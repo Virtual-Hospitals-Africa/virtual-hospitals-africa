@@ -211,6 +211,10 @@ export async function searchManufacturedMedications(
   }))
 }
 
+export function dateToString(date: Date | null): string | null {
+  return date ? date.toISOString() : null;
+}
+
 export async function searchAcrossPages(
   trx: TrxOrDb,
   search: string,
@@ -227,11 +231,19 @@ export async function searchAcrossPages(
       'manufactured_medications.medication_id',
     )
     .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .leftJoin(
+      'manufactured_medication_recalls',
+      'manufactured_medication_recalls.manufactured_medication_id',
+      'manufactured_medications.id'
+    )
     .where((eb) => 
-      eb.or([
-        eb('drugs.generic_name', 'ilike', `%${search}%`),
-        eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
-        eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+      eb.and([
+        eb.or([
+          eb('drugs.generic_name', 'ilike', `%${search}%`),
+          eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
+          eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+        ]),
+        search ? eb.or([eb('drugs.id', 'is not', null)]) : eb('manufactured_medication_recalls.recalled_at', 'is', null)
       ])
     )
     .select((eb) => eb.fn.countAll().as('totalRows'))
@@ -247,6 +259,11 @@ export async function searchAcrossPages(
       'manufactured_medications.medication_id',
     )
     .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .leftJoin(
+      'manufactured_medication_recalls',
+      'manufactured_medication_recalls.manufactured_medication_id',
+      'manufactured_medications.id'
+    )
     .select([
       'manufactured_medications.id',
       'drugs.generic_name',
@@ -259,12 +276,16 @@ export async function searchAcrossPages(
       'medications.strength_denominator_unit',
       'medications.strength_denominator_is_units',
       strengthSummary('manufactured_medications'),
+      'manufactured_medication_recalls.recalled_at',
     ])
     .where((eb) => 
-      eb.or([
-        eb('drugs.generic_name', 'ilike', `%${search}%`),
-        eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
-        eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+      eb.and([
+        eb.or([
+          eb('drugs.generic_name', 'ilike', `%${search}%`),
+          eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
+          eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+        ]),
+        search ? eb.or([eb('drugs.id', 'is not', null)]) : eb('manufactured_medication_recalls.recalled_at', 'is', null)
       ])
     )
     .orderBy('drugs.generic_name', 'asc')
@@ -276,6 +297,7 @@ export async function searchAcrossPages(
     medicines: medicines.map((medicine) => ({
       ...medicine,
       strength_denominator: parseFloat(medicine.strength_denominator),
+      recalled_at: dateToString(medicine.recalled_at),
       actions: {
         recall: `/regulator/medicines/${medicine.id}/recall`,
       },
@@ -299,6 +321,11 @@ export async function get(
       'manufactured_medications.medication_id',
     )
     .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .leftJoin(
+      'manufactured_medication_recalls',
+      'manufactured_medication_recalls.manufactured_medication_id',
+      'manufactured_medications.id'
+    )
     .select([
       'manufactured_medications.id',
       'drugs.generic_name',
@@ -311,23 +338,38 @@ export async function get(
       'medications.strength_denominator_unit',
       'medications.strength_denominator_is_units',
       strengthSummary('manufactured_medications'),
+      'manufactured_medication_recalls.recalled_at',
     ])
+    .where('manufactured_medication_recalls.recalled_at', 'is', null)
     .orderBy('drugs.generic_name', 'asc')
     .limit(rowsPerPage)
     .offset(offset)
     .execute()
 
-  const totalRowsResult = await trx
+    const totalRowsResult = await trx
     .selectFrom('manufactured_medications')
-    .select((eb) => eb.fn.count('id').as('totalRows'))
-    .execute()
-
-  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .leftJoin(
+      'manufactured_medication_recalls',
+      'manufactured_medication_recalls.manufactured_medication_id',
+      'manufactured_medications.id'
+    )
+    .where('manufactured_medication_recalls.recalled_at', 'is', null)
+    .select((eb) => eb.fn.count('manufactured_medications.id').as('totalRows'))
+    .executeTakeFirst()
+  
+  const totalRows = totalRowsResult ? parseInt(totalRowsResult.totalRows.toString(), 10) : 0
 
   return {
     medicines: medicines.map((medicine) => ({
       ...medicine,
       strength_denominator: parseFloat(medicine.strength_denominator),
+      recalled_at: dateToString(medicine.recalled_at),
       actions: {
         recall: `/regulator/medicines/${medicine.id}/recall`,
       },

@@ -7,10 +7,21 @@ import { Button } from '../components/library/Button.tsx'
 import FormRow from './form/Row.tsx'
 import { useEffect } from 'react';
 
+const formatDate = (dateString: string | null) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+};
+
 const columns: TableColumn<RenderedMedicine>[] = [
   {
     label: 'Generic Name',
-    data: 'generic_name',
+    data: (medicine: RenderedMedicine) => {
+      if (medicine.recalled_at) {
+        return `${medicine.generic_name} (recalled ${formatDate(medicine.recalled_at)})`;
+      }
+      return medicine.generic_name;
+    },
   },
   {
     label: 'Trade Name',
@@ -31,12 +42,24 @@ const columns: TableColumn<RenderedMedicine>[] = [
   {
     label: 'Actions',
     type: 'actions',
+    data: (medicine: RenderedMedicine) => {
+      console.log(`Medicine ${medicine.generic_name} recalled_at:`, medicine.recalled_at);
+      if (medicine.recalled_at) {
+        return { text: 'Recalled', disabled: true };
+      }
+      return {
+        text: 'Recall',
+        href: medicine.actions.recall,
+        disabled: false
+      };
+    },
   },
 ]
 
 export function MedicinesFooInput(
   { medicines, searchQuery }: { medicines: RenderedMedicine[], searchQuery: string },
 ) {
+  console.log('Medicines data:', medicines);
   const { search, setSearch } = useAsyncSearch({
     href: '/drugs',
     value: null,
