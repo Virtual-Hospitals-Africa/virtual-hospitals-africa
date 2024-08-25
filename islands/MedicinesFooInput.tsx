@@ -43,7 +43,6 @@ const columns: TableColumn<RenderedMedicine>[] = [
     label: 'Actions',
     type: 'actions',
     data: (medicine: RenderedMedicine) => {
-      console.log(`Medicine ${medicine.generic_name} recalled_at:`, medicine.recalled_at);
       if (medicine.recalled_at) {
         return { text: 'Recalled', disabled: true };
       }
@@ -59,7 +58,6 @@ const columns: TableColumn<RenderedMedicine>[] = [
 export function MedicinesFooInput(
   { medicines, searchQuery }: { medicines: RenderedMedicine[], searchQuery: string },
 ) {
-  console.log('Medicines data:', medicines);
   const { search, setSearch } = useAsyncSearch({
     href: '/drugs',
     value: null,
@@ -78,6 +76,12 @@ export function MedicinesFooInput(
     window.location.href = url.toString();
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch(search.query);
+    }
+  };
+
   return (
     <div className='mb-4'>
       <FormRow className='mb-4'>
@@ -87,6 +91,7 @@ export function MedicinesFooInput(
           onInput={(e) => {
             setSearch({ ...search, query: e.currentTarget.value })
           }}
+          onKeyDown={handleKeyDown}
         />
         <Button onClick={() => handleSearch(search.query)}>Search</Button>
       </FormRow>
