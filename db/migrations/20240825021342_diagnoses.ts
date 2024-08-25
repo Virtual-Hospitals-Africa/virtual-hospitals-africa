@@ -2,13 +2,11 @@ import { Kysely } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await createStandardTable(db, 'diagnosis', (qb) =>
+  await createStandardTable(db, 'diagnoses', (qb) =>
     qb
       .addColumn(
         'patient_condition_id',
-        'uuid',
-        (col) =>
-          col.notNull().references('patient_conditions.id').onDelete('cascade'),
+        'varchar(255)',
       )
       .addColumn(
         'provider_id',
@@ -24,5 +22,5 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('diagnosis').execute()
+  await db.schema.dropTable('diagnoses').execute()
 }

@@ -3,21 +3,35 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 
-interface DiagnosisData {
-  patient_condition_id: string
-  provider_id: string
-  doctor_reviews_id: string
+interface Condition {
+  id: string
+  name: string
+  start_date: string
 }
 
-// deno-lint-ignore no-explicit-any
-function assertIsDiagnoses(_arg: unknown): _arg is any {
-  const data = _arg as DiagnosisData
-  return (
-    typeof data.patient_condition_id === 'string' &&
-    typeof data.provider_id === 'string' &&
-    typeof data.doctor_reviews_id === 'string'
-  )
+interface DiagnosisData {
+  pre_existing_conditions: Condition[]
+}
+
+function assertIsDiagnoses(
+  data: unknown
+): asserts data is DiagnosisData {
+  assertOr400(isObjectLike(data), 'Invalid form values')
+  if (data.pre_existing_conditions !== undefined) {
+    assertOr400(
+        Array.isArray(data.pre_existing_conditions),
+        'pre_existing_conditions must be an array',
+    )
+    for (const condition of data.pre_existing_conditions) {
+        assertOr400(
+        typeof condition.id === 'string',
+        'Each condition must have an id of type string',
+        )
+    }
+  }
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -32,43 +46,26 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
     console.log('data', data)
 
-    const provider = await ctx.state.trx
-      .selectFrom('patient_encounter_providers')
-      .select('provider_id')
-      .where(
-        'id',
-        '=',
-        ctx.state.doctor_review.requested_by.patient_encounter_provider_id,
-      )
-      .executeTakeFirst()
-
-    if (!provider) {
-      throw new Error('Provider not found')
-    }
-
-    const patient_condition = await ctx.state.trx
-      .selectFrom('patient_conditions')
-      .select('id')
-      .where('patient_id', '=', ctx.state.doctor_review.patient.id)
-      .executeTakeFirst()
-
-    if (!patient_condition) {
-      throw new Error('patient_condition not found')
+    const patient_condition_ids: string[] = []
+    if (data.pre_existing_conditions && Array.isArray(data.pre_existing_conditions)) {
+        for (const condition of data.pre_existing_conditions) {
+          patient_condition_ids.push(condition.id);
+        }
     }
 
     await ctx.state.trx
-      .insertInto('diagnosis')
+      .insertInto('diagnoses')
       .values({
-        patient_condition_id: patient_condition.id,
-        provider_id: provider.provider_id,
+        patient_condition_id: JSON.stringify(patient_condition_ids),
+        provider_id: ctx.state.doctor_review.employment_id,
         doctor_reviews_id: ctx.state.doctor_review.review_id,
       })
       .execute()
-    console.log('Diagnosis inserted successfully')
+    console.log('Diagnoses inserted successfully')
 
     const completing_step = completeStep(ctx)
     return completing_step
-  },
+  }
 }
 
 // deno-lint-ignore require-await
