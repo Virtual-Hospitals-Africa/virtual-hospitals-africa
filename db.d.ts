@@ -337,6 +337,15 @@ export interface Devices {
   updated_at: Generated<Timestamp>
 }
 
+export interface Diagnosis {
+  created_at: Generated<Timestamp>
+  doctor_reviews_id: string
+  id: Generated<string>
+  patient_condition_id: string
+  provider_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface DiagnosticTests {
   name: string
 }
@@ -1327,6 +1336,7 @@ export interface DB {
   countries: Countries
   device_capabilities: DeviceCapabilities
   devices: Devices
+  diagnosis: Diagnosis
   diagnostic_tests: DiagnosticTests
   districts: Districts
   doctor_review: DoctorReview
