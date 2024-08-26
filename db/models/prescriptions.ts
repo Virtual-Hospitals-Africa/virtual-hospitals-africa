@@ -17,13 +17,23 @@ export type PrescriptionCondition = {
   medications: PatientMedicationUpsert[]
 }
 
+export type MedicationsFilled = {
+  patient_prescription_medication_id: string
+  pharmacist_id: string
+  pharmacy_id?: string
+}
+
 export function getById(
   trx: TrxOrDb,
   id: string,
 ) {
   return trx
     .selectFrom('prescriptions')
-    .innerJoin('prescription_codes', 'prescriptions.id', 'prescription_codes.prescription_id')
+    .innerJoin(
+      'prescription_codes',
+      'prescriptions.id',
+      'prescription_codes.prescription_id',
+    )
     .where('prescriptions.id', '=', id)
     // .selectAll()
     .select('prescriptions.id')
@@ -39,7 +49,11 @@ export function getByCode(
 ) {
   return trx
     .selectFrom('prescription_codes')
-    .innerJoin('prescriptions', 'prescriptions.id', 'prescription_codes.prescription_id')
+    .innerJoin(
+      'prescriptions',
+      'prescriptions.id',
+      'prescription_codes.prescription_id',
+    )
     .where('alphanumeric_code', '=', code)
     .select('prescriptions.id')
     .select('prescriptions.prescriber_id')
@@ -138,12 +152,11 @@ export async function getMedicationsByPrescriptionId(
     })
 }
 
-export async function getPrescriberByPrescriptionId(
+export function getPrescriberByPrescriptionId(
   trx: TrxOrDb,
   prescription_id: string,
 ) {
-  assert(typeof prescription_id === 'string')
-  const prescriber = await trx
+  return trx
     .selectFrom('prescriptions')
     .innerJoin(
       'patient_encounter_providers',
@@ -163,30 +176,24 @@ export async function getPrescriberByPrescriptionId(
     .where('prescriptions.id', '=', prescription_id)
     .select('health_workers.name')
     .executeTakeFirst()
-
-  return prescriber
 }
 
-export async function dispenseMedications(
+export function dispenseMedications(
   trx: TrxOrDb,
-  DispensedMedications: {
-    patient_prescription_medication_id: string
-    pharmacist_id: string
-    pharmacy_id?: string
-  }[],
+  dispensed_medications: MedicationsFilled[],
 ) {
-  return await trx
+  return trx
     .insertInto('patient_prescription_medications_filled')
-    .values(DispensedMedications)
+    .values(dispensed_medications)
     .returningAll()
     .execute()
 }
 
-export async function getFilledMedicationsByPrescriptionId(
+export function getFilledMedicationsByPrescriptionId(
   trx: TrxOrDb,
   prescription_id: string,
 ) {
-  return await trx
+  return trx
     .selectFrom('patient_prescription_medications')
     .innerJoin(
       'patient_prescription_medications_filled',
@@ -205,17 +212,12 @@ export async function getFilledMedicationsByPrescriptionId(
     .execute()
 }
 
-export async function deleteFilledMedications(
+export function deleteFilledMedicationsById(
   trx: TrxOrDb,
-  filledMedications: {
-    patient_prescription_medication_id: string
-  }[],
+  filled_id: string[],
 ) {
-  const idsToDelete = filledMedications.map((medication) =>
-    medication.patient_prescription_medication_id
-  )
-  return await trx
+  return trx
     .deleteFrom('patient_prescription_medications_filled')
-    .where('patient_prescription_medication_id', 'in', idsToDelete)
+    .where('patient_prescription_medication_id', 'in', filled_id)
     .execute()
 }

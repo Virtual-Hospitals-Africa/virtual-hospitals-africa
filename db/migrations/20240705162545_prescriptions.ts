@@ -95,5 +95,6 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_prescription_medications_filled').execute()
   await db.schema.dropTable('patient_prescription_medications').execute()
+  await db.schema.dropTable('prescription_codes').execute()
   await db.schema.dropTable('prescriptions').execute()
 }

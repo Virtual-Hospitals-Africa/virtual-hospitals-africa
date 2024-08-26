@@ -13,17 +13,16 @@ import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
+  currentMedication,
   dispenseAll,
   dispenseOne,
   dispenseRestart,
   dispenseSkip,
   dispenseType,
-  getAndUptateMedications,
-  currentMedication,
+  getPrescriber,
+  PharmacistStateData,
+  uptateMedications,
 } from './prescriptionMedications.ts'
-import {
-  getPrescriberByPrescriptionId,
-} from '../../db/models/prescriptions.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -226,15 +225,20 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
-      const medicationDescriptions: string[] = await getAndUptateMedications(
+      await uptateMedications(
         _trx,
         pharmacistState,
       )
 
+      const { medications, undispensed_medications } = pharmacistState
+        .chatbot_user.data as PharmacistStateData
+
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
         messageBody: `Here is your prescription\n* ${
-          medicationDescriptions.join('\n* ')
+          medications.join('\n* ')
+        }\n\nAnd these medications haven't been dispensed\n* ${
+          undispensed_medications.join('\n* ')
         }`,
         file_path,
       }
@@ -258,14 +262,16 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',
-    async prompt(
+    prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense this medication?\n* ${await currentMedication(
-        trx,
-        pharmacistState,
-      )}`
+      return `Do you want to dispense this medication?\n* ${
+        currentMedication(
+          trx,
+          pharmacistState,
+        )
+      }`
     },
     options: [
       {
@@ -282,7 +288,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_dispense_all': {
     type: 'select',
-    prompt: 'Do you want to dispense all medications?',
+    prompt: 'Do you want to dispense all undispensed medications?',
     options: [
       {
         id: 'Yes',
@@ -298,14 +304,16 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:start_dispense': {
     type: 'select',
-    async prompt(
+    prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${await currentMedication(
-        trx,
-        pharmacistState,
-      )}?`
+      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${
+        currentMedication(
+          trx,
+          pharmacistState,
+        )
+      }?`
     },
     options: [{
       id: 'yes',
@@ -344,14 +352,10 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      const { prescription_id } = pharmacistState.chatbot_user.data
-      assert(typeof prescription_id === 'string')
-      const prescriber = await getPrescriberByPrescriptionId(
+      return `Thank you for assisting "${await getPrescriber(
         trx,
-        prescription_id,
-      )
-      assert(prescriber)
-      return `Thank you for assisting "${prescriber.name}" do you want to Print or Share the Prescription Note, or restart dispense`
+        pharmacistState,
+      )}" do you want to Print or Share the Prescription Note, or restart dispense`
     },
     options: [
       {

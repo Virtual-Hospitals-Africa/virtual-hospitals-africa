@@ -2,10 +2,12 @@ import { dosageDisplay } from '../../shared/medication.ts'
 import omit from '../../util/omit.ts'
 import { durationBetween } from '../../util/date.ts'
 import {
-  deleteFilledMedications,
+  deleteFilledMedicationsById,
   dispenseMedications,
   getFilledMedicationsByPrescriptionId,
   getMedicationsByPrescriptionId,
+  getPrescriberByPrescriptionId,
+  MedicationsFilled,
 } from '../../db/models/prescriptions.ts'
 import {
   PharmacistChatbotUserState,
@@ -15,17 +17,17 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import * as conversations from '../../db/models/conversations.ts'
 
-type PharmacistStateData = {
-  prescription_code: string,
-  prescription_id: string,
-  medications: string[],
-  pendingMedications: string[],
-  number_of_medications: number,
-  number_of_dispensed_medications: number,
-  index_of_medications: number,
+export type PharmacistStateData = {
+  prescription_code: string
+  prescription_id: string
+  medications: string[]
+  undispensed_medications: string[]
+  number_of_undispensed_medications: number
+  count_dispensed_medications: number
+  index_of_undispensed_medications: number
 }
 
-async function getPendingMedications(
+async function filterMedications(
   trx: TrxOrDb,
   prescription_id: string,
   medications: PrescriptionMedication[],
@@ -42,18 +44,18 @@ async function getPendingMedications(
   )
 }
 
-async function getMedications(
+async function getUndispensedMedications(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ): Promise<PrescriptionMedication[]> {
-  const { prescription_id } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
+  const { prescription_id } = pharmacistState.chatbot_user
+    .data as PharmacistStateData
 
   const medications = await getMedicationsByPrescriptionId(trx, prescription_id)
-  return await getPendingMedications(trx, prescription_id, medications)
+  return await filterMedications(trx, prescription_id, medications)
 }
 
-function medicationDescription(
+function describeMedication(
   medications: PrescriptionMedication[],
 ): string[] {
   return medications.map((medication) => {
@@ -72,32 +74,31 @@ function medicationDescription(
   })
 }
 
-export async function getAndUptateMedications(
+export async function uptateMedications(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
-): Promise<string[]> {
-  const { prescription_code, prescription_id } = 
-    pharmacistState.chatbot_user.data as PharmacistStateData
+): Promise<void> {
+  const { prescription_code, prescription_id } = pharmacistState.chatbot_user
+    .data as PharmacistStateData
 
   const medications = await getMedicationsByPrescriptionId(
     trx,
     prescription_id,
   )
-  const medicationDescriptions = medicationDescription(medications)
-  const pendingMedicationsDescriptions = medicationDescription(
-    await getPendingMedications(trx, prescription_id, medications)
+  const medication_descriptions = describeMedication(medications)
+  const undispensed_medications_descriptions = describeMedication(
+    await filterMedications(trx, prescription_id, medications),
   )
-
-  console.log(pendingMedicationsDescriptions.length)
 
   const stateData: PharmacistStateData = {
     prescription_code: prescription_code,
     prescription_id: prescription_id,
-    medications: medicationDescriptions,
-    pendingMedications: pendingMedicationsDescriptions,
-    number_of_medications: pendingMedicationsDescriptions.length,
-    number_of_dispensed_medications: 0, //The number of medications dispensed in this round
-    index_of_medications: 0,
+    medications: medication_descriptions,
+    undispensed_medications: undispensed_medications_descriptions,
+    number_of_undispensed_medications:
+      undispensed_medications_descriptions.length,
+    count_dispensed_medications: 0,
+    index_of_undispensed_medications: 0,
   }
 
   await conversations.updateChatbotUser(
@@ -107,8 +108,6 @@ export async function getAndUptateMedications(
       data: stateData,
     },
   )
-
-  return medicationDescriptions
 }
 
 export async function dispenseType(
@@ -116,7 +115,8 @@ export async function dispenseType(
   pharmacistState: PharmacistChatbotUserState,
 ) {
   const unhandled_message = pharmacistState.unhandled_message.trimmed_body!
-  const { number_of_medications } = pharmacistState.chatbot_user.data as PharmacistStateData
+  const { number_of_undispensed_medications } = pharmacistState.chatbot_user
+    .data as PharmacistStateData
 
   await conversations.updateChatbotUser(
     trx,
@@ -124,11 +124,11 @@ export async function dispenseType(
     {
       data: {
         ...omit(pharmacistState.chatbot_user.data, [
-          'index_of_medications',
-          'number_of_dispensed_medications',
+          'count_dispensed_medications',
+          'index_of_undispensed_medications',
         ]),
-        index_of_medications: 0,
-        number_of_dispensed_medications: 0,
+        count_dispensed_medications: 0,
+        index_of_undispensed_medications: 0,
       },
     },
   )
@@ -136,7 +136,7 @@ export async function dispenseType(
   if (
     unhandled_message === 'dispense' || unhandled_message === 'restart_dispense'
   ) {
-    if (number_of_medications === 1) {
+    if (number_of_undispensed_medications === 1) {
       return 'onboarded:fill_prescription:ask_dispense_one'
     } else {
       return 'onboarded:fill_prescription:ask_dispense_all'
@@ -150,36 +150,42 @@ export function currentMedication(
   _trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ): string {
-  const { pendingMedications, number_of_medications, index_of_medications } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
-  console.log(pharmacistState.chatbot_user.data)
-  console.log(typeof pendingMedications)
-  console.log(pendingMedications[0])
-  // ??????????? index_of_medications = NaN
-  assert(index_of_medications < number_of_medications)
+  const {
+    undispensed_medications,
+    number_of_undispensed_medications,
+    index_of_undispensed_medications,
+  } = pharmacistState.chatbot_user.data as PharmacistStateData
 
-  const medicationDescription = pendingMedications[index_of_medications]
+  assert(index_of_undispensed_medications < number_of_undispensed_medications)
 
-  // await conversations.updateChatbotUser(
-  //   trx,
-  //   pharmacistState.chatbot_user,
-  //   {
-  //     data: {
-  //       ...omit(pharmacistState.chatbot_user.data, ['index_of_medications']),
-  //       index_of_medications: index_of_medications + 1,
-  //     },
-  //   },
-  // )
+  const medication_description =
+    undispensed_medications[index_of_undispensed_medications]
 
-  return medicationDescription
+  return medication_description
+}
+
+export async function getPrescriber(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+): Promise<string> {
+  const { prescription_id } = pharmacistState.chatbot_user.data
+  assert(typeof prescription_id === 'string')
+  const prescriber = await getPrescriberByPrescriptionId(
+    trx,
+    prescription_id,
+  )
+  assert(prescriber)
+  return prescriber.name
 }
 
 function isTheLastMedication(
   pharmacistState: PharmacistChatbotUserState,
 ): boolean {
-  const { pendingMedications, index_of_medications } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
-  return index_of_medications === pendingMedications.length
+  const {
+    number_of_undispensed_medications,
+    index_of_undispensed_medications,
+  } = pharmacistState.chatbot_user.data as PharmacistStateData
+  return index_of_undispensed_medications === number_of_undispensed_medications
 }
 
 function dispenseNextStep(
@@ -191,51 +197,14 @@ function dispenseNextStep(
     : 'onboarded:fill_prescription:dispense_select' as const
 }
 
-async function increaseNumberOfDispensedMedications(
+async function updateData(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
-  number: number,
+  number_of_dispense: number,
+  is_dispensed: boolean,
 ) {
-  const number_of_dispensed_medications = Number(
-    pharmacistState.chatbot_user.data.number_of_dispensed_medications,
-  )
-  await conversations.updateChatbotUser(
-    trx,
-    pharmacistState.chatbot_user,
-    {
-      data: {
-        ...omit(pharmacistState.chatbot_user.data, [
-          'number_of_dispensed_medications',
-        ]),
-        number_of_dispensed_medications: number_of_dispensed_medications + number,
-      },
-    },
-  )
-}
-
-export async function dispenseOne(
-  trx: TrxOrDb,
-  pharmacistState: PharmacistChatbotUserState,
-) {
-  const medications = await getMedications(
-    trx,
-    pharmacistState,
-  )
-
-  const { index_of_medications, number_of_dispensed_medications } =
+  const { count_dispensed_medications, index_of_undispensed_medications } =
     pharmacistState.chatbot_user.data as PharmacistStateData
-  const filledMedicationData = [{
-    patient_prescription_medication_id:
-      medications[index_of_medications].patient_prescription_medication_id,
-    pharmacist_id: pharmacistState.chatbot_user.entity_id,
-  } as {
-    patient_prescription_medication_id: string
-    pharmacist_id: string
-    pharmacy_id?: string
-  }]
-
-  const numberOfDispense = 1
-  await dispenseMedications(trx, filledMedicationData)
 
   await conversations.updateChatbotUser(
     trx,
@@ -243,38 +212,53 @@ export async function dispenseOne(
     {
       data: {
         ...omit(pharmacistState.chatbot_user.data, [
-          'number_of_dispensed_medications',
+          'count_dispensed_medications',
+          'index_of_undispensed_medications',
         ]),
-        index_of_medications: index_of_medications + numberOfDispense,
-        number_of_dispensed_medications: number_of_dispensed_medications + numberOfDispense,
+        count_dispensed_medications: count_dispensed_medications +
+          (is_dispensed ? number_of_dispense : 0),
+        index_of_undispensed_medications: index_of_undispensed_medications +
+          number_of_dispense,
       },
     },
   )
-
-  return dispenseNextStep(trx, pharmacistState)
 }
 
 export async function dispenseSkip(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const numberOfDispense = 1
-  const { index_of_medications, number_of_dispensed_medications } =
-    pharmacistState.chatbot_user.data.index_of_medications as PharmacistStateData
-  
-  await conversations.updateChatbotUser(
+  const number_of_dispense = 1
+  const is_dispensed = false
+  await updateData(trx, pharmacistState, number_of_dispense, is_dispensed)
+
+  return dispenseNextStep(trx, pharmacistState)
+}
+
+export async function dispenseOne(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
+  const medications = await getUndispensedMedications(
     trx,
-    pharmacistState.chatbot_user,
-    {
-      data: {
-        ...omit(pharmacistState.chatbot_user.data, [
-          'number_of_dispensed_medications',
-        ]),
-        index_of_medications: index_of_medications + numberOfDispense,
-        number_of_dispensed_medications: number_of_dispensed_medications + numberOfDispense,
-      },
-    },
+    pharmacistState,
   )
+
+  const { index_of_undispensed_medications, count_dispensed_medications } =
+    pharmacistState.chatbot_user.data as PharmacistStateData
+
+  const filled_medication_data = [{
+    patient_prescription_medication_id: medications[
+      index_of_undispensed_medications - count_dispensed_medications
+    ].patient_prescription_medication_id,
+    pharmacist_id: pharmacistState.chatbot_user.entity_id,
+  } as MedicationsFilled]
+
+  await dispenseMedications(trx, filled_medication_data)
+
+  const number_of_dispense = 1
+  const is_dispensed = true
+  await updateData(trx, pharmacistState, number_of_dispense, is_dispensed)
 
   return dispenseNextStep(trx, pharmacistState)
 }
@@ -283,36 +267,20 @@ export async function dispenseAll(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { index_of_medications, number_of_dispensed_medications } =
-    pharmacistState.chatbot_user.data.index_of_medications as PharmacistStateData
-
-  const medications = await getMedications(
+  const medications = await getUndispensedMedications(
     trx,
     pharmacistState,
   )
-  const filledMedicationData = medications.map((medication) => ({
+  const filled_medication_data = medications.map((medication) => ({
     patient_prescription_medication_id:
-    medication.patient_prescription_medication_id,
+      medication.patient_prescription_medication_id,
     pharmacist_id: pharmacistState.chatbot_user.entity_id,
-  } as {
-    patient_prescription_medication_id: string
-    pharmacist_id: string
-    pharmacy_id?: string
-  }))
-  await dispenseMedications(trx, filledMedicationData)
-  await conversations.updateChatbotUser(
-    trx,
-    pharmacistState.chatbot_user,
-    {
-      data: {
-        ...omit(pharmacistState.chatbot_user.data, [
-          'number_of_dispensed_medications',
-        ]),
-        index_of_medications: index_of_medications + medications.length,
-        number_of_dispensed_medications: number_of_dispensed_medications + medications.length,
-      },
-    },
-  )
+  } as MedicationsFilled))
+  await dispenseMedications(trx, filled_medication_data)
+
+  const is_dispensed = true
+  await updateData(trx, pharmacistState, medications.length, is_dispensed)
+
   return 'onboarded:fill_prescription:confirm_done' as const
 }
 
@@ -320,19 +288,13 @@ export async function dispenseRestart(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const prescription_id =
-    pharmacistState.chatbot_user.data.prescription_id
-  assert(typeof prescription_id === 'string')
-  const number_of_dispensed_medications = Number(
-    pharmacistState.chatbot_user.data.number_of_dispensed_medications,
-  )
-  const allFilledMedications =
-    await getFilledMedicationsByPrescriptionId(trx, prescription_id)
-  const filledMedicationsThisRound = allFilledMedications.slice(
-    0,
-    number_of_dispensed_medications,
-  )
+  const { prescription_id, count_dispensed_medications } = pharmacistState
+    .chatbot_user.data as PharmacistStateData
+  const filled_medications_id =
+    (await getFilledMedicationsByPrescriptionId(trx, prescription_id))
+      .slice(0, count_dispensed_medications)
+      .map((filled_id) => filled_id.patient_prescription_medication_id)
 
-  await deleteFilledMedications(trx, filledMedicationsThisRound)
-  return await dispenseType(trx, pharmacistState)
+  await deleteFilledMedicationsById(trx, filled_medications_id)
+  return dispenseType(trx, pharmacistState)
 }
