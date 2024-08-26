@@ -1065,52 +1065,6 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
-export interface PgStatStatements {
-  blk_read_time: number | null
-  blk_write_time: number | null
-  calls: Int8 | null
-  dbid: number | null
-  jit_emission_count: Int8 | null
-  jit_emission_time: number | null
-  jit_functions: Int8 | null
-  jit_generation_time: number | null
-  jit_inlining_count: Int8 | null
-  jit_inlining_time: number | null
-  jit_optimization_count: Int8 | null
-  jit_optimization_time: number | null
-  local_blks_dirtied: Int8 | null
-  local_blks_hit: Int8 | null
-  local_blks_read: Int8 | null
-  local_blks_written: Int8 | null
-  max_exec_time: number | null
-  max_plan_time: number | null
-  mean_exec_time: number | null
-  mean_plan_time: number | null
-  min_exec_time: number | null
-  min_plan_time: number | null
-  plans: Int8 | null
-  query: string | null
-  queryid: Int8 | null
-  rows: Int8 | null
-  shared_blks_dirtied: Int8 | null
-  shared_blks_hit: Int8 | null
-  shared_blks_read: Int8 | null
-  shared_blks_written: Int8 | null
-  stddev_exec_time: number | null
-  stddev_plan_time: number | null
-  temp_blk_read_time: number | null
-  temp_blk_write_time: number | null
-  temp_blks_read: Int8 | null
-  temp_blks_written: Int8 | null
-  toplevel: boolean | null
-  total_exec_time: number | null
-  total_plan_time: number | null
-  userid: number | null
-  wal_bytes: Numeric | null
-  wal_fpi: Int8 | null
-  wal_records: Int8 | null
-}
-
 export interface Pharmacies {
   address: string | null
   created_at: Generated<Timestamp>
