@@ -83,11 +83,15 @@ export async function insert(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  await medications.insert(
+  const prescription_medications = await medications.insert(
     trx,
     prescription.id,
     values.prescribing,
   )
+
+  if (prescription_medications.length) {
+    // TODO
+  }
 
   return prescription
 }
@@ -223,5 +227,15 @@ export function deleteFilledMedicationsById(
   return trx
     .deleteFrom('patient_prescription_medications_filled')
     .where('patient_prescription_medication_id', 'in', filled_id)
+    .execute()
+}
+
+export function deleteCode(
+  trx: TrxOrDb,
+  code: string,
+) {
+  return trx
+    .deleteFrom('prescription_codes')
+    .where('alphanumeric_code', '=', code)
     .execute()
 }

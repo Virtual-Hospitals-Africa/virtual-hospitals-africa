@@ -15,6 +15,7 @@ import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
   currentMedication,
   dispenseAll,
+  dispenseExit,
   dispenseOne,
   dispenseRestart,
   dispenseSkip,
@@ -358,11 +359,11 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       )}" do you want to Print or Share the Prescription Note, or restart dispense`
     },
     options: [
-      {
-        id: 'prescription_note',
-        title: 'Prescription Note',
-        onExit: 'initial_message',
-      },
+      // {
+      //   id: 'prescription_note',
+      //   title: 'Prescription Note',
+      //   onExit: 'initial_message',
+      // },
       {
         id: 'restart_dispense',
         title: 'Restart Dispense',
@@ -371,7 +372,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'main_menu',
         title: 'Back To Main Menu',
-        onExit: 'initial_message',
+        onExit: dispenseExit,
       },
     ],
   },

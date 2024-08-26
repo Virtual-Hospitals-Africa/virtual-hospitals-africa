@@ -2,6 +2,7 @@ import { dosageDisplay } from '../../shared/medication.ts'
 import omit from '../../util/omit.ts'
 import { durationBetween } from '../../util/date.ts'
 import {
+  deleteCode,
   deleteFilledMedicationsById,
   dispenseMedications,
   getFilledMedicationsByPrescriptionId,
@@ -297,4 +298,15 @@ export async function dispenseRestart(
 
   await deleteFilledMedicationsById(trx, filled_medications_id)
   return dispenseType(trx, pharmacistState)
+}
+
+export async function dispenseExit(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
+  const { prescription_code } = pharmacistState.chatbot_user
+    .data as PharmacistStateData
+  await deleteCode(trx, prescription_code)
+
+  return 'initial_message' as const
 }
