@@ -1111,11 +1111,6 @@ export interface PgStatStatements {
   wal_records: Int8 | null
 }
 
-export interface PgStatStatementsInfo {
-  dealloc: Int8 | null
-  stats_reset: Timestamp | null
-}
-
 export interface Pharmacies {
   address: string | null
   created_at: Generated<Timestamp>
@@ -1159,7 +1154,7 @@ export interface Pharmacists {
   pharmacist_type: PharmacistType
   prefix: NamePrefix | null
   revoked_at: Timestamp | null
-  revoked_by: number | null
+  revoked_by: string | null
   town: string | null
   updated_at: Generated<Timestamp>
 }
@@ -1326,11 +1321,6 @@ export interface Suburbs {
   ward_id: string
 }
 
-export interface TemporaryPrescriptionData {
-  index: string | null
-  prescription_id: string
-}
-
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1463,8 +1453,6 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
-  pg_stat_statements: PgStatStatements
-  pg_stat_statements_info: PgStatStatementsInfo
   pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:
     PharmacistChatbotUserWhatsappMessagesReceived
@@ -1485,7 +1473,6 @@ export interface DB {
   regulators: Regulators
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
-  temporary_prescription_data: TemporaryPrescriptionData
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
