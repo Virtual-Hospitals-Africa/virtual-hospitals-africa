@@ -50,10 +50,7 @@ export async function update(
       .values({
         pharmacist_id,
         pharmacy_id: pharmacy_id,
-        family_name: pharmacistData.family_name,
-        given_name: pharmacistData.given_name,
         is_supervisor: is_supervisor,
-        prefix: pharmacistData.prefix,
       })
       .execute()
   }
@@ -259,10 +256,7 @@ export async function insert(
     .values({
       pharmacist_id: pharmacist.id,
       pharmacy_id,
-      family_name: data.family_name,
-      given_name: data.given_name,
       is_supervisor,
-      prefix: data.prefix,
     })
     .execute()
   return pharmacist

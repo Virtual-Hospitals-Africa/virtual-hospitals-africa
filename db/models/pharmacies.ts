@@ -51,12 +51,12 @@ export async function get(
     .leftJoin(
       'pharmacy_employment',
       'pharmacies.id',
-      'pharmacy_employment.pharmacy_id',
+      'pharmacy_employment.pharmacy_id'
     )
     .leftJoin(
       'pharmacists',
       'pharmacy_employment.pharmacist_id',
-      'pharmacists.id',
+      'pharmacists.id'
     )
     .select((eb) => [
       'pharmacies.id',
@@ -69,18 +69,22 @@ export async function get(
       jsonArrayFrom(
         eb
           .selectFrom('pharmacy_employment')
+          .leftJoin(
+            'pharmacists',
+            'pharmacy_employment.pharmacist_id',
+            'pharmacists.id'
+          )
           .select([
-            'id',
-            'prefix',
-            name_sql('pharmacy_employment').as('name'),
-            sql<
-              string
-            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
-              .as(
-                'href',
-              ),
+            'pharmacy_employment.id',
+            'pharmacists.prefix',
+            'pharmacists.family_name',
+            'pharmacists.given_name',
+            name_sql('pharmacists').as('name'),
+            sql<string>`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`.as(
+              'href'
+            ),
           ])
-          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id')
       ).as('supervisors'),
     ])
     .groupBy([
@@ -128,12 +132,12 @@ export async function getById(
     .leftJoin(
       'pharmacy_employment',
       'pharmacies.id',
-      'pharmacy_employment.pharmacy_id',
+      'pharmacy_employment.pharmacy_id'
     )
     .leftJoin(
       'pharmacists',
       'pharmacy_employment.pharmacist_id',
-      'pharmacists.id',
+      'pharmacists.id'
     )
     .select((eb) => [
       'pharmacies.id',
@@ -147,20 +151,22 @@ export async function getById(
       jsonArrayFrom(
         eb
           .selectFrom('pharmacy_employment')
+          .leftJoin(
+            'pharmacists',
+            'pharmacy_employment.pharmacist_id',
+            'pharmacists.id'
+          )
           .select([
-            'id',
-            'prefix',
-            'family_name',
-            'given_name',
-            name_sql('pharmacy_employment').as('name'),
-            sql<
-              string
-            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
-              .as(
-                'href',
-              ),
+            'pharmacy_employment.id',
+            'pharmacists.prefix',
+            'pharmacists.family_name',
+            'pharmacists.given_name',
+            name_sql('pharmacists').as('name'),
+            sql<string>`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`.as(
+              'href'
+            ),
           ])
-          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id')
       ).as('supervisors'),
     ])
     .groupBy([
