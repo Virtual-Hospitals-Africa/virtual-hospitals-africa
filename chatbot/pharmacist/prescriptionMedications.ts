@@ -137,7 +137,9 @@ export async function dispenseType(
   if (
     unhandled_message === 'dispense' || unhandled_message === 'restart_dispense'
   ) {
-    if (number_of_undispensed_medications === 1) {
+    if (number_of_undispensed_medications === 0) {
+      // return 'onboarded:fill_prescription:confirm_done'
+    } else if (number_of_undispensed_medications === 1) {
       return 'onboarded:fill_prescription:ask_dispense_one'
     } else {
       return 'onboarded:fill_prescription:ask_dispense_all'
