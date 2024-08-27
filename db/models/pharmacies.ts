@@ -51,12 +51,12 @@ export async function get(
     .leftJoin(
       'pharmacy_employment',
       'pharmacies.id',
-      'pharmacy_employment.pharmacy_id'
+      'pharmacy_employment.pharmacy_id',
     )
     .leftJoin(
       'pharmacists',
       'pharmacy_employment.pharmacist_id',
-      'pharmacists.id'
+      'pharmacists.id',
     )
     .select((eb) => [
       'pharmacies.id',
@@ -72,7 +72,7 @@ export async function get(
           .leftJoin(
             'pharmacists',
             'pharmacy_employment.pharmacist_id',
-            'pharmacists.id'
+            'pharmacists.id',
           )
           .select([
             'pharmacy_employment.id',
@@ -80,11 +80,14 @@ export async function get(
             'pharmacists.family_name',
             'pharmacists.given_name',
             name_sql('pharmacists').as('name'),
-            sql<string>`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`.as(
-              'href'
-            ),
+            sql<
+              string
+            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+              .as(
+                'href',
+              ),
           ])
-          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id')
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
       ).as('supervisors'),
     ])
     .groupBy([
@@ -132,12 +135,12 @@ export async function getById(
     .leftJoin(
       'pharmacy_employment',
       'pharmacies.id',
-      'pharmacy_employment.pharmacy_id'
+      'pharmacy_employment.pharmacy_id',
     )
     .leftJoin(
       'pharmacists',
       'pharmacy_employment.pharmacist_id',
-      'pharmacists.id'
+      'pharmacists.id',
     )
     .select((eb) => [
       'pharmacies.id',
@@ -154,7 +157,7 @@ export async function getById(
           .leftJoin(
             'pharmacists',
             'pharmacy_employment.pharmacist_id',
-            'pharmacists.id'
+            'pharmacists.id',
           )
           .select([
             'pharmacy_employment.id',
@@ -162,11 +165,14 @@ export async function getById(
             'pharmacists.family_name',
             'pharmacists.given_name',
             name_sql('pharmacists').as('name'),
-            sql<string>`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`.as(
-              'href'
-            ),
+            sql<
+              string
+            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+              .as(
+                'href',
+              ),
           ])
-          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id')
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
       ).as('supervisors'),
     ])
     .groupBy([

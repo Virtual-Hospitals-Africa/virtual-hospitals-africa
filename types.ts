@@ -2917,6 +2917,7 @@ export type DetailedPharmacist = {
   name?: string
   given_name: string
   family_name: string
+  is_supervisor: boolean | null
   address: string | null
   town: string | null
   expiry_date: Date
