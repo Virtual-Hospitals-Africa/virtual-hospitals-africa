@@ -126,7 +126,7 @@ import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
-import * as $MedicinesFooInput from './islands/MedicinesFooInput.tsx'
+import * as $MedicinesSearchInput from './islands/MedicinesSearchInput.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
@@ -410,7 +410,7 @@ const manifest = {
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
-    './islands/MedicinesFooInput.tsx': $MedicinesFooInput,
+    './islands/MedicinesSearchInput.tsx': $MedicinesSearchInput,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,

@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { MedicinesFooInput } from '../../islands/MedicinesFooInput.tsx'
+import { MedicinesSearchInput } from '../../islands/MedicinesSearchInput.tsx'
 import { RenderedMedicine } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 
@@ -24,7 +24,7 @@ export default function MedicinesTable({
 }: MedicinesTableProps): JSX.Element {
   return (
     <>
-      <MedicinesFooInput 
+      <MedicinesSearchInput 
         medicines={medicines}
         searchQuery={searchQuery}
       />

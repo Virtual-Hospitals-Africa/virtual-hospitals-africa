@@ -55,7 +55,7 @@ const columns: TableColumn<RenderedMedicine>[] = [
   },
 ]
 
-export function MedicinesFooInput(
+export function MedicinesSearchInput(
   { medicines, searchQuery }: { medicines: RenderedMedicine[], searchQuery: string },
 ) {
   const { search, setSearch } = useAsyncSearch({
