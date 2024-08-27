@@ -32,6 +32,7 @@ const vhaVirtualHospitalStaff = [
   'alicejuancc01@gmail.com',
   'qiyuan877@gmail.com',
   'm81547905@gmail.com',
+  'ngwenyasikhululiwe1@gmail.com',
 ]
 
 export default create(['health_worker_invitees'], inviteVhaStaff)
