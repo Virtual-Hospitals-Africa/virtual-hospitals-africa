@@ -385,7 +385,6 @@ export function recall(
     regulator_id: string
   },
 ) {
-  console.log(data.manufactured_medication_id, data.regulator_id)
   return trx.insertInto('manufactured_medication_recalls').values({
     manufactured_medication_id: data.manufactured_medication_id,
     recalled_at: now,

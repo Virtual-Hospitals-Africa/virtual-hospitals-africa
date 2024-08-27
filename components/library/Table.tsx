@@ -17,6 +17,13 @@ type Showable =
 type Row = Record<string, unknown> & {
   id?: string
 }
+
+type ExtendedActionData = string | {
+  text: string;
+  href?: string;
+  disabled?: boolean;
+};
+
 export type TableColumn<T extends Row> =
   & {
     label?: Maybe<string>
@@ -34,7 +41,11 @@ export type TableColumn<T extends Row> =
         label: 'Actions'
         type: 'actions'
       }
-      : never)
+      : { 
+        label: 'Actions'
+        type: 'actions'
+        data: (row: T) => ExtendedActionData | ExtendedActionData[] 
+      })
   )
 
 type MappedColumn<T extends Row> = {
@@ -51,16 +62,35 @@ type TableProps<T extends Row> = {
 }
 
 function ActionButton(
-  { name, action }: { name: string; action?: Maybe<string> },
+  { name, action }: { name: string; action?: Maybe<ExtendedActionData> }
 ) {
-  return !action ? null : (
-    <a
-      href={typeof action === 'string' ? action : undefined}
+  if (!action) return null;
+  
+  if (typeof action === 'string') {
+    return (
+      <a 
+        href={action} 
+        className='text-indigo-600 hover:text-indigo-900 capitalize'
+      >
+        {name}
+      </a>
+    );
+  }
+
+  return action.disabled ? (
+    <span 
+      className='text-gray-400 capitalize'
+    >
+      {action.text || name}
+    </span>
+  ) : (
+    <a 
+      href={action.href} 
       className='text-indigo-600 hover:text-indigo-900 capitalize'
     >
-      {name}
+      {action.text || name}
     </a>
-  )
+  );
 }
 
 function TableCellInnerContents<T extends Row>(
@@ -103,21 +133,34 @@ function TableCellInnerContents<T extends Row>(
   }
 
   if (mapped_column.column.type === 'actions') {
-    assert('actions' in row)
-    if (row.actions == null) {
-      return null
+    let actionContent;
+    
+    if ('data' in mapped_column.column && typeof mapped_column.column.data === 'function') {
+      const actionData = mapped_column.column.data(row);
+      const actions = Array.isArray(actionData) ? actionData : [actionData];
+      actionContent = (
+        <div className='flex flex-col gap-1'>
+          {actions.map((action, index) => (
+            <ActionButton 
+              key={index} 
+              name={typeof action === 'string' ? action : action.text} 
+              action={action} 
+            />
+          ))}
+        </div>
+      );
+    } else if ('actions' in row && row.actions != null) {
+      assert(isObjectLike(row.actions))
+      actionContent = (
+        <div className='flex flex-col gap-1'>
+          {Object.entries(row.actions).map(([name, action]) => (
+            <ActionButton key={name} name={name} action={action as Maybe<ExtendedActionData>} />
+          ))}
+        </div>
+      );
     }
-    assert(isObjectLike(row.actions))
-    return (
-      <div className='flex flex-col gap-1'>
-        {Object.entries(row.actions).map((
-          [name, action],
-        ) => (
-          assert(action == null || typeof action === 'string'),
-            <ActionButton name={name} action={action} />
-        ))}
-      </div>
-    )
+
+    return actionContent || null;
   }
 
   throw new Error('Unreachable ' + mapped_column.column.type)
