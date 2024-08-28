@@ -5,6 +5,7 @@ import { getRequiredUUIDParam } from '../../../util/getParam.ts'
 import { LoggedInRegulator } from '../../../types.ts'
 import { FreshContext } from '$fresh/server.ts'
 import PharmacyDetailedCard from '../../../components/regulator/PharmacyDetailedCard.tsx'
+import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 
 export default async function PharmacyPage(
   _req: Request,
@@ -20,7 +21,6 @@ export default async function PharmacyPage(
     pharmacy,
     `Pharmacy ${pharmacy_id} not found`,
   )
-
   return (
     <Layout
       title='Pharmacies'
@@ -38,6 +38,7 @@ export default async function PharmacyPage(
         </div>
         <PharmacyDetailedCard
           pharmacy={pharmacy}
+          pre_existing_supervisors={pharmacy.supervisors}
         />
       </div>
     </Layout>

@@ -103,12 +103,14 @@ import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharma
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
 import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
+import * as $regulator_pharmacies_supervisors from './routes/regulator/pharmacies/supervisors.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
+import * as $regulator_supervisors from './routes/regulator/supervisors.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $tos from './routes/tos.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
@@ -151,6 +153,7 @@ import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButto
 import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
 import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
+import * as $SupervisorSearch from './islands/SupervisorSearch.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
 import * as $address_inputs from './islands/address-inputs.tsx'
@@ -205,9 +208,11 @@ import * as $pre_existing_conditions_Condition from './islands/pre-existing-cond
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
+import * as $regulator_AddRegulatorForm from './islands/regulator/AddRegulatorForm.tsx'
 import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
 import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
 import * as $regulator_InvitePharmacySearch from './islands/regulator/InvitePharmacySearch.tsx'
+import * as $regulator_Supervisor from './islands/regulator/Supervisor.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -379,6 +384,8 @@ const manifest = {
     './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
     './routes/regulator/pharmacies/pharmacies.tsx':
       $regulator_pharmacies_pharmacies,
+    './routes/regulator/pharmacies/supervisors.tsx':
+      $regulator_pharmacies_supervisors,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id].tsx':
       $regulator_pharmacists_pharmacist_id_,
@@ -389,6 +396,7 @@ const manifest = {
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
     './routes/regulator/pharmacists/pharmacists.tsx':
       $regulator_pharmacists_pharmacists,
+    './routes/regulator/supervisors.tsx': $regulator_supervisors,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/tos.tsx': $tos,
     './routes/volunteer.tsx': $volunteer,
@@ -433,6 +441,7 @@ const manifest = {
     './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
     './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
     './islands/SuccessMessage.tsx': $SuccessMessage,
+    './islands/SupervisorSearch.tsx': $SupervisorSearch,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
     './islands/address-inputs.tsx': $address_inputs,
@@ -494,12 +503,14 @@ const manifest = {
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
     './islands/referral/Form.tsx': $referral_Form,
+    './islands/regulator/AddRegulatorForm.tsx': $regulator_AddRegulatorForm,
     './islands/regulator/InvitePharmacistForm.tsx':
       $regulator_InvitePharmacistForm,
     './islands/regulator/InvitePharmacistSearch.tsx':
       $regulator_InvitePharmacistSearch,
     './islands/regulator/InvitePharmacySearch.tsx':
       $regulator_InvitePharmacySearch,
+    './islands/regulator/Supervisor.tsx': $regulator_Supervisor,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

@@ -282,6 +282,10 @@ export type PreExistingConditionWithDrugs = MedicalConditionBase & {
   medications: PatientConditionMedication[]
 }
 
+export type PreExistingSupervisors = SupervisorBase
+
+export type SupervisorBase = { id: string,name:string}
+
 export type PreExistingAllergy = {
   id?: Maybe<string>
   allergy_id: string

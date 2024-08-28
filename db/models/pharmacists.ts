@@ -79,6 +79,61 @@ export function addressDisplaySql(table: string) {
   })`
 }
 
+function getQueryWithoutHref(trx: TrxOrDb){
+  return trx
+  .selectFrom('pharmacists')
+  .select((eb) => [
+    'pharmacists.id',
+    'pharmacists.licence_number',
+    'pharmacists.prefix',
+    'pharmacists.given_name',
+    'pharmacists.family_name',
+    nameSql('pharmacists').as('name'),
+    'pharmacists.address',
+    'pharmacists.town',
+    addressDisplaySql('pharmacists').as('address_display'),
+    sql<string>`TO_CHAR(pharmacists.expiry_date, 'YYYY-MM-DD')`.as(
+      'expiry_date',
+    ),
+    'pharmacists.pharmacist_type',
+    jsonArrayFrom(
+      eb.selectFrom('pharmacies')
+        .innerJoin(
+          'pharmacy_employment',
+          'pharmacies.id',
+          'pharmacy_employment.pharmacy_id',
+        )
+        .whereRef('pharmacy_employment.pharmacist_id', '=', 'pharmacists.id')
+        .select([
+          'pharmacies.id',
+          'pharmacies.address',
+          'pharmacies.town',
+          'pharmacies.licence_number',
+          'pharmacies.licensee',
+          'pharmacies.name',
+          'pharmacies.pharmacies_types',
+          addressDisplaySql('pharmacies').as('address_display'),
+          sql<string>`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`.as(
+            'expiry_date',
+          ),
+
+        ]),
+    ).as('pharmacies'),
+    jsonBuildObject({
+      view: sql<string>`'/regulator/pharmacists/' || pharmacists.id`,
+      revoke: sql<
+        string
+      >`'/regulator/pharmacists/' || pharmacists.id || '/revoke'`,
+      edit: sql<
+        string
+      >`'/regulator/pharmacists/' || pharmacists.id || '/edit'`,
+    }).as('actions'),
+  ])
+  .orderBy([
+    'pharmacists.given_name asc',
+    'pharmacists.family_name asc',
+  ])
+}
 function getQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('pharmacists')
@@ -134,6 +189,88 @@ function getQuery(trx: TrxOrDb) {
       'pharmacists.given_name asc',
       'pharmacists.family_name asc',
     ])
+}
+export function search(
+  trx: TrxOrDb,
+  opts: {
+    name_search?: Maybe<string>
+  }={},
+) {
+  return trx
+    .selectFrom('pharmacists')
+    .select((_eb) => [
+        'pharmacists.id',
+        'pharmacists.licence_number',
+        'pharmacists.prefix',
+        'pharmacists.given_name',
+        'pharmacists.family_name',
+        nameSql('pharmacists').as('name'),
+        'pharmacists.address',
+        'pharmacists.town',
+    ])
+    .where(nameSql('pharmacists'), 'ilike', `%${opts.name_search}%`)
+    .execute()
+}
+export async function getWithoutHref(
+  trx: TrxOrDb,
+  opts: {
+    licence_number?: string
+    name_search?: Maybe<string>
+    pharmacist_type?: PharmacistType
+    include_revoked?: boolean
+    page?: number
+    rowsPerPage?: number
+  } = {},
+){
+  const page = opts.page || 1
+  const rowsPerPage = opts.rowsPerPage || 10
+  const offset = (page - 1) * rowsPerPage
+  let query = getQueryWithoutHref(trx)
+    .limit(rowsPerPage)
+    .offset(offset)
+
+  if (!opts.include_revoked) {
+    query = query.where(
+      'pharmacists.revoked_at',
+      'is',
+      null,
+    )
+  }
+  if (opts.name_search) {
+    query = query.where(
+      nameSql('pharmacists'),
+      `ilike`,
+      `%${opts.name_search}%`,
+    )
+  }
+  if (opts.licence_number) {
+    query = query.where(
+      'pharmacists.licence_number',
+      '=',
+      opts.licence_number,
+    )
+  }
+  if (opts.pharmacist_type) {
+    query = query.where(
+      'pharmacists.pharmacist_type',
+      '=',
+      opts.pharmacist_type,
+    )
+  }
+
+  const pharmacists = await query.execute()
+
+  const totalRowsResult = await trx
+    .selectFrom('pharmacists')
+    .select((eb) => eb.fn.count('id').as('totalRows'))
+    .execute()
+
+  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+
+  return {
+    pharmacists,
+    totalRows,
+  }
 }
 
 export async function get(
@@ -200,8 +337,8 @@ export async function get(
 
 export function getById(
   trx: TrxOrDb,
-  pharmacist_id: string,
-): Promise<RenderedPharmacist | undefined> {
+  pharmacist_id: string|null,
+){
   return getQuery(trx)
     .where('pharmacists.id', '=', pharmacist_id)
     .executeTakeFirst()

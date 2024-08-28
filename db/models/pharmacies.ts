@@ -5,7 +5,7 @@ import { Maybe, RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
 import { DB } from '../../db.d.ts'
 import { InsertExpression } from 'kysely/parser/insert-values-parser.js'
-
+import * as pharmacists from '../../db/models/pharmacists.ts'
 const view_sql = sql<
   string
 >`concat('/regulator/pharmacies/', pharmacies.id::text)`
@@ -96,4 +96,29 @@ export function insert(
     .values(data)
     .returning('id')
     .executeTakeFirstOrThrow()
+}
+
+export async function updateSupervisorsById(
+  trx: TrxOrDb,
+  pharmacy_id: string|null,
+  supervisor_id: string|null
+){
+  const pharmacy = await getQuery(trx)
+  .where('pharmacies.id', '=', pharmacy_id)
+  .executeTakeFirst()
+  const supervisor = await pharmacists.getById(trx,supervisor_id)
+  if(supervisor==undefined)
+    return null
+  console.log(supervisor)
+  //   trx.insertInto('pharmacy_employment')
+  //     .values({
+  //       given_name: supervisor?.given_name!,
+  //       family_name: supervisor?.family_name!,
+  //       pharmacy_id: pharmacy_id!,
+  //       pharmacist_id: supervisor_id!,
+  //       prefix: supervisor?.prefix!,
+  //       is_supervisor:true
+  //     }).returningAll()
+  //     .executeTakeFirstOrThrow()
+   return pharmacy_id
 }

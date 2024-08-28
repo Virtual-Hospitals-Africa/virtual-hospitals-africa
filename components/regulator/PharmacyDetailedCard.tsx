@@ -1,12 +1,14 @@
-import { RenderedPharmacy } from '../../types.ts'
+import AddRegulatorForm from '../../islands/regulator/AddRegulatorForm.tsx'
+import { RenderedPharmacy, Supervisor } from '../../types.ts'
 import { Person } from '../library/Person.tsx'
 
 type PharmacyDetailedCardProps = {
   pharmacy: RenderedPharmacy
+  pre_existing_supervisors: Supervisor[]
 }
 
 export default function PharmacyDetailedCard(
-  { pharmacy }: PharmacyDetailedCardProps,
+  { pharmacy,pre_existing_supervisors }:PharmacyDetailedCardProps
 ) {
   return (
     <>
@@ -64,6 +66,7 @@ export default function PharmacyDetailedCard(
                   <Person person={supervisor} />
                 </dd>
               ))}
+              <AddRegulatorForm pre_existing_supervisors={pre_existing_supervisors} pharmacy={pharmacy}/>
             </div>
           </dl>
         </div>
