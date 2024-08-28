@@ -19,10 +19,10 @@ type Row = Record<string, unknown> & {
 }
 
 type ExtendedActionData = string | {
-  text: string;
-  href?: string;
-  disabled?: boolean;
-};
+  text: string
+  href?: string
+  disabled?: boolean
+}
 
 export type TableColumn<T extends Row> =
   & {
@@ -41,10 +41,10 @@ export type TableColumn<T extends Row> =
         label: 'Actions'
         type: 'actions'
       }
-      : { 
+      : {
         label: 'Actions'
         type: 'actions'
-        data: (row: T) => ExtendedActionData | ExtendedActionData[] 
+        data: (row: T) => ExtendedActionData | ExtendedActionData[]
       })
   )
 
@@ -62,35 +62,35 @@ type TableProps<T extends Row> = {
 }
 
 function ActionButton(
-  { name, action }: { name: string; action?: Maybe<ExtendedActionData> }
+  { name, action }: { name: string; action?: Maybe<ExtendedActionData> },
 ) {
-  if (!action) return null;
-  
+  if (!action) return null
+
   if (typeof action === 'string') {
     return (
-      <a 
-        href={action} 
+      <a
+        href={action}
         className='text-indigo-600 hover:text-indigo-900 capitalize'
       >
         {name}
       </a>
-    );
+    )
   }
 
-  return action.disabled ? (
-    <span 
-      className='text-gray-400 capitalize'
-    >
-      {action.text || name}
-    </span>
-  ) : (
-    <a 
-      href={action.href} 
-      className='text-indigo-600 hover:text-indigo-900 capitalize'
-    >
-      {action.text || name}
-    </a>
-  );
+  return action.disabled
+    ? (
+      <span className='text-gray-400 capitalize'>
+        {action.text || name}
+      </span>
+    )
+    : (
+      <a
+        href={action.href}
+        className='text-indigo-600 hover:text-indigo-900 capitalize'
+      >
+        {action.text || name}
+      </a>
+    )
 }
 
 function TableCellInnerContents<T extends Row>(
@@ -133,34 +133,41 @@ function TableCellInnerContents<T extends Row>(
   }
 
   if (mapped_column.column.type === 'actions') {
-    let actionContent;
-    
-    if ('data' in mapped_column.column && typeof mapped_column.column.data === 'function') {
-      const actionData = mapped_column.column.data(row);
-      const actions = Array.isArray(actionData) ? actionData : [actionData];
+    let actionContent
+
+    if (
+      'data' in mapped_column.column &&
+      typeof mapped_column.column.data === 'function'
+    ) {
+      const actionData = mapped_column.column.data(row)
+      const actions = Array.isArray(actionData) ? actionData : [actionData]
       actionContent = (
         <div className='flex flex-col gap-1'>
           {actions.map((action, index) => (
-            <ActionButton 
-              key={index} 
-              name={typeof action === 'string' ? action : action.text} 
-              action={action} 
+            <ActionButton
+              key={index}
+              name={typeof action === 'string' ? action : action.text}
+              action={action}
             />
           ))}
         </div>
-      );
+      )
     } else if ('actions' in row && row.actions != null) {
       assert(isObjectLike(row.actions))
       actionContent = (
         <div className='flex flex-col gap-1'>
           {Object.entries(row.actions).map(([name, action]) => (
-            <ActionButton key={name} name={name} action={action as Maybe<ExtendedActionData>} />
+            <ActionButton
+              key={name}
+              name={name}
+              action={action as Maybe<ExtendedActionData>}
+            />
           ))}
         </div>
-      );
+      )
     }
 
-    return actionContent || null;
+    return actionContent || null
   }
 
   throw new Error('Unreachable ' + mapped_column.column.type)

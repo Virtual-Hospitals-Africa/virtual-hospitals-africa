@@ -57,7 +57,7 @@ export type TextInputProps = WrapperInputProps<HTMLInputElement, string> & {
   type?: 'text' | 'email' | 'tel'
   placeholder?: string
   pattern?: string
-  onKeyDown?: (event: KeyboardEvent) => void;
+  onKeyDown?: (event: KeyboardEvent) => void
 }
 
 export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {

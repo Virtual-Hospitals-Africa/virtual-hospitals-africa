@@ -212,16 +212,16 @@ export async function searchManufacturedMedications(
 }
 
 export function dateToString(date: Date | null): string | null {
-  return date ? date.toISOString() : null;
+  return date ? date.toISOString() : null
 }
 
 export async function searchAcrossPages(
   trx: TrxOrDb,
   search: string,
   page: number = 1,
-  rowsPerPage: number = 10
+  rowsPerPage: number = 10,
 ): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
-  const offset = (page - 1) * rowsPerPage;
+  const offset = (page - 1) * rowsPerPage
 
   const totalRowsResult = await trx
     .selectFrom('manufactured_medications')
@@ -234,22 +234,26 @@ export async function searchAcrossPages(
     .leftJoin(
       'manufactured_medication_recalls',
       'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id'
+      'manufactured_medications.id',
     )
-    .where((eb) => 
+    .where((eb) =>
       eb.and([
         eb.or([
           eb('drugs.generic_name', 'ilike', `%${search}%`),
           eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
           eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
         ]),
-        search ? eb.or([eb('drugs.id', 'is not', null)]) : eb('manufactured_medication_recalls.recalled_at', 'is', null)
+        search
+          ? eb.or([eb('drugs.id', 'is not', null)])
+          : eb('manufactured_medication_recalls.recalled_at', 'is', null),
       ])
     )
     .select((eb) => eb.fn.countAll().as('totalRows'))
-    .executeTakeFirst();
+    .executeTakeFirst()
 
-  const totalRows = totalRowsResult ? parseInt(totalRowsResult.totalRows.toString(), 10) : 0;
+  const totalRows = totalRowsResult
+    ? parseInt(totalRowsResult.totalRows.toString(), 10)
+    : 0
 
   const medicines = await trx
     .selectFrom('manufactured_medications')
@@ -262,7 +266,7 @@ export async function searchAcrossPages(
     .leftJoin(
       'manufactured_medication_recalls',
       'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id'
+      'manufactured_medications.id',
     )
     .select([
       'manufactured_medications.id',
@@ -278,20 +282,22 @@ export async function searchAcrossPages(
       strengthSummary('manufactured_medications'),
       'manufactured_medication_recalls.recalled_at',
     ])
-    .where((eb) => 
+    .where((eb) =>
       eb.and([
         eb.or([
           eb('drugs.generic_name', 'ilike', `%${search}%`),
           eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
           eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
         ]),
-        search ? eb.or([eb('drugs.id', 'is not', null)]) : eb('manufactured_medication_recalls.recalled_at', 'is', null)
+        search
+          ? eb.or([eb('drugs.id', 'is not', null)])
+          : eb('manufactured_medication_recalls.recalled_at', 'is', null),
       ])
     )
     .orderBy('drugs.generic_name', 'asc')
     .limit(rowsPerPage)
     .offset(offset)
-    .execute();
+    .execute()
 
   return {
     medicines: medicines.map((medicine) => ({
@@ -303,9 +309,8 @@ export async function searchAcrossPages(
       },
     })),
     totalRows,
-  };
+  }
 }
-
 
 export async function get(
   trx: TrxOrDb,
@@ -324,7 +329,7 @@ export async function get(
     .leftJoin(
       'manufactured_medication_recalls',
       'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id'
+      'manufactured_medications.id',
     )
     .select([
       'manufactured_medications.id',
@@ -346,7 +351,7 @@ export async function get(
     .offset(offset)
     .execute()
 
-    const totalRowsResult = await trx
+  const totalRowsResult = await trx
     .selectFrom('manufactured_medications')
     .innerJoin(
       'medications',
@@ -357,13 +362,15 @@ export async function get(
     .leftJoin(
       'manufactured_medication_recalls',
       'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id'
+      'manufactured_medications.id',
     )
     .where('manufactured_medication_recalls.recalled_at', 'is', null)
     .select((eb) => eb.fn.count('manufactured_medications.id').as('totalRows'))
     .executeTakeFirst()
-  
-  const totalRows = totalRowsResult ? parseInt(totalRowsResult.totalRows.toString(), 10) : 0
+
+  const totalRows = totalRowsResult
+    ? parseInt(totalRowsResult.totalRows.toString(), 10)
+    : 0
 
   return {
     medicines: medicines.map((medicine) => ({

@@ -24,7 +24,7 @@ export default function MedicinesTable({
 }: MedicinesTableProps): JSX.Element {
   return (
     <>
-      <MedicinesSearchInput 
+      <MedicinesSearchInput
         medicines={medicines}
         searchQuery={searchQuery}
       />

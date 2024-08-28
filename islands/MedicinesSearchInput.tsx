@@ -5,22 +5,24 @@ import { RenderedMedicine } from '../types.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { Button } from '../components/library/Button.tsx'
 import FormRow from './form/Row.tsx'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 const formatDate = (dateString: string | null) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
-};
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toISOString().split('T')[0] // Returns YYYY-MM-DD
+}
 
 const columns: TableColumn<RenderedMedicine>[] = [
   {
     label: 'Generic Name',
     data: (medicine: RenderedMedicine) => {
       if (medicine.recalled_at) {
-        return `${medicine.generic_name} (recalled ${formatDate(medicine.recalled_at)})`;
+        return `${medicine.generic_name} (recalled ${
+          formatDate(medicine.recalled_at)
+        })`
       }
-      return medicine.generic_name;
+      return medicine.generic_name
     },
   },
   {
@@ -44,19 +46,22 @@ const columns: TableColumn<RenderedMedicine>[] = [
     type: 'actions',
     data: (medicine: RenderedMedicine) => {
       if (medicine.recalled_at) {
-        return { text: 'Recalled', disabled: true };
+        return { text: 'Recalled', disabled: true }
       }
       return {
         text: 'Recall',
         href: medicine.actions.recall,
-        disabled: false
-      };
+        disabled: false,
+      }
     },
   },
 ]
 
 export function MedicinesSearchInput(
-  { medicines, searchQuery }: { medicines: RenderedMedicine[], searchQuery: string },
+  { medicines, searchQuery }: {
+    medicines: RenderedMedicine[]
+    searchQuery: string
+  },
 ) {
   const { search, setSearch } = useAsyncSearch({
     href: '/drugs',
@@ -65,27 +70,27 @@ export function MedicinesSearchInput(
 
   useEffect(() => {
     if (searchQuery) {
-      setSearch({ ...search, query: searchQuery });
+      setSearch({ ...search, query: searchQuery })
     }
-  }, [searchQuery]);
+  }, [searchQuery])
 
   const handleSearch = (query: string) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('search', query);
-    url.searchParams.set('page', '1');
-    window.location.href = url.toString();
-  };
+    const url = new URL(window.location.href)
+    url.searchParams.set('search', query)
+    url.searchParams.set('page', '1')
+    window.location.href = url.toString()
+  }
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch(search.query);
+      handleSearch(search.query)
     }
-  };
+  }
 
   return (
     <div className='mb-4'>
       <FormRow className='mb-4'>
-        <TextInput 
+        <TextInput
           name=''
           placeholder='Search Medicines'
           value={search.query}
@@ -94,7 +99,7 @@ export function MedicinesSearchInput(
           }}
           onKeyDown={handleKeyDown}
         />
-        <Button 
+        <Button
           onClick={() => handleSearch(search.query)}
           className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
         >

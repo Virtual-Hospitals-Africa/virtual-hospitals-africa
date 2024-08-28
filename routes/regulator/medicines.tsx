@@ -21,24 +21,24 @@ export const handler = {
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
-    const ROWS_PER_PAGE = 100;
-    const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1');
-    const searchQuery = ctx.url.searchParams.get('search') ?? '';
+    const ROWS_PER_PAGE = 100
+    const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
+    const searchQuery = ctx.url.searchParams.get('search') ?? ''
 
-    let result;
+    let result
     if (searchQuery) {
       result = await drugs.searchAcrossPages(
         ctx.state.trx,
         searchQuery,
         currentPage,
         ROWS_PER_PAGE,
-      );
+      )
     } else {
       result = await drugs.get(
         ctx.state.trx,
         currentPage,
         ROWS_PER_PAGE,
-      );
+      )
     }
 
     return ctx.render({
@@ -49,7 +49,7 @@ export const handler = {
       rowsPerPage: ROWS_PER_PAGE,
       totalPage: Math.ceil(result.totalRows / ROWS_PER_PAGE),
       searchQuery,
-    });
+    })
   },
 }
 
