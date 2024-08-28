@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import {
   MedicationSchedule,
   PatientMedicationUpsert,
+  PrescriptionMedication,
   TrxOrDb,
 } from '../../types.ts'
 import * as medications from './medications.ts'
@@ -16,14 +17,31 @@ export type PrescriptionCondition = {
   medications: PatientMedicationUpsert[]
 }
 
+export type MedicationsFilled = {
+  patient_prescription_medication_id: string
+  pharmacist_id: string
+  pharmacy_id?: string
+}
+
 export function getById(
   trx: TrxOrDb,
   id: string,
 ) {
   return trx
     .selectFrom('prescriptions')
-    .where('id', '=', id)
-    .selectAll()
+    .innerJoin(
+      'prescription_codes',
+      'prescriptions.id',
+      'prescription_codes.prescription_id',
+    )
+    .where('prescriptions.id', '=', id)
+    // .selectAll()
+    .select('prescriptions.id')
+    .select('prescription_codes.created_at')
+    .select('prescription_codes.updated_at')
+    .select('prescriptions.prescriber_id')
+    .select('prescriptions.patient_id')
+    .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
 
@@ -32,9 +50,19 @@ export function getByCode(
   code: string,
 ) {
   return trx
-    .selectFrom('prescriptions')
+    .selectFrom('prescription_codes')
+    .innerJoin(
+      'prescriptions',
+      'prescriptions.id',
+      'prescription_codes.prescription_id',
+    )
     .where('alphanumeric_code', '=', code)
-    .selectAll()
+    .select('prescriptions.id')
+    .select('prescription_codes.created_at')
+    .select('prescription_codes.updated_at')
+    .select('prescriptions.prescriber_id')
+    .select('prescriptions.patient_id')
+    .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
 
@@ -67,7 +95,7 @@ export async function insert(
 export async function getMedicationsByPrescriptionId(
   trx: TrxOrDb,
   prescription_id: string,
-) {
+): Promise<PrescriptionMedication[]> {
   const patient_medications = await trx
     .selectFrom('prescriptions')
     .innerJoin(
@@ -88,6 +116,7 @@ export async function getMedicationsByPrescriptionId(
     .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
     .where('prescriptions.id', '=', prescription_id)
     .select((eb) => [
+      'patient_prescription_medications.id as patient_prescription_medication_id',
       'drugs.generic_name as name',
       'medications.form',
       'patient_condition_medications.route',
@@ -125,4 +154,84 @@ export async function getMedicationsByPrescriptionId(
         strength_denominator: Number(medication.strength_denominator),
       }
     })
+}
+
+export function getPrescriberByPrescriptionId(
+  trx: TrxOrDb,
+  prescription_id: string,
+) {
+  return trx
+    .selectFrom('prescriptions')
+    .innerJoin(
+      'patient_encounter_providers',
+      'patient_encounter_providers.id',
+      'prescriptions.prescriber_id',
+    )
+    .innerJoin(
+      'employment',
+      'employment.id',
+      'patient_encounter_providers.provider_id',
+    )
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .where('prescriptions.id', '=', prescription_id)
+    .select('health_workers.name')
+    .executeTakeFirst()
+}
+
+export function dispenseMedications(
+  trx: TrxOrDb,
+  dispensed_medications: MedicationsFilled[],
+) {
+  return trx
+    .insertInto('patient_prescription_medications_filled')
+    .values(dispensed_medications)
+    .returningAll()
+    .execute()
+}
+
+export function getFilledMedicationsByPrescriptionId(
+  trx: TrxOrDb,
+  prescription_id: string,
+) {
+  return trx
+    .selectFrom('patient_prescription_medications')
+    .innerJoin(
+      'patient_prescription_medications_filled',
+      'patient_prescription_medications_filled.patient_prescription_medication_id',
+      'patient_prescription_medications.id',
+    )
+    .where(
+      'patient_prescription_medications.prescription_id',
+      '=',
+      prescription_id,
+    )
+    .select(
+      'patient_prescription_medications_filled.patient_prescription_medication_id',
+    )
+    .orderBy('patient_prescription_medications_filled.created_at', 'desc')
+    .execute()
+}
+
+export function deleteFilledMedicationsById(
+  trx: TrxOrDb,
+  filled_id: string[],
+) {
+  return trx
+    .deleteFrom('patient_prescription_medications_filled')
+    .where('patient_prescription_medication_id', 'in', filled_id)
+    .execute()
+}
+
+export function deleteCode(
+  trx: TrxOrDb,
+  code: string,
+) {
+  return trx
+    .deleteFrom('prescription_codes')
+    .where('alphanumeric_code', '=', code)
+    .execute()
 }

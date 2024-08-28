@@ -12,13 +12,13 @@ export async function up(db: Kysely<unknown>) {
         LOOP
             -- Generate a random 6-digit alphanumeric code
             new_code := (
-                SELECT string_agg(substr('0123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz', trunc(random() * 62)::int + 1, 1), '')
+                SELECT string_agg(substr('0123456789ABCDEFGHJKLMNPQRSTUVWXYZ', trunc(random() * 34)::int + 1, 1), '')
                 FROM generate_series(1, 6)
             );
             
-            -- Check if the generated code already exists in the prescriptions table
+            -- Check if the generated code already exists in the prescription_codes table
             SELECT INTO exists
-                EXISTS (SELECT 1 FROM prescriptions WHERE alphanumeric_code = new_code);
+                EXISTS (SELECT 1 FROM prescription_codes WHERE alphanumeric_code = new_code);
             
             -- If the code does not exist, exit the loop
             IF NOT exists THEN
@@ -33,17 +33,24 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'prescriptions', (qb) =>
     qb
-      .addColumn(
-        'alphanumeric_code',
-        'varchar(6)',
-        (col) => col.notNull().unique().defaultTo(sql`generate_unique_code()`),
-      )
       .addColumn('prescriber_id', 'uuid', (col) =>
         col.notNull().references('patient_encounter_providers.id').onDelete(
           'cascade',
         ))
       .addColumn('patient_id', 'uuid', (col) =>
         col.references('patients.id').onDelete('cascade')))
+
+  await createStandardTable(db, 'prescription_codes', (qb) =>
+    qb
+      .addColumn(
+        'alphanumeric_code',
+        'varchar(6)',
+        (col) => col.notNull().unique().defaultTo(sql`generate_unique_code()`),
+      )
+      .addColumn('prescription_id', 'uuid', (col) =>
+        col.notNull().references('prescriptions.id').onDelete(
+          'cascade',
+        )))
 
   await createStandardTable(
     db,
@@ -78,7 +85,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('pharmacist_id', 'uuid', (col) =>
           col.notNull().references('pharmacists.id').onDelete('cascade'))
         .addColumn('pharmacy_id', 'uuid', (col) =>
-          col.notNull().references('pharmacists.id').onDelete('cascade'))
+          col.references('pharmacists.id').onDelete('cascade'))
         .addUniqueConstraint('patient_prescription_medication_id', [
           'patient_prescription_medication_id',
         ]),
@@ -88,5 +95,6 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_prescription_medications_filled').execute()
   await db.schema.dropTable('patient_prescription_medications').execute()
+  await db.schema.dropTable('prescription_codes').execute()
   await db.schema.dropTable('prescriptions').execute()
 }
