@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { differenceInDays } from '../../util/date.ts'
 import { PrescriptionCondition } from './prescriptions.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export async function insert(
   trx: TrxOrDb,
@@ -9,6 +10,18 @@ export async function insert(
   conditions: PrescriptionCondition[],
 ) {
   const medications = conditions.flatMap(processMedications)
+
+  assert(
+    medications.length > 0,
+    'The number of medications in the prescription must be greater than 0.',
+  )
+
+  await trx
+    .insertInto('prescription_codes')
+    .values({
+      prescription_id: prescription_id,
+    })
+    .execute()
 
   const condition_medications = await trx
     .insertInto('patient_condition_medications')

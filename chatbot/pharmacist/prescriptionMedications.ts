@@ -137,9 +137,11 @@ export async function dispenseType(
   if (
     unhandled_message === 'dispense' || unhandled_message === 'restart_dispense'
   ) {
-    if (number_of_undispensed_medications === 0) {
-      // return 'onboarded:fill_prescription:confirm_done'
-    } else if (number_of_undispensed_medications === 1) {
+    assert(
+      number_of_undispensed_medications > 0,
+      'The number of medications in the prescription must be greater than 0.',
+    )
+    if (number_of_undispensed_medications === 1) {
       return 'onboarded:fill_prescription:ask_dispense_one'
     } else {
       return 'onboarded:fill_prescription:ask_dispense_all'
@@ -306,9 +308,15 @@ export async function dispenseExit(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { prescription_code } = pharmacistState.chatbot_user
+  const {
+    prescription_code,
+    number_of_undispensed_medications,
+    count_dispensed_medications,
+  } = pharmacistState.chatbot_user
     .data as PharmacistStateData
-  await deleteCode(trx, prescription_code)
+  if (count_dispensed_medications === number_of_undispensed_medications) {
+    await deleteCode(trx, prescription_code)
+  }
 
   return 'initial_message' as const
 }
