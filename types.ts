@@ -2937,6 +2937,7 @@ export type RenderedMedicine = {
   actions: {
     recall: string
   }
+  recalled_at: string | null
 }
 
 export type Regulator = {

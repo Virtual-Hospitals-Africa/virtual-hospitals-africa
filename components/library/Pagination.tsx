@@ -6,6 +6,7 @@ type PaginationProps = {
   path: string
   rowsPerPage: number
   totalRows: number
+  searchQuery?: string
 }
 
 export default function Pagination({

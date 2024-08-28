@@ -36,5 +36,5 @@ function DrugOption({
 export default function DrugSearch(
   props: Omit<AsyncSearchProps<DrugSearchResult>, 'Option' | 'href'>,
 ) {
-  return <AsyncSearch href='/app/drugs' {...props} Option={DrugOption} />
+  return <AsyncSearch href='/drugs' {...props} Option={DrugOption} />
 }
