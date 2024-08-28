@@ -341,7 +341,7 @@ export interface Diagnoses {
   created_at: Generated<Timestamp>
   doctor_reviews_id: string
   id: Generated<string>
-  patient_condition_id: string | null
+  patient_condition_id: string
   provider_id: string
   updated_at: Generated<Timestamp>
 }

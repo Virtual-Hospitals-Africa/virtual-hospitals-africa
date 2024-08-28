@@ -5,14 +5,15 @@ import PatientPreExistingConditions from '../../../../../components/patients/int
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 
-interface Condition {
+type Condition = {
   id: string
   name: string
   start_date: string
 }
 
-interface DiagnosisData {
+type DiagnosisData = {
   pre_existing_conditions: Condition[]
 }
 
@@ -44,7 +45,35 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsDiagnoses,
     )
-    console.log('data', data)
+    data
+    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+
+    /*
+    // @Alice @Qiyuan
+    data currently looks like this. Please modify the frontend so that the field name is `diagnoses` instead of `pre_existing_conditions`
+    remove allergies as a form field from the frontend
+    remove medications and comoorbidity as form fields from the frontend
+    pre_existing_conditions: [
+      { name: "Hyperosmolality", id: "c_8801", start_date: "2020-04-04" }
+    ]
+    */
+    // Insert the patient conditions here,
+    // Then insert the diagnoses pointing to those
+    // Move all of this into model functions
+
+    const patient_conditions_to_insert = data.pre_existing_conditions.map((
+      condition,
+    ) => ({
+      patient_id,
+      condition_id: condition.id,
+      start_date: condition.start_date,
+    }))
+
+    const patient_conditions_inserted = await ctx.state.trx
+      .insertInto('patient_conditions')
+      .values(patient_conditions_to_insert)
+      .returning('id')
+      .execute()
 
     const patient_condition_ids: string[] = []
     if (
@@ -78,6 +107,10 @@ export default async function DiagnosisPage(
 ) {
   console.log('params', ctx.params)
   console.log('state', ctx.state)
+  /*
+    @Alice @Qiyuan
+    Load any diagnoses from this review and pass them to the PatientPreExistingConditions component
+  */
 
   return (
     <ReviewLayout ctx={ctx}>
