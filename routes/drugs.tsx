@@ -1,12 +1,10 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Maybe,
 } from '../types.ts'
 import * as drugs from '../db/models/drugs.ts'
 import { json } from '../util/responses.ts'
-import { FreshContext } from '$fresh/server.ts'
 import db from '../db/db.ts'
 
 export async function searchResponse(
