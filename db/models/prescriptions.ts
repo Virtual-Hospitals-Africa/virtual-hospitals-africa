@@ -83,15 +83,11 @@ export async function insert(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  const prescription_medications = await medications.insert(
+  await medications.insert(
     trx,
     prescription.id,
     values.prescribing,
   )
-
-  if (prescription_medications.length) {
-    // TODO
-  }
 
   return prescription
 }

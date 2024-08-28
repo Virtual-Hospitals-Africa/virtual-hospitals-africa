@@ -35,7 +35,7 @@ export async function insert(
       prescription_id: prescription_id,
     }))
 
-  return trx
+  await trx
     .insertInto('patient_prescription_medications')
     .values(prescription_medications)
     .execute()
