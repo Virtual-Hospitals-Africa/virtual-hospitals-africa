@@ -13,7 +13,7 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
-import { jsonAgg, jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
+import { jsonAgg, jsonBuildObject } from '../helpers.ts'
 import * as medplum from '../../external-clients/medplum/client.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
@@ -98,10 +98,84 @@ export function get(
 }
 
 type EmployeeQueryOpts = {
+  organization_id?: string
   professions?: Profession[]
   emails?: string[]
   is_approved?: boolean
   exclude_health_worker_id?: string
+}
+
+export function getEmploymentQuery(
+  trx: TrxOrDb,
+  opts: {
+    organization_id?: string
+    professions?: Profession[]
+    is_approved?: boolean
+    exclude_health_worker_id?: string
+  },
+) {
+  return trx.with('organization_employment', (qb) => {
+    let query = qb.selectFrom('employment')
+      .leftJoin(
+        'nurse_registration_details',
+        'nurse_registration_details.health_worker_id',
+        'employment.health_worker_id',
+      )
+      .leftJoin(
+        'nurse_specialties',
+        'nurse_specialties.employee_id',
+        'employment.id',
+      )
+      .selectAll('employment')
+      .select([
+        'nurse_specialties.specialty',
+        sql<'pending_approval' | 'approved' | 'incomplete'>`
+          CASE
+            WHEN employment.profession = 'admin' THEN 'approved'
+            WHEN employment.profession = 'doctor' THEN 'approved'
+            WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
+            WHEN nurse_registration_details.approved_by IS NULL THEN 'pending_approval'
+            ELSE 'approved'
+          END
+        `.as('registration_status'),
+      ])
+      .orderBy([
+        'employment.health_worker_id asc',
+        'employment.profession asc',
+      ])
+
+    if (opts.organization_id) {
+      query = query.where(
+        'employment.organization_id',
+        '=',
+        opts.organization_id,
+      )
+    }
+
+    if (opts.professions) {
+      assert(opts.professions.length)
+      query = query.where('profession', 'in', opts.professions)
+    }
+
+    if (opts.is_approved) {
+      query = query.where((eb) =>
+        eb.or([
+          eb('employment.profession', 'in', ['doctor', 'admin']),
+          eb('nurse_registration_details.approved_by', 'is not', null),
+        ])
+      )
+    }
+
+    if (opts.exclude_health_worker_id) {
+      query = query.where(
+        'employment.health_worker_id',
+        '!=',
+        opts.exclude_health_worker_id,
+      )
+    }
+
+    return query
+  })
 }
 
 export function getEmployeesQuery(
@@ -109,106 +183,79 @@ export function getEmployeesQuery(
   organization_id: string,
   opts: EmployeeQueryOpts,
 ) {
-  let hwQuery = trx.selectFrom('health_workers')
-    .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
-    .leftJoin(
-      'nurse_registration_details',
-      'nurse_registration_details.health_worker_id',
-      'health_workers.id',
-    )
-    .select((eb) => [
-      'health_workers.id as health_worker_id',
-      'health_workers.name as name',
-      'health_workers.email as email',
-      'health_workers.name as display_name',
-      'health_workers.avatar_url as avatar_url',
-      eb.selectFrom('health_worker_sessions')
-        .whereRef('health_worker_sessions.entity_id', '=', 'health_workers.id')
-        .select(sql<boolean>`
-          max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
-        `.as('online'))
-        .groupBy('health_worker_sessions.entity_id')
-        .as('online'),
-      sql<false>`FALSE`.as('is_invitee'),
-      jsonArrayFromColumn(
-        'profession_details',
-        eb.selectFrom('employment')
-          .leftJoin(
-            'nurse_specialties',
-            'nurse_specialties.employee_id',
-            'employment.id',
-          )
-          .select((inner) => [
-            jsonBuildObject({
-              employee_id: inner.ref('employment.id'),
-              profession: inner.ref('employment.profession'),
-              specialty: inner.ref('nurse_specialties.specialty'),
-            }).as('profession_details'),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          )
-          .where('employment.organization_id', '=', organization_id)
-          .where(
-            'employment.profession',
-            'in',
-            opts.professions || ['admin', 'doctor', 'nurse'],
-          )
-          .groupBy([
-            'employment.id',
-            'nurse_specialties.specialty',
-          ]).orderBy(['employment.profession asc']),
-      ).as('professions'),
-      jsonBuildObject({
-        view: sql<
-          string
-        >`concat('/app/organizations/', ${organization_id}::text, '/employees/', health_workers.id::text)`,
-      }).as('actions'),
-      sql<'pending_approval' | 'approved' | 'incomplete'>`
-        CASE
-          WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
-          WHEN nurse_registration_details.approved_by IS NULL
-              AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%'
-              THEN 'pending_approval'
-          ELSE 'approved'
-        END
-      `.as('registration_status'),
-    ])
-    .where('employment.organization_id', '=', organization_id)
-    .groupBy([
-      'health_workers.id',
-      'nurse_registration_details.approved_by',
-      'nurse_registration_details.health_worker_id',
-    ])
-
-  if (opts.emails) {
-    assert(Array.isArray(opts.emails))
-    assert(opts.emails.length)
-    hwQuery = hwQuery.where('health_workers.email', 'in', opts.emails)
-  }
-  if (opts.professions) {
-    assert(opts.professions.length)
-    hwQuery = hwQuery.where('employment.profession', 'in', opts.professions)
-  }
-  if (opts.is_approved) {
-    hwQuery = hwQuery.where((eb) =>
-      eb.or([
-        eb('employment.profession', 'in', ['doctor', 'admin']),
-        eb('nurse_registration_details.approved_by', 'is not', null),
+  const health_workers_at_organization_query = getEmploymentQuery(trx, {
+    ...opts,
+    organization_id,
+  }).with('health_workers_at_organization', (qb) => {
+    return qb.selectFrom('organization_employment')
+      .select(({ fn, ref }) => [
+        'organization_employment.health_worker_id',
+        sql`ARRAY_AGG(registration_status)`.as('registration_statuses'),
+        fn.jsonAgg(
+          jsonBuildObject({
+            employee_id: ref('organization_employment.id'),
+            profession: ref('organization_employment.profession'),
+            specialty: ref('organization_employment.specialty'),
+            registration_status: ref(
+              'organization_employment.registration_status',
+            ),
+          }),
+        ).as('professions'),
       ])
-    )
-  }
-  if (opts.exclude_health_worker_id) {
-    hwQuery = hwQuery.where(
-      'health_workers.id',
-      '!=',
-      opts.exclude_health_worker_id,
-    )
-  }
+      .groupBy('organization_employment.health_worker_id')
+  })
 
-  return hwQuery
+  return health_workers_at_organization_query.with(
+    'organization_employees',
+    (qb) => {
+      let query = qb.selectFrom('health_workers_at_organization')
+        .innerJoin(
+          'health_workers',
+          'health_workers.id',
+          'health_workers_at_organization.health_worker_id',
+        )
+        .select((eb) => [
+          'health_workers.id as health_worker_id',
+          'health_workers.name as name',
+          'health_workers.email as email',
+          'health_workers.name as display_name',
+          'health_workers.avatar_url as avatar_url',
+          eb.selectFrom('health_worker_sessions')
+            .whereRef(
+              'health_worker_sessions.entity_id',
+              '=',
+              'health_workers.id',
+            )
+            .select(sql<boolean>`
+            max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
+          `.as('online'))
+            .groupBy('health_worker_sessions.entity_id')
+            .as('online'),
+          sql<false>`FALSE`.as('is_invitee'),
+          'health_workers_at_organization.professions',
+          sql<'pending_approval' | 'approved' | 'incomplete'>`
+          CASE 
+            WHEN 'pending_approval' = ANY(registration_statuses) THEN 'pending_approval'
+            WHEN 'incomplete' = ANY(registration_statuses) THEN 'incomplete'
+            ELSE 'approved'
+          END
+        `.as('registration_status'),
+          jsonBuildObject({
+            view: sql<
+              string
+            >`concat('/app/organizations/', ${organization_id}::text, '/employees/', health_workers.id::text)`,
+          }).as('actions'),
+        ])
+
+      if (opts.emails) {
+        assert(Array.isArray(opts.emails))
+        assert(opts.emails.length)
+        query = query.where('health_workers.email', 'in', opts.emails)
+      }
+
+      return query
+    },
+  )
 }
 
 export function getEmployees(
@@ -216,7 +263,9 @@ export function getEmployees(
   organization_id: string,
   opts: EmployeeQueryOpts = {},
 ): Promise<OrganizationEmployee[]> {
-  return getEmployeesQuery(trx, organization_id, opts).execute()
+  return getEmployeesQuery(trx, organization_id, opts).selectFrom(
+    'organization_employees',
+  ).selectAll('organization_employees').execute()
 }
 
 export async function getApprovedProviders(
@@ -253,7 +302,9 @@ export function getEmployeesAndInvitees(
     emails?: string[]
   } = {},
 ): Promise<OrganizationEmployeeOrInvitee[]> {
-  const hwQuery = getEmployeesQuery(trx, organization_id, opts)
+  const hwQuery = getEmployeesQuery(trx, organization_id, opts).selectFrom(
+    'organization_employees',
+  ).selectAll('organization_employees')
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
     .select((eb) => [
       sql<null | number>`NULL`.as('health_worker_id'),
@@ -268,12 +319,12 @@ export function getEmployeesAndInvitees(
           profession: eb.ref('health_worker_invitees.profession'),
         }),
       ).as('professions'),
-      jsonBuildObject({
-        view: sql<null>`NULL`,
-      }).as('actions'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as(
         'registration_status',
       ),
+      jsonBuildObject({
+        view: sql<null>`NULL`,
+      }).as('actions'),
     ])
     .where('health_worker_invitees.organization_id', '=', organization_id)
     .groupBy('health_worker_invitees.email')

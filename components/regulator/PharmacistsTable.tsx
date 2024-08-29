@@ -5,19 +5,11 @@ import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { Actions, RenderedPharmacist } from '../../types.ts'
+import { RenderedPharmacist } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
 
-export type Pharmacist = RenderedPharmacist & {
-  actions: Actions
-}
-
-const columns: TableColumn<Pharmacist>[] = [
-  {
-    label: 'Prefix',
-    data: 'prefix',
-  },
+const columns: TableColumn<RenderedPharmacist>[] = [
   {
     label: 'Name',
     data: 'name',
@@ -41,15 +33,18 @@ const columns: TableColumn<Pharmacist>[] = [
   {
     label: 'Pharmacy',
     data(row) {
-      if (!row.pharmacy) return null
       return (
-        <a
-          key={`${row.id}-${row.pharmacy.id}`}
-          href={row.pharmacy.href}
-          className='text-indigo-600 hover:text-indigo-900'
-        >
-          {row.pharmacy.name}
-        </a>
+        <div className='flex flex-col'>
+          {row.pharmacies.map((pharmacy) => (
+            <a
+              key={`${row.id}-${pharmacy.id}`}
+              href={pharmacy.href}
+              className='text-indigo-600 hover:text-indigo-900'
+            >
+              {pharmacy.name}
+            </a>
+          ))}
+        </div>
       )
     },
   },
@@ -59,7 +54,7 @@ const columns: TableColumn<Pharmacist>[] = [
   },
 ]
 type PharmacistsTableProps = {
-  pharmacists: Pharmacist[]
+  pharmacists: RenderedPharmacist[]
   pathname: string
   totalRows: number
   rowsPerPage: number

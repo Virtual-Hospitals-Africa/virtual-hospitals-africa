@@ -1,28 +1,19 @@
-import { getAllWithSearchConditions } from '../../../db/models/pharmacies.ts'
-import {
-  LoggedInRegulatorHandlerWithProps,
-  RenderedPharmacy,
-} from '../../../types.ts'
+import * as pharmacies from '../../../db/models/pharmacies.ts'
+import { LoggedInRegulatorHandlerWithProps } from '../../../types.ts'
 import { assertOr404 } from '../../../util/assertOr.ts'
 import { json } from '../../../util/responses.ts'
 
-type PharmaciesProps = {
-  pharmacies: RenderedPharmacy[]
-}
-
-export const handler: LoggedInRegulatorHandlerWithProps<PharmaciesProps> = {
+export const handler: LoggedInRegulatorHandlerWithProps = {
   async GET(req, ctx) {
     assertOr404(
       req.headers.get('accept') === 'application/json',
       'We only accept JSON',
     )
     const search = ctx.url.searchParams.get('search')
-    const pharmacies = await getAllWithSearchConditions(ctx.state.trx, search)
-
-    const pharmacies_with_href = pharmacies.map((pharmacy) => {
-      const href = `/regulator/pharmacies/${pharmacy?.id}`
-      return { id: pharmacy?.id, name: pharmacy?.name, href }
+    const results = await pharmacies.get(ctx.state.trx, {
+      search,
     })
-    return json(pharmacies_with_href)
+
+    return json(results.pharmacies)
   },
 }

@@ -1,11 +1,10 @@
 import { DetailedPharmacist } from '../../types.ts'
 
-type PharmacistProps = {
-  pharmacist: DetailedPharmacist
-}
 export default function PharmacistDetailedCard({
   pharmacist,
-}: PharmacistProps) {
+}: {
+  pharmacist: DetailedPharmacist
+}) {
   return (
     <>
       <div>
@@ -68,7 +67,7 @@ export default function PharmacistDetailedCard({
                 {pharmacist?.address}
               </dd>
             </div>
-            {pharmacist.pharmacy?.name && (
+            {pharmacist.pharmacies.map(pharmacy => (
               <>
                 <div class='border-t border-gray-100 py-6 sm:col-span-2 sm:px-0'>
                   <dt class='text-sm font-bold leading-6 text-gray-900'>
@@ -77,9 +76,9 @@ export default function PharmacistDetailedCard({
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                     <a
                       className='text-indigo-600 hover:text-indigo-900'
-                      href={pharmacist.pharmacy?.href}
+                      href={pharmacy.href}
                     >
-                      {pharmacist.pharmacy?.name}
+                      {pharmacy.name}
                     </a>
                   </dd>
                 </div>
@@ -88,11 +87,11 @@ export default function PharmacistDetailedCard({
                     Is supervisor
                   </dt>
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                    {pharmacist.is_supervisor ? 'Yes' : 'No'}
+                    {pharmacy.is_supervisor ? 'Yes' : 'No'}
                   </dd>
                 </div>
               </>
-            )}
+            ))}
           </dl>
         </div>
       </div>

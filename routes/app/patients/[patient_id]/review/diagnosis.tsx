@@ -3,16 +3,41 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 
-// deno-lint-ignore no-explicit-any
-function assertIsDiagnoses(_arg: unknown): arg is any {
+interface Condition {
+  id: string
+  name: string
+  start_date: string
+}
+
+interface DiagnosisData {
+  pre_existing_conditions: Condition[]
+}
+
+function assertIsDiagnoses(
+  data: unknown,
+): asserts data is DiagnosisData {
+  assertOr400(isObjectLike(data), 'Invalid form values')
+  if (data.pre_existing_conditions !== undefined) {
+    assertOr400(
+      Array.isArray(data.pre_existing_conditions),
+      'pre_existing_conditions must be an array',
+    )
+    for (const condition of data.pre_existing_conditions) {
+      assertOr400(
+        typeof condition.id === 'string',
+        'Each condition must have an id of type string',
+      )
+    }
+  }
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  // deno-lint-ignore require-await
   async POST(req, ctx: ReviewContext) {
     const data = await parseRequestAsserts(
       ctx.state.trx,
@@ -20,6 +45,27 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsDiagnoses,
     )
     console.log('data', data)
+
+    const patient_condition_ids: string[] = []
+    if (
+      data.pre_existing_conditions &&
+      Array.isArray(data.pre_existing_conditions)
+    ) {
+      for (const condition of data.pre_existing_conditions) {
+        patient_condition_ids.push(condition.id)
+      }
+    }
+
+    await ctx.state.trx
+      .insertInto('diagnoses')
+      .values({
+        patient_condition_id: JSON.stringify(patient_condition_ids),
+        provider_id: ctx.state.doctor_review.employment_id,
+        doctor_reviews_id: ctx.state.doctor_review.review_id,
+      })
+      .execute()
+    console.log('Diagnoses inserted successfully')
+
     const completing_step = completeStep(ctx)
     return completing_step
   },
@@ -27,7 +73,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 // deno-lint-ignore require-await
 export default async function DiagnosisPage(
-  req: Request,
+  _req: Request,
   ctx: ReviewContext,
 ) {
   console.log('params', ctx.params)
@@ -40,7 +86,6 @@ export default async function DiagnosisPage(
         patient_allergies={[]}
         pre_existing_conditions={[]}
       />
-
       <FormButtons />
     </ReviewLayout>
   )

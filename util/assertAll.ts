@@ -14,10 +14,11 @@ export function assertAllNotNull<
   }
 }
 
-export function assertAll<T, U extends T>(
+export function assertAll<T, U>(
   array: T[],
-  assert: (item: T) => asserts item is U,
-): asserts array is U[] {
+  // deno-lint-ignore no-explicit-any
+  assert: (item: any) => asserts item is U,
+): asserts array is Array<T & U> {
   for (const item of array) {
     assert(item)
   }

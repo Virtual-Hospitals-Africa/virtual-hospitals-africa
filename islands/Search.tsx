@@ -66,6 +66,7 @@ export type SearchProps<
       active: boolean
     },
   ): JSX.Element
+  addHref?: string
   optionHref?: (option: T) => string
 }
 
@@ -85,9 +86,13 @@ export default function Search<
   className,
   onQuery,
   onSelect,
+  addHref,
   optionHref, // The existence of this prop turns the options into <a> tags
   Option = BaseOption,
 }: SearchProps<T>) {
+  if (addHref) {
+    assert(addable, 'addHref requires addable to be true')
+  }
   if (multi) {
     assert(
       typeof onSelect === 'function',
@@ -198,12 +203,28 @@ export default function Search<
                         )}
                       </>
                     )
-                    if (!optionHref) return fragment
-                    return (
-                      <a href={optionHref(option)}>
-                        {fragment}
-                      </a>
-                    )
+                    if (option.id === 'add' && query && addHref) {
+                      return (
+                        <a href={`${addHref}${encodeURIComponent(query)}`}>
+                          {fragment}
+                        </a>
+                      )
+                    }
+                    if ('href' in option && typeof option.href === 'string') {
+                      return (
+                        <a href={option.href}>
+                          {fragment}
+                        </a>
+                      )
+                    }
+                    if (typeof optionHref === 'function') {
+                      return (
+                        <a href={optionHref(option)}>
+                          {fragment}
+                        </a>
+                      )
+                    }
+                    return fragment
                   }}
                 </Combobox.Option>
               ))}

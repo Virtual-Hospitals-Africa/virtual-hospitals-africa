@@ -75,8 +75,6 @@ export default async function WaitingRoomAdd(
     organization_id,
   )
 
-  console.log('gettingProviders', await gettingProviders)
-
   let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
   let patient: { id?: string | 'add'; name: string } | undefined
   if (patient_id) {

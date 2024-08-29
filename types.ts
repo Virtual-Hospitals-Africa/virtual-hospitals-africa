@@ -472,6 +472,11 @@ export type PharmacistConversationState =
   | 'onboarded:fill_prescription:enter_code'
   | 'onboarded:fill_prescription:reenter_code'
   | 'onboarded:fill_prescription:send_pdf'
+  | 'onboarded:fill_prescription:start_dispense'
+  | 'onboarded:fill_prescription:ask_dispense_one'
+  | 'onboarded:fill_prescription:ask_dispense_all'
+  | 'onboarded:fill_prescription:confirm_done'
+  | 'onboarded:fill_prescription:dispense_select'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
@@ -1074,6 +1079,7 @@ export type OrganizationEmployeeOrInvitee =
   | OrganizationEmployee
   | OrganizationEmployeeInvitee
 
+export type RegistrationStatus = 'pending_approval' | 'approved' | 'incomplete'
 export type OrganizationEmployee = {
   name: string
   is_invitee: false
@@ -1082,11 +1088,12 @@ export type OrganizationEmployee = {
     employee_id: string
     profession: Profession
     specialty: NurseSpecialty | null
+    registration_status: RegistrationStatus
   }[]
   avatar_url: null | string
   email: string
   display_name: string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+  registration_status: RegistrationStatus
   actions: {
     view: string
   }
@@ -2857,6 +2864,8 @@ export type SelectedPatient = {
 export type RenderedPharmacy = {
   id: string
   address: string | null
+  town: string | null
+  address_display: string | null
   expiry_date: string
   licence_number: string
   licensee: string
@@ -2874,41 +2883,49 @@ export type RenderedPharmacy = {
     | 'Pharmacy in rural area'
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
-  town: string | null
-  href?: string
+  href: string
   supervisors: Supervisor[]
   actions: {
     view: string
   }
 }
 
+export type PharmacistInPharmacy = RenderedPharmacy & {
+  is_supervisor: boolean
+}
+
 export type RenderedPharmacist = {
-  id?: string
+  id: string
   licence_number: string
   prefix: Prefix | null
-  name?: string
+  name: string
   given_name: string
   family_name: string
   address: string | null
   full_address?: string | null
   town: string | null
+  address_display: string | null
   expiry_date: string
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
-  pharmacy?: RenderedPharmacy
+  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
+  href: string
+  actions: {
+    view: string
+    revoke: string
+    edit: string
+  }
 }
 
 export type Supervisor = {
   id: string
   href: string
   name: string
-  family_name: string
-  given_name: string
   prefix: Prefix | null
-} & { id: string }
+}
 
 export type DetailedPharmacist = {
   id?: string
@@ -2917,16 +2934,15 @@ export type DetailedPharmacist = {
   name?: string
   given_name: string
   family_name: string
-  is_supervisor: boolean | null
   address: string | null
   town: string | null
-  expiry_date: Date
+  expiry_date: string
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
-  pharmacy?: RenderedPharmacy
+  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
 export type RenderedMedicine = {

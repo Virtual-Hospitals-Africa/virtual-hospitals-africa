@@ -12,7 +12,7 @@ export async function up(db: Kysely<unknown>) {
         LOOP
             -- Generate a random 6-digit alphanumeric code
             new_code := (
-                SELECT string_agg(substr('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', trunc(random() * 62)::int + 1, 1), '')
+                SELECT string_agg(substr('0123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz', trunc(random() * 62)::int + 1, 1), '')
                 FROM generate_series(1, 6)
             );
             

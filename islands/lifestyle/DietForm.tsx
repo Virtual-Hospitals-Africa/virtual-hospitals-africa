@@ -68,7 +68,7 @@ export default function DietSection(
   return (
     <FormSection header='Diet Questions'>
       <NumberInput
-        name={'lifestyle.diet.meals_per_day'}
+        name='lifestyle.diet.meals_per_day'
         label='How many meals does the patient eat per day?'
         value={lifestyle?.diet?.meals_per_day}
         min={0}
@@ -79,28 +79,24 @@ export default function DietSection(
         day?
       </div>
       {meals.value.map((meal, index) => (
-        <RemoveRow
-          onClick={() => {
-            removeMeal(index)
-          }}
-        >
+        <RemoveRow onClick={() => removeMeal(index)}>
           <FormRow>
             <SelectWithOptions
               label='Select meal'
               name={`lifestyle.diet.typical_foods_eaten.${index}`}
               options={MEAL_TYPES}
-              value={meals.value[index].meal}
+              value={meal.meal}
             />
             <TextInput
               name={`lifestyle.diet.typical_foods_eaten_content.${index}`}
               label='Content of meal'
-              value={meals.value[index].foods_eaten}
+              value={meal.foods_eaten}
             />
             <input
               type='time'
               name={`lifestyle.diet.typical_foods_eaten_time.${index}`}
               label='Time of meal'
-              value={meals.value[index].time}
+              value={meal.time}
             />
           </FormRow>
         </RemoveRow>

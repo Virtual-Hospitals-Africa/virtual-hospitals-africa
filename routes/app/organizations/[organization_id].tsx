@@ -3,7 +3,7 @@ import { OrganizationContext } from './[organization_id]/_middleware.ts'
 
 // deno-lint-ignore require-await
 export default async function OrganizationPage(
-  req: Request,
+  _req: Request,
   ctx: OrganizationContext,
 ) {
   const { organization } = ctx.state

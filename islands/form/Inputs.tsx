@@ -937,12 +937,12 @@ export function PharmacyTypeSelect(
 }
 
 export function IsSupervisorSelect(
-  { value, isRequired }: { value: Maybe<string>; isRequired: boolean },
+  { value, isRequired, prefix = '' }: { value: Maybe<string>; isRequired: boolean; prefix?: string },
 ) {
   return (
     <Select
       required={isRequired}
-      name='is_supervisor'
+      name={`${prefix}.is_supervisor`}
       label='Is Supervisor'
     >
       <option value=''>Select</option>

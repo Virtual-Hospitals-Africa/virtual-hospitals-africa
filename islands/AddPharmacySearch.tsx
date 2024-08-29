@@ -1,12 +1,15 @@
 import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
-import { RenderedPharmacy } from '../types.ts'
+import { PharmacistInPharmacy } from '../types.ts'
 import cls from '../util/cls.ts'
+
+// export type PharmacyOption = Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>
+export type PharmacyOption = Pick<PharmacistInPharmacy, 'id' | 'name' | 'is_supervisor'> & { removed?: boolean }
 
 function PharmacyOption({
   option,
   selected,
 }: {
-  option: RenderedPharmacy
+  option: PharmacyOption
   selected: boolean
 }) {
   return (
@@ -23,7 +26,7 @@ function PharmacyOption({
 }
 
 export default function AddPharmacySearch(
-  props: Omit<AsyncSearchProps<RenderedPharmacy>, 'Option' | 'href'>,
+  props: Omit<AsyncSearchProps<PharmacyOption>, 'Option' | 'href'>,
 ) {
   return (
     <AsyncSearch

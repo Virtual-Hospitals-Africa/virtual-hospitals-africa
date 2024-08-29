@@ -16,7 +16,6 @@ export default function WaitingRoomView(
       <FormRow className='mb-4'>
         <AddPatientSearch
           organization_id={organization_id}
-          waiting_room={waiting_room}
         />
         <Button
           type='button'

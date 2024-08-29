@@ -13,13 +13,12 @@ import {
   GoogleProfile,
   GoogleTokenInfo,
   GoogleTokens,
-  HealthWorkerWithGoogleTokens,
   Location,
   LocationDistance,
   LoggedInHealthWorker,
   TrxOrDb,
 } from '../types.ts'
-import { HandlerContext } from '$fresh/src/server/mod.ts'
+import { FreshContext } from '$fresh/src/server/mod.ts'
 import {
   isHealthWorkerWithGoogleTokens,
   removeExpiredAccessToken,
@@ -364,7 +363,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   }
 
   static fromCtx(
-    ctx: HandlerContext<any, LoggedInHealthWorker>,
+    ctx: FreshContext<LoggedInHealthWorker>,
   ) {
     return new HealthWorkerGoogleClient(
       ctx.state.trx,

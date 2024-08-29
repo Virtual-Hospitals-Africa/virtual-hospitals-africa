@@ -205,6 +205,24 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
   })`
 }
 
+export function jsonBuildNullableObject<
+  O extends Record<string, Expression<unknown>>,
+>(
+  key: string,
+  obj: O,
+): RawBuilder<
+  | null
+  | Simplify<
+    {
+      [K in keyof O]: O[K] extends Expression<infer V> ? V : never
+    }
+  >
+> {
+  return sql`CASE WHEN '${sql.raw(key)}' IS NOT NULL THEN ${
+    jsonBuildObject(obj)
+  } ELSE NULL END`
+}
+
 export function toJSON<
   Tables extends keyof DB,
   Ref extends StringReference<DB, Tables>,

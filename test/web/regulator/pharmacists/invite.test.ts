@@ -13,7 +13,7 @@ describe(
     it('renders an invite page on GET', async () => {
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`${route}/regulator/pharmacists/invite`)
+      const response = await fetch(`/regulator/pharmacists/invite`)
 
       assert(response.ok, 'should have returned ok')
       assert(response.url === `${route}/regulator/pharmacists/invite`)

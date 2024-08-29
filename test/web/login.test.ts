@@ -33,7 +33,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
   describe('when logged in', () => {
     it("doesn't allow unemployed access to /app", async () => {
       const mock = await addTestHealthWorkerWithSession(db)
-      const response = await mock.fetch(`${route}/app`)
+      const response = await mock.fetch(`/app`)
       assert(response.ok)
       assert(
         response.url ===
@@ -54,7 +54,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         scenario: 'doctor',
       })
 
-      const response = await mock.fetch(`${route}/app`)
+      const response = await mock.fetch(`/app`)
 
       if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/app`)
@@ -65,7 +65,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
     it('allows regulator access /regulator', async () => {
       const mock = await addTestRegulatorWithSession(db)
 
-      const response = await mock.fetch(`${route}/regulator`)
+      const response = await mock.fetch(`/regulator`)
 
       if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/regulator`)
@@ -78,7 +78,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         scenario: sample(['admin', 'doctor', 'nurse']),
       })
 
-      const response = await mock.fetch(`${route}/login`, {
+      const response = await mock.fetch(`/login`, {
         redirect: 'manual',
       })
       const redirectLocation = response.headers.get('location')
@@ -90,7 +90,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'nurse',
       })
-      const response = await mock.fetch(`${route}/app`)
+      const response = await mock.fetch(`/app`)
       assertEquals(
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
@@ -103,7 +103,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'awaiting-approval-nurse',
       })
-      const response = await mock.fetch(`${route}/app`)
+      const response = await mock.fetch(`/app`)
       assertEquals(response.url, `${route}/app/pending_approval`)
       await response.text()
     })
@@ -170,7 +170,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
 
       await nurse_registration_details.add(db, details)
 
-      const response = await mock.fetch(`${route}/app/employees`)
+      const response = await mock.fetch(`/app/employees`)
 
       if (!response.ok) throw new Error(await response.text())
       assert(response.redirected)

@@ -9,8 +9,9 @@ import capitalize from '../../util/capitalize.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { getApprovedProviders, nearest } from './organizations.ts'
 import { sql } from 'kysely'
-import { getMany } from './providers.ts'
+// import { getMany } from './providers.ts'
 // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
@@ -40,7 +41,16 @@ export async function forPatientIntake(
   organization_id: string,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
-  const nearestFacilities = await nearest(trx, location)
+  const { nearestFacilities, employees } = await promiseProps({
+    nearestFacilities: nearest(trx, location),
+    employees: getApprovedProviders(
+      trx,
+      organization_id,
+      {
+        exclude_health_worker_id: opts.exclude_health_worker_id,
+      },
+    ),
+  })
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
     (facility) => ({
       key: `facility/${facility.id}`,
@@ -63,23 +73,6 @@ export async function forPatientIntake(
     }),
   )
 
-  const employees = await getApprovedProviders(
-    trx,
-    organization_id,
-    {
-      exclude_health_worker_id: opts.exclude_health_worker_id,
-    },
-  )
-
-  console.log('employees', employees)
-
-  const employment_ids = employees.map((employee) => employee.employee_id)
-
-  console.log('employment_ids', employment_ids)
-
-  const providers = await getMany(trx, { employment_ids })
-
-  console.log('providers', providers)
   // const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const nurse_information: Sendable[] = employees.map(
