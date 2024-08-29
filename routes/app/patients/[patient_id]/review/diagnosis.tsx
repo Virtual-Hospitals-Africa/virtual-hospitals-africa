@@ -1,12 +1,12 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
-import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import DiagnosesConditions from '../../../../../components/patients/review/ConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
+import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 
 type Condition = {
   id: string
@@ -46,7 +46,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsDiagnoses,
     )
-    data
+    const diagnoses = data.pre_existing_conditions || []
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     /*
@@ -61,8 +61,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     // Insert the patient conditions here,
     // Then insert the diagnoses pointing to those
     // Move all of this into model functions
-
-    const patient_conditions_to_insert = data.pre_existing_conditions.map((
+  
+  if((diagnoses.length !== 0)){
+    const patient_conditions_to_insert = diagnoses.map((
       condition,
     ) => ({
       patient_id,
@@ -76,29 +77,26 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       .returning('id')
       .execute()
 
-    const patient_condition_ids: string[] = []
-    if (
-      data.pre_existing_conditions &&
-      Array.isArray(data.pre_existing_conditions)
-    ) {
-      for (const condition of data.pre_existing_conditions) {
-        patient_condition_ids.push(condition.id)
-      }
+    const patient_condition_ids = patient_conditions_inserted.map(
+      (record) => record.id
+    )
+
+    for (const patient_condition_id of patient_condition_ids) {
+      await ctx.state.trx
+        .insertInto('diagnoses')
+        .values({
+          patient_condition_id: patient_condition_id,
+          provider_id: ctx.state.doctor_review.employment_id,
+          doctor_reviews_id: ctx.state.doctor_review.review_id,
+        })
+        .execute()
     }
+    console.log('Diagnoses inserted successfully');
+  }
 
-    await ctx.state.trx
-      .insertInto('diagnoses')
-      .values({
-        patient_condition_id: JSON.stringify(patient_condition_ids),
-        provider_id: ctx.state.doctor_review.employment_id,
-        doctor_reviews_id: ctx.state.doctor_review.review_id,
-      })
-      .execute()
-    console.log('Diagnoses inserted successfully')
-
-    const completing_step = completeStep(ctx)
-    return completing_step
-  },
+  const completing_step = completeStep(ctx);
+  return completing_step;
+},
 }
 
 // deno-lint-ignore require-await
@@ -112,11 +110,18 @@ export default async function DiagnosisPage(
     @Alice @Qiyuan
     Load any diagnoses from this review and pass them to the PatientPreExistingConditions component
   */
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+  const { trx } = ctx.state
+  const getting_pre_existing_conditions = patient_conditions
+    .getPreExistingConditionsWithDrugs(
+      trx,
+      { patient_id },
+    )
 
   return (
     <ReviewLayout ctx={ctx}>
       <DiagnosesConditions
-        pre_existing_conditions={[]}
+        pre_existing_conditions={await getting_pre_existing_conditions}
       />
       <FormButtons />
     </ReviewLayout>
