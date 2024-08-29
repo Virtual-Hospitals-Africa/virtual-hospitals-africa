@@ -3,7 +3,9 @@ import { PharmacistInPharmacy } from '../types.ts'
 import cls from '../util/cls.ts'
 
 // export type PharmacyOption = Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>
-export type PharmacyOption = Pick<PharmacistInPharmacy, 'id' | 'name' | 'is_supervisor'> & { removed?: boolean }
+export type PharmacyOption =
+  & Pick<PharmacistInPharmacy, 'id' | 'name' | 'is_supervisor'>
+  & { removed?: boolean }
 
 function PharmacyOption({
   option,

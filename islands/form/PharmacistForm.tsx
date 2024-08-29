@@ -31,18 +31,20 @@ export default function PharmacistForm(
         is_supervisor: false,
         id: '',
         name: '',
-        removed: false
+        removed: false,
       },
     ]
   }
   const remove = (selectedIndex: number) => {
-    selectedPharmacies.value = selectedPharmacies.value.map((pharmacy, index) => {
-      if (index !== selectedIndex) return pharmacy
-      return {
-        ...pharmacy,
-        removed: true
-      }
-    })
+    selectedPharmacies.value = selectedPharmacies.value.map(
+      (pharmacy, index) => {
+        if (index !== selectedIndex) return pharmacy
+        return {
+          ...pharmacy,
+          removed: true,
+        }
+      },
+    )
   }
   return (
     <Form method='POST'>
@@ -100,29 +102,31 @@ export default function PharmacistForm(
         />
       </FormRow>
       <hr className='my-2' />
-      {selectedPharmacies.value.map((selectedPharmacy, index) => !selectedPharmacy.removed && (
-        <RemoveRow onClick={() => remove(index)} key={index} labelled>
+      {selectedPharmacies.value.map((selectedPharmacy, index) =>
+        !selectedPharmacy.removed && (
+          <RemoveRow onClick={() => remove(index)} key={index} labelled>
             <FormRow>
-            <AddPharmacySearch
-              name={`pharmacies.${index}`}
-              label='Pharmacy'
-              value={selectedPharmacy}
-              required
-              onSelect={(pharmacy) => {
-                selectedPharmacies.value[index] = {
-                  ...selectedPharmacies.value[index],
-                  ...pharmacy
-                }
-              }}
-            />
-            <IsSupervisorSelect
-              value={selectedPharmacy.is_supervisor?.toString()}
-              isRequired={selectedPharmacy.name !== undefined}
-              prefix={`pharmacies.${index}`}
-            />
-          </FormRow>
+              <AddPharmacySearch
+                name={`pharmacies.${index}`}
+                label='Pharmacy'
+                value={selectedPharmacy}
+                required
+                onSelect={(pharmacy) => {
+                  selectedPharmacies.value[index] = {
+                    ...selectedPharmacies.value[index],
+                    ...pharmacy,
+                  }
+                }}
+              />
+              <IsSupervisorSelect
+                value={selectedPharmacy.is_supervisor?.toString()}
+                isRequired={selectedPharmacy.name !== undefined}
+                prefix={`pharmacies.${index}`}
+              />
+            </FormRow>
           </RemoveRow>
-      ))}
+        )
+      )}
       <AddRow
         text='Add Pharmacy'
         onClick={addPharmacy}

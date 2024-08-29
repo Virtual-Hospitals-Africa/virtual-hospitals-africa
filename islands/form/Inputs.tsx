@@ -937,7 +937,11 @@ export function PharmacyTypeSelect(
 }
 
 export function IsSupervisorSelect(
-  { value, isRequired, prefix = '' }: { value: Maybe<string>; isRequired: boolean; prefix?: string },
+  { value, isRequired, prefix = '' }: {
+    value: Maybe<string>
+    isRequired: boolean
+    prefix?: string
+  },
 ) {
   return (
     <Select

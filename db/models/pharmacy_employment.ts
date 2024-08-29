@@ -13,7 +13,7 @@ export async function insert(trx: TrxOrDb, data: PharmacyEmploymentInsert[]) {
 export async function remove(
   trx: TrxOrDb,
   pharmacistId: string,
-  pharmacyId: string
+  pharmacyId: string,
 ) {
   await trx
     .deleteFrom('pharmacy_employment')
@@ -26,7 +26,7 @@ export async function updateIsSupervisor(
   trx: TrxOrDb,
   pharmacistId: string,
   pharmacyId: string,
-  isSupervisor: boolean
+  isSupervisor: boolean,
 ) {
   await trx
     .updateTable('pharmacy_employment')

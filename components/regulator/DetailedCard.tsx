@@ -67,7 +67,7 @@ export default function PharmacistDetailedCard({
                 {pharmacist?.address}
               </dd>
             </div>
-            {pharmacist.pharmacies.map(pharmacy => (
+            {pharmacist.pharmacies.map((pharmacy) => (
               <>
                 <div class='border-t border-gray-100 py-6 sm:col-span-2 sm:px-0'>
                   <dt class='text-sm font-bold leading-6 text-gray-900'>

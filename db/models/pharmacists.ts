@@ -75,22 +75,26 @@ export async function update(
     .selectAll()
     .execute()
   for (const existingPharmacyEmployment of existingPharmacyEmployments) {
-    const selectedPharmacy = pharmacies.find(pharmacy => pharmacy.id === existingPharmacyEmployment.pharmacy_id)
+    const selectedPharmacy = pharmacies.find((pharmacy) =>
+      pharmacy.id === existingPharmacyEmployment.pharmacy_id
+    )
     if (selectedPharmacy) {
       await updateIsSupervisor(
         trx,
         pharmacist_id,
         existingPharmacyEmployment.pharmacy_id,
-        selectedPharmacy.is_supervisor
+        selectedPharmacy.is_supervisor,
       )
     } else {
       await removePharmacyEmployment(
         trx,
         pharmacist_id,
-        existingPharmacyEmployment.pharmacy_id
+        existingPharmacyEmployment.pharmacy_id,
       )
     }
-    pharmacies = pharmacies.filter(pharmacy => pharmacy.id !== existingPharmacyEmployment.pharmacy_id)
+    pharmacies = pharmacies.filter((pharmacy) =>
+      pharmacy.id !== existingPharmacyEmployment.pharmacy_id
+    )
   }
   const pharmacyEmployments = pharmacies.map((pharmacyEmployee) => ({
     pharmacist_id,
@@ -287,7 +291,7 @@ export type PharmacistInsert = {
 
 export async function insert(
   trx: TrxOrDb,
-  data: PharmacistInsert
+  data: PharmacistInsert,
 ): Promise<{ id: string }> {
   const { pharmacies, ...pharmacistData } = data
   const pharmacist = await trx
