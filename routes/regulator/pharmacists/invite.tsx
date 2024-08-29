@@ -18,7 +18,7 @@ export const handler = {
       req,
       pharmacists.isUpsert,
     )
-    console.log('to_insert', to_insert)
+
     await pharmacists.insert(ctx.state.trx, to_insert)
 
     const success = encodeURIComponent(
