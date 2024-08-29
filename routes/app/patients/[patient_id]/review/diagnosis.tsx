@@ -2,6 +2,7 @@ import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
+import DiagnosesConditions from '../../../../../components/patients/review/ConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
@@ -114,9 +115,7 @@ export default async function DiagnosisPage(
 
   return (
     <ReviewLayout ctx={ctx}>
-      <PatientPreExistingConditions
-        allergies={[]}
-        patient_allergies={[]}
+      <DiagnosesConditions
         pre_existing_conditions={[]}
       />
       <FormButtons />

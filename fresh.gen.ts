@@ -203,6 +203,8 @@ import * as $patient_cards from './islands/patient-cards.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
+import * as $pre_existing_conditions_DiagnosisCondition from './islands/pre-existing-conditions/DiagnosisCondition.tsx'
+import * as $pre_existing_conditions_DiagnosisForm from './islands/pre-existing-conditions/DiagnosisForm.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
@@ -493,6 +495,10 @@ const manifest = {
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':
       $pre_existing_conditions_Condition,
+    './islands/pre-existing-conditions/DiagnosisCondition.tsx':
+      $pre_existing_conditions_DiagnosisCondition,
+    './islands/pre-existing-conditions/DiagnosisForm.tsx':
+      $pre_existing_conditions_DiagnosisForm,
     './islands/pre-existing-conditions/Form.tsx': $pre_existing_conditions_Form,
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
