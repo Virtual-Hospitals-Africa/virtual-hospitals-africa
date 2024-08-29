@@ -89,9 +89,9 @@ function getQuery(trx: TrxOrDb) {
       'pharmacists.given_name',
       'pharmacists.family_name',
       nameSql('pharmacists').as('name'),
-      'pharmacists.address',
+      sql<string | null>`CASE WHEN pharmacists.address = 'LOCUM' THEN NULL ELSE pharmacists.address END`.as('address'),
       'pharmacists.town',
-      addressDisplaySql('pharmacists').as('address_display'),
+      sql<string | null>`CASE WHEN pharmacists.address = 'LOCUM' THEN NULL ELSE ${addressDisplaySql('pharmacists')} END`.as('address_display'),
       sql<string>`'/regulator/pharmacists/' || pharmacists.id`.as('href'),
       sql<string>`TO_CHAR(pharmacists.expiry_date, 'YYYY-MM-DD')`.as(
         'expiry_date',
