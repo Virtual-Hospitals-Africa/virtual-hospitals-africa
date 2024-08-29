@@ -38,7 +38,7 @@ describe('db/models/pharmacists.ts', { sanitizeResources: false }, () => {
             name: 'B A T ZIMBABWE CLINIC',
             pharmacies_types: 'Clinics: Class C',
             href: `/regulator/pharmacies/${result.pharmacies[0].id}`,
-            is_supervisor: true
+            is_supervisor: true,
           }],
           actions: {
             view: `/regulator/pharmacists/${id}`,
