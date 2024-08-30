@@ -25,5 +25,7 @@ function DeviceOption({
 export default function DeviceSearch(
   props: Omit<AsyncSearchProps<RenderedDevice>, 'Option' | 'href'>,
 ) {
-  return <AsyncSearch {...props} search_route='/app/devices' Option={DeviceOption} />
+  return (
+    <AsyncSearch {...props} search_route='/app/devices' Option={DeviceOption} />
+  )
 }

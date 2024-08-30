@@ -57,6 +57,7 @@ export type TextInputProps = WrapperInputProps<HTMLInputElement, string> & {
   type?: 'text' | 'email' | 'tel'
   placeholder?: string
   pattern?: string
+  onKeyDown?: (event: KeyboardEvent) => void
 }
 
 export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {
@@ -104,6 +105,7 @@ export function TextInput(
     onInput,
     onFocus,
     onBlur,
+    onKeyDown,
     disabled,
     readonly,
     pattern,
@@ -137,6 +139,7 @@ export function TextInput(
         }}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         pattern={pattern}
         autoComplete='off'
       />

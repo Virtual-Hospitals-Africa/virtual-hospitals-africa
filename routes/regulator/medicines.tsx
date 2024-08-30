@@ -13,6 +13,7 @@ type MedicinesProps = {
   rowsPerPage: number
   totalPage: number
   currentPage: number
+  searchQuery: string
 }
 
 export const handler = {
@@ -22,18 +23,32 @@ export const handler = {
   ) {
     const ROWS_PER_PAGE = 100
     const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
-    const { medicines, totalRows } = await drugs.get(
-      ctx.state.trx,
-      currentPage,
-      ROWS_PER_PAGE,
-    )
+    const searchQuery = ctx.url.searchParams.get('search') ?? ''
+
+    let result
+    if (searchQuery) {
+      result = await drugs.searchAcrossPages(
+        ctx.state.trx,
+        searchQuery,
+        currentPage,
+        ROWS_PER_PAGE,
+      )
+    } else {
+      result = await drugs.get(
+        ctx.state.trx,
+        currentPage,
+        ROWS_PER_PAGE,
+      )
+    }
+
     return ctx.render({
-      medicines: medicines,
+      medicines: result.medicines,
       regulator: ctx.state.regulator,
       currentPage,
-      totalRows,
+      totalRows: result.totalRows,
       rowsPerPage: ROWS_PER_PAGE,
-      totalPage: Math.ceil(totalRows / ROWS_PER_PAGE),
+      totalPage: Math.ceil(result.totalRows / ROWS_PER_PAGE),
+      searchQuery,
     })
   },
 }
@@ -57,6 +72,7 @@ export default function MedicinesPage(
         totalRows={props.data.totalRows}
         currentPage={props.data.currentPage}
         totalPage={props.data.totalPage}
+        searchQuery={props.data.searchQuery}
       />
     </Layout>
   )

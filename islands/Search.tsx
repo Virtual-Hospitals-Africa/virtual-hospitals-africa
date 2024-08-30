@@ -90,7 +90,7 @@ export default function Search<
   addHref,
   optionHref, // The existence of this prop turns the options into <a> tags
   Option = BaseOption,
-  ignoreOptionHref
+  ignoreOptionHref,
 }: SearchProps<T>) {
   if (addHref) {
     assert(addable, 'addHref requires addable to be true')

@@ -1029,7 +1029,7 @@ export interface PatientPrescriptionMedicationsFilled {
   id: Generated<string>
   patient_prescription_medication_id: string
   pharmacist_id: string
-  pharmacy_id: string
+  pharmacy_id: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1148,8 +1148,15 @@ export interface Practitioner {
   projectId: string | null
 }
 
-export interface Prescriptions {
+export interface PrescriptionCodes {
   alphanumeric_code: Generated<string>
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface Prescriptions {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string | null
@@ -1414,6 +1421,7 @@ export interface DB {
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
   Practitioner: Practitioner
+  prescription_codes: PrescriptionCodes
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers

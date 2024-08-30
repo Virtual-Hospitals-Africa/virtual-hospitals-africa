@@ -13,11 +13,16 @@ import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
-  dispense_next_stag,
+  currentMedication,
+  dispenseAll,
+  dispenseExit,
+  dispenseOne,
+  dispenseRestart,
+  dispenseSkip,
   dispenseType,
   getPrescriber,
-  medicationDescription,
-  processNextMedication,
+  PharmacistStateData,
+  uptateMedications,
 } from './prescriptionMedications.ts'
 
 const checkOnboardingStatus = (
@@ -210,34 +215,32 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
-    prompt: 'Here is your prescription',
+    prompt: '',
     async getMessages(_trx, pharmacistState) {
       const { prescription_id, prescription_code } =
         pharmacistState.chatbot_user.data
       assert(typeof prescription_id === 'string')
       assert(typeof prescription_code === 'string')
 
-      const medications = await medicationDescription(_trx, prescription_id)
-      await conversations.updateChatbotUser(
-        _trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            ...pharmacistState.chatbot_user.data,
-            medications: medications,
-            number_of_medications: medications.length,
-            index_of_medications: 0,
-          },
-        },
-      )
-
       const file_path = await generatePDF(
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
+      await uptateMedications(
+        _trx,
+        pharmacistState,
+      )
+
+      const { medications, undispensed_medications } = pharmacistState
+        .chatbot_user.data as PharmacistStateData
+
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
-        messageBody: `${String(this.prompt)}\n* ${medications.join('\n* ')}`,
+        messageBody: `Here is your prescription\n* ${
+          medications.join('\n* ')
+        }\n\nAnd these medications haven't been dispensed\n* ${
+          undispensed_medications.join('\n* ')
+        }`,
         file_path,
       }
 
@@ -260,36 +263,38 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',
-    async prompt(
+    prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense this medication?\n* ${await processNextMedication(
-        trx,
-        pharmacistState,
-      )}`
+      return `Do you want to dispense this medication?\n* ${
+        currentMedication(
+          trx,
+          pharmacistState,
+        )
+      }`
     },
     options: [
       {
         id: 'yes',
         title: 'Yes',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        onExit: dispenseOne,
       },
       {
         id: 'no',
         title: 'No',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        onExit: dispenseSkip,
       },
     ],
   },
   'onboarded:fill_prescription:ask_dispense_all': {
     type: 'select',
-    prompt: 'Do you want to dispense all medications?',
+    prompt: 'Do you want to dispense all undispensed medications?',
     options: [
       {
         id: 'Yes',
         title: 'Yes',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        onExit: dispenseAll,
       },
       {
         id: 'No',
@@ -300,23 +305,25 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:start_dispense': {
     type: 'select',
-    async prompt(
+    prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${await processNextMedication(
-        trx,
-        pharmacistState,
-      )}?`
+      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${
+        currentMedication(
+          trx,
+          pharmacistState,
+        )
+      }?`
     },
     options: [{
       id: 'yes',
       title: 'Yes',
-      onExit: 'onboarded:fill_prescription:dispense_select',
+      onExit: dispenseOne,
     }, {
       id: 'no',
       title: 'No',
-      onExit: 'onboarded:fill_prescription:dispense_select',
+      onExit: dispenseSkip,
     }],
   },
   'onboarded:fill_prescription:dispense_select': {
@@ -325,7 +332,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense\n* ${await processNextMedication(
+      return `Do you want to dispense\n* ${await currentMedication(
         trx,
         pharmacistState,
       )}?`
@@ -333,11 +340,11 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     options: [{
       id: 'yes',
       title: 'Yes',
-      onExit: dispense_next_stag,
+      onExit: dispenseOne,
     }, {
       id: 'no',
       title: 'No',
-      onExit: dispense_next_stag,
+      onExit: dispenseSkip,
     }],
   },
   'onboarded:fill_prescription:confirm_done': {
@@ -346,25 +353,26 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      const prescriber = await getPrescriber(trx, pharmacistState)
-      assert(prescriber)
-      return `Thank you for assisting "${prescriber.name}" do you want to Print or Share the Prescription Note, or restart dispense`
+      return `Thank you for assisting "${await getPrescriber(
+        trx,
+        pharmacistState,
+      )}" do you want to Print or Share the Prescription Note, or restart dispense`
     },
     options: [
-      {
-        id: 'prescription_note',
-        title: 'Prescription Note',
-        onExit: 'initial_message',
-      },
+      // {
+      //   id: 'prescription_note',
+      //   title: 'Prescription Note',
+      //   onExit: 'initial_message',
+      // },
       {
         id: 'restart_dispense',
         title: 'Restart Dispense',
-        onExit: dispenseType,
+        onExit: dispenseRestart,
       },
       {
         id: 'main_menu',
         title: 'Back To Main Menu',
-        onExit: 'initial_message',
+        onExit: dispenseExit,
       },
     ],
   },

@@ -11,6 +11,9 @@ async function importFromCsv(db: Kysely<DB>) {
       columnSeparator: '\t',
     })
   ) {
+    if (pharmacist.address === 'LOCUM') {
+      pharmacist.address = null
+    }
     await db
       .insertInto('pharmacists')
       // deno-lint-ignore no-explicit-any
