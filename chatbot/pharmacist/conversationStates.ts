@@ -22,7 +22,7 @@ import {
   dispenseType,
   getPrescriber,
   PharmacistStateData,
-  uptateMedications,
+  updateMedications,
 } from './prescriptionMedications.ts'
 
 const checkOnboardingStatus = (
@@ -209,9 +209,20 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     onExit: handlePrescriptionCode,
   },
   'onboarded:fill_prescription:reenter_code': {
-    type: 'string',
-    prompt: 'Please enter your prescription code',
-    onExit: handlePrescriptionCode,
+    type: 'select',
+    prompt: 'The code you entered is invalid. Please check and try again.',
+    options: [
+      {
+        id: 'retry',
+        title: 'Retry',
+        onExit: 'onboarded:fill_prescription:enter_code',
+      },
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'initial_message',
+      },
+    ],
   },
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
@@ -226,21 +237,21 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
-      await uptateMedications(
+      await updateMedications(
         _trx,
         pharmacistState,
       )
 
-      const { medications, undispensed_medications } = pharmacistState
+      const { undispensed_medications } = pharmacistState
         .chatbot_user.data as PharmacistStateData
 
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
-        messageBody: `Here is your prescription\n* ${
-          medications.join('\n* ')
-        }\n\nAnd these medications haven't been dispensed\n* ${
-          undispensed_medications.join('\n* ')
-        }`,
+        // ${ medications.join('\n* ')}\n\n
+        messageBody:
+          `Here is your prescription\n\nThese medications haven't been dispensed\n* ${
+            undispensed_medications.join('\n* ')
+          }`,
         file_path,
       }
 

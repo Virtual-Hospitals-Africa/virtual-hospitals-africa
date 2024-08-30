@@ -1,4 +1,8 @@
-import { dosageDisplay } from '../../shared/medication.ts'
+import {
+  assertIntakeFrequency,
+  dosageDisplay,
+  IntakeDosesPerDay,
+} from '../../shared/medication.ts'
 import omit from '../../util/omit.ts'
 import { durationBetween } from '../../util/date.ts'
 import {
@@ -56,6 +60,9 @@ async function getUndispensedMedications(
   return await filterMedications(trx, prescription_id, medications)
 }
 
+// IntakeDosesPerDay
+// 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
+
 function describeMedication(
   medications: PrescriptionMedication[],
 ): string[] {
@@ -64,18 +71,33 @@ function describeMedication(
     assert(typeof medication.end_date === 'string')
     const duration = durationBetween(medication.start_date, medication.end_date)
       .duration + 1
-    return `*${medication.name}* : ${
-      dosageDisplay({
-        dosage: medication.dosage / medication.strength_denominator,
-        ...omit(medication, ['dosage']),
-      })
-    } * ${duration} = ${
-      medication.dosage * duration
-    } ${medication.strength_denominator_unit}`
+    assert(typeof medication.intake_frequency === 'string')
+    assertIntakeFrequency(medication.intake_frequency)
+
+    const dosesPerDay = IntakeDosesPerDay[medication.intake_frequency]
+
+    const pluralize = (word: string, count: number): string =>
+      count === 1 ? word : `${word}s`
+
+    const singleDosage = dosageDisplay({
+      dosage: medication.dosage / medication.strength_denominator,
+      ...omit(medication, ['dosage']),
+    })
+
+    const totalDosage = dosageDisplay({
+      dosage: medication.dosage / medication.strength_denominator,
+      totalDosageMultiplier: duration * dosesPerDay,
+      ...omit(medication, ['dosage']),
+    })
+
+    return `*${medication.name}* : ${singleDosage} per dose * ${dosesPerDay} ${
+      pluralize('dose', dosesPerDay)
+    } per day * ${duration} ${pluralize('day', duration)} = ${totalDosage}`
+      .toLowerCase()
   })
 }
 
-export async function uptateMedications(
+export async function updateMedications(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ): Promise<void> {
