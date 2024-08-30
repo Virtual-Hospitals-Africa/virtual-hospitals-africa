@@ -584,3 +584,43 @@ export async function upsertMajorSurgeries(
   const non_procedures = await getting_non_procedures
   assertOr400(non_procedures.length === 0, 'Condition is not a major surgery')
 }
+
+export async function upsertDiagnoses(
+  trx: TrxOrDb,
+  patient_id: string,
+  diagnoses: PreExistingConditionUpsert[],
+  provider_id: string,
+  doctor_reviews_id: string,
+) {
+  if ((diagnoses.length !== 0)) {
+    const patient_conditions_to_insert = diagnoses.map((
+      condition,
+    ) => ({
+      patient_id,
+      condition_id: condition.id,
+      start_date: condition.start_date,
+    }))
+
+    const patient_conditions_inserted = await trx
+      .insertInto('patient_conditions')
+      .values(patient_conditions_to_insert)
+      .returning('id')
+      .execute()
+
+    const patient_condition_ids = patient_conditions_inserted.map(
+      (record) => record.id,
+    )
+
+    for (const patient_condition_id of patient_condition_ids) {
+      await trx
+        .insertInto('diagnoses')
+        .values({
+          patient_condition_id: patient_condition_id,
+          provider_id: provider_id,
+          doctor_reviews_id: doctor_reviews_id,
+        })
+        .execute()
+    }
+    console.log('Diagnoses inserted successfully')
+  }
+}

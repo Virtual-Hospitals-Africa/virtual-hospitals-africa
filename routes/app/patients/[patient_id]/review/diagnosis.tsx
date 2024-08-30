@@ -46,8 +46,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsDiagnoses,
     )
+    console.log('data::', data)
     const diagnoses = data.pre_existing_conditions || []
+
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+    const provider_id = ctx.state.doctor_review.employment_id
+    const doctor_reviews_id = ctx.state.doctor_review.review_id
+    console.log('diagnoses::', diagnoses)
 
     /*
     // @Alice @Qiyuan
@@ -61,45 +66,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     // Insert the patient conditions here,
     // Then insert the diagnoses pointing to those
     // Move all of this into model functions
-  
-  if((diagnoses.length !== 0)){
-    const patient_conditions_to_insert = diagnoses.map((
-      condition,
-    ) => ({
+
+    await patient_conditions.upsertDiagnoses(
+      ctx.state.trx,
       patient_id,
-      condition_id: condition.id,
-      start_date: condition.start_date,
-    }))
-
-    const patient_conditions_inserted = await ctx.state.trx
-      .insertInto('patient_conditions')
-      .values(patient_conditions_to_insert)
-      .returning('id')
-      .execute()
-
-    const patient_condition_ids = patient_conditions_inserted.map(
-      (record) => record.id
+      diagnoses,
+      provider_id,
+      doctor_reviews_id,
     )
 
-    for (const patient_condition_id of patient_condition_ids) {
-      await ctx.state.trx
-        .insertInto('diagnoses')
-        .values({
-          patient_condition_id: patient_condition_id,
-          provider_id: ctx.state.doctor_review.employment_id,
-          doctor_reviews_id: ctx.state.doctor_review.review_id,
-        })
-        .execute()
-    }
-    console.log('Diagnoses inserted successfully');
-  }
-
-  const completing_step = completeStep(ctx);
-  return completing_step;
-},
+    const completing_step = completeStep(ctx)
+    return completing_step
+  },
 }
 
-// deno-lint-ignore require-await
 export default async function DiagnosisPage(
   _req: Request,
   ctx: ReviewContext,
@@ -121,7 +101,7 @@ export default async function DiagnosisPage(
   return (
     <ReviewLayout ctx={ctx}>
       <DiagnosesConditions
-        pre_existing_conditions={await getting_pre_existing_conditions}
+        diagnoses={await getting_pre_existing_conditions}
       />
       <FormButtons />
     </ReviewLayout>
