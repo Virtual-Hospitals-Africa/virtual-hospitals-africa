@@ -25,7 +25,7 @@ export default function Guardian({
         <FormRow>
           <PersonSearch
             name={`${name}.patient`}
-            href='/app/patients'
+            search_route='/app/patients'
             label='Name'
             value={patientGuardian &&
               {

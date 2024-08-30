@@ -5,14 +5,14 @@ import Search, { SearchProps } from './Search.tsx'
 export type AsyncSearchProps<
   T extends { id?: unknown; name: string } = { id?: unknown; name: string },
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
-  href: string
+  search_route: string
   onQuery?: (query: string) => void
 }
 
 export default function AsyncSearch<
   T extends { id?: unknown; name: string },
 >({
-  href,
+  search_route,
   value,
   onQuery,
   ...rest
@@ -26,7 +26,7 @@ export default function AsyncSearch<
 
   // Make a cancellable request when the query changes
   useEffect(() => {
-    const url = new URL(`${location.origin}${href}`)
+    const url = new URL(`${location.origin}${search_route}`)
     if (search.query) {
       url.searchParams.set('search', search.query)
     }

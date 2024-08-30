@@ -38,7 +38,7 @@ export default function ManufacturedMedicationSearch(
 ) {
   return (
     <AsyncSearch
-      href='/app/manufactured_medications'
+      search_route='/app/manufactured_medications'
       Option={ManufacturedMedicationOption}
       {...props}
     />

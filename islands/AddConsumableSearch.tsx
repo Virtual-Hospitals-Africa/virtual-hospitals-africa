@@ -5,7 +5,7 @@ export function AddConsumableSearch(
 ) {
   return (
     <AsyncSearch
-      href='/app/consumables'
+      search_route='/app/consumables'
       optionHref={(option) =>
         `/app/organizations/${organization_id}/inventory/add_consumable?consumable_id=${option.id}`}
     />

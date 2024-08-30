@@ -5,7 +5,7 @@ export function AddDeviceSearch(
 ) {
   return (
     <AsyncSearch
-      href='/app/devices'
+      search_route='/app/devices'
       optionHref={(option) =>
         `/app/organizations/${organization_id}/inventory/add_device?device_id=${option.id}`}
     />

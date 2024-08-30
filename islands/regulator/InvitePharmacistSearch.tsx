@@ -4,7 +4,7 @@ export function InvitePharmacistSearch() {
   return (
     <PersonSearch
       name='pharmacist'
-      href='/regulator/pharmacists/pharmacists'
+      search_route='/regulator/pharmacists/pharmacists'
       label=''
       addable
       addHref='/regulator/pharmacists/invite?pharmacist_name='

@@ -48,7 +48,7 @@ export function ReferralForm(props: {
           <PersonSearch
             name='review_request.doctor'
             label='Doctor'
-            href='/app/providers?profession=doctor&organization_kind=virtual'
+            search_route='/app/providers?profession=doctor&organization_kind=virtual'
             value={review_request.value?.doctor}
           />
         </FormRow>
