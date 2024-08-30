@@ -13,10 +13,8 @@ export type ConditionState = {
 export default function Condition(
   {
     index,
-    state,
     value,
     remove,
-    update,
   }: {
     index: number
     state: ConditionState
