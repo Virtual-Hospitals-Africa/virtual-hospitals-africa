@@ -16,7 +16,7 @@ const columns: TableColumn<RenderedPharmacist>[] = [
   },
   {
     label: 'Address',
-    data: (row) => row.address_display || 'NULL',
+    data: 'address',
   },
   {
     label: 'License Number',
