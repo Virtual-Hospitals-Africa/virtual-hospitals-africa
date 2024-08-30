@@ -132,7 +132,7 @@ export default function PharmacistForm(
         onClick={addPharmacy}
       />
       <hr className='my-2' />
-      <Buttons submitText='Next' />
+      <Buttons submitText='Submit' />
     </Form>
   )
 }
