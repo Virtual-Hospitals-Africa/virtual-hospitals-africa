@@ -8,6 +8,8 @@ import FormRow from '../form/Row.tsx'
 export type DiagnosisFormRowState = {
   id?: string
   removed?: false
+  comorbidities?: string[]
+  medications?: string[]
 }
 
 export default function DiagnosisFormRow(
