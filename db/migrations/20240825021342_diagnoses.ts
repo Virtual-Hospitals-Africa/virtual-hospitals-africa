@@ -16,7 +16,7 @@ export async function up(db: Kysely<unknown>) {
         (col) => col.notNull().references('employment.id').onDelete('cascade'),
       )
       .addColumn(
-        'doctor_reviews_id',
+        'doctor_review_id',
         'uuid',
         (col) =>
           col.notNull().references('doctor_reviews.id').onDelete('cascade'),

@@ -7,7 +7,6 @@ import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'
 import FormSection from '../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
@@ -44,51 +43,19 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsDiagnoses,
     )
-    console.log('data::', data)
-    const diagnosesData = data.diagnoses || []
 
-    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-    const provider_id = ctx.state.doctor_review.employment_id
-    const doctor_reviews_id = ctx.state.doctor_review.review_id
-    console.log('diagnosesData::', diagnosesData)
-
-    const diagnosesDataFormatted = diagnosesData.map((diagnosis) => ({
-      condition_id: diagnosis.id,
-      start_date: diagnosis.start_date,
+    const patient_diagnoses = (data.diagnoses || []).map((d) => ({
+      condition_id: d.id,
+      start_date: d.start_date,
     }))
-    console.log('diagnosesDataFormatted::', diagnosesDataFormatted)
 
-    /*
-    // @Alice @Qiyuan
-    data currently looks like this. Please modify the frontend so that the field name is `diagnoses` instead of `diagnoses`
-    remove allergies as a form field from the frontend
-    remove medications and comoorbidity as form fields from the frontend
-    diagnoses: [
-      { name: "Hyperosmolality", id: "c_8801", start_date: "2020-04-04" }
-    ]
-    */
-    // Insert the patient conditions here,
-    // Then insert the diagnoses pointing to those
-    // Move all of this into model functions
-    if (diagnosesDataFormatted.length === 0) {
-      await diagnoses.deleteDiagnoses(
-        ctx.state.trx,
-        {
-          patient_id,
-          doctor_reviews_id,
-        },
-      )
-    } else {
-      await diagnoses.upsert(
-        ctx.state.trx,
-        {
-          patient_id,
-          diagnoses: diagnosesDataFormatted,
-          provider_id,
-          doctor_reviews_id,
-        },
-      )
-    }
+    await diagnoses.upsertForReview(
+      ctx.state.trx,
+      {
+        review: ctx.state.doctor_review,
+        diagnoses: patient_diagnoses,
+      },
+    )
 
     const completing_step = completeStep(ctx)
     return completing_step
@@ -99,17 +66,8 @@ export default async function DiagnosisPage(
   _req: Request,
   ctx: ReviewContext,
 ) {
-  console.log('params', ctx.params)
-  console.log('state', ctx.state)
-  /*
-    @Alice @Qiyuan
-    Load any diagnoses from this review and pass them to the PatientPreExistingConditions component
-  */
-  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const { trx } = ctx.state
-  const patient_diagnoses = await diagnoses.getFromActiveReview(trx, {
-    patient_id,
-  })
+  const { trx, doctor_review: { review_id } } = ctx.state
+  const patient_diagnoses = await diagnoses.getFromReview(trx, { review_id })
 
   return (
     <ReviewLayout ctx={ctx}>

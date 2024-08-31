@@ -1,32 +1,29 @@
+import { RenderedDoctorReview } from '../../types.ts'
 import { Diagnosis, TrxOrDb } from '../../types.ts'
 import { isoDate } from '../helpers.ts'
 
-export async function getFromActiveReview(
+export function getFromReview(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: string },
+  { review_id }: { review_id: string },
 ): Promise<Diagnosis[]> {
-  //throw new Error('To Implement')
-  // Start with patient conditions table
-  // then join through the diagnoses table,
-  // then join through the doctor_reviews table,
-  const diagnoses = await trx
-    .selectFrom('patient_conditions')
+  return trx
+    .selectFrom('doctor_reviews')
     .innerJoin(
       'diagnoses',
-      'patient_conditions.id',
-      'diagnoses.patient_condition_id',
+      'diagnoses.doctor_review_id',
+      'doctor_reviews.id',
     )
     .innerJoin(
-      'doctor_reviews',
-      'diagnoses.doctor_reviews_id',
-      'doctor_reviews.id',
+      'patient_conditions',
+      'patient_conditions.id',
+      'diagnoses.patient_condition_id',
     )
     .innerJoin(
       'conditions',
       'conditions.id',
       'patient_conditions.condition_id',
     )
-    .where('patient_conditions.patient_id', '=', patient_id)
+    .where('doctor_reviews.id', '=', review_id)
     .select((eb) => [
       'conditions.id',
       'conditions.name',
@@ -34,26 +31,34 @@ export async function getFromActiveReview(
       'patient_conditions.id as patient_condition_id',
     ])
     .execute()
-  return diagnoses
 }
 
-export async function upsert(trx: TrxOrDb, {
-  patient_id,
+// @Alice @Qiyuan
+// For the upsert there are 3 cases:
+// 1. A diagnosis exists in the DB, but isn't in the provided data -> delete
+// 2. A diagnosis exists in the DB and is in the provided data -> update
+// 3. A diagnosis does not exist in the DB and is in the provided data -> insert
+// Please think through how you're handling each of these cases
+export async function upsertForReview(trx: TrxOrDb, {
+  // @Alice @Qiyuan This has all the information we we would need about the open review, 
+  // so easiest to pass in the whole thing. This comes from the context in the route.
+  review, 
   diagnoses,
-  provider_id,
-  doctor_reviews_id,
 }: {
-  patient_id: string
-  provider_id: string
-  doctor_reviews_id: string
+  review: RenderedDoctorReview
   diagnoses: {
     condition_id: string
     start_date: string
   }[]
 }): Promise<void> {
-  //throw new Error('To Implement')
+  
   for (const diagnosis of diagnoses) {
-    // check if the data is already in patient_condition table
+    
+    // @Alice @Qiyuan This is not quite right. 
+    // The reason is that you may have the same condition multiple times in your life.
+    // So the fact that a given patient ever had this condition is not enough to determine 
+    // if we should insert a new diagnosis.
+    // Use the function above to get the current diagnoses for the review and compare against that.
     const existingPatientCondition = await trx
       .selectFrom('patient_conditions')
       .select('id')
@@ -77,7 +82,7 @@ export async function upsert(trx: TrxOrDb, {
         .values({
           patient_condition_id: PatientCondition.id,
           provider_id: provider_id,
-          doctor_reviews_id: doctor_reviews_id,
+          doctor_review_id: doctor_review_id,
         })
         .execute()
     }
@@ -86,15 +91,15 @@ export async function upsert(trx: TrxOrDb, {
 
 export async function deleteDiagnoses(trx: TrxOrDb, {
   patient_id,
-  doctor_reviews_id,
+  doctor_review_id,
 }: {
   patient_id: string
-  doctor_reviews_id: string
+  doctor_review_id: string
 }): Promise<void> {
   const toDelete = await trx
     .selectFrom('diagnoses')
     .select('patient_condition_id')
-    .where('doctor_reviews_id', '=', doctor_reviews_id)
+    .where('doctor_review_id', '=', doctor_review_id)
     .where(
       'patient_condition_id',
       'in',
@@ -108,7 +113,7 @@ export async function deleteDiagnoses(trx: TrxOrDb, {
     // delete data in diagnoses table
     await trx
       .deleteFrom('diagnoses')
-      .where('doctor_reviews_id', '=', doctor_reviews_id)
+      .where('doctor_review_id', '=', doctor_review_id)
       .where('patient_condition_id', 'in', patientConditionIds)
       .execute()
     // delete data in patient_conditions table

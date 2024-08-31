@@ -596,7 +596,7 @@ export async function upsertDiagnoses(
   patient_id: string,
   diagnoses: PreExistingConditionUpsert[],
   provider_id: string,
-  doctor_reviews_id: string,
+  doctor_review_id: string,
 ) {
   if ((diagnoses.length !== 0)) {
     const patient_conditions_to_insert = diagnoses.map((
@@ -623,7 +623,7 @@ export async function upsertDiagnoses(
         .values({
           patient_condition_id: patient_condition_id,
           provider_id: provider_id,
-          doctor_reviews_id: doctor_reviews_id,
+          doctor_review_id: doctor_review_id,
         })
         .execute()
     }

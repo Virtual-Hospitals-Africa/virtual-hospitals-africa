@@ -339,7 +339,7 @@ export interface Devices {
 
 export interface Diagnoses {
   created_at: Generated<Timestamp>
-  doctor_reviews_id: string
+  doctor_review_id: string
   id: Generated<string>
   patient_condition_id: string
   provider_id: string
