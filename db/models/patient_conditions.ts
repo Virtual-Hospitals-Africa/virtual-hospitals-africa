@@ -327,7 +327,11 @@ export async function getPreExistingConditions(
       'conditions.id',
       'patient_conditions.condition_id',
     )
-    .leftJoin('diagnoses', 'diagnoses.patient_condition_id', 'patient_conditions.id')
+    .leftJoin(
+      'diagnoses',
+      'diagnoses.patient_condition_id',
+      'patient_conditions.id',
+    )
     .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)

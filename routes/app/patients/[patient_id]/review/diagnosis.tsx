@@ -1,5 +1,8 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { Diagnosis, LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
+import {
+  Diagnosis,
+  LoggedInHealthWorkerHandlerWithProps,
+} from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
@@ -49,8 +52,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const doctor_reviews_id = ctx.state.doctor_review.review_id
     console.log('diagnosesData::', diagnosesData)
 
-    const diagnosesDataFormatted = diagnosesData.map(diagnosis => ({
-      condition_id: diagnosis.id, 
+    const diagnosesDataFormatted = diagnosesData.map((diagnosis) => ({
+      condition_id: diagnosis.id,
       start_date: diagnosis.start_date,
     }))
     console.log('diagnosesDataFormatted::', diagnosesDataFormatted)
@@ -73,7 +76,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         {
           patient_id,
           doctor_reviews_id,
-        }
+        },
       )
     } else {
       await diagnoses.upsert(
@@ -83,13 +86,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
           diagnoses: diagnosesDataFormatted,
           provider_id,
           doctor_reviews_id,
-        }
+        },
       )
     }
 
     const completing_step = completeStep(ctx)
     return completing_step
-  }
+  },
 }
 
 export default async function DiagnosisPage(
@@ -104,7 +107,7 @@ export default async function DiagnosisPage(
   */
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
   const { trx } = ctx.state
-  const patient_diagnoses = await diagnoses.getFromActiveReview(trx,{ 
+  const patient_diagnoses = await diagnoses.getFromActiveReview(trx, {
     patient_id,
   })
 

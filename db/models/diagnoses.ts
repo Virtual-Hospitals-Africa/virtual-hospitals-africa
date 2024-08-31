@@ -1,10 +1,10 @@
-import {
-Diagnosis,
-  TrxOrDb,
-} from '../../types.ts'
+import { Diagnosis, TrxOrDb } from '../../types.ts'
 import { isoDate } from '../helpers.ts'
 
-export async function getFromActiveReview(trx: TrxOrDb, { patient_id }: { patient_id: string }): Promise<Diagnosis[]> {
+export async function getFromActiveReview(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<Diagnosis[]> {
   //throw new Error('To Implement')
   // Start with patient conditions table
   // then join through the diagnoses table,
@@ -12,13 +12,15 @@ export async function getFromActiveReview(trx: TrxOrDb, { patient_id }: { patien
   const diagnoses = await trx
     .selectFrom('patient_conditions')
     .innerJoin(
-      'diagnoses', 
-      'patient_conditions.id', 
-      'diagnoses.patient_condition_id')
+      'diagnoses',
+      'patient_conditions.id',
+      'diagnoses.patient_condition_id',
+    )
     .innerJoin(
-      'doctor_reviews', 
-      'diagnoses.doctor_reviews_id', 
-      'doctor_reviews.id')
+      'doctor_reviews',
+      'diagnoses.doctor_reviews_id',
+      'doctor_reviews.id',
+    )
     .innerJoin(
       'conditions',
       'conditions.id',
@@ -57,7 +59,7 @@ export async function upsert(trx: TrxOrDb, {
       .select('id')
       .where('patient_id', '=', patient_id)
       .where('condition_id', '=', diagnosis.condition_id)
-      .executeTakeFirst();
+      .executeTakeFirst()
 
     if (!existingPatientCondition) {
       const [PatientCondition] = await trx
@@ -68,7 +70,7 @@ export async function upsert(trx: TrxOrDb, {
           start_date: diagnosis.start_date,
         })
         .returning('id')
-        .execute();
+        .execute()
 
       await trx
         .insertInto('diagnoses')
@@ -77,8 +79,8 @@ export async function upsert(trx: TrxOrDb, {
           provider_id: provider_id,
           doctor_reviews_id: doctor_reviews_id,
         })
-        .execute();
-    } 
+        .execute()
+    }
   }
 }
 
@@ -89,18 +91,19 @@ export async function deleteDiagnoses(trx: TrxOrDb, {
   patient_id: string
   doctor_reviews_id: string
 }): Promise<void> {
-
   const toDelete = await trx
     .selectFrom('diagnoses')
     .select('patient_condition_id')
     .where('doctor_reviews_id', '=', doctor_reviews_id)
-    .where('patient_condition_id', 'in',
+    .where(
+      'patient_condition_id',
+      'in',
       trx.selectFrom('patient_conditions')
         .select('id')
-        .where('patient_id', '=', patient_id)
+        .where('patient_id', '=', patient_id),
     )
     .execute()
-  const patientConditionIds = toDelete.map(row => row.patient_condition_id)
+  const patientConditionIds = toDelete.map((row) => row.patient_condition_id)
   if (patientConditionIds.length > 0) {
     // delete data in diagnoses table
     await trx
