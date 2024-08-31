@@ -158,6 +158,9 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $diagnoses_DiagnosisCondition from './islands/diagnoses/DiagnosisCondition.tsx'
+import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
+import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $drug_Input from './islands/drug/Input.tsx'
 import * as $drug_Search from './islands/drug/Search.tsx'
 import * as $examinations_Form from './islands/examinations/Form.tsx'
@@ -203,8 +206,6 @@ import * as $patient_cards from './islands/patient-cards.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
-import * as $pre_existing_conditions_DiagnosisCondition from './islands/pre-existing-conditions/DiagnosisCondition.tsx'
-import * as $pre_existing_conditions_DiagnosisForm from './islands/pre-existing-conditions/DiagnosisForm.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
@@ -444,6 +445,9 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/diagnoses/DiagnosisCondition.tsx': $diagnoses_DiagnosisCondition,
+    './islands/diagnoses/Form.tsx': $diagnoses_Form,
+    './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/drug/Input.tsx': $drug_Input,
     './islands/drug/Search.tsx': $drug_Search,
     './islands/examinations/Form.tsx': $examinations_Form,
@@ -495,10 +499,6 @@ const manifest = {
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':
       $pre_existing_conditions_Condition,
-    './islands/pre-existing-conditions/DiagnosisCondition.tsx':
-      $pre_existing_conditions_DiagnosisCondition,
-    './islands/pre-existing-conditions/DiagnosisForm.tsx':
-      $pre_existing_conditions_DiagnosisForm,
     './islands/pre-existing-conditions/Form.tsx': $pre_existing_conditions_Form,
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
