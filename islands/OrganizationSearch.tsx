@@ -13,7 +13,7 @@ type OrganizationSearchPropsGeneral<
   & { kind: Kind }
   & Omit<
     AsyncSearchProps<OrganizationType>,
-    'Option' | 'href' | 'optionHref'
+    'Option' | 'search_route' | 'optionHref'
   >
 
 type OrganizationSearchProps =

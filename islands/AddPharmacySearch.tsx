@@ -28,7 +28,7 @@ function PharmacyOption({
 }
 
 export default function AddPharmacySearch(
-  props: Omit<AsyncSearchProps<PharmacyOption>, 'Option' | 'href'>,
+  props: Omit<AsyncSearchProps<PharmacyOption>, 'Option' | 'search_route'>,
 ) {
   return (
     <AsyncSearch

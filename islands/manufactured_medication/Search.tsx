@@ -33,7 +33,7 @@ function ManufacturedMedicationOption({
 export default function ManufacturedMedicationSearch(
   props: Omit<
     AsyncSearchProps<ManufacturedMedicationSearchResult>,
-    'Option' | 'href'
+    'Option' | 'search_route'
   >,
 ) {
   return (
