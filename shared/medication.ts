@@ -61,9 +61,58 @@ export const IntakeFrequencies = {
   prn: 'when necessary',
 }
 
+type IntakeFrequency = keyof typeof IntakeFrequencies
+
+export function assertIntakeFrequency(
+  frequency: string,
+): asserts frequency is IntakeFrequency {
+  assert(frequency in IntakeFrequencies)
+}
+
+export const IntakeDosesPerDay = {
+  ac: 3, // 3 doses per day
+  am: 1, // 1 doses per day
+  bd: 2, // 2 doses per day
+  nocte: 1, // 1 doses per day
+  od: 1, // 1 doses per day
+  pm: 1, // 1 doses per day
+  q15: 96, // 96 doses per day
+  q30: 48, // 48 doses per day
+  q1h: 24, // 24 doses per day
+  q2h: 12, // 12 doses per day
+  q4h: 6, // 6 doses per day
+  q6h: 4, // 4 doses per day
+  q8h: 3, // 3 doses per day
+  qd: 1, // 1 doses per day
+  qid: 4, // 4 doses per day
+  qod: 0.5, // 0.5 doses per day
+  qs: 1, // 1 doses per day
+  mane: 1, // 1 doses per day
+  qmane: 1, // 1 doses per day
+  qn: 1, // 1 doses per day
+  stat: 1, // 1 doses per day
+  tds: 3, // 3 doses per day
+  q24h: 1, // 1 dose per day
+  q30h: 0.8, // 0.8 dose per day
+  q48h: 0.5, // 0.5 dose per day
+  q72h: 1 / 3, // 1/3 dose per day
+  hs: 1, // 1 doses per day
+  qhs: 1, // 1 doses per day
+  qw: 1 / 7, // 1/7 doses per day
+  bw: 2 / 7, // 2/7 doses per day
+  tw: 3 / 7, // 3/7 doses per day
+  qm: 1 / 30, // 1/30 doses per day
+  bm: 2 / 30, // 2/30 doses per day
+  tm: 3 / 30, // 3/30 doses per day
+  prn: 1, // 1 dose per day
+} satisfies {
+  [frequency in IntakeFrequency]: number
+}
+
 type DosageDisplayParams = {
   dosage_text?: string
   dosage: number
+  totalDosageMultiplier?: number
   strength: number | string
   strength_denominator: number | string
   strength_denominator_unit: string
@@ -94,6 +143,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
     strength_denominator_is_units,
     dosage_text,
     dosage,
+    totalDosageMultiplier,
   } = params
   const numeric_strength = isNumber(strength) ? strength : parseFloat(strength)
   assert(numeric_strength)
@@ -101,15 +151,24 @@ export function dosageDisplay(params: DosageDisplayParams) {
     ? strength_denominator
     : parseFloat(strength_denominator)
   assert(numeric_strength_denominator)
-  const single_dose = dosage * numeric_strength_denominator
-  let display = strength_denominator === 1
-    ? (dosage_text || dosageText(dosage))
-    : String(single_dose)
 
+  const single_dose = dosage * numeric_strength_denominator
+  const totalDosage = totalDosageMultiplier
+    ? Math.ceil(totalDosageMultiplier * single_dose)
+    : single_dose
+
+  let display = totalDosageMultiplier
+    ? String(totalDosage)
+    : (strength_denominator === 1
+      ? (dosage_text ?? dosageText(dosage))
+      : String(single_dose))
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  display += dosage > 1 ? denominatorPlural(params) : strength_denominator_unit
+  const doseToCompare = totalDosageMultiplier ? totalDosage : dosage
+  display += doseToCompare > 1
+    ? denominatorPlural(params)
+    : strength_denominator_unit
   display += ` (${numeric_strength * dosage}${strength_numerator_unit})`
 
   return display
