@@ -20,7 +20,11 @@ export async function up(db: Kysely<unknown>) {
         'uuid',
         (col) =>
           col.notNull().references('doctor_reviews.id').onDelete('cascade'),
-      ))
+      )
+      .addUniqueConstraint('only_diagnosed_once_per_review', [
+        'patient_condition_id',
+        'doctor_review_id',
+      ]))
 }
 
 export async function down(db: Kysely<unknown>) {

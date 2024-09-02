@@ -1,5 +1,6 @@
-import { RenderedDoctorReview } from '../../types.ts'
-import { Diagnosis, TrxOrDb } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import { Diagnosis, RenderedDoctorReview, TrxOrDb } from '../../types.ts'
+import partition from '../../util/partition.ts'
 import { isoDate } from '../helpers.ts'
 
 export function getFromReview(
@@ -33,16 +34,8 @@ export function getFromReview(
     .execute()
 }
 
-// @Alice @Qiyuan
-// For the upsert there are 3 cases:
-// 1. A diagnosis exists in the DB, but isn't in the provided data -> delete
-// 2. A diagnosis exists in the DB and is in the provided data -> update
-// 3. A diagnosis does not exist in the DB and is in the provided data -> insert
-// Please think through how you're handling each of these cases
 export async function upsertForReview(trx: TrxOrDb, {
-  // @Alice @Qiyuan This has all the information we we would need about the open review, 
-  // so easiest to pass in the whole thing. This comes from the context in the route.
-  review, 
+  review: { review_id, patient, employment_id },
   diagnoses,
 }: {
   review: RenderedDoctorReview
@@ -51,80 +44,63 @@ export async function upsertForReview(trx: TrxOrDb, {
     start_date: string
   }[]
 }): Promise<void> {
-  const existing_diagnoses = await getFromReview(trx, { review_id: review.review_id })
+  const existing_diagnoses = await getFromReview(trx, { review_id })
+
+  const [to_update, to_insert] = partition(
+    diagnoses,
+    (diagnosis) =>
+      existing_diagnoses.some((existing_diagnosis) =>
+        existing_diagnosis.id === diagnosis.condition_id
+      ),
+  )
 
   const to_delete = existing_diagnoses.filter((existing_diagnosis) =>
-    !diagnoses.some((diagnosis) => 
+    !diagnoses.some((diagnosis) =>
       existing_diagnosis.id === diagnosis.condition_id
     )
   )
-  const to_update = existing_diagnoses.filter((existing_diagnosis) =>
-    !diagnoses.some((diagnosis) => 
-      existing_diagnosis.id === diagnosis.condition_id
-    )
-  )
-  for (const diagnosis of diagnoses) {
-    const existingPatientCondition = await trx
-      .selectFrom('patient_conditions')
-      .select('id')
-      .where('patient_id', '=', patient_id)
-      .where('condition_id', '=', diagnosis.condition_id)
-      .executeTakeFirst()
 
-    if (!existingPatientCondition) {
-      const [PatientCondition] = await trx
-        .insertInto('patient_conditions')
-        .values({
-          patient_id: patient_id,
-          condition_id: diagnosis.condition_id,
-          start_date: diagnosis.start_date,
-        })
-        .returning('id')
-        .execute()
-
-      await trx
-        .insertInto('diagnoses')
-        .values({
-          patient_condition_id: PatientCondition.id,
-          provider_id: provider_id,
-          doctor_review_id: doctor_review_id,
-        })
-        .execute()
-    }
-  }
-}
-
-export async function deleteDiagnoses(trx: TrxOrDb, {
-  patient_id,
-  doctor_review_id,
-}: {
-  patient_id: string
-  doctor_review_id: string
-}): Promise<void> {
-  const toDelete = await trx
-    .selectFrom('diagnoses')
-    .select('patient_condition_id')
-    .where('doctor_review_id', '=', doctor_review_id)
+  const deleting = to_delete.length && trx.deleteFrom('patient_conditions')
     .where(
-      'patient_condition_id',
+      'id',
       'in',
-      trx.selectFrom('patient_conditions')
-        .select('id')
-        .where('patient_id', '=', patient_id),
+      to_delete.map((diagnosis) => diagnosis.patient_condition_id),
     )
     .execute()
-  const patientConditionIds = toDelete.map((row) => row.patient_condition_id)
-  if (patientConditionIds.length > 0) {
-    // delete data in diagnoses table
-    await trx
-      .deleteFrom('diagnoses')
-      .where('doctor_review_id', '=', doctor_review_id)
-      .where('patient_condition_id', 'in', patientConditionIds)
+
+  const inserting = to_insert.length && Promise.all(to_insert.map(async (d) => {
+    const { id: patient_condition_id } = await trx.insertInto(
+      'patient_conditions',
+    )
+      .values({
+        patient_id: patient.id,
+        condition_id: d.condition_id,
+        start_date: d.start_date,
+      })
+      .returning('id')
+      .executeTakeFirstOrThrow()
+
+    await trx.insertInto('diagnoses')
+      .values({
+        patient_condition_id,
+        provider_id: employment_id,
+        doctor_review_id: review_id,
+      })
       .execute()
-    // delete data in patient_conditions table
-    await trx
-      .deleteFrom('patient_conditions')
-      .where('id', 'in', patientConditionIds)
-      .execute()
-  }
+  }))
+
+  const updating = Promise.all(to_update.map((d) => {
+    const matching_diagnosis = existing_diagnoses.find((existing_diagnosis) =>
+      existing_diagnosis.id === d.condition_id
+    )
+    assert(matching_diagnosis, 'matching_diagnosis should exist')
+    if (matching_diagnosis.start_date !== d.start_date) {
+      return trx.updateTable('patient_conditions')
+        .set('start_date', d.start_date)
+        .where('id', '=', matching_diagnosis.patient_condition_id)
+        .execute()
+    }
+  }))
+
+  await Promise.all([deleting, inserting, updating])
 }
