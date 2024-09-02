@@ -5,6 +5,8 @@ import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetail.tsx'
+import * as patient_allergies from '../../db/models/patient_allergies.ts'
+import { MedicationsTable } from '../../components/prescriptions/MedicationsTable.tsx'
 
 export default async function PrescriptionPage(
   req: Request,
@@ -30,28 +32,36 @@ export default async function PrescriptionPage(
 
   const patient = await patients.getByID(db, { id: patientId })
   const prescriber = prescription.prescriber_id
-  const medications = [
-    {
-      id: '14c1923a-f9ae-4bdb-8ec7-c0a209af9a63',
-      patient_condition_id: '5a9b85e7-cf04-4f79-8d8c-1145f6aa7610',
-      medication_id: 'a798a1cf-c37a-43d7-a6be-679629d34ff1',
-      strength: 20,
-      route: 'INFUSION',
-      special_instructions: 'Left buttcheek, then right buttcheek',
-      start_date: '2002-07-07',
-      schedules: '(2,nocte,683,days)',
-    },
-    {
-      id: '07345a28-87f7-4c5b-859e-62b871747eba',
-      patient_condition_id: '5a9b85e7-cf04-4f79-8d8c-1145f6aa7610',
-      medication_id: 'a3efea2a-9079-473a-8a7f-9ebdbd06471d',
-      strength: 0.25,
-      route: 'ORAL',
-      special_instructions: 'Instruction 1',
-      start_date: '0003-01-02',
-      schedules: '(1,ac,1,indefinitely)',
-    },
-  ]
+
+  // const medications = [
+  //   {
+  //     id: '14c1923a-f9ae-4bdb-8ec7-c0a209af9a63',
+  //     patient_condition_id: '5a9b85e7-cf04-4f79-8d8c-1145f6aa7610',
+  //     medication_id: 'a798a1cf-c37a-43d7-a6be-679629d34ff1',
+  //     strength: 20,
+  //     route: 'INFUSION',
+  //     special_instructions: 'Left buttcheek, then right buttcheek',
+  //     start_date: '2002-07-07',
+  //     schedules: '(2,nocte,683,days)',
+  //   },
+  //   {
+  //     id: '07345a28-87f7-4c5b-859e-62b871747eba',
+  //     patient_condition_id: '5a9b85e7-cf04-4f79-8d8c-1145f6aa7610',
+  //     medication_id: 'a3efea2a-9079-473a-8a7f-9ebdbd06471d',
+  //     strength: 0.25,
+  //     route: 'ORAL',
+  //     special_instructions: 'Instruction 1',
+  //     start_date: '0003-01-02',
+  //     schedules: '(1,ac,1,indefinitely)',
+  //   },
+  // ]
+
+  const allergies = await patient_allergies.getWithName(db, patientId)
+
+  const medications = await prescriptions.getMedicationsByPrescriptionId(
+    db,
+    prescription.id,
+  )
 
   return (
     <Layout
@@ -98,45 +108,40 @@ export default async function PrescriptionPage(
               <PrescriptionDetail heading='Name' information={patient.name} />
               <PrescriptionDetail
                 heading='Age'
-                information={`${
-                  new Date().getFullYear() -
-                  new Date('patient.date_of_birth').getFullYear()
-                }`}
+                information={patient.age_display}
               />
             </div>
             <div class='flex justify-between mb-2'>
-              <PrescriptionDetail
-                heading='Phone Number'
-                information={patient.phone_number
-                  ? patient.phone_number
-                  : 'N/A'}
-              />
+              {patient.phone_number && (
+                <PrescriptionDetail
+                  heading='Phone Number'
+                  information={patient.phone_number}
+                />
+              )}
               <PrescriptionDetail
                 heading='Date of Birth'
-                information={new Date('patient.date_of_birth')
-                  .toLocaleDateString()}
+                information={patient.dob_formatted}
               />
             </div>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail
-                heading='Email'
-                information={'patient.email'}
-              />
-              <PrescriptionDetail
                 heading='Gender'
-                information={patient.gender ? patient.gender : 'Nan'}
+                information={patient.gender}
               />
             </div>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail
                 heading='Address'
-                information={'patient.address'}
+                information={patient.address}
               />
             </div>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail
                 heading='Allergies'
-                information={'patient.allergies'}
+                // "wheat, buckwheat"
+                information={allergies.map((allergy) => allergy.name).join(
+                  ', ',
+                )}
               />
               <PrescriptionDetail
                 heading='Notable Health Condition'
@@ -148,143 +153,10 @@ export default async function PrescriptionPage(
             <div class='flex-1 h-4 bg-orange-200'></div>
             <div class='flex-1 h-4 bg-white'></div>
           </div>
-          <div style={{ marginBottom: '20px' }}>
-            <div class='text-purple-900 mb-2 font-bold'>
-              List of Prescribed Medications
-            </div>
-            <table
-              style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                marginTop: '20px',
-              }}
-            >
-              <thead>
-                <tr>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Medication Name
-                  </th>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Strength
-                  </th>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Route
-                  </th>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Special Instructions
-                  </th>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Start Date
-                  </th>
-                  <th
-                    style={{
-                      border: '1px solid #ddd',
-                      padding: '8px',
-                      textAlign: 'left',
-                      backgroundColor: '#f4f4f4',
-                    }}
-                  >
-                    Schedules
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {medications.map((medication, index) => (
-                  <tr key={index}>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {medication.medication_id}
-                    </td>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {medication.strength}
-                    </td>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {medication.route}
-                    </td>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {medication.special_instructions}
-                    </td>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {new Date(medication.start_date).toLocaleDateString()}
-                    </td>
-                    <td
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: '8px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {medication.schedules}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div class='text-purple-900 mb-2 font-bold'>
+            List of Prescribed Medications
           </div>
+          <MedicationsTable medications={medications} />
           <div class='mb-3'>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail

@@ -193,10 +193,11 @@ export type RenderedPatient =
   >
   & {
     id: string
+    address: string | null
     dob_formatted: string | null
     name: string
     description: string | null
-    // age_formatted: Maybe<string> // TODO: implement
+    age_display: Maybe<string>
     avatar_url: string | null
     nearest_organization: string | null
     last_visited: null // TODO: implement
@@ -1902,11 +1903,16 @@ export type PrescriptionMedication = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   special_instructions: string | null
-  start_date: string | null
+  start_date: string
+  start_date_formatted: string
+  condition_name: string
+  strength_display: string
+  schedules_display: string
   end_date: string
   dosage: number
   strength: number
   intake_frequency: string
+  is_filled: SqlBool
 }
 
 export type DurationUnit =

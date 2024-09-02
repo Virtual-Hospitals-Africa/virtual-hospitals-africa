@@ -72,13 +72,21 @@ const baseSelect = (trx: TrxOrDb) =>
       'Organization.id',
       'patients.nearest_organization_id',
     )
+    .leftJoin(
+      formattedAddress(trx),
+      'address_formatted.id',
+      'patients.address_id',
+    )
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
       'patients.phone_number',
       'patients.gender',
       'patients.ethnicity',
+      'address_formatted.address',
       dob_formatted,
+      'patient_age.age_display',
       sql<
         string | null
       >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(

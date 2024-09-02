@@ -63,7 +63,7 @@ describe(
       })
 
       const response = await fetch(
-        `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        `${route}/app/patients/${patient.id}/encounters/open/vitals?expectedTestError=1`,
       )
 
       assertEquals(response.status, 404)

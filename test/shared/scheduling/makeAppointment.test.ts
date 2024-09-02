@@ -70,6 +70,8 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           patient: {
             avatar_url: null,
             dob_formatted: null,
+            address: null,
+            age_display: null,
             description: null,
             gender: null,
             ethnicity: null,
