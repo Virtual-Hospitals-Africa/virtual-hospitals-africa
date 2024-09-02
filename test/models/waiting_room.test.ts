@@ -5,6 +5,7 @@ import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
+import * as patient_intake from '../../db/models/patient_intake.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { itUsesTrxAnd, withTestOrganization } from '../web/utilities.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
@@ -104,11 +105,11 @@ describe(
               reason: 'seeking treatment',
             })
 
-            await patients.upsertIntake(trx, {
+            await patient_intake.updateCompletion(trx, {
               id: patient.id,
               intake_step_just_completed: 'personal',
             })
-            await patients.upsertIntake(trx, {
+            await patient_intake.updateCompletion(trx, {
               id: patient.id,
               intake_step_just_completed: 'address',
             })
@@ -169,11 +170,11 @@ describe(
               encounter_id: 'open',
             })
 
-            await patients.upsertIntake(trx, {
+            await patient_intake.updateCompletion(trx, {
               id: patient.id,
               intake_step_just_completed: 'personal',
             })
-            await patients.upsertIntake(trx, {
+            await patient_intake.updateCompletion(trx, {
               id: patient.id,
               intake_step_just_completed: 'address',
             })

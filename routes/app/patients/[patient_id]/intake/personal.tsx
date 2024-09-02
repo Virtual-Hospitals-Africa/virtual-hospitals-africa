@@ -3,6 +3,8 @@ import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalF
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { IntakePage, postHandler } from './_middleware.tsx'
+import * as patients from '../../../../../db/models/patients.ts'
+import compact from '../../../../../util/compact.ts'
 
 type PersonalFormValues = {
   first_name: string
@@ -37,7 +39,24 @@ function assertIsPersonal(
   }
 }
 
-export const handler = postHandler(assertIsPersonal)
+export const handler = postHandler(
+  assertIsPersonal,
+  async function updatePersonal(
+    ctx,
+    patient_id,
+    { first_name, middle_names, last_name, ...form_values },
+  ) {
+    const name = compact(
+      [first_name, middle_names, last_name],
+    ).join(' ')
+
+    await patients.update(ctx.state.trx, {
+      id: patient_id,
+      name,
+      ...form_values,
+    })
+  },
+)
 
 export default IntakePage(
   function PersonalPage({ patient, previously_completed }) {

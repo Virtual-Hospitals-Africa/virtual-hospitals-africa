@@ -79,7 +79,7 @@ const conversationStates: ConversationStates<
         id: 'male',
         title: 'Male',
         async onExit(trx, patientState) {
-          await patients.upsertIntake(trx, {
+          await patients.update(trx, {
             id: patientState.chatbot_user.entity_id!,
             gender: 'male',
           })
@@ -91,7 +91,7 @@ const conversationStates: ConversationStates<
         title: 'Female',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          await patients.upsertIntake(trx, {
+          await patients.update(trx, {
             id: patientState.chatbot_user.entity_id,
             gender: 'female',
           })
@@ -103,7 +103,7 @@ const conversationStates: ConversationStates<
         title: 'Non-binary',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          await patients.upsertIntake(trx, {
+          await patients.update(trx, {
             id: patientState.chatbot_user.entity_id,
             gender: 'non-binary',
           })
@@ -123,7 +123,7 @@ const conversationStates: ConversationStates<
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
       const date_of_birth = `${year}-${monthStr}-${dayStr}`
-      await patients.upsertIntake(trx, {
+      await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
         date_of_birth,
       })
@@ -135,7 +135,7 @@ const conversationStates: ConversationStates<
     prompt: 'Please enter your national ID number',
     async onExit(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      await patients.upsertIntake(trx, {
+      await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
         national_id_number: patientState.unhandled_message.trimmed_body,
       })
@@ -159,7 +159,7 @@ const conversationStates: ConversationStates<
         longitude: locationMessage.longitude,
         latitude: locationMessage.latitude,
       }
-      await patients.upsertIntake(trx, {
+      await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
         location: currentLocation,
       })

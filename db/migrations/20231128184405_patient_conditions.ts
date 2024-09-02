@@ -25,11 +25,14 @@ export function up(db: Kysely<any>) {
           col
             .references('patient_conditions.id')
             .onDelete('cascade'))
+        .addColumn('noted_during_patient_intake_by', 'uuid', (col) =>
+          col.references('employment.id').onDelete('cascade'))
         .addUniqueConstraint('patient_condition_start_date', [
           'patient_id',
           'condition_id',
           'start_date',
-        ], (constraint) => constraint.nullsNotDistinct())
+        ], (constraint) =>
+          constraint.nullsNotDistinct())
         .addCheckConstraint(
           'condition_starts_before_today',
           sql`

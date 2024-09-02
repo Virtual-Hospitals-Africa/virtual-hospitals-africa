@@ -1,17 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
-  Address,
-  FamilyUpsert,
-  Gender,
   HasStringId,
-  Lifestyle,
   Location,
   Maybe,
   Patient,
-  PatientIntake,
   PatientNearestOrganization,
-  PatientOccupation,
   PatientSchedulingAppointmentRequest,
   PatientWithOpenEncounter,
   RenderedPatient,
@@ -19,31 +13,19 @@ import {
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
-import compact from '../../util/compact.ts'
-import {
-  formatted as formattedAddress,
-  upsert as upsertAddress,
-} from './address.ts'
+import { formatted as formattedAddress } from './address.ts'
 import * as conversations from './conversations.ts'
 import * as examinations from './examinations.ts'
-import * as patient_occupations from './patient_occupations.ts'
 import * as patient_encounters from './patient_encounters.ts'
-import * as patient_conditions from './patient_conditions.ts'
-import * as patient_allergies from './patient_allergies.ts'
-import * as patient_lifestyle from './patient_lifestyle.ts'
-import * as patient_family from './family.ts'
 import {
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
   longFormattedDate,
 } from '../helpers.ts'
-import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
-import { assertOr404 } from '../../util/assertOr.ts'
-import { DB, IntakeStep } from '../../db.d.ts'
-import { RenderedPatientAge } from '../../types.ts'
+import { DB } from '../../db.d.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -140,34 +122,6 @@ export async function getLastConversationState(
   const patient = await getting_patient
   const last_message = await getting_last_message
   return { ...patient, ...last_message }
-}
-
-export type UpsertPatientIntake = {
-  id: string
-  phone_number?: string
-  gender?: Maybe<Gender>
-  date_of_birth?: Maybe<string>
-  national_id_number?: Maybe<string>
-  nearest_organization_id?: Maybe<string>
-  primary_doctor_id?: Maybe<string>
-  location?: Maybe<Location>
-  avatar_media_id?: string
-  address_id?: string
-  completed_intake?: boolean
-  name?: Maybe<string>
-  first_name?: Maybe<string>
-  middle_names?: Maybe<string>
-  last_name?: Maybe<string>
-  address?: Address
-  unregistered_primary_doctor_name?: Maybe<string>
-  allergies?: { id: string }[]
-  pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
-  past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
-  major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
-  family?: FamilyUpsert
-  occupation?: Omit<PatientOccupation, 'patient_id'>
-  lifestyle?: Lifestyle
-  intake_step_just_completed?: IntakeStep
 }
 
 export function insertMany(
@@ -273,114 +227,6 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
-export async function upsertIntake(
-  trx: TrxOrDb,
-  {
-    id,
-    first_name,
-    middle_names,
-    last_name,
-    address,
-    family,
-    pre_existing_conditions,
-    past_medical_conditions,
-    major_surgeries,
-    allergies,
-    occupation,
-    lifestyle,
-    intake_step_just_completed,
-    ...patient_updates
-  }: UpsertPatientIntake,
-): Promise<void> {
-  const upserting_occupation = occupation && patient_occupations.upsert(trx, {
-    occupation,
-    patient_id: id,
-  })
-
-  const upserting_conditions = pre_existing_conditions &&
-    patient_conditions.upsertPreExisting(
-      trx,
-      id,
-      pre_existing_conditions,
-    )
-
-  const upserting_past_conditions = past_medical_conditions &&
-    patient_conditions.upsertPastMedical(
-      trx,
-      id,
-      past_medical_conditions,
-    )
-
-  const upserting_major_surgeries = major_surgeries &&
-    patient_conditions.upsertMajorSurgeries(
-      trx,
-      id,
-      major_surgeries,
-    )
-
-  const upserting_allergies = allergies &&
-    patient_allergies.upsert(
-      trx,
-      id,
-      allergies,
-    )
-
-  const upserting_family = family &&
-    patient_family.upsert(
-      trx,
-      id,
-      family,
-    )
-
-  const upserting_lifestyle = lifestyle && patient_lifestyle.upsert(
-    trx,
-    id,
-    lifestyle,
-  )
-
-  const upserting_intake_step = intake_step_just_completed &&
-    trx
-      .insertInto('patient_intake')
-      .values({
-        patient_id: id,
-        intake_step: intake_step_just_completed,
-      })
-      .onConflict((oc) => oc.doNothing())
-      .execute()
-
-  if (first_name) {
-    assert(!patient_updates.name, 'Cannot set both name and first_name')
-    patient_updates.name = compact(
-      [first_name, middle_names, last_name],
-    ).join(' ')
-  }
-  if (address) {
-    assert(
-      !patient_updates.address_id,
-      'Cannot set both address and address_id',
-    )
-    patient_updates.address_id = (await upsertAddress(trx, address)).id
-  }
-
-  const upserting_patient = !isEmpty(patient_updates) &&
-    update(trx, {
-      ...patient_updates,
-      id,
-    })
-
-  await Promise.all([
-    upserting_patient,
-    upserting_conditions,
-    upserting_past_conditions,
-    upserting_allergies,
-    upserting_family,
-    upserting_occupation,
-    upserting_major_surgeries,
-    upserting_lifestyle,
-    upserting_intake_step,
-  ])
-}
-
 export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
   return trx
     .deleteFrom('patients')
@@ -395,189 +241,6 @@ export function getByID(
   return baseSelect(trx)
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()
-}
-
-export function getIntakeById(
-  trx: TrxOrDb,
-  patient_id: string,
-): Promise<PatientIntake> {
-  return trx
-    .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin(
-      'Organization',
-      'Organization.id',
-      'patients.nearest_organization_id',
-    )
-    .leftJoin(
-      'Address as OrganizationAddress',
-      'Organization.id',
-      'OrganizationAddress.resourceId',
-    )
-    .leftJoin(
-      'employment',
-      'employment.id',
-      'patients.primary_doctor_id',
-    )
-    .leftJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .select((eb) => [
-      'patients.id',
-      'patients.name',
-      'patients.phone_number',
-      'patients.location',
-      'patients.gender',
-      'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
-      ),
-      'patients.national_id_number',
-      sql<
-        string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
-        .as(
-          'description',
-        ),
-      jsonBuildObject({
-        country_id: eb.ref('address.country_id'),
-        province_id: eb.ref('address.province_id'),
-        district_id: eb.ref('address.district_id'),
-        ward_id: eb.ref('address.ward_id'),
-        suburb_id: eb.ref('address.suburb_id'),
-        street: eb.ref('address.street'),
-      }).as('address'),
-      'patients.completed_intake',
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'patients.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
-      'patients.primary_doctor_id',
-      'patients.unregistered_primary_doctor_name',
-      sql<
-        string | null
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
-      'patients.nearest_organization_id',
-      'Organization.canonicalName as nearest_organization_name',
-      'OrganizationAddress.address as nearest_organization_address',
-      'health_workers.name as primary_doctor_name',
-      sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
-      jsonBuildObject({
-        clinical_notes: intake_clinical_notes_href_sql,
-      }).as('actions'),
-    ])
-    .where('patients.id', '=', patient_id)
-    .executeTakeFirstOrThrow()
-}
-
-export async function getIntakeSummaryById(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const getting_review = trx
-    .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin(
-      'Organization',
-      'Organization.id',
-      'patients.nearest_organization_id',
-    )
-    .leftJoin(
-      'employment',
-      'employment.id',
-      'patients.primary_doctor_id',
-    )
-    .leftJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .leftJoin(
-      formattedAddress(trx),
-      'address_formatted.id',
-      'patients.address_id',
-    )
-    .select((eb) => [
-      'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      'patients.phone_number',
-      'patients.gender',
-      'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
-      ),
-      'patients.national_id_number',
-      sql<
-        string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
-        .as(
-          'description',
-        ),
-      sql<
-        string
-      >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
-        .as('primary_doctor_name'),
-      'address_formatted.address',
-      sql<
-        string | null
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
-      'patients.nearest_organization_id',
-      'Organization.canonicalName as nearest_organization_name',
-      sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
-      jsonBuildObject({
-        clinical_notes: intake_clinical_notes_href_sql,
-      }).as('actions'),
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'patients.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
-      'completed_intake',
-    ])
-    .where('patients.id', '=', patient_id)
-    .executeTakeFirst()
-
-  const q = { patient_id }
-  const getting_family = patient_family.get(trx, q)
-  const getting_occupation = patient_occupations.get(trx, q)
-  const getting_pre_existing_conditions = patient_conditions
-    .getPreExistingConditionsReview(trx, q)
-  const getting_past_medical_conditions = patient_conditions
-    .getPastMedicalConditions(trx, q)
-  const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, q)
-
-  const review = await getting_review
-  assertOr404(review)
-
-  return {
-    ...review,
-    family: await getting_family,
-    occupation: await getting_occupation,
-    pre_existing_conditions: await getting_pre_existing_conditions,
-    past_medical_conditions: await getting_past_medical_conditions,
-    major_surgeries: await getting_major_surgeries,
-  }
 }
 
 // TODO: only show medical record if health worker has permission

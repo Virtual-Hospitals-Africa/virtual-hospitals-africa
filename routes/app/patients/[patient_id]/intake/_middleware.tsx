@@ -11,7 +11,8 @@ import {
   Sendable,
   SendToFormSubmission,
 } from '../../../../../types.ts'
-import * as patients from '../../../../../db/models/patients.ts'
+import * as patient_intake from '../../../../../db/models/patient_intake.ts'
+import * as employment from '../../../../../db/models/employment.ts'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
@@ -56,7 +57,7 @@ export async function handler(
       health_worker: ctx.state.healthWorker,
     })
 
-  ctx.state.patient = await patients.getIntakeById(ctx.state.trx, patient_id)
+  ctx.state.patient = await patient_intake.getById(ctx.state.trx, patient_id)
   ctx.state.encounter = encounter
   ctx.state.encounter_provider = encounter_provider
   return ctx.next()
@@ -95,31 +96,11 @@ const nextStep = ({ route }: FreshContext) => {
 const nextLink = (ctx: FreshContext) =>
   replaceParams(nextStep(ctx).route, ctx.params)
 
-type PatientIntakeUpdates = Partial<
-  Omit<patients.UpsertPatientIntake, 'id' | 'intake_steps_completed'>
->
-
-export async function upsertPatientAndRedirect(
+async function sendTo(
   ctx: IntakeContext,
-  { send_to, patient }: {
-    send_to?: Maybe<SendToFormSubmission>
-    patient: PatientIntakeUpdates
-  },
+  send_to: SendToFormSubmission,
+  step: string,
 ) {
-  const step = ctx.route.split('/').pop()
-  assert(step)
-  assert(isIntakeStep(step))
-
-  await patients.upsertIntake(ctx.state.trx, {
-    ...patient,
-    id: ctx.state.patient.id,
-    completed_intake: patient.completed_intake || (step === 'summary'),
-    intake_step_just_completed: step,
-  })
-
-  if (!send_to) {
-    return redirect(nextLink(ctx))
-  }
   if (send_to.action && send_to.action === 'waiting_room') {
     const { organization_id } = ctx.state.encounter_provider
     const patient_encounter_id = ctx.state.encounter.encounter_id
@@ -154,8 +135,12 @@ export async function upsertPatientAndRedirect(
       ctx.state.trx,
       { organization_id, patient_encounter_id: encounter_id },
     )
+
+    const employee_name = await employment.getName(ctx.state.trx, {
+      employment_id: provider_id,
+    })
     const success = encodeURIComponent(
-      `${capitalize(step)} completed and patient added to the waiting room.`,
+      `${capitalize(step)} completed and patient sent to ${employee_name}.`,
     )
     return redirect(
       `/app/organizations/${organization_id}/waiting_room?success=${success}`,
@@ -164,6 +149,27 @@ export async function upsertPatientAndRedirect(
 
   console.log('send_to', send_to)
   throw new Error('TODO: implement send_to')
+}
+
+async function upsertPatientAndRedirect(
+  ctx: IntakeContext,
+  send_to: Maybe<SendToFormSubmission>,
+  update_patient: () => Promise<void>,
+) {
+  const step = ctx.route.split('/').pop()
+  assert(step)
+  assert(isIntakeStep(step))
+
+  await update_patient()
+
+  await patient_intake.updateCompletion(ctx.state.trx, {
+    id: ctx.state.patient.id,
+    completed_intake: ctx.state.patient.completed_intake ||
+      (step === 'summary'),
+    intake_step_just_completed: step,
+  })
+
+  return send_to ? sendTo(ctx, send_to, step) : redirect(nextLink(ctx))
 }
 
 export function assertAgeYearsKnown(ctx: IntakeContext): number {
@@ -305,14 +311,19 @@ function assertIsSendTo(
   }
 }
 
-export function postHandler(
+export function postHandler<PostBody>(
   assertion: (
     form_values: unknown,
-  ) => asserts form_values is PatientIntakeUpdates,
+  ) => asserts form_values is PostBody,
+  updatePatient: (
+    ctx: IntakeContext,
+    patient_id: string,
+    patient_updates: PostBody,
+  ) => Promise<void>,
 ): LoggedInHealthWorkerHandler<IntakeContext> {
   function assertSendToAndPatientIntake(
     form_values: unknown,
-  ): asserts form_values is PatientIntakeUpdates & {
+  ): asserts form_values is PostBody & {
     send_to?: Maybe<SendToFormSubmission>
   } {
     assertOr400(isObjectLike(form_values))
@@ -327,7 +338,11 @@ export function postHandler(
         req,
         assertSendToAndPatientIntake,
       )
-      return upsertPatientAndRedirect(ctx, { send_to, patient })
+      return upsertPatientAndRedirect(
+        ctx,
+        send_to,
+        () => updatePatient(ctx, ctx.state.patient.id, patient as PostBody),
+      )
     },
   }
 }

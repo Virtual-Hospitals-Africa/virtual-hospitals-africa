@@ -17,7 +17,18 @@ function assertIsOccupation(
   patient.occupation = patient.occupation || {}
 }
 
-export const handler = postHandler(assertIsOccupation)
+export const handler = postHandler(
+  assertIsOccupation,
+  async function updateOccupation(ctx, patient_id, form_values) {
+    await patient_occupation.upsert(
+      ctx.state.trx,
+      {
+        patient_id,
+        occupation: form_values.occupation,
+      },
+    )
+  },
+)
 
 export default IntakePage(async function OccupationPage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

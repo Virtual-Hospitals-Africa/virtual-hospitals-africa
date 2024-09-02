@@ -74,6 +74,24 @@ export function getEmployee(
     .executeTakeFirst()
 }
 
+export function getName(
+  trx: TrxOrDb,
+  opts: {
+    employment_id: string
+  },
+): Promise<{ name: string }> {
+  return trx
+    .selectFrom('employment')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .select('health_workers.name')
+    .where('employment.id', '=', opts.employment_id)
+    .executeTakeFirstOrThrow()
+}
+
 export function addInvitees(
   trx: TrxOrDb,
   organization_id: string,

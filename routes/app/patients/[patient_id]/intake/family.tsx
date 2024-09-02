@@ -14,8 +14,8 @@ import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 type FamilyFormValues = {
   family: {
     under_18?: boolean
-    guardians?: FamilyRelationInsert[]
-    dependents?: FamilyRelationInsert[]
+    guardians: FamilyRelationInsert[]
+    dependents: FamilyRelationInsert[]
     other_next_of_kin?: FamilyRelationInsert
     home_satisfaction?: number
     spiritual_satisfaction?: number
@@ -43,7 +43,16 @@ function assertIsFamily(
   patient.family.dependents = patient.family.dependents || []
 }
 
-export const handler = postHandler(assertIsFamily)
+export const handler = postHandler(
+  assertIsFamily,
+  async function updateFamily(ctx, patient_id, form_values) {
+    await patient_family.upsert(
+      ctx.state.trx,
+      patient_id,
+      form_values.family,
+    )
+  },
+)
 
 export default IntakePage(async function FamilyPage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

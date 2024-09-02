@@ -426,16 +426,20 @@ describe('/app/patients/[patient_id]/intake', {
         reason: 'seeking treatment',
       },
     )
-    const { fetch } = await addTestHealthWorkerWithSession(db, {
+    const { fetch, healthWorker } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
 
-    await patient_conditions.upsertPreExisting(db, patient_id, [
-      {
-        id: 'c_4373',
-        start_date: '1989-01-12',
-      },
-    ])
+    await patient_conditions.upsertPreExisting(db, {
+      patient_id: patient_id,
+      employment_id: healthWorker.employee_id!,
+      patient_conditions: [
+        {
+          id: 'c_4373',
+          start_date: '1989-01-12',
+        },
+      ],
+    })
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/conditions`,
