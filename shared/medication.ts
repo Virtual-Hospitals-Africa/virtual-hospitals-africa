@@ -61,6 +61,11 @@ export const IntakeFrequencies = {
   prn: 'when necessary',
 }
 
+export function intakeFrequencyText(frequency: string): string {
+  assertIntakeFrequency(frequency)
+  return IntakeFrequencies[frequency]
+}
+
 type IntakeFrequency = keyof typeof IntakeFrequencies
 
 export function assertIntakeFrequency(
