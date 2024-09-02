@@ -7,8 +7,8 @@ import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { IntakePage, postHandler } from './_middleware.tsx'
 
 type ConditionsFormValues = {
-  allergies?: { id: string; name: string }[]
-  pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
+  allergies: { id: string; name: string }[]
+  pre_existing_conditions: patient_conditions.PreExistingConditionUpsert[]
 }
 
 function assertIsConditions(
@@ -19,7 +19,27 @@ function assertIsConditions(
   patient.allergies = patient.allergies || []
 }
 
-export const handler = postHandler(assertIsConditions)
+export const handler = postHandler(
+  assertIsConditions,
+  async function updateConditions(ctx, patient_id, form_values) {
+    const upserting_conditions = patient_conditions.upsertPreExisting(
+      ctx.state.trx,
+      {
+        patient_id,
+        employment_id: ctx.state.encounter_provider.employment_id,
+        patient_conditions: form_values.pre_existing_conditions,
+      },
+    )
+
+    const upserting_allergies = patient_allergies.upsert(
+      ctx.state.trx,
+      patient_id,
+      form_values.allergies,
+    )
+
+    await Promise.all([upserting_conditions, upserting_allergies])
+  },
+)
 
 export default IntakePage(async function ConditionsPage({ ctx, patient }) {
   const { trx } = ctx.state

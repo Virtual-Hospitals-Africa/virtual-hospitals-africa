@@ -3,8 +3,11 @@ import { Occupation, TrxOrDb } from '../../types.ts'
 
 export function upsert(
   trx: TrxOrDb,
-  // deno-lint-ignore no-explicit-any
-  opts: any,
+  opts: {
+    patient_id: string
+    // deno-lint-ignore no-explicit-any
+    occupation: any
+  },
 ) {
   return trx
     .insertInto('patient_occupations')

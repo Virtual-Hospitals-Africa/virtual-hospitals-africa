@@ -3,7 +3,7 @@ import {
   MedicationSummary,
   PreExistingConditionSummary,
 } from '../../../db/models/patient_conditions.ts'
-import { getIntakeSummaryById } from '../../../db/models/patients.ts'
+import { getSummaryById } from '../../../db/models/patient_intake.ts'
 import { dosageDisplay, IntakeFrequencies } from '../../../shared/medication.ts'
 import { Maybe } from '../../../types.ts'
 import {
@@ -14,7 +14,7 @@ import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
 
-type IntakePatientSummary = Awaited<ReturnType<typeof getIntakeSummaryById>>
+type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
 function DateRange(
   { start_date, end_date }: { start_date: string; end_date?: Maybe<string> },

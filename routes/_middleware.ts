@@ -1,4 +1,5 @@
 import { FreshContext } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
 import redirect from '../util/redirect.ts'
 
 // TODO: only do this on dev & test?
@@ -20,12 +21,14 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-
 export const handler = (_req: Request, ctx: FreshContext) =>
+  // deno-lint-ignore no-explicit-any
   ctx.next().catch(function handleError(err: any) {
     if (err.status === 302) {
+      assert(err.location, '302 redirect must have a location')
       return redirect(err.location)
     }
+    // Don't gum up the logs for tests which expect an error
     if (!ctx.url.searchParams.has('expectedTestError')) {
       console.error(err)
       logError(err)

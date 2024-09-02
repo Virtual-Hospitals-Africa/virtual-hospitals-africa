@@ -146,7 +146,16 @@ function assertIsLifestyle(
   }
 }
 
-export const handler = postHandler(assertIsLifestyle)
+export const handler = postHandler(
+  assertIsLifestyle,
+  async function updateLifestyle(ctx, patient_id, form_values) {
+    await patient_lifestyle.upsert(
+      ctx.state.trx,
+      patient_id,
+      form_values.lifestyle,
+    )
+  },
+)
 
 export default IntakePage(async function LifestylePage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

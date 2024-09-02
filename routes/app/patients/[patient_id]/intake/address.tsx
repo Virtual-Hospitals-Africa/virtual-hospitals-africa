@@ -1,5 +1,6 @@
 import { Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
+import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
@@ -62,7 +63,22 @@ function assertIsAddress(
   }
 }
 
-export const handler = postHandler(assertIsAddress)
+export const handler = postHandler(
+  assertIsAddress,
+  async function updateAddress(ctx, patient_id, form_values) {
+    const created_address = await address.upsert(
+      ctx.state.trx,
+      form_values.address,
+    )
+
+    await patients.update(ctx.state.trx, {
+      id: patient_id,
+      address_id: created_address.id,
+      nearest_organization_id: form_values.nearest_organization_id,
+      primary_doctor_id: form_values.primary_doctor_id,
+    })
+  },
+)
 
 export default IntakePage(async function AddressPage({ ctx, patient }) {
   const { healthWorker, trx } = ctx.state

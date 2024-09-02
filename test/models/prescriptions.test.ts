@@ -28,18 +28,22 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           },
         )
 
-        await patient_conditions.upsertPreExisting(trx, patient.id, [
-          {
-            id: 'c_22401',
-            start_date: '2020-01-01',
-            medications: [],
-          },
-          {
-            id: 'c_9757',
-            start_date: '2020-01-03',
-            medications: [],
-          },
-        ])
+        await patient_conditions.upsertPreExisting(trx, {
+          patient_id: patient.id,
+          employment_id: healthWorker.employee_id!,
+          patient_conditions: [
+            {
+              id: 'c_22401',
+              start_date: '2020-01-01',
+              medications: [],
+            },
+            {
+              id: 'c_9757',
+              start_date: '2020-01-03',
+              medications: [],
+            },
+          ],
+        })
 
         const patient_condition = await trx.selectFrom('patient_conditions')
           .selectAll()

@@ -100,8 +100,15 @@ function assertPreExistingConditions(
 
 async function upsertPreExistingCondition(
   trx: TrxOrDb,
-  patient_id: string,
-  condition: PreExistingConditionUpsert,
+  {
+    patient_id,
+    employment_id,
+    condition,
+  }: {
+    patient_id: string
+    employment_id: string
+    condition: PreExistingConditionUpsert
+  },
 ) {
   const parent_condition = await trx
     .insertInto('patient_conditions')
@@ -109,6 +116,7 @@ async function upsertPreExistingCondition(
       patient_id,
       condition_id: condition.id,
       start_date: condition.start_date,
+      noted_during_patient_intake_by: employment_id,
       comorbidity_of_condition_id: null,
     })
     .returning('id')
@@ -119,6 +127,7 @@ async function upsertPreExistingCondition(
     condition_id: comorbidity.id,
     start_date: comorbidity.start_date || condition.start_date,
     comorbidity_of_condition_id: parent_condition.id,
+    noted_during_patient_intake_by: employment_id,
   }))
   const inserting_comorbidities = comorbidities.length && trx
     .insertInto('patient_conditions')
@@ -141,8 +150,11 @@ async function upsertPreExistingCondition(
 
 export async function upsertPreExisting(
   trx: TrxOrDb,
-  patient_id: string,
-  patient_conditions: PreExistingConditionUpsert[],
+  { patient_id, employment_id, patient_conditions }: {
+    patient_id: string
+    employment_id: string
+    patient_conditions: PreExistingConditionUpsert[]
+  },
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
 
@@ -159,6 +171,7 @@ export async function upsertPreExisting(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is', null)
+    .where('noted_during_patient_intake_by', 'is not', null)
     .where(
       'condition_id',
       'in',
@@ -173,8 +186,7 @@ export async function upsertPreExisting(
     patient_conditions.map((condition) => (
       upsertPreExistingCondition(
         trx,
-        patient_id,
-        condition,
+        { patient_id, employment_id, condition },
       )
     )),
   )
@@ -222,7 +234,7 @@ export type PreExistingConditionSummary = {
   medications: MedicationSummary[]
 }
 
-export function getPreExistingConditionsReview(
+export function getPreExistingConditionsSummary(
   trx: TrxOrDb,
   opts: {
     patient_id: string
@@ -239,6 +251,7 @@ export function getPreExistingConditionsReview(
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)
     .where('patient_conditions.comorbidity_of_condition_id', 'is', null)
+    .where('patient_conditions.noted_during_patient_intake_by', 'is not', null)
     .select((eb) => [
       'conditions.id',
       'conditions.name',
@@ -330,6 +343,7 @@ export async function getPreExistingConditions(
     .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)
+    .where('patient_conditions.noted_during_patient_intake_by', 'is not', null)
     .select((eb) => [
       'conditions.id',
       'conditions.name',
@@ -460,6 +474,7 @@ export async function getPastMedicalConditions(
     .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is not', null)
+    .where('patient_conditions.noted_during_patient_intake_by', 'is not', null)
     .select((eb) => [
       'conditions.id',
       'conditions.name',
@@ -475,8 +490,11 @@ export async function getPastMedicalConditions(
 
 export async function upsertPastMedical(
   trx: TrxOrDb,
-  patient_id: string,
-  patient_conditions: PastMedicalConditionUpsert[],
+  { patient_id, employment_id, patient_conditions }: {
+    patient_id: string
+    employment_id: string
+    patient_conditions: PastMedicalConditionUpsert[]
+  },
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
   for (const condition of patient_conditions) {
@@ -490,6 +508,7 @@ export async function upsertPastMedical(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is not', null)
+    .where('noted_during_patient_intake_by', 'is not', null)
     .where(
       'condition_id',
       'in',
@@ -505,6 +524,7 @@ export async function upsertPastMedical(
     condition_id: condition.id,
     start_date: condition.start_date,
     end_date: condition.end_date,
+    noted_during_patient_intake_by: employment_id,
   }))
 
   to_insert.length && await trx
@@ -530,6 +550,7 @@ export function getMajorSurgeries(
     )
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('conditions.is_procedure', '=', true)
+    .where('noted_during_patient_intake_by', 'is not', null)
     .select((eb) => [
       'conditions.id',
       'conditions.name',
@@ -541,8 +562,11 @@ export function getMajorSurgeries(
 
 export async function upsertMajorSurgeries(
   trx: TrxOrDb,
-  patient_id: string,
-  major_surgeries: MajorSurgeryUpsert[],
+  { patient_id, employment_id, major_surgeries }: {
+    patient_id: string
+    employment_id: string
+    major_surgeries: MajorSurgeryUpsert[]
+  },
 ): Promise<void> {
   assertPreExistingConditions(major_surgeries)
 
@@ -558,6 +582,7 @@ export async function upsertMajorSurgeries(
     'patient_conditions',
   )
     .where('patient_id', '=', patient_id)
+    .where('noted_during_patient_intake_by', 'is not', null)
     .where(
       'condition_id',
       'in',
@@ -572,6 +597,7 @@ export async function upsertMajorSurgeries(
     patient_id,
     condition_id: surgery.id,
     start_date: surgery.start_date,
+    noted_during_patient_intake_by: employment_id,
   }))
 
   to_insert.length && await trx

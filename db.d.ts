@@ -339,9 +339,9 @@ export interface Devices {
 
 export interface Diagnoses {
   created_at: Generated<Timestamp>
-  doctor_reviews_id: string
+  doctor_review_id: string
   id: Generated<string>
-  patient_condition_id: string | null
+  patient_condition_id: string
   provider_id: string
   updated_at: Generated<Timestamp>
 }
@@ -884,6 +884,7 @@ export interface PatientConditions {
   created_at: Generated<Timestamp>
   end_date: Timestamp | null
   id: Generated<string>
+  noted_during_patient_intake_by: string | null
   patient_id: string
   start_date: Timestamp
   updated_at: Generated<Timestamp>

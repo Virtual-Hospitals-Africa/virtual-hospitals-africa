@@ -6,7 +6,9 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn(
         'patient_condition_id',
-        'varchar(255)',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_conditions.id').onDelete('cascade'),
       )
       .addColumn(
         'provider_id',
@@ -14,11 +16,15 @@ export async function up(db: Kysely<unknown>) {
         (col) => col.notNull().references('employment.id').onDelete('cascade'),
       )
       .addColumn(
-        'doctor_reviews_id',
+        'doctor_review_id',
         'uuid',
         (col) =>
           col.notNull().references('doctor_reviews.id').onDelete('cascade'),
-      ))
+      )
+      .addUniqueConstraint('only_diagnosed_once_per_review', [
+        'patient_condition_id',
+        'doctor_review_id',
+      ]))
 }
 
 export async function down(db: Kysely<unknown>) {

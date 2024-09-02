@@ -158,6 +158,8 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
+import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $drug_Input from './islands/drug/Input.tsx'
 import * as $drug_Search from './islands/drug/Search.tsx'
 import * as $examinations_Form from './islands/examinations/Form.tsx'
@@ -442,6 +444,8 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/diagnoses/Form.tsx': $diagnoses_Form,
+    './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/drug/Input.tsx': $drug_Input,
     './islands/drug/Search.tsx': $drug_Search,
     './islands/examinations/Form.tsx': $examinations_Form,
