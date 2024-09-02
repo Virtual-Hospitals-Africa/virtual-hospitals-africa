@@ -51,14 +51,19 @@ export async function upsertForReview(trx: TrxOrDb, {
     start_date: string
   }[]
 }): Promise<void> {
-  
+  const existing_diagnoses = await getFromReview(trx, { review_id: review.review_id })
+
+  const to_delete = existing_diagnoses.filter((existing_diagnosis) =>
+    !diagnoses.some((diagnosis) => 
+      existing_diagnosis.id === diagnosis.condition_id
+    )
+  )
+  const to_update = existing_diagnoses.filter((existing_diagnosis) =>
+    !diagnoses.some((diagnosis) => 
+      existing_diagnosis.id === diagnosis.condition_id
+    )
+  )
   for (const diagnosis of diagnoses) {
-    
-    // @Alice @Qiyuan This is not quite right. 
-    // The reason is that you may have the same condition multiple times in your life.
-    // So the fact that a given patient ever had this condition is not enough to determine 
-    // if we should insert a new diagnosis.
-    // Use the function above to get the current diagnoses for the review and compare against that.
     const existingPatientCondition = await trx
       .selectFrom('patient_conditions')
       .select('id')
