@@ -3,6 +3,7 @@ import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patients from '../../db/models/patients.ts'
+import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetail.tsx'
 import * as patient_allergies from '../../db/models/patient_allergies.ts'
@@ -31,7 +32,12 @@ export default async function PrescriptionPage(
   assertOr400(patientId, 'Patient ID is required')
 
   const patient = await patients.getByID(db, { id: patientId })
-  const prescriber = prescription.prescriber_id
+
+  const pre_existing_conditions = await patient_conditions
+    .getPreExistingConditions(
+      db,
+      { patient_id: patientId },
+    )
 
   // const medications = [
   //   {
@@ -140,12 +146,16 @@ export default async function PrescriptionPage(
                 heading='Allergies'
                 // "wheat, buckwheat"
                 information={allergies.map((allergy) => allergy.name).join(
-                  ', ',
+                  ', ' || 'None',
                 )}
               />
               <PrescriptionDetail
                 heading='Notable Health Condition'
-                information={'patient.health_conditions'}
+                information={pre_existing_conditions.map((condition) =>
+                  condition.name
+                ).join(
+                  ', ',
+                ) || 'None'}
               />
             </div>
           </div>
@@ -157,25 +167,21 @@ export default async function PrescriptionPage(
             List of Prescribed Medications
           </div>
           <MedicationsTable medications={medications} />
-          <div class='mb-3'>
+          <div class='mb-3 mt-3'>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail
                 heading='Physician Name'
-                information={prescriber}
+                information={prescription.prescriber_name}
               />
               <PrescriptionDetail
-                heading='Physician Phone Number'
-                information={'prescriber.phone_number'}
+                heading='Physician Email'
+                information={prescription.prescriber_email}
               />
             </div>
             <div class='flex justify-between mb-2'>
               <PrescriptionDetail
                 heading='Physician Signature'
                 information={'__________________'}
-              />
-              <PrescriptionDetail
-                heading='Physician Email'
-                information={'prescriber.email'}
               />
             </div>
           </div>

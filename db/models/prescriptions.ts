@@ -44,9 +44,21 @@ export function getById(
       'prescriptions.id',
       'prescription_codes.prescription_id',
     )
+    .innerJoin(
+      'employment',
+      'employment.id',
+      'prescriptions.prescriber_id',
+    )
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
     .where('prescriptions.id', '=', id)
     .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
+    .select('health_workers.name as prescriber_name')
+    .select('health_workers.email as prescriber_email')
     .executeTakeFirst()
 }
 
@@ -73,17 +85,19 @@ export function getByCode(
 
 export async function insert(
   trx: TrxOrDb,
-  values: ({
-    prescriber_id: string
-    patient_id: string
-    prescribing: PrescriptionCondition[]
-  } & ({
-    doctor_review_id: string
-    patient_encounter_id?: never
-  } | {
-    doctor_review_id?: never
-    patient_encounter_id: string
-  })),
+  values:
+    & {
+      prescriber_id: string
+      patient_id: string
+      prescribing: PrescriptionCondition[]
+    }
+    & ({
+      doctor_review_id: string
+      patient_encounter_id?: never
+    } | {
+      doctor_review_id?: never
+      patient_encounter_id: string
+    }),
 ) {
   assert(values.prescribing.length > 0)
 
@@ -250,6 +264,7 @@ export function getPrescriberByPrescriptionId(
     )
     .where('prescriptions.id', '=', prescription_id)
     .select('health_workers.name')
+    .select('health_workers.email')
     .executeTakeFirst()
 }
 
