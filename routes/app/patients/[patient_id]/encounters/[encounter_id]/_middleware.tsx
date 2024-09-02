@@ -147,7 +147,7 @@ const next_links_by_route = groupByMapped(
         `/app/patients/:patient_id/encounters/open/vitals`,
       button_text: next_link
         ? `Continue to ${buttonText(next_link.step)}`
-        : 'Start visit',
+        : 'Conclude visit',
     }
   },
 )

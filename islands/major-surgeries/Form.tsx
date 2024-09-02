@@ -19,6 +19,10 @@ export default function majorSurgeriesForm(props: {
       {},
     ]
 
+  const first_not_removed = major_surgeries.value.find(
+    (surgery) => !surgery.removed,
+  )
+
   return (
     <div className='flex flex-col space-y-2'>
       {major_surgeries.value.map((
@@ -29,6 +33,7 @@ export default function majorSurgeriesForm(props: {
           <Surgery
             key={index}
             index={index}
+            labelled={first_not_removed === state}
             value={state.id
               ? props.major_surgeries.find(
                 (surgery) =>

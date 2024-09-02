@@ -15,10 +15,12 @@ export type DiagnosisFormRowState = {
 export default function DiagnosisFormRow(
   {
     index,
+    labelled,
     value,
     remove,
   }: {
     index: number
+    labelled: boolean
     state: DiagnosisFormRowState
     value: Diagnosis | undefined
     remove(): void
@@ -28,17 +30,17 @@ export default function DiagnosisFormRow(
   const prefix = `diagnoses.${index}`
 
   return (
-    <RemoveRow onClick={remove} key={index} labelled>
+    <RemoveRow onClick={remove} key={index} labelled={labelled}>
       <div className='flex flex-col w-full gap-2'>
         <FormRow>
           <ConditionSearch
-            label='Condition name'
+            label={labelled ? 'Condition name' : null}
             name={prefix}
             value={value}
           />
           <DateInput
             name={`${prefix}.start_date`}
-            label='Start Date'
+            label={labelled ? 'Start Date' : null}
             value={value?.start_date}
             required
           />

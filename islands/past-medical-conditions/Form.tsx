@@ -19,6 +19,10 @@ export default function PastMedicalConditionsForm(props: {
       {},
     ]
 
+  const first_not_removed = past_medical_conditions.value.find(
+    (condition) => !condition.removed,
+  )
+
   return (
     <div className='flex flex-col space-y-2'>
       {past_medical_conditions.value.map((state, index) =>
@@ -26,6 +30,7 @@ export default function PastMedicalConditionsForm(props: {
           <Condition
             key={index}
             index={index}
+            labelled={first_not_removed === state}
             value={state.id
               ? props.past_medical_conditions.find(
                 (condition) =>

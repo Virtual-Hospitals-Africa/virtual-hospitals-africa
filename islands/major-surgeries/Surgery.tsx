@@ -12,16 +12,17 @@ export type SurgeryState = {
 export default function Surgery(
   {
     index,
+    labelled,
     value,
     remove,
   }: {
     index: number
+    labelled: boolean
     value?: MajorSurgery
     remove(): void
   },
 ): JSX.Element {
   const prefix = `major_surgeries.${index}`
-  const labelled = index === 0
 
   return (
     <RemoveRow onClick={remove} labelled={labelled}>

@@ -8,16 +8,17 @@ import FormRow from '../form/Row.tsx'
 export default function Condition(
   {
     index,
+    labelled,
     value,
     remove,
   }: {
     index: number
+    labelled: boolean
     value?: PastMedicalCondition
     remove(): void
   },
 ): JSX.Element {
   const prefix = `past_medical_conditions.${index}`
-  const labelled = index === 0
 
   return (
     <RemoveRow onClick={remove} labelled={labelled}>

@@ -21,6 +21,10 @@ export default function DiagnosesForm(props: {
       { comorbidities: [], medications: [] },
     ]
 
+  const first_not_removed = diagnoses.value.find(
+    (d) => !d.removed,
+  )
+
   return (
     <div>
       {diagnoses.value.map((
@@ -31,6 +35,7 @@ export default function DiagnosesForm(props: {
           <DiagnosisFormRow
             index={index}
             state={state}
+            labelled={first_not_removed === state}
             value={state.id
               ? props.diagnoses.find(
                 (diagnosis) => diagnosis.id === state.id,
