@@ -8,7 +8,6 @@ type Medication = {
   strength_display: string
   form: string
   route: string
-  start_date_formatted: string
   schedules_display: string
   special_instructions: string | null
 }
@@ -33,10 +32,6 @@ const MedicationsTableColumns: TableColumn<Medication>[] = [
   {
     label: 'Strength',
     data: 'strength_display',
-  },
-  {
-    label: 'Start Date',
-    data: 'start_date_formatted',
   },
   {
     label: 'Schedules',

@@ -196,11 +196,11 @@ export async function getSummaryById(
 export async function updateCompletion(
   trx: TrxOrDb,
   {
-    id,
+    patient_id,
     intake_step_just_completed,
     completed_intake,
   }: {
-    id: string
+    patient_id: string
     intake_step_just_completed: IntakeStep
     completed_intake?: boolean
   },
@@ -208,14 +208,14 @@ export async function updateCompletion(
   const upserting_intake_step = trx
     .insertInto('patient_intake')
     .values({
-      patient_id: id,
+      patient_id: patient_id,
       intake_step: intake_step_just_completed,
     })
     .onConflict((oc) => oc.doNothing())
     .execute()
 
   const updating_patient = completed_intake && trx.updateTable('patients')
-    .where('id', '=', id)
+    .where('id', '=', patient_id)
     .set({ completed_intake })
     .execute()
 

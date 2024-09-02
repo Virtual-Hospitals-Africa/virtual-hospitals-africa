@@ -8,8 +8,6 @@ import {
 import * as medications from './medications.ts'
 import { isoDate } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { durationEndDate } from '../../util/date.ts'
 import {
   assertIntakeFrequency,
   dosageDisplay,
@@ -19,7 +17,6 @@ import {
 import omit from '../../util/omit.ts'
 import { durationBetween } from '../../util/date.ts'
 import { pluralize } from '../../util/pluralize.ts'
-import { longFormattedDate } from '../helpers.ts'
 
 export type PrescriptionCondition = {
   patient_condition_id: string
@@ -177,10 +174,6 @@ export async function getMedicationsByPrescriptionId(
       isoDate(eb.ref('patient_condition_medications.start_date')).$notNull().as(
         'start_date',
       ),
-      longFormattedDate('patient_condition_medications.start_date').$notNull()
-        .as(
-          'start_date_formatted',
-        ),
       sql<
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
@@ -207,19 +200,9 @@ export async function getMedicationsByPrescriptionId(
 
   return patient_medications
     .map(({ schedules, ...medication }) => {
-      assertEquals(schedules.length, 1)
-      assert(medication.start_date)
-      const [schedule] = schedules
-      const end_date = durationEndDate(medication.start_date, schedule)
-      assert(
-        end_date,
-        'Every medication must have an end date on the prescription.',
-      )
       return {
         ...medication,
-        intake_frequency: schedule.frequency,
-        end_date: end_date,
-        dosage: schedule.dosage,
+        schedules,
         strength: Number(medication.strength),
         strength_denominator: Number(medication.strength_denominator),
       }
@@ -303,10 +286,6 @@ export function deleteCode(
 export function describeMedication(
   medication: PrescriptionMedication,
 ): string {
-  assert(typeof medication.start_date === 'string')
-  assert(typeof medication.end_date === 'string')
-  const duration = durationBetween(medication.start_date, medication.end_date)
-    .duration + 1
 
   assert(typeof medication.intake_frequency === 'string')
   assertIntakeFrequency(medication.intake_frequency)

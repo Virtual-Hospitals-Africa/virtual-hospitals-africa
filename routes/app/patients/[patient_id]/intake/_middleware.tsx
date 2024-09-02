@@ -163,7 +163,7 @@ async function upsertPatientAndRedirect(
   await update_patient()
 
   await patient_intake.updateCompletion(ctx.state.trx, {
-    id: ctx.state.patient.id,
+    patient_id: ctx.state.patient.id,
     completed_intake: ctx.state.patient.completed_intake ||
       (step === 'summary'),
     intake_step_just_completed: step,
