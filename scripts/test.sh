@@ -94,9 +94,13 @@ wait_until_test_servers_ready
 
 if ! $watch_mode; then
   run_tests "$@" || {
-    echo "Tests failed. Dumping server log:"
-    cat "$test_vha_server_output"
-    cat "$test_medplum_server_output"
+    if [ -s "$test_vha_server_output" ]; then
+      echo "Tests failed. Dumping server log:"
+      cat "$test_vha_server_output"
+    else
+      echo "Tests failed. Server log is empty."
+    fi
+    # cat "$test_medplum_server_output"
     exit 1
   }
   exit 0

@@ -20,18 +20,18 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-// deno-lint-ignore no-explicit-any
-export const handleError = (err: any) => {
-  if (err.status === 302) {
-    return redirect(err.location)
-  }
-  console.error(err)
-  logError(err)
-  const status = err.status || 500
-  const message: string = grokPostgresError(err) || err.message ||
-    'Internal Server Error'
-  return new Response(message, { status })
-}
 
 export const handler = (_req: Request, ctx: FreshContext) =>
-  ctx.next().catch(handleError)
+  ctx.next().catch(function handleError(err: any) {
+    if (err.status === 302) {
+      return redirect(err.location)
+    }
+    if (!ctx.url.searchParams.has('expectedTestError')) {
+      console.error(err)
+      logError(err)
+    }
+    const status = err.status || 500
+    const message: string = grokPostgresError(err) || err.message ||
+      'Internal Server Error'
+    return new Response(message, { status })
+  })

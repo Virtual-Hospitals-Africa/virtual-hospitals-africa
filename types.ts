@@ -1912,7 +1912,7 @@ export type PrescriptionMedication = {
   dosage: number
   strength: number
   intake_frequency: string
-  is_filled: boolean
+  is_filled: SqlBool
 }
 
 export type DurationUnit =

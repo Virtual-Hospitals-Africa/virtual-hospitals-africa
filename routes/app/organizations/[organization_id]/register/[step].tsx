@@ -71,8 +71,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       ...newFormState,
     }
 
-    console.log('formState', formState)
-
     const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
       name === step
     )

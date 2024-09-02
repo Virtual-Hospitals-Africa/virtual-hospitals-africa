@@ -487,7 +487,7 @@ describe(
           body.append('diagnostic_test_orders[0]', 'Diabetes')
 
           const response = await fetch(
-            `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
+            `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations&expectedTestError=1`,
             {
               method: 'POST',
               body,

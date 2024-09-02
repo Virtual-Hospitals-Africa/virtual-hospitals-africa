@@ -1,3 +1,5 @@
+import { Maybe } from '../../types.ts'
+
 type PrescriptionDetailProps = {
   heading: string
   information: Maybe<string>

@@ -232,7 +232,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         scenario: 'doctor',
       })
       const response = await mock.fetch(
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees?expectedTestError=1`,
       )
       assertEquals(response.status, 403)
     })
@@ -261,7 +261,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       )
 
       const invitesResponse = await mock.fetch(
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite?expectedTestError=1`,
       )
 
       assertEquals(invitesResponse.status, 403)

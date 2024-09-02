@@ -106,7 +106,8 @@ export async function getMedicationsByPrescriptionId(
   trx: TrxOrDb,
   prescription_id: string,
   options?: {
-    omit_filled?: boolean
+    unfilled?: boolean
+    filled?: boolean
   },
 ): Promise<PrescriptionMedication[]> {
   let query = trx
@@ -157,18 +158,28 @@ export async function getMedicationsByPrescriptionId(
       isoDate(eb.ref('patient_condition_medications.start_date')).$notNull().as(
         'start_date',
       ),
-      longFormattedDate('patient_condition_medications.start_date').as(
-        'start_date_formatted',
-      ),
+      longFormattedDate('patient_condition_medications.start_date').$notNull()
+        .as(
+          'start_date_formatted',
+        ),
       sql<
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
     ])
 
-  if (options?.omit_filled) {
+  if (options?.unfilled) {
+    assert(!options.filled)
     query = query.where(
       'patient_prescription_medications_filled.id',
       'is',
+      null,
+    )
+  }
+  if (options?.filled) {
+    assert(!options.unfilled)
+    query = query.where(
+      'patient_prescription_medications_filled.id',
+      'is not',
       null,
     )
   }
@@ -268,6 +279,7 @@ export function deleteCode(
     .execute()
 }
 
+// 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
 export function describeMedication(
   medication: PrescriptionMedication,
 ): string {

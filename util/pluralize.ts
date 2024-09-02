@@ -1,4 +1,4 @@
-const weirdPlurals = {
+const weirdPlurals: Record<string, string> = {
   diagnosis: 'diagnoses',
 }
 
