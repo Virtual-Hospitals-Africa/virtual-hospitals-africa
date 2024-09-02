@@ -1162,8 +1162,10 @@ export interface PrescriptionCodes {
 
 export interface Prescriptions {
   created_at: Generated<Timestamp>
+  doctor_review_id: string | null
   id: Generated<string>
-  patient_id: string | null
+  patient_encounter_id: string | null
+  patient_id: string
   prescriber_id: string
   updated_at: Generated<Timestamp>
 }
