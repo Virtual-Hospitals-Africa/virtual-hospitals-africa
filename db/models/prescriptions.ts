@@ -39,18 +39,13 @@ export function getById(
 ) {
   return trx
     .selectFrom('prescriptions')
-    .innerJoin(
+    .leftJoin(
       'prescription_codes',
       'prescriptions.id',
       'prescription_codes.prescription_id',
     )
     .where('prescriptions.id', '=', id)
-    // .selectAll()
-    .select('prescriptions.id')
-    .select('prescription_codes.created_at')
-    .select('prescription_codes.updated_at')
-    .select('prescriptions.prescriber_id')
-    .select('prescriptions.patient_id')
+    .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
@@ -67,36 +62,38 @@ export function getByCode(
       'prescription_codes.prescription_id',
     )
     .where('alphanumeric_code', '=', code)
-    .select('prescriptions.id')
-    .select('prescription_codes.created_at')
-    .select('prescription_codes.updated_at')
-    .select('prescriptions.prescriber_id')
-    .select('prescriptions.patient_id')
+    .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
 
 export async function insert(
   trx: TrxOrDb,
-  values: {
+  { prescribing, ...prescription_insert }: ({
     prescriber_id: string
     patient_id: string
     prescribing: PrescriptionCondition[]
-  },
+  } & ({
+    doctor_review_id: string
+    patient_encounter_id?: never
+  } | {
+    doctor_review_id?: never
+    patient_encounter_id: string
+  })),
 ) {
+  assert(prescribing.length > 0)
+  assert(!prescription_insert.patient_encounter_id, 'For now, only prescriptions made during doctor reviews are supported')
+
   const prescription = await trx
     .insertInto('prescriptions')
-    .values({
-      prescriber_id: values.prescriber_id,
-      patient_id: values.patient_id,
-    })
+    .values(prescription_insert)
     .returningAll()
     .executeTakeFirstOrThrow()
 
   await medications.insert(
     trx,
     prescription.id,
-    values.prescribing,
+    prescribing,
   )
 
   return prescription

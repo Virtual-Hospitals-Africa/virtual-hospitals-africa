@@ -34,11 +34,25 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'prescriptions', (qb) =>
     qb
       .addColumn('prescriber_id', 'uuid', (col) =>
-        col.notNull().references('patient_encounter_providers.id').onDelete(
+        col.notNull().references('employment.id').onDelete(
           'cascade',
         ))
       .addColumn('patient_id', 'uuid', (col) =>
-        col.references('patients.id').onDelete('cascade')))
+        col.notNull().references('patients.id').onDelete('cascade'))
+      .addColumn('doctor_review_id', 'uuid', (col) =>
+        col.references('doctor_reviews.id').onDelete(
+          'cascade',
+        ))
+      .addColumn('patient_encounter_id', 'uuid', (col) =>
+        col.references('patient_encounters.id').onDelete(
+          'cascade',
+        ))
+      .addCheckConstraint(
+        'either_doctor_review_or_patient_encounter',
+        sql<
+          boolean
+        >`("doctor_review_id" IS NOT NULL) = ("patient_encounter_id" IS NULL)`,
+      ))
 
   await createStandardTable(db, 'prescription_codes', (qb) =>
     qb
