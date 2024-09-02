@@ -39,18 +39,13 @@ export function getById(
 ) {
   return trx
     .selectFrom('prescriptions')
-    .innerJoin(
+    .leftJoin(
       'prescription_codes',
       'prescriptions.id',
       'prescription_codes.prescription_id',
     )
     .where('prescriptions.id', '=', id)
-    // .selectAll()
-    .select('prescriptions.id')
-    .select('prescription_codes.created_at')
-    .select('prescription_codes.updated_at')
-    .select('prescriptions.prescriber_id')
-    .select('prescriptions.patient_id')
+    .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
@@ -78,17 +73,27 @@ export function getByCode(
 
 export async function insert(
   trx: TrxOrDb,
-  values: {
+  values: ({
     prescriber_id: string
     patient_id: string
     prescribing: PrescriptionCondition[]
-  },
+  } & ({
+    doctor_review_id: string
+    patient_encounter_id?: never
+  } | {
+    doctor_review_id?: never
+    patient_encounter_id: string
+  })),
 ) {
+  assert(values.prescribing.length > 0)
+
   const prescription = await trx
     .insertInto('prescriptions')
     .values({
       prescriber_id: values.prescriber_id,
       patient_id: values.patient_id,
+      doctor_review_id: values.doctor_review_id,
+      patient_encounter_id: values.patient_encounter_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow()
