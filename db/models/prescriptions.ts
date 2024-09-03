@@ -1,6 +1,8 @@
 import { sql } from 'kysely'
-import { PatientMedicationUpsert, TrxOrDb } from '../../types.ts'
+import { PatientMedicationUpsert, RenderedPrescription, RenderedPrescriptionWithMedications, TrxOrDb } from '../../types.ts'
 import * as medications from './medications.ts'
+import * as drugs from './drugs.ts'
+import * as prescription_medications from './prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export type PrescriptionCondition = {
@@ -9,11 +11,8 @@ export type PrescriptionCondition = {
   medications: PatientMedicationUpsert[]
 }
 
-export function getById(
-  trx: TrxOrDb,
-  id: string,
-) {
-  return trx
+const getBase = (trx: TrxOrDb) =>
+  trx
     .selectFrom('prescriptions')
     .leftJoin(
       'prescription_codes',
@@ -35,7 +34,7 @@ export function getById(
       'doctor_registration_details.id',
       'health_workers.id',
     )
-    .where('prescriptions.id', '=', id)
+    
     .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
     // TODO: remove this once nurses can prescribe medications
@@ -44,6 +43,13 @@ export function getById(
     .select(
       'doctor_registration_details.mobile_number as prescriber_mobile_number',
     )
+
+export function getById(
+  trx: TrxOrDb,
+  id: string,
+): Promise<RenderedPrescription | undefined> {
+  return getBase(trx)
+    .where('prescriptions.id', '=', id)
     .executeTakeFirst()
 }
 
@@ -109,4 +115,37 @@ export function deleteCode(
     .deleteFrom('prescription_codes')
     .where('alphanumeric_code', '=', code)
     .execute()
+}
+
+export async function getFromReview(
+  trx: TrxOrDb,
+  { review_id }: { review_id: string },
+): Promise<RenderedPrescriptionWithMedications | null> {
+  const prescription = await getBase(trx)
+    .where('prescriptions.doctor_review_id', '=', review_id)
+    .executeTakeFirst()
+
+  if (!prescription) return null
+
+  const medications_of_prescription = await prescription_medications.getByPrescriptionId(
+    trx,
+    prescription.id
+  )
+
+  const drug_ids = medications_of_prescription.map((m) => m.drug_id)
+
+  const drugs_of_medications = await drugs.search(trx, {
+    ids: drug_ids,
+  })
+
+  const medications_with_drugs = medications_of_prescription.map((medication) => {
+    const drug = drugs_of_medications.find((drug) => drug.id === medication.drug_id)
+    assert(drug)
+    return { ...medication, drug }
+  })
+
+  return {
+    ...prescription,
+    medications: medications_with_drugs,
+  }
 }

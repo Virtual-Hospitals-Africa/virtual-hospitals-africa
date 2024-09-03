@@ -28,8 +28,8 @@ export function getFromReview(
     .select((eb) => [
       'conditions.id',
       'conditions.name',
+      'diagnoses.patient_condition_id',
       isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-      'patient_conditions.id as patient_condition_id',
     ])
     .execute()
 }

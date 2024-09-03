@@ -47,8 +47,12 @@ export async function getByPrescriptionId(
     .where('prescriptions.id', '=', prescription_id)
     .select((eb) => [
       'prescription_medications.id as prescription_medication_id',
+      'patient_condition_medications.patient_condition_id',
+      'patient_conditions.condition_id',
       'drugs.generic_name as drug_generic_name',
+      'drugs.id as drug_id',
       'medications.form',
+      'medications.id as medication_id',
       'patient_condition_medications.route',
       'patient_condition_medications.strength as strength_numerator',
       'medications.strength_numerator_unit',

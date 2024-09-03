@@ -1936,8 +1936,12 @@ export type MedicationDetails = {
 
 export type PrescriptionMedication = MedicationDetails & {
   prescription_medication_id: string
+  patient_condition_id: string
+  medication_id: string
   drug_generic_name: string
+  drug_id: string
   special_instructions: string | null
+  condition_id: string
   condition_name: string
   schedules: MedicationSchedule[]
   filled_at?: Date
@@ -2995,4 +2999,24 @@ export type Regulator = {
   name: string
   email: string
   avatar_url?: string
+}
+
+export type RenderedPrescription = {
+  id: string
+  created_at: Date
+  updated_at: Date
+  prescriber_id: string
+  patient_id: string
+  alphanumeric_code: string | null
+  prescriber_name: string
+  prescriber_email: string | null
+  prescriber_mobile_number: string | null
+}
+
+export type PrescriptionMedicationWithDrug = PrescriptionMedication & {
+  drug: DrugSearchResult
+}
+
+export type RenderedPrescriptionWithMedications = RenderedPrescription & {
+  medications: PrescriptionMedicationWithDrug[]
 }

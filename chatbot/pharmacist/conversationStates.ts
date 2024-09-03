@@ -1,6 +1,5 @@
 import {
   ConversationStates,
-  Location,
   PharmacistChatbotUserState,
   PharmacistConversationState,
   TrxOrDb,

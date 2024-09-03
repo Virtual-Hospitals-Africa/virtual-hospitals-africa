@@ -198,6 +198,7 @@ import * as $major_surgeries_Form from './islands/major-surgeries/Form.tsx'
 import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx'
 import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
 import * as $manufactured_medication_Search from './islands/manufactured_medication/Search.tsx'
+import * as $medication_Input from './islands/medication/Input.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
@@ -206,7 +207,10 @@ import * as $patient_intake_PersonalForm from './islands/patient-intake/Personal
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
-import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
+import * as $prescriptions_Form from './islands/prescriptions/Form.tsx'
+import * as $prescriptions_MedicationInput from './islands/prescriptions/MedicationInput.tsx'
+import * as $prescriptions_MedicationRow from './islands/prescriptions/MedicationRow.tsx'
+import * as $prescriptions_ScheduleInput from './islands/prescriptions/ScheduleInput.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
 import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
@@ -487,6 +491,7 @@ const manifest = {
       $manufactured_medication_Input,
     './islands/manufactured_medication/Search.tsx':
       $manufactured_medication_Search,
+    './islands/medication/Input.tsx': $medication_Input,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,
     './islands/past-medical-conditions/Condition.tsx':
       $past_medical_conditions_Condition,
@@ -498,8 +503,11 @@ const manifest = {
     './islands/pre-existing-conditions/Condition.tsx':
       $pre_existing_conditions_Condition,
     './islands/pre-existing-conditions/Form.tsx': $pre_existing_conditions_Form,
-    './islands/pre-existing-conditions/Medication.tsx':
-      $pre_existing_conditions_Medication,
+    './islands/prescriptions/Form.tsx': $prescriptions_Form,
+    './islands/prescriptions/MedicationInput.tsx':
+      $prescriptions_MedicationInput,
+    './islands/prescriptions/MedicationRow.tsx': $prescriptions_MedicationRow,
+    './islands/prescriptions/ScheduleInput.tsx': $prescriptions_ScheduleInput,
     './islands/referral/Form.tsx': $referral_Form,
     './islands/regulator/InvitePharmacistForm.tsx':
       $regulator_InvitePharmacistForm,
