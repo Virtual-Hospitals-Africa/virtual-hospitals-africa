@@ -13,7 +13,7 @@ type OrganizationSearchPropsGeneral<
   & { kind: Kind }
   & Omit<
     AsyncSearchProps<OrganizationType>,
-    'Option' | 'href' | 'optionHref'
+    'Option' | 'search_route' | 'optionHref'
   >
 
 type OrganizationSearchProps =
@@ -34,7 +34,7 @@ export default function OrganizationSearch(
   return (
     <AsyncSearch
       {...props}
-      href={href}
+      search_route={href}
       onSelect={(selected) => {
         if (selected && props.kind === 'physical') {
           assert(selected.address)

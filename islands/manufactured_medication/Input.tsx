@@ -98,7 +98,7 @@ export default function ManufacturedMedicationInput(props: {
       </FormRow>
       <FormRow>
         <AsyncSearch
-          href='/app/procurers'
+          search_route='/app/procurers'
           name='procured_from'
           label='Procured From'
           value={props.last_procurement?.procured_from}

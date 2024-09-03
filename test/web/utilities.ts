@@ -12,11 +12,7 @@ import * as pharmacists from '../../db/models/pharmacists.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import {
-  HealthWorkerWithGoogleTokens,
-  RenderedPharmacist,
-  TrxOrDb,
-} from '../../types.ts'
+import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import { testCalendars, testPharmacist, testRegulator } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
@@ -258,7 +254,7 @@ export async function addTestRegulatorWithSession(
 
 export async function addTestPharmacist(
   trx: TrxOrDb,
-  pharmacist?: RenderedPharmacist,
+  pharmacist?: pharmacists.PharmacistInsert,
 ) {
   const dummyPharmacist = {
     ...testPharmacist(),

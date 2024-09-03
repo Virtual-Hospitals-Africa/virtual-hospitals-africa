@@ -33,9 +33,6 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'pharmacy_employment', (qb) =>
     qb
-      .addColumn('prefix', sql`name_prefix`)
-      .addColumn('given_name', 'varchar(255)', (col) => col.notNull())
-      .addColumn('family_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('pharmacy_id', 'uuid', (col) =>
         col.notNull().references('pharmacies.id').onDelete('cascade'))
       .addColumn('pharmacist_id', 'uuid', (col) =>

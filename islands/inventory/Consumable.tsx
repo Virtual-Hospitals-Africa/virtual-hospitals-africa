@@ -23,7 +23,7 @@ export default function OrganizationConsumableForm(
           <div className='flex flex-col w-full gap-2'>
             <FormRow>
               <AsyncSearch
-                href='/app/consumables'
+                search_route='/app/consumables'
                 name='consumable'
                 label='Consumable'
                 required
@@ -31,7 +31,7 @@ export default function OrganizationConsumableForm(
                 value={consumable}
               />
               <AsyncSearch
-                href='/app/procurers'
+                search_route='/app/procurers'
                 name='procured_from'
                 label='Procured From'
                 required

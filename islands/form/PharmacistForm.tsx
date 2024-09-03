@@ -1,3 +1,4 @@
+import { useSignal } from '@preact/signals'
 import {
   DateInput,
   PharmacistTypeSelect,
@@ -8,6 +9,10 @@ import FormRow from './Row.tsx'
 import Buttons from './buttons.tsx'
 import { RenderedPharmacist } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
+import { IsSupervisorSelect } from '../../islands/form/Inputs.tsx'
+import AddPharmacySearch from '../AddPharmacySearch.tsx'
+import { AddRow, RemoveRow } from '../AddRemove.tsx'
+import { PharmacyOption } from '../AddPharmacySearch.tsx'
 
 type PharmacistForm = {
   formData: Partial<RenderedPharmacist>
@@ -16,6 +21,31 @@ type PharmacistForm = {
 export default function PharmacistForm(
   { formData }: PharmacistForm,
 ) {
+  const selectedPharmacies = useSignal<PharmacyOption[]>(
+    formData.pharmacies ?? [],
+  )
+  const addPharmacy = () => {
+    selectedPharmacies.value = [
+      ...selectedPharmacies.value,
+      {
+        is_supervisor: false,
+        id: '',
+        name: '',
+        removed: false,
+      },
+    ]
+  }
+  const remove = (selectedIndex: number) => {
+    selectedPharmacies.value = selectedPharmacies.value.map(
+      (pharmacy, index) => {
+        if (index !== selectedIndex) return pharmacy
+        return {
+          ...pharmacy,
+          removed: true,
+        }
+      },
+    )
+  }
   return (
     <Form method='POST'>
       <FormRow>
@@ -72,7 +102,37 @@ export default function PharmacistForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <Buttons submitText='Next' />
+      {selectedPharmacies.value.map((selectedPharmacy, index) =>
+        !selectedPharmacy.removed && (
+          <RemoveRow onClick={() => remove(index)} key={index} labelled>
+            <FormRow>
+              <AddPharmacySearch
+                name={`pharmacies.${index}`}
+                label='Pharmacy'
+                value={selectedPharmacy}
+                required
+                onSelect={(pharmacy) => {
+                  selectedPharmacies.value[index] = {
+                    ...selectedPharmacies.value[index],
+                    ...pharmacy,
+                  }
+                }}
+              />
+              <IsSupervisorSelect
+                value={selectedPharmacy.is_supervisor?.toString()}
+                isRequired={selectedPharmacy.name !== undefined}
+                prefix={`pharmacies.${index}`}
+              />
+            </FormRow>
+          </RemoveRow>
+        )
+      )}
+      <AddRow
+        text='Add Pharmacy'
+        onClick={addPharmacy}
+      />
+      <hr className='my-2' />
+      <Buttons submitText='Submit' />
     </Form>
   )
 }

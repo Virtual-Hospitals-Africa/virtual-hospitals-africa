@@ -10,14 +10,14 @@ export default function ScheduleForm({ className }: { className?: string }) {
       <FormRow>
         <PersonSearch
           name='patient'
-          href='/app/patients'
+          search_route='/app/patients'
           required
         />
       </FormRow>
       <FormRow>
         <PersonSearch
           name='provider'
-          href='/app/providers'
+          search_route='/app/providers'
         />
       </FormRow>
       <FormRow>

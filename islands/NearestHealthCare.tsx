@@ -34,7 +34,7 @@ export function NearestHealthCare(
         <PersonSearch
           name='primary_doctor'
           label='Primary/Family Doctor'
-          href={doctor_search_href}
+          search_route={doctor_search_href}
           required
           value={primary_doctor}
           addable

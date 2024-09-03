@@ -70,6 +70,7 @@ export type SearchProps<
   ): JSX.Element
   addHref?: string
   optionHref?: (option: T) => string
+  ignoreOptionHref?: boolean
 }
 
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
@@ -98,6 +99,7 @@ export default function Search<
   addHref,
   optionHref, // The existence of this prop turns the options into <a> tags
   Option = BaseOption,
+  ignoreOptionHref,
 }: SearchProps<T>) {
   if (addHref) {
     assert(addable, 'addHref requires addable to be true')
@@ -215,6 +217,7 @@ export default function Search<
                         )}
                       </>
                     )
+                    if (ignoreOptionHref) return fragment
                     if (option.id === 'add' && query && addHref) {
                       return (
                         <a href={`${addHref}${encodeURIComponent(query)}`}>

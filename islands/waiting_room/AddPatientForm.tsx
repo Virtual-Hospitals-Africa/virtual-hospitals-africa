@@ -50,7 +50,7 @@ export default function AddPatientForm({
         <FormRow>
           <PersonSearch
             name='patient'
-            href='/app/patients'
+            search_route='/app/patients'
             label=''
             required
             addable

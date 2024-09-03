@@ -2945,6 +2945,10 @@ export type RenderedPharmacy = {
   }
 }
 
+export type PharmacistInPharmacy = RenderedPharmacy & {
+  is_supervisor: boolean
+}
+
 export type RenderedPharmacist = {
   id: string
   licence_number: string
@@ -2953,6 +2957,7 @@ export type RenderedPharmacist = {
   given_name: string
   family_name: string
   address: string | null
+  full_address?: string | null
   town: string | null
   address_display: string | null
   expiry_date: string
@@ -2961,7 +2966,7 @@ export type RenderedPharmacist = {
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
-  pharmacies: Omit<RenderedPharmacy, 'actions' | 'supervisors'>[]
+  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
   href: string
   actions: {
     view: string
@@ -2975,6 +2980,24 @@ export type Supervisor = {
   href: string
   name: string
   prefix: Prefix | null
+}
+
+export type DetailedPharmacist = {
+  id?: string
+  licence_number: string
+  prefix: Prefix | null
+  name?: string
+  given_name: string
+  family_name: string
+  address: string | null
+  town: string | null
+  expiry_date: string
+  pharmacist_type:
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
+  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
 export type RenderedMedicine = {

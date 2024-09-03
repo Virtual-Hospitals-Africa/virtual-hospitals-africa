@@ -29,10 +29,17 @@ function getQuery(trx: TrxOrDb) {
       jsonArrayFrom(
         eb
           .selectFrom('pharmacy_employment')
+          .leftJoin(
+            'pharmacists',
+            'pharmacy_employment.pharmacist_id',
+            'pharmacists.id',
+          )
           .select([
-            'id',
-            'prefix',
-            nameSql('pharmacy_employment').as('name'),
+            'pharmacy_employment.id',
+            'pharmacists.prefix',
+            'pharmacists.family_name',
+            'pharmacists.given_name',
+            nameSql('pharmacists').as('name'),
             sql<
               string
             >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
@@ -60,10 +67,13 @@ export async function get(
   const page = opts.page || 1
   const rowsPerPage = opts.rowsPerPage || 10
   const offset = (page - 1) * rowsPerPage
-  const pharmacies = await getQuery(trx)
-    .limit(rowsPerPage)
-    .offset(offset)
-    .execute()
+  let query = getQuery(trx)
+
+  if (opts.search) {
+    query = query.where('pharmacies.name', 'ilike', `%${opts.search}%`)
+  }
+
+  const pharmacies = await query.limit(rowsPerPage).offset(offset).execute()
 
   const totalRowsResult = await trx
     .selectFrom('pharmacies')

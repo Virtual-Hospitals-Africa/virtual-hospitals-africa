@@ -64,7 +64,7 @@ export function MedicinesSearchInput(
   },
 ) {
   const { search, setSearch } = useAsyncSearch({
-    href: '/drugs',
+    search_route: '/drugs',
     value: null,
   })
 

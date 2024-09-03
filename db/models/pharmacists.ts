@@ -1,11 +1,20 @@
-import { InsertExpression } from 'kysely/parser/insert-values-parser.d.ts'
 import { Maybe, Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
-import { DB, PharmacistType } from '../../db.d.ts'
+import { PharmacistType } from '../../db.d.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isString from '../../util/isString.ts'
+import {
+  insert as insertPharmacyEmployment,
+  remove as removePharmacyEmployment,
+  updateIsSupervisor,
+} from './pharmacy_employment.ts'
+
+type PharmacyEmploymentUpsert = {
+  is_supervisor: boolean
+  id: string
+}
 
 export type PharmacistUpsert = {
   licence_number: string
@@ -16,6 +25,7 @@ export type PharmacistUpsert = {
   town: string
   expiry_date: string
   pharmacist_type: PharmacistType
+  pharmacies?: PharmacyEmploymentUpsert[]
 }
 
 export function isUpsert(
@@ -48,17 +58,51 @@ export function isUpsert(
   )
 }
 
-export function update(
+export async function update(
   trx: TrxOrDb,
   pharmacist_id: string,
   data: PharmacistUpsert,
 ) {
-  return trx
+  let { pharmacies = [], ...pharmacistData } = data
+  await trx
     .updateTable('pharmacists')
-    .set(data)
+    .set(pharmacistData)
     .where('id', '=', pharmacist_id)
-    .returning('id')
-    .executeTakeFirstOrThrow()
+    .execute()
+  const existingPharmacyEmployments = await trx
+    .selectFrom('pharmacy_employment')
+    .where('pharmacist_id', '=', pharmacist_id)
+    .selectAll()
+    .execute()
+  for (const existingPharmacyEmployment of existingPharmacyEmployments) {
+    const selectedPharmacy = pharmacies.find((pharmacy) =>
+      pharmacy.id === existingPharmacyEmployment.pharmacy_id
+    )
+    if (selectedPharmacy) {
+      await updateIsSupervisor(
+        trx,
+        pharmacist_id,
+        existingPharmacyEmployment.pharmacy_id,
+        selectedPharmacy.is_supervisor,
+      )
+    } else {
+      await removePharmacyEmployment(
+        trx,
+        pharmacist_id,
+        existingPharmacyEmployment.pharmacy_id,
+      )
+    }
+    pharmacies = pharmacies.filter((pharmacy) =>
+      pharmacy.id !== existingPharmacyEmployment.pharmacy_id
+    )
+  }
+  const pharmacyEmployments = pharmacies.map((pharmacyEmployee) => ({
+    pharmacist_id,
+    pharmacy_id: pharmacyEmployee.id,
+    is_supervisor: pharmacyEmployee.is_supervisor,
+  }))
+  if (!pharmacyEmployments.length) return
+  await insertPharmacyEmployment(trx, pharmacyEmployments)
 }
 
 export function nameSql(table: string) {
@@ -113,6 +157,7 @@ function getQuery(trx: TrxOrDb) {
             'pharmacies.licensee',
             'pharmacies.name',
             'pharmacies.pharmacies_types',
+            'pharmacy_employment.is_supervisor',
             addressDisplaySql('pharmacies').as('address_display'),
             sql<string>`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`.as(
               'expiry_date',
@@ -227,6 +272,11 @@ export function remove(trx: TrxOrDb, pharmacist_id: string) {
     .execute()
 }
 
+type PharmacyEmploymentInsert = {
+  is_supervisor: boolean
+  id: string
+}
+
 export type PharmacistInsert = {
   licence_number: string
   prefix: Prefix
@@ -236,15 +286,25 @@ export type PharmacistInsert = {
   town: string
   expiry_date: string
   pharmacist_type: PharmacistType
+  pharmacies?: PharmacyEmploymentInsert[]
 }
 
-export function insert(
+export async function insert(
   trx: TrxOrDb,
-  data: InsertExpression<DB, 'pharmacists'>,
+  data: PharmacistInsert,
 ): Promise<{ id: string }> {
-  return trx
+  const { pharmacies, ...pharmacistData } = data
+  const pharmacist = await trx
     .insertInto('pharmacists')
-    .values(data)
+    .values(pharmacistData)
     .returning('id')
     .executeTakeFirstOrThrow()
+  if (!pharmacies) return pharmacist
+  const pharmacyEmployments = pharmacies.map((pharmacyEmployee) => ({
+    pharmacist_id: pharmacist.id,
+    pharmacy_id: pharmacyEmployee.id,
+    is_supervisor: pharmacyEmployee.is_supervisor,
+  }))
+  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  return pharmacist
 }
