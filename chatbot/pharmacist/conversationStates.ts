@@ -13,7 +13,7 @@ import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
-  currentMedication,
+  activePresciptionMedication,
   dispenseAll,
   dispenseExit,
   dispenseOne,
@@ -238,14 +238,14 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       const buttonMessage: WhatsAppSingleSendable = {
         type: 'buttons',
-        messageBody: 'Click below to go back to main menu, or start dispense',
+        messageBody: 'Click below to continue dispensing medications',
         buttonText: 'Back to main menu',
         options: [{
-          id: 'main_menu',
-          title: 'Back to Menu',
-        }, {
           id: 'dispense',
           title: 'Dispense',
+        }, {
+          id: 'main_menu',
+          title: 'Back to Menu',
         }],
       }
       return [documentMessage, buttonMessage]
@@ -255,16 +255,16 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',
-    prompt(
+    async prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense this medication?\n* ${
-        currentMedication(
-          trx,
-          pharmacistState,
-        )
-      }`
+      const medication = await activePresciptionMedication(
+        trx,
+        pharmacistState,
+      )
+
+      return `Are you dispensing ${medication.drug_generic_name}?`
     },
     options: [
       {
@@ -291,53 +291,32 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'No',
         title: 'No',
-        onExit: 'onboarded:fill_prescription:start_dispense',
+        async onExit(trx, pharmacistState) {
+          const unfilled_medications = await prescription_medications
+            .getByPrescriptionId(
+              trx,
+              pharmacistState.chatbot_user.data.prescription_id as string,
+              {
+                unfilled: true,
+              },
+            )
+
+          await conversations.updateChatbotUser(
+            trx,
+            pharmacistState.chatbot_user,
+            {
+              data: {
+                ...pharmacistState.chatbot_user.data,
+                prescription_medication_id:
+                  unfilled_medications[0].prescription_medication_id,
+              },
+            },
+          )
+
+          return 'onboarded:fill_prescription:ask_dispense_one' as const
+        },
       },
     ],
-  },
-  'onboarded:fill_prescription:start_dispense': {
-    type: 'select',
-    prompt(
-      trx: TrxOrDb,
-      pharmacistState: PharmacistChatbotUserState,
-    ) {
-      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${
-        currentMedication(
-          trx,
-          pharmacistState,
-        )
-      }?`
-    },
-    options: [{
-      id: 'yes',
-      title: 'Yes',
-      onExit: dispenseOne,
-    }, {
-      id: 'no',
-      title: 'No',
-      onExit: dispenseSkip,
-    }],
-  },
-  'onboarded:fill_prescription:dispense_select': {
-    type: 'select',
-    async prompt(
-      trx: TrxOrDb,
-      pharmacistState: PharmacistChatbotUserState,
-    ) {
-      return `Do you want to dispense\n* ${await currentMedication(
-        trx,
-        pharmacistState,
-      )}?`
-    },
-    options: [{
-      id: 'yes',
-      title: 'Yes',
-      onExit: dispenseOne,
-    }, {
-      id: 'no',
-      title: 'No',
-      onExit: dispenseSkip,
-    }],
   },
   'onboarded:fill_prescription:confirm_done': {
     type: 'select',
@@ -351,11 +330,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       )}" do you want to Print or Share the Prescription Note, or restart dispense`
     },
     options: [
-      // {
-      //   id: 'prescription_note',
-      //   title: 'Prescription Note',
-      //   onExit: 'initial_message',
-      // },
       {
         id: 'restart_dispense',
         title: 'Restart Dispense',

@@ -33,8 +33,10 @@ function Medication({ medication }: { medication: MedicationSummary }) {
 
   const display_schedules = medication.schedules.map((schedule) => {
     const dosage = dosageDisplay({
-      dosage: schedule.dosage,
       ...medication,
+      dosage: schedule.dosage,
+      strength_numerator: Number(medication.strength),
+      strength_denominator: Number(medication.strength_denominator),
     })
     const frequency = IntakeFrequencies[
       schedule.frequency as unknown as keyof typeof IntakeFrequencies

@@ -9,7 +9,6 @@ import {
 import * as drugs from './drugs.ts'
 import * as prescription_medications from './prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
-import { debugLog } from '../helpers.ts'
 
 export type PrescriptionMedicationInsert = {
   route: string
@@ -100,49 +99,16 @@ export async function insert(
 ) {
   assert(prescribing.length > 0)
 
-  const { id: prescription_id } = await trx
+  const prescription = await trx
     .insertInto('prescriptions')
     .values(to_insert)
-    .returning('id')
+    .returningAll()
     .executeTakeFirstOrThrow()
 
   await trx
     .insertInto('prescription_codes')
-    .values({ prescription_id })
+    .values({ prescription_id: prescription.id })
     .executeTakeFirstOrThrow()
-
-  debugLog(
-    trx
-      .insertInto('patient_condition_medications')
-      .values(
-        prescribing.map((
-          {
-            schedules,
-            route,
-            patient_condition_id,
-            medication_id,
-            strength,
-            special_instructions,
-          },
-        ) => ({
-          route,
-          patient_condition_id,
-          medication_id,
-          strength,
-          special_instructions,
-          schedules: sql<string[]>`
-          ARRAY[${
-            sql.raw(
-              schedules.map((schedule) =>
-                `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
-              ).join(','),
-            )
-          }]::medication_schedule[]
-        `,
-        })),
-      )
-      .returning('id'),
-  )
 
   const condition_medications = await trx
     .insertInto('patient_condition_medications')
@@ -179,7 +145,7 @@ export async function insert(
   const prescription_medications = condition_medications
     .map((medication) => ({
       patient_condition_medication_id: medication.id,
-      prescription_id: prescription_id,
+      prescription_id: prescription.id,
     }))
 
   await trx
@@ -187,7 +153,7 @@ export async function insert(
     .values(prescription_medications)
     .execute()
 
-  return { prescription_id }
+  return prescription
 }
 
 export function deleteCode(

@@ -40,20 +40,20 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           completed_intake: true,
         })
 
-        const employed_doctor = await health_workers.getEmployed(trx, {
-          health_worker_id: doctor.id,
-        })
-
         await doctor_reviews.upsertRequest(trx, {
           patient_id: patient.id,
           requesting_doctor_id: doctor.employee_id!,
           encounter_id: encounter.id,
-          requested_by: nurse.employee_id!,
+          requested_by: encounter.providers[0].encounter_provider_id,
         })
 
         await doctor_reviews.finalizeRequest(trx, {
           patient_encounter_id: encounter.id,
-          requested_by: nurse.employee_id!,
+          requested_by: encounter.providers[0].encounter_provider_id,
+        })
+
+        const employed_doctor = await health_workers.getEmployed(trx, {
+          health_worker_id: doctor.id,
         })
 
         const { doctor_review } = await doctor_reviews.addSelfAsReviewer(trx, {
@@ -97,23 +97,21 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .executeTakeFirstOrThrow()
 
         const result = await prescriptions.insert(trx, {
-          prescriber_id: encounter.providers[0].encounter_provider_id,
+          prescriber_id: doctor_review.employment_id,
           patient_id: patient.id,
           doctor_review_id: doctor_review.review_id,
           prescribing: [
             {
-              patient_condition_id: patient_diagnoses[0].id,
-              start_date: '2020-01-01',
-              medications: [
-                {
-                  manufactured_medication_id: tablet.id,
-                  medication_id: null,
-                  dosage: 1,
-                  strength: tablet.strength_numerators[0],
-                  intake_frequency: 'qw',
-                  route: tablet.routes[0],
-                },
-              ],
+              patient_condition_id: patient_diagnoses[0].patient_condition_id,
+              medication_id: tablet.medication_id,
+              strength: tablet.strength_numerators[0],
+              route: tablet.routes[0],
+              schedules: [{
+                dosage: 1,
+                frequency: 'qw',
+                duration: 1,
+                duration_unit: 'years',
+              }],
             },
           ],
         })
@@ -131,8 +129,12 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         // Check patient_condition_medications
         const patient_medication = await trx
           .selectFrom('patient_condition_medications')
-          .where('manufactured_medication_id', '=', tablet.id)
-          .where('patient_condition_id', '=', patient_diagnoses[0].id)
+          .where('medication_id', '=', tablet.medication_id)
+          .where(
+            'patient_condition_id',
+            '=',
+            patient_diagnoses[0].patient_condition_id,
+          )
           .select(sql`TO_JSON(schedules)`.as('schedules'))
           .select('id')
           .executeTakeFirstOrThrow()
@@ -140,7 +142,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         assertEquals(patient_medication.schedules, [{
           dosage: 1,
           duration: 1,
-          duration_unit: 'indefinitely',
+          duration_unit: 'years',
           frequency: 'qw',
         }])
 

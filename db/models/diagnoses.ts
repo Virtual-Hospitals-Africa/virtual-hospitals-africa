@@ -68,6 +68,9 @@ export async function upsertForReview(trx: TrxOrDb, {
     )
     .execute()
 
+  console.log('await deleting')
+  await deleting
+
   const inserting = to_insert.length && Promise.all(to_insert.map(async (d) => {
     const { id: patient_condition_id } = await trx.insertInto(
       'patient_conditions',
@@ -88,6 +91,10 @@ export async function upsertForReview(trx: TrxOrDb, {
       })
       .execute()
   }))
+
+  console.log('await inserting')
+  await inserting
+  console.log('sweklkwlelkew inserting')
 
   const updating = Promise.all(to_update.map((d) => {
     const matching_diagnosis = existing_diagnoses.find((existing_diagnosis) =>

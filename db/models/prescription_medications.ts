@@ -7,15 +7,8 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PrescriptionMedicationsFilled } from '../../db.d.ts'
 
-export async function getByPrescriptionId(
-  trx: TrxOrDb,
-  prescription_id: string,
-  options?: {
-    unfilled?: boolean
-    filled?: boolean
-  },
-): Promise<PrescriptionMedication[]> {
-  let query = trx
+const baseSelect = (trx: TrxOrDb) =>
+  trx
     .selectFrom('prescriptions')
     .innerJoin(
       'prescription_medications',
@@ -44,7 +37,6 @@ export async function getByPrescriptionId(
       'prescription_medications_filled.prescription_medication_id',
       'prescription_medications.id',
     )
-    .where('prescriptions.id', '=', prescription_id)
     .select((eb) => [
       'prescription_medications.id as prescription_medication_id',
       'patient_condition_medications.patient_condition_id',
@@ -70,6 +62,16 @@ export async function getByPrescriptionId(
     ])
     .orderBy('drugs.generic_name asc')
 
+export async function getByPrescriptionId(
+  trx: TrxOrDb,
+  prescription_id: string,
+  options?: {
+    unfilled?: boolean
+    filled?: boolean
+  },
+): Promise<PrescriptionMedication[]> {
+  let query = baseSelect(trx).where('prescriptions.id', '=', prescription_id)
+
   if (options?.unfilled) {
     assert(!options.filled)
     query = query.where(
@@ -89,12 +91,36 @@ export async function getByPrescriptionId(
 
   const patient_medications = await query.execute()
 
-  return patient_medications
-    .map(({ strength_numerator, strength_denominator, ...medication }) => ({
-      ...medication,
-      strength_numerator: Number(strength_numerator),
-      strength_denominator: Number(strength_denominator),
-    }))
+  return patient_medications.map(massageStrengths)
+}
+
+function massageStrengths(
+  medication:
+    & Omit<
+      PrescriptionMedication,
+      'strength_numerator' | 'strength_denominator'
+    >
+    & {
+      strength_numerator: string
+      strength_denominator: string
+    },
+) {
+  return {
+    ...medication,
+    strength_numerator: Number(medication.strength_numerator),
+    strength_denominator: Number(medication.strength_denominator),
+  }
+}
+
+export async function getById(
+  trx: TrxOrDb,
+  prescription_medication_id: string,
+): Promise<PrescriptionMedication> {
+  return massageStrengths(
+    await baseSelect(trx)
+      .where('prescription_medications.id', '=', prescription_medication_id)
+      .executeTakeFirstOrThrow(),
+  )
 }
 
 export function fill(

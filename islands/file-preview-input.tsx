@@ -6,7 +6,8 @@ import { assert } from 'std/assert/assert.ts'
 import { RemoveRow } from './AddRemove.tsx'
 import { Label } from '../components/library/Label.tsx'
 
-type FilePreviewInputProps = Omit<TextInputProps, 'value'> & {
+type FilePreviewInputProps = Omit<TextInputProps, 'value' | 'label'> & {
+  label?: string
   className?: string
   fileName?: string
   value?: Maybe<{
