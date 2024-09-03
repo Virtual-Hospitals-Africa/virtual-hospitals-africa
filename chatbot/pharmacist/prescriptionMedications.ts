@@ -1,30 +1,22 @@
-import omit from '../../util/omit.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as conversations from '../../db/models/conversations.ts'
-import partition from '../../util/partition.ts'
 
 export type PharmacistStateData = {
   prescription_id: string
   prescription_code: string
-  focus_prescription_medication_id?: string
-  // medications: string[]
-  // undispensed_medications: string[]
-  // number_of_undispensed_medications: number
-  // count_dispensed_medications: number
-  // index_of_undispensed_medications: number
+  prescription_medication_id?: string
 }
 
-export async function currentMedication(
-  trx: TrxOrDb,
+export function activePresciptionMedicationId(
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { prescription_id, focus_prescription_medication_id } = pharmacistState
+  const { prescription_medication_id } = pharmacistState
     .chatbot_user.data as PharmacistStateData
-  assert(focus_prescription_medication_id)
-  return focus_prescription_medication_id
+  assert(prescription_medication_id, 'Prescription medication ID is required at this stage of the chatbot')
+  return prescription_medication_id
 }
 
 export async function dispenseType(
@@ -32,39 +24,41 @@ export async function dispenseType(
   pharmacistState: PharmacistChatbotUserState,
 ) {
   const unhandled_message = pharmacistState.unhandled_message.trimmed_body!
-  const { number_of_undispensed_medications } = pharmacistState.chatbot_user
-    .data as PharmacistStateData
+
+  if (unhandled_message !== 'dispense' && unhandled_message !== 'restart_dispense') {
+    return 'initial_message' as const
+  }
+
+  const { prescription_id } = pharmacistState.chatbot_user.data as PharmacistStateData
+
+  const unfilled_medications = await prescription_medications.getByPrescriptionId(
+    trx,
+    prescription_id,
+    {
+      unfilled: true,
+    },
+  )
+
+  assert(
+    unfilled_medications.length > 0,
+    'The number of medications in the prescription must be greater than 0.',
+  )
+  if (unfilled_medications.length > 1) {
+    return 'onboarded:fill_prescription:ask_dispense_all' as const
+  }
 
   await conversations.updateChatbotUser(
     trx,
     pharmacistState.chatbot_user,
     {
       data: {
-        ...omit(pharmacistState.chatbot_user.data, [
-          'count_dispensed_medications',
-          'index_of_undispensed_medications',
-        ]),
-        count_dispensed_medications: 0,
-        index_of_undispensed_medications: 0,
+        ...pharmacistState.chatbot_user.data,
+        prescription_medication_id: unfilled_medications[0].prescription_medication_id,
       },
     },
   )
 
-  if (
-    unhandled_message === 'dispense' || unhandled_message === 'restart_dispense'
-  ) {
-    assert(
-      number_of_undispensed_medications > 0,
-      'The number of medications in the prescription must be greater than 0.',
-    )
-    if (number_of_undispensed_medications === 1) {
-      return 'onboarded:fill_prescription:ask_dispense_one' as const
-    } else {
-      return 'onboarded:fill_prescription:ask_dispense_all' as const
-    }
-  } else {
-    return 'initial_message' as const
-  }
+  return 'onboarded:fill_prescription:ask_dispense_one' as const
 }
 
 export async function getPrescriber(
@@ -90,33 +84,6 @@ function dispenseNextStep(
     : 'onboarded:fill_prescription:dispense_select' as const
 }
 
-async function updateData(
-  trx: TrxOrDb,
-  pharmacistState: PharmacistChatbotUserState,
-  number_of_dispense: number,
-  is_dispensed: boolean,
-) {
-  const { count_dispensed_medications, index_of_undispensed_medications } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
-
-  await conversations.updateChatbotUser(
-    trx,
-    pharmacistState.chatbot_user,
-    {
-      data: {
-        ...omit(pharmacistState.chatbot_user.data, [
-          'count_dispensed_medications',
-          'index_of_undispensed_medications',
-        ]),
-        count_dispensed_medications: count_dispensed_medications +
-          (is_dispensed ? number_of_dispense : 0),
-        index_of_undispensed_medications: index_of_undispensed_medications +
-          number_of_dispense,
-      },
-    },
-  )
-}
-
 export async function dispenseSkip(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
@@ -132,33 +99,16 @@ export async function dispenseOne(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { prescription_id } = pharmacistState.chatbot_user
+  const { prescription_id, prescription_medication_id } = pharmacistState.chatbot_user
     .data as PharmacistStateData
 
-  const medications = await prescription_medications.getByPrescriptionId(
-    trx,
-    prescription_id,
-    {
-      unfilled: true,
-    },
-  )
+  assert(prescription_medication_id)
 
-  const { index_of_undispensed_medications, count_dispensed_medications } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
-
-  const filled_medication_data = [{
-    prescription_medication_id: medications[
-      index_of_undispensed_medications - count_dispensed_medications
-    ].prescription_medication_id,
+  await prescription_medications.fill(trx, [{
+    prescription_medication_id,
     pharmacist_id: pharmacistState.chatbot_user.entity_id!,
     pharmacy_id: null,
-  }]
-
-  await prescription_medications.fill(trx, filled_medication_data)
-
-  const number_of_dispense = 1
-  const is_dispensed = true
-  await updateData(trx, pharmacistState, number_of_dispense, is_dispensed)
+  }])
 
   return dispenseNextStep(trx, pharmacistState)
 }
@@ -185,7 +135,7 @@ export async function dispenseAll(
   await prescription_medications.fill(trx, filled_medication_data)
 
   const is_dispensed = true
-  await updateData(trx, pharmacistState, medications.length, is_dispensed)
+  // await updateData(trx, pharmacistState, medications.length, is_dispensed)
 
   return 'onboarded:fill_prescription:confirm_done' as const
 }

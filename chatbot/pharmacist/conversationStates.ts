@@ -13,7 +13,7 @@ import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
-  currentMedication,
+  // currentMedication,
   dispenseAll,
   dispenseExit,
   dispenseOne,
@@ -255,16 +255,19 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',
-    prompt(
+    async prompt(
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense this medication?\n* ${
-        currentMedication(
-          trx,
-          pharmacistState,
-        )
-      }`
+      const { prescription_medication_id } = pharmacistState.chatbot_user.data
+      assert(typeof prescription_medication_id === 'string')
+
+      const medication = await prescription_medications.getById(
+        trx,
+        prescription_medication_id
+      )
+
+      return `Do you want to dispense this medication?\n* ${medication.drug_generic_name}`
     },
     options: [
       {
