@@ -165,13 +165,13 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'get_location',
     prompt:
       'For regulatory purpose, we will need to have your current location, can you share that to us?',
-    onExit: handleShareLocation ,
+    onExit: handleShareLocation,
   },
   'not_onboarded:reshare_location': {
     type: 'get_location',
     prompt:
       "Sorry, we couldn't process that. Please click the + icon in the lower left corner to share your location and proceed",
-    onExit: handleShareLocation ,
+    onExit: handleShareLocation,
   },
   'onboarded:view_inventory': {
     type: 'select',
@@ -218,11 +218,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
-      const unfilled_medications = await prescription_medications.getByPrescriptionId(
-        trx,
-        prescription_id,
-        { unfilled: true },
-      )
+      const unfilled_medications = await prescription_medications
+        .getByPrescriptionId(
+          trx,
+          prescription_id,
+          { unfilled: true },
+        )
 
       assert(unfilled_medications.length > 0)
 
@@ -230,7 +231,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         type: 'document',
         messageBody:
           `Here is the patient's prescription including the following medications:\n* ${
-            unfilled_medications.map(m => m.drug_generic_name).join('\n* ')
+            unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
           }`,
         file_path,
       }

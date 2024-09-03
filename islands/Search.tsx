@@ -10,6 +10,8 @@ import {
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../util/capitalize.ts'
+import last from '../util/last.ts'
+import { isUUID } from '../util/uuid.ts'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -70,6 +72,13 @@ export type SearchProps<
   optionHref?: (option: T) => string
 }
 
+function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
+  if (!name) return false
+  const last_name_part = last(name.split('.'))!
+  if (isUUID(last_name_part)) return true
+  return /^\d+$/.test(last_name_part)
+}
+
 export default function Search<
   T extends { id?: unknown; name: string },
 >({
@@ -117,11 +126,14 @@ export default function Search<
 
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
   // while if the provided name is something like patient, we form the id field to be patient_id
-  const is_array_item = !!name && /\d$/.test(name)
+  const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
+
   const name_field = no_name_form_data ? undefined : (name &&
-    (is_array_item ? `${name}.name` : `${name}_name`))
+    (is_array_or_record_item ? `${name}.name` : `${name}_name`))
   const id_field = name &&
-    (no_name_form_data ? name : (is_array_item ? `${name}.id` : `${name}_id`))
+    (no_name_form_data
+      ? name
+      : (is_array_or_record_item ? `${name}.id` : `${name}_id`))
 
   return (
     <Combobox

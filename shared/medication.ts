@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import memoize from '../util/memoize.ts'
 import isNumber from '../util/isNumber.ts'
-import { MedicationDetails, MedicationSchedule, PrescriptionMedication } from '../types.ts'
+import { MedicationDetails, MedicationSchedule } from '../types.ts'
 import { unpluralize } from '../util/pluralize.ts'
 
 export const Dosages: [string, number][] = [
@@ -70,10 +70,16 @@ export function intakeFrequencyText(frequency: string): string {
 
 type IntakeFrequency = keyof typeof IntakeFrequencies
 
+export function isIntakeFrequency(
+  frequency: string,
+): frequency is IntakeFrequency {
+  return frequency in IntakeFrequencies
+}
+
 export function assertIntakeFrequency(
   frequency: string,
 ): asserts frequency is IntakeFrequency {
-  assert(frequency in IntakeFrequencies)
+  assert(isIntakeFrequency(frequency))
 }
 
 export const IntakeDosesPerDay = {

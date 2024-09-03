@@ -8,6 +8,8 @@ import {
 import FormRow from '../form/Row.tsx'
 import DrugSearch from '../drug/Search.tsx'
 import { strengthDisplay } from '../../shared/medication.ts'
+import { AddRow } from '../AddRemove.tsx'
+import { ScheduleRow } from './ScheduleRow.tsx'
 
 export function PrescriptionMedicationInput({
   name,
@@ -38,6 +40,8 @@ export function PrescriptionMedicationInput({
     value.medication_id,
   )
 
+  const [schedules, setSchedules] = useState(value.schedules ?? [{}])
+
   const setMedicationId = (medication_id: string) => {
     _setMedicationId(medication_id)
     medicationSelected(medication_id, {
@@ -45,6 +49,10 @@ export function PrescriptionMedicationInput({
       drug,
       medication_id,
     })
+  }
+
+  const addSchedule = () => {
+    setSchedules([...schedules, {}])
   }
 
   const [strength_numerator, setStrengthNumerator] = useState<
@@ -85,7 +93,7 @@ export function PrescriptionMedicationInput({
     <div className='w-full justify-normal'>
       <FormRow className='w-full justify-normal'>
         <SelectWithOptions
-          name={`name`}
+          name={`${name}.patient_condition_id`}
           required
           label='Condition'
           readonly={diagnoses.length === 1}
@@ -114,6 +122,7 @@ export function PrescriptionMedicationInput({
           required
           label='Form'
           disabled={!drug}
+          readonly={!!medication_id}
           onChange={(event) =>
             event.currentTarget.value &&
             setMedicationId(event.currentTarget.value)}
@@ -167,19 +176,21 @@ export function PrescriptionMedicationInput({
             setStrengthNumerator(Number(event.currentTarget.value))}
         >
           <option value=''>Select Strength</option>
-          {medication && strength_options?.map((strength_numerator) => (
-            <option
-              value={strength_numerator}
-              selected={strength_numerator === strength_numerator}
-            >
-              {strengthDisplay({
-                strength_numerator,
-                strength_numerator_unit: medication.strength_numerator_unit,
-                strength_denominator: medication.strength_denominator,
-                strength_denominator_unit: medication.strength_denominator_unit,
-              })}
-            </option>
-          ))}
+          {medication &&
+            strength_options?.map((strength_numerator_option) => (
+              <option
+                value={strength_numerator_option}
+                selected={strength_numerator_option === strength_numerator}
+              >
+                {strengthDisplay({
+                  strength_numerator: strength_numerator_option,
+                  strength_numerator_unit: medication.strength_numerator_unit,
+                  strength_denominator: medication.strength_denominator,
+                  strength_denominator_unit:
+                    medication.strength_denominator_unit,
+                })}
+              </option>
+            ))}
         </Select>
       </FormRow>
       <FormRow>
@@ -191,6 +202,27 @@ export function PrescriptionMedicationInput({
           onInput={(event) => setSpecialInstructions(event.currentTarget.value)}
         />
       </FormRow>
+      <div>
+        <h3 className='text-sm py-2'>Schedules</h3>
+        {schedules.map((schedule, index) => (
+          <ScheduleRow
+            key={index}
+            name={`${name}.schedules.${index}`}
+            value={schedule}
+            medication={medication}
+            strength_numerator={strength_numerator}
+            remove={index
+              ? () => {
+                const next_schedules = [...schedules]
+                next_schedules.splice(index, 1)
+                setSchedules(next_schedules)
+              }
+              : undefined}
+          />
+        ))}
+      </div>
+
+      <AddRow onClick={addSchedule} text='Add Schedule' />
     </div>
   )
 }

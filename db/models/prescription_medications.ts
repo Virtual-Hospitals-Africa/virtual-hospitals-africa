@@ -117,10 +117,13 @@ export function undoFill(
 ) {
   return trx
     .deleteFrom('prescription_medications_filled')
-    .where('prescription_medication_id', 'in', eb => 
-      eb.selectFrom('prescription_medications')
-        .where('prescription_id', '=', prescription_id)
-        .select('id')
-      )
+    .where(
+      'prescription_medication_id',
+      'in',
+      (eb) =>
+        eb.selectFrom('prescription_medications')
+          .where('prescription_id', '=', prescription_id)
+          .select('id'),
+    )
     .execute()
 }

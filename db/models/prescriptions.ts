@@ -1,14 +1,23 @@
 import { sql } from 'kysely'
-import { PatientMedicationUpsert, RenderedPrescription, RenderedPrescriptionWithMedications, TrxOrDb } from '../../types.ts'
-import * as medications from './medications.ts'
+import {
+  Maybe,
+  MedicationSchedule,
+  RenderedPrescription,
+  RenderedPrescriptionWithMedications,
+  TrxOrDb,
+} from '../../types.ts'
 import * as drugs from './drugs.ts'
 import * as prescription_medications from './prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
+import { debugLog } from '../helpers.ts'
 
-export type PrescriptionCondition = {
+export type PrescriptionMedicationInsert = {
+  route: string
   patient_condition_id: string
-  start_date: string
-  medications: PatientMedicationUpsert[]
+  medication_id: string
+  strength: number
+  special_instructions?: Maybe<string>
+  schedules: MedicationSchedule[]
 }
 
 const getBase = (trx: TrxOrDb) =>
@@ -34,7 +43,6 @@ const getBase = (trx: TrxOrDb) =>
       'doctor_registration_details.id',
       'health_workers.id',
     )
-    
     .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
     // TODO: remove this once nurses can prescribe medications
@@ -80,7 +88,7 @@ export async function insert(
     & {
       prescriber_id: string
       patient_id: string
-      prescribing: PrescriptionCondition[]
+      prescribing: PrescriptionMedicationInsert[]
     }
     & ({
       doctor_review_id: string
@@ -92,19 +100,94 @@ export async function insert(
 ) {
   assert(prescribing.length > 0)
 
-  const prescription = await trx
+  const { id: prescription_id } = await trx
     .insertInto('prescriptions')
     .values(to_insert)
-    .returningAll()
+    .returning('id')
     .executeTakeFirstOrThrow()
 
-  await medications.insert(
-    trx,
-    prescription.id,
-    prescribing,
+  await trx
+    .insertInto('prescription_codes')
+    .values({ prescription_id })
+    .executeTakeFirstOrThrow()
+
+  debugLog(
+    trx
+      .insertInto('patient_condition_medications')
+      .values(
+        prescribing.map((
+          {
+            schedules,
+            route,
+            patient_condition_id,
+            medication_id,
+            strength,
+            special_instructions,
+          },
+        ) => ({
+          route,
+          patient_condition_id,
+          medication_id,
+          strength,
+          special_instructions,
+          schedules: sql<string[]>`
+          ARRAY[${
+            sql.raw(
+              schedules.map((schedule) =>
+                `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
+              ).join(','),
+            )
+          }]::medication_schedule[]
+        `,
+        })),
+      )
+      .returning('id'),
   )
 
-  return prescription
+  const condition_medications = await trx
+    .insertInto('patient_condition_medications')
+    .values(
+      prescribing.map((
+        {
+          schedules,
+          route,
+          patient_condition_id,
+          medication_id,
+          strength,
+          special_instructions,
+        },
+      ) => ({
+        route,
+        patient_condition_id,
+        medication_id,
+        strength,
+        special_instructions,
+        schedules: sql<string[]>`
+          ARRAY[${
+          sql.raw(
+            schedules.map((schedule) =>
+              `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
+            ).join(','),
+          )
+        }]::medication_schedule[]
+        `,
+      })),
+    )
+    .returning('id')
+    .execute()
+
+  const prescription_medications = condition_medications
+    .map((medication) => ({
+      patient_condition_medication_id: medication.id,
+      prescription_id: prescription_id,
+    }))
+
+  await trx
+    .insertInto('prescription_medications')
+    .values(prescription_medications)
+    .execute()
+
+  return { prescription_id }
 }
 
 export function deleteCode(
@@ -127,10 +210,11 @@ export async function getFromReview(
 
   if (!prescription) return null
 
-  const medications_of_prescription = await prescription_medications.getByPrescriptionId(
-    trx,
-    prescription.id
-  )
+  const medications_of_prescription = await prescription_medications
+    .getByPrescriptionId(
+      trx,
+      prescription.id,
+    )
 
   const drug_ids = medications_of_prescription.map((m) => m.drug_id)
 
@@ -138,11 +222,15 @@ export async function getFromReview(
     ids: drug_ids,
   })
 
-  const medications_with_drugs = medications_of_prescription.map((medication) => {
-    const drug = drugs_of_medications.find((drug) => drug.id === medication.drug_id)
-    assert(drug)
-    return { ...medication, drug }
-  })
+  const medications_with_drugs = medications_of_prescription.map(
+    (medication) => {
+      const drug = drugs_of_medications.find((drug) =>
+        drug.id === medication.drug_id
+      )
+      assert(drug)
+      return { ...medication, drug }
+    },
+  )
 
   return {
     ...prescription,

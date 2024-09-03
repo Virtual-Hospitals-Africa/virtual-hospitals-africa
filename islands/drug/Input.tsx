@@ -205,7 +205,7 @@ export default function DrugInput({
           label='Frequency'
           disabled={!drug}
         >
-          <option value=''>Select Intake</option>
+          <option value=''>Select Frequency</option>
           {drug &&
             Object.entries(IntakeFrequencies).map(([code, label]) => (
               <option

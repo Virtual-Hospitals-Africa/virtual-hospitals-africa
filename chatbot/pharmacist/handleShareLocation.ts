@@ -1,12 +1,11 @@
-import {
-  Location,
-  PharmacistChatbotUserState,
-  TrxOrDb,
-} from '../../types.ts'
+import { Location, PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 
-export async function handleShareLocation(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+export async function handleShareLocation(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
   try {
     assert(pharmacistState.chatbot_user.entity_id)
     assert(pharmacistState.unhandled_message.trimmed_body)
@@ -17,7 +16,7 @@ export async function handleShareLocation(trx: TrxOrDb, pharmacistState: Pharmac
       longitude: locationMessage.longitude,
       latitude: locationMessage.latitude,
     }
-  
+
     //try to save it as data first and see if it works
     await conversations.updateChatbotUser(
       trx,
