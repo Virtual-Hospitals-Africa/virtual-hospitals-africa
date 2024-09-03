@@ -14,9 +14,9 @@ import { promiseProps } from '../../util/promiseProps.ts'
 
 function Divider() {
   return (
-    <div class='flex items-center mb-4'>
-      <div class='flex-1 h-4 bg-red-400'></div>
-      <div class='flex-1 h-4 bg-orange-200'></div>
+    <div className='flex items-center mb-4'>
+      <div className='flex-1 h-4 bg-red-400'></div>
+      <div className='flex-1 h-4 bg-orange-200'></div>
     </div>
   )
 }
@@ -71,19 +71,19 @@ export default async function PrescriptionPage(
         url={ctx.url}
         variant='just logo'
       >
-        <div class='pt-20 pb-20 bg-gray-100 flex items-center justify-center font-sans'>
+        <div className='pt-20 pb-20 bg-gray-100 flex items-center justify-center font-sans'>
           <div
-            class='bg-white p-5'
+            className='bg-white p-5'
             style={{
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
             }}
           >
-            <div class='text-purple-900 mb-2 font-extrabold text-3xl text-center pt-5'>
+            <div className='text-purple-900 mb-2 font-extrabold text-3xl text-center pt-5'>
               <h1>PRESCRIPTION</h1>
             </div>
             <Divider />
-            <div class='mb-2'>
-              <div class='flex justify-between'>
+            <div className='mb-2'>
+              <div className='flex justify-between'>
                 <PrescriptionDetail
                   heading='Prescription No.'
                   information={prescription.id}
@@ -96,11 +96,12 @@ export default async function PrescriptionPage(
               </div>
             </div>
             <Divider />
-            <div class='mb-2'>
-              <div class='text-purple-900 mb-2 font-bold'>
+            <div className='mb-2'>
+              <div className='text-purple-900 mb-2 font-bold'>
                 Patient Information
               </div>
-              <div class='grid grid-cols-2'>
+              {/* wkhtml2pdf can't handle css grid */}
+              <div /*className='grid grid-cols-2'*/>
                 <PrescriptionDetail heading='Name' information={patient.name} />
                 <PrescriptionDetail
                   heading='Age'
@@ -141,18 +142,19 @@ export default async function PrescriptionPage(
               </div>
             </div>
             <Divider />
-            <div class='text-purple-900 mb-2 font-bold'>
+            <div className='text-purple-900 mb-2 font-bold'>
               List of Prescribed Medications
             </div>
             <div className='pb-4'>
               <MedicationsTable medications={unfilled_medications} />
             </div>
             <Divider />
-            <div class='text-purple-900 mb-2 font-bold'>
+            <div className='text-purple-900 mb-2 font-bold'>
               Physician Information
             </div>
-            <div class='mb-3 mt-3'>
-              <div class='grid grid-cols-2'>
+            <div className='mb-3 mt-3'>
+              {/* wkhtml2pdf can't handle css grid */}
+              <div /*className='grid grid-cols-2'*/>
                 <PrescriptionDetail
                   heading='Name'
                   information={prescription.prescriber_name}

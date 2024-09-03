@@ -94,10 +94,17 @@ export async function getByPrescriptionId(
   return patient_medications.map(massageStrengths)
 }
 
-function massageStrengths(medication: Omit<PrescriptionMedication, 'strength_numerator' | 'strength_denominator'> & {
-  strength_numerator: string
-  strength_denominator: string
-}) {
+function massageStrengths(
+  medication:
+    & Omit<
+      PrescriptionMedication,
+      'strength_numerator' | 'strength_denominator'
+    >
+    & {
+      strength_numerator: string
+      strength_denominator: string
+    },
+) {
   return {
     ...medication,
     strength_numerator: Number(medication.strength_numerator),
@@ -112,7 +119,7 @@ export async function getById(
   return massageStrengths(
     await baseSelect(trx)
       .where('prescription_medications.id', '=', prescription_medication_id)
-      .executeTakeFirstOrThrow()
+      .executeTakeFirstOrThrow(),
   )
 }
 
