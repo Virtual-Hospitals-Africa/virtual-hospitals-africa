@@ -64,6 +64,7 @@ export async function getByPrescriptionId(
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
     ])
+    .orderBy('drugs.generic_name asc')
 
   if (options?.unfilled) {
     assert(!options.filled)

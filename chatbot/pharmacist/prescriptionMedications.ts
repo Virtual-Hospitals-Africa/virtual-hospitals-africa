@@ -17,37 +17,15 @@ export type PharmacistStateData = {
   // index_of_undispensed_medications: number
 }
 
-// export async function updateMedications(
-//   trx: TrxOrDb,
-//   pharmacistState: PharmacistChatbotUserState,
-// ): Promise<void> {
-//   const { prescription_code, prescription_id } = pharmacistState.chatbot_user
-//     .data as PharmacistStateData
+export async function currentMedication(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
+  const { prescription_id, focus_prescription_medication_id } = pharmacistState.chatbot_user.data as PharmacistStateData
+  assert(focus_prescription_medication_id)
+  return focus_prescription_medication_id
+}
 
-//   const medications = await prescription_medications.getByPrescriptionId(
-//     trx,
-//     prescription_id,
-//   )
-//   const [filled, unfilled] = partition(medications, (m) => !!m.filled_at)
-
-//   const stateData: PharmacistStateData = {
-//     prescription_code: prescription_code,
-//     prescription_id: prescription_id,
-//     medications: unfilled.map(describeMedication),
-//     undispensed_medications: filled.map(describeMedication),
-//     number_of_undispensed_medications: filled.length,
-//     count_dispensed_medications: 0,
-//     index_of_undispensed_medications: 0,
-//   }
-
-//   await conversations.updateChatbotUser(
-//     trx,
-//     pharmacistState.chatbot_user,
-//     {
-//       data: stateData,
-//     },
-//   )
-// }
 
 export async function dispenseType(
   trx: TrxOrDb,

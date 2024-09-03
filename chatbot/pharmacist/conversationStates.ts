@@ -23,6 +23,7 @@ import {
   dispenseType,
   getPrescriber,
 } from './prescriptionMedications.ts'
+import { handleShareLocation } from './handleShareLocation.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -165,30 +166,13 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'get_location',
     prompt:
       'For regulatory purpose, we will need to have your current location, can you share that to us?',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      assert(pharmacistState.chatbot_user.entity_id)
-      assert(pharmacistState.unhandled_message.trimmed_body)
-      const locationMessage: Location = JSON.parse(
-        pharmacistState.unhandled_message.trimmed_body,
-      )
-      const currentLocation: Location = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
-      }
-
-      //try to save it as data first and see if it works
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            ...pharmacistState.chatbot_user.data,
-            currentLocation,
-          },
-        },
-      )
-      return 'onboarded:fill_prescription:enter_code' as const
-    },
+    onExit: handleShareLocation ,
+  },
+  'not_onboarded:reshare_location': {
+    type: 'get_location',
+    prompt:
+      "Sorry, we couldn't process that. Please click the + icon in the lower left corner to share your location and proceed",
+    onExit: handleShareLocation ,
   },
   'onboarded:view_inventory': {
     type: 'select',
