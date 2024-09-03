@@ -17,6 +17,7 @@ import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs_json from './routes/app/drugs.json.tsx'
+import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
@@ -247,6 +248,7 @@ const manifest = {
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
     './routes/app/drugs.json.tsx': $app_drugs_json,
+    './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
