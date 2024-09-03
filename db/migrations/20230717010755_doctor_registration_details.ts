@@ -1,17 +1,17 @@
 import { Kysely, sql } from 'kysely'
-import { NURSE_SPECIALTIES } from '../../types.ts'
+import { DOCTOR_SPECIALTIES } from '../../types.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
-    .createType('nurse_specialty')
-    .asEnum(NURSE_SPECIALTIES)
+    .createType('doctor_specialty')
+    .asEnum(DOCTOR_SPECIALTIES)
     .execute()
 
   await createStandardTable(
     db,
-    'nurse_specialties',
+    'doctor_specialties',
     (qb) =>
       qb.addColumn('employee_id', 'uuid', (column) =>
         column
@@ -21,10 +21,10 @@ export async function up(db: Kysely<unknown>) {
           .onDelete('cascade'))
         .addColumn(
           'specialty',
-          sql`nurse_specialty`,
+          sql`doctor_specialty`,
           (column) => column.notNull(),
         )
-        .addUniqueConstraint('one_unique_nurse_specialty_per_employee', [
+        .addUniqueConstraint('one_unique_doctor_specialty_per_employee', [
           'employee_id',
           'specialty',
         ]),
@@ -32,7 +32,7 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'nurse_registration_details_in_progress',
+    'doctor_registration_details_in_progress',
     (qb) =>
       qb.addColumn('health_worker_id', 'uuid', (column) =>
         column
@@ -49,7 +49,7 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'nurse_registration_details',
+    'doctor_registration_details',
     (qb) =>
       qb.addColumn('health_worker_id', 'uuid', (column) =>
         column
@@ -92,7 +92,7 @@ export async function up(db: Kysely<unknown>) {
           column
             .references('media.id')
             .onDelete('set null'))
-        .addColumn('nurse_practicing_cert_media_id', 'uuid', (column) =>
+        .addColumn('doctor_practicing_cert_media_id', 'uuid', (column) =>
           column
             .references('media.id')
             .onDelete('set null'))
@@ -101,15 +101,15 @@ export async function up(db: Kysely<unknown>) {
             .references('health_workers.id')
             .onDelete('cascade'))
         .addCheckConstraint(
-          'nurse_registration_details_national_id_number_check',
+          'doctor_registration_details_national_id_number_check',
           sql`national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
         ),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('nurse_registration_details_in_progress').execute()
-  await db.schema.dropTable('nurse_registration_details').execute()
-  await db.schema.dropTable('nurse_specialties').execute()
-  await db.schema.dropType('nurse_specialty').execute()
+  await db.schema.dropTable('doctor_registration_details_in_progress').execute()
+  await db.schema.dropTable('doctor_registration_details').execute()
+  await db.schema.dropTable('doctor_specialties').execute()
+  await db.schema.dropType('doctor_specialty').execute()
 }

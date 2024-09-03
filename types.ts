@@ -467,6 +467,7 @@ export type PharmacistConversationState =
   | 'not_onboarded:reenter_licence_number'
   | 'not_onboarded:enter_name'
   | 'not_onboarded:share_location'
+  | 'not_onboarded:reshare_location'
   | 'not_onboarded:licence_expired'
   // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
@@ -1328,6 +1329,34 @@ export const NURSE_SPECIALTIES: NurseSpecialty[] = [
   'dental',
 ]
 
+export const DOCTOR_SPECIALTIES = [
+  'Allergy and Immunology' as const,
+  'Anesthesiology' as const,
+  'Cardiology' as const,
+  'Dermatology' as const,
+  'Emergency Medicine' as const,
+  'Endocrinology' as const,
+  'Family Medicine' as const,
+  'Gastroenterology' as const,
+  'Geriatrics' as const,
+  'Hematology' as const,
+  'Infectious Disease' as const,
+  'Internal Medicine' as const,
+  'Nephrology' as const,
+  'Neurology' as const,
+  'Obstetrics and Gynecology (OB/GYN)' as const,
+  'Oncology' as const,
+  'Ophthalmology' as const,
+  'Orthopedics' as const,
+  'Otolaryngology (ENT)' as const,
+  'Pediatrics' as const,
+  'Psychiatry' as const,
+  'Pulmonology' as const,
+  'Radiology' as const,
+  'Rheumatology' as const,
+  'Urology' as const,
+]
+
 export type NurseRegistrationDetails = {
   health_worker_id: string
   gender: Gender
@@ -1895,26 +1924,27 @@ export type PatientMedication =
     | { medication_id: string; manufactured_medication_id: null }
   )
 
-export type PrescriptionMedication = {
-  patient_prescription_medication_id: string
-  name: string
+export type MedicationDetails = {
   form: string
   route: string
+  strength_numerator: number
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
+}
+
+export type PrescriptionMedication = MedicationDetails & {
+  prescription_medication_id: string
+  patient_condition_id: string
+  medication_id: string
+  drug_generic_name: string
+  drug_id: string
   special_instructions: string | null
-  start_date: string
-  start_date_formatted: string
+  condition_id: string
   condition_name: string
-  strength_display: string
-  schedules_display: string
-  end_date: string
-  dosage: number
-  strength: number
-  intake_frequency: string
-  is_filled: SqlBool
+  schedules: MedicationSchedule[]
+  filled_at?: Date
 }
 
 export type DurationUnit =
@@ -2969,4 +2999,24 @@ export type Regulator = {
   name: string
   email: string
   avatar_url?: string
+}
+
+export type RenderedPrescription = {
+  id: string
+  created_at: Date
+  updated_at: Date
+  prescriber_id: string
+  patient_id: string
+  alphanumeric_code: string | null
+  prescriber_name: string
+  prescriber_email: string | null
+  prescriber_mobile_number: string | null
+}
+
+export type PrescriptionMedicationWithDrug = PrescriptionMedication & {
+  drug: DrugSearchResult
+}
+
+export type RenderedPrescriptionWithMedications = RenderedPrescription & {
+  medications: PrescriptionMedicationWithDrug[]
 }

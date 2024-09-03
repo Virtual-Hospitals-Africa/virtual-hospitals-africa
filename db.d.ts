@@ -19,6 +19,33 @@ export type DoctorReviewStep =
   | 'referral'
   | 'revert'
 
+export type DoctorSpecialty =
+  | 'Allergy and Immunology'
+  | 'Anesthesiology'
+  | 'Cardiology'
+  | 'Dermatology'
+  | 'Emergency Medicine'
+  | 'Endocrinology'
+  | 'Family Medicine'
+  | 'Gastroenterology'
+  | 'Geriatrics'
+  | 'Hematology'
+  | 'Infectious Disease'
+  | 'Internal Medicine'
+  | 'Nephrology'
+  | 'Neurology'
+  | 'Obstetrics and Gynecology (OB/GYN)'
+  | 'Oncology'
+  | 'Ophthalmology'
+  | 'Orthopedics'
+  | 'Otolaryngology (ENT)'
+  | 'Pediatrics'
+  | 'Psychiatry'
+  | 'Pulmonology'
+  | 'Radiology'
+  | 'Rheumatology'
+  | 'Urology'
+
 export type EncounterReason =
   | 'appointment'
   | 'checkup'
@@ -356,6 +383,33 @@ export interface Districts {
   province_id: string
 }
 
+export interface DoctorRegistrationDetails {
+  address_id: string | null
+  approved_by: string | null
+  created_at: Generated<Timestamp>
+  date_of_birth: Timestamp
+  date_of_first_practice: Timestamp
+  doctor_practicing_cert_media_id: string | null
+  face_picture_media_id: string | null
+  gender: Gender
+  health_worker_id: string
+  id: Generated<string>
+  mobile_number: string
+  national_id_media_id: string | null
+  national_id_number: string
+  ncz_registration_card_media_id: string | null
+  ncz_registration_number: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface DoctorRegistrationDetailsInProgress {
+  created_at: Generated<Timestamp>
+  data: Generated<Json>
+  health_worker_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface DoctorReview {
   order: Int8
   step: DoctorReviewStep
@@ -392,6 +446,14 @@ export interface DoctorReviewSteps {
   doctor_review_id: string
   id: Generated<string>
   step: DoctorReviewStep
+  updated_at: Generated<Timestamp>
+}
+
+export interface DoctorSpecialties {
+  created_at: Generated<Timestamp>
+  employee_id: string
+  id: Generated<string>
+  specialty: DoctorSpecialty
   updated_at: Generated<Timestamp>
 }
 
@@ -1017,23 +1079,6 @@ export interface PatientOccupations {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientPrescriptionMedications {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_condition_medication_id: string
-  prescription_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientPrescriptionMedicationsFilled {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_prescription_medication_id: string
-  pharmacist_id: string
-  pharmacy_id: string | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
@@ -1157,6 +1202,23 @@ export interface PrescriptionCodes {
   created_at: Generated<Timestamp>
   id: Generated<string>
   prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PrescriptionMedications {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_condition_medication_id: string
+  prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PrescriptionMedicationsFilled {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  prescription_medication_id: string
+  pharmacist_id: string
+  pharmacy_id: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1349,10 +1411,13 @@ export interface DB {
   diagnoses: Diagnoses
   diagnostic_tests: DiagnosticTests
   districts: Districts
+  doctor_registration_details: DoctorRegistrationDetails
+  doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
   doctor_review: DoctorReview
   doctor_review_requests: DoctorReviewRequests
   doctor_review_steps: DoctorReviewSteps
   doctor_reviews: DoctorReviews
+  doctor_specialties: DoctorSpecialties
   drugs: Drugs
   employment: Employment
   encounter: Encounter2
@@ -1415,8 +1480,6 @@ export interface DB {
   patient_measurements: PatientMeasurements
   patient_nearest_organizations: PatientNearestOrganizations
   patient_occupations: PatientOccupations
-  patient_prescription_medications: PatientPrescriptionMedications
-  patient_prescription_medications_filled: PatientPrescriptionMedicationsFilled
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
@@ -1428,6 +1491,8 @@ export interface DB {
   pharmacy_employment: PharmacyEmployment
   Practitioner: Practitioner
   prescription_codes: PrescriptionCodes
+  prescription_medications: PrescriptionMedications
+  prescription_medications_filled: PrescriptionMedicationsFilled
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers

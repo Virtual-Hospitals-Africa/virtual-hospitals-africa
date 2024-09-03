@@ -4,7 +4,7 @@ import { PreExistingConditionWithDrugs } from '../../types.ts'
 import { JSX } from 'preact'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import Comorbidity from './Comorbidity.tsx'
-import Medication from './Medication.tsx'
+import Medication from '../medication/Input.tsx'
 import FormRow from '../form/Row.tsx'
 
 export type ConditionState = {

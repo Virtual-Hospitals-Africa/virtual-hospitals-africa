@@ -1,52 +1,63 @@
 import { sql } from 'kysely'
 import {
+  Maybe,
   MedicationSchedule,
-  PatientMedicationUpsert,
-  PrescriptionMedication,
+  RenderedPrescription,
+  RenderedPrescriptionWithMedications,
   TrxOrDb,
 } from '../../types.ts'
-import * as medications from './medications.ts'
-import { isoDate } from '../helpers.ts'
+import * as drugs from './drugs.ts'
+import * as prescription_medications from './prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { durationEndDate } from '../../util/date.ts'
-import {
-  assertIntakeFrequency,
-  dosageDisplay,
-  IntakeDosesPerDay,
-  intakeFrequencyText,
-} from '../../shared/medication.ts'
-import omit from '../../util/omit.ts'
-import { durationBetween } from '../../util/date.ts'
-import { pluralize } from '../../util/pluralize.ts'
-import { longFormattedDate } from '../helpers.ts'
+import { debugLog } from '../helpers.ts'
 
-export type PrescriptionCondition = {
+export type PrescriptionMedicationInsert = {
+  route: string
   patient_condition_id: string
-  start_date: string
-  medications: PatientMedicationUpsert[]
+  medication_id: string
+  strength: number
+  special_instructions?: Maybe<string>
+  schedules: MedicationSchedule[]
 }
 
-export type MedicationsFilled = {
-  patient_prescription_medication_id: string
-  pharmacist_id: string
-  pharmacy_id?: string
-}
-
-export function getById(
-  trx: TrxOrDb,
-  id: string,
-) {
-  return trx
+const getBase = (trx: TrxOrDb) =>
+  trx
     .selectFrom('prescriptions')
     .leftJoin(
       'prescription_codes',
       'prescriptions.id',
       'prescription_codes.prescription_id',
     )
-    .where('prescriptions.id', '=', id)
+    .innerJoin(
+      'employment',
+      'employment.id',
+      'prescriptions.prescriber_id',
+    )
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .leftJoin(
+      'doctor_registration_details',
+      'doctor_registration_details.id',
+      'health_workers.id',
+    )
     .selectAll('prescriptions')
     .select('prescription_codes.alphanumeric_code')
+    // TODO: remove this once nurses can prescribe medications
+    .select(sql<string>`'Dr. ' || health_workers.name`.as('prescriber_name'))
+    .select('health_workers.email as prescriber_email')
+    .select(
+      'doctor_registration_details.mobile_number as prescriber_mobile_number',
+    )
+
+export function getById(
+  trx: TrxOrDb,
+  id: string,
+): Promise<RenderedPrescription | undefined> {
+  return getBase(trx)
+    .where('prescriptions.id', '=', id)
     .executeTakeFirst()
 }
 
@@ -73,205 +84,110 @@ export function getByCode(
 
 export async function insert(
   trx: TrxOrDb,
-  values: ({
-    prescriber_id: string
-    patient_id: string
-    prescribing: PrescriptionCondition[]
-  } & ({
-    doctor_review_id: string
-    patient_encounter_id?: never
-  } | {
-    doctor_review_id?: never
-    patient_encounter_id: string
-  })),
+  { prescribing, ...to_insert }:
+    & {
+      prescriber_id: string
+      patient_id: string
+      prescribing: PrescriptionMedicationInsert[]
+    }
+    & ({
+      doctor_review_id: string
+      patient_encounter_id?: never
+    } | {
+      doctor_review_id?: never
+      patient_encounter_id: string
+    }),
 ) {
-  assert(values.prescribing.length > 0)
+  assert(prescribing.length > 0)
 
-  const prescription = await trx
+  const { id: prescription_id } = await trx
     .insertInto('prescriptions')
-    .values({
-      prescriber_id: values.prescriber_id,
-      patient_id: values.patient_id,
-      doctor_review_id: values.doctor_review_id,
-      patient_encounter_id: values.patient_encounter_id,
-    })
-    .returningAll()
+    .values(to_insert)
+    .returning('id')
     .executeTakeFirstOrThrow()
 
-  await medications.insert(
-    trx,
-    prescription.id,
-    values.prescribing,
+  await trx
+    .insertInto('prescription_codes')
+    .values({ prescription_id })
+    .executeTakeFirstOrThrow()
+
+  debugLog(
+    trx
+      .insertInto('patient_condition_medications')
+      .values(
+        prescribing.map((
+          {
+            schedules,
+            route,
+            patient_condition_id,
+            medication_id,
+            strength,
+            special_instructions,
+          },
+        ) => ({
+          route,
+          patient_condition_id,
+          medication_id,
+          strength,
+          special_instructions,
+          schedules: sql<string[]>`
+          ARRAY[${
+            sql.raw(
+              schedules.map((schedule) =>
+                `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
+              ).join(','),
+            )
+          }]::medication_schedule[]
+        `,
+        })),
+      )
+      .returning('id'),
   )
 
-  return prescription
-}
-
-export async function getMedicationsByPrescriptionId(
-  trx: TrxOrDb,
-  prescription_id: string,
-  options?: {
-    unfilled?: boolean
-    filled?: boolean
-  },
-): Promise<PrescriptionMedication[]> {
-  let query = trx
-    .selectFrom('prescriptions')
-    .innerJoin(
-      'patient_prescription_medications',
-      'prescriptions.id',
-      'patient_prescription_medications.prescription_id',
+  const condition_medications = await trx
+    .insertInto('patient_condition_medications')
+    .values(
+      prescribing.map((
+        {
+          schedules,
+          route,
+          patient_condition_id,
+          medication_id,
+          strength,
+          special_instructions,
+        },
+      ) => ({
+        route,
+        patient_condition_id,
+        medication_id,
+        strength,
+        special_instructions,
+        schedules: sql<string[]>`
+          ARRAY[${
+          sql.raw(
+            schedules.map((schedule) =>
+              `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
+            ).join(','),
+          )
+        }]::medication_schedule[]
+        `,
+      })),
     )
-    .innerJoin(
-      'patient_condition_medications',
-      'patient_prescription_medications.patient_condition_medication_id',
-      'patient_condition_medications.id',
-    )
-    .innerJoin(
-      'medications',
-      'patient_condition_medications.medication_id',
-      'medications.id',
-    )
-    .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
-    .innerJoin(
-      'patient_conditions',
-      'patient_conditions.id',
-      'patient_condition_medications.patient_condition_id',
-    )
-    .innerJoin('conditions', 'patient_conditions.condition_id', 'conditions.id')
-    .leftJoin(
-      'patient_prescription_medications_filled',
-      'patient_prescription_medications_filled.patient_prescription_medication_id',
-      'patient_prescription_medications.id',
-    )
-    .where('prescriptions.id', '=', prescription_id)
-    .select((eb) => [
-      'patient_prescription_medications.id as patient_prescription_medication_id',
-      'drugs.generic_name as name',
-      'medications.form',
-      'patient_condition_medications.route',
-      'patient_condition_medications.strength',
-      'medications.strength_numerator_unit',
-      'medications.strength_denominator',
-      'medications.strength_denominator_unit',
-      'medications.strength_denominator_is_units',
-      'patient_condition_medications.special_instructions',
-      'conditions.name as condition_name',
-      eb('patient_prescription_medications_filled.id', 'is not', null).as(
-        'is_filled',
-      ),
-      isoDate(eb.ref('patient_condition_medications.start_date')).$notNull().as(
-        'start_date',
-      ),
-      longFormattedDate('patient_condition_medications.start_date').$notNull()
-        .as(
-          'start_date_formatted',
-        ),
-      sql<
-        MedicationSchedule[]
-      >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-    ])
-
-  if (options?.unfilled) {
-    assert(!options.filled)
-    query = query.where(
-      'patient_prescription_medications_filled.id',
-      'is',
-      null,
-    )
-  }
-  if (options?.filled) {
-    assert(!options.unfilled)
-    query = query.where(
-      'patient_prescription_medications_filled.id',
-      'is not',
-      null,
-    )
-  }
-
-  const patient_medications = await query.execute()
-
-  return patient_medications
-    .map(({ schedules, ...medication }) => {
-      assertEquals(schedules.length, 1)
-      assert(medication.start_date)
-      const [schedule] = schedules
-      const end_date = durationEndDate(medication.start_date, schedule)
-      assert(
-        end_date,
-        'Every medication must have an end date on the prescription.',
-      )
-      return {
-        ...medication,
-        intake_frequency: schedule.frequency,
-        end_date: end_date,
-        dosage: schedule.dosage,
-        strength: Number(medication.strength),
-        strength_denominator: Number(medication.strength_denominator),
-      }
-    })
-    .map((m) => {
-      const duration = 1 + durationBetween(m.start_date, m.end_date).duration
-      return {
-        ...m,
-        strength_display: `${m.strength}${m.strength_numerator_unit}/${
-          m
-              .strength_denominator === 1
-            ? ''
-            : m.strength_denominator
-        }${m.strength_denominator_unit}`,
-        schedules_display: `${
-          intakeFrequencyText(m.intake_frequency)
-        } for ${duration} ${pluralize('day', duration)}`,
-      }
-    })
-}
-
-export function getPrescriberByPrescriptionId(
-  trx: TrxOrDb,
-  prescription_id: string,
-) {
-  return trx
-    .selectFrom('prescriptions')
-    .innerJoin(
-      'patient_encounter_providers',
-      'patient_encounter_providers.id',
-      'prescriptions.prescriber_id',
-    )
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'patient_encounter_providers.provider_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .where('prescriptions.id', '=', prescription_id)
-    .select('health_workers.name')
-    .executeTakeFirst()
-}
-
-export function dispenseMedications(
-  trx: TrxOrDb,
-  dispensed_medications: MedicationsFilled[],
-) {
-  return trx
-    .insertInto('patient_prescription_medications_filled')
-    .values(dispensed_medications)
-    .returningAll()
+    .returning('id')
     .execute()
-}
 
-export function deleteFilledMedicationsById(
-  trx: TrxOrDb,
-  filled_id: string[],
-) {
-  return trx
-    .deleteFrom('patient_prescription_medications_filled')
-    .where('patient_prescription_medication_id', 'in', filled_id)
+  const prescription_medications = condition_medications
+    .map((medication) => ({
+      patient_condition_medication_id: medication.id,
+      prescription_id: prescription_id,
+    }))
+
+  await trx
+    .insertInto('prescription_medications')
+    .values(prescription_medications)
     .execute()
+
+  return { prescription_id }
 }
 
 export function deleteCode(
@@ -284,33 +200,40 @@ export function deleteCode(
     .execute()
 }
 
-// 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
-export function describeMedication(
-  medication: PrescriptionMedication,
-): string {
-  assert(typeof medication.start_date === 'string')
-  assert(typeof medication.end_date === 'string')
-  const duration = durationBetween(medication.start_date, medication.end_date)
-    .duration + 1
+export async function getFromReview(
+  trx: TrxOrDb,
+  { review_id }: { review_id: string },
+): Promise<RenderedPrescriptionWithMedications | null> {
+  const prescription = await getBase(trx)
+    .where('prescriptions.doctor_review_id', '=', review_id)
+    .executeTakeFirst()
 
-  assert(typeof medication.intake_frequency === 'string')
-  assertIntakeFrequency(medication.intake_frequency)
+  if (!prescription) return null
 
-  const dosesPerDay = IntakeDosesPerDay[medication.intake_frequency]
+  const medications_of_prescription = await prescription_medications
+    .getByPrescriptionId(
+      trx,
+      prescription.id,
+    )
 
-  const singleDosage = dosageDisplay({
-    dosage: medication.dosage / medication.strength_denominator,
-    ...omit(medication, ['dosage']),
+  const drug_ids = medications_of_prescription.map((m) => m.drug_id)
+
+  const drugs_of_medications = await drugs.search(trx, {
+    ids: drug_ids,
   })
 
-  const totalDosage = dosageDisplay({
-    dosage: medication.dosage / medication.strength_denominator,
-    totalDosageMultiplier: duration * dosesPerDay,
-    ...omit(medication, ['dosage']),
-  })
+  const medications_with_drugs = medications_of_prescription.map(
+    (medication) => {
+      const drug = drugs_of_medications.find((drug) =>
+        drug.id === medication.drug_id
+      )
+      assert(drug)
+      return { ...medication, drug }
+    },
+  )
 
-  return `*${medication.name}* : ${singleDosage} per dose * ${dosesPerDay} ${
-    pluralize('dose', dosesPerDay)
-  } per day * ${duration} ${pluralize('day', duration)} = ${totalDosage}`
-    .toLowerCase()
+  return {
+    ...prescription,
+    medications: medications_with_drugs,
+  }
 }

@@ -1,8 +1,6 @@
 import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
-// import * as pharmacists from '../../db/models/pharmacists.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
-// import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export async function handlePrescriptionCode(
   trx: TrxOrDb,

@@ -1,12 +1,12 @@
 import {
   ConversationStates,
-  Location,
   PharmacistChatbotUserState,
   PharmacistConversationState,
   TrxOrDb,
   WhatsAppSingleSendable,
 } from '../../types.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
@@ -21,9 +21,8 @@ import {
   dispenseSkip,
   dispenseType,
   getPrescriber,
-  PharmacistStateData,
-  updateMedications,
 } from './prescriptionMedications.ts'
+import { handleShareLocation } from './handleShareLocation.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -166,30 +165,13 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'get_location',
     prompt:
       'For regulatory purpose, we will need to have your current location, can you share that to us?',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      assert(pharmacistState.chatbot_user.entity_id)
-      assert(pharmacistState.unhandled_message.trimmed_body)
-      const locationMessage: Location = JSON.parse(
-        pharmacistState.unhandled_message.trimmed_body,
-      )
-      const currentLocation: Location = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
-      }
-
-      //try to save it as data first and see if it works
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            ...pharmacistState.chatbot_user.data,
-            currentLocation,
-          },
-        },
-      )
-      return 'onboarded:fill_prescription:enter_code' as const
-    },
+    onExit: handleShareLocation,
+  },
+  'not_onboarded:reshare_location': {
+    type: 'get_location',
+    prompt:
+      "Sorry, we couldn't process that. Please click the + icon in the lower left corner to share your location and proceed",
+    onExit: handleShareLocation,
   },
   'onboarded:view_inventory': {
     type: 'select',
@@ -200,7 +182,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         title: 'Back to main menu',
         onExit: 'initial_message',
       },
-      { id: 'end_of_demo', title: 'End of Demo', onExit: 'end_of_demo' },
     ],
   },
   'onboarded:fill_prescription:enter_code': {
@@ -227,7 +208,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
     prompt: '',
-    async getMessages(_trx, pharmacistState) {
+    async getMessages(trx, pharmacistState) {
       const { prescription_id, prescription_code } =
         pharmacistState.chatbot_user.data
       assert(typeof prescription_id === 'string')
@@ -237,20 +218,20 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
-      await updateMedications(
-        _trx,
-        pharmacistState,
-      )
+      const unfilled_medications = await prescription_medications
+        .getByPrescriptionId(
+          trx,
+          prescription_id,
+          { unfilled: true },
+        )
 
-      const { undispensed_medications } = pharmacistState
-        .chatbot_user.data as PharmacistStateData
+      assert(unfilled_medications.length > 0)
 
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
-        // ${ medications.join('\n* ')}\n\n
         messageBody:
-          `Here is your prescription\n\nThese medications haven't been dispensed\n* ${
-            undispensed_medications.join('\n* ')
+          `Here is the patient's prescription including the following medications:\n* ${
+            unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
           }`,
         file_path,
       }

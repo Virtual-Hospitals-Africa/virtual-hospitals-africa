@@ -320,7 +320,7 @@ export function completedStep(
     .execute()
 }
 
-export function upsertRequest(
+export async function upsertRequest(
   trx: TrxOrDb,
   { id, requesting_doctor_id, ...values }: {
     id?: Maybe<string>
@@ -341,15 +341,20 @@ export function upsertRequest(
         .select('id')
     ),
   }
-  const upsertting = id
-    ? trx.updateTable('doctor_review_requests')
+
+  if (id) {
+    await trx.updateTable('doctor_review_requests')
       .set(to_upsert)
       .where('id', '=', id)
-    : trx.insertInto('doctor_review_requests')
-      .values(to_upsert)
-      .returning('id')
+      .executeTakeFirstOrThrow()
 
-  return upsertting.executeTakeFirstOrThrow()
+    return { id }
+  }
+
+  return trx.insertInto('doctor_review_requests')
+    .values(to_upsert)
+    .returning('id')
+    .executeTakeFirstOrThrow()
 }
 
 export function deleteRequest(trx: TrxOrDb, id: string) {

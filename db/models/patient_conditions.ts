@@ -13,13 +13,16 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import { durationEndDate, isISODateString } from '../../util/date.ts'
+import {
+  differenceInDays,
+  durationEndDate,
+  isISODateString,
+} from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
-import { processMedications } from './medications.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -134,10 +137,32 @@ async function upsertPreExistingCondition(
     .values(comorbidities)
     .execute()
 
-  const medications = processMedications({
-    patient_condition_id: parent_condition.id,
-    start_date: condition.start_date,
-    medications: condition.medications || [],
+  const medications = (condition.medications || []).map((medication) => {
+    const start_date = medication.start_date || condition.start_date
+
+    const { duration, duration_unit } = medication.end_date
+      ? {
+        duration: differenceInDays(medication.end_date, start_date),
+        duration_unit: 'days',
+      }
+      : { duration: 1, duration_unit: 'indefinitely' }
+    return {
+      patient_condition_id: parent_condition.id,
+      medication_id: (!medication.manufactured_medication_id &&
+        medication.medication_id) ||
+        null, // omit medication_id if manufactured_medication_id is present
+      manufactured_medication_id: medication.manufactured_medication_id ||
+        null,
+      strength: medication.strength,
+      route: medication.route,
+      schedules: sql<string[]>`
+          ARRAY[
+          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
+          ]::medication_schedule[]
+      `,
+      start_date,
+      special_instructions: medication.special_instructions || null,
+    }
   })
 
   const inserting_medications = medications.length && trx

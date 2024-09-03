@@ -19,9 +19,13 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { Signal } from '@preact/signals'
 import { Label } from '../../components/library/Label.tsx'
 
+export const NoLabelButSpaceAsPlaceholder = Symbol(
+  'NoLabelButSpaceAsPlaceholder',
+)
+
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
-  label?: Maybe<string>
+  label?: Maybe<string | typeof NoLabelButSpaceAsPlaceholder>
   required?: boolean
   disabled?: boolean
   readonly?: boolean
@@ -80,8 +84,10 @@ function LabeledInput(
 ) {
   return (
     <Label
-      className={className}
-      label={label && (
+      className={label === NoLabelButSpaceAsPlaceholder
+        ? cls(className, 'pt-6')
+        : className}
+      label={label && (label !== NoLabelButSpaceAsPlaceholder) && (
         <span className='mb-1 ml-0.5'>
           {label}
           {label && required && <sup>*</sup>}

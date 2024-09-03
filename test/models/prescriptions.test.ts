@@ -1,10 +1,12 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-// import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
+import * as patient_intake from '../../db/models/patient_intake.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patients from '../../db/models/patients.ts'
+import * as diagnoses from '../../db/models/diagnoses.ts'
+import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import { sql } from 'kysely'
 
@@ -13,9 +15,14 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'makes a prescription for a given prescriber and patient with 1 or more medications',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, {
+        const nurse = await addTestHealthWorker(trx, {
           scenario: 'nurse',
         })
+        const doctor = await addTestHealthWorker(trx, {
+          scenario: 'doctor',
+          organization_id: '00000000-0000-0000-0000-000000000002',
+        })
+
         const patient = await patients.insert(trx, { name: 'Billy Bob' })
         const encounter = await patient_encounters.upsert(
           trx,
@@ -24,31 +31,47 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
             patient_id: patient.id,
             reason: 'seeking treatment',
             notes: null,
-            provider_ids: [healthWorker.employee_id!],
+            provider_ids: [nurse.employee_id!],
           },
         )
-
-        await patient_conditions.upsertPreExisting(trx, {
+        await patient_intake.updateCompletion(trx, {
           patient_id: patient.id,
-          employment_id: healthWorker.employee_id!,
-          patient_conditions: [
-            {
-              id: 'c_22401',
-              start_date: '2020-01-01',
-              medications: [],
-            },
-            {
-              id: 'c_9757',
-              start_date: '2020-01-03',
-              medications: [],
-            },
-          ],
+          intake_step_just_completed: 'summary',
+          completed_intake: true,
         })
 
-        const patient_condition = await trx.selectFrom('patient_conditions')
-          .selectAll()
-          .where('patient_id', '=', patient.id)
-          .execute()
+        const employed_doctor = await health_workers.getEmployed(trx, {
+          health_worker_id: doctor.id,
+        })
+
+        await doctor_reviews.upsertRequest(trx, {
+          patient_id: patient.id,
+          requesting_doctor_id: doctor.employee_id!,
+          encounter_id: encounter.id,
+          requested_by: nurse.employee_id!,
+        })
+
+        await doctor_reviews.finalizeRequest(trx, {
+          patient_encounter_id: encounter.id,
+          requested_by: nurse.employee_id!,
+        })
+
+        const { doctor_review } = await doctor_reviews.addSelfAsReviewer(trx, {
+          patient_id: patient.id,
+          health_worker: employed_doctor,
+        })
+
+        await diagnoses.upsertForReview(trx, {
+          review: doctor_review,
+          diagnoses: [{
+            condition_id: 'c_22401',
+            start_date: '2020-01-01',
+          }],
+        })
+
+        const patient_diagnoses = await diagnoses.getFromReview(trx, {
+          review_id: doctor_review.review_id,
+        })
 
         const tablet = await trx
           .selectFrom('manufactured_medications')
@@ -76,33 +99,11 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         const result = await prescriptions.insert(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
+          doctor_review_id: doctor_review.review_id,
           prescribing: [
             {
-              patient_condition_id: patient_condition[0].id,
+              patient_condition_id: patient_diagnoses[0].id,
               start_date: '2020-01-01',
-              medications: [
-                {
-                  manufactured_medication_id: tablet.id,
-                  medication_id: null,
-                  dosage: 1,
-                  strength: tablet.strength_numerators[0],
-                  intake_frequency: 'qw',
-                  route: tablet.routes[0],
-                },
-                {
-                  manufactured_medication_id: tablet.id,
-                  medication_id: null,
-                  dosage: 1,
-                  strength: tablet.strength_numerators[0],
-                  intake_frequency: 'qw',
-                  route: tablet.routes[0],
-                  start_date: '2020-01-02',
-                },
-              ],
-            },
-            {
-              patient_condition_id: patient_condition[1].id,
-              start_date: '2020-01-03',
               medications: [
                 {
                   manufactured_medication_id: tablet.id,
@@ -120,7 +121,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         // Check prescriptions
         assertEquals(
           result.prescriber_id,
-          encounter.providers[0].encounter_provider_id!,
+          doctor_review.employment_id,
         )
         assertEquals(
           result.patient_id,
@@ -131,7 +132,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         const patient_medication = await trx
           .selectFrom('patient_condition_medications')
           .where('manufactured_medication_id', '=', tablet.id)
-          .where('patient_condition_id', '=', patient_condition[0].id)
+          .where('patient_condition_id', '=', patient_diagnoses[0].id)
           .select(sql`TO_JSON(schedules)`.as('schedules'))
           .select('id')
           .executeTakeFirstOrThrow()
@@ -143,9 +144,9 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           frequency: 'qw',
         }])
 
-        // Check patient_prescription_medications
+        // Check prescription_medications
         const prescription_medication = await trx
-          .selectFrom('patient_prescription_medications')
+          .selectFrom('prescription_medications')
           .where('prescription_id', '=', result.id)
           .select('patient_condition_medication_id')
           .executeTakeFirstOrThrow()

@@ -10,6 +10,7 @@ import {
   dosageDisplay,
   Dosages,
   IntakeFrequencies,
+  strengthDisplay,
 } from '../../shared/medication.ts'
 
 export default function DrugInput({
@@ -34,7 +35,7 @@ export default function DrugInput({
     string | null
   >(value?.manufactured_medication_id ?? null)
 
-  const [strength, setStrength] = useState<
+  const [strength_numerator, setStrengthNumerator] = useState<
     number | null
   >(value?.strength ?? null)
   const [intake_frequency, setIntakeFrequency] = useState<
@@ -71,18 +72,18 @@ export default function DrugInput({
 
   useEffect(() => {
     if (!medication) return
-    if (strength) return
+    if (strength_numerator) return
     if (medication.strength_numerators.length === 1) {
-      setStrength(medication.strength_numerators[0])
+      setStrengthNumerator(medication.strength_numerators[0])
     }
   }, [medication])
 
   useEffect(() => {
     if (!medication) return
-    if (!strength) return
+    if (!strength_numerator) return
     if (dosage) return
     setDosage(medication.strength_denominator)
-  }, [medication, strength])
+  }, [medication, strength_numerator])
 
   return (
     <div className='w-full justify-normal'>
@@ -95,7 +96,7 @@ export default function DrugInput({
           onSelect={(drug) => {
             setDrug(drug ?? null)
             setMedicationId(null)
-            setStrength(null)
+            setStrengthNumerator(null)
             setDosage(null)
             setIntakeFrequency(null)
           }}
@@ -157,21 +158,20 @@ export default function DrugInput({
           disabled={!medication}
           onChange={(event) =>
             event.currentTarget.value &&
-            setStrength(Number(event.currentTarget.value))}
+            setStrengthNumerator(Number(event.currentTarget.value))}
         >
           <option value=''>Select Strength</option>
-          {medication && strength_options?.map((numerator) => (
+          {medication && strength_options?.map((strength_numerator) => (
             <option
-              value={numerator}
-              selected={strength === numerator}
+              value={strength_numerator}
+              selected={strength_numerator === strength_numerator}
             >
-              {numerator}
-              {medication
-                .strength_numerator_unit}/{medication
-                  .strength_denominator === 1
-                ? ''
-                : medication.strength_denominator}
-              {medication.strength_denominator_unit}
+              {strengthDisplay({
+                strength_numerator,
+                strength_numerator_unit: medication.strength_numerator_unit,
+                strength_denominator: medication.strength_denominator,
+                strength_denominator_unit: medication.strength_denominator_unit,
+              })}
             </option>
           ))}
         </Select>
@@ -180,10 +180,10 @@ export default function DrugInput({
         <Select
           name={`${name}.dosage`}
           label='Dosage'
-          disabled={!(medication && strength)}
+          disabled={!(medication && strength_numerator)}
         >
           <option value=''>Select Dosage</option>
-          {medication && strength &&
+          {medication && strength_numerator &&
             Dosages.map(([dosage_text, dosage_value]) => (
               <option
                 value={dosage_value * medication.strength_denominator}
@@ -193,7 +193,7 @@ export default function DrugInput({
                 {dosageDisplay({
                   dosage_text,
                   dosage: dosage_value,
-                  strength,
+                  strength_numerator,
                   ...medication,
                 })}
               </option>
@@ -205,7 +205,7 @@ export default function DrugInput({
           label='Frequency'
           disabled={!drug}
         >
-          <option value=''>Select Intake</option>
+          <option value=''>Select Frequency</option>
           {drug &&
             Object.entries(IntakeFrequencies).map(([code, label]) => (
               <option
