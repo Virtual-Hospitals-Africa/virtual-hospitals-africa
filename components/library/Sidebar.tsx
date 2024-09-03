@@ -18,6 +18,9 @@ import { ArrowRightOnRectangleIcon } from './icons/heroicons/outline.tsx'
 import { ClockIcon } from './icons/heroicons/outline.tsx'
 import { UserGroupIcon } from './icons/heroicons/outline.tsx'
 import { replaceParams } from '../../util/replaceParams.ts'
+import { MedicineIcon } from './icons/Medicines.tsx'
+import { PharmaciesIcon } from './icons/Pharmacies.tsx'
+import { UsersIcon } from './icons/heroicons/outline.tsx'
 
 export type SidebarProps = {
   top: {
@@ -88,13 +91,13 @@ const regulator_home_page_nav_links: LinkDef[] = [
   {
     route: '/regulator/pharmacists',
     title: 'Pharmacists',
-    Icon: ClockIcon,
+    Icon: UsersIcon,
   },
-  { route: '/regulator/pharmacies', title: 'Pharmacies', Icon: UserGroupIcon },
+  { route: '/regulator/pharmacies', title: 'Pharmacies', Icon: PharmaciesIcon },
   {
     route: '/regulator/medicines',
     title: 'Medicines',
-    Icon: IdentificationIcon,
+    Icon: MedicineIcon,
   },
   {
     route: '/regulator/logout',
