@@ -4,7 +4,6 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as patient_intake from '../../db/models/patient_intake.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as diagnoses from '../../db/models/diagnoses.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
@@ -67,7 +66,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           diagnoses: [{
             condition_id: 'c_22401',
             start_date: '2020-01-01',
-          }]
+          }],
         })
 
         const patient_diagnoses = await diagnoses.getFromReview(trx, {
@@ -122,7 +121,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         // Check prescriptions
         assertEquals(
           result.prescriber_id,
-          doctor_review.employment_id
+          doctor_review.employment_id,
         )
         assertEquals(
           result.patient_id,
@@ -145,9 +144,9 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           frequency: 'qw',
         }])
 
-        // Check patient_prescription_medications
+        // Check prescription_medications
         const prescription_medication = await trx
-          .selectFrom('patient_prescription_medications')
+          .selectFrom('prescription_medications')
           .where('prescription_id', '=', result.id)
           .select('patient_condition_medication_id')
           .executeTakeFirstOrThrow()

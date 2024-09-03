@@ -1328,6 +1328,34 @@ export const NURSE_SPECIALTIES: NurseSpecialty[] = [
   'dental',
 ]
 
+export const DOCTOR_SPECIALTIES = [
+  'Allergy and Immunology' as const,
+  'Anesthesiology' as const,
+  'Cardiology' as const,
+  'Dermatology' as const,
+  'Emergency Medicine' as const,
+  'Endocrinology' as const,
+  'Family Medicine' as const,
+  'Gastroenterology' as const,
+  'Geriatrics' as const,
+  'Hematology' as const,
+  'Infectious Disease' as const,
+  'Internal Medicine' as const,
+  'Nephrology' as const,
+  'Neurology' as const,
+  'Obstetrics and Gynecology (OB/GYN)' as const,
+  'Oncology' as const,
+  'Ophthalmology' as const,
+  'Orthopedics' as const,
+  'Otolaryngology (ENT)' as const,
+  'Pediatrics' as const,
+  'Psychiatry' as const,
+  'Pulmonology' as const,
+  'Radiology' as const,
+  'Rheumatology' as const,
+  'Urology' as const,
+]
+
 export type NurseRegistrationDetails = {
   health_worker_id: string
   gender: Gender
@@ -1895,25 +1923,23 @@ export type PatientMedication =
     | { medication_id: string; manufactured_medication_id: null }
   )
 
-export type PrescriptionMedication = {
-  patient_prescription_medication_id: string
-  name: string
+export type MedicationDetails = {
   form: string
   route: string
+  strength_numerator: number
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
+}
+
+export type PrescriptionMedication = MedicationDetails & {
+  prescription_medication_id: string
+  drug_generic_name: string
   special_instructions: string | null
   condition_name: string
-  strength_display: string
-  schedules_display: string
-  dosage: number
-  strength: number
-  intake_frequency: string
-  filled?: {
-    at: Date
-  }
+  schedules: MedicationSchedule[]
+  filled_at?: Date
 }
 
 export type DurationUnit =

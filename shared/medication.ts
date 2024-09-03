@@ -1,6 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import memoize from '../util/memoize.ts'
 import isNumber from '../util/isNumber.ts'
+import { MedicationDetails, MedicationSchedule, PrescriptionMedication } from '../types.ts'
+import { unpluralize } from '../util/pluralize.ts'
 
 export const Dosages: [string, number][] = [
   ['¼', 0.25],
@@ -75,41 +77,41 @@ export function assertIntakeFrequency(
 }
 
 export const IntakeDosesPerDay = {
-  ac: 3, // 3 doses per day
-  am: 1, // 1 doses per day
-  bd: 2, // 2 doses per day
-  nocte: 1, // 1 doses per day
-  od: 1, // 1 doses per day
-  pm: 1, // 1 doses per day
-  q15: 96, // 96 doses per day
-  q30: 48, // 48 doses per day
-  q1h: 24, // 24 doses per day
-  q2h: 12, // 12 doses per day
-  q4h: 6, // 6 doses per day
-  q6h: 4, // 4 doses per day
-  q8h: 3, // 3 doses per day
-  qd: 1, // 1 doses per day
-  qid: 4, // 4 doses per day
-  qod: 0.5, // 0.5 doses per day
-  qs: 1, // 1 doses per day
-  mane: 1, // 1 doses per day
-  qmane: 1, // 1 doses per day
-  qn: 1, // 1 doses per day
-  stat: 1, // 1 doses per day
-  tds: 3, // 3 doses per day
-  q24h: 1, // 1 dose per day
-  q30h: 0.8, // 0.8 dose per day
-  q48h: 0.5, // 0.5 dose per day
-  q72h: 1 / 3, // 1/3 dose per day
-  hs: 1, // 1 doses per day
-  qhs: 1, // 1 doses per day
-  qw: 1 / 7, // 1/7 doses per day
-  bw: 2 / 7, // 2/7 doses per day
-  tw: 3 / 7, // 3/7 doses per day
-  qm: 1 / 30, // 1/30 doses per day
-  bm: 2 / 30, // 2/30 doses per day
-  tm: 3 / 30, // 3/30 doses per day
-  prn: 1, // 1 dose per day
+  ac: 3,
+  am: 1,
+  bd: 2,
+  nocte: 1,
+  od: 1,
+  pm: 1,
+  q15: 96,
+  q30: 48,
+  q1h: 24,
+  q2h: 12,
+  q4h: 6,
+  q6h: 4,
+  q8h: 3,
+  qd: 1,
+  qid: 4,
+  qod: 0.5,
+  qs: 1,
+  mane: 1,
+  qmane: 1,
+  qn: 1,
+  stat: 1,
+  tds: 3,
+  q24h: 1,
+  q30h: 0.8,
+  q48h: 0.5,
+  q72h: 1 / 3,
+  hs: 1,
+  qhs: 1,
+  qw: 1 / 7,
+  bw: 2 / 7,
+  tw: 3 / 7,
+  qm: 1 / 30,
+  bm: 2 / 30,
+  tm: 3 / 30,
+  prn: 1,
 } satisfies {
   [frequency in IntakeFrequency]: number
 }
@@ -118,8 +120,8 @@ type DosageDisplayParams = {
   dosage_text?: string
   dosage: number
   totalDosageMultiplier?: number
-  strength: number | string
-  strength_denominator: number | string
+  strength_numerator: number
+  strength_denominator: number
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   strength_numerator_unit: string
@@ -141,7 +143,7 @@ export const denominatorPlural = memoize(
 
 export function dosageDisplay(params: DosageDisplayParams) {
   const {
-    strength,
+    strength_numerator,
     strength_denominator,
     strength_numerator_unit,
     strength_denominator_unit,
@@ -150,7 +152,9 @@ export function dosageDisplay(params: DosageDisplayParams) {
     dosage,
     totalDosageMultiplier,
   } = params
-  const numeric_strength = isNumber(strength) ? strength : parseFloat(strength)
+  const numeric_strength = isNumber(strength_numerator)
+    ? strength_numerator
+    : parseFloat(strength_numerator)
   assert(numeric_strength)
   const numeric_strength_denominator = isNumber(strength_denominator)
     ? strength_denominator
@@ -193,3 +197,67 @@ export function containerLabels(form: string) {
       return { size: 'Container size', number_of: 'Number of containers' }
   }
 }
+
+// 20MCG/INFUSION
+export function strengthDisplay({
+  strength_numerator,
+  strength_numerator_unit,
+  strength_denominator,
+  strength_denominator_unit,
+}: {
+  strength_numerator: number
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
+}): string {
+  let strength_display = `${strength_numerator}${strength_numerator_unit}/`
+  if (strength_denominator !== 1) {
+    strength_display += strength_denominator
+  }
+  return strength_display + strength_denominator_unit
+}
+
+export function scheduleDisplay(
+  schedule: MedicationSchedule,
+  medication: MedicationDetails,
+): string {
+  const { frequency, dosage, duration, duration_unit } = schedule
+
+  assertIntakeFrequency(frequency)
+  const frequency_display = IntakeFrequencies[frequency]
+
+  const dosage_display = dosageDisplay({
+    dosage,
+    ...medication,
+  })
+
+  return `${dosage_display} ${frequency_display} for ${duration} ${
+    unpluralize(duration_unit, duration)
+  }`
+}
+
+// // 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
+// export function describe(
+//   medication: PrescriptionMedication,
+// ): string {
+//   assert(typeof medication.intake_frequency === 'string')
+//   assertIntakeFrequency(medication.intake_frequency)
+
+//   const dosesPerDay = IntakeDosesPerDay[medication.intake_frequency]
+
+//   const singleDosage = dosageDisplay({
+//     dosage: medication.dosage / medication.strength_denominator,
+//     ...omit(medication, ['dosage']),
+//   })
+
+//   const totalDosage = dosageDisplay({
+//     dosage: medication.dosage / medication.strength_denominator,
+//     totalDosageMultiplier: duration * dosesPerDay,
+//     ...omit(medication, ['dosage']),
+//   })
+
+//   return `*${medication.name}* : ${singleDosage} per dose * ${dosesPerDay} ${
+//     pluralize('dose', dosesPerDay)
+//   } per day * ${duration} ${pluralize('day', duration)} = ${totalDosage}`
+//     .toLowerCase()
+// }

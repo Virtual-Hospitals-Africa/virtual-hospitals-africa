@@ -68,7 +68,7 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'patient_prescription_medications',
+    'prescription_medications',
     (qb) =>
       qb.addColumn(
         'patient_condition_medication_id',
@@ -88,27 +88,27 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'patient_prescription_medications_filled',
+    'prescription_medications_filled',
     (qb) =>
       qb
-        .addColumn('patient_prescription_medication_id', 'uuid', (col) =>
+        .addColumn('prescription_medication_id', 'uuid', (col) =>
           col
             .notNull()
-            .references('patient_prescription_medications.id')
+            .references('prescription_medications.id')
             .onDelete('cascade'))
         .addColumn('pharmacist_id', 'uuid', (col) =>
           col.notNull().references('pharmacists.id').onDelete('cascade'))
         .addColumn('pharmacy_id', 'uuid', (col) =>
           col.references('pharmacists.id').onDelete('cascade'))
-        .addUniqueConstraint('patient_prescription_medication_id', [
-          'patient_prescription_medication_id',
+        .addUniqueConstraint('prescription_medication_id', [
+          'prescription_medication_id',
         ]),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_prescription_medications_filled').execute()
-  await db.schema.dropTable('patient_prescription_medications').execute()
+  await db.schema.dropTable('prescription_medications_filled').execute()
+  await db.schema.dropTable('prescription_medications').execute()
   await db.schema.dropTable('prescription_codes').execute()
   await db.schema.dropTable('prescriptions').execute()
 }

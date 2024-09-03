@@ -1,25 +1,17 @@
 import { JSX } from 'preact'
 
 import Table, { TableColumn } from '../library/Table.tsx'
+import { PrescriptionMedication } from '../../types.ts'
+import { scheduleDisplay, strengthDisplay } from '../../shared/medication.ts'
 
-type Medication = {
-  condition_name: string
-  name: string
-  strength_display: string
-  form: string
-  route: string
-  schedules_display: string
-  special_instructions: string | null
-}
-
-const MedicationsTableColumns: TableColumn<Medication>[] = [
+const MedicationsTableColumns: TableColumn<PrescriptionMedication>[] = [
   {
     label: 'Condition',
     data: 'condition_name',
   },
   {
     label: 'Medication',
-    data: 'name',
+    data: 'drug_generic_name',
   },
   {
     label: 'Form',
@@ -31,11 +23,17 @@ const MedicationsTableColumns: TableColumn<Medication>[] = [
   },
   {
     label: 'Strength',
-    data: 'strength_display',
+    data: (m) => strengthDisplay(m),
   },
   {
     label: 'Schedules',
-    data: 'schedules_display',
+    data: (medication) => (
+      <ul>
+        {medication.schedules.map((schedule) => (
+          <li>{scheduleDisplay(schedule, medication)}</li>
+        ))}
+      </ul>
+    ),
   },
   {
     label: 'Special Instructions',
@@ -44,7 +42,7 @@ const MedicationsTableColumns: TableColumn<Medication>[] = [
 ]
 
 export function MedicationsTable(
-  { medications }: { medications: Medication[] },
+  { medications }: { medications: PrescriptionMedication[] },
 ): JSX.Element {
   return (
     <Table

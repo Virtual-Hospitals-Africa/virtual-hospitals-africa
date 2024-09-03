@@ -347,7 +347,7 @@ export async function upsertRequest(
       .set(to_upsert)
       .where('id', '=', id)
       .executeTakeFirstOrThrow()
-    
+
     return { id }
   }
 

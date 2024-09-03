@@ -106,11 +106,11 @@ describe(
             })
 
             await patient_intake.updateCompletion(trx, {
-              id: patient.id,
+              patient_id: patient.id,
               intake_step_just_completed: 'personal',
             })
             await patient_intake.updateCompletion(trx, {
-              id: patient.id,
+              patient_id: patient.id,
               intake_step_just_completed: 'address',
             })
 
@@ -171,11 +171,11 @@ describe(
             })
 
             await patient_intake.updateCompletion(trx, {
-              id: patient.id,
+              patient_id: patient.id,
               intake_step_just_completed: 'personal',
             })
             await patient_intake.updateCompletion(trx, {
-              id: patient.id,
+              patient_id: patient.id,
               intake_step_just_completed: 'address',
             })
 

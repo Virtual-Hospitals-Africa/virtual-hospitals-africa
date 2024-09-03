@@ -2,6 +2,7 @@ import { FreshContext } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
+import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
@@ -9,8 +10,19 @@ import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetai
 import * as patient_allergies from '../../db/models/patient_allergies.ts'
 import { MedicationsTable } from '../../components/prescriptions/MedicationsTable.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
-export default function PrescriptionPage(
+function Divider() {
+  return (
+    <div class='flex items-center mb-4'>
+      <div class='flex-1 h-4 bg-red-400'></div>
+      <div class='flex-1 h-4 bg-orange-200'></div>
+    </div>
+  )
+}
+
+// deno-lint-ignore require-await
+export default async function PrescriptionPage(
   req: Request,
   ctx: FreshContext,
 ) {
@@ -27,27 +39,31 @@ export default function PrescriptionPage(
 
     assertOr404(prescription, 'Could not find that prescription')
     assertOr404(
-      prescription.alphanumeric_code !== code,
+      prescription.alphanumeric_code === code,
       'Could not find that prescription',
     )
 
     const { patient_id } = prescription
     assert(patient_id, 'Patient ID is required')
 
-    const patient = await patients.getByID(trx, { id: patient_id })
-
-    const pre_existing_conditions = await patient_conditions
-      .getPreExistingConditions(
+    const {
+      patient,
+      pre_existing_conditions,
+      allergies,
+      unfilled_medications,
+    } = await promiseProps({
+      patient: patients.getByID(trx, { id: patient_id }),
+      pre_existing_conditions: patient_conditions.getPreExistingConditions(
         trx,
         { patient_id },
-      )
-
-    const allergies = await patient_allergies.getWithName(trx, patient_id)
-
-    const medications = await prescriptions.getMedicationsByPrescriptionId(
-      trx,
-      prescription.id,
-    )
+      ),
+      allergies: patient_allergies.getWithName(trx, patient_id),
+      unfilled_medications: prescription_medications.getByPrescriptionId(
+        trx,
+        prescription.id,
+        { unfilled: true },
+      ),
+    })
 
     return (
       <Layout
@@ -63,12 +79,9 @@ export default function PrescriptionPage(
             }}
           >
             <div class='text-purple-900 mb-2 font-extrabold text-3xl text-center pt-5'>
-              <h1>PRESCRIPTION TEMPLATE</h1>
+              <h1>PRESCRIPTION</h1>
             </div>
-            <div class='flex items-center mb-4'>
-              <div class='flex-1 h-4 bg-red-400'></div>
-              <div class='flex-1 h-4 bg-orange-200'></div>
-            </div>
+            <Divider />
             <div class='mb-2'>
               <div class='flex justify-between'>
                 <PrescriptionDetail
@@ -82,22 +95,17 @@ export default function PrescriptionPage(
                 />
               </div>
             </div>
-            <div class='flex items-center mb-4'>
-              <div class='flex-1 h-4 bg-orange-200'></div>
-              <div class='flex-1 h-4 bg-white'></div>
-            </div>
+            <Divider />
             <div class='mb-2'>
               <div class='text-purple-900 mb-2 font-bold'>
                 Patient Information
               </div>
-              <div class='flex justify-between mb-2'>
+              <div class='grid grid-cols-2'>
                 <PrescriptionDetail heading='Name' information={patient.name} />
                 <PrescriptionDetail
                   heading='Age'
                   information={patient.age_display}
                 />
-              </div>
-              <div class='flex justify-between mb-2'>
                 {patient.phone_number && (
                   <PrescriptionDetail
                     heading='Phone Number'
@@ -108,29 +116,22 @@ export default function PrescriptionPage(
                   heading='Date of Birth'
                   information={patient.dob_formatted}
                 />
-              </div>
-              <div class='flex justify-between mb-2'>
                 <PrescriptionDetail
                   heading='Gender'
                   information={patient.gender}
                 />
-              </div>
-              <div class='flex justify-between mb-2'>
                 <PrescriptionDetail
                   heading='Address'
                   information={patient.address}
                 />
-              </div>
-              <div class='flex justify-between mb-2'>
                 <PrescriptionDetail
                   heading='Allergies'
-                  // "wheat, buckwheat"
                   information={allergies.map((allergy) => allergy.name).join(
                     ', ' || 'None',
                   )}
                 />
                 <PrescriptionDetail
-                  heading='Notable Health Condition'
+                  heading='Other Notable Health Conditions'
                   information={pre_existing_conditions.map((condition) =>
                     condition.name
                   ).join(
@@ -139,36 +140,36 @@ export default function PrescriptionPage(
                 />
               </div>
             </div>
-            <div class='flex items-center mb-4'>
-              <div class='flex-1 h-4 bg-orange-200'></div>
-              <div class='flex-1 h-4 bg-white'></div>
-            </div>
+            <Divider />
             <div class='text-purple-900 mb-2 font-bold'>
               List of Prescribed Medications
             </div>
-            <MedicationsTable medications={medications} />
+            <div className='pb-4'>
+              <MedicationsTable medications={unfilled_medications} />
+            </div>
+            <Divider />
+            <div class='text-purple-900 mb-2 font-bold'>
+              Physician Information
+            </div>
             <div class='mb-3 mt-3'>
-              <div class='flex justify-between mb-2'>
+              <div class='grid grid-cols-2'>
                 <PrescriptionDetail
-                  heading='Physician Name'
+                  heading='Name'
                   information={prescription.prescriber_name}
                 />
                 <PrescriptionDetail
-                  heading='Physician Email'
+                  heading='Email'
                   information={prescription.prescriber_email}
                 />
-              </div>
-              <div class='flex justify-between mb-2'>
                 <PrescriptionDetail
-                  heading='Physician Signature'
+                  heading='Phone Number'
+                  information={prescription.prescriber_mobile_number}
+                />
+                <PrescriptionDetail
+                  heading='Signature'
                   information={'__________________'}
                 />
               </div>
-            </div>
-            <div>
-              <p>
-                {new Date(prescription.created_at).toLocaleDateString()}
-              </p>
             </div>
           </div>
         </div>
