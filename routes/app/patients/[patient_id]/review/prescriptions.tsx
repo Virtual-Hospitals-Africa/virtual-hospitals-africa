@@ -14,6 +14,8 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { isUUID } from '../../../../../util/uuid.ts'
 import { isIntakeFrequency } from '../../../../../shared/medication.ts'
+import { assert } from 'std/assert/assert.ts'
+import redirect from '../../../../../util/redirect.ts'
 
 type PrescriptionsFormValues = {
   prescriptions: {
@@ -84,14 +86,31 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       }),
     )
 
-    await prescriptions.insert(ctx.state.trx, {
+    const { id } = await prescriptions.upsert(ctx.state.trx, {
       doctor_review_id: ctx.state.doctor_review.review_id,
       prescriber_id: ctx.state.doctor_review.employment_id,
       patient_id: ctx.state.doctor_review.patient.id,
       prescribing,
     })
-    const completing_step = completeStep(ctx)
-    return completing_step
+
+    const prescription = await prescriptions.getById(
+      ctx.state.trx,
+      id,
+    )
+    assert(prescription)
+    prescription.alphanumeric_code
+    const completed_step = await completeStep(ctx)
+
+    if (!prescribing.length) {
+      return completed_step
+    }
+
+    const Location = completed_step.headers.get('Location')
+    assert(Location)
+    const success = encodeURIComponent(
+      `A prescription was made with code ${prescription.alphanumeric_code}`,
+    )
+    return redirect(`${Location}?success=${success}`)
   },
 }
 

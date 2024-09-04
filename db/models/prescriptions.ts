@@ -81,7 +81,7 @@ export function getByCode(
     .executeTakeFirst()
 }
 
-export async function insert(
+export async function upsert(
   trx: TrxOrDb,
   { prescribing, ...to_insert }:
     & {
@@ -97,6 +97,8 @@ export async function insert(
       patient_encounter_id: string
     }),
 ) {
+  // TODO remove old medications
+
   assert(prescribing.length > 0)
 
   const prescription = await trx
