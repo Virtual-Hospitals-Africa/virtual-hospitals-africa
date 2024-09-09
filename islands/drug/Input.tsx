@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'preact/hooks'
 import { DateInput, Select, TextArea } from '../form/Inputs.tsx'
 import {
   DrugSearchResult as DrugSearchResultData,
@@ -12,6 +11,7 @@ import {
   IntakeFrequencies,
   strengthDisplay,
 } from '../../shared/medication.ts'
+import { computed, effect, useSignal } from '@preact/signals'
 
 export default function DrugInput({
   name,
@@ -20,70 +20,62 @@ export default function DrugInput({
   name: string
   value?: PreExistingConditionWithDrugs['medications'][number]
 }) {
-  const [drug, setDrug] = useState<DrugSearchResultData | null>(
+  const drug = useSignal<DrugSearchResultData | null>(
     value?.drug || null,
   )
-  const [medication_id, setMedicationId] = useState<
-    string | null
-  >(
+  const medication_id = useSignal<string | null>(
     value?.medication_id || null,
   )
-
-  const [
-    manufactured_medication_id,
-  ] = useState<
-    string | null
-  >(value?.manufactured_medication_id ?? null)
-
-  const [strength_numerator, setStrengthNumerator] = useState<
+  const strength_numerator = useSignal<
     number | null
   >(value?.strength ?? null)
-  const [intake_frequency, setIntakeFrequency] = useState<
+
+  const intake_frequency = useSignal<
     string | null
   >(value?.intake_frequency ?? null)
-  const [dosage, setDosage] = useState<number | null>(
+
+  const dosage = useSignal<number | null>(
     value?.dosage ?? null,
   )
-  const [route, setRoute] = useState<string | null>(
+  const route = useSignal<string | null>(
     value?.route ?? null,
   )
-  const [specialInstructions, setSpecialInstructions] = useState<string | null>(
+  const special_instructions = useSignal<string | null>(
     value?.special_instructions ?? null,
   )
 
-  const medication = drug?.medications.find(
-    (m) => m.medication_id === medication_id,
+  const medication = computed(() =>
+    drug.value?.medications.find(
+      (m) => m.medication_id === medication_id.value,
+    )
   )
-  const manufactured_medication = medication?.manufacturers.find(
-    (mm) =>
-      mm.manufactured_medication_id ===
-        manufactured_medication_id,
+
+  const strength_numerator_options = computed(() =>
+    medication.value?.strength_numerators
   )
-  const strength_options = manufactured_medication?.strength_numerators ||
-    medication?.strength_numerators
 
-  useEffect(() => {
-    if (!drug) return
-    if (medication_id) return
-    if (drug.medications.length === 1) {
-      setMedicationId(drug.medications[0].medication_id)
+  effect(() => {
+    if (!drug.value) return
+    if (medication_id.value) return
+    if (drug.value.medications.length === 1) {
+      medication_id.value = drug.value.medications[0].medication_id
     }
-  }, [drug])
+  })
 
-  useEffect(() => {
-    if (!medication) return
-    if (strength_numerator) return
-    if (medication.strength_numerators.length === 1) {
-      setStrengthNumerator(medication.strength_numerators[0])
+  effect(() => {
+    if (!medication.value) return
+    if (strength_numerator.value) return
+    if (medication.value.strength_numerators.length === 1) {
+      strength_numerator.value = medication.value.strength_numerators[0]
     }
-  }, [medication])
+  })
 
-  useEffect(() => {
-    if (!medication) return
-    if (!strength_numerator) return
-    if (dosage) return
-    setDosage(medication.strength_denominator)
-  }, [medication, strength_numerator])
+  effect(() => {
+    if (!medication.value) return
+    if (!strength_numerator.value) return
+    if (dosage.value) return
+    dosage.value = medication.value.strength_denominator
+  })
 
   return (
     <div className='w-full justify-normal'>
@@ -91,14 +83,14 @@ export default function DrugInput({
         <MedicationSearch
           label='Drug'
           name={name}
-          value={drug}
+          value={drug.value}
           required
-          onSelect={(drug) => {
-            setDrug(drug ?? null)
-            setMedicationId(null)
-            setStrengthNumerator(null)
-            setDosage(null)
-            setIntakeFrequency(null)
+          onSelect={(d) => {
+            drug.value = d ?? null
+            medication_id.value = null
+            strength_numerator.value = null
+            dosage.value = null
+            intake_frequency.value = null
           }}
         />
       </FormRow>
@@ -108,47 +100,46 @@ export default function DrugInput({
           required
           label='Form'
           disabled={!drug}
-          onChange={(event) =>
-            event.currentTarget.value &&
-            setMedicationId(event.currentTarget.value)}
+          onChange={(event) => {
+            if (event.currentTarget.value) {
+              medication_id.value = event.currentTarget.value
+            }
+          }}
         >
           <option value=''>Select Form</option>
-          {drug &&
-            drug.medications.map((medication) => (
-              <option
-                value={medication.medication_id}
-                selected={medication_id === medication.medication_id}
-              >
-                {medication.form_route}
-              </option>
-            ))}
+          {drug.value?.medications.map((medication) => (
+            <option
+              value={medication.medication_id}
+              selected={medication_id.value === medication.medication_id}
+            >
+              {medication.form_route}
+            </option>
+          ))}
         </Select>
-        {medication && (medication.routes.length > 1) && (
+        {medication.value && (medication.value.routes.length > 1) && (
           <Select
             name={`${name}.route`}
             required
             label='Route'
             disabled={!drug}
-            onChange={(event) =>
-              event.currentTarget.value &&
-              setRoute(event.currentTarget.value)}
+            onChange={(event) => route.value = event.currentTarget.value}
           >
             <option value=''>Select Form</option>
-            {medication.routes.map((route_option) => (
+            {medication.value.routes.map((route_option) => (
               <option
                 value={route_option}
-                selected={route_option === route}
+                selected={route_option === route.value}
               >
                 {route_option}
               </option>
             ))}
           </Select>
         )}
-        {medication && (medication.routes.length === 1) && (
+        {medication.value && (medication.value.routes.length === 1) && (
           <input
             name={`${name}.route`}
             type='hidden'
-            value={medication.routes[0]}
+            value={medication.value.routes[0]}
           />
         )}
         <Select
@@ -156,45 +147,55 @@ export default function DrugInput({
           required
           label='Strength'
           disabled={!medication}
-          onChange={(event) =>
-            event.currentTarget.value &&
-            setStrengthNumerator(Number(event.currentTarget.value))}
+          onChange={(event) => {
+            if (event.currentTarget.value) {
+              strength_numerator.value = Number(event.currentTarget.value)
+            } else {
+              strength_numerator.value = null
+            }
+          }}
         >
           <option value=''>Select Strength</option>
-          {medication && strength_options?.map((strength_numerator) => (
-            <option
-              value={strength_numerator}
-              selected={strength_numerator === strength_numerator}
-            >
-              {strengthDisplay({
-                strength_numerator,
-                strength_numerator_unit: medication.strength_numerator_unit,
-                strength_denominator: medication.strength_denominator,
-                strength_denominator_unit: medication.strength_denominator_unit,
-              })}
-            </option>
-          ))}
+          {medication.value &&
+            strength_numerator_options.value?.map((
+              strength_numerator_option,
+            ) => (
+              <option
+                value={strength_numerator_option}
+                selected={strength_numerator_option ===
+                  strength_numerator.value}
+              >
+                {strengthDisplay({
+                  strength_numerator: strength_numerator_option,
+                  strength_numerator_unit:
+                    medication.value!.strength_numerator_unit,
+                  strength_denominator: medication.value!.strength_denominator,
+                  strength_denominator_unit:
+                    medication.value!.strength_denominator_unit,
+                })}
+              </option>
+            ))}
         </Select>
       </FormRow>
       <FormRow className='w-full justify-normal'>
         <Select
           name={`${name}.dosage`}
           label='Dosage'
-          disabled={!(medication && strength_numerator)}
+          disabled={!(medication.value && strength_numerator.value)}
         >
           <option value=''>Select Dosage</option>
-          {medication && strength_numerator &&
+          {medication.value && strength_numerator.value &&
             Dosages.map(([dosage_text, dosage_value]) => (
               <option
-                value={dosage_value * medication.strength_denominator}
-                selected={dosage ===
-                  (dosage_value * medication.strength_denominator)}
+                value={dosage_value * medication.value!.strength_denominator}
+                selected={dosage.value ===
+                  (dosage_value * medication.value!.strength_denominator)}
               >
                 {dosageDisplay({
                   dosage_text,
                   dosage: dosage_value,
-                  strength_numerator,
-                  ...medication,
+                  strength_numerator: strength_numerator.value!,
+                  ...medication.value!,
                 })}
               </option>
             ))}
@@ -210,7 +211,7 @@ export default function DrugInput({
             Object.entries(IntakeFrequencies).map(([code, label]) => (
               <option
                 value={code}
-                selected={intake_frequency === code}
+                selected={intake_frequency.value === code}
               >
                 {label}
               </option>
@@ -233,8 +234,9 @@ export default function DrugInput({
           name={`${name}.special_instructions`}
           className='w-full'
           label='Special Instructions'
-          value={specialInstructions}
-          onInput={(event) => setSpecialInstructions(event.currentTarget.value)}
+          value={special_instructions.value}
+          onInput={(event) =>
+            special_instructions.value = event.currentTarget.value}
         />
       </FormRow>
     </div>
