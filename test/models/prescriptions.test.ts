@@ -96,7 +96,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        const result = await prescriptions.insert(trx, {
+        const result = await prescriptions.upsert(trx, {
           prescriber_id: doctor_review.employment_id,
           patient_id: patient.id,
           doctor_review_id: doctor_review.review_id,

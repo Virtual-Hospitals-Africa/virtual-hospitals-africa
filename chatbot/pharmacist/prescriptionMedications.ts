@@ -1,9 +1,14 @@
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
-import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
+import {
+  PharmacistChatbotUserState,
+  PrescriptionMedication,
+  TrxOrDb,
+} from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import omit from '../../util/omit.ts'
+import { scheduleDisplay, strengthDisplay } from '../../shared/medication.ts'
 
 export type PharmacistStateData = {
   prescription_id: string
@@ -243,4 +248,21 @@ export async function dispenseExit(
   )
 
   return 'initial_message' as const
+}
+
+export function medicationDisplay(
+  medication: PrescriptionMedication,
+) {
+  // Format the main medication description
+  const strength = strengthDisplay(medication)
+  const medicationDescription =
+    `${medication.drug_generic_name} ${medication.form} (${strength})`
+
+  // Format each schedule
+  const scheduleDescriptions = medication.schedules.map((schedule) => {
+    return `- ${scheduleDisplay(schedule, medication)}`
+  })
+
+  // Combine everything into the final output
+  return `${medicationDescription}\n${scheduleDescriptions.join('\n')}`
 }

@@ -21,6 +21,7 @@ import {
   dispenseSkip,
   dispenseType,
   getPrescriber,
+  medicationDisplay,
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
 
@@ -264,7 +265,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         pharmacistState,
       )
 
-      return `Are you dispensing ${medication.drug_generic_name}?`
+      return `Are you dispensing this medication?\n\n${
+        medicationDisplay(medication)
+      }`
     },
     options: [
       {
