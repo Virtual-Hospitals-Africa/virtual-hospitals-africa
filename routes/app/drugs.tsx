@@ -24,6 +24,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
+    const include_recalled = ctx.url.searchParams.get('include_recalled')
     return searchResponse(ctx, search)
   },
 }
