@@ -9,6 +9,9 @@ const regulators = [
   { name: 'Ming Liu', email: '812046661lm@gmail.com' },
   { name: 'Sikhululiwe Ngwenya', email: 'ngwenyasikhululiwe125@gmail.com' },
   { name: 'Jonathan Tagarisa', email: 'jonathantagarisa@gmail.com' },
+  { name: 'Saad Malik', email: 'saadmparacha@gmail.com' },
+  { name: 'Laurence Lo', email: 'laurence.regu@gmail.com' },
+  { name: 'Mingda Ma', email: 'whoapple8@gmail.com' },
 ]
 
 export default create(['regulators'], addRegulators)
