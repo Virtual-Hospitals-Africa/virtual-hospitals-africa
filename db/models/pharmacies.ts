@@ -3,8 +3,8 @@ import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { addressDisplaySql, nameSql } from './pharmacists.ts'
 import { Maybe, RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
-import { DB } from '../../db.d.ts'
-import { InsertExpression } from 'kysely/parser/insert-values-parser.js'
+import { PharmaciesTypes } from '../../db.d.ts'
+import { insert as insertPharmacyEmployment } from './pharmacy_employment.ts'
 
 const view_sql = sql<
   string
@@ -97,13 +97,38 @@ export function getById(
     .executeTakeFirst()
 }
 
-export function insert(
+type PharmacySupervisorInsert = {
+  id: string
+  name: string
+}
+
+export type PharmacyInsert = {
+  address: string | null
+  town: string | null
+  expiry_date: string
+  licence_number: string
+  licensee: string
+  name: string
+  pharmacies_types: PharmaciesTypes
+  supervisors?: PharmacySupervisorInsert[]
+}
+
+export async function insert(
   trx: TrxOrDb,
-  data: InsertExpression<DB, 'pharmacies'>,
+  data: PharmacyInsert,
 ): Promise<{ id: string }> {
-  return trx
+  const { supervisors, ...pharmacyData } = data
+  const pharmacy = await trx
     .insertInto('pharmacies')
-    .values(data)
+    .values(pharmacyData)
     .returning('id')
     .executeTakeFirstOrThrow()
+  if (!supervisors) return pharmacy
+  const pharmacyEmployments = supervisors.map((supervisor) => ({
+    pharmacist_id: supervisor.id,
+    pharmacy_id: pharmacy.id,
+    is_supervisor: true,
+  }))
+  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  return pharmacy
 }

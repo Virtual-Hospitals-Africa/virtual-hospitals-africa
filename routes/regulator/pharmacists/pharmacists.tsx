@@ -9,7 +9,7 @@ export const handler: LoggedInRegulatorHandlerWithProps = {
       req.headers.get('accept') === 'application/json',
       'We only accept JSON',
     )
-    const name_search = ctx.url.searchParams.get('pharmacist_name')
+    const name_search = ctx.url.searchParams.get('search')
     const results = await get(ctx.state.trx, { name_search })
 
     return json(results.pharmacists)

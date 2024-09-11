@@ -1,16 +1,45 @@
+import { useSignal } from '@preact/signals'
 import { DateInput, PharmacyTypeSelect, TextInput } from './Inputs.tsx'
 import FormRow from './Row.tsx'
 import Buttons from './buttons.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
+import { AddRow, RemoveRow } from '../AddRemove.tsx'
+import AddPharmacistSearch, {
+  PharmacistOption,
+} from '../../islands/AddPharmacistSearch.tsx'
 
 type PharmacyForm = {
   formData: Partial<RenderedPharmacy>
 }
 
-export default function PharmacistForm(
+export default function PharmacyForm(
   { formData }: PharmacyForm,
 ) {
+  const selectedSupervisors = useSignal<PharmacistOption[]>(
+    formData.supervisors ?? [],
+  )
+  const addSupervisor = () => {
+    selectedSupervisors.value = [
+      ...selectedSupervisors.value,
+      {
+        id: '',
+        name: '',
+        removed: false,
+      },
+    ]
+  }
+  const removeSupervisor = (selectedIndex: number) => {
+    selectedSupervisors.value = selectedSupervisors.value.map(
+      (supervisor, index) => {
+        if (index !== selectedIndex) return supervisor
+        return {
+          ...supervisor,
+          removed: true,
+        }
+      },
+    )
+  }
   return (
     <Form method='POST'>
       <FormRow>
@@ -68,7 +97,36 @@ export default function PharmacistForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <Buttons submitText='Next' />
+      {selectedSupervisors.value.map((selectedSupervisor, index) =>
+        !selectedSupervisor.removed && (
+          <RemoveRow
+            onClick={() => removeSupervisor(index)}
+            key={index}
+            labelled
+          >
+            <FormRow>
+              <AddPharmacistSearch
+                name={`supervisors.${index}`}
+                label='Supervisor'
+                value={selectedSupervisor}
+                required
+                onSelect={(supervisor) => {
+                  selectedSupervisors.value[index] = {
+                    ...selectedSupervisors.value[index],
+                    ...supervisor,
+                  }
+                }}
+              />
+            </FormRow>
+          </RemoveRow>
+        )
+      )}
+      <AddRow
+        text='Add Supervisor'
+        onClick={addSupervisor}
+      />
+      <hr className='my-2' />
+      <Buttons submitText='Submit' />
     </Form>
   )
 }
