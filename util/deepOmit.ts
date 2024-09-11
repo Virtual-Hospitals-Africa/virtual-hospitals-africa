@@ -1,16 +1,25 @@
 // deno-lint-ignore-file no-prototype-builtins no-explicit-any no-prototype-builtins
 import isObjectLike from './isObjectLike.ts'
-type DeepOmit<T, K extends string | number | symbol> = T extends object
-  ? T extends { [P in K]: any } ? Omit<T, K>
-  : { [P in keyof T]: DeepOmit<T[P], K> }
+
+type RemoveNever<T> = {
+  [K in keyof T as T[K] extends never ? never : K]: T[K] extends object
+    ? RemoveNever<T[K]>
+    : T[K]
+}
+type DeepOmit<T, K extends string> = T extends Array<infer U>
+  ? Array<DeepOmit<U, K>>
+  : T extends object ? RemoveNever<
+      {
+        [P in keyof T]: P extends K ? never : DeepOmit<T[P], K>
+      }
+    >
   : T
 
 export default function deepOmit<
   T extends object,
-  K extends string | number | symbol,
->(obj: T, keys: K | K[]): DeepOmit<T, K> {
+  K extends string,
+>(obj: T, keys: K[]): DeepOmit<T, K> {
   if (!isObjectLike(obj)) return obj as any
-  if (!Array.isArray(keys)) keys = [keys]
   if (Array.isArray(obj)) {
     return obj.map((item: any) => deepOmit(item as any, keys)) as any
   }

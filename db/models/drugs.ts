@@ -81,24 +81,35 @@ function baseQuery(trx: TrxOrDb) {
             strengthSummary('medications'),
             jsonArrayFrom(
               eb_medications.selectFrom('manufactured_medications')
+                .leftJoin(
+                  'manufactured_medication_recalls',
+                  'manufactured_medication_recalls.manufactured_medication_id',
+                  'manufactured_medications.id',
+                )
                 .select([
                   'manufactured_medications.id as manufactured_medication_id',
                   'manufactured_medications.strength_numerators',
                   'manufactured_medications.trade_name',
                   'manufactured_medications.applicant_name',
+                  'manufactured_medication_recalls.recalled_at',
                 ])
                 .whereRef(
                   'manufactured_medications.medication_id',
                   '=',
                   'medications.id',
-                ),
+                )
+                .orderBy([
+                  'manufactured_medications.trade_name asc',
+                  'manufactured_medications.strength_numerators asc',
+                ]),
             ).as('manufacturers'),
           ])
           .whereRef(
             'medications.drug_id',
             '=',
             'drugs.id',
-          ),
+          )
+          .orderBy('medications.form_route', 'asc'),
       ).as('medications'),
     ])
 }
@@ -108,6 +119,7 @@ export async function search(
   opts: {
     search?: Maybe<string>
     ids?: Maybe<string[]>
+    include_recalled?: Maybe<boolean>
   },
 ): Promise<DrugSearchResult[]> {
   if (opts.ids) {
@@ -117,7 +129,7 @@ export async function search(
     assert(opts.search)
   }
 
-  const query = opts.search
+  let query = opts.search
     ? trx
       .selectFrom(baseQuery(trx).as('drug_search_results'))
       .selectAll()
@@ -133,7 +145,11 @@ export async function search(
       .orderBy(sql`similarity(name, ${opts.search})`, 'desc')
     : baseQuery(trx).where('drugs.id', 'in', opts.ids!)
 
-  const results = await query.limit(20).execute()
+  if (!opts.ids) {
+    query = query.limit(20)
+  }
+
+  const results = await query.execute()
 
   // TODO: do the float parsing in SQL?
   return results.map((r) => ({
@@ -142,6 +158,9 @@ export async function search(
       ...m,
       strength_denominator: parseFloat(m.strength_denominator),
     })),
+    fully_recalled: r.medications.every((m) =>
+      m.manufacturers.every((mm) => mm.recalled_at)
+    ),
   }))
 }
 
@@ -150,6 +169,7 @@ export async function searchManufacturedMedications(
   opts: {
     search?: Maybe<string>
     ids?: Maybe<string[]>
+    include_recalled?: Maybe<boolean>
   },
 ): Promise<ManufacturedMedicationSearchResult[]> {
   if (opts.ids) {
