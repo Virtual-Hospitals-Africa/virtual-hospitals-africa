@@ -70,5 +70,9 @@ export function create(
     await generate(db)
     await dump()
   }
-  return { drop, load, dump, recreate, generate, table_names }
+  async function reload() {
+    await drop()
+    await load()
+  }
+  return { drop, load, dump, recreate, generate, reload, table_names }
 }

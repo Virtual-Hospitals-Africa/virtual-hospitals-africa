@@ -6,10 +6,11 @@ export const seeds: Record<
   string,
   {
     table_names: string[]
-    load: () => Promise<Deno.CommandOutput>
-    dump: () => Promise<Deno.CommandOutput>
-    drop: () => Promise<Deno.CommandOutput>
-    recreate: () => Promise<Deno.CommandOutput>
+    load: () => Promise<void>
+    dump: () => Promise<void>
+    drop: () => Promise<void>
+    reload: () => Promise<void>
+    recreate: () => Promise<void>
   }
 > = {}
 for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
@@ -18,7 +19,7 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
   seeds[seedName] = seed.default || seed
 }
 
-type Cmd = 'load' | 'dump' | 'drop' | 'recreate'
+type Cmd = 'load' | 'dump' | 'drop' | 'recreate' | 'reload'
 
 export const seedTargets = sortBy(Object.keys(seeds), (key) => {
   const numeric = parseInt(key.split('_')[0])
@@ -56,6 +57,7 @@ const gerund = {
   dump: 'dumping',
   drop: 'dropping',
   recreate: 'recreating',
+  reload: 'reloading',
 }
 
 const past_tense = {
@@ -63,6 +65,7 @@ const past_tense = {
   dump: 'dumped',
   drop: 'dropped',
   recreate: 'recreated',
+  reload: 'reloaded',
 }
 
 export async function load(target?: string) {
@@ -79,6 +82,10 @@ export async function drop(target?: string) {
 
 export async function recreate(target?: string) {
   await run('recreate', target)
+}
+
+export async function reload(target?: string) {
+  await run('reload', target)
 }
 
 export async function loadRecreating(targets: string[]) {
