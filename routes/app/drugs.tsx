@@ -10,13 +10,12 @@ import { FreshContext } from '$fresh/server.ts'
 
 export async function searchResponse(
   ctx: FreshContext<LoggedInHealthWorker>,
-  search?: Maybe<string>,
+  opts: {
+    search?: Maybe<string>
+    include_recalled?: Maybe<boolean>
+  },
 ) {
-  const medicationsResult = search
-    ? await drugs.search(ctx.state.trx, {
-      search,
-    })
-    : []
+  const medicationsResult = await drugs.search(ctx.state.trx, opts)
   return json(medicationsResult)
 }
 
@@ -24,7 +23,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
-    const include_recalled = ctx.url.searchParams.get('include_recalled')
-    return searchResponse(ctx, search)
+    const include_recalled = ctx.url.searchParams.has('include_recalled')
+    return searchResponse(ctx, { search, include_recalled })
   },
 }
