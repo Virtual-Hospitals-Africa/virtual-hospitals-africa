@@ -20,6 +20,9 @@ const vhaClinicStaff = [
   'zhuosidian@gmail.com',
   'mike.huang.africa@gmail.com',
   '812046661lm@gmail.com',
+  'mingdama0909@gmail.com',
+  'laurencelo397@gmail.com',
+  'saadmalikpa@gmail.com',
 ]
 
 const vhaVirtualHospitalStaff = [
@@ -48,21 +51,24 @@ async function inviteVhaStaff(db: Kysely<DB>) {
     },
     {
       email,
-      profession: 'doctor' as const,
+      profession: 'nurse' as const,
       organization_id: '00000000-0000-0000-0000-000000000001',
     },
-  ]).concat(vhaVirtualHospitalStaff.flatMap((email) => [
-    {
-      email,
-      profession: 'admin' as const,
-      organization_id: '00000000-0000-0000-0000-000000000002',
-    },
-    {
-      email,
-      profession: 'doctor' as const,
-      organization_id: '00000000-0000-0000-0000-000000000002',
-    },
-  ]))
+  ]).concat(vhaVirtualHospitalStaff.flatMap((email) =>
+    [
+      {
+        email,
+        profession: 'admin' as const,
+        organization_id: '00000000-0000-0000-0000-000000000002',
+      },
+      {
+        email,
+        profession: 'doctor' as const,
+        organization_id: '00000000-0000-0000-0000-000000000002',
+      },
+      // deno-lint-ignore no-explicit-any
+    ] as any
+  ))
   await db
     .insertInto('health_worker_invitees')
     .values(invitees)
