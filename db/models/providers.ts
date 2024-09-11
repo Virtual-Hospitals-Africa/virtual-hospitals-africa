@@ -87,6 +87,10 @@ export function addCalendars(
   return trx
     .insertInto('provider_calendars')
     .values(cals.map((cal) => ({ health_worker_id, ...cal })))
+    .onConflict((oc) =>
+      oc.constraint('only_one_calendar_set_per_health_worker_organization')
+        .doNothing()
+    )
     .execute()
 }
 

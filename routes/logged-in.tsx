@@ -19,6 +19,22 @@ import { warning } from '../util/alerts.ts'
 import { could_not_locate_account_href } from './app/_middleware.ts'
 import * as cookie from '../shared/cookie.ts'
 
+async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+  trx: TrxOrDb,
+  googleClient: google.GoogleClient,
+  organization_ids: string[],
+) {
+  const my_orgs = await organizations.get(trx, { ids: organization_ids })
+  const calendars = await googleClient
+    .ensureHasAppointmentsAndAvailabilityCalendars(my_orgs)
+  return Array.from(zip(my_orgs, calendars)).map((
+    [organization, calendars],
+  ) => ({
+    organization_id: organization.id,
+    ...calendars,
+  }))
+}
+
 export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
@@ -27,7 +43,7 @@ export async function initializeHealthWorker(
 ): Promise<{ id: string }> {
   assert(invitees.length, 'No invitees found')
 
-  const removing_invites = await employment.removeInvitees(
+  await employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),
   )
@@ -35,18 +51,12 @@ export async function initializeHealthWorker(
   const organization_ids = uniq(
     invitees.map((invitee) => invitee.organization_id),
   )
-  const getting_calendars = organizations.get(trx, { ids: organization_ids })
-    .then(
-      async (organizations) => {
-        const calendars = await googleClient
-          .ensureHasAppointmentsAndAvailabilityCalendars(organizations)
-        return Array.from(zip(organizations, calendars)).map((
-          [organization, calendars],
-        ) => ({
-          organization_id: organization.id,
-          ...calendars,
-        }))
-      },
+
+  const calendars =
+    await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+      trx,
+      googleClient,
+      organization_ids,
     )
 
   const health_worker = await health_workers.upsertWithGoogleCredentials(
@@ -59,20 +69,20 @@ export async function initializeHealthWorker(
     },
   )
 
-  const adding_roles = employment.add(
-    trx,
-    invitees.map((invitee) => ({
-      health_worker_id: health_worker.id,
-      organization_id: invitee.organization_id,
-      profession: invitee.profession,
-    })),
+  const health_worker_id = health_worker.id
+
+  await addCalendars(trx, health_worker_id, calendars)
+
+  await Promise.all(
+    invitees.map(({ organization_id, profession }) =>
+      employment.addIgnoreDuplicate(
+        trx,
+        { health_worker_id, organization_id, profession },
+      )
+    ),
   )
 
-  await addCalendars(trx, health_worker.id, await getting_calendars)
-  await removing_invites
-  await adding_roles
-
-  return { id: health_worker.id }
+  return { id: health_worker_id }
 }
 
 async function checkPermissions(

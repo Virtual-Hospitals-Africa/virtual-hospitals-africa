@@ -8,6 +8,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { SqlBool } from 'kysely'
+import { now } from '../helpers.ts'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
@@ -37,26 +38,20 @@ export function add(
     .execute()
 }
 
-export async function isAdmin(
+export function addIgnoreDuplicate(
   trx: TrxOrDb,
-  opts: {
-    health_worker_id: string
-    organization_id: string
-  },
-): Promise<boolean> {
-  const matches = await trx
-    .selectFrom('employment')
-    .where('health_worker_id', '=', opts.health_worker_id)
-    .where('organization_id', '=', opts.organization_id)
-    .where('profession', '=', 'admin')
-    .execute()
-  if (matches.length > 1) {
-    throw new Error(
-      'Duplicate matches found when searching for an admin identified by: ' +
-        opts.health_worker_id + ' in database',
+  employees: Employee,
+): Promise<HasStringId<Employee>> {
+  return trx
+    .insertInto('employment')
+    .values(employees)
+    .onConflict((oc) =>
+      oc.constraint('only_employed_once_per_profession').doUpdateSet({
+        updated_at: now,
+      })
     )
-  }
-  return matches.length === 1
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function getEmployee(
