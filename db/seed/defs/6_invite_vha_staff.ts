@@ -51,7 +51,7 @@ async function inviteVhaStaff(db: Kysely<DB>) {
     },
     {
       email,
-      profession: 'nurse' as const,
+      profession: 'doctor' as const,
       organization_id: '00000000-0000-0000-0000-000000000001',
     },
   ]).concat(vhaVirtualHospitalStaff.flatMap((email) =>
