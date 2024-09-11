@@ -1213,9 +1213,9 @@ export interface PrescriptionMedications {
 export interface PrescriptionMedicationsFilled {
   created_at: Generated<Timestamp>
   id: Generated<string>
-  prescription_medication_id: string
   pharmacist_id: string
   pharmacy_id: string | null
+  prescription_medication_id: string
   updated_at: Generated<Timestamp>
 }
 
