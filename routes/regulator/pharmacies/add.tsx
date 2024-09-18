@@ -65,7 +65,7 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/pharmacies?success=${success}&show_pharmacy_id=${id}`,
+      `/regulator/pharmacies/${id}?success=${success}`,
     )
   },
 }
