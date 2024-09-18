@@ -6,6 +6,10 @@ const regulator_emails = [
   'zorachen84613@gmail.com',
   'mike.huang.mikank@gmail.com',
   '812046661lm@gmail.com',
+  'laurence.regu@gmail.com',
+  'peterpang1103jp@gmail.com',
+  'saadmparacha@gmail.com',
+  'whoapple8@gmail.com',
 ]
 
 export function isInvited(email: string): Promise<boolean> {
