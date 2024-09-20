@@ -325,7 +325,9 @@ export async function ExaminationsPage(
   })
 
   return {
-    next_step_text: adding_examinations ? 'Add Examinations' : `Continue to ${once_done}`,
+    next_step_text: adding_examinations
+      ? 'Add Examinations'
+      : `Continue to ${once_done}`,
     children: (
       <>
         <Tabs tabs={tabs} />
