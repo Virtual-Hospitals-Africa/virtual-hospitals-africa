@@ -40,7 +40,7 @@ export default function AllergyInput(props: {
                 className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
               >
                 {allergy.name}
-                <MinusCircleIcon className='text-indigo-600' />
+                <MinusCircleIcon className='text-indigo-600 w-4 h-4' />
               </button>
               <input
                 type='hidden'
