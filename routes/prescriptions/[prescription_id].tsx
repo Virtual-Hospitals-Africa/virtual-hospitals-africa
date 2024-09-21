@@ -4,7 +4,6 @@ import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import * as patients from '../../db/models/patients.ts'
-import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
 import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetail.tsx'
 import * as patient_allergies from '../../db/models/patient_allergies.ts'
@@ -48,15 +47,10 @@ export default async function PrescriptionPage(
 
     const {
       patient,
-      pre_existing_conditions,
       allergies,
       unfilled_medications,
     } = await promiseProps({
       patient: patients.getByID(trx, { id: patient_id }),
-      pre_existing_conditions: patient_conditions.getPreExistingConditions(
-        trx,
-        { patient_id },
-      ),
       allergies: patient_allergies.getWithName(trx, patient_id),
       unfilled_medications: prescription_medications.getByPrescriptionId(
         trx,
@@ -130,14 +124,6 @@ export default async function PrescriptionPage(
                   information={allergies.map((allergy) => allergy.name).join(
                     ', ' || 'None',
                   )}
-                />
-                <PrescriptionDetail
-                  heading='Other Notable Health Conditions'
-                  information={pre_existing_conditions.map((condition) =>
-                    condition.name
-                  ).join(
-                    ', ',
-                  ) || 'None'}
                 />
               </div>
             </div>
