@@ -99,7 +99,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('pharmacist_id', 'uuid', (col) =>
           col.notNull().references('pharmacists.id').onDelete('cascade'))
         .addColumn('pharmacy_id', 'uuid', (col) =>
-          col.references('pharmacists.id').onDelete('cascade'))
+          col.references('pharmacies.id').onDelete('cascade'))
         .addUniqueConstraint('prescription_medication_id', [
           'prescription_medication_id',
         ]),

@@ -10,7 +10,10 @@ import * as prescription_medications from '../../db/models/prescription_medicati
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
-import { handleLicenceInput } from './handleLicenceInput.ts'
+import {
+  handleLicenceInput,
+  handlePharmacyLicenceInput,
+} from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
   activePresciptionMedication,
@@ -24,6 +27,7 @@ import {
   medicationDisplay,
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
+import { getPharmacy } from '../../db/models/pharmacists.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -101,6 +105,17 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       `No record found. To continue, you'll need to reenter your licence number.`,
     onExit: handleLicenceInput,
   },
+  'not_onboarded:enter_pharmacy_number': {
+    type: 'string',
+    prompt: `Please enter your pharmacy licence number.`,
+    onExit: handlePharmacyLicenceInput,
+  },
+  'not_onboarded:reenter_pharmacy_number': {
+    type: 'string',
+    prompt:
+      `No record found. To continue, you'll need to reenter your pharmacy licence number.`,
+    onExit: handlePharmacyLicenceInput,
+  },
   'not_onboarded:enter_name': {
     type: 'string',
     prompt: 'What is your name?',
@@ -111,6 +126,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
         const { licence_number } = pharmacistState.chatbot_user.data
         assert(typeof licence_number === 'string')
+
+        const { pharmacy_licence_number } = pharmacistState.chatbot_user.data
+        assert(typeof pharmacy_licence_number === 'string')
 
         const pharmacist = await trx
           .selectFrom('pharmacists')
@@ -130,8 +148,16 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           )
         }
 
+        const pharmacy = await getPharmacy(trx, pharmacist.id)
+
+        if (!pharmacy || pharmacy.licence_number != pharmacy_licence_number) {
+          throw new Error(
+            'Cannot find a pharmacy with that pharmacist',
+          )
+        }
+
         const today = new Date()
-        if (pharmacist.expiry_date < today) {
+        if (pharmacist.expiry_date < today || pharmacy.expiry_date < today) {
           return 'not_onboarded:licence_expired' as const
         }
 
