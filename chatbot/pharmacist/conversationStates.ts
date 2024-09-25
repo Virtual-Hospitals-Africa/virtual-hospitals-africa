@@ -27,7 +27,6 @@ import {
   medicationDisplay,
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
-import { getPharmacy } from '../../db/models/pharmacists.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -105,11 +104,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       `No record found. To continue, you'll need to reenter your licence number.`,
     onExit: handleLicenceInput,
   },
-  'not_onboarded:enter_pharmacy_number': {
-    type: 'string',
-    prompt: `Please enter your pharmacy licence number.`,
-    onExit: handlePharmacyLicenceInput,
-  },
   'not_onboarded:enter_name': {
     type: 'string',
     prompt: 'What is your name?',
@@ -120,9 +114,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
         const { licence_number } = pharmacistState.chatbot_user.data
         assert(typeof licence_number === 'string')
-
-        const { pharmacy_licence_number } = pharmacistState.chatbot_user.data
-        assert(typeof pharmacy_licence_number === 'string')
 
         const pharmacist = await trx
           .selectFrom('pharmacists')
@@ -142,16 +133,8 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           )
         }
 
-        const pharmacy = await getPharmacy(trx, pharmacist.id)
-
-        if (!pharmacy || pharmacy.licence_number != pharmacy_licence_number) {
-          throw new Error(
-            'Cannot find a pharmacy with that pharmacist',
-          )
-        }
-
         const today = new Date()
-        if (pharmacist.expiry_date < today || pharmacy.expiry_date < today) {
+        if (pharmacist.expiry_date < today) {
           return 'not_onboarded:licence_expired' as const
         }
 
@@ -163,7 +146,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           },
         )
         // TODO Handle case where the user previously selected they want to view inventory
-        return 'not_onboarded:share_location' as const
+        return 'not_onboarded:enter_pharmacy_number' as const
       } catch (err) {
         console.log(err)
         return 'not_onboarded:reenter_licence_number' as const
@@ -174,6 +157,29 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'select',
     prompt:
       'Your license has expired. Please contact the authority to renew your license.',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+  'not_onboarded:enter_pharmacy_number': {
+    type: 'string',
+    prompt: `Please enter your pharmacy licence number.`,
+    onExit: handlePharmacyLicenceInput,
+  },
+  'not_onboarded:reenter_pharmacy_number': {
+    type: 'string',
+    prompt:
+      `No pharmacy record found. To continue, you'll need to reenter your pharmacy licence number.`,
+    onExit: handlePharmacyLicenceInput,
+  },
+  'not_onboarded:pharmacy_licence_expired': {
+    type: 'select',
+    prompt:
+      'Your pharmacy license has expired. Please contact the authority to renew your license.',
     options: [
       {
         id: 'main_menu',
