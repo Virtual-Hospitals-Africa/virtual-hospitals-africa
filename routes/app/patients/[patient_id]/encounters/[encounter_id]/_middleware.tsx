@@ -242,9 +242,22 @@ export function EncounterPage(
     const previously_completed = ctx.state.encounter.steps_completed.includes(
       step as unknown as EncounterStep,
     )
+
+    const organizationId = ctx.state.encounter_provider.organization_id
+
+    const location = await send_to.getLocationByOrganizationId(
+      ctx.state.trx,
+      organizationId,
+    )
+
     const getting_sendables = send_to.forPatientEncounter(
       ctx.state.trx,
       patient.id,
+      location,
+      organizationId,
+      {
+        exclude_health_worker_id: ctx.state.healthWorker.id,
+      },
     )
 
     let next_step_text: string | undefined

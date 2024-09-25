@@ -176,12 +176,178 @@ export async function forPatientIntake(
   ]
 }
 
-// deno-lint-ignore require-await
 export async function forPatientEncounter(
-  _trx: TrxOrDb,
+  trx: TrxOrDb,
   _patient_id: string,
+  location: Location,
+  organization_id: string,
+  opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
+  const { nearestFacilities, employees } = await promiseProps({
+    nearestFacilities: nearest(trx, location),
+    employees: getApprovedProviders(
+      trx,
+      organization_id,
+      {
+        exclude_health_worker_id: opts.exclude_health_worker_id,
+      },
+    ),
+  })
+
+  const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
+    (facility) => ({
+      key: `facility/${facility.id}`,
+      name: facility.name,
+      description: {
+        text: facility.address || '',
+      },
+      image: {
+        type: 'icon',
+        icon: 'BuildingOffice2Icon',
+      },
+      status: 'Accepting patients',
+      to: {
+        type: 'entity',
+        entity_type: 'facility',
+        entity_id: facility.id,
+        online: true,
+      },
+    }),
+  )
+
+  const nurse_information: Sendable[] = employees.map(
+    (employee) => ({
+      key: 'health_worker/' + employee.name,
+      name: employee.name,
+      description: {
+        text: capitalize(
+          employee.specialty
+            ? `${employee.specialty} ${employee.profession}`
+            : employee.profession,
+        ),
+      },
+      image: {
+        type: 'avatar',
+        url: employee.avatar_url,
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: employee.employee_id,
+        online: !!employee.online,
+      },
+      request_type_options: [
+        'request_review',
+        'make_appointment',
+        'declare_emergency',
+      ],
+      textarea: 'additional_details',
+    }),
+  )
   return [
+    {
+      key: 'health_worker/' + 'tester',
+      name: 'tester',
+      description: {
+        text: 'ABC',
+      },
+      image: {
+        type: 'icon',
+        icon: 'ClockIcon',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: '4890f04d-099d-4330-be5d-fc3265aaf2bd', // put employment.health_worker_id
+        online: false,
+      },
+      request_type_options: [
+        'request_review',
+        'make_appointment',
+        'declare_emergency',
+      ],
+      textarea: 'additional_details',
+    },
+    ...nurse_information,
+    ...nearestFacilitySendables,
+    {
+      key: 'waiting_room',
+      name: 'Waiting Room',
+      image: {
+        type: 'icon',
+        icon: 'ClockIcon',
+      },
+      status: 'To be seen by the next available practitioner',
+      to: {
+        type: 'action',
+        action: 'waiting_room',
+      },
+    },
+    {
+      key: 'device',
+      name: 'Device via Bluetooth',
+      image: {
+        type: 'icon',
+        icon: 'BluetoothIcon',
+      },
+      status: 'Connect with trusted devices of known colleagues',
+      to: {
+        type: 'action',
+        action: 'device',
+      },
+    },
+    {
+      key: 'search',
+      name: 'Search',
+      image: {
+        type: 'icon',
+        icon: 'MagnifyingGlassIcon',
+      },
+      status:
+        'Nurses, Doctors, Hospitals, Clinics, Virtual Organizations, Specialists, Laboratories, Pharmacies',
+      to: {
+        type: 'action',
+        action: 'search',
+      },
+    },
+  ]
+}
+
+export function assertIs(
+  send_to: unknown,
+): asserts send_to is SendToFormSubmission {
+  assertOr400(isObjectLike(send_to))
+  if (send_to.action) {
+    assertOr400(
+      typeof send_to.action === 'string',
+      'send_to.action must be a string',
+    )
+    assertOr400(
+      !send_to.entity,
+      'send_to.entity must not be present when send_to.action is present',
+    )
+  }
+  if (send_to.entity) {
+    assertOr400(isObjectLike(send_to.entity))
+    assertOr400(
+      typeof send_to.entity.id === 'string',
+      'send_to.entity.id must be a string',
+    )
+    assertOr400(
+      typeof send_to.entity.type === 'string',
+      'send_to.entity.type must be a string',
+    )
+    assertOr400(
+      !send_to.action,
+      'send_to.action must not be present when send_to.entity is present',
+    )
+  }
+}
+
+/**
+ * [
     {
       key: 'health_worker/nurse_a',
       name: 'Nurse A',
@@ -281,35 +447,4 @@ export async function forPatientEncounter(
       },
     },
   ]
-}
-
-export function assertIs(
-  send_to: unknown,
-): asserts send_to is SendToFormSubmission {
-  assertOr400(isObjectLike(send_to))
-  if (send_to.action) {
-    assertOr400(
-      typeof send_to.action === 'string',
-      'send_to.action must be a string',
-    )
-    assertOr400(
-      !send_to.entity,
-      'send_to.entity must not be present when send_to.action is present',
-    )
-  }
-  if (send_to.entity) {
-    assertOr400(isObjectLike(send_to.entity))
-    assertOr400(
-      typeof send_to.entity.id === 'string',
-      'send_to.entity.id must be a string',
-    )
-    assertOr400(
-      typeof send_to.entity.type === 'string',
-      'send_to.entity.type must be a string',
-    )
-    assertOr400(
-      !send_to.action,
-      'send_to.action must not be present when send_to.entity is present',
-    )
-  }
-}
+ */
