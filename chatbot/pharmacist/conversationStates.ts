@@ -110,12 +110,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     prompt: `Please enter your pharmacy licence number.`,
     onExit: handlePharmacyLicenceInput,
   },
-  'not_onboarded:reenter_pharmacy_number': {
-    type: 'string',
-    prompt:
-      `No record found. To continue, you'll need to reenter your pharmacy licence number.`,
-    onExit: handlePharmacyLicenceInput,
-  },
   'not_onboarded:enter_name': {
     type: 'string',
     prompt: 'What is your name?',

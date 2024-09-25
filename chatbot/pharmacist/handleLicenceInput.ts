@@ -28,7 +28,7 @@ export async function handlePharmacyLicenceInput(
 ) {
   const pharmacy_licence_number = pharmacistState.unhandled_message.trimmed_body
   if (!pharmacy_licence_number) {
-    return 'not_onboarded:reenter_pharmacy_number' as const
+    return 'not_onboarded:reenter_licence_number' as const
   }
 
   await conversations.updateChatbotUser(
