@@ -308,3 +308,25 @@ export async function insert(
   await insertPharmacyEmployment(trx, pharmacyEmployments)
   return pharmacist
 }
+
+export function getPharmacy(
+  trx: TrxOrDb,
+  pharmacist_id: string,
+) {
+  return trx
+    .selectFrom('pharmacies')
+    .innerJoin(
+      'pharmacy_employment',
+      'pharmacies.id',
+      'pharmacy_employment.pharmacy_id',
+    )
+    .where('pharmacy_employment.pharmacist_id', '=', pharmacist_id)
+    .select('licence_number')
+    .select('name')
+    .select('licensee')
+    .select('address')
+    .select('town')
+    .select('expiry_date')
+    .select('pharmacies_types')
+    .executeTakeFirst()
+}

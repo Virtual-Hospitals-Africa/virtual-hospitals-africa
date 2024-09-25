@@ -465,6 +465,7 @@ export type PharmacistConversationState =
   | 'initial_message'
   | 'not_onboarded:enter_licence_number'
   | 'not_onboarded:reenter_licence_number'
+  | 'not_onboarded:enter_pharmacy_number'
   | 'not_onboarded:enter_name'
   | 'not_onboarded:share_location'
   | 'not_onboarded:reshare_location'

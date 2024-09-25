@@ -19,5 +19,27 @@ export async function handleLicenceInput(
       },
     },
   )
+  return 'not_onboarded:enter_pharmacy_number' as const
+}
+
+export async function handlePharmacyLicenceInput(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
+  const pharmacy_licence_number = pharmacistState.unhandled_message.trimmed_body
+  if (!pharmacy_licence_number) {
+    return 'not_onboarded:reenter_licence_number' as const
+  }
+
+  await conversations.updateChatbotUser(
+    trx,
+    pharmacistState.chatbot_user,
+    {
+      data: {
+        ...pharmacistState.chatbot_user.data,
+        pharmacy_licence_number,
+      },
+    },
+  )
   return 'not_onboarded:enter_name' as const
 }
