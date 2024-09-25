@@ -38,37 +38,65 @@ export function strengthSummary(base_table: string) {
   ).as('strength_summary')
 }
 
-function baseQuery(trx: TrxOrDb) {
-  return trx
-    .selectFrom('drugs')
-    .select((eb_drugs) => [
-      'drugs.id',
-      'drugs.generic_name as name',
-      jsonArrayFromColumn(
-        'trade_name',
-        eb_drugs
-          .selectFrom('medications')
-          .innerJoin(
-            'manufactured_medications',
-            'manufactured_medications.medication_id',
-            'medications.id',
-          )
-          .whereRef(
-            'medications.drug_id',
-            '=',
-            'drugs.id',
-          )
-          .where(
-            'manufactured_medications.trade_name',
-            '!=',
-            eb_drugs.ref('drugs.generic_name'),
-          )
-          .select('manufactured_medications.trade_name')
-          .distinct(),
-      ).as('distinct_trade_names'),
-      jsonArrayFrom(
-        eb_drugs.selectFrom('medications')
-          .select((eb_medications) => [
+function baseQuery(trx: TrxOrDb, include_recalled: boolean = false) {
+  return trx.selectFrom('drugs').select((eb_drugs) => [
+    'drugs.id',
+    'drugs.generic_name as name',
+    jsonArrayFromColumn(
+      'trade_name',
+      eb_drugs
+        .selectFrom('medications')
+        .innerJoin(
+          'manufactured_medications',
+          'manufactured_medications.medication_id',
+          'medications.id',
+        )
+        .whereRef('medications.drug_id', '=', 'drugs.id')
+        .where(
+          'manufactured_medications.trade_name',
+          '!=',
+          eb_drugs.ref('drugs.generic_name'),
+        )
+        .select('manufactured_medications.trade_name')
+        .distinct(),
+    ).as('distinct_trade_names'),
+    jsonArrayFrom(
+      eb_drugs
+        .selectFrom('medications')
+        .select((eb_medications) => {
+          let manufacturersQuery = eb_medications
+            .selectFrom('manufactured_medications')
+            .leftJoin(
+              'manufactured_medication_recalls',
+              'manufactured_medication_recalls.manufactured_medication_id',
+              'manufactured_medications.id',
+            )
+            .select([
+              'manufactured_medications.id as manufactured_medication_id',
+              'manufactured_medications.strength_numerators',
+              'manufactured_medications.trade_name',
+              'manufactured_medications.applicant_name',
+              'manufactured_medication_recalls.recalled_at',
+            ])
+            .whereRef(
+              'manufactured_medications.medication_id',
+              '=',
+              'medications.id',
+            )
+            .orderBy([
+              'manufactured_medications.trade_name asc',
+              'manufactured_medications.strength_numerators asc',
+            ])
+
+          if (!include_recalled) {
+            manufacturersQuery = manufacturersQuery.where(
+              'manufactured_medication_recalls.recalled_at',
+              'is',
+              null,
+            )
+          }
+
+          return [
             'medications.id as medication_id',
             'medications.form',
             'medications.form_route',
@@ -79,39 +107,13 @@ function baseQuery(trx: TrxOrDb) {
             'medications.strength_denominator_unit',
             'medications.strength_denominator_is_units',
             strengthSummary('medications'),
-            jsonArrayFrom(
-              eb_medications.selectFrom('manufactured_medications')
-                .leftJoin(
-                  'manufactured_medication_recalls',
-                  'manufactured_medication_recalls.manufactured_medication_id',
-                  'manufactured_medications.id',
-                )
-                .select([
-                  'manufactured_medications.id as manufactured_medication_id',
-                  'manufactured_medications.strength_numerators',
-                  'manufactured_medications.trade_name',
-                  'manufactured_medications.applicant_name',
-                  'manufactured_medication_recalls.recalled_at',
-                ])
-                .whereRef(
-                  'manufactured_medications.medication_id',
-                  '=',
-                  'medications.id',
-                )
-                .orderBy([
-                  'manufactured_medications.trade_name asc',
-                  'manufactured_medications.strength_numerators asc',
-                ]),
-            ).as('manufacturers'),
-          ])
-          .whereRef(
-            'medications.drug_id',
-            '=',
-            'drugs.id',
-          )
-          .orderBy('medications.form_route', 'asc'),
-      ).as('medications'),
-    ])
+            jsonArrayFrom(manufacturersQuery).as('manufacturers'),
+          ]
+        })
+        .whereRef('medications.drug_id', '=', 'drugs.id')
+        .orderBy('medications.form_route', 'asc'),
+    ).as('medications'),
+  ])
 }
 
 export async function search(
@@ -129,9 +131,10 @@ export async function search(
     assert(opts.search)
   }
 
+  const include_recalled = opts.include_recalled ?? false
   let query = opts.search
     ? trx
-      .selectFrom(baseQuery(trx).as('drug_search_results'))
+      .selectFrom(baseQuery(trx, include_recalled).as('drug_search_results'))
       .selectAll()
       .where((eb) =>
         eb.or([
@@ -139,11 +142,11 @@ export async function search(
           sql<
             boolean
           >`EXISTS (select 1 from json_array_elements_text("drug_search_results"."distinct_trade_names") AS trade_name
-            WHERE trade_name ILIKE ${'%' + opts.search + '%'})`,
+          WHERE trade_name ILIKE ${'%' + opts.search + '%'})`,
         ])
       )
       .orderBy(sql`similarity(name, ${opts.search})`, 'desc')
-    : baseQuery(trx).where('drugs.id', 'in', opts.ids!)
+    : baseQuery(trx, include_recalled).where('drugs.id', 'in', opts.ids!)
 
   if (!opts.ids) {
     query = query.limit(20)
