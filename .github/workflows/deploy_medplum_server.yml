@@ -1,9 +1,10 @@
-name: Deploy Medplum Server
+name: Deploy Pharmacist Chatbot
 
 on:
   push:
     branches:
       - main
+      - staging
 
 jobs:
   build:
@@ -12,9 +13,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      # - uses: akhileshns/heroku-deploy@v3.13.15
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: "vha-medplum-server"
-      #     heroku_email: "will@morehumaninternet.org"
-      #     procfile: "web: deno task run:trusted external-clients/medplum/server.ts"
+      - name: Use Dockerfile.vha-medplum-server
+        run: cp Dockerfile.vha-medplum-server Dockerfile
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "vha-medplum-server"
+          heroku_email: "will@morehumaninternet.org"
+          docker_heroku_process_type: web
+          usedocker: true
+          docker_build_args: |
+            HEROKU_SLUG_COMMIT=${GITHUB_SHA}
