@@ -1,5 +1,6 @@
-import { connect } from 'redis'
 import { assert } from 'std/assert/assert.ts'
+import { connect } from 'redis'
+import Redlock from 'redlock'
 
 interface RedisConnectionOptions {
   username?: string
@@ -54,3 +55,5 @@ export function cacheable<F extends (...args: any[]) => Promise<any>>(
     })
   }) as unknown as F)
 }
+
+export const lock = new Redlock([redis])
