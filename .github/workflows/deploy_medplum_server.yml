@@ -1,4 +1,4 @@
-name: Deploy Pharmacist Chatbot
+name: Deploy Medplum Server
 
 on:
   push:
