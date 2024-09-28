@@ -5,6 +5,7 @@ import { mergeReadableStreams } from 'std/streams/merge_readable_streams.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 
+const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
 const MEDPLUM_SERVER_PORT = Deno.env.get('MEDPLUM_SERVER_PORT') || '8103'
 
 export async function start() {
@@ -21,6 +22,7 @@ export async function start() {
 
   const vha_medplum_config = {
     ...medplum_config,
+    adminClientId: MEDPLUM_CLIENT_ID,
     database: database_opts,
     redis: {
       ...redis_opts,

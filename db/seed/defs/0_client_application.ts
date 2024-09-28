@@ -1,112 +1,244 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { create } from '../create.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../../db.d.ts'
+import generateUUID from '../../../util/uuid.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
+import isString from '../../../util/isString.ts'
+import {
+  InsertExpression,
+  InsertObject,
+} from 'kysely/parser/insert-values-parser.d.ts'
 
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
 const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
 
 export default create(
-  ['ProjectMembership', 'ClientApplication'],
+  [
+    'Project',
+    'Project_History',
+    'ProjectMembership',
+    'ProjectMembership_History',
+    'User',
+    'User_History',
+    'Practitioner',
+    'Practitioner_History',
+    'ClientApplication',
+    'ClientApplication_History',
+    'HumanName',
+  ],
   addClientApplication,
   { never_dump: true },
 )
+
+async function insertWithHistory<
+  TableName extends
+    | 'Project'
+    | 'ProjectMembership'
+    | 'User'
+    | 'Practitioner'
+    | 'ClientApplication',
+>(
+  db: Kysely<DB>,
+  table_name: TableName,
+  content: Record<string, unknown>,
+  other_values: Omit<
+    InsertObject<DB, TableName>,
+    'id' | 'lastUpdated' | 'content'
+  >,
+) {
+  const lastUpdated = new Date().toISOString()
+  const id = content.id
+    ? (assert(isString(content.id)), content.id)
+    : generateUUID()
+
+  const versionId = generateUUID()
+  const meta = isObjectLike(content.meta) ? content.meta : {}
+
+  const actual_content = {
+    id,
+    resourceType: table_name,
+    ...content,
+    meta: {
+      versionId,
+      lastUpdated,
+      author: { reference: 'system' },
+      ...meta,
+    },
+  }
+  await db.insertInto(`${table_name}_History`).values({
+    id,
+    versionId,
+    lastUpdated,
+    content: JSON.stringify(actual_content),
+    // deno-lint-ignore no-explicit-any
+  } as any).executeTakeFirstOrThrow()
+
+  return db.insertInto(table_name).values({
+    ...other_values,
+    id,
+    lastUpdated,
+    content: JSON.stringify(actual_content),
+  } as InsertExpression<DB, TableName>).returningAll().executeTakeFirstOrThrow()
+}
 
 async function addClientApplication(db: Kysely<DB>) {
   assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
   assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
 
-  const project = await db.selectFrom('Project').selectAll()
-    .executeTakeFirstOrThrow()
-  const practitioner = await db.selectFrom('Practitioner')
-    .selectAll()
-    .where(
-      sql<
-        boolean
-      >`(cast(content AS json)->'name')::text = '[{"given":["Medplum"],"family":"Admin"}]'`,
-    )
-    .executeTakeFirstOrThrow()
-  const client_application = await db.insertInto('ClientApplication').values({
-    id: MEDPLUM_CLIENT_ID,
-    content: JSON.stringify({
-      'meta': {
-        'project': project.id,
-        'versionId': 'eeb5a703-185c-48f3-802b-090be3c53bae',
-        'lastUpdated': '2024-04-23T01:56:22.761Z',
-        'author': {
-          'reference': `Practitioner/${practitioner.id}`,
-          'display': 'Medplum Admin',
-        },
-        'compartment': [
-          {
-            'reference': `Project/${project.id}`,
-          },
-        ],
-      },
-      'resourceType': 'ClientApplication',
-      'name': 'Virtual Hospitals Africa',
-      'secret': MEDPLUM_CLIENT_SECRET,
-      'id': MEDPLUM_CLIENT_ID,
-    }),
-    lastUpdated: '2024-04-22 21:56:22.761-04',
-    compartments: [project.id],
-    name: 'Virtual Hospitals Africa',
-    deleted: false,
-    _profile: null,
-    _security: null,
-    _source: null,
-    _tag: null,
-    projectId: project.id,
-  }).returningAll().executeTakeFirstOrThrow()
+  const email = 'admin@virtualhospitalsafrica.org'
+  const projectId = generateUUID()
+  const user = await insertWithHistory(db, 'User', {
+    firstName: 'VHA',
+    lastName: 'Admin',
+    email,
+    passwordHash:
+      '$2a$10$3i7q4OQ3bkmmtwASrHeBFu96fNczD.a2gjwMx7w9QaAEJIkiL4iz.',
+    name: [{
+      given: ['VHA'],
+      family: 'Admin',
+    }],
+    project: `Project/${projectId}`,
+    projectId,
+  }, {
+    email,
+    compartments: [],
+    project: `Project/${projectId}`,
+    projectId,
+  })
 
-  const project_membership_id = 'b9be3cd0-d9a5-4e97-abaa-1752fd9f9ce5'
-
-  await db.insertInto('ProjectMembership').values(
-    {
-      id: project_membership_id,
-      content: JSON.stringify({
-        'meta': {
-          'project': project.id,
-          'versionId': '6579dbae-9432-4d8a-a87c-aaf05eeba353',
-          'lastUpdated': '2024-04-23T19:11:26.089Z',
-          'author': {
-            'reference': 'system',
-          },
-          'compartment': [
-            {
-              'reference': `Project/${project.id}`,
-            },
-          ],
-        },
-        'resourceType': 'ProjectMembership',
-        'project': {
-          'reference': `Project/${project.id}`,
-        },
-        'user': {
-          'reference': `ClientApplication/${client_application.id}}`,
-          'display': 'Virtual Hospitals Africa',
-        },
-        'profile': {
-          'reference': `ClientApplication/${client_application.id}}`,
-          'display': 'Virtual Hospitals Africa',
-        },
-        'id': project_membership_id,
-      }),
-      lastUpdated: '2024-04-23 15:11:26.089-04',
-      compartments: [project.id],
-      project: `Project/${project.id}`,
-      user: `ClientApplication/${client_application.id}`,
-      deleted: false,
-      profile: `ClientApplication/${client_application.id}}`,
-      _profile: null,
-      _security: null,
-      _source: null,
-      _tag: null,
-      profileType: 'ClientApplication',
-      externalId: null,
-      projectId: project.id,
-      accessPolicy: null,
-      userName: null,
+  await insertWithHistory(db, 'Project', {
+    id: projectId,
+    'name': 'Super Admin',
+    'owner': {
+      'reference': `User/${user.id}`,
+      'display': 'admin@virtualhospitalsafrica.org',
     },
-  ).execute()
+    'superAdmin': true,
+    'strictMode': true,
+    'meta': {
+      'project': projectId,
+      'compartment': [{
+        'reference': `Project/${projectId}`,
+      }],
+    },
+  }, {
+    compartments: [projectId],
+    name: 'Virtual Hospitals Africa',
+    owner: `User/${user.id}`,
+    projectId,
+    deleted: false,
+  })
+
+  const practitioner = await insertWithHistory(db, 'Practitioner', {
+    'meta': {
+      'compartment': [{
+        'reference': `Project/${projectId}`,
+      }],
+    },
+    'name': [{ 'given': ['VHA'], 'family': 'Admin' }],
+    'telecom': [{
+      'system': 'email',
+      'use': 'work',
+      'value': 'admin@virtualhosptialsafrica.org',
+    }],
+  }, {
+    compartments: [projectId],
+    phonetic: [JSON.stringify({
+      given: ['VHA'],
+      family: 'Admin',
+    })],
+    projectId,
+  })
+
+  await db.insertInto('HumanName')
+    .values({
+      resourceId: practitioner.id,
+      name: 'VHA Admin',
+      given: 'VHA',
+      family: 'Admin',
+    })
+    .executeTakeFirstOrThrow()
+
+  const client_application = await insertWithHistory(db, 'ClientApplication', {
+    'id': MEDPLUM_CLIENT_ID,
+    'secret': MEDPLUM_CLIENT_SECRET,
+    'meta': {
+      'project': projectId,
+      'author': {
+        'reference': `Practitioner/${practitioner.id}`,
+        'display': 'VHA Admin',
+      },
+      'compartment': [
+        {
+          'reference': `Project/${projectId}`,
+        },
+      ],
+    },
+    'name': 'Virtual Hospitals Africa',
+  }, {
+    compartments: [projectId],
+    name: 'Virtual Hospitals Africa',
+    projectId,
+  })
+
+  await insertWithHistory(db, 'ProjectMembership', {
+    'meta': {
+      'project': projectId,
+      'compartment': [
+        {
+          'reference': `Project/${projectId}`,
+        },
+      ],
+    },
+    'project': {
+      'reference': `Project/${projectId}`,
+      'display': 'Virtual Hospitals Africa',
+    },
+    'user': {
+      'reference': `User/${user.id}`,
+      'display': 'admin@virtualhospitalsafrica.org',
+    },
+    'profile': {
+      'reference': `Practitioner/${practitioner.id}`,
+      'display': 'VHA Admin',
+    },
+    admin: true,
+  }, {
+    compartments: [projectId],
+    project: `Project/${projectId}`,
+    user: `User/${user.id}`,
+    profile: `Practitioner/${practitioner.id}`,
+    profileType: 'Practitioner',
+    projectId,
+  })
+
+  await insertWithHistory(db, 'ProjectMembership', {
+    'meta': {
+      'project': projectId,
+      'compartment': [
+        {
+          'reference': `Project/${projectId}`,
+        },
+      ],
+    },
+    'project': {
+      'reference': `Project/${projectId}`,
+    },
+    'user': {
+      'reference': `ClientApplication/${client_application.id}`,
+      'display': 'Virtual Hospitals Africa',
+    },
+    'profile': {
+      'reference': `ClientApplication/${client_application.id}`,
+      'display': 'Virtual Hospitals Africa',
+    },
+  }, {
+    compartments: [projectId],
+    project: `Project/${projectId}`,
+    user: `ClientApplication/${client_application.id}`,
+    profile: `ClientApplication/${client_application.id}`,
+    profileType: 'ClientApplication',
+    projectId,
+  })
 }

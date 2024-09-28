@@ -15,6 +15,13 @@ MEDPLUM_TABLES_IN_USE=(
   ClientApplication
   Project
   Practitioner
+  User
+  ProjectMembership_History
+  ClientApplication_History
+  Project_History
+  Practitioner_History
+  User_History
+  HumanName
 )
 
 MEDPLUM_TABLES=(

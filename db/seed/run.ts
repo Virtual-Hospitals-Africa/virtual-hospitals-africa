@@ -126,7 +126,7 @@ export async function run(cmd: Cmd, target?: string) {
     const result = findTarget(target)
     if (result.type === 'not_found') {
       console.error(
-        `Please specify a valid target as in\n\n  deno task db:seeds:${cmd} ${
+        `Please specify a valid target as in\n\n  deno task db:seed ${cmd} ${
           seedTargets[0]
         }\n\nValid targets:\n${seedTargets.join('\n')}`,
       )

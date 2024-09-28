@@ -273,6 +273,13 @@ export interface ClientApplication {
   projectId: string | null
 }
 
+export interface ClientApplicationHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
+}
+
 export interface Condition {
   _profile: string[] | null
   _security: string[] | null
@@ -600,6 +607,13 @@ export interface HealthWorkerSessions {
   entity_id: string
   id: Generated<string>
   updated_at: Generated<Timestamp>
+}
+
+export interface HumanName {
+  family: string | null
+  given: string | null
+  name: string | null
+  resourceId: string
 }
 
 export interface Icd10Categories {
@@ -1194,6 +1208,13 @@ export interface Practitioner {
   projectId: string | null
 }
 
+export interface PractitionerHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
+}
+
 export interface PrescriptionCodes {
   alphanumeric_code: Generated<string>
   created_at: Generated<Timestamp>
@@ -1269,6 +1290,13 @@ export interface Project {
   recaptchaSiteKey: string[] | null
 }
 
+export interface ProjectHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
+}
+
 export interface ProjectMembership {
   _profile: string[] | null
   _security: string[] | null
@@ -1287,6 +1315,13 @@ export interface ProjectMembership {
   projectId: string | null
   user: string | null
   userName: string | null
+}
+
+export interface ProjectMembershipHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
 }
 
 export interface ProviderCalendars {
@@ -1346,6 +1381,29 @@ export interface Suburbs {
   ward_id: string
 }
 
+export interface User {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  email: string | null
+  externalId: string | null
+  id: string
+  lastUpdated: Timestamp
+  project: string | null
+  projectId: string | null
+}
+
+export interface UserHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
+}
+
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1397,6 +1455,7 @@ export interface DB {
   appointment_providers: AppointmentProviders
   appointments: Appointments
   ClientApplication: ClientApplication
+  ClientApplication_History: ClientApplicationHistory
   Condition: Condition
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
@@ -1429,6 +1488,7 @@ export interface DB {
   health_worker_invitees: HealthWorkerInvitees
   health_worker_sessions: HealthWorkerSessions
   health_workers: HealthWorkers
+  HumanName: HumanName
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
   icd10_diagnoses: Icd10Diagnoses
@@ -1487,6 +1547,7 @@ export interface DB {
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
   Practitioner: Practitioner
+  Practitioner_History: PractitionerHistory
   prescription_codes: PrescriptionCodes
   prescription_medications: PrescriptionMedications
   prescription_medications_filled: PrescriptionMedicationsFilled
@@ -1494,7 +1555,9 @@ export interface DB {
   procurement: Procurement
   procurers: Procurers
   Project: Project
+  Project_History: ProjectHistory
   ProjectMembership: ProjectMembership
+  ProjectMembership_History: ProjectMembershipHistory
   provider_calendars: ProviderCalendars
   provinces: Provinces
   regulator_google_tokens: RegulatorGoogleTokens
@@ -1502,6 +1565,8 @@ export interface DB {
   regulators: Regulators
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
+  User: User
+  User_History: UserHistory
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived

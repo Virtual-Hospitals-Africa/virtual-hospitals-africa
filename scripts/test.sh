@@ -100,7 +100,7 @@ if ! $watch_mode; then
     else
       echo "Tests failed. Server log is empty."
     fi
-    # cat "$test_medplum_server_output"
+    cat "$test_medplum_server_output"
     exit 1
   }
   exit 0
