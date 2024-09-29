@@ -1786,6 +1786,7 @@
     }
   },
   "redirects": {
+    "https://deno.land/x/spinners/mod.ts": "https://deno.land/x/spinners@v1.1.2/mod.ts",
     "https://esm.sh/@testing-library/jest-dom@6.1.4/types/matchers.d.ts?pin=v133": "https://esm.sh/v135/@testing-library/jest-dom@6.1.4/types/matchers.d.ts",
     "https://esm.sh/v135/@types/babel__helper-validator-identifier@~7/index.d.ts": "https://esm.sh/v135/@types/babel__helper-validator-identifier@7.15.2/index.d.ts"
   },
@@ -2468,6 +2469,7 @@
     "https://deno.land/std@0.216.0/semver/try_parse_range.ts": "239e0d711c5745da8c4dcda3c0797b4b5a83bfe494a51d3a0f005472cdc7b016",
     "https://deno.land/std@0.216.0/semver/types.ts": "8ed52c8cfc59e249a0dbab597d8c31bcf10405dcbe9714585055ea02252ae0d0",
     "https://deno.land/std@0.216.0/testing/snapshot.ts": "35ca1c8e8bfb98d7b7e794f1b7be8d992483fcff572540e41396f22a5bddb944",
+    "https://deno.land/std@0.52.0/fmt/colors.ts": "ec9d653672a9a3c7b6eafe53c5bc797364a2db2dcf766ab649c1155fea7a80b2",
     "https://deno.land/x/code_block_writer@12.0.0/mod.ts": "2c3448060e47c9d08604c8f40dee34343f553f33edcdfebbf648442be33205e5",
     "https://deno.land/x/code_block_writer@12.0.0/utils/string_utils.ts": "60cb4ec8bd335bf241ef785ccec51e809d576ff8e8d29da43d2273b69ce2a6ff",
     "https://deno.land/x/csv@v0.8.0/deps.ts": "597e3d0c81eca1c519ce20f0a7ed573d31cfbb5625c5013763550d717ba69dfa",
@@ -2581,6 +2583,10 @@
     "https://deno.land/x/redlock@v1.0/redlock.ts": "2783c50dc8572501b13e3ac77eafaafd61be4df92740dd92f727ed6078e13b36",
     "https://deno.land/x/redlock@v1.0/scripts.ts": "ff99a4d385c5e174668f64e5d522437c414be891fe2eef68e86915397624b6b3",
     "https://deno.land/x/redlock@v1.0/types.ts": "21f4e07b3dba29739e508feddb5f188bc86193fe876e55682fcdfe2019f89675",
+    "https://deno.land/x/spinners@v1.1.2/mod.ts": "ed5b3562d4ea6c6887bc7e9844612b08a3bc3a3678ca77cc7dfdf461c362751e",
+    "https://deno.land/x/spinners@v1.1.2/spinner-types.ts": "c67e6962a0c738aa57b4d3ad9fe06c8c0131f93360acbf95456f2ba200fd8826",
+    "https://deno.land/x/spinners@v1.1.2/terminal-spinner.ts": "1cf0c38a423781734e2e538323c1992027830d741e90f0b81f532e5bc993d035",
+    "https://deno.land/x/spinners@v1.1.2/util.ts": "7083203bedbda2e6144a14a7dd093747a7a01e73d95637c888bae8ac22a1c58b",
     "https://deno.land/x/ts_morph@21.0.1/common/DenoRuntime.ts": "a505f1feae9a77c8f6ab1c18c55d694719e96573f68e9c36463b243e1bef4c3e",
     "https://deno.land/x/ts_morph@21.0.1/common/mod.ts": "01985d2ee7da8d1caee318a9d07664774fbee4e31602bc2bb6bb62c3489555ed",
     "https://deno.land/x/ts_morph@21.0.1/common/ts_morph_common.js": "236475fb18476307e07b3a97dc92fe8fb69e4a9df4ca59aa098dd6430bae7237",
