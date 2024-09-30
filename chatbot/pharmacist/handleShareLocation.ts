@@ -2,6 +2,7 @@ import { Location, PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { assert } from 'std/assert/assert.ts'
+import { assertIsConversationState } from './conversationStates.ts'
 
 export async function handleShareLocation(
   trx: TrxOrDb,
@@ -41,5 +42,8 @@ export async function handleShareLocation(
       },
     },
   )
-  return 'onboarded:fill_prescription:enter_code' as const
+
+  const { after_onboarding_state } = pharmacistState.chatbot_user.data
+  assertIsConversationState(after_onboarding_state)
+  return after_onboarding_state
 }

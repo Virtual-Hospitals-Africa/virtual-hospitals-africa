@@ -29,13 +29,25 @@ import {
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
 
-const checkOnboardingStatus = (
+async function checkOnboardingStatus(
+  trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
-  onboardedAction: PharmacistConversationState,
-) => {
-  return pharmacistState.chatbot_user.entity_id
-    ? onboardedAction
-    : 'not_onboarded:enter_licence_number' as const
+  if_onboarded_state: PharmacistConversationState,
+): Promise<PharmacistConversationState> {
+  if (pharmacistState.chatbot_user.entity_id) {
+    return if_onboarded_state
+  }
+  await conversations.updateChatbotUser(
+    trx,
+    pharmacistState.chatbot_user,
+    {
+      data: {
+        ...pharmacistState.chatbot_user.data,
+        after_onboarding_state: if_onboarded_state,
+      },
+    },
+  )
+  return 'not_onboarded:enter_licence_number' as const
 }
 
 const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
@@ -73,10 +85,11 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         id: 'fill_prescription',
         title: 'Fill Prescription',
         onExit(
-          _trx: TrxOrDb,
+          trx: TrxOrDb,
           pharmacistState: PharmacistChatbotUserState,
         ) {
           return checkOnboardingStatus(
+            trx,
             pharmacistState,
             'onboarded:fill_prescription:enter_code',
           )
@@ -86,10 +99,11 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         id: 'view_inventory',
         title: 'View Inventory',
         onExit(
-          _trx: TrxOrDb,
+          trx: TrxOrDb,
           pharmacistState: PharmacistChatbotUserState,
         ) {
           return checkOnboardingStatus(
+            trx,
             pharmacistState,
             'onboarded:view_inventory',
           )
@@ -451,4 +465,13 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       },
     ],
   },
+}
+
+export function assertIsConversationState(
+  state: unknown,
+): asserts state is PharmacistConversationState {
+  assert(
+    typeof state === 'string' && state in PHARMACIST_CONVERSATION_STATES,
+    `invalid conversation state ${state}`,
+  )
 }
