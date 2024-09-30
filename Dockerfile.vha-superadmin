@@ -1,0 +1,8 @@
+FROM node:18.20.4
+WORKDIR /app
+
+COPY ./medplum/ /app
+RUN npm install
+RUN npx turbo run build
+
+CMD ["npm", "run", "dev"]

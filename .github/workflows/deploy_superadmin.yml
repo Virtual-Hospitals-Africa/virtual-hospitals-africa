@@ -1,4 +1,4 @@
-name: Deploy Medplum Server
+name: Deploy Superadmin
 
 on:
   push:
@@ -13,13 +13,13 @@ jobs:
         with:
           submodules: recursive
       
-      - name: Use Dockerfile.vha-medplum-server
-        run: cp Dockerfile.vha-medplum-server Dockerfile
+      - name: Use Dockerfile.vha-superadmin
+        run: cp Dockerfile.vha-superadmin Dockerfile
       
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "vha-medplum-server"
+          heroku_app_name: "vha-superadmin"
           heroku_email: "will@morehumaninternet.org"
           docker_heroku_process_type: web
           usedocker: true
