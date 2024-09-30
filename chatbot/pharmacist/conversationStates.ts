@@ -6,9 +6,10 @@ import {
   WhatsAppSingleSendable,
 } from '../../types.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as pharmacists from '../../db/models/pharmacists.ts'
+import * as pharmacies from '../../db/models/pharmacies.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
-import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
 import {
   handleLicenceInput,
@@ -41,26 +42,30 @@ const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
   'https://localhost:8000'
 assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
 
+const welcome =
+  'Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, select the items from the following menu'
+
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
   'initial_message': {
     type: 'select',
     async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      if (!pharmacistState.chatbot_user.entity_id) {
-        return 'Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, select the items from the following menu'
-      }
-      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
-        'id',
-        '=',
-        pharmacistState.chatbot_user.entity_id,
-      ).executeTakeFirst()
+      const { entity_id } = pharmacistState.chatbot_user
+      if (!entity_id) return welcome
 
+      const pharmacist = await pharmacists.getById(trx, entity_id)
       if (!pharmacist) {
-        throw new Error(
-          'pharmacist_chatbot_users has an entity_id to a nonexistent pharmacist',
+        await conversations.updateChatbotUser(
+          trx,
+          pharmacistState.chatbot_user,
+          {
+            entity_id: null,
+          },
         )
+        return welcome
       }
+
       return `Hello ${pharmacist.given_name}, what can I help you with today?`
     },
     options: [
@@ -100,58 +105,65 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:reenter_licence_number': {
     type: 'string',
-    prompt:
-      `No record found. To continue, you'll need to reenter your licence number.`,
+    prompt: `Please enter your licence number.`,
     onExit: handleLicenceInput,
   },
-  'not_onboarded:enter_name': {
-    type: 'string',
-    prompt: 'What is your name?',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      try {
-        const name = pharmacistState.unhandled_message.trimmed_body
-        assert(name, 'Name should not be empty')
-
-        const { licence_number } = pharmacistState.chatbot_user.data
-        assert(typeof licence_number === 'string')
-
-        const pharmacist = await trx
-          .selectFrom('pharmacists')
-          .selectAll()
-          .where(
-            sql<
-              // deno-lint-ignore no-explicit-any
-              any
-            >`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`,
-          )
-          .where('licence_number', '=', licence_number)
-          .executeTakeFirst()
-
-        if (!pharmacist) {
-          throw new Error(
-            'Cannot find a pharmacist with that licence and name combination',
-          )
-        }
-
-        const today = new Date()
-        if (pharmacist.expiry_date < today) {
-          return 'not_onboarded:licence_expired' as const
-        }
-
-        await conversations.updateChatbotUser(
-          trx,
-          pharmacistState.chatbot_user,
-          {
-            entity_id: pharmacist.id,
-          },
-        )
-        // TODO Handle case where the user previously selected they want to view inventory
-        return 'not_onboarded:enter_pharmacy_number' as const
-      } catch (err) {
-        console.log(err)
-        return 'not_onboarded:reenter_licence_number' as const
-      }
+  'not_onboarded:incorrect_licence_number': {
+    type: 'select',
+    prompt:
+      `No record found with that licence number. To continue, you'll need to reenter your licence number.`,
+    options: [
+      {
+        id: 'reenter_licence_number',
+        title: 'Try Again',
+        onExit: 'not_onboarded:reenter_licence_number',
+      },
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+  'not_onboarded:confirm_name': {
+    type: 'select',
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const { licence_number } = pharmacistState.chatbot_user.data
+      assert(typeof licence_number === 'string')
+      const pharmacist = await pharmacists.getByLicenceNumber(
+        trx,
+        licence_number,
+      )
+      assert(
+        pharmacist,
+        'The chatbot should not have let the pharmacist proceed with a licence number not corresponding with an extant pharmacist',
+      )
+      return `We have a record for ${pharmacist.given_name} with that licence. Is this you?`
     },
+    options: [
+      {
+        id: 'yes',
+        title: 'Yes',
+        onExit: 'not_onboarded:enter_pharmacy_licence',
+      },
+      {
+        id: 'no',
+        title: 'No',
+        async onExit(trx, pharmacistState) {
+          await conversations.updateChatbotUser(
+            trx,
+            pharmacistState.chatbot_user,
+            {
+              data: {
+                ...pharmacistState.chatbot_user.data,
+                licence_number: null,
+              },
+            },
+          )
+          return 'not_onboarded:reenter_licence_number' as const
+        },
+      },
+    ],
   },
   'not_onboarded:licence_expired': {
     type: 'select',
@@ -165,15 +177,21 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       },
     ],
   },
-  'not_onboarded:enter_pharmacy_number': {
+  'not_onboarded:enter_pharmacy_licence': {
     type: 'string',
     prompt: `Please enter your pharmacy licence number.`,
     onExit: handlePharmacyLicenceInput,
   },
-  'not_onboarded:reenter_pharmacy_number': {
+  'not_onboarded:reenter_pharmacy_licence': {
     type: 'string',
     prompt:
-      `No pharmacy record found. To continue, you'll need to reenter your pharmacy licence number.`,
+      `No pharmacy record found with that licence number. To continue, you'll need to reenter your pharmacy licence number.`,
+    onExit: handlePharmacyLicenceInput,
+  },
+  'not_onboarded:incorrect_pharmacy_licence': {
+    type: 'string',
+    prompt:
+      `We don't have a record of you working at that pharmacy. Please reenter your pharmacy licence number.`,
     onExit: handlePharmacyLicenceInput,
   },
   'not_onboarded:pharmacy_licence_expired': {
@@ -188,10 +206,50 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       },
     ],
   },
+  'not_onboarded:confirm_pharmacy': {
+    type: 'select',
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const { pharmacy_licence_number } = pharmacistState.chatbot_user.data
+      assert(typeof pharmacy_licence_number === 'string')
+      const pharmacy = await pharmacies.getByLicenceNumber(
+        trx,
+        pharmacy_licence_number,
+      )
+      assert(
+        pharmacy,
+        'The chatbot should not have let the pharmacist proceed with a pharmacy licence number not corresponding with an extant pharmacy',
+      )
+      return `We have a record you working at ${pharmacy.name}. Is this correct?`
+    },
+    options: [
+      {
+        id: 'yes',
+        title: 'Yes',
+        onExit: 'not_onboarded:share_location',
+      },
+      {
+        id: 'no',
+        title: 'No',
+        async onExit(trx, pharmacistState) {
+          await conversations.updateChatbotUser(
+            trx,
+            pharmacistState.chatbot_user,
+            {
+              data: {
+                ...pharmacistState.chatbot_user.data,
+                pharmacy_licence_number: null,
+              },
+            },
+          )
+          return 'not_onboarded:reenter_pharmacy_licence' as const
+        },
+      },
+    ],
+  },
   'not_onboarded:share_location': {
     type: 'get_location',
     prompt:
-      'For regulatory purpose, we will need to have your current location, can you share that to us?',
+      'For regulatory purposes, we will need to have your current location, can you share that to us?',
     onExit: handleShareLocation,
   },
   'not_onboarded:reshare_location': {
