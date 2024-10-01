@@ -8,8 +8,10 @@ const assert = require('assert')
 
 const DATABASE_URL = process.env.DATABASE_URL
 const REDISCLOUD_URL = process.env.REDISCLOUD_URL
+const PORT = process.env.PORT
 assert.ok(DATABASE_URL, 'DATABASE_URL must be set as environment variable')
 assert.ok(REDISCLOUD_URL, 'REDISCLOUD_URL must be set as environment variable')
+assert.ok(PORT, 'PORT must be set as environment variable')
 
 function parseDBConnectionString(connectionString) {
   const regex =
@@ -60,6 +62,7 @@ process.stdin.on('end', () => {
 
   const vha_medplum_config = {
     ...medplum_config,
+    port: PORT,
     database: {
       ...db_opts,
       ssl: true,
