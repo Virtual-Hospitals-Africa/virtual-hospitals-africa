@@ -7,7 +7,7 @@ export function up(db: Kysely<unknown>) {
       .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
-          .references('patients.id')
+          .references('Patient.id')
           .unique()
           .onDelete('cascade'))
       .addColumn('sexual_activity', 'json')

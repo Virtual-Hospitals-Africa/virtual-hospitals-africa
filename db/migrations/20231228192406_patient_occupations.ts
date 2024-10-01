@@ -9,7 +9,7 @@ export function up(db: Kysely<unknown>) {
       qb.addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
-          .references('patients.id')
+          .references('Patient.id')
           .onDelete('cascade'))
         .addColumn('occupation', 'json')
         .addUniqueConstraint('patient_id', ['patient_id']),

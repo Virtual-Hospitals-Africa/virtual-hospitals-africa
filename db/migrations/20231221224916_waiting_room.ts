@@ -14,7 +14,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn(
         'patient_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) => col.notNull().references('Patient.id').onDelete('cascade'),
       )
       .addColumn('reason', sql`encounter_reason`, (col) => col.notNull())
       .addColumn(

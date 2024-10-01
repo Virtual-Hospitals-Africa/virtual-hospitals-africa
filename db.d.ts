@@ -1059,6 +1059,12 @@ export interface PatientIntake {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientIntakeCompleted {
+  completed_at: Timestamp
+  completed_by_employment_id: string
+  patient_id: string
+}
+
 export interface PatientKin {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1105,25 +1111,6 @@ export interface PatientOccupations {
   updated_at: Generated<Timestamp>
 }
 
-export interface Patients {
-  address_id: string | null
-  avatar_media_id: string | null
-  completed_intake: Generated<boolean>
-  created_at: Generated<Timestamp>
-  date_of_birth: Timestamp | null
-  ethnicity: string | null
-  gender: Gender | null
-  id: Generated<string>
-  location: string | null
-  name: string
-  national_id_number: string | null
-  nearest_organization_id: string | null
-  phone_number: string | null
-  primary_doctor_id: string | null
-  unregistered_primary_doctor_name: string | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientSymptomMedia {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1146,55 +1133,9 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
-export interface PgStatStatements {
-  blk_read_time: number | null
-  blk_write_time: number | null
-  calls: Int8 | null
-  dbid: number | null
-  jit_emission_count: Int8 | null
-  jit_emission_time: number | null
-  jit_functions: Int8 | null
-  jit_generation_time: number | null
-  jit_inlining_count: Int8 | null
-  jit_inlining_time: number | null
-  jit_optimization_count: Int8 | null
-  jit_optimization_time: number | null
-  local_blks_dirtied: Int8 | null
-  local_blks_hit: Int8 | null
-  local_blks_read: Int8 | null
-  local_blks_written: Int8 | null
-  max_exec_time: number | null
-  max_plan_time: number | null
-  mean_exec_time: number | null
-  mean_plan_time: number | null
-  min_exec_time: number | null
-  min_plan_time: number | null
-  plans: Int8 | null
-  query: string | null
-  queryid: Int8 | null
-  rows: Int8 | null
-  shared_blks_dirtied: Int8 | null
-  shared_blks_hit: Int8 | null
-  shared_blks_read: Int8 | null
-  shared_blks_written: Int8 | null
-  stddev_exec_time: number | null
-  stddev_plan_time: number | null
-  temp_blk_read_time: number | null
-  temp_blk_write_time: number | null
-  temp_blks_read: Int8 | null
-  temp_blks_written: Int8 | null
-  toplevel: boolean | null
-  total_exec_time: number | null
-  total_plan_time: number | null
-  userid: number | null
-  wal_bytes: Numeric | null
-  wal_fpi: Int8 | null
-  wal_records: Int8 | null
-}
-
-export interface PgStatStatementsInfo {
-  dealloc: Int8 | null
-  stats_reset: Timestamp | null
+export interface PatientWhatsappReportedLocation {
+  location: string
+  patient_id: string
 }
 
 export interface Pharmacies {
@@ -1596,6 +1537,7 @@ export interface DB {
   patient_guardians: PatientGuardians
   Patient_History: PatientHistory
   patient_intake: PatientIntake
+  patient_intake_completed: PatientIntakeCompleted
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
@@ -1603,9 +1545,7 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
-  patients: Patients
-  pg_stat_statements: PgStatStatements
-  pg_stat_statements_info: PgStatStatementsInfo
+  patient_whatsapp_reported_location: PatientWhatsappReportedLocation
   pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:
     PharmacistChatbotUserWhatsappMessagesReceived

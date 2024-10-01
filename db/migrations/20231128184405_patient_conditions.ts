@@ -10,7 +10,7 @@ export function up(db: Kysely<any>) {
       qb.addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
-          .references('patients.id')
+          .references('Patient.id')
           .onDelete('cascade'))
         .addColumn('condition_id', 'varchar(255)', (col) =>
           col

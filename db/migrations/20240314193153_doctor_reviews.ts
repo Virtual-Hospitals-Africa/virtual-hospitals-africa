@@ -22,7 +22,7 @@ export async function up(db: Kysely<any>) {
       .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
-          .references('patients.id')
+          .references('Patient.id')
           .onDelete('cascade'))
       .addColumn('encounter_id', 'uuid', (col) =>
         col
@@ -70,7 +70,7 @@ export async function up(db: Kysely<any>) {
       .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
-          .references('patients.id')
+          .references('Patient.id')
           .onDelete('cascade'))
       .addColumn('encounter_id', 'uuid', (col) =>
         col

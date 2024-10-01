@@ -33,12 +33,12 @@ export async function up(db: Kysely<any>) {
       .addColumn(
         'guardian_patient_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) => col.notNull().references('Patient.id').onDelete('cascade'),
       )
       .addColumn(
         'dependent_patient_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) => col.notNull().references('Patient.id').onDelete('cascade'),
       )
       .addUniqueConstraint(
         'one_relationship_per_pair',

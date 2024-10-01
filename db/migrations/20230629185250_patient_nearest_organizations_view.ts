@@ -1,29 +1,32 @@
 import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
+  await db.schema.createTable('patient_whatsapp_reported_location')
+    .addColumn(
+      'patient_id',
+      'uuid',
+      (col) => col.primaryKey().notNull().references('Patient.id'),
+    )
+    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, (col) => col.notNull())
+    .execute()
+
   await sql`
     CREATE OR REPLACE VIEW patient_nearest_organizations AS (
-      WITH patients_with_location AS (
-        SELECT id as patient_id, location
-        FROM patients
-        WHERE location is not null
-      ),
-
-      patient_organization_location_results AS (
+      WITH patient_organization_location_results AS (
         SELECT "Location".*,
-              patients_with_location.patient_id as patient_id,
+              patient_whatsapp_reported_location.patient_id as patient_id,
               ST_Distance(
-                patients_with_location.location,
+                patient_whatsapp_reported_location.location,
                 "Location".location
               ) as distance,
               ROW_NUMBER() OVER (
-                PARTITION BY patients_with_location.patient_id
+                PARTITION BY patient_whatsapp_reported_location.patient_id
                 ORDER BY ST_Distance(
-                  patients_with_location.location,
+                  patient_whatsapp_reported_location.location,
                   "Location".location
                 )
               ) as row_number
-        FROM patients_with_location
+        FROM patient_whatsapp_reported_location
         CROSS JOIN "Location"
         WHERE "Location"."organizationId" IS NOT NULL
       ),
@@ -57,4 +60,5 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropView('patient_nearest_organizations').execute()
+  await db.schema.dropTable('patient_whatsapp_reported_location').execute()
 }

@@ -4,8 +4,18 @@ import { createStandardTable } from '../createStandardTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
-  await db.updateTable('patients')
-    .set('completed_intake', false)
+  await db.schema.createTable('patient_intake_completed')
+    .addColumn(
+      'patient_id',
+      'uuid',
+      (col) => col.primaryKey().notNull().references('Patient.id'),
+    )
+    .addColumn(
+      'completed_by_employment_id',
+      'uuid',
+      (col) => col.notNull().references('employment.id'),
+    )
+    .addColumn('completed_at', 'timestamp', (col) => col.notNull())
     .execute()
 
   await db.schema.createType('intake_step')
@@ -26,7 +36,7 @@ export async function up(db: Kysely<any>) {
       'patient_id',
       'uuid',
       (col) =>
-        col.notNull().references('patients.id').onDelete(
+        col.notNull().references('Patient.id').onDelete(
           'cascade',
         ),
     )
@@ -46,4 +56,5 @@ export async function down(db: Kysely<any>) {
   await db.schema.dropTable('patient_intake').execute()
   await db.schema.dropTable('intake').execute()
   await db.schema.dropType('intake_step').execute()
+  await db.schema.dropTable('patient_completed_intake').execute()
 }

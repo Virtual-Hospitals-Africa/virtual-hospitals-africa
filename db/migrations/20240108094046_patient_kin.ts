@@ -10,12 +10,12 @@ export function up(db: Kysely<unknown>) {
         .addColumn(
           'patient_id',
           'uuid',
-          (col) => col.notNull().references('patients.id').onDelete('cascade'),
+          (col) => col.notNull().references('Patient.id').onDelete('cascade'),
         )
         .addColumn(
           'next_of_kin_patient_id',
           'uuid',
-          (col) => col.notNull().references('patients.id').onDelete('cascade'),
+          (col) => col.notNull().references('Patient.id').onDelete('cascade'),
         )
         .addUniqueConstraint('unique_patient_next_of_kin', ['patient_id'])
         .addCheckConstraint(

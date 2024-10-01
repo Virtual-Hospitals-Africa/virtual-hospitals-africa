@@ -9,7 +9,7 @@ export async function up(db: Kysely<unknown>) {
       qb.addColumn(
         'entity_id',
         'uuid',
-        (col) => col.references('patients.id').onDelete('cascade'),
+        (col) => col.references('Patient.id').onDelete('cascade'),
       )
         .addColumn('phone_number', 'varchar(255)', (col) =>
           col.notNull().unique())
