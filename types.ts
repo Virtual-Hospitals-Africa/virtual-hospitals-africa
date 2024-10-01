@@ -1081,6 +1081,16 @@ export type OrganizationDoctorOrNurse =
     specialty: NurseSpecialty | null
   }
 
+export type EmployeesWithoutActions = Omit<OrganizationEmployee, 'actions'>
+
+export type DoctorsWithoutAction =
+  & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
+  & {
+    profession: 'doctor'
+    employee_id: string
+    specialty: NurseSpecialty | null
+  }
+
 export type OrganizationEmployeeInvitee = {
   name: null
   is_invitee: true
@@ -2852,6 +2862,8 @@ export type Sendable = {
     href?: string
     parenthetical?: string
   }
+  additional_description?: string
+  additional_info?: string
   status: string
   menu_options?: {
     name: string

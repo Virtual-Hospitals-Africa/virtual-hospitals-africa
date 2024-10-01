@@ -1,28 +1,134 @@
 import { z } from 'zod'
-import { Location, Maybe, Sendable, TrxOrDb } from '../../types.ts'
+import {
+  Location,
+  OrganizationDoctorOrNurse,
+  RenderedPatientEncounterProvider,
+  Sendable,
+  SendToFormSubmission,
+  Maybe,
+  TrxOrDb,
+} from '../../types.ts'
+import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
-import { getApprovedProviders, nearestHospitals } from './organizations.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import {
+  getApprovedDoctorsWithoutAction,
+  getApprovedProviders,
+  nearestHospitals,
+} from './organizations.ts'
+import { sql } from 'kysely'
+// import { getMany } from './providers.ts'
+// import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import * as organizations from './organizations.ts'
+import * as patients from './patients.ts'
+
+export async function getLocationByOrganizationId(
+  trx: TrxOrDb,
+  organizationId: string,
+) {
+  const result = await trx
+    .selectFrom('Location')
+    .select([
+      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
+      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
+    ])
+    .where('organizationId', '=', organizationId)
+    .executeTakeFirst()
+
+  if (!result) {
+    throw new Error(
+      `No location data found for organizationId: ${organizationId}`,
+    )
+  }
+  return result
+}
+
+function processEmployee(
+  employees: OrganizationDoctorOrNurse[],
+  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  patient_name: string,
+  primary_doctor_id?: string,
+) {
+  //Limit health workers to 3
+  /**
+   * - [ ]  Sort by:
+    1. Health worker who referred this patient to me
+    2. The patient’s primary care doctor
+    3. Health workers who I have recently sent patients to
+    4. Health workers my clinic has recently sent patients to
+   */
+
+  const patient_encounter_providers_id = patient_encounter_providers.map((
+    provider,
+  ) => provider.employment_id)
+
+  const sorted_employees = employees.sort((a, b) => {
+    if (
+      patient_encounter_providers_id.includes(a.employee_id) &&
+      !(patient_encounter_providers_id.includes(b.employee_id))
+    ) {
+      return -1
+    }
+    if (
+      patient_encounter_providers_id.includes(b.employee_id) &&
+      !(patient_encounter_providers_id.includes(a.employee_id))
+    ) {
+      return 1
+    }
+    if (a.employee_id === primary_doctor_id) {
+      return -1
+    }
+    if (b.employee_id === primary_doctor_id) {
+      return 1
+    }
+    return 0
+  })
+
+  const processed_employees = sorted_employees.slice(0, 3).map((employee) => {
+    let additional_info = ''
+    if (
+      patient_encounter_providers.map((provider) => provider.employment_id)
+        .includes(employee.employee_id)
+    ) {
+      additional_info = `Encounter provider for ${patient_name} `
+    }
+    if (employee.employee_id === primary_doctor_id) {
+      additional_info = `Primary Care Doctor for ${patient_name}`
+    }
+    if (additional_info === '') {
+      additional_info = ' '
+    }
+    return {
+      ...employee,
+      additional_info,
+    }
+  })
+
+  return processed_employees
+}
 
 export async function forPatientIntake(
   trx: TrxOrDb,
-  _patient_id: string,
+  patient_id: string,
   location: Location | null,
   organization_id: string,
-  opts: { exclude_health_worker_id?: string } = {},
+  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
-  const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: location
-      ? nearestHospitals(trx, location)
-      : Promise.resolve([]),
-    employees: getApprovedProviders(
-      trx,
-      organization_id,
-      {
-        exclude_health_worker_id: opts.exclude_health_worker_id,
-      },
-    ),
-  })
+  const { nearestFacilities, employees, organization, patient } =
+    await promiseProps({
+      nearestFacilities: location ? nearestHospitals(trx, location): Promise.resolve([]),
+      employees: getApprovedProviders(
+        trx,
+        organization_id,
+        {
+          exclude_health_worker_id: opts.exclude_health_worker_id,
+        },
+      ),
+      organization: organizations.get(trx, { ids: [organization_id] }),
+      patient: patients.getByID(trx, { id: patient_id }),
+    })
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
     (facility) => ({
       key: `facility/${facility.id}`,
@@ -45,9 +151,15 @@ export async function forPatientIntake(
     }),
   )
 
-  // const provider_availability = await getAllProviderAvailability(trx, providers)
+  //sort and limit number of health workers to be displayed
+  const processed_employees = processEmployee(
+    employees,
+    patient_encounter_providers,
+    patient.name,
+    opts.primary_doctor_id,
+  )
 
-  const nurse_information: Sendable[] = employees.map(
+  const nurse_information: Sendable[] = processed_employees.map(
     (employee) => ({
       key: 'health_worker/' + employee.name,
       name: employee.name,
@@ -58,6 +170,8 @@ export async function forPatientIntake(
             : employee.profession,
         ),
       },
+      additional_description: organization[0].name,
+      additional_info: employee.additional_info,
       image: {
         type: 'avatar',
         url: employee.avatar_url,
@@ -151,19 +265,17 @@ export async function forPatientIntake(
 export async function forPatientEncounter(
   trx: TrxOrDb,
   _patient_id: string,
-  location: Maybe<Location>,
-  organization_id: string,
+  location?: Location,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
     nearestFacilities: location
       ? nearestHospitals(trx, location)
       : Promise.resolve([]),
-    employees: getApprovedProviders(
+    employees: getApprovedDoctorsWithoutAction(
       trx,
-      organization_id,
       {
-        exclude_health_worker_id: opts.exclude_health_worker_id,
+        exclude_health_worker_id: opts.exclude_health_worker_id ?? '',
       },
     ),
   })
@@ -189,7 +301,7 @@ export async function forPatientEncounter(
     }),
   )
 
-  const nurse_information: Sendable[] = employees.map(
+  const doctor_information: Sendable[] = employees.map(
     (employee) => ({
       key: 'health_worker/' + employee.name,
       name: employee.name,
@@ -244,7 +356,7 @@ export async function forPatientEncounter(
       ],
       textarea: 'additional_details',
     },
-    ...nurse_information,
+    ...doctor_information,
     ...nearestFacilitySendables,
     {
       key: 'waiting_room',

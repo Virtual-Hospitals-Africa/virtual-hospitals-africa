@@ -168,3 +168,28 @@ export function getOrganizationAdmin(
     ])
     .executeTakeFirst()
 }
+
+export function getAllDoctor(
+  trx: TrxOrDb,
+  opts: {
+    exclude_health_worker_id?: string[]
+  },
+): Promise<HasStringId<Employee>[]> {
+  const allDoctorsQuery = trx
+    .selectFrom('employment')
+    .where('profession', '=', 'doctor')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .selectAll()
+  if (opts.exclude_health_worker_id) {
+    allDoctorsQuery.where(
+      'health_worker_id',
+      'not in',
+      opts.exclude_health_worker_id,
+    )
+  }
+  return allDoctorsQuery.execute()
+}

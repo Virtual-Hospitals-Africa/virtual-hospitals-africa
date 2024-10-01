@@ -272,8 +272,8 @@ export function IntakePage(
         location,
         encounter_provider.organization_id,
         {
-          exclude_health_worker_id: healthWorker.id,
-        },
+          exclude_health_worker_id: ctx.state.healthWorker.id,
+          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined        },
       ),
     })
 
