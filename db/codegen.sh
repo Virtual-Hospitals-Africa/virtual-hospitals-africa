@@ -5,23 +5,25 @@ set -euo pipefail
 # So with this we'll need to add to the list of tables we're using in the codebase.
 MEDPLUM_TABLES_IN_USE=(
   Address
-  Organization
-  Location
-  Media
-  Encounter
+  ClientApplication
+  ClientApplication_History
   Condition
   ConditionEvidence
-  ProjectMembership
-  ClientApplication
-  Project
-  Practitioner
-  User
-  ProjectMembership_History
-  ClientApplication_History
-  Project_History
-  Practitioner_History
-  User_History
+  Encounter
   HumanName
+  Location
+  Media
+  Organization
+  Patient
+  Patient_History
+  Practitioner
+  Practitioner_History
+  Project
+  ProjectMembership
+  ProjectMembership_History
+  Project_History
+  User
+  User_History
 )
 
 MEDPLUM_TABLES=(
@@ -698,14 +700,10 @@ for table in "${MEDPLUM_TABLES[@]}"; do
     fi
   done
 
-  echo "$table $found"
-
   if ! $found; then
     exclude_patterns="$exclude_patterns --exclude-pattern $table"
   fi
 done
-
-echo $exclude_patterns
 
 cd ./db/codegen
 npm install
