@@ -14,6 +14,7 @@ import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
 import { searchManufacturedMedications } from '../db/models/drugs.ts'
 import sample from '../util/sample.ts'
+import { now } from '../db/helpers.ts'
 
 function randomDateOfBirth() {
   const start = new Date(1950, 0, 1)
@@ -161,10 +162,14 @@ async function addPatientsToWaitingRoom() {
             .execute()
         }
       } else {
-        await db.updateTable('patients')
-          .where('patients.id', '=', patient.id)
-          .set({ completed_intake: true })
+        await db.insertInto('patient_intake_completed')
+          .values({
+            patient_id: patient.id,
+            completed_by_employment_id: health_worker.employee_id!,
+            completed_at: now,
+          })
           .execute()
+
         const on_encounter_step = shuffle(ENCOUNTER_STEPS)[0]
         const encounter_steps_completed = ENCOUNTER_STEPS.slice(
           0,

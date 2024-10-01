@@ -1,9 +1,23 @@
 import { Kysely, sql } from 'kysely'
+import { upsertTrigger } from '../helpers.ts'
+import { DB } from '../../db.d.ts'
 
-export async function up(db: Kysely<unknown>) {
+const t1 = upsertTrigger('Organization', 'canonicalName', 'NEW.name[1]')
+
+const t2 = upsertTrigger('Location', 'organizationId', `substring(NEW.organization from 'Organization/(.*)')`)
+
+const t3 = upsertTrigger('Location', 'location', `
+  ST_SetSRID(ST_MakePoint(
+    (((NEW."near"::json)->'longitude')::text)::numeric,
+    (((NEW."near"::json)->'latitude')::text)::numeric
+  ), 4326)::geography
+`)
+
+export async function up(db: Kysely<DB>) {
   await sql`
     ALTER TABLE "Organization"
-    ADD CONSTRAINT "check_single_name" CHECK (array_length("name", 1) = 1)
+    ADD CONSTRAINT "check_single_name"
+    CHECK (array_length("name", 1) = 1)
   `.execute(db)
 
   await db.schema.alterTable('Organization')
@@ -23,74 +37,21 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, (col) => col.notNull())
     .execute()
 
-  await sql`
-    CREATE OR REPLACE FUNCTION set_canonical_name()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        NEW."canonicalName" := New."name"[1];
-        RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
-
-    CREATE OR REPLACE TRIGGER set_canonical_name_trigger
-    BEFORE INSERT OR UPDATE ON "Organization"
-    FOR EACH ROW
-    EXECUTE FUNCTION set_canonical_name();
-  `.execute(db)
-
-  await sql`
-    CREATE OR REPLACE FUNCTION set_location_organization_id()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        NEW."organizationId" := substring(NEW.organization from 'Organization/(.*)');
-        RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
-
-    CREATE OR REPLACE TRIGGER set_location_organization_id_trigger
-    BEFORE INSERT OR UPDATE ON "Location"
-    FOR EACH ROW
-    EXECUTE FUNCTION set_location_organization_id();
-  `.execute(db)
-
-  await sql`
-    CREATE OR REPLACE FUNCTION set_location_location()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        NEW."location" := 
-          ST_SetSRID(ST_MakePoint(
-            (((NEW."near"::json)->'longitude')::text)::numeric,
-            (((NEW."near"::json)->'latitude')::text)::numeric
-          ), 4326)::geography
-        ;
-        RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
-
-    CREATE OR REPLACE TRIGGER set_location_location_trigger
-    BEFORE INSERT OR UPDATE ON "Location"
-    FOR EACH ROW
-    EXECUTE FUNCTION set_location_location();
-  `.execute(db)
+  await t1.create(db)
+  await t2.create(db)
+  await t3.create(db)
 }
 
 // deno-lint-ignore no-explicit-any
 export async function down(db: Kysely<any>) {
-  await db.schema.alterTable('Organization').dropConstraint('check_single_name')
-    .execute()
+  await t3.drop(db)
+  await t2.drop(db)
+  await t1.drop(db)
 
   await db.schema.alterTable('Location').dropColumn('organizationId').execute()
   await db.schema.alterTable('Location').dropColumn('canonicalName').execute()
   await db.schema.alterTable('Location').dropColumn('location').execute()
-  await sql`
-    DROP TRIGGER IF EXISTS set_location_organization_id_trigger on "Location"
-  `.execute(db)
-  await sql`
-    DROP TRIGGER IF EXISTS set_location_location_trigger on "Location"
-  `.execute(db)
 
-  // TODO: should this be handled by seeds?
-  await db.deleteFrom('Address').execute()
-  await db.deleteFrom('Location').execute()
-  await db.deleteFrom('Organization').execute()
+  await db.schema.alterTable('Organization').dropConstraint('check_single_name')
+    .execute()
 }

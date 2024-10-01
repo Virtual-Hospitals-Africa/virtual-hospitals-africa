@@ -112,7 +112,7 @@ export async function get(
           )
           .on('waiting_room.organization_id', '=', organization_id),
     )
-    .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
+    .innerJoin('Patient', 'Patient.id', 'patient_encounters.patient_id')
     .leftJoin(
       'appointments',
       'appointments.id',
@@ -130,8 +130,8 @@ export async function get(
     )
     .select((eb) => [
       jsonBuildObject({
-        id: eb.ref('patients.id'),
-        name: eb.ref('patients.name'),
+        id: eb.ref('Patient.id'),
+        name: eb.ref('Patient.name'),
         avatar_url: patients.avatar_url_sql,
         description: sql<
           string | null

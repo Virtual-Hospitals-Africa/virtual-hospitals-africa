@@ -94,7 +94,7 @@ describe('/app/patients/[patient_id]/intake', {
       throw new Error(await postResponse.text())
     }
 
-    const patients_after_update = await db.selectFrom('patients').where(
+    const patients_after_update = await db.selectFrom('Patient').where(
       'id',
       '=',
       patient_id,
@@ -179,7 +179,7 @@ describe('/app/patients/[patient_id]/intake', {
       `${route}/app/patients/${patient_id}/intake/conditions`,
     )
 
-    const patientResult = await db.selectFrom('patients').where(
+    const patientResult = await db.selectFrom('Patient').where(
       'id',
       '=',
       patient_id,

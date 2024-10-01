@@ -28,53 +28,53 @@ import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
 
 export const view_href_sql = sql<string>`
-  concat('/app/patients/', patients.id::text)
+  concat('/app/patients/', Patient.id::text)
 `
 
 export const avatar_url_sql = sql<string | null>`
-  CASE WHEN patients.avatar_media_id IS NOT NULL 
-    THEN concat('/app/patients/', patients.id::text, '/avatar') 
+  CASE WHEN Patient.avatar_media_id IS NOT NULL 
+    THEN concat('/app/patients/', Patient.id::text, '/avatar') 
     ELSE NULL 
   END
 `
 
 export const intake_clinical_notes_href_sql = sql<string>`
-  concat('/app/patients/', patients.id::text, '/intake/review')
+  concat('/app/patients/', Patient.id::text, '/intake/review')
 `
 
-const dob_formatted = longFormattedDate('patients.date_of_birth').as(
+const dob_formatted = longFormattedDate('Patient.date_of_birth').as(
   'dob_formatted',
 )
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
-    .selectFrom('patients')
+    .selectFrom('Patient')
     .leftJoin(
       'Organization',
       'Organization.id',
-      'patients.nearest_organization_id',
+      'Patient.nearest_organization_id',
     )
     .leftJoin(
       formattedAddress(trx),
       'address_formatted.id',
-      'patients.address_id',
+      'Patient.address_id',
     )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
-      'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      'patients.phone_number',
-      'patients.gender',
-      'patients.ethnicity',
+      'Patient.id',
+      eb.ref('Patient.name').$notNull().as('name'),
+      'Patient.phone_number',
+      'Patient.gender',
+      'Patient.ethnicity',
       'address_formatted.address',
       dob_formatted,
       'patient_age.age_display',
       sql<
         string | null
-      >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
+      >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
         'description',
       ),
-      'patients.national_id_number',
+      'Patient.national_id_number',
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -83,17 +83,17 @@ const baseSelect = (trx: TrxOrDb) =>
             'intake.step',
             'patient_intake.intake_step',
           )
-          .whereRef('patient_id', '=', 'patients.id')
+          .whereRef('patient_id', '=', 'Patient.id')
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      'patients.completed_intake',
+      'Patient.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'Organization.canonicalName as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
       jsonBuildObject({
-        longitude: sql<number | null>`ST_X(patients.location::geometry)`,
-        latitude: sql<number | null>`ST_Y(patients.location::geometry)`,
+        longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
+        latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
       }).as('location'),
       jsonBuildObject({
         view: view_href_sql,
@@ -101,14 +101,14 @@ const baseSelect = (trx: TrxOrDb) =>
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
-  baseSelect(trx).where('patients.name', 'is not', null)
+  baseSelect(trx).where('Patient.name', 'is not', null)
 
 export async function getLastConversationState(
   trx: TrxOrDb,
   query: { phone_number: string },
 ) {
   const getting_patient = baseSelect(trx)
-    .where('patients.phone_number', '=', query.phone_number)
+    .where('Patient.phone_number', '=', query.phone_number)
     .executeTakeFirst()
 
   const getting_last_message = conversations.getUser(
@@ -128,17 +128,10 @@ export function insertMany(
   trx: TrxOrDb,
   patients: Array<Partial<Patient> & { name: string }>,
 ) {
-  assert(patients.length > 0, 'Must insert at least one patient')
+  assert(Patient.length > 0, 'Must insert at least one patient')
   return trx
-    .insertInto('patients')
-    .values(patients.map((patient) => ({
-      ...patient,
-      location: patient.location
-        ? sql<
-          string
-        >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
-        : null,
-    })))
+    .insertInto('Patient')
+    .values(patients)
     .returningAll()
     .execute()
 }
@@ -168,7 +161,7 @@ export async function insert(
 
 export function update(
   trx: TrxOrDb,
-  { id, name, location, primary_doctor_id, ...patient }: Partial<Patient> & {
+  { id, name, primary_doctor_id, ...patient }: Partial<Patient> & {
     id: string
   },
 ) {
@@ -180,10 +173,6 @@ export function update(
         .where('profession', '=', 'doctor')
         .select('id')
     ),
-    location: location &&
-      sql<
-        string
-      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
   }
   const to_update_with_name: (typeof to_update) & {
     name?: string
@@ -191,7 +180,7 @@ export function update(
   if (name) {
     to_update_with_name.name = name
   }
-  return trx.updateTable('patients')
+  return trx.updateTable('Patient')
     .where('id', '=', id)
     .set(to_update_with_name)
     .returningAll()
@@ -219,7 +208,7 @@ export function upsert(
       >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
   }
   return trx
-    .insertInto('patients')
+    .insertInto('Patient')
     .values(to_upsert)
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
     .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
@@ -227,19 +216,12 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
-export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
-  return trx
-    .deleteFrom('patients')
-    .where('phone_number', '=', opts.phone_number)
-    .executeTakeFirst()
-}
-
 export function getByID(
   trx: TrxOrDb,
   opts: { id: string },
 ): Promise<HasStringId<RenderedPatient>> {
   return baseSelect(trx)
-    .where('patients.id', '=', opts.id)
+    .where('Patient.id', '=', opts.id)
     .executeTakeFirstOrThrow()
 }
 
@@ -261,8 +243,8 @@ export async function getWithOpenEncounter(
     .forPatientEncounter(trx)
 
   const patients = await selectWithName(trx)
-    .where('patients.id', 'in', opts.ids)
-    .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
+    .where('Patient.id', 'in', opts.ids)
+    .leftJoin(open_encounters, 'open_encounters.patient_id', 'Patient.id')
     .select((eb) => [
       eb.case().when(eb('open_encounters.encounter_id', 'is', null)).then(null)
         .else(jsonBuildObject({
@@ -313,13 +295,13 @@ export type PatientCard = {
 
 export function getCardQuery(
   trx: TrxOrDb,
-): SelectQueryBuilder<DB, 'patients', PatientCard> {
-  return trx.selectFrom('patients')
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+): SelectQueryBuilder<DB, 'Patient', PatientCard> {
+  return trx.selectFrom('Patient')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
-      'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      sql<string | null>`patients.gender || ', ' || patient_age.age_display`.as(
+      'Patient.id',
+      eb.ref('Patient.name').$notNull().as('name'),
+      sql<string | null>`Patient.gender || ', ' || patient_age.age_display`.as(
         'description',
       ),
       avatar_url_sql.as('avatar_url'),
@@ -331,7 +313,7 @@ export function getCard(
   { id }: { id: string },
 ): Promise<PatientCard | undefined> {
   return getCardQuery(trx)
-    .where('patients.id', '=', id)
+    .where('Patient.id', '=', id)
     .executeTakeFirst()
 }
 
@@ -339,11 +321,11 @@ export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ): Promise<RenderedPatient[]> {
-  let query = baseSelect(trx).where('patients.name', 'is not', null).orderBy(
+  let query = baseSelect(trx).where('Patient.name', 'is not', null).orderBy(
     'name asc',
   )
 
-  if (search) query = query.where('patients.name', 'ilike', `%${search}%`)
+  if (search) query = query.where('Patient.name', 'ilike', `%${search}%`)
 
   const patients = await query.execute()
 
@@ -355,9 +337,9 @@ export async function getAllWithNames(
 export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
   return trx
     .selectFrom('media')
-    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
+    .innerJoin('patients', 'Patient.avatar_media_id', 'media.id')
     .select(['media.mime_type', 'media.binary_data'])
-    .where('patients.id', '=', opts.patient_id)
+    .where('Patient.id', '=', opts.patient_id)
     .executeTakeFirst()
 }
 

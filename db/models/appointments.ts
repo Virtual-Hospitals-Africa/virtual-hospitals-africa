@@ -273,7 +273,7 @@ export async function getWithPatientInfo(
       'appointments.id',
       'appointment_providers.appointment_id',
     )
-    .innerJoin('patients', 'appointments.patient_id', 'patients.id')
+    .innerJoin('Patient', 'appointments.patient_id', 'Patient.id')
     .select((eb) => [
       'appointments.id',
       'patient_id',

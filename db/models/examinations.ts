@@ -22,7 +22,7 @@ export function recommended(
     qb: QueryCreator<DB>,
   ) => SelectQueryBuilder<
     DB,
-    'patients' | 'patient_age' | 'patient_encounters',
+    'Patient' | 'patient_age' | 'patient_encounters',
     {
       patient_id: string
       encounter_id: string
@@ -31,14 +31,14 @@ export function recommended(
   >
 > {
   return trx.with('recommended_examinations', (qb) => {
-    const patient_encounter = qb.selectFrom('patients')
-      .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    const patient_encounter = qb.selectFrom('Patient')
+      .innerJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
       .innerJoin(
         'patient_encounters',
         'patient_encounters.patient_id',
-        'patients.id',
+        'Patient.id',
       ).select([
-        'patients.id as patient_id',
+        'Patient.id as patient_id',
         'patient_encounters.id as encounter_id',
       ])
 
@@ -47,12 +47,12 @@ export function recommended(
     )
 
     const womens_health = patient_encounter
-      .where('patients.gender', '=', 'female')
+      .where('Patient.gender', '=', 'female')
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
       .select(examinationName("Women's Health Assessment"))
 
     const mens_health = patient_encounter
-      .where('patients.gender', '=', 'male')
+      .where('Patient.gender', '=', 'male')
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
       .select(examinationName("Men's Health Assessment"))
 

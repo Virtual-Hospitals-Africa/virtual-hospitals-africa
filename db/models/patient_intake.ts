@@ -15,7 +15,7 @@ export function getById(
   patient_id: string,
 ): Promise<PatientIntake> {
   return trx
-    .selectFrom('patients')
+    .selectFrom('Patient')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin(
       'Organization',
@@ -100,7 +100,7 @@ export async function getSummaryById(
   patient_id: string,
 ) {
   const getting_review = trx
-    .selectFrom('patients')
+    .selectFrom('Patient')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin(
       'Organization',

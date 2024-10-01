@@ -123,7 +123,7 @@ describe(
         .where(
           'patient_id',
           '=',
-          db.selectFrom('patients').select('id').where(
+          db.selectFrom('Patient').select('id').where(
             'name',
             '=',
             patient_name,
@@ -149,7 +149,7 @@ describe(
       )
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
 
-      const { name } = await db.selectFrom('patients').select(['name']).where(
+      const { name } = await db.selectFrom('Patient').select(['name']).where(
         'id',
         '=',
         patientEncounter.patient_id,
