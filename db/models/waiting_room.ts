@@ -449,7 +449,7 @@ export async function get(
       }
       assert(status)
 
-      const action = awaiting_review 
+      const action = awaiting_review
         ? 'awaiting_review'
         : in_review
         ? 'review'
@@ -476,12 +476,12 @@ export async function get(
               awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
             }`
             : null,
-          awaiting_review: action === 'awaiting_review' ? 
-          {
-            text: 'Awaiting Review',
-            disabled: true
-          } 
-          : null
+          awaiting_review: action === 'awaiting_review'
+            ? {
+              text: 'Awaiting Review',
+              disabled: true,
+            }
+            : null,
         },
       }
     },

@@ -2307,6 +2307,7 @@ export type RenderedWaitingRoom = {
     view: string | null
     intake: string | null
     review: string | null
+    awaiting_review: object | null
   }
   reason: EncounterReason
   is_emergency: SqlBool

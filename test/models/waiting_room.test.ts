@@ -62,6 +62,7 @@ describe(
                 view: null,
                 intake: `/app/patients/${patient1.id}/intake/personal`,
                 review: null,
+                awaiting_review: null
               },
               providers: [],
               reviewers: [],
@@ -83,6 +84,7 @@ describe(
                 view: null,
                 intake: `/app/patients/${patient2.id}/intake/personal`,
                 review: null,
+                awaiting_review: null
               },
               providers: [],
               reviewers: [],
@@ -133,6 +135,7 @@ describe(
                 view: null,
                 intake: `/app/patients/${patient.id}/intake/conditions`,
                 review: null,
+                awaiting_review: null
               },
               providers: [],
               reviewers: [],
@@ -198,6 +201,7 @@ describe(
                 view: null,
                 intake: `/app/patients/${patient.id}/intake/conditions`,
                 review: null,
+                awaiting_review: null
               },
               providers: [{
                 name: nurse.name,
@@ -260,6 +264,7 @@ describe(
                   view: null,
                   intake: `/app/patients/${patient1.id}/intake/personal`,
                   review: null,
+                  awaiting_review: null
                 },
                 providers: [],
                 reviewers: [],
@@ -281,6 +286,7 @@ describe(
                   view: null,
                   intake: `/app/patients/${patient2.id}/intake/personal`,
                   review: null,
+                  awaiting_review: null
                 },
                 providers: [],
                 reviewers: [],
@@ -292,7 +298,7 @@ describe(
       )
 
       itUsesTrxAnd(
-        'shows review requests for patients in the waiting room',
+        'shows awaiting review for patients in the waiting room',
         (trx) =>
           withTestOrganization(
             trx,
@@ -355,7 +361,11 @@ describe(
                   actions: {
                     view: null,
                     intake: null,
-                    review: `/app/patients/${patient.id}/review/clinical_notes`,
+                    review: null,
+                    awaiting_review: {
+                      text: 'Awaiting Review',
+                      disabled: true
+                    }
                   },
                   providers: [{
                     name: nurse.name,
@@ -375,6 +385,7 @@ describe(
             },
           ),
       )
+
     })
     describe('arrivedAgoDisplay', () => {
       it('returns "Just now" for a patient who arrived less than 1 minute ago', () => {

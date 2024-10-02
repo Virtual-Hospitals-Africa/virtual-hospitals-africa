@@ -40,6 +40,7 @@ describe(
                   view: null,
                   review: null,
                   intake: `/app/patients/${patient.id}/intake/personal`,
+                  awaiting_review: null
                 },
                 providers: [],
                 reviewers: [],
@@ -80,6 +81,7 @@ describe(
                   view: null,
                   review: null,
                   intake: `/app/patients/${patient.id}/intake/personal`,
+                  awaiting_review: null
                 },
                 providers: [
                   {
