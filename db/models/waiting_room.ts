@@ -465,16 +465,27 @@ export async function get(
         appointment,
         arrived_ago_display: arrivedAgoDisplay(wait_time),
         actions: {
-          view: action === 'view' ? `/app/patients/${patient.id}` : null,
+          view: action === 'view'
+            ? {
+              text: 'View',
+              href: `/app/patients/${patient.id}`,
+            }
+            : null,
           intake: action === 'intake'
-            ? `/app/patients/${patient.id}/intake/${
-              awaiting_intake_step || INTAKE_STEPS[0]
-            }`
+            ? {
+              text: 'Intake',
+              href: `/app/patients/${patient.id}/intake/${
+                awaiting_intake_step || INTAKE_STEPS[0]
+              }`,
+            }
             : null,
           review: action === 'review'
-            ? `/app/patients/${patient.id}/review/${
-              awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
-            }`
+            ? {
+              text: 'Review',
+              href: `/app/patients/${patient.id}/review/${
+                awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
+              }`,
+            }
             : null,
           awaiting_review: action === 'awaiting_review'
             ? {

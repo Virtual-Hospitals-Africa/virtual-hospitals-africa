@@ -60,7 +60,10 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient1.id}/intake/personal`,
+                intake: {
+                  text: 'Intake',
+                  href: `/app/patients/${patient1.id}/intake/personal`
+                },
                 review: null,
                 awaiting_review: null,
               },
@@ -82,7 +85,10 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient2.id}/intake/personal`,
+                intake: {
+                  text: 'Intake',
+                  href: `/app/patients/${patient2.id}/intake/personal`
+                },
                 review: null,
                 awaiting_review: null,
               },
@@ -133,7 +139,10 @@ describe(
               status: 'Awaiting Intake (Conditions)',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient.id}/intake/conditions`,
+                intake: {
+                  text: 'Intake',
+                  href: `/app/patients/${patient.id}/intake/conditions`
+                },
                 review: null,
                 awaiting_review: null,
               },
@@ -199,7 +208,10 @@ describe(
               status: 'In Intake (Conditions)',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient.id}/intake/conditions`,
+                intake: {
+                  text: 'Intake',
+                  href: `/app/patients/${patient.id}/intake/conditions`
+                },
                 review: null,
                 awaiting_review: null,
               },
@@ -262,7 +274,10 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient1.id}/intake/personal`,
+                  intake: {
+                    text: 'Intake',
+                    href: `/app/patients/${patient1.id}/intake/personal`
+                  },
                   review: null,
                   awaiting_review: null,
                 },
@@ -284,7 +299,10 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient2.id}/intake/personal`,
+                  intake: {
+                    text: 'Intake',
+                    href: `/app/patients/${patient2.id}/intake/personal`
+                  },
                   review: null,
                   awaiting_review: null,
                 },
