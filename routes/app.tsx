@@ -16,6 +16,8 @@ export default async function AppPage(
 ) {
   const { healthWorker, trx } = ctx.state
   const { searchParams } = ctx.url
+  const organizationAddress =
+    ctx.state.healthWorker.employment[0].organization.address
 
   // We may revisit this, but for now there's only one tab
   // that actually displays on this page, the waiting room
@@ -88,6 +90,7 @@ export default async function AppPage(
       <WaitingRoomView
         organization_id={organization_id}
         waiting_room={await getting_waiting_room}
+        address={organizationAddress}
       />
     </Layout>
   )
