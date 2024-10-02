@@ -7,6 +7,7 @@ import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
 import { delay } from 'std/async/delay.ts'
 import { restore } from './restore.ts'
+import { spinner } from '../util/spinner.ts'
 
 const migrations: Record<
   string,
@@ -62,13 +63,13 @@ export const migrate = {
     return Deno.exit(1)
   },
   latest() {
-    return migrator.migrateToLatest()
+    return spinner('Migrating to latest', migrator.migrateToLatest())
   },
   up() {
-    return migrator.migrateUp()
+    return spinner('Migrating up', migrator.migrateUp())
   },
   down() {
-    return migrator.migrateDown()
+    return spinner('Migrating down', migrator.migrateDown())
   },
   async wipe() {
     const results: MigrationResult[] = []
@@ -90,34 +91,39 @@ export const migrate = {
   },
   async 'redo:from'(target: string) {
     if (!target) return targetError('redo:from')
-    console.log('Migrating down...')
-    const migration = findTarget(target, 'redo:from')
-    const migration_index = migrationTargets.indexOf(migration)
-    const migration_just_before = migrationTargets[migration_index - 1]
-    logMigrationResults(await migrator.migrateTo(migration_just_before))
-    console.log('\nMigrating up to latest...')
-    return migrator.migrateToLatest()
+    const results = await spinner('Migrating down', () => {
+      const migration = findTarget(target, 'redo:from')
+      const migration_index = migrationTargets.indexOf(migration)
+      const migration_just_before = migrationTargets[migration_index - 1]
+      return migrator.migrateTo(migration_just_before)
+    })
+    logMigrationResults(results)
+    await spinner('Migrating up to latest', migrator.migrateToLatest())
   },
   async all(opts: { recreate?: boolean | string[] } = {}) {
     await restore('medplum')
 
-    console.log('Running medplum migrations...')
-    const medplum_server = await runMedplumServer()
+    const medplum_server = await spinner(
+      'Running medplum migrations',
+      runMedplumServer,
+    )
 
-    console.log('Running VHA migrations...')
-    logMigrationResults(await migrate.latest())
+    const results = await spinner('Running VHA migrations', migrate.latest)
+    logMigrationResults(results)
 
-    console.log('Handling seeds...')
     const seeds = await import('./seed/run.ts')
     if (opts.recreate === true) {
-      await seeds.recreate()
+      await spinner('Recreating seeds', seeds.recreate())
     } else if (opts.recreate) {
-      await seeds.loadRecreating(opts.recreate)
+      const { recreate } = opts
+      await spinner(
+        `Loading seeds, recreating ${recreate.join(', ')}`,
+        () => seeds.loadRecreating(recreate),
+      )
     } else {
-      await seeds.load()
+      await spinner('Loading seeds', seeds.load())
     }
 
-    console.log('Done!')
     medplum_server.kill()
 
     // See if we can avoid hanging. Locally this works, but not in CI.

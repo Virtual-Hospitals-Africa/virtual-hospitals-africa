@@ -97,6 +97,15 @@ export function getById(
     .executeTakeFirst()
 }
 
+export function getByLicenceNumber(
+  trx: TrxOrDb,
+  licence_number: string,
+): Promise<RenderedPharmacy | undefined> {
+  return getQuery(trx)
+    .where('pharmacies.licence_number', '=', licence_number)
+    .executeTakeFirst()
+}
+
 type PharmacySupervisorInsert = {
   id: string
   name: string

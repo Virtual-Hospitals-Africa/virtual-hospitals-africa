@@ -39,81 +39,109 @@ export function strengthSummary(base_table: string) {
 }
 
 function baseQuery(trx: TrxOrDb, include_recalled: boolean = false) {
-  return trx.selectFrom('drugs').select((eb_drugs) => [
-    'drugs.id',
-    'drugs.generic_name as name',
-    jsonArrayFromColumn(
-      'trade_name',
-      eb_drugs
-        .selectFrom('medications')
-        .innerJoin(
-          'manufactured_medications',
-          'manufactured_medications.medication_id',
-          'medications.id',
-        )
-        .whereRef('medications.drug_id', '=', 'drugs.id')
-        .where(
-          'manufactured_medications.trade_name',
-          '!=',
-          eb_drugs.ref('drugs.generic_name'),
-        )
-        .select('manufactured_medications.trade_name')
-        .distinct(),
-    ).as('distinct_trade_names'),
-    jsonArrayFrom(
-      eb_drugs
-        .selectFrom('medications')
-        .select((eb_medications) => {
-          let manufacturersQuery = eb_medications
-            .selectFrom('manufactured_medications')
-            .leftJoin(
-              'manufactured_medication_recalls',
-              'manufactured_medication_recalls.manufactured_medication_id',
-              'manufactured_medications.id',
-            )
-            .select([
-              'manufactured_medications.id as manufactured_medication_id',
-              'manufactured_medications.strength_numerators',
-              'manufactured_medications.trade_name',
-              'manufactured_medications.applicant_name',
-              'manufactured_medication_recalls.recalled_at',
-            ])
-            .whereRef(
-              'manufactured_medications.medication_id',
-              '=',
-              'medications.id',
-            )
-            .orderBy([
-              'manufactured_medications.trade_name asc',
-              'manufactured_medications.strength_numerators asc',
-            ])
+  return trx.selectFrom('drugs').select((eb_drugs) => {
+    const expr = eb_drugs
+      .selectFrom('medications')
+      .innerJoin(
+        'manufactured_medications',
+        'manufactured_medications.medication_id',
+        'medications.id',
+      )
+      .leftJoin(
+        'manufactured_medication_recalls',
+        'manufactured_medication_recalls.manufactured_medication_id',
+        'manufactured_medications.id',
+      )
+      .whereRef('medications.drug_id', '=', 'drugs.id')
+      .where(
+        'manufactured_medications.trade_name',
+        '!=',
+        eb_drugs.ref('drugs.generic_name'),
+      )
+      .$if(
+        !include_recalled,
+        (qb) =>
+          qb.where('manufactured_medication_recalls.recalled_by', 'is', null),
+      )
+      .select('manufactured_medications.trade_name')
+      .distinct()
+    return [
+      'drugs.id',
+      'drugs.generic_name as name',
+      jsonArrayFromColumn('trade_name', expr).as('distinct_trade_names'),
+      jsonArrayFrom(
+        eb_drugs
+          .selectFrom('medications')
+          .select((eb_medications) => {
+            let manufacturersQuery = eb_medications
+              .selectFrom('manufactured_medications')
+              .leftJoin(
+                'manufactured_medication_recalls',
+                'manufactured_medication_recalls.manufactured_medication_id',
+                'manufactured_medications.id',
+              )
+              .select([
+                'manufactured_medications.id as manufactured_medication_id',
+                'manufactured_medications.strength_numerators',
+                'manufactured_medications.trade_name',
+                'manufactured_medications.applicant_name',
+                'manufactured_medication_recalls.recalled_at',
+              ])
+              .whereRef(
+                'manufactured_medications.medication_id',
+                '=',
+                'medications.id',
+              )
+              .orderBy([
+                'manufactured_medications.trade_name asc',
+                'manufactured_medications.strength_numerators asc',
+              ])
 
-          if (!include_recalled) {
-            manufacturersQuery = manufacturersQuery.where(
-              'manufactured_medication_recalls.recalled_at',
-              'is',
-              null,
-            )
-          }
+            if (!include_recalled) {
+              manufacturersQuery = manufacturersQuery.where(
+                'manufactured_medication_recalls.recalled_at',
+                'is',
+                null,
+              )
+            }
 
-          return [
-            'medications.id as medication_id',
-            'medications.form',
-            'medications.form_route',
-            'medications.routes',
-            'medications.strength_numerators',
-            'medications.strength_numerator_unit',
-            'medications.strength_denominator',
-            'medications.strength_denominator_unit',
-            'medications.strength_denominator_is_units',
-            strengthSummary('medications'),
-            jsonArrayFrom(manufacturersQuery).as('manufacturers'),
-          ]
-        })
-        .whereRef('medications.drug_id', '=', 'drugs.id')
-        .orderBy('medications.form_route', 'asc'),
-    ).as('medications'),
-  ])
+            return [
+              'medications.id as medication_id',
+              'medications.form',
+              'medications.form_route',
+              'medications.routes',
+              'medications.strength_numerator_unit',
+              'medications.strength_denominator',
+              'medications.strength_denominator_unit',
+              'medications.strength_denominator_is_units',
+              jsonArrayFrom(manufacturersQuery).as('manufacturers'),
+            ]
+          })
+          .whereRef('medications.drug_id', '=', 'drugs.id')
+          .orderBy('medications.form_route', 'asc'),
+      ).as('medications'),
+    ]
+  })
+}
+
+export function formStrengthDisplay(
+  strength_numerators: string,
+  strength_numerator_unit: string,
+  strength_denominator: string,
+  strength_denominator_unit: string,
+): string {
+  let result = strength_numerators + strength_numerator_unit
+  if (
+    !['MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU'].includes(
+      strength_denominator_unit,
+    )
+  ) return result
+  result += '/'
+  if (parseInt(strength_denominator) !== 1) {
+    result += `${strength_denominator}`
+  }
+  result += strength_denominator_unit
+  return result
 }
 
 export async function search(
@@ -131,7 +159,7 @@ export async function search(
     assert(opts.search)
   }
 
-  const include_recalled = opts.include_recalled ?? false
+  const include_recalled = true
   let query = opts.search
     ? trx
       .selectFrom(baseQuery(trx, include_recalled).as('drug_search_results'))
@@ -154,17 +182,36 @@ export async function search(
 
   const results = await query.execute()
 
-  // TODO: do the float parsing in SQL?
-  return results.map((r) => ({
-    ...r,
-    medications: r.medications.map((m) => ({
-      ...m,
-      strength_denominator: parseFloat(m.strength_denominator),
-    })),
-    fully_recalled: r.medications.every((m) =>
-      m.manufacturers.every((mm) => mm.recalled_at)
-    ),
-  }))
+  return results.reduce<Array<DrugSearchResult>>((acc, r) => {
+    const filteredMedications = include_recalled
+      ? r.medications
+      : r.medications.filter((med) => med.manufacturers.length > 0)
+    if (filteredMedications.length === 0) return acc
+    const result = {
+      ...r,
+      medications: filteredMedications.map((m) => {
+        const strength_numerators = [
+          ...new Set(m.manufacturers.flatMap((m) => m.strength_numerators)),
+        ]
+        return {
+          ...m,
+          // TODO: do the float parsing in SQL?
+          strength_denominator: parseFloat(m.strength_denominator),
+          strength_numerators,
+          // TODO: use strengthDisplay
+          strength_summary: `${
+            formStrengthDisplay(
+              strength_numerators.join(', '),
+              m.strength_numerator_unit,
+              m.strength_denominator,
+              m.strength_denominator_unit,
+            )
+          }`,
+        }
+      }),
+    }
+    return [...acc, result]
+  }, [])
 }
 
 export async function searchManufacturedMedications(

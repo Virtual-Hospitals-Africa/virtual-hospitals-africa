@@ -3,7 +3,7 @@ import { runCommand } from '../util/command.ts'
 
 export function dump() {
   return runCommand('pg_dump', {
-    args: ['-Fc', '-O', db.uri],
+    args: ['-Fc', '--no-comments', '-O', db.uri],
     stdout: 'inherit',
   })
 }
