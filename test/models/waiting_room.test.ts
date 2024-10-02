@@ -383,7 +383,7 @@ describe(
                     awaiting_review: {
                       text: 'Awaiting Review',
                       disabled: true,
-                    },
+                    }
                   },
                   providers: [{
                     name: nurse.name,
