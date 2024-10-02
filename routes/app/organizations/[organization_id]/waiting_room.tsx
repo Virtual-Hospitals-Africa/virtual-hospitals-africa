@@ -11,6 +11,8 @@ export default async function WaitingRoomPage(
 ) {
   const { organization_id } = ctx.params
   assertOr404(organization_id)
+  const organizationAddress =
+    ctx.state.healthWorker.employment[0].organization.address
 
   return (
     <Layout
@@ -25,6 +27,7 @@ export default async function WaitingRoomPage(
         waiting_room={await waiting_room.get(ctx.state.trx, {
           organization_id,
         })}
+        address={organizationAddress}
       />
     </Layout>
   )
