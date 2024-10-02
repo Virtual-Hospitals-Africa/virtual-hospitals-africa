@@ -41,7 +41,7 @@ describe(
                   review: null,
                   intake: {
                     text: 'Intake',
-                    href: `/app/patients/${patient.id}/intake/personal`
+                    href: `/app/patients/${patient.id}/intake/personal`,
                   },
                   awaiting_review: null,
                 },
@@ -85,7 +85,7 @@ describe(
                   review: null,
                   intake: {
                     text: 'Intake',
-                    href: `/app/patients/${patient.id}/intake/personal`
+                    href: `/app/patients/${patient.id}/intake/personal`,
                   },
                   awaiting_review: null,
                 },

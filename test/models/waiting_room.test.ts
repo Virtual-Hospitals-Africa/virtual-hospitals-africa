@@ -62,7 +62,7 @@ describe(
                 view: null,
                 intake: {
                   text: 'Intake',
-                  href: `/app/patients/${patient1.id}/intake/personal`
+                  href: `/app/patients/${patient1.id}/intake/personal`,
                 },
                 review: null,
                 awaiting_review: null,
@@ -87,7 +87,7 @@ describe(
                 view: null,
                 intake: {
                   text: 'Intake',
-                  href: `/app/patients/${patient2.id}/intake/personal`
+                  href: `/app/patients/${patient2.id}/intake/personal`,
                 },
                 review: null,
                 awaiting_review: null,
@@ -141,7 +141,7 @@ describe(
                 view: null,
                 intake: {
                   text: 'Intake',
-                  href: `/app/patients/${patient.id}/intake/conditions`
+                  href: `/app/patients/${patient.id}/intake/conditions`,
                 },
                 review: null,
                 awaiting_review: null,
@@ -210,7 +210,7 @@ describe(
                 view: null,
                 intake: {
                   text: 'Intake',
-                  href: `/app/patients/${patient.id}/intake/conditions`
+                  href: `/app/patients/${patient.id}/intake/conditions`,
                 },
                 review: null,
                 awaiting_review: null,
@@ -276,7 +276,7 @@ describe(
                   view: null,
                   intake: {
                     text: 'Intake',
-                    href: `/app/patients/${patient1.id}/intake/personal`
+                    href: `/app/patients/${patient1.id}/intake/personal`,
                   },
                   review: null,
                   awaiting_review: null,
@@ -301,7 +301,7 @@ describe(
                   view: null,
                   intake: {
                     text: 'Intake',
-                    href: `/app/patients/${patient2.id}/intake/personal`
+                    href: `/app/patients/${patient2.id}/intake/personal`,
                   },
                   review: null,
                   awaiting_review: null,
@@ -383,7 +383,7 @@ describe(
                     awaiting_review: {
                       text: 'Awaiting Review',
                       disabled: true,
-                    }
+                    },
                   },
                   providers: [{
                     name: nurse.name,
