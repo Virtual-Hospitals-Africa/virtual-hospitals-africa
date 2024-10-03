@@ -252,6 +252,15 @@ export function getById(
     .executeTakeFirst()
 }
 
+export function getByLicenceNumber(
+  trx: TrxOrDb,
+  licence_number: string,
+): Promise<RenderedPharmacist | undefined> {
+  return getQuery(trx)
+    .where('pharmacists.licence_number', '=', licence_number)
+    .executeTakeFirst()
+}
+
 export function revoke(
   trx: TrxOrDb,
   data: {

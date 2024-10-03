@@ -2,6 +2,8 @@ import { runCommand } from '../util/command.ts'
 
 const APPLICATIONS = {
   'virtual-hospitals-africa': 'web',
+  'vha-super-admin': 'web',
+  'vha-medplum-server': 'web',
   'vha-pharmacist-chatbot': 'worker',
   'vha-patient-chatbot': 'worker',
 }

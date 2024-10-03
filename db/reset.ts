@@ -5,6 +5,7 @@ import { redis } from '../external-clients/redis.ts'
 import { migrate } from './migrate.ts'
 import { parseArgs } from '@std/cli/parse-args'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { spinner } from '../util/spinner.ts'
 
 async function recreateDatabase() {
   assert(opts)
@@ -14,30 +15,31 @@ async function recreateDatabase() {
     'This script only works on localhost, not production',
   )
 
-  console.log('Flushing redis...')
-  await redis.flushdb()
+  await spinner('Flushing redis', redis.flushdb())
 
-  console.log('Dropping database...')
-  try {
-    await runCommand('dropdb', {
+  await spinner(
+    'Dropping database',
+    runCommand('dropdb', {
       args: [opts.dbname, '-U', opts!.username],
-    })
-  } catch (e) {
+    }),
+  ).catch((e) => {
     if (e.message.includes('other session')) {
       console.error('Database is in use, cannot drop.')
       Deno.exit(1)
     }
     console.log('Database does not exist, skipping drop.')
-  }
+  })
 
-  console.log('Recreating database...')
-  const args = ['-h', opts.host, '-U', opts!.username, '-w', opts.dbname]
-  if (opts.password) {
-    args.push('-W')
-    args.push(opts.password)
-  }
-  await runCommand('createdb', {
-    args,
+  await spinner('Recreating database', () => {
+    assert(opts)
+    const args = ['-h', opts.host, '-U', opts!.username, '-w', opts.dbname]
+    if (opts.password) {
+      args.push('-W')
+      args.push(opts.password)
+    }
+    return runCommand('createdb', {
+      args,
+    })
   })
 }
 
