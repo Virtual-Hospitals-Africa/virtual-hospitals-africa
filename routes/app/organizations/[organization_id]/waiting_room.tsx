@@ -11,8 +11,10 @@ export default async function WaitingRoomPage(
 ) {
   const { organization_id } = ctx.params
   assertOr404(organization_id)
-  const organizationAddress =
-    ctx.state.healthWorker.employment[0].organization.address
+  const { organization } = ctx.state.healthWorker.employment.find((e) =>
+    e.organization.id === organization_id
+  )!
+  const can_add_patients = !!organization.address
 
   return (
     <Layout
@@ -27,7 +29,7 @@ export default async function WaitingRoomPage(
         waiting_room={await waiting_room.get(ctx.state.trx, {
           organization_id,
         })}
-        address={organizationAddress}
+        can_add_patients={can_add_patients}
       />
     </Layout>
   )

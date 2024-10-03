@@ -16,9 +16,6 @@ export default async function AppPage(
 ) {
   const { healthWorker, trx } = ctx.state
   const { searchParams } = ctx.url
-  const organizationAddress =
-    ctx.state.healthWorker.employment[0].organization.address
-
   // We may revisit this, but for now there's only one tab
   // that actually displays on this page, the waiting room
   // while the rest link out to other pages
@@ -77,6 +74,11 @@ export default async function AppPage(
     },
   ]
 
+  const { organization } = ctx.state.healthWorker.employment.find((e) =>
+    e.organization.id === organization_id
+  )!
+  const can_add_patients = !!organization.address
+
   return (
     <Layout
       variant='practitioner home page'
@@ -90,7 +92,7 @@ export default async function AppPage(
       <WaitingRoomView
         organization_id={organization_id}
         waiting_room={await getting_waiting_room}
-        address={organizationAddress}
+        can_add_patients={can_add_patients}
       />
     </Layout>
   )
