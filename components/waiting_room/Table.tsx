@@ -63,10 +63,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
 ]
 
 export default function WaitingRoomTable(
-  { waiting_room, add_href, address }: {
+  { waiting_room, add_href, can_add_patients }: {
     waiting_room: RenderedWaitingRoom[]
     add_href: string
-    address: string | undefined | null
+    can_add_patients: boolean
   },
 ) {
   return (
@@ -74,7 +74,7 @@ export default function WaitingRoomTable(
       columns={columns}
       rows={waiting_room}
       EmptyState={() => (
-        address
+        can_add_patients
           ? <WaitingRoomEmptyState add_href={add_href} />
           : <p>Use the search bar to search for patients.</p>
       )}
