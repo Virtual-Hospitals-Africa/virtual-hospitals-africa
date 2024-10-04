@@ -290,15 +290,10 @@ export interface Condition {
   abatementString: string | null
   assertedDate: Timestamp | null
   asserter: string | null
-  bodySite: string[] | null
-  category: string[] | null
-  clinicalStatus: string | null
-  code: string | null
   compartments: string[]
   content: string
   deleted: Generated<boolean>
   encounter: string | null
-  evidence: string[] | null
   evidenceDetail: string[] | null
   id: string
   lastUpdated: Timestamp
@@ -308,10 +303,7 @@ export interface Condition {
   patient: string | null
   projectId: string | null
   recordedDate: Timestamp | null
-  severity: string | null
-  stage: string[] | null
   subject: string | null
-  verificationStatus: string | null
 }
 
 export interface ConditionIcd10Codes {
@@ -488,7 +480,6 @@ export interface Encounter {
   account: string[] | null
   appointment: string[] | null
   basedOn: string[] | null
-  class: string | null
   compartments: string[]
   content: string
   date: Timestamp | null
@@ -501,18 +492,14 @@ export interface Encounter {
   location: string[] | null
   locationPeriod: ArrayType<Timestamp> | null
   participant: string[] | null
-  participantType: string[] | null
   partOf: string | null
   patient: string | null
   practitioner: string[] | null
   projectId: string | null
-  reasonCode: string[] | null
   reasonReference: string[] | null
   serviceProvider: string | null
-  specialArrangement: string[] | null
   status: string | null
   subject: string | null
-  type: string[] | null
 }
 
 export interface Encounter2 {
@@ -699,13 +686,11 @@ export interface Location {
   location: string
   name: string[] | null
   near: string | null
-  operationalStatus: string | null
   organization: string | null
   organizationId: string
   partof: string | null
   projectId: string | null
   status: string | null
-  type: string[] | null
 }
 
 export interface MailingList {
@@ -768,15 +753,11 @@ export interface Media {
   encounter: string | null
   id: string
   lastUpdated: Timestamp
-  modality: string | null
   operator: string | null
   patient: string | null
   projectId: string | null
-  site: string | null
   status: string | null
   subject: string | null
-  type: string | null
-  view: string | null
 }
 
 export interface Media2 {
@@ -855,7 +836,6 @@ export interface Organization {
   partof: string | null
   phonetic: string | null
   projectId: string | null
-  type: string[] | null
 }
 
 export interface OrganizationConsumables {
@@ -1197,7 +1177,6 @@ export interface Practitioner {
   _source: string | null
   _tag: string[] | null
   active: boolean | null
-  communication: string[] | null
   compartments: string[]
   content: string
   deleted: Generated<boolean>

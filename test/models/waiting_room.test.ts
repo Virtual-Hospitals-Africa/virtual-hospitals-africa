@@ -37,14 +37,18 @@ describe(
               reason: 'seeking treatment',
             })
 
-            const health_worker = await addTestHealthWorker(trx, {
+            const { id: health_worker_id } = await addTestHealthWorker(trx, {
               scenario: 'nurse',
+            })
+            const health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id,
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
               health_worker,
             })
+
             assertEquals(waiting_room_results.length, 2)
             const waiting_room_1 = waiting_room_results.find((r) =>
               r.patient.id === patient1.id
@@ -65,10 +69,7 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: {
-                  text: 'Intake',
-                  href: `/app/patients/${patient1.id}/intake/personal`,
-                },
+                intake: `/app/patients/${patient1.id}/intake/personal`,
                 review: null,
                 awaiting_review: null,
               },
@@ -90,10 +91,7 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: {
-                  text: 'Intake',
-                  href: `/app/patients/${patient2.id}/intake/personal`,
-                },
+                intake: `/app/patients/${patient2.id}/intake/personal`,
                 review: null,
                 awaiting_review: null,
               },
@@ -127,8 +125,11 @@ describe(
               intake_step_just_completed: 'address',
             })
 
-            const health_worker = await addTestHealthWorker(trx, {
+            const { id: health_worker_id } = await addTestHealthWorker(trx, {
               scenario: 'nurse',
+            })
+            const health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id,
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
@@ -149,10 +150,7 @@ describe(
               status: 'Awaiting Intake (Conditions)',
               actions: {
                 view: null,
-                intake: {
-                  text: 'Intake',
-                  href: `/app/patients/${patient.id}/intake/conditions`,
-                },
+                intake: `/app/patients/${patient.id}/intake/conditions`,
                 review: null,
                 awaiting_review: null,
               },
@@ -219,10 +217,7 @@ describe(
               status: 'In Intake (Conditions)',
               actions: {
                 view: null,
-                intake: {
-                  text: 'Intake',
-                  href: `/app/patients/${patient.id}/intake/conditions`,
-                },
+                intake: `/app/patients/${patient.id}/intake/conditions`,
                 review: null,
                 awaiting_review: null,
               },
@@ -271,12 +266,20 @@ describe(
               patient_encounter_id: seeking_treatment.id,
             }).execute()
 
-            const health_worker = await addTestHealthWorker(trx, {
+            const { id: health_worker_id } = await addTestHealthWorker(trx, {
               scenario: 'nurse',
+            })
+            const health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id,
+            })
+
+            const waiting_room_results = await waiting_room.get(trx, {
+              organization_id,
+              health_worker,
             })
 
             assertEquals(
-              await waiting_room.get(trx, { organization_id, health_worker }),
+              waiting_room_results,
               [
                 {
                   appointment: null,
@@ -291,10 +294,7 @@ describe(
                   status: 'Awaiting Intake',
                   actions: {
                     view: null,
-                    intake: {
-                      text: 'Intake',
-                      href: `/app/patients/${patient1.id}/intake/personal`,
-                    },
+                    intake: `/app/patients/${patient1.id}/intake/personal`,
                     review: null,
                     awaiting_review: null,
                   },
@@ -316,10 +316,7 @@ describe(
                   status: 'Awaiting Intake',
                   actions: {
                     view: null,
-                    intake: {
-                      text: 'Intake',
-                      href: `/app/patients/${patient2.id}/intake/personal`,
-                    },
+                    intake: `/app/patients/${patient2.id}/intake/personal`,
                     review: null,
                     awaiting_review: null,
                   },
@@ -382,12 +379,20 @@ describe(
                 patient_encounter_id: encounter.encounter_id,
               })
 
-              const health_worker = await addTestHealthWorker(trx, {
+              const { id: health_worker_id } = await addTestHealthWorker(trx, {
                 scenario: 'nurse',
+              })
+              const health_worker = await health_workers.getEmployed(trx, {
+                health_worker_id,
+              })
+
+              const waiting_room_results = await waiting_room.get(trx, {
+                organization_id,
+                health_worker,
               })
 
               assertEquals(
-                await waiting_room.get(trx, { organization_id, health_worker }),
+                waiting_room_results,
                 [
                   {
                     appointment: null,

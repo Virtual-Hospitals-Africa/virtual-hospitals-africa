@@ -64,7 +64,7 @@ export async function get(
   trx: TrxOrDb,
   { organization_id, health_worker }: {
     organization_id: string
-    health_worker: EmployedHealthWorker | HealthWorkerWithGoogleTokens
+    health_worker: EmployedHealthWorker
   },
 ): Promise<RenderedWaitingRoom[]> {
   const organization_waiting_room = trx
@@ -142,7 +142,9 @@ export async function get(
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
+      'doctor_review_requests.organization_id as requesting_organization_id',
       'completed_intake',
+
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
@@ -250,14 +252,6 @@ export async function get(
       eb('doctor_review_requests.id', 'is not', null).as('awaiting_review'),
       eb('doctor_reviews.id', 'is not', null).as('in_review'),
 
-      eb.selectFrom('doctor_reviews')
-        .innerJoin('employment', 'employment.id', 'doctor_reviews.reviewer_id')
-        .select((eb) =>
-          eb('employment.health_worker_id', '=', health_worker.id).as(
-            'is_current_health_worker_reviewer',
-          )
-        ),
-
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
           .innerJoin(
@@ -282,6 +276,7 @@ export async function get(
             'health_workers.avatar_url',
           ]),
       ).as('appointment_providers'),
+
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
           .innerJoin(
@@ -315,12 +310,9 @@ export async function get(
       ).as('providers'),
 
       jsonArrayFrom(
-        eb.selectFrom('doctor_reviews')
-          .innerJoin(
-            'employment',
-            'doctor_reviews.reviewer_id',
-            'employment.id',
-          )
+        eb.selectFrom(
+          'employment',
+        )
           .innerJoin(
             'health_workers',
             'health_workers.id',
@@ -331,8 +323,14 @@ export async function get(
             '=',
             'patient_encounters.id',
           )
+          .whereRef(
+            'employment.id',
+            '=',
+            'doctor_reviews.reviewer_id',
+          )
           .select([
             'employment.health_worker_id',
+            'employment.organization_id',
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
@@ -344,16 +342,18 @@ export async function get(
               .as('href'),
           ])
           .unionAll(
-            eb.selectFrom('doctor_review_requests')
-              .innerJoin(
-                'employment',
-                'doctor_reviews.reviewer_id',
-                'employment.id',
-              )
+            eb.selectFrom(
+              'employment',
+            )
               .innerJoin(
                 'health_workers',
                 'health_workers.id',
                 'employment.health_worker_id',
+              )
+              .whereRef(
+                'employment.id',
+                '=',
+                'doctor_review_requests.requesting_doctor_id',
               )
               .whereRef(
                 'doctor_reviews.encounter_id',
@@ -362,6 +362,7 @@ export async function get(
               )
               .select([
                 'employment.health_worker_id',
+                'employment.organization_id',
                 'employment.id as employee_id',
                 'health_workers.name',
                 'employment.profession',
@@ -385,6 +386,10 @@ export async function get(
     )
     .orderBy(['is_emergency desc', 'patient_encounters.created_at asc'])
 
+  const organizations_where_doctor = health_worker.employment.filter((e) =>
+    e.roles.doctor?.registration_completed
+  )
+
   const patients_in_waiting_room = await query.execute()
 
   const waiting_room_unsorted = patients_in_waiting_room.map(
@@ -403,8 +408,9 @@ export async function get(
         last_completed_encounter_step,
         awaiting_review,
         in_review,
-        is_current_health_worker_reviewer,
         review_steps,
+        requesting_organization_id,
+        reviewers,
         ...rest
       },
     ) => {
@@ -465,14 +471,19 @@ export async function get(
       }
       assert(status)
 
-      const action =
-        awaiting_review || (in_review && !is_current_health_worker_reviewer)
-          ? 'awaiting_review'
-          : in_review
-          ? 'review'
-          : completed_intake
-          ? 'view'
-          : 'intake'
+      const can_review =
+        reviewers.some((r) => r.health_worker_id === health_worker.id) || (
+          !!requesting_organization_id &&
+          organizations_where_doctor.some((e) =>
+            e.organization.id === requesting_organization_id
+          )
+        )
+
+      const action = awaiting_review || in_review
+        ? 'review'
+        : completed_intake
+        ? 'view'
+        : 'intake'
 
       return {
         ...rest,
@@ -480,31 +491,21 @@ export async function get(
         status,
         in_waiting_room,
         appointment,
+        reviewers,
         arrived_ago_display: arrivedAgoDisplay(wait_time),
         actions: {
-          view: action === 'view'
-            ? {
-              text: 'View',
-              href: `/app/patients/${patient.id}`,
-            }
-            : null,
+          view: action === 'view' ? `/app/patients/${patient.id}` : null,
           intake: action === 'intake'
-            ? {
-              text: 'Intake',
-              href: `/app/patients/${patient.id}/intake/${
-                awaiting_intake_step || INTAKE_STEPS[0]
-              }`,
-            }
+            ? `/app/patients/${patient.id}/intake/${
+              awaiting_intake_step || INTAKE_STEPS[0]
+            }`
             : null,
-          review: action === 'review'
-            ? {
-              text: 'Review',
-              href: `/app/patients/${patient.id}/review/${
-                awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
-              }`,
-            }
+          review: action === 'review' && can_review
+            ? `/app/patients/${patient.id}/review/${
+              awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
+            }`
             : null,
-          awaiting_review: action === 'awaiting_review'
+          awaiting_review: action === 'review' && !can_review
             ? {
               text: 'Awaiting Review',
               disabled: true,
