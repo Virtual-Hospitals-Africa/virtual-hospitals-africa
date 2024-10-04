@@ -20,6 +20,7 @@ import {
   jsonBuildObject,
   jsonObjectFrom,
   literalString,
+  now,
 } from '../helpers.ts'
 import { getCardQuery } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -306,7 +307,6 @@ export async function addSelfAsReviewer(
   return { doctor_review: started_review }
 }
 
-// TODO: check that if you redo a step the updated_at is updated
 export function completedStep(
   trx: TrxOrDb,
   values: {
@@ -316,7 +316,9 @@ export function completedStep(
 ) {
   return trx.insertInto('doctor_review_steps')
     .values(values)
-    .onConflict((oc) => oc.doNothing())
+    .onConflict((oc) => oc.doUpdateSet({
+      updated_at: now
+    }))
     .execute()
 }
 
