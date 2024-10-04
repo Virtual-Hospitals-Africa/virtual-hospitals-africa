@@ -113,6 +113,7 @@ export async function get(
           .on('waiting_room.organization_id', '=', organization_id),
     )
     .innerJoin('Patient', 'Patient.id', 'patient_encounters.patient_id')
+    .innerJoin('HumanName as PatientName', 'patient_encounters.patient_id', 'PatientName.resourceId')
     .leftJoin(
       'appointments',
       'appointments.id',
@@ -131,11 +132,11 @@ export async function get(
     .select((eb) => [
       jsonBuildObject({
         id: eb.ref('Patient.id'),
-        name: eb.ref('Patient.name'),
+        name: sql<string>`PatientName.given || ' ' || PatientName.family`,
         avatar_url: patients.avatar_url_sql,
         description: sql<
           string | null
-        >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
+        >`Patient.gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`,
       }).as('patient'),
       'patient_encounters.reason',
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
@@ -154,7 +155,7 @@ export async function get(
           (join) =>
             join
               .onRef('patient_intake.intake_step', '=', 'intake.step')
-              .onRef('patient_intake.patient_id', '=', 'patients.id'),
+              .onRef('patient_intake.patient_id', '=', 'Patient.id'),
         )
         .where('patient_intake.id', 'is', null)
         .orderBy('intake.order', 'asc')
@@ -168,7 +169,7 @@ export async function get(
           (join) =>
             join
               .onRef('patient_intake.intake_step', '=', 'intake.step')
-              .onRef('patient_intake.patient_id', '=', 'patients.id'),
+              .onRef('patient_intake.patient_id', '=', 'Patient.id'),
         )
         .orderBy('intake.order', 'desc')
         .select('step')

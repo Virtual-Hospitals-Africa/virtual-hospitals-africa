@@ -1,10 +1,12 @@
-import { Kysely /*, sql*/ } from 'kysely'
+import { Kysely, /*, sql*/ 
+sql} from 'kysely'
 import { upsertTrigger } from '../helpers.ts'
+import { DB } from '../../db.d.ts'
 // import { createStandardTable } from '../createStandardTable.ts'
 
 const t2 = upsertTrigger('Patient', 'organizationId', `substring(NEW.organization from 'Organization/(.*)')`)
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   // await db.schema
   //   .createType('gender')
   //   .asEnum([
@@ -15,11 +17,16 @@ export async function up(db: Kysely<unknown>) {
   //   .execute()
 
   await db.schema.alterTable('Patient')
-    .addColumn('organization_id', 'uuid', (col) => col.references('Organization.id'))
+    .addColumn('organizationId', 'uuid', (col) => col.references('Organization.id'))
     .addColumn('national_id_number', 'varchar(50)', col => col.unique().check(sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`))
+    .addColumn(
+      'completed_intake',
+      'boolean',
+      (col) => col.notNull().defaultTo(false),
+    )
     .execute()
 
-    t2
+  await t2.create(db)
 
   // await createStandardTable(
   //   db,

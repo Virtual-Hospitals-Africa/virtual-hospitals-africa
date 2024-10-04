@@ -49,6 +49,7 @@ const dob_formatted = longFormattedDate('Patient.date_of_birth').as(
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('Patient')
+    .innerJoin('HumanName as PatientName', 'Patient.id', 'PatientName.resourceId')
     .leftJoin(
       'Organization',
       'Organization.id',
@@ -62,7 +63,7 @@ const baseSelect = (trx: TrxOrDb) =>
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
       'Patient.id',
-      eb.ref('Patient.name').$notNull().as('name'),
+      sql<string>`PatientName.given || ' ' || PatientName.family`.as('name'),
       'Patient.phone_number',
       'Patient.gender',
       'Patient.ethnicity',
@@ -99,9 +100,6 @@ const baseSelect = (trx: TrxOrDb) =>
         view: view_href_sql,
       }).as('actions'),
     ])
-
-const selectWithName = (trx: TrxOrDb) =>
-  baseSelect(trx).where('Patient.name', 'is not', null)
 
 export async function getLastConversationState(
   trx: TrxOrDb,
@@ -297,10 +295,11 @@ export function getCardQuery(
   trx: TrxOrDb,
 ): SelectQueryBuilder<DB, 'Patient', PatientCard> {
   return trx.selectFrom('Patient')
+    .innerJoin('HumanName as PatientName', 'Patient.id', 'PatientName.resourceId')
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
       'Patient.id',
-      eb.ref('Patient.name').$notNull().as('name'),
+      sql<string>`PatientName.given || ' ' || PatientName.family`.as('name'),
       sql<string | null>`Patient.gender || ', ' || patient_age.age_display`.as(
         'description',
       ),

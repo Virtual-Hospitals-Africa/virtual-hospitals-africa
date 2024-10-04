@@ -69,7 +69,7 @@ export function ofHealthWorker(
       }).as('encounter'),
       jsonObjectFrom(
         getCardQuery(trx).where(
-          'patients.id',
+          'Patient.id',
           '=',
           eb.ref('doctor_reviews.patient_id'),
         ),
