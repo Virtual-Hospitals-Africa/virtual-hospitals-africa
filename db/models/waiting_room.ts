@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
+import { RenderedWaitingRoom, TrxOrDb, WaitingRoom, EmployedHealthWorker } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
@@ -56,10 +56,12 @@ export function arrivedAgoDisplay(wait_time: string) {
 // and the patients who are actively being seen by a provider at the organization.
 export async function get(
   trx: TrxOrDb,
-  { organization_id }: {
-    organization_id: string
+  { organization_id, health_worker }: {
+    organization_id: string,
+    health_worker: EmployedHealthWorker
   },
 ): Promise<RenderedWaitingRoom[]> {
+  console.log(health_worker);
   const organization_waiting_room = trx
     .selectFrom('waiting_room')
     .where('waiting_room.organization_id', '=', organization_id)
@@ -243,6 +245,10 @@ export async function get(
       eb('doctor_review_requests.id', 'is not', null).as('awaiting_review'),
       eb('doctor_reviews.id', 'is not', null).as('in_review'),
 
+      eb.selectFrom('doctor_review_requests')
+        .whereRef('doctor_reviews.reviewer_id', '=', health_worker.id)
+        .as('requesting_review_from_health_worker'),
+
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
           .innerJoin(
@@ -388,6 +394,7 @@ export async function get(
         last_completed_encounter_step,
         awaiting_review,
         in_review,
+        requesting_review_from_health_worker,
         review_steps,
         ...rest
       },
@@ -449,7 +456,7 @@ export async function get(
       }
       assert(status)
 
-      const action = awaiting_review
+      const action = awaiting_review || (in_review && !requesting_review_from_health_worker)
         ? 'awaiting_review'
         : in_review
         ? 'review'

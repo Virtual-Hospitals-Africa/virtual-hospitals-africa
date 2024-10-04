@@ -59,17 +59,6 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Actions',
     type: 'actions',
-    data: (row: RenderedWaitingRoom) => {
-      if (row.actions.awaiting_review) {
-        return row.actions.awaiting_review
-      } else if (row.actions.review) {
-        return row.actions.review
-      } else if (row.actions.intake) {
-        return row.actions.intake
-      } else {
-        return row.actions.view
-      }
-    },
   },
 ]
 

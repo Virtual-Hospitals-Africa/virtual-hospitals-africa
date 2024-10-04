@@ -45,6 +45,7 @@ export default async function AppPage(
 
   const getting_waiting_room = waiting_room.get(trx, {
     organization_id,
+    health_worker: healthWorker,
   })
   const appointments_count = await appointments.countUpcoming(
     trx,

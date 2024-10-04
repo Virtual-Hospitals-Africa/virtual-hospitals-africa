@@ -28,6 +28,7 @@ export default async function WaitingRoomPage(
         organization_id={organization_id}
         waiting_room={await waiting_room.get(ctx.state.trx, {
           organization_id,
+          health_worker: ctx.state.healthWorker
         })}
         can_add_patients={can_add_patients}
       />
