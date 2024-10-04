@@ -28,33 +28,39 @@ describe(
               scenario: 'approved-nurse',
             })
 
-            assertEquals(await waiting_room.get(trx, { organization_id, health_worker: nurse }), [
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient.id,
-                  name: 'Test Patient',
-                  description: null,
-                },
-                in_waiting_room: true,
-                arrived_ago_display: 'Just now',
-                status: 'Awaiting Intake',
-                actions: {
-                  view: null,
-                  review: null,
-                  intake: {
-                    text: 'Intake',
-                    href: `/app/patients/${patient.id}/intake/personal`,
+            assertEquals(
+              await waiting_room.get(trx, {
+                organization_id,
+                health_worker: nurse,
+              }),
+              [
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient.id,
+                    name: 'Test Patient',
+                    description: null,
                   },
-                  awaiting_review: null,
+                  in_waiting_room: true,
+                  arrived_ago_display: 'Just now',
+                  status: 'Awaiting Intake',
+                  actions: {
+                    view: null,
+                    review: null,
+                    intake: {
+                      text: 'Intake',
+                      href: `/app/patients/${patient.id}/intake/personal`,
+                    },
+                    awaiting_review: null,
+                  },
+                  providers: [],
+                  reviewers: [],
+                  reason: 'seeking treatment',
+                  is_emergency: false,
                 },
-                providers: [],
-                reviewers: [],
-                reason: 'seeking treatment',
-                is_emergency: false,
-              },
-            ])
+              ],
+            )
           }),
       )
 
@@ -72,44 +78,50 @@ describe(
               provider_ids: [nurse.employee_id!],
             })
 
-            assertEquals(await waiting_room.get(trx, { organization_id, health_worker: nurse }), [
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient.id,
-                  name: 'Test Patient',
-                  description: null,
-                },
-                in_waiting_room: true,
-                arrived_ago_display: 'Just now',
-                status: 'Awaiting Intake',
-                actions: {
-                  view: null,
-                  review: null,
-                  intake: {
-                    text: 'Intake',
-                    href: `/app/patients/${patient.id}/intake/personal`,
+            assertEquals(
+              await waiting_room.get(trx, {
+                organization_id,
+                health_worker: nurse,
+              }),
+              [
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient.id,
+                    name: 'Test Patient',
+                    description: null,
                   },
-                  awaiting_review: null,
-                },
-                providers: [
-                  {
-                    health_worker_id: nurse.id,
-                    employee_id: nurse.employee_id!,
-                    name: nurse.name,
-                    profession: 'nurse',
-                    seen: false,
-                    href:
-                      `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
-                    avatar_url: nurse.avatar_url,
+                  in_waiting_room: true,
+                  arrived_ago_display: 'Just now',
+                  status: 'Awaiting Intake',
+                  actions: {
+                    view: null,
+                    review: null,
+                    intake: {
+                      text: 'Intake',
+                      href: `/app/patients/${patient.id}/intake/personal`,
+                    },
+                    awaiting_review: null,
                   },
-                ],
-                reviewers: [],
-                reason: 'seeking treatment',
-                is_emergency: false,
-              },
-            ])
+                  providers: [
+                    {
+                      health_worker_id: nurse.id,
+                      employee_id: nurse.employee_id!,
+                      name: nurse.name,
+                      profession: 'nurse',
+                      seen: false,
+                      href:
+                        `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+                      avatar_url: nurse.avatar_url,
+                    },
+                  ],
+                  reviewers: [],
+                  reason: 'seeking treatment',
+                  is_emergency: false,
+                },
+              ],
+            )
           }),
       )
     })

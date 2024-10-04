@@ -1,6 +1,12 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { RenderedWaitingRoom, TrxOrDb, WaitingRoom, EmployedHealthWorker, HealthWorkerWithGoogleTokens } from '../../types.ts'
+import {
+  EmployedHealthWorker,
+  HealthWorkerWithGoogleTokens,
+  RenderedWaitingRoom,
+  TrxOrDb,
+  WaitingRoom,
+} from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
@@ -57,7 +63,7 @@ export function arrivedAgoDisplay(wait_time: string) {
 export async function get(
   trx: TrxOrDb,
   { organization_id, health_worker }: {
-    organization_id: string,
+    organization_id: string
     health_worker: EmployedHealthWorker | HealthWorkerWithGoogleTokens
   },
 ): Promise<RenderedWaitingRoom[]> {
@@ -246,8 +252,10 @@ export async function get(
 
       eb.selectFrom('doctor_reviews')
         .innerJoin('employment', 'employment.id', 'doctor_reviews.reviewer_id')
-        .select((eb) => 
-          eb('employment.health_worker_id', '=', health_worker.id).as('is_current_health_worker_reviewer'),
+        .select((eb) =>
+          eb('employment.health_worker_id', '=', health_worker.id).as(
+            'is_current_health_worker_reviewer',
+          )
         ),
 
       jsonArrayFrom(
@@ -457,13 +465,14 @@ export async function get(
       }
       assert(status)
 
-      const action = awaiting_review || (in_review && !is_current_health_worker_reviewer)
-        ? 'awaiting_review'
-        : in_review
-        ? 'review'
-        : completed_intake
-        ? 'view'
-        : 'intake'
+      const action =
+        awaiting_review || (in_review && !is_current_health_worker_reviewer)
+          ? 'awaiting_review'
+          : in_review
+          ? 'review'
+          : completed_intake
+          ? 'view'
+          : 'intake'
 
       return {
         ...rest,

@@ -43,7 +43,7 @@ describe(
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
-              health_worker
+              health_worker,
             })
             assertEquals(waiting_room_results.length, 2)
             const waiting_room_1 = waiting_room_results.find((r) =>
@@ -133,7 +133,7 @@ describe(
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
-              health_worker
+              health_worker,
             })
 
             assertEquals(waiting_room_results, [{
@@ -203,7 +203,7 @@ describe(
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
-              health_worker: nurse_health_worker
+              health_worker: nurse_health_worker,
             })
 
             assertEquals(waiting_room_results, [{
@@ -275,58 +275,61 @@ describe(
               scenario: 'nurse',
             })
 
-            assertEquals(await waiting_room.get(trx, { organization_id, health_worker }), [
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient1.id,
-                  name: 'Test Patient 1',
-                  description: null,
-                },
-                in_waiting_room: true,
-                arrived_ago_display: 'Just now',
-                status: 'Awaiting Intake',
-                actions: {
-                  view: null,
-                  intake: {
-                    text: 'Intake',
-                    href: `/app/patients/${patient1.id}/intake/personal`,
+            assertEquals(
+              await waiting_room.get(trx, { organization_id, health_worker }),
+              [
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient1.id,
+                    name: 'Test Patient 1',
+                    description: null,
                   },
-                  review: null,
-                  awaiting_review: null,
-                },
-                providers: [],
-                reviewers: [],
-                reason: 'emergency',
-                is_emergency: true,
-              },
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient2.id,
-                  name: 'Test Patient 2',
-                  description: null,
-                },
-                in_waiting_room: true,
-                arrived_ago_display: '60 minutes ago',
-                status: 'Awaiting Intake',
-                actions: {
-                  view: null,
-                  intake: {
-                    text: 'Intake',
-                    href: `/app/patients/${patient2.id}/intake/personal`,
+                  in_waiting_room: true,
+                  arrived_ago_display: 'Just now',
+                  status: 'Awaiting Intake',
+                  actions: {
+                    view: null,
+                    intake: {
+                      text: 'Intake',
+                      href: `/app/patients/${patient1.id}/intake/personal`,
+                    },
+                    review: null,
+                    awaiting_review: null,
                   },
-                  review: null,
-                  awaiting_review: null,
+                  providers: [],
+                  reviewers: [],
+                  reason: 'emergency',
+                  is_emergency: true,
                 },
-                providers: [],
-                reviewers: [],
-                reason: 'seeking treatment',
-                is_emergency: false,
-              },
-            ])
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient2.id,
+                    name: 'Test Patient 2',
+                    description: null,
+                  },
+                  in_waiting_room: true,
+                  arrived_ago_display: '60 minutes ago',
+                  status: 'Awaiting Intake',
+                  actions: {
+                    view: null,
+                    intake: {
+                      text: 'Intake',
+                      href: `/app/patients/${patient2.id}/intake/personal`,
+                    },
+                    review: null,
+                    awaiting_review: null,
+                  },
+                  providers: [],
+                  reviewers: [],
+                  reason: 'seeking treatment',
+                  is_emergency: false,
+                },
+              ],
+            )
           }),
       )
 
@@ -383,42 +386,45 @@ describe(
                 scenario: 'nurse',
               })
 
-              assertEquals(await waiting_room.get(trx, { organization_id, health_worker }), [
-                {
-                  appointment: null,
-                  patient: {
-                    avatar_url: null,
-                    id: patient.id,
-                    name: 'Test Patient 1',
-                    description: null,
-                  },
-                  in_waiting_room: false,
-                  arrived_ago_display: 'Just now',
-                  status: 'Awaiting Review',
-                  actions: {
-                    view: null,
-                    intake: null,
-                    review: null,
-                    awaiting_review: {
-                      text: 'Awaiting Review',
-                      disabled: true,
+              assertEquals(
+                await waiting_room.get(trx, { organization_id, health_worker }),
+                [
+                  {
+                    appointment: null,
+                    patient: {
+                      avatar_url: null,
+                      id: patient.id,
+                      name: 'Test Patient 1',
+                      description: null,
                     },
+                    in_waiting_room: false,
+                    arrived_ago_display: 'Just now',
+                    status: 'Awaiting Review',
+                    actions: {
+                      view: null,
+                      intake: null,
+                      review: null,
+                      awaiting_review: {
+                        text: 'Awaiting Review',
+                        disabled: true,
+                      },
+                    },
+                    providers: [{
+                      name: nurse.name,
+                      profession: 'nurse',
+                      href:
+                        `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+                      avatar_url: nurse.avatar_url,
+                      seen: true,
+                      health_worker_id: nurse.id,
+                      employee_id: nurse.employee_id!,
+                    }],
+                    reviewers: [],
+                    reason: 'maternity',
+                    is_emergency: false,
                   },
-                  providers: [{
-                    name: nurse.name,
-                    profession: 'nurse',
-                    href:
-                      `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
-                    avatar_url: nurse.avatar_url,
-                    seen: true,
-                    health_worker_id: nurse.id,
-                    employee_id: nurse.employee_id!,
-                  }],
-                  reviewers: [],
-                  reason: 'maternity',
-                  is_emergency: false,
-                },
-              ])
+                ],
+              )
             },
           ),
       )
