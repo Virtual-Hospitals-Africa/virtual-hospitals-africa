@@ -118,6 +118,7 @@ export default async function PrescriptionsPage(
   _req: Request,
   ctx: ReviewContext,
 ) {
+  console.log('ctx', ctx)
   const { trx, doctor_review: { review_id } } = ctx.state
   const { patient_diagnoses, patient_prescription } = await promiseProps({
     patient_diagnoses: diagnoses.getFromReview(trx, { review_id }),
