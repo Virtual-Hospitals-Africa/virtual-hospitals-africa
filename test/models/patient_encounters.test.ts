@@ -24,7 +24,11 @@ describe(
               reason: 'seeking treatment',
             })
 
-            assertEquals(await waiting_room.get(trx, { organization_id }), [
+            const nurse = await addTestHealthWorker(trx, {
+              scenario: 'approved-nurse',
+            })
+
+            assertEquals(await waiting_room.get(trx, { organization_id, health_worker: nurse }), [
               {
                 appointment: null,
                 patient: {
@@ -68,7 +72,7 @@ describe(
               provider_ids: [nurse.employee_id!],
             })
 
-            assertEquals(await waiting_room.get(trx, { organization_id }), [
+            assertEquals(await waiting_room.get(trx, { organization_id, health_worker: nurse }), [
               {
                 appointment: null,
                 patient: {

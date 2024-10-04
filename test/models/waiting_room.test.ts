@@ -37,8 +37,13 @@ describe(
               reason: 'seeking treatment',
             })
 
+            const health_worker = await addTestHealthWorker(trx, {
+              scenario: 'nurse',
+            })
+
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
+              health_worker
             })
             assertEquals(waiting_room_results.length, 2)
             const waiting_room_1 = waiting_room_results.find((r) =>
@@ -122,8 +127,13 @@ describe(
               intake_step_just_completed: 'address',
             })
 
+            const health_worker = await addTestHealthWorker(trx, {
+              scenario: 'nurse',
+            })
+
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
+              health_worker
             })
 
             assertEquals(waiting_room_results, [{
@@ -193,6 +203,7 @@ describe(
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
+              health_worker: nurse_health_worker
             })
 
             assertEquals(waiting_room_results, [{
@@ -260,7 +271,11 @@ describe(
               patient_encounter_id: seeking_treatment.id,
             }).execute()
 
-            assertEquals(await waiting_room.get(trx, { organization_id }), [
+            const health_worker = await addTestHealthWorker(trx, {
+              scenario: 'nurse',
+            })
+
+            assertEquals(await waiting_room.get(trx, { organization_id, health_worker }), [
               {
                 appointment: null,
                 patient: {
@@ -364,7 +379,11 @@ describe(
                 patient_encounter_id: encounter.encounter_id,
               })
 
-              assertEquals(await waiting_room.get(trx, { organization_id }), [
+              const health_worker = await addTestHealthWorker(trx, {
+                scenario: 'nurse',
+              })
+
+              assertEquals(await waiting_room.get(trx, { organization_id, health_worker }), [
                 {
                   appointment: null,
                   patient: {

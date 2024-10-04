@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { RenderedWaitingRoom, TrxOrDb, WaitingRoom, EmployedHealthWorker } from '../../types.ts'
+import { RenderedWaitingRoom, TrxOrDb, WaitingRoom, EmployedHealthWorker, HealthWorkerWithGoogleTokens } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
@@ -58,10 +58,9 @@ export async function get(
   trx: TrxOrDb,
   { organization_id, health_worker }: {
     organization_id: string,
-    health_worker: EmployedHealthWorker
+    health_worker: EmployedHealthWorker | HealthWorkerWithGoogleTokens
   },
 ): Promise<RenderedWaitingRoom[]> {
-  console.log(health_worker);
   const organization_waiting_room = trx
     .selectFrom('waiting_room')
     .where('waiting_room.organization_id', '=', organization_id)
@@ -245,9 +244,11 @@ export async function get(
       eb('doctor_review_requests.id', 'is not', null).as('awaiting_review'),
       eb('doctor_reviews.id', 'is not', null).as('in_review'),
 
-      eb.selectFrom('doctor_review_requests')
-        .whereRef('doctor_reviews.reviewer_id', '=', health_worker.id)
-        .as('requesting_review_from_health_worker'),
+      eb.selectFrom('doctor_reviews')
+        .innerJoin('employment', 'employment.id', 'doctor_reviews.reviewer_id')
+        .select((eb) => 
+          eb('employment.health_worker_id', '=', health_worker.id).as('is_current_health_worker_reviewer'),
+        ),
 
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
@@ -394,7 +395,7 @@ export async function get(
         last_completed_encounter_step,
         awaiting_review,
         in_review,
-        requesting_review_from_health_worker,
+        is_current_health_worker_reviewer,
         review_steps,
         ...rest
       },
@@ -456,7 +457,7 @@ export async function get(
       }
       assert(status)
 
-      const action = awaiting_review || (in_review && !requesting_review_from_health_worker)
+      const action = awaiting_review || (in_review && !is_current_health_worker_reviewer)
         ? 'awaiting_review'
         : in_review
         ? 'review'
