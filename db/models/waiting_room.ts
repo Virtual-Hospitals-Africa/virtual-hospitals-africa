@@ -2,7 +2,6 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   EmployedHealthWorker,
-  HealthWorkerWithGoogleTokens,
   RenderedWaitingRoom,
   TrxOrDb,
   WaitingRoom,

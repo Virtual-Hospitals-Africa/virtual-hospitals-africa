@@ -44,7 +44,7 @@ export type TableColumn<T extends Row> =
       : {
         label: 'Actions'
         type: 'actions'
-        data: (row: T) => ExtendedActionData | ExtendedActionData[] | null
+        data?: (row: T) => ExtendedActionData | ExtendedActionData[] | null
       })
   )
 

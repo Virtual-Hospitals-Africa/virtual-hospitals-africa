@@ -2296,6 +2296,7 @@ export type RenderedProvider = {
   avatar_url: string | null
   href: string
   seen: SqlBool
+  organization_id?: string
 }
 export type RenderedWaitingRoom = {
   patient: {

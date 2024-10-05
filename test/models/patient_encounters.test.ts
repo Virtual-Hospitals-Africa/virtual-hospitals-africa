@@ -1,6 +1,7 @@
 import { describe } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
@@ -28,10 +29,14 @@ describe(
               scenario: 'approved-nurse',
             })
 
+            const health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id: nurse.id,
+            })
+
             assertEquals(
               await waiting_room.get(trx, {
                 organization_id,
-                health_worker: nurse,
+                health_worker,
               }),
               [
                 {
@@ -48,10 +53,7 @@ describe(
                   actions: {
                     view: null,
                     review: null,
-                    intake: {
-                      text: 'Intake',
-                      href: `/app/patients/${patient.id}/intake/personal`,
-                    },
+                    intake: `/app/patients/${patient.id}/intake/personal`,
                     awaiting_review: null,
                   },
                   providers: [],
@@ -78,10 +80,14 @@ describe(
               provider_ids: [nurse.employee_id!],
             })
 
+            const health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id: nurse.id,
+            })
+
             assertEquals(
               await waiting_room.get(trx, {
                 organization_id,
-                health_worker: nurse,
+                health_worker,
               }),
               [
                 {
@@ -98,10 +104,7 @@ describe(
                   actions: {
                     view: null,
                     review: null,
-                    intake: {
-                      text: 'Intake',
-                      href: `/app/patients/${patient.id}/intake/personal`,
-                    },
+                    intake: `/app/patients/${patient.id}/intake/personal`,
                     awaiting_review: null,
                   },
                   providers: [

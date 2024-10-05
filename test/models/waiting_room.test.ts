@@ -433,6 +433,131 @@ describe(
             },
           ),
       )
+
+      itUsesTrxAnd(
+        'shows review action for doctor who were requested to review patient',
+        (trx) =>
+          withTestOrganization(
+            trx,
+            { kind: 'virtual' },
+            async (organization_id) => {
+              const patient = await patients.insert(trx, {
+                name: 'Test Patient 1',
+              })
+              await patient_encounters.upsert(
+                trx,
+                organization_id,
+                {
+                  patient_id: patient.id,
+                  reason: 'maternity',
+                },
+              )
+              const nurse = await addTestHealthWorker(trx, {
+                organization_id,
+                scenario: 'approved-nurse',
+              })
+
+              const nurse_health_worker = await health_workers.getEmployed(
+                trx,
+                {
+                  health_worker_id: nurse.id,
+                },
+              )
+
+              const { encounter, encounter_provider } =
+                await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+                  patient_id: patient.id,
+                  health_worker: nurse_health_worker,
+                  encounter_id: 'open',
+                })
+
+              const doctor = await addTestHealthWorker(trx, {
+                organization_id,
+                scenario: 'doctor',
+              })
+
+              const doctor_health_worker = await health_workers.getEmployed(
+                trx,
+                {
+                  health_worker_id: doctor.id,
+                },
+              )
+
+              await doctor_reviews.upsertRequest(trx, {
+                patient_id: patient.id,
+                encounter_id: encounter.encounter_id,
+                requested_by: encounter_provider.patient_encounter_provider_id,
+                organization_id,
+                requesting_doctor_id: doctor_health_worker.id,
+              })
+
+              await doctor_reviews.finalizeRequest(trx, {
+                requested_by: encounter_provider.patient_encounter_provider_id,
+                patient_encounter_id: encounter.encounter_id,
+              })
+
+              await doctor_reviews.addSelfAsReviewer(trx, {
+                patient_id: patient.id,
+                health_worker: await health_workers.getEmployed(trx, {
+                  health_worker_id: doctor.id,
+                }),
+              })
+
+              const waiting_room_results = await waiting_room.get(trx, {
+                organization_id,
+                health_worker: doctor_health_worker,
+              })
+
+              assertEquals(
+                waiting_room_results,
+                [
+                  {
+                    appointment: null,
+                    patient: {
+                      avatar_url: null,
+                      id: patient.id,
+                      name: 'Test Patient 1',
+                      description: null,
+                    },
+                    in_waiting_room: false,
+                    arrived_ago_display: 'Just now',
+                    status: 'In Review (Clinical Notes)',
+                    actions: {
+                      view: null,
+                      intake: null,
+                      review:
+                        `/app/patients/${patient.id}/review/clinical_notes`,
+                      awaiting_review: null,
+                    },
+                    providers: [{
+                      name: nurse.name,
+                      profession: 'nurse',
+                      href:
+                        `/app/organizations/${organization_id}/employees/${nurse.id}`,
+                      avatar_url: nurse.avatar_url,
+                      seen: true,
+                      health_worker_id: nurse.id,
+                      employee_id: nurse.employee_id!,
+                    }],
+                    reviewers: [{
+                      name: doctor.name,
+                      profession: 'doctor',
+                      href:
+                        `/app/organizations/${organization_id}/employees/${doctor.id}`,
+                      avatar_url: doctor.avatar_url,
+                      seen: true,
+                      health_worker_id: doctor.id,
+                      employee_id: doctor.employee_id!,
+                      organization_id,
+                    }],
+                    reason: 'maternity',
+                    is_emergency: false,
+                  },
+                ],
+              )
+            },
+          ),
+      )
     })
     describe('arrivedAgoDisplay', () => {
       it('returns "Just now" for a patient who arrived less than 1 minute ago', () => {
