@@ -142,7 +142,6 @@ export async function get(
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
       'doctor_review_requests.organization_id as requesting_organization_id',
-      'doctor_review_requests.requesting_doctor_id',
       'completed_intake',
 
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
@@ -318,56 +317,41 @@ export async function get(
             'health_workers.id',
             'employment.health_worker_id',
           )
-          .whereRef(
-            'doctor_reviews.encounter_id',
-            '=',
-            'patient_encounters.id',
+          .where((eb2) =>
+            eb2.or([
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_reviews.reviewer_id'),
+              ),
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_review_requests.requesting_doctor_id'),
+              ),
+            ])
           )
-          .whereRef(
-            'employment.id',
-            '=',
-            'doctor_reviews.reviewer_id',
-          )
-          .select([
+          .select((eb2) => [
             'employment.health_worker_id',
             'employment.organization_id',
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
             'health_workers.avatar_url',
-            literalBoolean(true).as('seen'),
+            eb2.and([
+              eb2('doctor_reviews.reviewer_id', 'is not', null),
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_reviews.reviewer_id'),
+              ),
+            ])
+              .as('seen'),
             sql<
               string
             >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
               .as('href'),
-          ]).unionAll(
-            eb.selectFrom(
-              'employment',
-            )
-              .innerJoin(
-                'health_workers',
-                'health_workers.id',
-                'employment.health_worker_id',
-              )
-              .whereRef(
-                'employment.id',
-                '=',
-                'doctor_review_requests.requesting_doctor_id',
-              )
-              .select([
-                'employment.health_worker_id',
-                'employment.organization_id',
-                'employment.id as employee_id',
-                'health_workers.name',
-                'employment.profession',
-                'health_workers.avatar_url',
-                literalBoolean(false).as('seen'),
-                sql<
-                  string
-                >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
-                  .as('href'),
-              ]),
-          ),
+          ]),
       ).as('reviewers'),
     ])
     .where('patient_encounters.id', 'in', encounters_to_show)
@@ -405,11 +389,9 @@ export async function get(
         review_steps,
         requesting_organization_id,
         reviewers,
-        requesting_doctor_id,
         ...rest
       },
     ) => {
-      console.log('requesting_doctor_id', requesting_doctor_id)
       assert(hasName(patient), 'Patient must have a name')
 
       let appointment: RenderedWaitingRoom['appointment'] = null
