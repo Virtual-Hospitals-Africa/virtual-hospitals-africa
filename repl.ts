@@ -14,6 +14,7 @@ async function loadAllModules(dir: string) {
     }
     const file = inDir
     const [fileName, fileExt] = file.name.split('.')
+    if (fileExt === 'sh') return
     const importing_module = import(`${dir}/${file.name}`).then((module) => {
       let just_default_export = true
       if (!module.default) {

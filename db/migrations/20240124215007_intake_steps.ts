@@ -56,5 +56,5 @@ export async function down(db: Kysely<any>) {
   await db.schema.dropTable('patient_intake').execute()
   await db.schema.dropTable('intake').execute()
   await db.schema.dropType('intake_step').execute()
-  await db.schema.dropTable('patient_completed_intake').execute()
+  await db.schema.dropTable('patient_intake_completed').execute()
 }

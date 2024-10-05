@@ -1,3 +1,1 @@
-import * as mc from 'medplum_core';
-
-const c = 
+// import * as mc from 'medplum_core';

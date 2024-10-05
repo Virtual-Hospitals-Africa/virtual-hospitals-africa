@@ -866,7 +866,6 @@ export interface Patient {
   active: boolean | null
   birthdate: Timestamp | null
   compartments: string[]
-  completed_intake: Generated<boolean>
   content: string
   deathDate: Timestamp | null
   deceased: boolean | null
@@ -880,7 +879,7 @@ export interface Patient {
   link: string[] | null
   national_id_number: string | null
   organization: string | null
-  organization_id: string | null
+  organizationId: string | null
   phonetic: string[] | null
   projectId: string | null
   race: string[] | null

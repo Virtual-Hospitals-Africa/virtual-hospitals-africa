@@ -159,28 +159,28 @@ export type PatientConversationState =
   | 'end_of_demo'
   | 'error'
 
-// export type Patient = PatientPersonal & {
-//   primary_doctor_id: Maybe<string>
-//   nearest_organization_id: Maybe<string>
-//   completed_intake: boolean
-//   address_id: Maybe<string>
-//   unregistered_primary_doctor_name: Maybe<string>
-//   intake_steps_completed: IntakeStep[]
-// }
+export type Patient = PatientPersonal & {
+  primary_doctor_id: Maybe<string>
+  nearest_organization_id: Maybe<string>
+  completed_intake: boolean
+  address_id: Maybe<string>
+  unregistered_primary_doctor_name: Maybe<string>
+  intake_steps_completed: IntakeStep[]
+}
 
-// export type PatientDemographicInfo = {
-//   phone_number: Maybe<string>
-//   name: Maybe<string>
-//   gender: Maybe<Gender>
-//   ethnicity: Maybe<string>
-//   date_of_birth: Maybe<string>
-//   national_id_number: Maybe<string>
-// }
-// export type PatientPersonal = {
-//   conversation_state: PatientConversationState
-//   avatar_media_id: Maybe<string>
-//   location: Maybe<Location>
-// } & PatientDemographicInfo
+export type PatientDemographicInfo = {
+  phone_number: Maybe<string>
+  name: Maybe<string>
+  gender: Maybe<Gender>
+  ethnicity: Maybe<string>
+  date_of_birth: Maybe<string>
+  national_id_number: Maybe<string>
+}
+export type PatientPersonal = {
+  conversation_state: PatientConversationState
+  avatar_media_id: Maybe<string>
+  location: Maybe<Location>
+} & PatientDemographicInfo
 
 export type RenderedPatient =
   & Pick<

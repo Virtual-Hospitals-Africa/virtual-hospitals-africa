@@ -53,12 +53,17 @@ const baseSelect = (trx: TrxOrDb) =>
     .leftJoin(
       'Organization',
       'Organization.id',
-      'Patient.nearest_organization_id',
+      'Patient.organizationId',
     )
     .leftJoin(
       formattedAddress(trx),
       'address_formatted.id',
       'Patient.address_id',
+    )
+    .leftJoin(
+      'patient_intake_completed',
+      'patient_intake_completed.patient_id',
+      'Patient.id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
@@ -68,6 +73,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'Patient.gender',
       'Patient.ethnicity',
       'address_formatted.address',
+      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
       dob_formatted,
       'patient_age.age_display',
       sql<
@@ -88,7 +94,6 @@ const baseSelect = (trx: TrxOrDb) =>
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      'Patient.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'Organization.canonicalName as nearest_organization',
       sql<null>`NULL`.as('last_visited'),

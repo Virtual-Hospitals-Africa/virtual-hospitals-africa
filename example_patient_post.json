@@ -1,0 +1,84 @@
+{
+  "resourceType": "Patient",
+  "identifier": [
+    {
+      "system": "https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md",
+      "value": "85-123456"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "given": [
+        "Garibaldi"
+      ],
+      "family": "Foo"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+263 456 7891"
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1989-12-30",
+  "address": [
+    {
+      "use": "home",
+      "line": [
+        "120 Main"
+      ],
+      "city": "Harare",
+      "state": "Harare"
+    }
+  ],
+  "maritalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+        "code": "M",
+        "display": "Married"
+      }
+    ]
+  },
+  "contact": [
+    {
+      "relationship": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+              "code": "N",
+              "display": "Next-of-Kin"
+            }
+          ]
+        }
+      ],
+      "name": {
+        "use": "official",
+        "given": [
+          "Mary"
+        ],
+        "family": "Other"
+      },
+      "telecom": [
+        {
+          "system": "phone",
+          "value": "+278 45621290"
+        }
+      ]
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/dfe9d090-d7ca-4487-9dd5-b471846824cd",
+    "display": "VHA Test Clinic"
+  },
+  "generalPractitioner": [
+    {
+      "reference": "Organization/dfe9d090-d7ca-4487-9dd5-b471846824cd",
+      "display": "VHA Test Clinic"
+    }
+  ]
+}
