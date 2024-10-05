@@ -433,13 +433,17 @@ export async function withTestOrganization(
 
 export async function withTestOrganizations(
   trx: TrxOrDb,
-  opts: { kind?: 'virtual' | 'physical'; count: number },
+  opts: { kind?: 'virtual' | 'physical'; count: number } | {
+    kind?: 'virtual' | 'physical'
+  }[],
   callback: (organization_ids: string[]) => Promise<void>,
 ) {
-  assert(opts.count > 0)
-  const kind = opts.kind
+  const to_create = Array.isArray(opts) ? opts : (
+    assert(opts.count > 0), range(opts.count).map((_) => ({ kind: opts.kind }))
+  )
+
   const organizations_added = await Promise.all(
-    range(opts.count).map(() =>
+    to_create.map(({ kind }) =>
       organizations.add(trx, {
         name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
         category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
