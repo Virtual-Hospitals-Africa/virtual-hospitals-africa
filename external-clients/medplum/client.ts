@@ -5,7 +5,7 @@ import { isISODateTimeString } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { redis, lock } from '../redis.ts'
 import { Lock } from "redlock"
-import { Resource } from 'medeplum_fhirtypes'
+import { Resource } from 'medplum_fhirtypes'
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
@@ -123,67 +123,20 @@ export async function putResource<T extends Resource>(resource: T & { id: string
   return json
 }
 
-/*
-{
-  "resourceType": "Bundle",
-  "type": "transaction-response",
-  "entry": [
-    {
-      "response": {
-        "outcome": {
-          "resourceType": "OperationOutcome",
-          "id": "created",
-          "issue": [
-            {
-              "severity": "information",
-              "code": "informational",
-              "details": {
-                "text": "Created"
-              }
-            }
-          ]
-        },
-        "status": "201",
-        "location": "Patient/c022829d-8e37-4bca-acfb-86e456ab5f9a"
-      },
-      "resource": {
-        "resourceType": "Patient",
-        "name": [
-          {
-            "use": "official",
-            "given": [
-              "Alice"
-            ],
-            "family": "BOB"
-          }
-        ],
-        "gender": "female",
-        "birthDate": "1974-12-25",
-        "id": "c022829d-8e37-4bca-acfb-86e456ab5f9a",
-        "meta": {
-          "versionId": "a738cb7f-dc46-46de-865a-f27d49724c24",
-          "lastUpdated": "2024-10-05T14:59:38.379Z",
-          "author": {
-            "reference": "Practitioner/8c48a54b-0f69-4db1-ace0-47c4b21b85f3",
-            "display": "VHA Admin"
-          },
-          "project": "136d74f0-66ba-467b-aee4-cfd652063aa2",
-          "compartment": [
-            {
-              "reference": "Project/136d74f0-66ba-467b-aee4-cfd652063aa2"
-            },
-            {
-              "reference": "Patient/c022829d-8e37-4bca-acfb-86e456ab5f9a"
-            }
-          ]
-        }
-      }
-    }
-  ]
+export async function patchResource<T extends Resource>(resource: T & { id: string }): Promise<CreatedResource<T>> {
+  const response = await request('PATCH', `${resource.resourceType}/${resource.id}`, resource);
+  const json = await response.json();
+  // deno-lint-ignore no-explicit-any
+  const error = json.issue && json.issue.find((i: any) => i.severity !== 'informational')
+  if (error) {
+    throw new Error(JSON.stringify(error.details.text));
+  }
+  assertIsCreatedResource<T>(json);
+  return json
 }
-*/
 
-export async function insertMany<T extends Resource>(resources: T[]) {
+
+export async function batchInsert<T extends Resource>(resources: T[]): Promise<CreatedResource<T>[]> {
   const response = await request('POST', '', {
     resourceType: "Bundle",
     type: 'transaction',
@@ -197,11 +150,18 @@ export async function insertMany<T extends Resource>(resources: T[]) {
   });
   const json = await response.json();
   assert(isObjectLike(json), 'Expected JSON response');
+
+  if (Array.isArray(json.issue)) {
+    // deno-lint-ignore no-explicit-any
+    const error = json.issue.find((i: any) => i.severity !== 'informational')
+    if (error) {
+      throw new Error(JSON.stringify(error.details.text));
+    }
+  }
+
   assert(json.resourceType === 'Bundle', 'Expected resourceType: "Bundle"');
   assert(json.type === 'transaction-response', 'Expected type: "transaction-response"');
   assert(Array.isArray(json.entry), 'Expected entry to be an array');
-  
-
 
   // deno-lint-ignore no-explicit-any
   const error = Array.isArray(json.issue) && json.issue.find((i: any) => i.severity !== 'informational')
@@ -209,6 +169,5 @@ export async function insertMany<T extends Resource>(resources: T[]) {
     throw new Error(JSON.stringify(error.details.text));
   }
   assertIsCreatedResource<T>(json);
-  return json
-
+  return json.entry.map(e => e.resource)
 }

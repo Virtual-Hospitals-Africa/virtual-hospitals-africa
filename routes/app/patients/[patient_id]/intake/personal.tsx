@@ -46,13 +46,18 @@ export const handler = postHandler(
     patient_id,
     { first_name, middle_names, last_name, ...form_values },
   ) {
-    const name = compact(
-      [first_name, middle_names, last_name],
-    ).join(' ')
+    const given_names = [first_name]
+    if (middle_names) {
+      given_names.push(...compact(middle_names.split(/\W/)))
+    }
 
     await patients.update(ctx.state.trx, {
       id: patient_id,
-      name,
+      name: [{
+        use: 'official',
+        given: given_names,
+        family: last_name,
+      }],
       ...form_values,
     })
   },

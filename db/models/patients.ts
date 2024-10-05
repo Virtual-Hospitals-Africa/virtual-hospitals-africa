@@ -11,6 +11,7 @@ import {
   RenderedPatient,
   TrxOrDb,
 } from '../../types.ts'
+import { Patient as MedplumPatient } from 'medplum_fhirtypes'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import * as conversations from './conversations.ts'
@@ -25,6 +26,7 @@ import {
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
+import { batchInsert, patchResource } from '../../external-clients/medplum/client.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', Patient.id::text)
@@ -126,13 +128,21 @@ export async function getLastConversationState(
   return { ...patient, ...last_message }
 }
 
-export function insertMany(
+export async function insertMany(
   trx: TrxOrDb,
-  patients: Array<Partial<Patient> & { name: string }>,
+  patients: Array<Partial<Patient>>,
 ) {
-  
-
   assert(patients.length > 0, 'Must insert at least one patient')
+  const foo = await batchInsert(patients.map(({
+    name, ..._rest
+  }) => ({
+    resourceType: "Patient",
+    name: [{
+      use: "official",
+      given: name.split(' ')
+    }],
+    // ...rest
+  })))
   return trx
     .insertInto('Patient')
     .values(patients)
@@ -163,32 +173,16 @@ export async function insert(
   return patient
 }
 
-export function update(
-  trx: TrxOrDb,
-  { id, name, primary_doctor_id, ...patient }: Partial<Patient> & {
+export async function update(
+  _trx: TrxOrDb,
+  patient: Omit<MedplumPatient, 'resourceType'> & {
     id: string
   },
 ) {
-  const to_update = {
-    ...patient,
-    primary_doctor_id: primary_doctor_id && (
-      trx.selectFrom('employment')
-        .where('id', '=', primary_doctor_id)
-        .where('profession', '=', 'doctor')
-        .select('id')
-    ),
-  }
-  const to_update_with_name: (typeof to_update) & {
-    name?: string
-  } = to_update
-  if (name) {
-    to_update_with_name.name = name
-  }
-  return trx.updateTable('Patient')
-    .where('id', '=', id)
-    .set(to_update_with_name)
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  await patchResource({
+    resourceType: 'Patient',
+    ...patient
+  })
 }
 
 export function upsert(
