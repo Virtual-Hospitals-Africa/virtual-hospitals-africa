@@ -4,7 +4,6 @@ import {
   HasStringId,
   Location,
   Maybe,
-  Patient,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
   PatientWithOpenEncounter,
@@ -42,7 +41,7 @@ export const intake_clinical_notes_href_sql = sql<string>`
   concat('/app/patients/', Patient.id::text, '/intake/review')
 `
 
-const dob_formatted = longFormattedDate('Patient.date_of_birth').as(
+const dob_formatted = longFormattedDate('Patient.birthDate').as(
   'dob_formatted',
 )
 
@@ -75,35 +74,35 @@ const baseSelect = (trx: TrxOrDb) =>
       'address_formatted.address',
       eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
       dob_formatted,
-      'patient_age.age_display',
-      sql<
-        string | null
-      >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
-        'description',
-      ),
-      'Patient.national_id_number',
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'Patient.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
-      avatar_url_sql.as('avatar_url'),
-      'Organization.canonicalName as nearest_organization',
-      sql<null>`NULL`.as('last_visited'),
-      jsonBuildObject({
-        longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
-        latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
-      }).as('location'),
-      jsonBuildObject({
-        view: view_href_sql,
-      }).as('actions'),
+      // 'patient_age.age_display',
+      // sql<
+      //   string | null
+      // >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
+      //   'description',
+      // ),
+      // 'Patient.national_id_number',
+      // jsonArrayFromColumn(
+      //   'intake_step',
+      //   eb.selectFrom('patient_intake')
+      //     .innerJoin(
+      //       'intake',
+      //       'intake.step',
+      //       'patient_intake.intake_step',
+      //     )
+      //     .whereRef('patient_id', '=', 'Patient.id')
+      //     .orderBy(['intake.order desc'])
+      //     .select(['intake_step']),
+      // ).as('intake_steps_completed'),
+      // avatar_url_sql.as('avatar_url'),
+      // 'Organization.canonicalName as nearest_organization',
+      // sql<null>`NULL`.as('last_visited'),
+      // jsonBuildObject({
+      //   longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
+      //   latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
+      // }).as('location'),
+      // jsonBuildObject({
+      //   view: view_href_sql,
+      // }).as('actions'),
     ])
 
 export async function getLastConversationState(

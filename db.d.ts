@@ -858,6 +858,13 @@ export interface OrganizationDevices {
   updated_by: string | null
 }
 
+export interface OrganizationHistory {
+  content: string
+  id: string
+  lastUpdated: Timestamp
+  versionId: string
+}
+
 export interface Patient {
   _profile: string[] | null
   _security: string[] | null
@@ -880,6 +887,7 @@ export interface Patient {
   national_id_number: string | null
   organization: string | null
   organizationId: string | null
+  phone_number: string | null
   phonetic: string[] | null
   projectId: string | null
   race: string[] | null
@@ -1519,6 +1527,7 @@ export interface DB {
   Organization: Organization
   organization_consumables: OrganizationConsumables
   organization_devices: OrganizationDevices
+  Organization_History: OrganizationHistory
   Patient: Patient
   patient_age: PatientAge
   patient_allergies: PatientAllergies

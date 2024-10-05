@@ -509,7 +509,6 @@ export async function add(
 
   const interpretedAddress = address && interpretAddress(address)
   const createdOrganization = await medplum.createResource('Organization', {
-    id,
     name,
     type,
     active: true,
@@ -518,20 +517,28 @@ export async function add(
 
   // Hacky, but we want to explicitly set the ids of the test organizations and you can't do it
   // via the createResource call
-  // if (id) {
-  //   await Promise.all([
-  //     trx.updateTable('Organization')
-  //       .set({ id })
-  //       .where('id', '=', createdOrganization.id)
-  //       .execute(),
-  //     trx.updateTable('Address')
-  //       .set({ resourceId: id })
-  //       .where('resourceId', '=', createdOrganization.id)
-  //       .execute(),
-  //   ])
+  if (id) {
+    const content = JSON.stringify({
+      ...createdOrganization,
+      id
+    })
+    await Promise.all([
+      trx.updateTable('Organization')
+        .set({  id, content })
+        .where('id', '=', createdOrganization.id)
+        .execute(),
+      trx.updateTable('Organization_History')
+        .set({ id, content })
+        .where('id', '=', createdOrganization.id)
+        .execute(),
+      trx.updateTable('Address')
+        .set({ resourceId: id })
+        .where('resourceId', '=', createdOrganization.id)
+        .execute(),
+    ])
 
-  //   createdOrganization.id = id
-  // }
+    createdOrganization.id = id
+  }
 
   if (address && !Number.isNaN(latitude) && !Number.isNaN(longitude)) {
     const code = category && categoryMap[category as keyof typeof categoryMap]

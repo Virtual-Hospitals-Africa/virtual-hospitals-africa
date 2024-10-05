@@ -14,6 +14,7 @@ MEDPLUM_TABLES_IN_USE=(
   Location
   Media
   Organization
+  Organization_History
   Patient
   Patient_History
   Practitioner
