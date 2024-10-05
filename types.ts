@@ -18,6 +18,7 @@ import {
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
+import { ExtendedActionData } from './components/library/Table.tsx'
 
 export type Maybe<T> = T | null | undefined
 
@@ -2295,6 +2296,7 @@ export type RenderedProvider = {
   avatar_url: string | null
   href: string
   seen: SqlBool
+  organization_id?: string
 }
 export type RenderedWaitingRoom = {
   patient: {
@@ -2304,9 +2306,10 @@ export type RenderedWaitingRoom = {
     description: string | null
   }
   actions: {
-    view: string | null
-    intake: string | null
-    review: string | null
+    view: ExtendedActionData | null
+    intake: ExtendedActionData | null
+    review: ExtendedActionData | null
+    awaiting_review: ExtendedActionData | null
   }
   reason: EncounterReason
   is_emergency: SqlBool

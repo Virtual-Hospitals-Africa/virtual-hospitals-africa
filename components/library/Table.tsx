@@ -18,7 +18,7 @@ type Row = Record<string, unknown> & {
   id?: string
 }
 
-type ExtendedActionData = string | {
+export type ExtendedActionData = string | {
   text: string
   href?: string
   disabled?: boolean
@@ -44,7 +44,7 @@ export type TableColumn<T extends Row> =
       : {
         label: 'Actions'
         type: 'actions'
-        data: (row: T) => ExtendedActionData | ExtendedActionData[]
+        data?: (row: T) => ExtendedActionData | ExtendedActionData[] | null
       })
   )
 
