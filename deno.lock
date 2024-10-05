@@ -10,6 +10,7 @@
       "jsr:@std/jsonc@0.213": "jsr:@std/jsonc@0.213.1",
       "jsr:@std/path@0.213": "jsr:@std/path@0.213.1",
       "npm:@medplum/core": "npm:@medplum/core@3.2.16",
+      "npm:@medplum/fhirtypes": "npm:@medplum/fhirtypes@3.2.16",
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.35",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.17": "npm:autoprefixer@10.4.17_postcss@8.4.35",
@@ -147,6 +148,10 @@
       },
       "@medplum/core@3.2.16": {
         "integrity": "sha512-TUHySlZOhkJXE2Z/4iYDKnGaL2oDq/KNaFFAPGgkMIIn67FN0uT+d17mmzmNNB4jeAZLIT2JuLsNsjkwaUauww==",
+        "dependencies": {}
+      },
+      "@medplum/fhirtypes@3.2.16": {
+        "integrity": "sha512-LCchOf2xITUn2fPJ/BDjahBybcscjVvCPsqVL6AxzGoE0ZlfiysLTkFl9EXlZrp83LM+bsPKL9eL6KlFQDCWpw==",
         "dependencies": {}
       },
       "@nodelib/fs.scandir@2.1.5": {
@@ -2746,6 +2751,7 @@
     "dependencies": [
       "jsr:@std/cli@^0.224.7",
       "npm:@medplum/core",
+      "npm:@medplum/fhirtypes",
       "npm:@tailwindcss/forms@0.5.7",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",

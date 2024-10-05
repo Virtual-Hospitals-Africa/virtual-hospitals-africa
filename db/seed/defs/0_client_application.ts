@@ -122,6 +122,7 @@ async function addClientApplication(db: Kysely<DB>) {
         'reference': `Project/${projectId}`,
       }],
     },
+    'features': ['transaction-bundles'],
   }, {
     compartments: [projectId],
     name: 'Virtual Hospitals Africa',

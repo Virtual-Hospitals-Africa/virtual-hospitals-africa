@@ -1,48 +1,31 @@
-import { PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import {
   EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
+  LoggedInHealthWorkerContext,
   RenderedPatient,
 } from '../../types.ts'
-import PatientsView from '../../components/patients/View.tsx'
-import { getAllWithNames } from '../../db/models/patients.ts'
-import { json } from '../../util/responses.ts'
+// import PatientsView from '../../components/patients/View.tsx'
 
 type PatientsProps = {
   healthWorker: EmployedHealthWorker
   patients: RenderedPatient[]
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
-  async GET(req, ctx) {
-    const search = ctx.url.searchParams.get('search')
-
-    const patients = await getAllWithNames(ctx.state.trx, search)
-
-    if (req.headers.get('accept') === 'application/json') {
-      return json(patients)
-    }
-
-    return ctx.render({
-      healthWorker: ctx.state.healthWorker,
-      patients: await getAllWithNames(ctx.state.trx, search),
-    })
-  },
-}
-
-export default function PatientsPage(
-  props: PageProps<PatientsProps>,
+// deno-lint-ignore require-await
+export default async function PatientsPage(
+  _req: Request,
+  ctx: LoggedInHealthWorkerContext,
 ) {
   return (
     <Layout
       variant='practitioner home page'
       title='Patients'
-      route={props.route}
-      url={props.url}
-      health_worker={props.data.healthWorker}
+      route={ctx.route}
+      url={ctx.url}
+      health_worker={ctx.state.healthWorker}
     >
-      <PatientsView patients={props.data.patients} />
+      {/* <PatientsView patients={props.data.patients} /> */}
+      TODO Reimplement
     </Layout>
   )
 }

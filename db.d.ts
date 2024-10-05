@@ -871,6 +871,7 @@ export interface Patient {
   _source: string | null
   _tag: string[] | null
   active: boolean | null
+  avatar_media_id: string | null
   birthdate: Timestamp | null
   compartments: string[]
   content: string

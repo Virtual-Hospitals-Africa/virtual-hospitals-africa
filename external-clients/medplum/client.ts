@@ -5,6 +5,7 @@ import { isISODateTimeString } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { redis, lock } from '../redis.ts'
 import { Lock } from "redlock"
+import { Resource } from 'medeplum_fhirtypes'
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
@@ -82,8 +83,7 @@ export async function request(method: string, path: string, data?: unknown) {
   });
 }
 
-type CreatedResource<T, Data extends Record<string, unknown>> = Data & {
-  resourceType: T,
+type CreatedResource<T extends Resource> = T & {
   id: string
   meta: {
     versionId: string
@@ -91,7 +91,7 @@ type CreatedResource<T, Data extends Record<string, unknown>> = Data & {
   }
 }
 
-function assertIsCreatedResource<T, Data extends Record<string, unknown>>(data: unknown): asserts data is CreatedResource<T, Data> {
+function assertIsCreatedResource<T extends Resource>(data: unknown): asserts data is CreatedResource<T> {
   assert(isObjectLike(data), 'Expected data to be an object');
   assert(isUUID(data.id), 'Expected .id to be a UUID');
   assert(isObjectLike(data.meta), 'Expected .meta to be an object');
@@ -99,15 +99,116 @@ function assertIsCreatedResource<T, Data extends Record<string, unknown>>(data: 
   assert(isISODateTimeString(data.meta.lastUpdated), 'Expected .meta.lastUpdated to be a datetime string');
 }
 
-export async function createResource<T extends string, Data extends Record<string, unknown>>(resourceType: T, data?: Data) {
-  const response = await request('POST', resourceType, {
-    resourceType,
-    ...data
+export async function createResource<T extends Resource>(resource: T): Promise<CreatedResource<T>> {
+  const response = await request('POST', resource.resourceType, resource);
+  const json = await response.json();
+  // deno-lint-ignore no-explicit-any
+  const error = json.issue && json.issue.find((i: any) => i.severity !== 'informational')
+  if (error) {
+    throw new Error(JSON.stringify(error.details.text));
+  }
+  assertIsCreatedResource<T>(json);
+  return json
+}
+
+export async function putResource<T extends Resource>(resource: T & { id: string }): Promise<CreatedResource<T>> {
+  const response = await request('PUT', `${resource.resourceType}/${resource.id}`, resource);
+  const json = await response.json();
+  // deno-lint-ignore no-explicit-any
+  const error = json.issue && json.issue.find((i: any) => i.severity !== 'informational')
+  if (error) {
+    throw new Error(JSON.stringify(error.details.text));
+  }
+  assertIsCreatedResource<T>(json);
+  return json
+}
+
+/*
+{
+  "resourceType": "Bundle",
+  "type": "transaction-response",
+  "entry": [
+    {
+      "response": {
+        "outcome": {
+          "resourceType": "OperationOutcome",
+          "id": "created",
+          "issue": [
+            {
+              "severity": "information",
+              "code": "informational",
+              "details": {
+                "text": "Created"
+              }
+            }
+          ]
+        },
+        "status": "201",
+        "location": "Patient/c022829d-8e37-4bca-acfb-86e456ab5f9a"
+      },
+      "resource": {
+        "resourceType": "Patient",
+        "name": [
+          {
+            "use": "official",
+            "given": [
+              "Alice"
+            ],
+            "family": "BOB"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1974-12-25",
+        "id": "c022829d-8e37-4bca-acfb-86e456ab5f9a",
+        "meta": {
+          "versionId": "a738cb7f-dc46-46de-865a-f27d49724c24",
+          "lastUpdated": "2024-10-05T14:59:38.379Z",
+          "author": {
+            "reference": "Practitioner/8c48a54b-0f69-4db1-ace0-47c4b21b85f3",
+            "display": "VHA Admin"
+          },
+          "project": "136d74f0-66ba-467b-aee4-cfd652063aa2",
+          "compartment": [
+            {
+              "reference": "Project/136d74f0-66ba-467b-aee4-cfd652063aa2"
+            },
+            {
+              "reference": "Patient/c022829d-8e37-4bca-acfb-86e456ab5f9a"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+*/
+
+export async function insertMany<T extends Resource>(resources: T[]) {
+  const response = await request('POST', '', {
+    resourceType: "Bundle",
+    type: 'transaction',
+    entry: resources.map(resource => ({
+      resource,
+      request: {
+        method: "POST",
+        url: resource.resourceType
+      }
+    }))
   });
   const json = await response.json();
-  if (json.issue) {
-    throw new Error(JSON.stringify(json.issue[0].details.text));
+  assert(isObjectLike(json), 'Expected JSON response');
+  assert(json.resourceType === 'Bundle', 'Expected resourceType: "Bundle"');
+  assert(json.type === 'transaction-response', 'Expected type: "transaction-response"');
+  assert(Array.isArray(json.entry), 'Expected entry to be an array');
+  
+
+
+  // deno-lint-ignore no-explicit-any
+  const error = Array.isArray(json.issue) && json.issue.find((i: any) => i.severity !== 'informational')
+  if (error) {
+    throw new Error(JSON.stringify(error.details.text));
   }
-  assertIsCreatedResource<T, Data>(json);
+  assertIsCreatedResource<T>(json);
   return json
+
 }

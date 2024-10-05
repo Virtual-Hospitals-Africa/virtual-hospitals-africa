@@ -71,6 +71,7 @@
     "kysely-deno-postgres": "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts",
     "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
     "medplum_core": "npm:@medplum/core",
+    "medeplum_fhirtypes": "npm:@medplum/fhirtypes",
     "natural": "npm:natural@6.10.4",
     "preact": "https://esm.sh/preact@10.20.1",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.1.0",

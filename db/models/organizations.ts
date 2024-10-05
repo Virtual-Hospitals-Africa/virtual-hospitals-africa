@@ -486,7 +486,7 @@ export async function add(
     return
   }
 
-  let status = 'active'
+  let status: 'active' | 'inactive' = 'active'
   const category_match = category.match(/(.*)(\(.*\))/)
   if (category_match) {
     category = category_match[1].trim()
@@ -508,11 +508,12 @@ export async function add(
   }]
 
   const interpretedAddress = address && interpretAddress(address)
-  const createdOrganization = await medplum.createResource('Organization', {
+  const createdOrganization = await medplum.createResource({
+    resourceType: 'Organization',
     name,
     type,
     active: true,
-    address: interpretedAddress && [interpretedAddress],
+    address: interpretedAddress ? [interpretedAddress] : undefined,
   })
 
   // Hacky, but we want to explicitly set the ids of the test organizations and you can't do it
@@ -552,7 +553,8 @@ export async function add(
       system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
     }]
 
-    const locationResponse = await medplum.createResource('Location', {
+    const locationResponse = await medplum.createResource({
+      resourceType: 'Location',
       status,
       name,
       type: [{ coding }],
@@ -571,7 +573,7 @@ export async function add(
           },
         ],
       },
-      position: { longitude, latitude },
+      position: { longitude: longitude!, latitude: latitude! },
       managingOrganization: {
         reference: `Organization/${createdOrganization.id}`,
         display: name,
@@ -591,23 +593,6 @@ export async function add(
 
   return createdOrganization
 }
-
-// export function add(
-//   trx: TrxOrDb,
-//   { latitude, longitude, ...organization }: Organization,
-// ) {
-//   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
-//   return trx
-//     .insertInto('Organization')
-//     .values({
-//       ...organization,
-//       location: (latitude != null && longitude != null)
-//         ? sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`
-//         : null,
-//     })
-//     .returningAll()
-//     .executeTakeFirstOrThrow()
-// }
 
 export function remove(
   trx: TrxOrDb,

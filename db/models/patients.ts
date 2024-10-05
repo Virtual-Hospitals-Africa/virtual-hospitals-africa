@@ -4,6 +4,7 @@ import {
   HasStringId,
   Location,
   Maybe,
+  Patient,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
   PatientWithOpenEncounter,
@@ -12,7 +13,6 @@ import {
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
-import { formatted as formattedAddress } from './address.ts'
 import * as conversations from './conversations.ts'
 import * as examinations from './examinations.ts'
 import * as patient_encounters from './patient_encounters.ts'
@@ -55,9 +55,9 @@ const baseSelect = (trx: TrxOrDb) =>
       'Patient.organizationId',
     )
     .leftJoin(
-      formattedAddress(trx),
-      'address_formatted.id',
-      'Patient.address_id',
+      'Address',
+      'Address.resourceId',
+      'Patient.id',
     )
     .leftJoin(
       'patient_intake_completed',
@@ -71,38 +71,38 @@ const baseSelect = (trx: TrxOrDb) =>
       'Patient.phone_number',
       'Patient.gender',
       'Patient.ethnicity',
-      'address_formatted.address',
+      'Address.address',
       eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
       dob_formatted,
-      // 'patient_age.age_display',
-      // sql<
-      //   string | null
-      // >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
-      //   'description',
-      // ),
-      // 'Patient.national_id_number',
-      // jsonArrayFromColumn(
-      //   'intake_step',
-      //   eb.selectFrom('patient_intake')
-      //     .innerJoin(
-      //       'intake',
-      //       'intake.step',
-      //       'patient_intake.intake_step',
-      //     )
-      //     .whereRef('patient_id', '=', 'Patient.id')
-      //     .orderBy(['intake.order desc'])
-      //     .select(['intake_step']),
-      // ).as('intake_steps_completed'),
-      // avatar_url_sql.as('avatar_url'),
-      // 'Organization.canonicalName as nearest_organization',
-      // sql<null>`NULL`.as('last_visited'),
-      // jsonBuildObject({
-      //   longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
-      //   latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
-      // }).as('location'),
-      // jsonBuildObject({
-      //   view: view_href_sql,
-      // }).as('actions'),
+      'patient_age.age_display',
+      sql<
+        string | null
+      >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
+        'description',
+      ),
+      'Patient.national_id_number',
+      jsonArrayFromColumn(
+        'intake_step',
+        eb.selectFrom('patient_intake')
+          .innerJoin(
+            'intake',
+            'intake.step',
+            'patient_intake.intake_step',
+          )
+          .whereRef('patient_id', '=', 'Patient.id')
+          .orderBy(['intake.order desc'])
+          .select(['intake_step']),
+      ).as('intake_steps_completed'),
+      avatar_url_sql.as('avatar_url'),
+      'Organization.canonicalName as nearest_organization',
+      sql<null>`NULL`.as('last_visited'),
+      jsonBuildObject({
+        longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
+        latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
+      }).as('location'),
+      jsonBuildObject({
+        view: view_href_sql,
+      }).as('actions'),
     ])
 
 export async function getLastConversationState(
@@ -130,7 +130,9 @@ export function insertMany(
   trx: TrxOrDb,
   patients: Array<Partial<Patient> & { name: string }>,
 ) {
-  assert(Patient.length > 0, 'Must insert at least one patient')
+  
+
+  assert(patients.length > 0, 'Must insert at least one patient')
   return trx
     .insertInto('Patient')
     .values(patients)
@@ -244,7 +246,7 @@ export async function getWithOpenEncounter(
   const patient_examinations_with_recommendations = examinations
     .forPatientEncounter(trx)
 
-  const patients = await selectWithName(trx)
+  const patients = await baseSelect(trx)
     .where('Patient.id', 'in', opts.ids)
     .leftJoin(open_encounters, 'open_encounters.patient_id', 'Patient.id')
     .select((eb) => [
@@ -320,27 +322,10 @@ export function getCard(
     .executeTakeFirst()
 }
 
-export async function getAllWithNames(
-  trx: TrxOrDb,
-  search?: Maybe<string>,
-): Promise<RenderedPatient[]> {
-  let query = baseSelect(trx).where('Patient.name', 'is not', null).orderBy(
-    'name asc',
-  )
-
-  if (search) query = query.where('Patient.name', 'ilike', `%${search}%`)
-
-  const patients = await query.execute()
-
-  assert(haveNames(patients))
-
-  return patients
-}
-
 export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
   return trx
     .selectFrom('media')
-    .innerJoin('patients', 'Patient.avatar_media_id', 'media.id')
+    .innerJoin('Patient', 'Patient.avatar_media_id', 'media.id')
     .select(['media.mime_type', 'media.binary_data'])
     .where('Patient.id', '=', opts.patient_id)
     .executeTakeFirst()

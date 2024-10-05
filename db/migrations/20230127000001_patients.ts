@@ -38,6 +38,12 @@ export async function up(db: Kysely<DB>) {
     .addColumn('organizationId', 'uuid', (col) => col.references('Organization.id'))
     .addColumn('phone_number', 'varchar(255)')
     .addColumn('national_id_number', 'varchar(50)', col => col.unique().check(sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`))
+    // TODO remove this in favor of medplum's handling of this
+    .addColumn(
+      'avatar_media_id',
+      'uuid',
+      (col) => col.references('media.id'),
+    )
     .execute()
 
   await t1.create(db)
