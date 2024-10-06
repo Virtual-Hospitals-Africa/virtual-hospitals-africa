@@ -331,7 +331,7 @@ export function upsertTrigger(
 ) {
   const fn_name = `${tableName}_set_${tableName}_${columnName}`.toLowerCase()
   const trigger_name = `${fn_name}_trigger`
-  
+
   return {
     create(db: Kysely<DB>) {
       return sql`
@@ -351,8 +351,10 @@ export function upsertTrigger(
     },
     drop(db: Kysely<DB>) {
       return sql`
-        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${sql.raw(tableName)}"
+        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${
+        sql.raw(tableName)
+      }"
       `.execute(db)
-    }
+    },
   }
 }

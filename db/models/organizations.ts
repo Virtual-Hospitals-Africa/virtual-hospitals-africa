@@ -521,11 +521,11 @@ export async function add(
   if (id) {
     const content = JSON.stringify({
       ...createdOrganization,
-      id
+      id,
     })
     await Promise.all([
       trx.updateTable('Organization')
-        .set({  id, content })
+        .set({ id, content })
         .where('id', '=', createdOrganization.id)
         .execute(),
       trx.updateTable('Organization_History')

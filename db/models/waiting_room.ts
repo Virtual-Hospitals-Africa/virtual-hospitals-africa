@@ -113,7 +113,11 @@ export async function get(
           .on('waiting_room.organization_id', '=', organization_id),
     )
     .innerJoin('Patient', 'Patient.id', 'patient_encounters.patient_id')
-    .innerJoin('HumanName as PatientName', 'patient_encounters.patient_id', 'PatientName.resourceId')
+    .innerJoin(
+      'HumanName as PatientName',
+      'patient_encounters.patient_id',
+      'PatientName.resourceId',
+    )
     .leftJoin(
       'appointments',
       'appointments.id',

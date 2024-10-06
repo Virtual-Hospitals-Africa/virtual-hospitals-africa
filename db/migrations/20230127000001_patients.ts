@@ -1,28 +1,39 @@
-import { Kysely, /*, sql*/ 
-sql} from 'kysely'
+import { Kysely, /*, sql*/ sql } from 'kysely'
 import { upsertTrigger } from '../helpers.ts'
 import { DB } from '../../db.d.ts'
 // import { createStandardTable } from '../createStandardTable.ts'
 
-const t1 = upsertTrigger('Patient', 'phone_number', `
+const t1 = upsertTrigger(
+  'Patient',
+  'phone_number',
+  `
   (
     SELECT elem->>'value'
     FROM jsonb_array_elements(NEW.content::jsonb->'telecom') AS elem
     WHERE elem->>'system' = 'phone'
     LIMIT 1
   )
-`)
+`,
+)
 
-const t2 = upsertTrigger('Patient', 'organizationId', `substring(NEW.organization from 'Organization/(.*)')`)
+const t2 = upsertTrigger(
+  'Patient',
+  'organizationId',
+  `substring(NEW.organization from 'Organization/(.*)')`,
+)
 
-const t3 = upsertTrigger('Patient', 'national_id_number', `
+const t3 = upsertTrigger(
+  'Patient',
+  'national_id_number',
+  `
   (
     SELECT elem->>'value'
     FROM jsonb_array_elements(NEW.content::jsonb->'identifier') AS elem
     WHERE elem->>'system' = 'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md'
     LIMIT 1
   )
-`)
+`,
+)
 
 export async function up(db: Kysely<DB>) {
   // await db.schema
@@ -35,9 +46,20 @@ export async function up(db: Kysely<DB>) {
   //   .execute()
 
   await db.schema.alterTable('Patient')
-    .addColumn('organizationId', 'uuid', (col) => col.references('Organization.id'))
+    .addColumn(
+      'organizationId',
+      'uuid',
+      (col) => col.references('Organization.id'),
+    )
     .addColumn('phone_number', 'varchar(255)')
-    .addColumn('national_id_number', 'varchar(50)', col => col.unique().check(sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`))
+    .addColumn(
+      'national_id_number',
+      'varchar(50)',
+      (col) =>
+        col.unique().check(
+          sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
+        ),
+    )
     // TODO remove this in favor of medplum's handling of this
     .addColumn(
       'avatar_media_id',

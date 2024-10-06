@@ -3,7 +3,6 @@ import { SelectQueryBuilder, sql } from 'kysely'
 import {
   HasStringId,
   Location,
-  Maybe,
   Patient,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
@@ -26,7 +25,10 @@ import {
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
-import { batchInsert, patchResource } from '../../external-clients/medplum/client.ts'
+import {
+  batchInsert,
+  patchResource,
+} from '../../external-clients/medplum/client.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', Patient.id::text)
@@ -50,7 +52,11 @@ const dob_formatted = longFormattedDate('Patient.birthDate').as(
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('Patient')
-    .innerJoin('HumanName as PatientName', 'Patient.id', 'PatientName.resourceId')
+    .innerJoin(
+      'HumanName as PatientName',
+      'Patient.id',
+      'PatientName.resourceId',
+    )
     .leftJoin(
       'Organization',
       'Organization.id',
@@ -74,7 +80,9 @@ const baseSelect = (trx: TrxOrDb) =>
       'Patient.gender',
       'Patient.ethnicity',
       'Address.address',
-      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
+      eb('patient_intake_completed.patient_id', 'is not', null).as(
+        'intake_completed',
+      ),
       dob_formatted,
       'patient_age.age_display',
       sql<
@@ -134,12 +142,13 @@ export async function insertMany(
 ) {
   assert(patients.length > 0, 'Must insert at least one patient')
   const foo = await batchInsert(patients.map(({
-    name, ..._rest
+    name,
+    ..._rest
   }) => ({
-    resourceType: "Patient",
+    resourceType: 'Patient',
     name: [{
-      use: "official",
-      given: name.split(' ')
+      use: 'official',
+      given: name.split(' '),
     }],
     // ...rest
   })))
@@ -181,7 +190,7 @@ export async function update(
 ) {
   await patchResource({
     resourceType: 'Patient',
-    ...patient
+    ...patient,
   })
 }
 
@@ -295,9 +304,13 @@ export function getCardQuery(
   trx: TrxOrDb,
 ): SelectQueryBuilder<DB, 'Patient', PatientCard> {
   return trx.selectFrom('Patient')
-    .innerJoin('HumanName as PatientName', 'Patient.id', 'PatientName.resourceId')
+    .innerJoin(
+      'HumanName as PatientName',
+      'Patient.id',
+      'PatientName.resourceId',
+    )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
-    .select((eb) => [
+    .select([
       'Patient.id',
       sql<string>`PatientName.given || ' ' || PatientName.family`.as('name'),
       sql<string | null>`Patient.gender || ', ' || patient_age.age_display`.as(

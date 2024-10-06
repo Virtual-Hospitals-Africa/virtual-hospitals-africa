@@ -4,14 +4,22 @@ import { DB } from '../../db.d.ts'
 
 const t1 = upsertTrigger('Organization', 'canonicalName', 'NEW.name[1]')
 
-const t2 = upsertTrigger('Location', 'organizationId', `substring(NEW.organization from 'Organization/(.*)')`)
+const t2 = upsertTrigger(
+  'Location',
+  'organizationId',
+  `substring(NEW.organization from 'Organization/(.*)')`,
+)
 
-const t3 = upsertTrigger('Location', 'location', `
+const t3 = upsertTrigger(
+  'Location',
+  'location',
+  `
   ST_SetSRID(ST_MakePoint(
     (((NEW."near"::json)->'longitude')::text)::numeric,
     (((NEW."near"::json)->'latitude')::text)::numeric
   ), 4326)::geography
-`)
+`,
+)
 
 export async function up(db: Kysely<DB>) {
   await sql`
