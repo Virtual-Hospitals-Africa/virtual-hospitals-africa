@@ -1,12 +1,12 @@
 import FormRow from './form/Row.tsx'
 import { Select, TextInput } from './form/Inputs.tsx'
-import { CountryAddressTree, PatientIntake } from '../types.ts'
+import { AddressFormFields, CountryAddressTree } from '../types.ts'
 import { computed, effect, useSignal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export default function AddressForm(
   { address, country_address_tree }: {
-    address: Partial<PatientIntake['address']>
+    address: Partial<AddressFormFields>
     country_address_tree: CountryAddressTree
   },
 ) {

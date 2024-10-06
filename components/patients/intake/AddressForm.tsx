@@ -3,8 +3,9 @@ import AddressForm from '../../../islands/address-inputs.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 import FormSection from '../../library/FormSection.tsx'
 
+// TODO use patient address
 function PatientAddress(
-  { patient, country_address_tree }: {
+  { country_address_tree }: {
     patient: PatientIntake
     country_address_tree: CountryAddressTree
   },
@@ -12,7 +13,7 @@ function PatientAddress(
   return (
     <FormSection header='Patient Address'>
       <AddressForm
-        address={patient.address}
+        address={{}}
         country_address_tree={country_address_tree}
       />
     </FormSection>

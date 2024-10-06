@@ -4,7 +4,7 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import db from './db/db.ts'
 import {
-Address,
+  Address,
   AgeUnit,
   DB,
   DoctorReviewStep,
@@ -321,7 +321,11 @@ export type AddressFormFields = {
 export type PatientIntake =
   & {
     id: string
-    name: string
+    name: {
+      name: string
+      given: string
+      family: string
+    }
     avatar_url: Maybe<string>
     description: Maybe<string>
     nearest_organization_name: Maybe<string>

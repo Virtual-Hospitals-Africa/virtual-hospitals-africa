@@ -34,7 +34,6 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
-import { fromHumanName } from '../../../../../util/human_name.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
@@ -217,7 +216,7 @@ export function IntakeLayout({
           <SendToButton
             form='intake'
             patient={{
-              name: fromHumanName(ctx.state.patient.name!),
+              name: ctx.state.patient.name.name,
               description: ctx.state.patient.description,
               avatar_url: ctx.state.patient.avatar_url,
               actions: ctx.state.patient.actions,

@@ -7,12 +7,13 @@ import {
   WaitingRoom,
 } from '../../types.ts'
 import * as patients from './patients.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { debugLog, jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 import capitalize from '../../util/capitalize.ts'
 import sortBy from '../../util/sortBy.ts'
+import { name_string_sql } from './human_name.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -141,11 +142,11 @@ export async function get(
     .select((eb) => [
       jsonBuildObject({
         id: eb.ref('Patient.id'),
-        name: sql<string>`PatientName.given || ' ' || PatientName.family`,
+        name: name_string_sql('PatientName'),
         avatar_url: patients.avatar_url_sql,
         description: sql<
           string | null
-        >`Patient.gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`,
+        >`"Patient".gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`,
       }).as('patient'),
       'patient_encounters.reason',
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
@@ -376,11 +377,13 @@ export async function get(
     )
     .orderBy(['is_emergency desc', 'patient_encounters.created_at asc'])
 
+  debugLog(query)
+
+  const patients_in_waiting_room = await query.execute()
+
   const organizations_where_doctor = health_worker.employment.filter((e) =>
     e.roles.doctor?.registration_completed
   )
-
-  const patients_in_waiting_room = await query.execute()
 
   const waiting_room_unsorted = patients_in_waiting_room.map(
     (

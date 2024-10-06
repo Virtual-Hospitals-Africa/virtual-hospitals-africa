@@ -36,19 +36,24 @@ const t3 = upsertTrigger(
 )
 
 export async function up(db: Kysely<DB>) {
-  // await db.schema
-  //   .createType('gender')
-  //   .asEnum([
-  //     'male',
-  //     'female',
-  //     'other',
-  //   ])
-  //   .execute()
+  await db.schema
+    .createType('gender')
+    .asEnum([
+      'male',
+      'female',
+      'other',
+      'unknown',
+    ])
+    .execute()
 
   await db.schema.alterTable('HumanName')
-    .alterColumn('name', col => col.setNotNull())
-    .alterColumn('given', col => col.setNotNull())
-    .alterColumn('family', col => col.setNotNull())
+    .alterColumn('name', (col) => col.setNotNull())
+    .alterColumn('given', (col) => col.setNotNull())
+    .alterColumn('family', (col) => col.setNotNull())
+    .execute()
+
+  await db.schema.alterTable('Patient').dropColumn('gender').execute()
+  await db.schema.alterTable('Patient').addColumn('gender', sql`gender`)
     .execute()
 
   await db.schema.alterTable('Patient')

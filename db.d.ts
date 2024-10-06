@@ -865,7 +865,7 @@ export interface Patient {
   deceased: boolean | null
   deleted: Generated<boolean>
   ethnicity: string[] | null
-  gender: string | null
+  gender: Gender | null
   genderIdentity: string[] | null
   generalPractitioner: string[] | null
   id: string

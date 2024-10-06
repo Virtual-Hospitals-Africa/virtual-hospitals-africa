@@ -3,16 +3,6 @@ import { NURSE_SPECIALTIES } from '../../types.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createType('gender')
-    .asEnum([
-      'male',
-      'female',
-      'other',
-      'unknown',
-    ])
-    .execute()
-
   await db
     .schema
     .createType('nurse_specialty')
@@ -118,5 +108,4 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('nurse_registration_details').execute()
   await db.schema.dropTable('nurse_specialties').execute()
   await db.schema.dropType('nurse_specialty').execute()
-  await db.schema.dropType('gender').execute()
 }

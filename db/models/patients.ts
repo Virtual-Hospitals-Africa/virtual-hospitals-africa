@@ -35,21 +35,21 @@ import { toHumanName } from '../../util/human_name.ts'
 import { name_string_sql } from './human_name.ts'
 
 export const view_href_sql = sql<string>`
-  concat('/app/patients/', Patient.id::text)
+  concat('/app/patients/', "Patient".id::text)
 `
 
 export const avatar_url_sql = sql<string | null>`
-  CASE WHEN Patient.avatar_media_id IS NOT NULL 
-    THEN concat('/app/patients/', Patient.id::text, '/avatar') 
+  CASE WHEN "Patient".avatar_media_id IS NOT NULL 
+    THEN concat('/app/patients/', "Patient".id::text, '/avatar') 
     ELSE NULL 
   END
 `
 
 export const intake_clinical_notes_href_sql = sql<string>`
-  concat('/app/patients/', Patient.id::text, '/intake/review')
+  concat('/app/patients/', "Patient".id::text, '/intake/review')
 `
 
-const dob_formatted = longFormattedDate('Patient.birthDate').as(
+const dob_formatted = longFormattedDate('"Patient".birthDate').as(
   'dob_formatted',
 )
 
@@ -91,7 +91,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patient_age.age_display',
       sql<
         string | null
-      >`Patient.gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`.as(
+      >`"Patient".gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`.as(
         'description',
       ),
       'Patient.national_id_number',
@@ -340,8 +340,8 @@ export function getCardQuery(
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select([
       'Patient.id',
-      sql<string>`PatientName.given || ' ' || PatientName.family`.as('name'),
-      sql<string | null>`Patient.gender || ', ' || patient_age.age_display`.as(
+      name_string_sql('PatientName').as('name'),
+      sql<string | null>`"Patient".gender || ', ' || patient_age.age_display`.as(
         'description',
       ),
       avatar_url_sql.as('avatar_url'),

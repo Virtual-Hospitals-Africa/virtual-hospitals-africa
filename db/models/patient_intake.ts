@@ -17,8 +17,10 @@ export function getById(
 ): Promise<PatientIntake> {
   return trx
     .selectFrom('Patient')
-    .innerJoin('HumanName as PatientName', 
-      'PatientName.resourceId', 'Patient.id'
+    .innerJoin(
+      'HumanName as PatientName',
+      'PatientName.resourceId',
+      'Patient.id',
     )
     .leftJoin('Address', 'Address.resourceId', 'Patient.id')
     .leftJoin(
@@ -42,10 +44,18 @@ export function getById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
-    .leftJoin('patient_intake_completed', 'Patient.id', 'patient_intake_completed.patient_id')
+    .leftJoin(
+      'patient_intake_completed',
+      'Patient.id',
+      'patient_intake_completed.patient_id',
+    )
     .select((eb) => [
       'Patient.id',
-      name_string_sql('PatientName').as('name'),
+      jsonBuildObject({
+        name: eb.ref('PatientName.name'),
+        given: eb.ref('PatientName.given'),
+        family: eb.ref('PatientName.family'),
+      }).as('name'),
       'Patient.phone_number',
       'Patient.location',
       'Patient.gender',
@@ -56,7 +66,7 @@ export function getById(
       'Patient.national_id_number',
       sql<
         string | null
-      >`Patient.gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
+      >`"Patient".gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
@@ -68,7 +78,9 @@ export function getById(
         state: eb.ref('Address.state'),
         use: eb.ref('Address.use'),
       }).as('address'),
-      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
+      eb('patient_intake_completed.patient_id', 'is not', null).as(
+        'intake_completed',
+      ),
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -83,10 +95,7 @@ export function getById(
       ).as('intake_steps_completed'),
       'Patient.primary_doctor_id',
       'Patient.unregistered_primary_doctor_name',
-      sql<
-        string | null
-      >`CASE WHEN Patient.avatar_media_id IS NOT NULL THEN concat('/app/patients/', Patient.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
+      patients.avatar_url_sql.as('avatar_url'),
       'Patient.organizationId',
       'Organization.canonicalName as nearest_organization_name',
       'OrganizationAddress.address as nearest_organization_address',
@@ -124,7 +133,11 @@ export async function getSummaryById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
-    .leftJoin('patient_intake_completed', 'Patient.id', 'patient_intake_completed.patient_id')
+    .leftJoin(
+      'patient_intake_completed',
+      'Patient.id',
+      'patient_intake_completed.patient_id',
+    )
     .select((eb) => [
       'Patient.id',
       name_string_sql('HumanName').as('name'),
@@ -137,7 +150,7 @@ export async function getSummaryById(
       'Patient.national_id_number',
       sql<
         string | null
-      >`Patient.gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
+      >`"Patient".gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
@@ -146,10 +159,7 @@ export async function getSummaryById(
       >`'Dr. ' || coalesce(health_workers.name, Patient.unregistered_primary_doctor_name)`
         .as('primary_doctor_name'),
       'Address.address',
-      sql<
-        string | null
-      >`CASE WHEN Patient.avatar_media_id IS NOT NULL THEN concat('/app/patients/', Patient.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
+      patients.avatar_url_sql.as('avatar_url'),
       'Patient.organizationId',
       'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
@@ -168,7 +178,9 @@ export async function getSummaryById(
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
+      eb('patient_intake_completed.patient_id', 'is not', null).as(
+        'intake_completed',
+      ),
     ])
     .where('Patient.id', '=', patient_id)
     .executeTakeFirst()

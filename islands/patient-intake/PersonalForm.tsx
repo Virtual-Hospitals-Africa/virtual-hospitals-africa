@@ -26,7 +26,7 @@ export default function PatientPersonalForm(
       <FormRow>
         <TextInput
           name='given_names'
-          value={patient.name?.given.join(' ')}
+          value={patient.name?.given}
           required
         />
         <TextInput
