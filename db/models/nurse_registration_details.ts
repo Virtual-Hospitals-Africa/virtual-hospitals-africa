@@ -1,47 +1,24 @@
 import {
-  Address,
   HasStringId,
   ISODateString,
   Maybe,
   NurseRegistrationDetails,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/assert/assert.ts'
-import { upsert as upsertAddress } from './address.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { isoDate } from '../helpers.ts'
 
-export type UpsertableNurseRegistrationDetails =
-  | NurseRegistrationDetails & { address?: undefined }
-  | (
-    & Omit<
-      NurseRegistrationDetails,
-      'address_id'
-    >
-    & {
-      address_id?: undefined
-      address: Address
-    }
-  )
+export type UpsertableNurseRegistrationDetails = NurseRegistrationDetails
 
-export async function add(
+export function add(
   trx: TrxOrDb,
-  { address, address_id, ...registration_details }:
-    UpsertableNurseRegistrationDetails,
+  registration_details: UpsertableNurseRegistrationDetails,
 ) {
   assertIsRegistrationDetails(registration_details)
-  if (address) {
-    assert(
-      !address_id,
-      'address_id must not be defined if address is specified',
-    )
-    address_id = (await upsertAddress(trx, address)).id
-  }
-  assert(address_id, 'address_id must be defined')
   return trx
     .insertInto('nurse_registration_details')
-    .values({ ...registration_details, address_id })
+    .values(registration_details)
     .execute()
 }
 
@@ -117,7 +94,6 @@ export function get(
       'face_picture_media_id',
       'nurse_practicing_cert_media_id',
       'approved_by',
-      'address_id',
     ])
     .where('health_worker_id', '=', opts.health_worker_id)
     .executeTakeFirst()
@@ -150,7 +126,7 @@ function assertIsRegistrationDetails(
   assertOr400(
     (registration_details.gender === 'male') ||
       (registration_details.gender === 'female') ||
-      (registration_details.gender === 'non-binary'),
+      (registration_details.gender === 'other'),
   )
   assertOr400(typeof registration_details.national_id_number === 'string')
   assertOr400(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(

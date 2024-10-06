@@ -46,7 +46,7 @@ function GuardianOptions({
     )
   }
   if (
-    (!gender || gender === 'non-binary') ||
+    (!gender || gender === 'other') ||
     (gender === 'female' && !relation.female_guardian) ||
     (gender === 'male' && !relation.male_guardian)
   ) {
@@ -92,7 +92,7 @@ function DependentOptions({
     )
   }
   if (
-    (!gender || gender === 'non-binary' ||
+    (!gender || gender === 'other' ||
       (gender === 'female' && !relation.female_dependent) ||
       (gender === 'male' && !relation.male_dependent))
   ) {

@@ -9,7 +9,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import {
-  insertTestAddress,
+  // insertTestAddress,
   testHealthWorker,
   testRegistrationDetails,
 } from '../mocks.ts'
@@ -240,8 +240,8 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           specialty: 'clinical care',
         })
 
-        const nurse_address = await insertTestAddress(trx)
-        assert(nurse_address)
+        // const nurse_address = await insertTestAddress(trx)
+        // assert(nurse_address)
 
         const details = await testRegistrationDetails(trx, {
           health_worker_id: healthWorker.id,

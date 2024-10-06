@@ -51,7 +51,7 @@ export type PersonalFormFields = {
   first_name: string
   middle_names?: string
   last_name: string
-  gender: 'male' | 'female' | 'non-binary'
+  gender: 'male' | 'female' | 'other'
   birthDate: string
   national_id_number: string
   email: string

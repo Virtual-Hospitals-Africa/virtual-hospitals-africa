@@ -3,7 +3,6 @@ import { spinner } from '../util/spinner.ts'
 import { onLocalhost } from './onLocalhost.ts'
 import { drop } from './drop.ts'
 
-
 export async function recreate() {
   const db_opts = onLocalhost()
 

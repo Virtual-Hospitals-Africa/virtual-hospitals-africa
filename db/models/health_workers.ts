@@ -22,7 +22,6 @@ import pick from '../../util/pick.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as doctor_reviews from './doctor_reviews.ts'
-import * as address from './address.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -449,9 +448,9 @@ export function getEmployeeInfo(
           'health_workers.id',
         )
         .leftJoin(
-          address.formatted(trx),
-          'address_formatted.id',
-          'nurse_registration_details.address_id',
+          'Address as HealthWorkerAddress',
+          'HealthWorkerAddress.resourceId',
+          'health_workers.id',
         )
         .select((eb) => [
           'health_workers.id as health_worker_id',
@@ -471,7 +470,7 @@ export function getEmployeeInfo(
           'health_workers.email',
           'health_workers.name',
           'health_workers.avatar_url',
-          'address_formatted.address',
+          'HealthWorkerAddress.address',
           'Organization.id as organization_id',
           'Organization.canonicalName as organization_name',
           'OrganizationAddress.address as organization_address',

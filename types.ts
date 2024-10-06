@@ -50,8 +50,7 @@ export type Location = {
   latitude: number
 }
 
-// export type Gender = 'male' | 'female' | 'non-binary'
-export type Gender = string
+export type Gender = 'male' | 'female' | 'other' | 'unknown'
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
@@ -162,9 +161,8 @@ export type PatientConversationState =
 
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<string>
-  nearest_organization_id: Maybe<string>
+  organizationId: Maybe<string>
   intake_completed: SqlBool
-  address_id: Maybe<string>
   unregistered_primary_doctor_name: Maybe<string>
   intake_steps_completed: IntakeStep[]
 }
@@ -310,6 +308,15 @@ export type RenderedPatientAge = {
   age_years: number
 }
 
+export type AddressFormFields = {
+  street: Maybe<string>
+  suburb_id: Maybe<string>
+  ward_id: Maybe<string>
+  district_id: Maybe<string>
+  province_id: Maybe<string>
+  country_id: Maybe<string>
+}
+
 export type PatientIntake =
   & {
     id: string
@@ -319,14 +326,7 @@ export type PatientIntake =
     nearest_organization_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     age?: RenderedPatientAge
-    address: {
-      street: Maybe<string>
-      suburb_id: Maybe<string>
-      ward_id: Maybe<string>
-      district_id: Maybe<string>
-      province_id: Maybe<string>
-      country_id: Maybe<string>
-    }
+    address: AddressFormFields
     actions: {
       clinical_notes: string
     }
@@ -339,7 +339,7 @@ export type PatientIntake =
     | 'ethnicity'
     | 'birthDate'
     | 'national_id_number'
-    | 'nearest_organization_id'
+    | 'organizationId'
     | 'intake_completed'
     | 'intake_steps_completed'
     | 'primary_doctor_id'
@@ -1375,7 +1375,6 @@ export type NurseRegistrationDetails = {
   face_picture_media_id: Maybe<string>
   nurse_practicing_cert_media_id: Maybe<string>
   approved_by: Maybe<string>
-  address_id: Maybe<string>
 }
 
 export type Specialties = {
@@ -1881,15 +1880,6 @@ export type MailingListRecipient = {
   name: string
   email: string
   entrypoint: string
-}
-
-export type Address = {
-  street: Maybe<string>
-  suburb_id?: Maybe<string>
-  ward_id: string
-  district_id: string
-  province_id: string
-  country_id: string
 }
 
 export type Drug = {

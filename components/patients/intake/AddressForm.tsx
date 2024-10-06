@@ -27,10 +27,10 @@ export default function PatientAddressForm(
   },
 ) {
   const nearest_organization =
-    patient.nearest_organization_id && patient.nearest_organization_name &&
+    patient.organizationId && patient.nearest_organization_name &&
       patient.nearest_organization_address
       ? {
-        id: patient.nearest_organization_id,
+        id: patient.organizationId,
         name: patient.nearest_organization_name,
         address: patient.nearest_organization_address,
       }

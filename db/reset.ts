@@ -1,9 +1,6 @@
 import { runCommand } from '../util/command.ts'
 import { migrate } from './migrate.ts'
 import { parseArgs } from '@std/cli/parse-args'
-import { spinner } from '../util/spinner.ts'
-import { onLocalhost } from './onLocalhost.ts'
-import { drop } from './drop.ts'
 import { recreate } from './recreate.ts'
 
 export async function reset(opts: { recreate?: boolean | string[] } = {}) {

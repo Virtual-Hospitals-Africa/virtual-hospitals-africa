@@ -87,7 +87,7 @@ export type FamilyType =
   | 'Polygamous/Compound'
   | 'Single Parent'
 
-export type Gender = 'female' | 'male' | 'non-binary'
+export type Gender = 'female' | 'male' | 'other' | 'unknown'
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -213,18 +213,6 @@ export interface Address {
   resourceId: string
   state: string | null
   use: string | null
-}
-
-export interface Address2 {
-  country_id: string
-  created_at: Generated<Timestamp>
-  district_id: string
-  id: Generated<string>
-  province_id: string
-  street: string | null
-  suburb_id: string | null
-  updated_at: Generated<Timestamp>
-  ward_id: string
 }
 
 export interface Allergies {
@@ -383,7 +371,6 @@ export interface Districts {
 }
 
 export interface DoctorRegistrationDetails {
-  address_id: string | null
   approved_by: string | null
   birthDate: Timestamp
   created_at: Generated<Timestamp>
@@ -785,7 +772,6 @@ export interface Medications {
 }
 
 export interface NurseRegistrationDetails {
-  address_id: string | null
   approved_by: string | null
   birthDate: Timestamp
   created_at: Generated<Timestamp>
@@ -1066,6 +1052,7 @@ export interface PatientHistory {
 }
 
 export interface PatientIntake {
+  completed_by_employment_id: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   intake_step: IntakeStep
@@ -1465,7 +1452,6 @@ export interface WhatsappMessagesSent {
 }
 
 export interface DB {
-  address: Address2
   Address: Address
   allergies: Allergies
   appointment_media: AppointmentMedia

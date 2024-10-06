@@ -41,7 +41,7 @@ export async function up(db: Kysely<DB>) {
   //   .asEnum([
   //     'male',
   //     'female',
-  //     'non-binary',
+  //     'other',
   //   ])
   //   .execute()
 
@@ -96,13 +96,7 @@ export async function up(db: Kysely<DB>) {
   //         (col) => col.references('media.id'),
   //       )
   //       .addColumn(
-  //         'address_id',
-  //         'uuid',
-  //         (col) => col.references('address.id'),
-  //       )
-
-  //       .addColumn(
-  //         'nearest_organization_id',
+  //         'organizationId',
   //         'uuid',
   //         (col) => col.references('Organization.id'),
   //       )

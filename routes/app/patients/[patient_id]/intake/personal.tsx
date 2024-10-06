@@ -56,7 +56,8 @@ export const handler = postHandler(
     },
   ) {
     console.log('TODO handle ethnicity', ethnicity)
-    await patients.update(ctx.state.trx, patient_id, {
+    await patients.update(ctx.state.trx, {
+      id: patient_id,
       name: {
         given: given_names,
         family: family_name,

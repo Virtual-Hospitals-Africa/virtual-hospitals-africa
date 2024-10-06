@@ -34,6 +34,7 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
+import { fromHumanName } from '../../../../../util/fromHumanName.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
@@ -164,9 +165,10 @@ async function upsertPatientAndRedirect(
 
   await patient_intake.updateCompletion(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
-    intake_completed: ctx.state.patient.intake_completed ||
+    intake_completed: !!ctx.state.patient.intake_completed ||
       (step === 'summary'),
     intake_step_just_completed: step,
+    completed_by_employment_id: ctx.state.encounter_provider.employment_id,
   })
 
   return send_to ? sendTo(ctx, send_to, step) : redirect(nextLink(ctx))
@@ -215,7 +217,7 @@ export function IntakeLayout({
           <SendToButton
             form='intake'
             patient={{
-              name: ctx.state.patient.name!,
+              name: fromHumanName(ctx.state.patient.name!),
               description: ctx.state.patient.description,
               avatar_url: ctx.state.patient.avatar_url,
               actions: ctx.state.patient.actions,

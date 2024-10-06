@@ -16,7 +16,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       conversation_state: 'not_onboarded:make_appointment:enter_birthDate',
       phone_number,
       name: 'test',
-      gender: 'non-binary',
+      gender: 'other',
       birthDate: null,
       national_id_number: null,
     })

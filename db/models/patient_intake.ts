@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { PatientIntake, TrxOrDb } from '../../types.ts'
-import { formatted as formattedAddress } from './address.ts'
+import { completeIntake } from './patients.ts'
+import { name_string_sql } from './human_name.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
@@ -16,11 +17,11 @@ export function getById(
 ): Promise<PatientIntake> {
   return trx
     .selectFrom('Patient')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('Address', 'Address.resourceId', 'Patient.id')
     .leftJoin(
       'Organization',
       'Organization.id',
-      'patients.nearest_organization_id',
+      'Patient.organizationId',
     )
     .leftJoin(
       'Address as OrganizationAddress',
@@ -30,40 +31,41 @@ export function getById(
     .leftJoin(
       'employment',
       'employment.id',
-      'patients.primary_doctor_id',
+      'Patient.primary_doctor_id',
     )
     .leftJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
-      'patients.id',
-      'patients.name',
-      'patients.phone_number',
-      'patients.location',
-      'patients.gender',
-      'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.birthDate, 'YYYY-MM-DD')`.as(
+      'Patient.id',
+      'Patient.name',
+      'Patient.phone_number',
+      'Patient.location',
+      'Patient.gender',
+      'Patient.ethnicity',
+      sql<null | string>`TO_CHAR(Patient.birthDate, 'YYYY-MM-DD')`.as(
         'birthDate',
       ),
-      'patients.national_id_number',
+      'Patient.national_id_number',
       sql<
         string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.birthDate, 'DD/MM/YYYY')`
+      >`Patient.gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
       jsonBuildObject({
-        country_id: eb.ref('address.country_id'),
-        province_id: eb.ref('address.province_id'),
-        district_id: eb.ref('address.district_id'),
-        ward_id: eb.ref('address.ward_id'),
-        suburb_id: eb.ref('address.suburb_id'),
-        street: eb.ref('address.street'),
+        address: eb.ref('Address.address'),
+        city: eb.ref('Address.city'),
+        country: eb.ref('Address.country'),
+        postalCode: eb.ref('Address.postalCode'),
+        resourceId: eb.ref('Address.resourceId'),
+        state: eb.ref('Address.state'),
+        use: eb.ref('Address.use'),
       }).as('address'),
-      'patients.intake_completed',
+      'Patient.intake_completed',
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -72,17 +74,17 @@ export function getById(
             'intake.step',
             'patient_intake.intake_step',
           )
-          .whereRef('patient_id', '=', 'patients.id')
+          .whereRef('patient_id', '=', 'Patient.id')
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      'patients.primary_doctor_id',
-      'patients.unregistered_primary_doctor_name',
+      'Patient.primary_doctor_id',
+      'Patient.unregistered_primary_doctor_name',
       sql<
         string | null
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+      >`CASE WHEN Patient.avatar_media_id IS NOT NULL THEN concat('/app/patients/', Patient.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
-      'patients.nearest_organization_id',
+      'Patient.organizationId',
       'Organization.canonicalName as nearest_organization_name',
       'OrganizationAddress.address as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
@@ -91,7 +93,7 @@ export function getById(
         clinical_notes: patients.intake_clinical_notes_href_sql,
       }).as('actions'),
     ])
-    .where('patients.id', '=', patient_id)
+    .where('Patient.id', '=', patient_id)
     .executeTakeFirstOrThrow()
 }
 
@@ -101,54 +103,50 @@ export async function getSummaryById(
 ) {
   const getting_review = trx
     .selectFrom('Patient')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .innerJoin('HumanName', 'HumanName.resourceId', 'Patient.id')
+    .leftJoin('Address', 'Address.resourceId', 'Patient.id')
     .leftJoin(
       'Organization',
       'Organization.id',
-      'patients.nearest_organization_id',
+      'Patient.organizationId',
     )
     .leftJoin(
       'employment',
       'employment.id',
-      'patients.primary_doctor_id',
+      'Patient.primary_doctor_id',
     )
     .leftJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .leftJoin(
-      formattedAddress(trx),
-      'address_formatted.id',
-      'patients.address_id',
-    )
+    .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
-      'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      'patients.phone_number',
-      'patients.gender',
-      'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.birthDate, 'YYYY-MM-DD')`.as(
+      'Patient.id',
+      name_string_sql('HumanName').as('name'),
+      'Patient.phone_number',
+      'Patient.gender',
+      'Patient.ethnicity',
+      sql<null | string>`TO_CHAR(Patient.birthDate, 'YYYY-MM-DD')`.as(
         'birthDate',
       ),
-      'patients.national_id_number',
+      'Patient.national_id_number',
       sql<
         string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.birthDate, 'DD/MM/YYYY')`
+      >`Patient.gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
       sql<
         string
-      >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
+      >`'Dr. ' || coalesce(health_workers.name, Patient.unregistered_primary_doctor_name)`
         .as('primary_doctor_name'),
-      'address_formatted.address',
+      'Address.address',
       sql<
         string | null
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+      >`CASE WHEN Patient.avatar_media_id IS NOT NULL THEN concat('/app/patients/', Patient.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
-      'patients.nearest_organization_id',
+      'Patient.organizationId',
       'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
@@ -162,13 +160,13 @@ export async function getSummaryById(
             'intake.step',
             'patient_intake.intake_step',
           )
-          .whereRef('patient_id', '=', 'patients.id')
+          .whereRef('patient_id', '=', 'Patient.id')
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
       'intake_completed',
     ])
-    .where('patients.id', '=', patient_id)
+    .where('Patient.id', '=', patient_id)
     .executeTakeFirst()
 
   const q = { patient_id }
@@ -199,25 +197,28 @@ export async function updateCompletion(
     patient_id,
     intake_step_just_completed,
     intake_completed,
+    completed_by_employment_id,
   }: {
     patient_id: string
     intake_step_just_completed: IntakeStep
     intake_completed?: boolean
+    completed_by_employment_id: string
   },
 ): Promise<void> {
   const upserting_intake_step = trx
     .insertInto('patient_intake')
     .values({
-      patient_id: patient_id,
+      patient_id,
+      completed_by_employment_id,
       intake_step: intake_step_just_completed,
     })
     .onConflict((oc) => oc.doNothing())
     .execute()
 
-  const updating_patient = intake_completed && trx.updateTable('patients')
-    .where('id', '=', patient_id)
-    .set({ intake_completed })
-    .execute()
+  const completing_intake = intake_completed && completeIntake(trx, {
+    patient_id,
+    completed_by_employment_id,
+  })
 
-  await Promise.all([upserting_intake_step, updating_patient])
+  await Promise.all([upserting_intake_step, completing_intake])
 }

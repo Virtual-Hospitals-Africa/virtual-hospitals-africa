@@ -53,7 +53,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
           options: [
             { id: 'male', title: 'Male' },
             { id: 'female', title: 'Female' },
-            { id: 'non-binary', title: 'Non-binary' },
+            { id: 'other', title: 'Non-binary' },
           ],
         },
         phone_number,

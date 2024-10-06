@@ -115,6 +115,13 @@ describe(
               name: 'Test Patient 1',
             })
 
+            const nurse = await addTestHealthWorker(trx, {
+              scenario: 'nurse',
+            })
+            const nurse_health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id: nurse.id,
+            })
+
             await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
@@ -123,22 +130,17 @@ describe(
             await patient_intake.updateCompletion(trx, {
               patient_id: patient.id,
               intake_step_just_completed: 'personal',
+              completed_by_employment_id: nurse.employee_id!,
             })
             await patient_intake.updateCompletion(trx, {
               patient_id: patient.id,
               intake_step_just_completed: 'address',
-            })
-
-            const { id: health_worker_id } = await addTestHealthWorker(trx, {
-              scenario: 'nurse',
-            })
-            const health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id,
+              completed_by_employment_id: nurse.employee_id!,
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
               organization_id,
-              health_worker,
+              health_worker: nurse_health_worker,
             })
 
             assertEquals(waiting_room_results, [{
@@ -197,10 +199,12 @@ describe(
             await patient_intake.updateCompletion(trx, {
               patient_id: patient.id,
               intake_step_just_completed: 'personal',
+              completed_by_employment_id: nurse.employee_id!,
             })
             await patient_intake.updateCompletion(trx, {
               patient_id: patient.id,
               intake_step_just_completed: 'address',
+              completed_by_employment_id: nurse.employee_id!,
             })
 
             const waiting_room_results = await waiting_room.get(trx, {

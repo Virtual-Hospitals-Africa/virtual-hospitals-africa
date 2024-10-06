@@ -1,5 +1,6 @@
 import { jsonArrayFrom } from '../helpers.ts'
-import { Address, CountryAddressTree, TrxOrDb } from '../../types.ts'
+import { CountryAddressTree, TrxOrDb } from '../../types.ts'
+// import { Address } from '../../db.d.ts'
 
 let fullCountryInfo: CountryAddressTree | undefined
 export async function getCountryAddressTree(
@@ -51,16 +52,38 @@ export async function getCountryAddressTree(
     .execute()
 }
 
-export function upsert(
-  trx: TrxOrDb,
-  address: Address,
-) {
-  return trx
-    .insertInto('address')
-    .values(address)
-    .onConflict((oc) =>
-      oc.constraint('address_street_suburb_ward').doUpdateSet(address)
-    )
-    .returningAll()
-    .executeTakeFirstOrThrow()
-}
+// export function upsert(
+//   trx: TrxOrDb,
+//   address: Address,
+// ) {
+//   return trx
+//     .insertInto('Address')
+//     .values(address)
+//     .onConflict((oc) => oc.column('resourceId').doUpdateSet(address))
+//     .returningAll()
+//     .executeTakeFirstOrThrow()
+// }
+
+// export async function upsertFromFormFields(
+//   trx: TrxOrDb,
+//   resourceId: string,
+//   form_values: AddressFormFields,
+// ) {
+//   const country_address_tree = await getCountryAddressTree()
+
+//   return upsert(trx, {
+//     resourceId,
+//     address: form_values.street,
+//     city,
+//     country: null,
+//     postalCode: 'ZW',
+//     state
+//   })
+
+//   trx
+//     .insertInto('Address')
+//     .values(address)
+//     .onConflict((oc) => oc.column('resourceId').doUpdateSet(specified))
+//     .returningAll()
+//     .executeTakeFirstOrThrow()
+// }

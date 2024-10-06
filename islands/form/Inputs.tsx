@@ -802,9 +802,9 @@ export function GenderSelect(
       <option value='female' label='Female' selected={value === 'female'} />
       <option value='male' label='Male' selected={value === 'male'} />
       <option
-        value='non-binary'
+        value='other'
         label='Non-binary'
-        selected={value === 'non-binary'}
+        selected={value === 'other'}
       />
     </Select>
   )

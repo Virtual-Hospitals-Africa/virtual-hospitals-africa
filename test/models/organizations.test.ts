@@ -5,7 +5,7 @@ import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { insertTestAddress, randomNationalId } from '../mocks.ts'
+import { /* insertTestAddress, */ randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
@@ -334,8 +334,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           },
         ])
 
-        const nurse_address = await insertTestAddress(trx)
-        assert(nurse_address)
+        // const nurse_address = await insertTestAddress(trx)
+        // assert(nurse_address)
 
         await nurse_registration_details.add(trx, {
           health_worker_id: hw_at_organization1.id,
@@ -350,7 +350,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: null,
           birthDate: '2020-01-01',
-          address_id: nurse_address.id,
+          // address_id: nurse_Address.resourceId,
         })
 
         const withInvitees = await organizations.getEmployeesAndInvitees(
@@ -411,8 +411,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           },
         ])
 
-        const nurse_address = await insertTestAddress(trx)
-        assert(nurse_address)
+        // const nurse_address = await insertTestAddress(trx)
+        // assert(nurse_address)
 
         await nurse_registration_details.add(trx, {
           health_worker_id: nurse.id,
@@ -427,7 +427,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           birthDate: '2020-01-01',
-          address_id: nurse_address.id,
+          // address_id: nurse_Address.resourceId,
         })
 
         const withInvitees = await organizations.getEmployeesAndInvitees(

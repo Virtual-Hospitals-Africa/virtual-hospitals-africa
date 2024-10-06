@@ -1,5 +1,4 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -72,32 +71,9 @@ export async function up(db: Kysely<unknown>) {
         .onDelete('cascade'))
     .addUniqueConstraint('suburb_name', ['name', 'ward_id'])
     .execute()
-
-  await createStandardTable(db, 'address', (qb) =>
-    qb
-      .addColumn('street', 'varchar(255)')
-      .addColumn('suburb_id', 'uuid', (col) => col.references('suburbs.id'))
-      .addColumn('ward_id', 'uuid', (col) =>
-        col.notNull()
-          .references('wards.id'))
-      .addColumn('district_id', 'uuid', (col) =>
-        col.notNull()
-          .references('districts.id'))
-      .addColumn('province_id', 'uuid', (col) =>
-        col.notNull()
-          .references('provinces.id'))
-      .addColumn('country_id', 'uuid', (col) =>
-        col.notNull()
-          .references('countries.id'))
-      .addUniqueConstraint('address_street_suburb_ward', [
-        'street',
-        'suburb_id',
-        'ward_id',
-      ], (constraint) => constraint.nullsNotDistinct()))
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('address').execute()
   await db.schema.dropTable('suburbs').execute()
   await db.schema.dropTable('wards').execute()
   await db.schema.dropTable('districts').execute()

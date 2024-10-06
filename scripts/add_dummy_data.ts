@@ -160,6 +160,7 @@ async function addPatientsToWaitingRoom() {
             .values(intake_steps_completed.map((intake_step) => ({
               patient_id: patient.id,
               intake_step,
+              completed_by_employment_id: health_worker.employee_id!,
             })))
             .execute()
         }

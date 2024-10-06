@@ -26,7 +26,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: 'non-binary',
+      body: 'other',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -62,6 +62,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       patient.conversation_state,
       'not_onboarded:make_appointment:enter_birthDate',
     )
-    assertEquals(patient.gender, 'non-binary')
+    assertEquals(patient.gender, 'other')
   })
 })

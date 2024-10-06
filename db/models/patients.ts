@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
+  Gender,
   HasStringId,
   Location,
   Maybe,
@@ -172,32 +173,19 @@ export function insertMany(
 
 export async function insert(
   trx: TrxOrDb,
-  { name, phone_number, conversation_state }: {
-    name: string
-    phone_number?: Maybe<string>
+  { conversation_state, ...values }: MedplumCoercible & {
     conversation_state?: string
   },
 ) {
-  const patient = await createResource({
-    resourceType: 'Patient',
-    name: [convertToHumanName(name)],
-    telecom: phone_number
-      ? [
-        {
-          system: 'phone',
-          value: phone_number,
-        },
-      ]
-      : undefined,
-  })
+  const patient = await createResource(toMedplum(values))
 
   // TODO, make this part of a medplum transaction?
   if (conversation_state) {
-    assert(phone_number)
+    assert(values.phone_number)
     await trx.insertInto('patient_chatbot_users')
       .values({
         entity_id: patient.id,
-        phone_number,
+        phone_number: values.phone_number,
         conversation_state,
         data: '{}',
       })
@@ -212,19 +200,25 @@ type MedplumCoercible = {
     given: string[]
     family: string
   }
+  gender?: Maybe<Gender>
   national_id_number?: Maybe<string>
   avatar_media_id?: Maybe<string>
   phone_number?: Maybe<string>
+  birthDate?: Maybe<string>
 }
 
 function toMedplum({
   name,
+  birthDate,
   national_id_number,
   avatar_media_id,
+  gender,
   phone_number,
 }: MedplumCoercible): MedplumPatient {
   return {
     resourceType: 'Patient',
+    birthDate: birthDate || undefined,
+    gender: gender || undefined,
     name: !name
       ? undefined
       : typeof name === 'string'
@@ -260,16 +254,7 @@ function toMedplum({
 
 export function update(
   _trx: TrxOrDb,
-  { id, ...updates }: {
-    id: string
-    name?: string | {
-      given: string[]
-      family: string
-    }
-    national_id_number?: Maybe<string>
-    avatar_media_id?: Maybe<string>
-    phone_number?: Maybe<string>
-  },
+  { id, ...updates }: HasStringId<MedplumCoercible>,
 ) {
   return patchResource({
     id,
@@ -283,7 +268,7 @@ export function upsert(
     id?: string
     name: string
     phone_number?: Maybe<string>
-    gender?: Maybe<string>
+    gender?: Maybe<Gender>
   },
 ) {
   return id ? update(trx, { id, ...data }) : insert(trx, data)

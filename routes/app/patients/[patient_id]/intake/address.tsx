@@ -1,6 +1,6 @@
 import { Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
-import * as patients from '../../../../../db/models/patients.ts'
+// import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
@@ -15,7 +15,7 @@ type AddressFormValues = {
     suburb_id?: Maybe<string>
     street: string
   }
-  nearest_organization_id: string
+  organizationId: string
   nearest_organization_name: string
   primary_doctor_id: string
   primary_doctor_name: string
@@ -46,8 +46,8 @@ function assertIsAddress(
       !patient.address.street,
   )
   assertOr400(
-    !!patient.nearest_organization_id &&
-      typeof patient.nearest_organization_id === 'string',
+    !!patient.organizationId &&
+      typeof patient.organizationId === 'string',
   )
   assertOr400(
     !!(patient.primary_doctor_id &&
@@ -66,17 +66,34 @@ function assertIsAddress(
 export const handler = postHandler(
   assertIsAddress,
   async function updateAddress(ctx, patient_id, form_values) {
-    const created_address = await address.upsert(
-      ctx.state.trx,
-      form_values.address,
+    await console.log(
+      'TODO: implement updateAddress',
+      ctx,
+      patient_id,
+      form_values,
     )
+    // const country_address_tree = await address.getCountryAddressTree(trx)
 
-    await patients.update(ctx.state.trx, {
-      id: patient_id,
-      address_id: created_address.id,
-      nearest_organization_id: form_values.nearest_organization_id,
-      primary_doctor_id: form_values.primary_doctor_id,
-    })
+    // const created_address = await address.upsert(
+    //   ctx.state.trx,
+    //   {
+    //     resourceId: patient_id,
+    //     address
+    //     city
+    //     country
+    //     postalCode
+    //     resourceId
+    //     state
+    //     use
+    //   }
+    // )
+
+    // await patients.update(ctx.state.trx, {
+    //   id: patient_id,
+    //   address_id: created_Address.resourceId,
+    //   organizationId: form_values.organizationId,
+    //   primary_doctor_id: form_values.primary_doctor_id,
+    // })
   },
 )
 

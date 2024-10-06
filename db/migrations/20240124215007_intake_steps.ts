@@ -50,6 +50,11 @@ export async function up(db: Kysely<any>) {
         sql`intake_step`,
         (col) => col.notNull().references('intake.step'),
       )
+      .addColumn(
+        'completed_by_employment_id',
+        'uuid',
+        (col) => col.notNull().references('employment.id'),
+      )
       .addUniqueConstraint('patient_intake_step', [
         'patient_id',
         'intake_step',

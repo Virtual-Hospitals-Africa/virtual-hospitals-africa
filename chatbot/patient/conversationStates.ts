@@ -99,13 +99,13 @@ const conversationStates: ConversationStates<
         },
       },
       {
-        id: 'non-binary',
+        id: 'other',
         title: 'Non-binary',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
           await patients.update(trx, {
             id: patientState.chatbot_user.entity_id,
-            gender: 'non-binary',
+            gender: 'other',
           })
           return 'not_onboarded:make_appointment:enter_birthDate' as const
         },
