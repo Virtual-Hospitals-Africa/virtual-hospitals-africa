@@ -1,16 +1,17 @@
 import last from '../../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import sortBy from '../../util/sortBy.ts'
+import { spinner } from '../../util/spinner.ts'
 
 export const seeds: Record<
   string,
   {
     table_names: string[]
-    load: () => Promise<void>
-    dump: () => Promise<void>
-    drop: () => Promise<void>
-    reload: () => Promise<void>
-    recreate: () => Promise<void>
+    load: () => Promise<undefined | string>
+    dump: () => Promise<undefined | string>
+    drop: () => Promise<undefined | string>
+    reload: () => Promise<undefined | string>
+    recreate: () => Promise<undefined | string>
   }
 > = {}
 for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
@@ -69,23 +70,23 @@ const past_tense = {
 }
 
 export async function load(target?: string) {
-  await run('load', target)
+  return run('load', target)
 }
 
 export async function dump(target?: string) {
-  await run('dump', target)
+  return run('dump', target)
 }
 
 export async function drop(target?: string) {
-  await run('drop', target)
+  return run('drop', target)
 }
 
 export async function recreate(target?: string) {
-  await run('recreate', target)
+  return run('recreate', target)
 }
 
 export async function reload(target?: string) {
-  await run('reload', target)
+  return run('reload', target)
 }
 
 export async function loadRecreating(targets: string[]) {
@@ -146,14 +147,15 @@ export async function run(cmd: Cmd, target?: string) {
   }
 
   for (const seedName of targets) {
-    console.log(`${gerund[cmd]} seed ${seedName}...`)
     const seed = seeds[seedName]
-    await seed[cmd]()
-    console.log(
-      `${seedName} ${past_tense[cmd]}. Tables affected: ${
-        seed.table_names.join(', ')
-      }.`,
-    )
+    await spinner(`${gerund[cmd]} ${seedName}`, async () => {
+      const result = await seed[cmd]()
+      return (
+        `${seedName} ${result || past_tense[cmd]}. Tables affected: ${
+          seed.table_names.join(', ')
+        }`
+      )
+    })
   }
 }
 

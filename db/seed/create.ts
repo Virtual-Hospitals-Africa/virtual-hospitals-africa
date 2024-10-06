@@ -37,8 +37,7 @@ export function create(
       !have_rows[index]
     )
     if (!needs_loading) {
-      console.log('Seed already loaded')
-      return
+      return 'already loaded'
     }
 
     const tables_with_data = table_names.filter((_table_name, index) =>

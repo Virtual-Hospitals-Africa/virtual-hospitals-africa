@@ -10,7 +10,7 @@ export async function spinner<T>(
   if (typeof result === 'string') {
     spinner.succeed(result)
   } else {
-    spinner.succeed()
+    spinner.succeed(description)
   }
   return result
 }
