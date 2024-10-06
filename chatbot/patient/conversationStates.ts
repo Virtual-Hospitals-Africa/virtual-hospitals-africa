@@ -149,22 +149,26 @@ const conversationStates: ConversationStates<
     type: 'get_location',
     prompt:
       'Sure, we can find your nearest organization. Can you share your location?',
-    async onExit(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
-      assert(patientState.unhandled_message.trimmed_body)
-      const locationMessage: Location = JSON.parse(
-        patientState.unhandled_message.trimmed_body,
-      )
-      const currentLocation: Location = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
-      }
-      await patients.update(trx, {
-        id: patientState.chatbot_user.entity_id,
-        location: currentLocation,
-      })
+    onExit(_trx, patientState) {
+      const patient_id = patientState.chatbot_user.entity_id
+      const body = patientState.unhandled_message.trimmed_body
 
-      return 'find_nearest_organization:got_location' as const
+      assert(patient_id)
+      assert(body)
+      // const locationMessage: Location = JSON.parse(body!)
+      // const currentLocation: Location = {
+      //   longitude: locationMessage.longitude,
+      //   latitude: locationMessage.latitude,
+      // }
+
+      // await patients.update(trx, {
+      //   id: patient_id,
+      //   // location: currentLocation,
+      // })
+
+      throw new Error('TODO implement updating patient location')
+
+      // return 'find_nearest_organization:got_location' as const
     },
   },
   // change the name of got_location to nearest_organizations?

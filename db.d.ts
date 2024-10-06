@@ -584,9 +584,9 @@ export interface HealthWorkerSessions {
 }
 
 export interface HumanName {
-  family: string | null
-  given: string | null
-  name: string | null
+  family: string
+  given: string
+  name: string
   resourceId: string
 }
 

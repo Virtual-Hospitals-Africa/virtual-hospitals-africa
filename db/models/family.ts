@@ -3,6 +3,7 @@ import {
   FamilyRelation,
   FamilyRelationInsert,
   FamilyUpsert,
+  Gender,
   GuardianRelationName,
   Maybe,
   PatientFamily,
@@ -376,7 +377,7 @@ export async function upsert(
   const to_insert: {
     name: string
     phone_number?: Maybe<string>
-    gender?: Maybe<string>
+    gender?: Maybe<Gender>
   }[] = []
   for (const guardian of new_guardians) {
     const relation = inverseGuardianRelation(guardian.family_relation_gendered)

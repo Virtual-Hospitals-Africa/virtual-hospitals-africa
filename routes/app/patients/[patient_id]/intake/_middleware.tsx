@@ -34,7 +34,7 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
-import { fromHumanName } from '../../../../../util/fromHumanName.ts'
+import { fromHumanName } from '../../../../../util/human_name.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {

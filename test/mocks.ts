@@ -65,7 +65,8 @@ export function randomNationalId() {
   }`
 }
 
-export const testRegistrationDetails = (
+// deno-lint-ignore require-await
+export const testRegistrationDetails = async (
   _trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: string },
 ): Promise<NurseRegistrationDetails> => ({

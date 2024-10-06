@@ -10,6 +10,8 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import db from '../../../../../db/db.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import last from '../../../../../util/last.ts'
+import { fromHumanName } from '../../../../../util/human_name.ts'
 
 describe(
   '/app/organizations/[organization_id]/waiting_room/add',
@@ -97,7 +99,7 @@ describe(
         scenario: 'approved-nurse',
       })
 
-      const patient_name = generateUUID()
+      const patient_name = generateUUID().replaceAll('-', ' ')
       const body = new FormData()
       body.set('notes', 'Test notes')
       body.set('patient_name', patient_name)
@@ -116,6 +118,8 @@ describe(
       if (!response.ok) {
         throw new Error(await response.text())
       }
+      const family_name = last(patient_name.split(' '))
+      assert(family_name, 'family name should be defined')
 
       // Assert that the patient encounter is created and added to the waiting room
       const patientEncounter = await db
@@ -123,10 +127,10 @@ describe(
         .where(
           'patient_id',
           '=',
-          db.selectFrom('Patient').select('id').where(
-            'name',
+          db.selectFrom('HumanName').select('resourceId').where(
+            'family',
             '=',
-            patient_name,
+            family_name,
           ),
         )
         .selectAll()
@@ -149,12 +153,12 @@ describe(
       )
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
 
-      const { name } = await db.selectFrom('Patient').select(['name']).where(
-        'id',
+      const human_name = await db.selectFrom('HumanName').selectAll().where(
+        'resourceId',
         '=',
         patientEncounter.patient_id,
       ).executeTakeFirstOrThrow()
-      assertEquals(name, patient_name)
+      assertEquals(fromHumanName(human_name), patient_name)
     })
   },
 )

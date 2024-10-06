@@ -45,6 +45,12 @@ export async function up(db: Kysely<DB>) {
   //   ])
   //   .execute()
 
+  await db.schema.alterTable('HumanName')
+    .alterColumn('name', col => col.setNotNull())
+    .alterColumn('given', col => col.setNotNull())
+    .alterColumn('family', col => col.setNotNull())
+    .execute()
+
   await db.schema.alterTable('Patient')
     .addColumn(
       'organizationId',

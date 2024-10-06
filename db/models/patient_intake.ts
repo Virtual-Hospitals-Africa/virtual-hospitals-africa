@@ -17,6 +17,9 @@ export function getById(
 ): Promise<PatientIntake> {
   return trx
     .selectFrom('Patient')
+    .innerJoin('HumanName as PatientName', 
+      'PatientName.resourceId', 'Patient.id'
+    )
     .leftJoin('Address', 'Address.resourceId', 'Patient.id')
     .leftJoin(
       'Organization',
@@ -39,9 +42,10 @@ export function getById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
+    .leftJoin('patient_intake_completed', 'Patient.id', 'patient_intake_completed.patient_id')
     .select((eb) => [
       'Patient.id',
-      'Patient.name',
+      name_string_sql('PatientName').as('name'),
       'Patient.phone_number',
       'Patient.location',
       'Patient.gender',
@@ -61,11 +65,10 @@ export function getById(
         city: eb.ref('Address.city'),
         country: eb.ref('Address.country'),
         postalCode: eb.ref('Address.postalCode'),
-        resourceId: eb.ref('Address.resourceId'),
         state: eb.ref('Address.state'),
         use: eb.ref('Address.use'),
       }).as('address'),
-      'Patient.intake_completed',
+      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -121,6 +124,7 @@ export async function getSummaryById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
+    .leftJoin('patient_intake_completed', 'Patient.id', 'patient_intake_completed.patient_id')
     .select((eb) => [
       'Patient.id',
       name_string_sql('HumanName').as('name'),
@@ -164,7 +168,7 @@ export async function getSummaryById(
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      'intake_completed',
+      eb('patient_intake_completed.patient_id', 'is not', null).as('intake_completed'),
     ])
     .where('Patient.id', '=', patient_id)
     .executeTakeFirst()

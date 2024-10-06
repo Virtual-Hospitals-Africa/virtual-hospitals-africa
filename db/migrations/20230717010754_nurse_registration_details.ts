@@ -9,7 +9,7 @@ export async function up(db: Kysely<unknown>) {
       'male',
       'female',
       'other',
-      'unknown'
+      'unknown',
     ])
     .execute()
 

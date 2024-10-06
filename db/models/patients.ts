@@ -31,7 +31,7 @@ import {
   createResource,
   patchResource,
 } from '../../external-clients/medplum/client.ts'
-import last from '../../util/last.ts'
+import { toHumanName } from '../../util/human_name.ts'
 import { name_string_sql } from './human_name.ts'
 
 export const view_href_sql = sql<string>`
@@ -140,29 +140,6 @@ export async function getLastConversationState(
   return { ...patient, ...last_message }
 }
 
-function convertToHumanName(name: string) {
-  let given_names = name.split(' ').filter((n) => !!n)
-  let family_name = given_names.pop()
-
-  // Interpret "de" in "Camille de Bruglia" into part of the family name
-  if (given_names.length >= 2) {
-    const maybe_part_of_family_name = last(given_names)!
-    if (
-      maybe_part_of_family_name[0].toLowerCase() ===
-        maybe_part_of_family_name[0]
-    ) {
-      given_names = given_names.slice(0, -1)
-      family_name = `${maybe_part_of_family_name} ${family_name}`
-    }
-  }
-  assert(family_name)
-  assert(given_names.length > 1)
-  return {
-    given: given_names,
-    family: family_name,
-  }
-}
-
 export function insertMany(
   _trx: TrxOrDb,
   patients: MedplumCoercible[],
@@ -222,7 +199,7 @@ function toMedplum({
     name: !name
       ? undefined
       : typeof name === 'string'
-      ? [convertToHumanName(name)]
+      ? [toHumanName(name)]
       : [name],
     identifier: national_id_number
       ? [
