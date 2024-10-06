@@ -20,7 +20,7 @@ export default async function PatientPage(
 
   assertOr404(patient, 'Patient not found')
 
-  if (!patient.completed_intake) {
+  if (!patient.intake_completed) {
     const first_incomplete_step = INTAKE_STEPS.find((step) =>
       !patient.intake_steps_completed.includes(step)
     )

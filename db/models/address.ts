@@ -1,4 +1,3 @@
-import { sql } from 'kysely'
 import { jsonArrayFrom } from '../helpers.ts'
 import { Address, CountryAddressTree, TrxOrDb } from '../../types.ts'
 

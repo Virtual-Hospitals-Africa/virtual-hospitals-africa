@@ -50,7 +50,8 @@ export type Location = {
   latitude: number
 }
 
-export type Gender = 'male' | 'female' | 'non-binary'
+// export type Gender = 'male' | 'female' | 'non-binary'
+export type Gender = string
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
@@ -142,7 +143,7 @@ export type PatientConversationState =
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
   | 'not_onboarded:make_appointment:enter_gender'
-  | 'not_onboarded:make_appointment:enter_date_of_birth'
+  | 'not_onboarded:make_appointment:enter_birthDate'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:initial_ask_for_media'
@@ -162,18 +163,21 @@ export type PatientConversationState =
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<string>
   nearest_organization_id: Maybe<string>
-  completed_intake: boolean
+  intake_completed: SqlBool
   address_id: Maybe<string>
   unregistered_primary_doctor_name: Maybe<string>
   intake_steps_completed: IntakeStep[]
 }
 
 export type PatientDemographicInfo = {
+  name: {
+    given: string[]
+    family: string
+  }
   phone_number: Maybe<string>
-  name: Maybe<string>
-  gender: Maybe<Gender>
-  ethnicity: Maybe<string>
-  date_of_birth: Maybe<string>
+  gender: Maybe<string>
+  ethnicity: Maybe<string[]>
+  birthDate: Maybe<string>
   national_id_number: Maybe<string>
 }
 export type PatientPersonal = {
@@ -189,7 +193,7 @@ export type RenderedPatient =
     | 'ethnicity'
     | 'national_id_number'
     | 'phone_number'
-    | 'completed_intake'
+    | 'intake_completed'
     | 'intake_steps_completed'
   >
   & {
@@ -333,10 +337,10 @@ export type PatientIntake =
     | 'phone_number'
     | 'gender'
     | 'ethnicity'
-    | 'date_of_birth'
+    | 'birthDate'
     | 'national_id_number'
     | 'nearest_organization_id'
-    | 'completed_intake'
+    | 'intake_completed'
     | 'intake_steps_completed'
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
@@ -1361,7 +1365,7 @@ export const DOCTOR_SPECIALTIES = [
 export type NurseRegistrationDetails = {
   health_worker_id: string
   gender: Gender
-  date_of_birth: string
+  birthDate: string
   national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
@@ -1390,7 +1394,7 @@ export type EmployeeInfo = {
   name: string
   email: string
   gender: Maybe<Gender>
-  date_of_birth: Maybe<string>
+  birthDate: Maybe<string>
   national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
   mobile_number: Maybe<string>

@@ -71,7 +71,7 @@ export const testRegistrationDetails = async (
 ): Promise<NurseRegistrationDetails> => ({
   health_worker_id,
   gender: 'male',
-  date_of_birth: '1979-12-12',
+  birthDate: '1979-12-12',
   national_id_number: randomNationalId(),
   date_of_first_practice: '1999-11-11',
   ncz_registration_number: 'GN' + randomDigits(6),

@@ -49,7 +49,7 @@ export default function HealthWorkerDetailedCard(
           <dl class='grid grid-cols-1 sm:grid-cols-4'>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                First Name
+                Given Name
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {employee.name.split(' ')[0]}
@@ -86,7 +86,7 @@ export default function HealthWorkerDetailedCard(
                 Date of Birth
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.date_of_birth ? employee.date_of_birth : 'TBD'}
+                {employee.birthDate ? employee.birthDate : 'TBD'}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>

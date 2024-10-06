@@ -113,6 +113,11 @@ export async function get(
           .on('waiting_room.organization_id', '=', organization_id),
     )
     .innerJoin('Patient', 'Patient.id', 'patient_encounters.patient_id')
+    .leftJoin(
+      'patient_intake_completed',
+      'Patient.id',
+      'patient_intake_completed.patient_id',
+    )
     .innerJoin(
       'HumanName as PatientName',
       'patient_encounters.patient_id',
@@ -147,7 +152,9 @@ export async function get(
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
       'doctor_review_requests.organization_id as requesting_organization_id',
-      'completed_intake',
+      eb('patient_intake_completed.patient_id', 'is not', null).as(
+        'intake_completed',
+      ),
 
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
@@ -178,7 +185,7 @@ export async function get(
         .orderBy('intake.order', 'desc')
         .select('step')
         .limit(1)
-        .as('last_completed_intake_step'),
+        .as('last_intake_completed_step'),
 
       eb.selectFrom('encounter')
         .leftJoin(
@@ -383,10 +390,10 @@ export async function get(
         appointment_start,
         appointment_providers,
         wait_time,
-        completed_intake,
+        intake_completed,
         in_waiting_room,
         awaiting_intake_step,
-        last_completed_intake_step,
+        last_intake_completed_step,
         awaiting_encounter_step,
         last_completed_encounter_step,
         awaiting_review,
@@ -425,7 +432,7 @@ export async function get(
         if (awaiting_review_step) {
           status += ` (${capitalize(awaiting_review_step)})`
         }
-      } else if (completed_intake) {
+      } else if (intake_completed) {
         if (in_waiting_room) {
           if (last_completed_encounter_step) {
             assert(awaiting_encounter_step)
@@ -441,7 +448,7 @@ export async function get(
         }
       } else {
         if (in_waiting_room) {
-          if (last_completed_intake_step) {
+          if (last_intake_completed_step) {
             assert(awaiting_intake_step)
             status = `Awaiting Intake (${capitalize(awaiting_intake_step)})`
           } else {
@@ -464,7 +471,7 @@ export async function get(
 
       const action = awaiting_review || in_review
         ? 'review'
-        : completed_intake
+        : intake_completed
         ? 'view'
         : 'intake'
 

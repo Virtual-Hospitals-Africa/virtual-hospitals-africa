@@ -83,7 +83,7 @@ const conversationStates: ConversationStates<
             id: patientState.chatbot_user.entity_id!,
             gender: 'male',
           })
-          return 'not_onboarded:make_appointment:enter_date_of_birth' as const
+          return 'not_onboarded:make_appointment:enter_birthDate' as const
         },
       },
       {
@@ -95,7 +95,7 @@ const conversationStates: ConversationStates<
             id: patientState.chatbot_user.entity_id,
             gender: 'female',
           })
-          return 'not_onboarded:make_appointment:enter_date_of_birth' as const
+          return 'not_onboarded:make_appointment:enter_birthDate' as const
         },
       },
       {
@@ -107,12 +107,12 @@ const conversationStates: ConversationStates<
             id: patientState.chatbot_user.entity_id,
             gender: 'non-binary',
           })
-          return 'not_onboarded:make_appointment:enter_date_of_birth' as const
+          return 'not_onboarded:make_appointment:enter_birthDate' as const
         },
       },
     ],
   },
-  'not_onboarded:make_appointment:enter_date_of_birth': {
+  'not_onboarded:make_appointment:enter_birthDate': {
     type: 'date',
     prompt: 'What is your date of birth?',
     async onExit(trx, patientState) {
@@ -122,10 +122,10 @@ const conversationStates: ConversationStates<
         .split('/')
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
-      const date_of_birth = `${year}-${monthStr}-${dayStr}`
+      const birthDate = `${year}-${monthStr}-${dayStr}`
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
-        date_of_birth,
+        birthDate,
       })
       return 'not_onboarded:make_appointment:enter_national_id_number' as const
     },

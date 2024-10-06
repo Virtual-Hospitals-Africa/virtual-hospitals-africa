@@ -457,8 +457,8 @@ export function getEmployeeInfo(
           'health_workers.id as health_worker_id',
           sql<
             Maybe<string>
-          >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
-            .as('date_of_birth'),
+          >`TO_CHAR(nurse_registration_details.birthDate, 'FMDD FMMonth YYYY')`
+            .as('birthDate'),
           sql<
             Maybe<string>
           >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`

@@ -78,7 +78,7 @@ describe('/app/patients/[patient_id]/intake', {
     body.set('middle_names', 'Zoom Zoom')
     body.set('last_name', 'Patient')
     body.set('national_id_number', national_id_number)
-    body.set('date_of_birth', '2020-01-01')
+    body.set('birthDate', '2020-01-01')
     body.set('gender', 'female')
     body.set('ethnicity', 'african')
     body.set('phone_number', phone_number)
@@ -121,7 +121,7 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals($('input[name="first_name"]').val(), 'Test')
     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
     assertEquals($('input[name="last_name"]').val(), 'Patient')
-    assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
+    assertEquals($('input[name="birthDate"]').val(), '2020-01-01')
     assertEquals($('select[name="gender"]').val(), 'female')
     assertEquals($('select[name="ethnicity"]').val(), 'african')
     assertEquals(
@@ -571,7 +571,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
     await patients.update(db, {
       id: patient_id,
-      date_of_birth: '2020-01-01',
+      birthDate: '2020-01-01',
     })
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
@@ -683,7 +683,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     await patients.update(db, {
       id: patient_id,
-      date_of_birth: '2020-01-01',
+      birthDate: '2020-01-01',
     })
 
     const { fetch } = await addTestHealthWorkerWithSession(db, {
@@ -779,7 +779,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     await patients.update(db, {
       id: patient_id,
-      date_of_birth: '2000-01-01',
+      birthDate: '2000-01-01',
     })
 
     const { fetch } = await addTestHealthWorkerWithSession(db, {
@@ -887,7 +887,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     await patients.update(db, {
       id: patient_id,
-      date_of_birth: '2000-01-01',
+      birthDate: '2000-01-01',
     })
 
     const { fetch } = await addTestHealthWorkerWithSession(db, {
@@ -1125,7 +1125,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     await patients.update(db, {
       id: patient_id,
-      date_of_birth: '2000-01-01',
+      birthDate: '2000-01-01',
     })
 
     const { fetch } = await addTestHealthWorkerWithSession(db, {

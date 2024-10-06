@@ -1,27 +1,29 @@
-import { Maybe } from '../../../../../types.ts'
 import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { IntakePage, postHandler } from './_middleware.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
-import compact from '../../../../../util/compact.ts'
 
 type PersonalFormValues = {
-  first_name: string
-  last_name: string
-  middle_names?: string
-  avatar_media?: Maybe<{ id: string }>
+  given_names: string[]
+  family_name: string
   national_id_number?: string
   no_national_id: boolean
   phone_number?: string
+  avatar_media_id?: string
+  ethnicity?: string | string[]
 }
 
 function assertIsPersonal(
   patient: unknown,
 ): asserts patient is PersonalFormValues {
+  console.log('assertIsPersonal', patient)
   assertOr400(isObjectLike(patient))
-  assertOr400(!!patient.first_name && typeof patient.first_name === 'string')
-  assertOr400(!!patient.last_name && typeof patient.last_name === 'string')
+
+  assertOr400(!!patient.given_names && typeof patient.given_names === 'string')
+  patient.given_names = patient.given_names.split(' ')
+
+  assertOr400(!!patient.family_name && typeof patient.family_name === 'string')
   assertOr400(
     (!!patient.national_id_number &&
       typeof patient.national_id_number === 'string') ||
@@ -44,21 +46,24 @@ export const handler = postHandler(
   async function updatePersonal(
     ctx,
     patient_id,
-    { first_name, middle_names, last_name, ...form_values },
+    {
+      given_names,
+      family_name,
+      national_id_number,
+      avatar_media_id,
+      phone_number,
+      ethnicity,
+    },
   ) {
-    const given_names = [first_name]
-    if (middle_names) {
-      given_names.push(...compact(middle_names.split(/\W/)))
-    }
-
-    await patients.update(ctx.state.trx, {
-      id: patient_id,
-      name: [{
-        use: 'official',
+    console.log('TODO handle ethnicity', ethnicity)
+    await patients.update(ctx.state.trx, patient_id, {
+      name: {
         given: given_names,
-        family: last_name,
-      }],
-      ...form_values,
+        family: family_name,
+      },
+      national_id_number,
+      avatar_media_id,
+      phone_number,
     })
   },
 )

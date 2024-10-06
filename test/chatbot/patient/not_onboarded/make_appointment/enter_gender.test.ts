@@ -17,7 +17,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       phone_number,
       name: 'test',
       gender: null,
-      date_of_birth: null,
+      birthDate: null,
       national_id_number: null,
     })
 
@@ -60,7 +60,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'not_onboarded:make_appointment:enter_date_of_birth',
+      'not_onboarded:make_appointment:enter_birthDate',
     )
     assertEquals(patient.gender, 'non-binary')
   })

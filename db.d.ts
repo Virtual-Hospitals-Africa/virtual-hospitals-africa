@@ -385,8 +385,8 @@ export interface Districts {
 export interface DoctorRegistrationDetails {
   address_id: string | null
   approved_by: string | null
+  birthDate: Timestamp
   created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
   date_of_first_practice: Timestamp
   doctor_practicing_cert_media_id: string | null
   face_picture_media_id: string | null
@@ -787,8 +787,8 @@ export interface Medications {
 export interface NurseRegistrationDetails {
   address_id: string | null
   approved_by: string | null
+  birthDate: Timestamp
   created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
   date_of_first_practice: Timestamp
   face_picture_media_id: string | null
   gender: Gender
@@ -885,13 +885,16 @@ export interface Patient {
   id: string
   lastUpdated: Timestamp
   link: string[] | null
+  location: string | null
   national_id_number: string | null
   organization: string | null
   organizationId: string | null
   phone_number: string | null
   phonetic: string[] | null
+  primary_doctor_id: string | null
   projectId: string | null
   race: string[] | null
+  unregistered_primary_doctor_name: string | null
 }
 
 export interface PatientAge {
@@ -1071,7 +1074,7 @@ export interface PatientIntake {
 }
 
 export interface PatientIntakeCompleted {
-  completed_at: Timestamp
+  completed_at: Generated<Timestamp>
   completed_by_employment_id: string
   patient_id: string
 }

@@ -10,6 +10,7 @@
     "web": "deno task run:trusted main.ts",
     "db:codegen": "./db/codegen.sh",
     "db:local": "./db/local.sh",
+    "db:recreate": "deno task run:trusted ./db/recreate.ts",
     "db:reset": "deno task run:trusted ./db/reset.ts",
     "db:migrate": "deno task run:trusted db/migrate.ts",
     "db:seed": "deno task run:trusted db/seed/run.ts",

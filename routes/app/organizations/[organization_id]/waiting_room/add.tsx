@@ -1,17 +1,16 @@
-import { FreshContext } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as organizations from '../../../../../db/models/organizations.ts'
 import {
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Maybe,
 } from '../../../../../types.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import { EncounterReason } from '../../../../../db.d.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
@@ -48,27 +47,29 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default async function WaitingRoomAdd(
   _req: Request,
-  { url, state, params, route }: FreshContext<LoggedInHealthWorker>,
+  { url, state, params, route }: OrganizationContext,
 ) {
-  const { trx } = state
+  const { trx, organization_provider_id } = state
   const { searchParams } = url
+  const { organization_id } = params
+  assert(organization_id)
   const patient_id = searchParams.get('patient_id')
   const encounter_id = searchParams.get('encounter_id')
   assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
 
   const patient_name = searchParams.get('patient_name')
   const just_completed_intake = url.searchParams.get('intake') === 'completed'
-  let completing_intake: Promise<unknown> = Promise.resolve()
   if (just_completed_intake) {
     assertOr400(patient_id, 'patient_id is required')
-    completing_intake = patients.update(trx, {
-      id: patient_id,
-      completed_intake: true,
+    assertOr403(
+      organization_provider_id,
+      'Only providers (doctor, nurse) can complete intake',
+    )
+    await patients.completeIntake(trx, {
+      patient_id,
+      completed_by_employment_id: organization_provider_id,
     })
   }
-
-  const { organization_id } = params
-  assert(organization_id)
 
   const gettingProviders = organizations.getApprovedProviders(
     trx,
@@ -82,7 +83,6 @@ export default async function WaitingRoomAdd(
       patient_id,
       encounter_id: 'open',
     })
-    await completing_intake
     const fetched_patient = await patients.getByID(trx, {
       id: patient_id,
     })

@@ -51,7 +51,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            completed_intake: false,
+            intake_completed: false,
             intake_steps_completed: [],
             actions: {
               view: `/app/patients/${test_patient1.id}`,
@@ -72,7 +72,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            completed_intake: false,
+            intake_completed: false,
             intake_steps_completed: [],
             actions: {
               view: `/app/patients/${test_patient2.id}`,
@@ -88,7 +88,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         const name = generateUUID()
         await patients.insert(trx, {
           name,
-          date_of_birth: '2021-03-01',
+          birthDate: '2021-03-01',
           gender: 'female',
         })
 
@@ -124,7 +124,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          completed_intake: false,
+          intake_completed: false,
           intake_steps_completed: [],
           actions: {
             view: `/app/patients/${test_patient.id}`,
@@ -164,7 +164,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          completed_intake: false,
+          intake_completed: false,
           intake_steps_completed: [],
           actions: {
             view: `/app/patients/${patient_id}`,
@@ -193,7 +193,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       async (trx) => {
         const patient = await patients.insert(trx, {
           name: 'Test Patient',
-          date_of_birth: '1989-01-03',
+          birthDate: '1989-01-03',
           gender: 'male',
         })
         const encounter = await patient_encounters.upsert(
@@ -225,7 +225,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            completed_intake: false,
+            intake_completed: false,
             intake_steps_completed: [],
             actions: {
               view: `/app/patients/${patient_id}`,
@@ -301,32 +301,32 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd('finds patient ages', async (trx) => {
       const testPatient1 = await patients.insert(trx, {
         name: 'Test Patient 1',
-        date_of_birth: today.toISOString().split('T')[0],
+        birthDate: today.toISOString().split('T')[0],
       })
 
       const yesterday = new Date(today.getTime() - 86400000)
       const testPatient2 = await patients.insert(trx, {
         name: 'Test Patient 2',
-        date_of_birth: yesterday.toISOString().split('T')[0],
+        birthDate: yesterday.toISOString().split('T')[0],
       })
 
       const twentyDays = new Date(today.getTime() - (86400000 * 20))
       const testPatient3 = await patients.insert(trx, {
         name: 'Test Patient 3',
-        date_of_birth: twentyDays.toISOString().split('T')[0],
+        birthDate: twentyDays.toISOString().split('T')[0],
       })
 
       const threeWeeks = new Date(today.getTime() - (86400000 * 21))
       const testPatient4 = await patients.insert(trx, {
         name: 'Test Patient 4',
-        date_of_birth: threeWeeks.toISOString().split('T')[0],
+        birthDate: threeWeeks.toISOString().split('T')[0],
       })
 
       const threeMonths = new Date(today)
       threeMonths.setMonth(today.getMonth() - 3)
       const testPatient5 = await patients.insert(trx, {
         name: 'Test Patient 5',
-        date_of_birth: threeMonths.toISOString().split('T')[0],
+        birthDate: threeMonths.toISOString().split('T')[0],
       })
 
       const twoYears = new Date(today)
@@ -334,12 +334,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const oneDayBelowTwoYears = new Date(twoYears.getTime() + 86400000)
       const testPatient6 = await patients.insert(trx, {
         name: 'Test Patient 6',
-        date_of_birth: oneDayBelowTwoYears.toISOString().split('T')[0],
+        birthDate: oneDayBelowTwoYears.toISOString().split('T')[0],
       })
 
       const testPatient7 = await patients.insert(trx, {
         name: 'Test Patient 7',
-        date_of_birth: twoYears.toISOString().split('T')[0],
+        birthDate: twoYears.toISOString().split('T')[0],
       })
 
       const patient_ages = await trx
@@ -381,7 +381,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const oneDayBelowThreeMonths = new Date(threeMonths.getTime() + 86400000)
       const testPatient8 = await patients.insert(trx, {
         name: 'Test Patient 8',
-        date_of_birth: oneDayBelowThreeMonths.toISOString().split('T')[0],
+        birthDate: oneDayBelowThreeMonths.toISOString().split('T')[0],
       })
 
       const patient_age = await trx

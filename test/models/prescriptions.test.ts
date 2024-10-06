@@ -37,7 +37,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         await patient_intake.updateCompletion(trx, {
           patient_id: patient.id,
           intake_step_just_completed: 'summary',
-          completed_intake: true,
+          intake_completed: true,
         })
 
         await doctor_reviews.upsertRequest(trx, {

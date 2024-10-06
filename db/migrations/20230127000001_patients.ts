@@ -7,13 +7,13 @@ const t1 = upsertTrigger(
   'Patient',
   'phone_number',
   `
-  (
-    SELECT elem->>'value'
-    FROM jsonb_array_elements(NEW.content::jsonb->'telecom') AS elem
-    WHERE elem->>'system' = 'phone'
-    LIMIT 1
-  )
-`,
+    (
+      SELECT elem->>'value'
+      FROM jsonb_array_elements(NEW.content::jsonb->'telecom') AS elem
+      WHERE elem->>'system' = 'phone'
+      LIMIT 1
+    )
+  `,
 )
 
 const t2 = upsertTrigger(
@@ -26,13 +26,13 @@ const t3 = upsertTrigger(
   'Patient',
   'national_id_number',
   `
-  (
-    SELECT elem->>'value'
-    FROM jsonb_array_elements(NEW.content::jsonb->'identifier') AS elem
-    WHERE elem->>'system' = 'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md'
-    LIMIT 1
-  )
-`,
+    (
+      SELECT elem->>'value'
+      FROM jsonb_array_elements(NEW.content::jsonb->'identifier') AS elem
+      WHERE elem->>'system' = 'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md'
+      LIMIT 1
+    )
+  `,
 )
 
 export async function up(db: Kysely<DB>) {
@@ -66,6 +66,15 @@ export async function up(db: Kysely<DB>) {
       'uuid',
       (col) => col.references('media.id'),
     )
+    // TODO remove this in favor of medplum's handling of this
+    .addColumn(
+      'primary_doctor_id',
+      'uuid',
+      (col) => col.references('employment.id'),
+    )
+    // TODO remove this in favor of medplum's handling of this
+    .addColumn('unregistered_primary_doctor_name', 'varchar(255)')
+    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
     .execute()
 
   await t1.create(db)
@@ -79,7 +88,7 @@ export async function up(db: Kysely<DB>) {
   //     qb.addColumn('phone_number', 'varchar(255)')
   //       .addColumn('name', 'varchar(255)', (col) => col.notNull())
   //       .addColumn('gender', sql`gender`)
-  //       .addColumn('date_of_birth', 'date')
+  //       .addColumn('birthDate', 'date')
   //       .addColumn('national_id_number', 'varchar(50)')
   //       .addColumn(
   //         'avatar_media_id',
@@ -91,7 +100,7 @@ export async function up(db: Kysely<DB>) {
   //         'uuid',
   //         (col) => col.references('address.id'),
   //       )
-  //       .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
+
   //       .addColumn(
   //         'nearest_organization_id',
   //         'uuid',
@@ -99,7 +108,7 @@ export async function up(db: Kysely<DB>) {
   //       )
   //       .addColumn('ethnicity', 'varchar(50)')
   //       .addColumn(
-  //         'completed_intake',
+  //         'intake_completed',
   //         'boolean',
   //         (col) => col.notNull().defaultTo(false),
   //       )

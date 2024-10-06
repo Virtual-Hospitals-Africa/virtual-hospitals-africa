@@ -3,7 +3,7 @@ import { SelectQueryBuilder, sql } from 'kysely'
 import {
   HasStringId,
   Location,
-  Patient,
+  Maybe,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
   PatientWithOpenEncounter,
@@ -27,8 +27,11 @@ import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
 import {
   batchInsert,
+  createResource,
   patchResource,
 } from '../../external-clients/medplum/client.ts'
+import last from '../../util/last.ts'
+import { name_string_sql } from './human_name.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', Patient.id::text)
@@ -75,7 +78,7 @@ const baseSelect = (trx: TrxOrDb) =>
     .leftJoin('patient_age', 'patient_age.patient_id', 'Patient.id')
     .select((eb) => [
       'Patient.id',
-      sql<string>`PatientName.given || ' ' || PatientName.family`.as('name'),
+      name_string_sql('PatientName').as('name'),
       'Patient.phone_number',
       'Patient.gender',
       'Patient.ethnicity',
@@ -87,7 +90,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patient_age.age_display',
       sql<
         string | null
-      >`Patient.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
+      >`Patient.gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`.as(
         'description',
       ),
       'Patient.national_id_number',
@@ -136,91 +139,154 @@ export async function getLastConversationState(
   return { ...patient, ...last_message }
 }
 
-export async function insertMany(
-  trx: TrxOrDb,
-  patients: Array<Partial<Patient>>,
+function convertToHumanName(name: string) {
+  let given_names = name.split(' ').filter((n) => !!n)
+  let family_name = given_names.pop()
+
+  // Interpret "de" in "Camille de Bruglia" into part of the family name
+  if (given_names.length >= 2) {
+    const maybe_part_of_family_name = last(given_names)!
+    if (
+      maybe_part_of_family_name[0].toLowerCase() ===
+        maybe_part_of_family_name[0]
+    ) {
+      given_names = given_names.slice(0, -1)
+      family_name = `${maybe_part_of_family_name} ${family_name}`
+    }
+  }
+  assert(family_name)
+  assert(given_names.length > 1)
+  return {
+    given: given_names,
+    family: family_name,
+  }
+}
+
+export function insertMany(
+  _trx: TrxOrDb,
+  patients: MedplumCoercible[],
 ) {
   assert(patients.length > 0, 'Must insert at least one patient')
-  const foo = await batchInsert(patients.map(({
-    name,
-    ..._rest
-  }) => ({
-    resourceType: 'Patient',
-    name: [{
-      use: 'official',
-      given: name.split(' '),
-    }],
-    // ...rest
-  })))
-  return trx
-    .insertInto('Patient')
-    .values(patients)
-    .returningAll()
-    .execute()
+  return batchInsert(patients.map(toMedplum))
 }
 
 export async function insert(
   trx: TrxOrDb,
-  { conversation_state, ...to_insert }: Partial<Patient> & {
+  { name, phone_number, conversation_state }: {
     name: string
+    phone_number?: Maybe<string>
     conversation_state?: string
   },
 ) {
-  const inserted = await insertMany(trx, [to_insert])
-  assert(inserted.length === 1)
-  const patient = inserted[0]
+  const patient = await createResource({
+    resourceType: 'Patient',
+    name: [convertToHumanName(name)],
+    telecom: phone_number
+      ? [
+        {
+          system: 'phone',
+          value: phone_number,
+        },
+      ]
+      : undefined,
+  })
+
+  // TODO, make this part of a medplum transaction?
   if (conversation_state) {
+    assert(phone_number)
     await trx.insertInto('patient_chatbot_users')
       .values({
         entity_id: patient.id,
-        phone_number: patient.phone_number!,
+        phone_number,
         conversation_state,
         data: '{}',
       })
       .execute()
   }
+
   return patient
 }
 
-export async function update(
+type MedplumCoercible = {
+  name?: string | {
+    given: string[]
+    family: string
+  }
+  national_id_number?: Maybe<string>
+  avatar_media_id?: Maybe<string>
+  phone_number?: Maybe<string>
+}
+
+function toMedplum({
+  name,
+  national_id_number,
+  avatar_media_id,
+  phone_number,
+}: MedplumCoercible): MedplumPatient {
+  return {
+    resourceType: 'Patient',
+    name: !name
+      ? undefined
+      : typeof name === 'string'
+      ? [convertToHumanName(name)]
+      : [name],
+    identifier: national_id_number
+      ? [
+        {
+          system:
+            'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md',
+          value: national_id_number,
+        },
+      ]
+      : undefined,
+    extension: avatar_media_id
+      ? [
+        {
+          url: 'avatar_media_id',
+          valueString: avatar_media_id,
+        },
+      ]
+      : undefined,
+    telecom: phone_number
+      ? [
+        {
+          system: 'phone',
+          value: phone_number,
+        },
+      ]
+      : undefined,
+  }
+}
+
+export function update(
   _trx: TrxOrDb,
-  patient: Omit<MedplumPatient, 'resourceType'> & {
+  { id, ...updates }: {
     id: string
+    name?: string | {
+      given: string[]
+      family: string
+    }
+    national_id_number?: Maybe<string>
+    avatar_media_id?: Maybe<string>
+    phone_number?: Maybe<string>
   },
 ) {
-  await patchResource({
-    resourceType: 'Patient',
-    ...patient,
+  return patchResource({
+    id,
+    ...toMedplum(updates),
   })
 }
 
 export function upsert(
   trx: TrxOrDb,
-  { location, primary_doctor_id, ...patient }: Partial<Patient> & {
+  { id, ...data }: {
     id?: string
     name: string
+    phone_number?: Maybe<string>
+    gender?: Maybe<string>
   },
 ) {
-  const to_upsert = {
-    ...patient,
-    primary_doctor_id: primary_doctor_id && (
-      trx.selectFrom('employment')
-        .where('id', '=', primary_doctor_id)
-        .where('profession', '=', 'doctor')
-        .select('id')
-    ),
-    location: location &&
-      sql<
-        string
-      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
-  }
-  return trx
-    .insertInto('Patient')
-    .values(to_upsert)
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
-    .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  return id ? update(trx, { id, ...data }) : insert(trx, data)
 }
 
 export function getByID(
@@ -439,4 +505,14 @@ export function scheduledAppointments(
     ])
     .where('patient_id', '=', patient_id)
     .execute()
+}
+
+export function completeIntake(trx: TrxOrDb, values: {
+  patient_id: string
+  completed_by_employment_id: string
+}) {
+  return trx.insertInto('patient_intake_completed')
+    .values(values)
+    .onConflict((oc) => oc.column('patient_id').doNothing())
+    .executeTakeFirstOrThrow()
 }

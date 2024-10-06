@@ -21,7 +21,7 @@ describe(
             const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
-              date_of_birth: '1990-01-01',
+              birthDate: '1990-01-01',
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,
@@ -53,7 +53,7 @@ describe(
             const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
-              date_of_birth: '1990-01-01',
+              birthDate: '1990-01-01',
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,
@@ -91,7 +91,7 @@ describe(
             const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
-              date_of_birth: '1990-01-01',
+              birthDate: '1990-01-01',
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,

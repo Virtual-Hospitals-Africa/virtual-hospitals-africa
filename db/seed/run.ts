@@ -69,23 +69,23 @@ const past_tense = {
   reload: 'reloaded',
 }
 
-export async function load(target?: string) {
+export function load(target?: string) {
   return run('load', target)
 }
 
-export async function dump(target?: string) {
+export function dump(target?: string) {
   return run('dump', target)
 }
 
-export async function drop(target?: string) {
+export function drop(target?: string) {
   return run('drop', target)
 }
 
-export async function recreate(target?: string) {
+export function recreate(target?: string) {
   return run('recreate', target)
 }
 
-export async function reload(target?: string) {
+export function reload(target?: string) {
   return run('reload', target)
 }
 

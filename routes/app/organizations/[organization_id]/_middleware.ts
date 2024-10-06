@@ -10,6 +10,7 @@ import { HealthWorkerEmployment } from '../../../../types.ts'
 export type OrganizationContext = LoggedInHealthWorkerContext<{
   organization: HasStringId<Organization>
   organization_employment: HealthWorkerEmployment
+  organization_provider_id?: string
   isAdminAtOrganization: boolean
 }>
 
@@ -36,6 +37,9 @@ export async function handler(
 
   ctx.state.organization = organization
   ctx.state.organization_employment = organization_employment
+  ctx.state.organization_provider_id =
+    organization_employment.roles.doctor?.employment_id ||
+    organization_employment.roles.nurse?.employment_id
   ctx.state.isAdminAtOrganization = !!organization_employment.roles.admin
   return ctx.next()
 }

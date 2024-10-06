@@ -45,13 +45,13 @@ export function getById(
       'patients.location',
       'patients.gender',
       'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
+      sql<null | string>`TO_CHAR(patients.birthDate, 'YYYY-MM-DD')`.as(
+        'birthDate',
       ),
       'patients.national_id_number',
       sql<
         string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+      >`patients.gender || ', ' || TO_CHAR(patients.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
@@ -63,7 +63,7 @@ export function getById(
         suburb_id: eb.ref('address.suburb_id'),
         street: eb.ref('address.street'),
       }).as('address'),
-      'patients.completed_intake',
+      'patients.intake_completed',
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -129,13 +129,13 @@ export async function getSummaryById(
       'patients.phone_number',
       'patients.gender',
       'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
+      sql<null | string>`TO_CHAR(patients.birthDate, 'YYYY-MM-DD')`.as(
+        'birthDate',
       ),
       'patients.national_id_number',
       sql<
         string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+      >`patients.gender || ', ' || TO_CHAR(patients.birthDate, 'DD/MM/YYYY')`
         .as(
           'description',
         ),
@@ -166,7 +166,7 @@ export async function getSummaryById(
           .orderBy(['intake.order desc'])
           .select(['intake_step']),
       ).as('intake_steps_completed'),
-      'completed_intake',
+      'intake_completed',
     ])
     .where('patients.id', '=', patient_id)
     .executeTakeFirst()
@@ -198,11 +198,11 @@ export async function updateCompletion(
   {
     patient_id,
     intake_step_just_completed,
-    completed_intake,
+    intake_completed,
   }: {
     patient_id: string
     intake_step_just_completed: IntakeStep
-    completed_intake?: boolean
+    intake_completed?: boolean
   },
 ): Promise<void> {
   const upserting_intake_step = trx
@@ -214,9 +214,9 @@ export async function updateCompletion(
     .onConflict((oc) => oc.doNothing())
     .execute()
 
-  const updating_patient = completed_intake && trx.updateTable('patients')
+  const updating_patient = intake_completed && trx.updateTable('patients')
     .where('id', '=', patient_id)
-    .set({ completed_intake })
+    .set({ intake_completed })
     .execute()
 
   await Promise.all([upserting_intake_step, updating_patient])

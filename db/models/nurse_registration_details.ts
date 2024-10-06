@@ -107,7 +107,7 @@ export function get(
       'updated_at',
       'health_worker_id',
       'gender',
-      isoDate(eb.ref('date_of_birth')).as('date_of_birth'),
+      isoDate(eb.ref('birthDate')).as('birthDate'),
       isoDate(eb.ref('date_of_first_practice')).as('date_of_first_practice'),
       'national_id_number',
       'ncz_registration_number',
@@ -156,7 +156,7 @@ function assertIsRegistrationDetails(
   assertOr400(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(
     registration_details.national_id_number,
   ))
-  assertOr400(isDate(registration_details.date_of_birth))
+  assertOr400(isDate(registration_details.birthDate))
   assertOr400(isDate(registration_details.date_of_first_practice))
   assertOr400(typeof registration_details.ncz_registration_number === 'string')
   assertOr400(

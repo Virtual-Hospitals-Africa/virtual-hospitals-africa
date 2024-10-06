@@ -22,7 +22,7 @@ export default async function PatientPage(
 
   assertOr404(patient, 'Patient not found')
 
-  if (!patient.completed_intake) {
+  if (!patient.intake_completed) {
     return redirect(`/app/patients/${patient_id}/intake`)
   }
 

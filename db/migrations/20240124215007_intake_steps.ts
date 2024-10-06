@@ -1,6 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { createStandardTable } from '../createStandardTable.ts'
+import { now } from '../helpers.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
@@ -15,7 +16,11 @@ export async function up(db: Kysely<any>) {
       'uuid',
       (col) => col.notNull().references('employment.id'),
     )
-    .addColumn('completed_at', 'timestamp', (col) => col.notNull())
+    .addColumn(
+      'completed_at',
+      'timestamp',
+      (col) => col.defaultTo(now).notNull(),
+    )
     .execute()
 
   await db.schema.createType('intake_step')

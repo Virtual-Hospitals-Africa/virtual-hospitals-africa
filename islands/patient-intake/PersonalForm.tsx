@@ -18,7 +18,6 @@ export default function PatientPersonalForm(
     previously_completed: boolean
   },
 ) {
-  const names = patient.name ? patient.name.split(/\s+/) : []
   const no_national_id = useSignal<boolean>(
     previously_completed && !patient.national_id_number,
   )
@@ -26,22 +25,21 @@ export default function PatientPersonalForm(
     <>
       <FormRow>
         <TextInput
-          name='first_name'
-          value={names[0]}
+          name='given_names'
+          value={patient.name?.given.join(' ')}
           required
         />
-        <TextInput name='middle_names' value={names.slice(1, -1).join(' ')} />
         <TextInput
-          name='last_name'
-          value={names.slice(-1)[0]}
+          name='family_name'
+          value={patient.name?.family}
           required
         />
       </FormRow>
       <FormRow>
         <GenderSelect value={patient.gender} />
         <DateInput
-          name='date_of_birth'
-          value={patient.date_of_birth}
+          name='birthDate'
+          value={patient.birthDate}
           required
         />
         <EthnicitySelect value={patient.ethnicity} />

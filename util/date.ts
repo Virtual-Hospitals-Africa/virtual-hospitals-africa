@@ -13,9 +13,9 @@ import isString from './isString.ts'
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 export function prettyPatientDateOfBirth(
-  date_of_birth: string,
+  birthDate: string,
 ): string {
-  const [y, m, d] = date_of_birth.split('-').map((d) => parseInt(d, 10))
+  const [y, m, d] = birthDate.split('-').map((d) => parseInt(d, 10))
   const year = `${y}`
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')

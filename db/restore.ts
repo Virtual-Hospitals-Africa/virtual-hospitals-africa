@@ -1,13 +1,16 @@
 import * as db from './db.ts'
 import { runCommand } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
+import { spinner } from '../util/spinner.ts'
 
 export function restore(name: string) {
   const dump_file = `./db/dumps/${name}`
-  console.log(`Restoring database from ${dump_file}...`)
-  return runCommand('pg_restore', {
-    args: ['--no-owner', '-d', db.uri, dump_file],
-  })
+  return spinner(
+    `Restoring database from ${dump_file}`,
+    runCommand('pg_restore', {
+      args: ['--no-owner', '-d', db.uri, dump_file],
+    }),
+  )
 }
 
 if (import.meta.main) {

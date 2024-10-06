@@ -4,7 +4,6 @@ import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/ou
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import {
-  Gender,
   Maybe,
   NURSE_SPECIALTIES,
   PHARMACIST_TYPES,
@@ -18,6 +17,7 @@ import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { Signal } from '@preact/signals'
 import { Label } from '../../components/library/Label.tsx'
+import { LabelledListboxMulti } from './Listbox.tsx'
 
 export const NoLabelButSpaceAsPlaceholder = Symbol(
   'NoLabelButSpaceAsPlaceholder',
@@ -790,7 +790,7 @@ export function RadioGroup(
 }
 
 export function GenderSelect(
-  { value }: { value: Maybe<Gender> },
+  { value }: { value: Maybe<string> },
 ) {
   return (
     <Select
@@ -811,54 +811,25 @@ export function GenderSelect(
 }
 
 export function EthnicitySelect(
-  { value }: { value: Maybe<string> },
+  { value }: { value: Maybe<string[]> },
 ) {
   return (
-    <Select
-      required
+    <LabelledListboxMulti
       name='ethnicity'
       label='Ethnicity'
-    >
-      <option value=''>Select</option>
-      <option value='african' label='African' selected={value === 'african'} />
-      <option
-        value='african american'
-        label='African American'
-        selected={value === 'african american'}
-      />
-      <option value='asian' label='Asian' selected={value === 'asian'} />
-      <option
-        value='caribbean'
-        label='Caribbean'
-        selected={value === 'caribbean'}
-      />
-      <option
-        value='caucasian'
-        label='Caucasian'
-        selected={value === 'caucasian'}
-      />
-      <option
-        value='hispanic'
-        label='Hispanic'
-        selected={value === 'hispanic'}
-      />
-      <option
-        value='middle eastern'
-        label='Middle Eastern'
-        selected={value === 'middle eastern'}
-      />
-      <option
-        value='native american'
-        label='Native American'
-        selected={value === 'native american'}
-      />
-      <option
-        value='pacific islander'
-        label='Pacific Islander'
-        selected={value === 'pacific islander'}
-      />
-      <option value='other' label='Other' selected={value === 'other'} />
-    </Select>
+      options={[
+        'african',
+        'african american',
+        'asian',
+        'caribbean',
+        'caucasian',
+        'hispanic',
+        'middle eastern',
+        'native american',
+        'pacific islander',
+      ]}
+      selected={value || []}
+    />
   )
 }
 

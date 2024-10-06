@@ -14,5 +14,15 @@ diff .env .env.local >/dev/null || {
   exit 1
 }
 
+# shellcheck disable=SC2086
 deno task db:$script "$@"
-IS_TEST=true deno task db:$script "$@"
+
+if [ "$script" = "reset" ]; then
+  deno task db:dump > ./db/dumps/latest
+  IS_TEST=true deno task db:recreate
+  IS_TEST=true deno task db:restore latest
+else
+  # shellcheck disable=SC2086
+  IS_TEST=true deno task db:$script "$@"
+fi
+

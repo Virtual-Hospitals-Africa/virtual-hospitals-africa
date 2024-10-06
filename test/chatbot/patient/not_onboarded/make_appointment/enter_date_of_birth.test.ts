@@ -13,11 +13,11 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for national ID number after inquiring birthday', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
+      conversation_state: 'not_onboarded:make_appointment:enter_birthDate',
       phone_number,
       name: 'test',
       gender: 'non-binary',
-      date_of_birth: null,
+      birthDate: null,
       national_id_number: null,
     })
 

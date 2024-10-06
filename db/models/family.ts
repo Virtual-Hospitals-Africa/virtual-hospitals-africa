@@ -4,7 +4,7 @@ import {
   FamilyRelationInsert,
   FamilyUpsert,
   GuardianRelationName,
-  Patient,
+  Maybe,
   PatientFamily,
   PatientGuardian,
   TrxOrDb,
@@ -18,6 +18,7 @@ import partition from '../../util/partition.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 import memoize from '../../util/memoize.ts'
+import { name_string_sql } from './human_name.ts'
 
 export function addGuardian(
   trx: TrxOrDb,
@@ -42,12 +43,17 @@ export async function get(
       'guardian_relations.guardian',
     )
     .innerJoin(
-      'patients as guardian',
+      'Patient as guardian',
       'patient_guardians.guardian_patient_id',
       'guardian.id',
     )
     .innerJoin(
-      'patients as dependent',
+      'HumanName as guardian_name',
+      'guardian_name.resourceId',
+      'guardian.id',
+    )
+    .innerJoin(
+      'Patient as dependent',
       'patient_guardians.dependent_patient_id',
       'dependent.id',
     )
@@ -61,7 +67,7 @@ export async function get(
       'guardian_relations.guardian as family_relation',
       'guardian_relations.guardian as guardian_relation',
       'guardian.id as patient_id',
-      'guardian.name as patient_name',
+      name_string_sql('guardian_name').as('patient_name'),
       'guardian.gender as patient_gender',
       'guardian.phone_number as patient_phone_number',
       eb('kin.next_of_kin_patient_id', 'is not', null).as('next_of_kin'),
@@ -96,20 +102,25 @@ export async function get(
       'guardian_relations.guardian',
     )
     .innerJoin(
-      'patients as guardian',
+      'Patient as guardian',
       'patient_guardians.guardian_patient_id',
       'guardian.id',
     )
     .innerJoin(
-      'patients as dependent',
+      'Patient as dependent',
       'patient_guardians.dependent_patient_id',
+      'dependent.id',
+    )
+    .innerJoin(
+      'HumanName as dependent_name',
+      'dependent_name.resourceId',
       'dependent.id',
     )
     .where('guardian.id', '=', patient_id)
     .select(({ eb, and }) => [
       'patient_guardians.id as relation_id',
       'dependent.id as patient_id',
-      'dependent.name as patient_name',
+      name_string_sql('dependent_name').as('patient_name'),
       'dependent.phone_number as patient_phone_number',
       'guardian_relations.dependent as family_relation',
       'guardian_relations.guardian as guardian_relation',
@@ -139,8 +150,13 @@ export async function get(
   const gettingOtherNextOfKin = trx
     .selectFrom('patient_kin')
     .innerJoin(
-      'patients as kin',
+      'Patient as kin',
       'patient_kin.next_of_kin_patient_id',
+      'kin.id',
+    )
+    .innerJoin(
+      'HumanName as kin_name',
+      'kin_name.resourceId',
       'kin.id',
     )
     .leftJoin('patient_guardians', (join) =>
@@ -161,7 +177,7 @@ export async function get(
       'patient_kin.id as id',
       'patient_kin.relationship as relation',
       'kin.id as patient_id',
-      'kin.name as patient_name',
+      name_string_sql('kin_name').as('patient_name'),
       'kin.phone_number as patient_phone_number',
       'kin.gender as patient_gender',
     ])
@@ -357,7 +373,11 @@ export async function upsert(
     FamilyRelationInsert,
     [number, GuardianRelationName]
   >()
-  const to_insert: Array<Partial<Patient> & { name: string }> = []
+  const to_insert: {
+    name: string
+    phone_number?: Maybe<string>
+    gender?: Maybe<string>
+  }[] = []
   for (const guardian of new_guardians) {
     const relation = inverseGuardianRelation(guardian.family_relation_gendered)
     const index = to_insert.push({

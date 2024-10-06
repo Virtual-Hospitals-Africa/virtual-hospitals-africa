@@ -14,7 +14,6 @@ import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
 import { searchManufacturedMedications } from '../db/models/drugs.ts'
 import sample from '../util/sample.ts'
-import { now } from '../db/helpers.ts'
 
 function randomDateOfBirth() {
   const start = new Date(1950, 0, 1)
@@ -107,8 +106,11 @@ async function addPatientsToWaitingRoom() {
     const health_worker = nurses[num_patients - i - 1]
 
     const patient = await patients.insert(db, {
-      name: `${demo.first_name} ${demo.last_name}`,
-      date_of_birth: randomDateOfBirth(),
+      name: {
+        given: [demo.first_name],
+        family: demo.last_name,
+      },
+      birthDate: randomDateOfBirth(),
       gender: demo.gender,
       avatar_media_id: inserted_media.id,
     })
@@ -166,7 +168,6 @@ async function addPatientsToWaitingRoom() {
           .values({
             patient_id: patient.id,
             completed_by_employment_id: health_worker.employee_id!,
-            completed_at: now,
           })
           .execute()
 

@@ -75,7 +75,7 @@ export async function up(db: Kysely<unknown>) {
           'date',
           (column) => column.notNull(),
         )
-        .addColumn('date_of_birth', 'date', (column) => column.notNull())
+        .addColumn('birthDate', 'date', (column) => column.notNull())
         .addColumn('ncz_registration_number', 'varchar(50)', (column) =>
           column
             .notNull()
