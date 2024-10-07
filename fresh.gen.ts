@@ -39,6 +39,7 @@ import * as $app_organizations_organization_id_inventory_add_medicine from './ro
 import * as $app_organizations_organization_id_inventory_add_procurer from './routes/app/organizations/[organization_id]/inventory/add_procurer.tsx'
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
+import * as $app_organizations_organization_id_patients from './routes/app/organizations/[organization_id]/patients.tsx'
 import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
 import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
 import * as $app_organizations_organization_id_waiting_room from './routes/app/organizations/[organization_id]/waiting_room.tsx'
@@ -284,6 +285,8 @@ const manifest = {
       $app_organizations_organization_id_inventory_consume,
     './routes/app/organizations/[organization_id]/inventory/history.tsx':
       $app_organizations_organization_id_inventory_history,
+    './routes/app/organizations/[organization_id]/patients.tsx':
+      $app_organizations_organization_id_patients,
     './routes/app/organizations/[organization_id]/register.tsx':
       $app_organizations_organization_id_register,
     './routes/app/organizations/[organization_id]/register/[step].tsx':

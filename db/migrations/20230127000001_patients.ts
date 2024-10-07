@@ -99,7 +99,7 @@ export async function up(db: Kysely<DB>) {
   //     qb.addColumn('phone_number', 'varchar(255)')
   //       .addColumn('name', 'varchar(255)', (col) => col.notNull())
   //       .addColumn('gender', sql`gender`)
-  //       .addColumn('birthDate', 'date')
+  //       .addColumn('birthdate', 'date')
   //       .addColumn('national_id_number', 'varchar(50)')
   //       .addColumn(
   //         'avatar_media_id',

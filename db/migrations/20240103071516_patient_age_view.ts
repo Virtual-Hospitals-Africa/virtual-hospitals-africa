@@ -23,10 +23,10 @@ export async function up(db: Kysely<unknown>) {
 
     WITH a1 AS (
       SELECT id,
-             AGE(CURRENT_DATE, birthDate) as age,
-             CURRENT_DATE::timestamp - birthDate::timestamp as diff
+             AGE(CURRENT_DATE, birthdate) as age,
+             CURRENT_DATE::timestamp - birthdate::timestamp as diff
         from "Patient"
-       WHERE birthDate IS NOT NULL
+       WHERE birthdate IS NOT NULL
     ),
 
     a2 AS (

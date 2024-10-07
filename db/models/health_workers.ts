@@ -12,7 +12,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import {
-debugLog,
+  debugLog,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
@@ -219,102 +219,104 @@ export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: string },
 ): Promise<Maybe<PossiblyEmployedHealthWorker>> {
-  debugLog(trx
-    .selectFrom('health_workers')
-    .leftJoin(
-      'nurse_registration_details',
-      'health_workers.id',
-      'nurse_registration_details.health_worker_id',
-    )
-    .leftJoin(
-      'health_worker_sessions',
-      'health_workers.id',
-      'health_worker_sessions.entity_id',
-    )
-    .leftJoin(
-      'health_worker_google_tokens',
-      'health_workers.id',
-      'health_worker_google_tokens.health_worker_id',
-    )
-    .select((eb) => [
-      'health_workers.id',
-      'health_workers.name',
-      'health_workers.email',
-      'health_workers.avatar_url',
-      'health_worker_google_tokens.access_token',
-      'health_worker_google_tokens.refresh_token',
-      'health_worker_google_tokens.expires_at',
-      eb('nurse_registration_details.health_worker_id', 'is', null).as(
-        'registration_needed',
+  debugLog(
+    trx
+      .selectFrom('health_workers')
+      .leftJoin(
+        'nurse_registration_details',
+        'health_workers.id',
+        'nurse_registration_details.health_worker_id',
+      )
+      .leftJoin(
+        'health_worker_sessions',
+        'health_workers.id',
+        'health_worker_sessions.entity_id',
+      )
+      .leftJoin(
+        'health_worker_google_tokens',
+        'health_workers.id',
+        'health_worker_google_tokens.health_worker_id',
+      )
+      .select((eb) => [
+        'health_workers.id',
+        'health_workers.name',
+        'health_workers.email',
+        'health_workers.avatar_url',
+        'health_worker_google_tokens.access_token',
+        'health_worker_google_tokens.refresh_token',
+        'health_worker_google_tokens.expires_at',
+        eb('nurse_registration_details.health_worker_id', 'is', null).as(
+          'registration_needed',
+        ),
+        'nurse_registration_details.approved_by',
+        jsonArrayFrom(
+          eb.selectFrom('employment')
+            .innerJoin(
+              'Organization',
+              'employment.organization_id',
+              'Organization.id',
+            )
+            .leftJoin(
+              'Address as OrganizationAddress',
+              'Organization.id',
+              'OrganizationAddress.resourceId',
+            )
+            .innerJoin(
+              'provider_calendars',
+              (join) =>
+                join
+                  .onRef(
+                    'employment.organization_id',
+                    '=',
+                    'provider_calendars.organization_id',
+                  )
+                  .onRef(
+                    'employment.health_worker_id',
+                    '=',
+                    'provider_calendars.health_worker_id',
+                  ),
+            )
+            .select((eb_employment) => [
+              'employment.id as employment_id',
+              'employment.profession',
+              'provider_calendars.gcal_appointments_calendar_id',
+              'provider_calendars.gcal_availability_calendar_id',
+              'provider_calendars.availability_set',
+              jsonBuildObject({
+                id: eb_employment.ref('employment.organization_id'),
+                name: eb_employment.ref('Organization.canonicalName'),
+                address: eb_employment.ref('OrganizationAddress.address'),
+              }).as('organization'),
+            ])
+            .whereRef(
+              'employment.health_worker_id',
+              '=',
+              'health_workers.id',
+            ),
+        ).as('employment'),
+        jsonArrayFrom(
+          patient_encounters.baseQuery(trx)
+            .where('patient_encounters.closed_at', 'is', null)
+            .where(
+              'patient_encounters.id',
+              'in',
+              patient_encounters.ofHealthWorker(trx, health_worker_id),
+            ),
+        ).as('open_encounters'),
+        jsonBuildObject({
+          requested: jsonArrayFrom(
+            doctor_reviews.requestsOfHealthWorker(trx, health_worker_id),
+          ),
+          in_progress: jsonArrayFrom(
+            doctor_reviews.ofHealthWorker(trx, health_worker_id),
+          ),
+        }).as('reviews'),
+      ]).where(
+        'health_workers.id',
+        '=',
+        health_worker_id,
       ),
-      'nurse_registration_details.approved_by',
-      jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'Organization',
-            'employment.organization_id',
-            'Organization.id',
-          )
-          .leftJoin(
-            'Address as OrganizationAddress',
-            'Organization.id',
-            'OrganizationAddress.resourceId',
-          )
-          .innerJoin(
-            'provider_calendars',
-            (join) =>
-              join
-                .onRef(
-                  'employment.organization_id',
-                  '=',
-                  'provider_calendars.organization_id',
-                )
-                .onRef(
-                  'employment.health_worker_id',
-                  '=',
-                  'provider_calendars.health_worker_id',
-                ),
-          )
-          .select((eb_employment) => [
-            'employment.id as employment_id',
-            'employment.profession',
-            'provider_calendars.gcal_appointments_calendar_id',
-            'provider_calendars.gcal_availability_calendar_id',
-            'provider_calendars.availability_set',
-            jsonBuildObject({
-              id: eb_employment.ref('employment.organization_id'),
-              name: eb_employment.ref('Organization.canonicalName'),
-              address: eb_employment.ref('OrganizationAddress.address'),
-            }).as('organization'),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          ),
-      ).as('employment'),
-      jsonArrayFrom(
-        patient_encounters.baseQuery(trx)
-          .where('patient_encounters.closed_at', 'is', null)
-          .where(
-            'patient_encounters.id',
-            'in',
-            patient_encounters.ofHealthWorker(trx, health_worker_id),
-          ),
-      ).as('open_encounters'),
-      jsonBuildObject({
-        requested: jsonArrayFrom(
-          doctor_reviews.requestsOfHealthWorker(trx, health_worker_id),
-        ),
-        in_progress: jsonArrayFrom(
-          doctor_reviews.ofHealthWorker(trx, health_worker_id),
-        ),
-      }).as('reviews'),
-    ]).where(
-      'health_workers.id',
-      '=',
-      health_worker_id,
-    ))
+  )
   const result = await trx
     .selectFrom('health_workers')
     .leftJoin(
@@ -553,8 +555,8 @@ export function getEmployeeInfo(
           'health_workers.id as health_worker_id',
           sql<
             Maybe<string>
-          >`TO_CHAR(nurse_registration_details.birthDate, 'FMDD FMMonth YYYY')`
-            .as('birthDate'),
+          >`TO_CHAR(nurse_registration_details.birthdate, 'FMDD FMMonth YYYY')`
+            .as('birthdate'),
           sql<
             Maybe<string>
           >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`

@@ -40,10 +40,10 @@ export default function NursePersonalForm(
       </FormRow>
       <FormRow>
         <DateInput
-          name='birthDate'
+          name='birthdate'
           required
           label='Date of Birth'
-          value={formData.birthDate}
+          value={formData.birthdate}
         />
         <GenderSelect value={formData.gender} />
       </FormRow>

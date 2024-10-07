@@ -60,13 +60,13 @@ export function getById(
       'Patient.location',
       'Patient.gender',
       'Patient.ethnicity',
-      sql<null | string>`TO_CHAR(Patient.birthDate, 'YYYY-MM-DD')`.as(
-        'birthDate',
+      sql<null | string>`TO_CHAR("Patient"."birthdate", 'YYYY-MM-DD')`.as(
+        'birthdate',
       ),
       'Patient.national_id_number',
       sql<
         string | null
-      >`"Patient".gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
+      >`"Patient".gender || ', ' || TO_CHAR("Patient"."birthdate", 'DD/MM/YYYY')`
         .as(
           'description',
         ),
@@ -144,13 +144,13 @@ export async function getSummaryById(
       'Patient.phone_number',
       'Patient.gender',
       'Patient.ethnicity',
-      sql<null | string>`TO_CHAR(Patient.birthDate, 'YYYY-MM-DD')`.as(
-        'birthDate',
+      sql<null | string>`TO_CHAR("Patient"."birthdate", 'YYYY-MM-DD')`.as(
+        'birthdate',
       ),
       'Patient.national_id_number',
       sql<
         string | null
-      >`"Patient".gender || ', ' || TO_CHAR(Patient.birthDate, 'DD/MM/YYYY')`
+      >`"Patient".gender || ', ' || TO_CHAR("Patient"."birthdate", 'DD/MM/YYYY')`
         .as(
           'description',
         ),

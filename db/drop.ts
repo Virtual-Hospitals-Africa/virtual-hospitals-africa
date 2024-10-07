@@ -18,8 +18,7 @@ export async function drop() {
     },
   ).catch((e) => {
     if (e.message.includes('other session')) {
-      console.error('Database is in use, cannot drop.')
-      Deno.exit(1)
+      throw new Error('Database is in use, cannot drop.')
     }
     return 'Database does not exist, skipping drop.'
   })

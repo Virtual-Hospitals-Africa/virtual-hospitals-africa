@@ -38,8 +38,8 @@ export default function PatientPersonalForm(
       <FormRow>
         <GenderSelect value={patient.gender} />
         <DateInput
-          name='birthDate'
-          value={patient.birthDate}
+          name='birthdate'
+          value={patient.birthdate}
           required
         />
         <EthnicitySelect value={patient.ethnicity} />

@@ -29,10 +29,12 @@ import { DB } from '../../db.d.ts'
 import {
   batchInsert,
   createResource,
+  PatchOperation,
   patchResource,
 } from '../../external-clients/medplum/client.ts'
 import { toHumanName } from '../../util/human_name.ts'
 import { name_string_sql } from './human_name.ts'
+import { debugLog } from '../helpers.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', "Patient".id::text)
@@ -49,7 +51,7 @@ export const intake_clinical_notes_href_sql = sql<string>`
   concat('/app/patients/', "Patient".id::text, '/intake/review')
 `
 
-const dob_formatted = longFormattedDate('"Patient".birthDate').as(
+const dob_formatted = longFormattedDate('Patient.birthdate').as(
   'dob_formatted',
 )
 
@@ -91,7 +93,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patient_age.age_display',
       sql<
         string | null
-      >`"Patient".gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`.as(
+      >`"Patient".gender || ', ' || to_char(birthdate, 'DD/MM/YYYY')`.as(
         'description',
       ),
       'Patient.national_id_number',
@@ -111,8 +113,8 @@ const baseSelect = (trx: TrxOrDb) =>
       'Organization.canonicalName as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
       jsonBuildObject({
-        longitude: sql<number | null>`ST_X(Patient.location::geometry)`,
-        latitude: sql<number | null>`ST_Y(Patient.location::geometry)`,
+        longitude: sql<number | null>`ST_X("Patient".location::geometry)`,
+        latitude: sql<number | null>`ST_Y("Patient".location::geometry)`,
       }).as('location'),
       jsonBuildObject({
         view: view_href_sql,
@@ -181,62 +183,86 @@ type MedplumCoercible = {
   national_id_number?: Maybe<string>
   avatar_media_id?: Maybe<string>
   phone_number?: Maybe<string>
-  birthDate?: Maybe<string>
+  birthdate?: Maybe<string>
 }
 
-function toMedplum({
-  name,
-  birthDate,
-  national_id_number,
-  avatar_media_id,
-  gender,
-  phone_number,
-}: MedplumCoercible): MedplumPatient {
-  return {
+// type KeyValueTuple<T> = {
+//   [K in keyof T]: [K, T[K]];
+// }[keyof T];
+
+// type MedplumPatientTuple = KeyValueTuple<MedplumPatient>
+
+type MapValueTuple<T, V> = {
+  [K in keyof T]: [K, ((value: V) => T[K])]
+}[keyof T]
+
+const TO_MEDPLUM: {
+  [T in keyof MedplumCoercible]: MapValueTuple<
+    Omit<MedplumPatient, 'resourceType'>,
+    NonNullable<MedplumCoercible[T]>
+  >
+} = {
+  name: [
+    'name',
+    (value) => typeof value === 'string' ? [toHumanName(value)] : [value],
+  ],
+  birthdate: ['birthDate', (value) => value],
+  national_id_number: ['identifier', (value) => [{
+    system:
+      'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md',
+    value,
+  }]],
+  avatar_media_id: ['extension', (value) => [{
+    url: 'avatar_media_id',
+    valueString: value,
+  }]],
+  gender: ['gender', (value) => value],
+  phone_number: ['telecom', (value) => [{
+    system: 'phone',
+    value,
+  }]],
+}
+
+function toMedplum(patient: MedplumCoercible): MedplumPatient {
+  const as_medplum: MedplumPatient = {
     resourceType: 'Patient',
-    birthDate: birthDate || undefined,
-    gender: gender || undefined,
-    name: !name
-      ? undefined
-      : typeof name === 'string'
-      ? [toHumanName(name)]
-      : [name],
-    identifier: national_id_number
-      ? [
-        {
-          system:
-            'https://github.com/Umlamulankunzi/Zim_ID_Codes/blob/master/README.md',
-          value: national_id_number,
-        },
-      ]
-      : undefined,
-    extension: avatar_media_id
-      ? [
-        {
-          url: 'avatar_media_id',
-          valueString: avatar_media_id,
-        },
-      ]
-      : undefined,
-    telecom: phone_number
-      ? [
-        {
-          system: 'phone',
-          value: phone_number,
-        },
-      ]
-      : undefined,
   }
+  for (const [key, value] of Object.entries(patient)) {
+    if (value === undefined) continue
+    const to_medplum = TO_MEDPLUM[key as keyof MedplumCoercible]
+    assert(to_medplum, `No mapper found for ${key}`)
+    const [medplum_key, mapValue] = to_medplum
+
+    Object.assign(as_medplum, {
+      // deno-lint-ignore no-explicit-any
+      [medplum_key]: value === null ? null : mapValue(value as any),
+    })
+  }
+  return as_medplum
 }
 
 export function update(
   _trx: TrxOrDb,
   { id, ...updates }: HasStringId<MedplumCoercible>,
 ) {
-  return patchResource({
-    id,
-    ...toMedplum(updates),
-  })
+  const as_medplum = toMedplum(updates)
+  const ops: PatchOperation[] = []
+  for (const [key, value] of Object.entries(as_medplum)) {
+    if (key === 'resourceType') continue
+
+    const path =  `/${key}`
+    const op = value === null
+      ? {
+        op: 'remove' as const,
+        path,
+      } : {
+        op: 'replace' as const,
+        path,
+        value,
+      }
+    ops.push(op)
+  }
+  return patchResource('Patient', id, ops)
 }
 
 export function upsert(
@@ -341,9 +367,10 @@ export function getCardQuery(
     .select([
       'Patient.id',
       name_string_sql('PatientName').as('name'),
-      sql<string | null>`"Patient".gender || ', ' || patient_age.age_display`.as(
-        'description',
-      ),
+      sql<string | null>`"Patient".gender || ', ' || patient_age.age_display`
+        .as(
+          'description',
+        ),
       avatar_url_sql.as('avatar_url'),
     ])
 }
@@ -477,4 +504,26 @@ export function completeIntake(trx: TrxOrDb, values: {
     .values(values)
     .onConflict((oc) => oc.column('patient_id').doNothing())
     .executeTakeFirstOrThrow()
+}
+
+export async function getAllWithNames(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<RenderedPatient[]> {
+  let query = baseSelect(trx).orderBy(
+    'name asc',
+  ).limit(20)
+
+  console.log('getAllWithNames')
+
+  if (search) {
+    query = query.where('PatientName.name', 'ilike', `%${search}%`)
+  }
+  debugLog(query)
+
+  const patients = await query.execute()
+
+  assert(haveNames(patients))
+
+  return patients
 }

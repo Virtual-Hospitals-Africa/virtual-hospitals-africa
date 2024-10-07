@@ -21,7 +21,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       phone_number,
       name: 'test',
       gender: 'female',
-      birthDate: '2023-01-01',
+      birthdate: '2023-01-01',
       national_id_number: randomNationalId(),
     })
 

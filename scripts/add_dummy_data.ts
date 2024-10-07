@@ -110,7 +110,7 @@ async function addPatientsToWaitingRoom() {
         given: [demo.first_name],
         family: demo.last_name,
       },
-      birthDate: randomDateOfBirth(),
+      birthdate: randomDateOfBirth(),
       gender: demo.gender,
       avatar_media_id: inserted_media.id,
     })

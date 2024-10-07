@@ -25,7 +25,7 @@ export function toHumanName(name: string) {
     }
   }
   assert(family_name)
-  assert(given_names.length > 1)
+  assert(given_names.length >= 1)
   return {
     given: given_names,
     family: family_name,

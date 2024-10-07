@@ -143,7 +143,7 @@ export type PatientConversationState =
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
   | 'not_onboarded:make_appointment:enter_gender'
-  | 'not_onboarded:make_appointment:enter_birthDate'
+  | 'not_onboarded:make_appointment:enter_birthdate'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:initial_ask_for_media'
@@ -176,7 +176,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   gender: Maybe<string>
   ethnicity: Maybe<string[]>
-  birthDate: Maybe<string>
+  birthdate: Maybe<string>
   national_id_number: Maybe<string>
 }
 export type PatientPersonal = {
@@ -342,7 +342,7 @@ export type PatientIntake =
     | 'phone_number'
     | 'gender'
     | 'ethnicity'
-    | 'birthDate'
+    | 'birthdate'
     | 'national_id_number'
     | 'organizationId'
     | 'intake_completed'
@@ -1370,7 +1370,7 @@ export const DOCTOR_SPECIALTIES = [
 export type NurseRegistrationDetails = {
   health_worker_id: string
   gender: Gender
-  birthDate: string
+  birthdate: string
   national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
@@ -1398,7 +1398,7 @@ export type EmployeeInfo = {
   name: string
   email: string
   gender: Maybe<Gender>
-  birthDate: Maybe<string>
+  birthdate: Maybe<string>
   national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
   mobile_number: Maybe<string>

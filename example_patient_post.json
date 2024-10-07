@@ -23,7 +23,7 @@
     }
   ],
   "gender": "female",
-  "birthDate": "1989-12-30",
+  "birthdate": "1989-12-30",
   "address": [
     {
       "use": "home",

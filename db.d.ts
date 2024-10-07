@@ -372,7 +372,7 @@ export interface Districts {
 
 export interface DoctorRegistrationDetails {
   approved_by: string | null
-  birthDate: Timestamp
+  birthdate: Timestamp
   created_at: Generated<Timestamp>
   date_of_first_practice: Timestamp
   doctor_practicing_cert_media_id: string | null
@@ -773,7 +773,7 @@ export interface Medications {
 
 export interface NurseRegistrationDetails {
   approved_by: string | null
-  birthDate: Timestamp
+  birthdate: Timestamp
   created_at: Generated<Timestamp>
   date_of_first_practice: Timestamp
   face_picture_media_id: string | null

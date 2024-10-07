@@ -146,7 +146,7 @@ export async function get(
         avatar_url: patients.avatar_url_sql,
         description: sql<
           string | null
-        >`"Patient".gender || ', ' || to_char(birthDate, 'DD/MM/YYYY')`,
+        >`"Patient".gender || ', ' || to_char(birthdate, 'DD/MM/YYYY')`,
       }).as('patient'),
       'patient_encounters.reason',
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),

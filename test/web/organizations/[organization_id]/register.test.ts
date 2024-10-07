@@ -36,7 +36,7 @@ describe(
       assert($('input[name="first_name"]').length === 1)
       assert($('input[name="middle_names"]').length === 1)
       assert($('input[name="last_name"]').length === 1)
-      assert($('input[name="birthDate"]').length === 1)
+      assert($('input[name="birthdate"]').length === 1)
       assert($('input[name="email"]').length === 1)
       assert($('select[name="gender"]').length === 1)
       assert($('input[name="national_id_number"]').length === 1)
@@ -68,7 +68,7 @@ describe(
     //     body.set('last_name', 'Nurse')
     //     body.set('gender', 'female')
     //     body.set('national_id_number', '08-123456 D 53')
-    //     body.set('birthDate', '2020-01-01')
+    //     body.set('birthdate', '2020-01-01')
     //     body.set('mobile_number', '5555555555')
 
     //     body.set('address.country_id', address.country_id.toString())
@@ -104,7 +104,7 @@ describe(
     //         suburb_id: registrationFormState.address.suburb_id || null,
     //       },
     //     }, {
-    //       birthDate: '2020-01-01',
+    //       birthdate: '2020-01-01',
     //       first_name: 'Test',
     //       gender: 'female',
     //       last_name: 'Nurse',
@@ -128,7 +128,7 @@ describe(
     //     assertEquals($('input[name="first_name"]').val(), 'Test')
     //     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
     //     assertEquals($('input[name="last_name"]').val(), 'Nurse')
-    //     assertEquals($('input[name="birthDate"]').val(), '2020-01-01')
+    //     assertEquals($('input[name="birthdate"]').val(), '2020-01-01')
     //     assertEquals($('select[name="gender"]').val(), 'female')
     //     assertEquals(
     //       $('input[name="national_id_number"]').val(),
@@ -194,7 +194,7 @@ describe(
     //         suburb_id: registrationFormState.address.suburb_id || null,
     //       },
     //     }, {
-    //       birthDate: '2020-01-01',
+    //       birthdate: '2020-01-01',
     //       first_name: 'Test',
     //       gender: 'female',
     //       last_name: 'Nurse',
@@ -271,7 +271,7 @@ describe(
     //     assert(nurseEmployment)
     //     assert(specialty)
 
-    //     assertEquals(registrationDetails.birthDate, '2020-01-01')
+    //     assertEquals(registrationDetails.birthdate, '2020-01-01')
     //     assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
     //     assertEquals(registrationDetails.gender, 'female')
     //     assertEquals(registrationDetails.mobile_number, '5555555555')

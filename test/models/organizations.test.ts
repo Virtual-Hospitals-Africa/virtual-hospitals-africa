@@ -349,7 +349,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: null,
-          birthDate: '2020-01-01',
+          birthdate: '2020-01-01',
           // address_id: nurse_Address.resourceId,
         })
 
@@ -426,7 +426,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
-          birthDate: '2020-01-01',
+          birthdate: '2020-01-01',
           // address_id: nurse_Address.resourceId,
         })
 

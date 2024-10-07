@@ -123,9 +123,17 @@ export async function putResource<T extends Resource>(resource: T & { id: string
   return json
 }
 
-export async function patchResource<T extends Resource>(resource: T & { id: string }): Promise<CreatedResource<T>> {
-  const response = await request('PATCH', `${resource.resourceType}/${resource.id}`, resource);
+export type PatchOperation = {
+  op: 'add' | 'remove' | 'replace' | 'copy' | 'move' | 'test',
+  path: string
+  value?: unknown
+}
+
+export async function patchResource<T extends Resource>(resourceType: Resource['resourceType'], id: string, operations: PatchOperation[]): Promise<CreatedResource<T>> {
+  console.log('operations', operations)
+  const response = await request('PATCH', `${resourceType}/${id}`, operations);
   const json = await response.json();
+  console.log('json', json)
   // deno-lint-ignore no-explicit-any
   const error = json.issue && json.issue.find((i: any) => i.severity !== 'informational')
   if (error) {

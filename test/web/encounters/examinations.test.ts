@@ -35,7 +35,7 @@ describe(
         await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
-          birthDate: '1980-01-01',
+          birthdate: '1980-01-01',
         })
 
         const body = new FormData()
@@ -99,7 +99,7 @@ describe(
         await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
-          birthDate: '1980-01-01',
+          birthdate: '1980-01-01',
         })
 
         await upsertFindings(db, {
@@ -190,7 +190,7 @@ describe(
         await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
-          birthDate: '1980-01-01',
+          birthdate: '1980-01-01',
         })
 
         await upsertFindings(db, {
@@ -305,7 +305,7 @@ describe(
         await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
-          birthDate: '1980-01-01',
+          birthdate: '1980-01-01',
         })
 
         const $ = await fetchCheerio(
@@ -353,7 +353,7 @@ describe(
           await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
-            birthDate: '1980-01-01',
+            birthdate: '1980-01-01',
           })
           const $ = await fetchCheerio(
             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
@@ -378,7 +378,7 @@ describe(
           await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
-            birthDate: '1980-01-01',
+            birthdate: '1980-01-01',
           })
           const $ = await fetchCheerio(
             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
@@ -407,7 +407,7 @@ describe(
           await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
-            birthDate: '1980-01-01',
+            birthdate: '1980-01-01',
           })
 
           const body = new FormData()
@@ -480,7 +480,7 @@ describe(
           await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
-            birthDate: '1980-01-01',
+            birthdate: '1980-01-01',
           })
 
           const body = new FormData()

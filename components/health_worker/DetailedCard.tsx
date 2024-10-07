@@ -86,7 +86,7 @@ export default function HealthWorkerDetailedCard(
                 Date of Birth
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.birthDate ? employee.birthDate : 'TBD'}
+                {employee.birthdate ? employee.birthdate : 'TBD'}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
