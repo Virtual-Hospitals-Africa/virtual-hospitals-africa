@@ -8,6 +8,7 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'
+import * as patient_symptoms from '../../../../../db/models/patient_symptoms.ts'
 import FormSection from '../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
 
@@ -69,10 +70,22 @@ export default async function DiagnosisPage(
   const { trx, doctor_review: { review_id } } = ctx.state
   const patient_diagnoses = await diagnoses.getFromReview(trx, { review_id })
 
+  const symptoms = await patient_symptoms.getEncounter(trx, {
+    encounter_id: ctx.state.doctor_review.encounter.id,
+    patient_id: ctx.state.doctor_review.patient.id,
+  })
+  const symptom_start_dates = symptoms.map((s) => s.start_date)
+  const earliest_date = symptom_start_dates.reduce((earliest, current) => {
+    return current < earliest ? current : earliest
+  })
+
   return (
     <ReviewLayout ctx={ctx}>
       <FormSection header='Diagnoses'>
-        <DiagnosesForm diagnoses={patient_diagnoses} />
+        <DiagnosesForm
+          diagnoses={patient_diagnoses}
+          earliestSymptomDate={earliest_date}
+        />
       </FormSection>
       <FormButtons />
     </ReviewLayout>
