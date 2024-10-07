@@ -26,7 +26,7 @@ export default function DiagnosesForm(props: {
   )
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       {diagnoses.value.map((
         state,
         index,

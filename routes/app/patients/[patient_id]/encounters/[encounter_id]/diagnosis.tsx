@@ -5,6 +5,8 @@ import {
   EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
+import FormSection from '../../../../../../components/library/FormSection.tsx'
+import DiagnosesForm from '../../../../../../islands/diagnoses/Form.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
@@ -21,6 +23,10 @@ export default EncounterPage(
   function DiagnosisPage(
     _props: EncounterPageChildProps,
   ) {
-    return <p>TODO</p>
+    return (
+      <FormSection header='Diagnoses'>
+        <DiagnosesForm diagnoses={[]} />
+      </FormSection>
+    )
   },
 )
