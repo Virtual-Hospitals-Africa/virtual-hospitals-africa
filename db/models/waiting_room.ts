@@ -7,7 +7,7 @@ import {
   WaitingRoom,
 } from '../../types.ts'
 import * as patients from './patients.ts'
-import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
