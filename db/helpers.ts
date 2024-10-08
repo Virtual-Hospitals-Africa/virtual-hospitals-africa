@@ -7,6 +7,7 @@ import {
   ExpressionWrapper,
   ExtractTypeFromReferenceExpression,
   InsertQueryBuilder,
+  Kysely,
   RawBuilder,
   SelectQueryBuilder,
   Simplify,
@@ -321,4 +322,39 @@ export function longFormattedDateTime(ref: string) {
   return sql<string>`TO_CHAR(${
     sql.ref(ref)
   }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
+}
+
+export function upsertTrigger(
+  tableName: keyof DB,
+  columnName: string,
+  computation: string,
+) {
+  const fn_name = `${tableName}_set_${tableName}_${columnName}`.toLowerCase()
+  const trigger_name = `${fn_name}_trigger`
+
+  return {
+    create(db: Kysely<DB>) {
+      return sql`
+        CREATE OR REPLACE FUNCTION ${sql.raw(fn_name)}()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW."${sql.raw(columnName)}" := ${sql.raw(computation)};
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+
+        CREATE OR REPLACE TRIGGER ${sql.raw(fn_name)}_trigger
+        BEFORE INSERT OR UPDATE ON "${sql.raw(tableName)}"
+        FOR EACH ROW
+        EXECUTE FUNCTION ${sql.raw(fn_name)}();
+      `.execute(db)
+    },
+    drop(db: Kysely<DB>) {
+      return sql`
+        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${
+        sql.raw(tableName)
+      }"
+      `.execute(db)
+    },
+  }
 }
