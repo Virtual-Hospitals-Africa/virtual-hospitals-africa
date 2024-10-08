@@ -1,7 +1,6 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
@@ -9,6 +8,7 @@ import * as patients from '../../../../db/models/patients.ts'
 import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import { readSeedDump } from '../../../web/utilities.ts'
+import { mockWhatsApp } from '../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
   const organizations = readSeedDump('Organization')
@@ -38,17 +38,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsAppOne = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsappOne = mockWhatsApp()
 
-    await respond(fakeWhatsAppOne, 'patient')
+    await respond(whatsappOne, 'patient')
     const arcadia = organizations.value.find((o) =>
       o.canonicalName === 'Arcadia Clinic'
     )!
@@ -56,9 +48,11 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       o.canonicalName === 'Braeside Clinic'
     )!
 
+    const message = whatsappOne.sendMessages.calls[0].args[0].messages
+    assert(!Array.isArray(message))
+    assert(message.type === 'list')
     assertEquals(
-      fakeWhatsAppOne.sendMessages.firstCall.args[0].messages.action.sections[0]
-        .rows[0].id,
+      message.action.sections[0].rows[0].id,
       arcadia.id,
     )
 
@@ -73,18 +67,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsAppTwo = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsappTwo = mockWhatsApp()
 
-    await respond(fakeWhatsAppTwo, 'patient')
-    assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
+    await respond(whatsappTwo, 'patient')
+    assertEquals(whatsappTwo.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: [

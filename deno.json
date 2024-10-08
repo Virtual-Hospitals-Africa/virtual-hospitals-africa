@@ -78,7 +78,6 @@
     "react": "https://esm.sh/preact@10.20.1/compat",
     "redis": "https://deno.land/x/redis@v0.25.5/mod.ts",
     "redlock": "https://deno.land/x/redlock@v1.0/mod.ts",
-    "sinon": "npm:sinon@17.0.1",
     "spinners": "https://deno.land/x/spinners/mod.ts",
     "std/": "https://deno.land/std@0.214.0/",
     "tailwindcss": "npm:tailwindcss@3.3.5",
