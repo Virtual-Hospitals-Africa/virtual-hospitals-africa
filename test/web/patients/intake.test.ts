@@ -14,7 +14,7 @@ import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
-import * as address from '../../../db/models/address.ts'
+import * as addresses from '../../../db/models/addresses.ts'
 import * as family from '../../../db/models/family.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
@@ -144,7 +144,7 @@ describe('/app/patients/[patient_id]/intake', {
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
-    const countryInfo = await address.getCountryAddressTree(db)
+    const countryInfo = await addresses.getCountryAddressTree(db)
     const zimbabwe = countryInfo[0]
     assertEquals(zimbabwe.name, 'Zimbabwe')
 

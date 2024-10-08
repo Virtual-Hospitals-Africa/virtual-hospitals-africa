@@ -1,12 +1,8 @@
-// deno-lint-ignore-file no-explicit-any
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
-import { run as runMedplumServer } from '../external-clients/medplum/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
-import { delay } from 'std/async/delay.ts'
-import { restore } from './restore.ts'
 import { spinner } from '../util/spinner.ts'
 
 const migrations: Record<
@@ -103,14 +99,6 @@ export const migrate = {
     await spinner('Migrating up to latest', migrator.migrateToLatest())
   },
   async all(opts: { recreate?: boolean | string[] } = {}) {
-    await restore('medplum')
-
-    const medplum_server = await spinner(
-      'Running medplum migrations',
-      runMedplumServer,
-      { success: 'Ran medplum migrations' },
-    )
-
     await spinner('Running VHA migrations', migrate.latest, {
       success: 'Ran VHA migrations',
     })
@@ -127,12 +115,6 @@ export const migrate = {
     } else {
       await spinner('Loading seeds', seeds.load())
     }
-
-    medplum_server.kill()
-
-    // See if we can avoid hanging. Locally this works, but not in CI.
-    await delay(500)
-    medplum_server.unref()
   },
   create(migration_name: string) {
     return createMigration(migration_name)

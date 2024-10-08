@@ -1,11 +1,10 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import { create } from '../create.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 
 export default create(['pharmacies', 'pharmacy_employment'], importFromCsv)
 
-async function importFromCsv(db: Kysely<DB>) {
+async function importFromCsv(trx: TrxOrDb) {
   const pharmacies = await parseCsv('./db/resources/pharmacies.tsv', {
     columnSeparator: '\t',
   })
@@ -25,7 +24,7 @@ async function importFromCsv(db: Kysely<DB>) {
   }
 
   // deno-lint-ignore no-explicit-any
-  await db.insertInto('pharmacies').values(pharmaciesData as any).execute()
+  await trx.insertInto('pharmacies').values(pharmaciesData as any).execute()
 
   const representativesData = []
 
@@ -33,14 +32,14 @@ async function importFromCsv(db: Kysely<DB>) {
     delete representative['\r']
     const { licence_number, given_name, family_name, ..._resProps } =
       representative
-    const pharmacy = await db
+    const pharmacy = await trx
       .selectFrom('pharmacies')
       .select(['id', 'licence_number'])
       .where('licence_number', '=', licence_number)
       .executeTakeFirst()
     if (!pharmacy) continue
 
-    const pharmacist = await db
+    const pharmacist = await trx
       .selectFrom('pharmacists')
       .select(['id', 'given_name', 'family_name'])
       .where('given_name', '=', given_name)
@@ -59,7 +58,7 @@ async function importFromCsv(db: Kysely<DB>) {
     })
   }
 
-  await db
+  await trx
     .insertInto('pharmacy_employment')
     // deno-lint-ignore no-explicit-any
     .values(representativesData as any)

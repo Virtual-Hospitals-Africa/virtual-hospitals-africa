@@ -11,7 +11,7 @@ import { readSeedDump } from '../../../web/utilities.ts'
 import { mockWhatsApp } from '../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
-  const organizations = readSeedDump('Organization')
+  const organizations = readSeedDump('organizations')
 
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
@@ -59,10 +59,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assertEquals(message.action.sections[0].title, 'Town Name Here')
 
     const arcadia = organizations.value.find((o) =>
-      o.canonicalName === 'Arcadia Clinic'
+      o.name === 'Arcadia Clinic'
     )!
     const braeside = organizations.value.find((o) =>
-      o.canonicalName === 'Braeside Clinic'
+      o.name === 'Braeside Clinic'
     )!
 
     assertEquals(

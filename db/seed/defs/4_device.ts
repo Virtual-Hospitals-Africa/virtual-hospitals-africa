@@ -1,5 +1,4 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { assert } from 'std/assert/assert.ts'
 import { create } from '../create.ts'
@@ -10,8 +9,8 @@ export default create(
   seedDataFromJSON,
 )
 
-async function seedDataFromJSON(db: Kysely<DB>) {
-  const tests = await db.selectFrom('diagnostic_tests').select('name').execute()
+async function seedDataFromJSON(trx: TrxOrDb) {
+  const tests = await trx.selectFrom('diagnostic_tests').select('name').execute()
 
   const devices: {
     name: string
@@ -20,7 +19,7 @@ async function seedDataFromJSON(db: Kysely<DB>) {
   }[] = await parseJSON('./db/resources/devices.json')
 
   await inParallel.forEach(devices, async (device) => {
-    const { id } = await db.insertInto('devices')
+    const { id } = await trx.insertInto('devices')
       .values({
         name: device.name,
         manufacturer: device.manufacturer,
@@ -39,7 +38,7 @@ async function seedDataFromJSON(db: Kysely<DB>) {
         diagnostic_test: name,
       }
     ))
-    await db.insertInto('device_capabilities')
+    await trx.insertInto('device_capabilities')
       .values(device_capabilities)
       .execute()
   })

@@ -1,6 +1,6 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as address from '../../db/models/address.ts'
+import * as addresses from '../../db/models/addresses.ts'
 import { createTestAddress } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
@@ -12,8 +12,8 @@ describe('db/models/address.ts', { sanitizeResources: false }, () => {
       async (trx) => {
         const randomAddress = await createTestAddress(trx)
 
-        const address1 = await address.upsert(trx, randomAddress)
-        const address2 = await address.upsert(trx, randomAddress)
+        const address1 = await addresses.insert(trx, randomAddress)
+        const address2 = await addresses.insert(trx, randomAddress)
 
         assertEquals(
           omit(address1, ['updated_at']),

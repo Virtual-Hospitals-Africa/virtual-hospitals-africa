@@ -22,7 +22,6 @@ import pick from '../../util/pick.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as doctor_reviews from './doctor_reviews.ts'
-import * as address from './address.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -251,14 +250,14 @@ export async function get(
       jsonArrayFrom(
         eb.selectFrom('employment')
           .innerJoin(
-            'Organization',
+            'organizations',
             'employment.organization_id',
-            'Organization.id',
+            'organizations.id',
           )
           .leftJoin(
-            'Address as OrganizationAddress',
-            'Organization.id',
-            'OrganizationAddress.resourceId',
+            'addresses as organization_address',
+            'organizations.address_id',
+            'organization_address.id',
           )
           .innerJoin(
             'provider_calendars',
@@ -283,8 +282,8 @@ export async function get(
             'provider_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.organization_id'),
-              name: eb_employment.ref('Organization.canonicalName'),
-              address: eb_employment.ref('OrganizationAddress.address'),
+              name: eb_employment.ref('organizations.name'),
+              address: eb_employment.ref('organization_address.address'),
             }).as('organization'),
           ])
           .whereRef(
@@ -414,13 +413,13 @@ export function getEmployeeInfo(
           'health_worker_at_organization.health_worker_id',
         )
         .innerJoin(
-          'Organization',
-          (join) => join.on('Organization.id', '=', opts.organization_id),
+          'organizations',
+          (join) => join.on('organizations.id', '=', opts.organization_id),
         )
         .leftJoin(
-          'Address as OrganizationAddress',
-          'Organization.id',
-          'OrganizationAddress.resourceId',
+          'addresses as organization_address',
+          'organizations.address_id',
+          'organization_address.id',
         )
         .leftJoin(
           'employment as nurse_employment',
@@ -449,8 +448,8 @@ export function getEmployeeInfo(
           'health_workers.id',
         )
         .leftJoin(
-          address.formatted(trx),
-          'address_formatted.id',
+          'addresses',
+          'addresses.id',
           'nurse_registration_details.address_id',
         )
         .select((eb) => [
@@ -471,10 +470,10 @@ export function getEmployeeInfo(
           'health_workers.email',
           'health_workers.name',
           'health_workers.avatar_url',
-          'address_formatted.address',
-          'Organization.id as organization_id',
-          'Organization.canonicalName as organization_name',
-          'OrganizationAddress.address as organization_address',
+          'addresses.formatted as address',
+          'organizations.id as organization_id',
+          'organizations.name as organization_name',
+          'organization_address.formatted as organization_address',
           jsonArrayFromColumn(
             'profession',
             eb

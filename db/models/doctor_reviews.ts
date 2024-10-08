@@ -49,9 +49,9 @@ export function ofHealthWorker(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'Organization',
+      'organizations',
       'requested_by_employee.organization_id',
-      'Organization.id',
+      'organizations.id',
     )
     .innerJoin(
       'health_workers as requested_by_health_worker',
@@ -82,8 +82,8 @@ export function ofHealthWorker(
         >(),
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
         organization: jsonBuildObject({
-          id: eb.ref('Organization.id'),
-          name: eb.ref('Organization.canonicalName'),
+          id: eb.ref('organizations.id'),
+          name: eb.ref('organizations.name'),
         }),
       }).as('requested_by'),
       jsonArrayFromColumn(
@@ -134,7 +134,7 @@ export function requests(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'Organization as requested_by_organization',
+      'organizations as requested_by_organization',
       'requested_by_employee.organization_id',
       'requested_by_organization.id',
     )
@@ -165,7 +165,7 @@ export function requests(
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
         organization: jsonBuildObject({
           id: eb.ref('requested_by_organization.id'),
-          name: eb.ref('requested_by_organization.canonicalName'),
+          name: eb.ref('requested_by_organization.name'),
         }),
       }).as('requested_by'),
     ])
@@ -393,21 +393,21 @@ export function getRequest(
       'id',
       'requester_notes',
       jsonObjectFrom(
-        eb.selectFrom('Organization')
+        eb.selectFrom('organizations')
           .leftJoin(
-            'Address as OrganizationAddress',
-            'Organization.id',
-            'OrganizationAddress.resourceId',
+            'addresses as organization_address',
+            'organizations.address_id',
+            'organization_address.id',
           )
           .whereRef(
-            'Organization.id',
+            'organizations.id',
             '=',
             'doctor_review_requests.organization_id',
           )
           .select([
-            'Organization.id',
-            'Organization.canonicalName as name',
-            'OrganizationAddress.address',
+            'organizations.id',
+            'organizations.name as name',
+            'organization_address.formatted',
           ]),
       ).as('organization'),
       jsonObjectFrom(

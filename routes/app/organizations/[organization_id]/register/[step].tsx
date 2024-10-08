@@ -17,7 +17,7 @@ import * as employment from '../../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
-import * as address from '../../../../../db/models/address.ts'
+import * as addresses from '../../../../../db/models/addresses.ts'
 import {
   DocumentFormFields,
   PersonalFormFields,
@@ -182,7 +182,7 @@ export default async function RegisterPage(
   formState.email = healthWorker.email
 
   const country_address_tree = step == 'personal'
-    ? await address.getCountryAddressTree(ctx.state.trx)
+    ? await addresses.getCountryAddressTree(ctx.state.trx)
     : undefined
 
   const stepState = useNurseRegistrationSteps(ctx)

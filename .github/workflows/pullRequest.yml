@@ -67,28 +67,6 @@ jobs:
           echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
-          echo "MEDPLUM_CLIENT_ID=16cb17a2-161b-4379-85db-d3bfc89f31a3" >> .env
-          echo "MEDPLUM_CLIENT_SECRET=2b83992938a44a0a72447e88664895cea17205da463cdb52125c17d62bbba0dc" >> .env
-
-      - uses: actions/cache/restore@v4
-        id: cache-medplum-restore
-        name: Restore medplum
-        with:
-          path: medplum
-          # key: medplum-${{ hashFiles('medplum/package.json') }}
-          key: medplum
-
-      - name: Install medplum
-        if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
-        run: cd medplum && npm install && npx turbo run build
-
-      - name: Save medplum
-        id: cache-medplum-save
-        uses: actions/cache/save@v4
-        if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
-        with:
-          path: medplum
-          key: medplum
 
       - name: Migrate database
         run: deno task db:migrate all

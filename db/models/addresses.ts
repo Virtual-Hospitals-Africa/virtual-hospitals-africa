@@ -1,6 +1,7 @@
-import { sql } from 'kysely'
 import { jsonArrayFrom } from '../helpers.ts'
-import { Address, CountryAddressTree, TrxOrDb } from '../../types.ts'
+import { CountryAddressTree, TrxOrDb } from '../../types.ts'
+import compact from '../../util/compact.ts'
+import uniq from '../../util/uniq.ts'
 
 let fullCountryInfo: CountryAddressTree | undefined
 export async function getCountryAddressTree(
@@ -52,45 +53,33 @@ export async function getCountryAddressTree(
     .execute()
 }
 
-export function upsert(
-  trx: TrxOrDb,
-  address: Address,
-) {
-  return trx
-    .insertInto('address')
-    .values(address)
-    .onConflict((oc) =>
-      oc.constraint('address_street_suburb_ward').doUpdateSet(address)
-    )
-    .returningAll()
-    .executeTakeFirstOrThrow()
+export type AddressInsert = {
+  street_number?: string
+  route?: string
+  locality: string
+  administrative_area_level_1?: string
+  administrative_area_level_2?: string
+  country: string
+  postal_code?: string
 }
 
-export function formatted(trx: TrxOrDb) {
-  return trx
-    .selectFrom('address')
-    .leftJoin('suburbs', 'suburbs.id', 'address.suburb_id')
-    .leftJoin('wards', 'wards.id', 'address.ward_id')
-    .leftJoin('districts', 'districts.id', 'address.district_id')
-    .leftJoin('provinces', 'provinces.id', 'address.province_id')
-    .leftJoin('countries', 'countries.id', 'address.country_id')
-    .select([
-      'address.id',
-      sql<string>`
-        ARRAY_TO_STRING(
-          ARRAY(
-              SELECT DISTINCT UNNEST(ARRAY[
-                  address.street,
-                  suburbs.name,
-                  wards.name,
-                  districts.name,
-                  provinces.name,
-                  countries.name
-              ]) ORDER BY 1
-          ),
-          ', '
-        )
-      `.as('address'),
-    ])
-    .as('address_formatted')
+export function insert(trx: TrxOrDb, address: AddressInsert) {
+  const formatted = compact([
+    address.street_number,
+    address.route,
+    ...uniq([
+      address.locality,
+      address.administrative_area_level_2,
+      address.administrative_area_level_1,
+    ]),
+    address.country,
+    address.postal_code,
+  ]).join(', ')
+  return trx.insertInto('addresses')
+    .values({
+      ...address,
+      formatted,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }

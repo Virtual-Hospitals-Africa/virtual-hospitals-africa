@@ -1,16 +1,16 @@
-import { Kysely } from 'kysely'
+import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { create } from '../create.ts'
-import { DB } from '../../../db.d.ts'
+
 
 export default create(['allergies'], importFromJSON)
 
-async function importFromJSON(db: Kysely<DB>) {
+async function importFromJSON(trx: TrxOrDb) {
   const data: { name: string; type: string }[] = await parseJSON(
     './db/resources/allergies.json',
   )
 
-  await db
+  await trx
     .insertInto('allergies')
     .values(data.map((c) => ({ name: c.name })))
     .executeTakeFirstOrThrow()

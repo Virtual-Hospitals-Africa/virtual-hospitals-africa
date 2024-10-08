@@ -1794,6 +1794,7 @@ export type GoogleAddressComponent = {
     short_name?: string
     types?: string[]
   }[]
+  types: string[]
 }
 
 export type GoogleAddressComponentType =
@@ -1891,15 +1892,6 @@ export type MailingListRecipient = {
   name: string
   email: string
   entrypoint: string
-}
-
-export type Address = {
-  street: Maybe<string>
-  suburb_id?: Maybe<string>
-  ward_id: string
-  district_id: string
-  province_id: string
-  country_id: string
 }
 
 export type Drug = {

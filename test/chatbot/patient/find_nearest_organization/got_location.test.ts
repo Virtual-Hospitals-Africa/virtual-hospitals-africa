@@ -11,7 +11,7 @@ import { readSeedDump } from '../../../web/utilities.ts'
 import { mockWhatsApp } from '../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
-  const organizations = readSeedDump('Organization')
+  const organizations = readSeedDump('organizations')
 
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
@@ -42,10 +42,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     await respond(whatsappOne, 'patient')
     const arcadia = organizations.value.find((o) =>
-      o.canonicalName === 'Arcadia Clinic'
+      o.name === 'Arcadia Clinic'
     )!
     const braeside = organizations.value.find((o) =>
-      o.canonicalName === 'Braeside Clinic'
+      o.name === 'Braeside Clinic'
     )!
 
     const message = whatsappOne.sendMessages.calls[0].args[0].messages

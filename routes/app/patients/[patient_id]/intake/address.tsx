@@ -1,5 +1,5 @@
 import { Maybe } from '../../../../../types.ts'
-import * as address from '../../../../../db/models/address.ts'
+import * as addresses from '../../../../../db/models/addresses.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
@@ -66,7 +66,7 @@ function assertIsAddress(
 export const handler = postHandler(
   assertIsAddress,
   async function updateAddress(ctx, patient_id, form_values) {
-    const created_address = await address.upsert(
+    const created_address = await addresses.insert(
       ctx.state.trx,
       form_values.address,
     )
@@ -82,7 +82,7 @@ export const handler = postHandler(
 
 export default IntakePage(async function AddressPage({ ctx, patient }) {
   const { healthWorker, trx } = ctx.state
-  const country_address_tree = await address.getCountryAddressTree(trx)
+  const country_address_tree = await addresses.getCountryAddressTree(trx)
 
   let default_organization:
     | { id: string; name: string; address: string }

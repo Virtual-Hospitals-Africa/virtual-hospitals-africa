@@ -1,5 +1,4 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { create } from '../create.ts'
 
@@ -9,18 +8,18 @@ export default create([
   'condition_icd10_codes',
 ], importFromJSON)
 
-async function importFromJSON(db: Kysely<DB>) {
+async function importFromJSON(trx: TrxOrDb) {
   const data = await parseJSON(
     './db/resources/cond_proc_download.json',
   )
 
   for (const row of data) {
     /*
-      Populate conditions db, conditions_icd10_codes db and
-      icd10_codes db from the conditions json file
+      Populate conditions trx, conditions_icd10_codes trx and
+      icd10_codes trx from the conditions json file
     */
     const [info_link_href, info_link_text] = row.info_link_data[0] || []
-    await db.insertInto('conditions')
+    await trx.insertInto('conditions')
       .values({
         id: row.key_id,
         name: row.primary_name,
@@ -38,7 +37,7 @@ async function importFromJSON(db: Kysely<DB>) {
       continue
     }
 
-    await db.insertInto('icd10_codes')
+    await trx.insertInto('icd10_codes')
       .values(
         // deno-lint-ignore no-explicit-any
         row.icd10cm.map((icd10: any) => ({
@@ -50,7 +49,7 @@ async function importFromJSON(db: Kysely<DB>) {
       .returningAll()
       .execute()
 
-    await db.insertInto('condition_icd10_codes')
+    await trx.insertInto('condition_icd10_codes')
       .values(
         // deno-lint-ignore no-explicit-any
         row.icd10cm.map((icd10: any) => ({

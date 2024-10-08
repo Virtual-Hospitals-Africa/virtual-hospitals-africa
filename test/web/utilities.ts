@@ -426,7 +426,7 @@ export async function withTestOrganization(
   await trx.deleteFrom('Location')
     .where('organizationId', '=', organization!.id)
     .execute()
-  await trx.deleteFrom('Organization')
+  await trx.deleteFrom('organizations')
     .where('id', '=', organization!.id)
     .execute()
 }
@@ -464,7 +464,7 @@ export async function withTestOrganizations(
   await trx.deleteFrom('Location')
     .where('organizationId', 'in', organization_ids)
     .execute()
-  await trx.deleteFrom('Organization')
+  await trx.deleteFrom('organizations')
     .where('id', 'in', organization_ids)
     .execute()
 }

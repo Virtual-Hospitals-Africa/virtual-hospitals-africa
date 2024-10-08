@@ -13,7 +13,6 @@ import {
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
-import { formatted as formattedAddress } from './address.ts'
 import * as conversations from './conversations.ts'
 import * as examinations from './examinations.ts'
 import * as patient_encounters from './patient_encounters.ts'
@@ -21,6 +20,7 @@ import {
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
+  literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -50,13 +50,13 @@ const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
     .leftJoin(
-      'Organization',
-      'Organization.id',
+      'organizations',
+      'organizations.id',
       'patients.nearest_organization_id',
     )
     .leftJoin(
-      formattedAddress(trx),
-      'address_formatted.id',
+      'addresses',
+      'addresses.id',
       'patients.address_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
@@ -66,7 +66,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.phone_number',
       'patients.gender',
       'patients.ethnicity',
-      'address_formatted.address',
+      'addresses.formatted as address',
       dob_formatted,
       'patient_age.age_display',
       sql<
@@ -89,7 +89,7 @@ const baseSelect = (trx: TrxOrDb) =>
       ).as('intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
-      'Organization.canonicalName as nearest_organization',
+      'organizations.name as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
       jsonBuildObject({
         longitude: sql<number | null>`ST_X(patients.location::geometry)`,
@@ -133,11 +133,7 @@ export function insertMany(
     .insertInto('patients')
     .values(patients.map((patient) => ({
       ...patient,
-      location: patient.location
-        ? sql<
-          string
-        >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
-        : null,
+      location: patient.location && literalLocation(patient.location),
     })))
     .returningAll()
     .execute()
@@ -180,10 +176,7 @@ export function update(
         .where('profession', '=', 'doctor')
         .select('id')
     ),
-    location: location &&
-      sql<
-        string
-      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
+    location: location && literalLocation(location),
   }
   const to_update_with_name: (typeof to_update) & {
     name?: string
@@ -213,10 +206,7 @@ export function upsert(
         .where('profession', '=', 'doctor')
         .select('id')
     ),
-    location: location &&
-      sql<
-        string
-      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
+    location: location && literalLocation(location),
   }
   return trx
     .insertInto('patients')

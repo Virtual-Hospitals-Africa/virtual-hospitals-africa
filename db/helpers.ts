@@ -17,6 +17,7 @@ import {
 } from 'kysely'
 import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
+import { Location } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 
 /**
@@ -322,6 +323,10 @@ export function longFormattedDateTime(ref: string) {
   return sql<string>`TO_CHAR(${
     sql.ref(ref)
   }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
+}
+
+export function literalLocation(loc: Location) {
+  return sql<string>`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`
 }
 
 export function upsertTrigger(
