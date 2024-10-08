@@ -16,6 +16,7 @@
     "db:drop": "deno task run:trusted db/drop.ts",
     "db:dump": "deno task run:trusted db/dump.ts",
     "db:restore": "deno task run:trusted db/restore.ts",
+    "db:recreate": "deno task run:trusted db/recreate.ts",
     "medplum:setup": "cd medplum && npm install && npx turbo run build && cd ..",
     "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
     "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",

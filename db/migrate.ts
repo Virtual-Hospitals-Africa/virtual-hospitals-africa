@@ -63,7 +63,9 @@ export const migrate = {
     return Deno.exit(1)
   },
   latest() {
-    return spinner('Migrating to latest', migrator.migrateToLatest())
+    return spinner('Migrating to latest', async () => {
+      logMigrationResults(await migrator.migrateToLatest())
+    })
   },
   up() {
     return spinner('Migrating up', migrator.migrateUp())
@@ -106,10 +108,12 @@ export const migrate = {
     const medplum_server = await spinner(
       'Running medplum migrations',
       runMedplumServer,
+      { success: 'Ran medplum migrations' },
     )
 
-    const results = await spinner('Running VHA migrations', migrate.latest)
-    logMigrationResults(results)
+    await spinner('Running VHA migrations', migrate.latest, {
+      success: 'Ran VHA migrations',
+    })
 
     const seeds = await import('./seed/run.ts')
     if (opts.recreate === true) {
@@ -138,14 +142,14 @@ export const migrate = {
 export function logMigrationResults({ error, results }: any = {}) {
   results?.forEach((it: any) => {
     if (it.status === 'Success') {
-      console.log(`migration "${it.migrationName}" was executed successfully`)
+      console.log(`  migration "${it.migrationName}" was executed successfully`)
     } else if (it.status === 'Error') {
-      console.error(`failed to execute migration "${it.migrationName}"`)
+      console.error(`  failed to execute migration "${it.migrationName}"`)
     }
   })
 
   if (error) {
-    console.error('failed to migrate')
+    console.error('  failed to migrate')
     throw error
   }
 }
