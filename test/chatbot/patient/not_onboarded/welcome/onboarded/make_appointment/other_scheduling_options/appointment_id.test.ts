@@ -1,7 +1,6 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { afterEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import db from '../../../../../../../../db/db.ts'
 import respond from '../../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../../external-clients/google.ts'
@@ -13,15 +12,14 @@ import { declineOfferedTimes } from '../../../../../../../../db/models/appointme
 import { randomPhoneNumber } from '../../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { addTestHealthWorker } from '../../../../../../../web/utilities.ts'
+import { mockWhatsApp } from '../../../../../../mocks.ts'
+import { Stub, stub } from 'std/testing/mock.ts'
+import { GCalEvent } from '../../../../../../../../types.ts'
 
 describe.skip('patient chatbot', { sanitizeResources: false }, () => {
-  // deno-lint-ignore no-explicit-any
-  let insertEvent: any
-  beforeEach(() => {
-    insertEvent = sinon.stub(google.GoogleClient.prototype, 'insertEvent')
-  })
+  let insertEvent: Stub
   afterEach(() => {
-    insertEvent.restore()
+    if (insertEvent) insertEvent.restore()
   })
 
   it('provides with cancel_appointment_option after confirming another appointment', async () => {
@@ -80,23 +78,19 @@ describe.skip('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsApp = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsapp = mockWhatsApp()
 
-    insertEvent.resolves(
-      { id: 'insertEvent_id' },
+    insertEvent = stub(
+      google.GoogleClient.prototype,
+      'insertEvent',
+      () =>
+        Promise.resolve(
+          { id: 'insertEvent_id' } as GCalEvent,
+        ),
     )
 
-    await respond(fakeWhatsApp, 'patient', phone_number)
-    console.log(fakeWhatsApp.sendMessage.firstCall.args)
-    assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
+    await respond(whatsapp, 'patient', phone_number)
+    assertEquals(whatsapp.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: {

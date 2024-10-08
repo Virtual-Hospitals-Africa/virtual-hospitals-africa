@@ -5,9 +5,8 @@ import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
 import { randomPhoneNumber } from '../../mocks.ts'
-import { spy } from 'std/testing/mock.ts'
 import generateUUID from '../../../util/uuid.ts'
-import { WhatsAppJSONResponseSuccess } from '../../../types.ts'
+import { mockWhatsApp } from '../mocks.ts'
 
 describe('pharmacist chatbot', { sanitizeResources: false }, () => {
   it('sends the main menu after the initial message', async () => {
@@ -22,26 +21,10 @@ describe('pharmacist chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsApp = {
-      phone_number: '263XXXXXX',
-      sendMessage: () => {
-        throw new Error('sendMessage should not be called')
-      },
-      sendMessages: spy(() =>
-        Promise.resolve([
-          {
-            messaging_product: 'whatsapp' as const,
-            contacts: [{ input: 'whatever', wa_id: `wamid.${generateUUID()}` }],
-            messages: [{
-              id: `wamid.${generateUUID()}`,
-            }],
-          } satisfies WhatsAppJSONResponseSuccess,
-        ])
-      ),
-    }
+    const whatsapp = mockWhatsApp()
 
-    await respond(fakeWhatsApp, 'pharmacist', phone_number)
-    assertEquals(fakeWhatsApp.sendMessages.calls[0].args, [
+    await respond(whatsapp, 'pharmacist', phone_number)
+    assertEquals(whatsapp.sendMessages.calls[0].args, [
       {
         chatbot_name: 'pharmacist',
         messages: {

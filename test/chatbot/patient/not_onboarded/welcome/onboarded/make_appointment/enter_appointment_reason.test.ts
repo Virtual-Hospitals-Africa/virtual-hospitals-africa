@@ -1,13 +1,13 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
 import { randomNationalId, randomPhoneNumber } from '../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
+import { mockWhatsApp } from '../../../../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for media after inquiring appointment reason', async () => {
@@ -32,17 +32,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsAppOne = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsappOne = mockWhatsApp()
 
-    await respond(fakeWhatsAppOne, 'patient', phone_number)
+    await respond(whatsappOne, 'patient', phone_number)
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',
@@ -54,18 +46,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsAppTwo = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsappTwo = mockWhatsApp()
 
-    await respond(fakeWhatsAppTwo, 'patient')
-    assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
+    await respond(whatsappTwo, 'patient')
+    assertEquals(whatsappTwo.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: {

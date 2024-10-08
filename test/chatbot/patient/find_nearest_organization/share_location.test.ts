@@ -1,7 +1,6 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
@@ -9,6 +8,7 @@ import * as patients from '../../../../db/models/patients.ts'
 import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import { readSeedDump } from '../../../web/utilities.ts'
+import { mockWhatsApp } from '../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
   const organizations = readSeedDump('Organization')
@@ -38,32 +38,25 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsApp = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsapp = mockWhatsApp()
 
-    await respond(fakeWhatsApp, 'patient', phone_number)
+    await respond(whatsapp, 'patient', phone_number)
 
-    const callArgs = fakeWhatsApp.sendMessages.firstCall.args[0]
+    const firstCallArgs = whatsapp.sendMessages.calls[0].args[0]
+    const message = firstCallArgs.messages
+    assert(!Array.isArray(message))
+    assert(message.type === 'list')
 
-    assertEquals(callArgs.messages.type, 'list')
-
-    assertEquals(callArgs.messages.headerText, 'Nearest Facilities')
+    assertEquals(message.headerText, 'Nearest Facilities')
 
     assertEquals(
-      callArgs.messages.messageBody,
+      message.messageBody,
       'Click the button below to see your nearest health organizations',
     )
 
-    assertEquals(callArgs.messages.action.button, 'Nearest Facilities')
+    assertEquals(message.action.button, 'Nearest Facilities')
 
-    assertEquals(callArgs.messages.action.sections[0].title, 'Town Name Here')
+    assertEquals(message.action.sections[0].title, 'Town Name Here')
 
     const arcadia = organizations.value.find((o) =>
       o.canonicalName === 'Arcadia Clinic'
@@ -73,24 +66,24 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     )!
 
     assertEquals(
-      callArgs.messages.action.sections[0].rows[0].id,
+      message.action.sections[0].rows[0].id,
       arcadia.id,
     )
     assertEquals(
-      callArgs.messages.action.sections[0].rows[0].title,
+      message.action.sections[0].rows[0].title,
       'Arcadia Clinic',
     )
 
     assertEquals(
-      callArgs.messages.action.sections[0].rows[1].id,
+      message.action.sections[0].rows[1].id,
       braeside.id,
     )
     assertEquals(
-      callArgs.messages.action.sections[0].rows[1].title,
+      message.action.sections[0].rows[1].title,
       'Braeside Clinic',
     )
 
-    assertEquals(callArgs.phone_number, phone_number)
+    assertEquals(firstCallArgs.phone_number, phone_number)
 
     const patient = await patients.getLastConversationState(db, {
       phone_number,

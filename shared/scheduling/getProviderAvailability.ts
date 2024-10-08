@@ -19,6 +19,7 @@ export function getAvailability(
   },
   freeBusy: GCalFreeBusy,
 ): Availability {
+  console.log('freeBusy', freeBusy)
   const availability = [
     ...freeBusy.calendars[provider.gcal_availability_calendar_id].busy,
   ]
@@ -93,6 +94,10 @@ export async function providerAvailability(
     ...provider,
     id: provider.health_worker_id,
   })
+  console.log(
+    'healthWorkerGoogleClient.getFreeBusy',
+    healthWorkerGoogleClient.getFreeBusy,
+  )
   const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
     ...timeRange,
     calendarIds: [

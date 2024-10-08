@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../external-clients/google.ts'
@@ -16,16 +15,14 @@ import { randomPhoneNumber } from '../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
 import { addTestHealthWorker } from '../../../../../../web/utilities.ts'
 import { resetInTest } from '../../../../../../../db/meta.ts'
+import { mockWhatsApp } from '../../../../../mocks.ts'
+import { Stub, stub } from 'std/testing/mock.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
-  // deno-lint-ignore no-explicit-any
-  let getFreeBusy: any
-  beforeEach(() => {
-    getFreeBusy = sinon.stub(google.GoogleClient.prototype, 'getFreeBusy')
-  })
+  let getFreeBusy: Stub
   afterEach(() => {
-    getFreeBusy.restore()
+    if (getFreeBusy) getFreeBusy.restore()
   })
   it('provides with first_scheduling_option details after confirming details', async () => {
     const phone_number = randomPhoneNumber()
@@ -73,30 +70,35 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     currentTime.setMinutes(0)
     const secondDayEnd = formatHarare(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hours
 
-    getFreeBusy.resolves(
-      {
-        kind: 'calendar#freeBusy',
-        timeMin: timeMin,
-        timeMax: timeMax,
-        calendars: {
-          [health_worker.calendars!.gcal_appointments_calendar_id]: {
-            busy: [
-              {
-                start: secondDayStart,
-                end: secondDayBusyTime,
+    getFreeBusy = stub(
+      google.GoogleClient.prototype,
+      'getFreeBusy',
+      () =>
+        Promise.resolve(
+          {
+            kind: 'calendar#freeBusy' as const,
+            timeMin: timeMin,
+            timeMax: timeMax,
+            calendars: {
+              [health_worker.calendars!.gcal_appointments_calendar_id]: {
+                busy: [
+                  {
+                    start: secondDayStart,
+                    end: secondDayBusyTime,
+                  },
+                ],
               },
-            ],
-          },
-          [health_worker.calendars!.gcal_availability_calendar_id]: {
-            busy: [
-              {
-                start: secondDayStart,
-                end: secondDayEnd,
+              [health_worker.calendars!.gcal_availability_calendar_id]: {
+                busy: [
+                  {
+                    start: secondDayStart,
+                    end: secondDayEnd,
+                  },
+                ],
               },
-            ],
+            },
           },
-        },
-      },
+        ),
     )
 
     await conversations.insertMessageReceived(db, {
@@ -109,18 +111,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const fakeWhatsApp = {
-      phone_number: '263XXXXXX',
-      sendMessage: sinon.stub(),
-      sendMessages: sinon.stub().resolves([{
-        messages: [{
-          id: `wamid.${generateUUID()}`,
-        }],
-      }]),
-    }
+    const whatsapp = mockWhatsApp()
 
-    await respond(fakeWhatsApp, 'patient', phone_number)
-    assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
+    await respond(whatsapp, 'patient', phone_number)
+    assertEquals(whatsapp.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: {

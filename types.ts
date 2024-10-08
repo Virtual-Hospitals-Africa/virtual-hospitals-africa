@@ -1552,6 +1552,20 @@ export type WhatsAppMessageSent = {
   read_status: string
 }
 
+export type WhatsApp = {
+  phone_number: string
+  sendMessage(opts: {
+    phone_number: string
+    chatbot_name: ChatbotName
+    message: WhatsAppSingleSendable
+  }): Promise<WhatsAppJSONResponse>
+  sendMessages(opts: {
+    phone_number: string
+    chatbot_name: ChatbotName
+    messages: WhatsAppSingleSendable | WhatsAppSendable
+  }): Promise<WhatsAppJSONResponse[]>
+}
+
 export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export type Time = {
