@@ -2,13 +2,6 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
-export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
-  : ArrayTypeImpl<T>
-
-export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S[], I[], U[]>
-  : T[]
-
 export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep =
@@ -205,26 +198,20 @@ export type Religion =
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
-export interface Address {
-  address: string | null
-  city: string | null
-  country: string | null
-  postalCode: string | null
-  resourceId: string
-  state: string | null
-  use: string | null
-}
-
-export interface Address2 {
-  country_id: string
+export interface Addresses {
+  administrative_area_level_1: string | null
+  administrative_area_level_2: string | null
+  country: string
   created_at: Generated<Timestamp>
-  district_id: string
+  formatted: string
   id: Generated<string>
-  province_id: string
+  locality: string | null
+  postal_code: string | null
+  route: string | null
   street: string | null
-  suburb_id: string | null
+  street_number: string | null
+  unit: string | null
   updated_at: Generated<Timestamp>
-  ward_id: string
 }
 
 export interface Allergies {
@@ -257,53 +244,6 @@ export interface Appointments {
   reason: string
   start: Timestamp
   updated_at: Generated<Timestamp>
-}
-
-export interface ClientApplication {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  id: string
-  lastUpdated: Timestamp
-  name: string | null
-  projectId: string | null
-}
-
-export interface ClientApplicationHistory {
-  content: string
-  id: string
-  lastUpdated: Timestamp
-  versionId: string
-}
-
-export interface Condition {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  abatementAge: number | null
-  abatementDate: Timestamp | null
-  abatementString: string | null
-  assertedDate: Timestamp | null
-  asserter: string | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  encounter: string | null
-  evidenceDetail: string[] | null
-  id: string
-  lastUpdated: Timestamp
-  onsetAge: number | null
-  onsetDate: Timestamp | null
-  onsetInfo: string | null
-  patient: string | null
-  projectId: string | null
-  recordedDate: Timestamp | null
-  subject: string | null
 }
 
 export interface ConditionIcd10Codes {
@@ -473,36 +413,6 @@ export interface Employment {
 }
 
 export interface Encounter {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  account: string[] | null
-  appointment: string[] | null
-  basedOn: string[] | null
-  compartments: string[]
-  content: string
-  date: Timestamp | null
-  deleted: Generated<boolean>
-  diagnosis: string[] | null
-  episodeOfCare: string[] | null
-  id: string
-  lastUpdated: Timestamp
-  length: number | null
-  location: string[] | null
-  locationPeriod: ArrayType<Timestamp> | null
-  participant: string[] | null
-  partOf: string | null
-  patient: string | null
-  practitioner: string[] | null
-  projectId: string | null
-  reasonReference: string[] | null
-  serviceProvider: string | null
-  status: string | null
-  subject: string | null
-}
-
-export interface Encounter2 {
   order: Int8
   step: EncounterStep
 }
@@ -596,13 +506,6 @@ export interface HealthWorkerSessions {
   updated_at: Generated<Timestamp>
 }
 
-export interface HumanName {
-  family: string | null
-  given: string | null
-  name: string | null
-  resourceId: string
-}
-
 export interface Icd10Categories {
   category: string
   description: string
@@ -672,27 +575,6 @@ export interface Intake {
   step: IntakeStep
 }
 
-export interface Location {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  endpoint: string[] | null
-  id: string
-  lastUpdated: Timestamp
-  location: string
-  name: string[] | null
-  near: string | null
-  organization: string | null
-  organizationId: string
-  partof: string | null
-  projectId: string | null
-  status: string | null
-}
-
 export interface MailingList {
   created_at: Generated<Timestamp>
   email: string
@@ -740,27 +622,6 @@ export interface Measurements {
 }
 
 export interface Media {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  basedOn: string[] | null
-  compartments: string[]
-  content: string
-  created: Timestamp | null
-  deleted: Generated<boolean>
-  device: string | null
-  encounter: string | null
-  id: string
-  lastUpdated: Timestamp
-  operator: string | null
-  patient: string | null
-  projectId: string | null
-  status: string | null
-  subject: string | null
-}
-
-export interface Media2 {
   binary_data: Buffer
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -819,25 +680,6 @@ export interface NurseSpecialties {
   updated_at: Generated<Timestamp>
 }
 
-export interface Organization {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  active: boolean | null
-  canonicalName: string
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  endpoint: string[] | null
-  id: string
-  lastUpdated: Timestamp
-  name: string[] | null
-  partof: string | null
-  phonetic: string | null
-  projectId: string | null
-}
-
 export interface OrganizationConsumables {
   consumable_id: string
   created_at: Generated<Timestamp>
@@ -856,6 +698,17 @@ export interface OrganizationDevices {
   serial_number: string | null
   updated_at: Generated<Timestamp>
   updated_by: string | null
+}
+
+export interface Organizations {
+  address_id: string | null
+  category: string | null
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  inactive_reason: string | null
+  location: string | null
+  name: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface PatientAge {
@@ -1060,8 +913,8 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
-export interface PatientNearestOrganizations {
-  nearest_organizations: Json | null
+export interface PatientNearestFacilities {
+  nearest_facilities: Json | null
   patient_id: string | null
 }
 
@@ -1171,29 +1024,6 @@ export interface PharmacyEmployment {
   updated_at: Generated<Timestamp>
 }
 
-export interface Practitioner {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  active: boolean | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  gender: string | null
-  id: string
-  lastUpdated: Timestamp
-  phonetic: string[] | null
-  projectId: string | null
-}
-
-export interface PractitionerHistory {
-  content: string
-  id: string
-  lastUpdated: Timestamp
-  versionId: string
-}
-
 export interface PrescriptionCodes {
   alphanumeric_code: Generated<string>
   created_at: Generated<Timestamp>
@@ -1252,57 +1082,6 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
-export interface Project {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  googleClientId: string[] | null
-  id: string
-  lastUpdated: Timestamp
-  name: string | null
-  owner: string | null
-  projectId: string | null
-  recaptchaSiteKey: string[] | null
-}
-
-export interface ProjectHistory {
-  content: string
-  id: string
-  lastUpdated: Timestamp
-  versionId: string
-}
-
-export interface ProjectMembership {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  accessPolicy: string[] | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  externalId: string | null
-  id: string
-  lastUpdated: Timestamp
-  profile: Generated<string | null>
-  profileType: string | null
-  project: string | null
-  projectId: string | null
-  user: string | null
-  userName: string | null
-}
-
-export interface ProjectMembershipHistory {
-  content: string
-  id: string
-  lastUpdated: Timestamp
-  versionId: string
-}
-
 export interface ProviderCalendars {
   availability_set: Generated<boolean>
   created_at: Generated<Timestamp>
@@ -1354,35 +1133,6 @@ export interface SpatialRefSys {
   srtext: string | null
 }
 
-export interface Suburbs {
-  id: Generated<string>
-  name: string
-  ward_id: string
-}
-
-export interface User {
-  _profile: string[] | null
-  _security: string[] | null
-  _source: string | null
-  _tag: string[] | null
-  compartments: string[]
-  content: string
-  deleted: Generated<boolean>
-  email: string | null
-  externalId: string | null
-  id: string
-  lastUpdated: Timestamp
-  project: string | null
-  projectId: string | null
-}
-
-export interface UserHistory {
-  content: string
-  id: string
-  lastUpdated: Timestamp
-  versionId: string
-}
-
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1427,15 +1177,11 @@ export interface WhatsappMessagesSent {
 }
 
 export interface DB {
-  address: Address2
-  Address: Address
+  addresses: Addresses
   allergies: Allergies
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
-  ClientApplication: ClientApplication
-  ClientApplication_History: ClientApplicationHistory
-  Condition: Condition
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   consumables: Consumables
@@ -1455,8 +1201,7 @@ export interface DB {
   doctor_specialties: DoctorSpecialties
   drugs: Drugs
   employment: Employment
-  encounter: Encounter2
-  Encounter: Encounter
+  encounter: Encounter
   examination_categories: ExaminationCategories
   examination_findings: ExaminationFindings
   examinations: Examinations
@@ -1467,7 +1212,6 @@ export interface DB {
   health_worker_invitees: HealthWorkerInvitees
   health_worker_sessions: HealthWorkerSessions
   health_workers: HealthWorkers
-  HumanName: HumanName
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
   icd10_diagnoses: Icd10Diagnoses
@@ -1478,21 +1222,19 @@ export interface DB {
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
   intake: Intake
-  Location: Location
   mailing_list: MailingList
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
-  media: Media2
-  Media: Media
+  media: Media
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails
   nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
   nurse_specialties: NurseSpecialties
-  Organization: Organization
   organization_consumables: OrganizationConsumables
   organization_devices: OrganizationDevices
+  organizations: Organizations
   patient_age: PatientAge
   patient_allergies: PatientAllergies
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
@@ -1514,7 +1256,7 @@ export interface DB {
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
-  patient_nearest_organizations: PatientNearestOrganizations
+  patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
@@ -1525,27 +1267,18 @@ export interface DB {
   pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
-  Practitioner: Practitioner
-  Practitioner_History: PractitionerHistory
   prescription_codes: PrescriptionCodes
   prescription_medications: PrescriptionMedications
   prescription_medications_filled: PrescriptionMedicationsFilled
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
-  Project: Project
-  Project_History: ProjectHistory
-  ProjectMembership: ProjectMembership
-  ProjectMembership_History: ProjectMembershipHistory
   provider_calendars: ProviderCalendars
   provinces: Provinces
   regulator_google_tokens: RegulatorGoogleTokens
   regulator_sessions: RegulatorSessions
   regulators: Regulators
   spatial_ref_sys: SpatialRefSys
-  suburbs: Suburbs
-  User: User
-  User_History: UserHistory
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived

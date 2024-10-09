@@ -1,5 +1,4 @@
 import {
-  Address,
   HasStringId,
   ISODateString,
   Maybe,
@@ -7,7 +6,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { upsert as upsertAddress } from './address.ts'
+import * as addresses from './addresses.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { isoDate } from '../helpers.ts'
@@ -21,7 +20,7 @@ export type UpsertableNurseRegistrationDetails =
     >
     & {
       address_id?: undefined
-      address: Address
+      address: addresses.AddressInsert
     }
   )
 
@@ -36,7 +35,7 @@ export async function add(
       !address_id,
       'address_id must not be defined if address is specified',
     )
-    address_id = (await upsertAddress(trx, address)).id
+    address_id = (await addresses.insert(trx, address)).id
   }
   assert(address_id, 'address_id must be defined')
   return trx

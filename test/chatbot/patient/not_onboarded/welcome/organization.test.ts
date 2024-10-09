@@ -26,7 +26,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: 'find_nearest_organization',
+      body: 'find_nearest_facilities',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -52,7 +52,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'find_nearest_organization:share_location',
+      'find_nearest_facilities:share_location',
     )
   })
 })

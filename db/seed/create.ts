@@ -1,7 +1,7 @@
-import { Kysely } from 'kysely'
 import db, { uri } from '../db.ts'
 import { runCommand } from '../../util/command.ts'
 import { DB } from '../../db.d.ts'
+import { TrxOrDb } from '../../types.ts'
 
 const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
@@ -15,7 +15,7 @@ type TableName = keyof DB
 
 export function create(
   table_names: TableName[],
-  generate: (db: Kysely<DB>) => Promise<void>,
+  generate: (trx: TrxOrDb) => Promise<void>,
   opts?: { never_dump?: boolean },
 ) {
   async function drop(tables: TableName[] = table_names) {
@@ -51,7 +51,9 @@ export function create(
     })
 
     if (!all_seeds_present) {
-      return generate(db)
+      return db.transaction().setIsolationLevel('read committed').execute(
+        generate,
+      )
     }
 
     await runCommand('./db/seed/tsv_load.sh', {

@@ -52,7 +52,10 @@ export type SearchProps<
   required?: boolean
   label?: Maybe<string>
   no_name_form_data?: boolean
-  addable?: boolean
+  addable?: boolean | {
+    href?: string
+    formatDisplay?: (query: string) => string
+  }
   disabled?: boolean
   readonly?: boolean
   value?: Maybe<T>
@@ -68,7 +71,6 @@ export type SearchProps<
       active: boolean
     },
   ): JSX.Element
-  addHref?: string
   optionHref?: (option: T) => string
   ignoreOptionHref?: boolean
 }
@@ -96,14 +98,10 @@ export default function Search<
   className,
   onQuery,
   onSelect,
-  addHref,
   optionHref, // The existence of this prop turns the options into <a> tags
   Option = BaseOption,
   ignoreOptionHref,
 }: SearchProps<T>) {
-  if (addHref) {
-    assert(addable, 'addHref requires addable to be true')
-  }
   if (multi) {
     assert(
       typeof onSelect === 'function',
@@ -118,13 +116,19 @@ export default function Search<
 
   const [query, setQuery] = useState(value?.name ?? '')
 
+  let formatDisplay = (query: string) => `Add "${query}"`
+  if (addable && typeof addable !== 'boolean' && addable.formatDisplay) {
+    formatDisplay = addable.formatDisplay
+  }
   const add_option = {
     id: 'add' as const,
     name: query,
-    display_name: `Add "${query}"`,
+    display_name: formatDisplay(query),
   } as unknown as T
-
-  const all_options = addable ? [...options, add_option] : options
+  const all_options = options
+  if (addable) {
+    all_options.push()
+  }
 
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
   // while if the provided name is something like patient, we form the id field to be patient_id
@@ -218,9 +222,12 @@ export default function Search<
                       </>
                     )
                     if (ignoreOptionHref) return fragment
-                    if (option.id === 'add' && query && addHref) {
+                    if (
+                      option.id === 'add' && query && addable &&
+                      typeof addable === 'object' && ('href' in addable)
+                    ) {
                       return (
-                        <a href={`${addHref}${encodeURIComponent(query)}`}>
+                        <a href={`${addable.href}${encodeURIComponent(query)}`}>
                           {fragment}
                         </a>
                       )

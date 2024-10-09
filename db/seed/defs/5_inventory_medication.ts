@@ -1,5 +1,4 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { groupBy } from '../../../util/groupBy.ts'
 import uniq from '../../../util/uniq.ts'
@@ -66,8 +65,8 @@ const form_rewrite = {
   'CREAMS': 'CREAM',
 }
 
-async function seedDataFromJSON(db: Kysely<DB>) {
-  await db
+async function seedDataFromJSON(trx: TrxOrDb) {
+  await trx
     .insertInto('consumables')
     .values({ name: 'bandage' })
     .executeTakeFirst()
@@ -87,7 +86,7 @@ async function seedDataFromJSON(db: Kysely<DB>) {
 
   // Log all unique forms
   // console.log(uniq(data.map(d => d.forms)).sort())
-  await inParallel.forEach([...drugs.entries()], addDrug.bind(null, db))
+  await inParallel.forEach([...drugs.entries()], addDrug.bind(null, trx))
 
   if (skippedDrugs.length) {
     Deno.writeTextFileSync(
@@ -98,7 +97,7 @@ async function seedDataFromJSON(db: Kysely<DB>) {
 }
 
 async function addDrug(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   [generic_name, manufactured_medications]: [
     string,
     ManufacturedMedicationCsvRow[],
@@ -178,7 +177,7 @@ async function addDrug(
     return
   }
 
-  const { id: drug_id } = await db
+  const { id: drug_id } = await trx
     .insertInto('drugs')
     .values({ generic_name })
     .returning('id')
@@ -194,7 +193,7 @@ async function addDrug(
       throw new Error(`No route found for ${form}`)
     }
 
-    const { id: medication_id } = await db
+    const { id: medication_id } = await trx
       .insertInto('medications')
       .values({
         drug_id,
@@ -215,7 +214,7 @@ async function addDrug(
       )
       const { applicant_name, trade_name } = manufactured_medication
 
-      const mm = await db
+      const mm = await trx
         .insertInto('manufactured_medications')
         .values({
           medication_id,
@@ -228,7 +227,7 @@ async function addDrug(
         .executeTakeFirstOrThrow()
 
       for (const strength_numerator of strengths.strength_numerators) {
-        const consumable = await db
+        const consumable = await trx
           .insertInto('consumables')
           .values({
             name:
@@ -237,7 +236,7 @@ async function addDrug(
           .returning('id')
           .executeTakeFirstOrThrow()
 
-        await db
+        await trx
           .insertInto('manufactured_medication_strengths')
           .values({
             manufactured_medication_id: mm.id,

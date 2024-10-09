@@ -5,6 +5,6 @@ COPY ./medplum/ /app
 RUN npm install
 RUN npx turbo run build
 
-COPY ./external-clients/medplum/docker/superadmin-scripts/ /app
+COPY ./scripts/medplum/docker/superadmin/ /app
 
 CMD ["/app/run.sh"]

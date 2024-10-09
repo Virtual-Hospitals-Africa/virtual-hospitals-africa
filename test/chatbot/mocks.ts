@@ -5,7 +5,8 @@ import { WhatsApp, WhatsAppJSONResponseSuccess } from '../../types.ts'
 export function mockWhatsApp() {
   return {
     phone_number: '263XXXXXX',
-    sendMessage: () => {
+    sendMessage: (message) => {
+      console.error(message)
       throw new Error('sendMessage should not be called')
     },
     sendMessages: spy((_) =>

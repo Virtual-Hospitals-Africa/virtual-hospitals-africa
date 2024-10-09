@@ -4,6 +4,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
+import * as organizations from '../../db/models/organizations.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_intake from '../../db/models/patient_intake.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -619,6 +620,11 @@ describe(
                   { health_worker_id: doctor.id },
                 )
 
+              const clinic = await organizations.getById(
+                trx,
+                clinic_organization_id,
+              )
+
               assertEquals(doctor_after_review_request.reviews, {
                 requested: [
                   {
@@ -638,7 +644,7 @@ describe(
                       name: nurse.name,
                       organization: {
                         id: clinic_organization_id,
-                        name: 'Test Clinic',
+                        name: clinic.name,
                       },
                       patient_encounter_provider_id:
                         doctor_after_review_request.reviews.requested[0]

@@ -1,6 +1,7 @@
 import last from '../../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import sortBy from '../../util/sortBy.ts'
+import { spinner } from '../../util/spinner.ts'
 
 export const seeds: Record<
   string,
@@ -146,14 +147,13 @@ export async function run(cmd: Cmd, target?: string) {
   }
 
   for (const seedName of targets) {
-    console.log(`${gerund[cmd]} seed ${seedName}...`)
-    const seed = seeds[seedName]
-    await seed[cmd]()
-    console.log(
-      `${seedName} ${past_tense[cmd]}. Tables affected: ${
+    await spinner(`${gerund[cmd]} seed ${seedName}`, async () => {
+      const seed = seeds[seedName]
+      await seed[cmd]()
+      return `${seedName} ${past_tense[cmd]}. Tables affected: ${
         seed.table_names.join(', ')
-      }.`,
-    )
+      }.`
+    })
   }
 }
 

@@ -1,6 +1,5 @@
-import { Kysely } from 'kysely'
+import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
-import { DB } from '../../../db.d.ts'
 import { create } from '../create.ts'
 
 type AdminDistrict = {
@@ -24,7 +23,6 @@ type District = {
 
 type Ward = {
   name: string
-  suburbs?: Suburb[]
 }
 
 type Suburb = {
@@ -36,7 +34,6 @@ export default create([
   'provinces',
   'districts',
   'wards',
-  'suburbs',
 ], importData)
 
 async function getDataFromJSON(): Promise<AdminDistrict> {
@@ -46,37 +43,32 @@ async function getDataFromJSON(): Promise<AdminDistrict> {
   return data
 }
 
-async function importData(db: Kysely<DB>) {
+async function importData(trx: TrxOrDb) {
   const data = await getDataFromJSON()
   for await (
     const country of data.countries
   ) {
-    const country_id = await insertCountry(db, country)
+    const country_id = await insertCountry(trx, country)
     for await (
       const province of country.provinces
     ) {
-      const province_id = await insertProvince(db, province, country_id)
+      const province_id = await insertProvince(trx, province, country_id)
       for await (
         const district of province.districts
       ) {
-        const district_id = await insertDistrict(db, district, province_id)
+        const district_id = await insertDistrict(trx, district, province_id)
         for await (
           const ward of district.wards
         ) {
-          const wardId = await insertWard(db, ward, district_id)
-          for await (
-            const suburb of ward.suburbs ?? []
-          ) {
-            await insertSuburb(db, suburb, wardId)
-          }
+          await insertWard(trx, ward, district_id)
         }
       }
     }
   }
 }
 
-async function insertCountry(db: Kysely<DB>, country: Country) {
-  const result = await db.insertInto('countries').values({
+async function insertCountry(trx: TrxOrDb, country: Country) {
+  const result = await trx.insertInto('countries').values({
     id: '10000000-0000-0000-0000-000000000000',
     name: country.name,
   }).returningAll().executeTakeFirstOrThrow()
@@ -84,11 +76,11 @@ async function insertCountry(db: Kysely<DB>, country: Country) {
 }
 
 async function insertProvince(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   province: Province,
   country_id: string,
 ) {
-  const result = await db.insertInto('provinces').values({
+  const result = await trx.insertInto('provinces').values({
     name: province.name,
     country_id,
   }).returningAll().executeTakeFirstOrThrow()
@@ -96,11 +88,11 @@ async function insertProvince(
 }
 
 async function insertDistrict(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   district: District,
   province_id: string,
 ) {
-  const result = await db.insertInto('districts').values({
+  const result = await trx.insertInto('districts').values({
     name: district.name,
     province_id,
   }).returningAll().executeTakeFirstOrThrow()
@@ -108,24 +100,13 @@ async function insertDistrict(
 }
 
 async function insertWard(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   ward: Ward,
   district_id: string,
 ) {
-  const result = await db.insertInto('wards').values({
+  const result = await trx.insertInto('wards').values({
     name: ward.name,
     district_id,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
-}
-
-async function insertSuburb(
-  db: Kysely<DB>,
-  suburb: Suburb,
-  ward_id: string,
-) {
-  await db.insertInto('suburbs').values({
-    name: suburb.name,
-    ward_id,
-  }).execute()
 }

@@ -1,11 +1,10 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import { create } from '../create.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 
 export default create(['pharmacists'], importFromCsv)
 
-async function importFromCsv(db: Kysely<DB>) {
+async function importFromCsv(trx: TrxOrDb) {
   for await (
     const pharmacist of parseCsv('./db/resources/pharmacists.tsv', {
       columnSeparator: '\t',
@@ -14,7 +13,7 @@ async function importFromCsv(db: Kysely<DB>) {
     if (pharmacist.address === 'LOCUM') {
       pharmacist.address = null
     }
-    await db
+    await trx
       .insertInto('pharmacists')
       // deno-lint-ignore no-explicit-any
       .values(pharmacist as any)

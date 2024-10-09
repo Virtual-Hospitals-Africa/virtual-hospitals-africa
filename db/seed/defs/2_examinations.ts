@@ -1,9 +1,8 @@
-import { Kysely } from 'kysely'
 import { create } from '../create.ts'
 import uniq from '../../../util/uniq.ts'
 import { groupBy } from '../../../util/groupBy.ts'
 import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../../shared/examinations.ts'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 
 export default create(
   [
@@ -129,12 +128,12 @@ const head_to_toe_assessment = [
   { 'finding_name': 'swelling conjunctiva', 'category': 'Conjunctiva' },
 ]
 
-async function addSeedData(db: Kysely<DB>) {
-  await db.insertInto('examinations').values(
+async function addSeedData(trx: TrxOrDb) {
+  await trx.insertInto('examinations').values(
     EXAMINATIONS.map((name, index) => ({ name, order: index + 1 })),
   ).execute()
 
-  await db.insertInto('diagnostic_tests').values(
+  await trx.insertInto('diagnostic_tests').values(
     DIAGNOSTIC_TESTS.map((name) => ({ name })),
   ).execute()
 
@@ -147,7 +146,7 @@ async function addSeedData(db: Kysely<DB>) {
     order: index + 1,
   }))
 
-  const inserted_categories = await db
+  const inserted_categories = await trx
     .insertInto('examination_categories')
     .values(categories)
     .returningAll()
@@ -173,7 +172,7 @@ async function addSeedData(db: Kysely<DB>) {
     }
   }
 
-  await db
+  await trx
     .insertInto('examination_findings')
     .values(to_insert)
     .execute()

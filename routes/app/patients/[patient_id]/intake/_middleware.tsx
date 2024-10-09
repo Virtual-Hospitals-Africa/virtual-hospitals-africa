@@ -13,6 +13,7 @@ import {
 } from '../../../../../types.ts'
 import * as patient_intake from '../../../../../db/models/patient_intake.ts'
 import * as employment from '../../../../../db/models/employment.ts'
+import * as organizations from '../../../../../db/models/organizations.ts'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
@@ -34,6 +35,7 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
@@ -101,12 +103,13 @@ async function sendTo(
   send_to: SendToFormSubmission,
   step: string,
 ) {
+  const { encounter_provider, encounter, trx } = ctx.state
   if (send_to.action && send_to.action === 'waiting_room') {
-    const { organization_id } = ctx.state.encounter_provider
-    const patient_encounter_id = ctx.state.encounter.encounter_id
+    const { organization_id } = encounter_provider
+    const patient_encounter_id = encounter.encounter_id
 
     await waiting_room.add(
-      ctx.state.trx,
+      trx,
       { organization_id, patient_encounter_id },
     )
     const success = encodeURIComponent(
@@ -118,13 +121,13 @@ async function sendTo(
   }
 
   if (send_to.entity) {
-    const { organization_id } = ctx.state.encounter_provider
-    const { encounter_id } = ctx.state.encounter
+    const { organization_id } = encounter_provider
+    const { encounter_id } = encounter
 
     const provider_id = send_to.entity.id
 
     await patient_encounters.addProvider(
-      ctx.state.trx,
+      trx,
       {
         encounter_id,
         provider_id,
@@ -132,11 +135,11 @@ async function sendTo(
     )
 
     await waiting_room.add(
-      ctx.state.trx,
+      trx,
       { organization_id, patient_encounter_id: encounter_id },
     )
 
-    const employee_name = await employment.getName(ctx.state.trx, {
+    const employee_name = await employment.getName(trx, {
       employment_id: provider_id,
     })
     const success = encodeURIComponent(
@@ -247,33 +250,33 @@ export function IntakePage(
     _req: Request,
     ctx: IntakeContext,
   ) {
-    const { patient } = ctx.state
+    const { healthWorker, patient, encounter_provider, trx } = ctx.state
     const step = ctx.route.split('/').pop()!
     const previously_completed = patient.intake_steps_completed.includes(
       step as unknown as IntakeStep,
     )
 
-    const organizationId = ctx.state.encounter_provider.organization_id
-    const location = await send_to.getLocationByOrganizationId(
-      ctx.state.trx,
-      organizationId,
+    const { location } = await organizations.getById(
+      trx,
+      encounter_provider.organization_id,
     )
 
-    const getting_sendables = send_to.forPatientIntake(
-      ctx.state.trx,
-      patient.id,
-      location,
-      ctx.state.encounter_provider.organization_id,
-      {
-        exclude_health_worker_id: ctx.state.healthWorker.id,
-      },
-    )
-
-    const children = await render({ ctx, patient, previously_completed })
+    const { rendered, sendables } = await promiseProps({
+      rendered: render({ ctx, patient, previously_completed }),
+      sendables: send_to.forPatientIntake(
+        trx,
+        patient.id,
+        location,
+        encounter_provider.organization_id,
+        {
+          exclude_health_worker_id: healthWorker.id,
+        },
+      ),
+    })
 
     return (
-      <IntakeLayout ctx={ctx} sendables={await getting_sendables}>
-        {children}
+      <IntakeLayout ctx={ctx} sendables={sendables}>
+        {rendered}
       </IntakeLayout>
     )
   }

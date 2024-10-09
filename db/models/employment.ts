@@ -153,8 +153,8 @@ export function getOrganizationAdmin(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'Organization',
-      'Organization.id',
+      'organizations',
+      'organizations.id',
       'employment.organization_id',
     )
     .select([
@@ -164,7 +164,7 @@ export function getOrganizationAdmin(
       'email',
       'profession',
       'organization_id',
-      'Organization.canonicalName as organization_name',
+      'organizations.name as organization_name',
     ])
     .executeTakeFirst()
 }

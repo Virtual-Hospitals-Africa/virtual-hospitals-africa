@@ -58,11 +58,10 @@ export type PersonalFormFields = {
   mobile_number: string
   address: {
     street: string
-    suburb_id: string
-    ward_id: string
-    district_id: string
-    province_id: string
-    country_id: string
+    locality: string
+    administrative_area_level_1: string
+    administrative_area_level_2: string
+    country: string
   }
 }
 
@@ -82,10 +81,11 @@ function assertIsPersonalFormFields(
   assertOr400(!!fields.national_id_number)
   assertOr400(!!fields.mobile_number)
   assertOr400(isObjectLike(fields.address))
-  assertOr400(!!fields.address.country_id)
-  assertOr400(!!fields.address.province_id)
-  assertOr400(!!fields.address.district_id)
-  assertOr400(!!fields.address.ward_id)
+  assertOr400(!!fields.address.country)
+  assertOr400(!!fields.address.administrative_area_level_1)
+  assertOr400(!!fields.address.administrative_area_level_2)
+  assertOr400(!!fields.address.locality)
+  assertOr400(!!fields.address.street)
 }
 
 function assertIsProfessionalInformationFields(

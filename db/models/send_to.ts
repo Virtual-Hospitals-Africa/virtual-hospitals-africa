@@ -1,5 +1,6 @@
 import {
   Location,
+  Maybe,
   Sendable,
   SendToFormSubmission,
   TrxOrDb,
@@ -7,42 +8,20 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { getApprovedProviders, nearest } from './organizations.ts'
-import { sql } from 'kysely'
-// import { getMany } from './providers.ts'
-// import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
+import { getApprovedProviders, nearestHospitals } from './organizations.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
-
-export async function getLocationByOrganizationId(
-  trx: TrxOrDb,
-  organizationId: string,
-) {
-  const result = await trx
-    .selectFrom('Location')
-    .select([
-      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
-      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
-    ])
-    .where('organizationId', '=', organizationId)
-    .executeTakeFirst()
-
-  if (!result) {
-    throw new Error(
-      `No location data found for organizationId: ${organizationId}`,
-    )
-  }
-  return result
-}
 
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
-  location: Location,
+  location: Location | null,
   organization_id: string,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: nearest(trx, location),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,
@@ -179,12 +158,14 @@ export async function forPatientIntake(
 export async function forPatientEncounter(
   trx: TrxOrDb,
   _patient_id: string,
-  location: Location,
+  location: Maybe<Location>,
   organization_id: string,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: nearest(trx, location),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,

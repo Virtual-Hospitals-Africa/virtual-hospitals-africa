@@ -11,13 +11,13 @@ import { readSeedDump } from '../../../web/utilities.ts'
 import { mockWhatsApp } from '../../mocks.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
-  const organizations = readSeedDump('Organization')
+  const organizations = readSeedDump('organizations')
 
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
     await patients.insert(db, {
-      conversation_state: 'find_nearest_organization:share_location',
+      conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
       name: 'test',
       gender: 'female',
@@ -42,10 +42,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     await respond(whatsappOne, 'patient')
     const arcadia = organizations.value.find((o) =>
-      o.canonicalName === 'Arcadia Clinic'
+      o.name === 'Arcadia Clinic'
     )!
     const braeside = organizations.value.find((o) =>
-      o.canonicalName === 'Braeside Clinic'
+      o.name === 'Braeside Clinic'
     )!
 
     const message = whatsappOne.sendMessages.calls[0].args[0].messages
@@ -81,7 +81,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
               longitude: 31.0657,
               latitude: -17.8399,
               name: 'Braeside Clinic',
-              address: '4 General Booth Rd, Harare, ZW',
+              address: 'Malta Road, Harare, Harare Province, Zimbabwe',
             },
           },
           {
@@ -104,7 +104,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'find_nearest_organization:send_organization_location',
+      'find_nearest_facilities:send_organization_location',
     )
   })
 })

@@ -35,7 +35,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
           buttonText: 'Menu',
           options: [
             { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_organization', title: 'Nearest Organization' },
+            { id: 'find_nearest_facilities', title: 'Nearest Organization' },
           ],
         },
         phone_number,

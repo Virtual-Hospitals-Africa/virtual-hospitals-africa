@@ -1,6 +1,5 @@
 import { sql } from 'kysely'
-import { PatientIntake, TrxOrDb } from '../../types.ts'
-import { formatted as formattedAddress } from './address.ts'
+import { Address, PatientIntake, TrxOrDb } from '../../types.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
@@ -16,16 +15,16 @@ export function getById(
 ): Promise<PatientIntake> {
   return trx
     .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('addresses', 'addresses.id', 'patients.address_id')
     .leftJoin(
-      'Organization',
-      'Organization.id',
+      'organizations',
+      'organizations.id',
       'patients.nearest_organization_id',
     )
     .leftJoin(
-      'Address as OrganizationAddress',
-      'Organization.id',
-      'OrganizationAddress.resourceId',
+      'addresses as organization_address',
+      'organizations.address_id',
+      'organization_address.id',
     )
     .leftJoin(
       'employment',
@@ -55,14 +54,7 @@ export function getById(
         .as(
           'description',
         ),
-      jsonBuildObject({
-        country_id: eb.ref('address.country_id'),
-        province_id: eb.ref('address.province_id'),
-        district_id: eb.ref('address.district_id'),
-        ward_id: eb.ref('address.ward_id'),
-        suburb_id: eb.ref('address.suburb_id'),
-        street: eb.ref('address.street'),
-      }).as('address'),
+      sql<null | Address>`TO_JSON(addresses)`.as('address'),
       'patients.completed_intake',
       jsonArrayFromColumn(
         'intake_step',
@@ -83,8 +75,8 @@ export function getById(
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_organization_id',
-      'Organization.canonicalName as nearest_organization_name',
-      'OrganizationAddress.address as nearest_organization_address',
+      'organizations.name as nearest_organization_name',
+      'organization_address.formatted as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
@@ -101,10 +93,10 @@ export async function getSummaryById(
 ) {
   const getting_review = trx
     .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('addresses', 'addresses.id', 'patients.address_id')
     .leftJoin(
-      'Organization',
-      'Organization.id',
+      'organizations',
+      'organizations.id',
       'patients.nearest_organization_id',
     )
     .leftJoin(
@@ -119,8 +111,8 @@ export async function getSummaryById(
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .leftJoin(
-      formattedAddress(trx),
-      'address_formatted.id',
+      'addresses',
+      'addresses.id',
       'patients.address_id',
     )
     .select((eb) => [
@@ -143,13 +135,13 @@ export async function getSummaryById(
         string
       >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
         .as('primary_doctor_name'),
-      'address_formatted.address',
+      'addresses.formatted as address',
       sql<
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_organization_id',
-      'Organization.canonicalName as nearest_organization_name',
+      'organizations.name as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
         clinical_notes: patients.intake_clinical_notes_href_sql,

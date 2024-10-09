@@ -120,6 +120,7 @@ import * as $AddDeviceSearch from './islands/AddDeviceSearch.tsx'
 import * as $AddPharmacistSearch from './islands/AddPharmacistSearch.tsx'
 import * as $AddPharmacySearch from './islands/AddPharmacySearch.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
+import * as $AddressForm from './islands/AddressForm.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
@@ -157,7 +158,6 @@ import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
-import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
@@ -414,6 +414,7 @@ const manifest = {
     './islands/AddPharmacistSearch.tsx': $AddPharmacistSearch,
     './islands/AddPharmacySearch.tsx': $AddPharmacySearch,
     './islands/AddRemove.tsx': $AddRemove,
+    './islands/AddressForm.tsx': $AddressForm,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,
     './islands/ConditionSearch.tsx': $ConditionSearch,
@@ -451,7 +452,6 @@ const manifest = {
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
-    './islands/address-inputs.tsx': $address_inputs,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,

@@ -9,7 +9,7 @@ export function up(db: Kysely<unknown>) {
       qb.addColumn('email', 'varchar(255)', (col) => col.notNull())
         .addColumn('organization_id', 'uuid', (col) =>
           col.notNull()
-            .references('Organization.id')
+            .references('organizations.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',
