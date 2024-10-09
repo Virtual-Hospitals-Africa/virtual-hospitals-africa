@@ -46,18 +46,13 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.46.3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'v18.20.2'
 
-      # - uses: actions/cache/restore@v4
-      #   name: Restore deno modules
-      #   id: cache-deno-modules-restore
-      #   with:
-      #     path: $XDG_CACHE_HOME/deno
-      #     key: deno-modules
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
       - name: Run check
         run: deno task check
@@ -77,12 +72,12 @@ jobs:
       - name: Run tests
         run: deno task test --skip-migrate-check && deno task test:chatbot
 
-      # - name: Save deno-modules
-      #   id: cache-deno-modules-save
-      #   uses: actions/cache/save@v4
-      #   with:
-      #     path: $XDG_CACHE_HOME/deno
-      #     key: deno-modules
+      - name: Save deno-modules
+        id: cache-deno-modules-save
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
   build_container:
     runs-on: ubuntu-latest
