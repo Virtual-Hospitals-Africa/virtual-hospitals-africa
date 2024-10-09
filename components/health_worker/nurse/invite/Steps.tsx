@@ -58,10 +58,10 @@ export type PersonalFormFields = {
   mobile_number: string
   address: {
     street: string
-    ward_name: string
-    district_name: string
-    province_name: string
-    country_name: string
+    locality: string
+    administrative_area_level_1: string
+    administrative_area_level_2: string
+    country: string
   }
 }
 

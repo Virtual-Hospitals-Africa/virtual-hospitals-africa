@@ -406,7 +406,7 @@ export function getRequest(
           .select([
             'organizations.id',
             'organizations.name as name',
-            'organization_address.formatted',
+            'organization_address.formatted as address',
           ]),
       ).as('organization'),
       jsonObjectFrom(

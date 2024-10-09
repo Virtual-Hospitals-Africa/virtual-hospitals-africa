@@ -92,7 +92,8 @@ export function get(
     .where('organizations.id', 'in', opts.ids)
     .select([
       'organizations.id',
-      'organizations.name as name',
+      'organizations.name',
+      'organizations.category',
       'addresses.formatted as address',
       jsonBuildNullableObject('location', {
         longitude: sql<number>`ST_X(location::geometry)`,

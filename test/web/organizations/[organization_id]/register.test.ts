@@ -71,7 +71,7 @@ describe(
         body.set('address.province_name', address.administrative_area_level_1)
         body.set('address.district_name', address.administrative_area_level_2)
         body.set('address.ward_name', address.locality)
-        body.set('address.street', `${address.street_number} ${address.route}`)
+        body.set('address.street', address.street)
 
         const postResponse = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
@@ -128,16 +128,16 @@ describe(
           address.country,
         )
         assert(
-          $('select[name="address.province"]').val(),
+          $('select[name="address.administrative_area_level_1"]').val(),
           address.administrative_area_level_1,
         )
         assert(
-          $('select[name="address.district"]').val(),
-          address.district,
+          $('select[name="address.administrative_area_level_2"]').val(),
+          address.administrative_area_level_2,
         )
         assert(
-          $('select[name="address.ward"]').val(),
-          address.ward,
+          $('select[name="address.locality"]').val(),
+          address.locality,
         )
         assert(
           $('input[name="address.street"]').val(),

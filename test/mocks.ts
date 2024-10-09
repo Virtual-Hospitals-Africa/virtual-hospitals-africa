@@ -92,9 +92,7 @@ export async function createTestAddress(trx: TrxOrDb) {
   const ward = sample(district.wards)
   const street_number = Math.random().toString(36).substring(7)
   return {
-    street_number,
-    route: 'Main Street',
-    unit: null,
+    street: `${street_number} Main Street`,
     locality: ward.name,
     administrative_area_level_2: district.name,
     administrative_area_level_1: province.name,

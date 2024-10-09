@@ -121,9 +121,9 @@ export function insert(
   ]).join(', ')
   return trx.insertInto('addresses')
     .values({
-      ...address,
       street,
       formatted,
+      ...address,
     })
     .returningAll()
     .executeTakeFirstOrThrow()

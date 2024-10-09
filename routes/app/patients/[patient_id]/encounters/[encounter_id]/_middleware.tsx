@@ -253,7 +253,9 @@ export function EncounterPage(
     )
 
     const { rendered, sendables } = await promiseProps({
-      rendered: render({ ctx, ...ctx.state, previously_completed }),
+      rendered: Promise.resolve(
+        render({ ctx, ...ctx.state, previously_completed }),
+      ),
       sendables: send_to.forPatientEncounter(
         trx,
         patient.id,
@@ -266,12 +268,9 @@ export function EncounterPage(
     })
 
     let next_step_text: string | undefined
+    let children = rendered
     if ('next_step_text' in rendered) {
       next_step_text = rendered.next_step_text as string
-    }
-
-    let children = rendered
-    if ('children' in rendered) {
       children = rendered.children
     }
 

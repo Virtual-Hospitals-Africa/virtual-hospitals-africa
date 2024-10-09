@@ -309,7 +309,7 @@ export type RenderedPatientAge = {
 export type Address = {
   formatted: string
   country: string
-  administrative_level_1: Maybe<string>
+  administrative_area_level_1: Maybe<string>
   administrative_area_level_2: Maybe<string>
   locality: Maybe<string>
   route: Maybe<string>

@@ -116,15 +116,18 @@ export default function Search<
 
   const [query, setQuery] = useState(value?.name ?? '')
 
+  let formatDisplay = (query: string) => `Add "${query}"`
+  if (addable && typeof addable !== 'boolean' && addable.formatDisplay) {
+    formatDisplay = addable.formatDisplay
+  }
+  const add_option = {
+    id: 'add' as const,
+    name: query,
+    display_name: formatDisplay(query),
+  } as unknown as T
   const all_options = options
   if (addable) {
-    all_options.push({
-      id: 'add' as const,
-      name: query,
-      display_name: 'formatDisplay' in addable
-        ? addable.formatDisplay(query)
-        : `Add "${query}"`,
-    } as unknown as T)
+    all_options.push()
   }
 
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
@@ -219,7 +222,10 @@ export default function Search<
                       </>
                     )
                     if (ignoreOptionHref) return fragment
-                    if (option.id === 'add' && query && ('href' in addable)) {
+                    if (
+                      option.id === 'add' && query && addable &&
+                      typeof addable === 'object' && ('href' in addable)
+                    ) {
                       return (
                         <a href={`${addable.href}${encodeURIComponent(query)}`}>
                           {fragment}
