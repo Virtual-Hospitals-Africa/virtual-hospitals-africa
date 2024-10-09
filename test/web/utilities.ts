@@ -21,6 +21,8 @@ import range from '../../util/range.ts'
 import { collect } from '../../util/inParallel.ts'
 import { parseTsv } from '../../util/parseCsv.ts'
 import { take } from '../../util/take.ts'
+import generateUUID from '../../util/uuid.ts'
+import { OrganizationInsert } from '../../db/models/organizations.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -431,25 +433,25 @@ export async function withTestOrganizations(
     assert(opts.count > 0), range(opts.count).map((_) => ({ kind: opts.kind }))
   )
 
+  const creating = to_create.map(({ kind }) => {
+    const category = kind ? 'Clinic' : 'Virtual Hospital'
+    const name = `Test ${generateUUID()} ${category}`
+    const to_create: OrganizationInsert = { name, category }
+    if (kind === 'physical') {
+      to_create.address = {
+        street: '123 Test St',
+        locality: 'Test City',
+        country: 'US',
+        postal_code: '12345',
+      }
+      to_create.location = { latitude: 0, longitude: 0 }
+    }
+
+    return to_create
+  })
+
   const organizations_added = await Promise.all(
-    to_create.map(({ kind }) =>
-      organizations.add(trx, {
-        name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
-        category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-        address: kind === 'physical'
-          ? {
-            street_number: '123',
-            route: 'Test St',
-            locality: 'Test City',
-            country: 'US',
-            postal_code: '12345',
-          }
-          : undefined,
-        location: kind === 'physical'
-          ? { latitude: 0, longitude: 0 }
-          : undefined,
-      })
-    ),
+    creating.map((org) => organizations.add(trx, org)),
   )
   const organization_ids = organizations_added.map((organization) =>
     organization.id
@@ -457,13 +459,16 @@ export async function withTestOrganizations(
   const address_ids = organizations_added.map((organization) =>
     organization.address_id
   )
-  await callback(organization_ids)
-  await trx.deleteFrom('organizations')
-    .where('id', 'in', organization_ids)
-    .execute()
-  await trx.deleteFrom('addresses')
-    .where('id', 'in', address_ids)
-    .execute()
+  try {
+    await callback(organization_ids)
+  } finally {
+    await trx.deleteFrom('organizations')
+      .where('id', 'in', organization_ids)
+      .execute()
+    await trx.deleteFrom('addresses')
+      .where('id', 'in', address_ids)
+      .execute()
+  }
 }
 
 export function readFirstFiveRowsOfSeedDump(

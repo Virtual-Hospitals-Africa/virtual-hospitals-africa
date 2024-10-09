@@ -14,6 +14,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import {
+  debugLog,
   jsonArrayFromColumn,
   literalNumber,
   literalOptionalDate,
@@ -565,6 +566,47 @@ export function consumeConsumable(
     procurement_id: string
   },
 ) {
+  debugLog(
+    trx.with('adding_consumption', (qb) =>
+      qb.insertInto('consumption')
+        .values({
+          organization_id,
+          created_by: consumable.created_by,
+          quantity: consumable.quantity,
+          procurement_id: consumable.procurement_id,
+        })
+        .returning('id'))
+      .with(
+        'incrementing_consumed_amount',
+        (qb) =>
+          qb.updateTable('procurement')
+            .set({
+              consumed_amount: sql`consumed_amount + ${consumable.quantity}`,
+            })
+            .where('procurement.id', '=', consumable.procurement_id),
+      )
+      .with(
+        'decrementing_quantity_on_hand',
+        (qb) =>
+          qb.updateTable('organization_consumables')
+            .set({
+              quantity_on_hand: sql`quantity_on_hand - ${consumable.quantity}`,
+            })
+            .where(
+              'organization_consumables.organization_id',
+              '=',
+              organization_id,
+            )
+            .where(
+              'organization_consumables.consumable_id',
+              '=',
+              consumable.consumable_id,
+            ),
+      )
+      .selectFrom('adding_consumption')
+      .selectAll(),
+  )
+
   // Send the whole update in one query. This avoids constraint errors firing in the background when we won't catch them.
   return trx.with('adding_consumption', (qb) =>
     qb.insertInto('consumption')

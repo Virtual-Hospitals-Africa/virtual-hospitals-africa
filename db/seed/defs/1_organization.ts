@@ -60,13 +60,16 @@ async function importDataFromCSV(trx: TrxOrDb) {
       columnSeparator: '\t',
     }),
     async (row) => {
-      // const address = row.address ?? undefined
-      let category = row.category && capitalize(row.category!.trim())
+      let category = row.category?.trim()
       let inactive_reason: undefined | string = undefined
-      const match = category && category.match(/^(.*)(\(.*\()/)
-      if (match) {
-        category = match[1].trim()
-        inactive_reason = match[2].slice(1, -1).trim().toLowerCase()
+
+      if (category) {
+        const open_paren = category.indexOf('(')
+        const close_paren = category.indexOf(')')
+        if (open_paren !== -1 && close_paren !== -1) {
+          inactive_reason = category.slice(open_paren + 1, close_paren).trim()
+          category = category.slice(0, open_paren).trim()
+        }
       }
 
       const address = await google.getLocationAddress({
@@ -75,9 +78,10 @@ async function importDataFromCSV(trx: TrxOrDb) {
       })
 
       const category_capitalized = category && capitalize(category)
-      let name = category_capitalized
-        ? (row.name + ' ' + category_capitalized)
-        : row.name!
+      let name = row.name!.trim()
+      if (category && !name.toLowerCase().endsWith(category.toLowerCase())) {
+        name += ` ${category_capitalized}`
+      }
 
       if (name === 'ZRP') {
         const city = address.locality || address.administrative_area_level_2
@@ -103,6 +107,14 @@ async function importDataFromCSV(trx: TrxOrDb) {
       } else {
         names.set(name, { address, location, count: 0 })
       }
+
+      console.log({
+        name: suffix ? `${name} (${suffix})` : name,
+        address,
+        inactive_reason,
+        category: category_capitalized,
+        location,
+      })
 
       await organizations.add(trx, {
         name: suffix ? `${name} (${suffix})` : name,

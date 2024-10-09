@@ -2,7 +2,7 @@ import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await sql`
-    CREATE OR REPLACE VIEW patient_nearest_organizations AS (
+    CREATE OR REPLACE VIEW patient_nearest_facilities AS (
       WITH patients_with_location AS (
         SELECT id as patient_id, location
         FROM patients
@@ -38,13 +38,13 @@ export async function up(db: Kysely<unknown>) {
             json_agg(json_build_object(
                 'organization_id', organizations.id,
                 'location_id', "patient_organization_location_results".id,
-                'organization_name', organizations."name",
+                'organization_name', organizations.name,
                 'address', "addresses".formatted,
                 'longitude', ST_X("patient_organization_location_results".location::geometry),
                 'latitude', ST_Y("patient_organization_location_results".location::geometry),
                 'distance', distance,
                 'vha', patient_organization_location_results.id IN (SELECT organization_id FROM organizations_with_admins)
-              )) as nearest_organizations
+              )) as nearest_facilities
       FROM patient_organization_location_results
       JOIN organizations ON patient_organization_location_results.id = organizations.id
       JOIN addresses on patient_organization_location_results.address_id = addresses.id
@@ -56,5 +56,5 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropView('patient_nearest_organizations').execute()
+  await db.schema.dropView('patient_nearest_facilities').execute()
 }

@@ -27,8 +27,8 @@ describe(
       const [test_clinic, test_virtual_hospital] = json
       assertEquals(test_clinic, {
         id: '00000000-0000-0000-0000-000000000001',
-        address: '120 Main St, Bristol, UK, 23456',
-        description: '120 Main St, Bristol, UK, 23456',
+        address: '123 Main St, Bristol, UK, 23456',
+        description: '123 Main St, Bristol, UK, 23456',
         name: 'VHA Test Clinic',
       })
       assertEquals(test_virtual_hospital, {

@@ -913,8 +913,8 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
-export interface PatientNearestOrganizations {
-  nearest_organizations: Json | null
+export interface PatientNearestFacilities {
+  nearest_facilities: Json | null
   patient_id: string | null
 }
 
@@ -1256,7 +1256,7 @@ export interface DB {
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
-  patient_nearest_organizations: PatientNearestOrganizations
+  patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms

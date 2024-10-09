@@ -357,16 +357,16 @@ export async function nearestFacilities(
   currentLocation: Location,
 ) {
   const patient = await trx
-    .selectFrom('patient_nearest_organizations')
+    .selectFrom('patient_nearest_facilities')
     .selectAll()
     .where('patient_id', '=', patient_id)
     .executeTakeFirstOrThrow()
 
-  assert(Array.isArray(patient.nearest_organizations))
-  assert(patient.nearest_organizations.length > 0)
+  assert(Array.isArray(patient.nearest_facilities))
+  assert(patient.nearest_facilities.length > 0)
 
   return Promise.all(
-    patient.nearest_organizations.map(async (organization) => (
+    patient.nearest_facilities.map(async (organization) => (
       assert(isObjectLike(organization)),
         assert(isNumber(organization.longitude)),
         assert(isNumber(organization.latitude)),

@@ -503,6 +503,7 @@ export async function getGeocodeData(
   const response = await fetch(url)
   assert(response.ok)
   const data = await response.json()
+  console.log('data', data)
   assert(data.status === 'OK')
   assert(Array.isArray(data.results))
   assert(data.results.length)

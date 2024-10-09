@@ -13,8 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('comes back to main menu after clicking button', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {
-      conversation_state:
-        'find_nearest_organization:send_organization_location',
+      conversation_state: 'find_nearest_facilities:send_organization_location',
       phone_number,
       name: 'test',
       gender: 'female',
@@ -45,7 +44,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
           buttonText: 'Menu',
           options: [
             { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_organization', title: 'Nearest Organization' },
+            { id: 'find_nearest_facilities', title: 'Nearest Organization' },
           ],
         },
         phone_number,

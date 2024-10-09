@@ -8,7 +8,7 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { getApprovedProviders, nearest } from './organizations.ts'
+import { getApprovedProviders, nearestHospitals } from './organizations.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 
 export async function forPatientIntake(
@@ -19,7 +19,9 @@ export async function forPatientIntake(
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: location ? nearest(trx, location) : Promise.resolve([]),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,
@@ -161,7 +163,9 @@ export async function forPatientEncounter(
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: location ? nearest(trx, location) : Promise.resolve([]),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,

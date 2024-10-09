@@ -104,9 +104,9 @@ export function insert(
   }
 
   street = compact([
-    address.street_number,
-    address.route,
-    address.unit,
+    street_number,
+    route,
+    unit,
   ]).join(' ') || undefined
 
   const formatted = compact([
@@ -123,6 +123,9 @@ export function insert(
     .values({
       street,
       formatted,
+      street_number,
+      route,
+      unit,
       ...address,
     })
     .returningAll()

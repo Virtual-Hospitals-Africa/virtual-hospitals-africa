@@ -23,25 +23,30 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, assertOr404, StatusError } from '../../util/assertOr.ts'
 
-export async function nearest(
+export function nearestHospitals(
   trx: TrxOrDb,
   location: Location,
 ): Promise<HasStringId<Organization>[]> {
-  const result = await sql<HasStringId<Organization>>`
-      SELECT *,
-             ST_Distance(
-                  location,
-                  ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-              ) AS distance,
-              ST_X(location::geometry) as longitude,
-              ST_Y(location::geometry) as latitude
-        FROM "Location"
-        WHERE "name"::text ILIKE '%hospital%'
-    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-       LIMIT 2
-  `.execute(trx)
-
-  return result.rows
+  return trx.selectFrom('organizations')
+    .innerJoin('addresses', 'address_id', 'addresses.id')
+    .where('inactive_reason', 'is', null)
+    .where('location', 'is not', null)
+    .where('category', 'ilike', '%hospital%')
+    .select([
+      'organizations.id',
+      'organizations.name',
+      'organizations.category',
+      'addresses.formatted as address',
+      jsonBuildObject({
+        longitude: sql<number>`ST_X(location::geometry)`,
+        latitude: sql<number>`ST_Y(location::geometry)`,
+      }).as('location'),
+    ])
+    .orderBy(
+      sql`organizations.location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography`,
+    )
+    .limit(2)
+    .execute()
 }
 
 export function search(
@@ -459,20 +464,22 @@ export async function invite(
   }
 }
 
+export type OrganizationInsert = {
+  id?: string
+  name: string
+  category?: Maybe<string>
+  inactive_reason?: string
+  address?: addresses.AddressInsert
+  location?: Location
+}
+
 export async function add(
   trx: TrxOrDb,
   {
     address,
     location,
     ...rest
-  }: {
-    id?: string
-    name: string
-    category?: Maybe<string>
-    inactive_reason?: string
-    address?: addresses.AddressInsert
-    location?: Location
-  },
+  }: OrganizationInsert,
 ) {
   let address_id: string | undefined
   if (address) {

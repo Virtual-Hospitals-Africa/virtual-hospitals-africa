@@ -16,7 +16,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {
-      conversation_state: 'find_nearest_organization:share_location',
+      conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
       name: 'test',
       gender: 'female',
@@ -51,7 +51,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(
       message.messageBody,
-      'Click the button below to see your nearest health organizations',
+      'Click the button below to see the health facilities closes to you',
     )
 
     assertEquals(message.action.button, 'Nearest Facilities')
@@ -64,6 +64,11 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     const braeside = organizations.value.find((o) =>
       o.name === 'Braeside Clinic'
     )!
+
+    console.log(
+      'message.action.sections[0].rows',
+      message.action.sections[0].rows,
+    )
 
     assertEquals(
       message.action.sections[0].rows[0].id,
@@ -92,7 +97,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'find_nearest_organization:got_location',
+      'find_nearest_facilities:got_location',
     )
   })
 })

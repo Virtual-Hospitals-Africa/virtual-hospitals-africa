@@ -153,9 +153,9 @@ export type PatientConversationState =
   | 'onboarded:appointment_scheduled'
   | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
-  | 'find_nearest_organization:share_location'
-  | 'find_nearest_organization:got_location'
-  | 'find_nearest_organization:send_organization_location'
+  | 'find_nearest_facilities:share_location'
+  | 'find_nearest_facilities:got_location'
+  | 'find_nearest_facilities:send_organization_location'
   | 'end_of_demo'
   | 'error'
 

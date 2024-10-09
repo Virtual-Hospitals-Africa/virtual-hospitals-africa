@@ -42,10 +42,14 @@ describe(
       assert($('input[name="national_id_number"]').length === 1)
       assert($('input[name="mobile_number"]').length === 1)
 
-      assert($('input[name="address.country_id"]').length === 1)
-      assert($('select[name="address.province_id"]').length === 1)
-      assert($('select[name="address.district_id"]').length === 1)
-      assert($('select[name="address.ward_id"]').length === 1)
+      assert($('input[name="address.country"]').length === 1)
+      assert(
+        $('input[name="address.administrative_area_level_1"]').length === 1,
+      )
+      assert(
+        $('input[name="address.administrative_area_level_2"]').length === 1,
+      )
+      assert($('input[name="address.locality"]').length === 1)
       assert($('input[name="address.street"]').length === 1)
     })
 
@@ -67,10 +71,16 @@ describe(
         body.set('date_of_birth', '2020-01-01')
         body.set('mobile_number', '5555555555')
 
-        body.set('address.country_name', address.country)
-        body.set('address.province_name', address.administrative_area_level_1)
-        body.set('address.district_name', address.administrative_area_level_2)
-        body.set('address.ward_name', address.locality)
+        body.set('address.country', address.country)
+        body.set(
+          'address.administrative_area_level_1',
+          address.administrative_area_level_1,
+        )
+        body.set(
+          'address.administrative_area_level_2',
+          address.administrative_area_level_2,
+        )
+        body.set('address.locality', address.locality)
         body.set('address.street', address.street)
 
         const postResponse = await fetch(
@@ -128,15 +138,15 @@ describe(
           address.country,
         )
         assert(
-          $('select[name="address.administrative_area_level_1"]').val(),
+          $('input[name="address.administrative_area_level_1"]').val(),
           address.administrative_area_level_1,
         )
         assert(
-          $('select[name="address.administrative_area_level_2"]').val(),
+          $('input[name="address.administrative_area_level_2"]').val(),
           address.administrative_area_level_2,
         )
         assert(
-          $('select[name="address.locality"]').val(),
+          $('input[name="address.locality"]').val(),
           address.locality,
         )
         assert(

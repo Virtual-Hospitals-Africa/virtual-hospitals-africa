@@ -82,9 +82,10 @@ function assertIsPersonalFormFields(
   assertOr400(!!fields.mobile_number)
   assertOr400(isObjectLike(fields.address))
   assertOr400(!!fields.address.country)
-  assertOr400(!!fields.address.province)
-  assertOr400(!!fields.address.district)
-  assertOr400(!!fields.address.ward)
+  assertOr400(!!fields.address.administrative_area_level_1)
+  assertOr400(!!fields.address.administrative_area_level_2)
+  assertOr400(!!fields.address.locality)
+  assertOr400(!!fields.address.street)
 }
 
 function assertIsProfessionalInformationFields(

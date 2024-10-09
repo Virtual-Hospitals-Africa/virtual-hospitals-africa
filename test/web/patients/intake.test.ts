@@ -153,11 +153,11 @@ describe('/app/patients/[patient_id]/intake', {
     const ward = sample(district.wards)
 
     const body = new FormData()
-    body.set('address.country_name', zimbabwe.name)
-    body.set('address.province_name', province.name)
-    body.set('address.district_name', district.name)
-    body.set('address.ward_name', ward.name)
-    body.set('address.street', '120 Main Street')
+    body.set('address.country', zimbabwe.name)
+    body.set('address.administrative_area_level_1', province.name)
+    body.set('address.administrative_area_level_2', district.name)
+    body.set('address.locality', ward.name)
+    body.set('address.street', '123 Main Street apt 3')
     body.set('nearest_organization_id', '00000000-0000-0000-0000-000000000001')
     body.set('primary_doctor_id', testDoctor.employee_id!)
 
@@ -190,12 +190,14 @@ describe('/app/patients/[patient_id]/intake', {
       '=',
       patientResult[0].address_id,
     ).executeTakeFirstOrThrow()
+
     assertEquals(patientAddress.country, zimbabwe.name)
     assertEquals(patientAddress.administrative_area_level_1, province.name)
     assertEquals(patientAddress.administrative_area_level_2, district.name)
     assertEquals(patientAddress.locality, ward.name)
     assertEquals(patientAddress.route, 'Main Street')
-    assertEquals(patientAddress.street_number, '120')
+    assertEquals(patientAddress.street_number, '123')
+    assertEquals(patientAddress.unit, 'apt 3')
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/address`,
@@ -204,15 +206,18 @@ describe('/app/patients/[patient_id]/intake', {
     const pageContents = await getResponse.text()
     const $ = cheerio.load(pageContents)
     assertEquals(
-      $('select[name="address.province_id"]').val(),
-      String(province.id),
+      $('input[name="address.administrative_area_level_1"]').val(),
+      String(province.name),
     )
     assertEquals(
-      $('select[name="address.district_id"]').val(),
-      String(district.id),
+      $('input[name="address.administrative_area_level_2"]').val(),
+      String(district.name),
     )
-    assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
-    assertEquals($('input[name="address.street"]').val(), '120 Main Street')
+    assertEquals($('input[name="address.locality"]').val(), String(ward.name))
+    assertEquals(
+      $('input[name="address.street"]').val(),
+      '123 Main Street apt 3',
+    )
   })
 
   it('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
