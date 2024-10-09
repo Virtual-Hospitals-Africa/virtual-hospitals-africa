@@ -30,7 +30,7 @@ import isObjectLike from '../util/isObjectLike.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
-if (!Deno.env.get('BUILDING')) assert(GOOGLE_MAPS_API_KEY)
+if (!Deno.env.get('NO_EXTERNAL_CONNECT')) assert(GOOGLE_MAPS_API_KEY)
 
 const googleApisUrl = 'https://www.googleapis.com'
 

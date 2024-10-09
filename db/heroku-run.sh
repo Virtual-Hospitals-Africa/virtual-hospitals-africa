@@ -7,7 +7,7 @@ SCRIPT=$(mktemp)
 ARTIFACT_NAME="$1"
 ARTIFACT_URL=""
 
-if ! [ "$ARTIFACT_NAME" = "web" -o "$ARTIFACT_NAME" = "chatbot" -o "$ARTIFACT_NAME" = "token_refresher" ]; then
+if ! [ "$ARTIFACT_NAME" = "web" -o "$ARTIFACT_NAME" = "chatbot" ]; then
   echo "Must provide a recognized artifact name"
   exit 1
 fi

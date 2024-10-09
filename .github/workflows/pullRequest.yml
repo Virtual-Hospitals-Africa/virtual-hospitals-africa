@@ -109,9 +109,6 @@ jobs:
       - name: Compile chatbot
         run: deno task compile:chatbot
 
-      - name: Compile token_refresher
-        run: deno task compile:token_refresher
-
   compile_web:
     runs-on: ubuntu-latest
 
