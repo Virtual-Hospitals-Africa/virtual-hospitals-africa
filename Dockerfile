@@ -7,4 +7,8 @@ EXPOSE 8000
 
 RUN echo 'deno task db:migrate latest && deno task web' >> deno_start.sh
 RUN chmod +x deno_start.sh
-CMD ["/app/deno_start.sh"]
+
+# https://deno.com/blog/aws-lambda-coldstart-benchmarks#optimizing-deno-for-a-serverless-environment
+RUN timeout 10s deno task web || [ $? -eq 124 ] || exit 1
+
+CMD ["./app/deno_start.sh"]

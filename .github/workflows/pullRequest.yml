@@ -84,6 +84,16 @@ jobs:
       #     path: $XDG_CACHE_HOME/deno
       #     key: deno-modules
 
+  build_container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t vha .
+
   compile_others:
     runs-on: ubuntu-latest
 
