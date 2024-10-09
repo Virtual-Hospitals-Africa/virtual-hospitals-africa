@@ -11,4 +11,4 @@ RUN chmod +x deno_start.sh
 # https://deno.com/blog/aws-lambda-coldstart-benchmarks#optimizing-deno-for-a-serverless-environment
 RUN NO_EXTERNAL_CONNECT=1 timeout 3s deno task web || [ $? -eq 124 -o $? -eq 143 ]
 
-CMD ["./app/deno_start.sh"]
+CMD ["/app/deno_start.sh"]
