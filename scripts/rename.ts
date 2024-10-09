@@ -18,7 +18,6 @@ const dirs = [
   'shared',
   'static',
   'test',
-  'token_refresher',
 ]
 
 async function* walkFiles(directory: string) {
