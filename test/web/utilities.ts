@@ -400,7 +400,7 @@ export function withTestOrganization(
   callback: (organization_id: string) => Promise<void>,
 ): Promise<void>
 
-export async function withTestOrganization(
+export function withTestOrganization(
   trx: TrxOrDb,
   opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
   callback?: (organization_id: string) => Promise<void>,
@@ -411,24 +411,13 @@ export async function withTestOrganization(
   } else {
     kind = opts.kind
   }
-  const organization = await organizations.add(trx, {
-    name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
-    category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-    address: kind === 'physical' ? '123 Test St' : undefined,
-    latitude: kind === 'physical' ? 0 : undefined,
-    longitude: kind === 'physical' ? 0 : undefined,
-    // phone: null,
-  })
-  await callback!(organization!.id)
-  await trx.deleteFrom('Address')
-    .where('resourceId', '=', organization!.id)
-    .execute()
-  await trx.deleteFrom('Location')
-    .where('organizationId', '=', organization!.id)
-    .execute()
-  await trx.deleteFrom('organizations')
-    .where('id', '=', organization!.id)
-    .execute()
+  return withTestOrganizations(
+    trx,
+    { kind, count: 1 },
+    async ([organization_id]) => {
+      await callback!(organization_id)
+    },
+  )
 }
 
 export async function withTestOrganizations(
@@ -447,25 +436,33 @@ export async function withTestOrganizations(
       organizations.add(trx, {
         name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
         category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-        address: kind === 'physical' ? '123 Test St' : undefined,
-        latitude: kind === 'physical' ? 0 : undefined,
-        longitude: kind === 'physical' ? 0 : undefined,
-        // phone: null,
+        address: kind === 'physical'
+          ? {
+            street_number: '123',
+            route: 'Test St',
+            locality: 'Test City',
+            country: 'US',
+            postal_code: '12345',
+          }
+          : undefined,
+        location: kind === 'physical'
+          ? { latitude: 0, longitude: 0 }
+          : undefined,
       })
     ),
   )
   const organization_ids = organizations_added.map((organization) =>
-    organization!.id
+    organization.id
+  )
+  const address_ids = organizations_added.map((organization) =>
+    organization.address_id
   )
   await callback(organization_ids)
-  await trx.deleteFrom('Address')
-    .where('resourceId', 'in', organization_ids)
-    .execute()
-  await trx.deleteFrom('Location')
-    .where('organizationId', 'in', organization_ids)
-    .execute()
   await trx.deleteFrom('organizations')
     .where('id', 'in', organization_ids)
+    .execute()
+  await trx.deleteFrom('addresses')
+    .where('id', 'in', address_ids)
     .execute()
 }
 

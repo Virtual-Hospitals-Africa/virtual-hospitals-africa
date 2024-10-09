@@ -208,7 +208,9 @@ export interface Addresses {
   locality: string | null
   postal_code: string | null
   route: string | null
+  street: string | null
   street_number: string | null
+  unit: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1131,12 +1133,6 @@ export interface SpatialRefSys {
   srtext: string | null
 }
 
-export interface Suburbs {
-  id: Generated<string>
-  name: string
-  ward_id: string
-}
-
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1283,7 +1279,6 @@ export interface DB {
   regulator_sessions: RegulatorSessions
   regulators: Regulators
   spatial_ref_sys: SpatialRefSys
-  suburbs: Suburbs
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived

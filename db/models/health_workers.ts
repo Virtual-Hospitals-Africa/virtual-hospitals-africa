@@ -283,7 +283,7 @@ export async function get(
             jsonBuildObject({
               id: eb_employment.ref('employment.organization_id'),
               name: eb_employment.ref('organizations.name'),
-              address: eb_employment.ref('organization_address.address'),
+              address: eb_employment.ref('organization_address.formatted'),
             }).as('organization'),
           ])
           .whereRef(

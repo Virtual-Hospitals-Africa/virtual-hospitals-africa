@@ -14,9 +14,14 @@ import {
 import * as employment from './employment.ts'
 import * as addresses from './addresses.ts'
 import partition from '../../util/partition.ts'
-import { jsonAgg, jsonBuildObject, literalLocation } from '../helpers.ts'
+import {
+  jsonAgg,
+  jsonBuildNullableObject,
+  jsonBuildObject,
+  literalLocation,
+} from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import { assertOr400, assertOr404, StatusError } from '../../util/assertOr.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -53,7 +58,7 @@ export function search(
       'organizations.id',
       'organizations.name as name',
       'addresses.formatted as address',
-      'addresses.formatted as description'
+      'addresses.formatted as description',
     ])
 
   if (opts.search) {
@@ -89,10 +94,21 @@ export function get(
       'organizations.id',
       'organizations.name as name',
       'addresses.formatted as address',
-      sql<number>`ST_X(location::geometry)`.as('longitude'),
-      sql<number>`ST_Y(location::geometry)`.as('latitude'),
+      jsonBuildNullableObject('location', {
+        longitude: sql<number>`ST_X(location::geometry)`,
+        latitude: sql<number>`ST_Y(location::geometry)`,
+      }).as('location'),
     ])
     .execute()
+}
+
+export async function getById(
+  trx: TrxOrDb,
+  organization_id: string,
+): Promise<HasStringId<Organization>> {
+  const [organization] = await get(trx, { ids: [organization_id] })
+  assertOr404(organization, `Organization not found with id ${organization_id}`)
+  return organization
 }
 
 type EmployeeQueryOpts = {
@@ -444,18 +460,18 @@ export async function invite(
 
 export async function add(
   trx: TrxOrDb,
-  { 
+  {
     address,
     location,
     ...rest
-   }: {
+  }: {
     id?: string
     name: string
     category?: Maybe<string>
     inactive_reason?: string
     address?: addresses.AddressInsert
     location?: Location
-   },
+  },
 ) {
   let address_id: string | undefined
   if (address) {

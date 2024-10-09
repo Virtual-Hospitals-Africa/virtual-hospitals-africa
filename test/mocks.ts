@@ -90,14 +90,14 @@ export async function createTestAddress(trx: TrxOrDb) {
   const province = sample(country.provinces)
   const district = sample(province.districts)
   const ward = sample(district.wards)
-  const suburb = ward.suburbs.length ? sample(ward.suburbs) : null
-  const route = Math.random().toString(36).substring(7) + ' Main Street'
+  const street_number = Math.random().toString(36).substring(7)
   return {
-    route,
-    suburb_id: suburb?.name || null,
-    ward: ward.name,
-    district: district.name,
-    province: province.name,
+    street_number,
+    route: 'Main Street',
+    unit: null,
+    locality: ward.name,
+    administrative_area_level_2: district.name,
+    administrative_area_level_1: province.name,
     country: country.name,
   }
 }

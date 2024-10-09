@@ -6,8 +6,9 @@ export function InvitePharmacistSearch() {
       name='pharmacist'
       search_route='/regulator/pharmacists/pharmacists'
       label=''
-      addable
-      addHref='/regulator/pharmacists/invite?pharmacist_name='
+      addable={{
+        href: '/regulator/pharmacists/invite?pharmacist_name=',
+      }}
       optionHref={(pharmacist) =>
         `/regulator/pharmacists/invite?pharmacist_id=${pharmacist.id}`}
     />

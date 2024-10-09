@@ -6,8 +6,9 @@ export function InvitePharmacySearch() {
       name='name'
       search_route='/regulator/pharmacies/pharmacies'
       label=''
-      addable
-      addHref='/regulator/pharmacies/invite?pharmacy_name='
+      addable={{
+        href: '/regulator/pharmacies/invite?pharmacy_name=',
+      }}
     />
   )
 }

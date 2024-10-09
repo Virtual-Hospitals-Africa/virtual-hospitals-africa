@@ -23,7 +23,6 @@ type District = {
 
 type Ward = {
   name: string
-  suburbs?: Suburb[]
 }
 
 type Suburb = {
@@ -35,7 +34,6 @@ export default create([
   'provinces',
   'districts',
   'wards',
-  'suburbs',
 ], importData)
 
 async function getDataFromJSON(): Promise<AdminDistrict> {
@@ -62,12 +60,7 @@ async function importData(trx: TrxOrDb) {
         for await (
           const ward of district.wards
         ) {
-          const wardId = await insertWard(trx, ward, district_id)
-          for await (
-            const suburb of ward.suburbs ?? []
-          ) {
-            await insertSuburb(trx, suburb, wardId)
-          }
+          await insertWard(trx, ward, district_id)
         }
       }
     }
@@ -116,15 +109,4 @@ async function insertWard(
     district_id,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
-}
-
-async function insertSuburb(
-  trx: TrxOrDb,
-  suburb: Suburb,
-  ward_id: string,
-) {
-  await trx.insertInto('suburbs').values({
-    name: suburb.name,
-    ward_id,
-  }).execute()
 }

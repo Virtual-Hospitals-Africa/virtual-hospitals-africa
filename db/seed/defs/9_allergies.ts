@@ -2,7 +2,6 @@ import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { create } from '../create.ts'
 
-
 export default create(['allergies'], importFromJSON)
 
 async function importFromJSON(trx: TrxOrDb) {

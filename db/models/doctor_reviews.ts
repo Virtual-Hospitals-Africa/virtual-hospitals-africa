@@ -3,9 +3,8 @@ import {
   DB,
   DoctorReviewStep,
   Employment,
-  // EncounterReason,
   HealthWorkers,
-  Organization,
+  Organizations,
 } from '../../db.d.ts'
 import {
   HealthWorkerEmployment,
@@ -105,7 +104,7 @@ export function requests(
   DB & {
     requested_by_employee: Employment
   } & {
-    requested_by_organization: Organization
+    requested_by_organization: Organizations
   } & {
     requested_by_health_worker: HealthWorkers
   },

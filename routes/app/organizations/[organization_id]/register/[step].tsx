@@ -88,11 +88,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       return redirect(nextUrl)
     }
 
-    assert(formState.specialty)
+    const { specialty } = formState
+    assert(specialty)
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
-      specialty: formState.specialty,
+      specialty,
     })
 
     const registrationDetails = getRegistrationDetails(

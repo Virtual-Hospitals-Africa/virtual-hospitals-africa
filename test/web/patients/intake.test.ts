@@ -151,17 +151,15 @@ describe('/app/patients/[patient_id]/intake', {
     const province = sample(zimbabwe.provinces)
     const district = sample(province.districts)
     const ward = sample(district.wards)
-    const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
 
     const body = new FormData()
-    body.set('address.country_id', String(zimbabwe.id))
-    body.set('address.province_id', String(province.id))
-    body.set('address.district_id', String(district.id))
-    body.set('address.ward_id', String(ward.id))
-    if (suburb) body.set('address.suburb_id', String(suburb.id))
+    body.set('address.country_name', zimbabwe.name)
+    body.set('address.province_name', province.name)
+    body.set('address.district_name', district.name)
+    body.set('address.ward_name', ward.name)
     body.set('address.street', '120 Main Street')
     body.set('nearest_organization_id', '00000000-0000-0000-0000-000000000001')
-    body.set('primary_doctor_id', String(testDoctor.employee_id!))
+    body.set('primary_doctor_id', testDoctor.employee_id!)
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/address`,
@@ -187,17 +185,17 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
 
-    const patientAddress = await db.selectFrom('address').selectAll().where(
-      'address.id',
+    const patientAddress = await db.selectFrom('addresses').selectAll().where(
+      'addresses.id',
       '=',
-      patientResult[0].address_id ? patientResult[0].address_id : null,
-    ).execute()
-    assertEquals(patientAddress[0].country_id, zimbabwe.id)
-    assertEquals(patientAddress[0].province_id, province.id)
-    assertEquals(patientAddress[0].district_id, district.id)
-    assertEquals(patientAddress[0].ward_id, ward.id)
-    assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
-    assertEquals(patientAddress[0].street, '120 Main Street')
+      patientResult[0].address_id,
+    ).executeTakeFirstOrThrow()
+    assertEquals(patientAddress.country, zimbabwe.name)
+    assertEquals(patientAddress.administrative_area_level_1, province.name)
+    assertEquals(patientAddress.administrative_area_level_2, district.name)
+    assertEquals(patientAddress.locality, ward.name)
+    assertEquals(patientAddress.route, 'Main Street')
+    assertEquals(patientAddress.street_number, '120')
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/address`,
@@ -214,10 +212,6 @@ describe('/app/patients/[patient_id]/intake', {
       String(district.id),
     )
     assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
-    assertEquals(
-      $('select[name="address.suburb_id"]').val(),
-      suburb && String(suburb.id),
-    )
     assertEquals($('input[name="address.street"]').val(), '120 Main Street')
   })
 

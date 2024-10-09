@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { PatientIntake, TrxOrDb } from '../../types.ts'
+import { Address, PatientIntake, TrxOrDb } from '../../types.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
@@ -15,7 +15,7 @@ export function getById(
 ): Promise<PatientIntake> {
   return trx
     .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('addresses', 'addresses.id', 'patients.address_id')
     .leftJoin(
       'organizations',
       'organizations.id',
@@ -54,14 +54,7 @@ export function getById(
         .as(
           'description',
         ),
-      jsonBuildObject({
-        country_id: eb.ref('address.country_id'),
-        province_id: eb.ref('address.province_id'),
-        district_id: eb.ref('address.district_id'),
-        ward_id: eb.ref('address.ward_id'),
-        suburb_id: eb.ref('address.suburb_id'),
-        street: eb.ref('address.street'),
-      }).as('address'),
+      sql<null | Address>`TO_JSON(addresses)`.as('address'),
       'patients.completed_intake',
       jsonArrayFromColumn(
         'intake_step',
@@ -100,7 +93,7 @@ export async function getSummaryById(
 ) {
   const getting_review = trx
     .selectFrom('patients')
-    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('addresses', 'addresses.id', 'patients.address_id')
     .leftJoin(
       'organizations',
       'organizations.id',

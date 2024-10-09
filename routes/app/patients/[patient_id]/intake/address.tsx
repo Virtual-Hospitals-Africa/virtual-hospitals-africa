@@ -1,4 +1,3 @@
-import { Maybe } from '../../../../../types.ts'
 import * as addresses from '../../../../../db/models/addresses.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
@@ -8,12 +7,11 @@ import { IntakePage, postHandler } from './_middleware.tsx'
 
 type AddressFormValues = {
   address: {
-    country_id: string
-    province_id: string
-    district_id: string
-    ward_id: string
-    suburb_id?: Maybe<string>
-    street: string
+    country: string
+    province: string
+    district: string
+    ward: string
+    street?: string
   }
   nearest_organization_id: string
   nearest_organization_name: string
@@ -27,19 +25,20 @@ function assertIsAddress(
   assertOr400(isObjectLike(patient))
   assertOr400(isObjectLike(patient.address))
   assertOr400(
-    !!patient.address.country_id &&
-      typeof patient.address.country_id === 'string',
+    !!patient.address.country &&
+      typeof patient.address.country === 'string',
   )
   assertOr400(
-    !!patient.address.province_id &&
-      typeof patient.address.province_id === 'string',
+    !!patient.address.province &&
+      typeof patient.address.province === 'string',
   )
   assertOr400(
-    !!patient.address.district_id &&
-      typeof patient.address.district_id === 'string',
+    !!patient.address.district &&
+      typeof patient.address.district === 'string',
   )
   assertOr400(
-    !!patient.address.ward_id && typeof patient.address.ward_id === 'string',
+    !!patient.address.ward &&
+      typeof patient.address.ward === 'string',
   )
   assertOr400(
     (!!patient.address.street && typeof patient.address.street === 'string') ||
@@ -66,9 +65,39 @@ function assertIsAddress(
 export const handler = postHandler(
   assertIsAddress,
   async function updateAddress(ctx, patient_id, form_values) {
+    // ctx.state.patient.address
+    const {
+      country,
+      province,
+      district,
+      ward,
+      street,
+    } = form_values.address
+    let route: string | undefined = street
+    let street_number: string | undefined
+    if (street) {
+      const street_parts = street.split(' ')
+      if (street_parts.length > 1) {
+        const street_number_as_number = parseInt(street_parts[0])
+        if (!Number.isNaN(street_number_as_number)) {
+          street_number = street_parts.shift()
+          route = street_parts.join(' ')
+        }
+      }
+      street_number = street_parts.shift()!
+      route = street_parts.join(' ')
+    }
+
     const created_address = await addresses.insert(
       ctx.state.trx,
-      form_values.address,
+      {
+        country,
+        administrative_area_level_1: province,
+        administrative_area_level_2: district,
+        locality: ward,
+        route,
+        street_number,
+      },
     )
 
     await patients.update(ctx.state.trx, {

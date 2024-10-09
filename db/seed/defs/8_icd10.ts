@@ -14,7 +14,6 @@ import { byCodeWithSimilarity } from '../../models/icd10.ts'
 import { searchFlat } from '../../models/icd10.ts'
 import { create } from '../create.ts'
 
-
 export default create([
   'icd10_sections',
   'icd10_categories',

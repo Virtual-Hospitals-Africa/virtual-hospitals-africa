@@ -30,7 +30,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     location: {
       latitude: 51.4545,
       longitude: -2.5879,
-    }
+    },
   })
 
   await organizations.add(trx, {
@@ -47,10 +47,14 @@ const names = new Map()
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
 async function importDataFromCSV(trx: TrxOrDb) {
-  const file = await Deno.open(duplicates_file, { write: true, create: true, truncate: true })
+  const file = await Deno.open(duplicates_file, {
+    write: true,
+    create: true,
+    truncate: true,
+  })
   await file.truncate()
   await file.write(new TextEncoder().encode('name,lat1,lon1,lat2,lon2\n'))
-  
+
   await forEach(
     parseCsv('./db/resources/zimbabwe-health-organizations.tsv', {
       columnSeparator: '\t',
@@ -85,12 +89,14 @@ async function importDataFromCSV(trx: TrxOrDb) {
         latitude: Number(row.latitude),
         longitude: Number(row.longitude),
       }
-      
+
       let suffix: undefined | number = undefined
       if (names.has(name)) {
         const other = names.get(name)!
-        const encoder = new TextEncoder();
-        const data = encoder.encode(`${name}\t${row.latitude}\t${row.longitude}\t${other.location.latitude}\t${other.location.longitude}\n`);
+        const encoder = new TextEncoder()
+        const data = encoder.encode(
+          `${name}\t${row.latitude}\t${row.longitude}\t${other.location.latitude}\t${other.location.longitude}\n`,
+        )
         await file.write(data)
         other.count++
         suffix = other.count + 1
@@ -103,7 +109,7 @@ async function importDataFromCSV(trx: TrxOrDb) {
         address,
         inactive_reason,
         category: category_capitalized,
-        location
+        location,
       })
     },
   )

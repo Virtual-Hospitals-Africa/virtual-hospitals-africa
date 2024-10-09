@@ -1,5 +1,4 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -57,25 +56,9 @@ export async function up(db: Kysely<unknown>) {
         .onDelete('cascade'))
     .addUniqueConstraint('ward_name', ['name', 'district_id'])
     .execute()
-
-  await db.schema
-    .createTable('suburbs')
-    .addColumn(
-      'id',
-      'uuid',
-      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
-    )
-    .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('ward_id', 'uuid', (col) =>
-      col.notNull()
-        .references('wards.id')
-        .onDelete('cascade'))
-    .addUniqueConstraint('suburb_name', ['name', 'ward_id'])
-    .execute()
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('suburbs').execute()
   await db.schema.dropTable('wards').execute()
   await db.schema.dropTable('districts').execute()
   await db.schema.dropTable('provinces').execute()

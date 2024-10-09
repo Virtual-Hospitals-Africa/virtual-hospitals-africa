@@ -326,7 +326,9 @@ export function longFormattedDateTime(ref: string) {
 }
 
 export function literalLocation(loc: Location) {
-  return sql<string>`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`
+  return sql<
+    string
+  >`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`
 }
 
 export function upsertTrigger(

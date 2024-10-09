@@ -9,7 +9,6 @@ import {
   GCalEventsResponse,
   GCalFreeBusy,
   GoogleAddressComponent,
-  GoogleAddressComponentType,
   GoogleProfile,
   GoogleTokenInfo,
   GoogleTokens,
@@ -24,7 +23,6 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
-import uniq from '../util/uniq.ts'
 import { cacheable } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
@@ -521,18 +519,17 @@ const types_we_care_about = new Set([
   'street_number',
 ])
 
-
 function isRouteUseful(route: string): boolean {
   const regex =
     /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
   return regex.test(route)
 }
 
-
 function getAddressFromData(results: GoogleAddressComponent[]): AddressInsert {
+  // deno-lint-ignore no-explicit-any
   const address: any = {}
   for (const result of results) {
-    const types = result.types.filter(type => type !== 'political')
+    const types = result.types.filter((type) => type !== 'political')
     if (types.length !== 1) continue
     const [type] = types
     if (!types_we_care_about.has(type)) continue

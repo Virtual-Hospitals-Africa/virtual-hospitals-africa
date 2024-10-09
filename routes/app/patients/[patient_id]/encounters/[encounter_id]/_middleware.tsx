@@ -14,6 +14,7 @@ import {
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as send_to from '../../../../../../db/models/send_to.ts'
+import * as organizations from '../../../../../../db/models/organizations.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
@@ -34,6 +35,7 @@ import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import words from '../../../../../../util/words.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
+import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
@@ -237,42 +239,47 @@ export function EncounterPage(
     _req: Request,
     ctx: EncounterContext,
   ) {
-    const { patient } = ctx.state
+    const { healthWorker, patient, encounter, encounter_provider, trx } =
+      ctx.state
     const step = ctx.route.split('/').pop()!
-    const previously_completed = ctx.state.encounter.steps_completed.includes(
+    const previously_completed = encounter.steps_completed.includes(
       step as unknown as EncounterStep,
     )
 
-    const organizationId = ctx.state.encounter_provider.organization_id
-
-    const location = await send_to.getLocationByOrganizationId(
-      ctx.state.trx,
-      organizationId,
+    const { organization_id } = encounter_provider
+    const { location } = await organizations.getById(
+      trx,
+      organization_id,
     )
 
-    const getting_sendables = send_to.forPatientEncounter(
-      ctx.state.trx,
-      patient.id,
-      location,
-      organizationId,
-      {
-        exclude_health_worker_id: ctx.state.healthWorker.id,
-      },
-    )
+    const { rendered, sendables } = await promiseProps({
+      rendered: render({ ctx, ...ctx.state, previously_completed }),
+      sendables: send_to.forPatientEncounter(
+        trx,
+        patient.id,
+        location,
+        organization_id,
+        {
+          exclude_health_worker_id: healthWorker.id,
+        },
+      ),
+    })
 
     let next_step_text: string | undefined
-    const rendered = await render({ ctx, ...ctx.state, previously_completed })
-    const children = 'next_step_text' in rendered ? rendered.children : rendered
-
     if ('next_step_text' in rendered) {
-      next_step_text = rendered.next_step_text
+      next_step_text = rendered.next_step_text as string
+    }
+
+    let children = rendered
+    if ('children' in rendered) {
+      children = rendered.children
     }
 
     return (
       <EncounterLayout
         ctx={ctx}
         next_step_text={next_step_text}
-        sendables={await getting_sendables}
+        sendables={sendables}
       >
         {children}
       </EncounterLayout>

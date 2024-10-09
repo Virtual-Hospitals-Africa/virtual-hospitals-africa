@@ -121,7 +121,9 @@ export const migrate = {
   },
 }
 
+// deno-lint-ignore no-explicit-any
 export function logMigrationResults({ error, results }: any = {}) {
+  // deno-lint-ignore no-explicit-any
   results?.forEach((it: any) => {
     if (it.status === 'Success') {
       console.log(`  migration "${it.migrationName}" was executed successfully`)
@@ -156,5 +158,6 @@ if (import.meta.main) {
     Deno.exit(1)
   }
 
+  // deno-lint-ignore no-explicit-any
   migrateCommand(cmd as any, Deno.args[1])
 }

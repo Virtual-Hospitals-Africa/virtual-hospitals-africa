@@ -10,7 +10,8 @@ export default create(
 )
 
 async function seedDataFromJSON(trx: TrxOrDb) {
-  const tests = await trx.selectFrom('diagnostic_tests').select('name').execute()
+  const tests = await trx.selectFrom('diagnostic_tests').select('name')
+    .execute()
 
   const devices: {
     name: string

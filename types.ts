@@ -306,6 +306,19 @@ export type RenderedPatientAge = {
   age_years: number
 }
 
+export type Address = {
+  formatted: string
+  country: string
+  administrative_level_1: Maybe<string>
+  administrative_area_level_2: Maybe<string>
+  locality: Maybe<string>
+  route: Maybe<string>
+  street_number: Maybe<string>
+  unit: Maybe<string>
+  street: Maybe<string>
+  postal_code: Maybe<string>
+}
+
 export type PatientIntake =
   & {
     id: string
@@ -315,14 +328,7 @@ export type PatientIntake =
     nearest_organization_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     age?: RenderedPatientAge
-    address: {
-      street: Maybe<string>
-      suburb_id: Maybe<string>
-      ward_id: Maybe<string>
-      district_id: Maybe<string>
-      province_id: Maybe<string>
-      country_id: Maybe<string>
-    }
+    address?: Maybe<Address>
     actions: {
       clinical_notes: string
     }
@@ -426,41 +432,6 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   health_worker_name: string
   profession: Profession
 }
-
-// export type PatientState = {
-//   entity_type: 'patient'
-//   id: string
-//   whatsapp_id: string
-//   message_id: string
-//   body?: string
-//   has_media: boolean
-//   media_id?: string
-//   phone_number: string
-//   name: Maybe<string>
-//   gender: Maybe<Gender>
-//   dob_formatted: Maybe<string>
-//   national_id_number: Maybe<string>
-//   conversation_state: PatientConversationState
-//   location: Maybe<Location>
-//   scheduling_appointment_request?: {
-//     id: string
-//     reason: Maybe<string>
-//     offered_times: SchedulingAppointmentOfferedTime[]
-//   }
-//   scheduled_appointment?: {
-//     id: string
-//     reason: string
-//     provider_id: string
-//     health_worker_name: string
-//     gcal_event_id: string
-//     start: Date
-//   }
-//   created_at: Date
-//   updated_at: Date
-//   nearest_organizations?: PatientNearestOrganization[]
-//   nearest_organization_name?: string
-//   selected_organization?: PatientNearestOrganization
-// }
 
 export type PharmacistConversationState =
   | 'initial_message'
@@ -1765,10 +1736,11 @@ export type LoggedInRegulatorHandler<Context = Record<string, never>> =
     ? LoggedInRegulatorHandlerWithProps<unknown, State>
     : LoggedInRegulatorHandlerWithProps<unknown, Context>
 
-export type Organization = Partial<Location> & {
+export type Organization = {
   name: string
-  // category: string
+  category: string | null
   address: string | null
+  location: Location | null
 }
 
 export type OrganizationWithAddress =
@@ -1865,8 +1837,6 @@ export type District = { name: string; province_id: string }
 
 export type Ward = { name: string; district_id: string }
 
-export type Suburb = { name: string; ward_id: string }
-
 export type CountryAddressTree = {
   id: string
   name: string
@@ -1879,10 +1849,6 @@ export type CountryAddressTree = {
       wards: {
         id: string
         name: string
-        suburbs: {
-          id: string | null
-          name: string | null
-        }[]
       }[]
     }[]
   }[]

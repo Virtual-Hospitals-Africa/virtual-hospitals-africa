@@ -1,23 +1,23 @@
 import { describe } from 'std/testing/bdd.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as addresses from '../../db/models/addresses.ts'
 import { createTestAddress } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import { assertNotEquals } from 'https://deno.land/std@0.216.0/assert/assert_not_equals.ts'
 
 describe('db/models/address.ts', { sanitizeResources: false }, () => {
   describe('upsert', () => {
     itUsesTrxAnd(
-      'inserts addresses, returning an already existing address if it matches an existing ward, suburb, and street',
+      'inserts addresses, making a new id each time',
       async (trx) => {
         const randomAddress = await createTestAddress(trx)
 
         const address1 = await addresses.insert(trx, randomAddress)
         const address2 = await addresses.insert(trx, randomAddress)
 
-        assertEquals(
-          omit(address1, ['updated_at']),
-          omit(address2, ['updated_at']),
+        assertNotEquals(
+          omit(address1, ['created_at', 'updated_at']),
+          omit(address2, ['created_at', 'updated_at']),
         )
       },
     )

@@ -47,10 +47,6 @@ describe(
       assert($('select[name="address.district_id"]').length === 1)
       assert($('select[name="address.ward_id"]').length === 1)
       assert($('input[name="address.street"]').length === 1)
-      assert(
-        $('select[name="address.suburb_id"]').length === 0,
-        'suburb is only necessary for certain wards',
-      )
     })
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
@@ -71,14 +67,11 @@ describe(
         body.set('date_of_birth', '2020-01-01')
         body.set('mobile_number', '5555555555')
 
-        body.set('address.country_id', address.country_id.toString())
-        body.set('address.province_id', address.province_id.toString())
-        body.set('address.district_id', address.district_id.toString())
-        body.set('address.ward_id', address.ward_id.toString())
-        if (address.suburb_id) {
-          body.set('address.suburb_id', address.suburb_id.toString())
-        }
-        if (address.street) body.set('address.street', address.street)
+        body.set('address.country_name', address.country)
+        body.set('address.province_name', address.administrative_area_level_1)
+        body.set('address.district_name', address.administrative_area_level_2)
+        body.set('address.ward_name', address.locality)
+        body.set('address.street', `${address.street_number} ${address.route}`)
 
         const postResponse = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
@@ -97,13 +90,7 @@ describe(
             health_worker_id: nurse.id,
           })
 
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
+        assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
           gender: 'female',
@@ -137,31 +124,25 @@ describe(
         assertEquals($('input[name="mobile_number"]').val(), '5555555555')
 
         assert(
-          $('input[name="address.country_id"]').val(),
-          address.country_id.toString(),
+          $('input[name="address.country"]').val(),
+          address.country,
         )
         assert(
-          $('select[name="address.province_id"]').val(),
-          address.province_id.toString(),
+          $('select[name="address.province"]').val(),
+          address.administrative_area_level_1,
         )
         assert(
-          $('select[name="address.district_id"]').val(),
-          address.district_id.toString(),
+          $('select[name="address.district"]').val(),
+          address.district,
         )
         assert(
-          $('select[name="address.ward_id"]').val(),
-          address.ward_id.toString(),
+          $('select[name="address.ward"]').val(),
+          address.ward,
         )
         assert(
           $('input[name="address.street"]').val(),
-          address.street!.toString(),
+          address.street!,
         )
-        if (address.suburb_id) {
-          assert(
-            $('select[name="address.suburb_id"]').val(),
-            address.suburb_id.toString(),
-          )
-        }
       }
 
       {
@@ -187,13 +168,7 @@ describe(
             health_worker_id: nurse.id,
           })
 
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
+        assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
           gender: 'female',

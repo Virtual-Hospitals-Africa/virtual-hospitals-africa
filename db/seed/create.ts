@@ -51,7 +51,9 @@ export function create(
     })
 
     if (!all_seeds_present) {
-      return db.transaction().setIsolationLevel('read committed').execute(generate)
+      return db.transaction().setIsolationLevel('read committed').execute(
+        generate,
+      )
     }
 
     await runCommand('./db/seed/tsv_load.sh', {

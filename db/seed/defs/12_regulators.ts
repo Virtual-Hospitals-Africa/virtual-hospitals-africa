@@ -1,7 +1,6 @@
 import { TrxOrDb } from '../../../types.ts'
 import { create } from '../create.ts'
 
-
 const regulators = [
   { name: 'Will Weiss', email: 'william.t.weiss@gmail.com' },
   { name: 'Zora Chen', email: 'zorachen84613@gmail.com' },

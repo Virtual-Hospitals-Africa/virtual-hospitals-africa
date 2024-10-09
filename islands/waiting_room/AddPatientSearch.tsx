@@ -12,10 +12,10 @@ export function AddPatientSearch({
       name='patient'
       search_route={`/app/organizations/${organization_id}/patients`}
       label=''
-      addable={can_add_patients}
-      addHref={can_add_patients
-        ? `/app/organizations/${organization_id}/waiting_room/add?patient_name=`
-        : undefined}
+      addable={can_add_patients && {
+        href:
+          `/app/organizations/${organization_id}/waiting_room/add?patient_name=`,
+      }}
     />
   )
 }
