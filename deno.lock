@@ -2587,6 +2587,7 @@
     "https://esm.sh/preact@10.20.1/hooks": "3c7307938d2318feb8fa1d5aed0a7550a25bff23434cc0fa76e036b80d877e2a",
     "https://esm.sh/preact@10.20.1/jsx-runtime": "0685dab9b7614e166950b5d5e969c90c9c441c3d2d051b5da8b0d9387b6db6b6",
     "https://esm.sh/preact@10.20.1/test-utils": "2b2791c7167a37871178600d7ee12c8e965b588d8911769c6d173d76fc8c7216",
+    "https://esm.sh/preact@10.22.0/jsx-runtime": "c6185b52c1673f9d309dd6046051e9b6c034f14858bef62ea2a9fe9ef1ea2201",
     "https://esm.sh/stable/preact@10.20.1/denonext/compat.js": "645c1935e3fa4096c9293d0a6a09a9b4a3d522ae0365d617b9abbfc41ffc4ea2",
     "https://esm.sh/stable/preact@10.20.1/denonext/debug.js": "a9c0b0f011ccaec006b240e2ec7d4b32ba6432525962ba00f03190885fa958f6",
     "https://esm.sh/stable/preact@10.20.1/denonext/devtools.js": "3ff09d76a7b481c5c0f8babec2833480750456b4c702ee9878d4dfde8a3f811d",
@@ -2594,6 +2595,8 @@
     "https://esm.sh/stable/preact@10.20.1/denonext/jsx-runtime.js": "5875f10c83338dd21c3c30ed55c77f3c79a6f37e1ea1939e2e071cc52b9805f0",
     "https://esm.sh/stable/preact@10.20.1/denonext/preact.mjs": "eed417f1653718f3b8b4b5d1b61ad66967fc02ed2cf86f7589ce0c813c8ed0b6",
     "https://esm.sh/stable/preact@10.20.1/denonext/test-utils.js": "d05fe7801ff99904f293eaa3d1371be116ae84e02a65c4c7d25763a056a44dc1",
+    "https://esm.sh/stable/preact@10.22.0/denonext/jsx-runtime.js": "de60943799b1cbe6066c4f83f4ca71ef37011d7f5be7bef58ed980e8ff3f996a",
+    "https://esm.sh/stable/preact@10.22.0/denonext/preact.mjs": "20c9563e051dd66e053d3afb450f61b48f2fa0d0ce4f69f8f0a2f23c1ef090da",
     "https://esm.sh/v132/jest-clipboard@0.0.11/X-YS9ibG9iLXBvbHlmaWxsOnZt/denonext/jest-clipboard.mjs": "535981505c256adbcda9e5b48f258203179a8889c057e4d57f37fc255c92caa8",
     "https://esm.sh/v133/@adobe/css-tools@4.3.1/denonext/css-tools.mjs": "20a6b077982599f3ac7b3d594568e9e56d060f768bd477085379fabe4768c6b6",
     "https://esm.sh/v133/@testing-library/dom@8.20.0/X-ZS9wcmVhY3Q/denonext/dom.mjs": "6608d65552e2281df9f49b055f7c0a29b7f04c20316b69a2ea9f2490dd64b7fa",
@@ -2670,7 +2673,6 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/cli@^0.224.7",
-      "npm:@medplum/core",
       "npm:@tailwindcss/forms@0.5.7",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",

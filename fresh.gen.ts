@@ -227,7 +227,7 @@ import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
-import { type Manifest } from '$fresh/server.ts'
+import type { Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {

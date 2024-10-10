@@ -44,19 +44,6 @@ wait_until_vha_test_server_ready() {
   truncate -s 0 "$test_vha_server_output"
 }
 
-# wait_until_medplum_test_server_ready() {
-#   while ! grep -q "Server started" "$test_medplum_server_output"; do
-#     # Deno prints "error" with color codes, so we remove them before checking
-#     # shellcheck disable=SC2002
-#     if cat "$test_medplum_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
-#       cat "$test_medplum_server_output"
-#       exit 1
-#     fi
-#     sleep 0.1
-#   done
-#   truncate -s 0 "$test_medplum_server_output"
-# }
-
 run_tests() {
   DENO_TLS_CA_STORE=system IS_TEST=true \
   deno test \
@@ -64,7 +51,7 @@ run_tests() {
     --unstable-temporal \
     --env \
     --unsafely-ignore-certificate-errors \
-    --ignore=test/chatbot,medplum \
+    --ignore=test/chatbot \
     --parallel \
     "$@"
 }
