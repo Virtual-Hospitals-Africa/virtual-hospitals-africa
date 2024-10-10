@@ -15,16 +15,17 @@ export default function createMigration(migrationName: string) {
   const migrationFileName =
     `${year}${month}${day}${hour}${minute}${second}_${migrationName}.ts`
 
-  const initialContents = `import { Kysely } from "kysely";
+  const initialContents = `import { Kysely } from "kysely"
+import { DB } from "../../db.d.ts"
 
-  export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<unknown>) {
 
-  }
+}
 
-  export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>) {
 
-  }
-  `
+}
+`
 
   const filePath = `db/migrations/${migrationFileName}`
 

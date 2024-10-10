@@ -1,3 +1,6 @@
 [submodule "medplum"]
 	path = medplum
 	url = git@github.com:medplum/medplum.git
+[submodule "snowstorm"]
+	path = snowstorm
+	url = git@github.com:IHTSDO/snowstorm.git
