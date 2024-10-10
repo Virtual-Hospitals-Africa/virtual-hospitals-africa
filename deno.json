@@ -17,9 +17,6 @@
     "db:restore": "deno task run:trusted db/restore.ts",
     "db:recreate": "deno task run:trusted db/recreate.ts",
     "db:create": "deno task run:trusted db/create.ts",
-    "medplum:setup": "cd medplum && npm install && npx turbo run build && cd ..",
-    "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
-    "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",
     "heroku": "deno task run:trusted ./scripts/heroku.ts",
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unsafely-ignore-certificate-errors --unstable --target x86_64-unknown-linux-gnu",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
@@ -35,7 +32,7 @@
     "test:watch": "./scripts/watch_and_beep.sh FAILED deno task test --watch",
     "tmux": "./scripts/tmux.sh",
     "preview": "deno run -A main.ts",
-    "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '^./medplum/' | grep -v '^./chatbot/' | xargs deno check",
+    "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)"
   },
@@ -44,20 +41,16 @@
     "indentWidth": 2,
     "semiColons": false,
     "singleQuote": true,
-    "proseWrap": "preserve",
-    "exclude": ["**/medplum/*"]
+    "proseWrap": "preserve"
   },
   "lint": {
-    "exclude": ["medplum/"],
     "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
   },
-  "test": { "exclude": ["**/medplum/**/*.*"] },
   "imports": {
     "$fresh-testing-library": "https://deno.land/x/fresh_testing_library@0.12.0/mod.ts",
     "$fresh-testing-library/": "https://deno.land/x/fresh_testing_library@0.12.0/",
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "@headlessui/react": "https://esm.sh/*@headlessui/react@1.7.17?alias=react:preact/compat,react-dom:preact/compat,client-only:preact/compat",
-    "@medplum/core": "npm:@medplum/core",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
     "@std/cli": "jsr:@std/cli@^0.224.7",
@@ -66,7 +59,6 @@
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
-    "ffmpeg": "https://deno.land/x/deno_ffmpeg@v3.1.0/mod.ts",
     "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
     "kysely-deno-postgres": "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts",
     "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
