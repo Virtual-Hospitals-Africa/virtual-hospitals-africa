@@ -1,6 +1,7 @@
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../util/redirect.ts'
+import { ZodError } from 'npm:zod'
 
 // TODO: only do this on dev & test?
 const log_file = Deno.env.get('LOG_FILE') || 'server.log'
@@ -32,6 +33,14 @@ export const handler = (_req: Request, ctx: FreshContext) =>
     if (!ctx.url.searchParams.has('expectedTestError')) {
       console.error(err)
       logError(err)
+    }
+    if (err instanceof ZodError) {
+      return new Response(JSON.stringify(err), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     }
     const status = err.status || 500
     const message: string = grokPostgresError(err) || err.message ||

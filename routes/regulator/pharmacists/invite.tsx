@@ -1,22 +1,17 @@
 import { FreshContext } from '$fresh/server.ts'
 import PharmacistForm from '../../../islands/form/PharmacistForm.tsx'
-import { PageProps } from '$fresh/server.ts'
 import redirect from '../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../util/parseForm.ts'
+import { parseRequest } from '../../../util/parseForm.ts'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
 
-type InviteProps = {
-  regulator: LoggedInRegulator['regulator']
-}
-
 export const handler = {
-  POST: async function (req: Request, ctx: FreshContext<LoggedInRegulator>) {
-    const to_insert = await parseRequestAsserts(
+  async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+    const to_insert = await parseRequest(
       ctx.state.trx,
       req,
-      pharmacists.isUpsert,
+      pharmacists.parseUpsert,
     )
 
     await pharmacists.insert(ctx.state.trx, to_insert)
@@ -29,25 +24,19 @@ export const handler = {
       `/regulator/pharmacists?success=${success}`,
     )
   },
-  GET: function (
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
-  ) {
-    return ctx.render({
-      regulator: ctx.state.regulator,
-    })
-  },
 }
 
-export default function Invite(
-  props: PageProps<InviteProps>,
+// deno-lint-ignore require-await
+export default async function Invite(
+  _req: Request,
+  ctx: FreshContext<LoggedInRegulator>,
 ) {
   return (
     <Layout
       title='Pharmacists'
-      route={props.route}
-      url={props.url}
-      regulator={props.data.regulator}
+      route={ctx.route}
+      url={ctx.url}
+      regulator={ctx.state.regulator}
       params={{}}
       variant='regulator home page'
     >

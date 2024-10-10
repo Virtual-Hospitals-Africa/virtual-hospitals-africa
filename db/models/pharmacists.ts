@@ -2,61 +2,35 @@ import { Maybe, Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 import { PharmacistType } from '../../db.d.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
-import isString from '../../util/isString.ts'
+import { z } from 'zod'
 import {
   insert as insertPharmacyEmployment,
   remove as removePharmacyEmployment,
   updateIsSupervisor,
 } from './pharmacy_employment.ts'
 
-type PharmacyEmploymentUpsert = {
-  is_supervisor: boolean
-  id: string
-}
+export const PharmacistUpsert = z.object({
+  licence_number: z.string(),
+  prefix: z.enum(['Mr', 'Mrs', 'Ms', 'Miss', 'Dr']),
+  given_name: z.string(),
+  family_name: z.string(),
+  address: z.string(),
+  town: z.string(),
+  expiry_date: z.string(),
+  pharmacist_type: z.enum([
+    'Dispensing Medical Practitioner',
+    'Ind Clinic Nurse',
+    'Pharmacist',
+    'Pharmacy Technician',
+  ]),
+  pharmacies: z.optional(z.array(z.object({
+    is_supervisor: z.boolean(),
+    id: z.string(),
+  }))),
+})
 
-export type PharmacistUpsert = {
-  licence_number: string
-  prefix: Prefix
-  given_name: string
-  family_name: string
-  address: string
-  town: string
-  expiry_date: string
-  pharmacist_type: PharmacistType
-  pharmacies?: PharmacyEmploymentUpsert[]
-}
-
-export function isUpsert(
-  obj: unknown,
-): asserts obj is PharmacistUpsert {
-  assertOr400(isObjectLike(obj))
-  assertOr400(
-    isString(obj.licence_number),
-  )
-  assertOr400(
-    isString(obj.prefix),
-  )
-  assertOr400(
-    isString(obj.given_name),
-  )
-  assertOr400(
-    isString(obj.family_name),
-  )
-  assertOr400(
-    isString(obj.address),
-  )
-  assertOr400(
-    isString(obj.town),
-  )
-  assertOr400(
-    isString(obj.expiry_date),
-  )
-  assertOr400(
-    isString(obj.pharmacist_type),
-  )
-}
+export const parseUpsert = PharmacistUpsert.parse
+export type PharmacistUpsert = z.infer<typeof PharmacistUpsert>
 
 export async function update(
   trx: TrxOrDb,

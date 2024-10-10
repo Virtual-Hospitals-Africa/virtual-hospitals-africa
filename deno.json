@@ -73,7 +73,8 @@
     "std/": "https://deno.land/std@0.214.0/",
     "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
-    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js"
+    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "zod": "npm:zod@3.23.8"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true

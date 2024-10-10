@@ -62,15 +62,10 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(pageContents.includes('My Patients'))
     })
 
-    it('allows regulator access /regulator', async () => {
-      const mock = await addTestRegulatorWithSession(db)
-
-      const response = await mock.fetch(`/regulator`)
-
-      if (!response.ok) throw new Error(await response.text())
-      assertEquals(response.url, `${route}/regulator`)
-      const pageContents = await response.text()
-      assert(pageContents.includes('Regulator Home'))
+    it('allows regulator to access /regulator/pharmacies', async () => {
+      const { fetchCheerio } = await addTestRegulatorWithSession(db)
+      const $ = await fetchCheerio(`/regulator/pharmacies`)
+      assertEquals($('h1').text(), 'Pharmacies')
     })
 
     it('redirects from /login to /app', async () => {

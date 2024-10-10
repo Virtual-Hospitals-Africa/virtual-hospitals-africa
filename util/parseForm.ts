@@ -48,10 +48,10 @@ function isBlank(formData: Maybe<FormData>) {
   return true
 }
 
-export async function parseRequestAsserts<T extends Record<string, unknown>>(
+export async function parseRequest<T extends Record<string, unknown>>(
   trx: TrxOrDb,
   req: Request,
-  typeCheck: (obj: unknown) => asserts obj is T,
+  parse: (obj: unknown) => T,
 ): Promise<T> {
   assert(['POST', 'GET'].includes(req.method))
 
@@ -107,6 +107,16 @@ export async function parseRequestAsserts<T extends Record<string, unknown>>(
   )
 
   delete parsed.omit
-  typeCheck(parsed)
-  return parsed
+  return parse(parsed)
+}
+
+export function parseRequestAsserts<T extends Record<string, unknown>>(
+  trx: TrxOrDb,
+  req: Request,
+  typeCheck: (obj: unknown) => asserts obj is T,
+): Promise<T> {
+  return parseRequest(trx, req, (obj) => {
+    typeCheck(obj)
+    return obj
+  })
 }
