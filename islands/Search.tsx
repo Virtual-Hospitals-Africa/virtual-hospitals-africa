@@ -125,9 +125,9 @@ export default function Search<
     name: query,
     display_name: formatDisplay(query),
   } as unknown as T
-  const all_options = options
+  const all_options = [...options]
   if (addable) {
-    all_options.push()
+    all_options.push(add_option)
   }
 
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
