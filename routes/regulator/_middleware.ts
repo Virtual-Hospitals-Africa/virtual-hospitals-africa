@@ -10,6 +10,7 @@ import { login_href } from '../login.tsx'
 
 export const handler = [
   ensureCookiePresent,
+  redirectIfAtRoot,
   startTrx,
   getLoggedInRegulator,
 ]
@@ -27,6 +28,12 @@ export function getRegulatorCookie(req: Request): string | undefined {
 
 function ensureCookiePresent(req: Request, ctx: FreshContext) {
   return getRegulatorCookie(req) ? ctx.next() : noSession()
+}
+
+function redirectIfAtRoot(req: Request, ctx: FreshContext) {
+  return req.url === '/regulator'
+    ? redirect('/regulator/pharmacists')
+    : ctx.next()
 }
 
 async function getLoggedInRegulator(

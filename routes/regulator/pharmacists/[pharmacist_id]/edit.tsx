@@ -3,7 +3,7 @@ import Layout from '../../../../components/library/Layout.tsx'
 import { LoggedInRegulator } from '../../../../types.ts'
 import PharmacistForm from '../../../../islands/form/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../util/parseForm.ts'
 import * as pharmacists from '../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { error } from '../../../../util/alerts.ts'
@@ -11,10 +11,10 @@ import { error } from '../../../../util/alerts.ts'
 export const handler = {
   async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
-    const to_update = await parseRequestAsserts(
+    const to_update = await parseRequest(
       ctx.state.trx,
       req,
-      pharmacists.isUpsert,
+      pharmacists.parseUpsert,
     )
 
     await pharmacists.update(ctx.state.trx, pharmacist_id, to_update)
