@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Use Dockerfile.vha-pharmacist-chatbot
         run: cp Dockerfile.vha-pharmacist-chatbot Dockerfile
       - uses: akhileshns/heroku-deploy@v3.13.15

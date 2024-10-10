@@ -1,3 +1,0 @@
-[submodule "medplum"]
-	path = medplum
-	url = git@github.com:medplum/medplum.git

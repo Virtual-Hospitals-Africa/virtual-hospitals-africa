@@ -54,10 +54,8 @@ fi
 redis-server --daemonize yes
 
 echo "Now we'll install the project dependencies..."
-echo "Installing medplum..."
 
 deno task switch:local
-deno task medplum:setup
 
 echo "Now let's migrate your local database..."
 deno task db:local reset
