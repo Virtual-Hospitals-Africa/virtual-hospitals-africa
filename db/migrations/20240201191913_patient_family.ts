@@ -26,24 +26,6 @@ export async function up(db: Kysely<unknown>) {
       (col) =>
         col.unique().notNull().references('patients.id').onDelete('cascade'),
     )
-      .addColumn(
-        'home_satisfaction',
-        'int2',
-        (col) =>
-          col.check(sql`home_satisfaction >= 1 AND home_satisfaction <= 10`),
-      )
-      .addColumn('spiritual_satisfaction', 'int2', (col) =>
-        col.check(
-          sql`spiritual_satisfaction >= 1 AND spiritual_satisfaction <= 10`,
-        ))
-      .addColumn(
-        'social_satisfaction',
-        'int2',
-        (col) =>
-          col.check(
-            sql`social_satisfaction >= 1 AND social_satisfaction <= 10`,
-          ),
-      )
       .addColumn('religion', sql`religion`)
       .addColumn('family_type', sql`family_type`)
       .addColumn('marital_status', sql`marital_status`)

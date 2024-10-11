@@ -352,9 +352,6 @@ export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
   other_next_of_kin: Maybe<NextOfKin>
-  home_satisfaction: Maybe<number>
-  spiritual_satisfaction: Maybe<number>
-  social_satisfaction: Maybe<number>
   religion: Maybe<Religion>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
@@ -397,9 +394,6 @@ export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin?: Maybe<FamilyRelationInsert>
-  home_satisfaction?: Maybe<number>
-  spiritual_satisfaction?: Maybe<number>
-  social_satisfaction?: Maybe<number>
   religion?: Maybe<Religion>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>

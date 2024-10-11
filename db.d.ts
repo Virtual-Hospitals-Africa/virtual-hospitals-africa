@@ -852,14 +852,11 @@ export interface PatientExaminations {
 export interface PatientFamily {
   created_at: Generated<Timestamp>
   family_type: FamilyType | null
-  home_satisfaction: number | null
   id: Generated<string>
   marital_status: MaritalStatus | null
   patient_cohabitation: PatientCohabitation | null
   patient_id: string
   religion: Religion | null
-  social_satisfaction: number | null
-  spiritual_satisfaction: number | null
   updated_at: Generated<Timestamp>
 }
 
