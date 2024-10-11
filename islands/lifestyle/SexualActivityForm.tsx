@@ -8,7 +8,7 @@ import {
 import { Lifestyle, SexualActivity } from '../../types.ts'
 import FormSection from '../../components/library/FormSection.tsx'
 
-const attraction_question = ['Male', 'Female', 'LGBTQIA']
+const attraction_question = ['Male', 'Female', 'Other', 'Unknown']
 
 export default function SexualActivitySection(
   { lifestyle, age_years }: { lifestyle: Lifestyle; age_years: number },
