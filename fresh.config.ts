@@ -40,8 +40,7 @@ export default defineConfig({
         colors.bgRgb8(colors.rgb8('Virtual Hospitals Africa ready', 255), 57),
     )
 
-    const is_local = !!db_opts && db_opts.host === 'localhost'
-    const is_prod = !is_local
+    const is_prod = !!db_opts && db_opts.host !== 'localhost'
     if (is_prod) {
       console.log(
         `     ` +
