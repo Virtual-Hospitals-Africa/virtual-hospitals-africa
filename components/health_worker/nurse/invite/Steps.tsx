@@ -58,7 +58,7 @@ const PersonalFormFields = z.object({
   date_of_birth: z.string().date(),
   email: z.optional(z.string()),
   gender: z.enum(['male', 'female', 'non-binary']),
-  national_id_number: z.string(),
+  national_id_number: z.string().regex(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/),
   mobile_number: z.optional(z.string()),
   address: z.object({
     country: z.string(),
