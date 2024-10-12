@@ -299,7 +299,7 @@
         "integrity": "sha512-/cpVNRLSfhOtcGflT13P2794gVSgmPgTR+erw5ifnMLZb0UnSlkK4tquLmkd3BhA+nLo5tX8Cu0upUsGKvKbmg==",
         "dependencies": {
           "browserslist": "browserslist@4.24.0",
-          "caniuse-lite": "caniuse-lite@1.0.30001667",
+          "caniuse-lite": "caniuse-lite@1.0.30001668",
           "fraction.js": "fraction.js@4.3.7",
           "normalize-range": "normalize-range@0.1.2",
           "picocolors": "picocolors@1.1.0",
@@ -334,7 +334,7 @@
       "browserslist@4.24.0": {
         "integrity": "sha512-Rmb62sR1Zpjql25eSanFGEhAxcFwfA1K0GuQcLoaJBAcENegrQut3hYdhXFF1obQfiDyqIW/cLM5HSJ/9k884A==",
         "dependencies": {
-          "caniuse-lite": "caniuse-lite@1.0.30001667",
+          "caniuse-lite": "caniuse-lite@1.0.30001668",
           "electron-to-chromium": "electron-to-chromium@1.5.36",
           "node-releases": "node-releases@2.0.18",
           "update-browserslist-db": "update-browserslist-db@1.1.1_browserslist@4.24.0"
@@ -348,13 +348,13 @@
         "integrity": "sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==",
         "dependencies": {
           "browserslist": "browserslist@4.24.0",
-          "caniuse-lite": "caniuse-lite@1.0.30001667",
+          "caniuse-lite": "caniuse-lite@1.0.30001668",
           "lodash.memoize": "lodash.memoize@4.1.2",
           "lodash.uniq": "lodash.uniq@4.5.0"
         }
       },
-      "caniuse-lite@1.0.30001667": {
-        "integrity": "sha512-7LTwJjcRkzKFmtqGsibMeuXmvFDfZq/nzIjnmgCGzKKRVzjD72selLDK1oPF/Oxzmt4fNcPvTDvGqSDG4tCALw==",
+      "caniuse-lite@1.0.30001668": {
+        "integrity": "sha512-nWLrdxqCdblixUO+27JtGJJE/txpJlyUy5YN1u53wLZkP0emYCo5zgS6QYft7VUYR42LGgi/S5hdLZTrnyIddw==",
         "dependencies": {}
       },
       "chalk@2.4.2": {

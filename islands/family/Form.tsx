@@ -15,8 +15,6 @@ import PatientCohabitationSelect from './PatientCohabitationSelect.tsx'
 import FamilyTypeSelect from './FamilyTypeSelect.tsx'
 import ReligionSelect from '../ReligionSelect.tsx'
 import FormRow from '../form/Row.tsx'
-import { SelectWithOptions } from '../form/Inputs.tsx'
-import range from '../../util/range.ts'
 import FormSection from '../../components/library/FormSection.tsx'
 
 type GuardianFamilyRelationState =
@@ -48,11 +46,6 @@ export default function PatientFamilyForm({
   )
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
-
-  const satisfactionValues = range(1, 11).map((n) => ({
-    value: n,
-    label: n.toString(),
-  }))
 
   const showGuardians = age_years <= 18
   const showDependents = age_years >= 10
@@ -139,29 +132,6 @@ export default function PatientFamilyForm({
             label='Religion'
             name='family.religion'
             value={family.religion as string}
-          />
-        </FormRow>
-        <FormRow className='mt-2'>
-          <SelectWithOptions
-            label={'Home Environment/Family Satisfaction'}
-            name='family.home_satisfaction'
-            blank_option
-            options={satisfactionValues}
-            value={family.home_satisfaction ?? undefined}
-          />
-          <SelectWithOptions
-            label={'Spiritual Environment/Religion Satisfaction'}
-            name='family.spiritual_satisfaction'
-            blank_option
-            options={satisfactionValues}
-            value={family.spiritual_satisfaction ?? undefined}
-          />
-          <SelectWithOptions
-            label={'Social Environment/Community Satisfaction'}
-            name='family.social_satisfaction'
-            blank_option
-            options={satisfactionValues}
-            value={family.social_satisfaction ?? undefined}
           />
         </FormRow>
         <FormRow className='mt-2'>

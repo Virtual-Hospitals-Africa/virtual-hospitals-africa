@@ -176,9 +176,6 @@ export async function get(
   return {
     marital_status: patient_family?.marital_status,
     religion: patient_family?.religion,
-    home_satisfaction: patient_family?.home_satisfaction,
-    spiritual_satisfaction: patient_family?.spiritual_satisfaction,
-    social_satisfaction: patient_family?.social_satisfaction,
     family_type: patient_family?.family_type,
     patient_cohabitation: patient_family?.patient_cohabitation,
     guardians: await gettingGuardians,
@@ -574,9 +571,6 @@ export async function upsert(
 
   const familyValues = {
     patient_id,
-    home_satisfaction: family_to_upsert.home_satisfaction ?? null,
-    spiritual_satisfaction: family_to_upsert.spiritual_satisfaction ?? null,
-    social_satisfaction: family_to_upsert.social_satisfaction ?? null,
     religion: family_to_upsert.religion ?? null,
     family_type: family_to_upsert.family_type ?? null,
     marital_status: family_to_upsert?.marital_status ?? null,

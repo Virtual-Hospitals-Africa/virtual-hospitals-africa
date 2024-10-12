@@ -17,9 +17,6 @@ type FamilyFormValues = {
     guardians: FamilyRelationInsert[]
     dependents: FamilyRelationInsert[]
     other_next_of_kin?: FamilyRelationInsert
-    home_satisfaction?: number
-    spiritual_satisfaction?: number
-    social_satisfaction?: number
     religion?: Religion
     family_type?: FamilyType
     marital_status?: MaritalStatus
