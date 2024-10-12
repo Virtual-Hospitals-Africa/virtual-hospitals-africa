@@ -71,7 +71,7 @@ export async function up(db: Kysely<unknown>) {
           column
             .notNull()
             .check(sql`ncz_registration_number ~ '^[a-zA-Z]{2}[0-9]{6}$'`))
-        .addColumn('mobile_number', 'varchar(50)', (column) => column.notNull())
+        .addColumn('mobile_number', 'varchar(50)')
         .addColumn('national_id_media_id', 'uuid', (column) =>
           column
             .references('media.id')

@@ -655,7 +655,7 @@ export interface NurseRegistrationDetails {
   gender: Gender
   health_worker_id: string
   id: Generated<string>
-  mobile_number: string
+  mobile_number: string | null
   national_id_media_id: string | null
   national_id_number: string
   ncz_registration_card_media_id: string | null

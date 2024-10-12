@@ -1330,7 +1330,7 @@ export type NurseRegistrationDetails = {
   national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
-  mobile_number: string
+  mobile_number?: Maybe<string>
   national_id_media_id: Maybe<string>
   ncz_registration_card_media_id: Maybe<string>
   face_picture_media_id: Maybe<string>
