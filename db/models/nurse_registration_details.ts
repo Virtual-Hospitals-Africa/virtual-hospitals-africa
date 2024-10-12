@@ -1,14 +1,6 @@
-import {
-  HasStringId,
-  ISODateString,
-  Maybe,
-  NurseRegistrationDetails,
-  TrxOrDb,
-} from '../../types.ts'
+import { HasStringId, NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as addresses from './addresses.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
 import { isoDate } from '../helpers.ts'
 
 export type UpsertableNurseRegistrationDetails =
@@ -29,7 +21,6 @@ export async function add(
   { address, address_id, ...registration_details }:
     UpsertableNurseRegistrationDetails,
 ) {
-  assertIsRegistrationDetails(registration_details)
   if (address) {
     assert(
       !address_id,
@@ -138,47 +129,4 @@ export function approve(
     .where('health_worker_id', '=', opts.health_worker_id)
     .returningAll()
     .executeTakeFirst()
-}
-
-function assertIsRegistrationDetails(
-  registration_details: unknown,
-): asserts registration_details is NurseRegistrationDetails {
-  assertOr400(isObjectLike(registration_details))
-  assertOr400(typeof registration_details.health_worker_id === 'string')
-  assertOr400(typeof registration_details.gender === 'string')
-  assertOr400(
-    (registration_details.gender === 'male') ||
-      (registration_details.gender === 'female') ||
-      (registration_details.gender === 'non-binary'),
-  )
-  assertOr400(typeof registration_details.national_id_number === 'string')
-  assertOr400(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(
-    registration_details.national_id_number,
-  ))
-  assertOr400(isDate(registration_details.date_of_birth))
-  assertOr400(isDate(registration_details.date_of_first_practice))
-  assertOr400(typeof registration_details.ncz_registration_number === 'string')
-  assertOr400(
-    /^[a-zA-Z]{2}[0-9]{6}$/.test(registration_details.ncz_registration_number),
-  )
-  assertOr400(typeof registration_details.mobile_number === 'string')
-  assertOr400(/^[0-9]+$/.test(registration_details.mobile_number))
-  assertOr400(isMaybeString(registration_details.national_id_media_id))
-  assertOr400(
-    isMaybeString(registration_details.ncz_registration_card_media_id),
-  )
-  assertOr400(isMaybeString(registration_details.face_picture_media_id))
-  assertOr400(
-    isMaybeString(registration_details.nurse_practicing_cert_media_id),
-  )
-  assertOr400(isMaybeString(registration_details.approved_by))
-}
-
-function isDate(date: unknown): date is ISODateString {
-  return typeof date === 'string' &&
-    /^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$/.test(date)
-}
-
-function isMaybeString(num: unknown): num is Maybe<string> {
-  return num == null || typeof num === 'string'
 }
