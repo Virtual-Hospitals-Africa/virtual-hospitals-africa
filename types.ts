@@ -2375,12 +2375,12 @@ export type PatientSymptomInsertShared = {
   code: string
   severity: number
   start_date: string
-  end_date: string | null
-  notes: string | null
+  end_date?: Maybe<string>
+  notes?: Maybe<string>
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
-  media: { id: string }[]
+  media?: { id: string }[]
 }
 
 export type RenderedPatientSymptom =

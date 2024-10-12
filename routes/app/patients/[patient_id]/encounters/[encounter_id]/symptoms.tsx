@@ -1,56 +1,33 @@
+import { z } from 'zod'
 import {
   completeStep,
   EncounterContext,
   EncounterPage,
   EncounterPageChildProps,
 } from './_middleware.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-  PatientSymptomUpsert,
-} from '../../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../islands/symptoms/Section.tsx'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
-import { assertOr400 } from '../../../../../../util/assertOr.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
-import {
-  isISODateString,
-  todayISOInHarare,
-} from '../../../../../../util/date.ts'
+import { todayISOInHarare } from '../../../../../../util/date.ts'
 
-function assertIsSymptoms(body: unknown): asserts body is {
-  symptoms?: PatientSymptomUpsert[]
-} {
-  assertOr400(isObjectLike(body))
-  if (!body.symptoms) return
-  assertOr400(Array.isArray(body.symptoms), 'Invalid symptoms')
-  for (const symptom of body.symptoms) {
-    assertOr400(isObjectLike(symptom), 'Invalid symptom')
-    assertOr400(typeof symptom.code === 'string', 'Invalid symptom')
-    assertOr400(
-      typeof symptom.severity === 'number' &&
-        symptom.severity >= 1 &&
-        symptom.severity <= 10,
-      'Invalid symptom severity',
-    )
-    assertOr400(
-      typeof symptom.start_date === 'string' &&
-        isISODateString(symptom.start_date),
-      'Invalid symptom start_date',
-    )
-    assertOr400(
-      symptom.end_date === undefined ||
-        (typeof symptom.end_date === 'string' &&
-          isISODateString(symptom.end_date)),
-      'Invalid symptom end_date',
-    )
-    assertOr400(
-      symptom.notes === undefined || typeof symptom.notes === 'string',
-      'Invalid symptom notes',
-    )
-  }
-}
+const MediaSchema = z.object({
+  id: z.string(),
+})
+
+const PatientSymptomUpsertSchema = z.object({
+  code: z.string(),
+  severity: z.number().min(1).max(10),
+  start_date: z.string().date(),
+  end_date: z.string().date().optional(),
+  notes: z.string().optional(),
+  media: z.array(MediaSchema).optional(),
+})
+
+const SymptomsSchema = z.object({
+  symptoms: z.array(PatientSymptomUpsertSchema).optional(),
+})
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
@@ -59,10 +36,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async POST(req, ctx: EncounterContext) {
     const completing_step = completeStep(ctx)
 
-    const { symptoms = [] } = await parseRequestAsserts(
+    const { symptoms = [] } = await parseRequest(
       ctx.state.trx,
       req,
-      assertIsSymptoms,
+      SymptomsSchema.parse,
     )
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
