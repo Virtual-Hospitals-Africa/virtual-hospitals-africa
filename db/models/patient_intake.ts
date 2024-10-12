@@ -110,11 +110,6 @@ export async function getSummaryById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .leftJoin(
-      'addresses',
-      'addresses.id',
-      'patients.address_id',
-    )
     .select((eb) => [
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),

@@ -1,6 +1,7 @@
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
+import { opts as db_opts } from './db/db.ts'
 
 const { SELF_URL, PORT } = Deno.env.toObject()
 
@@ -32,13 +33,22 @@ export default defineConfig({
     const address = colors.cyan(
       `${protocol}//localhost:${params.port}`,
     )
-    const localLabel = colors.bold('Local:')
 
     console.log()
     console.log(
       ' 🩺 ' +
         colors.bgRgb8(colors.rgb8('Virtual Hospitals Africa ready', 255), 57),
     )
-    console.log(`    ${localLabel} ${address}\n`)
+
+    const is_local = !!db_opts && db_opts.host === 'localhost'
+    const is_prod = !is_local
+    if (is_prod) {
+      console.log(
+        `     ` +
+          colors.bgRgb8(colors.rgb8('(running against production)\n', 255), 59),
+      )
+    }
+
+    console.log(`    ${colors.bold('URL:')} ${address}\n`)
   },
 })
