@@ -110,7 +110,6 @@ function PreExistingConditionsSummary(
 function FamilySummary(
   { family }: { family: IntakePatientSummary['family'] }
 ) {
-  console.log(family)
   return (
     <div className='flex flex-col'>
       {family.marital_status && (
