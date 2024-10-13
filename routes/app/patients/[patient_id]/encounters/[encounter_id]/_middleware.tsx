@@ -80,7 +80,7 @@ export function postHandler<T>(
     send_to?: Maybe<SendToFormSubmission>
   } {
     assertOr400(isObjectLike(form_values))
-    if (form_values.send_to) send_to.assertIs(form_values.send_to)
+    if (form_values.send_to) send_to.SendToSchema.parse(form_values.send_to)
     assertion(form_values)
   }
 
