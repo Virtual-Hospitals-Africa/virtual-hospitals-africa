@@ -108,7 +108,7 @@ function PreExistingConditionsSummary(
 }
 
 function FamilySummary(
-  { family }: { 
+  { family }: {
     family: IntakePatientSummary['family']
   },
 ) {
