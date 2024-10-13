@@ -108,7 +108,9 @@ function PreExistingConditionsSummary(
 }
 
 function FamilySummary(
-  { family }: { family: IntakePatientSummary['family'] }
+  { family }: { 
+    family: IntakePatientSummary['family']
+  },
 ) {
   return (
     <div className='flex flex-col'>
