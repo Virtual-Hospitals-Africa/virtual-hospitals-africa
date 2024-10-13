@@ -107,6 +107,36 @@ function PreExistingConditionsSummary(
   )
 }
 
+function FamilySummary(
+  { family }: { family: IntakePatientSummary['family'] }
+) {
+  console.log(family)
+  return (
+    <div className='flex flex-col'>
+      {family.marital_status && (
+        <>
+          <span className='font-semibold'>Marital Status:</span>
+          <span>{family.marital_status}</span>
+        </>
+      )}
+
+      {family.religion && (
+        <>
+          <span className='font-semibold mt-2'>Religion:</span>
+          <span>{family.religion}</span>
+        </>
+      )}
+
+      {family.family_type && (
+        <>
+          <span className='font-semibold mt-2'>Family Type:</span>
+          <span>{family.family_type}</span>
+        </>
+      )}
+    </div>
+  )
+}
+
 // Do something for displaying international phone numbers
 function PhoneDisplay({ phone_number }: { phone_number: string }) {
   return <span>{phone_number}</span>
@@ -169,6 +199,11 @@ export default function PatientSummary(
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
           edit_href: 'TODO',
+        },
+        {
+          label: 'Family',
+          children: <FamilySummary family={patient.family} />,
+          edit_href: `${intake_href}/family`,
         },
       ]}
     />
