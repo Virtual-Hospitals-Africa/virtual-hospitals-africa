@@ -56,10 +56,20 @@ const PersonalFormFields = z.object({
   middle_names: z.optional(z.string()),
   last_name: z.string(),
   date_of_birth: z.string().date(),
-  email: z.optional(z.string()),
+  email: z.optional(z.string()).refine(
+    (email) => !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    {
+      message: 'Invalid email format',
+    },
+  ),
   gender: z.enum(['male', 'female', 'non-binary']),
-  national_id_number: z.string(),
-  mobile_number: z.optional(z.string()),
+  national_id_number: z.string().regex(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/),
+  mobile_number: z.optional(z.union([
+    z.string(),
+    z.number(),
+  ])).transform((value): undefined | string =>
+    typeof value === 'number' ? value.toString() : value
+  ),
   address: z.object({
     country: z.string(),
     administrative_area_level_1: z.string(),

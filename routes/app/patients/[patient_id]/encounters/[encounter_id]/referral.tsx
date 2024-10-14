@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import {
   completeStep,
   EncounterContext,
@@ -8,29 +9,26 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts
 import * as doctor_reviews from '../../../../../../db/models/doctor_reviews.ts'
 import SectionHeader from '../../../../../../components/library/typography/SectionHeader.tsx'
 import { ReferralForm } from '../../../../../../islands/referral/Form.tsx'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
-import { assertOr400 } from '../../../../../../util/assertOr.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
+import { parseRequest } from '../../../../../../util/parseForm.ts'
 
-function assertIsReferral(body: unknown): asserts body is {
-  review_request?: {
-    id?: string
-    organization_id?: string
-    organization_name?: string
-    doctor_id?: string
-    doctor_name?: string
-    requester_notes?: string
-  }
-} {
-  assertOr400(isObjectLike(body))
-  if (!body.review_request) return
-  assertOr400(isObjectLike(body.review_request))
-  assertOr400(
-    body.review_request.organization_id || body.review_request.doctor_id,
-    'Must provide either organization_id or doctor_id',
-  )
-  return
-}
+const ReviewRequestSchema = z.object({
+  id: z.string().optional(),
+  organization_id: z.string().optional(),
+  organization_name: z.string().optional(),
+  doctor_id: z.string().optional(),
+  doctor_name: z.string().optional(),
+  requester_notes: z.string().optional(),
+}).refine(
+  (data) => data.organization_id || data.doctor_id,
+  {
+    message: 'Must provide either organization_id or doctor_id',
+    path: ['organization_id', 'doctor_id'],
+  },
+)
+
+const PostSchema = z.object({
+  review_request: ReviewRequestSchema.optional(),
+})
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
@@ -42,18 +40,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const getting_original_request = doctor_reviews.getRequest(ctx.state.trx, {
       requested_by: ctx.state.encounter_provider.patient_encounter_provider_id,
     })
-    const body = await parseRequestAsserts(
+    const body = await parseRequest(
       ctx.state.trx,
       req,
-      assertIsReferral,
+      PostSchema.parse,
     )
 
     if (body.review_request) {
       await doctor_reviews.upsertRequest(trx, {
-        id: body.review_request.id || undefined,
-        organization_id: body.review_request.organization_id || null,
-        requesting_doctor_id: body.review_request.doctor_id || null,
-        requester_notes: body.review_request.requester_notes,
+        ...body.review_request,
         requested_by: encounter_provider.patient_encounter_provider_id,
         patient_id: encounter.patient_id,
         encounter_id: encounter.encounter_id,

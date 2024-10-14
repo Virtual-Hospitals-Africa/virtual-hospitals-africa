@@ -1,13 +1,6 @@
-import {
-  Location,
-  Maybe,
-  Sendable,
-  SendToFormSubmission,
-  TrxOrDb,
-} from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
+import { z } from 'zod'
+import { Location, Maybe, Sendable, TrxOrDb } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
 import { getApprovedProviders, nearestHospitals } from './organizations.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 
@@ -296,36 +289,19 @@ export async function forPatientEncounter(
   ]
 }
 
-export function assertIs(
-  send_to: unknown,
-): asserts send_to is SendToFormSubmission {
-  assertOr400(isObjectLike(send_to))
-  if (send_to.action) {
-    assertOr400(
-      typeof send_to.action === 'string',
-      'send_to.action must be a string',
-    )
-    assertOr400(
-      !send_to.entity,
-      'send_to.entity must not be present when send_to.action is present',
-    )
-  }
-  if (send_to.entity) {
-    assertOr400(isObjectLike(send_to.entity))
-    assertOr400(
-      typeof send_to.entity.id === 'string',
-      'send_to.entity.id must be a string',
-    )
-    assertOr400(
-      typeof send_to.entity.type === 'string',
-      'send_to.entity.type must be a string',
-    )
-    assertOr400(
-      !send_to.action,
-      'send_to.action must not be present when send_to.entity is present',
-    )
-  }
-}
+export const SendToSchema = z.object({
+  action: z.string().optional(),
+  entity: z.object({
+    id: z.string().uuid(),
+    type: z.string(),
+  }).optional(),
+}).refine(
+  (data) => !data.action && data.entity,
+  {
+    message: 'Cannot send to both an action and an entity',
+    path: ['action'],
+  },
+)
 
 /**
  * [
