@@ -20,7 +20,7 @@ export function DescriptionList(
       <div
         className='grid gap-4'
         style={{
-          width: 'min-content',
+          width: 'max-content',
           alignItems: 'center',
           gridTemplateColumns: 'max-content 1fr min-content',
         }}

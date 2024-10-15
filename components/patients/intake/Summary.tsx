@@ -13,6 +13,7 @@ import {
 import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
+import { FamilyRelation } from '../../../types.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -107,6 +108,73 @@ function PreExistingConditionsSummary(
   )
 }
 
+function Relation({ relation }: { relation: FamilyRelation }) {
+  return (
+    <div className='mt-1.5 flex flex-col gap-1'>
+      <span>{relation.patient_name}</span>
+      <span>Relation: {relation.family_relation_gendered}</span>
+      <span>Gender: {relation.patient_gender}</span>
+      <span>
+        Phone:{' '}
+        <PhoneDisplay phone_number={relation.patient_phone_number || 'N/A'} />
+      </span>
+    </div>
+  )
+}
+
+function FamilySummary(
+  { family }: {
+    family: IntakePatientSummary['family']
+  },
+) {
+  return (
+    <div className='flex flex-col'>
+      {family.marital_status && (
+        <>
+          <span className='font-semibold'>Marital Status:</span>
+          <span>{family.marital_status}</span>
+        </>
+      )}
+
+      {family.religion && (
+        <>
+          <span className='font-semibold mt-2'>Religion:</span>
+          <span>{family.religion}</span>
+        </>
+      )}
+
+      {family.family_type && (
+        <>
+          <span className='font-semibold mt-2'>Family Type:</span>
+          <span>{family.family_type}</span>
+        </>
+      )}
+
+      {family.guardians && family.guardians.length > 0 && (
+        <div className='mt-4'>
+          <span className='font-semibold'>Guardians:</span>
+          <div className='mt-2 flex flex-col gap-2'>
+            {family.guardians.map((guardian) => (
+              <Relation key={guardian.relation_id} relation={guardian} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {family.dependents && family.dependents.length > 0 && (
+        <div className='mt-4'>
+          <span className='font-semibold'>Dependents:</span>
+          <div className='mt-2 flex flex-col gap-2'>
+            {family.dependents.map((dependent) => (
+              <Relation key={dependent.relation_id} relation={dependent} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // Do something for displaying international phone numbers
 function PhoneDisplay({ phone_number }: { phone_number: string }) {
   return <span>{phone_number}</span>
@@ -169,6 +237,11 @@ export default function PatientSummary(
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
           edit_href: 'TODO',
+        },
+        {
+          label: 'Family',
+          children: <FamilySummary family={patient.family} />,
+          edit_href: `${intake_href}/family`,
         },
       ]}
     />
