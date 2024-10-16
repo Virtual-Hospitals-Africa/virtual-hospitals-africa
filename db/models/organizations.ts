@@ -266,9 +266,6 @@ export function getAllEmployeesWithoutActionQuery(
     return qb.selectFrom('organization_employment')
       .select(({ fn, ref }) => [
         'organization_employment.health_worker_id',
-        'organization_employment.id as employee_id',
-        'organization_employment.profession as profession',
-        'organization_employment.specialty as specialty',
         sql`ARRAY_AGG(registration_status)`.as('registration_statuses'),
         fn.jsonAgg(
           jsonBuildObject({

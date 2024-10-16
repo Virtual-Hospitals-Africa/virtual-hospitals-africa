@@ -263,7 +263,7 @@ export function EncounterPage(
         patient.id,
         location,
         {
-          exclude_health_worker_id: healthWorker.id
+          exclude_health_worker_id: healthWorker.id,
         },
       ),
     })

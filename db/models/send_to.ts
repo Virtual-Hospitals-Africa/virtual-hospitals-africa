@@ -4,45 +4,19 @@ import {
   OrganizationDoctorOrNurse,
   RenderedPatientEncounterProvider,
   Sendable,
-  SendToFormSubmission,
-  Maybe,
   TrxOrDb,
 } from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
 import {
   getApprovedDoctorsWithoutAction,
   getApprovedProviders,
   nearestHospitals,
 } from './organizations.ts'
-import { sql } from 'kysely'
 // import { getMany } from './providers.ts'
 // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import * as organizations from './organizations.ts'
 import * as patients from './patients.ts'
-
-export async function getLocationByOrganizationId(
-  trx: TrxOrDb,
-  organizationId: string,
-) {
-  const result = await trx
-    .selectFrom('Location')
-    .select([
-      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
-      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
-    ])
-    .where('organizationId', '=', organizationId)
-    .executeTakeFirst()
-
-  if (!result) {
-    throw new Error(
-      `No location data found for organizationId: ${organizationId}`,
-    )
-  }
-  return result
-}
 
 function processEmployee(
   employees: OrganizationDoctorOrNurse[],
@@ -118,7 +92,9 @@ export async function forPatientIntake(
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, organization, patient } =
     await promiseProps({
-      nearestFacilities: location ? nearestHospitals(trx, location): Promise.resolve([]),
+      nearestFacilities: location
+        ? nearestHospitals(trx, location)
+        : Promise.resolve([]),
       employees: getApprovedProviders(
         trx,
         organization_id,
