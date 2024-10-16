@@ -32,7 +32,7 @@ addEventListener('submit', function (event) {
     var htmlElement = document.createElement('html')
     htmlElement.innerHTML = innerHTML
     var hijackScript = htmlElement.querySelector(
-      'script[src="/hijack-form-submission.js"]',
+      'script[src="/hijack-form-submission-and-set-focus.js"]',
     )
     if (hijackScript) {
       hijackScript.parentNode.removeChild(hijackScript)
@@ -89,4 +89,48 @@ addEventListener('submit', function (event) {
     console.error(error)
     return onError('Offline: ' + error.message || error)
   })
+})
+
+// Set focus on the first input or select element in the form when
+// navigating to a subsection with hash
+window.navigation.addEventListener('navigate', function (event) {
+  let sectionID
+  if (location.hash) {
+    sectionID = location.hash.split('=')[1].replace(/-/g, ' ')
+  }
+
+  let hasFocusableElement = false
+  document.querySelectorAll('label > span').forEach((label) => {
+    console.log(label.textContent)
+    if (label.textContent.includes(sectionID)) {
+      const focusableElement = label.parentElement.querySelector(
+        'input, select',
+      )
+      if (focusableElement) {
+        hasFocusableElement = true
+        focusableElement.focus()
+        return
+      }
+    }
+  })
+
+  document.querySelectorAll('label').forEach((label) => {
+    if (label.textContent.includes(sectionID)) {
+      const focusableElement = label.parentElement.querySelector(
+        'input, select',
+      )
+      if (focusableElement) {
+        hasFocusableElement = true
+        focusableElement.focus()
+        return
+      }
+    }
+  })
+
+  if (!hasFocusableElement) {
+    const firstFocusableElement = document.querySelector('input, select')
+    if (firstFocusableElement) {
+      firstFocusableElement.focus()
+    }
+  }
 })
