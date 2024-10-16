@@ -140,6 +140,7 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
+import * as $SendTo_AdditionalDescription from './islands/SendTo/AdditionalDescription.tsx'
 import * as $SendTo_AdditionalInfo from './islands/SendTo/AdditionalInfo.tsx'
 import * as $SendTo_Button from './islands/SendTo/Button.tsx'
 import * as $SendTo_CircularImage from './islands/SendTo/CircularImage.tsx'
@@ -426,6 +427,7 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
+    './islands/SendTo/AdditionalDescription.tsx': $SendTo_AdditionalDescription,
     './islands/SendTo/AdditionalInfo.tsx': $SendTo_AdditionalInfo,
     './islands/SendTo/Button.tsx': $SendTo_Button,
     './islands/SendTo/CircularImage.tsx': $SendTo_CircularImage,

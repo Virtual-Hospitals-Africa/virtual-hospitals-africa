@@ -169,27 +169,20 @@ export function getOrganizationAdmin(
     .executeTakeFirst()
 }
 
-export function getAllDoctor(
+export async function getEmploymentLocationName(
   trx: TrxOrDb,
   opts: {
-    exclude_health_worker_id?: string[]
+    employee_id: string
   },
-): Promise<HasStringId<Employee>[]> {
-  const allDoctorsQuery = trx
+) {
+  return await trx
     .selectFrom('employment')
-    .where('profession', '=', 'doctor')
     .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
+      'organizations',
+      'organizations.id',
+      'employment.organization_id',
     )
-    .selectAll()
-  if (opts.exclude_health_worker_id) {
-    allDoctorsQuery.where(
-      'health_worker_id',
-      'not in',
-      opts.exclude_health_worker_id,
-    )
-  }
-  return allDoctorsQuery.execute()
+    .select('organizations.name')
+    .where('employment.id', '=', opts.employee_id)
+    .executeTakeFirstOrThrow()
 }

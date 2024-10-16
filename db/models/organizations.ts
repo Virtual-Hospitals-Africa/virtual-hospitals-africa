@@ -2,7 +2,6 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   DoctorsWithoutAction,
-  EmployeesWithoutActions,
   HasStringId,
   Location,
   Maybe,
@@ -329,10 +328,10 @@ export function getAllEmployeesWithoutActionQuery(
   )
 }
 
-export function getEmployeesWithoutActions(
+export function getDoctorsWithoutAction(
   trx: TrxOrDb,
   opts: EmployeeQueryOpts = {},
-): Promise<EmployeesWithoutActions[]> {
+): Promise<DoctorsWithoutAction[]> {
   return getAllEmployeesWithoutActionQuery(trx, opts).selectFrom(
     'organization_employees',
   ).selectAll('organization_employees').execute()
@@ -342,7 +341,7 @@ export async function getApprovedDoctorsWithoutAction(
   trx: TrxOrDb,
   opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions' | 'actions'> = {},
 ): Promise<DoctorsWithoutAction[]> {
-  const employees = await getEmployeesWithoutActions(trx, {
+  const employees = await getDoctorsWithoutAction(trx, {
     ...opts,
     professions: ['doctor'],
     is_approved: true,

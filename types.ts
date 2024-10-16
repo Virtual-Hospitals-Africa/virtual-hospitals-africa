@@ -1081,8 +1081,6 @@ export type OrganizationDoctorOrNurse =
     specialty: NurseSpecialty | null
   }
 
-export type EmployeesWithoutActions = Omit<OrganizationEmployee, 'actions'>
-
 export type DoctorsWithoutAction =
   & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
   & {

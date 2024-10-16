@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import {
+  DoctorsWithoutAction,
   Location,
   OrganizationDoctorOrNurse,
   RenderedPatientEncounterProvider,
@@ -17,9 +18,11 @@ import {
 import { promiseProps } from '../../util/promiseProps.ts'
 import * as organizations from './organizations.ts'
 import * as patients from './patients.ts'
+import { getEmploymentLocationName } from './employment.ts'
 
-function processEmployee(
-  employees: OrganizationDoctorOrNurse[],
+async function processEmployee(
+  trx: TrxOrDb,
+  employees: OrganizationDoctorOrNurse[] | DoctorsWithoutAction[],
   patient_encounter_providers: RenderedPatientEncounterProvider[],
   patient_name: string,
   primary_doctor_id?: string,
@@ -59,25 +62,34 @@ function processEmployee(
     return 0
   })
 
-  const processed_employees = sorted_employees.slice(0, 3).map((employee) => {
-    let additional_info = ''
-    if (
-      patient_encounter_providers.map((provider) => provider.employment_id)
-        .includes(employee.employee_id)
-    ) {
-      additional_info = `Encounter provider for ${patient_name} `
-    }
-    if (employee.employee_id === primary_doctor_id) {
-      additional_info = `Primary Care Doctor for ${patient_name}`
-    }
-    if (additional_info === '') {
-      additional_info = ' '
-    }
-    return {
-      ...employee,
-      additional_info,
-    }
-  })
+  const processed_employees = await Promise.all(
+    sorted_employees.slice(0, 3).map(async (employee) => {
+      let additional_info = ''
+      if (
+        patient_encounter_providers.map((provider) => provider.employment_id)
+          .includes(employee.employee_id)
+      ) {
+        additional_info = `Encounter provider for ${patient_name} `
+      }
+      if (employee.employee_id === primary_doctor_id) {
+        additional_info = `Primary Care Doctor for ${patient_name}`
+      }
+      if (additional_info === '') {
+        additional_info = ' '
+      }
+
+      const employment_location = await getEmploymentLocationName(trx, {
+        employee_id: employee.employee_id,
+      })
+      const employment_location_name = employment_location.name
+
+      return {
+        ...employee,
+        additional_info,
+        employment_location_name,
+      }
+    }),
+  )
 
   return processed_employees
 }
@@ -128,7 +140,8 @@ export async function forPatientIntake(
   )
 
   //sort and limit number of health workers to be displayed
-  const processed_employees = processEmployee(
+  const processed_employees = await processEmployee(
+    trx,
     employees,
     patient_encounter_providers,
     patient.name,
@@ -146,7 +159,8 @@ export async function forPatientIntake(
             : employee.profession,
         ),
       },
-      additional_description: organization[0].name,
+      additional_description: employee.employment_location_name ??
+        organization[0].name,
       additional_info: employee.additional_info,
       image: {
         type: 'avatar',
@@ -240,11 +254,12 @@ export async function forPatientIntake(
 
 export async function forPatientEncounter(
   trx: TrxOrDb,
-  _patient_id: string,
-  location?: Location,
-  opts: { exclude_health_worker_id?: string } = {},
+  patient_id: string,
+  location: Location | null,
+  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
-  const { nearestFacilities, employees } = await promiseProps({
+  const { nearestFacilities, employees, patient } = await promiseProps({
     nearestFacilities: location
       ? nearestHospitals(trx, location)
       : Promise.resolve([]),
@@ -254,6 +269,7 @@ export async function forPatientEncounter(
         exclude_health_worker_id: opts.exclude_health_worker_id ?? '',
       },
     ),
+    patient: patients.getByID(trx, { id: patient_id }),
   })
 
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
@@ -277,35 +293,48 @@ export async function forPatientEncounter(
     }),
   )
 
-  const doctor_information: Sendable[] = employees.map(
-    (employee) => ({
-      key: 'health_worker/' + employee.name,
-      name: employee.name,
-      description: {
-        text: capitalize(
-          employee.specialty
-            ? `${employee.specialty} ${employee.profession}`
-            : employee.profession,
-        ),
-      },
-      image: {
-        type: 'avatar',
-        url: employee.avatar_url,
-      },
-      status: 'Unavailable until tomorrow at 9:00am',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: employee.employee_id,
-        online: !!employee.online,
-      },
-      request_type_options: [
-        'request_review',
-        'make_appointment',
-        'declare_emergency',
-      ],
-      textarea: 'additional_details',
-    }),
+  const processed_doctors = await processEmployee(
+    trx,
+    employees,
+    patient_encounter_providers,
+    patient.name,
+    opts.primary_doctor_id,
+  )
+
+  const doctor_information: Sendable[] = processed_doctors.map(
+    (doctor) => {
+      const employment_location = doctor.employment_location_name
+      return ({
+        key: 'health_worker/' + doctor.name,
+        name: doctor.name,
+        description: {
+          text: capitalize(
+            doctor.specialty
+              ? `${doctor.specialty} ${doctor.profession}`
+              : doctor.profession,
+          ),
+        },
+        additional_description: employment_location,
+        additional_info: doctor.additional_info,
+        image: {
+          type: 'avatar',
+          url: doctor.avatar_url,
+        },
+        status: 'Unavailable until tomorrow at 9:00am',
+        to: {
+          type: 'entity',
+          entity_type: 'health_worker',
+          entity_id: doctor.employee_id,
+          online: !!doctor.online,
+        },
+        request_type_options: [
+          'request_review',
+          'make_appointment',
+          'declare_emergency',
+        ],
+        textarea: 'additional_details',
+      })
+    },
   )
   return [
     {

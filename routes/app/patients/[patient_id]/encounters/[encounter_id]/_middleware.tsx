@@ -262,8 +262,10 @@ export function EncounterPage(
         trx,
         patient.id,
         location,
+        encounter.providers,
         {
           exclude_health_worker_id: healthWorker.id,
+          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
         },
       ),
     })
