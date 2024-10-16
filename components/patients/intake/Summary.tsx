@@ -208,40 +208,39 @@ export default function PatientSummary(
         {
           label: 'Personal',
           children: <PersonalSummary patient={patient} />,
-          edit_href: `${intake_href}/personal`,
+          edit_href: `${intake_href}/personal#focus=Personal`,
         },
         {
           label: 'Address',
           children: patient.address,
-          edit_href: `${intake_href}/address`,
+          edit_href: `${intake_href}/address#focus=Address`,
         },
-        { label: 'Ethnicity', children: patient.ethnicity, edit_href: 'TODO' },
-        { label: 'Phone', children: patient.phone_number, edit_href: 'TODO' },
+        { label: 'Ethnicity', children: patient.ethnicity, edit_href: `${intake_href}/personal#focus=Ethnicity` },
+        { label: 'Phone', children: patient.phone_number, edit_href: `${intake_href}/personal#focus=Phone` },
         {
           label: 'National ID',
           children: patient.national_id_number,
-          edit_href: 'TODO',
+          edit_href: `${intake_href}/personal#focus=National-ID-Number`,
         },
-        { label: 'Address', children: patient.address, edit_href: 'TODO' },
         {
           label: 'Nearest Organization',
           children: patient.nearest_organization_name,
-          edit_href: 'TODO',
+          edit_href: `${intake_href}/address#focus=Nearest-Organization`,
         },
         {
           label: 'Primary Doctor',
           children: patient.primary_doctor_name,
-          edit_href: 'TODO',
+          edit_href: `${intake_href}/address#focus=Primary/Family-Doctor`,
         },
         {
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
-          edit_href: 'TODO',
+          edit_href: `${intake_href}/conditions#focus=Condition-name`,
         },
         {
           label: 'Family',
           children: <FamilySummary family={patient.family} />,
-          edit_href: `${intake_href}/family`,
+          edit_href: `${intake_href}/family#focus=Family`,
         },
       ]}
     />
