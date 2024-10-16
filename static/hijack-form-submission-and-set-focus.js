@@ -94,39 +94,43 @@ addEventListener('submit', function (event) {
 // Set focus on the first input or select element in the form when
 // navigating to a subsection with hash
 window.navigation.addEventListener('navigate', function (event) {
-  let sectionID;
+  let sectionID
   if (location.hash) {
-    sectionID = location.hash.split('=')[1].replace(/-/g, ' ');
+    sectionID = location.hash.split('=')[1].replace(/-/g, ' ')
   }
 
   let hasFocusableElement = false
   document.querySelectorAll('label > span').forEach((label) => {
-    console.log(label.textContent);
+    console.log(label.textContent)
     if (label.textContent.includes(sectionID)) {
-      const focusableElement = label.parentElement.querySelector('input, select');
+      const focusableElement = label.parentElement.querySelector(
+        'input, select',
+      )
       if (focusableElement) {
-        hasFocusableElement = true;
-        focusableElement.focus();
-        return;
+        hasFocusableElement = true
+        focusableElement.focus()
+        return
       }
     }
-  });
+  })
 
-  document.querySelectorAll('label').forEach((label) => { 
+  document.querySelectorAll('label').forEach((label) => {
     if (label.textContent.includes(sectionID)) {
-      const focusableElement = label.parentElement.querySelector('input, select');
+      const focusableElement = label.parentElement.querySelector(
+        'input, select',
+      )
       if (focusableElement) {
-        hasFocusableElement = true;
-        focusableElement.focus();
-        return;
+        hasFocusableElement = true
+        focusableElement.focus()
+        return
       }
     }
-  });
+  })
 
   if (!hasFocusableElement) {
-    const firstFocusableElement = document.querySelector('input, select');
-      if (firstFocusableElement) {
-        firstFocusableElement.focus();
-      } 
+    const firstFocusableElement = document.querySelector('input, select')
+    if (firstFocusableElement) {
+      firstFocusableElement.focus()
+    }
   }
 })

@@ -215,8 +215,16 @@ export default function PatientSummary(
           children: patient.address,
           edit_href: `${intake_href}/address#focus=Address`,
         },
-        { label: 'Ethnicity', children: patient.ethnicity, edit_href: `${intake_href}/personal#focus=Ethnicity` },
-        { label: 'Phone', children: patient.phone_number, edit_href: `${intake_href}/personal#focus=Phone` },
+        {
+          label: 'Ethnicity',
+          children: patient.ethnicity,
+          edit_href: `${intake_href}/personal#focus=Ethnicity`,
+        },
+        {
+          label: 'Phone',
+          children: patient.phone_number,
+          edit_href: `${intake_href}/personal#focus=Phone`,
+        },
         {
           label: 'National ID',
           children: patient.national_id_number,
