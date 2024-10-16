@@ -111,9 +111,7 @@ function PreExistingConditionsSummary(
 function Relation({ relation }: { relation: FamilyRelation }) {
   return (
     <div className='mt-1.5 flex flex-col gap-1'>
-      <span>{relation.patient_name}</span>
-      <span>Relation: {relation.family_relation_gendered}</span>
-      <span>Gender: {relation.patient_gender}</span>
+      <span>{relation.patient_name}, {relation.family_relation_gendered}</span>
       <span>
         Phone:{' '}
         <PhoneDisplay phone_number={relation.patient_phone_number || 'N/A'} />
@@ -152,8 +150,8 @@ function FamilySummary(
 
       {family.guardians && family.guardians.length > 0 && (
         <div className='mt-4'>
-          <span className='font-semibold'>Guardians:</span>
-          <div className='mt-2 flex flex-col gap-2'>
+          <span className='font-semibold'>Guardians</span>
+          <div className='mt-2 flex flex-col gap-2 pl-4'>
             {family.guardians.map((guardian) => (
               <Relation key={guardian.relation_id} relation={guardian} />
             ))}
@@ -163,8 +161,8 @@ function FamilySummary(
 
       {family.dependents && family.dependents.length > 0 && (
         <div className='mt-4'>
-          <span className='font-semibold'>Dependents:</span>
-          <div className='mt-2 flex flex-col gap-2'>
+          <span className='font-semibold'>Dependents</span>
+          <div className='mt-2 flex flex-col gap-2 pl-4'>
             {family.dependents.map((dependent) => (
               <Relation key={dependent.relation_id} relation={dependent} />
             ))}
