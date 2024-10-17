@@ -206,47 +206,47 @@ export default function PatientSummary(
         {
           label: 'Personal',
           children: <PersonalSummary patient={patient} />,
-          edit_href: `${intake_href}/personal#focus=Personal`,
+          edit_href: `${intake_href}/personal#focus=personal`,
         },
         {
           label: 'Address',
           children: patient.address,
-          edit_href: `${intake_href}/address#focus=Address`,
+          edit_href: `${intake_href}/address#focus=address`,
         },
         {
           label: 'Ethnicity',
           children: patient.ethnicity,
-          edit_href: `${intake_href}/personal#focus=Ethnicity`,
+          edit_href: `${intake_href}/personal#focus=ethnicity`,
         },
         {
           label: 'Phone',
           children: patient.phone_number,
-          edit_href: `${intake_href}/personal#focus=Phone`,
+          edit_href: `${intake_href}/personal#focus=phone`,
         },
         {
           label: 'National ID',
           children: patient.national_id_number,
-          edit_href: `${intake_href}/personal#focus=National-ID-Number`,
+          edit_href: `${intake_href}/personal#focus=national_id_number`,
         },
         {
           label: 'Nearest Organization',
           children: patient.nearest_organization_name,
-          edit_href: `${intake_href}/address#focus=Nearest-Organization`,
+          edit_href: `${intake_href}/address#focus=nearest_organization_name`,
         },
         {
           label: 'Primary Doctor',
           children: patient.primary_doctor_name,
-          edit_href: `${intake_href}/address#focus=Primary/Family-Doctor`,
+          edit_href: `${intake_href}/address#focus=primary_doctor_name`,
         },
         {
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
-          edit_href: `${intake_href}/conditions#focus=Condition-name`,
+          edit_href: `${intake_href}/conditions#focus=pre_existing_conditions`,
         },
         {
           label: 'Family',
           children: <FamilySummary family={patient.family} />,
-          edit_href: `${intake_href}/family#focus=Family`,
+          edit_href: `${intake_href}/family#focus=family`,
         },
       ]}
     />
