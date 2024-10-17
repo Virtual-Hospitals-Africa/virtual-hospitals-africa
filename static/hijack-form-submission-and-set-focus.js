@@ -96,38 +96,15 @@ addEventListener('submit', function (event) {
 window.navigation.addEventListener('navigate', function (event) {
   let sectionID
   if (location.hash) {
-    sectionID = location.hash.split('=')[1].replace(/-/g, ' ')
+    sectionID = location.hash.split('=')[1]
   }
 
-  let hasFocusableElement = false
-  document.querySelectorAll('label > span').forEach((label) => {
-    console.log(label.textContent)
-    if (label.textContent.includes(sectionID)) {
-      const focusableElement = label.parentElement.querySelector(
-        'input, select',
-      )
-      if (focusableElement) {
-        hasFocusableElement = true
-        focusableElement.focus()
-        return
-      }
-    }
-  })
-
-  document.querySelectorAll('label').forEach((label) => {
-    if (label.textContent.includes(sectionID)) {
-      const focusableElement = label.parentElement.querySelector(
-        'input, select',
-      )
-      if (focusableElement) {
-        hasFocusableElement = true
-        focusableElement.focus()
-        return
-      }
-    }
-  })
-
-  if (!hasFocusableElement) {
+  const focusableElement = document.querySelector(
+    `input[name^="${sectionID}"], select[name^="${sectionID}"]`,
+  )
+  if (focusableElement) {
+    focusableElement.focus()
+  } else {
     const firstFocusableElement = document.querySelector('input, select')
     if (firstFocusableElement) {
       firstFocusableElement.focus()
