@@ -184,7 +184,7 @@ describe(
           gender: 'female',
           last_name: 'Nurse',
           middle_names: 'Zoom Zoom',
-          mobile_number: 5555555555,
+          mobile_number: '5555555555',
           national_id_number: '08-123456 D 53',
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
