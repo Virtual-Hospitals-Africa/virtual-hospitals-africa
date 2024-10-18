@@ -14,6 +14,7 @@ import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
 import { FamilyRelation } from '../../../types.ts'
+import { MajorSurgery, PastMedicalCondition } from '../../../types.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -116,6 +117,43 @@ function Relation({ relation }: { relation: FamilyRelation }) {
         Phone:{' '}
         <PhoneDisplay phone_number={relation.patient_phone_number || 'N/A'} />
       </span>
+    </div>
+  )
+}
+
+function MedicalConditionSummary(
+  { past_medical_conditions, major_surgeries }: {
+    past_medical_conditions: PastMedicalCondition[]
+    major_surgeries: MajorSurgery[]
+  },
+) {
+  if (!past_medical_conditions.length && !major_surgeries.length) return null
+  return (
+    <div>
+      {past_medical_conditions.map((condition) => (
+        <div className='flex flex-col'>
+          <span className='font-semibold'>{condition.name}</span>
+          <DateRange {...condition} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function MajorSurgerySummary(
+  { major_surgeries }: {
+    major_surgeries: MajorSurgery[]
+  },
+) {
+  if (!major_surgeries.length) return null
+  return (
+    <div>
+      {major_surgeries.map((surgery) => (
+        <div className='flex flex-col'>
+          <span className='font-semibold'>{surgery.name}</span>
+          <DateRange {...surgery} />
+        </div>
+      ))}
     </div>
   )
 }
@@ -242,6 +280,16 @@ export default function PatientSummary(
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
           edit_href: `${intake_href}/conditions#focus=pre_existing_conditions`,
+        },
+        {
+          label: 'Past Medical Conditions',
+          children: <MedicalConditionSummary {...patient} />,
+          edit_href: `${intake_href}/history`,
+        },
+        {
+          label: 'Major Surgeries and Procedures',
+          children: <MajorSurgerySummary {...patient} />,
+          edit_href: `${intake_href}/history`,
         },
         {
           label: 'Family',
