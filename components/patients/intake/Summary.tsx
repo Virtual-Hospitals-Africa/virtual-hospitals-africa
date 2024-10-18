@@ -14,7 +14,7 @@ import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
 import { FamilyRelation } from '../../../types.ts'
-import {PastMedicalCondition, MajorSurgery} from '../../../types.ts'
+import { MajorSurgery, PastMedicalCondition } from '../../../types.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
