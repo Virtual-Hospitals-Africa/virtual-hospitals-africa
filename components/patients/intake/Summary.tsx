@@ -13,7 +13,7 @@ import {
 import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
-import { FamilyRelation } from '../../../types.ts'
+import {PastMedicalCondition, MajorSurgery} from '../../../types.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -108,67 +108,39 @@ function PreExistingConditionsSummary(
   )
 }
 
-function Relation({ relation }: { relation: FamilyRelation }) {
+function MedicalConditionSummary(
+  { past_medical_conditions, major_surgeries }: {
+    past_medical_conditions: PastMedicalCondition[]
+    major_surgeries: MajorSurgery[]
+  },
+) {
+  if (!past_medical_conditions.length && !major_surgeries.length) return null
   return (
-    <div className='mt-1.5 flex flex-col gap-1'>
-      <span>{relation.patient_name}, {relation.family_relation_gendered}</span>
-      <span>
-        Phone:{' '}
-        <PhoneDisplay phone_number={relation.patient_phone_number || 'N/A'} />
-      </span>
+    <div>
+      {past_medical_conditions.map((condition) => (
+        <div className='flex flex-col'>
+          <span className='font-semibold'>{condition.name}</span>
+          <DateRange {...condition} />
+        </div>
+      ))}
     </div>
   )
 }
 
-function FamilySummary(
-  { family }: {
-    family: IntakePatientSummary['family']
+function MajorSurgerySummary(
+  { major_surgeries }: {
+    major_surgeries: MajorSurgery[]
   },
 ) {
+  if (!major_surgeries.length) return null
   return (
-    <div className='flex flex-col'>
-      {family.marital_status && (
-        <>
-          <span className='font-semibold'>Marital Status:</span>
-          <span>{family.marital_status}</span>
-        </>
-      )}
-
-      {family.religion && (
-        <>
-          <span className='font-semibold mt-2'>Religion:</span>
-          <span>{family.religion}</span>
-        </>
-      )}
-
-      {family.family_type && (
-        <>
-          <span className='font-semibold mt-2'>Family Type:</span>
-          <span>{family.family_type}</span>
-        </>
-      )}
-
-      {family.guardians && family.guardians.length > 0 && (
-        <div className='mt-4'>
-          <span className='font-semibold'>Guardians</span>
-          <div className='mt-2 flex flex-col gap-2 pl-4'>
-            {family.guardians.map((guardian) => (
-              <Relation key={guardian.relation_id} relation={guardian} />
-            ))}
-          </div>
+    <div>
+      {major_surgeries.map((surgery) => (
+        <div className='flex flex-col'>
+          <span className='font-semibold'>{surgery.name}</span>
+          <DateRange {...surgery} />
         </div>
-      )}
-
-      {family.dependents && family.dependents.length > 0 && (
-        <div className='mt-4'>
-          <span className='font-semibold'>Dependents</span>
-          <div className='mt-2 flex flex-col gap-2 pl-4'>
-            {family.dependents.map((dependent) => (
-              <Relation key={dependent.relation_id} relation={dependent} />
-            ))}
-          </div>
-        </div>
-      )}
+      ))}
     </div>
   )
 }
@@ -206,47 +178,45 @@ export default function PatientSummary(
         {
           label: 'Personal',
           children: <PersonalSummary patient={patient} />,
-          edit_href: `${intake_href}/personal#focus=personal`,
+          edit_href: `${intake_href}/personal`,
         },
         {
           label: 'Address',
           children: patient.address,
-          edit_href: `${intake_href}/address#focus=address`,
+          edit_href: `${intake_href}/address`,
         },
-        {
-          label: 'Ethnicity',
-          children: patient.ethnicity,
-          edit_href: `${intake_href}/personal#focus=ethnicity`,
-        },
-        {
-          label: 'Phone',
-          children: patient.phone_number,
-          edit_href: `${intake_href}/personal#focus=phone`,
-        },
+        { label: 'Ethnicity', children: patient.ethnicity, edit_href: 'TODO' },
+        { label: 'Phone', children: patient.phone_number, edit_href: 'TODO' },
         {
           label: 'National ID',
           children: patient.national_id_number,
-          edit_href: `${intake_href}/personal#focus=national_id_number`,
+          edit_href: 'TODO',
         },
+        { label: 'Address', children: patient.address, edit_href: 'TODO' },
         {
           label: 'Nearest Organization',
           children: patient.nearest_organization_name,
-          edit_href: `${intake_href}/address#focus=nearest_organization_name`,
+          edit_href: 'TODO',
         },
         {
           label: 'Primary Doctor',
           children: patient.primary_doctor_name,
-          edit_href: `${intake_href}/address#focus=primary_doctor_name`,
+          edit_href: 'TODO',
         },
         {
           label: 'Pre-existing Conditions',
           children: <PreExistingConditionsSummary {...patient} />,
-          edit_href: `${intake_href}/conditions#focus=pre_existing_conditions`,
+          edit_href: 'TODO',
         },
         {
-          label: 'Family',
-          children: <FamilySummary family={patient.family} />,
-          edit_href: `${intake_href}/family#focus=family`,
+          label: 'Past Medical Conditions',
+          children: <MedicalConditionSummary {...patient} />,
+          edit_href: `${intake_href}/history`,
+        },
+        {
+          label: 'Major Surgeries and Procedures',
+          children: <MajorSurgerySummary {...patient} />,
+          edit_href: `${intake_href}/history`,
         },
       ]}
     />
