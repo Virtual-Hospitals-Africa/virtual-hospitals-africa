@@ -6,7 +6,7 @@ import {
   PhoneNumberInput,
   TextInput,
 } from '../form/Inputs.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import { ImagePreviewInput } from '../file-preview-input.tsx'
 import { PatientIntake } from '../../types.ts'
 import NationalIdInput from '../NationalIdInput.tsx'

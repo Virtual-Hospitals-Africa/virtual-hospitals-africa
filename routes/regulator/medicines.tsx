@@ -1,79 +1,36 @@
 import Layout from '../../components/library/Layout.tsx'
-import MedicinesTable from '../../components/regulator/MedicinesTable.tsx'
-import { PageProps } from '$fresh/server.ts'
-import { LoggedInRegulator, RenderedMedicine } from '../../types.ts'
-import * as drugs from '../../db/models/drugs.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { MedicinesTable } from '../../components/regulator/MedicinesTable.tsx'
+import { LoggedInRegulator } from '../../types.ts'
+import * as manufactured_medications from '../../db/models/manufactured_medications.ts'
+import type { FreshContext } from '$fresh/server.ts'
+import { MedicinesSearch } from '../../components/regulator/MedicinesSearch.tsx'
+import Form from '../../components/library/Form.tsx'
+import { searchPage } from '../../util/searchPage.ts'
 
-type MedicinesProps = {
-  medicines: RenderedMedicine[]
-  regulator: LoggedInRegulator['regulator']
-  page: number
-  totalRows: number
-  rowsPerPage: number
-  totalPage: number
-  currentPage: number
-  searchQuery: string
-}
-
-export const handler = {
-  GET: async function (
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
-  ) {
-    const ROWS_PER_PAGE = 100
-    const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
-    const searchQuery = ctx.url.searchParams.get('search') ?? ''
-
-    let result
-    if (searchQuery) {
-      result = await drugs.searchAcrossPages(
-        ctx.state.trx,
-        searchQuery,
-        currentPage,
-        ROWS_PER_PAGE,
-      )
-    } else {
-      result = await drugs.get(
-        ctx.state.trx,
-        currentPage,
-        ROWS_PER_PAGE,
-      )
-    }
-
-    return ctx.render({
-      medicines: result.medicines,
-      regulator: ctx.state.regulator,
-      currentPage,
-      totalRows: result.totalRows,
-      rowsPerPage: ROWS_PER_PAGE,
-      totalPage: Math.ceil(result.totalRows / ROWS_PER_PAGE),
-      searchQuery,
-    })
-  },
-}
-
-export default function MedicinesPage(
-  props: PageProps<MedicinesProps>,
+export default async function MedicinesPage(
+  _req: Request,
+  ctx: FreshContext<LoggedInRegulator>,
 ) {
+  const page = searchPage(ctx)
+  const search = ctx.url.searchParams.get('search')
+
+  const search_results = await manufactured_medications.search(
+    ctx.state.trx,
+    { search, page },
+  )
+
   return (
     <Layout
       title='Medicines'
-      route={props.route}
-      url={props.url}
-      regulator={props.data.regulator}
-      params={{}}
+      route={ctx.route}
+      url={ctx.url}
+      regulator={ctx.state.regulator}
       variant='regulator home page'
     >
-      <MedicinesTable
-        medicines={props.data.medicines}
-        pathname={props.url.pathname}
-        rowsPerPage={props.data.rowsPerPage}
-        totalRows={props.data.totalRows}
-        currentPage={props.data.currentPage}
-        totalPage={props.data.totalPage}
-        searchQuery={props.data.searchQuery}
-      />
+      <Form>
+        <MedicinesSearch search={search} />
+        <MedicinesTable {...search_results} />
+      </Form>
     </Layout>
   )
 }

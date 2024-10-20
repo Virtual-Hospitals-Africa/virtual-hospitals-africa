@@ -118,6 +118,7 @@ async function addDrug(
               manufactured_medication,
             }
           } catch (e) {
+            assert(e instanceof Error)
             skippedDrugs.push({
               drug: manufactured_medication,
               reason: e.message,

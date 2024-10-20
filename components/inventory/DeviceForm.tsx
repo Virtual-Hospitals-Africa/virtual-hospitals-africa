@@ -1,7 +1,7 @@
 import { JSX } from 'preact'
 import { RenderedDevice } from '../../types.ts'
 import Form from '../library/Form.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import DeviceSearch from '../../islands/inventory/DeviceSearch.tsx'
 import { Button } from '../library/Button.tsx'
 import { TextInput } from '../../islands/form/Inputs.tsx'

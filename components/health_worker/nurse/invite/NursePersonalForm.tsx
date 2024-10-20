@@ -4,7 +4,7 @@ import {
   PhoneNumberInput,
   TextInput,
 } from '../../../../islands/form/Inputs.tsx'
-import FormRow from '../../../../islands/form/Row.tsx'
+import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'

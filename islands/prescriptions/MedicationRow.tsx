@@ -2,7 +2,7 @@ import { Diagnosis, PrescriptionMedicationWithDrug } from '../../types.ts'
 import { JSX } from 'preact'
 import { RemoveRow } from '../AddRemove.tsx'
 import { PrescriptionMedicationInput } from './MedicationInput.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export function PrescriptionMedicationRow(
   {

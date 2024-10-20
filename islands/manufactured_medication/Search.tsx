@@ -1,4 +1,4 @@
-import { ManufacturedMedicationSearchResult } from '../../types.ts'
+import { RenderedManufacturedMedication } from '../../types.ts'
 import AsyncSearch, { AsyncSearchProps } from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 
@@ -6,7 +6,7 @@ function ManufacturedMedicationOption({
   option,
   selected,
 }: {
-  option: ManufacturedMedicationSearchResult
+  option: RenderedManufacturedMedication
   selected: boolean
 }) {
   return (
@@ -32,7 +32,7 @@ function ManufacturedMedicationOption({
 
 export default function ManufacturedMedicationSearch(
   props: Omit<
-    AsyncSearchProps<ManufacturedMedicationSearchResult>,
+    AsyncSearchProps<RenderedManufacturedMedication>,
     'Option' | 'search_route'
   >,
 ) {

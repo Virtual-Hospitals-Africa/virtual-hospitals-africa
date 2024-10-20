@@ -130,7 +130,6 @@ import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
-import * as $MedicinesSearchInput from './islands/MedicinesSearchInput.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
@@ -178,9 +177,6 @@ import * as $family_RelationshipSelect from './islands/family/RelationshipSelect
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
-import * as $form_PharmacistForm from './islands/form/PharmacistForm.tsx'
-import * as $form_PharmacyForm from './islands/form/PharmacyForm.tsx'
-import * as $form_Row from './islands/form/Row.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
@@ -216,9 +212,8 @@ import * as $prescriptions_MedicationRow from './islands/prescriptions/Medicatio
 import * as $prescriptions_ScheduleInput from './islands/prescriptions/ScheduleInput.tsx'
 import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
-import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
-import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
-import * as $regulator_InvitePharmacySearch from './islands/regulator/InvitePharmacySearch.tsx'
+import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
+import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -424,7 +419,6 @@ const manifest = {
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
-    './islands/MedicinesSearchInput.tsx': $MedicinesSearchInput,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,
@@ -473,9 +467,6 @@ const manifest = {
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
-    './islands/form/PharmacistForm.tsx': $form_PharmacistForm,
-    './islands/form/PharmacyForm.tsx': $form_PharmacyForm,
-    './islands/form/Row.tsx': $form_Row,
     './islands/form/buttons.tsx': $form_buttons,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
@@ -517,12 +508,8 @@ const manifest = {
     './islands/prescriptions/ScheduleInput.tsx': $prescriptions_ScheduleInput,
     './islands/prescriptions/ScheduleRow.tsx': $prescriptions_ScheduleRow,
     './islands/referral/Form.tsx': $referral_Form,
-    './islands/regulator/InvitePharmacistForm.tsx':
-      $regulator_InvitePharmacistForm,
-    './islands/regulator/InvitePharmacistSearch.tsx':
-      $regulator_InvitePharmacistSearch,
-    './islands/regulator/InvitePharmacySearch.tsx':
-      $regulator_InvitePharmacySearch,
+    './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
+    './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

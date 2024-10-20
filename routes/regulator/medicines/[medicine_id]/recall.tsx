@@ -1,4 +1,4 @@
-import * as medicines from '../../../../db/models/drugs.ts'
+import * as manufactured_medications from '../../../../db/models/manufactured_medications.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Button } from '../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
@@ -15,7 +15,7 @@ export const handler = {
   ) {
     const medicine_id = getRequiredUUIDParam(ctx, 'medicine_id')
 
-    const manufacturedMedication = await medicines.getById(
+    const manufacturedMedication = await manufactured_medications.getById(
       ctx.state.trx,
       medicine_id,
     )
@@ -24,7 +24,7 @@ export const handler = {
 
     const regulator_id = ctx.state.regulator.id
 
-    await medicines.recall(ctx.state.trx, {
+    await manufactured_medications.recall(ctx.state.trx, {
       manufactured_medication_id: medicine_id,
       regulator_id: regulator_id,
     })
@@ -45,7 +45,7 @@ export default async function RecallPage(
 ) {
   const medicine_id = getRequiredUUIDParam(ctx, 'medicine_id')
 
-  const manufacturedMedication = await medicines.getById(
+  const manufacturedMedication = await manufactured_medications.getById(
     ctx.state.trx,
     medicine_id,
   )

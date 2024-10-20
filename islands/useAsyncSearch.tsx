@@ -44,8 +44,14 @@ export default function useAsyncSearch<
         })
         return self.dispatchEvent(event)
       }
-      const results = JSON.parse(request.responseText)
-      assert(Array.isArray(results))
+      let results = JSON.parse(request.responseText)
+      if (!Array.isArray(results)) {
+        assert(
+          Array.isArray(results.results),
+          'Expected results to be an array or an object with a results key',
+        )
+        results = results.results
+      }
       setSearch((search) => {
         if (search.active_request === request) {
           return {

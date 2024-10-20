@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BUILD_STRING: "${{ github.run_number }}-${{ github.sha }}"
+  BUILD_STRING: '${{ github.run_number }}-${{ github.sha }}'
 
 jobs:
   check:
@@ -203,4 +203,4 @@ jobs:
         run: deno task build
 
       - name: Compile web
-        run:  deno task compile:web
+        run: deno task compile:web

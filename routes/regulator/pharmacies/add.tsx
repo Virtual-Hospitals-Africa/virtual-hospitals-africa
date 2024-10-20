@@ -1,61 +1,42 @@
+import { z } from 'zod'
 import { FreshContext } from '$fresh/server.ts'
-import PharmacyForm from '../../../islands/form/PharmacyForm.tsx'
+import PharmacyForm from '../../../islands/regulator/PharmacyForm.tsx'
 import redirect from '../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../util/parseForm.ts'
-import { assertOr400 } from '../../../util/assertOr.ts'
-import isObjectLike from '../../../util/isObjectLike.ts'
-import isString from '../../../util/isString.ts'
+import { parseRequest } from '../../../util/parseForm.ts'
 import * as pharmacies from '../../../db/models/pharmacies.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
-import { PharmaciesTypes } from '../../../db.d.ts'
 
-type InviteProps = {
-  regulator: LoggedInRegulator['regulator']
-}
-
-export function assertIsUpsertPharmacy(
-  obj: unknown,
-): asserts obj is {
-  name: string
-  address: string
-  licence_number: string
-  licensee: string
-  pharmacies_types: PharmaciesTypes
-  expiry_date: string
-  town: string
-} {
-  assertOr400(isObjectLike(obj))
-  assertOr400(
-    isString(obj.name),
-  )
-  assertOr400(
-    isString(obj.address),
-  )
-  assertOr400(
-    isString(obj.licence_number),
-  )
-  assertOr400(
-    isString(obj.licensee),
-  )
-  assertOr400(
-    isString(obj.pharmacies_types),
-  )
-  assertOr400(
-    isString(obj.expiry_date),
-  )
-  assertOr400(
-    isString(obj.town),
-  )
-}
+const UpsertPharmacySchema = z.object({
+  name: z.string(),
+  address: z.string(),
+  licence_number: z.string(),
+  licensee: z.string(),
+  pharmacies_types: z.enum([
+    'Clinics: Class A',
+    'Clinics: Class B',
+    'Clinics: Class C',
+    'Clinics: Class D',
+    'Dispensing medical practice',
+    'Hospital pharmacies',
+    'Pharmacies: Research',
+    'Pharmacies: Restricted',
+    'Pharmacy in any other location',
+    'Pharmacy in rural area',
+    'Pharmacy located in the CBD',
+    'Wholesalers',
+  ]),
+  expiry_date: z.string(),
+  town: z.string(),
+})
 
 export const handler = {
   async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
     const { trx } = ctx.state
-    const pharmacy = await parseRequestAsserts(
+    const pharmacy = await parseRequest(
       trx,
       req,
-      assertIsUpsertPharmacy,
+      UpsertPharmacySchema.parse,
     )
 
     const { id } = await pharmacies.insert(trx, pharmacy)
@@ -81,10 +62,14 @@ export default async function Add(
       route={ctx.route}
       url={ctx.url}
       regulator={ctx.state.regulator}
-      params={{}}
       variant='regulator home page'
     >
-      <PharmacyForm formData={{}} />
+      <PharmacyForm
+        formData={{
+          name: ctx.url.searchParams.get('name') || '',
+          licence_number: ctx.url.searchParams.get('licence_number') || '',
+        }}
+      />
     </Layout>
   )
 }

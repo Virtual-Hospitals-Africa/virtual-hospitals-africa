@@ -1,4 +1,4 @@
-import FormRow from './form/Row.tsx'
+import FormRow from '../components/library/FormRow.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { Job, Occupation, School } from '../types.ts'
 import { useState } from 'preact/hooks'

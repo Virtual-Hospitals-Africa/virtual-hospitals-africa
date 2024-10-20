@@ -3,7 +3,7 @@ import { DateInput } from '../form/Inputs.tsx'
 import { Diagnosis } from '../../types.ts'
 import { JSX } from 'preact'
 import { RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export type DiagnosisFormRowState = {
   id?: string

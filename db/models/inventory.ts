@@ -21,7 +21,7 @@ import {
   literalString,
   longFormattedDateTime,
 } from '../helpers.ts'
-import { strengthDisplay } from './drugs.ts'
+import { strengthDisplay } from './manufactured_medications.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'

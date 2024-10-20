@@ -4,7 +4,7 @@ import {
   SelectWithOptions,
   TextArea,
 } from '../form/Inputs.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import { computed, useSignal } from '@preact/signals'
 import { RemoveRow } from '../AddRemove.tsx'
 import range from '../../util/range.ts'

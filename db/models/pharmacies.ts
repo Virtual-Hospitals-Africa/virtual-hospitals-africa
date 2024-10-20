@@ -10,7 +10,7 @@ const view_sql = sql<
   string
 >`concat('/regulator/pharmacies/', pharmacies.id::text)`
 
-function getQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('pharmacies')
     .select((eb) => [
@@ -56,35 +56,51 @@ function getQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-export async function get(
+const isLicenceLike = (search: string) =>
+  /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
+
+export async function search(
   trx: TrxOrDb,
   opts: {
-    search?: Maybe<string>
-    page?: number
-    rowsPerPage?: number
+    search: string | null
+    page?: Maybe<number>
+    rows_per_page?: Maybe<number>
   },
 ) {
   const page = opts.page || 1
-  const rowsPerPage = opts.rowsPerPage || 10
-  const offset = (page - 1) * rowsPerPage
-  let query = getQuery(trx)
+  const rows_per_page = opts.rows_per_page || 10
+  const offset = (page - 1) * rows_per_page
 
-  if (opts.search) {
+  const name_search = (opts.search && !isLicenceLike(opts.search))
+    ? opts.search
+    : null
+  const licence_number_search = (opts.search && isLicenceLike(opts.search))
+    ? opts.search.toUpperCase()
+    : null
+
+  let query = baseQuery(trx)
+    .limit(rows_per_page + 1)
+    .offset(offset)
+
+  if (name_search) {
     query = query.where('pharmacies.name', 'ilike', `%${opts.search}%`)
   }
+  if (licence_number_search) {
+    query = query.where(
+      'pharmacies.licence_number',
+      '=',
+      licence_number_search,
+    )
+  }
 
-  const pharmacies = await query.limit(rowsPerPage).offset(offset).execute()
-
-  const totalRowsResult = await trx
-    .selectFrom('pharmacies')
-    .select((eb) => eb.fn.count('id').as('totalRows'))
-    .execute()
-
-  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+  const pharmacies = await query.execute()
 
   return {
-    pharmacies,
-    totalRows,
+    page,
+    name_search,
+    licence_number_search,
+    results: pharmacies.slice(0, rows_per_page),
+    has_next_page: pharmacies.length > rows_per_page,
   }
 }
 
@@ -92,7 +108,7 @@ export function getById(
   trx: TrxOrDb,
   pharmacy_id: string,
 ): Promise<RenderedPharmacy | undefined> {
-  return getQuery(trx)
+  return baseQuery(trx)
     .where('pharmacies.id', '=', pharmacy_id)
     .executeTakeFirst()
 }
@@ -101,7 +117,7 @@ export function getByLicenceNumber(
   trx: TrxOrDb,
   licence_number: string,
 ): Promise<RenderedPharmacy | undefined> {
-  return getQuery(trx)
+  return baseQuery(trx)
     .where('pharmacies.licence_number', '=', licence_number)
     .executeTakeFirst()
 }
