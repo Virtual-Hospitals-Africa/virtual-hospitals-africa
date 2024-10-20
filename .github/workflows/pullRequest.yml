@@ -22,14 +22,14 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
       - name: Run check
         run: deno task check
@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
   test_web:
     runs-on: ubuntu-latest
@@ -72,14 +72,14 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
       - name: Write .env file
         run: |
@@ -101,7 +101,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
   test_chatbot:
     runs-on: ubuntu-latest
@@ -134,14 +134,14 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
       - name: Write .env file
         run: |
@@ -160,7 +160,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/deno
-          key: deno-modules
+          key: deno-modules-2
 
   build_container:
     runs-on: ubuntu-latest
@@ -182,7 +182,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -197,7 +197,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - name: Build web
         run: deno task build
