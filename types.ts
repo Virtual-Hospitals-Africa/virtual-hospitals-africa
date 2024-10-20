@@ -1955,21 +1955,7 @@ export type DrugSearchResult = {
   name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
-}
-
-export type ManufacturedMedicationSearchResult = {
-  id: string
-  name: string
-  generic_name: string
-  trade_name: string
-  applicant_name: string
-  form: string
-  strength_summary: string
-  strength_numerators: number[]
-  strength_numerator_unit: string
-  strength_denominator: number
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
+  all_recalled: boolean
 }
 
 export type GuardianRelationName =
@@ -2969,8 +2955,9 @@ export type DetailedPharmacist = {
   pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
-export type RenderedMedicine = {
+export type RenderedManufacturedMedication = {
   id: string
+  name: string
   generic_name: string
   trade_name: string
   applicant_name: string
@@ -2982,7 +2969,7 @@ export type RenderedMedicine = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   actions: {
-    recall: string
+    recall: string | null
   }
   recalled_at: string | null
 }

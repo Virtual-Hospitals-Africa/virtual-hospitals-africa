@@ -9,6 +9,7 @@ import { insertMessageSent } from '../db/models/conversations.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
+import { assert } from 'std/assert/assert.ts'
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
 console.log('error_family', error_family)
@@ -53,6 +54,9 @@ async function respondToMessage(
   } catch (err) {
     console.log('Error determining message to send')
     console.error(err)
+
+    // TODO: not always true?
+    assert(err instanceof Error)
 
     await whatsapp.sendMessage({
       chatbot_name,

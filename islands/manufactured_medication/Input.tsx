@@ -1,14 +1,14 @@
 import { computed, effect, useSignal } from '@preact/signals'
 import { DateInput, NumberInput, Select, TextInput } from '../form/Inputs.tsx'
-import { ManufacturedMedicationSearchResult, Maybe } from '../../types.ts'
-import FormRow from '../form/Row.tsx'
+import { Maybe, RenderedManufacturedMedication } from '../../types.ts'
+import FormRow from '../../components/library/FormRow.tsx'
 import ManufacturedMedicationSearch from './Search.tsx'
 import AsyncSearch from '../AsyncSearch.tsx'
 import { containerLabels, denominatorPlural } from '../../shared/medication.ts'
 
 export default function ManufacturedMedicationInput(props: {
   name: string
-  manufactured_medication: null | ManufacturedMedicationSearchResult
+  manufactured_medication: null | RenderedManufacturedMedication
   last_procurement?: Maybe<{
     strength: number
     quantity: number

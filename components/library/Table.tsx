@@ -5,6 +5,7 @@ import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertPersonLike, Person, PersonData } from './Person.tsx'
+import Pagination from './Pagination.tsx'
 
 type Showable =
   | string
@@ -58,6 +59,10 @@ type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
   rows: T[]
   className?: string
+  pagination?: {
+    page: number
+    has_next_page: boolean
+  }
   EmptyState(): JSX.Element
 }
 
@@ -279,7 +284,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { columns, rows, className, EmptyState }: TableProps<T>,
+  { columns, rows, className, EmptyState, pagination }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />
@@ -287,7 +292,7 @@ export default function Table<T extends Row>(
 
   const mapped_columns = [...columnsWithSomeNonNullValue({ columns, rows })]
 
-  return (
+  const table = (
     <div
       className={cls(
         className,
@@ -312,5 +317,17 @@ export default function Table<T extends Row>(
         </div>
       </div>
     </div>
+  )
+
+  if (!pagination) return table
+
+  return (
+    <>
+      {table}
+      <Pagination
+        page={pagination.page}
+        has_next_page={pagination.has_next_page}
+      />
+    </>
   )
 }

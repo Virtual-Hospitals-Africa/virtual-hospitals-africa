@@ -4,16 +4,14 @@ import { assertOr404 } from '../../../util/assertOr.ts'
 import { json } from '../../../util/responses.ts'
 
 export const handler: LoggedInRegulatorHandlerWithProps = {
-  async GET(req, ctx) {
+  GET(req, ctx) {
     assertOr404(
       req.headers.get('accept') === 'application/json',
       'We only accept JSON',
     )
     const search = ctx.url.searchParams.get('search')
-    const results = await pharmacies.get(ctx.state.trx, {
+    return pharmacies.search(ctx.state.trx, {
       search,
-    })
-
-    return json(results.pharmacies)
+    }).then(json)
   },
 }

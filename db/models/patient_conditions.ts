@@ -470,7 +470,7 @@ export async function getPreExistingConditionsWithDrugs(
     ),
   )
   const matchingDrugs = drug_ids.length
-    ? await drugs.search(trx, { ids: drug_ids })
+    ? await drugs.getByIds(trx, drug_ids)
     : []
 
   return preExistingConditions.map((c) => ({

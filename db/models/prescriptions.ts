@@ -186,9 +186,7 @@ export async function getFromReview(
 
   const drug_ids = medications_of_prescription.map((m) => m.drug_id)
 
-  const drugs_of_medications = await drugs.search(trx, {
-    ids: drug_ids,
-  })
+  const drugs_of_medications = await drugs.getByIds(trx, drug_ids)
 
   const medications_with_drugs = medications_of_prescription.map(
     (medication) => {

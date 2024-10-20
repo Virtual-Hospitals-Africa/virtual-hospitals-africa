@@ -91,6 +91,7 @@ export class GoogleClient {
         data = await response.json()
       } catch (error) {
         console.error(`${method} ${url}`, error)
+        assert(error instanceof Error)
         return { result: 'other_error', error }
       }
       console.log(`${method} ${url}`, JSON.stringify(data))
@@ -112,6 +113,7 @@ export class GoogleClient {
         return { result: 'success', data: text as T }
       } catch (error) {
         console.error(`${method} ${url}`, error)
+        assert(error instanceof Error)
         return { result: 'other_error', error }
       }
     }
@@ -370,11 +372,11 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     )
   }
 
-  async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
+  override async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
     try {
       return await super.makeRequest(path, opts)
     } catch (err) {
-      if (err.message === 'Unauthorized') {
+      if (isObjectLike(err) && err.message === 'Unauthorized') {
         assert(this.health_worker.refresh_token, 'No refresh token')
         const refreshed = await refreshTokens(
           this.trx,

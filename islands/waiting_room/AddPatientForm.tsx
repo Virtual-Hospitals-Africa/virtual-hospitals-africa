@@ -1,5 +1,5 @@
 import { computed, useSignal } from '@preact/signals'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { Maybe, OrganizationDoctorOrNurse } from '../../types.ts'
 import { RadioGroup, TextArea } from '../form/Inputs.tsx'

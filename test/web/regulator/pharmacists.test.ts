@@ -24,7 +24,7 @@ describe(
 
       const $ = cheerio.load(pageContents)
       assert(
-        $('input[name="pharmacist_name"]').length === 1,
+        $('input[name="search"]').length === 1,
         'should have a search input',
       )
     })

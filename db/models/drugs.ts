@@ -1,79 +1,31 @@
-import { RawBuilder, sql } from 'kysely'
+import { type SelectQueryBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
+import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
+import { jsonArrayFrom } from '../helpers.ts'
+import type { DB } from '../../db.d.ts'
 import {
-  DrugSearchResult,
-  ManufacturedMedicationSearchResult,
-  Maybe,
-  RenderedMedicine,
-  TrxOrDb,
-} from '../../types.ts'
-import { jsonArrayFrom, jsonArrayFromColumn, now } from '../helpers.ts'
+  collectSortedUniqNumbers,
+  collectSortedUniqStrings,
+} from '../../util/collectSorted.ts'
 
-export function strengthDisplay(
-  builder: RawBuilder<string>,
-): RawBuilder<string> {
-  return sql<string>`
-  ${builder} ||
-  strength_numerator_unit || (
-    CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-      THEN ''
-      ELSE (
-        '/' || (
-          CASE WHEN strength_denominator = 1 
-            THEN ''
-            ELSE strength_denominator::text
-          END
-        ) || strength_denominator_unit
-      )
-    END
-  )
-`
-}
-
-export function strengthSummary(base_table: string) {
-  return strengthDisplay(
-    sql<string>`array_to_string(${
-      sql.ref(base_table)
-    }.strength_numerators, ', ')`,
-  ).as('strength_summary')
-}
-
-function baseQuery(trx: TrxOrDb, include_recalled: boolean = false) {
-  return trx.selectFrom('drugs').select((eb_drugs) => {
-    const expr = eb_drugs
-      .selectFrom('medications')
-      .innerJoin(
-        'manufactured_medications',
-        'manufactured_medications.medication_id',
-        'medications.id',
-      )
-      .leftJoin(
-        'manufactured_medication_recalls',
-        'manufactured_medication_recalls.manufactured_medication_id',
-        'manufactured_medications.id',
-      )
-      .whereRef('medications.drug_id', '=', 'drugs.id')
-      .where(
-        'manufactured_medications.trade_name',
-        '!=',
-        eb_drugs.ref('drugs.generic_name'),
-      )
-      .$if(
-        !include_recalled,
-        (qb) =>
-          qb.where('manufactured_medication_recalls.recalled_by', 'is', null),
-      )
-      .select('manufactured_medications.trade_name')
-      .distinct()
-    return [
-      'drugs.id',
-      'drugs.generic_name as name',
-      jsonArrayFromColumn('trade_name', expr).as('distinct_trade_names'),
-      jsonArrayFrom(
-        eb_drugs
-          .selectFrom('medications')
-          .select((eb_medications) => {
-            let manufacturersQuery = eb_medications
+function baseQuery(trx: TrxOrDb, opts: { include_recalled?: Maybe<boolean> }) {
+  return trx.selectFrom('drugs').select((eb_drugs) => [
+    'drugs.id',
+    'drugs.generic_name as name',
+    jsonArrayFrom(
+      eb_drugs
+        .selectFrom('medications')
+        .select((eb_medications) => [
+          'medications.id as medication_id',
+          'medications.form',
+          'medications.form_route',
+          'medications.routes',
+          'medications.strength_numerator_unit',
+          'medications.strength_denominator',
+          'medications.strength_denominator_unit',
+          'medications.strength_denominator_is_units',
+          jsonArrayFrom(
+            eb_medications
               .selectFrom('manufactured_medications')
               .leftJoin(
                 'manufactured_medication_recalls',
@@ -92,36 +44,93 @@ function baseQuery(trx: TrxOrDb, include_recalled: boolean = false) {
                 '=',
                 'medications.id',
               )
+              .$if(
+                !opts.include_recalled,
+                (qb) =>
+                  qb.where(
+                    'manufactured_medication_recalls.recalled_at',
+                    'is',
+                    null,
+                  ),
+              )
               .orderBy([
                 'manufactured_medications.trade_name asc',
                 'manufactured_medications.strength_numerators asc',
-              ])
+              ]),
+          ).as('manufacturers'),
+        ])
+        .whereRef('medications.drug_id', '=', 'drugs.id')
+        .orderBy('medications.form_route', 'asc'),
+    ).as('medications'),
+  ])
+    .$if(!opts.include_recalled, (qb) => {
+      const non_recalled_medications = trx.selectFrom(
+        'manufactured_medications',
+      )
+        .select('medication_id')
+        .distinct()
+        .leftJoin(
+          'manufactured_medication_recalls',
+          'manufactured_medication_recalls.manufactured_medication_id',
+          'manufactured_medications.id',
+        )
+        .where('recalled_at', 'is', null)
 
-            if (!include_recalled) {
-              manufacturersQuery = manufacturersQuery.where(
-                'manufactured_medication_recalls.recalled_at',
-                'is',
-                null,
-              )
-            }
+      const non_recalled_drugs = trx.selectFrom('medications')
+        .select('drug_id')
+        .distinct()
+        .where('id', 'in', non_recalled_medications)
 
-            return [
-              'medications.id as medication_id',
-              'medications.form',
-              'medications.form_route',
-              'medications.routes',
-              'medications.strength_numerator_unit',
-              'medications.strength_denominator',
-              'medications.strength_denominator_unit',
-              'medications.strength_denominator_is_units',
-              jsonArrayFrom(manufacturersQuery).as('manufacturers'),
-            ]
-          })
-          .whereRef('medications.drug_id', '=', 'drugs.id')
-          .orderBy('medications.form_route', 'asc'),
-      ).as('medications'),
-    ]
-  })
+      return qb.where('drugs.id', 'in', non_recalled_drugs)
+    })
+}
+
+type BaseQueryReturn = ReturnType<typeof baseQuery> extends
+  SelectQueryBuilder<DB, 'drugs', infer T> ? T : never
+
+function* distinctTradeNames(medications: BaseQueryReturn['medications']) {
+  for (const medication of medications) {
+    for (const manufacturer of medication.manufacturers) {
+      yield manufacturer.trade_name
+    }
+  }
+}
+
+function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
+  for (const manufacturer of medication.manufacturers) {
+    for (const strength_numerator of manufacturer.strength_numerators) {
+      yield strength_numerator
+    }
+  }
+}
+
+function formatResults(results: BaseQueryReturn[]): DrugSearchResult[] {
+  return results.map(({ medications, ...rest }) => ({
+    all_recalled: medications.every((m) =>
+      m.manufacturers.every((m) => m.recalled_at)
+    ),
+    distinct_trade_names: collectSortedUniqStrings(
+      distinctTradeNames(medications),
+    ),
+    medications: medications.map((m) => {
+      const strength_numerators = collectSortedUniqNumbers(
+        strengthNumerators(m),
+      )
+      return {
+        ...m,
+        strength_numerators,
+        // TODO: do the float parsing in SQL?
+        strength_denominator: parseFloat(m.strength_denominator),
+        strength_summary: formStrengthDisplay(
+          strength_numerators.join(', '),
+          m.strength_numerator_unit,
+          m.strength_denominator,
+          m.strength_denominator_unit,
+        ),
+      }
+    }),
+    ...rest,
+  }))
 }
 
 export function formStrengthDisplay(
@@ -144,347 +153,53 @@ export function formStrengthDisplay(
   return result
 }
 
+export async function getByIds(
+  trx: TrxOrDb,
+  ids: string[],
+): Promise<DrugSearchResult[]> {
+  assert(ids.length, 'must provide at least one id')
+  const results = await baseQuery(trx, { include_recalled: true }).where(
+    'drugs.id',
+    'in',
+    ids,
+  )
+    .execute()
+  return formatResults(results)
+}
+
 export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    ids?: Maybe<string[]>
     include_recalled?: Maybe<boolean>
   },
 ): Promise<DrugSearchResult[]> {
-  if (opts.ids) {
-    assert(opts.ids.length, 'must provide at least one id')
-    assert(!opts.search)
-  } else {
-    assert(opts.search)
-  }
-
-  const include_recalled = true
-  let query = opts.search
-    ? trx
-      .selectFrom(baseQuery(trx, include_recalled).as('drug_search_results'))
-      .selectAll()
-      .where((eb) =>
-        eb.or([
-          eb('drug_search_results.name', 'ilike', `%${opts.search}%`),
-          sql<
-            boolean
-          >`EXISTS (select 1 from json_array_elements_text("drug_search_results"."distinct_trade_names") AS trade_name
-          WHERE trade_name ILIKE ${'%' + opts.search + '%'})`,
-        ])
-      )
-      .orderBy(sql`similarity(name, ${opts.search})`, 'desc')
-    : baseQuery(trx, include_recalled).where('drugs.id', 'in', opts.ids!)
-
-  if (!opts.ids) {
-    query = query.limit(20)
-  }
-
-  const results = await query.execute()
-
-  return results.reduce<Array<DrugSearchResult>>((acc, r) => {
-    const filteredMedications = include_recalled
-      ? r.medications
-      : r.medications.filter((med) => med.manufacturers.length > 0)
-    if (filteredMedications.length === 0) return acc
-    const result = {
-      ...r,
-      medications: filteredMedications.map((m) => {
-        const strength_numerators = [
-          ...new Set(m.manufacturers.flatMap((m) => m.strength_numerators)),
-        ]
-        return {
-          ...m,
-          // TODO: do the float parsing in SQL?
-          strength_denominator: parseFloat(m.strength_denominator),
-          strength_numerators,
-          // TODO: use strengthDisplay
-          strength_summary: `${
-            formStrengthDisplay(
-              strength_numerators.join(', '),
-              m.strength_numerator_unit,
-              m.strength_denominator,
-              m.strength_denominator_unit,
-            )
-          }`,
-        }
-      }),
-    }
-    return [...acc, result]
-  }, [])
-}
-
-export async function searchManufacturedMedications(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    ids?: Maybe<string[]>
-    include_recalled?: Maybe<boolean>
-  },
-): Promise<ManufacturedMedicationSearchResult[]> {
-  if (opts.ids) {
-    assert(opts.ids.length, 'must provide at least one id')
-    assert(!opts.search)
-  } else {
-    assert(opts.search)
-  }
-
-  let query = trx
-    .selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .select([
-      'manufactured_medications.id',
-      sql<
-        string
-      >`manufactured_medications.trade_name || ' ' || medications.form || ' by ' || manufactured_medications.applicant_name`
-        .as('name'),
-      'drugs.generic_name',
-      'manufactured_medications.trade_name',
-      'manufactured_medications.applicant_name',
-      'medications.form',
-      'medications.strength_numerator_unit',
-      'medications.strength_denominator',
-      'medications.strength_denominator_unit',
-      'medications.strength_denominator_is_units',
-      'manufactured_medications.strength_numerators',
-      strengthSummary('manufactured_medications'),
-    ])
-    .limit(20)
+  let query = baseQuery(trx, { include_recalled: opts.include_recalled }).limit(
+    20,
+  )
 
   if (opts.search) {
-    //if multiple words are given, like lamivudine solution, it will check for both form and name
-    const searchWords = opts.search.split(' ').filter(Boolean)
+    const matching_manufactured_medications = trx
+      .selectFrom('manufactured_medications')
+      .select('medication_id')
+      .where('trade_name', 'ilike', `%${opts.search}%`)
+      .distinct()
+
+    const matching_drugs = trx
+      .selectFrom('medications')
+      .select('drug_id')
+      .where('id', 'in', matching_manufactured_medications)
+      .distinct()
+
     query = query.where((eb) =>
-      eb.and(
-        searchWords.map((word) =>
-          eb.or([
-            eb('manufactured_medications.trade_name', 'ilike', `%${word}%`),
-            eb('drugs.generic_name', 'ilike', `%${word}%`),
-            eb('medications.form', 'ilike', `%${word}%`),
-          ])
-        ),
-      )
+      eb.or([
+        eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
+        eb('drugs.id', 'in', matching_drugs),
+      ])
     )
-  } else {
-    query = query.where('manufactured_medications.id', 'in', opts.ids!)
+      .orderBy(sql`similarity('drugs.name', ${opts.search})`, 'desc')
   }
 
   const results = await query.execute()
-  return results.map((r) => ({
-    ...r,
-    strength_denominator: parseFloat(r.strength_denominator),
-  }))
-}
-
-export function dateToString(date: Date | null): string | null {
-  return date ? date.toISOString() : null
-}
-
-export async function searchAcrossPages(
-  trx: TrxOrDb,
-  search: string,
-  page: number = 1,
-  rowsPerPage: number = 10,
-): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
-  const offset = (page - 1) * rowsPerPage
-
-  const totalRowsResult = await trx
-    .selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .leftJoin(
-      'manufactured_medication_recalls',
-      'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id',
-    )
-    .where((eb) =>
-      eb.and([
-        eb.or([
-          eb('drugs.generic_name', 'ilike', `%${search}%`),
-          eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
-          eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
-        ]),
-        search
-          ? eb.or([eb('drugs.id', 'is not', null)])
-          : eb('manufactured_medication_recalls.recalled_at', 'is', null),
-      ])
-    )
-    .select((eb) => eb.fn.countAll().as('totalRows'))
-    .executeTakeFirst()
-
-  const totalRows = totalRowsResult
-    ? parseInt(totalRowsResult.totalRows.toString(), 10)
-    : 0
-
-  const medicines = await trx
-    .selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .leftJoin(
-      'manufactured_medication_recalls',
-      'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id',
-    )
-    .select([
-      'manufactured_medications.id',
-      'drugs.generic_name',
-      'manufactured_medications.trade_name',
-      'manufactured_medications.applicant_name',
-      'medications.form',
-      'medications.strength_numerators',
-      'medications.strength_numerator_unit',
-      'medications.strength_denominator',
-      'medications.strength_denominator_unit',
-      'medications.strength_denominator_is_units',
-      strengthSummary('manufactured_medications'),
-      'manufactured_medication_recalls.recalled_at',
-    ])
-    .where((eb) =>
-      eb.and([
-        eb.or([
-          eb('drugs.generic_name', 'ilike', `%${search}%`),
-          eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
-          eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
-        ]),
-        search
-          ? eb.or([eb('drugs.id', 'is not', null)])
-          : eb('manufactured_medication_recalls.recalled_at', 'is', null),
-      ])
-    )
-    .orderBy('drugs.generic_name', 'asc')
-    .limit(rowsPerPage)
-    .offset(offset)
-    .execute()
-
-  return {
-    medicines: medicines.map((medicine) => ({
-      ...medicine,
-      strength_denominator: parseFloat(medicine.strength_denominator),
-      recalled_at: dateToString(medicine.recalled_at),
-      actions: {
-        recall: `/regulator/medicines/${medicine.id}/recall`,
-      },
-    })),
-    totalRows,
-  }
-}
-
-export async function get(
-  trx: TrxOrDb,
-  page: number = 1,
-  rowsPerPage: number = 10,
-): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
-  const offset = (page - 1) * rowsPerPage
-  const medicines = await trx
-    .selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .leftJoin(
-      'manufactured_medication_recalls',
-      'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id',
-    )
-    .select([
-      'manufactured_medications.id',
-      'drugs.generic_name',
-      'manufactured_medications.trade_name',
-      'manufactured_medications.applicant_name',
-      'medications.form',
-      'medications.strength_numerators',
-      'medications.strength_numerator_unit',
-      'medications.strength_denominator',
-      'medications.strength_denominator_unit',
-      'medications.strength_denominator_is_units',
-      strengthSummary('manufactured_medications'),
-      'manufactured_medication_recalls.recalled_at',
-    ])
-    .where('manufactured_medication_recalls.recalled_at', 'is', null)
-    .orderBy('drugs.generic_name', 'asc')
-    .limit(rowsPerPage)
-    .offset(offset)
-    .execute()
-
-  const totalRowsResult = await trx
-    .selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .leftJoin(
-      'manufactured_medication_recalls',
-      'manufactured_medication_recalls.manufactured_medication_id',
-      'manufactured_medications.id',
-    )
-    .where('manufactured_medication_recalls.recalled_at', 'is', null)
-    .select((eb) => eb.fn.count('manufactured_medications.id').as('totalRows'))
-    .executeTakeFirst()
-
-  const totalRows = totalRowsResult
-    ? parseInt(totalRowsResult.totalRows.toString(), 10)
-    : 0
-
-  return {
-    medicines: medicines.map((medicine) => ({
-      ...medicine,
-      strength_denominator: parseFloat(medicine.strength_denominator),
-      recalled_at: dateToString(medicine.recalled_at),
-      actions: {
-        recall: `/regulator/medicines/${medicine.id}/recall`,
-      },
-    })),
-    totalRows,
-  }
-}
-
-export function recall(
-  trx: TrxOrDb,
-  data: {
-    manufactured_medication_id: string
-    regulator_id: string
-  },
-) {
-  return trx.insertInto('manufactured_medication_recalls').values({
-    manufactured_medication_id: data.manufactured_medication_id,
-    recalled_at: now,
-    recalled_by: data.regulator_id.toString(),
-  })
-    .execute()
-}
-
-export function getById(trx: TrxOrDb, medicine_id: string) {
-  return trx.selectFrom('manufactured_medications')
-    .innerJoin(
-      'medications',
-      'medications.id',
-      'manufactured_medications.medication_id',
-    )
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .select([
-      'manufactured_medications.id',
-      'drugs.generic_name',
-      'manufactured_medications.trade_name',
-      'manufactured_medications.applicant_name',
-      strengthSummary('manufactured_medications'),
-    ])
-    .where('manufactured_medications.id', '=', medicine_id)
-    .executeTakeFirst()
+  return formatResults(results)
 }

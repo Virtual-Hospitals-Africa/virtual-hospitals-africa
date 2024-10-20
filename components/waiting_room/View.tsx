@@ -1,7 +1,7 @@
 import { RenderedWaitingRoom } from '../../types.ts'
 import WaitingRoomTable from './Table.tsx'
 import { Button } from '../library/Button.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import { AddPatientSearch } from '../../islands/waiting_room/AddPatientSearch.tsx'
 
 export default function WaitingRoomView(

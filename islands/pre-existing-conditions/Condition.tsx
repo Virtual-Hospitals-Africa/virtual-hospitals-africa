@@ -5,7 +5,7 @@ import { JSX } from 'preact'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import Comorbidity from './Comorbidity.tsx'
 import Medication from '../medication/Input.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export type ConditionState = {
   id?: string

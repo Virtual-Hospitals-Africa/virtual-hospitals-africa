@@ -1,23 +1,24 @@
 import Layout from '../../components/library/Layout.tsx'
-import PharmaciesTable from '../../components/regulator/PharmaciesTable.tsx'
+import { PharmaciesTable } from '../../components/regulator/PharmaciesTable.tsx'
 import { LoggedInRegulator } from '../../types.ts'
 import * as pharmacies from '../../db/models/pharmacies.ts'
 import { FreshContext } from '$fresh/server.ts'
+import FormRow from '../../components/library/FormRow.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import Form from '../../components/library/Form.tsx'
+import { searchPage } from '../../util/searchPage.ts'
+import { TextInput } from '../../islands/form/Inputs.tsx'
 
 export default async function PharmaciesPage(
   _req: Request,
   ctx: FreshContext<LoggedInRegulator>,
 ) {
-  const ROWS_PER_PAGE = 70
-  const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
-  const results = await pharmacies.get(
+  const page = searchPage(ctx)
+  const search = ctx.url.searchParams.get('search')
+  const search_results = await pharmacies.search(
     ctx.state.trx,
-    {
-      page: currentPage,
-      rowsPerPage: ROWS_PER_PAGE,
-    },
+    { page, search },
   )
-  const totalPage = Math.ceil(results.totalRows / ROWS_PER_PAGE)
 
   return (
     <Layout
@@ -28,14 +29,23 @@ export default async function PharmaciesPage(
       params={ctx.params}
       variant='regulator home page'
     >
-      <PharmaciesTable
-        pharmacies={results.pharmacies}
-        pathname={ctx.url.pathname}
-        rowsPerPage={ROWS_PER_PAGE}
-        totalRows={results.totalRows}
-        currentPage={currentPage}
-        totalPage={totalPage}
-      />
+      <Form>
+        <FormRow className='mb-4'>
+          <TextInput
+            name='search'
+            label=''
+            placeholder='Search by name or licence number'
+            value={search ?? ''}
+          />
+          <Button
+            type='submit'
+            className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+          >
+            Search
+          </Button>
+        </FormRow>
+        <PharmaciesTable {...search_results} />
+      </Form>
     </Layout>
   )
 }
