@@ -170,13 +170,25 @@ export async function getByIds(
 export async function search(
   trx: TrxOrDb,
   opts: {
-    search?: Maybe<string>
+    search: string | null
     include_recalled?: Maybe<boolean>
+    page?: Maybe<number>
+    rows_per_page?: Maybe<number>
   },
-): Promise<DrugSearchResult[]> {
-  let query = baseQuery(trx, { include_recalled: opts.include_recalled }).limit(
-    20,
-  )
+): Promise<{
+  page: number
+  rows_per_page: number
+  results: DrugSearchResult[]
+  has_next_page: boolean
+  search: string | null
+}> {
+  const page = opts.page ?? 1
+  const rows_per_page = opts.rows_per_page ?? 10
+  const offset = (page - 1) * rows_per_page
+
+  let query = baseQuery(trx, { include_recalled: opts.include_recalled })
+    .limit(rows_per_page + 1)
+    .offset(offset)
 
   if (opts.search) {
     const matching_manufactured_medications = trx
@@ -200,6 +212,9 @@ export async function search(
       .orderBy(sql`similarity('drugs.name', ${opts.search})`, 'desc')
   }
 
-  const results = await query.execute()
-  return formatResults(results)
+  const drugs = await query.execute()
+  const results = formatResults(drugs.slice(0, rows_per_page))
+  const has_next_page = drugs.length > rows_per_page
+
+  return { page, rows_per_page, results, has_next_page, search: opts.search }
 }

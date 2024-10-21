@@ -16,14 +16,19 @@ export default function AsyncSearch<
   onQuery,
   ...rest
 }: AsyncSearchProps<T>) {
-  const { search, setSearch } = useAsyncSearch({ search_route, value })
+  const { results, loading, loadMore, setQuery } = useAsyncSearch({
+    search_route,
+    value,
+  })
   return (
     <Search
       {...rest}
       value={value}
-      options={search.results}
+      loading_options={loading}
+      loadMoreOptions={loadMore}
+      options={results}
       onQuery={(query) => {
-        setSearch({ ...search, query })
+        setQuery(query)
         onQuery?.(query)
       }}
     />

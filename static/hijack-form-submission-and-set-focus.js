@@ -93,21 +93,24 @@ addEventListener('submit', function (event) {
 
 // Set focus on the first input or select element in the form when
 // navigating to a subsection with hash
-window.navigation.addEventListener('navigate', function (event) {
-  let sectionID
+addEventListener('navigate', function (event) {
+  if (!location.hash) return
+
+  var params = new URLSearchParams(location.hash)
+  var focus = params.get('focus')
+  if (!focus) return
+
   if (location.hash) {
     sectionID = location.hash.split('=')[1]
   }
 
-  const focusableElement = document.querySelector(
-    `input[name^="${sectionID}"], select[name^="${sectionID}"]`,
-  )
+  var focusableElement = document.getElementById(focus) ||
+    document.querySelector(
+      'input[name="' + focus + '"], select[name="' + focus + '"]',
+    ) ||
+    document.querySelector('input, select')
+
   if (focusableElement) {
     focusableElement.focus()
-  } else {
-    const firstFocusableElement = document.querySelector('input, select')
-    if (firstFocusableElement) {
-      firstFocusableElement.focus()
-    }
   }
 })
