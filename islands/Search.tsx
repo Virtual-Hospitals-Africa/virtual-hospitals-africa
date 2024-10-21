@@ -12,6 +12,7 @@ import {
 import capitalize from '../util/capitalize.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
+import { TargetedEvent } from 'preact/compat'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -61,7 +62,9 @@ export type SearchProps<
   value?: Maybe<T>
   multi?: boolean
   className?: string
+  loading_options?: boolean
   options: T[]
+  loadMoreOptions?: () => void
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
   Option?(
@@ -94,8 +97,10 @@ export default function Search<
   addable,
   disabled,
   readonly,
+  loading_options,
   options,
   className,
+  loadMoreOptions,
   onQuery,
   onSelect,
   optionHref, // The existence of this prop turns the options into <a> tags
@@ -189,8 +194,18 @@ export default function Search<
             />
           </Combobox.Button>
 
-          {(all_options.length > 0) && (
-            <Combobox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+          {(all_options.length > 0 || loading_options) && (
+            <Combobox.Options
+              onScroll={(event: TargetedEvent<HTMLUListElement>) => {
+                const scrolled_to_bottom = event.currentTarget.scrollTop +
+                    event.currentTarget.clientHeight >=
+                  event.currentTarget.scrollHeight
+                if (!scrolled_to_bottom) return
+                if (loading_options) return
+                loadMoreOptions?.()
+              }}
+              className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+            >
               {all_options.map((option) => (
                 <Combobox.Option
                   key={option.id}
@@ -250,6 +265,19 @@ export default function Search<
                   }}
                 </Combobox.Option>
               ))}
+              {(loading_options || loadMoreOptions)
+                ? (
+                  <Combobox.Option
+                    key='loading'
+                    value={null}
+                    disabled
+                  >
+                    <i className={cls('ml-3', !loading_options && 'opacity-0')}>
+                      {all_options.length ? 'Loading more...' : 'Loading...'}
+                    </i>
+                  </Combobox.Option>
+                )
+                : null}
             </Combobox.Options>
           )}
         </div>

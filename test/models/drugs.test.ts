@@ -10,7 +10,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'gets search results for drugs with their forms, strengths, and manufacturers',
       async (trx) => {
-        const results = await drugs.search(trx, { search: 'NIFEDIPINE' })
+        const { results } = await drugs.search(trx, { search: 'NIFEDIPINE' })
         assertEquals(
           deepOmit(results, [
             'id',
@@ -29,7 +29,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       "returns search results for drugs even if some manufacturers were recalled as long as some weren't if include_recalled: false",
       async (trx) => {
-        const results = await drugs.search(trx, { search: 'NIFEDIPINE' })
+        const { results } = await drugs.search(trx, { search: 'NIFEDIPINE' })
         assertEquals(results.length, 1)
 
         const NIFEDIPINE = results[0]
@@ -46,7 +46,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
           regulator_id,
         })
 
-        const after_recall_results = await drugs.search(trx, {
+        const { results: after_recall_results } = await drugs.search(trx, {
           search: 'NIFEDIPINE',
         })
         assertEquals(after_recall_results.length, 1)
@@ -65,7 +65,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'does not return a drug if all manufacturers were recalled when include_recalled: false',
       async (trx) => {
-        const results = await drugs.search(trx, { search: 'NIFEDIPINE' })
+        const { results } = await drugs.search(trx, { search: 'NIFEDIPINE' })
         assertEquals(results.length, 1)
 
         const NIFEDIPINE = results[0]
@@ -88,7 +88,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
 
         const recalled = await Promise.all(recalling)
 
-        const after_recall_results = await drugs.search(trx, {
+        const { results: after_recall_results } = await drugs.search(trx, {
           search: 'NIFEDIPINE',
         })
 
