@@ -1,4 +1,4 @@
-import { TerminalSpinner } from 'https://deno.land/x/spinners@v1.1.2/mod.ts'
+import { TerminalSpinner } from 'spinners'
 
 export async function spinner<T>(
   description: string,
