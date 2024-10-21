@@ -56,6 +56,7 @@
     "@std/cli": "jsr:@std/cli@^0.224.7",
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
     "cheerio": "https://esm.sh/v136/cheerio@1.0.0-rc.12",
+    "client-only": "https://esm.sh/v135/client-only@0.0.1/",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
@@ -69,7 +70,7 @@
     "react": "https://esm.sh/preact@10.20.1/compat",
     "redis": "https://deno.land/x/redis@v0.25.5/mod.ts",
     "redlock": "https://deno.land/x/redlock@v1.0/mod.ts",
-    "spinners": "https://deno.land/x/spinners/mod.ts",
+    "spinners": "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/mod.ts",
     "std/": "https://deno.land/std@0.214.0/",
     "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
@@ -77,5 +78,5 @@
     "zod": "npm:zod@3.23.8"
   },
   "exclude": ["**/_fresh/*"],
-  "nodeModulesDir": true
+  "nodeModulesDir": "auto"
 }

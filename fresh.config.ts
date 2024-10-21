@@ -2,10 +2,9 @@ import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
 import { opts as db_opts } from './db/db.ts'
+import { promiseProps } from './util/promiseProps.ts'
 
 const { SELF_URL, PORT } = Deno.env.toObject()
-
-const httpsOpts: Partial<Deno.ServeTlsOptions> = {}
 
 if (SELF_URL === 'https://localhost:8000') {
   console.error(
@@ -15,12 +14,15 @@ if (SELF_URL === 'https://localhost:8000') {
 }
 
 const serveHttps = !SELF_URL
-if (serveHttps) {
-  const readingKey = Deno.readTextFile('./local-certs/localhost.key')
-  const readingCert = Deno.readTextFile('./local-certs/localhost.crt')
-  httpsOpts.key = await readingKey
-  httpsOpts.cert = await readingCert
-}
+const httpsOpts: {
+  key?: string
+  cert?: string
+} = serveHttps
+  ? await promiseProps({
+    key: Deno.readTextFile('./local-certs/localhost.key'),
+    cert: Deno.readTextFile('./local-certs/localhost.crt'),
+  })
+  : {}
 
 export default defineConfig({
   plugins: [tailwind()],
