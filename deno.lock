@@ -18,6 +18,7 @@
     "npm:jsdom@22.1.0": "22.1.0",
     "npm:natural@6.10.4": "6.10.4",
     "npm:postcss@8.4.35": "8.4.35",
+    "npm:react-sparklines@1.7.0": "1.7.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:sql-formatter@*": "15.4.4",
     "npm:tailwindcss@3.3.5": "3.3.5_postcss@8.4.47",
     "npm:zod@*": "3.23.8",
@@ -856,6 +857,12 @@
     "lodash.uniq@4.5.0": {
       "integrity": "sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ=="
     },
+    "loose-envify@1.4.0": {
+      "integrity": "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==",
+      "dependencies": [
+        "js-tokens"
+      ]
+    },
     "lru-cache@10.4.3": {
       "integrity": "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="
     },
@@ -1256,7 +1263,15 @@
       "dependencies": [
         "@jest/schemas",
         "ansi-styles@5.2.0",
-        "react-is"
+        "react-is@18.3.1"
+      ]
+    },
+    "prop-types@15.8.1": {
+      "integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",
+      "dependencies": [
+        "loose-envify",
+        "object-assign",
+        "react-is@16.13.1"
       ]
     },
     "psl@1.9.0": {
@@ -1281,8 +1296,33 @@
         "ret"
       ]
     },
+    "react-dom@18.3.1_react@18.3.1": {
+      "integrity": "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==",
+      "dependencies": [
+        "loose-envify",
+        "react",
+        "scheduler"
+      ]
+    },
+    "react-is@16.13.1": {
+      "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
+    },
     "react-is@18.3.1": {
       "integrity": "sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg=="
+    },
+    "react-sparklines@1.7.0_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+      "integrity": "sha512-bJFt9K4c5Z0k44G8KtxIhbG+iyxrKjBZhdW6afP+R7EnIq+iKjbWbEFISrf3WKNFsda+C46XAfnX0StS5fbDcg==",
+      "dependencies": [
+        "prop-types",
+        "react",
+        "react-dom"
+      ]
+    },
+    "react@18.3.1": {
+      "integrity": "sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==",
+      "dependencies": [
+        "loose-envify"
+      ]
     },
     "read-cache@1.0.0": {
       "integrity": "sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==",
@@ -1332,6 +1372,12 @@
       "integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
       "dependencies": [
         "xmlchars"
+      ]
+    },
+    "scheduler@0.23.2": {
+      "integrity": "sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==",
+      "dependencies": [
+        "loose-envify"
       ]
     },
     "shebang-command@2.0.0": {
@@ -2461,6 +2507,7 @@
     "https://esm.sh/preact@10.22.0/hooks": "94fe12928993c62115b7bad4b2dcc3fa796d741fee12f6c88425ee4ff47cf0e1",
     "https://esm.sh/preact@10.22.0/jsx-runtime": "c6185b52c1673f9d309dd6046051e9b6c034f14858bef62ea2a9fe9ef1ea2201",
     "https://esm.sh/preact@10.22.0/test-utils": "ec5c681d69d485f6b2437739d18c3e75454ae3a211273f82400848520cc40d0a",
+    "https://esm.sh/react-sparklines@1.7.0?alias=react:preact/compat,react-dom:preact/compat,client-only:preact/compat": "ddcee880491bf4cfb0e2a077d1df5e41400fe01915a3a9bf4feb989ba5e8f8fe",
     "https://esm.sh/stable/preact@10.20.1/denonext/compat.js": "645c1935e3fa4096c9293d0a6a09a9b4a3d522ae0365d617b9abbfc41ffc4ea2",
     "https://esm.sh/stable/preact@10.20.1/denonext/hooks.js": "dc0ad52e80dfe7c7c8c220b95f39474e6507c2427ae96f73c5264718eac01431",
     "https://esm.sh/stable/preact@10.20.1/denonext/preact.mjs": "eed417f1653718f3b8b4b5d1b61ad66967fc02ed2cf86f7589ce0c813c8ed0b6",
@@ -2471,6 +2518,9 @@
     "https://esm.sh/stable/preact@10.22.0/denonext/jsx-runtime.js": "de60943799b1cbe6066c4f83f4ca71ef37011d7f5be7bef58ed980e8ff3f996a",
     "https://esm.sh/stable/preact@10.22.0/denonext/preact.mjs": "20c9563e051dd66e053d3afb450f61b48f2fa0d0ce4f69f8f0a2f23c1ef090da",
     "https://esm.sh/stable/preact@10.22.0/denonext/test-utils.js": "311b2bc59f7310c3b391688e2e697345a50e9daf3378d0dd70aa91ffb9eb37b7",
+    "https://esm.sh/stable/preact@10.24.3/X-YS9jbGllbnQtb25seTpwcmVhY3QvY29tcGF0LHJlYWN0LWRvbTpwcmVhY3QvY29tcGF0LHJlYWN0OnByZWFjdC9jb21wYXQ/denonext/compat.js": "0f636c544b1c9afca9147816904d0949b2878e7c363960fc825b8d0d3278a1b3",
+    "https://esm.sh/stable/preact@10.24.3/X-YS9jbGllbnQtb25seTpwcmVhY3QvY29tcGF0LHJlYWN0LWRvbTpwcmVhY3QvY29tcGF0LHJlYWN0OnByZWFjdC9jb21wYXQ/denonext/hooks.js": "4065859b758aae7e84b0d69c6ff76fc8aca8188476bc50b88d72b6fd9c5e2346",
+    "https://esm.sh/stable/preact@10.24.3/denonext/preact.mjs": "adda7b905b40f0bab844d3ee900378e59da2b16f0f8e716ba9a8d67c15b78c87",
     "https://esm.sh/v132/jest-clipboard@0.0.11/X-YS9ibG9iLXBvbHlmaWxsOnZt/denonext/jest-clipboard.mjs": "535981505c256adbcda9e5b48f258203179a8889c057e4d57f37fc255c92caa8",
     "https://esm.sh/v133/@adobe/css-tools@4.3.1/denonext/css-tools.mjs": "20a6b077982599f3ac7b3d594568e9e56d060f768bd477085379fabe4768c6b6",
     "https://esm.sh/v133/@testing-library/dom@8.20.0/X-ZS9wcmVhY3Q/denonext/dom.mjs": "6608d65552e2281df9f49b055f7c0a29b7f04c20316b69a2ea9f2490dd64b7fa",
@@ -2540,6 +2590,7 @@
     "https://esm.sh/v135/parse5-htmlparser2-tree-adapter@7.0.0/denonext/parse5-htmlparser2-tree-adapter.mjs": "2e8c24c6859e24e7c0f1e634574f8c014860868a603e85430b98212460e25091",
     "https://esm.sh/v135/parse5@7.1.2/denonext/parse5.mjs": "35bb04ec36a1c25c8cd8137296d64d16fd523a8ad1c2b63c41ba867fcd455c36",
     "https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs": "bcaceb8c3938310aee3dd4f7b6f2136cf0b2b890988c2e6679485e052e76e920",
+    "https://esm.sh/v135/react-sparklines@1.7.0/X-YS9jbGllbnQtb25seTpwcmVhY3QvY29tcGF0LHJlYWN0LWRvbTpwcmVhY3QvY29tcGF0LHJlYWN0OnByZWFjdC9jb21wYXQ/denonext/react-sparklines.mjs": "c2f66639a5b2564d0466c56ed9700bff4e6e6a42c4c44175218d08a291648199",
     "https://esm.sh/v136/cheerio@1.0.0-rc.12": "f2df09a207094c060115470643b70099ef967dba5238de17bdc6bb820cb9ac0d",
     "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/deps.ts": "c6a3cad23df7bac1cfa926fe6630f456801283760124fb1cda25ac2271205825",
     "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts": "662438fd3909984bb8cbaf3fd44d2121e949d11301baf21d6c3f057ccf9887de",
@@ -2557,6 +2608,7 @@
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
       "npm:natural@6.10.4",
+      "npm:react-sparklines@1.7.0",
       "npm:tailwindcss@3.3.5",
       "npm:zod@3.23.8"
     ]

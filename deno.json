@@ -70,6 +70,7 @@
     "react": "https://esm.sh/preact@10.20.1/compat",
     "redis": "https://deno.land/x/redis@v0.25.5/mod.ts",
     "redlock": "https://deno.land/x/redlock@v1.0/mod.ts",
+    "react-sparklines": "npm:react-sparklines@1.7.0",
     "spinners": "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/mod.ts",
     "std/": "https://deno.land/std@0.214.0/",
     "tailwindcss": "npm:tailwindcss@3.3.5",

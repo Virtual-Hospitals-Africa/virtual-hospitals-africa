@@ -13,6 +13,7 @@ import * as $app_calendar_appointments_appointment_id_media_media_id_ from './ro
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
 import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
+import * as $app_chart from './routes/app/chart.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
@@ -154,6 +155,7 @@ import * as $SendTo_ListItem from './islands/SendTo/ListItem.tsx'
 import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButtons.tsx'
 import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
 import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
+import * as $SparklinesExample from './islands/SparklinesExample.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
@@ -240,6 +242,7 @@ const manifest = {
     './routes/app/calendar/appointments/schedule.tsx':
       $app_calendar_appointments_schedule,
     './routes/app/calendar/availability.tsx': $app_calendar_availability,
+    './routes/app/chart.tsx': $app_chart,
     './routes/app/conditions.tsx': $app_conditions,
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
@@ -443,6 +446,7 @@ const manifest = {
     './islands/SendTo/RequestRadioButtons.tsx': $SendTo_RequestRadioButtons,
     './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
     './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
+    './islands/SparklinesExample.tsx': $SparklinesExample,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
