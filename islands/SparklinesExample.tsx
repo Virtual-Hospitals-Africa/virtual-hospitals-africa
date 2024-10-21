@@ -1,4 +1,6 @@
 /* Ported from https://github.com/borisyankov/react-sparklines/tree/master */
+/* I want the hover effect from this one, could be worth merging
+  https://codepen.io/fnando/pen/GOQLVE */
 import type { JSX } from 'preact/jsx-runtime'
 
 export function SparklinesExample() {
