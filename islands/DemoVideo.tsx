@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment } from 'preact'
 import { Dialog, Transition } from '@headlessui/react'
 import { useEffect } from 'preact/hooks'
 import { effect, useSignal } from '@preact/signals'

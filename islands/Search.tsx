@@ -194,92 +194,100 @@ export default function Search<
             />
           </Combobox.Button>
 
-          {(all_options.length > 0 || loading_options) && (
-            <Combobox.Options
-              onScroll={(event: TargetedEvent<HTMLUListElement>) => {
-                const scrolled_to_bottom = event.currentTarget.scrollTop +
-                    event.currentTarget.clientHeight >=
-                  event.currentTarget.scrollHeight
-                if (!scrolled_to_bottom) return
-                if (loading_options) return
-                loadMoreOptions?.()
-              }}
-              className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
-            >
-              {all_options.map((option) => (
-                <Combobox.Option
-                  key={option.id}
-                  value={option}
-                  className={({ active }) =>
-                    cls(
-                      'relative cursor-default select-none py-2 pl-3 pr-9',
-                      active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                    )}
-                >
-                  {({ active, selected }) => {
-                    const fragment = (
-                      <>
-                        <Option
-                          option={option}
-                          active={active}
-                          selected={selected}
-                        />
-                        {selected && (
-                          <span
-                            className={cls(
-                              'absolute inset-y-0 right-0 flex items-center pr-4',
-                              active ? 'text-white' : 'text-indigo-600',
-                            )}
-                          >
-                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                          </span>
-                        )}
-                      </>
+          <Combobox.Options
+            onScroll={(event: TargetedEvent<HTMLUListElement>) => {
+              const scrolled_to_bottom = event.currentTarget.scrollTop +
+                  event.currentTarget.clientHeight >=
+                event.currentTarget.scrollHeight
+              if (!scrolled_to_bottom) return
+              if (loading_options) return
+              loadMoreOptions?.()
+            }}
+            className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+          >
+            {all_options.map((option) => (
+              <Combobox.Option
+                key={option.id}
+                value={option}
+                className={({ active }) =>
+                  cls(
+                    'relative cursor-default select-none py-2 pl-3 pr-9',
+                    active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                  )}
+              >
+                {({ active, selected }) => {
+                  const fragment = (
+                    <>
+                      <Option
+                        option={option}
+                        active={active}
+                        selected={selected}
+                      />
+                      {selected && (
+                        <span
+                          className={cls(
+                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                            active ? 'text-white' : 'text-indigo-600',
+                          )}
+                        >
+                          <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                        </span>
+                      )}
+                    </>
+                  )
+                  if (ignoreOptionHref) return fragment
+                  if (
+                    option.id === 'add' && query && addable &&
+                    typeof addable === 'object' && ('href' in addable)
+                  ) {
+                    return (
+                      <a href={`${addable.href}${encodeURIComponent(query)}`}>
+                        {fragment}
+                      </a>
                     )
-                    if (ignoreOptionHref) return fragment
-                    if (
-                      option.id === 'add' && query && addable &&
-                      typeof addable === 'object' && ('href' in addable)
-                    ) {
-                      return (
-                        <a href={`${addable.href}${encodeURIComponent(query)}`}>
-                          {fragment}
-                        </a>
-                      )
-                    }
-                    if ('href' in option && typeof option.href === 'string') {
-                      return (
-                        <a href={option.href}>
-                          {fragment}
-                        </a>
-                      )
-                    }
-                    if (typeof optionHref === 'function') {
-                      return (
-                        <a href={optionHref(option)}>
-                          {fragment}
-                        </a>
-                      )
-                    }
-                    return fragment
-                  }}
+                  }
+                  if ('href' in option && typeof option.href === 'string') {
+                    return (
+                      <a href={option.href}>
+                        {fragment}
+                      </a>
+                    )
+                  }
+                  if (typeof optionHref === 'function') {
+                    return (
+                      <a href={optionHref(option)}>
+                        {fragment}
+                      </a>
+                    )
+                  }
+                  return fragment
+                }}
+              </Combobox.Option>
+            ))}
+            {(loading_options || loadMoreOptions)
+              ? (
+                <Combobox.Option
+                  key='loading'
+                  value={null}
+                  disabled
+                >
+                  <i className={cls('ml-3', !loading_options && 'opacity-0')}>
+                    {all_options.length ? 'Loading more...' : 'Loading...'}
+                  </i>
                 </Combobox.Option>
-              ))}
-              {(loading_options || loadMoreOptions)
-                ? (
-                  <Combobox.Option
-                    key='loading'
-                    value={null}
-                    disabled
-                  >
-                    <i className={cls('ml-3', !loading_options && 'opacity-0')}>
-                      {all_options.length ? 'Loading more...' : 'Loading...'}
-                    </i>
-                  </Combobox.Option>
-                )
-                : null}
-            </Combobox.Options>
-          )}
+              )
+              : !all_options.length && (
+                <Combobox.Option
+                  key='no_options'
+                  value={null}
+                  disabled
+                >
+                  <i className='ml-3'>
+                    No options available
+                  </i>
+                </Combobox.Option>
+              )}
+          </Combobox.Options>
         </div>
         {(selected?.id && selected.id !== 'add') && (
           <input

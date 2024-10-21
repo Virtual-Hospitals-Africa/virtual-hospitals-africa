@@ -1,10 +1,10 @@
 import { Listbox } from '@headlessui/react'
-import { useState } from 'react'
 import cls from '../../util/cls.ts'
 import { ComponentChild } from 'preact'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import { CheckIcon } from '../../components/library/icons/heroicons/solid.tsx'
+import { useSignal } from '@preact/signals'
 
 type OptionRecord = {
   id: string | string
@@ -33,7 +33,7 @@ export function ListboxMulti<O extends Option>({
   variant = 'default',
   onChange,
 }: ListboxMultiProps<O>) {
-  const [selected_ids, setSelectedIds] = useState(
+  const selected_ids = useSignal(
     selected,
   )
   const using_options: OptionRecord[] = options.map((option) =>
@@ -46,9 +46,9 @@ export function ListboxMulti<O extends Option>({
 
   return (
     <Listbox
-      value={selected_ids}
+      value={selected_ids.value}
       onChange={(ids) => {
-        setSelectedIds(ids)
+        selected_ids.value = ids
         onChange?.(ids)
       }}
       multiple
@@ -57,7 +57,7 @@ export function ListboxMulti<O extends Option>({
       {variant === 'default' && (
         <Listbox.Button className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
           <span className='block py-3 px-1.5'>
-            {selected_ids.map((id) => {
+            {selected_ids.value.map((id) => {
               const matching_option = using_options.find((option) =>
                 option.id === id
               )
