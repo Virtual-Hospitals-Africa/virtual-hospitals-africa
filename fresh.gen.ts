@@ -16,7 +16,6 @@ import * as $app_calendar_availability from './routes/app/calendar/availability.
 import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
-import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
@@ -86,7 +85,6 @@ import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
-import * as $drugs from './routes/drugs.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
@@ -243,7 +241,6 @@ const manifest = {
     './routes/app/conditions.tsx': $app_conditions,
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
-    './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/icd10.tsx': $app_icd10,
@@ -364,7 +361,6 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
-    './routes/drugs.tsx': $drugs,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,

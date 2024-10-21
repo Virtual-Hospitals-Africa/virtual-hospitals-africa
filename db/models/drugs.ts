@@ -1,5 +1,4 @@
 import { type SelectQueryBuilder, sql } from 'kysely'
-import { assert } from 'std/assert/assert.ts'
 import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
@@ -7,6 +6,7 @@ import {
   collectSortedUniqNumbers,
   collectSortedUniqStrings,
 } from '../../util/collectSorted.ts'
+import { base } from './_base.ts'
 
 function baseQuery(trx: TrxOrDb, opts: { include_recalled?: Maybe<boolean> }) {
   return trx.selectFrom('drugs').select((eb_drugs) => [
@@ -104,35 +104,6 @@ function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
   }
 }
 
-function formatResults(results: BaseQueryReturn[]): DrugSearchResult[] {
-  return results.map(({ medications, ...rest }) => ({
-    all_recalled: medications.every((m) =>
-      m.manufacturers.every((m) => m.recalled_at)
-    ),
-    distinct_trade_names: collectSortedUniqStrings(
-      distinctTradeNames(medications),
-    ),
-    medications: medications.map((m) => {
-      const strength_numerators = collectSortedUniqNumbers(
-        strengthNumerators(m),
-      )
-      return {
-        ...m,
-        strength_numerators,
-        // TODO: do the float parsing in SQL?
-        strength_denominator: parseFloat(m.strength_denominator),
-        strength_summary: formStrengthDisplay(
-          strength_numerators.join(', '),
-          m.strength_numerator_unit,
-          m.strength_denominator,
-          m.strength_denominator_unit,
-        ),
-      }
-    }),
-    ...rest,
-  }))
-}
-
 export function formStrengthDisplay(
   strength_numerators: string,
   strength_numerator_unit: string,
@@ -153,48 +124,47 @@ export function formStrengthDisplay(
   return result
 }
 
-export async function getByIds(
-  trx: TrxOrDb,
-  ids: string[],
-): Promise<DrugSearchResult[]> {
-  assert(ids.length, 'must provide at least one id')
-  const results = await baseQuery(trx, { include_recalled: true }).where(
-    'drugs.id',
-    'in',
-    ids,
-  )
-    .execute()
-  return formatResults(results)
-}
-
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    search: string | null
-    include_recalled?: Maybe<boolean>
-    page?: Maybe<number>
-    rows_per_page?: Maybe<number>
+const model = base({
+  baseQuery,
+  formatResult({ medications, ...rest }): DrugSearchResult {
+    return {
+      all_recalled: medications.every((m) =>
+        m.manufacturers.every((m) => m.recalled_at)
+      ),
+      distinct_trade_names: collectSortedUniqStrings(
+        distinctTradeNames(medications),
+      ),
+      medications: medications.map((m) => {
+        const strength_numerators = collectSortedUniqNumbers(
+          strengthNumerators(m),
+        )
+        return {
+          ...m,
+          strength_numerators,
+          // TODO: do the float parsing in SQL?
+          strength_denominator: parseFloat(m.strength_denominator),
+          strength_summary: formStrengthDisplay(
+            strength_numerators.join(', '),
+            m.strength_numerator_unit,
+            m.strength_denominator,
+            m.strength_denominator_unit,
+          ),
+        }
+      }),
+      ...rest,
+    }
   },
-): Promise<{
-  page: number
-  rows_per_page: number
-  results: DrugSearchResult[]
-  has_next_page: boolean
-  search: string | null
-}> {
-  const page = opts.page ?? 1
-  const rows_per_page = opts.rows_per_page ?? 10
-  const offset = (page - 1) * rows_per_page
+  handleSearch: (
+    trx,
+    qb,
+    terms: { search: string | null; include_recalled?: Maybe<boolean> },
+  ) => {
+    if (!terms.search) return qb
 
-  let query = baseQuery(trx, { include_recalled: opts.include_recalled })
-    .limit(rows_per_page + 1)
-    .offset(offset)
-
-  if (opts.search) {
     const matching_manufactured_medications = trx
       .selectFrom('manufactured_medications')
       .select('medication_id')
-      .where('trade_name', 'ilike', `%${opts.search}%`)
+      .where('trade_name', 'ilike', `%${terms.search}%`)
       .distinct()
 
     const matching_drugs = trx
@@ -203,18 +173,16 @@ export async function search(
       .where('id', 'in', matching_manufactured_medications)
       .distinct()
 
-    query = query.where((eb) =>
+    return qb.where((eb) =>
       eb.or([
-        eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
+        eb('drugs.generic_name', 'ilike', `%${terms.search}%`),
         eb('drugs.id', 'in', matching_drugs),
       ])
     )
-      .orderBy(sql`similarity('drugs.name', ${opts.search})`, 'desc')
-  }
+      .orderBy(sql`similarity('drugs.name', ${terms.search})`, 'desc')
+  },
+})
 
-  const drugs = await query.execute()
-  const results = formatResults(drugs.slice(0, rows_per_page))
-  const has_next_page = drugs.length > rows_per_page
-
-  return { page, rows_per_page, results, has_next_page, search: opts.search }
-}
+export const getById = model.getById
+export const search = model.search
+export const getByIds = model.getByIds
