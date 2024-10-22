@@ -15,7 +15,6 @@ import * as employment from './employment.ts'
 import * as addresses from './addresses.ts'
 import partition from '../../util/partition.ts'
 import {
-  debugLog,
   jsonAgg,
   jsonBuildNullableObject,
   jsonBuildObject,
@@ -86,7 +85,6 @@ const model = base({
         null,
       )
     }
-    debugLog(qb)
     return qb
   },
 })
