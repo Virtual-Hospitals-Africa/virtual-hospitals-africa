@@ -3,22 +3,17 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
-  RenderedConsumable,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 
-import {
-  assertOr400,
-  assertOr403,
-  assertOr404,
-} from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
-import { searchConsumables } from '../../../../../db/models/inventory.ts'
+import consumables from '../../../../../db/models/consumables.ts'
 import isNumber from '../../../../../util/isNumber.ts'
 import isString from '../../../../../util/isString.ts'
 
@@ -82,20 +77,15 @@ export default async function ConsumableAdd(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
-  let consumable: RenderedConsumable | null = null
   const consumable_id = url.searchParams.get(
     'consumable_id',
   )
-  if (consumable_id) {
-    const consumables = await searchConsumables(
+  const consumable = consumable_id
+    ? await consumables.getById(
       state.trx,
-      {
-        ids: [consumable_id],
-      },
+      consumable_id,
     )
-    assertOr404(consumables.length)
-    consumable = consumables[0]
-  }
+    : null
 
   return (
     <Layout
