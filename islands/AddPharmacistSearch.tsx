@@ -33,7 +33,7 @@ export default function AddPharmacistSearch(
     <AsyncSearch
       {...props}
       ignoreOptionHref
-      search_route='/regulator/pharmacists/pharmacists'
+      search_route='/regulator/pharmacists'
       Option={PharmacistOption}
     />
   )

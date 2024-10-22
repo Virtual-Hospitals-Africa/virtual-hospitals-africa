@@ -125,6 +125,7 @@ export function formStrengthDisplay(
 }
 
 const model = base({
+  top_level_table: 'drugs',
   baseQuery,
   formatResult({ medications, ...rest }): DrugSearchResult {
     return {
@@ -155,9 +156,9 @@ const model = base({
     }
   },
   handleSearch: (
-    trx,
     qb,
     terms: { search: string | null; include_recalled?: Maybe<boolean> },
+    trx,
   ) => {
     if (!terms.search) return qb
 

@@ -4,7 +4,7 @@ import {
   Organization,
 } from '../../../../types.ts'
 import * as organizations from '../../../../db/models/organizations.ts'
-import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
+import { assertOr403 } from '../../../../util/assertOr.ts'
 import { HealthWorkerEmployment } from '../../../../types.ts'
 
 export type OrganizationContext = LoggedInHealthWorkerContext<{
@@ -29,10 +29,10 @@ export async function handler(
     'Must be employed at this organization to access it',
   )
 
-  const [organization] = await organizations.get(ctx.state.trx, {
-    ids: [organization_id],
-  })
-  assertOr404(organization)
+  const organization = await organizations.getById(
+    ctx.state.trx,
+    organization_id,
+  )
 
   ctx.state.organization = organization
   ctx.state.organization_employment = organization_employment

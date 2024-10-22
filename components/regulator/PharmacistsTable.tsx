@@ -54,14 +54,15 @@ type PharmacistsTableProps = {
   results: RenderedPharmacist[]
   has_next_page: boolean
   page: number
-  name_search: string | null
-  licence_number_search: string | null
+  search_terms: {
+    name_search: string | null
+    licence_number_search: string | null
+  }
 }
 
 export default function PharmacistsTable({
   results,
-  name_search,
-  licence_number_search,
+  search_terms,
   page,
   has_next_page,
 }: PharmacistsTableProps): JSX.Element {
@@ -75,15 +76,15 @@ export default function PharmacistsTable({
           header='No matching pharmacist found'
           explanation={[
             `No pharmacist matched the search term "${
-              name_search || licence_number_search
+              search_terms.name_search || search_terms.licence_number_search
             }"`,
             'If there should be, click below to invite them',
           ]}
           button={{
             text: 'Invite Pharmacist',
             href: path('/regulator/pharmacists/invite', {
-              name: name_search,
-              licence_number: licence_number_search,
+              name: search_terms.name_search,
+              licence_number: search_terms.licence_number_search,
             }),
           }}
           Icon={UserCircleIcon}

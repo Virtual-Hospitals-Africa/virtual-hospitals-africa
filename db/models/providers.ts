@@ -14,7 +14,7 @@ export const ensureProviderId = (trx: TrxOrDb, provider_id: string) =>
     .where('profession', 'in', ['doctor', 'nurse'])
 
 // This isn't confirming registration_status
-const getQuery = (trx: TrxOrDb) =>
+const baseQuery = (trx: TrxOrDb) =>
   getWithTokensQuery(trx)
     .innerJoin(
       'employment',
@@ -61,7 +61,7 @@ export async function get(
   trx: TrxOrDb,
   provider_id: string,
 ): Promise<Provider> {
-  const provider = await getQuery(trx)
+  const provider = await baseQuery(trx)
     .where(
       'employment.id',
       '=',
@@ -100,7 +100,7 @@ export async function getMany(
     employment_ids?: string[]
   },
 ) {
-  let query = getQuery(trx)
+  let query = baseQuery(trx)
   if (opts.employment_ids) {
     if (!opts.employment_ids.length) {
       return []

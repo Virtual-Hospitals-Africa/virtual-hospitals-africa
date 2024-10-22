@@ -101,13 +101,11 @@ import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
-import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
-import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $tos from './routes/tos.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
@@ -381,8 +379,6 @@ const manifest = {
     './routes/regulator/pharmacies/[pharmacy_id].tsx':
       $regulator_pharmacies_pharmacy_id_,
     './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
-    './routes/regulator/pharmacies/pharmacies.tsx':
-      $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id].tsx':
       $regulator_pharmacists_pharmacist_id_,
@@ -391,8 +387,6 @@ const manifest = {
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
-    './routes/regulator/pharmacists/pharmacists.tsx':
-      $regulator_pharmacists_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/tos.tsx': $tos,
     './routes/volunteer.tsx': $volunteer,

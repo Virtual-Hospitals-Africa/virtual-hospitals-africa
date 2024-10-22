@@ -1,4 +1,4 @@
-import { Maybe, Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
+import { Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 import { PharmacistType } from '../../db.d.ts'
@@ -8,6 +8,7 @@ import {
   remove as removePharmacyEmployment,
   updateIsSupervisor,
 } from './pharmacy_employment.ts'
+import { base } from './_base.ts'
 
 export const PharmacistUpsert = z.object({
   licence_number: z.string(),
@@ -158,81 +159,61 @@ function baseQuery(trx: TrxOrDb) {
 const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-\d{4}-\d{4}$/.test(search.toUpperCase())
 
-// TODO: search could be a search by licnese number or name
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    // licence_number?: string
-    search?: Maybe<string>
-    pharmacist_type?: PharmacistType
-    include_revoked?: boolean
-    page?: number
-    rows_per_page?: number
-  } = {},
-) {
-  const page = opts.page || 1
-  const rows_per_page = opts.rows_per_page || 10
-  const offset = (page - 1) * rows_per_page
-
-  const name_search = (opts.search && !isLicenceLike(opts.search))
-    ? opts.search
-    : null
-  const licence_number_search = (opts.search && isLicenceLike(opts.search))
-    ? opts.search.toUpperCase()
-    : null
-
-  let query = baseQuery(trx)
-    .limit(rows_per_page + 1)
-    .offset(offset)
-
-  if (!opts.include_revoked) {
-    query = query.where(
-      'pharmacists.revoked_at',
-      'is',
-      null,
-    )
-  }
-  if (name_search) {
-    query = query.where(
-      nameSql('pharmacists'),
-      `ilike`,
-      `%${name_search}%`,
-    )
-  }
-  if (licence_number_search) {
-    query = query.where(
-      'pharmacists.licence_number',
-      '=',
-      licence_number_search,
-    )
-  }
-  if (opts.pharmacist_type) {
-    query = query.where(
-      'pharmacists.pharmacist_type',
-      '=',
-      opts.pharmacist_type,
-    )
-  }
-
-  const pharmacists = await query.execute()
-
-  return {
-    results: pharmacists.slice(0, rows_per_page),
-    has_next_page: pharmacists.length > rows_per_page,
-    page,
-    name_search,
-    licence_number_search,
-  }
+type SearchTerms = {
+  name_search: string | null
+  licence_number_search: string | null
+  pharmacist_type?: PharmacistType
+  include_revoked?: boolean
 }
 
-export function getById(
-  trx: TrxOrDb,
-  pharmacist_id: string,
-): Promise<RenderedPharmacist | undefined> {
-  return baseQuery(trx)
-    .where('pharmacists.id', '=', pharmacist_id)
-    .executeTakeFirst()
+export function toSearchTerms(search: string | null): SearchTerms {
+  if (!search) return { name_search: null, licence_number_search: null }
+  if (isLicenceLike(search)) {
+    return { name_search: null, licence_number_search: search.toUpperCase() }
+  }
+  return { name_search: search, licence_number_search: null }
 }
+
+const model = base({
+  top_level_table: 'pharmacists',
+  baseQuery,
+  formatResult: (x: RenderedPharmacist): RenderedPharmacist => x,
+  handleSearch(qb, opts: SearchTerms) {
+    if (!opts.include_revoked) {
+      qb = qb.where(
+        'pharmacists.revoked_at',
+        'is',
+        null,
+      )
+    }
+    if (opts.name_search) {
+      qb = qb.where(
+        nameSql('pharmacists'),
+        `ilike`,
+        `%${opts.name_search}%`,
+      )
+    }
+    if (opts.licence_number_search) {
+      qb = qb.where(
+        'pharmacists.licence_number',
+        '=',
+        opts.licence_number_search,
+      )
+    }
+    if (opts.pharmacist_type) {
+      qb = qb.where(
+        'pharmacists.pharmacist_type',
+        '=',
+        opts.pharmacist_type,
+      )
+    }
+    return qb
+  },
+})
+
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds
 
 export function getByLicenceNumber(
   trx: TrxOrDb,
@@ -298,26 +279,4 @@ export async function insert(
   }))
   await insertPharmacyEmployment(trx, pharmacyEmployments)
   return pharmacist
-}
-
-export function getPharmacy(
-  trx: TrxOrDb,
-  pharmacist_id: string,
-) {
-  return trx
-    .selectFrom('pharmacies')
-    .innerJoin(
-      'pharmacy_employment',
-      'pharmacies.id',
-      'pharmacy_employment.pharmacy_id',
-    )
-    .where('pharmacy_employment.pharmacist_id', '=', pharmacist_id)
-    .select('licence_number')
-    .select('name')
-    .select('licensee')
-    .select('address')
-    .select('town')
-    .select('expiry_date')
-    .select('pharmacies_types')
-    .executeTakeFirst()
 }

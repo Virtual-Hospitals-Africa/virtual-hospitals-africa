@@ -36,11 +36,13 @@ type MedicinesTableProps = {
   results: RenderedManufacturedMedication[]
   page: number
   has_next_page: boolean
-  search: string | null
+  search_terms: {
+    search: string | null
+  }
 }
 
 export function MedicinesTable(
-  { results, page, has_next_page, search }: MedicinesTableProps,
+  { results, page, has_next_page, search_terms }: MedicinesTableProps,
 ) {
   return (
     <Table
@@ -51,14 +53,14 @@ export function MedicinesTable(
         <EmptyState
           header='No matching medicine found'
           explanation={[
-            `No medicine matched the search term "${search}"`,
+            `No medicine matched the search term "${search_terms.search}"`,
             'If there should be, click below to add it',
           ]}
           // TODO: create /regulator/medicines/add page
           button={{
             text: 'Add Medicine',
             href: path('/regulator/medicines/add', {
-              name: search,
+              name: search_terms.search,
             }),
           }}
           icon={<Plussable Icon={MedicineIcon} />}
