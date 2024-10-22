@@ -1,7 +1,7 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as drugs from '../../db/models/drugs.ts'
-import * as manufactured_medications from '../../db/models/manufactured_medications.ts'
+import manufactured_medications from '../../db/models/manufactured_medications.ts'
 import deepOmit from '../../util/deepOmit.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 

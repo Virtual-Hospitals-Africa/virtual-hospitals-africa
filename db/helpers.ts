@@ -254,13 +254,6 @@ export function isoDate(ref: unknown): unknown {
   return sql<string>`TO_CHAR(${ref}, 'YYYY-MM-DD')`
 }
 
-export function nullableDateString(
-  // deno-lint-ignore no-explicit-any
-  ew: ExpressionWrapper<DB, any, Date | null>,
-) {
-  return sql<string | null>`TO_CHAR(${ew}, 'YYYY-MM-DD')`
-}
-
 // TODO: see if kysely has built-in support for this.
 // I bet we're not handling arrays properly
 function debugReplace(parameter: unknown) {
@@ -283,13 +276,13 @@ function debugReplace(parameter: unknown) {
 export function debugLog(
   qb:
     // deno-lint-ignore no-explicit-any
-    | SelectQueryBuilder<DB, any, any>
+    | SelectQueryBuilder<any, any, any>
     // deno-lint-ignore no-explicit-any
-    | UpdateQueryBuilder<DB, any, any, any>
+    | UpdateQueryBuilder<any, any, any, any>
     // deno-lint-ignore no-explicit-any
-    | DeleteQueryBuilder<DB, any, any>
+    | DeleteQueryBuilder<any, any, any>
     // deno-lint-ignore no-explicit-any
-    | InsertQueryBuilder<DB, any, any>,
+    | InsertQueryBuilder<any, any, any>,
 ) {
   let { sql, parameters } = qb.compile()
   parameters.forEach((p: unknown, i: number) => {

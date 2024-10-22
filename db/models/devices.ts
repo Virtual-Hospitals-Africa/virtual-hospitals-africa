@@ -4,28 +4,25 @@ import { jsonArrayFromColumn } from '../helpers.ts'
 import { base } from './_base.ts'
 import type { DB } from '../../db.d.ts'
 
-function baseQuery(
-  trx: TrxOrDb,
-): SelectQueryBuilder<DB, 'devices', RenderedDevice> {
-  return trx
-    .selectFrom('devices')
-    .select((eb) => [
-      'devices.id',
-      'devices.name',
-      'devices.manufacturer',
-      jsonArrayFromColumn(
-        'diagnostic_test',
-        eb
-          .selectFrom('device_capabilities')
-          .whereRef('device_capabilities.device_id', '=', 'devices.id')
-          .select('diagnostic_test'),
-      ).as('diagnostic_test_capabilities'),
-    ])
-}
-
-const model = base({
+export default base({
   top_level_table: 'devices',
-  baseQuery,
+  baseQuery: (
+    trx: TrxOrDb,
+  ): SelectQueryBuilder<DB, 'devices', RenderedDevice> =>
+    trx
+      .selectFrom('devices')
+      .select((eb) => [
+        'devices.id',
+        'devices.name',
+        'devices.manufacturer',
+        jsonArrayFromColumn(
+          'diagnostic_test',
+          eb
+            .selectFrom('device_capabilities')
+            .whereRef('device_capabilities.device_id', '=', 'devices.id')
+            .select('diagnostic_test'),
+        ).as('diagnostic_test_capabilities'),
+      ]),
   formatResult: (x: RenderedDevice): RenderedDevice => x,
   handleSearch(qb, opts: { search: string | null }, trx) {
     if (!opts.search) return qb
@@ -45,7 +42,3 @@ const model = base({
     )
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds

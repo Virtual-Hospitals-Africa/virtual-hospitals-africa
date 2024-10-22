@@ -3,13 +3,36 @@ import type { TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB } from '../../db.d.ts'
+import { bindAll } from '../../util/bindAll.ts'
+import { debugLog } from '../helpers.ts'
 
-type SearchResults<SearchTerms, RenderedResult> = {
+export type SearchResults<SearchTerms, RenderedResult> = {
   page: number
   rows_per_page: number
   results: RenderedResult[]
   has_next_page: boolean
   search_terms: SearchTerms
+}
+
+type BaseModelInput<
+  SearchTerms extends Partial<Record<string, unknown>>,
+  Tables,
+  SelectingFrom extends keyof Tables,
+  TopLevelTable extends StandardTables,
+  IntermediateResult,
+  RenderedResult,
+> = {
+  top_level_table: TopLevelTable & SelectingFrom
+  baseQuery: (
+    trx: TrxOrDb,
+    terms: SearchTerms,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  handleSearch: (
+    qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
+    terms: SearchTerms,
+    trx: TrxOrDb,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  formatResult: (result: IntermediateResult) => RenderedResult
 }
 
 type BaseModel<
@@ -41,22 +64,33 @@ export function base<
   TopLevelTable extends StandardTables,
   IntermediateResult,
   RenderedResult,
+  Extra extends Record<string, unknown>,
 >(
-  { top_level_table, baseQuery, handleSearch, formatResult }: {
-    top_level_table: TopLevelTable & SelectingFrom
-    baseQuery: (
-      trx: TrxOrDb,
-      terms: SearchTerms,
-    ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-    handleSearch: (
-      qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
-      terms: SearchTerms,
-      trx: TrxOrDb,
-    ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-    formatResult: (result: IntermediateResult) => RenderedResult
-  },
-): BaseModel<SearchTerms, RenderedResult> {
-  return {
+  input:
+    & BaseModelInput<
+      SearchTerms,
+      Tables,
+      SelectingFrom,
+      TopLevelTable,
+      IntermediateResult,
+      RenderedResult
+    >
+    & Extra,
+):
+  & BaseModel<SearchTerms, RenderedResult>
+  & BaseModelInput<
+    SearchTerms,
+    Tables,
+    SelectingFrom,
+    TopLevelTable,
+    IntermediateResult,
+    RenderedResult
+  >
+  & Extra {
+  const { top_level_table, baseQuery, handleSearch, formatResult } = input
+
+  return bindAll({
+    ...input,
     async search(
       trx: TrxOrDb,
       search_terms: SearchTerms,
@@ -76,6 +110,7 @@ export function base<
       const search_query = handleSearch(base_query, search_terms, trx)
 
       const intermediate_results = await search_query.execute()
+
       const results = intermediate_results.slice(0, rows_per_page).map(
         formatResult,
       )
@@ -111,5 +146,5 @@ export function base<
         .execute()
       return intermediate_results.map(formatResult)
     },
-  }
+  })
 }

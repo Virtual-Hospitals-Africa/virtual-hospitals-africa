@@ -17,6 +17,8 @@ import { ensureProviderId } from './providers.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import uniq from '../../util/uniq.ts'
+import { inBackground } from '../../util/inBackground.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export type Upsert =
   & {
@@ -108,29 +110,29 @@ export async function upsert(
         .executeTakeFirstOrThrow()
   )
 
-  const adding_providers = provider_ids?.length
-    ? trx
-      .insertInto('patient_encounter_providers')
-      .values(provider_ids.map((provider_id) => ({
-        patient_encounter_id: upserted.id,
-        provider_id: ensureProviderId(trx, provider_id),
-      })))
-      .returning([
-        'id as encounter_provider_id',
-        'provider_id',
-      ])
-      .execute()
-    : Promise.resolve([])
-
-  const waiting_room_added = await waiting_room.add(trx, {
-    patient_encounter_id: upserted.id,
-    organization_id,
+  const others = await promiseProps({
+    providers: provider_ids?.length
+      ? trx
+        .insertInto('patient_encounter_providers')
+        .values(provider_ids.map((provider_id) => ({
+          patient_encounter_id: upserted.id,
+          provider_id: ensureProviderId(trx, provider_id),
+        })))
+        .returning([
+          'id as encounter_provider_id',
+          'provider_id',
+        ])
+        .execute()
+      : Promise.resolve([]),
+    waiting_room_id: await waiting_room.add(trx, {
+      patient_encounter_id: upserted.id,
+      organization_id,
+    }).then((w) => w.id),
   })
 
   return {
     ...upserted,
-    waiting_room_id: waiting_room_added.id,
-    providers: await adding_providers,
+    ...others,
   }
 }
 
@@ -300,7 +302,6 @@ export function close(
     .where('id', '=', encounter_id)
     .executeTakeFirstOrThrow()
 }
-
 /*
   Note: this modifies health_worker.open_encounters in place
 */
@@ -325,71 +326,73 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
   // TODO: start an encounter if it doesn't exist?
   assertOr404(encounter, 'No open visit with this patient')
 
-  const removing_from_waiting_room = encounter.waiting_room_id && (
-    waiting_room.remove(trx, {
-      id: encounter.waiting_room_id,
-    })
-  )
+  const removing_from_waiting_room = encounter.waiting_room_id
+    ? (
+      waiting_room.remove(trx, {
+        id: encounter.waiting_room_id,
+      })
+    )
+    : Promise.resolve()
 
-  let matching_provider = encounter.providers.find(
-    (provider) => provider.health_worker_id === health_worker.id,
-  )
-  if (!matching_provider) {
-    const being_seen_at_organizations = encounter.waiting_room_organization_id
-      ? [encounter.waiting_room_organization_id]
-      : uniq(
-        encounter.providers.map((p) => p.organization_id),
+  return inBackground(removing_from_waiting_room, async () => {
+    let matching_provider = encounter.providers.find(
+      (provider) => provider.health_worker_id === health_worker.id,
+    )
+    if (!matching_provider) {
+      const being_seen_at_organizations = encounter.waiting_room_organization_id
+        ? [encounter.waiting_room_organization_id]
+        : uniq(
+          encounter.providers.map((p) => p.organization_id),
+        )
+
+      const employment = health_worker.employment.find(
+        (e) => being_seen_at_organizations.includes(e.organization.id),
       )
-
-    const employment = health_worker.employment.find(
-      (e) => being_seen_at_organizations.includes(e.organization.id),
-    )
-    assertOr403(
-      employment,
-      'You do not have access to this patient at this time. The patient is being seen at a organization you do not work at. Please contact the organization to get access to the patient.',
-    )
-
-    const provider = employment.roles.doctor || employment.roles.nurse
-
-    if (!provider) {
-      assert(employment.roles.admin)
       assertOr403(
-        false,
-        'You must be a nurse or doctor to edit patient information as part of an encounter',
+        employment,
+        'You do not have access to this patient at this time. The patient is being seen at a organization you do not work at. Please contact the organization to get access to the patient.',
       )
+
+      const provider = employment.roles.doctor || employment.roles.nurse
+
+      if (!provider) {
+        assert(employment.roles.admin)
+        assertOr403(
+          false,
+          'You must be a nurse or doctor to edit patient information as part of an encounter',
+        )
+      }
+
+      const added_provider = await addProvider(trx, {
+        encounter_id: encounter.encounter_id,
+        provider_id: provider.employment_id,
+        seen_now: true,
+      })
+
+      assert(added_provider.seen_at)
+
+      matching_provider = {
+        patient_encounter_provider_id: added_provider.id,
+        employment_id: provider.employment_id,
+        organization_id: employment.organization.id,
+        profession: employment.roles.doctor ? 'doctor' : 'nurse',
+        health_worker_id: health_worker.id,
+        health_worker_name: health_worker.name,
+        seen: true,
+      }
+      encounter.providers.push(matching_provider)
+    } else if (!matching_provider.seen) {
+      const { seen_at } = await markProviderSeen(trx, {
+        patient_encounter_provider_id:
+          matching_provider.patient_encounter_provider_id,
+      })
+      assert(seen_at)
+      matching_provider.seen = true
     }
 
-    const added_provider = await addProvider(trx, {
-      encounter_id: encounter.encounter_id,
-      provider_id: provider.employment_id,
-      seen_now: true,
-    })
-
-    assert(added_provider.seen_at)
-
-    matching_provider = {
-      patient_encounter_provider_id: added_provider.id,
-      employment_id: provider.employment_id,
-      organization_id: employment.organization.id,
-      profession: employment.roles.doctor ? 'doctor' : 'nurse',
-      health_worker_id: health_worker.id,
-      health_worker_name: health_worker.name,
-      seen: true,
+    return {
+      encounter,
+      encounter_provider: matching_provider,
     }
-    encounter.providers.push(matching_provider)
-  } else if (!matching_provider.seen) {
-    const { seen_at } = await markProviderSeen(trx, {
-      patient_encounter_provider_id:
-        matching_provider.patient_encounter_provider_id,
-    })
-    assert(seen_at)
-    matching_provider.seen = true
-  }
-
-  await removing_from_waiting_room
-
-  return {
-    encounter,
-    encounter_provider: matching_provider,
-  }
+  })
 }

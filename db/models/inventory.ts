@@ -3,18 +3,15 @@ import {
   MedicationProcurement,
   OrganizationDevice,
   Procurer,
-  RenderedConsumable,
   RenderedInventoryHistory,
   RenderedInventoryHistoryConsumption,
   RenderedInventoryHistoryProcurement,
   RenderedOrganizationConsumable,
   RenderedOrganizationDevice,
   RenderedOrganizationMedicine,
-  RenderedProcurer,
   TrxOrDb,
 } from '../../types.ts'
 import {
-  debugLog,
   jsonArrayFromColumn,
   literalNumber,
   literalOptionalDate,
@@ -335,49 +332,6 @@ export function getLatestProcurement(
   return query.executeTakeFirst()
 }
 
-export function searchConsumables(
-  trx: TrxOrDb,
-  opts: {
-    search?: string
-    ids?: string[]
-  },
-): Promise<RenderedConsumable[]> {
-  if (opts.ids) {
-    assert(opts.ids.length, 'must provide at least one id')
-    assert(!opts.search)
-  } else {
-    assert(opts.search)
-  }
-
-  let query = trx
-    .selectFrom('consumables')
-    .leftJoin(
-      'manufactured_medication_strengths',
-      'consumables.id',
-      'manufactured_medication_strengths.consumable_id',
-    )
-    .where('manufactured_medication_strengths.id', 'is', null)
-    .select(['consumables.id', 'consumables.name'])
-
-  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
-  if (opts.ids) query = query.where('consumables.id', 'in', opts.ids)
-
-  return query.execute()
-}
-
-export function searchProcurers(
-  trx: TrxOrDb,
-  search?: string,
-): Promise<RenderedProcurer[]> {
-  let query = trx
-    .selectFrom('procurers')
-    .select(['procurers.id', 'procurers.name'])
-
-  if (search) query = query.where('procurers.name', 'ilike', `%${search}%`)
-
-  return query.execute()
-}
-
 export function getAvailableTests(
   trx: TrxOrDb,
   opts: {
@@ -566,47 +520,6 @@ export function consumeConsumable(
     procurement_id: string
   },
 ) {
-  debugLog(
-    trx.with('adding_consumption', (qb) =>
-      qb.insertInto('consumption')
-        .values({
-          organization_id,
-          created_by: consumable.created_by,
-          quantity: consumable.quantity,
-          procurement_id: consumable.procurement_id,
-        })
-        .returning('id'))
-      .with(
-        'incrementing_consumed_amount',
-        (qb) =>
-          qb.updateTable('procurement')
-            .set({
-              consumed_amount: sql`consumed_amount + ${consumable.quantity}`,
-            })
-            .where('procurement.id', '=', consumable.procurement_id),
-      )
-      .with(
-        'decrementing_quantity_on_hand',
-        (qb) =>
-          qb.updateTable('organization_consumables')
-            .set({
-              quantity_on_hand: sql`quantity_on_hand - ${consumable.quantity}`,
-            })
-            .where(
-              'organization_consumables.organization_id',
-              '=',
-              organization_id,
-            )
-            .where(
-              'organization_consumables.consumable_id',
-              '=',
-              consumable.consumable_id,
-            ),
-      )
-      .selectFrom('adding_consumption')
-      .selectAll(),
-  )
-
   // Send the whole update in one query. This avoids constraint errors firing in the background when we won't catch them.
   return trx.with('adding_consumption', (qb) =>
     qb.insertInto('consumption')

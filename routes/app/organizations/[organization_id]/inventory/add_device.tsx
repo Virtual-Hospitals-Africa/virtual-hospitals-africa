@@ -9,11 +9,11 @@ import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import * as devices from '../../../../../db/models/devices.ts'
 
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import devices from '../../../../../db/models/devices.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
