@@ -1,9 +1,13 @@
-import { Condition, Maybe, TrxOrDb } from '../../types.ts'
+import type { SelectQueryBuilder } from 'kysely/index.d.ts'
+import { Condition, TrxOrDb } from '../../types.ts'
+import { base } from './_base.ts'
+import type { DB } from '../../db.d.ts'
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(
+  trx: TrxOrDb,
+): SelectQueryBuilder<DB, 'conditions', Condition> {
   return trx
     .selectFrom('conditions')
-    .where('is_procedure', '=', false)
     .select([
       'conditions.id',
       'conditions.name',
@@ -16,35 +20,22 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-function formatResults(conditions: Condition[]): Condition[] {
-  return conditions
-}
+const model = base({
+  top_level_table: 'conditions',
+  baseQuery,
+  formatResult: (x: Condition): Condition => x,
+  handleSearch(
+    qb,
+    opts: { search: string | null; is_procedure: boolean },
+  ) {
+    if (opts.search) {
+      qb = qb.where('name', 'ilike', `%${opts.search}%`)
+    }
 
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    search: string | null
-    is_procedure: boolean
-    page?: Maybe<number>
-    rows_per_page?: Maybe<number>
+    return qb.where('is_procedure', '=', opts.is_procedure)
   },
-) {
-  const page = opts.page ?? 1
-  const rows_per_page = opts.rows_per_page ?? 10
-  const offset = (page - 1) * rows_per_page
+})
 
-  let query = baseQuery(trx)
-    .where('is_procedure', '=', opts.is_procedure)
-    .limit(rows_per_page + 1)
-    .offset(offset)
-
-  if (opts.search) {
-    query = query.where('name', 'ilike', `%${opts.search}%`)
-  }
-
-  const drugs = await query.execute()
-  const results = formatResults(drugs.slice(0, rows_per_page))
-  const has_next_page = drugs.length > rows_per_page
-
-  return { page, rows_per_page, results, has_next_page, search: opts.search }
-}
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds

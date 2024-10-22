@@ -17,7 +17,6 @@ import * as $app_chart from './routes/app/chart.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
-import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
@@ -87,7 +86,6 @@ import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
-import * as $drugs from './routes/drugs.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
@@ -104,13 +102,11 @@ import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
-import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
-import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $tos from './routes/tos.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
@@ -246,7 +242,6 @@ const manifest = {
     './routes/app/conditions.tsx': $app_conditions,
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
-    './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/icd10.tsx': $app_icd10,
@@ -367,7 +362,6 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
-    './routes/drugs.tsx': $drugs,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,
@@ -388,8 +382,6 @@ const manifest = {
     './routes/regulator/pharmacies/[pharmacy_id].tsx':
       $regulator_pharmacies_pharmacy_id_,
     './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
-    './routes/regulator/pharmacies/pharmacies.tsx':
-      $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id].tsx':
       $regulator_pharmacists_pharmacist_id_,
@@ -398,8 +390,6 @@ const manifest = {
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
-    './routes/regulator/pharmacists/pharmacists.tsx':
-      $regulator_pharmacists_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/tos.tsx': $tos,
     './routes/volunteer.tsx': $volunteer,

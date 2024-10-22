@@ -210,7 +210,8 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
 export function jsonBuildNullableObject<
   O extends Record<string, Expression<unknown>>,
 >(
-  key: string,
+  // deno-lint-ignore no-explicit-any
+  ew: ExpressionWrapper<any, any, any>,
   obj: O,
 ): RawBuilder<
   | null
@@ -220,9 +221,12 @@ export function jsonBuildNullableObject<
     }
   >
 > {
-  return sql`CASE WHEN '${sql.raw(key)}' IS NOT NULL THEN ${
-    jsonBuildObject(obj)
-  } ELSE NULL END`
+  return sql`
+    CASE WHEN ${ew} IS NULL
+      THEN NULL
+      ELSE ${jsonBuildObject(obj)}
+    END
+  `
 }
 
 export function toJSON<

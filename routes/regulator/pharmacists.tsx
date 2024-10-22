@@ -8,20 +8,24 @@ import FormRow from '../../components/library/FormRow.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { searchPage } from '../../util/searchPage.ts'
 import { TextInput } from '../../islands/form/Inputs.tsx'
+import { json } from '../../util/responses.ts'
 
 export default async function PharmacistsPage(
-  _req: Request,
+  req: Request,
   ctx: FreshContext<LoggedInRegulator>,
 ) {
   const page = searchPage(ctx)
   const search = ctx.url.searchParams.get('search')
+  const search_terms = pharmacists.toSearchTerms(search)
   const search_results = await pharmacists.search(
     ctx.state.trx,
-    {
-      search,
-      page,
-    },
+    search_terms,
+    { page },
   )
+
+  if (req.headers.get('accept') === 'application/json') {
+    return json(search_results)
+  }
 
   return (
     <Layout
@@ -29,7 +33,6 @@ export default async function PharmacistsPage(
       route={ctx.route}
       url={ctx.url}
       regulator={ctx.state.regulator}
-      params={{}}
       variant='regulator home page'
     >
       <Form>

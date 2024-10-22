@@ -53,13 +53,14 @@ type PharmaciesTableProps = {
   results: RenderedPharmacy[]
   has_next_page: boolean
   page: number
-  name_search: string | null
-  licence_number_search: string | null
+  search_terms: {
+    name_search: string | null
+    licence_number_search: string | null
+  }
 }
 
 export function PharmaciesTable(
-  { results, name_search, licence_number_search, page, has_next_page }:
-    PharmaciesTableProps,
+  { results, search_terms, page, has_next_page }: PharmaciesTableProps,
 ): JSX.Element {
   return (
     <Table
@@ -71,15 +72,15 @@ export function PharmaciesTable(
           header='No matching pharmacy found'
           explanation={[
             `No pharmacy matched the search term "${
-              name_search || licence_number_search
+              search_terms.name_search || search_terms.licence_number_search
             }"`,
             'If there should be, click below to add it',
           ]}
           button={{
             text: 'Add Pharmacy',
             href: path('/regulator/pharmacies/add', {
-              name: name_search,
-              licence_number: licence_number_search,
+              name: search_terms.name_search,
+              licence_number: search_terms.licence_number_search,
             }),
           }}
           Icon={UserCircleIcon}

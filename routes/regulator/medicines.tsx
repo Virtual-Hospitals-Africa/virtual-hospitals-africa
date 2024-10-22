@@ -16,7 +16,8 @@ export default async function MedicinesPage(
 
   const search_results = await manufactured_medications.search(
     ctx.state.trx,
-    { search, page },
+    { search },
+    { page },
   )
 
   return (

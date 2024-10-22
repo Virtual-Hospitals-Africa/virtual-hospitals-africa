@@ -646,10 +646,10 @@ export function consumeConsumable(
     .executeTakeFirstOrThrow()
 }
 
-export function upsertProcurer(trx: TrxOrDb, model: Procurer) {
+export function upsertProcurer(trx: TrxOrDb, procurer: Procurer) {
   return trx
     .insertInto('procurers')
-    .values(model)
-    .onConflict((c) => c.column('id').doUpdateSet(model))
+    .values(procurer)
+    .onConflict((c) => c.column('id').doUpdateSet(procurer))
     .execute()
 }

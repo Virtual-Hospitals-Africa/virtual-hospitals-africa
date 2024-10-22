@@ -15,13 +15,15 @@ import * as employment from './employment.ts'
 import * as addresses from './addresses.ts'
 import partition from '../../util/partition.ts'
 import {
+  debugLog,
   jsonAgg,
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertOr400, assertOr404, StatusError } from '../../util/assertOr.ts'
+import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import { base } from './_base.ts'
 
 export function nearestHospitals(
   trx: TrxOrDb,
@@ -49,73 +51,49 @@ export function nearestHospitals(
     .execute()
 }
 
-export function search(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    kind?: Maybe<'physical' | 'virtual'>
-  },
-) {
-  let query = trx
-    .selectFrom('organizations')
-    .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
-    .select([
-      'organizations.id',
-      'organizations.name as name',
-      'addresses.formatted as address',
-      'addresses.formatted as description',
-    ])
-
-  if (opts.search) {
-    query = query.where(
-      'organizations.name',
-      'ilike',
-      `%${opts.search}%`,
-    )
-  }
-  if (opts.kind) {
-    query = query.where(
-      'address_id',
-      opts.kind === 'physical' ? 'is not' : 'is',
-      null,
-    )
-  }
-
-  return query.execute()
-}
-
-export function get(
-  trx: TrxOrDb,
-  opts: {
-    ids: string[]
-  },
-): Promise<HasStringId<Organization>[]> {
-  assert(opts.ids.length, 'Must select nonzero organizations')
+function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')
     .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
-    .where('organizations.id', 'in', opts.ids)
-    .select([
+    .select((eb) => [
       'organizations.id',
       'organizations.name',
       'organizations.category',
       'addresses.formatted as address',
-      jsonBuildNullableObject('location', {
+      'addresses.formatted as description',
+      jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
     ])
-    .execute()
 }
 
-export async function getById(
-  trx: TrxOrDb,
-  organization_id: string,
-): Promise<HasStringId<Organization>> {
-  const [organization] = await get(trx, { ids: [organization_id] })
-  assertOr404(organization, `Organization not found with id ${organization_id}`)
-  return organization
-}
+const model = base({
+  top_level_table: 'organizations',
+  baseQuery,
+  formatResult: (x): HasStringId<Organization> => x,
+  handleSearch(
+    qb,
+    opts: { search: string | null; kind: 'physical' | 'virtual' | null },
+  ) {
+    if (opts.search) {
+      qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
+    }
+    if (opts.kind) {
+      qb = qb.where(
+        'address_id',
+        opts.kind === 'physical' ? 'is not' : 'is',
+        null,
+      )
+    }
+    debugLog(qb)
+    return qb
+  },
+})
+
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds
 
 type EmployeeQueryOpts = {
   organization_id?: string

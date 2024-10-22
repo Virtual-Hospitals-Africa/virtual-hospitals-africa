@@ -10,8 +10,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     const search = ctx.url.searchParams.get('search')
     const page = searchPage(ctx)
     const include_recalled = ctx.url.searchParams.has('include_recalled')
-    return drugs.search(ctx.state.trx, { search, page, include_recalled }).then(
-      json,
-    )
+    return drugs.search(ctx.state.trx, { search, include_recalled }, { page })
+      .then(
+        json,
+      )
   },
 }

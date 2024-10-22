@@ -15,7 +15,7 @@ export default function InvitePhamacistForm() {
         </FormRow>
         <PersonSearch
           name='pharmacist'
-          search_route='/regulator/pharmacists/pharmacists'
+          search_route='/regulator/pharmacists'
           label=''
           addable={{
             href: '/regulator/pharmacists/invite?pharmacist_name=',

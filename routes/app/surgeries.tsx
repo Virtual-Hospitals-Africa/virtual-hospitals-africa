@@ -11,9 +11,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     const page = searchPage(ctx)
     return conditions.search(ctx.state.trx, {
       search,
-      page,
       is_procedure: true,
-    })
+    }, { page })
       .then(json)
   },
 }
