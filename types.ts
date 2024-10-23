@@ -2013,8 +2013,8 @@ export type CurrentSchool = {
 }
 
 export type PastSchool = {
-  last_grade: string
-  reason: string
+  stopped_last_grade: string
+  stopped_reason: string
 }
 
 export type Job = {
