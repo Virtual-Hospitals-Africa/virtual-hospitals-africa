@@ -211,6 +211,90 @@ function FamilySummary(
   )
 }
 
+function OccupationSummary(
+  { occupation }: { occupation: IntakePatientSummary['occupation'] },
+) {
+  const renderSchoolInfo = () => {
+    if (!occupation?.school) return null
+
+    switch (occupation.school.status) {
+      case 'never attended':
+        return (
+          <span className='mt-2 flex flex-col gap-2 pl-4'>
+            Never attended school
+          </span>
+        )
+
+      case 'in school':
+        return (
+          <span className='mt-2 flex flex-col gap-2 pl-4'>
+            Currently in school: {occupation.school.current?.grade}
+          </span>
+        )
+
+      case 'stopped school':
+        return (
+          <span className='mt-2 flex flex-col gap-2 pl-4'>
+            Stopped school at: {occupation.school.past.stopped_last_grade}
+          </span>
+        )
+
+      case 'adult in school':
+        return (
+          <span className='mt-2 flex flex-col gap-2 pl-4'>
+            Education Level: {occupation.school.education_level}
+          </span>
+        )
+
+      case 'adult stopped school':
+        return (
+          <>
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Education Level: {occupation.school.education_level}
+            </span>
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Reason for stopping: {occupation.school.reason}
+            </span>
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Desire to return:{' '}
+              {occupation.school.desire_to_return ? 'Yes' : 'No'}
+            </span>
+          </>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  return (
+    <>
+      {occupation?.school && (
+        <div className='mt-4'>
+          <span className='font-semibold'>School</span>
+          {renderSchoolInfo()}
+        </div>
+      )}
+
+      {occupation?.job && (
+        <div className='mt-4'>
+          <span className='font-semibold'>Job</span>
+          {occupation?.job?.profession && (
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Profession: {occupation.job.profession}
+            </span>
+          )}
+          {occupation?.job?.work_satisfaction && (
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Work Satisfaction: {occupation.job.work_satisfaction}
+            </span>
+          )}
+        </div>
+      )}
+    </>
+  )
+}
+
 // Do something for displaying international phone numbers
 function PhoneDisplay({ phone_number }: { phone_number: string }) {
   return <span>{phone_number}</span>
@@ -238,65 +322,75 @@ export default function PatientSummary(
   const intake_href = `/app/patients/${patient.id}/intake`
 
   return (
-    <DescriptionList
-      title='Summary Patient Details'
-      items={[
-        {
-          label: 'Personal',
-          children: <PersonalSummary patient={patient} />,
-          edit_href: `${intake_href}/personal#focus=personal`,
-        },
-        {
-          label: 'Address',
-          children: patient.address,
-          edit_href: `${intake_href}/address#focus=address`,
-        },
-        {
-          label: 'Ethnicity',
-          children: patient.ethnicity,
-          edit_href: `${intake_href}/personal#focus=ethnicity`,
-        },
-        {
-          label: 'Phone',
-          children: patient.phone_number,
-          edit_href: `${intake_href}/personal#focus=phone`,
-        },
-        {
-          label: 'National ID',
-          children: patient.national_id_number,
-          edit_href: `${intake_href}/personal#focus=national_id_number`,
-        },
-        {
-          label: 'Nearest Organization',
-          children: patient.nearest_organization_name,
-          edit_href: `${intake_href}/address#focus=nearest_organization_name`,
-        },
-        {
-          label: 'Primary Doctor',
-          children: patient.primary_doctor_name,
-          edit_href: `${intake_href}/address#focus=primary_doctor_name`,
-        },
-        {
-          label: 'Pre-existing Conditions',
-          children: <PreExistingConditionsSummary {...patient} />,
-          edit_href: `${intake_href}/conditions#focus=pre_existing_conditions`,
-        },
-        {
-          label: 'Past Medical Conditions',
-          children: <MedicalConditionSummary {...patient} />,
-          edit_href: `${intake_href}/history`,
-        },
-        {
-          label: 'Major Surgeries and Procedures',
-          children: <MajorSurgerySummary {...patient} />,
-          edit_href: `${intake_href}/history`,
-        },
-        {
-          label: 'Family',
-          children: <FamilySummary family={patient.family} />,
-          edit_href: `${intake_href}/family#focus=family`,
-        },
-      ]}
-    />
+    console.log(patient.occupation),
+      (
+        <DescriptionList
+          title='Summary Patient Details'
+          items={[
+            {
+              label: 'Personal',
+              children: <PersonalSummary patient={patient} />,
+              edit_href: `${intake_href}/personal#focus=personal`,
+            },
+            {
+              label: 'Address',
+              children: patient.address,
+              edit_href: `${intake_href}/address#focus=address`,
+            },
+            {
+              label: 'Ethnicity',
+              children: patient.ethnicity,
+              edit_href: `${intake_href}/personal#focus=ethnicity`,
+            },
+            {
+              label: 'Phone',
+              children: patient.phone_number,
+              edit_href: `${intake_href}/personal#focus=phone`,
+            },
+            {
+              label: 'National ID',
+              children: patient.national_id_number,
+              edit_href: `${intake_href}/personal#focus=national_id_number`,
+            },
+            {
+              label: 'Nearest Organization',
+              children: patient.nearest_organization_name,
+              edit_href:
+                `${intake_href}/address#focus=nearest_organization_name`,
+            },
+            {
+              label: 'Primary Doctor',
+              children: patient.primary_doctor_name,
+              edit_href: `${intake_href}/address#focus=primary_doctor_name`,
+            },
+            {
+              label: 'Pre-existing Conditions',
+              children: <PreExistingConditionsSummary {...patient} />,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions`,
+            },
+            {
+              label: 'Past Medical Conditions',
+              children: <MedicalConditionSummary {...patient} />,
+              edit_href: `${intake_href}/history`,
+            },
+            {
+              label: 'Major Surgeries and Procedures',
+              children: <MajorSurgerySummary {...patient} />,
+              edit_href: `${intake_href}/history`,
+            },
+            {
+              label: 'Family',
+              children: <FamilySummary family={patient.family} />,
+              edit_href: `${intake_href}/family#focus=family`,
+            },
+            {
+              label: 'Occupation',
+              children: <OccupationSummary occupation={patient.occupation} />,
+              edit_href: `${intake_href}/family#focus=occupation`,
+            },
+          ]}
+        />
+      )
   )
 }
