@@ -9,6 +9,7 @@ import {
   OrganizationDoctorOrNurse,
   OrganizationEmployee,
   OrganizationEmployeeOrInvitee,
+  OrganizationEmployeeWithActions,
   Profession,
   TrxOrDb,
 } from '../../types.ts'
@@ -331,10 +332,11 @@ export function getAllEmployeesWithoutActionQuery(
 export function getDoctorsWithoutAction(
   trx: TrxOrDb,
   opts: EmployeeQueryOpts = {},
-): Promise<DoctorsWithoutAction[]> {
-  return getAllEmployeesWithoutActionQuery(trx, opts).selectFrom(
+): Promise<OrganizationEmployeeWithActions[]> {
+  const employees = getAllEmployeesWithoutActionQuery(trx, opts).selectFrom(
     'organization_employees',
   ).selectAll('organization_employees').execute()
+  return employees
 }
 
 export async function getApprovedDoctorsWithoutAction(

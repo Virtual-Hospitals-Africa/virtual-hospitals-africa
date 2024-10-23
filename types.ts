@@ -1070,6 +1070,11 @@ export type OrganizationEmployee = {
   online: null | SqlBool
 }
 
+export type OrganizationEmployeeWithActions = Omit<
+  OrganizationEmployee,
+  'actions'
+>
+
 export type OrganizationDoctorOrNurse =
   & Omit<
     OrganizationEmployee,
