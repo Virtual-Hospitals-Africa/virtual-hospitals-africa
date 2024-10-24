@@ -11,6 +11,7 @@
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.4.47",
     "npm:@types/node@*": "22.5.4",
     "npm:autoprefixer@10.4.17": "10.4.17_postcss@8.4.35",
+    "npm:awesome-phonenumber@7.2.0": "7.2.0",
     "npm:cssnano@6.0.3": "6.0.3_postcss@8.4.35",
     "npm:expect@29.7.0": "29.7.0",
     "npm:fast-levenshtein@3.0.0": "3.0.0",
@@ -277,6 +278,9 @@
         "postcss@8.4.35",
         "postcss-value-parser"
       ]
+    },
+    "awesome-phonenumber@7.2.0": {
+      "integrity": "sha512-CqH0TyDMHiMhqGRg/kaJDiV5KRok5AdrJKvUsED9/QRQdiCjUzp32+NqEEnY+OWEDTeeqlyLsLs7SLR/sPQU2A=="
     },
     "balanced-match@1.0.2": {
       "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
@@ -2492,6 +2496,7 @@
     "https://esm.sh/*@headlessui/react@1.7.17?alias=react:preact/compat,react-dom:preact/compat,client-only:preact/compat": "c586a2c7046e67dbe3244cce360f2dc273c21a8e2dfbab06adaee2fbb87b1733",
     "https://esm.sh/*@preact/signals-core@1.5.1": "382e1e909d94792c655d35c72854d3a06167442bd2e81190e3a682194163d8c8",
     "https://esm.sh/*@preact/signals@1.2.2": "8b174b406f1c00fdf3930fbb4ddc556162e6fd0dfe84a5ec300e9ac1776cbf42",
+    "https://esm.sh/*preact-render-to-string@6.1.0": "ce1c6902880f66372096778d76a4afcb1e7f10a7349939c146d5e33aee5962dd",
     "https://esm.sh/*preact-render-to-string@6.3.1": "07807f027acf54b994b630bbb2a923f5a835f9544e01144f67ab292e90a431e4",
     "https://esm.sh/@babel/helper-validator-identifier@7.22.20": "daace34e028130297fddf97f3ef6deb4b05ec3eb46f5c5cacd6eaa43d6323b0a",
     "https://esm.sh/@testing-library/jest-dom@6.1.4/matchers?pin=v133": "110238b541c8317bae51080270969cb01f8d8c65933bcd57c01f1f17a302c838",
@@ -2589,6 +2594,7 @@
     "https://esm.sh/v135/nth-check@2.1.1/denonext/nth-check.mjs": "638b4f5a22236cd05c7d1d43e5c6ea719695c4a8bc7beccdf8d97a434bea96dc",
     "https://esm.sh/v135/parse5-htmlparser2-tree-adapter@7.0.0/denonext/parse5-htmlparser2-tree-adapter.mjs": "2e8c24c6859e24e7c0f1e634574f8c014860868a603e85430b98212460e25091",
     "https://esm.sh/v135/parse5@7.1.2/denonext/parse5.mjs": "35bb04ec36a1c25c8cd8137296d64d16fd523a8ad1c2b63c41ba867fcd455c36",
+    "https://esm.sh/v135/preact-render-to-string@6.1.0/X-ZS8q/denonext/preact-render-to-string.mjs": "8ce71d44f2a197f8fafa24c8d1ac19e0d7fac5a171efae6154f8d754e1ae0ae4",
     "https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs": "bcaceb8c3938310aee3dd4f7b6f2136cf0b2b890988c2e6679485e052e76e920",
     "https://esm.sh/v135/react-sparklines@1.7.0/X-YS9jbGllbnQtb25seTpwcmVhY3QvY29tcGF0LHJlYWN0LWRvbTpwcmVhY3QvY29tcGF0LHJlYWN0OnByZWFjdC9jb21wYXQ/denonext/react-sparklines.mjs": "c2f66639a5b2564d0466c56ed9700bff4e6e6a42c4c44175218d08a291648199",
     "https://esm.sh/v136/cheerio@1.0.0-rc.12": "f2df09a207094c060115470643b70099ef967dba5238de17bdc6bb820cb9ac0d",
@@ -2605,6 +2611,7 @@
     "dependencies": [
       "jsr:@std/cli@~0.224.7",
       "npm:@tailwindcss/forms@0.5.7",
+      "npm:awesome-phonenumber@7.2.0",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
       "npm:natural@6.10.4",

@@ -3,7 +3,7 @@ import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandler } from './_middleware.tsx'
+import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
 import isString, {
   assertHasNonEmptyString,
 } from '../../../../../util/isString.ts'
@@ -52,7 +52,7 @@ function assertIsAddress(
   }
 }
 
-export const handler = postHandler(
+export const handler = postHandlerAsserts(
   assertIsAddress,
   async function updateAddress(ctx, patient_id, form_values) {
     const created_address = await addresses.insert(

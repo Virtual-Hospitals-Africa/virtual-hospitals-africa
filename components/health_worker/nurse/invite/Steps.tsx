@@ -3,6 +3,11 @@ import { useSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
+import {
+  gender,
+  national_id_number,
+  phone_number,
+} from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -62,14 +67,9 @@ const PersonalFormFields = z.object({
       message: 'Invalid email format',
     },
   ),
-  gender: z.enum(['male', 'female', 'non-binary']),
-  national_id_number: z.string().regex(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/),
-  mobile_number: z.optional(z.union([
-    z.string(),
-    z.number(),
-  ])).transform((value): undefined | string =>
-    typeof value === 'number' ? value.toString() : value
-  ),
+  gender,
+  national_id_number,
+  mobile_number: z.optional(phone_number),
   address: z.object({
     country: z.string(),
     administrative_area_level_1: z.string(),
