@@ -2,7 +2,11 @@ import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { assertAgeYearsKnown, IntakePage, postHandlerAsserts } from './_middleware.tsx'
+import {
+  assertAgeYearsKnown,
+  IntakePage,
+  postHandlerAsserts,
+} from './_middleware.tsx'
 import {
   FamilyType,
   MaritalStatus,

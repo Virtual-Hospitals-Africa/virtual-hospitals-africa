@@ -4,7 +4,12 @@ import * as patients from '../../../../../db/models/patients.ts'
 import compact from '../../../../../util/compact.ts'
 import omit from '../../../../../util/omit.ts'
 import { z } from 'zod'
-import { national_id_number, phone_number, gender, varchar255 } from '../../../../../util/validators.ts'
+import {
+  gender,
+  national_id_number,
+  phone_number,
+  varchar255,
+} from '../../../../../util/validators.ts'
 
 const PersonalSchema = z.object({
   first_name: varchar255,
@@ -16,14 +21,16 @@ const PersonalSchema = z.object({
   phone_number: z.optional(phone_number),
   date_of_birth: z.string().date(),
   gender,
-  ethnicity: z.optional(varchar255)
+  ethnicity: z.optional(varchar255),
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {
     message: 'Must provide either national id number or check no national id',
     path: ['national_id_number', 'no_national_id'],
   },
-).transform(({ avatar_media, first_name, middle_names, last_name, ...data }) => ({
+).transform((
+  { avatar_media, first_name, middle_names, last_name, ...data },
+) => ({
   ...omit(data, ['no_national_id']),
   avatar_media_id: avatar_media?.id,
   name: compact(
@@ -36,7 +43,7 @@ export const handler = postHandler(
   async function updatePersonal(
     ctx,
     patient_id,
-    form_values
+    form_values,
   ) {
     await patients.update(ctx.state.trx, {
       id: patient_id,

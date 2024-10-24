@@ -8,25 +8,31 @@ import * as validators from '../../util/validators.ts'
 describe('validators', () => {
   describe('national_id_number', () => {
     it('parses a legitimate national_id_number', () => {
-      const national_id_number = validators.national_id_number.parse('63-817312 A 56')
+      const national_id_number = validators.national_id_number.parse(
+        '63-817312 A 56',
+      )
       assertEquals(national_id_number, '63-817312 A 56')
     })
-    
+
     it('parses a legitimate national_id_number in lowercase', () => {
-      const national_id_number = validators.national_id_number.parse('63-817312 a 56')
+      const national_id_number = validators.national_id_number.parse(
+        '63-817312 a 56',
+      )
       assertEquals(national_id_number, '63-817312 A 56')
     })
 
     it('throws an error on an illegitimate national_id_number', () => {
-      const error = assertThrows(() => validators.national_id_number.parse('63-8312 A 56'))
+      const error = assertThrows(() =>
+        validators.national_id_number.parse('63-8312 A 56')
+      )
       assert(error instanceof ZodError)
       assertEquals(error.issues, [
         {
-          validation: "regex",
-          code: "invalid_string",
-          message: "Invalid",
-          path: []
-        }
+          validation: 'regex',
+          code: 'invalid_string',
+          message: 'Invalid',
+          path: [],
+        },
       ])
     })
   })
@@ -48,14 +54,16 @@ describe('validators', () => {
     })
 
     it('throws an error on an illegitimate phone number', () => {
-      const error = assertThrows(() => validators.phone_number.parse('MY HAMSTER IS NAMED TERRENCE'))
+      const error = assertThrows(() =>
+        validators.phone_number.parse('MY HAMSTER IS NAMED TERRENCE')
+      )
       assert(error instanceof ZodError)
       assertEquals(error.issues, [
         {
-          code: "custom",
-          message: "Invalid phone number",
-          path: []
-        }
+          code: 'custom',
+          message: 'Invalid phone number',
+          path: [],
+        },
       ])
     })
   })

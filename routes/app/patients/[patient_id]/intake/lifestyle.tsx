@@ -1,6 +1,10 @@
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { assertAgeYearsKnown, IntakePage, postHandlerAsserts } from './_middleware.tsx'
+import {
+  assertAgeYearsKnown,
+  IntakePage,
+  postHandlerAsserts,
+} from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'

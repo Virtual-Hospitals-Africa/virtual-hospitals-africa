@@ -32,7 +32,10 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { groupByMapped } from '../../../../../util/groupBy.ts'
 import { IntakeStep } from '../../../../../db.d.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import { parseRequestAsserts, parseRequest } from '../../../../../util/parseForm.ts'
+import {
+  parseRequest,
+  parseRequestAsserts,
+} from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
@@ -369,7 +372,7 @@ export function postHandler<PostBody>(
     const values = parse(form_values)
     return {
       ...values,
-      send_to: form_values.send_to
+      send_to: form_values.send_to,
     }
   }
 
