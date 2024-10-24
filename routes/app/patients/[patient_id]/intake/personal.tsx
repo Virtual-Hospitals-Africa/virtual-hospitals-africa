@@ -4,19 +4,19 @@ import * as patients from '../../../../../db/models/patients.ts'
 import compact from '../../../../../util/compact.ts'
 import omit from '../../../../../util/omit.ts'
 import { z } from 'zod'
-import { national_id_number, phone_number, gender } from '../../../../../util/validators.ts'
+import { national_id_number, phone_number, gender, varchar255 } from '../../../../../util/validators.ts'
 
 const PersonalSchema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
-  middle_names: z.optional(z.string()),
-  avatar_media: z.optional(z.object({ id: z.string() })),
+  first_name: varchar255,
+  last_name: varchar255,
+  middle_names: z.optional(varchar255),
+  avatar_media: z.optional(z.object({ id: z.string().uuid() })),
   national_id_number: z.optional(national_id_number),
   no_national_id: z.optional(z.boolean()),
   phone_number: z.optional(phone_number),
   date_of_birth: z.string().date(),
   gender,
-  ethnicity: z.optional(z.string())
+  ethnicity: z.optional(varchar255)
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {

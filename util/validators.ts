@@ -17,3 +17,5 @@ export const phone_number = z.string().or(z.number())
   .transform(data => data.number.e164)
 
 export const gender = z.enum(['male', 'female', 'non-binary'])
+
+export const varchar255 = z.string().min(1).max(255)
