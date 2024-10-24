@@ -630,7 +630,7 @@ describe('/app/patients/[patient_id]/intake', {
             next_of_kin: false,
             patient_id: patient_family.guardians[0].patient_id,
             patient_name: 'New Guardian',
-            patient_phone_number: Number(guardian_phone),
+            patient_phone_number: guardian_phone,
           },
         ],
         religion: 'Non-Religious',

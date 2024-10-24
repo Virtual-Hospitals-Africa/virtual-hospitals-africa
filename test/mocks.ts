@@ -52,7 +52,7 @@ export function randomDigits(length: number) {
 }
 
 export function randomPhoneNumber() {
-  return '263' + randomDigits(9)
+  return '+26377' + randomDigits(7)
 }
 
 export function randomLetter() {

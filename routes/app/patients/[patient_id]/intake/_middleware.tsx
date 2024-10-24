@@ -32,7 +32,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { groupByMapped } from '../../../../../util/groupBy.ts'
 import { IntakeStep } from '../../../../../db.d.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts, parseRequest } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
@@ -314,7 +314,8 @@ function assertIsSendTo(
   }
 }
 
-export function postHandler<PostBody>(
+/* @deprecated */
+export function postHandlerAsserts<PostBody>(
   assertion: (
     form_values: unknown,
   ) => asserts form_values is PostBody,
@@ -340,6 +341,44 @@ export function postHandler<PostBody>(
         ctx.state.trx,
         req,
         assertSendToAndPatientIntake,
+      )
+      return upsertPatientAndRedirect(
+        ctx,
+        send_to,
+        () => updatePatient(ctx, ctx.state.patient.id, patient as PostBody),
+      )
+    },
+  }
+}
+
+export function postHandler<PostBody>(
+  parse: (form_values: unknown) => PostBody,
+  updatePatient: (
+    ctx: IntakeContext,
+    patient_id: string,
+    patient_updates: PostBody,
+  ) => Promise<void>,
+): LoggedInHealthWorkerHandler<IntakeContext> {
+  function parseSendToAndPatientIntake(
+    form_values: unknown,
+  ): PostBody & {
+    send_to?: Maybe<SendToFormSubmission>
+  } {
+    assertOr400(isObjectLike(form_values))
+    assertIsSendTo(form_values.send_to)
+    const values = parse(form_values)
+    return {
+      ...values,
+      send_to: form_values.send_to
+    }
+  }
+
+  return {
+    async POST(req, ctx) {
+      const { send_to, ...patient } = await parseRequest(
+        ctx.state.trx,
+        req,
+        parseSendToAndPatientIntake,
       )
       return upsertPatientAndRedirect(
         ctx,

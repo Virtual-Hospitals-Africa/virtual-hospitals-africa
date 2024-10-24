@@ -69,7 +69,7 @@ describe(
         body.set('gender', 'female')
         body.set('national_id_number', '08-123456 D 53')
         body.set('date_of_birth', '2020-01-01')
-        body.set('mobile_number', '5555555555')
+        body.set('mobile_number', '+1 (203) 555-5555')
 
         body.set('address.country', address.country)
         body.set(
@@ -106,7 +106,7 @@ describe(
           gender: 'female',
           last_name: 'Nurse',
           middle_names: 'Zoom Zoom',
-          mobile_number: '5555555555',
+          mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',
           address,
         })
@@ -131,7 +131,7 @@ describe(
           $('input[name="national_id_number"]').val(),
           '08-123456 D 53',
         )
-        assertEquals($('input[name="mobile_number"]').val(), '5555555555')
+        assertEquals($('input[name="mobile_number"]').val(), '+12035555555')
 
         assert(
           $('input[name="address.country"]').val(),
@@ -184,7 +184,7 @@ describe(
           gender: 'female',
           last_name: 'Nurse',
           middle_names: 'Zoom Zoom',
-          mobile_number: '5555555555',
+          mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
@@ -259,7 +259,7 @@ describe(
         assertEquals(registrationDetails.date_of_birth, '2020-01-01')
         assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
         assertEquals(registrationDetails.gender, 'female')
-        assertEquals(registrationDetails.mobile_number, '5555555555')
+        assertEquals(registrationDetails.mobile_number, '+12035555555')
         assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')

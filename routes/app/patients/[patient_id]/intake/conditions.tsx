@@ -4,7 +4,7 @@ import * as patient_allergies from '../../../../../db/models/patient_allergies.t
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandler } from './_middleware.tsx'
+import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
 
 type ConditionsFormValues = {
   allergies: { id: string; name: string }[]
@@ -19,7 +19,7 @@ function assertIsConditions(
   patient.allergies = patient.allergies || []
 }
 
-export const handler = postHandler(
+export const handler = postHandlerAsserts(
   assertIsConditions,
   async function updateConditions(ctx, patient_id, form_values) {
     const upserting_conditions = patient_conditions.upsertPreExisting(
