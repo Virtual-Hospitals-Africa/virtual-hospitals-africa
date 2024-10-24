@@ -18,7 +18,6 @@ import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { Signal } from '@preact/signals'
 import { Label } from '../../components/library/Label.tsx'
-import PhoneInput from 'react-phone-number-input'
 
 export const NoLabelButSpaceAsPlaceholder = Symbol(
   'NoLabelButSpaceAsPlaceholder',
@@ -488,21 +487,6 @@ export function PhoneNumberInput(
         onBlur={onBlur}
       />
     </LabeledInput>
-  )
-}
-
-export function PhoneInputWithFormat(
-  {
-    value
-  } : {
-    value: string
-  }
-) {
-  return (
-    <PhoneInput
-      placeholder="Enter phone number"
-      value={value}
-    />
   )
 }
 
