@@ -8,19 +8,10 @@ function baseQuery(
 ): SelectQueryBuilder<DB, 'conditions', Condition> {
   return trx
     .selectFrom('conditions')
-    .select([
-      'conditions.id',
-      'conditions.name',
-      'conditions.term_icd9_code',
-      'conditions.term_icd9_text',
-      'conditions.consumer_name',
-      'conditions.is_procedure',
-      'conditions.info_link_href',
-      'conditions.info_link_text',
-    ])
+    .selectAll()
 }
 
-const model = base({
+export default base({
   top_level_table: 'conditions',
   baseQuery,
   formatResult: (x: Condition): Condition => x,
@@ -35,7 +26,3 @@ const model = base({
     return qb.where('is_procedure', '=', opts.is_procedure)
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
