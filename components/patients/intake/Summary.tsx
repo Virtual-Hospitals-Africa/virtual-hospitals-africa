@@ -289,6 +289,16 @@ function OccupationSummary(
               Work Satisfaction: {occupation.job.work_satisfaction}
             </span>
           )}
+          {occupation?.job?.descendants_employed && (
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Descendants employed or in the diaspora
+            </span>
+          )}
+          {occupation?.job?.require_assistance && (
+            <span className='mt-2 flex flex-col gap-2 pl-4'>
+              Requires assistance with daily activities
+            </span>
+          )}
         </div>
       )}
     </>
