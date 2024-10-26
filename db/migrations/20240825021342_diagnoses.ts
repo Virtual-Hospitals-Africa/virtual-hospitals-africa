@@ -9,7 +9,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('provider_id', 'uuid', (col) =>
         col.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('doctor_review_id', 'uuid', (col) =>
-        col.notNull().references('doctor_reviews.id').onDelete('cascade'))
+        col.references('doctor_reviews.id').onDelete('cascade'))
       .addColumn('patient_encounter_id', 'uuid', (col) =>
         col.references('patient_encounters.id').onDelete('cascade'))
       .addCheckConstraint(

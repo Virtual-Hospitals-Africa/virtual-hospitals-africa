@@ -52,7 +52,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     await diagnoses.upsertForReview(
       ctx.state.trx,
       {
-        review: ctx.state.doctor_review,
+        review_id: ctx.state.doctor_review.review_id,
+        patient_id: ctx.state.doctor_review.patient.id,
+        employment_id: ctx.state.doctor_review.employment_id,
         diagnoses: patient_diagnoses,
       },
     )
