@@ -54,6 +54,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       {
         review_id: ctx.state.doctor_review.review_id,
         patient_id: ctx.state.doctor_review.patient.id,
+        encounter_id: ctx.state.doctor_review.encounter.id,
         employment_id: ctx.state.doctor_review.employment_id,
         diagnoses: patient_diagnoses,
       },
@@ -69,8 +70,11 @@ export default async function DiagnosisPage(
   ctx: ReviewContext,
 ) {
   const { trx, doctor_review: { review_id } } = ctx.state
-  const patient_diagnoses = await diagnoses.getFromReview(trx, { review_id })
-
+  const patient_diagnoses = await diagnoses.getFromReview(trx, {
+    review_id,
+    employment_id: ctx.state.doctor_review.employment_id,
+    encounter_id: ctx.state.doctor_review.encounter.id,
+  })
   return (
     <ReviewLayout ctx={ctx}>
       <FormSection header='Diagnoses'>

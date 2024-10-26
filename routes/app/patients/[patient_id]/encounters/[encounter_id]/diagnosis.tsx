@@ -77,6 +77,7 @@ export default EncounterPage(
   ) {
     const patient_diagnoses = await diagnoses.getFromReview(ctx.state.trx, {
       encounter_id: encounter.encounter_id,
+      employment_id: ctx.state.encounter_provider.employment_id,
     })
     return (
       <FormSection header='Diagnoses'>

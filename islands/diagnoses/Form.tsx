@@ -1,4 +1,4 @@
-import { Diagnosis } from '../../types.ts'
+import { DiagnosisGroup } from '../../types.ts'
 import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import DiagnosisFormRow, { DiagnosisFormRowState } from './FormRow.tsx'
@@ -9,53 +9,76 @@ type DiagnosesFormState = Array<
 >
 
 export default function DiagnosesForm(props: {
-  diagnoses: Diagnosis[]
+  diagnoses: DiagnosisGroup
 }): JSX.Element {
-  const diagnoses: Signal<DiagnosesFormState> = useSignal<DiagnosesFormState>(
-    props.diagnoses,
+  const selfDiagnoses: Signal<DiagnosesFormState> = useSignal<
+    DiagnosesFormState
+  >(
+    props.diagnoses.self,
   )
 
   const addDiagnosis = () =>
-    diagnoses.value = [
-      ...diagnoses.value,
+    selfDiagnoses.value = [
+      ...selfDiagnoses.value,
       { comorbidities: [], medications: [] },
     ]
 
-  const first_not_removed = diagnoses.value.find(
+  const first_not_removed = selfDiagnoses.value.find(
     (d) => !d.removed,
   )
 
   return (
-    <div className='flex flex-col gap-3'>
-      {diagnoses.value.map((
-        state,
-        index,
-      ) =>
-        !state.removed && (
-          <DiagnosisFormRow
-            index={index}
-            state={state}
-            labelled={first_not_removed === state}
-            value={state.id
-              ? props.diagnoses.find(
-                (diagnosis) => diagnosis.id === state.id,
-              )
-              : undefined}
-            remove={() =>
-              diagnoses.value = diagnoses.value.map((diagnosis, j) =>
-                j === index ? { removed: true } : diagnosis
-              )}
-            update={(updatedDiagnosis) =>
-              diagnoses.value = diagnoses.value.map((diagnosis, j) =>
-                j === index ? updatedDiagnosis : diagnosis
-              )}
-          />
-        )
-      )}
-      <AddRow
-        text='Add Diagnosis'
-        onClick={addDiagnosis}
-      />
-    </div>
+    <section className='flex flex-col gap-4'>
+      <div>
+        <h3 className='text-sm font-semibold text-gray-900'>
+          Made by others
+        </h3>
+        <div className='flex flex-col gap-3'>
+          {props.diagnoses.others.map((diagnoses) => (
+            <p>
+              {diagnoses.name} since {diagnoses.start_date}{' '}
+              <span className='italic'>
+                diagnosed by Dr. {diagnoses.diagnosed_by}{' '}
+                {diagnoses.diagnosed_at}
+              </span>
+            </p>
+          ))}
+        </div>
+      </div>
+      <div className='flex flex-col gap-3'>
+        <h3 className='text-sm font-semibold text-gray-900'>
+          Made by you
+        </h3>
+        {selfDiagnoses.value.map((
+          state,
+          index,
+        ) =>
+          !state.removed && (
+            <DiagnosisFormRow
+              index={index}
+              state={state}
+              labelled={first_not_removed === state}
+              value={state.id
+                ? props.diagnoses.self.find(
+                  (diagnosis) => diagnosis.id === state.id,
+                )
+                : undefined}
+              remove={() =>
+                selfDiagnoses.value = selfDiagnoses.value.map((diagnosis, j) =>
+                  j === index ? { removed: true } : diagnosis
+                )}
+              update={(updatedDiagnosis) =>
+                selfDiagnoses.value = selfDiagnoses.value.map((diagnosis, j) =>
+                  j === index ? updatedDiagnosis : diagnosis
+                )}
+            />
+          )
+        )}
+        <AddRow
+          text='Add Diagnosis'
+          onClick={addDiagnosis}
+        />
+      </div>
+    </section>
   )
 }
