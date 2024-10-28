@@ -1,65 +1,30 @@
 import * as addresses from '../../../../../db/models/addresses.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
-import isString, {
-  assertHasNonEmptyString,
-} from '../../../../../util/isString.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
+import { z } from 'zod'
 
-type AddressFormValues = {
-  address: {
-    street?: string
-    locality: string
-    administrative_area_level_2?: string
-    administrative_area_level_1?: string
-    country: string
-  }
-  nearest_organization_id: string
-  nearest_organization_name: string
-  primary_doctor_id: string
-  primary_doctor_name: string
-}
+export const AddressSchema = z.object({
+  address: z.object({
+    street: z.string().optional(),
+    locality: z.string(),
+    administrative_area_level_2: z.string().optional(),
+    administrative_area_level_1: z.string().optional(),
+    country: z.string(),
+  }),
+  nearest_organization_id: z.string().optional(),
+  nearest_organization_name: z.string().optional(),
+  primary_doctor_id: z.string().optional(),
+  primary_doctor_name: z.string().optional(),
+})
 
-function assertIsAddress(
-  patient: unknown,
-): asserts patient is AddressFormValues {
-  assertOr400(isObjectLike(patient))
-  assertOr400(isObjectLike(patient.address))
-  assertHasNonEmptyString(patient.address, 'locality')
-  assertHasNonEmptyString(patient.address, 'country')
-
-  if (patient.street) assertOr400(isString(patient.street))
-  if (patient.administrative_area_level_2) assertOr400(isString(patient.street))
-  if (patient.administrative_area_level_1) assertOr400(isString(patient.street))
-
-  assertOr400(
-    !!patient.nearest_organization_id &&
-      typeof patient.nearest_organization_id === 'string',
-  )
-  assertOr400(
-    !!(patient.primary_doctor_id &&
-      typeof patient.primary_doctor_id === 'string') ||
-      patient.primary_doctor_name,
-  )
-  const primary_doctor_id = patient.primary_doctor_id
-  const primary_doctor_name = patient.primary_doctor_name
-  delete patient.primary_doctor_name
-  delete patient.nearest_organization_name
-  if (!primary_doctor_id && primary_doctor_name) {
-    patient.unregistered_primary_doctor_name = primary_doctor_name
-  }
-}
-
-export const handler = postHandlerAsserts(
-  assertIsAddress,
+export const handler = postHandler(
+  AddressSchema.parse,
   async function updateAddress(ctx, patient_id, form_values) {
     const created_address = await addresses.insert(
       ctx.state.trx,
       form_values.address,
     )
-
     await patients.update(ctx.state.trx, {
       id: patient_id,
       address_id: created_address.id,
