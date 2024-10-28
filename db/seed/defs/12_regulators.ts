@@ -16,7 +16,6 @@ const regulators = [
 
 export default create(['regulators'], addRegulators)
 
-// Add a test organization with all VHA employees as admins
 async function addRegulators(trx: TrxOrDb) {
   await trx
     .insertInto('regulators')
