@@ -256,7 +256,7 @@ describe('/app/patients/[patient_id]/intake', {
       'pre_existing_conditions.0.medications.0.medication_id',
       String(tablet.id),
     )
-    body.set('pre_existing_conditions.0.medications.0.start_date', '1989-01-12',)
+    body.set('pre_existing_conditions.0.medications.0.start_date', '1989-01-12')
     body.set(
       'pre_existing_conditions.0.medications.0.strength',
       String(tablet.strength_numerators[0]),
@@ -500,11 +500,14 @@ describe('/app/patients/[patient_id]/intake', {
       'pre_existing_conditions.1.medications.0.medication_id',
       String(tablet.id),
     )
-    body.set('pre_existing_conditions.1.medications.0.start_date','1989-01-12'),
     body.set(
-      'pre_existing_conditions.1.medications.0.strength',
-      String(tablet.strength_numerators[0]),
-    )
+      'pre_existing_conditions.1.medications.0.start_date',
+      '1989-01-12',
+    ),
+      body.set(
+        'pre_existing_conditions.1.medications.0.strength',
+        String(tablet.strength_numerators[0]),
+      )
     body.set('pre_existing_conditions.1.medications.0.route', tablet.routes[0])
     body.set('pre_existing_conditions.1.medications.0.dosage', '2')
     body.set(

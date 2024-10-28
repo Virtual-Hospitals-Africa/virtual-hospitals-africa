@@ -17,7 +17,9 @@ export const ConditionsSchema = z.object({
       name: z.string().optional(),
     }).optional(),
   ).optional()
-  .transform((allergies) => allergies?.filter((allergy) => allergy !== undefined) || []),
+    .transform((allergies) =>
+      allergies?.filter((allergy) => allergy !== undefined) || []
+    ),
   pre_existing_conditions: z.array(
     z.object({
       id: z.string(),
@@ -27,8 +29,8 @@ export const ConditionsSchema = z.object({
         z.object({
           id: z.string().optional(),
           name: z.string().optional(),
-          medication_id: z.string().nullable(),
-          manufactured_medication_id: z.string().nullable(),
+          medication_id: z.string().optional(),
+          manufactured_medication_id: z.string().optional(),
           strength: z.number(),
           route: z.string(),
           dosage: z.number(),
@@ -36,11 +38,15 @@ export const ConditionsSchema = z.object({
           start_date: z.string().date(),
           end_date: z.string().date().optional(),
           special_instructions: z.string().optional(),
-        },
-      )
-      .refine(medication => medication.medication_id || medication.manufactured_medication_id, {
-        message: 'Must provide either medication or manufactured medication',
-      })
+        })
+          .refine(
+            (medication) =>
+              medication.medication_id || medication.manufactured_medication_id,
+            {
+              message:
+                'Must provide either medication or manufactured medication',
+            },
+          ),
       ).optional(),
       comorbidities: z.array(
         z.object({
@@ -49,10 +55,9 @@ export const ConditionsSchema = z.object({
         }),
       ).optional(),
     })
-    .refine(condition => condition.start_date, {
-      message: 'Must provide start date',
-    }
-    )
+      .refine((condition) => condition.start_date, {
+        message: 'Must provide start date',
+      }),
   ).default([]),
 })
 

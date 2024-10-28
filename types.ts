@@ -2352,8 +2352,8 @@ export type PatientMedicationUpsert = {
   route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
-  medication_id: string | null
-  manufactured_medication_id: string | null
+  medication_id?: Maybe<string>
+  manufactured_medication_id?: Maybe<string>
   special_instructions?: Maybe<string>
 }
 
