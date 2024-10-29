@@ -1,20 +1,35 @@
-import { DiagnosisGroup } from '../../types.ts'
+import { DiagnosisGroup, Maybe } from '../../types.ts'
 import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import DiagnosisFormRow, { DiagnosisFormRowState } from './FormRow.tsx'
 import { Signal, useSignal } from '@preact/signals'
+import { AgreeDisagreeQuestion } from '../../islands/form/Inputs.tsx'
 
-type DiagnosesFormState = Array<
+type SelfDiagnosesFormState = Array<
   DiagnosisFormRowState | { removed: true }
+>
+
+type OthersDiagnosesFormState = Array<
+  {
+    id?: string
+    diagnosis_id?: string
+    approval?: Maybe<'agree' | 'disagree'>
+  }
 >
 
 export default function DiagnosesForm(props: {
   diagnoses: DiagnosisGroup
 }): JSX.Element {
-  const selfDiagnoses: Signal<DiagnosesFormState> = useSignal<
-    DiagnosesFormState
+  const selfDiagnoses: Signal<SelfDiagnosesFormState> = useSignal<
+    SelfDiagnosesFormState
   >(
     props.diagnoses.self,
+  )
+
+  const othersDiagnoses: Signal<OthersDiagnosesFormState> = useSignal<
+    OthersDiagnosesFormState
+  >(
+    props.diagnoses.others,
   )
 
   const addDiagnosis = () =>
@@ -29,22 +44,48 @@ export default function DiagnosesForm(props: {
 
   return (
     <section className='flex flex-col gap-4'>
-      <div>
-        <h3 className='text-sm font-semibold text-gray-900'>
-          Made by others
-        </h3>
-        <div className='flex flex-col gap-3'>
-          {props.diagnoses.others.map((diagnoses) => (
-            <p>
-              {diagnoses.name} since {diagnoses.start_date}{' '}
-              <span className='italic'>
-                diagnosed by Dr. {diagnoses.diagnosed_by}{' '}
-                {diagnoses.diagnosed_at}
-              </span>
-            </p>
-          ))}
+      {othersDiagnoses.value.length > 0 && (
+        <div>
+          <h3 className='text-sm font-semibold text-gray-900'>
+            Made by others
+          </h3>
+          <div className='flex flex-col gap-3'>
+            {othersDiagnoses.value.map((state, index) => {
+              return (
+                <div className='flex items-center gap-2' key={index}>
+                  <AgreeDisagreeQuestion
+                    name={`diagnoses_collaborations.${index}.approval`}
+                    onChange={(approval) => {
+                      othersDiagnoses.value = othersDiagnoses.value.map((
+                        diagnosis,
+                        j,
+                      ) => j === index ? { ...diagnosis, approval } : diagnosis)
+                    }}
+                    value={state.id
+                      ? othersDiagnoses.value.find((od) => od.id === state.id)
+                        ?.approval
+                      : null}
+                  />
+                  <input
+                    type='hidden'
+                    name={`diagnoses_collaborations.${index}.diagnosis_id`}
+                    value={state.diagnosis_id}
+                  />
+                  <p>
+                    {props.diagnoses.others[index].name} since{' '}
+                    {props.diagnoses.others[index].start_date}{' '}
+                    <span className='italic'>
+                      diagnosed by Dr.{' '}
+                      {props.diagnoses.others[index].diagnosed_by}{' '}
+                      {props.diagnoses.others[index].diagnosed_at}
+                    </span>
+                  </p>
+                </div>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
       <div className='flex flex-col gap-3'>
         <h3 className='text-sm font-semibold text-gray-900'>
           Made by you

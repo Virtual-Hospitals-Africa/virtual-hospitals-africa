@@ -231,6 +231,7 @@ export type PatientCondition = {
 
 export type MedicalConditionBase = {
   id: string
+  diagnosis_id: string
   name: string
   start_date: string
   patient_condition_id: string
@@ -285,12 +286,16 @@ export type PreExistingConditionWithDrugs = MedicalConditionBase & {
 
 export type DiagnosisGroup = {
   self: Diagnosis[]
-  others: Diagnosis[]
+  others: DiagnosesCollaboration[]
 }
 
-export type Diagnosis = MedicalConditionBase & {
+export type Diagnosis = MedicalConditionBase
+
+export type DiagnosesCollaboration = MedicalConditionBase & {
   diagnosed_by: string
   diagnosed_at: string
+  approval_by?: Maybe<string>
+  approval?: Maybe<'agree' | 'disagree'>
 }
 
 export type PreExistingAllergy = {

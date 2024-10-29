@@ -2,9 +2,7 @@ import { type Config } from 'tailwindcss'
 import formsPlugin from '@tailwindcss/forms'
 
 export default {
-  content: [
-    '{routes,islands,components}/**/*.{ts,tsx}',
-  ],
+  content: ['{routes,islands,components}/**/*.{ts,tsx}'],
   theme: {
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
@@ -16,6 +14,9 @@ export default {
         '4xl': '2rem',
         '5xl': '3rem',
         '6xl': '5rem',
+      },
+      strokeWidth: {
+        '3': '3px',
       },
     },
     fontSize: {
@@ -34,7 +35,5 @@ export default {
       '9xl': ['8rem', { lineHeight: '1' }],
     },
   },
-  plugins: [
-    formsPlugin,
-  ],
+  plugins: [formsPlugin],
 } satisfies Config

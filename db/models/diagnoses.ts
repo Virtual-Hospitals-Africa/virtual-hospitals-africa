@@ -1,3 +1,4 @@
+import { sql as rawSql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { DiagnosisGroup, TrxOrDb } from '../../types.ts'
 import partition from '../../util/partition.ts'
@@ -29,6 +30,11 @@ export async function getFromReview(
       'employment.health_worker_id',
       'health_workers.id',
     )
+    .leftJoin(
+      'diagnoses_collaboration',
+      'diagnoses.id',
+      'diagnoses_collaboration.diagnosis_id',
+    )
 
   if (review_id && encounter_id) {
     sql = sql.where((eb) =>
@@ -48,9 +54,16 @@ export async function getFromReview(
       'conditions.name',
       'diagnoses.patient_condition_id',
       'diagnoses.provider_id',
+      'diagnoses.id as diagnosis_id',
       'health_workers.name as diagnosed_by',
       isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
       isoDate(eb.ref('diagnoses.updated_at')).as('diagnosed_at'),
+      'diagnoses_collaboration.approver_id as approval_by',
+      rawSql<'agree' | 'disagree'>`CASE 
+          WHEN diagnoses_collaboration.is_approved = true THEN 'agree' 
+          WHEN diagnoses_collaboration.is_approved = false THEN 'disagree' 
+          ELSE null 
+        END`.as('approval'),
     ])
     .execute()
 
@@ -68,6 +81,7 @@ export async function upsertForReview(
     patient_id,
     employment_id,
     diagnoses,
+    diagnoses_collaborations,
   }: {
     patient_id: string
     employment_id: string
@@ -75,55 +89,78 @@ export async function upsertForReview(
       condition_id: string
       start_date: string
     }[]
+    diagnoses_collaborations: {
+      diagnosis_id: string
+      is_approved: boolean
+    }[]
     encounter_id: string
     review_id?: string
   },
 ): Promise<void> {
-  let existing_diagnoses: DiagnosisGroup = {
-    self: [],
-    others: [],
-  }
-
-  existing_diagnoses = await getFromReview(trx, {
+  const existing_diagnoses = await getFromReview(trx, {
     review_id,
     employment_id,
     encounter_id,
   })
 
-  const [to_update, to_insert] = partition(
+  const [to_update_diagnoses, to_insert_diagnoses] = partition(
     diagnoses,
     (diagnosis) =>
       existing_diagnoses.self.some(
-        (existing_diagnosis) =>
-          existing_diagnosis.id === diagnosis.condition_id,
+        (existing_diagnosis) => existing_diagnosis.id === diagnosis.condition_id
+      )
+  )
+  const [to_update_collaborations, to_insert_collaborations] = partition(
+    diagnoses_collaborations,
+    (diagnoses_collaboration) =>
+      existing_diagnoses.others.some(
+        (existing_diagnoses_collaboration) =>
+          existing_diagnoses_collaboration.diagnosis_id ===
+            diagnoses_collaboration.diagnosis_id &&
+          !!existing_diagnoses_collaboration.approval_by,
       ),
   )
 
-  const to_delete = existing_diagnoses.self.filter(
+  const inserting_collaborations = to_insert_collaborations.length &&
+    Promise.all(
+      to_insert_collaborations.map(async (d) => {
+        await trx
+          .insertInto('diagnoses_collaboration')
+          .values({
+            ...d,
+            approver_id: employment_id,
+          })
+          .execute()
+      }),
+    )
+
+  const to_delete_diagnoses = existing_diagnoses.self.filter(
     (existing_diagnosis) =>
       !diagnoses.some(
         (diagnosis) => existing_diagnosis.id === diagnosis.condition_id,
       ),
   )
 
-  const deleting = to_delete.length &&
+  const deleting_diagnoses =
+    to_delete_diagnoses.length &&
     trx
       .deleteFrom('patient_conditions')
       .where(
         'id',
         'in',
-        to_delete.map((diagnosis) => diagnosis.patient_condition_id),
+        to_delete_diagnoses.map((diagnosis) => diagnosis.patient_condition_id)
       )
       .execute()
 
   console.log('await deleting')
-  await deleting
+  await deleting_diagnoses
 
   const isInDoctorReview = review_id !== undefined
 
-  const inserting = to_insert.length &&
+  const inserting_diagnoses =
+    to_insert_diagnoses.length &&
     Promise.all(
-      to_insert.map(async (d) => {
+      to_insert_diagnoses.map(async (d) => {
         const { id: patient_condition_id } = await trx
           .insertInto('patient_conditions')
           .values({
@@ -143,17 +180,17 @@ export async function upsertForReview(
             ...(!isInDoctorReview && { patient_encounter_id: encounter_id }),
           })
           .execute()
-      }),
+      })
     )
 
   console.log('await inserting')
-  await inserting
+  await inserting_diagnoses
   console.log('sweklkwlelkew inserting')
 
-  const updating = Promise.all(
-    to_update.map((d) => {
+  const updating_diagnoses = Promise.all(
+    to_update_diagnoses.map((d) => {
       const matching_diagnosis = existing_diagnoses.self.find(
-        (existing_diagnosis) => existing_diagnosis.id === d.condition_id,
+        (existing_diagnosis) => existing_diagnosis.id === d.condition_id
       )
       assert(matching_diagnosis, 'matching_diagnosis should exist')
       if (matching_diagnosis.start_date !== d.start_date) {
@@ -163,8 +200,38 @@ export async function upsertForReview(
           .where('id', '=', matching_diagnosis.patient_condition_id)
           .execute()
       }
-    }),
+    })
   )
 
-  await Promise.all([deleting, inserting, updating])
+  const updating_collaborations = to_update_collaborations.length &&
+    Promise.all(
+      to_update_collaborations.map((d) => {
+        const matching_diagnoses_collaboration = existing_diagnoses.others.find(
+          (existing_diagnoses_collaboration) =>
+            existing_diagnoses_collaboration.diagnosis_id === d.diagnosis_id,
+        )
+        assert(
+          matching_diagnoses_collaboration,
+          'matching_diagnoses_collaboration should exist',
+        )
+        return trx
+          .updateTable('diagnoses_collaboration')
+          .set('is_approved', d.is_approved)
+          .where(
+            'diagnosis_id',
+            '=',
+            matching_diagnoses_collaboration.diagnosis_id,
+          )
+          .where('approver_id', '=', employment_id)
+          .execute()
+      }),
+    )
+
+  await Promise.all([
+    deleting_diagnoses,
+    inserting_diagnoses,
+    updating_diagnoses,
+    inserting_collaborations,
+    updating_collaborations,
+  ])
 }

@@ -1,6 +1,7 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import {
   Diagnosis,
+  DiagnosesCollaboration,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
@@ -13,6 +14,7 @@ import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]
+  diagnoses_collaborations: DiagnosesCollaboration[]
 }
 
 function assertIsDiagnoses(
@@ -28,6 +30,18 @@ function assertIsDiagnoses(
       assertOr400(
         typeof diagnosis.id === 'string',
         'Each diagnosis must have an id of type string',
+      )
+    }
+  }
+  if (data.diagnoses_collaborations !== undefined) {
+    assertOr400(
+      Array.isArray(data.diagnoses_collaborations),
+      'diagnoses_collaborations must be an array',
+    )
+    for (const diagnoses_collaboration of data.diagnoses_collaborations) {
+      assertOr400(
+        typeof diagnoses_collaboration.diagnosis_id === 'string',
+        'Each diagnoses_collaboration must have an diagnosis_id of type string',
       )
     }
   }
@@ -49,6 +63,14 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       start_date: d.start_date,
     }))
 
+    const diagnoses_collaborations = (data.diagnoses_collaborations || [])
+      .filter((d) => 'approval' in d).map(
+        (d) => ({
+          diagnosis_id: d.diagnosis_id,
+          is_approved: d.approval === 'agree',
+        }),
+      )
+
     await diagnoses.upsertForReview(
       ctx.state.trx,
       {
@@ -57,6 +79,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         encounter_id: ctx.state.doctor_review.encounter.id,
         employment_id: ctx.state.doctor_review.employment_id,
         diagnoses: patient_diagnoses,
+        diagnoses_collaborations,
       },
     )
 

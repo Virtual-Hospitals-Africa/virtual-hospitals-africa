@@ -373,6 +373,15 @@ export interface Diagnoses {
   updated_at: Generated<Timestamp>
 }
 
+export interface DiagnosesCollaboration {
+  approver_id: string
+  created_at: Generated<Timestamp>
+  diagnosis_id: string
+  id: Generated<string>
+  is_approved: boolean
+  updated_at: Generated<Timestamp>
+}
+
 export interface DiagnosticTests {
   name: string
 }
@@ -1445,6 +1454,7 @@ export interface DB {
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnoses: Diagnoses
+  diagnoses_collaboration: DiagnosesCollaboration
   diagnostic_tests: DiagnosticTests
   districts: Districts
   doctor_registration_details: DoctorRegistrationDetails
