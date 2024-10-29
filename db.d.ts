@@ -377,6 +377,7 @@ export interface DiagnosesCollaboration {
   approver_id: string
   created_at: Generated<Timestamp>
   diagnosis_id: string
+  disagree_reason: string | null
   id: Generated<string>
   is_approved: boolean
   updated_at: Generated<Timestamp>

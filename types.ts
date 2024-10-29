@@ -296,6 +296,7 @@ export type DiagnosesCollaboration = MedicalConditionBase & {
   diagnosed_at: string
   approval_by?: Maybe<string>
   approval?: Maybe<'agree' | 'disagree'>
+  disagree_reason?: Maybe<string>
 }
 
 export type PreExistingAllergy = {

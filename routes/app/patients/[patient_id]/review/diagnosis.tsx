@@ -1,7 +1,7 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import {
-  Diagnosis,
   DiagnosesCollaboration,
+  Diagnosis,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
@@ -68,6 +68,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         (d) => ({
           diagnosis_id: d.diagnosis_id,
           is_approved: d.approval === 'agree',
+          disagree_reason: d.disagree_reason ?? null,
         }),
       )
 

@@ -9,7 +9,8 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('approver_id', 'uuid', (col) =>
         col.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('is_approved', 'boolean', (col) =>
-        col.notNull()))
+        col.notNull())
+      .addColumn('disagree_reason', 'varchar(255)'))
 }
 
 export async function down(db: Kysely<unknown>) {

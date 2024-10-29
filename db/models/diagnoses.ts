@@ -59,6 +59,7 @@ export async function getFromReview(
       isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
       isoDate(eb.ref('diagnoses.updated_at')).as('diagnosed_at'),
       'diagnoses_collaboration.approver_id as approval_by',
+      'diagnoses_collaboration.disagree_reason',
       rawSql<'agree' | 'disagree'>`CASE 
           WHEN diagnoses_collaboration.is_approved = true THEN 'agree' 
           WHEN diagnoses_collaboration.is_approved = false THEN 'disagree' 
@@ -92,6 +93,7 @@ export async function upsertForReview(
     diagnoses_collaborations: {
       diagnosis_id: string
       is_approved: boolean
+      disagree_reason: null | string
     }[]
     encounter_id: string
     review_id?: string
@@ -107,8 +109,9 @@ export async function upsertForReview(
     diagnoses,
     (diagnosis) =>
       existing_diagnoses.self.some(
-        (existing_diagnosis) => existing_diagnosis.id === diagnosis.condition_id
-      )
+        (existing_diagnosis) =>
+          existing_diagnosis.id === diagnosis.condition_id,
+      ),
   )
   const [to_update_collaborations, to_insert_collaborations] = partition(
     diagnoses_collaborations,
@@ -141,14 +144,13 @@ export async function upsertForReview(
       ),
   )
 
-  const deleting_diagnoses =
-    to_delete_diagnoses.length &&
+  const deleting_diagnoses = to_delete_diagnoses.length &&
     trx
       .deleteFrom('patient_conditions')
       .where(
         'id',
         'in',
-        to_delete_diagnoses.map((diagnosis) => diagnosis.patient_condition_id)
+        to_delete_diagnoses.map((diagnosis) => diagnosis.patient_condition_id),
       )
       .execute()
 
@@ -157,8 +159,7 @@ export async function upsertForReview(
 
   const isInDoctorReview = review_id !== undefined
 
-  const inserting_diagnoses =
-    to_insert_diagnoses.length &&
+  const inserting_diagnoses = to_insert_diagnoses.length &&
     Promise.all(
       to_insert_diagnoses.map(async (d) => {
         const { id: patient_condition_id } = await trx
@@ -180,7 +181,7 @@ export async function upsertForReview(
             ...(!isInDoctorReview && { patient_encounter_id: encounter_id }),
           })
           .execute()
-      })
+      }),
     )
 
   console.log('await inserting')
@@ -190,7 +191,7 @@ export async function upsertForReview(
   const updating_diagnoses = Promise.all(
     to_update_diagnoses.map((d) => {
       const matching_diagnosis = existing_diagnoses.self.find(
-        (existing_diagnosis) => existing_diagnosis.id === d.condition_id
+        (existing_diagnosis) => existing_diagnosis.id === d.condition_id,
       )
       assert(matching_diagnosis, 'matching_diagnosis should exist')
       if (matching_diagnosis.start_date !== d.start_date) {
@@ -200,7 +201,7 @@ export async function upsertForReview(
           .where('id', '=', matching_diagnosis.patient_condition_id)
           .execute()
       }
-    })
+    }),
   )
 
   const updating_collaborations = to_update_collaborations.length &&
@@ -217,6 +218,7 @@ export async function upsertForReview(
         return trx
           .updateTable('diagnoses_collaboration')
           .set('is_approved', d.is_approved)
+          .set('disagree_reason', d.disagree_reason)
           .where(
             'diagnosis_id',
             '=',
