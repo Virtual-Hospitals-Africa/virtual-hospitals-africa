@@ -1,16 +1,17 @@
 import { sql } from 'kysely'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { addressDisplaySql, nameSql } from './pharmacists.ts'
-import { Maybe, RenderedPharmacy } from '../../types.ts'
+import { RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
 import { PharmaciesTypes } from '../../db.d.ts'
 import { insert as insertPharmacyEmployment } from './pharmacy_employment.ts'
+import { base } from './_base.ts'
 
 const view_sql = sql<
   string
 >`concat('/regulator/pharmacies/', pharmacies.id::text)`
 
-function getQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('pharmacies')
     .select((eb) => [
@@ -56,53 +57,50 @@ function getQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-export async function get(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    page?: number
-    rowsPerPage?: number
+export const isLicenceLike = (search: string) =>
+  /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
+
+type SearchTerms = {
+  name_search: string | null
+  licence_number_search: string | null
+}
+
+export const toSearchTerms = (search: string | null): SearchTerms => {
+  if (!search) return { name_search: null, licence_number_search: null }
+  if (isLicenceLike(search)) {
+    return { name_search: null, licence_number_search: search.toUpperCase() }
+  }
+  return { name_search: search, licence_number_search: null }
+}
+
+const model = base({
+  top_level_table: 'pharmacies',
+  baseQuery,
+  formatResult(result): RenderedPharmacy {
+    return result
   },
-) {
-  const page = opts.page || 1
-  const rowsPerPage = opts.rowsPerPage || 10
-  const offset = (page - 1) * rowsPerPage
-  let query = getQuery(trx)
+  handleSearch(qb, opts: SearchTerms) {
+    if (opts.name_search) {
+      qb = qb.where('pharmacies.name', 'ilike', `%${opts.name_search}%`)
+    }
+    if (opts.licence_number_search) {
+      qb = qb.where(
+        'pharmacies.licence_number',
+        '=',
+        opts.licence_number_search,
+      )
+    }
+    return qb
+  },
+})
 
-  if (opts.search) {
-    query = query.where('pharmacies.name', 'ilike', `%${opts.search}%`)
-  }
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds
 
-  const pharmacies = await query.limit(rowsPerPage).offset(offset).execute()
-
-  const totalRowsResult = await trx
-    .selectFrom('pharmacies')
-    .select((eb) => eb.fn.count('id').as('totalRows'))
-    .execute()
-
-  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
-
-  return {
-    pharmacies,
-    totalRows,
-  }
-}
-
-export function getById(
-  trx: TrxOrDb,
-  pharmacy_id: string,
-): Promise<RenderedPharmacy | undefined> {
-  return getQuery(trx)
-    .where('pharmacies.id', '=', pharmacy_id)
-    .executeTakeFirst()
-}
-
-export function getByLicenceNumber(
-  trx: TrxOrDb,
-  licence_number: string,
-): Promise<RenderedPharmacy | undefined> {
-  return getQuery(trx)
-    .where('pharmacies.licence_number', '=', licence_number)
+export function getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
+  return baseQuery(trx)
+    .where('licence_number', '=', licence_number)
     .executeTakeFirst()
 }
 

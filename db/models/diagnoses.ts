@@ -154,7 +154,6 @@ export async function upsertForReview(
       )
       .execute()
 
-  console.log('await deleting')
   await deleting_diagnoses
 
   const isInDoctorReview = review_id !== undefined
@@ -184,9 +183,7 @@ export async function upsertForReview(
       }),
     )
 
-  console.log('await inserting')
   await inserting_diagnoses
-  console.log('sweklkwlelkew inserting')
 
   const updating_diagnoses = Promise.all(
     to_update_diagnoses.map((d) => {
@@ -203,7 +200,6 @@ export async function upsertForReview(
       }
     }),
   )
-
   const updating_collaborations = to_update_collaborations.length &&
     Promise.all(
       to_update_collaborations.map((d) => {

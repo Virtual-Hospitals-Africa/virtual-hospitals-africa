@@ -1,0 +1,24 @@
+name: Deploy Snowstorm
+
+on:
+  push:
+    branches:
+      - main
+      - snowstorm
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Dockerfile.vha-snowstorm
+        run: cp Dockerfile.vha-snowstorm Dockerfile
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'vha-snowstorm'
+          heroku_email: 'will@morehumaninternet.org'
+          docker_heroku_process_type: web
+          usedocker: true
+          docker_build_args: |
+            HEROKU_SLUG_COMMIT=${GITHUB_SHA}

@@ -1,12 +1,8 @@
-// deno-lint-ignore-file no-explicit-any
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
-import { run as runMedplumServer } from '../external-clients/medplum/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
-import { delay } from 'std/async/delay.ts'
-import { restore } from './restore.ts'
 import { spinner } from '../util/spinner.ts'
 
 const migrations: Record<
@@ -63,7 +59,9 @@ export const migrate = {
     return Deno.exit(1)
   },
   latest() {
-    return spinner('Migrating to latest', migrator.migrateToLatest())
+    return spinner('Migrating to latest', async () => {
+      logMigrationResults(await migrator.migrateToLatest())
+    })
   },
   up() {
     return spinner('Migrating up', migrator.migrateUp())
@@ -101,15 +99,9 @@ export const migrate = {
     await spinner('Migrating up to latest', migrator.migrateToLatest())
   },
   async all(opts: { recreate?: boolean | string[] } = {}) {
-    await restore('medplum')
-
-    const medplum_server = await spinner(
-      'Running medplum migrations',
-      runMedplumServer,
-    )
-
-    const results = await spinner('Running VHA migrations', migrate.latest)
-    logMigrationResults(results)
+    await spinner('Running VHA migrations', migrate.latest, {
+      success: 'Ran VHA migrations',
+    })
 
     const seeds = await import('./seed/run.ts')
     if (opts.recreate === true) {
@@ -123,29 +115,25 @@ export const migrate = {
     } else {
       await spinner('Loading seeds', seeds.load())
     }
-
-    medplum_server.kill()
-
-    // See if we can avoid hanging. Locally this works, but not in CI.
-    await delay(500)
-    medplum_server.unref()
   },
   create(migration_name: string) {
     return createMigration(migration_name)
   },
 }
 
+// deno-lint-ignore no-explicit-any
 export function logMigrationResults({ error, results }: any = {}) {
+  // deno-lint-ignore no-explicit-any
   results?.forEach((it: any) => {
     if (it.status === 'Success') {
-      console.log(`migration "${it.migrationName}" was executed successfully`)
+      console.log(`  migration "${it.migrationName}" was executed successfully`)
     } else if (it.status === 'Error') {
-      console.error(`failed to execute migration "${it.migrationName}"`)
+      console.error(`  failed to execute migration "${it.migrationName}"`)
     }
   })
 
   if (error) {
-    console.error('failed to migrate')
+    console.error('  failed to migrate')
     throw error
   }
 }
@@ -170,5 +158,6 @@ if (import.meta.main) {
     Deno.exit(1)
   }
 
+  // deno-lint-ignore no-explicit-any
   migrateCommand(cmd as any, Deno.args[1])
 }

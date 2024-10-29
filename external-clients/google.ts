@@ -9,7 +9,6 @@ import {
   GCalEventsResponse,
   GCalFreeBusy,
   GoogleAddressComponent,
-  GoogleAddressComponentType,
   GoogleProfile,
   GoogleTokenInfo,
   GoogleTokens,
@@ -24,14 +23,14 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
-import uniq from '../util/uniq.ts'
 import { cacheable } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
 import isObjectLike from '../util/isObjectLike.ts'
+import { AddressInsert } from '../db/models/addresses.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
-if (!Deno.env.get('BUILDING')) assert(GOOGLE_MAPS_API_KEY)
+if (!Deno.env.get('NO_EXTERNAL_CONNECT')) assert(GOOGLE_MAPS_API_KEY)
 
 const googleApisUrl = 'https://www.googleapis.com'
 
@@ -92,6 +91,7 @@ export class GoogleClient {
         data = await response.json()
       } catch (error) {
         console.error(`${method} ${url}`, error)
+        assert(error instanceof Error)
         return { result: 'other_error', error }
       }
       console.log(`${method} ${url}`, JSON.stringify(data))
@@ -113,6 +113,7 @@ export class GoogleClient {
         return { result: 'success', data: text as T }
       } catch (error) {
         console.error(`${method} ${url}`, error)
+        assert(error instanceof Error)
         return { result: 'other_error', error }
       }
     }
@@ -371,11 +372,11 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     )
   }
 
-  async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
+  override async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
     try {
       return await super.makeRequest(path, opts)
     } catch (err) {
-      if (err.message === 'Unauthorized') {
+      if (isObjectLike(err) && err.message === 'Unauthorized') {
         assert(this.health_worker.refresh_token, 'No refresh token')
         const refreshed = await refreshTokens(
           this.trx,
@@ -488,15 +489,12 @@ export async function refreshTokens(
 
 export const getLocationAddress = cacheable(async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string> {
-  const data = await getGeocodeData(latitude, longitude)
-  const address = getAddressFromData(data)
-
-  assert(address)
-  return address
+): Promise<AddressInsert> {
+  const results = await getGeocodeData(latitude, longitude)
+  return getAddressFromData(results)
 })
 
-async function getGeocodeData(
+export async function getGeocodeData(
   latitude: number,
   longitude: number,
 ): Promise<GoogleAddressComponent[]> {
@@ -507,56 +505,46 @@ async function getGeocodeData(
   const response = await fetch(url)
   assert(response.ok)
   const data = await response.json()
+  console.log('data', data)
   assert(data.status === 'OK')
   assert(Array.isArray(data.results))
   assert(data.results.length)
   return data.results
 }
 
-function getAddressFromData(resultData: Array<GoogleAddressComponent>) {
-  for (const addressComponent of resultData) {
-    if (isFormattedAddressUseful(addressComponent.formatted_address)) {
-      const address = addressComponent.formatted_address.replace(
-        'Zimbabwe',
-        'ZW',
-      )
-      return address
-    }
-  }
+const types_we_care_about = new Set([
+  'administrative_area_level_1',
+  'administrative_area_level_2',
+  'country',
+  'locality',
+  'postal_code',
+  'route',
+  'street_number',
+])
 
-  const locality = getAreaNameByType(resultData, 'locality')
-  const townOrDistrict = getAreaNameByType(
-    resultData,
-    'administrative_area_level_2',
-  )
-  const province = getAreaNameByType(resultData, 'administrative_area_level_1')
-  const country = getAreaNameByType(resultData, 'country')
-
-  const addressComponents = [locality, townOrDistrict, province, country]
-  const nonUnknownComponents = addressComponents.filter((component) =>
-    component !== null
-  )
-
-  const uniqueComponents = uniq(nonUnknownComponents)
-  if (!uniqueComponents.length) return null
-
-  return uniqueComponents.join(', ')
-}
-
-function isFormattedAddressUseful(formattedAddress: string): boolean {
+function isRouteUseful(route: string): boolean {
   const regex =
     /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
-  return regex.test(formattedAddress)
+  return regex.test(route)
 }
 
-function getAreaNameByType(
-  addressComponentList: Array<GoogleAddressComponent>,
-  areaType: GoogleAddressComponentType,
-): string | null {
-  const locationInfo = addressComponentList
-    .flatMap((addressComponentObj) => addressComponentObj.address_components)
-    .find((locationInfo) => locationInfo.types?.includes(areaType))
-  return locationInfo?.short_name || locationInfo?.long_name || null
+function getAddressFromData(results: GoogleAddressComponent[]): AddressInsert {
+  // deno-lint-ignore no-explicit-any
+  const address: any = {}
+  for (const result of results) {
+    const types = result.types.filter((type) => type !== 'political')
+    if (types.length !== 1) continue
+    const [type] = types
+    if (!types_we_care_about.has(type)) continue
+    const address_component = result.address_components[0]
+    assert(address_component)
+    const value = address_component.long_name || address_component.short_name
+    assert(value, `No value for ${type}`)
+    if (type === 'route' && !isRouteUseful(value)) continue
+    address[type] = value
+  }
+  assert(address.country)
+  return address
 }
 
 export const getWalkingDistance = cacheable(async function getWalkingDistance(

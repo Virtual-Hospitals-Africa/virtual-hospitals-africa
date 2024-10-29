@@ -3,7 +3,7 @@ import {
   DrugSearchResult as DrugSearchResultData,
   PreExistingConditionWithDrugs,
 } from '../../types.ts'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import MedicationSearch from './Search.tsx'
 import {
   dosageDisplay,

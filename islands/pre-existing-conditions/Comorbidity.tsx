@@ -3,7 +3,7 @@ import ConditionSearch from '../ConditionSearch.tsx'
 import { DateInput } from '../form/Inputs.tsx'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export default function Comorbidity({
   value,

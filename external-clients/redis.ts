@@ -37,7 +37,7 @@ const connectionOpts = () => {
 export const opts = connectionOpts()
 
 export const redis =
-  (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
+  (Deno.env.get('NO_EXTERNAL_CONNECT') ? undefined : await connect(opts))!
 
 // deno-lint-ignore no-explicit-any
 export function cacheable<F extends (...args: any[]) => Promise<any>>(
@@ -56,4 +56,4 @@ export function cacheable<F extends (...args: any[]) => Promise<any>>(
   }) as unknown as F)
 }
 
-export const lock = new Redlock([redis])
+export const lock = redis && new Redlock([redis])

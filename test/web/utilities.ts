@@ -21,6 +21,8 @@ import range from '../../util/range.ts'
 import { collect } from '../../util/inParallel.ts'
 import { parseTsv } from '../../util/parseCsv.ts'
 import { take } from '../../util/take.ts'
+import generateUUID from '../../util/uuid.ts'
+import { OrganizationInsert } from '../../db/models/organizations.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -400,7 +402,7 @@ export function withTestOrganization(
   callback: (organization_id: string) => Promise<void>,
 ): Promise<void>
 
-export async function withTestOrganization(
+export function withTestOrganization(
   trx: TrxOrDb,
   opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
   callback?: (organization_id: string) => Promise<void>,
@@ -411,58 +413,62 @@ export async function withTestOrganization(
   } else {
     kind = opts.kind
   }
-  const organization = await organizations.add(trx, {
-    name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
-    category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-    address: kind === 'physical' ? '123 Test St' : undefined,
-    latitude: kind === 'physical' ? 0 : undefined,
-    longitude: kind === 'physical' ? 0 : undefined,
-    // phone: null,
-  })
-  await callback!(organization!.id)
-  await trx.deleteFrom('Address')
-    .where('resourceId', '=', organization!.id)
-    .execute()
-  await trx.deleteFrom('Location')
-    .where('organizationId', '=', organization!.id)
-    .execute()
-  await trx.deleteFrom('Organization')
-    .where('id', '=', organization!.id)
-    .execute()
+  return withTestOrganizations(
+    trx,
+    { kind, count: 1 },
+    async ([organization_id]) => {
+      await callback!(organization_id)
+    },
+  )
 }
 
 export async function withTestOrganizations(
   trx: TrxOrDb,
-  opts: { kind?: 'virtual' | 'physical'; count: number },
+  opts: { kind?: 'virtual' | 'physical'; count: number } | {
+    kind?: 'virtual' | 'physical'
+  }[],
   callback: (organization_ids: string[]) => Promise<void>,
 ) {
-  assert(opts.count > 0)
-  const kind = opts.kind
+  const to_create = Array.isArray(opts) ? opts : (
+    assert(opts.count > 0), range(opts.count).map((_) => ({ kind: opts.kind }))
+  )
+
+  const creating = to_create.map(({ kind }) => {
+    const category = kind ? 'Clinic' : 'Virtual Hospital'
+    const name = `Test ${generateUUID()} ${category}`
+    const to_create: OrganizationInsert = { name, category }
+    if (kind === 'physical') {
+      to_create.address = {
+        street: '123 Test St',
+        locality: 'Test City',
+        country: 'US',
+        postal_code: '12345',
+      }
+      to_create.location = { latitude: 0, longitude: 0 }
+    }
+
+    return to_create
+  })
+
   const organizations_added = await Promise.all(
-    range(opts.count).map(() =>
-      organizations.add(trx, {
-        name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
-        category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-        address: kind === 'physical' ? '123 Test St' : undefined,
-        latitude: kind === 'physical' ? 0 : undefined,
-        longitude: kind === 'physical' ? 0 : undefined,
-        // phone: null,
-      })
-    ),
+    creating.map((org) => organizations.add(trx, org)),
   )
   const organization_ids = organizations_added.map((organization) =>
-    organization!.id
+    organization.id
   )
-  await callback(organization_ids)
-  await trx.deleteFrom('Address')
-    .where('resourceId', 'in', organization_ids)
-    .execute()
-  await trx.deleteFrom('Location')
-    .where('organizationId', 'in', organization_ids)
-    .execute()
-  await trx.deleteFrom('Organization')
-    .where('id', 'in', organization_ids)
-    .execute()
+  const address_ids = organizations_added.map((organization) =>
+    organization.address_id
+  )
+  try {
+    await callback(organization_ids)
+  } finally {
+    await trx.deleteFrom('organizations')
+      .where('id', 'in', organization_ids)
+      .execute()
+    await trx.deleteFrom('addresses')
+      .where('id', 'in', address_ids)
+      .execute()
+  }
 }
 
 export function readFirstFiveRowsOfSeedDump(

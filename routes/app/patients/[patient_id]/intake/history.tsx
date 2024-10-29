@@ -2,7 +2,7 @@ import * as patient_conditions from '../../../../../db/models/patient_conditions
 import PatientHistoryForm from '../../../../../components/patients/intake/HistoryForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandler } from './_middleware.tsx'
+import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
 
 type HistoryFormValues = {
   past_medical_conditions: patient_conditions.PastMedicalConditionUpsert[]
@@ -17,7 +17,7 @@ function assertIsHistory(
   patient.major_surgeries = patient.major_surgeries || []
 }
 
-export const handler = postHandler(
+export const handler = postHandlerAsserts(
   assertIsHistory,
   async function updateHistory(ctx, patient_id, form_values) {
     const upserting_past_medical_conditions = patient_conditions

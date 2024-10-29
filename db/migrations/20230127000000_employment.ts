@@ -21,7 +21,7 @@ export async function up(db: Kysely<unknown>) {
           .onDelete('cascade'))
         .addColumn('organization_id', 'uuid', (col) =>
           col.notNull()
-            .references('Organization.id')
+            .references('organizations.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',
@@ -49,7 +49,7 @@ export async function up(db: Kysely<unknown>) {
           'organization_id',
           'uuid',
           (col) =>
-            col.notNull().references('Organization.id').onDelete('cascade'),
+            col.notNull().references('organizations.id').onDelete('cascade'),
         )
         .addColumn(
           'gcal_appointments_calendar_id',

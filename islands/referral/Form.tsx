@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import { TextArea } from '../form/Inputs.tsx'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import PersonSearch from '../PersonSearch.tsx'

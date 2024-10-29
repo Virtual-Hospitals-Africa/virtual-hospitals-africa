@@ -136,8 +136,13 @@ export function GenericSidebar(
   )
 }
 
-export const DefaultTop = {
+export const HealthWorkerDefaultTop = {
   href: '/app',
+  child: <LogoWithFullText variant='indigo' className='h-16' />,
+}
+
+export const RegulatorDefaultTop = {
+  href: '/regulator',
   child: <LogoWithFullText variant='indigo' className='h-16' />,
 }
 
@@ -154,7 +159,7 @@ export function PractitionerHomePageSidebar(
       params={params}
       urlSearchParams={urlSearchParams}
       nav_links={practitioner_home_page_nav_links}
-      top={DefaultTop}
+      top={HealthWorkerDefaultTop}
     />
   )
 }
@@ -172,7 +177,7 @@ export function RegulatorHomePageSidebar(
       params={params}
       urlSearchParams={urlSearchParams}
       nav_links={regulator_home_page_nav_links}
-      top={DefaultTop}
+      top={RegulatorDefaultTop}
     />
   )
 }
@@ -190,12 +195,22 @@ type StepsSidebarProps = {
   steps_completed: string[]
 }
 
+function defaultTop(ctx: FreshContext) {
+  if (ctx.url.pathname.startsWith('/app')) {
+    return HealthWorkerDefaultTop
+  }
+  if (ctx.url.pathname.startsWith('/regulator')) {
+    return RegulatorDefaultTop
+  }
+  throw new Error(`Could not compute home page top for url: ${ctx.url}`)
+}
+
 export function StepsSidebar(
   { top, ctx, nav_links, steps_completed }: StepsSidebarProps,
 ) {
   return (
     <GenericSidebar
-      top={top || DefaultTop}
+      top={top || defaultTop(ctx)}
       route={ctx.route}
       params={ctx.params}
       urlSearchParams={ctx.url.searchParams}

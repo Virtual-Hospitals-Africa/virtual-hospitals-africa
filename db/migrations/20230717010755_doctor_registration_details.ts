@@ -78,7 +78,7 @@ export async function up(db: Kysely<unknown>) {
             .onDelete('set null'))
         .addColumn('address_id', 'uuid', (col) =>
           col
-            .references('address.id')
+            .references('addresses.id')
             .onDelete('set null'))
         .addColumn(
           'ncz_registration_card_media_id',

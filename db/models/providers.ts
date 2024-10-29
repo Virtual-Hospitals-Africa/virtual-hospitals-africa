@@ -14,7 +14,7 @@ export const ensureProviderId = (trx: TrxOrDb, provider_id: string) =>
     .where('profession', 'in', ['doctor', 'nurse'])
 
 // This isn't confirming registration_status
-const getQuery = (trx: TrxOrDb) =>
+const baseQuery = (trx: TrxOrDb) =>
   getWithTokensQuery(trx)
     .innerJoin(
       'employment',
@@ -61,7 +61,7 @@ export async function get(
   trx: TrxOrDb,
   provider_id: string,
 ): Promise<Provider> {
-  const provider = await getQuery(trx)
+  const provider = await baseQuery(trx)
     .where(
       'employment.id',
       '=',
@@ -100,7 +100,7 @@ export async function getMany(
     employment_ids?: string[]
   },
 ) {
-  let query = getQuery(trx)
+  let query = baseQuery(trx)
   if (opts.employment_ids) {
     if (!opts.employment_ids.length) {
       return []
@@ -141,11 +141,11 @@ export async function search(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'Organization',
+      'organizations',
       'employment.organization_id',
-      'Organization.id',
+      'organizations.id',
     )
-    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
+    .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
     .select([
       'employment.id',
       'health_workers.id as health_worker_id',
@@ -154,7 +154,7 @@ export async function search(
       'health_workers.name',
       'employment.organization_id',
       'employment.profession',
-      'Organization.canonicalName as organization_name',
+      'organizations.name as organization_name',
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])
@@ -170,7 +170,7 @@ export async function search(
 
   if (opts.organization_kind) {
     query = query.where(
-      'Address.resourceId',
+      'organizations.address_id',
       opts.organization_kind === 'physical' ? 'is not' : 'is',
       null,
     )

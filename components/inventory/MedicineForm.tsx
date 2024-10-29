@@ -1,16 +1,16 @@
 import { JSX } from 'preact'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Form from '../library/Form.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import { Button } from '../library/Button.tsx'
 import ManufacturedMedicationInput from '../../islands/manufactured_medication/Input.tsx'
-import { ManufacturedMedicationSearchResult } from '../../types.ts'
+import { RenderedManufacturedMedication } from '../../types.ts'
 import { Maybe } from '../../types.ts'
 
 export default function InventoryMedicineForm(
   { today, manufactured_medication, last_procurement }: {
     today: string
-    manufactured_medication: null | ManufacturedMedicationSearchResult
+    manufactured_medication: null | RenderedManufacturedMedication
     last_procurement?: Maybe<{
       strength: number
       quantity: number

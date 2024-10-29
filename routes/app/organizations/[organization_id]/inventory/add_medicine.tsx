@@ -1,20 +1,16 @@
 import Layout from '../../../../../components/library/Layout.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-  MedicationProcurement,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { searchManufacturedMedications } from '../../../../../db/models/drugs.ts'
+import manufactured_medications from '../../../../../db/models/manufactured_medications.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import isString from '../../../../../util/isString.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
-import { assertOr404 } from '../../../../../util/assertOr.ts'
-import { ManufacturedMedicationSearchResult } from '../../../../../types.ts'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
 
 export function assertIsUpsertMedicine(
   obj: unknown,
@@ -81,32 +77,32 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default async function MedicineAdd(
   _req: Request,
-  { route, url, state }: OrganizationContext,
+  { route, url, state: { trx, organization, healthWorker } }:
+    OrganizationContext,
 ) {
-  let manufactured_medication: ManufacturedMedicationSearchResult | null = null
-  let last_procurement: MedicationProcurement | undefined
+  const strength = parseInt(url.searchParams.get('strength')!) || undefined
+
   const manufactured_medication_id = url.searchParams.get(
     'manufactured_medication_id',
   )
-  if (manufactured_medication_id) {
-    const strength = parseInt(url.searchParams.get('strength')!) || undefined
-    assertOr400(manufactured_medication_id)
-    const getting_latest_procurement = inventory.getLatestProcurement(
-      state.trx,
-      {
-        manufactured_medication_id,
-        strength,
-        organization_id: state.organization.id,
-      },
-    )
-    const manufactured_medications = await searchManufacturedMedications(
-      state.trx,
-      { ids: [manufactured_medication_id] },
-    )
-    assertOr404(manufactured_medications.length)
-    manufactured_medication = manufactured_medications[0]
-    last_procurement = await getting_latest_procurement
-  }
+
+  const { manufactured_medication, last_procurement } =
+    !manufactured_medication_id
+      ? { manufactured_medication: null, last_procurement: null }
+      : await promiseProps({
+        last_procurement: inventory.getLatestProcurement(
+          trx,
+          {
+            manufactured_medication_id,
+            strength,
+            organization_id: organization.id,
+          },
+        ),
+        manufactured_medication: manufactured_medications.getById(
+          trx,
+          manufactured_medication_id,
+        ),
+      })
 
   return (
     <Layout
@@ -114,7 +110,7 @@ export default async function MedicineAdd(
       title='Add Medicine'
       route={route}
       url={url}
-      health_worker={state.healthWorker}
+      health_worker={healthWorker}
     >
       <InventoryMedicineForm
         today={todayISOInHarare()}

@@ -5,7 +5,7 @@ import {
   DrugSearchResult as DrugSearchResultData,
   PrescriptionMedicationWithDrug,
 } from '../../types.ts'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import DrugSearch from '../drug/Search.tsx'
 import { strengthDisplay } from '../../shared/medication.ts'
 import { AddRow } from '../AddRemove.tsx'

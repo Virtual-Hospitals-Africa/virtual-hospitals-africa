@@ -1,5 +1,5 @@
 import { ImagePreviewInput } from '../../../../islands/file-preview-input.tsx'
-import FormRow from '../../../../islands/form/Row.tsx'
+import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 

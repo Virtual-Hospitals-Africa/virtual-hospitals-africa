@@ -13,10 +13,10 @@ import * as $app_calendar_appointments_appointment_id_media_media_id_ from './ro
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
 import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
+import * as $app_chart from './routes/app/chart.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
-import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
@@ -86,7 +86,6 @@ import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
-import * as $drugs from './routes/drugs.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
@@ -103,13 +102,11 @@ import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
-import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
-import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $tos from './routes/tos.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
@@ -120,6 +117,7 @@ import * as $AddDeviceSearch from './islands/AddDeviceSearch.tsx'
 import * as $AddPharmacistSearch from './islands/AddPharmacistSearch.tsx'
 import * as $AddPharmacySearch from './islands/AddPharmacySearch.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
+import * as $AddressForm from './islands/AddressForm.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
@@ -129,7 +127,6 @@ import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
-import * as $MedicinesSearchInput from './islands/MedicinesSearchInput.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
@@ -154,10 +151,10 @@ import * as $SendTo_ListItem from './islands/SendTo/ListItem.tsx'
 import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButtons.tsx'
 import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
 import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
+import * as $SparklinesExample from './islands/SparklinesExample.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
-import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
@@ -178,9 +175,6 @@ import * as $family_RelationshipSelect from './islands/family/RelationshipSelect
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
-import * as $form_PharmacistForm from './islands/form/PharmacistForm.tsx'
-import * as $form_PharmacyForm from './islands/form/PharmacyForm.tsx'
-import * as $form_Row from './islands/form/Row.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
@@ -216,9 +210,8 @@ import * as $prescriptions_MedicationRow from './islands/prescriptions/Medicatio
 import * as $prescriptions_ScheduleInput from './islands/prescriptions/ScheduleInput.tsx'
 import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
-import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
-import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
-import * as $regulator_InvitePharmacySearch from './islands/regulator/InvitePharmacySearch.tsx'
+import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
+import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -227,7 +220,7 @@ import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
-import { type Manifest } from '$fresh/server.ts'
+import type { Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {
@@ -245,10 +238,10 @@ const manifest = {
     './routes/app/calendar/appointments/schedule.tsx':
       $app_calendar_appointments_schedule,
     './routes/app/calendar/availability.tsx': $app_calendar_availability,
+    './routes/app/chart.tsx': $app_chart,
     './routes/app/conditions.tsx': $app_conditions,
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
-    './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/icd10.tsx': $app_icd10,
@@ -369,7 +362,6 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
-    './routes/drugs.tsx': $drugs,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,
@@ -390,8 +382,6 @@ const manifest = {
     './routes/regulator/pharmacies/[pharmacy_id].tsx':
       $regulator_pharmacies_pharmacy_id_,
     './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
-    './routes/regulator/pharmacies/pharmacies.tsx':
-      $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id].tsx':
       $regulator_pharmacists_pharmacist_id_,
@@ -400,8 +390,6 @@ const manifest = {
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
-    './routes/regulator/pharmacists/pharmacists.tsx':
-      $regulator_pharmacists_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/tos.tsx': $tos,
     './routes/volunteer.tsx': $volunteer,
@@ -414,6 +402,7 @@ const manifest = {
     './islands/AddPharmacistSearch.tsx': $AddPharmacistSearch,
     './islands/AddPharmacySearch.tsx': $AddPharmacySearch,
     './islands/AddRemove.tsx': $AddRemove,
+    './islands/AddressForm.tsx': $AddressForm,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,
     './islands/ConditionSearch.tsx': $ConditionSearch,
@@ -423,7 +412,6 @@ const manifest = {
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
-    './islands/MedicinesSearchInput.tsx': $MedicinesSearchInput,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,
@@ -448,10 +436,10 @@ const manifest = {
     './islands/SendTo/RequestRadioButtons.tsx': $SendTo_RequestRadioButtons,
     './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
     './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
+    './islands/SparklinesExample.tsx': $SparklinesExample,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
-    './islands/address-inputs.tsx': $address_inputs,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
@@ -473,9 +461,6 @@ const manifest = {
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
-    './islands/form/PharmacistForm.tsx': $form_PharmacistForm,
-    './islands/form/PharmacyForm.tsx': $form_PharmacyForm,
-    './islands/form/Row.tsx': $form_Row,
     './islands/form/buttons.tsx': $form_buttons,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
@@ -517,12 +502,8 @@ const manifest = {
     './islands/prescriptions/ScheduleInput.tsx': $prescriptions_ScheduleInput,
     './islands/prescriptions/ScheduleRow.tsx': $prescriptions_ScheduleRow,
     './islands/referral/Form.tsx': $referral_Form,
-    './islands/regulator/InvitePharmacistForm.tsx':
-      $regulator_InvitePharmacistForm,
-    './islands/regulator/InvitePharmacistSearch.tsx':
-      $regulator_InvitePharmacistSearch,
-    './islands/regulator/InvitePharmacySearch.tsx':
-      $regulator_InvitePharmacySearch,
+    './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
+    './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

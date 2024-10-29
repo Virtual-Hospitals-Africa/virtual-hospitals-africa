@@ -223,3 +223,24 @@ export async function findChatbotUser(
   assert(isObjectLike(user.data))
   return user as ChatbotUser
 }
+
+export function getLastConversationState(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  where: { phone_number?: string; entity_id?: string },
+) {
+  assert(where.phone_number || where.entity_id)
+  return trx
+    .selectFrom(`${chatbot_name}_chatbot_users`)
+    .select('conversation_state')
+    .select(literalString(chatbot_name).as('chatbot_name'))
+    .$if(
+      !!where.phone_number,
+      (eb) => eb.where('phone_number', '=', where.phone_number!),
+    )
+    .$if(
+      !!where.entity_id,
+      (eb) => eb.where('entity_id', '=', where.entity_id!),
+    )
+    .executeTakeFirstOrThrow()
+}

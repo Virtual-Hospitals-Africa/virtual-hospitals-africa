@@ -1,21 +1,23 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'sinon'
 import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
 import * as patients from '../../../db/models/patients.ts'
-import { assert } from 'std/assert/assert.ts'
 import { addTestHealthWorker } from '../../web/utilities.ts'
 import { itUsesTrxAnd } from '../../web/utilities.ts'
+import { spy } from 'std/testing/mock.ts'
+import { GCalEvent, GoogleTokens } from '../../../types.ts'
 
 describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
   describe('makeAppointmentWeb', () => {
     itUsesTrxAnd(
       "inserts an event on the specified health worker's google calendar, adding that event to the db",
       async (trx) => {
-        const insertEvent = sinon.stub().resolves({
-          id: 'inserted google event id',
-        })
+        const insertEvent = spy((_1: GoogleTokens, _2, _3) =>
+          Promise.resolve({
+            id: 'inserted google event id',
+          } as GCalEvent)
+        )
         const healthWorker = await addTestHealthWorker(trx, {
           scenario: 'doctor',
         })
@@ -33,21 +35,21 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           provider_ids: [healthWorker.employee_id!],
         }, insertEvent)
 
-        assert(insertEvent.calledOnce)
-        assertEquals(insertEvent.firstCall.args.length, 3)
+        assertEquals(insertEvent.calls.length, 1)
+        assertEquals(insertEvent.calls[0].args.length, 3)
         assertEquals(
-          insertEvent.firstCall.args[0].access_token,
+          insertEvent.calls[0].args[0]!.access_token,
           healthWorker.access_token,
         )
         assertEquals(
-          insertEvent.firstCall.args[0].refresh_token,
+          insertEvent.calls[0].args[0].refresh_token,
           healthWorker.refresh_token,
         )
         assertEquals(
-          insertEvent.firstCall.args[1],
+          insertEvent.calls[0].args[1],
           healthWorker.calendars!.gcal_appointments_calendar_id,
         )
-        assertEquals(insertEvent.firstCall.args[2], {
+        assertEquals(insertEvent.calls[0].args[2], {
           start: {
             dateTime: '2023-10-12T12:30:00+02:00',
           },

@@ -1,58 +1,52 @@
-import { Maybe } from '../../../../../types.ts'
 import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { IntakePage, postHandler } from './_middleware.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import compact from '../../../../../util/compact.ts'
+import omit from '../../../../../util/omit.ts'
+import { z } from 'zod'
+import {
+  gender,
+  national_id_number,
+  phone_number,
+  varchar255,
+} from '../../../../../util/validators.ts'
 
-type PersonalFormValues = {
-  first_name: string
-  last_name: string
-  middle_names?: string
-  avatar_media?: Maybe<{ id: string }>
-  national_id_number?: string
-  no_national_id: boolean
-  phone_number?: string
-}
-
-function assertIsPersonal(
-  patient: unknown,
-): asserts patient is PersonalFormValues {
-  assertOr400(isObjectLike(patient))
-  assertOr400(!!patient.first_name && typeof patient.first_name === 'string')
-  assertOr400(!!patient.last_name && typeof patient.last_name === 'string')
-  assertOr400(
-    (!!patient.national_id_number &&
-      typeof patient.national_id_number === 'string') ||
-      patient.no_national_id,
-  )
-  delete patient.no_national_id
-  if (typeof patient.national_id_number === 'string') {
-    patient.national_id_number = patient.national_id_number.toUpperCase()
-  }
-  const avatar_media = patient.avatar_media
-  delete patient.avatar_media
-  if (avatar_media) {
-    assertOr400(isObjectLike(avatar_media))
-    patient.avatar_media_id = avatar_media.id
-  }
-}
+const PersonalSchema = z.object({
+  first_name: varchar255,
+  last_name: varchar255,
+  middle_names: z.optional(varchar255),
+  avatar_media: z.optional(z.object({ id: z.string().uuid() })),
+  national_id_number: z.optional(national_id_number),
+  no_national_id: z.optional(z.boolean()),
+  phone_number: z.optional(phone_number),
+  date_of_birth: z.string().date(),
+  gender,
+  ethnicity: z.optional(varchar255),
+}).refine(
+  (data) => data.national_id_number || data.no_national_id,
+  {
+    message: 'Must provide either national id number or check no national id',
+    path: ['national_id_number', 'no_national_id'],
+  },
+).transform((
+  { avatar_media, first_name, middle_names, last_name, ...data },
+) => ({
+  ...omit(data, ['no_national_id']),
+  avatar_media_id: avatar_media?.id,
+  name: compact(
+    [first_name, middle_names, last_name],
+  ).join(' '),
+}))
 
 export const handler = postHandler(
-  assertIsPersonal,
+  PersonalSchema.parse,
   async function updatePersonal(
     ctx,
     patient_id,
-    { first_name, middle_names, last_name, ...form_values },
+    form_values,
   ) {
-    const name = compact(
-      [first_name, middle_names, last_name],
-    ).join(' ')
-
     await patients.update(ctx.state.trx, {
       id: patient_id,
-      name,
       ...form_values,
     })
   },

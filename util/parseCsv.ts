@@ -15,7 +15,9 @@ export default async function* parseCsv(
     // Collecting data from the async iterable row into an array
     const rowDataArray: string[] = []
     for await (const cell of row) {
-      rowDataArray.push(cell)
+      if (cell !== '\r') {
+        rowDataArray.push(cell)
+      }
     }
 
     if (isFirstRow) {

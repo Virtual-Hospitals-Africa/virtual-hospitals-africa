@@ -1,7 +1,7 @@
 import { RenderedPatient } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import PatientsTable from './Table.tsx'
 import PatientCards from '../../islands/patient-cards.tsx'
 

@@ -1,6 +1,6 @@
 import Form from '../library/Form.tsx'
 import { DateInput, TextInput } from '../../islands/form/Inputs.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import FormButtons from '../../islands/form/buttons.tsx'
 import PersonSearch from '../../islands/PersonSearch.tsx'
 

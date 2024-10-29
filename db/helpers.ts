@@ -7,6 +7,7 @@ import {
   ExpressionWrapper,
   ExtractTypeFromReferenceExpression,
   InsertQueryBuilder,
+  Kysely,
   RawBuilder,
   SelectQueryBuilder,
   Simplify,
@@ -16,6 +17,7 @@ import {
 } from 'kysely'
 import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
+import { Location } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 
 /**
@@ -208,7 +210,8 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
 export function jsonBuildNullableObject<
   O extends Record<string, Expression<unknown>>,
 >(
-  key: string,
+  // deno-lint-ignore no-explicit-any
+  ew: ExpressionWrapper<any, any, any>,
   obj: O,
 ): RawBuilder<
   | null
@@ -218,9 +221,12 @@ export function jsonBuildNullableObject<
     }
   >
 > {
-  return sql`CASE WHEN '${sql.raw(key)}' IS NOT NULL THEN ${
-    jsonBuildObject(obj)
-  } ELSE NULL END`
+  return sql`
+    CASE WHEN ${ew} IS NULL
+      THEN NULL
+      ELSE ${jsonBuildObject(obj)}
+    END
+  `
 }
 
 export function toJSON<
@@ -270,13 +276,13 @@ function debugReplace(parameter: unknown) {
 export function debugLog(
   qb:
     // deno-lint-ignore no-explicit-any
-    | SelectQueryBuilder<DB, any, any>
+    | SelectQueryBuilder<any, any, any>
     // deno-lint-ignore no-explicit-any
-    | UpdateQueryBuilder<DB, any, any, any>
+    | UpdateQueryBuilder<any, any, any, any>
     // deno-lint-ignore no-explicit-any
-    | DeleteQueryBuilder<DB, any, any>
+    | DeleteQueryBuilder<any, any, any>
     // deno-lint-ignore no-explicit-any
-    | InsertQueryBuilder<DB, any, any>,
+    | InsertQueryBuilder<any, any, any>,
 ) {
   let { sql, parameters } = qb.compile()
   parameters.forEach((p: unknown, i: number) => {
@@ -321,4 +327,45 @@ export function longFormattedDateTime(ref: string) {
   return sql<string>`TO_CHAR(${
     sql.ref(ref)
   }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
+}
+
+export function literalLocation(loc: Location) {
+  return sql<
+    string
+  >`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`
+}
+
+export function upsertTrigger(
+  tableName: keyof DB,
+  columnName: string,
+  computation: string,
+) {
+  const fn_name = `${tableName}_set_${tableName}_${columnName}`.toLowerCase()
+  const trigger_name = `${fn_name}_trigger`
+
+  return {
+    create(db: Kysely<DB>) {
+      return sql`
+        CREATE OR REPLACE FUNCTION ${sql.raw(fn_name)}()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW."${sql.raw(columnName)}" := ${sql.raw(computation)};
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+
+        CREATE OR REPLACE TRIGGER ${sql.raw(fn_name)}_trigger
+        BEFORE INSERT OR UPDATE ON "${sql.raw(tableName)}"
+        FOR EACH ROW
+        EXECUTE FUNCTION ${sql.raw(fn_name)}();
+      `.execute(db)
+    },
+    drop(db: Kysely<DB>) {
+      return sql`
+        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${
+        sql.raw(tableName)
+      }"
+      `.execute(db)
+    },
+  }
 }

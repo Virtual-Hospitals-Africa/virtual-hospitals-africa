@@ -1,5 +1,4 @@
-import { Kysely } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import { TrxOrDb } from '../../../types.ts'
 import { create } from '../create.ts'
 
 const vhaClinicStaff = [
@@ -40,12 +39,13 @@ const vhaVirtualHospitalStaff = [
   'saadmalikp@gmail.com',
   'laurence.hosp@gmail.com',
   'mangowho5@gmail.com',
+  'sanyalrishab@gmail.com',
 ]
 
 export default create(['health_worker_invitees'], inviteVhaStaff)
 
 // Add a test organization with all VHA employees as admins
-async function inviteVhaStaff(db: Kysely<DB>) {
+async function inviteVhaStaff(trx: TrxOrDb) {
   const invitees = vhaClinicStaff.flatMap((email) => [
     {
       email,
@@ -72,7 +72,7 @@ async function inviteVhaStaff(db: Kysely<DB>) {
       // deno-lint-ignore no-explicit-any
     ] as any
   ))
-  await db
+  await trx
     .insertInto('health_worker_invitees')
     .values(invitees)
     .execute()

@@ -9,12 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+      - name: Check out code
+        uses: actions/checkout@v4
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "virtual-hospitals-africa" #Must be unique in Heroku
-          heroku_email: "will@morehumaninternet.org"
+          heroku_app_name: 'virtual-hospitals-africa' #Must be unique in Heroku
+          heroku_email: 'will@morehumaninternet.org'
           usedocker: true

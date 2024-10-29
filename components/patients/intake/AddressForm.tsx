@@ -1,5 +1,5 @@
 import { CountryAddressTree, PatientIntake } from '../../../types.ts'
-import AddressForm from '../../../islands/address-inputs.tsx'
+import AddressForm from '../../../islands/AddressForm.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 import FormSection from '../../library/FormSection.tsx'
 

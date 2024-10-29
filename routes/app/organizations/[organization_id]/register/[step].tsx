@@ -17,7 +17,7 @@ import * as employment from '../../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
-import * as address from '../../../../../db/models/address.ts'
+import * as addresses from '../../../../../db/models/addresses.ts'
 import {
   DocumentFormFields,
   PersonalFormFields,
@@ -88,11 +88,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       return redirect(nextUrl)
     }
 
-    assert(formState.specialty)
+    const { specialty } = formState
+    assert(specialty)
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
-      specialty: formState.specialty,
+      specialty,
     })
 
     const registrationDetails = getRegistrationDetails(
@@ -135,8 +136,6 @@ function getRegistrationDetails(
     ncz_registration_card,
     national_id_picture,
     nurse_practicing_cert,
-    mobile_number,
-    national_id_number,
     ...rest
   }: FormState,
 ): nurse_registration_details.UpsertableNurseRegistrationDetails {
@@ -146,10 +145,6 @@ function getRegistrationDetails(
     ncz_registration_card_media_id: ncz_registration_card?.id,
     national_id_media_id: national_id_picture?.id,
     nurse_practicing_cert_media_id: nurse_practicing_cert?.id,
-    national_id_number: national_id_number.toUpperCase(),
-    mobile_number: typeof mobile_number === 'number'
-      ? String(mobile_number)
-      : mobile_number?.replace(/[^0-9]/g, ''),
     approved_by: null,
     ...rest,
   }
@@ -182,7 +177,7 @@ export default async function RegisterPage(
   formState.email = healthWorker.email
 
   const country_address_tree = step == 'personal'
-    ? await address.getCountryAddressTree(ctx.state.trx)
+    ? await addresses.getCountryAddressTree(ctx.state.trx)
     : undefined
 
   const stepState = useNurseRegistrationSteps(ctx)

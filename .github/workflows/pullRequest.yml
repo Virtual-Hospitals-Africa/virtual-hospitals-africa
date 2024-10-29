@@ -9,10 +9,39 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BUILD_STRING: "${{ github.run_number }}-${{ github.sha }}"
+  BUILD_STRING: '${{ github.run_number }}-${{ github.sha }}'
 
 jobs:
-  lint_and_test:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.0.2
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+      - name: Run check
+        run: deno task check
+
+      - name: Cache deno-modules
+        id: cache-deno-modules-save
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+  test_web:
     runs-on: ubuntu-latest
 
     services:
@@ -39,56 +68,24 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+          deno-version: v2.0.2
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
         with:
-          node-version: 'v18.20.2'
-
-      # - uses: actions/cache/restore@v4
-      #   name: Restore deno modules
-      #   id: cache-deno-modules-restore
-      #   with:
-      #     path: $XDG_CACHE_HOME/deno
-      #     key: deno-modules
-
-      - name: Run check
-        run: deno task check
+          path: ~/.cache/deno
+          key: deno-modules
 
       - name: Write .env file
         run: |
           echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
-          echo "MEDPLUM_CLIENT_ID=16cb17a2-161b-4379-85db-d3bfc89f31a3" >> .env
-          echo "MEDPLUM_CLIENT_SECRET=2b83992938a44a0a72447e88664895cea17205da463cdb52125c17d62bbba0dc" >> .env
-
-      - uses: actions/cache/restore@v4
-        id: cache-medplum-restore
-        name: Restore medplum
-        with:
-          path: medplum
-          # key: medplum-${{ hashFiles('medplum/package.json') }}
-          key: medplum
-
-      - name: Install medplum
-        if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
-        run: cd medplum && npm install && npx turbo run build
-
-      - name: Save medplum
-        id: cache-medplum-save
-        uses: actions/cache/save@v4
-        if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
-        with:
-          path: medplum
-          key: medplum
 
       - name: Migrate database
         run: deno task db:migrate all
@@ -97,14 +94,83 @@ jobs:
         run: deno task build
 
       - name: Run tests
-        run: deno task test --skip-migrate-check && deno task test:chatbot
+        run: deno task test --skip-migrate-check
 
-      # - name: Save deno-modules
-      #   id: cache-deno-modules-save
-      #   uses: actions/cache/save@v4
-      #   with:
-      #     path: $XDG_CACHE_HOME/deno
-      #     key: deno-modules
+      - name: Cache deno-modules
+        id: cache-deno-modules-save
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+  test_chatbot:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.0.2
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+      - name: Write .env file
+        run: |
+          echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
+          echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+          echo "SKIP_GOOGLE_MAPS=true" >> .env
+
+      - name: Migrate database
+        run: deno task db:migrate all
+
+      - name: Run tests
+        run: deno task test:chatbot
+
+      - name: Cache deno-modules
+        id: cache-deno-modules-save
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+  build_container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t vha .
 
   compile_others:
     runs-on: ubuntu-latest
@@ -116,13 +182,10 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - name: Compile chatbot
         run: deno task compile:chatbot
-
-      - name: Compile token_refresher
-        run: deno task compile:token_refresher
 
   compile_web:
     runs-on: ubuntu-latest
@@ -134,10 +197,10 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.46.3
+          deno-version: v2.0.2
 
       - name: Build web
         run: deno task build
 
       - name: Compile web
-        run:  deno task compile:web
+        run: deno task compile:web

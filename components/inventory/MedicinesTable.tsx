@@ -1,7 +1,7 @@
 import { RenderedOrganizationMedicine } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
-import FormRow from '../../islands/form/Row.tsx'
+import FormRow from '../library/FormRow.tsx'
 import { AddMedicineSearch } from '../../islands/manufactured_medication/Search.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'

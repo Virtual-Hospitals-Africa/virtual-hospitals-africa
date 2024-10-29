@@ -1,22 +1,18 @@
 import { FreshContext } from '$fresh/server.ts'
-import PharmacistForm from '../../../islands/form/PharmacistForm.tsx'
-import { PageProps } from '$fresh/server.ts'
+import PharmacistForm from '../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../util/parseForm.ts'
+import { parseRequest } from '../../../util/parseForm.ts'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
 import Layout from '../../../components/library/Layout.tsx'
-import { LoggedInRegulator } from '../../../types.ts'
-
-type InviteProps = {
-  regulator: LoggedInRegulator['regulator']
-}
+import { LoggedInRegulator, RenderedPharmacist } from '../../../types.ts'
+import compact from '../../../util/compact.ts'
 
 export const handler = {
-  POST: async function (req: Request, ctx: FreshContext<LoggedInRegulator>) {
-    const to_insert = await parseRequestAsserts(
+  async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+    const to_insert = await parseRequest(
       ctx.state.trx,
       req,
-      pharmacists.isUpsert,
+      pharmacists.parseUpsert,
     )
 
     await pharmacists.insert(ctx.state.trx, to_insert)
@@ -29,29 +25,38 @@ export const handler = {
       `/regulator/pharmacists?success=${success}`,
     )
   },
-  GET: function (
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
-  ) {
-    return ctx.render({
-      regulator: ctx.state.regulator,
-    })
-  },
 }
 
-export default function Invite(
-  props: PageProps<InviteProps>,
+// deno-lint-ignore require-await
+export default async function InvitePage(
+  _req: Request,
+  ctx: FreshContext<LoggedInRegulator>,
 ) {
+  const name = ctx.url.searchParams.get('name')
+  const licence_number = ctx.url.searchParams.get('licence_number')
+  const form_data: Partial<RenderedPharmacist> = {}
+  if (name) {
+    const names = compact(name.split(' ').map((n) => n.trim()))
+    if (names.length === 1) {
+      form_data.family_name = names[0]
+    } else {
+      form_data.given_name = names[0]
+      form_data.family_name = names.slice(1).join(' ')
+    }
+  }
+  if (licence_number) {
+    form_data.licence_number = licence_number
+  }
+
   return (
     <Layout
       title='Pharmacists'
-      route={props.route}
-      url={props.url}
-      regulator={props.data.regulator}
-      params={{}}
+      route={ctx.route}
+      url={ctx.url}
+      regulator={ctx.state.regulator}
       variant='regulator home page'
     >
-      <PharmacistForm formData={{}} />
+      <PharmacistForm formData={form_data} />
     </Layout>
   )
 }

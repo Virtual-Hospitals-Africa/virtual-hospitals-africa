@@ -1,7 +1,7 @@
-import { Address, NurseRegistrationDetails, TrxOrDb } from '../types.ts'
+import { NurseRegistrationDetails, TrxOrDb } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import sample from '../util/sample.ts'
-import * as address from '../db/models/address.ts'
+import * as addresses from '../db/models/addresses.ts'
 
 export const testHealthWorker = () => {
   const expires_at = new Date()
@@ -52,7 +52,7 @@ export function randomDigits(length: number) {
 }
 
 export function randomPhoneNumber() {
-  return '263' + randomDigits(9)
+  return '+26377' + randomDigits(7)
 }
 
 export function randomLetter() {
@@ -84,26 +84,24 @@ export const testRegistrationDetails = async (
   address_id: (await insertTestAddress(trx)).id,
 })
 
-export async function createTestAddress(trx: TrxOrDb): Promise<Address> {
-  const fullCountryInfo = await address.getCountryAddressTree(trx)
+export async function createTestAddress(trx: TrxOrDb) {
+  const fullCountryInfo = await addresses.getCountryAddressTree(trx)
   const country = sample(fullCountryInfo)
   const province = sample(country.provinces)
   const district = sample(province.districts)
   const ward = sample(district.wards)
-  const suburb = ward.suburbs.length ? sample(ward.suburbs) : null
-  const street = Math.random().toString(36).substring(7) + ' Main Street'
+  const street_number = Math.random().toString(36).substring(7)
   return {
-    street,
-    suburb_id: suburb?.id || null,
-    ward_id: ward.id,
-    district_id: district.id,
-    province_id: province.id,
-    country_id: country.id,
+    street: `${street_number} Main Street`,
+    locality: ward.name,
+    administrative_area_level_2: district.name,
+    administrative_area_level_1: province.name,
+    country: country.name,
   }
 }
 
 export async function insertTestAddress(
   trx: TrxOrDb,
 ) {
-  return address.upsert(trx, await createTestAddress(trx))
+  return addresses.insert(trx, await createTestAddress(trx))
 }

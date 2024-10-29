@@ -145,7 +145,7 @@ const conversationStates: ConversationStates<
       return 'onboarded:make_appointment:enter_appointment_reason' as const
     },
   },
-  'find_nearest_organization:share_location': {
+  'find_nearest_facilities:share_location': {
     type: 'get_location',
     prompt:
       'Sure, we can find your nearest organization. Can you share your location?',
@@ -164,14 +164,14 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
-      return 'find_nearest_organization:got_location' as const
+      return 'find_nearest_facilities:got_location' as const
     },
   },
-  // change the name of got_location to nearest_organizations?
-  'find_nearest_organization:got_location': {
+  // change the name of got_location to nearest_facilities?
+  'find_nearest_facilities:got_location': {
     type: 'action',
     headerText: 'Nearest Facilities',
-    prompt: 'Click the button below to see your nearest health organizations',
+    prompt: 'Click the button below to see the health facilities closes to you',
     async action(
       trx,
       patientState,
@@ -184,12 +184,12 @@ const conversationStates: ConversationStates<
       assert(patient.location.latitude)
       assert(patient.location.longitude)
 
-      const nearest_organizations = await patients.nearestFacilities(
+      const nearest_facilities = await patients.nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
         patient.location as Location,
       )
-      if (!nearest_organizations?.length) {
+      if (!nearest_facilities?.length) {
         return {
           type: 'select',
           prompt:
@@ -208,7 +208,7 @@ const conversationStates: ConversationStates<
         }
       }
 
-      const organizations = nearest_organizations.map((organization) => {
+      const organizations = nearest_facilities.map((organization) => {
         const distanceInKM = organization.walking_distance ||
           (organization.distance / 1000).toFixed(1) + ' km'
         const description = distanceInKM
@@ -225,7 +225,7 @@ const conversationStates: ConversationStates<
             title: capLengthAtWhatsAppTitle(organizationName),
             description: capLengthAtWhatsAppDescription(description),
             onExit:
-              'find_nearest_organization:send_organization_location' as const,
+              'find_nearest_facilities:send_organization_location' as const,
           },
         }
       })
@@ -252,7 +252,7 @@ const conversationStates: ConversationStates<
       }
     },
   },
-  'find_nearest_organization:send_organization_location': {
+  'find_nearest_facilities:send_organization_location': {
     prompt: 'I will send you organization location',
     async getMessages(trx, patientState): Promise<WhatsAppSendable> {
       assert(patientState.chatbot_user.entity_id)
@@ -263,13 +263,13 @@ const conversationStates: ConversationStates<
       assert(patient.location.latitude)
       assert(patient.location.longitude)
 
-      const nearest_organizations = await patients.nearestFacilities(
+      const nearest_facilities = await patients.nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
         patient.location as Location,
       )
 
-      const selected_organization = nearest_organizations
+      const selected_organization = nearest_facilities
         ?.find(
           (organization) =>
             organization.organization_id ===

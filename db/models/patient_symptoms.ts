@@ -7,6 +7,7 @@ import {
 import { isoDate, jsonArrayFrom } from '../helpers.ts'
 import omit from '../../util/omit.ts'
 import { tree } from './icd10.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export async function upsert(
   trx: TrxOrDb,
@@ -45,11 +46,17 @@ export async function upsert(
     encounter_provider_id,
   }))
 
-  const results = !to_insert.length ? [] : await trx
+  const getting_results = !to_insert.length ? Promise.resolve([]) : trx
     .insertInto('patient_symptoms')
     .values(to_insert)
     .returning('id')
     .execute()
+
+  const { results } = await promiseProps({
+    removing_media,
+    removing_symptoms,
+    results: getting_results,
+  })
 
   const patient_symptom_media_to_insert = symptoms.flatMap(
     ({ media }, index) => {

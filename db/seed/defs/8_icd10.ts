@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Kysely } from 'kysely'
+import { TrxOrDb } from '../../../types.ts'
 import { XMLParser } from 'fast-xml-parser'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import compact from '../../../util/compact.ts'
@@ -13,7 +13,6 @@ import { forEach } from '../../../util/inParallel.ts'
 import { byCodeWithSimilarity } from '../../models/icd10.ts'
 import { searchFlat } from '../../models/icd10.ts'
 import { create } from '../create.ts'
-import { DB } from '../../../db.d.ts'
 
 export default create([
   'icd10_sections',
@@ -24,9 +23,9 @@ export default create([
   'icd10_diagnoses_excludes_categories',
   'icd10_diagnoses_excludes_code_ranges',
   'icd10_diagnoses_excludes_codes',
-], async (db: Kysely<DB>) => {
-  await loadTabularData(db)
-  await loadIndexData(db)
+], async (trx: TrxOrDb) => {
+  await loadTabularData(trx)
+  await loadIndexData(trx)
 })
 
 type Exclude = {
@@ -393,27 +392,27 @@ async function readICD10TabularSections() {
 }
 
 async function insertExcludeRow(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   exclude_id: string,
   { check_referrant_code_before_insertion, ...row }: ExcludeRow,
 ) {
   if (row.category) {
-    return db.insertInto('icd10_diagnoses_excludes_categories')
+    return trx.insertInto('icd10_diagnoses_excludes_categories')
       .values({ exclude_id, ...row } as any)
       .execute()
   }
   if (row.code_range_start && row.code_range_end) {
-    return db.insertInto('icd10_diagnoses_excludes_code_ranges')
+    return trx.insertInto('icd10_diagnoses_excludes_code_ranges')
       .values({ exclude_id, ...row } as any)
       .execute()
   }
   if (row.code) {
     if (check_referrant_code_before_insertion) {
-      const exists = await db.selectFrom('icd10_diagnoses').select('code')
+      const exists = await trx.selectFrom('icd10_diagnoses').select('code')
         .where('code', '=', row.code).executeTakeFirst()
       if (!exists) return
     }
-    return db.insertInto('icd10_diagnoses_excludes_codes')
+    return trx.insertInto('icd10_diagnoses_excludes_codes')
       .values({ exclude_id, ...row } as any)
       .execute()
   }
@@ -421,20 +420,20 @@ async function insertExcludeRow(
 }
 
 async function insertExclude(
-  db: Kysely<DB>,
+  trx: TrxOrDb,
   { excludes, ...exclude }: Exclude,
 ) {
-  const { id: exclude_id } = await db.insertInto('icd10_diagnoses_excludes')
+  const { id: exclude_id } = await trx.insertInto('icd10_diagnoses_excludes')
     .values(exclude)
     .returning('id')
     .executeTakeFirstOrThrow()
 
   for (const row of excludes) {
-    await insertExcludeRow(db, exclude_id, row)
+    await insertExcludeRow(trx, exclude_id, row)
   }
 }
 
-export async function loadTabularData(db: Kysely<DB>) {
+export async function loadTabularData(trx: TrxOrDb) {
   const sections = await readICD10TabularSections()
 
   // Excludes refer to other codes, so we need to insert the codes
@@ -446,11 +445,11 @@ export async function loadTabularData(db: Kysely<DB>) {
       insert_excludes.push(to_insert.row as any)
       return
     }
-    await db.insertInto(to_insert.table)
+    await trx.insertInto(to_insert.table)
       .values(to_insert.row)
       .execute()
   })
-  await forEach(insert_excludes, (exclude) => insertExclude(db, exclude))
+  await forEach(insert_excludes, (exclude) => insertExclude(trx, exclude))
 }
 
 /*
@@ -627,14 +626,14 @@ type TidiedTerm = {
     - determine if the index term is already in the "includes"
     - for the index terms that don't point to codes, look for the closest match
 */
-async function loadIndexData(db: Kysely<DB>) {
+async function loadIndexData(trx: TrxOrDb) {
   const icd10_index = await readICD10Index()
   await forEach(parse(icd10_index), async (parsed) => {
     if (parsed.type === 'code') {
-      const diag = await byCodeWithSimilarity(db, parsed.code, parsed.note)
+      const diag = await byCodeWithSimilarity(trx, parsed.code, parsed.note)
       assert(diag)
       if (diag.best_similarity >= 0.85) return
-      return db.insertInto('icd10_diagnoses_includes')
+      return trx.insertInto('icd10_diagnoses_includes')
         .values({
           code: parsed.code,
           note: human_readable(parsed.note),
@@ -644,7 +643,7 @@ async function loadIndexData(db: Kysely<DB>) {
     }
     if (parsed.type === 'see') {
       if (parsed.see.toLowerCase() === 'condition') return
-      const [candidate] = await searchFlat(db, { term: parsed.see, limit: 1 })
+      const [candidate] = await searchFlat(trx, { term: parsed.see, limit: 1 })
       if (!candidate) {
         console.log('No match found for see: ', parsed)
         return
@@ -653,7 +652,7 @@ async function loadIndexData(db: Kysely<DB>) {
         console.log('Low similarity for see: ', parsed, candidate)
         return
       }
-      return db.insertInto('icd10_diagnoses_includes')
+      return trx.insertInto('icd10_diagnoses_includes')
         .values({
           code: candidate.code,
           note: human_readable(parsed.note),

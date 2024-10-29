@@ -18,6 +18,7 @@ import {
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
+import { ExtendedActionData } from './components/library/Table.tsx'
 
 export type Maybe<T> = T | null | undefined
 
@@ -152,9 +153,9 @@ export type PatientConversationState =
   | 'onboarded:appointment_scheduled'
   | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
-  | 'find_nearest_organization:share_location'
-  | 'find_nearest_organization:got_location'
-  | 'find_nearest_organization:send_organization_location'
+  | 'find_nearest_facilities:share_location'
+  | 'find_nearest_facilities:got_location'
+  | 'find_nearest_facilities:send_organization_location'
   | 'end_of_demo'
   | 'error'
 
@@ -319,6 +320,19 @@ export type RenderedPatientAge = {
   age_years: number
 }
 
+export type Address = {
+  formatted: string
+  country: string
+  administrative_area_level_1: Maybe<string>
+  administrative_area_level_2: Maybe<string>
+  locality: Maybe<string>
+  route: Maybe<string>
+  street_number: Maybe<string>
+  unit: Maybe<string>
+  street: Maybe<string>
+  postal_code: Maybe<string>
+}
+
 export type PatientIntake =
   & {
     id: string
@@ -328,14 +342,7 @@ export type PatientIntake =
     nearest_organization_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     age?: RenderedPatientAge
-    address: {
-      street: Maybe<string>
-      suburb_id: Maybe<string>
-      ward_id: Maybe<string>
-      district_id: Maybe<string>
-      province_id: Maybe<string>
-      country_id: Maybe<string>
-    }
+    address?: Maybe<Address>
     actions: {
       clinical_notes: string
     }
@@ -359,9 +366,6 @@ export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
   other_next_of_kin: Maybe<NextOfKin>
-  home_satisfaction: Maybe<number>
-  spiritual_satisfaction: Maybe<number>
-  social_satisfaction: Maybe<number>
   religion: Maybe<Religion>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
@@ -404,9 +408,6 @@ export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin?: Maybe<FamilyRelationInsert>
-  home_satisfaction?: Maybe<number>
-  spiritual_satisfaction?: Maybe<number>
-  social_satisfaction?: Maybe<number>
   religion?: Maybe<Religion>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>
@@ -439,41 +440,6 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   health_worker_name: string
   profession: Profession
 }
-
-// export type PatientState = {
-//   entity_type: 'patient'
-//   id: string
-//   whatsapp_id: string
-//   message_id: string
-//   body?: string
-//   has_media: boolean
-//   media_id?: string
-//   phone_number: string
-//   name: Maybe<string>
-//   gender: Maybe<Gender>
-//   dob_formatted: Maybe<string>
-//   national_id_number: Maybe<string>
-//   conversation_state: PatientConversationState
-//   location: Maybe<Location>
-//   scheduling_appointment_request?: {
-//     id: string
-//     reason: Maybe<string>
-//     offered_times: SchedulingAppointmentOfferedTime[]
-//   }
-//   scheduled_appointment?: {
-//     id: string
-//     reason: string
-//     provider_id: string
-//     health_worker_name: string
-//     gcal_event_id: string
-//     start: Date
-//   }
-//   created_at: Date
-//   updated_at: Date
-//   nearest_organizations?: PatientNearestOrganization[]
-//   nearest_organization_name?: string
-//   selected_organization?: PatientNearestOrganization
-// }
 
 export type PharmacistConversationState =
   | 'initial_message'
@@ -1378,7 +1344,7 @@ export type NurseRegistrationDetails = {
   national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
-  mobile_number: string
+  mobile_number?: Maybe<string>
   national_id_media_id: Maybe<string>
   ncz_registration_card_media_id: Maybe<string>
   face_picture_media_id: Maybe<string>
@@ -1563,6 +1529,20 @@ export type WhatsAppMessageSent = {
   body: string
   responding_to_received_id: string
   read_status: string
+}
+
+export type WhatsApp = {
+  phone_number: string
+  sendMessage(opts: {
+    phone_number: string
+    chatbot_name: ChatbotName
+    message: WhatsAppSingleSendable
+  }): Promise<WhatsAppJSONResponse>
+  sendMessages(opts: {
+    phone_number: string
+    chatbot_name: ChatbotName
+    messages: WhatsAppSingleSendable | WhatsAppSendable
+  }): Promise<WhatsAppJSONResponse[]>
 }
 
 export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -1764,10 +1744,11 @@ export type LoggedInRegulatorHandler<Context = Record<string, never>> =
     ? LoggedInRegulatorHandlerWithProps<unknown, State>
     : LoggedInRegulatorHandlerWithProps<unknown, Context>
 
-export type Organization = Partial<Location> & {
+export type Organization = {
   name: string
-  // category: string
+  category: string | null
   address: string | null
+  location: Location | null
 }
 
 export type OrganizationWithAddress =
@@ -1793,6 +1774,7 @@ export type GoogleAddressComponent = {
     short_name?: string
     types?: string[]
   }[]
+  types: string[]
 }
 
 export type GoogleAddressComponentType =
@@ -1863,8 +1845,6 @@ export type District = { name: string; province_id: string }
 
 export type Ward = { name: string; district_id: string }
 
-export type Suburb = { name: string; ward_id: string }
-
 export type CountryAddressTree = {
   id: string
   name: string
@@ -1877,10 +1857,6 @@ export type CountryAddressTree = {
       wards: {
         id: string
         name: string
-        suburbs: {
-          id: string | null
-          name: string | null
-        }[]
       }[]
     }[]
   }[]
@@ -1890,15 +1866,6 @@ export type MailingListRecipient = {
   name: string
   email: string
   entrypoint: string
-}
-
-export type Address = {
-  street: Maybe<string>
-  suburb_id?: Maybe<string>
-  ward_id: string
-  district_id: string
-  province_id: string
-  country_id: string
 }
 
 export type Drug = {
@@ -2002,21 +1969,7 @@ export type DrugSearchResult = {
   name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
-}
-
-export type ManufacturedMedicationSearchResult = {
-  id: string
-  name: string
-  generic_name: string
-  trade_name: string
-  applicant_name: string
-  form: string
-  strength_summary: string
-  strength_numerators: number[]
-  strength_numerator_unit: string
-  strength_denominator: number
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
+  all_recalled: boolean
 }
 
 export type GuardianRelationName =
@@ -2074,8 +2027,8 @@ export type CurrentSchool = {
 }
 
 export type PastSchool = {
-  last_grade: string
-  reason: string
+  stopped_last_grade: string
+  stopped_reason: string
 }
 
 export type Job = {
@@ -2309,6 +2262,7 @@ export type RenderedProvider = {
   avatar_url: string | null
   href: string
   seen: SqlBool
+  organization_id?: string
 }
 export type RenderedWaitingRoom = {
   patient: {
@@ -2318,9 +2272,10 @@ export type RenderedWaitingRoom = {
     description: string | null
   }
   actions: {
-    view: string | null
-    intake: string | null
-    review: string | null
+    view: ExtendedActionData | null
+    intake: ExtendedActionData | null
+    review: ExtendedActionData | null
+    awaiting_review: ExtendedActionData | null
   }
   reason: EncounterReason
   is_emergency: SqlBool
@@ -2411,8 +2366,8 @@ export type PatientMedicationUpsert = {
   route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
-  medication_id: string | null
-  manufactured_medication_id: string | null
+  medication_id?: Maybe<string>
+  manufactured_medication_id?: Maybe<string>
   special_instructions?: Maybe<string>
 }
 
@@ -2420,12 +2375,12 @@ export type PatientSymptomInsertShared = {
   code: string
   severity: number
   start_date: string
-  end_date: string | null
-  notes: string | null
+  end_date?: Maybe<string>
+  notes?: Maybe<string>
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
-  media: { id: string }[]
+  media?: { id: string }[]
 }
 
 export type RenderedPatientSymptom =
@@ -3014,8 +2969,9 @@ export type DetailedPharmacist = {
   pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
-export type RenderedMedicine = {
+export type RenderedManufacturedMedication = {
   id: string
+  name: string
   generic_name: string
   trade_name: string
   applicant_name: string
@@ -3027,7 +2983,7 @@ export type RenderedMedicine = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   actions: {
-    recall: string
+    recall: string | null
   }
   recalled_at: string | null
 }

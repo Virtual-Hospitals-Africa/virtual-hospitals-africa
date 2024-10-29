@@ -15,7 +15,8 @@ echo "Checking you have the right tools installed..."
 
 ensure_you_have "git"
 ensure_you_have "deno"
-ensure_you_have "npm" "node"
+ensure_you_have "npm"
+ensure_you_have "node"
 ensure_you_have "heroku"
 ensure_you_have "redis-server" "redis"
 ensure_you_have "createdb" "postgresql"
@@ -54,10 +55,8 @@ fi
 redis-server --daemonize yes
 
 echo "Now we'll install the project dependencies..."
-echo "Installing medplum..."
 
 deno task switch:local
-deno task medplum:setup
 
 echo "Now let's migrate your local database..."
 deno task db:local reset

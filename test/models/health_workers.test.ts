@@ -78,7 +78,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               organization: {
                 id: '00000000-0000-0000-0000-000000000001',
                 name: 'VHA Test Clinic',
-                address: '120 Main St, Bristol, UK, 23456',
+                address: '123 Main St, Bristol, UK, 23456',
               },
               roles: {
                 admin: null,
@@ -211,7 +211,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.organization_name, 'VHA Test Clinic')
         assertEquals(
           result.organization_address,
-          '120 Main St, Bristol, UK, 23456',
+          '123 Main St, Bristol, UK, 23456',
         )
         assertEquals(result.professions, ['nurse'])
       },
@@ -286,7 +286,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.organization_name, 'VHA Test Clinic')
         assertEquals(
           result.organization_address,
-          '120 Main St, Bristol, UK, 23456',
+          '123 Main St, Bristol, UK, 23456',
         )
         assertEquals(result.professions, ['nurse'])
       },
@@ -393,7 +393,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.organization_name, 'VHA Test Clinic')
       assertEquals(
         result.organization_address,
-        '120 Main St, Bristol, UK, 23456',
+        '123 Main St, Bristol, UK, 23456',
       )
       assertEquals(result.professions, ['nurse'])
     })

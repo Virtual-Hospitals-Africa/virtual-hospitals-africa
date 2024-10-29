@@ -22,7 +22,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
     )
     const search = ctx.url.searchParams.get('search')
     const { organization_id } = ctx.params
-    const getting_room = waiting_room.get(ctx.state.trx, { organization_id })
+    const getting_room = waiting_room.get(ctx.state.trx, {
+      organization_id,
+      health_worker: ctx.state.healthWorker,
+    })
     const patients = await getAllWithNames(ctx.state.trx, search)
     const room = await getting_room
 

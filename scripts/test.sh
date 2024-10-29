@@ -2,8 +2,6 @@
 set -eo pipefail
 
 VHA_SERVER_PORT=8005
-MEDPLUM_SERVER_PORT=8006
-MEDPLUM_SERVER_URL="http://localhost:$MEDPLUM_SERVER_PORT"
 
 watch_mode=false
 [[ "$1" == "--watch" ]] && {
@@ -19,11 +17,9 @@ migrate_check=true
 
 # Set up a temporary file for the test server output so we can check if it's ready
 test_vha_server_output=$(mktemp)
-test_medplum_server_output=$(mktemp)
 
-kill_test_servers() {
+kill_test_server() {
   ./scripts/kill_process_on_port.sh $VHA_SERVER_PORT
-  ./scripts/kill_process_on_port.sh $MEDPLUM_SERVER_PORT
 }
 
 start_vha_test_server() {
@@ -48,49 +44,31 @@ wait_until_vha_test_server_ready() {
   truncate -s 0 "$test_vha_server_output"
 }
 
-wait_until_medplum_test_server_ready() {
-  while ! grep -q "Server started" "$test_medplum_server_output"; do
-    # Deno prints "error" with color codes, so we remove them before checking
-    # shellcheck disable=SC2002
-    if cat "$test_medplum_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
-      cat "$test_medplum_server_output"
-      exit 1
-    fi
-    sleep 0.1
-  done
-  truncate -s 0 "$test_medplum_server_output"
-}
-
-wait_until_test_servers_ready() {
-  wait_until_vha_test_server_ready
-  wait_until_medplum_test_server_ready
-}
-
 run_tests() {
-  DENO_TLS_CA_STORE=system IS_TEST=true MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL \
+  DENO_TLS_CA_STORE=system IS_TEST=true \
   deno test \
     -A \
     --unstable-temporal \
     --env \
     --unsafely-ignore-certificate-errors \
-    --ignore=test/chatbot,medplum \
+    --ignore=test/chatbot \
     --parallel \
     "$@"
 }
 
 # Ensure there is no prior test servers, that the database is up to date, and that the log file is empty
-kill_test_servers
+kill_test_server
 if $migrate_check; then
   deno task db:migrate check
 fi
 rm -f test_server.log
 
-# Start the test servers
-IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL start_vha_test_server >> "$test_vha_server_output" 2>&1 &
-IS_TEST=true MEDPLUM_SERVER_PORT=$MEDPLUM_SERVER_PORT deno task medplum:server >> "$test_medplum_server_output" 2>&1 &
-trap "kill_test_servers" EXIT
 
-wait_until_test_servers_ready
+# Start the test servers
+IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 start_vha_test_server >> "$test_vha_server_output" 2>&1 &
+trap "kill_test_server" EXIT
+
+wait_until_vha_test_server_ready
 
 if ! $watch_mode; then
   run_tests "$@" || {
@@ -100,7 +78,6 @@ if ! $watch_mode; then
     else
       echo "Tests failed. Server log is empty."
     fi
-    cat "$test_medplum_server_output"
     exit 1
   }
   exit 0

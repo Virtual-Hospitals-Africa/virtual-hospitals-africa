@@ -10,8 +10,8 @@ import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
 let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
 
-const BUILDING = Deno.env.get('BUILDING')
-if (!BUILDING) assert(DATABASE_URL)
+const NO_EXTERNAL_CONNECT = Deno.env.get('NO_EXTERNAL_CONNECT')
+if (!NO_EXTERNAL_CONNECT) assert(DATABASE_URL)
 
 // Connect with vha_test database instead of vha_dev when running tests
 if (Deno.env.get('IS_TEST')) {

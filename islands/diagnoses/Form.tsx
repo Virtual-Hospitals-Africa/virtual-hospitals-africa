@@ -19,6 +19,7 @@ type OthersDiagnosesFormState = Array<
 
 export default function DiagnosesForm(props: {
   diagnoses: DiagnosisGroup
+  earliestSymptomDate?: string
 }): JSX.Element {
   const selfDiagnoses: Signal<SelfDiagnosesFormState> = useSignal<
     SelfDiagnosesFormState
@@ -32,11 +33,16 @@ export default function DiagnosesForm(props: {
     props.diagnoses.others,
   )
 
-  const addDiagnosis = () =>
-    selfDiagnoses.value = [
-      ...selfDiagnoses.value,
-      { comorbidities: [], medications: [] },
-    ]
+  const addDiagnosis = () => {
+    const newDiagnosis = {
+      comorbidities: [],
+      medications: [],
+      start_date: props.earliestSymptomDate ||
+        new Date().toISOString().split('T')[0], // default to earliest date or today
+    }
+
+    selfDiagnoses.value = [...selfDiagnoses.value, newDiagnosis]
+  }
 
   const first_not_removed = selfDiagnoses.value.find(
     (d) => !d.removed,
@@ -104,6 +110,7 @@ export default function DiagnosesForm(props: {
                   (diagnosis) => diagnosis.id === state.id,
                 )
                 : undefined}
+              earliestSymptomDate={props.earliestSymptomDate}
               remove={() =>
                 selfDiagnoses.value = selfDiagnoses.value.map((diagnosis, j) =>
                   j === index ? { removed: true } : diagnosis

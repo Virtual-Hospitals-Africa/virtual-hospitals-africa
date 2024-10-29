@@ -28,13 +28,13 @@ export async function up(db: Kysely<unknown>) {
         .addColumn(
           'address_id',
           'uuid',
-          (col) => col.references('address.id'),
+          (col) => col.references('addresses.id'),
         )
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
         .addColumn(
           'nearest_organization_id',
           'uuid',
-          (col) => col.references('Organization.id'),
+          (col) => col.references('organizations.id'),
         )
         .addColumn('ethnicity', 'varchar(50)')
         .addColumn(

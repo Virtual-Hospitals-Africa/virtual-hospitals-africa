@@ -22,7 +22,7 @@ import {
 } from '../../shared/diet.ts'
 import { CheckboxGridItem } from '../form/Inputs.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 
 export default function DietSection(

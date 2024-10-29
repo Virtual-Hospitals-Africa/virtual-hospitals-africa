@@ -14,8 +14,8 @@ export default [
     },
   },
   {
-    id: 'find_nearest_organization',
+    id: 'find_nearest_facilities',
     title: 'Nearest Organization',
-    onExit: 'find_nearest_organization:share_location' as const,
+    onExit: 'find_nearest_facilities:share_location' as const,
   },
 ] as ConversationStateHandlerSelectOption<PatientChatbotUserState>[]

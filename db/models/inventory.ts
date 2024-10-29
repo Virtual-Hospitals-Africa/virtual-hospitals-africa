@@ -3,14 +3,12 @@ import {
   MedicationProcurement,
   OrganizationDevice,
   Procurer,
-  RenderedConsumable,
   RenderedInventoryHistory,
   RenderedInventoryHistoryConsumption,
   RenderedInventoryHistoryProcurement,
   RenderedOrganizationConsumable,
   RenderedOrganizationDevice,
   RenderedOrganizationMedicine,
-  RenderedProcurer,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -20,7 +18,7 @@ import {
   literalString,
   longFormattedDateTime,
 } from '../helpers.ts'
-import { strengthDisplay } from './drugs.ts'
+import { strengthDisplay } from './manufactured_medications.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -334,49 +332,6 @@ export function getLatestProcurement(
   return query.executeTakeFirst()
 }
 
-export function searchConsumables(
-  trx: TrxOrDb,
-  opts: {
-    search?: string
-    ids?: string[]
-  },
-): Promise<RenderedConsumable[]> {
-  if (opts.ids) {
-    assert(opts.ids.length, 'must provide at least one id')
-    assert(!opts.search)
-  } else {
-    assert(opts.search)
-  }
-
-  let query = trx
-    .selectFrom('consumables')
-    .leftJoin(
-      'manufactured_medication_strengths',
-      'consumables.id',
-      'manufactured_medication_strengths.consumable_id',
-    )
-    .where('manufactured_medication_strengths.id', 'is', null)
-    .select(['consumables.id', 'consumables.name'])
-
-  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
-  if (opts.ids) query = query.where('consumables.id', 'in', opts.ids)
-
-  return query.execute()
-}
-
-export function searchProcurers(
-  trx: TrxOrDb,
-  search?: string,
-): Promise<RenderedProcurer[]> {
-  let query = trx
-    .selectFrom('procurers')
-    .select(['procurers.id', 'procurers.name'])
-
-  if (search) query = query.where('procurers.name', 'ilike', `%${search}%`)
-
-  return query.execute()
-}
-
 export function getAvailableTests(
   trx: TrxOrDb,
   opts: {
@@ -604,10 +559,10 @@ export function consumeConsumable(
     .executeTakeFirstOrThrow()
 }
 
-export function upsertProcurer(trx: TrxOrDb, model: Procurer) {
+export function upsertProcurer(trx: TrxOrDb, procurer: Procurer) {
   return trx
     .insertInto('procurers')
-    .values(model)
-    .onConflict((c) => c.column('id').doUpdateSet(model))
+    .values(procurer)
+    .onConflict((c) => c.column('id').doUpdateSet(procurer))
     .execute()
 }

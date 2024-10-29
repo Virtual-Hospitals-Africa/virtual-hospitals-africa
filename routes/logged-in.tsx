@@ -24,7 +24,7 @@ async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
   googleClient: google.GoogleClient,
   organization_ids: string[],
 ) {
-  const my_orgs = await organizations.get(trx, { ids: organization_ids })
+  const my_orgs = await organizations.getByIds(trx, organization_ids)
   const calendars = await googleClient
     .ensureHasAppointmentsAndAvailabilityCalendars(my_orgs)
   return Array.from(zip(my_orgs, calendars)).map((

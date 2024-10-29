@@ -1,10 +1,13 @@
+import { z } from 'zod'
 import { useSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
-import { parseRequestAsserts } from '../../../../util/parseForm.ts'
-import isObjectLike from '../../../../util/isObjectLike.ts'
+import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
-import { Media } from '../../../../types.ts'
-import { assertOr400 } from '../../../../util/assertOr.ts'
+import {
+  gender,
+  national_id_number,
+  phone_number,
+} from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -12,9 +15,9 @@ export type NurseRegistrationStep =
   | 'documents'
 
 export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
-  'personal',
-  'professional',
-  'documents',
+  'personal' as const,
+  'professional' as const,
+  'documents' as const,
 ]
 
 export const useNurseRegistrationSteps = useSteps(NurseRegistrationStepNames)
@@ -26,15 +29,15 @@ export function getStepFormData(
 ) {
   switch (currentStep) {
     case NurseRegistrationStepNames[0]:
-      return parseRequestAsserts(trx, req, assertIsPersonalFormFields)
+      return parseRequest(trx, req, PersonalFormFields.parse)
     case NurseRegistrationStepNames[1]:
-      return parseRequestAsserts(
+      return parseRequest(
         trx,
         req,
-        assertIsProfessionalInformationFields,
+        ProfessionalInformationFields.parse,
       )
     case NurseRegistrationStepNames[2]:
-      return parseRequestAsserts(trx, req, assertIsDocumentsFormFields)
+      return parseRequest(trx, req, DocumentsFormFields.parse)
     default:
       throw new Error('No step found')
   }
@@ -47,72 +50,69 @@ export type DocumentFormFields = {
   nurse_practicing_cert: Maybe<{ id: string; url: string }>
 }
 
-export type PersonalFormFields = {
-  first_name: string
-  middle_names?: string
-  last_name: string
-  gender: 'male' | 'female' | 'non-binary'
-  date_of_birth: string
-  national_id_number: string
-  email: string
-  mobile_number: string
-  address: {
-    street: string
-    suburb_id: string
-    ward_id: string
-    district_id: string
-    province_id: string
-    country_id: string
-  }
-}
-
 export type ProfessionalInformationFields = {
   specialty: NurseSpecialty
   date_of_first_practice: string
   ncz_registration_number: string
 }
 
-function assertIsPersonalFormFields(
-  fields: unknown,
-): asserts fields is PersonalFormFields {
-  assertOr400(isObjectLike(fields))
-  assertOr400(!!fields.first_name)
-  assertOr400(!!fields.last_name)
-  assertOr400(!!fields.gender)
-  assertOr400(!!fields.national_id_number)
-  assertOr400(!!fields.mobile_number)
-  assertOr400(isObjectLike(fields.address))
-  assertOr400(!!fields.address.country_id)
-  assertOr400(!!fields.address.province_id)
-  assertOr400(!!fields.address.district_id)
-  assertOr400(!!fields.address.ward_id)
-}
+const PersonalFormFields = z.object({
+  first_name: z.string(),
+  middle_names: z.optional(z.string()),
+  last_name: z.string(),
+  date_of_birth: z.string().date(),
+  email: z.optional(z.string()).refine(
+    (email) => !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    {
+      message: 'Invalid email format',
+    },
+  ),
+  gender,
+  national_id_number,
+  mobile_number: z.optional(phone_number),
+  address: z.object({
+    country: z.string(),
+    administrative_area_level_1: z.string(),
+    administrative_area_level_2: z.string(),
+    locality: z.string(),
+    street: z.string(),
+  }),
+})
+export type PersonalFormFields = z.infer<typeof PersonalFormFields>
 
-function assertIsProfessionalInformationFields(
-  fields: unknown,
-): asserts fields is ProfessionalInformationFields {
-  assertOr400(isObjectLike(fields))
-  assertOr400(!!fields.specialty)
-  assertOr400(!!fields.date_of_first_practice)
-  assertOr400(!!fields.ncz_registration_number)
-}
+const ProfessionalInformationFields = z.object({
+  specialty: z.enum([
+    'primary care',
+    'registered general',
+    'midwife',
+    'intensive and coronary care',
+    'renal',
+    'neonatal intensive care and paediatric',
+    'psychiatric mental health',
+    'operating theatre',
+    'community',
+    'opthalmic',
+    'anaesthetist',
+    'trauma care',
+    'clinical care',
+    'clinical officer',
+    'orthopaedic',
+    'oncology and palliative care',
+    'dental',
+  ]),
+  date_of_first_practice: z.string().date(),
+  ncz_registration_number: z.string(),
+})
 
-function assertIsMedia(
-  media: unknown,
-): asserts media is Media | null | undefined | '' {
-  if (media == null || media === '') return
-  assertOr400(isObjectLike(media))
-  assertOr400(!!media.mime_type)
-  assertOr400(!!media.binary_data)
-  assertOr400(!!media.id)
-}
+const Media = z.object({
+  mime_type: z.string(),
+  binary_data: z.string(),
+  id: z.string(),
+})
 
-function assertIsDocumentsFormFields(
-  fields: unknown,
-): asserts fields is DocumentFormFields {
-  assertOr400(isObjectLike(fields))
-  assertIsMedia(fields.national_id_picture)
-  assertIsMedia(fields.ncz_registration_card)
-  assertIsMedia(fields.face_picture)
-  assertIsMedia(fields.nurse_practicing_cert)
-}
+const DocumentsFormFields = z.object({
+  national_id_picture: z.optional(Media),
+  ncz_registration_card: z.optional(Media),
+  face_picture: z.optional(Media),
+  nurse_practicing_cert: z.optional(Media),
+})

@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import FormRow from './form/Row.tsx'
+import FormRow from '../components/library/FormRow.tsx'
 import { Select } from './form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
@@ -102,8 +102,8 @@ export default function Occupation0_18({
                   ? {
                     status: 'stopped school',
                     past: {
-                      last_grade: 'Grade 1',
-                      reason: 'Problems at home',
+                      stopped_last_grade: 'Grade 1',
+                      stopped_reason: 'Problems at home',
                     },
                   }
                   : {
@@ -233,7 +233,7 @@ export default function Occupation0_18({
               {stopEducationReasons.map((reason) => (
                 <option
                   value={reason}
-                  selected={reason === school?.past.reason}
+                  selected={reason === school?.past.stopped_reason}
                 >
                   {reason}
                 </option>
@@ -244,12 +244,12 @@ export default function Occupation0_18({
           {school.status === 'stopped school' && (
             <Select
               label='What grade was the patient in last school term?'
-              name='occupation.past.stopped_last_grade'
+              name='occupation.school.past.stopped_last_grade'
             >
               {grades.map((grade) => (
                 <option
                   value={grade}
-                  selected={grade === school.past.last_grade}
+                  selected={grade === school.past.stopped_last_grade}
                 >
                   {grade}
                 </option>

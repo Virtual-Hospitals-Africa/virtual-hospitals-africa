@@ -1,13 +1,10 @@
 import { JSX } from 'preact'
 import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
-import { Button } from '../library/Button.tsx'
-import FormRow from '../../islands/form/Row.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacist } from '../../types.ts'
-import Pagination from '../library/Pagination.tsx'
-import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
+import { path } from '../../util/path.ts'
 
 const columns: TableColumn<RenderedPharmacist>[] = [
   {
@@ -54,53 +51,45 @@ const columns: TableColumn<RenderedPharmacist>[] = [
   },
 ]
 type PharmacistsTableProps = {
-  pharmacists: RenderedPharmacist[]
-  pathname: string
-  totalRows: number
-  rowsPerPage: number
-  currentPage: number
-  totalPage: number
+  results: RenderedPharmacist[]
+  has_next_page: boolean
+  page: number
+  search_terms: {
+    name_search: string | null
+    licence_number_search: string | null
+  }
 }
 
 export default function PharmacistsTable({
-  pharmacists,
-  pathname,
-  totalRows,
-  rowsPerPage,
-  currentPage,
-  totalPage,
+  results,
+  search_terms,
+  page,
+  has_next_page,
 }: PharmacistsTableProps): JSX.Element {
-  const invite_href = `/regulator/pharmacists/invite`
   return (
-    <>
-      <FormRow className='mb-4'>
-        <InvitePharmacistSearch />
-        <Button
-          type='button'
-          href={invite_href}
-          className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
-        >
-          Invite
-        </Button>
-      </FormRow>
-      <Table
-        columns={columns}
-        rows={pharmacists}
-        EmptyState={() => (
-          <EmptyState
-            header='No pharmacists'
-            explanation='Invite a pharmacist to get started'
-            Icon={UserCircleIcon}
-          />
-        )}
-      />
-      <Pagination
-        totalPages={totalPage}
-        currentPages={currentPage}
-        path={pathname}
-        rowsPerPage={rowsPerPage}
-        totalRows={totalRows}
-      />
-    </>
+    <Table
+      columns={columns}
+      rows={results}
+      pagination={{ page, has_next_page }}
+      EmptyState={() => (
+        <EmptyState
+          header='No matching pharmacist found'
+          explanation={[
+            `No pharmacist matched the search term "${
+              search_terms.name_search || search_terms.licence_number_search
+            }"`,
+            'If there should be, click below to invite them',
+          ]}
+          button={{
+            text: 'Invite Pharmacist',
+            href: path('/regulator/pharmacists/invite', {
+              name: search_terms.name_search,
+              licence_number: search_terms.licence_number_search,
+            }),
+          }}
+          Icon={UserCircleIcon}
+        />
+      )}
+    />
   )
 }

@@ -2,7 +2,11 @@ import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
+import {
+  assertAgeYearsKnown,
+  IntakePage,
+  postHandlerAsserts,
+} from './_middleware.tsx'
 import {
   FamilyType,
   MaritalStatus,
@@ -17,9 +21,6 @@ type FamilyFormValues = {
     guardians: FamilyRelationInsert[]
     dependents: FamilyRelationInsert[]
     other_next_of_kin?: FamilyRelationInsert
-    home_satisfaction?: number
-    spiritual_satisfaction?: number
-    social_satisfaction?: number
     religion?: Religion
     family_type?: FamilyType
     marital_status?: MaritalStatus
@@ -43,7 +44,7 @@ function assertIsFamily(
   patient.family.dependents = patient.family.dependents || []
 }
 
-export const handler = postHandler(
+export const handler = postHandlerAsserts(
   assertIsFamily,
   async function updateFamily(ctx, patient_id, form_values) {
     await patient_family.upsert(

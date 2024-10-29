@@ -42,15 +42,15 @@ describe(
       assert($('input[name="national_id_number"]').length === 1)
       assert($('input[name="mobile_number"]').length === 1)
 
-      assert($('input[name="address.country_id"]').length === 1)
-      assert($('select[name="address.province_id"]').length === 1)
-      assert($('select[name="address.district_id"]').length === 1)
-      assert($('select[name="address.ward_id"]').length === 1)
-      assert($('input[name="address.street"]').length === 1)
+      assert($('input[name="address.country"]').length === 1)
       assert(
-        $('select[name="address.suburb_id"]').length === 0,
-        'suburb is only necessary for certain wards',
+        $('input[name="address.administrative_area_level_1"]').length === 1,
       )
+      assert(
+        $('input[name="address.administrative_area_level_2"]').length === 1,
+      )
+      assert($('input[name="address.locality"]').length === 1)
+      assert($('input[name="address.street"]').length === 1)
     })
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
@@ -69,16 +69,19 @@ describe(
         body.set('gender', 'female')
         body.set('national_id_number', '08-123456 D 53')
         body.set('date_of_birth', '2020-01-01')
-        body.set('mobile_number', '5555555555')
+        body.set('mobile_number', '+1 (203) 555-5555')
 
-        body.set('address.country_id', address.country_id.toString())
-        body.set('address.province_id', address.province_id.toString())
-        body.set('address.district_id', address.district_id.toString())
-        body.set('address.ward_id', address.ward_id.toString())
-        if (address.suburb_id) {
-          body.set('address.suburb_id', address.suburb_id.toString())
-        }
-        if (address.street) body.set('address.street', address.street)
+        body.set('address.country', address.country)
+        body.set(
+          'address.administrative_area_level_1',
+          address.administrative_area_level_1,
+        )
+        body.set(
+          'address.administrative_area_level_2',
+          address.administrative_area_level_2,
+        )
+        body.set('address.locality', address.locality)
+        body.set('address.street', address.street)
 
         const postResponse = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
@@ -97,19 +100,13 @@ describe(
             health_worker_id: nurse.id,
           })
 
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
+        assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
           gender: 'female',
           last_name: 'Nurse',
           middle_names: 'Zoom Zoom',
-          mobile_number: 5555555555,
+          mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',
           address,
         })
@@ -134,34 +131,28 @@ describe(
           $('input[name="national_id_number"]').val(),
           '08-123456 D 53',
         )
-        assertEquals($('input[name="mobile_number"]').val(), '5555555555')
+        assertEquals($('input[name="mobile_number"]').val(), '+12035555555')
 
         assert(
-          $('input[name="address.country_id"]').val(),
-          address.country_id.toString(),
+          $('input[name="address.country"]').val(),
+          address.country,
         )
         assert(
-          $('select[name="address.province_id"]').val(),
-          address.province_id.toString(),
+          $('input[name="address.administrative_area_level_1"]').val(),
+          address.administrative_area_level_1,
         )
         assert(
-          $('select[name="address.district_id"]').val(),
-          address.district_id.toString(),
+          $('input[name="address.administrative_area_level_2"]').val(),
+          address.administrative_area_level_2,
         )
         assert(
-          $('select[name="address.ward_id"]').val(),
-          address.ward_id.toString(),
+          $('input[name="address.locality"]').val(),
+          address.locality,
         )
         assert(
           $('input[name="address.street"]').val(),
-          address.street!.toString(),
+          address.street!,
         )
-        if (address.suburb_id) {
-          assert(
-            $('select[name="address.suburb_id"]').val(),
-            address.suburb_id.toString(),
-          )
-        }
       }
 
       {
@@ -187,19 +178,13 @@ describe(
             health_worker_id: nurse.id,
           })
 
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
+        assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
           gender: 'female',
           last_name: 'Nurse',
           middle_names: 'Zoom Zoom',
-          mobile_number: 5555555555,
+          mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
@@ -274,7 +259,7 @@ describe(
         assertEquals(registrationDetails.date_of_birth, '2020-01-01')
         assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
         assertEquals(registrationDetails.gender, 'female')
-        assertEquals(registrationDetails.mobile_number, '5555555555')
+        assertEquals(registrationDetails.mobile_number, '+12035555555')
         assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')

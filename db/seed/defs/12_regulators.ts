@@ -1,6 +1,5 @@
-import { Kysely } from 'kysely'
+import { TrxOrDb } from '../../../types.ts'
 import { create } from '../create.ts'
-import { DB } from '../../../db.d.ts'
 
 const regulators = [
   { name: 'Will Weiss', email: 'william.t.weiss@gmail.com' },
@@ -12,13 +11,13 @@ const regulators = [
   { name: 'Saad Malik', email: 'saadmparacha@gmail.com' },
   { name: 'Laurence Lo', email: 'laurence.regu@gmail.com' },
   { name: 'Mingda Ma', email: 'whoapple8@gmail.com' },
+  { name: 'Rishab Sanyal', email: 'rsanyal@ucdavis.edu' },
 ]
 
 export default create(['regulators'], addRegulators)
 
-// Add a test organization with all VHA employees as admins
-async function addRegulators(db: Kysely<DB>) {
-  await db
+async function addRegulators(trx: TrxOrDb) {
+  await trx
     .insertInto('regulators')
     .values(regulators)
     .execute()

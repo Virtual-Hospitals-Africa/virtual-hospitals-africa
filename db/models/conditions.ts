@@ -1,14 +1,13 @@
-import { Condition, Maybe, TrxOrDb } from '../../types.ts'
+import type { SelectQueryBuilder } from 'kysely/index.d.ts'
+import { Condition, TrxOrDb } from '../../types.ts'
+import { base } from './_base.ts'
+import type { DB } from '../../db.d.ts'
 
-export function search(
+function baseQuery(
   trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-  },
-): Promise<Condition[]> {
+): SelectQueryBuilder<DB, 'conditions', Condition> {
   return trx
     .selectFrom('conditions')
-    .where('is_procedure', '=', false)
     .select([
       'conditions.id',
       'conditions.name',
@@ -19,29 +18,24 @@ export function search(
       'conditions.info_link_href',
       'conditions.info_link_text',
     ])
-    .where('name', 'ilike', `%${opts.search}%`)
-    .execute()
 }
 
-export function searchSurgery(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
+const model = base({
+  top_level_table: 'conditions',
+  baseQuery,
+  formatResult: (x: Condition): Condition => x,
+  handleSearch(
+    qb,
+    opts: { search: string | null; is_procedure: boolean },
+  ) {
+    if (opts.search) {
+      qb = qb.where('name', 'ilike', `%${opts.search}%`)
+    }
+
+    return qb.where('is_procedure', '=', opts.is_procedure)
   },
-): Promise<Condition[]> {
-  return trx
-    .selectFrom('conditions')
-    .where('name', 'ilike', `%${opts.search}%`)
-    .where('is_procedure', '=', true)
-    .select([
-      'conditions.id',
-      'conditions.name',
-      'conditions.term_icd9_code',
-      'conditions.term_icd9_text',
-      'conditions.consumer_name',
-      'conditions.is_procedure',
-      'conditions.info_link_href',
-      'conditions.info_link_text',
-    ])
-    .execute()
-}
+})
+
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds

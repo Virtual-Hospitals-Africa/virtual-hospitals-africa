@@ -12,7 +12,7 @@ import { INTAKE_STEPS } from '../shared/intake.ts'
 import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
-import { searchManufacturedMedications } from '../db/models/drugs.ts'
+import manufactured_medications from '../db/models/manufactured_medications.ts'
 import sample from '../util/sample.ts'
 
 function randomDateOfBirth() {
@@ -204,11 +204,12 @@ async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
     .limit(200)
     .execute()
 
-  const manufactured_medications = await searchManufacturedMedications(db, {
-    ids: manufactured_medication_ids.map(({ id }) => id),
-  })
+  const manufactured_meds = await manufactured_medications.getByIds(
+    db,
+    manufactured_medication_ids.map(({ id }) => id),
+  )
 
-  for (const manufactured_medication of manufactured_medications) {
+  for (const manufactured_medication of manufactured_meds) {
     const container_size = sample([10, 20, 40, 100])
     const number_of_containers = sample([40, 100, 200])
 

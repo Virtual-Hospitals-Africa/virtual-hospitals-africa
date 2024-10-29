@@ -3,33 +3,13 @@ import {
   getUnhandledMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
-import {
-  ChatbotName,
-  TrxOrDb,
-  UnhandledMessage,
-  WhatsAppJSONResponse,
-  WhatsAppSendable,
-  WhatsAppSingleSendable,
-} from '../types.ts'
+import { ChatbotName, TrxOrDb, UnhandledMessage, WhatsApp } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
-
-type WhatsApp = {
-  phone_number: string
-  sendMessage(opts: {
-    phone_number: string
-    chatbot_name: ChatbotName
-    message: WhatsAppSingleSendable
-  }): Promise<WhatsAppJSONResponse>
-  sendMessages(opts: {
-    phone_number: string
-    chatbot_name: ChatbotName
-    messages: WhatsAppSingleSendable | WhatsAppSendable
-  }): Promise<WhatsAppJSONResponse[]>
-}
+import { assert } from 'std/assert/assert.ts'
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
 console.log('error_family', error_family)
@@ -74,6 +54,9 @@ async function respondToMessage(
   } catch (err) {
     console.log('Error determining message to send')
     console.error(err)
+
+    // TODO: not always true?
+    assert(err instanceof Error)
 
     await whatsapp.sendMessage({
       chatbot_name,

@@ -1,10 +1,12 @@
-import { JSX, useState } from 'react'
 import { MakeAppointments } from '../../components/library/icons/MakeAppointments.tsx'
 import { DeclareEmergency } from '../../components/library/icons/DeclareEmergency.tsx'
 import { RequestReview } from '../../components/library/icons/RequestReview.tsx'
 import { PickedMakeAppointments } from '../../components/library/icons/PickedMakeAppointments.tsx'
 import { PickedDeclareEmergency } from '../../components/library/icons/PickedDeclareEmergency.tsx'
 import { PickedRequestReview } from '../../components/library/icons/PickedRequestReview.tsx'
+import cls from '../../util/cls.ts'
+import { useSignal } from '@preact/signals'
+import type { JSX } from 'preact'
 
 const REQUEST_TYPES: { [key: string]: string } = {
   request_review: 'Request Review',
@@ -33,53 +35,52 @@ export function SendToRequestRadioButtons({
   form: string
   options: string[]
 }) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
-
-  const handleChange = (option: string) => {
-    setSelectedOption(option)
-  }
+  const selected_option = useSignal<string | null>(null)
 
   return (
     <fieldset className='flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
-        {options.map((option) => (
-          <label key={option} className='flex items-center gap-2'>
-            <input
-              form={form}
-              type='radio'
-              name='send_to.request_type'
-              value={option}
-              checked={selectedOption === option}
-              onChange={() =>
-                handleChange(option)}
-              className='hidden'
-            />
-            <div
-              className={`flex items-center gap-5 p-2 cursor-pointer rounded-md ${
-                selectedOption === option ? 'bg-white' : ''
-              }`}
-              onClick={() =>
-                handleChange(option)}
-            >
-              <div className='icon-container'>
-                {selectedOption === option
-                  ? PickedIconComponents[option]
-                  : DefaultIconComponents[option]}
-              </div>
-              <span
-                className={`text-lg font-medium ${
-                  selectedOption === option ? 'border-b-2 border-current' : ''
-                }`}
-                style={{
-                  lineHeight: '1.1',
-                  paddingBottom: selectedOption === option ? '2px' : '0',
-                }}
+        {options.map((option) => {
+          const is_selected = selected_option.value === option
+
+          return (
+            <label key={option} className='flex items-center gap-2'>
+              <input
+                form={form}
+                type='radio'
+                name='send_to.request_type'
+                value={option}
+                checked={is_selected}
+                onChange={() => selected_option.value = option}
+                className='hidden'
+              />
+              <div
+                className={cls(
+                  'flex items-center gap-5 p-2 cursor-pointer rounded-md',
+                  is_selected && 'bg-white',
+                )}
+                onClick={() => selected_option.value = option}
               >
-                {REQUEST_TYPES[option]}
-              </span>
-            </div>
-          </label>
-        ))}
+                <div className='icon-container'>
+                  {is_selected
+                    ? PickedIconComponents[option]
+                    : DefaultIconComponents[option]}
+                </div>
+                <span
+                  className={cls(
+                    'text-lg font-medium',
+                    is_selected && 'border-b-2 border-current pb-0.5',
+                  )}
+                  style={{
+                    lineHeight: '1.1',
+                  }}
+                >
+                  {REQUEST_TYPES[option]}
+                </span>
+              </div>
+            </label>
+          )
+        })}
       </div>
     </fieldset>
   )

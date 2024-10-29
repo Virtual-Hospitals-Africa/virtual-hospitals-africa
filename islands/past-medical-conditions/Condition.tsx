@@ -3,7 +3,7 @@ import { DateInput } from '../form/Inputs.tsx'
 import { PastMedicalCondition } from '../../types.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export default function Condition(
   {

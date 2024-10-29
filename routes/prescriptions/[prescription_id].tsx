@@ -122,8 +122,8 @@ export default async function PrescriptionPage(
                 <PrescriptionDetail
                   heading='Allergies'
                   information={allergies.map((allergy) => allergy.name).join(
-                    ', ' || 'None',
-                  )}
+                    ', ',
+                  ) || 'None'}
                 />
               </div>
             </div>

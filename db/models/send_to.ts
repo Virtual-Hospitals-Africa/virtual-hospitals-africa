@@ -1,48 +1,20 @@
-import {
-  Location,
-  Sendable,
-  SendToFormSubmission,
-  TrxOrDb,
-} from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
+import { z } from 'zod'
+import { Location, Maybe, Sendable, TrxOrDb } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
-import { getApprovedProviders, nearest } from './organizations.ts'
-import { sql } from 'kysely'
-// import { getMany } from './providers.ts'
-// import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
+import { getApprovedProviders, nearestHospitals } from './organizations.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
-
-export async function getLocationByOrganizationId(
-  trx: TrxOrDb,
-  organizationId: string,
-) {
-  const result = await trx
-    .selectFrom('Location')
-    .select([
-      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
-      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
-    ])
-    .where('organizationId', '=', organizationId)
-    .executeTakeFirst()
-
-  if (!result) {
-    throw new Error(
-      `No location data found for organizationId: ${organizationId}`,
-    )
-  }
-  return result
-}
 
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
-  location: Location,
+  location: Location | null,
   organization_id: string,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: nearest(trx, location),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,
@@ -179,12 +151,14 @@ export async function forPatientIntake(
 export async function forPatientEncounter(
   trx: TrxOrDb,
   _patient_id: string,
-  location: Location,
+  location: Maybe<Location>,
   organization_id: string,
   opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees } = await promiseProps({
-    nearestFacilities: nearest(trx, location),
+    nearestFacilities: location
+      ? nearestHospitals(trx, location)
+      : Promise.resolve([]),
     employees: getApprovedProviders(
       trx,
       organization_id,
@@ -315,36 +289,19 @@ export async function forPatientEncounter(
   ]
 }
 
-export function assertIs(
-  send_to: unknown,
-): asserts send_to is SendToFormSubmission {
-  assertOr400(isObjectLike(send_to))
-  if (send_to.action) {
-    assertOr400(
-      typeof send_to.action === 'string',
-      'send_to.action must be a string',
-    )
-    assertOr400(
-      !send_to.entity,
-      'send_to.entity must not be present when send_to.action is present',
-    )
-  }
-  if (send_to.entity) {
-    assertOr400(isObjectLike(send_to.entity))
-    assertOr400(
-      typeof send_to.entity.id === 'string',
-      'send_to.entity.id must be a string',
-    )
-    assertOr400(
-      typeof send_to.entity.type === 'string',
-      'send_to.entity.type must be a string',
-    )
-    assertOr400(
-      !send_to.action,
-      'send_to.action must not be present when send_to.entity is present',
-    )
-  }
-}
+export const SendToSchema = z.object({
+  action: z.string().optional(),
+  entity: z.object({
+    id: z.string().uuid(),
+    type: z.string(),
+  }).optional(),
+}).refine(
+  (data) => !data.action && data.entity,
+  {
+    message: 'Cannot send to both an action and an entity',
+    path: ['action'],
+  },
+)
 
 /**
  * [

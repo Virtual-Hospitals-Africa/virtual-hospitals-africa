@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as inventory from '../../db/models/inventory.ts'
 import {
@@ -6,7 +6,9 @@ import {
   itUsesTrxAnd,
   withTestOrganization,
 } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
+import { assertRejects } from 'std/assert/assert_rejects.ts'
 
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
   describe('getAvailableTests', () => {
@@ -147,68 +149,73 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
         }),
     )
 
-    itUsesTrxAnd.rejects(
-      'consuming more than the amount previously procured',
-      (trx) =>
-        withTestOrganization(trx, async (organization_id) => {
-          const admin = await addTestHealthWorker(trx, {
-            scenario: 'admin',
-            organization_id,
-          })
+    it('rejects when consuming more than the amount previously procured', async () => {
+      await withTestOrganization(db, async (organization_id) => {
+        const admin = await addTestHealthWorker(db, {
+          scenario: 'admin',
+          organization_id,
+        })
 
-          const consumable_name = generateUUID()
+        const consumable_name = generateUUID()
 
-          const consumable = await trx
-            .insertInto('consumables')
-            .returning('id')
-            .values({ name: consumable_name })
-            .executeTakeFirstOrThrow()
+        const consumable = await db
+          .insertInto('consumables')
+          .returning('id')
+          .values({ name: consumable_name })
+          .executeTakeFirstOrThrow()
 
-          const procurer = await trx
-            .insertInto('procurers')
-            .returning('id')
-            .values({ name: generateUUID() })
-            .executeTakeFirstOrThrow()
+        const procurer = await db
+          .insertInto('procurers')
+          .returning('id')
+          .values({ name: generateUUID() })
+          .executeTakeFirstOrThrow()
 
-          const first_added = await inventory.procureConsumable(
-            trx,
-            organization_id,
-            {
-              consumable_id: consumable.id,
-              created_by: admin.employee_id!,
-              quantity: 10,
-              container_size: 5,
-              number_of_containers: 2,
-              procured_from_id: procurer.id,
-              expiry_date: null,
-              batch_number: '',
-            },
-          )
-
-          await inventory.procureConsumable(trx, organization_id, {
+        console.log('inventory.zzz')
+        const first_added = await inventory.procureConsumable(
+          db,
+          organization_id,
+          {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
-            quantity: 5,
+            quantity: 10,
+            container_size: 5,
+            number_of_containers: 2,
             procured_from_id: procurer.id,
             expiry_date: null,
             batch_number: '',
-            container_size: 5,
-            number_of_containers: 1,
-          })
+          },
+        )
 
-          await inventory.consumeConsumable(trx, organization_id, {
+        console.log('inventory.procureConsumable')
+        await inventory.procureConsumable(db, organization_id, {
+          consumable_id: consumable.id,
+          created_by: admin.employee_id!,
+          quantity: 5,
+          procured_from_id: procurer.id,
+          expiry_date: null,
+          batch_number: '',
+          container_size: 5,
+          number_of_containers: 1,
+        })
+
+        console.log('inventory.consumeConsumable')
+        // deno-lint-ignore no-explicit-any
+        const error: any = await assertRejects(() =>
+          inventory.consumeConsumable(db, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
             quantity: 12,
             procurement_id: first_added.id,
           })
-        }),
-      (error) => {
+        )
+
+        console.log(error)
+
         assertEquals(
-          error.cause!.fields!.message,
+          error.fields.message,
           'new row for relation "procurement" violates check constraint "procurement_consumed_amount_less_than_quantity"',
         )
-      },
-    )
+      })
+    })
   })
 })

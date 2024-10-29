@@ -1,6 +1,10 @@
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
+import {
+  assertAgeYearsKnown,
+  IntakePage,
+  postHandlerAsserts,
+} from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'
@@ -146,7 +150,7 @@ function assertIsLifestyle(
   }
 }
 
-export const handler = postHandler(
+export const handler = postHandlerAsserts(
   assertIsLifestyle,
   async function updateLifestyle(ctx, patient_id, form_values) {
     await patient_lifestyle.upsert(

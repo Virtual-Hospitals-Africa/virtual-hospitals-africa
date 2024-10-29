@@ -1,10 +1,10 @@
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
+import { opts as db_opts } from './db/db.ts'
+import { promiseProps } from './util/promiseProps.ts'
 
 const { SELF_URL, PORT } = Deno.env.toObject()
-
-const httpsOpts: Partial<Deno.ServeTlsOptions> = {}
 
 if (SELF_URL === 'https://localhost:8000') {
   console.error(
@@ -14,12 +14,15 @@ if (SELF_URL === 'https://localhost:8000') {
 }
 
 const serveHttps = !SELF_URL
-if (serveHttps) {
-  const readingKey = Deno.readTextFile('./local-certs/localhost.key')
-  const readingCert = Deno.readTextFile('./local-certs/localhost.crt')
-  httpsOpts.key = await readingKey
-  httpsOpts.cert = await readingCert
-}
+const httpsOpts: {
+  key?: string
+  cert?: string
+} = serveHttps
+  ? await promiseProps({
+    key: Deno.readTextFile('./local-certs/localhost.key'),
+    cert: Deno.readTextFile('./local-certs/localhost.crt'),
+  })
+  : {}
 
 export default defineConfig({
   plugins: [tailwind()],
@@ -32,13 +35,21 @@ export default defineConfig({
     const address = colors.cyan(
       `${protocol}//localhost:${params.port}`,
     )
-    const localLabel = colors.bold('Local:')
 
     console.log()
     console.log(
       ' 🩺 ' +
         colors.bgRgb8(colors.rgb8('Virtual Hospitals Africa ready', 255), 57),
     )
-    console.log(`    ${localLabel} ${address}\n`)
+
+    const is_prod = !!db_opts && db_opts.host !== 'localhost'
+    if (is_prod) {
+      console.log(
+        `     ` +
+          colors.bgRgb8(colors.rgb8('(running against production)\n', 255), 59),
+      )
+    }
+
+    console.log(`    ${colors.bold('URL:')} ${address}\n`)
   },
 })

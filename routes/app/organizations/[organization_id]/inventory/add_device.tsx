@@ -9,15 +9,11 @@ import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import * as devices from '../../../../../db/models/devices.ts'
 
-import {
-  assertOr400,
-  assertOr403,
-  assertOr404,
-} from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import devices from '../../../../../db/models/devices.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
@@ -68,14 +64,7 @@ export default async function DeviceAdd(
     'device_id',
   )
   if (device_id) {
-    const result = await devices.search(
-      state.trx,
-      {
-        ids: [device_id],
-      },
-    )
-    assertOr404(result.length)
-    device = result[0]
+    device = await devices.getById(state.trx, device_id)
   }
 
   return (

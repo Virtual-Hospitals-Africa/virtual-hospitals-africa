@@ -1,114 +1,96 @@
+import {
+  ArrowLongLeftIcon,
+  ArrowLongRightIcon,
+} from './icons/heroicons/solid.tsx'
 import cls from '../../util/cls.ts'
+import range from '../../util/range.ts'
 
 type PaginationProps = {
-  totalPages: number
-  currentPages: number
-  path: string
-  rowsPerPage: number
-  totalRows: number
-  searchQuery?: string
+  has_next_page: boolean
+  page: number
+}
+
+function PageNumber(
+  { page, is_current }: { page: number; is_current: boolean },
+) {
+  return (
+    <button
+      type='submit'
+      name='page'
+      value={page}
+      className={cls(
+        'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium',
+        is_current
+          ? 'text-indigo-600 border-indigo-500'
+          : 'text-gray-500 hover:border-gray-300 hover:text-gray-700',
+      )}
+    >
+      {page}
+    </button>
+  )
+}
+
+function Ellipsis() {
+  return (
+    <span className='inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500'>
+      ...
+    </span>
+  )
 }
 
 export default function Pagination({
-  totalPages,
-  currentPages,
-  path,
-  rowsPerPage,
-  totalRows,
+  has_next_page,
+  page,
 }: PaginationProps) {
+  const primary_page_range = range(Math.max(1, page - 2), page + 1)
+  if (has_next_page) {
+    primary_page_range.push(page + 1)
+  }
+
   return (
-    <div className='flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6'>
-      <div className='flex flex-1 justify-between sm:hidden'>
-        <a
-          href={`${path}?page=${currentPages - 1 || 1}`}
-          className='relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+    <nav className='flex items-center justify-between border-t border-gray-200 px-4 sm:px-0'>
+      <div className='-mt-px flex w-0 flex-1'>
+        <button
+          type='submit'
+          name='page'
+          value={page - 1}
+          className='inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+          disabled={page === 1}
         >
+          <ArrowLongLeftIcon
+            aria-hidden='true'
+            className='mr-3 h-5 w-5 text-gray-400'
+          />
           Previous
-        </a>
-        <a
-          href={`${path}?page=${Math.min(currentPages + 1, totalPages)}`}
-          className='relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+        </button>
+      </div>
+      <div className='hidden md:-mt-px md:flex'>
+        {primary_page_range[0] > 1 && (
+          <>
+            <PageNumber page={1} is_current={false} />
+            <Ellipsis />
+          </>
+        )}
+        {primary_page_range.map((p) => (
+          <PageNumber key={p} page={p} is_current={p === page} />
+        ))}
+        {has_next_page && <Ellipsis />}
+      </div>
+      <div className='-mt-px flex w-0 flex-1 justify-end'>
+        <button
+          type='submit'
+          name='page'
+          value={page + 1}
+          className='inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+          disabled={!has_next_page}
         >
           Next
-        </a>
+          <ArrowLongRightIcon
+            aria-hidden='true'
+            className='ml-3 h-5 w-5 text-gray-400'
+          />
+        </button>
       </div>
-      <div className='hidden sm:flex sm:flex-1 sm:items-center sm:justify-between'>
-        <div>
-          <p className='text-sm text-gray-700'>
-            Showing{' '}
-            <span className='font-medium'>
-              {(currentPages - 1) * rowsPerPage + 1}
-            </span>{' '}
-            to{' '}
-            <span className='font-medium'>
-              {Math.min(currentPages * rowsPerPage, totalRows)}
-            </span>{' '}
-            of <span className='font-medium'>{totalRows}</span> results
-          </p>
-        </div>
-        <div>
-          <nav
-            aria-label='Pagination'
-            className='isolate inline-flex -space-x-px rounded-md shadow-sm'
-          >
-            <a
-              href={`${path}?page=${currentPages - 1 || 1}`}
-              className='relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'
-            >
-              <span className='sr-only'>Previous</span>
-              <svg
-                class='h-5 w-5'
-                viewBox='0 0 20 20'
-                fill='currentColor'
-                aria-hidden='true'
-              >
-                <path
-                  fill-rule='evenodd'
-                  d='M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z'
-                  clip-rule='evenodd'
-                />
-              </svg>
-            </a>
-            {new Array(totalPages).fill(0).map((_, i) => (
-              <a
-                key={i}
-                href={`${path}?page=${i + 1}`}
-                className={cls(
-                  'relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20',
-                  i + 1 === currentPages
-                    ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                    : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0',
-                )}
-              >
-                {i + 1}
-              </a>
-            ))}
-            {
-              /* <span className='relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0'>
-              ...
-            </span> */
-            }
-            <a
-              href={`${path}?page=${Math.min(currentPages + 1, totalPages)}`}
-              className='relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'
-            >
-              <span className='sr-only'>Next</span>
-              <svg
-                class='h-5 w-5'
-                viewBox='0 0 20 20'
-                fill='currentColor'
-                aria-hidden='true'
-              >
-                <path
-                  fill-rule='evenodd'
-                  d='M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z'
-                  clip-rule='evenodd'
-                />
-              </svg>
-            </a>
-          </nav>
-        </div>
-      </div>
-    </div>
+    </nav>
   )
 }

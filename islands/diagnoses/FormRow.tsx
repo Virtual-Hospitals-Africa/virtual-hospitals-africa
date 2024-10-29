@@ -3,7 +3,7 @@ import { DateInput } from '../form/Inputs.tsx'
 import { Diagnosis } from '../../types.ts'
 import { JSX } from 'preact'
 import { RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../form/Row.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
 
 export type DiagnosisFormRowState = {
   id?: string
@@ -17,12 +17,14 @@ export default function DiagnosisFormRow(
     index,
     labelled,
     value,
+    earliestSymptomDate,
     remove,
   }: {
     index: number
     labelled: boolean
     state: DiagnosisFormRowState
     value: Diagnosis | undefined
+    earliestSymptomDate?: string
     remove(): void
     update(diagnosis: DiagnosisFormRowState): void
   },
@@ -41,7 +43,7 @@ export default function DiagnosisFormRow(
           <DateInput
             name={`${prefix}.start_date`}
             label={labelled ? 'Start Date' : null}
-            value={value?.start_date}
+            value={value?.start_date || earliestSymptomDate}
             required
           />
         </FormRow>

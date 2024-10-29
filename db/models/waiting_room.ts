@@ -1,8 +1,13 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
+import {
+  EmployedHealthWorker,
+  RenderedWaitingRoom,
+  TrxOrDb,
+  WaitingRoom,
+} from '../../types.ts'
 import * as patients from './patients.ts'
-import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
@@ -56,8 +61,9 @@ export function arrivedAgoDisplay(wait_time: string) {
 // and the patients who are actively being seen by a provider at the organization.
 export async function get(
   trx: TrxOrDb,
-  { organization_id }: {
+  { organization_id, health_worker }: {
     organization_id: string
+    health_worker: EmployedHealthWorker
   },
 ): Promise<RenderedWaitingRoom[]> {
   const organization_waiting_room = trx
@@ -135,7 +141,9 @@ export async function get(
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
+      'doctor_review_requests.organization_id as requesting_organization_id',
       'completed_intake',
+
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
@@ -267,6 +275,7 @@ export async function get(
             'health_workers.avatar_url',
           ]),
       ).as('appointment_providers'),
+
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
           .innerJoin(
@@ -300,64 +309,49 @@ export async function get(
       ).as('providers'),
 
       jsonArrayFrom(
-        eb.selectFrom('doctor_reviews')
-          .innerJoin(
-            'employment',
-            'doctor_reviews.reviewer_id',
-            'employment.id',
-          )
+        eb.selectFrom(
+          'employment',
+        )
           .innerJoin(
             'health_workers',
             'health_workers.id',
             'employment.health_worker_id',
           )
-          .whereRef(
-            'doctor_reviews.encounter_id',
-            '=',
-            'patient_encounters.id',
+          .where((eb2) =>
+            eb2.or([
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_reviews.reviewer_id'),
+              ),
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_review_requests.requesting_doctor_id'),
+              ),
+            ])
           )
-          .select([
+          .select((eb2) => [
             'employment.health_worker_id',
+            'employment.organization_id',
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
             'health_workers.avatar_url',
-            literalBoolean(true).as('seen'),
+            eb2.and([
+              eb2('doctor_reviews.reviewer_id', 'is not', null),
+              eb2(
+                'employment.id',
+                '=',
+                eb2.ref('doctor_reviews.reviewer_id'),
+              ),
+            ])
+              .as('seen'),
             sql<
               string
             >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
               .as('href'),
-          ])
-          .unionAll(
-            eb.selectFrom('doctor_review_requests')
-              .innerJoin(
-                'employment',
-                'doctor_reviews.reviewer_id',
-                'employment.id',
-              )
-              .innerJoin(
-                'health_workers',
-                'health_workers.id',
-                'employment.health_worker_id',
-              )
-              .whereRef(
-                'doctor_reviews.encounter_id',
-                '=',
-                'patient_encounters.id',
-              )
-              .select([
-                'employment.health_worker_id',
-                'employment.id as employee_id',
-                'health_workers.name',
-                'employment.profession',
-                'health_workers.avatar_url',
-                literalBoolean(false).as('seen'),
-                sql<
-                  string
-                >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
-                  .as('href'),
-              ]),
-          ),
+          ]),
       ).as('reviewers'),
     ])
     .where('patient_encounters.id', 'in', encounters_to_show)
@@ -369,6 +363,10 @@ export async function get(
       ])
     )
     .orderBy(['is_emergency desc', 'patient_encounters.created_at asc'])
+
+  const organizations_where_doctor = health_worker.employment.filter((e) =>
+    e.roles.doctor?.registration_completed
+  )
 
   const patients_in_waiting_room = await query.execute()
 
@@ -389,6 +387,8 @@ export async function get(
         awaiting_review,
         in_review,
         review_steps,
+        requesting_organization_id,
+        reviewers,
         ...rest
       },
     ) => {
@@ -449,7 +449,15 @@ export async function get(
       }
       assert(status)
 
-      const action = in_review || awaiting_review
+      const can_review =
+        reviewers.some((r) => r.health_worker_id === health_worker.id) || (
+          !!requesting_organization_id &&
+          organizations_where_doctor.some((e) =>
+            e.organization.id === requesting_organization_id
+          )
+        )
+
+      const action = awaiting_review || in_review
         ? 'review'
         : completed_intake
         ? 'view'
@@ -461,6 +469,7 @@ export async function get(
         status,
         in_waiting_room,
         appointment,
+        reviewers,
         arrived_ago_display: arrivedAgoDisplay(wait_time),
         actions: {
           view: action === 'view' ? `/app/patients/${patient.id}` : null,
@@ -469,10 +478,16 @@ export async function get(
               awaiting_intake_step || INTAKE_STEPS[0]
             }`
             : null,
-          review: action === 'review'
+          review: action === 'review' && can_review
             ? `/app/patients/${patient.id}/review/${
               awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
             }`
+            : null,
+          awaiting_review: action === 'review' && !can_review
+            ? {
+              text: 'Awaiting Review',
+              disabled: true,
+            }
             : null,
         },
       }

@@ -1,0 +1,9 @@
+FROM amazoncorretto:17-alpine
+WORKDIR /app
+
+RUN apk add --no-cache wget
+RUN wget https://github.com/IHTSDO/snowstorm/releases/download/10.4.2/snowstorm-10.4.2.jar
+
+COPY scripts/docker/snowstorm/ /app
+EXPOSE 8080
+CMD ["/app/run.sh"]

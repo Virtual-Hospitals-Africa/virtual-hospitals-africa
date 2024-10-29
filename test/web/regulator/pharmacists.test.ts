@@ -8,6 +8,8 @@ import {
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
+import { path } from '../../../util/path.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describe(
   '/regulator/pharmacists',
@@ -24,7 +26,7 @@ describe(
 
       const $ = cheerio.load(pageContents)
       assert(
-        $('input[name="pharmacist_name"]').length === 1,
+        $('input[name="search"]').length === 1,
         'should have a search input',
       )
     })
@@ -33,25 +35,29 @@ describe(
       const newPharmacist = await addTestPharmacist(db)
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`/regulator/pharmacists`)
+      const pharmacist_name =
+        `${newPharmacist.given_name} ${newPharmacist.family_name}`
 
-      assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/regulator/pharmacists`)
+      const response = await fetch(path('/regulator/pharmacists', {
+        search: pharmacist_name,
+      }))
+
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
+
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
-      assert($('table').length === 1)
-
-      const pharmacistName =
-        `${newPharmacist.given_name} ${newPharmacist.family_name}`
+      assertEquals($('table').length, 1)
 
       assert(
-        $(`td div:contains(${pharmacistName})`).length === 1,
+        $(`td div:contains(${pharmacist_name})`).length === 1,
         `should have one <td> with the pharmacist name"`,
       )
 
-      const tableRow = $(`tr div:contains(${pharmacistName})`).closest('tr')
+      const tableRow = $(`tr div:contains(${pharmacist_name})`).closest('tr')
 
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.prefix})`).length ===

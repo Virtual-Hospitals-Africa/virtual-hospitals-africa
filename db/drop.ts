@@ -1,6 +1,32 @@
 import { redis } from '../external-clients/redis.ts'
 import { spinner } from '../util/spinner.ts'
-import { dropEverything } from './dropEverything.ts'
+import { runCommand } from '../util/command.ts'
+import { onLocalhost } from './onLocalhost.ts'
 
-await spinner('Flushing redis', redis.flushdb())
-await spinner('Dropping everything', dropEverything())
+export async function drop() {
+  const db_opts = onLocalhost()
+
+  await spinner('Flushing redis', async () => {
+    await redis!.flushdb()
+  })
+
+  await spinner(
+    'Dropping database',
+    () =>
+      runCommand('dropdb', {
+        args: [db_opts.dbname, '-U', db_opts.username],
+      }).catch((e) => {
+        if (e.message.includes('other session')) {
+          throw new Error('Database is in use, cannot drop.')
+        }
+        if (e.message.includes('does not exist')) {
+          return 'Database does not exist, skipping drop.'
+        }
+        throw e
+      }),
+  )
+}
+
+if (import.meta.main) {
+  await drop()
+}
