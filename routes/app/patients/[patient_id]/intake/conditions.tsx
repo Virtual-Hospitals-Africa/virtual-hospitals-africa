@@ -5,11 +5,6 @@ import PatientPreExistingConditions from '../../../../../components/patients/int
 import { IntakePage, postHandler } from './_middleware.tsx'
 import { z } from 'zod'
 
-type ConditionsFormValues = {
-  allergies: { id: string; name: string }[]
-  pre_existing_conditions: patient_conditions.PreExistingConditionUpsert[]
-}
-
 export const ConditionsSchema = z.object({
   allergies: z.array(
     z.object({
@@ -27,9 +22,9 @@ export const ConditionsSchema = z.object({
       start_date: z.string(),
       medications: z.array(
         z.object({
-          id: z.string().optional(),
+          id: z.string().uuid().optional(),
           name: z.string().optional(),
-          medication_id: z.string().optional(),
+          medication_id: z.string().uuid().optional(),
           manufactured_medication_id: z.string().optional(),
           strength: z.number(),
           route: z.string(),
