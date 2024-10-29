@@ -7,22 +7,24 @@ export async function drop() {
   const db_opts = onLocalhost()
 
   await spinner('Flushing redis', async () => {
-    await redis.flushdb()
+    await redis!.flushdb()
   })
 
   await spinner(
     'Dropping database',
-    async () => {
-      await runCommand('dropdb', {
+    () =>
+      runCommand('dropdb', {
         args: [db_opts.dbname, '-U', db_opts.username],
-      })
-    },
-  ).catch((e) => {
-    if (e.message.includes('other session')) {
-      throw new Error('Database is in use, cannot drop.')
-    }
-    return 'Database does not exist, skipping drop.'
-  })
+      }).catch((e) => {
+        if (e.message.includes('other session')) {
+          throw new Error('Database is in use, cannot drop.')
+        }
+        if (e.message.includes('does not exist')) {
+          return 'Database does not exist, skipping drop.'
+        }
+        throw e
+      }),
+  )
 }
 
 if (import.meta.main) {
