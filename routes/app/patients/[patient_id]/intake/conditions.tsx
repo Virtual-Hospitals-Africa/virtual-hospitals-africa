@@ -2,25 +2,67 @@ import * as patient_conditions from '../../../../../db/models/patient_conditions
 import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
+import { IntakePage, postHandler } from './_middleware.tsx'
+import { z } from 'zod'
 
 type ConditionsFormValues = {
   allergies: { id: string; name: string }[]
   pre_existing_conditions: patient_conditions.PreExistingConditionUpsert[]
 }
 
-function assertIsConditions(
-  patient: unknown,
-): asserts patient is ConditionsFormValues {
-  assertOr400(isObjectLike(patient))
-  patient.pre_existing_conditions = patient.pre_existing_conditions || []
-  patient.allergies = patient.allergies || []
-}
+export const ConditionsSchema = z.object({
+  allergies: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().optional(),
+    }).optional(),
+  ).optional()
+    .transform((allergies) =>
+      allergies?.filter((allergy) => allergy !== undefined) || []
+    ),
+  pre_existing_conditions: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().optional(),
+      start_date: z.string(),
+      medications: z.array(
+        z.object({
+          id: z.string().optional(),
+          name: z.string().optional(),
+          medication_id: z.string().optional(),
+          manufactured_medication_id: z.string().optional(),
+          strength: z.number(),
+          route: z.string(),
+          dosage: z.number(),
+          intake_frequency: z.string(),
+          start_date: z.string().date(),
+          end_date: z.string().date().optional(),
+          special_instructions: z.string().optional(),
+        })
+          .refine(
+            (medication) =>
+              medication.medication_id || medication.manufactured_medication_id,
+            {
+              message:
+                'Must provide either medication or manufactured medication',
+            },
+          ),
+      ).optional(),
+      comorbidities: z.array(
+        z.object({
+          id: z.string(),
+          start_date: z.string().optional(),
+        }),
+      ).optional(),
+    })
+      .refine((condition) => condition.start_date, {
+        message: 'Must provide start date',
+      }),
+  ).default([]),
+})
 
-export const handler = postHandlerAsserts(
-  assertIsConditions,
+export const handler = postHandler(
+  ConditionsSchema.parse,
   async function updateConditions(ctx, patient_id, form_values) {
     const upserting_conditions = patient_conditions.upsertPreExisting(
       ctx.state.trx,
