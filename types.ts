@@ -1400,6 +1400,7 @@ export type RenderedDoctorReviewBase = {
     name: string
     avatar_url: string | null
     description: string | null
+    primary_doctor_id: string | null
   }
   requested_by: {
     profession: 'nurse' | 'doctor'

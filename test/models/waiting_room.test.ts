@@ -638,6 +638,7 @@ describe(
                       description: null,
                       id: patient.id,
                       name: 'Test Patient 1',
+                      primary_doctor_id: null,
                     },
                     requested_by: {
                       avatar_url: nurse.avatar_url,
