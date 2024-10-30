@@ -385,7 +385,7 @@ export type GuardianFamilyRelation = FamilyRelation & {
 export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
   patient_name: string
-  patient_phone_number: Maybe<string>
+  patient_phone_number?: Maybe<string>
   family_relation_gendered: string
   next_of_kin: boolean
 }

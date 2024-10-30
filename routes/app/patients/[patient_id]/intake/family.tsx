@@ -1,10 +1,6 @@
 import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
-import {
-  assertAgeYearsKnown,
-  IntakePage,
-  postHandler,
-} from './_middleware.tsx'
+import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 import {
   FamilyType,
   MaritalStatus,
@@ -41,7 +37,15 @@ export const FamilySchema = z.object({
     guardians: z.array(FamilyRelationInsertSchema).default([]),
     dependents: z.array(FamilyRelationInsertSchema).default([]),
     other_next_of_kin: FamilyRelationInsertSchema.optional(),
-    religion: z.string().optional(),
+    religion: z.enum([
+      'African Traditional Religion',
+      'Apostolic Sect',
+      'Islam',
+      'Non-Religious',
+      'Other',
+      'Pentecostal/Protestant Christianity',
+      'Roman Catholic',
+    ]).optional(),
     family_type: z.string().optional(),
     marital_status: z.string().optional(),
     patient_cohabitation: z.string().optional(),
