@@ -114,7 +114,7 @@ export async function forPatientIntake(
           exclude_health_worker_id: opts.exclude_health_worker_id,
         },
       ),
-      organization: organizations.get(trx, { ids: [organization_id] }),
+      organization: organizations.getById(trx, organization_id),
       patient: patients.getByID(trx, { id: patient_id }),
     })
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
@@ -160,7 +160,7 @@ export async function forPatientIntake(
         ),
       },
       additional_description: employee.employment_location_name ??
-        organization[0].name,
+        organization.name,
       additional_info: employee.additional_info,
       image: {
         type: 'avatar',
