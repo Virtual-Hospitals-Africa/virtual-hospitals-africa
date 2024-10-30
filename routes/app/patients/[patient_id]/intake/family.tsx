@@ -1,11 +1,9 @@
 import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
   IntakePage,
-  postHandlerAsserts,
+  postHandler,
 } from './_middleware.tsx'
 import {
   FamilyType,
@@ -14,6 +12,7 @@ import {
   Religion,
 } from '../../../../../db.d.ts'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
+import { z } from 'zod'
 
 type FamilyFormValues = {
   family: {
@@ -28,24 +27,29 @@ type FamilyFormValues = {
   }
 }
 
-function assertIsFamily(
-  patient: unknown,
-): asserts patient is FamilyFormValues {
-  assertOr400(isObjectLike(patient))
-  assertOr400(isObjectLike(patient.family))
-  if (
-    isObjectLike(patient.family.other_next_of_kin) &&
-    !patient.family.other_next_of_kin.patient_name &&
-    !patient.family.other_next_of_kin.patient_id
-  ) {
-    delete patient.family.other_next_of_kin
-  }
-  patient.family.guardians = patient.family.guardians || []
-  patient.family.dependents = patient.family.dependents || []
-}
+const FamilyRelationInsertSchema = z.object({
+  patient_id: z.string().optional(),
+  patient_name: z.string(),
+  patient_phone_number: z.string().optional(),
+  family_relation_gendered: z.string(),
+  next_of_kin: z.boolean().default(false),
+})
 
-export const handler = postHandlerAsserts(
-  assertIsFamily,
+export const FamilySchema = z.object({
+  family: z.object({
+    under_18: z.boolean().optional(),
+    guardians: z.array(FamilyRelationInsertSchema).default([]),
+    dependents: z.array(FamilyRelationInsertSchema).default([]),
+    other_next_of_kin: FamilyRelationInsertSchema.optional(),
+    religion: z.string().optional(),
+    family_type: z.string().optional(),
+    marital_status: z.string().optional(),
+    patient_cohabitation: z.string().optional(),
+  }),
+})
+
+export const handler = postHandler(
+  FamilySchema.parse,
   async function updateFamily(ctx, patient_id, form_values) {
     await patient_family.upsert(
       ctx.state.trx,
