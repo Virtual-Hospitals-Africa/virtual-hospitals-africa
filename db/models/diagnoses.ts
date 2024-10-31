@@ -136,6 +136,7 @@ export async function upsertForReview(
           .execute()
       }),
     )
+  await inserting_collaborations;
 
   const to_delete_diagnoses = existing_diagnoses.self.filter(
     (existing_diagnosis) =>
@@ -200,6 +201,8 @@ export async function upsertForReview(
       }
     }),
   )
+  await updating_diagnoses;
+
   const updating_collaborations = to_update_collaborations.length &&
     Promise.all(
       to_update_collaborations.map((d) => {
@@ -225,11 +228,5 @@ export async function upsertForReview(
       }),
     )
 
-  await Promise.all([
-    deleting_diagnoses,
-    inserting_diagnoses,
-    updating_diagnoses,
-    inserting_collaborations,
-    updating_collaborations,
-  ])
+  await updating_collaborations
 }

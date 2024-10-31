@@ -232,7 +232,6 @@ export type PatientCondition = {
 
 export type MedicalConditionBase = {
   id: string
-  diagnosis_id: string
   name: string
   start_date: string
   patient_condition_id: string
@@ -290,9 +289,10 @@ export type DiagnosisGroup = {
   others: DiagnosesCollaboration[]
 }
 
-export type Diagnosis = MedicalConditionBase
+export type Diagnosis = MedicalConditionBase & { diagnosis_id: string }
 
 export type DiagnosesCollaboration = MedicalConditionBase & {
+  diagnosis_id: string
   diagnosed_by: string
   diagnosed_at: string
   approval_by?: Maybe<string>

@@ -62,15 +62,21 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         })
 
         await diagnoses.upsertForReview(trx, {
-          review: doctor_review,
+          review_id: doctor_review.review_id,
+          employment_id: doctor.employee_id!,
+          patient_id: patient.id,
+          encounter_id: encounter.id,
           diagnoses: [{
             condition_id: 'c_22401',
             start_date: '2020-01-01',
           }],
+          diagnoses_collaborations: []
         })
 
         const patient_diagnoses = await diagnoses.getFromReview(trx, {
           review_id: doctor_review.review_id,
+          employment_id: doctor.employee_id!,
+          encounter_id: encounter.id,
         })
 
         const tablet = await trx
@@ -102,7 +108,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           doctor_review_id: doctor_review.review_id,
           prescribing: [
             {
-              patient_condition_id: patient_diagnoses[0].patient_condition_id,
+              patient_condition_id: patient_diagnoses.self[0].patient_condition_id,
               medication_id: tablet.medication_id,
               strength: tablet.strength_numerators[0],
               route: tablet.routes[0],
@@ -133,7 +139,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .where(
             'patient_condition_id',
             '=',
-            patient_diagnoses[0].patient_condition_id,
+            patient_diagnoses.self[0].patient_condition_id,
           )
           .select(sql`TO_JSON(schedules)`.as('schedules'))
           .select('id')
