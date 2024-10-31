@@ -5,10 +5,6 @@ import {
   MagnifyingGlassIcon,
   XCircleIcon as OutlineXCircleIcon,
 } from '../../components/library/icons/heroicons/outline.tsx'
-import {
-  CheckCircleIcon as SolidCheckCircleIcon,
-  XCircleIcon as SolidXCircleIcon,
-} from '../../components/library/icons/heroicons/solid.tsx'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import {
