@@ -1,4 +1,4 @@
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(
@@ -72,21 +72,22 @@ export async function up(
           ),
       )
         .addColumn(
-          'examination_finding_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('examination_findings.id').onDelete(
-              'cascade',
-            ),
+          'snomed_code',
+          'varchar(255)',
+          (col) => col.notNull()
         )
-        .addColumn('value', 'json', (col) => col.notNull())
-        .addUniqueConstraint('patient_examination_findings_unique', [
-          'patient_examination_id',
-          'examination_finding_id',
-        ]),
+        .addColumn(
+          'snomed_english_description',
+          'varchar(255)',
+          (col) => col.notNull()
+        )
+        .addColumn('body_site_snomed_code', 'varchar(255)')
+        .addColumn('body_site_snomed_english_description', 'varchar(255)')
+        .addColumn('value', 'json', col => col.notNull())
+        .addCheckConstraint('body_site_presence', sql<boolean>`
+          (body_site_snomed_code is null) = (body_site_snomed_english_description is null)
+        `)
   )
-
-  // TODO: Add a trigger to ensure the examination findings are of the correct type
 }
 
 export async function down(db: Kysely<unknown>) {
