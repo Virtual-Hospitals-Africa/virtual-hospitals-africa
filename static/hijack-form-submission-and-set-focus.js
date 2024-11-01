@@ -9,9 +9,26 @@ addEventListener('submit', function (event) {
   var submitButton
 
   function onError(errorMessage) {
+    submitButton.disabled = false
+
+    if (errorMessage.startsWith('{')) {
+      var json = JSON.parse(errorMessage)
+      if (json.name === 'ZodError') {
+        json.issues.forEach(function (issue, index) {
+          var path = issue.path.join('.')
+          var element = document.querySelector('[name="' + path + '"]')
+          element.setCustomValidity(issue.message)
+          if (!index) {
+            element.focus()
+            element.reportValidity()
+          }
+        })
+        return
+      }
+    }
+
     var event = new CustomEvent('show-error', { detail: errorMessage })
     dispatchEvent(event)
-    submitButton.disabled = false
   }
 
   var form = event.target
@@ -96,7 +113,7 @@ addEventListener('submit', function (event) {
 addEventListener('navigate', function (event) {
   if (!location.hash) return
 
-  var params = new URLSearchParams(location.hash)
+  var params = new URLSearchParams(location.hash.replace('#', '?'))
   var focus = params.get('focus')
   if (!focus) return
 

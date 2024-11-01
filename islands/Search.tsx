@@ -175,6 +175,7 @@ export default function Search<
               onSelect?.(undefined)
               setQuery(query)
               onQuery(query)
+              event.currentTarget.setCustomValidity('')
             }}
             value={selected?.name}
             required={required}

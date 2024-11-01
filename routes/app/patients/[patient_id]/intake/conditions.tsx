@@ -24,7 +24,7 @@ export const ConditionsSchema = z.object({
     z.object({
       id: z.string(),
       name: z.string().optional(),
-      start_date: z.string(),
+      start_date: z.string().date(),
       medications: z.array(
         z.object({
           id: z.string().optional(),
@@ -45,19 +45,17 @@ export const ConditionsSchema = z.object({
             {
               message:
                 'Must provide either medication or manufactured medication',
+              path: ['medication_id'],
             },
           ),
       ).optional(),
       comorbidities: z.array(
         z.object({
           id: z.string(),
-          start_date: z.string().optional(),
+          start_date: z.string().date().optional(),
         }),
       ).optional(),
-    })
-      .refine((condition) => condition.start_date, {
-        message: 'Must provide start date',
-      }),
+    }),
   ).default([]),
 })
 

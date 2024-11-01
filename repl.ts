@@ -47,12 +47,13 @@ async function loadAll(to_import: string[]) {
   return modules
 }
 
-const [models, migrations, util, routes, shared, externalClients] =
+const [models, migrations, util, routes, components, shared, externalClients] =
   await loadAll([
     './db/models',
     './db/migrations',
     './util',
     './routes',
+    './components',
     './shared',
     './external-clients',
   ])
