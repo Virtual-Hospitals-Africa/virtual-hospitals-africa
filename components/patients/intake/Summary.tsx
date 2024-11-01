@@ -6,6 +6,7 @@ import {
 } from '../../library/DescriptionList.tsx'
 import type { Maybe } from '../../../types.ts'
 import omit from '../../../util/omit.ts'
+import { intakeFrequencyText } from '../../../shared/medication.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -19,9 +20,9 @@ type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 */
 
 // TODO Do something for displaying international phone numbers
-function PhoneDisplay({ phone_number }: { phone_number: string }) {
-  return <span>{phone_number}</span>
-}
+// function PhoneDisplay({ phone_number }: { phone_number: string }) {
+//   return <span>{phone_number}</span>
+// }
 
 type MaybeCell = {
   value: Maybe<string>
@@ -65,8 +66,7 @@ export default function PatientSummary(
     nonEmptyRows([[{
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
-    }]]),
-    nonEmptyRows([[{
+    }], [{
       value: personal.phone_number,
       edit_href: `${intake_href}/personal#focus=phone_number`,
     }]]),
@@ -76,17 +76,14 @@ export default function PatientSummary(
     nonEmptyRows([[{
       value: address.street,
       edit_href: `${intake_href}/address#focus=address.street`,
-    }]]),
-    nonEmptyRows([[{
+    }], [{
       value: address.locality,
       edit_href: `${intake_href}/address#focus=address.locality`,
-    }]]),
-    nonEmptyRows([[{
+    }], [{
       value: address.administrative_area_level_1,
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_1`,
-    }]]),
-    nonEmptyRows([[{
+    }], [{
       value: address.administrative_area_level_2,
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_2`,
@@ -99,8 +96,7 @@ export default function PatientSummary(
         value: nearest_health_care.nearest_organization_name,
         edit_href: `${intake_href}/address#focus=nearest_organization_name`,
       },
-    ]]),
-    nonEmptyRows([[{
+    ], [{
       value: nearest_health_care.primary_doctor_name,
       edit_href: `${intake_href}/address#focus=primary_doctor_name`,
     }]]),
@@ -132,10 +128,9 @@ export default function PatientSummary(
     }]]),
   ]
 
-  const dependents_items: DescriptionListRows[] = []
-  family.dependents.map(
-    (dependent, index) => {
-      const row1 = nonEmptyRows([
+  const dependents_items: DescriptionListRows[] = family.dependents.map(
+    (dependent, index) =>
+      nonEmptyRows([
         [{
           value: dependent.patient_name,
           edit_href:
@@ -146,107 +141,101 @@ export default function PatientSummary(
             `${intake_href}/family#focus=dependents.${index}.family_relation_gendered`,
           leading_separator: ', ',
         }],
-      ])
-      const row2 = nonEmptyRows([[
-        {
-          value: dependent.patient_phone_number,
-          edit_href:
-            `${intake_href}/family#focus=dependents.${index}.patient_phone_number`,
-        },
-      ]])
-      dependents_items.push(row1, row2)
-    },
-  )
-
-  const pre_existing_conditions_items: DescriptionListRows[] = []
-
-  pre_existing_conditions.map(
-    (condition, index) => {
-      const row1 = nonEmptyRows([
         [
           {
-            value: condition.name,
+            value: dependent.patient_phone_number,
             edit_href:
-              `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
+              `${intake_href}/family#focus=dependents.${index}.patient_phone_number`,
           },
         ],
-      ])
-
-      const row2 = nonEmptyRows([[
-        {
-          value: condition.start_date,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
-        }, // Not a cell!
-        {
-          value: 'Present',
-          edit_href: ' ',
-          leading_separator: ' - ',
-        },
-      ]])
-      pre_existing_conditions_items.push(row1, row2)
-    },
+      ]),
   )
 
-  const medications_items: DescriptionListRows[] = []
-  pre_existing_conditions.map((condition, index) =>
-    condition.medications.map((medication, medIndex) => {
-      const row1 = nonEmptyRows([[
-        {
-          value: medication.name,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
-        },
-      ]])
-      const row2 = nonEmptyRows([[
-        {
-          value: medication.form,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
-        },
-      ]])
-      const row3 = nonEmptyRows([[
-        {
-          value: medication.schedules[0].dosage.toString(),
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
-        },
-        {
-          value: medication.strength_numerator_unit,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
-          leading_separator: ' ',
-        },
-        {
-          value: medication.schedules[0].frequency,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.frequency`,
-          leading_separator: ' ',
-        },
-      ]])
-      const row4 = nonEmptyRows([[
-        {
-          value: medication.start_date,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
-        },
-        {
-          value: 'End Date',
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
-          leading_separator: ' — ',
-        },
-      ]])
-      const row5 = nonEmptyRows([[
-        {
-          value: medication.special_instructions,
-          edit_href:
-            `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
-        },
-      ]])
-      medications_items.push(row1, row2, row3, row4, row5)
-    })
-  )
+  const pre_existing_conditions_items: DescriptionListRows[] =
+    pre_existing_conditions.map(
+      (condition, index) =>
+        nonEmptyRows([
+          [
+            {
+              value: condition.name,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
+            },
+          ],
+          [
+            {
+              value: condition.start_date,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
+            },
+            {
+              value: ' — Present',
+            },
+          ],
+        ]),
+    )
+
+  const medications_items: DescriptionListRows[] = pre_existing_conditions
+    .flatMap((condition, index) =>
+      condition.medications.map((medication, medIndex) =>
+        nonEmptyRows([
+          [
+            {
+              value: `${medication.name} (for ${condition.name})`,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
+            },
+          ],
+          [
+            {
+              value: medication.form,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
+            },
+          ],
+          [
+            {
+              value: medication.schedules[0].dosage.toString(),
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
+            },
+            {
+              value: medication.strength_numerator_unit,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
+              leading_separator: ' ',
+            },
+            {
+              value: intakeFrequencyText(medication.schedules[0].frequency),
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.frequency`,
+              leading_separator: ' ',
+            },
+          ],
+          [
+            {
+              value: medication.start_date,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
+            },
+            {
+              // TODO get actual end date
+              value: 'End Date',
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
+              leading_separator: ' — ',
+            },
+          ],
+          [
+            {
+              value: medication.special_instructions,
+              edit_href:
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
+            },
+          ],
+        ])
+      )
+    )
 
   const pages = [
     {
