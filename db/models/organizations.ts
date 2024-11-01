@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
+  DoctorsWithoutAction,
   HasStringId,
   Location,
   Maybe,
@@ -8,6 +9,7 @@ import {
   OrganizationDoctorOrNurse,
   OrganizationEmployee,
   OrganizationEmployeeOrInvitee,
+  OrganizationEmployeeWithActions,
   Profession,
   TrxOrDb,
 } from '../../types.ts'
@@ -252,6 +254,114 @@ export function getEmployeesQuery(
       return query
     },
   )
+}
+
+export function getAllEmployeesWithoutActionQuery(
+  trx: TrxOrDb,
+  opts: EmployeeQueryOpts,
+) {
+  const health_workers_at_organization_query = getEmploymentQuery(trx, {
+    ...opts,
+  }).with('health_workers_at_organization', (qb) => {
+    return qb.selectFrom('organization_employment')
+      .select(({ fn, ref }) => [
+        'organization_employment.health_worker_id',
+        sql`ARRAY_AGG(registration_status)`.as('registration_statuses'),
+        fn.jsonAgg(
+          jsonBuildObject({
+            employee_id: ref('organization_employment.id'),
+            profession: ref('organization_employment.profession'),
+            specialty: ref('organization_employment.specialty'),
+            registration_status: ref(
+              'organization_employment.registration_status',
+            ),
+          }),
+        ).as('professions'),
+      ])
+      .groupBy('organization_employment.health_worker_id')
+  })
+
+  return health_workers_at_organization_query.with(
+    'organization_employees',
+    (qb) => {
+      let query = qb.selectFrom('health_workers_at_organization')
+        .innerJoin(
+          'health_workers',
+          'health_workers.id',
+          'health_workers_at_organization.health_worker_id',
+        )
+        .select((eb) => [
+          'health_workers.id as health_worker_id',
+          'health_workers.name as name',
+          'health_workers.email as email',
+          'health_workers.name as display_name',
+          'health_workers.avatar_url as avatar_url',
+          eb.selectFrom('health_worker_sessions')
+            .whereRef(
+              'health_worker_sessions.entity_id',
+              '=',
+              'health_workers.id',
+            )
+            .select(sql<boolean>`
+            max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
+          `.as('online'))
+            .groupBy('health_worker_sessions.entity_id')
+            .as('online'),
+          sql<false>`FALSE`.as('is_invitee'),
+          'health_workers_at_organization.professions',
+          sql<'pending_approval' | 'approved' | 'incomplete'>`
+          CASE 
+            WHEN 'pending_approval' = ANY(registration_statuses) THEN 'pending_approval'
+            WHEN 'incomplete' = ANY(registration_statuses) THEN 'incomplete'
+            ELSE 'approved'
+          END
+        `.as('registration_status'),
+        ])
+
+      if (opts.emails) {
+        assert(Array.isArray(opts.emails))
+        assert(opts.emails.length)
+        query = query.where('health_workers.email', 'in', opts.emails)
+      }
+
+      return query
+    },
+  )
+}
+
+export function getDoctorsWithoutAction(
+  trx: TrxOrDb,
+  opts: EmployeeQueryOpts = {},
+): Promise<OrganizationEmployeeWithActions[]> {
+  const employees = getAllEmployeesWithoutActionQuery(trx, opts).selectFrom(
+    'organization_employees',
+  ).selectAll('organization_employees').execute()
+  return employees
+}
+
+export async function getApprovedDoctorsWithoutAction(
+  trx: TrxOrDb,
+  opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions' | 'actions'> = {},
+): Promise<DoctorsWithoutAction[]> {
+  const employees = await getDoctorsWithoutAction(trx, {
+    ...opts,
+    professions: ['doctor'],
+    is_approved: true,
+  })
+
+  return employees.map(({ is_invitee, professions, ...rest }) => {
+    assert(!is_invitee)
+    assertEquals(professions.length, 1)
+    const [{ profession, employee_id, specialty }] = professions
+    assert(profession === 'doctor')
+
+    return {
+      ...rest,
+      profession,
+      employee_id,
+      specialty,
+    }
+  })
 }
 
 export function getEmployees(

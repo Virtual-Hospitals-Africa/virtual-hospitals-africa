@@ -4,9 +4,18 @@ import OnlineIndicator from '../../components/OnlineIndicator.tsx'
 import { Description } from './Description.tsx'
 import { CircularImage } from './CircularImage.tsx'
 import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
+import { AdditionalInfo } from './AdditionalInfo.tsx'
+import { AdditionalDescription } from './AdditionalDescription.tsx'
 
 function SendableListItemContents({ sendable }: { sendable: Sendable }) {
-  const { image, name, description, to } = sendable
+  const {
+    image,
+    name,
+    description,
+    to,
+    additional_description,
+    additional_info,
+  } = sendable
   return (
     <div className='group relative flex items-center px-5 py-4'>
       <a className='-m-1 block flex-1 p-1'>
@@ -29,6 +38,10 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
               {name}
             </p>
             <Description description={description} />
+            <AdditionalDescription
+              additional_description={additional_description}
+            />
+            <AdditionalInfo additional_info={additional_info} />
             {sendable.status && (
               <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                 {sendable.status}

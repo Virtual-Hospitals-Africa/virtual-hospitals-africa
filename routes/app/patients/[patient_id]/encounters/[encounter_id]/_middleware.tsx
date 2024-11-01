@@ -252,6 +252,8 @@ export function EncounterPage(
       organization_id,
     )
 
+    assert(location, 'Location not found')
+
     const { rendered, sendables } = await promiseProps({
       rendered: Promise.resolve(
         render({ ctx, ...ctx.state, previously_completed }),
@@ -260,9 +262,10 @@ export function EncounterPage(
         trx,
         patient.id,
         location,
-        organization_id,
+        encounter.providers,
         {
           exclude_health_worker_id: healthWorker.id,
+          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
         },
       ),
     })

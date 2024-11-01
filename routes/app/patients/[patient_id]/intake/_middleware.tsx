@@ -253,7 +253,8 @@ export function IntakePage(
     _req: Request,
     ctx: IntakeContext,
   ) {
-    const { healthWorker, patient, encounter_provider, trx } = ctx.state
+    const { healthWorker, patient, encounter, encounter_provider, trx } =
+      ctx.state
     const step = ctx.route.split('/').pop()!
     const previously_completed = patient.intake_steps_completed.includes(
       step as unknown as IntakeStep,
@@ -271,8 +272,10 @@ export function IntakePage(
         patient.id,
         location,
         encounter_provider.organization_id,
+        encounter.providers,
         {
           exclude_health_worker_id: healthWorker.id,
+          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
         },
       ),
     })

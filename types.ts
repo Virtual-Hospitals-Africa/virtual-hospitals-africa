@@ -1069,6 +1069,11 @@ export type OrganizationEmployee = {
   online: null | SqlBool
 }
 
+export type OrganizationEmployeeWithActions = Omit<
+  OrganizationEmployee,
+  'actions'
+>
+
 export type OrganizationDoctorOrNurse =
   & Omit<
     OrganizationEmployee,
@@ -1076,6 +1081,14 @@ export type OrganizationDoctorOrNurse =
   >
   & {
     profession: 'doctor' | 'nurse'
+    employee_id: string
+    specialty: NurseSpecialty | null
+  }
+
+export type DoctorsWithoutAction =
+  & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
+  & {
+    profession: 'doctor'
     employee_id: string
     specialty: NurseSpecialty | null
   }
@@ -1386,6 +1399,7 @@ export type RenderedDoctorReviewBase = {
     name: string
     avatar_url: string | null
     description: string | null
+    primary_doctor_id: string | null
   }
   requested_by: {
     profession: 'nurse' | 'doctor'
@@ -2851,6 +2865,8 @@ export type Sendable = {
     href?: string
     parenthetical?: string
   }
+  additional_description?: string
+  additional_info?: string
   status: string
   menu_options?: {
     name: string
