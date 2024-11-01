@@ -133,6 +133,9 @@ export default function RelationshipSelect({
       required={required}
     >
       <>
+        <option value='' selected={!selected_family_relation_gendered.value}>
+          Select a relationship
+        </option>
         {GUARDIAN_RELATIONS.flatMap((relation) =>
           Options({
             gender,
