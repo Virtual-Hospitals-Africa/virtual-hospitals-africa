@@ -856,7 +856,7 @@ export interface PatientFamily {
   marital_status: MaritalStatus | null
   patient_cohabitation: PatientCohabitation | null
   patient_id: string
-  religion: Religion | null
+  religion: string | null
   updated_at: Generated<Timestamp>
 }
 

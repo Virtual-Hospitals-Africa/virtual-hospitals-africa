@@ -1,24 +1,31 @@
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 import PatientHistoryForm from '../../../../../components/patients/intake/HistoryForm.tsx'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { IntakePage, postHandlerAsserts } from './_middleware.tsx'
+import { IntakePage, postHandler } from './_middleware.tsx'
+import { z } from 'zod'
 
 type HistoryFormValues = {
   past_medical_conditions: patient_conditions.PastMedicalConditionUpsert[]
   major_surgeries: patient_conditions.MajorSurgeryUpsert[]
 }
 
-function assertIsHistory(
-  patient: unknown,
-): asserts patient is HistoryFormValues {
-  assertOr400(isObjectLike(patient))
-  patient.past_medical_conditions = patient.past_medical_conditions || []
-  patient.major_surgeries = patient.major_surgeries || []
-}
+export const HistorySchema = z.object({
+  past_medical_conditions: z.array(
+    z.object({
+      id: z.string(),
+      start_date: z.string(),
+      end_date: z.string(),
+    }),
+  ).default([]),
+  major_surgeries: z.array(
+    z.object({
+      id: z.string(),
+      start_date: z.string(),
+    }),
+  ).default([]),
+})
 
-export const handler = postHandlerAsserts(
-  assertIsHistory,
+export const handler = postHandler(
+  HistorySchema.parse,
   async function updateHistory(ctx, patient_id, form_values) {
     const upserting_past_medical_conditions = patient_conditions
       .upsertPastMedical(

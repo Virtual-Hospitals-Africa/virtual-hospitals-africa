@@ -12,9 +12,9 @@ export const AddressSchema = z.object({
     administrative_area_level_1: z.string().optional(),
     country: z.string(),
   }),
-  nearest_organization_id: z.string().optional(),
+  nearest_organization_id: z.string().uuid().optional(),
   nearest_organization_name: z.string().optional(),
-  primary_doctor_id: z.string().optional(),
+  primary_doctor_id: z.string().uuid().optional(),
   primary_doctor_name: z.string().optional(),
 })
 
