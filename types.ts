@@ -14,7 +14,6 @@ import {
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
-  Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
