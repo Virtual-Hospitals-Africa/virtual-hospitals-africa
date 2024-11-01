@@ -371,7 +371,7 @@ export type FamilyRelation = {
   family_relation: string
   guardian_relation: GuardianRelationName
   patient_id: string
-  patient_name: Maybe<string>
+  patient_name: string
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>

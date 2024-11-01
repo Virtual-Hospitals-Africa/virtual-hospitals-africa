@@ -108,18 +108,13 @@ addEventListener('submit', function (event) {
   })
 })
 
-// Set focus on the first input or select element in the form when
-// navigating to a subsection with hash
-addEventListener('navigate', function (event) {
+function hashFocus() {
   if (!location.hash) return
 
   var params = new URLSearchParams(location.hash.replace('#', '?'))
+  console.log('params', params)
   var focus = params.get('focus')
   if (!focus) return
-
-  if (location.hash) {
-    sectionID = location.hash.split('=')[1]
-  }
 
   var focusableElement = document.getElementById(focus) ||
     document.querySelector(
@@ -130,4 +125,10 @@ addEventListener('navigate', function (event) {
   if (focusableElement) {
     focusableElement.focus()
   }
-})
+}
+
+// Set focus on the first input or select element in the form when
+// navigating to a subsection with hash
+addEventListener('navigate', hashFocus)
+
+hashFocus()
