@@ -112,31 +112,40 @@ export async function getSummaryById(
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
       'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      'patients.phone_number',
-      'patients.gender',
-      'patients.ethnicity',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
-      ),
-      'patients.national_id_number',
-      sql<
-        string | null
-      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
-        .as(
-          'description',
+      jsonBuildObject({
+        name: eb.ref('patients.name').$notNull(),
+        phone_number: eb.ref('patients.phone_number'),
+        gender: eb.ref('patients.gender'),
+        ethnicity: eb.ref('patients.ethnicity'),
+        date_of_birth: sql<
+          null | string
+        >`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`,
+        national_id_number: eb.ref('patients.national_id_number'),
+        description: sql<
+          string | null
+        >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`,
+      }).as('personal'),
+      jsonBuildObject({
+        primary_doctor_name: sql<
+          string
+        >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`,
+        nearest_organization_id: eb.ref('patients.nearest_organization_id'),
+        nearest_organization_name: eb.ref('organizations.name'),
+      }).as('nearest_health_care'),
+      jsonBuildObject({
+        street: eb.ref('addresses.street'),
+        locality: eb.ref('addresses.locality'),
+        administrative_area_level_1: eb.ref(
+          'addresses.administrative_area_level_1',
         ),
-      sql<
-        string
-      >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
-        .as('primary_doctor_name'),
-      'addresses.formatted as address',
+        administrative_area_level_2: eb.ref(
+          'addresses.administrative_area_level_2',
+        ),
+      }).as('address'),
       sql<
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
-      'patients.nearest_organization_id',
-      'organizations.name as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
         clinical_notes: patients.intake_clinical_notes_href_sql,
