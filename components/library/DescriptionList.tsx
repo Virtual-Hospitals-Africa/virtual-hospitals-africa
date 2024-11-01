@@ -8,8 +8,10 @@ export type DescriptionListCell = {
   leading_separator?: string
 }
 
+export type EmptyRow = []
+
 // value: 'Present'
-export type DescriptionListRow = DescriptionListCell[]
+export type DescriptionListRow = DescriptionListCell[] | EmptyRow
 export type DescriptionListRows = DescriptionListRow[]
 
 type DescriptionListSection = {
@@ -27,6 +29,9 @@ function createRowElement(
   row: DescriptionListCell[],
   row_number: number,
 ): JSX.Element {
+  if (row.length === 0) {
+    return createEmptyRow(row_number)
+  }
   const cell_elements: JSX.Element[] = []
   for (const cell of row) {
     cell.leading_separator && (
@@ -60,7 +65,12 @@ function createRowElement(
       >
         {row_element}
       </div>
-      <div className='grid gap-x-4 gap-y-0.5 w-4 h-4 text-gray-500' style={{ gridColumn: 3, gridRow: `${row_number}` }}><PencilSquareIcon/></div>
+      <div
+        className='grid gap-x-4 gap-y-0.5 w-4 h-4 text-gray-500'
+        style={{ gridColumn: 3, gridRow: `${row_number}` }}
+      >
+        <PencilSquareIcon />
+      </div>
     </>
   )
 }
@@ -93,6 +103,14 @@ function createDividerElement(row_number: number): JSX.Element {
   )
 }
 
+function createEmptyRow(row_number: number): JSX.Element {
+  return (
+    <div
+      style={{ gridColumn: '1 / 3', gridRow: `${row_number}`, height: 24 }}
+    />
+  )
+}
+
 export const DescriptionList = (
   { pages }: { pages: DescriptionListItemProps[] },
 ) => {
@@ -100,26 +118,40 @@ export const DescriptionList = (
   let page_row_start: number = 0
   let page_row_end: number = 1
   for (const [page_index, page] of pages.entries()) {
-    let item_index_end: number = 0
-    let section_index_end: number = 0
     for (const [item_index, item] of page.items.entries()) {
       for (const [row_index, row] of item.entries()) {
+        if (row.length === 0) {
+          console.log('empty row')
+        }
         elements.push(createRowElement(row, page_row_end))
         page_row_end += 1
       }
-      item_index_end = item_index
     }
-    elements.push(createTitleElement(page.title, page_row_start + 1, page_row_end))
+    elements.push(
+      createTitleElement(page.title, page_row_start + 1, page_row_end),
+    )
     page_row_start = page_row_end
+
+    if (page.sections.length > 0) {
+      page_row_end += 1
+      elements.push(createEmptyRow(page_row_end))
+      page_row_end += 1
+      page_row_start = page_row_end
+    }
 
     for (const [section_index, section] of page.sections.entries()) {
       for (const [item_index, item] of section.items.entries()) {
         for (const [row_index, row] of item.entries()) {
+          if (row.length === 0) {
+            console.log('empty row')
+          }
           elements.push(createRowElement(row, page_row_end))
           page_row_end += 1
         }
       }
-      elements.push(createTitleElement(section.title, page_row_start, page_row_end))
+      elements.push(
+        createTitleElement(section.title, page_row_start, page_row_end),
+      )
       page_row_start = page_row_end
     }
     elements.push(createDividerElement(page_row_end))

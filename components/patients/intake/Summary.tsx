@@ -83,11 +83,13 @@ export default function PatientSummary(
     }]]),
     nonEmptyRows([[{
       value: address.administrative_area_level_1,
-      edit_href: `${intake_href}/address#focus=address.administrative_area_level_1`,
+      edit_href:
+        `${intake_href}/address#focus=address.administrative_area_level_1`,
     }]]),
     nonEmptyRows([[{
       value: address.administrative_area_level_2,
-      edit_href: `${intake_href}/address#focus=address.administrative_area_level_2`,
+      edit_href:
+        `${intake_href}/address#focus=address.administrative_area_level_2`,
     }]]),
   ]
 
