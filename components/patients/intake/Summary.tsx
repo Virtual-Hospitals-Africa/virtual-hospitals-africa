@@ -127,7 +127,7 @@ function MedicalConditionSummary(
     major_surgeries: MajorSurgery[]
   },
 ) {
-  if (!past_medical_conditions.length && !major_surgeries.length) return null
+  if (!past_medical_conditions.length) return null
   return (
     <div>
       {past_medical_conditions.map((condition) => (
@@ -148,11 +148,15 @@ function MajorSurgerySummary(
   if (!major_surgeries.length) return null
   return (
     <div>
-      {major_surgeries.map((surgery) => (
-        <div className='flex flex-col'>
-          <span className='font-semibold'>{surgery.name}</span>
-          <DateRange {...surgery} />
-        </div>
+      {major_surgeries.map((surgery, index) => (
+          <div className='flex flex-col' key={index}>
+              <a href={`history#focus=major_surgeries.${index}.name`}>
+                <span className='font-semibold'>{surgery.name}</span>
+              </a>
+              <a href={`history#focus=major_surgeries.${index}.start_date`}>
+                <span> {prettyPatientDateOfBirth(surgery.start_date)} </span>
+              </a>
+            </div>
       ))}
     </div>
   )
