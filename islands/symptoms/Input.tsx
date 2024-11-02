@@ -53,8 +53,6 @@ export default function SymptomInput({
 
   const notes = useSignal(value?.notes || '')
 
-  console.log('notes.value', notes.value)
-
   return (
     <RemoveRow onClick={remove} labelled>
       <div className='flex flex-col space-y-1 w-full'>

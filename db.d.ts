@@ -60,15 +60,6 @@ export type EncounterStep =
   | 'symptoms'
   | 'vitals'
 
-export type ExaminationFindingType =
-  | 'boolean'
-  | 'date'
-  | 'float'
-  | 'integer'
-  | 'multiselect'
-  | 'select'
-  | 'string'
-
 export type FamilyType =
   | '2 married parents'
   | 'Blended'
@@ -415,26 +406,6 @@ export interface Employment {
 export interface Encounter {
   order: Int8
   step: EncounterStep
-}
-
-export interface ExaminationCategories {
-  category: string
-  examination_name: string
-  id: Generated<string>
-  order: number
-}
-
-export interface ExaminationFindings {
-  ask_dependent_on: string | null
-  ask_dependent_values: Json | null
-  examination_category_id: string
-  id: Generated<string>
-  label: string
-  name: string
-  options: string[] | null
-  order: number
-  required: Generated<boolean>
-  type: ExaminationFindingType
 }
 
 export interface Examinations {
@@ -828,10 +799,13 @@ export interface PatientEncounterSteps {
 }
 
 export interface PatientExaminationFindings {
+  body_site_snomed_code: string | null
+  body_site_snomed_english_description: string | null
   created_at: Generated<Timestamp>
-  examination_finding_id: string
   id: Generated<string>
   patient_examination_id: string
+  snomed_code: string
+  snomed_english_description: string
   updated_at: Generated<Timestamp>
   value: Json
 }
@@ -1199,8 +1173,6 @@ export interface DB {
   drugs: Drugs
   employment: Employment
   encounter: Encounter
-  examination_categories: ExaminationCategories
-  examination_findings: ExaminationFindings
   examinations: Examinations
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns

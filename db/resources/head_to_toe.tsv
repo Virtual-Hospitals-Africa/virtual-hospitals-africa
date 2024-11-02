@@ -1,0 +1,394 @@
+examination_name	category	subcategory	finding_name	notes	snomed_finding_code	snomed_body_structure_codes	snomed_additional_relationships
+General	Patient state		ill				
+General	Patient state		unalert				
+General	Patient state		confused				
+General	Patient state		drowsy				
+General	Patient state		febrile				
+General	Patient state		dehydrated				
+General	Patient state		uncooperative				
+General	Patient state		sad				
+General	Patient state		resentful				
+General	Patient state		fat				
+General	Patient state		muscular				
+General	Patient state		edema				
+General	Patient state		wasted				
+General	Patient state		in pain				
+General	Patient state		in distress				
+General	Hands	Texture	cold		703883009	"1286100112861001,85151006,78791008"	
+General	Hands	Texture	hot		707793005	"1286100112861001,85151006,78791008"	
+General	Hands	Texture	clammy		102598000	"1286100112861001,85151006,78791008"	
+General	Hands	Fingers	cyanosis		3415004	362779006	
+General	Hands	Fingers	nicotine stains		247439004	362779006	
+General	Hands	Fingers	clubbing		30760008	362779006	
+General	Hands	Nails	leukonychia		111202002	770802007	
+General	Hands	Nails	koilonychia		66270006	770802007	
+General	Hands	Nails	splinter hemorrhages		271770005	770802007	
+General	Hands	Nails	pitting		89704006	770802007	
+General	Hands	Nails	onycholysis		75789001	770802007	
+General	Hands	Nails	discolouration		47415006	770802007	
+General	Hands	Palms	erythema		70819003	21547004	
+General	Hands	Palms	dupuytren's disease		203045001	21203009	
+General	Hands	Palms	pale skin		403237004	21547004	
+General	Hands	Palms	cyanosis		119419001	21547004	
+General	Hands	Palms	jaundice		18165001	21547004	
+Skin	Colour		hypopigment	User must select site			
+Skin	Colour		hyperpigment	User must select site			
+Skin	Colour		discolouration	User must select site			
+Skin	Colour		jaundice				
+Skin	Colour		cyanosis				
+Skin	Colour		pale				
+Skin	Texture		diaphoresis				
+Skin	Texture		thin				
+Skin	Texture		thick				
+Skin	Texture		dry				
+Skin	Temperature		apyrexial				
+Skin	Temperature		pyrexial				
+Skin	Temperature		hypothermia				
+Skin	Temperature		hyperthermia				
+Skin	Wound	Type	abrasion	User must select site			
+Skin	Wound	Type	avulsion	User must select site			
+Skin	Wound	Type	contusion	User must select site			
+Skin	Wound	Type	laceration	User must select site			
+Skin	Wound	Type	burn	User must select site			
+Skin	Wound	Type	surgical incision	User must select site			
+Skin	Wound	Type	pressure injury	User must select site			
+Skin	Wound	Type	puncture	User must select site			
+Skin	Wound	Type	skin tear	User must select site			
+Skin	Wound	Type	ulcer	User must select site			
+Skin	Wound	Foreign Body	organic				
+Skin	Wound	Foreign Body	metallic				
+Skin	Wound	Foreign Body	fiberglass spicules				
+Skin	Wound	Foreign Body	fishhooks				
+Skin	Wound	Foreign Body	glass				
+Skin	Wound	Foreign Body	gravel				
+Skin	Wound	Foreign Body	pencil lead				
+Skin	Wound	Foreign Body	plastic				
+Skin	Rash	Pattern	linear				
+Skin	Rash	Pattern	annular				
+Skin	Rash	Pattern	serpiginous				
+Skin	Rash	Pattern	reticular				
+Skin	Rash	Pattern	star shaped				
+Skin	Rash	Pattern	discrete				
+Skin	Rash	Pattern	confluent				
+Skin	Rash	Description	flat macular	User must select site			
+Skin	Rash	Description	raised papular	User must select site			
+Skin	Rash	Description	localized plaque	User must select site			
+Skin	Rash	Description	wheal	User must select site			
+Skin	Rash	Description	blisters	User must select site			
+Skin	Rash	Description	bullae	User must select site			
+Skin	Rash	Description	large vesicles	User must select site			
+Skin	Rash	Description	nodules	User must select site			
+Skin	Rash	Description	purpura	User must select site			
+Skin	Rash	Surface	scaly				
+Skin	Rash	Surface	shiny				
+Skin	Rash	Surface	well demarcated edges				
+Skin	Rash	Surface	rough edges				
+Skin	Rash	Surface	pigment				
+Skin	Rash	Character	cold				
+Skin	Rash	Character	hot				
+Skin	Rash	Character	sweating				
+Skin	Rash	Character	warm				
+Skin	Rash	Character	tender				
+Skin	Rash	Character	blanching				
+Skin	Rash	Character	discharging				
+Skin	Rash	Distribution	hands and feet				
+Skin	Rash	Distribution	extensor surfaces				
+Skin	Rash	Distribution	flexural surfaces				
+Skin	Rash	Distribution	truncal				
+Skin	Rash	Distribution	exposed sites				
+Skin	Rash	Distribution	symmetrical				
+Skin	Rash	Distribution	asymmetrical				
+Head and Neck	Face		drooping				
+Head and Neck	Face		swelling				
+Head and Neck	Eyes	Sclera	erythema	User must select site			
+Head and Neck	Eyes	Sclera	jaundice	User must select site			
+Head and Neck	Eyes	Conjunctiva	jaundice	User must select site			
+Head and Neck	Eyes	Conjunctiva	pale	User must select site			
+Head and Neck	Eyes	Conjunctiva	erythema	User must select site			
+Head and Neck	Eyes	Conjunctiva	swelling	User must select site			
+Head and Neck	Eyes	Pupils	constricted	User must select site			
+Head and Neck	Eyes	Pupils	dilated	User must select site			
+Head and Neck	Eyes	Pupils	anisocoria	User must select site			
+Head and Neck	Eyes	Pupils	cataract	User must select site			
+Head and Neck	Eyes	Movement	nystagmus	User must select site			
+Head and Neck	Eyes	Movement	strabismus	User must select site			
+Head and Neck	Eyes	Movement	twitching	User must select site			
+Head and Neck	Eyes	Foreign Body	eyelash	User must select site			
+Head and Neck	Eyes	Foreign Body	dried mucus	User must select site			
+Head and Neck	Eyes	Foreign Body	sawdust	User must select site			
+Head and Neck	Eyes	Foreign Body	dirt	User must select site			
+Head and Neck	Eyes	Foreign Body	sand	User must select site			
+Head and Neck	Eyes	Foreign Body	cosmetics	User must select site			
+Head and Neck	Eyes	Foreign Body	contact lens	User must select site			
+Head and Neck	Eyes	Foreign Body	metal particles	User must select site			
+Head and Neck	Eyes	Foreign Body	glass shards	User must select site			
+Head and Neck	Ears		tender	User must select site			
+Head and Neck	Ears		discharge	User must select site			
+Head and Neck	Ears		wax impaction	User must select site			
+Head and Neck	Ears	Foreign Body	toy part	User must select site			
+Head and Neck	Ears	Foreign Body	coin	User must select site			
+Head and Neck	Ears	Foreign Body	nut	User must select site			
+Head and Neck	Ears	Foreign Body	seed	User must select site			
+Head and Neck	Ears	Foreign Body	stone	User must select site			
+Head and Neck	Ears	Foreign Body	button	User must select site			
+Head and Neck	Nose		Asymmetry	User must select site			
+Head and Neck	Nose		Mass	User must select site			
+Head and Neck	Nose		Bleeding	User must select site			
+Head and Neck	Nose		Discharge	User must select site			
+Head and Neck	Nose		Swelling	User must select site			
+Head and Neck	Nose		malformation	User must select site			
+Head and Neck	Nose	Foreign Body	toy part	User must select site			
+Head and Neck	Nose	Foreign Body	coin	User must select site			
+Head and Neck	Nose	Foreign Body	nut	User must select site			
+Head and Neck	Nose	Foreign Body	seed	User must select site			
+Head and Neck	Nose	Foreign Body	stone	User must select site			
+Head and Neck	Nose	Foreign Body	button	User must select site			
+Head and Neck	Nose	Foreign Body	other	User must select site			
+Head and Neck	Mouth	Lips	angular cheilitis				
+Head and Neck	Mouth	Lips	cyanosis				
+Head and Neck	Mouth	Lips	malformation				
+Head and Neck	Mouth	Tongue	pale				
+Head and Neck	Mouth	Tongue	cyanosis				
+Head and Neck	Mouth	Tongue	moist				
+Head and Neck	Mouth	Tongue	dry tongue				
+Head and Neck	Mouth	Tongue	big tongue				
+Head and Neck	Mouth	Tongue	deviation				
+Head and Neck	Mouth	Teeth	caries				
+Head and Neck	Mouth	Teeth	poor hygiene				
+Head and Neck	Mouth	Teeth	false teeth				
+Head and Neck	Mouth	Teeth	missing teeth				
+Head and Neck	Mouth	Teeth	dentures				
+Head and Neck	Mouth	Teeth	braces				
+Head and Neck	Mouth	Teeth	implants				
+Head and Neck	Mouth	Gums	bleeding				
+Head and Neck	Mouth	Gums	swollen				
+Head and Neck	Mouth	Tonsils	swollen				
+Head and Neck	Mouth	Tonsils	red				
+Head and Neck	Mouth	Tonsils	ulcer				
+Head and Neck	Mouth	Pharynx	swollen				
+Head and Neck	Mouth	Pharynx	red				
+Head and Neck	Mouth	Pharynx	ulcer				
+Head and Neck	Mouth	Breath	ketosis				
+Head and Neck	Mouth	Breath	alcohol				
+Head and Neck	Mouth	Breath	fetor				
+Head and Neck	Mouth	Breath	musty				
+Head and Neck	Neck		tenderness				
+Head and Neck	Neck		mass				
+Head and Neck	Neck		enlarged lymph nodes	User must select site			
+Cardiovascular	General		extremity coolness				
+Cardiovascular	General		pallor				
+Cardiovascular	General		delayed capillary refill				
+Cardiovascular	General		lower limb swelling				
+Cardiovascular	General		edema				
+Cardiovascular	General		cyanosis				
+Cardiovascular	General		clubbing				
+Cardiovascular	Blood Pressure		low				
+Cardiovascular	Blood Pressure		elevated				
+Cardiovascular	Blood Pressure		high				
+Cardiovascular	Pulse		no pulse				
+Cardiovascular	Pulse	Rate	absent				
+Cardiovascular	Pulse	Rate	bradycardia				
+Cardiovascular	Pulse	Rate	tachycardia				
+Cardiovascular	Pulse	Pattern	regular				
+Cardiovascular	Pulse	Pattern	weak				
+Cardiovascular	Pulse	Pattern	pulsus alternans				
+Cardiovascular	Pulse	Pattern	pulsus paradoxicus				
+Cardiovascular	Pulse	Pressure	wide				
+Cardiovascular	Heart	Precordium	no activity				
+Cardiovascular	Heart	Precordium	heaves				
+Cardiovascular	Heart	Precordium	thrills				
+Cardiovascular	Heart	Apex beat	present				
+Cardiovascular	Heart	Apex beat	not present				
+Cardiovascular	Heart	Apex beat	feeble				
+Cardiovascular	Heart	Apex beat	palpable				
+Cardiovascular	Heart	Apex beat	not palpable				
+Cardiovascular	Heart	Apex beat	thrusting				
+Cardiovascular	Heart	Apex beat	displaced				
+Cardiovascular	Heart	Dullness	shift to the left				
+Cardiovascular	Heart	Dullness	shift to the right				
+Cardiovascular	Heart	Dullness	increased				
+Cardiovascular	Heart	Sounds	no sounds				
+Cardiovascular	Heart	Sounds	gallop				
+Cardiovascular	Heart	Sounds	extra heart sounds				
+Cardiovascular	Heart	Sounds	diastolic murmur	User must select site			
+Cardiovascular	Heart	Sounds	systolic murmur	User must select site			
+Cardiovascular	Heart	Sounds	continuous murmur	User must select site			
+Cardiovascular	Heart	Sounds	pericardial rub				
+Respiratory	General		alar flaring				
+Respiratory	General		retractions				
+Respiratory	General		pursed lip breathing				
+Respiratory	General		noisy breathing				
+Respiratory	General		stridor				
+Respiratory	General		wheezes				
+Respiratory	General		pallor				
+Respiratory	General		cyanosis				
+Respiratory	General		clubbing				
+Respiratory	Trachea		deviation				
+Respiratory	Trachea		tug				
+Respiratory	Chest	Shape	barrel chest				
+Respiratory	Chest	Shape	pigeon chest				
+Respiratory	Chest	Shape	kyphosis				
+Respiratory	Chest	Shape	scar	User must select site			
+Respiratory	Chest	Shape	mass	User must select site			
+Respiratory	Chest	Expansion	no movement				
+Respiratory	Chest	Expansion	symmetrical				
+Respiratory	Chest	Expansion	asymmetrical				
+Respiratory	Chest	Expansion	crepitus	User must select site			
+Respiratory	Chest	Tactile Fremitus	decreased	User must select site			
+Respiratory	Chest	Tactile Fremitus	increased	User must select site			
+Respiratory	Chest	Tactile Fremitus	crepitus	User must select site			
+Respiratory	Chest	Vocal Fremitus	decreased	User must select site			
+Respiratory	Chest	Vocal Fremitus	increased	User must select site			
+Respiratory	Chest	Dullness	absent				
+Respiratory	Chest	Dullness	stony	User must select site			
+Respiratory	Chest	Dullness	liver				
+Respiratory	Breathing		no breathing				
+Respiratory	Breathing	Rate	bradypnea				
+Respiratory	Breathing	Rate	tachypnea				
+Respiratory	Breathing	Oxygen Saturation	low				
+Respiratory	Breathing	Pattern	shallow				
+Respiratory	Breathing	Pattern	labored				
+Respiratory	Breathing	Sounds	absent				
+Respiratory	Breathing	Sounds	decreased	User must select site			
+Respiratory	Breathing	Sounds	increased	User must select site			
+Respiratory	Breathing	Sounds	bronchial	User must select site			
+Respiratory	Breathing	Sounds	bronchovesicular	User must select site			
+Respiratory	Breathing	Sounds	vesicular	User must select site			
+Respiratory	Breathing	Sounds	crackles	User must select site			
+Respiratory	Breathing	Sounds	crepitus	User must select site			
+Respiratory	Breathing	Sounds	wheezes	User must select site			
+Respiratory	Breathing	Sounds	pleural rub				
+Gastrointestinal	General		scratch marks				
+Gastrointestinal	General		striae				
+Gastrointestinal	General		obesity				
+Gastrointestinal	General		feeding tube	User must select site			
+Gastrointestinal	General		catheter	User must select site			
+Gastrointestinal	Abdomen	Shape	asymmetry				
+Gastrointestinal	Abdomen	Shape	scar	User must select site			
+Gastrointestinal	Abdomen	Shape	wound	User must select site			
+Gastrointestinal	Abdomen	Shape	hernia	User must select site			
+Gastrointestinal	Abdomen	Shape	distended	User must select site			
+Gastrointestinal	Abdomen	Shape	mass	User must select site			
+Gastrointestinal	Abdomen	Pain	no pain				
+Gastrointestinal	Abdomen	Pain	tenderness	User must select site			
+Gastrointestinal	Abdomen	Pain	guarding	User must select site			
+Gastrointestinal	Abdomen	Pain	rigidity	User must select site			
+Gastrointestinal	Abdomen	Pain	rebound tenderness				
+Gastrointestinal	Abdomen	Motion	pulsation				
+Gastrointestinal	Abdomen	Motion	visible peristalsis				
+Gastrointestinal	Abdomen	Liver	shrunken				
+Gastrointestinal	Abdomen	Liver	hepatomegaly				
+Gastrointestinal	Abdomen	Kidneys	not palpable				
+Gastrointestinal	Abdomen	Kidneys	palpable				
+Gastrointestinal	Abdomen	Spleen	not palpable				
+Gastrointestinal	Abdomen	Spleen	palpable				
+Gastrointestinal	Abdomen	Spleen	splenomegaly				
+Gastrointestinal	Abdomen	Bladder	not palpable				
+Gastrointestinal	Abdomen	Bladder	palpable				
+Gastrointestinal	Abdomen	Bladder	distended				
+Gastrointestinal	Abdomen	Bowel Sounds	absent				
+Gastrointestinal	Abdomen	Bowel Sounds	reduced				
+Gastrointestinal	Abdomen	Bowel Sounds	hyperactive				
+Gastrointestinal	Rectum	Appearance	anal tags				
+Gastrointestinal	Rectum	Appearance	hemorrhoids				
+Gastrointestinal	Rectum	Appearance	mass				
+Gastrointestinal	Rectum	Sphincter Tone	decreased				
+Gastrointestinal	Rectum	Sphincter Tone	increased				
+Gastrointestinal	Stool		no stool				
+Gastrointestinal	Stool	Form	hard				
+Gastrointestinal	Stool	Form	loose				
+Gastrointestinal	Stool	Form	watery				
+Gastrointestinal	Stool	Form	fatty				
+Gastrointestinal	Stool	Form	worms				
+Gastrointestinal	Stool	Colour	dark				
+Gastrointestinal	Stool	Colour	pale				
+Gastrointestinal	Stool	Colour	bloody				
+Gastrointestinal	Stool	Colour	tarry				
+Gastrointestinal	Urine		no urine				
+Gastrointestinal	Urine	Colour	clear				
+Gastrointestinal	Urine	Colour	dark				
+Gastrointestinal	Urine	Colour	pale				
+Gastrointestinal	Urine	Colour	red				
+Gastrointestinal	Urine	Colour	orange				
+Gastrointestinal	Urine	Colour	black				
+Gastrointestinal	Urine	Colour	bloody				
+Gastrointestinal	Urine	Smell	no odour				
+Gastrointestinal	Urine	Smell	ammonia odour				
+Gastrointestinal	Urine	Smell	foul odour				
+Gastrointestinal	Urine	Smell	sweet odour				
+Neuromuscular	Consciousness	Level	Alert				
+Neuromuscular	Consciousness	Level	Voice				
+Neuromuscular	Consciousness	Level	Pain				
+Neuromuscular	Consciousness	Level	Unresponsive				
+Neuromuscular	Cranial Nerves	Sight	no sight				
+Neuromuscular	Cranial Nerves	Sight	far				
+Neuromuscular	Cranial Nerves	Sight	partial				
+Neuromuscular	Cranial Nerves	Sight	near				
+Neuromuscular	Cranial Nerves	Smell	no smell				
+Neuromuscular	Cranial Nerves	Smell	impaired				
+Neuromuscular	Cranial Nerves	Taste	no taste				
+Neuromuscular	Cranial Nerves	Taste	decreased				
+Neuromuscular	Cranial Nerves	Taste	impaired				
+Neuromuscular	Cranial Nerves	Taste	increased				
+Neuromuscular	Cranial Nerves	Speech	no speech				
+Neuromuscular	Cranial Nerves	Speech	Slurred				
+Neuromuscular	Cranial Nerves	Speech	Sounds				
+Neuromuscular	Cranial Nerves	Speech	stuttering				
+Neuromuscular	Cranial Nerves	Voice	no voice				
+Neuromuscular	Cranial Nerves	Voice	whispers				
+Neuromuscular	Cranial Nerves	Voice	hoarse				
+Neuromuscular	Cranial Nerves	Swallowing	no swallowing				
+Neuromuscular	Cranial Nerves	Swallowing	slow				
+Neuromuscular	Cranial Nerves	Swallowing	restricted				
+Neuromuscular	Cranial Nerves	Swallowing	difficulty				
+Neuromuscular	Cranial Nerves	Hearing	no hearing				
+Neuromuscular	Cranial Nerves	Hearing	decreased				
+Neuromuscular	Cranial Nerves	Hearing	impaired				
+Neuromuscular	Cranial Nerves	Hearing	increased				
+Neuromuscular	Central System	Cognition	confusion				
+Neuromuscular	Central System	Cognition	disorientation				
+Neuromuscular	Central System	Cognition	impaired				
+Neuromuscular	Central System	Memory	no memory				
+Neuromuscular	Central System	Memory	impaired				
+Neuromuscular	Central System	Gait	abnormal				
+Neuromuscular	Central System	Gait	ataxic				
+Neuromuscular	Central System	Gait	bouncy				
+Neuromuscular	Central System	Gait	staggering				
+Neuromuscular	Central System	Gait	unsteady				
+Neuromuscular	Central System	Balance	no balance				
+Neuromuscular	Central System	Balance	impaired				
+Neuromuscular	Central System	Coordination	no coordination				
+Neuromuscular	Central System	Coordination	decreased				
+Neuromuscular	Central System	Coordination	stumbling				
+Neuromuscular	Extremities	Shape	scar	User must select site			
+Neuromuscular	Extremities	Shape	amputation	User must select site			
+Neuromuscular	Extremities	Shape	deformity	User must select site			
+Neuromuscular	Extremities	Shape	swelling	User must select site			
+Neuromuscular	Extremities	Shape	mass	User must select site			
+Neuromuscular	Extremities	Power	weakness	User must select site			
+Neuromuscular	Extremities	Power	paralysis	User must select site			
+Neuromuscular	Extremities	Movement	limited	User must select site			
+Neuromuscular	Extremities	Movement	extended	User must select site			
+Neuromuscular	Extremities	Movement	fasciculation	User must select site			
+Neuromuscular	Extremities	Movement	spasticity	User must select site			
+Neuromuscular	Extremities	Movement	rigidity	User must select site			
+Neuromuscular	Extremities	Tone	decreased	User must select site			
+Neuromuscular	Extremities	Tone	increased	User must select site			
+Neuromuscular	Extremities	Reflexes	absent	User must select site			
+Neuromuscular	Extremities	Reflexes	decreased	User must select site			
+Neuromuscular	Extremities	Reflexes	increased	User must select site			
+Neuromuscular	Joints	Shape	swelling	User must select site			
+Neuromuscular	Joints	Shape	deformity	User must select site			
+Neuromuscular	Joints	Shape	mass	User must select site			
+Neuromuscular	Joints	Temperature	cool	User must select site			
+Neuromuscular	Joints	Temperature	warm	User must select site			
+Neuromuscular	Joints	Temperature	hot	User must select site			
+Neuromuscular	Joints	Movements	laxity	User must select site			
+Neuromuscular	Joints	Movements	instability	User must select site			
+Neuromuscular	Joints	Movements	stiff	User must select site			
+Neuromuscular	Joints	Movements	locked	User must select site			
+Neuromuscular	Joints	Pain	not tender				
+Neuromuscular	Joints	Pain	tender	User must select site			
+Neuromuscular	Joints	Sounds	no sounds				
+Neuromuscular	Joints	Sounds	clicking	User must select site			
+Neuromuscular	Joints	Sounds	crepitus	User must select site			

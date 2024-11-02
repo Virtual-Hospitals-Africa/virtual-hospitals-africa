@@ -2462,15 +2462,16 @@ export type RenderedPatientExaminationFinding = {
   options: string[] | null
   value: any
 }
-export type RenderedPatientExaminationCategory = {
-  category: string
-  findings: RenderedPatientExaminationFinding[]
-}
-
 export type RenderedPatientExamination = {
   completed: boolean
   skipped: boolean
-  categories: RenderedPatientExaminationCategory[]
+  findings: {
+    value: any
+    snomed_code: string
+    snomed_english_description: string
+    body_site_snomed_code: string | null
+    body_site_snomed_english_description: string | null
+  }[]
 }
 
 export type DatabaseSchema = DB

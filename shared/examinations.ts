@@ -1,3 +1,5 @@
+import { groupByUniq } from '../util/groupBy.ts'
+
 export const ASSESSMENTS = [
   'Head-to-toe Assessment' as const,
   "Women's Health Assessment" as const,
@@ -108,19 +110,166 @@ export type DiagnosticTest = typeof DIAGNOSTIC_TESTS[number]
 
 export type Examination = typeof EXAMINATIONS[number]
 
-/*  SQL to get all examination findings
-    select examination_findings.name,
-           examination_name,
-           category,
-           examination_findings.type,
-           required,
-           options,
-           ask_dependent_on,
-           ask_dependent_values
-      from examination_findings
-      join examination_categories on examination_findings.examination_category_id = examination_categories.id
-      join examinations on examination_categories.examination_name = examinations.name
-  order by examinations.order asc,
-           examination_categories.order asc,
-           examination_findings.order asc
-*/
+export const HEAD_TO_TOE_EXAMINATION_CATEGORIES = [
+  {
+    'category': 'Hands',
+    'subcategories': [
+      {
+        'subcategory': 'Texture',
+        'checklist': [
+          {
+            'label': 'cold',
+            'snomed_code': '703883009',
+            'body_sites': [
+              '1286100112861001',
+              '85151006',
+              '78791008',
+            ],
+          },
+          {
+            'label': 'hot',
+            'snomed_code': '707793005',
+            'body_sites': [
+              '1286100112861001',
+              '85151006',
+              '78791008',
+            ],
+          },
+          {
+            'label': 'clammy',
+            'snomed_code': '102598000',
+            'body_sites': [
+              '1286100112861001',
+              '85151006',
+              '78791008',
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Fingers',
+        'checklist': [
+          {
+            'label': 'cyanosis',
+            'snomed_code': '3415004',
+            'body_sites': [
+              '362779006',
+            ],
+          },
+          {
+            'label': 'nicotine stains',
+            'snomed_code': '247439004',
+            'body_sites': [
+              '362779006',
+            ],
+          },
+          {
+            'label': 'clubbing',
+            'snomed_code': '30760008',
+            'body_sites': [
+              '362779006',
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Nails',
+        'checklist': [
+          {
+            'label': 'leukonychia',
+            'snomed_code': '111202002',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+          {
+            'label': 'koilonychia',
+            'snomed_code': '66270006',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+          {
+            'label': 'splinter hemorrhages',
+            'snomed_code': '271770005',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+          {
+            'label': 'pitting',
+            'snomed_code': '89704006',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+          {
+            'label': 'onycholysis',
+            'snomed_code': '75789001',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+          {
+            'label': 'discolouration',
+            'snomed_code': '47415006',
+            'body_sites': [
+              '770802007',
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Palms',
+        'checklist': [
+          {
+            'label': 'erythema',
+            'snomed_code': '70819003',
+            'body_sites': [
+              '21547004',
+            ],
+          },
+          {
+            'label': "dupuytren's disease",
+            'snomed_code': '203045001',
+            'body_sites': [
+              '21203009',
+            ],
+          },
+          {
+            'label': 'pale skin',
+            'snomed_code': '403237004',
+            'body_sites': [
+              '21547004',
+            ],
+          },
+          {
+            'label': 'cyanosis',
+            'snomed_code': '119419001',
+            'body_sites': [
+              '21547004',
+            ],
+          },
+          {
+            'label': 'jaundice',
+            'snomed_code': '18165001',
+            'body_sites': [
+              '21547004',
+            ],
+          },
+        ],
+      },
+    ],
+    'checklist': [],
+  },
+]
+
+export const HEAD_TO_TOE_EXAMINATION_CHECKLIST =
+  HEAD_TO_TOE_EXAMINATION_CATEGORIES.flatMap(({ checklist, subcategories }) =>
+    subcategories.flatMap(({ checklist }) => checklist).concat(checklist)
+  )
+
+export const HEAD_TO_TOE_EXAMINATION_CHECKLIST_BY_SNOMED_CODE = groupByUniq(
+  HEAD_TO_TOE_EXAMINATION_CHECKLIST,
+  (item) => item.snomed_code,
+)

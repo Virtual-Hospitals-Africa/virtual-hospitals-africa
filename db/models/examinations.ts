@@ -1,8 +1,13 @@
 import { QueryCreator, SelectQueryBuilder, sql, SqlBool } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonArrayFrom, literalBoolean, now } from '../helpers.ts'
-import { DB, ExaminationFindingType } from '../../db.d.ts'
+import {
+  jsonArrayFrom,
+  jsonObjectFrom,
+  literalBoolean,
+  now,
+} from '../helpers.ts'
+import { DB } from '../../db.d.ts'
 import { isISODateString } from '../../util/date.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
@@ -242,179 +247,179 @@ export function skip(trx: TrxOrDb, values: {
     .executeTakeFirstOrThrow()
 }
 
-function getFindings(trx: TrxOrDb, examination_name: string) {
-  return trx
-    .selectFrom('examinations')
-    .innerJoin(
-      'examination_categories',
-      'examinations.name',
-      'examination_categories.examination_name',
-    )
-    .innerJoin(
-      'examination_findings',
-      'examination_categories.id',
-      'examination_findings.examination_category_id',
-    )
-    .where('examinations.name', '=', examination_name)
-    .selectAll('examination_findings')
-    .select('category')
-    .execute()
-}
+// function getFindings(trx: TrxOrDb, examination_name: string) {
+//   return trx
+//     .selectFrom('examinations')
+//     .innerJoin(
+//       'examination_categories',
+//       'examinations.name',
+//       'examination_categories.examination_name',
+//     )
+//     .innerJoin(
+//       'examination_findings',
+//       'examination_categories.id',
+//       'examination_findings.examination_category_id',
+//     )
+//     .where('examinations.name', '=', examination_name)
+//     .selectAll('examination_findings')
+//     .select('category')
+//     .execute()
+// }
 
-function assertFindingType(examination_finding: {
-  options: string[] | null
-  required: boolean
-  type: ExaminationFindingType
-  // deno-lint-ignore no-explicit-any
-}, value: any) {
-  assert(value != null, 'Value must be present')
-  switch (examination_finding.type) {
-    case 'boolean': {
-      return assertOr400(
-        value === true || value === false,
-        'Value must be a boolean',
-      )
-    }
-    case 'integer': {
-      return assertOr400(
-        typeof value === 'number' && Math.floor(value) === value,
-        'Value must be a number',
-      )
-    }
-    case 'float': {
-      return assertOr400(typeof value === 'number', 'Value must be a float')
-    }
-    case 'string': {
-      return assertOr400(typeof value === 'string', 'Value must be a string')
-    }
-    case 'date': {
-      return assertOr400(
-        isISODateString(value),
-        'Value must be an ISO date string',
-      )
-    }
-    case 'select':
-    case 'multiselect': {
-      return assertOr400(
-        typeof value === 'string' &&
-          examination_finding.options?.includes(value),
-        `Value must be one of (${examination_finding.options?.join(', ')})`,
-      )
-    }
-    default: {
-      throw new Error(
-        `Unknown examination finding type ${examination_finding.type}`,
-      )
-    }
-  }
-}
+// function assertFindingType(examination_finding: {
+//   options: string[] | null
+//   required: boolean
+//   type: ExaminationFindingType
+//   // deno-lint-ignore no-explicit-any
+// }, value: any) {
+//   assert(value != null, 'Value must be present')
+//   switch (examination_finding.type) {
+//     case 'boolean': {
+//       return assertOr400(
+//         value === true || value === false,
+//         'Value must be a boolean',
+//       )
+//     }
+//     case 'integer': {
+//       return assertOr400(
+//         typeof value === 'number' && Math.floor(value) === value,
+//         'Value must be a number',
+//       )
+//     }
+//     case 'float': {
+//       return assertOr400(typeof value === 'number', 'Value must be a float')
+//     }
+//     case 'string': {
+//       return assertOr400(typeof value === 'string', 'Value must be a string')
+//     }
+//     case 'date': {
+//       return assertOr400(
+//         isISODateString(value),
+//         'Value must be an ISO date string',
+//       )
+//     }
+//     case 'select':
+//     case 'multiselect': {
+//       return assertOr400(
+//         typeof value === 'string' &&
+//           examination_finding.options?.includes(value),
+//         `Value must be one of (${examination_finding.options?.join(', ')})`,
+//       )
+//     }
+//     default: {
+//       throw new Error(
+//         `Unknown examination finding type ${examination_finding.type}`,
+//       )
+//     }
+//   }
+// }
 
-export async function upsertFindings(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    encounter_id,
-    encounter_provider_id,
-    examination_name,
-    skipped,
-    values,
-  }: {
-    patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
-    examination_name: string
-    skipped?: boolean
-    values: Record<string, Record<string, unknown>>
-  },
-): Promise<void> {
-  const getting_examination_findings = getFindings(trx, examination_name)
+// export async function upsertFindings(
+//   trx: TrxOrDb,
+//   {
+//     patient_id,
+//     encounter_id,
+//     encounter_provider_id,
+//     examination_name,
+//     skipped,
+//     values,
+//   }: {
+//     patient_id: string
+//     encounter_id: string
+//     encounter_provider_id: string
+//     examination_name: string
+//     skipped?: boolean
+//     values: Record<string, Record<string, unknown>>
+//   },
+// ): Promise<void> {
+//   const getting_examination_findings = getFindings(trx, examination_name)
 
-  const updating_patient_examination = trx
-    .insertInto('patient_examinations')
-    .values({
-      examination_name,
-      encounter_id,
-      encounter_provider_id,
-      completed: !skipped,
-      skipped,
-      patient_id: trx.selectFrom('patient_encounters')
-        .where('id', '=', encounter_id)
-        .where('patient_id', '=', patient_id)
-        .select('patient_id'),
-    })
-    .onConflict((oc) =>
-      oc.constraint('patient_examination_unique').doUpdateSet({
-        encounter_provider_id,
-        completed: true,
-      })
-    )
-    .returning('id')
-    .executeTakeFirstOrThrow()
+//   const updating_patient_examination = trx
+//     .insertInto('patient_examinations')
+//     .values({
+//       examination_name,
+//       encounter_id,
+//       encounter_provider_id,
+//       completed: !skipped,
+//       skipped,
+//       patient_id: trx.selectFrom('patient_encounters')
+//         .where('id', '=', encounter_id)
+//         .where('patient_id', '=', patient_id)
+//         .select('patient_id'),
+//     })
+//     .onConflict((oc) =>
+//       oc.constraint('patient_examination_unique').doUpdateSet({
+//         encounter_provider_id,
+//         completed: true,
+//       })
+//     )
+//     .returning('id')
+//     .executeTakeFirstOrThrow()
 
-  const removing = trx
-    .deleteFrom('patient_examination_findings')
-    .where(
-      'patient_examination_id',
-      'in',
-      trx.selectFrom('patient_examinations')
-        .select('id')
-        .where('encounter_id', '=', encounter_id)
-        .where('examination_name', '=', examination_name),
-    )
-    .where('patient_examination_findings.created_at', '<=', now)
-    .execute()
+//   const removing = trx
+//     .deleteFrom('patient_examination_findings')
+//     .where(
+//       'patient_examination_id',
+//       'in',
+//       trx.selectFrom('patient_examinations')
+//         .select('id')
+//         .where('encounter_id', '=', encounter_id)
+//         .where('examination_name', '=', examination_name),
+//     )
+//     .where('patient_examination_findings.created_at', '<=', now)
+//     .execute()
 
-  const examination_findings = await getting_examination_findings
-  const patient_examination = await updating_patient_examination
+//   const examination_findings = await getting_examination_findings
+//   const patient_examination = await updating_patient_examination
 
-  const required_findings = new Set(
-    examination_findings.filter((f) => f.required),
-  )
+//   const required_findings = new Set(
+//     examination_findings.filter((f) => f.required),
+//   )
 
-  const patient_findings_to_insert: {
-    patient_examination_id: string
-    examination_finding_id: string
-    // deno-lint-ignore no-explicit-any
-    value: any
-  }[] = []
+//   const patient_findings_to_insert: {
+//     patient_examination_id: string
+//     examination_finding_id: string
+//     // deno-lint-ignore no-explicit-any
+//     value: any
+//   }[] = []
 
-  for (const [category, findings] of Object.entries(values)) {
-    for (const [finding_name, value] of Object.entries(findings)) {
-      const examination_finding = examination_findings.find(
-        (f) => f.name === finding_name && f.category === category,
-      )
-      assertOr400(
-        examination_finding,
-        `Finding ${category}.${finding_name} not found`,
-      )
-      assertFindingType(examination_finding, value)
-      // TODO assert dependent values are unanswered if dependent on is unanswered
+//   for (const [category, findings] of Object.entries(values)) {
+//     for (const [finding_name, value] of Object.entries(findings)) {
+//       const examination_finding = examination_findings.find(
+//         (f) => f.name === finding_name && f.category === category,
+//       )
+//       assertOr400(
+//         examination_finding,
+//         `Finding ${category}.${finding_name} not found`,
+//       )
+//       assertFindingType(examination_finding, value)
+//       // TODO assert dependent values are unanswered if dependent on is unanswered
 
-      patient_findings_to_insert.push({
-        patient_examination_id: patient_examination.id,
-        examination_finding_id: examination_finding.id,
-        value,
-      })
-      required_findings.delete(examination_finding)
-    }
-  }
+//       patient_findings_to_insert.push({
+//         patient_examination_id: patient_examination.id,
+//         examination_finding_id: examination_finding.id,
+//         value,
+//       })
+//       required_findings.delete(examination_finding)
+//     }
+//   }
 
-  assertOr400(
-    required_findings.size === 0,
-    `Required findings not found: ${
-      Array.from(required_findings)
-        .map((f) => `${f.category}.${f.name}`)
-        .join(', ')
-    }`,
-  )
+//   assertOr400(
+//     required_findings.size === 0,
+//     `Required findings not found: ${
+//       Array.from(required_findings)
+//         .map((f) => `${f.category}.${f.name}`)
+//         .join(', ')
+//     }`,
+//   )
 
-  const adding = patient_findings_to_insert.length && trx
-    .insertInto('patient_examination_findings')
-    .values(patient_findings_to_insert)
-    .execute()
+//   const adding = patient_findings_to_insert.length && trx
+//     .insertInto('patient_examination_findings')
+//     .values(patient_findings_to_insert)
+//     .execute()
 
-  await Promise.all([removing, adding])
-}
+//   await Promise.all([removing, adding])
+// }
 
 export function getPatientExamination(
   trx: TrxOrDb,
@@ -446,50 +451,20 @@ export function getPatientExamination(
         'skipped',
       ),
       jsonArrayFrom(
-        eb.selectFrom('examination_categories')
+        eb.selectFrom('patient_examination_findings')
           .whereRef(
-            'examination_categories.examination_name',
+            'patient_examination_findings.patient_examination_id',
             '=',
-            'examinations.name',
+            'patient_examinations.id',
           )
-          .select((eb_category) => [
-            'examination_categories.category',
-            jsonArrayFrom(
-              eb_category
-                .selectFrom('examination_findings')
-                .whereRef(
-                  'examination_findings.examination_category_id',
-                  '=',
-                  'examination_categories.id',
-                )
-                .leftJoin(
-                  'patient_examination_findings',
-                  (join) =>
-                    join.onRef(
-                      'patient_examination_findings.examination_finding_id',
-                      '=',
-                      'examination_findings.id',
-                    )
-                      .onRef(
-                        'patient_examination_findings.patient_examination_id',
-                        '=',
-                        'patient_examinations.id',
-                      ),
-                )
-                .select([
-                  'examination_findings.name',
-                  'examination_findings.label',
-                  'examination_findings.type',
-                  'examination_findings.required',
-                  'examination_findings.options',
-                  'patient_examination_findings.value',
-                ])
-                .orderBy('examination_findings.order', 'asc'),
-            ).as('findings'),
-          ])
-          .orderBy('examination_categories.order', 'asc'),
-      )
-        .as('categories'),
+          .select([
+            'patient_examination_findings.value',
+            'patient_examination_findings.snomed_code',
+            'patient_examination_findings.snomed_english_description',
+            'patient_examination_findings.body_site_snomed_code',
+            'patient_examination_findings.body_site_snomed_english_description',
+          ]),
+      ).as('findings'),
     ])
     .executeTakeFirstOrThrow()
 }

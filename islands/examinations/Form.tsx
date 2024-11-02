@@ -1,69 +1,102 @@
 import { JSX } from 'preact'
-import { computed, useSignal } from '@preact/signals'
+import { useSignal } from '@preact/signals'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import unsavedChangesWarning from '../form/unsaved_changes_warning.tsx'
 import { CheckboxGridItem } from '../form/Inputs.tsx'
+import { RenderedPatientExamination } from '../../types.ts'
 import {
-  RenderedPatientExamination,
-  RenderedPatientExaminationCategory,
-} from '../../types.ts'
+  HEAD_TO_TOE_EXAMINATION_CATEGORIES,
+  HEAD_TO_TOE_EXAMINATION_CHECKLIST_BY_SNOMED_CODE,
+} from '../../shared/examinations.ts'
+
+type ExaminationChecklistItem = {
+  label: string
+  snomed_code: string
+  body_sites: string[]
+}
+
+type ExaminationCategoryProps = {
+  category: string
+  checklist: ExaminationChecklistItem[]
+  subcategories: {
+    subcategory: string
+    checklist: ExaminationChecklistItem[]
+  }[]
+  findings: RenderedPatientExamination['findings']
+  addFinding(finding: {
+    snomed_code: string
+    snomed_english_description: string
+    body_site_snomed_code: string | null
+    body_site_snomed_english_description: string | null
+  }): void
+  removeFinding(snomed_code: string): void
+}
+
+type ExaminationChecklistProps = {
+  subcategory?: string
+  checklist: ExaminationChecklistItem[]
+  findings: RenderedPatientExamination['findings']
+  addFinding(finding: {
+    snomed_code: string
+    snomed_english_description: string
+    body_site_snomed_code: string | null
+    body_site_snomed_english_description: string | null
+  }): void
+  removeFinding(snomed_code: string): void
+}
+
+function ExaminationChecklist(
+  { checklist, subcategory, findings, addFinding, removeFinding }:
+    ExaminationChecklistProps,
+) {
+  return (
+    <>
+      {subcategory && (
+        <SectionHeader className='mb-1 text-[16px]'>
+          {subcategory}
+        </SectionHeader>
+      )}
+      {checklist.map((checklist_item) => (
+        <CheckboxGridItem
+          label={checklist_item.label}
+          checked={findings.some((finding) =>
+            finding.snomed_code === checklist_item.snomed_code
+          )}
+          onChange={(checked) => {
+            if (checked) {
+              addFinding({
+                snomed_code: checklist_item.snomed_code,
+                snomed_english_description: checklist_item.label,
+                body_site_snomed_code: checklist_item.body_sites[0] ?? null,
+                body_site_snomed_english_description: null,
+              })
+            } else {
+              removeFinding(checklist_item.snomed_code)
+            }
+          }}
+        />
+      ))}
+    </>
+  )
+}
 
 function ExaminationCategory(
-  { previously_completed, skipped, category }: {
-    previously_completed: boolean
-    skipped: boolean
-    category: RenderedPatientExaminationCategory
-  },
+  { category, checklist, subcategories, ...rest }: ExaminationCategoryProps,
 ) {
-  const findings = useSignal(category.findings)
-
-  // Only initially show the all normal as checked if the form was
-  // previously filled and nothing was checked for this category
-  const all_normal = useSignal(
-    !!previously_completed && findings.value.every((finding) => !finding.value),
-  )
-
-  const something_checked = computed(() =>
-    all_normal.value || findings.value.some((finding) => !!finding.value)
-  )
   return (
     <div className='flex flex-col mb-5'>
       <SectionHeader className='mb-1 text-[20px]'>
-        {category.category}
+        {category}
       </SectionHeader>
-      <CheckboxGridItem
-        label='all normal'
-        checked={all_normal.value}
-        required={!something_checked.value}
-        disabled={skipped}
-        onChange={(checked) => {
-          all_normal.value = checked
-          if (checked) {
-            findings.value = findings.value.map((finding) => ({
-              ...finding,
-              value: null,
-            }))
-          }
-        }}
+      <ExaminationChecklist
+        checklist={checklist}
+        {...rest}
       />
-      {findings.value.map((finding) => (
-        <CheckboxGridItem
-          name={`${category.category}.${finding.name}`}
-          label={finding.label}
-          checked={!!finding.value}
-          disabled={skipped}
-          onChange={(checked) => {
-            const next_finding = {
-              ...finding,
-              value: checked ? true : null,
-            }
-            findings.value = findings.value.map((f) =>
-              f === finding ? next_finding : f
-            )
-            if (checked) {
-              all_normal.value = false
-            }
-          }}
+      {subcategories.map(({ subcategory, checklist }) => (
+        <ExaminationChecklist
+          key={subcategory}
+          subcategory={subcategory}
+          checklist={checklist}
+          {...rest}
         />
       ))}
     </div>
@@ -75,28 +108,48 @@ export function PatientExaminationForm({
 }: {
   patient_examination: RenderedPatientExamination
 }): JSX.Element {
-  unsavedChangesWarning()
+  const findings = useSignal(patient_examination.findings)
 
-  const skipped = useSignal(patient_examination.skipped)
+  console.log('findings', findings.value)
 
   return (
-    <>
-      <CheckboxGridItem
-        label='skip'
-        name='skipped'
-        checked={skipped.value}
-        onChange={(checked) => skipped.value = checked}
-      />
+    <div
+      className='grid'
+      style={{
+        gridTemplateColumns: '1fr 300px',
+      }}
+    >
       <div className='sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6'>
-        {patient_examination.categories.map((category) => (
+        {HEAD_TO_TOE_EXAMINATION_CATEGORIES.map((
+          { category, subcategories, checklist },
+        ) => (
           <ExaminationCategory
-            key={category.category}
-            previously_completed={patient_examination.completed}
+            key={category}
             category={category}
-            skipped={skipped.value}
+            subcategories={subcategories}
+            checklist={checklist}
+            findings={findings.value}
+            addFinding={(finding) => {
+              findings.value = [...findings.value, { ...finding, value: true }]
+            }}
+            removeFinding={(snomed_code: string) => {
+              findings.value = findings.value.filter(
+                (finding) => finding.snomed_code !== snomed_code,
+              )
+            }}
           />
         ))}
       </div>
-    </>
+      <div>
+        <SectionHeader className='mb-1 text-[30px]'>
+          Findings
+        </SectionHeader>
+        {findings.value.map((finding) => (
+          <div key={finding.snomed_code}>
+            {finding.snomed_english_description}
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }

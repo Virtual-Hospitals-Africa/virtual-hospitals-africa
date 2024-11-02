@@ -14,10 +14,11 @@ export default async function* parseCsv(
   for await (const row of readCSV(file, opts)) {
     // Collecting data from the async iterable row into an array
     const rowDataArray: string[] = []
-    for await (const cell of row) {
-      if (cell !== '\r') {
-        rowDataArray.push(cell)
+    for await (let cell of row) {
+      if (cell.endsWith('\r')) {
+        cell = cell.slice(0, cell.length - 1)
       }
+      rowDataArray.push(cell)
     }
 
     if (isFirstRow) {

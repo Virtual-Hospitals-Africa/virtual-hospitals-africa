@@ -229,17 +229,17 @@ async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
 
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  await examinations.upsertFindings(
-    trx,
-    {
-      patient_id,
-      encounter_id: encounter.encounter_id,
-      encounter_provider_id: encounter_provider.patient_encounter_provider_id,
-      examination_name: examination.examination_name,
-      skipped: !!skipped,
-      values: skipped ? {} : omit(values, ['examination']),
-    },
-  )
+  // await examinations.upsertFindings(
+  //   trx,
+  //   {
+  //     patient_id,
+  //     encounter_id: encounter.encounter_id,
+  //     encounter_provider_id: encounter_provider.patient_encounter_provider_id,
+  //     examination_name: examination.examination_name,
+  //     skipped: !!skipped,
+  //     values: skipped ? {} : omit(values, ['examination']),
+  //   },
+  // )
 
   return once_done
 }
