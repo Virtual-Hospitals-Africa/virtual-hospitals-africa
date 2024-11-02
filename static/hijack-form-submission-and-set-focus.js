@@ -148,6 +148,7 @@ function onBeforeInput(event) {
   }
 }
 
+// TODO: handle select elements?
 // store modified values
 function onInput(event) {
   var target = event.target

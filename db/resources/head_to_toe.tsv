@@ -14,12 +14,12 @@ General	Patient state		edema
 General	Patient state		wasted				
 General	Patient state		in pain				
 General	Patient state		in distress				
-General	Hands	Texture	cold		703883009	"1286100112861001,85151006,78791008"	
-General	Hands	Texture	hot		707793005	"1286100112861001,85151006,78791008"	
-General	Hands	Texture	clammy		102598000	"1286100112861001,85151006,78791008"	
-General	Hands	Fingers	cyanosis		3415004	362779006	
-General	Hands	Fingers	nicotine stains		247439004	362779006	
-General	Hands	Fingers	clubbing		30760008	362779006	
+General	Hands	Texture	cold		703883009	"12861001,85151006,78791008"	
+General	Hands	Texture	hot		707793005	"12861001,85151006,78791008"	
+General	Hands	Texture	clammy		102598000	"12861001,85151006,78791008"	
+General	Hands	Fingers	cyanosis		3415004	"362779006,7569003"	
+General	Hands	Fingers	nicotine stains		247439004	"362779006,7569003"	
+General	Hands	Fingers	clubbing		30760008	"362779006,7569003"	
 General	Hands	Nails	leukonychia		111202002	770802007	
 General	Hands	Nails	koilonychia		66270006	770802007	
 General	Hands	Nails	splinter hemorrhages		271770005	770802007	

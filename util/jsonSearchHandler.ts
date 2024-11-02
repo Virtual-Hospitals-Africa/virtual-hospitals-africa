@@ -29,8 +29,10 @@ export function jsonSearchHandler<SearchTerms, RenderedResult>(
         } else if (value === 'true' || value === 'false') {
           search_terms[key] = value === 'true'
         } else {
-          const as_int = parseInt(value)
-          search_terms[key] = isNaN(as_int) ? value : as_int
+          // TODO use zod to parse all this?
+          // const as_int = parseInt(value)
+          // search_terms[key] = isNaN(as_int) ? value : as_int
+          search_terms[key] = value
         }
       })
       return model

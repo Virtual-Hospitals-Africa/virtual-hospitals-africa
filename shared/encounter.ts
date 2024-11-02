@@ -4,7 +4,7 @@ export const ENCOUNTER_STEPS: EncounterStep[] = [
   'vitals',
   'symptoms',
   'examinations',
-  'diagnosis',
+  'diagnoses',
   'prescriptions',
   'orders',
   'clinical_notes',

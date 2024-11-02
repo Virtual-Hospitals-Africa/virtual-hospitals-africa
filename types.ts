@@ -9,11 +9,11 @@ import {
   DoctorReviewStep,
   EncounterReason,
   EncounterStep,
-  ExaminationFindingType,
   FamilyType,
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
+  type Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
@@ -393,7 +393,7 @@ export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin?: Maybe<FamilyRelationInsert>
-  religion?: Maybe<string>
+  religion?: Maybe<Religion>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>
   patient_cohabitation?: Maybe<PatientCohabitation>
@@ -2453,24 +2453,15 @@ export type Provider = {
   health_worker_id: string
   provider_id: string
 }
-
-export type RenderedPatientExaminationFinding = {
-  name: string
-  label: string
-  type: ExaminationFindingType
-  required: boolean
-  options: string[] | null
-  value: any
-}
 export type RenderedPatientExamination = {
   completed: boolean
   skipped: boolean
   findings: {
     value: any
     snomed_code: string
-    snomed_english_description: string
+    snomed_english_term: string
     body_site_snomed_code: string | null
-    body_site_snomed_english_description: string | null
+    body_site_snomed_english_term: string | null
   }[]
 }
 

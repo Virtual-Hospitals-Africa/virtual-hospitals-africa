@@ -27,7 +27,6 @@ import {
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
 import { PatientExaminationForm } from '../../../../../../islands/examinations/Form.tsx'
 import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
-import omit from '../../../../../../util/omit.ts'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
 import {
@@ -37,12 +36,6 @@ import {
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
-
-function assertIsExaminationFindings(
-  values: unknown,
-): asserts values is Record<string, Record<string, unknown>> {
-  assertOr400(isObjectLike(values), 'Invalid form values')
-}
 
 function assertIsAddExaminations(
   values: unknown,
@@ -201,11 +194,12 @@ async function handlePlaceOrders(
     : completeStep(ctx)
 }
 
-async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
+// deno-lint-ignore require-await
+async function handleExaminationFindings(_req: Request, ctx: EncounterContext) {
   const examination = matchingExamination(ctx)
   assert(examination, 'No matching examination')
 
-  const { trx, encounter, encounter_provider } = ctx.state
+  const { encounter /* trx, encounter_provider */ } = ctx.state
 
   const [orders, during_this_encounter] = partition(
     encounter.examinations,
@@ -221,13 +215,13 @@ async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
     ? redirect(placeOrdersHref(ctx))
     : completeStep(ctx)
 
-  const { skipped, ...values } = await parseRequestAsserts(
-    trx,
-    req,
-    assertIsExaminationFindings,
-  )
+  // const { skipped, ...values } = await parseRequestAsserts(
+  //   trx,
+  //   req,
+  //   assertIsExaminationFindings,
+  // )
 
-  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+  // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   // await examinations.upsertFindings(
   //   trx,

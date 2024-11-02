@@ -77,17 +77,17 @@ export async function up(
           (col) => col.notNull(),
         )
         .addColumn(
-          'snomed_english_description',
+          'snomed_english_term',
           'varchar(255)',
           (col) => col.notNull(),
         )
         .addColumn('body_site_snomed_code', 'varchar(255)')
-        .addColumn('body_site_snomed_english_description', 'varchar(255)')
+        .addColumn('body_site_snomed_english_term', 'varchar(255)')
         .addColumn('value', 'json', (col) => col.notNull())
         .addCheckConstraint(
           'body_site_presence',
           sql<boolean>`
-          (body_site_snomed_code is null) = (body_site_snomed_english_description is null)
+          (body_site_snomed_code is null) = (body_site_snomed_english_term is null)
         `,
         ),
   )

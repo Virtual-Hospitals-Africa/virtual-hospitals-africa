@@ -52,7 +52,7 @@ export type EncounterReason =
 export type EncounterStep =
   | 'clinical_notes'
   | 'close_visit'
-  | 'diagnosis'
+  | 'diagnoses'
   | 'examinations'
   | 'orders'
   | 'prescriptions'
@@ -800,12 +800,12 @@ export interface PatientEncounterSteps {
 
 export interface PatientExaminationFindings {
   body_site_snomed_code: string | null
-  body_site_snomed_english_description: string | null
+  body_site_snomed_english_term: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
   snomed_code: string
-  snomed_english_description: string
+  snomed_english_term: string
   updated_at: Generated<Timestamp>
   value: Json
 }
@@ -830,7 +830,7 @@ export interface PatientFamily {
   marital_status: MaritalStatus | null
   patient_cohabitation: PatientCohabitation | null
   patient_id: string
-  religion: string | null
+  religion: Religion | null
   updated_at: Generated<Timestamp>
 }
 

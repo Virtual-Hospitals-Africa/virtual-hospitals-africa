@@ -1,14 +1,14 @@
 import { QueryCreator, SelectQueryBuilder, sql, SqlBool } from 'kysely'
-import { assert } from 'std/assert/assert.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
+// import { assert } from 'std/assert/assert.ts'
+// import { assertOr400 } from '../../util/assertOr.ts'
 import {
   jsonArrayFrom,
-  jsonObjectFrom,
+  // jsonObjectFrom,
   literalBoolean,
-  now,
+  // now,
 } from '../helpers.ts'
 import { DB } from '../../db.d.ts'
-import { isISODateString } from '../../util/date.ts'
+// import { isISODateString } from '../../util/date.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
 import { QueryCreatorWithCommonTableExpression } from 'kysely/parser/with-parser.js'
@@ -460,9 +460,9 @@ export function getPatientExamination(
           .select([
             'patient_examination_findings.value',
             'patient_examination_findings.snomed_code',
-            'patient_examination_findings.snomed_english_description',
+            'patient_examination_findings.snomed_english_term',
             'patient_examination_findings.body_site_snomed_code',
-            'patient_examination_findings.body_site_snomed_english_description',
+            'patient_examination_findings.body_site_snomed_english_term',
           ]),
       ).as('findings'),
     ])

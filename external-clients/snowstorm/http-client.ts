@@ -8,6 +8,11 @@
  * ---------------------------------------------------------------
  */
 
+import { assert } from 'std/assert/assert.ts'
+
+const SNOWSTORM_URL = Deno.env.get('SNOWSTORM_URL')
+assert(SNOWSTORM_URL, 'SNOWSTORM_URL is required')
+
 export type QueryParamsType = Record<string | number, any>
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>
 
@@ -60,7 +65,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = 'https://vha-snowstorm-4f74c4e2acf8.herokuapp.com'
+  public baseUrl: string = SNOWSTORM_URL!
   private securityData: SecurityDataType | null = null
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
   private abortControllers = new Map<CancelToken, AbortController>()
@@ -69,7 +74,10 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
-    headers: {},
+    headers: {
+      'Accept': 'application/json',
+      'Accept-Language': 'en',
+    },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
   }
@@ -206,28 +214,6 @@ export class HttpClient<SecurityDataType = unknown> {
     const payloadFormatter = this.contentFormatters[type || ContentType.Json]
     const responseFormat = format || requestParams.format
 
-    console.log(
-      `${baseUrl || this.baseUrl || ''}${path}${
-        queryString ? `?${queryString}` : ''
-      }`,
-      {
-        ...requestParams,
-        headers: {
-          ...(requestParams.headers || {}),
-          ...(type && type !== ContentType.FormData
-            ? { 'Content-Type': type }
-            : {}),
-        },
-        signal:
-          (cancelToken
-            ? this.createAbortSignal(cancelToken)
-            : requestParams.signal) || null,
-        body: typeof body === 'undefined' || body === null
-          ? null
-          : payloadFormatter(body),
-      },
-    )
-
     return this.customFetch(
       `${baseUrl || this.baseUrl || ''}${path}${
         queryString ? `?${queryString}` : ''
@@ -239,8 +225,6 @@ export class HttpClient<SecurityDataType = unknown> {
           ...(type && type !== ContentType.FormData
             ? { 'Content-Type': type }
             : {}),
-          'Accept': 'application/json',
-          'Accept-Language': 'en',
         },
         signal:
           (cancelToken
