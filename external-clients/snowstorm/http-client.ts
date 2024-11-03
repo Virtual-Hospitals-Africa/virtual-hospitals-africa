@@ -11,7 +11,11 @@
 import { assert } from 'std/assert/assert.ts'
 
 const SNOWSTORM_URL = Deno.env.get('SNOWSTORM_URL')
-assert(SNOWSTORM_URL, 'SNOWSTORM_URL is required')
+assert(
+  SNOWSTORM_URL || Deno.env.get('IS_TEST') ||
+    Deno.env.get('NO_EXTERNAL_CONNECT'),
+  'SNOWSTORM_URL is required on non-test environments',
+)
 
 export type QueryParamsType = Record<string | number, any>
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>

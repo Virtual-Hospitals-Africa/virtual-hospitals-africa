@@ -28,10 +28,14 @@ export const handler = jsonSearchHandler({
       termActive: true,
       limit: rows_per_page,
       offset,
+    }).catch((err) => {
+      console.error(err)
+      return { data: { items: [], total: 0 } }
     })
-    console.timeEnd('searchConcepts')
+      .finally(() => {
+        console.timeEnd('searchConcepts')
+      })
 
-    console.log('response', response)
     const results = response.data.items!.map((item) => ({
       ...item,
       name: item.pt!.term!,

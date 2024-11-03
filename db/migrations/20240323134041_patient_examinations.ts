@@ -1,4 +1,4 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(
@@ -80,20 +80,36 @@ export async function up(
           'snomed_english_term',
           'varchar(255)',
           (col) => col.notNull(),
+        ),
+  )
+
+  await createStandardTable(
+    db,
+    'patient_examination_finding_body_sites',
+    (qb) =>
+      qb.addColumn(
+        'patient_examination_finding_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_examination_findings.id').onDelete(
+            'cascade',
+          ),
+      )
+        .addColumn(
+          'snomed_code',
+          'varchar(255)',
+          (col) => col.notNull(),
         )
-        .addColumn('body_site_snomed_code', 'varchar(255)')
-        .addColumn('body_site_snomed_english_term', 'varchar(255)')
-        .addColumn('value', 'json', (col) => col.notNull())
-        .addCheckConstraint(
-          'body_site_presence',
-          sql<boolean>`
-          (body_site_snomed_code is null) = (body_site_snomed_english_term is null)
-        `,
+        .addColumn(
+          'snomed_english_term',
+          'varchar(255)',
+          (col) => col.notNull(),
         ),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('patient_examination_finding_body_sites').execute()
   await db.schema.dropTable('patient_examination_findings').execute()
   await db.schema.dropTable('patient_examinations').execute()
 }

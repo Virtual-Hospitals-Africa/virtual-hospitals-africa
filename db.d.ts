@@ -798,16 +798,22 @@ export interface PatientEncounterSteps {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientExaminationFindingBodySites {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_examination_finding_id: string
+  snomed_code: string
+  snomed_english_term: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientExaminationFindings {
-  body_site_snomed_code: string | null
-  body_site_snomed_english_term: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
   snomed_code: string
   snomed_english_term: string
   updated_at: Generated<Timestamp>
-  value: Json
 }
 
 export interface PatientExaminations {
@@ -1217,6 +1223,7 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
+  patient_examination_finding_body_sites: PatientExaminationFindingBodySites
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily

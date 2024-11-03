@@ -2457,11 +2457,12 @@ export type RenderedPatientExamination = {
   completed: boolean
   skipped: boolean
   findings: {
-    value: any
     snomed_code: string
     snomed_english_term: string
-    body_site_snomed_code: string | null
-    body_site_snomed_english_term: string | null
+    body_sites: {
+      snomed_code: string
+      snomed_english_term: string
+    }[]
   }[]
 }
 

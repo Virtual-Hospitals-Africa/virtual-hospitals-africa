@@ -33,8 +33,10 @@ type ExaminationCategoryProps = {
   addFinding(finding: {
     snomed_code: string
     snomed_english_term: string
-    body_site_snomed_code: string | null
-    body_site_snomed_english_term: string | null
+    body_sites: {
+      snomed_code: string
+      snomed_english_term: string
+    }[]
   }): void
   removeFinding(snomed_code: string): void
 }
@@ -46,8 +48,10 @@ type ExaminationChecklistProps = {
   addFinding(finding: {
     snomed_code: string
     snomed_english_term: string
-    body_site_snomed_code: string | null
-    body_site_snomed_english_term: string | null
+    body_sites: {
+      snomed_code: string
+      snomed_english_term: string
+    }[]
   }): void
   removeFinding(snomed_code: string): void
 }
@@ -74,10 +78,11 @@ function ExaminationChecklist(
               addFinding({
                 snomed_code: checklist_item.code,
                 snomed_english_term: checklist_item.english_term,
-                body_site_snomed_code: checklist_item.body_sites[0]?.code ??
-                  null,
-                body_site_snomed_english_term:
-                  checklist_item.body_sites[0]?.english_term ?? null,
+                body_sites: !checklist_item.body_sites.length ? [] : [{
+                  snomed_code: checklist_item.body_sites[0].code,
+                  snomed_english_term:
+                    checklist_item.body_sites[0].english_term,
+                }],
               })
             } else {
               removeFinding(checklist_item.code)
@@ -117,8 +122,10 @@ type FindingProps = {
   finding: {
     snomed_code: string
     snomed_english_term: string
-    body_site_snomed_code: string | null
-    body_site_snomed_english_term: string | null
+    body_sites: {
+      snomed_code: string
+      snomed_english_term: string
+    }[]
   }
   removeFinding(snomed_code: string): void
 }
@@ -143,6 +150,7 @@ function Finding({ finding, removeFinding }: FindingProps): JSX.Element {
         <FormRow>
           {finding.snomed_english_term}
         </FormRow>
+        {/* TODO handle multiple body sites */}
         {examination.body_sites?.length > 0 && (
           <FormRow className=''>
             <AsyncSearch
@@ -152,10 +160,10 @@ function Finding({ finding, removeFinding }: FindingProps): JSX.Element {
               search_route={`/app/snomed/body_structures?parent_codes=${
                 examination.body_sites.map((s) => s.code).join(',')
               }`}
-              value={finding.body_site_snomed_code
+              value={finding.body_sites.length > 0
                 ? {
-                  id: finding.body_site_snomed_code,
-                  name: finding.body_site_snomed_english_term!,
+                  id: finding.body_sites[0].snomed_code,
+                  name: finding.body_sites[0].snomed_english_term,
                 }
                 : null}
             />
@@ -200,7 +208,7 @@ export function PatientExaminationForm({
             checklist={checklist}
             findings={findings.value}
             addFinding={(finding) => {
-              findings.value = [...findings.value, { ...finding, value: true }]
+              findings.value = [...findings.value, finding]
             }}
             removeFinding={removeFinding}
           />

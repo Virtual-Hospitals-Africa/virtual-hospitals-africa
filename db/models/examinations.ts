@@ -458,12 +458,18 @@ export function getPatientExamination(
             'patient_examinations.id',
           )
           .select([
-            'patient_examination_findings.value',
-            'patient_examination_findings.snomed_code',
-            'patient_examination_findings.snomed_english_term',
-            'patient_examination_findings.body_site_snomed_code',
-            'patient_examination_findings.body_site_snomed_english_term',
-          ]),
+            'snomed_code',
+            'snomed_english_term',
+          ])
+          .select((eb_findings) =>
+            jsonArrayFrom(
+              eb_findings.selectFrom('patient_examination_finding_body_sites')
+                .select([
+                  'snomed_code',
+                  'snomed_english_term',
+                ]),
+            ).as('body_sites')
+          ),
       ).as('findings'),
     ])
     .executeTakeFirstOrThrow()
