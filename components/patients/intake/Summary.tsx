@@ -120,7 +120,7 @@ function Relation({ relation }: { relation: FamilyRelation }) {
     </div>
   )
 }
-
+//name="pre_existing_conditions.0.name"
 function MedicalConditionSummary(
   { past_medical_conditions, major_surgeries }: {
     past_medical_conditions: PastMedicalCondition[]
@@ -130,10 +130,14 @@ function MedicalConditionSummary(
   if (!past_medical_conditions.length) return null
   return (
     <div>
-      {past_medical_conditions.map((condition) => (
-        <div className='flex flex-col'>
-          <span className='font-semibold'>{condition.name}</span>
-          <DateRange {...condition} />
+      {past_medical_conditions.map((condition, index) => (
+        <div className='flex flex-col' key={index}>
+          <a href={`history#focus=past_medical_conditions.${index}.name`}>
+            <span className='font-semibold'>{condition.name}</span>
+          </a>
+          <a href={`history#focus=past_medical_conditions.${index}.start_dategit`}>
+            <DateRange {...condition} />
+          </a>
         </div>
       ))}
     </div>
