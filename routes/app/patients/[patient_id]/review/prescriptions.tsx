@@ -121,7 +121,11 @@ export default async function PrescriptionsPage(
   console.log('ctx', ctx)
   const { trx, doctor_review: { review_id } } = ctx.state
   const { patient_diagnoses, patient_prescription } = await promiseProps({
-    patient_diagnoses: diagnoses.getFromReview(trx, { review_id }),
+    patient_diagnoses: diagnoses.getFromReview(trx, {
+      review_id,
+      employment_id: ctx.state.doctor_review.employment_id,
+      encounter_id: ctx.state.doctor_review.encounter.id,
+    }),
     patient_prescription: prescriptions.getFromReview(trx, { review_id }),
   })
 
@@ -133,7 +137,7 @@ export default async function PrescriptionsPage(
     <ReviewLayout ctx={ctx}>
       <PrescriptionsForm
         medications={medications}
-        diagnoses={patient_diagnoses}
+        diagnoses={patient_diagnoses.self}
       />
       <FormButtons />
     </ReviewLayout>
