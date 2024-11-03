@@ -9,12 +9,11 @@ import {
   DoctorReviewStep,
   EncounterReason,
   EncounterStep,
-  ExaminationFindingType,
   FamilyType,
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
-  Religion,
+  type Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
@@ -366,7 +365,7 @@ export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
   other_next_of_kin: Maybe<NextOfKin>
-  religion: Maybe<Religion>
+  religion: Maybe<string>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
   patient_cohabitation: Maybe<PatientCohabitation>
@@ -386,7 +385,7 @@ export type FamilyRelation = {
   family_relation: string
   guardian_relation: GuardianRelationName
   patient_id: string
-  patient_name: Maybe<string>
+  patient_name: string
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>
@@ -399,7 +398,7 @@ export type GuardianFamilyRelation = FamilyRelation & {
 export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
   patient_name: string
-  patient_phone_number: Maybe<string>
+  patient_phone_number?: Maybe<string>
   family_relation_gendered: string
   next_of_kin: boolean
 }
@@ -1084,6 +1083,11 @@ export type OrganizationEmployee = {
   online: null | SqlBool
 }
 
+export type OrganizationEmployeeWithActions = Omit<
+  OrganizationEmployee,
+  'actions'
+>
+
 export type OrganizationDoctorOrNurse =
   & Omit<
     OrganizationEmployee,
@@ -1091,6 +1095,14 @@ export type OrganizationDoctorOrNurse =
   >
   & {
     profession: 'doctor' | 'nurse'
+    employee_id: string
+    specialty: NurseSpecialty | null
+  }
+
+export type DoctorsWithoutAction =
+  & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
+  & {
+    profession: 'doctor'
     employee_id: string
     specialty: NurseSpecialty | null
   }
@@ -1401,6 +1413,7 @@ export type RenderedDoctorReviewBase = {
     name: string
     avatar_url: string | null
     description: string | null
+    primary_doctor_id: string | null
   }
   requested_by: {
     profession: 'nurse' | 'doctor'
@@ -2454,24 +2467,17 @@ export type Provider = {
   health_worker_id: string
   provider_id: string
 }
-
-export type RenderedPatientExaminationFinding = {
-  name: string
-  label: string
-  type: ExaminationFindingType
-  required: boolean
-  options: string[] | null
-  value: any
-}
-export type RenderedPatientExaminationCategory = {
-  category: string
-  findings: RenderedPatientExaminationFinding[]
-}
-
 export type RenderedPatientExamination = {
   completed: boolean
   skipped: boolean
-  categories: RenderedPatientExaminationCategory[]
+  findings: {
+    snomed_code: string
+    snomed_english_term: string
+    body_sites: {
+      snomed_code: string
+      snomed_english_term: string
+    }[]
+  }[]
 }
 
 export type DatabaseSchema = DB
@@ -2866,6 +2872,8 @@ export type Sendable = {
     href?: string
     parenthetical?: string
   }
+  additional_description?: string
+  additional_info?: string
   status: string
   menu_options?: {
     name: string

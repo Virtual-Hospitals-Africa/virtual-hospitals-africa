@@ -47,12 +47,23 @@ async function loadAll(to_import: string[]) {
   return modules
 }
 
-const [models, migrations, util, routes, shared, externalClients] =
-  await loadAll([
-    './db/models',
-    './db/migrations',
-    './util',
-    './routes',
-    './shared',
-    './external-clients',
-  ])
+// Add these to the repl's scope
+const [
+  models,
+  migrations,
+  util,
+  routes,
+  shared,
+  externalClients,
+  components,
+  islands,
+] = await loadAll([
+  './db/models',
+  './db/migrations',
+  './util',
+  './routes',
+  './shared',
+  './external-clients',
+  './components',
+  './islands',
+])

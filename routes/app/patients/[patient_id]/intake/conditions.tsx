@@ -5,11 +5,6 @@ import PatientPreExistingConditions from '../../../../../components/patients/int
 import { IntakePage, postHandler } from './_middleware.tsx'
 import { z } from 'zod'
 
-type ConditionsFormValues = {
-  allergies: { id: string; name: string }[]
-  pre_existing_conditions: patient_conditions.PreExistingConditionUpsert[]
-}
-
 export const ConditionsSchema = z.object({
   allergies: z.array(
     z.object({
@@ -24,12 +19,12 @@ export const ConditionsSchema = z.object({
     z.object({
       id: z.string(),
       name: z.string().optional(),
-      start_date: z.string(),
+      start_date: z.string().date(),
       medications: z.array(
         z.object({
-          id: z.string().optional(),
+          id: z.string().uuid().optional(),
           name: z.string().optional(),
-          medication_id: z.string().optional(),
+          medication_id: z.string().uuid().optional(),
           manufactured_medication_id: z.string().optional(),
           strength: z.number(),
           route: z.string(),
@@ -45,19 +40,17 @@ export const ConditionsSchema = z.object({
             {
               message:
                 'Must provide either medication or manufactured medication',
+              path: ['medication_id'],
             },
           ),
       ).optional(),
       comorbidities: z.array(
         z.object({
           id: z.string(),
-          start_date: z.string().optional(),
+          start_date: z.string().date().optional(),
         }),
       ).optional(),
-    })
-      .refine((condition) => condition.start_date, {
-        message: 'Must provide start date',
-      }),
+    }),
   ).default([]),
 })
 

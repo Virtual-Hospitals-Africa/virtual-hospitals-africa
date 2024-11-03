@@ -9,9 +9,28 @@ addEventListener('submit', function (event) {
   var submitButton
 
   function onError(errorMessage) {
+    submitButton.disabled = false
+
+    // On ZodError's focus on the first invalid input
+    // Mark the other inputs as invalid as well, which should get cleared before submission
+    if (errorMessage.startsWith('{')) {
+      var json = JSON.parse(errorMessage)
+      if (json.name === 'ZodError') {
+        json.issues.forEach(function (issue, index) {
+          var path = issue.path.join('.')
+          var element = document.querySelector('[name="' + path + '"]')
+          element.setCustomValidity(issue.message)
+          if (!index) {
+            element.focus()
+            element.reportValidity()
+          }
+        })
+        return
+      }
+    }
+
     var event = new CustomEvent('show-error', { detail: errorMessage })
     dispatchEvent(event)
-    submitButton.disabled = false
   }
 
   var form = event.target
@@ -91,18 +110,13 @@ addEventListener('submit', function (event) {
   })
 })
 
-// Set focus on the first input or select element in the form when
-// navigating to a subsection with hash
-addEventListener('navigate', function (event) {
+function hashFocus() {
   if (!location.hash) return
 
-  var params = new URLSearchParams(location.hash)
+  var params = new URLSearchParams(location.hash.replace('#', '?'))
+  console.log('params', params)
   var focus = params.get('focus')
   if (!focus) return
-
-  if (location.hash) {
-    sectionID = location.hash.split('=')[1]
-  }
 
   var focusableElement = document.getElementById(focus) ||
     document.querySelector(
@@ -113,4 +127,60 @@ addEventListener('navigate', function (event) {
   if (focusableElement) {
     focusableElement.focus()
   }
-})
+}
+
+// Set focus on the first input or select element in the form when
+// navigating to a subsection with hash
+addEventListener('navigate', hashFocus)
+
+hashFocus()
+
+// Disable form submission if any inputs are modified
+var modified_inputs = new Set()
+var defaultValue = ''
+
+// store original values
+function onBeforeInput(event) {
+  var target = event.target
+
+  if (!(defaultValue in target || defaultValue in target.dataset)) {
+    target.dataset[defaultValue] = ('' + target.value).trim()
+  }
+}
+
+// TODO: handle select elements?
+// store modified values
+function onInput(event) {
+  var target = event.target
+
+  var original
+  if (defaultValue in target) {
+    original = target[defaultValue]
+  } else {
+    original = target.dataset[defaultValue]
+  }
+  if (original !== ('' + target.value).trim()) {
+    if (!modified_inputs.has(target)) {
+      modified_inputs.add(target)
+    }
+  } else if (modified_inputs.has(target)) {
+    modified_inputs.delete(target)
+  }
+}
+
+// clear modified inputs on form submission
+function onSubmit() {
+  modified_inputs.clear()
+}
+
+// warn before exiting if any inputs are modified
+function onBeforeUnload(event) {
+  if (modified_inputs.size) {
+    event.preventDefault()
+  }
+}
+
+addEventListener('beforeinput', onBeforeInput)
+addEventListener('input', onInput)
+addEventListener('submit', onSubmit)
+addEventListener('beforeunload', onBeforeUnload)

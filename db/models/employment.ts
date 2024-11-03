@@ -168,3 +168,21 @@ export function getOrganizationAdmin(
     ])
     .executeTakeFirst()
 }
+
+export async function getEmploymentLocationName(
+  trx: TrxOrDb,
+  opts: {
+    employee_id: string
+  },
+) {
+  return await trx
+    .selectFrom('employment')
+    .innerJoin(
+      'organizations',
+      'organizations.id',
+      'employment.organization_id',
+    )
+    .select('organizations.name')
+    .where('employment.id', '=', opts.employee_id)
+    .executeTakeFirstOrThrow()
+}

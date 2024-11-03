@@ -34,11 +34,11 @@ export function BaseOption<
 }) {
   return (
     <div className='flex flex-col'>
-      <div className={cls('truncate text-base', selected && 'font-bold')}>
+      <div className={cls('text-base', selected && 'font-bold')}>
         {option.display_name || option.name}
       </div>
       {option.description && (
-        <div className={cls('truncate text-xs', selected && 'font-bold')}>
+        <div className={cls('text-xs', selected && 'font-bold')}>
           {option.description}
         </div>
       )}
@@ -175,6 +175,7 @@ export default function Search<
               onSelect?.(undefined)
               setQuery(query)
               onQuery(query)
+              event.currentTarget.setCustomValidity('')
             }}
             value={selected?.name}
             required={required}

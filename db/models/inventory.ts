@@ -1,3 +1,13 @@
+/* TODO: As of 2024-11-03 Appears to be breaking on procurement
+error: Uncaught (in promise) Error: no result
+                ? new errorConstructor(this.toOperationNode())
+                  ^
+    at InsertQueryBuilder.executeTakeFirstOrThrow (https://cdn.jsdelivr.net/npm/kysely/dist/esm/query-builder/insert-query-builder.js:813:19)
+    at eventLoopTick (ext:core/01_core.js:175:7)
+    at async Module.addOrganizationMedicine (file:///Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/db/models/inventory.ts:391:29)
+    at async addInventoryTransactions (file:///Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/scripts/add_dummy_data.ts:216:5)
+    at async addDummyData (file:///Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/scripts/add_dummy_data.ts:236:3)
+*/
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   MedicationProcurement,

@@ -299,6 +299,7 @@ export type PatientCard = {
   name: string
   description: string | null
   avatar_url: string | null
+  primary_doctor_id: string | null
 }
 
 export function getCardQuery(
@@ -313,6 +314,7 @@ export function getCardQuery(
         'description',
       ),
       avatar_url_sql.as('avatar_url'),
+      'patients.primary_doctor_id',
     ])
 }
 

@@ -56,7 +56,7 @@ export type ProfessionalInformationFields = {
   ncz_registration_number: string
 }
 
-const PersonalFormFields = z.object({
+export const PersonalFormFields = z.object({
   first_name: z.string(),
   middle_names: z.optional(z.string()),
   last_name: z.string(),

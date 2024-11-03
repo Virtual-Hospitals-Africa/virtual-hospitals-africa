@@ -81,6 +81,7 @@ import * as $app_patients_patient_id_review_revert from './routes/app/patients/[
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
+import * as $app_snomed_body_structures from './routes/app/snomed/body_structures.ts'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
@@ -140,6 +141,8 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
+import * as $SendTo_AdditionalDescription from './islands/SendTo/AdditionalDescription.tsx'
+import * as $SendTo_AdditionalInfo from './islands/SendTo/AdditionalInfo.tsx'
 import * as $SendTo_Button from './islands/SendTo/Button.tsx'
 import * as $SendTo_CircularImage from './islands/SendTo/CircularImage.tsx'
 import * as $SendTo_Description from './islands/SendTo/Description.tsx'
@@ -357,6 +360,7 @@ const manifest = {
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/procurers.tsx': $app_procurers,
     './routes/app/providers.tsx': $app_providers,
+    './routes/app/snomed/body_structures.ts': $app_snomed_body_structures,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
@@ -425,6 +429,8 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
+    './islands/SendTo/AdditionalDescription.tsx': $SendTo_AdditionalDescription,
+    './islands/SendTo/AdditionalInfo.tsx': $SendTo_AdditionalInfo,
     './islands/SendTo/Button.tsx': $SendTo_Button,
     './islands/SendTo/CircularImage.tsx': $SendTo_CircularImage,
     './islands/SendTo/Description.tsx': $SendTo_Description,

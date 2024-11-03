@@ -46,8 +46,9 @@ export default defineConfig({
     if (is_prod) {
       console.log(
         `     ` +
-          colors.bgRgb8(colors.rgb8('(running against production)\n', 255), 59),
+          colors.bgRgb8(colors.rgb8('(running against production)', 255), 59),
       )
+      console.log()
     }
 
     console.log(`    ${colors.bold('URL:')} ${address}\n`)

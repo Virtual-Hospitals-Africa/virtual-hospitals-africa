@@ -1,44 +1,169 @@
-import { ComponentChildren } from 'preact'
-import { Maybe } from '../../types.ts'
-
 import { PencilSquareIcon } from './icons/heroicons/outline.tsx'
+import type { JSX } from 'preact/jsx-runtime'
+import { assert } from 'std/assert/assert.ts'
 
-export type DescriptionListItemProps = {
-  label: string
-  edit_href: string
-  children: Maybe<ComponentChildren>
+export type DescriptionListCell = {
+  value: string
+  edit_href?: string
+  leading_separator?: string
 }
 
-export function DescriptionList(
-  { title, items }: { title: string; items: DescriptionListItemProps[] },
-) {
+export type EmptyRow = []
+
+export type DescriptionListRow = DescriptionListCell[] | EmptyRow
+export type DescriptionListRows = DescriptionListRow[]
+
+type DescriptionListSection = {
+  title: string
+  items: DescriptionListRows[]
+}
+
+export type DescriptionListItemProps = {
+  title: string
+  items: DescriptionListRows[]
+  sections: DescriptionListSection[]
+}
+
+function createRowElement(
+  row: DescriptionListCell[],
+  row_number: number,
+): JSX.Element {
+  const cell_elements: JSX.Element[] = []
+  for (const cell of row) {
+    cell.leading_separator && (
+      cell_elements.push(<span>{cell.leading_separator}</span>)
+    )
+    const element = cell.edit_href
+      ? (
+        <a style={{ display: 'inline-block' }} href={cell.edit_href}>
+          {cell.value}
+        </a>
+      )
+      : (
+        <span>
+          {cell.value}
+        </span>
+      )
+    cell_elements.push(element)
+  }
+  const row_element = <div>{cell_elements}</div>
   return (
     <>
-      <h3 className='text-base font-semibold leading-7 text-gray-900'>
-        {title}
-      </h3>
       <div
-        className='grid gap-4'
-        style={{
-          width: 'max-content',
-          alignItems: 'center',
-          gridTemplateColumns: 'max-content 1fr min-content',
-        }}
+        style={{ gridColumn: 2, gridRow: row_number }}
       >
-        {items.flatMap((item) =>
-          !item.children ? [] : [
-            <dt className='text-sm font-semibold leading-6 text-gray-900'>
-              {item.label}
-            </dt>,
-            <dd className='text-sm leading-6 text-gray-700'>
-              {item.children}
-            </dd>,
-            <a href={item.edit_href} aria-label='edit'>
-              <PencilSquareIcon className='w-4 h-4 text-gray-500' />
-            </a>,
-          ]
-        )}
+        {row_element}
+      </div>
+      <div
+        className='w-4 h-4 text-gray-500'
+        style={{ gridColumn: 3, gridRow: row_number }}
+      >
+        <PencilSquareIcon />
       </div>
     </>
+  )
+}
+
+function createTitleElement(
+  title: string,
+  row_start_number: number,
+  row_end_number: number,
+): JSX.Element {
+  return (
+    <h3
+      className='text-lg font-semibold text-left'
+      style={{
+        gridColumn: 1,
+        gridRow: `${row_start_number} / ${row_end_number}`,
+      }}
+    >
+      {title}
+    </h3>
+  )
+}
+
+function createDividerElement(row_number: number): JSX.Element {
+  return (
+    <div
+      className='border-b border-gray-200 mt-2 mb-2'
+      style={{ gridColumn: '1 / 3', gridRow: row_number }}
+    >
+    </div>
+  )
+}
+
+function createEmptyRow(
+  row_number: number,
+  size: 'small' | 'large',
+): JSX.Element {
+  return (
+    <div
+      style={{
+        gridColumn: '1 / 3',
+        gridRow: row_number,
+        height: size === 'large' ? 24 : 12,
+      }}
+    />
+  )
+}
+
+export const DescriptionList = (
+  { pages }: { pages: DescriptionListItemProps[] },
+) => {
+  const elements: JSX.Element[] = []
+  let page_row_start: number = 0
+  let page_row_end: number = 1
+  for (const page of pages) {
+    for (const [item_index, item] of page.items.entries()) {
+      if (item_index) {
+        elements.push(createEmptyRow(page_row_end, 'small'))
+        page_row_end += 1
+      }
+
+      for (const row of item) {
+        assert(row.length > 0, 'Empty row')
+        elements.push(createRowElement(row, page_row_end))
+        page_row_end += 1
+      }
+    }
+    elements.push(
+      createTitleElement(page.title, page_row_start + 1, page_row_end),
+    )
+    page_row_start = page_row_end
+
+    if (page.sections.length > 0) {
+      page_row_end += 1
+      elements.push(createEmptyRow(page_row_end, 'large'))
+      page_row_end += 1
+      page_row_start = page_row_end
+    }
+
+    for (const section of page.sections) {
+      for (const item of section.items) {
+        for (const row of item) {
+          assert(row.length > 0, 'Empty row')
+          elements.push(createRowElement(row, page_row_end))
+          page_row_end += 1
+        }
+      }
+      elements.push(
+        createTitleElement(section.title, page_row_start, page_row_end),
+      )
+      page_row_start = page_row_end
+    }
+    elements.push(createDividerElement(page_row_end))
+    page_row_end += 1
+  }
+
+  return (
+    <div
+      className='grid gap-x-4 gap-y-0.5'
+      style={{
+        gridTemplateColumns: 'max-content max-content 20px',
+        alignItems: 'start',
+      }}
+    >
+      {elements}
+    </div>
   )
 }

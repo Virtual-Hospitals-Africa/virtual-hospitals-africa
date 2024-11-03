@@ -14,19 +14,19 @@ import {
 const PersonalSchema = z.object({
   first_name: varchar255,
   last_name: varchar255,
-  middle_names: z.optional(varchar255),
-  avatar_media: z.optional(z.object({ id: z.string().uuid() })),
-  national_id_number: z.optional(national_id_number),
-  no_national_id: z.optional(z.boolean()),
-  phone_number: z.optional(phone_number),
+  middle_names: varchar255.optional(),
+  avatar_media: z.object({ id: z.string().uuid() }).optional(),
+  national_id_number: national_id_number.optional(),
+  no_national_id: z.boolean().optional(),
+  phone_number: phone_number.optional(),
   date_of_birth: z.string().date(),
   gender,
-  ethnicity: z.optional(varchar255),
+  ethnicity: varchar255.optional(),
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {
-    message: 'Must provide either national id number or check no national id',
-    path: ['national_id_number', 'no_national_id'],
+    message: 'Must either provide national id number or check no national id',
+    path: ['national_id_number'],
   },
 ).transform((
   { avatar_media, first_name, middle_names, last_name, ...data },
