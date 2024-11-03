@@ -2,7 +2,6 @@ import { FormState } from '../routes/app/organizations/[organization_id]/registe
 import NursePersonalForm from '../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
-import unsavedChangesWarning from './form/unsaved_changes_warning.tsx'
 import { CountryAddressTree } from '../types.ts'
 import Form from '../components/library/Form.tsx'
 
@@ -13,8 +12,6 @@ export default function NurseRegistrationForm(
     country_address_tree: CountryAddressTree | undefined
   },
 ) {
-  unsavedChangesWarning()
-
   return (
     <Form
       method='POST'

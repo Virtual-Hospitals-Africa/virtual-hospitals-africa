@@ -1,27 +1,7 @@
-import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
-import {
-  FamilyType,
-  MaritalStatus,
-  PatientCohabitation,
-  Religion,
-} from '../../../../../db.d.ts'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 import { z } from 'zod'
-
-type FamilyFormValues = {
-  family: {
-    under_18?: boolean
-    guardians: FamilyRelationInsert[]
-    dependents: FamilyRelationInsert[]
-    other_next_of_kin?: FamilyRelationInsert
-    religion?: Religion
-    family_type?: FamilyType
-    marital_status?: MaritalStatus
-    patient_cohabitation?: PatientCohabitation
-  }
-}
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().optional(),
@@ -37,7 +17,15 @@ export const FamilySchema = z.object({
     guardians: z.array(FamilyRelationInsertSchema).default([]),
     dependents: z.array(FamilyRelationInsertSchema).default([]),
     other_next_of_kin: FamilyRelationInsertSchema.optional(),
-    religion: z.string().optional(),
+    religion: z.enum([
+      'African Traditional Religion',
+      'Apostolic Sect',
+      'Islam',
+      'Non-Religious',
+      'Other',
+      'Pentecostal/Protestant Christianity',
+      'Roman Catholic',
+    ]).optional(),
     family_type: z.enum([
       '2 married parents',
       'Blended',
@@ -68,6 +56,9 @@ export const FamilySchema = z.object({
       'Sibling',
       'Uncle or Aunt',
     ]).optional(),
+  }).optional().default({
+    dependents: [],
+    guardians: [],
   }),
 })
 

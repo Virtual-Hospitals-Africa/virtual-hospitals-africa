@@ -1,3 +1,5 @@
+import { groupByUniq } from '../util/groupBy.ts'
+
 export const ASSESSMENTS = [
   'Head-to-toe Assessment' as const,
   "Women's Health Assessment" as const,
@@ -108,19 +110,264 @@ export type DiagnosticTest = typeof DIAGNOSTIC_TESTS[number]
 
 export type Examination = typeof EXAMINATIONS[number]
 
-/*  SQL to get all examination findings
-    select examination_findings.name,
-           examination_name,
-           category,
-           examination_findings.type,
-           required,
-           options,
-           ask_dependent_on,
-           ask_dependent_values
-      from examination_findings
-      join examination_categories on examination_findings.examination_category_id = examination_categories.id
-      join examinations on examination_categories.examination_name = examinations.name
-  order by examinations.order asc,
-           examination_categories.order asc,
-           examination_findings.order asc
-*/
+export const HEAD_TO_TOE_EXAMINATION_CATEGORIES = [
+  {
+    'category': 'Hands',
+    'subcategories': [
+      {
+        'subcategory': 'Texture',
+        'checklist': [
+          {
+            'checklist_label': 'cold',
+            'code': '703883009',
+            'english_term': 'Cold skin',
+            'body_sites': [
+              {
+                'code': '12861001',
+                'english_term': 'Both hands',
+              },
+              {
+                'code': '85151006',
+                'english_term': 'Structure of left hand',
+              },
+              {
+                'code': '78791008',
+                'english_term': 'Structure of right hand',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'hot',
+            'code': '707793005',
+            'english_term': 'Hot skin',
+            'body_sites': [
+              {
+                'code': '12861001',
+                'english_term': 'Both hands',
+              },
+              {
+                'code': '85151006',
+                'english_term': 'Structure of left hand',
+              },
+              {
+                'code': '78791008',
+                'english_term': 'Structure of right hand',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'clammy',
+            'code': '102598000',
+            'english_term': 'Clammy skin',
+            'body_sites': [
+              {
+                'code': '12861001',
+                'english_term': 'Both hands',
+              },
+              {
+                'code': '85151006',
+                'english_term': 'Structure of left hand',
+              },
+              {
+                'code': '78791008',
+                'english_term': 'Structure of right hand',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Fingers',
+        'checklist': [
+          {
+            'checklist_label': 'cyanosis',
+            'code': '3415004',
+            'english_term': 'Cyanosis',
+            'body_sites': [
+              {
+                'code': '362779006',
+                'english_term': 'All fingers',
+              },
+              {
+                'code': '7569003',
+                'english_term': 'Finger structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'nicotine stains',
+            'code': '247439004',
+            'english_term': 'Nicotine staining of finger',
+            'body_sites': [
+              {
+                'code': '362779006',
+                'english_term': 'All fingers',
+              },
+              {
+                'code': '7569003',
+                'english_term': 'Finger structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'clubbing',
+            'code': '30760008',
+            'english_term': 'Finger clubbing',
+            'body_sites': [
+              {
+                'code': '362779006',
+                'english_term': 'All fingers',
+              },
+              {
+                'code': '7569003',
+                'english_term': 'Finger structure',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Nails',
+        'checklist': [
+          {
+            'checklist_label': 'leukonychia',
+            'code': '111202002',
+            'english_term': 'Leukonychia',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'koilonychia',
+            'code': '66270006',
+            'english_term': 'Koilonychia',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'splinter hemorrhages',
+            'code': '271770005',
+            'english_term': 'Splinter hemorrhages under nail',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'pitting',
+            'code': '89704006',
+            'english_term': 'Pitting of nails',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'onycholysis',
+            'code': '75789001',
+            'english_term': 'Onycholysis',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'discolouration',
+            'code': '47415006',
+            'english_term': 'Abnormal color',
+            'body_sites': [
+              {
+                'code': '770802007',
+                'english_term': 'Nail unit structure',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        'subcategory': 'Palms',
+        'checklist': [
+          {
+            'checklist_label': 'erythema',
+            'code': '70819003',
+            'english_term': 'Erythema',
+            'body_sites': [
+              {
+                'code': '21547004',
+                'english_term': 'Palm (region) structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': "dupuytren's disease",
+            'code': '203045001',
+            'english_term': "Dupuytren's disease of palm",
+            'body_sites': [
+              {
+                'code': '21203009',
+                'english_term': 'Palmar aponeurosis structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'pale skin',
+            'code': '403237004',
+            'english_term': 'Pale white constitutive skin colour',
+            'body_sites': [
+              {
+                'code': '21547004',
+                'english_term': 'Palm (region) structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'cyanosis',
+            'code': '119419001',
+            'english_term': 'Cyanosis of skin',
+            'body_sites': [
+              {
+                'code': '21547004',
+                'english_term': 'Palm (region) structure',
+              },
+            ],
+          },
+          {
+            'checklist_label': 'jaundice',
+            'code': '18165001',
+            'english_term': 'Jaundice',
+            'body_sites': [
+              {
+                'code': '21547004',
+                'english_term': 'Palm (region) structure',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    'checklist': [],
+  },
+]
+
+export const HEAD_TO_TOE_EXAMINATION_CHECKLIST =
+  HEAD_TO_TOE_EXAMINATION_CATEGORIES.flatMap(({ checklist, subcategories }) =>
+    subcategories.flatMap(({ checklist }) => checklist).concat(checklist)
+  )
+
+export const HEAD_TO_TOE_EXAMINATION_CHECKLIST_BY_SNOMED_CODE = groupByUniq(
+  HEAD_TO_TOE_EXAMINATION_CHECKLIST,
+  'code',
+)

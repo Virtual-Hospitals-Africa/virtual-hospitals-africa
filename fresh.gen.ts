@@ -81,6 +81,7 @@ import * as $app_patients_patient_id_review_revert from './routes/app/patients/[
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
+import * as $app_snomed_body_structures from './routes/app/snomed/body_structures.ts'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
@@ -359,6 +360,7 @@ const manifest = {
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/procurers.tsx': $app_procurers,
     './routes/app/providers.tsx': $app_providers,
+    './routes/app/snomed/body_structures.ts': $app_snomed_body_structures,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,

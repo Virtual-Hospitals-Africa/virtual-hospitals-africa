@@ -72,24 +72,44 @@ export async function up(
           ),
       )
         .addColumn(
-          'examination_finding_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('examination_findings.id').onDelete(
-              'cascade',
-            ),
+          'snomed_code',
+          'varchar(255)',
+          (col) => col.notNull(),
         )
-        .addColumn('value', 'json', (col) => col.notNull())
-        .addUniqueConstraint('patient_examination_findings_unique', [
-          'patient_examination_id',
-          'examination_finding_id',
-        ]),
+        .addColumn(
+          'snomed_english_term',
+          'varchar(255)',
+          (col) => col.notNull(),
+        ),
   )
 
-  // TODO: Add a trigger to ensure the examination findings are of the correct type
+  await createStandardTable(
+    db,
+    'patient_examination_finding_body_sites',
+    (qb) =>
+      qb.addColumn(
+        'patient_examination_finding_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_examination_findings.id').onDelete(
+            'cascade',
+          ),
+      )
+        .addColumn(
+          'snomed_code',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
+        .addColumn(
+          'snomed_english_term',
+          'varchar(255)',
+          (col) => col.notNull(),
+        ),
+  )
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('patient_examination_finding_body_sites').execute()
   await db.schema.dropTable('patient_examination_findings').execute()
   await db.schema.dropTable('patient_examinations').execute()
 }
