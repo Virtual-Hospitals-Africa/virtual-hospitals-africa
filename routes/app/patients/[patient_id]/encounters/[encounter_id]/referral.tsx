@@ -14,7 +14,6 @@ import { parseRequest } from '../../../../../../util/parseForm.ts'
 const ReviewRequestSchema = z.object({
   id: z.string().optional(),
   organization_id: z.string().optional(),
-  organization_name: z.string().optional(),
   doctor_id: z.string().optional(),
   doctor_name: z.string().optional(),
   requester_notes: z.string().optional(),

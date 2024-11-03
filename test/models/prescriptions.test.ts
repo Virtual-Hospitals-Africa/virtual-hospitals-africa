@@ -70,7 +70,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
             condition_id: 'c_22401',
             start_date: '2020-01-01',
           }],
-          diagnoses_collaborations: []
+          diagnoses_collaborations: [],
         })
 
         const patient_diagnoses = await diagnoses.getFromReview(trx, {
@@ -108,7 +108,8 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           doctor_review_id: doctor_review.review_id,
           prescribing: [
             {
-              patient_condition_id: patient_diagnoses.self[0].patient_condition_id,
+              patient_condition_id:
+                patient_diagnoses.self[0].patient_condition_id,
               medication_id: tablet.medication_id,
               strength: tablet.strength_numerators[0],
               route: tablet.routes[0],

@@ -136,7 +136,7 @@ export async function upsertForReview(
           .execute()
       }),
     )
-  await inserting_collaborations;
+  await inserting_collaborations
 
   const to_delete_diagnoses = existing_diagnoses.self.filter(
     (existing_diagnosis) =>
@@ -186,7 +186,7 @@ export async function upsertForReview(
 
   await inserting_diagnoses
 
-  const updating_diagnoses = Promise.all(
+  const updating_diagnoses = to_update_diagnoses.length && Promise.all(
     to_update_diagnoses.map((d) => {
       const matching_diagnosis = existing_diagnoses.self.find(
         (existing_diagnosis) => existing_diagnosis.id === d.condition_id,
@@ -201,7 +201,7 @@ export async function upsertForReview(
       }
     }),
   )
-  await updating_diagnoses;
+  await updating_diagnoses
 
   const updating_collaborations = to_update_collaborations.length &&
     Promise.all(
