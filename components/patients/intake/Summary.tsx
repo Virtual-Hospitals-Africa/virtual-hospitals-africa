@@ -45,9 +45,6 @@ function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
 
 function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
   const filteredRows = rows.map(nonNullableCells).filter((row) => row.length)
-  if (filteredRows.length === 0) {
-    return [[{ value: 'None provided', edit_href: '', italics: true }]]
-  }
   return filteredRows
 }
 
