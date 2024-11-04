@@ -52,7 +52,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_ from './routes/app
 import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_clinical_notes from './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_close_visit from './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_diagnoses from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
@@ -305,8 +305,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_clinical_notes,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx':
       $app_patients_patient_id_encounters_encounter_id_close_visit,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx':
-      $app_patients_patient_id_encounters_encounter_id_diagnosis,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx':
+      $app_patients_patient_id_encounters_encounter_id_diagnoses,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx':
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
