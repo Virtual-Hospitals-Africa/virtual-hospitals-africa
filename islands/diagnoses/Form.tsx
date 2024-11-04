@@ -93,13 +93,11 @@ export default function DiagnosesForm(props: {
         </div>
       )}
       <div className='flex flex-col gap-3'>
-        {
-          othersDiagnoses.value.length > 0 && (
-            <h3 className='text-sm font-semibold text-gray-900'>
-              Made by you
-            </h3>
-          )
-        }
+        {othersDiagnoses.value.length > 0 && (
+          <h3 className='text-sm font-semibold text-gray-900'>
+            Made by you
+          </h3>
+        )}
         {selfDiagnoses.value.map((
           state,
           index,
