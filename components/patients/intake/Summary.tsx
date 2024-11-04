@@ -110,7 +110,8 @@ export default function PatientSummary(
   const next_of_kin_items: DescriptionListRows[] = [
     [[
       {
-        value: patient.family.other_next_of_kin?.patient_name || 'None provided',
+        value: patient.family.other_next_of_kin?.patient_name ||
+          'None provided',
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
         italics: !patient.family.other_next_of_kin?.patient_name,
       },
