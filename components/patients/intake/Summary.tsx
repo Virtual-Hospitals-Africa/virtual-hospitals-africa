@@ -44,7 +44,11 @@ function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
 }
 
 function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
-  return rows.map(nonNullableCells).filter((row) => row.length)
+  const filteredRows = rows.map(nonNullableCells).filter((row) => row.length)
+  if (filteredRows.length === 0) {
+    return [[{ value: 'None provided', edit_href: '', italics: true }]]
+  }
+  return filteredRows
 }
 
 export default function PatientSummary(
@@ -65,13 +69,15 @@ export default function PatientSummary(
   } = patient
 
   const personal_items: DescriptionListRows[] = [
-    nonEmptyRows([[{
-      value: personal.name,
+    [[{
+      value: personal.name || 'None provided',
       edit_href: `${intake_href}/personal#focus=first_name`,
+      italics: !personal.name,
     }], [{
-      value: personal.phone_number,
+      value: personal.phone_number || 'None provided',
       edit_href: `${intake_href}/personal#focus=phone_number`,
-    }]]),
+      italics: !personal.phone_number,
+    }]],
   ]
 
   const address_items: DescriptionListRows[] = [
@@ -105,16 +111,18 @@ export default function PatientSummary(
   ]
 
   const next_of_kin_items: DescriptionListRows[] = [
-    nonEmptyRows([[
+    [[
       {
-        value: patient.family.other_next_of_kin?.patient_name,
+        value: patient.family.other_next_of_kin?.patient_name || 'None provided',
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        italics: !patient.family.other_next_of_kin?.patient_name,
       },
-    ]]),
-    nonEmptyRows([[{
-      value: patient.family.other_next_of_kin?.relation,
+    ]],
+    [[{
+      value: patient.family.other_next_of_kin?.relation || 'None provided',
       edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
-    }]]),
+      italics: !patient.family.other_next_of_kin?.relation,
+    }]],
   ]
 
   const family_items: DescriptionListRows[] = [

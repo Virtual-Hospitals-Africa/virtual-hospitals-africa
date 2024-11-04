@@ -6,6 +6,7 @@ export type DescriptionListCell = {
   value: string
   edit_href?: string
   leading_separator?: string
+  italics?: boolean
 }
 
 export type EmptyRow = []
@@ -35,12 +36,14 @@ function createRowElement(
     )
     const element = cell.edit_href
       ? (
-        <a style={{ display: 'inline-block' }} href={cell.edit_href}>
-          {cell.value}
+        <a style={{ display: 'inline-block',
+          fontStyle: cell.italics ? 'italic' : 'normal'
+         }} href={cell.edit_href}>
+            {cell.value}
         </a>
       )
       : (
-        <span>
+        <span style={{ fontStyle: cell.italics ? 'italic' : 'normal' }}>
           {cell.value}
         </span>
       )
