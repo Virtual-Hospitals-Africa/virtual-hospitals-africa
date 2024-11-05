@@ -10,6 +10,7 @@ addEventListener('submit', function (event) {
 
   function onError(errorMessage) {
     submitButton.disabled = false
+    console.log('errorMessage', errorMessage)
 
     // On ZodError's focus on the first invalid input
     // Mark the other inputs as invalid as well, which should get cleared before submission
@@ -19,6 +20,14 @@ addEventListener('submit', function (event) {
         json.issues.forEach(function (issue, index) {
           var path = issue.path.join('.')
           var element = document.querySelector('[name="' + path + '"]')
+          if (
+            element.attributes.getNamedItem('type').value === 'hidden' &&
+            path.endsWith('id')
+          ) {
+            element = document.querySelector(
+              '[name="' + path.replace(/id$/, 'name') + '"]',
+            )
+          }
           element.setCustomValidity(issue.message)
           if (!index) {
             element.focus()
@@ -88,6 +97,7 @@ addEventListener('submit', function (event) {
           history.pushState({}, '', response.url)
         })
       case 400:
+        console.log('WELKEWLK')
         return response.text().then(onError)
       case 401:
         return response.text().then(function (text) {

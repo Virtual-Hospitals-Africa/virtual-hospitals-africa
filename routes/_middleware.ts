@@ -35,6 +35,7 @@ export const handler = (_req: Request, ctx: FreshContext) =>
       logError(err)
     }
     if (err instanceof ZodError) {
+      console.error(err)
       return new Response(JSON.stringify(err), {
         status: 400,
         headers: {

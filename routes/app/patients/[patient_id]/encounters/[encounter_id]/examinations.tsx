@@ -286,6 +286,8 @@ export async function ExaminationsPage(
     encounter_id: ctx.params.encounter_id,
   })
 
+  console.log('patient_examinations', patient_examinations)
+
   const examination = doing_examination &&
     matchingExamination(ctx, patient_examinations)
 
