@@ -10,6 +10,7 @@ export function FindingsListItem(
     <li>
       <a href={finding.edit_href}>
         {finding.text}
+        {finding.additional_notes && <p>{finding.additional_notes}</p>}
       </a>
     </li>
   )

@@ -7,7 +7,7 @@ type SearchTerms = {
   parent_codes: string
 }
 
-const rows_per_page = 50
+const rows_per_page = 10
 
 export const handler = jsonSearchHandler({
   async search(_trx, search_terms: SearchTerms, { page }) {
