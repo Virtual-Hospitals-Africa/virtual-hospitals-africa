@@ -42,7 +42,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
 
         await doctor_reviews.upsertRequest(trx, {
           patient_id: patient.id,
-          requesting_doctor_id: doctor.employee_id!,
+          doctor_id: doctor.employee_id!,
           encounter_id: encounter.id,
           requested_by: encounter.providers[0].encounter_provider_id,
         })

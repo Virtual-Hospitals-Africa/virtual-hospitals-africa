@@ -38,7 +38,7 @@ export async function up(db: Kysely<any>) {
         col
           .references('organizations.id')
           .onDelete('cascade'))
-      .addColumn('requesting_doctor_id', 'uuid', (col) =>
+      .addColumn('doctor_id', 'uuid', (col) =>
         col
           .references('employment.id')
           .onDelete('cascade'))
@@ -50,13 +50,13 @@ export async function up(db: Kysely<any>) {
       ])
       .addUniqueConstraint('once_per_patient_employee', [
         'patient_id',
-        'requesting_doctor_id',
+        'doctor_id',
       ])
       .addCheckConstraint(
         'organization_or_requesting_employee',
         sql`
-        (organization_id is not null and requesting_doctor_id is null) or
-        (organization_id is null and requesting_doctor_id is not null)
+        (organization_id is not null and doctor_id is null) or
+        (organization_id is null and doctor_id is not null)
       `,
       ))
 

@@ -540,7 +540,7 @@ describe(
                 patient_id: patient.id,
                 encounter_id: encounter.encounter_id,
                 requested_by: encounter_provider.patient_encounter_provider_id,
-                requesting_doctor_id: doctor.employee_id!,
+                doctor_id: doctor.employee_id!,
               })
 
               await doctor_reviews.finalizeRequest(trx, {
@@ -714,7 +714,7 @@ describe(
                 patient_id: patient.id,
                 encounter_id: encounter.encounter_id,
                 requested_by: encounter_provider.patient_encounter_provider_id,
-                requesting_doctor_id: doctor.employee_id!,
+                doctor_id: doctor.employee_id!,
               })
 
               await doctor_reviews.finalizeRequest(trx, {

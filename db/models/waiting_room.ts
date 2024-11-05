@@ -327,7 +327,7 @@ export async function get(
               eb2(
                 'employment.id',
                 '=',
-                eb2.ref('doctor_review_requests.requesting_doctor_id'),
+                eb2.ref('doctor_review_requests.doctor_id'),
               ),
             ])
           )

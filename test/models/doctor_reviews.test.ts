@@ -45,7 +45,7 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
               encounter_id: patient_encounter.id,
               requested_by:
                 patient_encounter.providers[0].encounter_provider_id,
-              requesting_doctor_id: doctor.employee_id!,
+              doctor_id: doctor.employee_id!,
             })
 
             await doctor_reviews.finalizeRequest(trx, {
@@ -63,7 +63,7 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
 
             assertEquals(patient_review_requests.length, 1)
             assertEquals(
-              patient_review_requests[0].requesting_doctor_id,
+              patient_review_requests[0].doctor_id,
               doctor.employee_id!,
             )
 

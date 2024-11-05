@@ -360,6 +360,7 @@ export interface DoctorReview {
 
 export interface DoctorReviewRequests {
   created_at: Generated<Timestamp>
+  doctor_id: string | null
   encounter_id: string
   id: Generated<string>
   organization_id: string | null
@@ -367,7 +368,6 @@ export interface DoctorReviewRequests {
   pending: Generated<boolean>
   requested_by: string
   requester_notes: string | null
-  requesting_doctor_id: string | null
   updated_at: Generated<Timestamp>
 }
 

@@ -178,7 +178,7 @@ export function requestsOfHealthWorker(
   return requests(trx)
     .innerJoin(
       'employment',
-      'doctor_review_requests.requesting_doctor_id',
+      'doctor_review_requests.doctor_id',
       'employment.id',
     )
     .where(
@@ -325,21 +325,21 @@ export function completedStep(
 
 export async function upsertRequest(
   trx: TrxOrDb,
-  { id, requesting_doctor_id, ...values }: {
+  { id, doctor_id, ...values }: {
     id?: Maybe<string>
     patient_id: string
     encounter_id: string
     requested_by: string
     organization_id?: string | null
-    requesting_doctor_id?: string | null
+    doctor_id?: string | null
     requester_notes?: Maybe<string>
   },
 ) {
   const to_upsert = {
     ...values,
-    requesting_doctor_id: requesting_doctor_id && (
+    doctor_id: doctor_id && (
       trx.selectFrom('employment')
-        .where('id', '=', requesting_doctor_id)
+        .where('id', '=', doctor_id)
         .where('profession', '=', 'doctor')
         .select('id')
     ),
@@ -419,7 +419,7 @@ export function getRequest(
           .whereRef(
             'employment.id',
             '=',
-            'doctor_review_requests.requesting_doctor_id',
+            'doctor_review_requests.doctor_id',
           )
           .select([
             'employment.id',
