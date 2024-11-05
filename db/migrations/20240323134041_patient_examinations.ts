@@ -34,7 +34,7 @@ export async function up(
         )
         .addColumn(
           'examination_name',
-          'varchar(40)',
+          'varchar(80)',
           (col) =>
             col.notNull().references('examinations.name').onDelete('cascade'),
         )
@@ -80,6 +80,10 @@ export async function up(
           'snomed_english_term',
           'varchar(255)',
           (col) => col.notNull(),
+        )
+        .addColumn(
+          'additional_notes',
+          'text',
         ),
   )
 

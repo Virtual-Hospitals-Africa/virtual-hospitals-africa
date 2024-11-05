@@ -127,7 +127,7 @@ function toChecklist(exs: ExaminationSchema[]) {
   ))
 }
 
-const HEAD_TO_TOE_EXAMINATION = groupBy(hands_examinations, (e) => e.category)
+const HEAD_TO_TOE_ASSESSMENT = groupBy(hands_examinations, (e) => e.category)
   .entries().map(
     ([category, exs]) => {
       const [has_subcategory, no_subcategories] = partition(exs, hasSubcategory)
@@ -150,7 +150,7 @@ const HEAD_TO_TOE_EXAMINATION = groupBy(hands_examinations, (e) => e.category)
     },
   ).toArray()
 
-console.log(JSON.stringify(HEAD_TO_TOE_EXAMINATION, null, 2))
+console.log(JSON.stringify(HEAD_TO_TOE_ASSESSMENT, null, 2))
 
 // // const to_search = [
 // //   'koilonychia',

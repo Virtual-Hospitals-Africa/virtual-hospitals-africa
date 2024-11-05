@@ -1,11 +1,11 @@
 import { JSX } from 'preact'
 import { Sendable } from '../../types.ts'
 import OnlineIndicator from '../../components/OnlineIndicator.tsx'
-import { Description } from './Description.tsx'
-import { CircularImage } from './CircularImage.tsx'
+import { CircularImage } from '../../components/library/CircularImage.tsx'
 import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
-import { AdditionalInfo } from './AdditionalInfo.tsx'
-import { AdditionalDescription } from './AdditionalDescription.tsx'
+import { AdditionalInfo } from '../../components/library/AdditionalInfo.tsx'
+import { AdditionalDescription } from '../../components/library/AdditionalDescription.tsx'
+import { Description } from '../../components/library/Description.tsx'
 
 function SendableListItemContents({ sendable }: { sendable: Sendable }) {
   const {

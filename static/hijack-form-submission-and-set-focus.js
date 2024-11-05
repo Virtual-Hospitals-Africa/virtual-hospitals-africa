@@ -135,6 +135,8 @@ addEventListener('navigate', hashFocus)
 
 hashFocus()
 
+/* TODO: turn this back on? It's not working with hash changes and is just kind of overbearing during development
+
 // Disable form submission if any inputs are modified
 var modified_inputs = new Set()
 var defaultValue = ''
@@ -184,3 +186,5 @@ addEventListener('beforeinput', onBeforeInput)
 addEventListener('input', onInput)
 addEventListener('submit', onSubmit)
 addEventListener('beforeunload', onBeforeUnload)
+
+*/

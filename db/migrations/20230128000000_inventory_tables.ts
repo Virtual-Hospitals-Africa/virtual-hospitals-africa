@@ -11,7 +11,7 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn('device_id', 'uuid', (col) =>
         col.notNull().references('devices.id').onDelete('cascade'))
-      .addColumn('diagnostic_test', 'varchar(40)', (col) =>
+      .addColumn('diagnostic_test', 'varchar(80)', (col) =>
         col.notNull().references('diagnostic_tests.name').onDelete('cascade')))
 
   await createStandardTable(db, 'organization_devices', (qb) =>

@@ -1,5 +1,6 @@
+import type { SqlBool } from 'kysely'
 import cls from '../../../util/cls.ts'
-import { CheckCircleIcon } from './heroicons/outline.tsx'
+import { CheckCircleIcon, ForwardIcon } from './heroicons/outline.tsx'
 
 // TODO: use active?
 export function Check({ className }: { active: boolean; className?: string }) {
@@ -38,4 +39,16 @@ export function Dot({ active }: { active: boolean }) {
       <div className='h-2 w-2 rounded-full bg-gray-300 group-hover:bg-gray-400' />
     </div>
   )
+}
+
+export function Progress({ active, completed, skipped }: {
+  active: boolean
+  completed: SqlBool | null
+  skipped: SqlBool | null
+}) {
+  return (completed
+    ? <Check active={active} />
+    : skipped && !active
+    ? <ForwardIcon className='w-5 h-5' />
+    : <Dot active={active} />)
 }

@@ -6,7 +6,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
-import * as examinations from './examinations.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
@@ -19,6 +18,7 @@ import { assert } from 'std/assert/assert.ts'
 import uniq from '../../util/uniq.ts'
 import { inBackground } from '../../util/inBackground.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import { isUUID } from '../../util/uuid.ts'
 
 export type Upsert =
   & {
@@ -183,7 +183,7 @@ export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: string) =>
     .distinct()
 
 export const baseQuery = (trx: TrxOrDb) =>
-  examinations.forPatientEncounter(trx)
+  trx
     .selectFrom('patient_encounters')
     .leftJoin(
       'waiting_room',
@@ -240,20 +240,34 @@ export const baseQuery = (trx: TrxOrDb) =>
             'patient_encounters.id',
           ),
       ).as('providers'),
-      jsonArrayFrom(
-        eb.selectFrom('patient_examinations_with_recommendations')
-          .selectAll('patient_examinations_with_recommendations')
-          .whereRef(
-            'patient_examinations_with_recommendations.encounter_id',
-            '=',
-            'patient_encounters.id',
-          ),
-      ).as('examinations'),
     ])
     .orderBy('patient_encounters.created_at', 'desc')
 
 export const openQuery = (trx: TrxOrDb) =>
   baseQuery(trx).where('patient_encounters.closed_at', 'is', null)
+
+export const ensureEncounterId = (
+  trx: TrxOrDb,
+  opts: {
+    patient_id: string
+    encounter_id: string | 'open'
+  },
+) => {
+  if (opts.encounter_id !== 'open') {
+    assertOr400(
+      isUUID(opts.encounter_id),
+      'Invalid encounter_id, must be a UUID or "open"',
+    )
+  }
+
+  const query = trx.selectFrom('patient_encounters')
+    .select('patient_encounters.id')
+    .where('patient_encounters.patient_id', '=', opts.patient_id)
+
+  return opts.encounter_id === 'open'
+    ? query.where('patient_encounters.closed_at', 'is', null)
+    : query.where('patient_encounters.id', '=', opts.encounter_id)
+}
 
 export function get(
   trx: TrxOrDb,

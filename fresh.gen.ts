@@ -55,6 +55,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnoses from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment from './routes/app/patients/[patient_id]/encounters/[encounter_id]/head_to_toe_assessment.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
@@ -141,11 +142,7 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
-import * as $SendTo_AdditionalDescription from './islands/SendTo/AdditionalDescription.tsx'
-import * as $SendTo_AdditionalInfo from './islands/SendTo/AdditionalInfo.tsx'
 import * as $SendTo_Button from './islands/SendTo/Button.tsx'
-import * as $SendTo_CircularImage from './islands/SendTo/CircularImage.tsx'
-import * as $SendTo_Description from './islands/SendTo/Description.tsx'
 import * as $SendTo_Form from './islands/SendTo/Form.tsx'
 import * as $SendTo_Header from './islands/SendTo/Header.tsx'
 import * as $SendTo_Icons from './islands/SendTo/Icons.tsx'
@@ -165,7 +162,8 @@ import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
 import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $drug_Input from './islands/drug/Input.tsx'
 import * as $drug_Search from './islands/drug/Search.tsx'
-import * as $examinations_Form from './islands/examinations/Form.tsx'
+import * as $examinations_ChecklistItem from './islands/examinations/ChecklistItem.tsx'
+import * as $examinations_Dialog from './islands/examinations/Dialog.tsx'
 import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
@@ -176,6 +174,10 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
+import * as $findings_Drawer from './islands/findings/Drawer.tsx'
+import * as $findings_Header from './islands/findings/Header.tsx'
+import * as $findings_List from './islands/findings/List.tsx'
+import * as $findings_ListItem from './islands/findings/ListItem.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
@@ -311,6 +313,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/head_to_toe_assessment.tsx':
+      $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':
@@ -429,11 +433,7 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
-    './islands/SendTo/AdditionalDescription.tsx': $SendTo_AdditionalDescription,
-    './islands/SendTo/AdditionalInfo.tsx': $SendTo_AdditionalInfo,
     './islands/SendTo/Button.tsx': $SendTo_Button,
-    './islands/SendTo/CircularImage.tsx': $SendTo_CircularImage,
-    './islands/SendTo/Description.tsx': $SendTo_Description,
     './islands/SendTo/Form.tsx': $SendTo_Form,
     './islands/SendTo/Header.tsx': $SendTo_Header,
     './islands/SendTo/Icons.tsx': $SendTo_Icons,
@@ -453,7 +453,8 @@ const manifest = {
     './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/drug/Input.tsx': $drug_Input,
     './islands/drug/Search.tsx': $drug_Search,
-    './islands/examinations/Form.tsx': $examinations_Form,
+    './islands/examinations/ChecklistItem.tsx': $examinations_ChecklistItem,
+    './islands/examinations/Dialog.tsx': $examinations_Dialog,
     './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
@@ -465,6 +466,10 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
+    './islands/findings/Drawer.tsx': $findings_Drawer,
+    './islands/findings/Header.tsx': $findings_Header,
+    './islands/findings/List.tsx': $findings_List,
+    './islands/findings/ListItem.tsx': $findings_ListItem,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/buttons.tsx': $form_buttons,

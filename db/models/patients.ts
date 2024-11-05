@@ -14,10 +14,8 @@ import {
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import * as conversations from './conversations.ts'
-import * as examinations from './examinations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import {
-  jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
   literalLocation,
@@ -247,9 +245,6 @@ export async function getWithOpenEncounter(
     .where('patient_encounters.patient_id', 'in', opts.ids)
     .as('open_encounters')
 
-  const patient_examinations_with_recommendations = examinations
-    .forPatientEncounter(trx)
-
   const patients = await selectWithName(trx)
     .where('patients.id', 'in', opts.ids)
     .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
@@ -269,22 +264,6 @@ export async function getWithOpenEncounter(
           ),
           providers: eb.ref('open_encounters.providers').$notNull(),
           steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
-          examinations: jsonArrayFrom(
-            patient_examinations_with_recommendations
-              .selectFrom('patient_examinations_with_recommendations')
-              .select([
-                'patient_examinations_with_recommendations.examination_name',
-                'patient_examinations_with_recommendations.completed',
-                'patient_examinations_with_recommendations.skipped',
-                'patient_examinations_with_recommendations.ordered',
-                'patient_examinations_with_recommendations.recommended',
-              ])
-              .where(
-                'patient_examinations_with_recommendations.encounter_id',
-                '=',
-                eb.ref('open_encounters.encounter_id').$notNull(),
-              ),
-          ),
         })).end().as('open_encounter'),
     ])
     .execute()

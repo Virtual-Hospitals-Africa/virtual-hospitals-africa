@@ -18,6 +18,7 @@ export type LayoutProps =
     title: string
     url: URL
     children: ComponentChildren
+    drawer?: ComponentChild
   }
   & ({
     variant: 'practitioner home page'
@@ -37,29 +38,37 @@ export type LayoutProps =
   })
 
 function AppLayoutContents(
-  { title, avatarUrl, notifications, variant, sidebar, children }: {
+  { title, avatarUrl, notifications, variant, sidebar, drawer, children }: {
     title: string
     avatarUrl?: Maybe<string>
     notifications?: RenderedNotification[]
     variant: 'home page' | 'form'
     sidebar: ComponentChild
+    drawer?: ComponentChild
     children: ComponentChildren
   },
 ) {
   return (
     <>
       {sidebar}
-      <section className='md:pl-48'>
-        <Header
-          title={title}
-          variant={variant}
-          avatarUrl={avatarUrl}
-          notifications={notifications}
-        />
-        <div className='p-4'>
-          {children}
-        </div>
-      </section>
+      <div className='flex'>
+        <section className='md:pl-48 flex-1'>
+          <Header
+            title={title}
+            variant={variant}
+            avatarUrl={avatarUrl}
+            notifications={notifications}
+          />
+          <div className='p-4'>
+            {children}
+          </div>
+        </section>
+        {drawer && (
+          <div className='h-screen w-[400px] border-l border-gray-200'>
+            {drawer}
+          </div>
+        )}
+      </div>
     </>
   )
 }
