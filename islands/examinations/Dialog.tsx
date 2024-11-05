@@ -9,6 +9,7 @@ import FormButtons from '../form/buttons.tsx'
 import { FormClassName } from '../../components/library/Form.tsx'
 import cls from '../../util/cls.ts'
 import { assertHasNonEmptyString } from '../../util/isString.ts'
+import { CloseButton } from '../CloseButton.tsx'
 
 type FindingDialogFormValues = {
   body_sites: {
@@ -108,10 +109,7 @@ function ExaminationFindingDialogContents(
           <FormRow>
             <FormButtons
               submitText='Save'
-              onClick={() => {
-                save(form_values.value)
-                close()
-              }}
+              onClick={() => save(form_values.value)}
             />
           </FormRow>
         </div>
@@ -152,7 +150,8 @@ export function ExaminationFindingDialog(
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-[450px]'>
+              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-[450px] relative'>
+                <CloseButton size='md' close={close} />
                 {found && (
                   <ExaminationFindingDialogContents
                     action={action}

@@ -76,8 +76,6 @@ export function ExaminationChecklistItem(
     }
   }, [adding.value, item.value])
 
-  console.log('item', item.value)
-
   return (
     <CheckboxGridItem
       label={checklist_item.checklist_label}
@@ -97,10 +95,14 @@ export function ExaminationChecklistItem(
         checklist_item={checklist_item}
         found={item.value}
         close={() => {
+          if (adding.value) {
+            item.value = undefined
+          }
           self.location.hash = ''
         }}
         save={(finding) => {
-          console.log('welkwekllkwe', finding)
+          item.value = finding
+
           let text = checklist_item.english_term
           // TODO handle multiple body sites
           if (finding.body_sites.length) {
@@ -113,6 +115,7 @@ export function ExaminationChecklistItem(
             edit_href,
             additional_notes: finding.additional_notes,
           })
+          self.location.hash = ''
         }}
       />
     </CheckboxGridItem>

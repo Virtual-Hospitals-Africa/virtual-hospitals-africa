@@ -2,8 +2,8 @@ import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 const baseStyles = {
-  solid: 'shadow-sm py-1 px-4',
-  outline: 'border py-1 px-4',
+  solid: 'shadow-sm',
+  outline: 'border',
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
@@ -50,7 +50,7 @@ type ButtonProps =
     color?: keyof typeof variantStyles.solid
   })
 
-export function Button({
+export function HeroIconButton({
   variant = 'solid',
   color = 'primary',
   className,
@@ -58,7 +58,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex justify-center rounded-md text-base font-semibold tracking-tight focus:outline-none',
+    'inline-flex justify-center rounded-md py-1 px-4 text-base font-semibold tracking-tight focus:outline-none',
     baseStyles[variant],
     // deno-lint-ignore no-explicit-any
     (variantStyles as any)[variant][color],
