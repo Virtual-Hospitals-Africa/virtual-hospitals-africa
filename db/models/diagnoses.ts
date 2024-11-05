@@ -60,7 +60,7 @@ export async function getFromReview(
       isoDate(eb.ref('diagnoses.updated_at')).as('diagnosed_at'),
       'diagnoses_collaboration.approver_id as approval_by',
       'diagnoses_collaboration.disagree_reason',
-      rawSql<'agree' | 'disagree'>`CASE 
+      rawSql<'agree' | 'disagree' | null>`CASE 
           WHEN diagnoses_collaboration.is_approved = true THEN 'agree' 
           WHEN diagnoses_collaboration.is_approved = false THEN 'disagree' 
           ELSE null 
