@@ -3,7 +3,7 @@ import { RenderedPatientExamination } from '../../types.ts'
 import { ExaminationChecklistItem } from '../../islands/examinations/ChecklistItem.tsx'
 
 export type ExaminationChecklistItem = {
-  checklist_label: string
+  label: string
   english_term: string
   code: string
   body_sites: {

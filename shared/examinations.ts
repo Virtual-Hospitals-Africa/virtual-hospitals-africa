@@ -1,3 +1,4 @@
+import type { ExaminationChecklistDefinition } from '../types.ts'
 import { groupBy, groupByUniq } from '../util/groupBy.ts'
 
 export const ASSESSMENTS = [
@@ -124,16 +125,6 @@ export type DiagnosticTest = typeof DIAGNOSTIC_TESTS[number]
 
 export type Examination = typeof EXAMINATIONS[number]
 
-export type ChecklistItem = {
-  checklist_label: string
-  code: string
-  english_term: string
-  body_sites: {
-    code: string
-    english_term: string
-  }[]
-}
-
 export const HEAD_TO_TOE_ASSESSMENT_TABS = [
   {
     tab: 'General' as const,
@@ -146,7 +137,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'subcategory': 'Texture',
           'checklist': [
             {
-              'checklist_label': 'cold',
+              'label': 'cold',
               'code': '703883009',
               'english_term': 'Cold skin',
               'body_sites': [
@@ -165,7 +156,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'hot',
+              'label': 'hot',
               'code': '707793005',
               'english_term': 'Hot skin',
               'body_sites': [
@@ -184,7 +175,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'clammy',
+              'label': 'clammy',
               'code': '102598000',
               'english_term': 'Clammy skin',
               'body_sites': [
@@ -208,7 +199,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'subcategory': 'Fingers',
           'checklist': [
             {
-              'checklist_label': 'cyanosis',
+              'label': 'cyanosis',
               'code': '3415004',
               'english_term': 'Cyanosis',
               'body_sites': [
@@ -223,7 +214,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'nicotine stains',
+              'label': 'nicotine stains',
               'code': '247439004',
               'english_term': 'Nicotine staining of finger',
               'body_sites': [
@@ -238,7 +229,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'clubbing',
+              'label': 'clubbing',
               'code': '30760008',
               'english_term': 'Finger clubbing',
               'body_sites': [
@@ -258,7 +249,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'subcategory': 'Nails',
           'checklist': [
             {
-              'checklist_label': 'leukonychia',
+              'label': 'leukonychia',
               'code': '111202002',
               'english_term': 'Leukonychia',
               'body_sites': [
@@ -269,7 +260,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'koilonychia',
+              'label': 'koilonychia',
               'code': '66270006',
               'english_term': 'Koilonychia',
               'body_sites': [
@@ -280,7 +271,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'splinter hemorrhages',
+              'label': 'splinter hemorrhages',
               'code': '271770005',
               'english_term': 'Splinter hemorrhages under nail',
               'body_sites': [
@@ -291,7 +282,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'pitting',
+              'label': 'pitting',
               'code': '89704006',
               'english_term': 'Pitting of nails',
               'body_sites': [
@@ -302,7 +293,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'onycholysis',
+              'label': 'onycholysis',
               'code': '75789001',
               'english_term': 'Onycholysis',
               'body_sites': [
@@ -313,7 +304,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'discolouration',
+              'label': 'discolouration',
               'code': '47415006',
               'english_term': 'Abnormal color',
               'body_sites': [
@@ -329,7 +320,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'subcategory': 'Palms',
           'checklist': [
             {
-              'checklist_label': 'erythema',
+              'label': 'erythema',
               'code': '70819003',
               'english_term': 'Erythema',
               'body_sites': [
@@ -340,7 +331,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': "dupuytren's disease",
+              'label': "dupuytren's disease",
               'code': '203045001',
               'english_term': "Dupuytren's disease of palm",
               'body_sites': [
@@ -351,7 +342,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'pale skin',
+              'label': 'pale skin',
               'code': '403237004',
               'english_term': 'Pale white constitutive skin colour',
               'body_sites': [
@@ -362,7 +353,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'cyanosis',
+              'label': 'cyanosis',
               'code': '119419001',
               'english_term': 'Cyanosis of skin',
               'body_sites': [
@@ -373,7 +364,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
               ],
             },
             {
-              'checklist_label': 'jaundice',
+              'label': 'jaundice',
               'code': '18165001',
               'english_term': 'Jaundice',
               'body_sites': [
@@ -386,7 +377,7 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           ],
         },
       ],
-      'checklist': [] as ChecklistItem[],
+      'checklist': [] as ExaminationChecklistDefinition[],
     }],
   },
   {

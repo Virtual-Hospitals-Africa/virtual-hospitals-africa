@@ -3,20 +3,10 @@ import { useSignal } from '@preact/signals'
 import { addFinding, removeFinding } from '../findings/Drawer.tsx'
 import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
-
-export type ChecklistItem = {
-  checklist_label: string
-  code: string
-  english_term: string
-
-  body_sites: {
-    code: string
-    english_term: string
-  }[]
-}
+import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type ExaminationChecklistProps = {
-  checklist_item: ChecklistItem
+  checklist_item: ExaminationChecklistDefinition
   edit_href: string
   found?: {
     body_sites: {
@@ -78,7 +68,7 @@ export function ExaminationChecklistItem(
 
   return (
     <CheckboxGridItem
-      label={checklist_item.checklist_label}
+      label={checklist_item.label}
       checked={!!item.value}
       onChange={(value) => {
         if (value) {

@@ -1,9 +1,9 @@
 import AsyncSearch from '../../islands/AsyncSearch.tsx'
-import type { ChecklistItem } from './ChecklistItem.tsx'
+import type { ExaminationChecklistDefinition } from '../../types.ts'
 import { assertHasNonEmptyString } from '../../util/isString.ts'
 
 export function BodySiteSelect({ checklist_item, value, onSelect }: {
-  checklist_item: ChecklistItem
+  checklist_item: ExaminationChecklistDefinition
   value: { id: string; name: string } | null
   onSelect(value: { id: string; name: string }): void
 }) {

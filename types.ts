@@ -3035,3 +3035,14 @@ export type RenderedPatientExaminationFinding = {
   //   snomed_english_term: string
   // }[]
 }
+
+export type ExaminationChecklistDefinition = {
+  label: string
+  code: string
+  english_term: string
+
+  body_sites: {
+    code: string
+    english_term: string
+  }[]
+}

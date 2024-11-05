@@ -3,12 +3,12 @@ import { useSignal } from '@preact/signals'
 import { Dialog, Transition } from '@headlessui/react'
 import { TextArea } from '../../islands/form/Inputs.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
-import type { ChecklistItem } from './ChecklistItem.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { FormClassName } from '../../components/library/Form.tsx'
 import cls from '../../util/cls.ts'
 import { CloseButton } from '../CloseButton.tsx'
 import { BodySiteSelect } from './BodySiteSelect.tsx'
+import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
@@ -21,7 +21,7 @@ type FindingDialogFormValues = {
 type FindingProps = {
   action: 'Add' | 'Edit'
   open: boolean
-  checklist_item: ChecklistItem
+  checklist_item: ExaminationChecklistDefinition
   found?: FindingDialogFormValues
   save(form_values: FindingDialogFormValues): void
   close(): void

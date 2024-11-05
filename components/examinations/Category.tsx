@@ -1,15 +1,17 @@
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-import { RenderedPatientExamination } from '../../types.ts'
-import type { ChecklistItem } from '../../islands/examinations/ChecklistItem.tsx'
+import type {
+  ExaminationChecklistDefinition,
+  RenderedPatientExamination,
+} from '../../types.ts'
 import { ExaminationChecklist } from './Checklist.tsx'
 
 type ExaminationCategoryProps = {
   patient_examination_href: string
   category: string
-  checklist: ChecklistItem[]
+  checklist: ExaminationChecklistDefinition[]
   subcategories: {
     subcategory: string
-    checklist: ChecklistItem[]
+    checklist: ExaminationChecklistDefinition[]
   }[]
   findings: RenderedPatientExamination['findings']
 }

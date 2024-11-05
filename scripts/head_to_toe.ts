@@ -112,7 +112,7 @@ const snomed_body_structures_by_code = groupByUniq(
 function toChecklist(exs: ExaminationSchema[]) {
   return exs.map((e) => (
     assert(e.snomed_finding_code), {
-      checklist_label: e.finding_name,
+      label: e.finding_name,
       code: e.snomed_finding_code,
       english_term: findings_by_code.get(e.snomed_finding_code!)!.english_term,
       body_sites: e.snomed_body_structure_codes?.map((code) => {
