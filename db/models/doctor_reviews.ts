@@ -25,6 +25,7 @@ import { getCardQuery } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
+import { ensureDoctorId } from './doctor.ts'
 
 export function ofHealthWorker(
   trx: TrxOrDb,
@@ -337,12 +338,7 @@ export async function upsertRequest(
 ) {
   const to_upsert = {
     ...values,
-    doctor_id: doctor_id && (
-      trx.selectFrom('employment')
-        .where('id', '=', doctor_id)
-        .where('profession', '=', 'doctor')
-        .select('id')
-    ),
+    doctor_id: doctor_id && ensureDoctorId(trx, doctor_id),
   }
 
   if (id) {

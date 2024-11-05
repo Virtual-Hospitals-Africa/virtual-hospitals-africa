@@ -24,6 +24,7 @@ import {
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
+import { ensureDoctorId } from './doctor.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -168,12 +169,8 @@ export function update(
 ) {
   const to_update = {
     ...patient,
-    primary_doctor_id: primary_doctor_id && (
-      trx.selectFrom('employment')
-        .where('id', '=', primary_doctor_id)
-        .where('profession', '=', 'doctor')
-        .select('id')
-    ),
+    primary_doctor_id: primary_doctor_id &&
+      ensureDoctorId(trx, primary_doctor_id),
     location: location && literalLocation(location),
   }
   const to_update_with_name: (typeof to_update) & {
@@ -198,12 +195,8 @@ export function upsert(
 ) {
   const to_upsert = {
     ...patient,
-    primary_doctor_id: primary_doctor_id && (
-      trx.selectFrom('employment')
-        .where('id', '=', primary_doctor_id)
-        .where('profession', '=', 'doctor')
-        .select('id')
-    ),
+    primary_doctor_id: primary_doctor_id &&
+      ensureDoctorId(trx, primary_doctor_id),
     location: location && literalLocation(location),
   }
   return trx
