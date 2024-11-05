@@ -18,9 +18,10 @@ const ReviewRequestSchema = z.object({
   doctor_name: z.string().optional(),
   requester_notes: z.string().optional(),
 }).refine(
-  (data) => data.organization_id || data.doctor_id,
+  (data) => !!data.organization_id === !!data.doctor_id,
   {
-    message: 'Must request a review from a doctor or an organization',
+    message:
+      'Must request a review from a doctor or an organization, but not both',
     path: ['organization_id'],
   },
 )
