@@ -18,13 +18,20 @@ const ReviewRequestSchema = z.object({
   doctor_name: z.string().optional(),
   requester_notes: z.string().optional(),
 }).refine(
-  (data) => !!data.organization_id === !!data.doctor_id,
+  (data) => data.organization_id || data.doctor_id,
   {
-    message:
-      'Must request a review from a doctor or an organization, but not both',
+    message: 'Must request a review from a doctor or an organization',
     path: ['organization_id'],
   },
 )
+  .refine(
+    (data) => !!data.organization_id === !!data.doctor_id,
+    {
+      message:
+        'Must request a review from a doctor or an organization, but not both',
+      path: ['organization_id'],
+    },
+  )
 
 const PostSchema = z.object({
   review_request: ReviewRequestSchema.optional(),
