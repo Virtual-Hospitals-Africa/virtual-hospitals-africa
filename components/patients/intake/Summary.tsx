@@ -28,6 +28,7 @@ type MaybeCell = {
   value: Maybe<string>
   edit_href?: string
   leading_separator?: string
+  apply_fallback?: boolean
 }
 
 function isCell(cell: MaybeCell): cell is DescriptionListCell {
@@ -35,17 +36,27 @@ function isCell(cell: MaybeCell): cell is DescriptionListCell {
 }
 
 // Return all the cells that have a value
+// if cell.apply_fallback is true, use the fallback value
 function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
-  const non_null_row = row.filter(isCell)
-  if (non_null_row[0]?.leading_separator) {
-    non_null_row[0] = omit(non_null_row[0], ['leading_separator'])
+  const processedRow = row.map(cell => ({
+    ...cell,
+    value: cell.apply_fallback ? withFallback(cell.value) : cell.value
+  }));
+
+  const nonNullRow = processedRow.filter(isCell);
+  if (nonNullRow[0]?.leading_separator) {
+    nonNullRow[0] = omit(nonNullRow[0], ['leading_separator']);
   }
-  return non_null_row
+  return nonNullRow;
 }
 
 function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
   const filteredRows = rows.map(nonNullableCells).filter((row) => row.length)
   return filteredRows
+}
+
+function withFallback<T>(value: T | null | undefined, fallback = 'None provided'): T | string {
+  return value ?? fallback;
 }
 
 export default function PatientSummary(
@@ -66,15 +77,15 @@ export default function PatientSummary(
   } = patient
 
   const personal_items: DescriptionListRows[] = [
-    [[{
-      value: personal.name || 'None provided',
+    nonEmptyRows([[{
+      value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
-      italics: !personal.name,
+      apply_fallback: true,
     }], [{
-      value: personal.phone_number || 'None provided',
+      value: personal.phone_number,
       edit_href: `${intake_href}/personal#focus=phone_number`,
-      italics: !personal.phone_number,
-    }]],
+      apply_fallback: true,
+    }]]),
   ]
 
   const address_items: DescriptionListRows[] = [
@@ -106,21 +117,17 @@ export default function PatientSummary(
       edit_href: `${intake_href}/address#focus=primary_doctor_name`,
     }]]),
   ]
-
   const next_of_kin_items: DescriptionListRows[] = [
-    [[
+    nonEmptyRows([[
       {
-        value: patient.family.other_next_of_kin?.patient_name ||
-          'None provided',
+        value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
-        italics: !patient.family.other_next_of_kin?.patient_name,
       },
-    ]],
-    [[{
-      value: patient.family.other_next_of_kin?.relation || 'None provided',
+    ]]),
+    nonEmptyRows([[{
+      value: patient.family.other_next_of_kin?.relation,
       edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
-      italics: !patient.family.other_next_of_kin?.relation,
-    }]],
+    }]]),
   ]
 
   const family_items: DescriptionListRows[] = [
