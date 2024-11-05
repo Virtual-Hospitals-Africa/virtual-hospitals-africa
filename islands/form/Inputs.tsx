@@ -711,17 +711,18 @@ export function YesNoGrid(
 }
 
 export function CheckboxGridItem(
-  { name, label, required, disabled, checked, onChange }: {
+  { name, label, required, disabled, checked, onChange, children }: {
     name?: string
     label: string
     required?: boolean
     disabled?: boolean
     checked?: boolean
     onChange?(value: boolean): void
+    children?: ComponentChildren
   },
 ) {
   return (
-    <div className='w-full flex justify-start gap-2 break-before-avoid'>
+    <div className='w-full flex justify-start gap-2 break-before-avoid relative'>
       <div className='grid items-center'>
         <input
           name={name}
@@ -734,6 +735,7 @@ export function CheckboxGridItem(
         />
       </div>
       <Label label={label} />
+      {children}
     </div>
   )
 }

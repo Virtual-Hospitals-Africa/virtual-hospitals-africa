@@ -9,11 +9,13 @@ import {
   Maybe,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
+  type RenderedPatientExaminationFinding,
   Sendable,
   SendToFormSubmission,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as send_to from '../../../../../../db/models/send_to.ts'
+import * as findings from '../../../../../../db/models/findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
@@ -37,6 +39,7 @@ import words from '../../../../../../util/words.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
+import { FindingsDrawer } from '../../../../../../islands/findings/Drawer.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -166,11 +169,13 @@ const nextLink = (ctx: FreshContext) =>
 export function EncounterLayout({
   ctx,
   sendables,
+  key_findings,
   next_step_text,
   children,
 }: {
   ctx: EncounterContext
   sendables: Sendable[]
+  key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
 }): JSX.Element {
@@ -188,6 +193,7 @@ export function EncounterLayout({
           steps_completed={ctx.state.encounter.steps_completed}
         />
       }
+      drawer={<FindingsDrawer findings={key_findings} />}
       url={ctx.url}
       variant='form'
     >
@@ -233,7 +239,8 @@ export function EncounterPage(
   ) =>
     | JSX.Element
     | Promise<JSX.Element>
-    | Promise<{ next_step_text: string; children: JSX.Element }>,
+    | Promise<{ next_step_text: string; children: JSX.Element }>
+    | Promise<Response>,
 ) {
   return async function (
     _req: Request,
@@ -254,7 +261,7 @@ export function EncounterPage(
 
     assert(location, 'Location not found')
 
-    const { rendered, sendables } = await promiseProps({
+    const { rendered, sendables, key_findings } = await promiseProps({
       rendered: Promise.resolve(
         render({ ctx, ...ctx.state, previously_completed }),
       ),
@@ -268,7 +275,15 @@ export function EncounterPage(
           primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
         },
       ),
+      key_findings: findings.forPatientEncounter(trx, {
+        patient_id: patient.id,
+        encounter_id: encounter.encounter_id,
+      }),
     })
+
+    if (rendered instanceof Response) {
+      return rendered
+    }
 
     let next_step_text: string | undefined
     let children = rendered
@@ -282,6 +297,7 @@ export function EncounterPage(
         ctx={ctx}
         next_step_text={next_step_text}
         sendables={sendables}
+        key_findings={key_findings}
       >
         {children}
       </EncounterLayout>

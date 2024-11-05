@@ -182,7 +182,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             waiting_room_organization_id:
               '00000000-0000-0000-0000-000000000001',
             steps_completed: [],
-            examinations: [],
           },
         },
       ])
@@ -243,22 +242,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
               waiting_room_organization_id:
                 '00000000-0000-0000-0000-000000000001',
               steps_completed: [],
-              examinations: [
-                {
-                  completed: false,
-                  examination_name: 'Head-to-toe Assessment',
-                  recommended: true,
-                  skipped: false,
-                  ordered: false,
-                },
-                {
-                  completed: false,
-                  examination_name: "Men's Health Assessment",
-                  recommended: true,
-                  skipped: false,
-                  ordered: false,
-                },
-              ],
             },
           },
         ])

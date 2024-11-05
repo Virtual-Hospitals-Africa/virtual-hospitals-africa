@@ -18,6 +18,8 @@
     "db:recreate": "deno task run:trusted db/recreate.ts",
     "db:create": "deno task run:trusted db/create.ts",
     "heroku": "deno task run:trusted ./scripts/heroku.ts",
+    "local": "./scripts/local.sh",
+    "prod": "./scripts/prod.sh",
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unsafely-ignore-certificate-errors --unstable --target x86_64-unknown-linux-gnu",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",

@@ -53,7 +53,9 @@ export type EncounterStep =
   | 'clinical_notes'
   | 'close_visit'
   | 'diagnoses'
+  | 'diagnostic_tests'
   | 'examinations'
+  | 'head_to_toe_assessment'
   | 'orders'
   | 'prescriptions'
   | 'referral'
@@ -420,8 +422,12 @@ export interface Encounter {
 }
 
 export interface Examinations {
+  is_head_to_toe: Generated<boolean>
   name: string
   order: number
+  page: string
+  path: string
+  tab: string
 }
 
 export interface GeographyColumns {
@@ -819,6 +825,7 @@ export interface PatientExaminationFindingBodySites {
 }
 
 export interface PatientExaminationFindings {
+  additional_notes: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string

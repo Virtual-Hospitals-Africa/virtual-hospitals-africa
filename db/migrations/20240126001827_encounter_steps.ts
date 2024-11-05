@@ -1,9 +1,9 @@
 import { Kysely, sql } from 'kysely'
 import { ENCOUNTER_STEPS } from '../../shared/encounter.ts'
 import { createStandardTable } from '../createStandardTable.ts'
+import type { DB } from '../../db.d.ts'
 
-// deno-lint-ignore no-explicit-any
-export async function up(db: Kysely<any>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('encounter_step')
     .asEnum(ENCOUNTER_STEPS)
     .execute()
@@ -37,8 +37,7 @@ export async function up(db: Kysely<any>) {
       ]))
 }
 
-// deno-lint-ignore no-explicit-any
-export async function down(db: Kysely<any>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_encounter_steps').execute()
   await db.schema.dropTable('encounter').execute()
   await db.schema.dropType('encounter_step').execute()

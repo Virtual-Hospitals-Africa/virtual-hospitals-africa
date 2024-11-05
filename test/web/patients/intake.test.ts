@@ -1153,3 +1153,16 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 })
+
+describe(
+  '/app/patients/[patient_id]/intake',
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
+    it('has a .tsx file for every declared encounter step', async () => {
+      await Promise.all(INTAKE_STEPS.map(async (step) => {
+        const path = `routes/app/patients/[patient_id]/intake/${step}.tsx`
+        await Deno.readFile(path)
+      }))
+    })
+  },
+)

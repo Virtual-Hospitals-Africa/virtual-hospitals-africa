@@ -2338,7 +2338,6 @@ export type RenderedPatientEncounter = {
   waiting_room_organization_id: null | string
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
-  examinations: RenderedPatientEncounterExamination[]
 }
 
 export type Measurements = {
@@ -2468,11 +2467,15 @@ export type Provider = {
   provider_id: string
 }
 export type RenderedPatientExamination = {
-  completed: boolean
-  skipped: boolean
+  examination_name: Examination
+  completed: boolean | null
+  skipped: boolean | null
+  ordered: boolean | null
+  href: string
   findings: {
     snomed_code: string
     snomed_english_term: string
+    additional_notes: string | null
     body_sites: {
       snomed_code: string
       snomed_english_term: string
@@ -3020,4 +3023,15 @@ export type PrescriptionMedicationWithDrug = PrescriptionMedication & {
 
 export type RenderedPrescriptionWithMedications = RenderedPrescription & {
   medications: PrescriptionMedicationWithDrug[]
+}
+
+export type RenderedPatientExaminationFinding = {
+  edit_href: string
+  snomed_code: string
+  text: string
+  additional_notes: string | null
+  // body_sites: {
+  //   snomed_code: string
+  //   snomed_english_term: string
+  // }[]
 }

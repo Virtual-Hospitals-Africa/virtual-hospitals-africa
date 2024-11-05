@@ -19,13 +19,11 @@ import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
-import * as ProgressIcons from '../../../../../../components/library/icons/progress.tsx'
 import {
-  ForwardIcon,
   PaperAirplaneIcon,
   PlusCircleIcon,
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
-import { PatientExaminationForm } from '../../../../../../islands/examinations/Form.tsx'
+import { PatientExaminationForm } from '../../../../../../components/examinations/Form.tsx'
 import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
@@ -36,6 +34,7 @@ import {
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
+import { Progress } from '../../../../../../components/library/icons/progress.tsx'
 
 function assertIsAddExaminations(
   values: unknown,
@@ -109,19 +108,19 @@ function allowedToPlaceOrders(
 
 function matchingExamination(
   ctx: EncounterContext,
+  patient_examinations: RenderedPatientEncounterExamination[],
 ): RenderedPatientEncounterExamination | null {
-  const { encounter } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   if (adding_examinations) return null
   const examination_name = ctx.url.searchParams.get('examination')
 
-  const next_incomplete_exam = ctx.state.encounter.examinations.find(
+  const next_incomplete_exam = patient_examinations.find(
     (exam) => !exam.completed && !exam.skipped,
-  ) || encounter.examinations[0]
+  ) || patient_examinations[0]
   if (!examination_name) {
     return next_incomplete_exam
   }
-  const matching_examination = encounter.examinations.find(
+  const matching_examination = patient_examinations.find(
     (examination) => examination.examination_name === examination_name,
   )
   assertOrRedirect(
@@ -131,7 +130,11 @@ function matchingExamination(
   return matching_examination
 }
 
-async function handleAddExaminations(req: Request, ctx: EncounterContext) {
+async function handleAddExaminations(
+  req: Request,
+  ctx: EncounterContext,
+  _patient_examinations: RenderedPatientEncounterExamination[],
+) {
   const { trx, encounter, encounter_provider } = ctx.state
 
   const {
@@ -173,16 +176,17 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
 async function handlePlaceOrders(
   _req: Request,
   ctx: EncounterContext,
+  patient_examinations: RenderedPatientEncounterExamination[],
 ): Promise<Response> {
   // TODO: Place orders
-  const { encounter, encounter_provider } = ctx.state
+  const { encounter_provider } = ctx.state
   assertOr403(
     allowedToPlaceOrders(encounter_provider),
     'Only doctors can place orders',
   )
 
   const [_orders, during_this_encounter] = partition(
-    encounter.examinations,
+    patient_examinations,
     (ex) => !!ex.ordered,
   )
   const next_incomplete_exam = during_this_encounter.find(
@@ -195,14 +199,18 @@ async function handlePlaceOrders(
 }
 
 // deno-lint-ignore require-await
-async function handleExaminationFindings(_req: Request, ctx: EncounterContext) {
-  const examination = matchingExamination(ctx)
+async function handleExaminationFindings(
+  _req: Request,
+  ctx: EncounterContext,
+  patient_examinations: RenderedPatientEncounterExamination[],
+) {
+  const examination = matchingExamination(ctx, patient_examinations)
   assert(examination, 'No matching examination')
 
-  const { encounter /* trx, encounter_provider */ } = ctx.state
+  /* const { encounter, trx, encounter_provider } = ctx.state */
 
   const [orders, during_this_encounter] = partition(
-    encounter.examinations,
+    patient_examinations,
     (ex) => !!ex.ordered,
   )
   const next_incomplete_exam = during_this_encounter.find(
@@ -242,17 +250,25 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {
-  POST(req: Request, ctx: EncounterContext) {
+  async POST(req: Request, ctx: EncounterContext) {
     const adding_examinations =
       ctx.url.searchParams.get('add') === 'examinations'
     const placing_orders = ctx.url.searchParams.get('place') === 'orders'
+    const patient_examinations = await examinations.forPatientEncounter(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.encounter.patient_id,
+        encounter_id: ctx.params.encounter_id,
+      },
+    )
+
     const handle = adding_examinations
       ? handleAddExaminations
       : placing_orders
       ? handlePlaceOrders
       : handleExaminationFindings
 
-    return handle(req, ctx)
+    return handle(req, ctx, patient_examinations)
   },
 }
 
@@ -264,7 +280,14 @@ export async function ExaminationsPage(
   const placing_orders = ctx.url.searchParams.get('place') === 'orders'
 
   const doing_examination = !adding_examinations && !placing_orders
-  const examination = doing_examination && matchingExamination(ctx)
+
+  const patient_examinations = await examinations.forPatientEncounter(trx, {
+    patient_id: encounter.patient_id,
+    encounter_id: ctx.params.encounter_id,
+  })
+
+  const examination = doing_examination &&
+    matchingExamination(ctx, patient_examinations)
 
   if (doing_examination) {
     assert(examination, 'No matching examination')
@@ -274,7 +297,7 @@ export async function ExaminationsPage(
   const place_orders_href = placeOrdersHref(ctx)
 
   const [orders, during_this_encounter] = partition(
-    encounter.examinations,
+    patient_examinations,
     (ex) => !!ex.ordered,
   )
 
@@ -294,11 +317,7 @@ export async function ExaminationsPage(
       tab: exam.examination_name as string,
       href: examinationHref(ctx, exam.examination_name),
       active,
-      leftIcon: exam.completed
-        ? <ProgressIcons.Check active={active} />
-        : exam.skipped && !active
-        ? <ForwardIcon className='w-5 h-5' />
-        : <ProgressIcons.Dot active={active} />,
+      leftIcon: <Progress {...exam} active={active} />,
     }
   })
 
@@ -327,10 +346,10 @@ export async function ExaminationsPage(
         <Tabs tabs={tabs} />
         {adding_examinations && (
           <NewExaminationForm
-            recommended_examinations={encounter.examinations.filter((ex) =>
+            recommended_examinations={patient_examinations.filter((ex) =>
               ex.recommended
             ).map((ex) => ex.examination_name)}
-            selected_examinations={encounter.examinations.map((ex) =>
+            selected_examinations={patient_examinations.map((ex) =>
               ex.examination_name
             )}
             available_diagnostic_tests={await getAvailableTests(trx, {
