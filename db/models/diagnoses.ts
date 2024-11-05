@@ -79,7 +79,7 @@ export async function getFromReview(
     all: diagnoses,
     self,
     others,
-    approved: self.concat(others.filter((d) => d.approval === 'agree')),
+    approved_by_self: self.concat(others.filter((d) => d.approval === 'agree')),
   }
 }
 

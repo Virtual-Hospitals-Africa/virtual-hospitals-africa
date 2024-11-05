@@ -285,7 +285,7 @@ export type PreExistingConditionWithDrugs = MedicalConditionBase & {
 
 export type DiagnosisGroup = {
   all: Diagnosis[]
-  approved: Diagnosis[]
+  approved_by_self: Diagnosis[]
   self: Diagnosis[]
   others: DiagnosesCollaboration[]
 }

@@ -136,7 +136,7 @@ export default async function PrescriptionsPage(
     <ReviewLayout ctx={ctx}>
       <PrescriptionsForm
         medications={medications}
-        diagnoses={patient_diagnoses.approved}
+        diagnoses={patient_diagnoses.approved_by_self}
       />
       <FormButtons />
     </ReviewLayout>
