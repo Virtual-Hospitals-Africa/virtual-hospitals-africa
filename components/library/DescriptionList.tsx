@@ -37,17 +37,14 @@ function createRowElement(
     const element = cell.edit_href
       ? (
         <a
-          style={{
-            display: 'inline-block',
-            fontStyle: cell.italics ? 'italic' : 'normal',
-          }}
+          className={`inline-block ${cell.italics ? 'italic' : 'not-italic'}`}
           href={cell.edit_href}
         >
           {cell.value}
         </a>
       )
       : (
-        <span style={{ fontStyle: cell.italics ? 'italic' : 'normal' }}>
+        <span className={cell.italics ? 'italic' : 'not-italic'}>
           {cell.value}
         </span>
       )
