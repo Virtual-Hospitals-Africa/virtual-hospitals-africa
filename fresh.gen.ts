@@ -163,6 +163,7 @@ import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
 import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $drug_Input from './islands/drug/Input.tsx'
 import * as $drug_Search from './islands/drug/Search.tsx'
+import * as $examinations_BodySiteSelect from './islands/examinations/BodySiteSelect.tsx'
 import * as $examinations_ChecklistItem from './islands/examinations/ChecklistItem.tsx'
 import * as $examinations_Dialog from './islands/examinations/Dialog.tsx'
 import * as $examinations_New from './islands/examinations/New.tsx'
@@ -455,6 +456,7 @@ const manifest = {
     './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/drug/Input.tsx': $drug_Input,
     './islands/drug/Search.tsx': $drug_Search,
+    './islands/examinations/BodySiteSelect.tsx': $examinations_BodySiteSelect,
     './islands/examinations/ChecklistItem.tsx': $examinations_ChecklistItem,
     './islands/examinations/Dialog.tsx': $examinations_Dialog,
     './islands/examinations/New.tsx': $examinations_New,

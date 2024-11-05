@@ -2,14 +2,13 @@ import { Fragment, JSX } from 'preact'
 import { useSignal } from '@preact/signals'
 import { Dialog, Transition } from '@headlessui/react'
 import { TextArea } from '../../islands/form/Inputs.tsx'
-import AsyncSearch from '../../islands/AsyncSearch.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import type { ChecklistItem } from './ChecklistItem.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { FormClassName } from '../../components/library/Form.tsx'
 import cls from '../../util/cls.ts'
-import { assertHasNonEmptyString } from '../../util/isString.ts'
 import { CloseButton } from '../CloseButton.tsx'
+import { BodySiteSelect } from './BodySiteSelect.tsx'
 
 type FindingDialogFormValues = {
   body_sites: {
@@ -28,36 +27,14 @@ type FindingProps = {
   close(): void
 }
 
-function BodySiteSelect({ checklist_item, value, onSelect }: {
-  checklist_item: ChecklistItem
-  value: { id: string; name: string } | null
-  onSelect(value: { id: string; name: string }): void
-}) {
-  return (
-    <AsyncSearch
-      label='Body site'
-      required
-      search_route={`/app/snomed/body_structures?parent_codes=${
-        checklist_item.body_sites.map((s) => s.code).join(
-          ',',
-        )
-      }`}
-      value={value}
-      onSelect={(value) => {
-        assertHasNonEmptyString(value, 'id')
-        assertHasNonEmptyString(value, 'name')
-        onSelect(value)
-      }}
-    />
-  )
-}
-
-type FindingDialogContentsProps = Omit<FindingProps, 'open' | 'found'> & {
-  found: FindingDialogFormValues
-}
+type FindingDialogContentsProps =
+  & Omit<FindingProps, 'open' | 'close' | 'found'>
+  & {
+    found: FindingDialogFormValues
+  }
 
 function ExaminationFindingDialogContents(
-  { action, checklist_item, found, save, close }: FindingDialogContentsProps,
+  { action, checklist_item, found, save }: FindingDialogContentsProps,
 ) {
   const form_values = useSignal(found)
 
@@ -158,7 +135,6 @@ export function ExaminationFindingDialog(
                     checklist_item={checklist_item}
                     found={found}
                     save={save}
-                    close={close}
                   />
                 )}
               </Dialog.Panel>
