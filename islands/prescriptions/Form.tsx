@@ -16,7 +16,7 @@ export default function PrescriptionsForm({
 
   const prescriptions = useSignal<
     Map<string, Partial<PrescriptionMedicationWithDrug>>
-  >(groupByUniq(medications, (m) => m.medication_id))
+  >(groupByUniq(medications, 'medication_id'))
 
   const addPrescription = () => {
     if (adding_new_prescription.value) {
@@ -24,6 +24,8 @@ export default function PrescriptionsForm({
     }
     adding_new_prescription.value = true
   }
+
+  console.log('diagnoses', diagnoses)
 
   return (
     <div>

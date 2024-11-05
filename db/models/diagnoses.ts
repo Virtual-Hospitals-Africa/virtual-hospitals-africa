@@ -69,6 +69,7 @@ export async function getFromReview(
     .execute()
 
   return {
+    all: diagnoses,
     self: diagnoses.filter((d) => d.provider_id === employment_id),
     others: diagnoses.filter((d) => d.provider_id !== employment_id),
   }

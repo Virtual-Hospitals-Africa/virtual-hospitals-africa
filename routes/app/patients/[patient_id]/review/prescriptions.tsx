@@ -118,7 +118,6 @@ export default async function PrescriptionsPage(
   _req: Request,
   ctx: ReviewContext,
 ) {
-  console.log('ctx', ctx)
   const { trx, doctor_review: { review_id } } = ctx.state
   const { patient_diagnoses, patient_prescription } = await promiseProps({
     patient_diagnoses: diagnoses.getFromReview(trx, {
@@ -137,7 +136,7 @@ export default async function PrescriptionsPage(
     <ReviewLayout ctx={ctx}>
       <PrescriptionsForm
         medications={medications}
-        diagnoses={patient_diagnoses.self}
+        diagnoses={patient_diagnoses.all}
       />
       <FormButtons />
     </ReviewLayout>
