@@ -12,9 +12,9 @@ import { ReferralForm } from '../../../../../../islands/referral/Form.tsx'
 import { parseRequest } from '../../../../../../util/parseForm.ts'
 
 const ReviewRequestSchema = z.object({
-  id: z.string().optional(),
-  organization_id: z.string().optional(),
-  doctor_id: z.string().optional(),
+  id: z.string().uuid().optional(),
+  organization_id: z.string().uuid().optional(),
+  doctor_id: z.string().uuid().optional(),
   doctor_name: z.string().optional(),
   requester_notes: z.string().optional(),
 }).refine(
