@@ -8,6 +8,7 @@ import type { ChecklistItem } from './ChecklistItem.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { FormClassName } from '../../components/library/Form.tsx'
 import cls from '../../util/cls.ts'
+import { assertHasNonEmptyString } from '../../util/isString.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
@@ -29,7 +30,7 @@ type FindingProps = {
 function BodySiteSelect({ checklist_item, value, onSelect }: {
   checklist_item: ChecklistItem
   value: { id: string; name: string } | null
-  onSelect(value: any): void
+  onSelect(value: { id: string; name: string }): void
 }) {
   return (
     <AsyncSearch
@@ -41,7 +42,11 @@ function BodySiteSelect({ checklist_item, value, onSelect }: {
         )
       }`}
       value={value}
-      onSelect={onSelect}
+      onSelect={(value) => {
+        assertHasNonEmptyString(value, 'id')
+        assertHasNonEmptyString(value, 'name')
+        onSelect(value)
+      }}
     />
   )
 }
