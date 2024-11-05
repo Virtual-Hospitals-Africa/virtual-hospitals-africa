@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
-import { removeFinding } from '../findings/Drawer.tsx'
+import { addFinding, removeFinding } from '../findings/Drawer.tsx'
 import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
 
@@ -28,14 +28,15 @@ type ExaminationChecklistProps = {
 }
 
 const edit_hash = '#edit='
+const add_hash = '#add='
 
 // TODO handle body sites, href, and an interactive dialog
 export function ExaminationChecklistItem(
   { edit_href, checklist_item, found }: ExaminationChecklistProps,
 ) {
-  const past_item = useSignal(found)
   const item = useSignal(found)
   const editing = useSignal(false)
+  const adding = useSignal(false)
 
   function isEditing(): boolean {
     const { hash } = self.location
@@ -44,8 +45,16 @@ export function ExaminationChecklistItem(
     return code === checklist_item.code
   }
 
+  function isAdding(): boolean {
+    const { hash } = self.location
+    if (!hash.startsWith(add_hash)) return false
+    const code = hash.slice(add_hash.length)
+    return code === checklist_item.code
+  }
+
   function onHashChange() {
     editing.value = isEditing()
+    adding.value = isAdding()
   }
 
   useEffect(() => {
@@ -53,21 +62,29 @@ export function ExaminationChecklistItem(
     return () => removeEventListener('hashchange', onHashChange)
   }, [])
 
+  useEffect(() => {
+    if (adding.value && !item.value) {
+      item.value = {
+        body_sites: checklist_item.body_sites?.length
+          ? [{
+            snomed_code: checklist_item.body_sites[0].code,
+            snomed_english_term: checklist_item.body_sites[0].english_term,
+          }]
+          : [],
+        additional_notes: null,
+      }
+    }
+  }, [adding.value, item.value])
+
+  console.log('item', item.value)
+
   return (
     <CheckboxGridItem
       label={checklist_item.checklist_label}
       checked={!!item.value}
       onChange={(value) => {
         if (value) {
-          past_item.value = item.value
-          item.value = {
-            body_sites: !checklist_item.body_sites.length ? [] : [{
-              snomed_code: checklist_item.body_sites[0].code,
-              snomed_english_term: checklist_item.body_sites[0].english_term,
-            }],
-            additional_notes: null,
-          }
-          self.location.hash = edit_hash + checklist_item.code
+          self.location.hash = add_hash + checklist_item.code
         } else {
           item.value = undefined
           removeFinding(checklist_item.code)
@@ -75,16 +92,27 @@ export function ExaminationChecklistItem(
       }}
     >
       <ExaminationFindingDialog
-        open={editing.value && !!item.value}
+        action={editing.value ? 'Edit' : 'Add'}
+        open={(editing.value || adding.value) && !!item.value}
         checklist_item={checklist_item}
-        edit_href={edit_href}
-        found={item}
+        found={item.value}
         close={() => {
           self.location.hash = ''
         }}
-        cancel={() => {
-          item.value = past_item.value
-          self.location.hash = ''
+        save={(finding) => {
+          console.log('welkwekllkwe', finding)
+          let text = checklist_item.english_term
+          // TODO handle multiple body sites
+          if (finding.body_sites.length) {
+            text += ` affecting ${finding.body_sites[0].snomed_english_term}`
+          }
+
+          addFinding({
+            snomed_code: checklist_item.code,
+            text,
+            edit_href,
+            additional_notes: finding.additional_notes,
+          })
         }}
       />
     </CheckboxGridItem>

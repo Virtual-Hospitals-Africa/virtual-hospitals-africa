@@ -1,4 +1,4 @@
-import { ComponentChildren } from 'preact'
+import { ComponentChildren, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import { Button } from '../../components/library/Button.tsx'
 
@@ -11,6 +11,8 @@ type FormButtonsProps = {
   }
   name?: string
   value?: string
+  onSubmit?: (e: JSX.TargetedEvent<HTMLButtonElement>) => void
+  onClick?: (e: JSX.TargetedEvent<HTMLButtonElement>) => void
 }
 
 export function ButtonsContainer(
@@ -32,6 +34,8 @@ export default function FormButtons(
     cancel,
     name,
     value,
+    onSubmit,
+    onClick,
   }: FormButtonsProps = {},
 ) {
   return (
@@ -48,10 +52,12 @@ export default function FormButtons(
         </Button>
       )}
       <Button
-        type='submit'
+        type={onClick ? 'button' : 'submit'}
         name={name}
         value={value}
         className='flex-1 max-w-xl'
+        onSubmit={onSubmit}
+        onClick={onClick}
       >
         {submitText}
       </Button>

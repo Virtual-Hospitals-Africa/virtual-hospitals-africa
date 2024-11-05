@@ -13,7 +13,7 @@ export function Label({
   return (
     <label
       className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max',
+        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max text-left',
         className,
       )}
     >

@@ -158,7 +158,7 @@ export default function Search<
     >
       <div className='grow'>
         {label && (
-          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-500 mb-0 ml-0.5'>
+          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-500 mb-0 ml-0.5 text-left'>
             {label}
             {required && '*'}
           </Combobox.Label>
