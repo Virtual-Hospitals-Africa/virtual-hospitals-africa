@@ -17,7 +17,9 @@ export function BodySiteSelect({ checklist_item, value, onSelect }: {
         )
       }`}
       value={value}
+      name='foo'
       onSelect={(value) => {
+        if (!value) return
         assertHasNonEmptyString(value, 'id')
         assertHasNonEmptyString(value, 'name')
         onSelect(value)
