@@ -296,10 +296,21 @@ export interface Devices {
 
 export interface Diagnoses {
   created_at: Generated<Timestamp>
-  doctor_review_id: string
+  doctor_review_id: string | null
   id: Generated<string>
   patient_condition_id: string
+  patient_encounter_id: string | null
   provider_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface DiagnosesCollaboration {
+  approver_id: string
+  created_at: Generated<Timestamp>
+  diagnosis_id: string
+  disagree_reason: string | null
+  id: Generated<string>
+  is_approved: boolean
   updated_at: Generated<Timestamp>
 }
 
@@ -1167,6 +1178,7 @@ export interface DB {
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnoses: Diagnoses
+  diagnoses_collaboration: DiagnosesCollaboration
   diagnostic_tests: DiagnosticTests
   districts: Districts
   doctor_registration_details: DoctorRegistrationDetails

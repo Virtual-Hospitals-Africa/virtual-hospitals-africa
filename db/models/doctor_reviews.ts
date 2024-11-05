@@ -316,7 +316,7 @@ export function completedStep(
   return trx.insertInto('doctor_review_steps')
     .values(values)
     .onConflict((oc) =>
-      oc.doUpdateSet({
+      oc.columns(['doctor_review_id', 'step']).doUpdateSet({
         updated_at: now,
       })
     )
