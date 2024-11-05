@@ -68,10 +68,18 @@ export async function getFromReview(
     ])
     .execute()
 
+  const [self, others] = partition(
+    diagnoses,
+    (d) => d.provider_id === employment_id,
+  )
+
+  console.log('diagnoses', diagnoses)
+
   return {
     all: diagnoses,
-    self: diagnoses.filter((d) => d.provider_id === employment_id),
-    others: diagnoses.filter((d) => d.provider_id !== employment_id),
+    self,
+    others,
+    approved: self.concat(others.filter((d) => d.approval === 'agree')),
   }
 }
 
