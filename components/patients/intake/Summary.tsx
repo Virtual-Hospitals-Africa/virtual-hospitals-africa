@@ -61,7 +61,7 @@ export default function PatientSummary(
     family,
     pre_existing_conditions,
     past_medical_conditions,
-    major_surgeries
+    major_surgeries,
   } = patient
 
   const personal_items: DescriptionListRows[] = [
@@ -174,31 +174,32 @@ export default function PatientSummary(
       ]),
   )
 
-  const past_conditions_items: DescriptionListRows[] = past_medical_conditions.map(
-    (condition, index) =>
-      nonEmptyRows([
-        [
-          {
-            value: condition.name,
-            edit_href:
-              `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
-          },
-        ],
-        [
-          {
-            value: condition.start_date,
-            edit_href:
-              `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
-          },
-          {
-            value: condition.end_date,
-            edit_href:
-              `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
-            leading_separator: ' — ',
-          },
-        ],
-      ]),
-  )
+  const past_conditions_items: DescriptionListRows[] = past_medical_conditions
+    .map(
+      (condition, index) =>
+        nonEmptyRows([
+          [
+            {
+              value: condition.name,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
+            },
+          ],
+          [
+            {
+              value: condition.start_date,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
+            },
+            {
+              value: condition.end_date,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
+              leading_separator: ' — ',
+            },
+          ],
+        ]),
+    )
 
   const major_surgeries_items: DescriptionListRows[] = major_surgeries.map(
     (surgery, index) =>
@@ -383,8 +384,8 @@ export default function PatientSummary(
           title: 'Major Surgeries',
           items: major_surgeries_items,
         },
-      ]
-    }
+      ],
+    },
   ]
 
   return <DescriptionList pages={pages} />
