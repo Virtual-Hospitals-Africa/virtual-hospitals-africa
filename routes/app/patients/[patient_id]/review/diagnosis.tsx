@@ -44,6 +44,12 @@ function assertIsDiagnoses(
         typeof diagnoses_collaboration.diagnosis_id === 'string',
         'Each diagnoses_collaboration must have an diagnosis_id of type string',
       )
+      if (diagnoses_collaboration.approval === 'disagree') {
+        assertOr400(
+          diagnoses_collaboration.disagree_reason?.length > 0,
+          'Must provide a disagree reason',
+        )
+      }
     }
   }
 }
