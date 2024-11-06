@@ -151,6 +151,27 @@ export default function PatientSummary(
       ]),
   )
 
+  const guardians_items: DescriptionListRows[] = family.guardians.map(
+    (guardian, index) =>
+      nonEmptyRows([
+        [{
+          value: guardian.patient_name,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.patient_name`,
+        }, {
+          value: guardian.family_relation_gendered,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
+          leading_separator: ', ',
+        }],
+        [{
+          value: guardian.patient_phone_number,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
+        }],
+      ]),
+  )
+
   const pre_existing_conditions_items: DescriptionListRows[] =
     pre_existing_conditions.map(
       (condition, index) =>
@@ -237,6 +258,48 @@ export default function PatientSummary(
       )
     )
 
+  const family_page =
+    (patient.age.age_years < 18 && patient.family.dependents.length > 0)
+      ? {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Guardians',
+            items: guardians_items,
+          },
+          {
+            title: 'Dependents',
+            items: dependents_items,
+          },
+        ],
+      }
+      : (patient.age.age_years < 18 && patient.family.dependents.length === 0)
+      ? {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Guardians',
+            items: guardians_items,
+          },
+        ],
+      }
+      : {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Next of kin',
+            items: next_of_kin_items,
+          },
+          {
+            title: 'Dependents',
+            items: dependents_items,
+          },
+        ],
+      }
+
   const pages = [
     {
       title: 'Personal',
@@ -253,20 +316,7 @@ export default function PatientSummary(
         },
       ],
     },
-    {
-      title: 'Family',
-      items: family_items,
-      sections: [
-        {
-          title: 'Next of kin',
-          items: next_of_kin_items,
-        },
-        {
-          title: 'Dependents',
-          items: dependents_items,
-        },
-      ],
-    },
+    family_page,
     {
       title: 'Pre-existing Conditions',
       items: pre_existing_conditions_items,
