@@ -60,6 +60,8 @@ export default function PatientSummary(
     nearest_health_care,
     family,
     pre_existing_conditions,
+    past_medical_conditions,
+    major_surgeries
   } = patient
 
   const personal_items: DescriptionListRows[] = [
@@ -169,6 +171,52 @@ export default function PatientSummary(
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
         }],
+      ]),
+  )
+
+  const past_conditions_items: DescriptionListRows[] = past_medical_conditions.map(
+    (condition, index) =>
+      nonEmptyRows([
+        [
+          {
+            value: condition.name,
+            edit_href:
+              `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
+          },
+        ],
+        [
+          {
+            value: condition.start_date,
+            edit_href:
+              `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
+          },
+          {
+            value: condition.end_date,
+            edit_href:
+              `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
+            leading_separator: ' — ',
+          },
+        ],
+      ]),
+  )
+
+  const major_surgeries_items: DescriptionListRows[] = major_surgeries.map(
+    (surgery, index) =>
+      nonEmptyRows([
+        [
+          {
+            value: surgery.name,
+            edit_href:
+              `${intake_href}/history#focus=major_surgeries.${index}.name`,
+          },
+        ],
+        [
+          {
+            value: surgery.start_date,
+            edit_href:
+              `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
+          },
+        ],
       ]),
   )
 
@@ -327,6 +375,16 @@ export default function PatientSummary(
         },
       ],
     },
+    {
+      title: 'Past Conditions',
+      items: past_conditions_items,
+      sections: [
+        {
+          title: 'Major Surgeries',
+          items: major_surgeries_items,
+        },
+      ]
+    }
   ]
 
   return <DescriptionList pages={pages} />
