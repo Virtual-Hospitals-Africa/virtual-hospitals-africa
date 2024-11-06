@@ -3,7 +3,7 @@ import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import DiagnosisFormRow, { DiagnosisFormRowState } from './FormRow.tsx'
 import { Signal, useSignal } from '@preact/signals'
-import { AgreeDisagreeQuestion } from '../../islands/form/Inputs.tsx'
+import { AgreeDisagreeQuestion, TextInput } from '../../islands/form/Inputs.tsx'
 
 type SelfDiagnosesFormState = Array<
   DiagnosisFormRowState | { removed: true }
@@ -14,6 +14,7 @@ type OthersDiagnosesFormState = Array<
     id?: string
     diagnosis_id?: string
     approval?: Maybe<'agree' | 'disagree'>
+    disagree_reason?: Maybe<string>
   }
 >
 
@@ -58,7 +59,7 @@ export default function DiagnosesForm(props: {
           <div className='flex flex-col gap-3'>
             {othersDiagnoses.value.map((state, index) => {
               return (
-                <div className='flex items-center gap-2' key={index}>
+                <div className='flex gap-2' key={index}>
                   <AgreeDisagreeQuestion
                     name={`diagnoses_collaborations.${index}.approval`}
                     onChange={(approval) => {
@@ -77,15 +78,44 @@ export default function DiagnosesForm(props: {
                     name={`diagnoses_collaborations.${index}.diagnosis_id`}
                     value={state.diagnosis_id}
                   />
-                  <p>
-                    {props.diagnoses.others[index].name} since{' '}
-                    {props.diagnoses.others[index].start_date}{' '}
-                    <span className='italic'>
-                      diagnosed by Dr.{' '}
-                      {props.diagnoses.others[index].diagnosed_by}{' '}
-                      {props.diagnoses.others[index].diagnosed_at}
-                    </span>
-                  </p>
+                  <div className='flex flex-col gap-2'>
+                    <p>
+                      {props.diagnoses.others[index].name} since{' '}
+                      {props.diagnoses.others[index].start_date}{' '}
+                      <span className='italic'>
+                        diagnosed by Dr.{' '}
+                        {props.diagnoses.others[index].diagnosed_by}{' '}
+                        {props.diagnoses.others[index].diagnosed_at}
+                      </span>
+                    </p>
+                    {state.id && state.approval === 'disagree' && (
+                      <TextInput
+                        name={`diagnoses_collaborations.${index}.disagree_reason`}
+                        label=''
+                        placeholder='Reason why you disapproval'
+                        value={state.id
+                          ? othersDiagnoses.value.find((od) =>
+                            od.id === state.id
+                          )
+                            ?.disagree_reason
+                          : null}
+                        onInput={(event) => {
+                          othersDiagnoses.value = othersDiagnoses.value.map((
+                            diagnosis,
+                            j,
+                          ) =>
+                            j === index
+                              ? {
+                                ...diagnosis,
+                                disagree_reason: event.currentTarget.value,
+                              }
+                              : diagnosis
+                          )
+                        }}
+                        required
+                      />
+                    )}
+                  </div>
                 </div>
               )
             })}
