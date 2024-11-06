@@ -300,6 +300,7 @@ export async function forPatientEncounter(
     patient.name,
     opts.primary_doctor_id,
   )
+  
 
   const doctor_information: Sendable[] = processed_doctors.map(
     (doctor) => {

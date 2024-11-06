@@ -25,6 +25,7 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base } from './_base.ts'
+import { kysely } from 'https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/deps.ts'
 
 export function nearestHospitals(
   trx: TrxOrDb,
@@ -374,9 +375,30 @@ export function getEmployees(
   ).selectAll('organization_employees').execute()
 }
 
+export function getSortedEmployeesForIntakeSendTo(
+  trx: TrxOrDb,
+  organization_id: string,
+  primary_doctor_id: string,
+  patient_encounter_providers_ids: string[],
+  opts: EmployeeQueryOpts = {},
+): Promise<OrganizationEmployee[]> {
+  return getEmployeesQuery(trx, organization_id, opts).selectFrom(
+    'organization_employees',
+  ).selectAll('organization_employees')
+  .orderBy(
+    sql`CASE 
+         WHEN employee_id = ${primary_doctor_id} THEN 1
+         WHEN employee_id = ANY(${sql.val(patient_encounter_providers_ids)}) THEN 2
+         ELSE 3
+       END`
+    ).execute()
+  }
+
 export async function getApprovedProviders(
   trx: TrxOrDb,
   organization_id: string,
+  primary_doctor_id: string,
+  patient_encounter_providers_id: string,
   opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions'> = {},
 ): Promise<OrganizationDoctorOrNurse[]> {
   const employees = await getEmployees(trx, organization_id, {
