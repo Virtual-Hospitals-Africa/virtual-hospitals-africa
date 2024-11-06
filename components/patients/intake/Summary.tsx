@@ -38,16 +38,16 @@ function isCell(cell: MaybeCell): cell is DescriptionListCell {
 // Return all the cells that have a value
 // if cell.apply_fallback is true, use the fallback value
 function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
-  const processedRow = row.map(cell => ({
+  const processedRow = row.map((cell) => ({
     ...cell,
-    value: cell.apply_fallback ? withFallback(cell.value) : cell.value
-  }));
+    value: cell.apply_fallback ? withFallback(cell.value) : cell.value,
+  }))
 
-  const nonNullRow = processedRow.filter(isCell);
+  const nonNullRow = processedRow.filter(isCell)
   if (nonNullRow[0]?.leading_separator) {
-    nonNullRow[0] = omit(nonNullRow[0], ['leading_separator']);
+    nonNullRow[0] = omit(nonNullRow[0], ['leading_separator'])
   }
-  return nonNullRow;
+  return nonNullRow
 }
 
 function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
@@ -55,8 +55,11 @@ function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
   return filteredRows
 }
 
-function withFallback<T>(value: T | null | undefined, fallback = 'None provided'): T | string {
-  return value ?? fallback;
+function withFallback<T>(
+  value: T | null | undefined,
+  fallback = 'None provided',
+): T | string {
+  return value ?? fallback
 }
 
 export default function PatientSummary(
@@ -122,6 +125,7 @@ export default function PatientSummary(
       {
         value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        apply_fallback: true,
       },
     ]]),
     nonEmptyRows([[{
