@@ -117,43 +117,100 @@ export const DescriptionList = (
   const elements: JSX.Element[] = []
   let page_row_start: number = 0
   let page_row_end: number = 1
-  for (const page of pages) {
-    for (const [item_index, item] of page.items.entries()) {
-      if (item_index) {
-        elements.push(createEmptyRow(page_row_end, 'small'))
-        page_row_end += 1
-      }
 
-      for (const row of item) {
-        assert(row.length > 0, 'Empty row')
-        elements.push(createRowElement(row, page_row_end))
-        page_row_end += 1
-      }
-    }
-    elements.push(
-      createTitleElement(page.title, page_row_start + 1, page_row_end),
-    )
+/*
+  return (
+    <>
+      <div
+        style={{ gridColumn: 2, gridRow: row_number }}
+      >
+        {row_element}
+      </div>
+      <div
+        className='w-4 h-4 text-gray-500'
+        style={{ gridColumn: 3, gridRow: row_number }}
+      >
+        <PencilSquareIcon />
+      </div>
+    </>
+  )
+*/
+
+  for (const page of pages) {
+    const titleElement = createTitleElement(page.title, page_row_start + 1, page_row_end)
+    if (titleElement) elements.push(titleElement)
     page_row_start = page_row_end
 
-    if (page.sections.length > 0) {
+    if (page.items.length === 0) {
+      elements.push(
+        <>
+          <div
+            className="italic"
+            style={{ gridColumn: 2, gridRow: page_row_end }}
+          >
+            None provided
+          </div>
+          <div 
+          className='w-4 h-4 text-gray-500'
+          style={{ gridColumn: 3, gridRow: page_row_end }}
+          >
+            <PencilSquareIcon />
+          </div>
+        </>
+      )
       page_row_end += 1
-      elements.push(createEmptyRow(page_row_end, 'large'))
-      page_row_end += 1
-      page_row_start = page_row_end
-    }
+    } else {
+      // Render each item in the page
+      for (const [item_index, item] of page.items.entries()) {
+        if (item_index) {
+          elements.push(createEmptyRow(page_row_end, 'small'))
+          page_row_end += 1
+        }
 
-    for (const section of page.sections) {
-      for (const item of section.items) {
         for (const row of item) {
           assert(row.length > 0, 'Empty row')
-          elements.push(createRowElement(row, page_row_end))
+          const rowElement = createRowElement(row, page_row_end)
+          if (rowElement) elements.push(rowElement)
           page_row_end += 1
         }
       }
-      elements.push(
-        createTitleElement(section.title, page_row_start, page_row_end),
-      )
+    }
+
+    page_row_start = page_row_end
+
+    for (const section of page.sections) {
+      const sectionTitleElement = createTitleElement(section.title, page_row_start, page_row_end)
+      if (sectionTitleElement) elements.push(sectionTitleElement)
       page_row_start = page_row_end
+
+      if (section.items.length === 0) {
+        elements.push(
+          <>
+            <div
+              className="italic"
+              style={{ gridColumn: 2, gridRow: page_row_end }}
+            >
+              None provided
+            </div>
+            <div 
+              className='w-4 h-4 text-gray-500'
+              style={{ gridColumn: 3, gridRow: page_row_end }}
+              >
+                <PencilSquareIcon />
+            </div>
+          </>
+        )
+        page_row_end += 1
+      } else {
+        for (const item of section.items) {
+          for (const row of item) {
+            assert(row.length > 0, 'Empty row')
+            const rowElement = createRowElement(row, page_row_end)
+            if (rowElement) elements.push(rowElement)
+            page_row_end += 1
+          }
+        }
+      }
     }
     elements.push(createDividerElement(page_row_end))
     page_row_end += 1
@@ -171,3 +228,4 @@ export const DescriptionList = (
     </div>
   )
 }
+

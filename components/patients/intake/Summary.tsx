@@ -28,7 +28,6 @@ type MaybeCell = {
   value: Maybe<string>
   edit_href?: string
   leading_separator?: string
-  apply_fallback?: boolean
 }
 
 function isCell(cell: MaybeCell): cell is DescriptionListCell {
@@ -36,30 +35,16 @@ function isCell(cell: MaybeCell): cell is DescriptionListCell {
 }
 
 // Return all the cells that have a value
-// if cell.apply_fallback is true, use the fallback value
 function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
-  const processedRow = row.map((cell) => ({
-    ...cell,
-    value: cell.apply_fallback ? withFallback(cell.value) : cell.value,
-  }))
-
-  const nonNullRow = processedRow.filter(isCell)
-  if (nonNullRow[0]?.leading_separator) {
-    nonNullRow[0] = omit(nonNullRow[0], ['leading_separator'])
+  const non_null_row = row.filter(isCell)
+  if (non_null_row[0]?.leading_separator) {
+    non_null_row[0] = omit(non_null_row[0], ['leading_separator'])
   }
-  return nonNullRow
+  return non_null_row
 }
 
 function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
-  const filteredRows = rows.map(nonNullableCells).filter((row) => row.length)
-  return filteredRows
-}
-
-function withFallback<T>(
-  value: T | null | undefined,
-  fallback = 'None provided',
-): T | string {
-  return value ?? fallback
+  return rows.map(nonNullableCells).filter((row) => row.length)
 }
 
 export default function PatientSummary(
@@ -83,11 +68,9 @@ export default function PatientSummary(
     nonEmptyRows([[{
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
-      apply_fallback: true,
     }], [{
       value: personal.phone_number,
       edit_href: `${intake_href}/personal#focus=phone_number`,
-      apply_fallback: true,
     }]]),
   ]
 
@@ -120,12 +103,12 @@ export default function PatientSummary(
       edit_href: `${intake_href}/address#focus=primary_doctor_name`,
     }]]),
   ]
+
   const next_of_kin_items: DescriptionListRows[] = [
     nonEmptyRows([[
       {
         value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
-        apply_fallback: true,
       },
     ]]),
     nonEmptyRows([[{
