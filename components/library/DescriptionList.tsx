@@ -118,7 +118,7 @@ export const DescriptionList = (
   for (const page of pages) {
     const titleElement = createTitleElement(
       page.title,
-      page_row_start + 1,
+      page_row_start + 3,
       page_row_end,
     )
     if (titleElement) elements.push(titleElement)
