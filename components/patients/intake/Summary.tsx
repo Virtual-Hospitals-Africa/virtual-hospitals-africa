@@ -60,6 +60,8 @@ export default function PatientSummary(
     nearest_health_care,
     family,
     pre_existing_conditions,
+    past_medical_conditions,
+    major_surgeries,
   } = patient
 
   const personal_items: DescriptionListRows[] = [
@@ -151,6 +153,74 @@ export default function PatientSummary(
       ]),
   )
 
+  const guardians_items: DescriptionListRows[] = family.guardians.map(
+    (guardian, index) =>
+      nonEmptyRows([
+        [{
+          value: guardian.patient_name,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.patient_name`,
+        }, {
+          value: guardian.family_relation_gendered,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
+          leading_separator: ', ',
+        }],
+        [{
+          value: guardian.patient_phone_number,
+          edit_href:
+            `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
+        }],
+      ]),
+  )
+
+  const past_conditions_items: DescriptionListRows[] = past_medical_conditions
+    .map(
+      (condition, index) =>
+        nonEmptyRows([
+          [
+            {
+              value: condition.name,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
+            },
+          ],
+          [
+            {
+              value: condition.start_date,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
+            },
+            {
+              value: condition.end_date,
+              edit_href:
+                `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
+              leading_separator: ' — ',
+            },
+          ],
+        ]),
+    )
+
+  const major_surgeries_items: DescriptionListRows[] = major_surgeries.map(
+    (surgery, index) =>
+      nonEmptyRows([
+        [
+          {
+            value: surgery.name,
+            edit_href:
+              `${intake_href}/history#focus=major_surgeries.${index}.name`,
+          },
+        ],
+        [
+          {
+            value: surgery.start_date,
+            edit_href:
+              `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
+          },
+        ],
+      ]),
+  )
+
   const pre_existing_conditions_items: DescriptionListRows[] =
     pre_existing_conditions.map(
       (condition, index) =>
@@ -237,6 +307,48 @@ export default function PatientSummary(
       )
     )
 
+  const family_page =
+    (patient.age.age_years < 18 && patient.family.dependents.length > 0)
+      ? {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Guardians',
+            items: guardians_items,
+          },
+          {
+            title: 'Dependents',
+            items: dependents_items,
+          },
+        ],
+      }
+      : (patient.age.age_years < 18 && patient.family.dependents.length === 0)
+      ? {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Guardians',
+            items: guardians_items,
+          },
+        ],
+      }
+      : {
+        title: 'Family',
+        items: family_items,
+        sections: [
+          {
+            title: 'Next of kin',
+            items: next_of_kin_items,
+          },
+          {
+            title: 'Dependents',
+            items: dependents_items,
+          },
+        ],
+      }
+
   const pages = [
     {
       title: 'Personal',
@@ -253,20 +365,7 @@ export default function PatientSummary(
         },
       ],
     },
-    {
-      title: 'Family',
-      items: family_items,
-      sections: [
-        {
-          title: 'Next of kin',
-          items: next_of_kin_items,
-        },
-        {
-          title: 'Dependents',
-          items: dependents_items,
-        },
-      ],
-    },
+    family_page,
     {
       title: 'Pre-existing Conditions',
       items: pre_existing_conditions_items,
@@ -274,6 +373,16 @@ export default function PatientSummary(
         {
           title: 'Medications',
           items: medications_items,
+        },
+      ],
+    },
+    {
+      title: 'Past Conditions',
+      items: past_conditions_items,
+      sections: [
+        {
+          title: 'Major Surgeries',
+          items: major_surgeries_items,
         },
       ],
     },
