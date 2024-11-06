@@ -30,7 +30,7 @@ export default async function PatientPage(
       health_worker={ctx.state.healthWorker}
       variant='practitioner home page'
     >
-      <div className="container my-4 mx-6">
+      <div className='container my-4 mx-6'>
         <PatientBasicInfo patient={patient} />
       </div>
     </Layout>
