@@ -46,6 +46,7 @@ import * as $app_organizations_organization_id_waiting_room from './routes/app/o
 import * as $app_organizations_organization_id_waiting_room_add from './routes/app/organizations/[organization_id]/waiting_room/add.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
+import * as $app_patients_patient_id_middleware from './routes/app/patients/[patient_id]/_middleware.tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
 import * as $app_patients_patient_id_encounters from './routes/app/patients/[patient_id]/encounters.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_ from './routes/app/patients/[patient_id]/encounters/[encounter_id].tsx'
@@ -71,6 +72,8 @@ import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patient
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
+import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
+import * as $app_patients_patient_id_profile_summary from './routes/app/patients/[patient_id]/profile/summary.tsx'
 import * as $app_patients_patient_id_review from './routes/app/patients/[patient_id]/review.tsx'
 import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
 import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
@@ -297,6 +300,8 @@ const manifest = {
       $app_organizations_organization_id_waiting_room_add,
     './routes/app/patients.tsx': $app_patients,
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
+    './routes/app/patients/[patient_id]/_middleware.tsx':
+      $app_patients_patient_id_middleware,
     './routes/app/patients/[patient_id]/avatar.tsx':
       $app_patients_patient_id_avatar,
     './routes/app/patients/[patient_id]/encounters.tsx':
@@ -347,6 +352,10 @@ const manifest = {
       $app_patients_patient_id_intake_personal,
     './routes/app/patients/[patient_id]/intake/summary.tsx':
       $app_patients_patient_id_intake_summary,
+    './routes/app/patients/[patient_id]/profile/_middleware.tsx':
+      $app_patients_patient_id_profile_middleware,
+    './routes/app/patients/[patient_id]/profile/summary.tsx':
+      $app_patients_patient_id_profile_summary,
     './routes/app/patients/[patient_id]/review.tsx':
       $app_patients_patient_id_review,
     './routes/app/patients/[patient_id]/review/_middleware.tsx':
