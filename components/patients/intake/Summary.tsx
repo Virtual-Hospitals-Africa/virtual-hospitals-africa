@@ -110,11 +110,12 @@ export default function PatientSummary(
         value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
       },
+      {
+        value: patient.family.other_next_of_kin?.relation,
+        edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        leading_separator: ', ',
+      },
     ]]),
-    nonEmptyRows([[{
-      value: patient.family.other_next_of_kin?.relation,
-      edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
-    }]]),
   ]
 
   const family_items: DescriptionListRows[] = [
@@ -311,6 +312,7 @@ export default function PatientSummary(
     (patient.age.age_years < 18 && patient.family.dependents.length > 0)
       ? {
         title: 'Family',
+        link: `${intake_href}/family`,
         items: family_items,
         sections: [
           {
@@ -327,6 +329,7 @@ export default function PatientSummary(
       ? {
         title: 'Family',
         items: family_items,
+        link: `${intake_href}/family`,
         sections: [
           {
             title: 'Guardians',
@@ -337,6 +340,7 @@ export default function PatientSummary(
       : {
         title: 'Family',
         items: family_items,
+        link: `${intake_href}/family`,
         sections: [
           {
             title: 'Next of kin',
@@ -352,11 +356,13 @@ export default function PatientSummary(
   const pages = [
     {
       title: 'Personal',
+      link: `${intake_href}/personal`,
       items: personal_items,
       sections: [],
     },
     {
       title: 'Address',
+      link: `${intake_href}/address`,
       items: address_items,
       sections: [
         {
@@ -368,6 +374,7 @@ export default function PatientSummary(
     family_page,
     {
       title: 'Pre-existing Conditions',
+      link: `${intake_href}/conditions`,
       items: pre_existing_conditions_items,
       sections: [
         {
@@ -378,6 +385,7 @@ export default function PatientSummary(
     },
     {
       title: 'Past Conditions',
+      link: `${intake_href}/history`,
       items: past_conditions_items,
       sections: [
         {

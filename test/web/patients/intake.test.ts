@@ -581,6 +581,7 @@ describe('/app/patients/[patient_id]/intake', {
       scenario: 'approved-nurse',
     })
     const guardian_phone = randomPhoneNumber()
+    console.log('guardian_phone', guardian_phone)
     const body = new FormData()
     body.set('family.guardians.0.patient_name', 'New Guardian')
     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
