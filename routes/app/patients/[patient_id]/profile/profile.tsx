@@ -1,13 +1,13 @@
 import { PatientPage } from './_middleware.tsx'
 import * as patient_intake from '../../../../../db/models/patient_intake.ts'
-import PatientSummary from '../../../../../components/patients/profile/PatientSummary.tsx'
+import PatientProfile from '../../../../../components/patients/profile/PatientProfile.tsx'
 
 export default PatientPage(
-  async function PatientConditionsTab({ ctx }) {
+  async function PatientProfileTab({ ctx }) {
     const patient_summary = await patient_intake.getSummaryById(
       ctx.state.trx,
       ctx.state.patient.id,
     )
-    return <PatientSummary patient={patient_summary} />
+    return <PatientProfile patient={patient_summary} />
   },
 )

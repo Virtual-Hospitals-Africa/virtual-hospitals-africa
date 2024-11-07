@@ -2,6 +2,7 @@ import { getSummaryById } from '../../../db/models/patient_intake.ts'
 import {
   DescriptionList,
   DescriptionListCell,
+  DescriptionListCellAction,
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
 import type { Maybe } from '../../../types.ts'
@@ -12,19 +13,20 @@ import omit from '../../../util/omit.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
-type MaybeCell = {
+export type MaybeCell = {
   value: Maybe<string>
   name?: string
-  edit_href?: string
+  href?: string
+  action?: 'edit' | 'view'
   leading_separator?: string
 }
 
-function isCell(cell: MaybeCell): cell is DescriptionListCell {
+export function isCell(cell: MaybeCell): cell is DescriptionListCell {
   return !!cell.value
 }
 
 // Return all the cells that have a value
-function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
+export function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
   const non_null_row = row.filter(isCell)
   if (non_null_row[0]?.leading_separator) {
     non_null_row[0] = omit(non_null_row[0], ['leading_separator'])
@@ -32,7 +34,7 @@ function nonNullableCells(row: MaybeCell[]): DescriptionListCell[] {
   return non_null_row
 }
 
-function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
+export function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
   return rows.map(nonNullableCells).filter((row) => row.length)
 }
 
@@ -58,11 +60,13 @@ export default function PatientSummary(
   const personal_items: DescriptionListRows[] = [
     nonEmptyRows([[{
       value: personal.name,
-      edit_href: `${intake_href}/personal#focus=first_name`,
+      href: `${intake_href}/personal#focus=first_name`,
+      action: DescriptionListCellAction.Edit,
       name: 'first_name',
     }], [{
       value: international_phone_number.nullable().parse(personal.phone_number),
-      edit_href: `${intake_href}/personal#focus=phone_number`,
+      href: `${intake_href}/personal#focus=phone_number`,
+      action: DescriptionListCellAction.Edit,
       name: 'phone_number',
     }]]),
   ]
@@ -70,10 +74,12 @@ export default function PatientSummary(
   const address_rows = [{
     value: address.street,
     name: 'street',
-    edit_href: `${intake_href}/address#focus=address.street`,
+    href: `${intake_href}/address#focus=address.street`,
+    action: DescriptionListCellAction.Edit,
   }, {
     value: address.locality,
-    edit_href: `${intake_href}/address#focus=address.locality`,
+    href: `${intake_href}/address#focus=address.locality`,
+    action: DescriptionListCellAction.Edit,
     name: 'Ward',
     leading_separator: ', ',
   }]
@@ -84,8 +90,8 @@ export default function PatientSummary(
     address_rows.push({
       value: address.administrative_area_level_1,
       name: 'District',
-      edit_href:
-        `${intake_href}/address#focus=address.administrative_area_level_1`,
+      href: `${intake_href}/address#focus=address.administrative_area_level_1`,
+      action: DescriptionListCellAction.Edit,
       leading_separator: ', ',
     })
   }
@@ -98,8 +104,8 @@ export default function PatientSummary(
     address_rows.push({
       value: address.administrative_area_level_2,
       name: 'Province',
-      edit_href:
-        `${intake_href}/address#focus=address.administrative_area_level_2`,
+      href: `${intake_href}/address#focus=address.administrative_area_level_2`,
+      action: DescriptionListCellAction.Edit,
       leading_separator: ', ',
     })
   }
@@ -112,12 +118,14 @@ export default function PatientSummary(
     nonEmptyRows([[
       {
         value: nearest_health_care.nearest_organization_name,
-        edit_href: `${intake_href}/address#focus=nearest_organization_name`,
+        href: `${intake_href}/address#focus=nearest_organization_name`,
+        action: DescriptionListCellAction.Edit,
         name: 'Nearest Organization',
       },
     ], [{
       value: nearest_health_care.primary_doctor_name,
-      edit_href: `${intake_href}/address#focus=primary_doctor_name`,
+      href: `${intake_href}/address#focus=primary_doctor_name`,
+      action: DescriptionListCellAction.Edit,
       name: 'Primary Doctor',
     }]]),
   ]
@@ -126,12 +134,14 @@ export default function PatientSummary(
     nonEmptyRows([[
       {
         value: patient.family.other_next_of_kin?.patient_name,
-        edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        action: DescriptionListCellAction.Edit,
         name: 'Next of Kin',
       },
       {
         value: patient.family.other_next_of_kin?.relation,
-        edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        action: DescriptionListCellAction.Edit,
         name: 'Relationship',
         leading_separator: ', ',
       },
@@ -142,18 +152,21 @@ export default function PatientSummary(
     nonEmptyRows([[
       {
         value: family.family_type,
-        edit_href: `${intake_href}/family#focus=family.family_type`,
+        href: `${intake_href}/family#focus=family.family_type`,
+        action: DescriptionListCellAction.Edit,
         name: 'family_type',
       },
     ], [
       {
         value: family.marital_status,
-        edit_href: `${intake_href}/family#focus=family.marital_status`,
+        href: `${intake_href}/family#focus=family.marital_status`,
+        action: DescriptionListCellAction.Edit,
         name: 'marital_status',
       },
       {
         value: family.religion,
-        edit_href: `${intake_href}/family#focus=family.religion`,
+        href: `${intake_href}/family#focus=family.religion`,
+        action: DescriptionListCellAction.Edit,
         name: 'religion',
         leading_separator: ', ',
       },
@@ -165,12 +178,13 @@ export default function PatientSummary(
       nonEmptyRows([
         [{
           value: dependent.patient_name,
-          edit_href:
-            `${intake_href}/family#focus=dependents.${index}.patient_name`,
+          href: `${intake_href}/family#focus=dependents.${index}.patient_name`,
+          action: DescriptionListCellAction.Edit,
         }, {
           value: dependent.family_relation_gendered,
-          edit_href:
+          href:
             `${intake_href}/family#focus=dependents.${index}.family_relation_gendered`,
+          action: DescriptionListCellAction.Edit,
           leading_separator: ', ',
         }],
         [
@@ -178,8 +192,9 @@ export default function PatientSummary(
             value: international_phone_number.nullable().parse(
               dependent.patient_phone_number,
             ),
-            edit_href:
+            href:
               `${intake_href}/family#focus=dependents.${index}.patient_phone_number`,
+            action: DescriptionListCellAction.Edit,
           },
         ],
       ]),
@@ -191,13 +206,14 @@ export default function PatientSummary(
         [{
           value: guardian.patient_name,
           name: 'guardian',
-          edit_href:
-            `${intake_href}/family#focus=guardians.${index}.patient_name`,
+          href: `${intake_href}/family#focus=guardians.${index}.patient_name`,
+          action: DescriptionListCellAction.Edit,
         }, {
           value: guardian.family_relation_gendered,
           name: 'relationship',
-          edit_href:
+          href:
             `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
+          action: DescriptionListCellAction.Edit,
           leading_separator: ', ',
         }],
         [{
@@ -205,8 +221,9 @@ export default function PatientSummary(
             guardian.patient_phone_number,
           ),
           name: 'phone_number',
-          edit_href:
+          href:
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
+          action: DescriptionListCellAction.Edit,
         }],
       ]),
   )
@@ -217,7 +234,8 @@ export default function PatientSummary(
         ? occupation.school.current.grade
         : null,
       name: 'education_level',
-      edit_href: `${intake_href}/occupation#focus=occupation.job.profession`,
+      href: `${intake_href}/occupation#focus=occupation.job.profession`,
+      action: DescriptionListCellAction.Edit,
     },
   ]])]
 
@@ -225,8 +243,9 @@ export default function PatientSummary(
     {
       value: occupation?.job && occupation.job.profession,
       name: 'profession',
-      edit_href:
+      href:
         `${intake_href}/occupation#focus=occupation.school.education_level`,
+      action: DescriptionListCellAction.Edit,
     },
   ]])]
 
@@ -237,7 +256,8 @@ export default function PatientSummary(
           {
             value: allergy.snomed_english_term,
             name: 'allergy',
-            edit_href: `${intake_href}/conditions#focus=allergies.${index}`,
+            href: `${intake_href}/conditions#focus=allergies.${index}`,
+            action: DescriptionListCellAction.Edit,
           },
         ],
       ])
@@ -252,22 +272,25 @@ export default function PatientSummary(
             {
               value: condition.name,
               name: 'condition',
-              edit_href:
+              href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
+              action: DescriptionListCellAction.Edit,
             },
           ],
           [
             {
               value: condition.start_date,
               name: 'start_date',
-              edit_href:
+              href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
+              action: DescriptionListCellAction.Edit,
             },
             {
               value: condition.end_date,
               name: 'end_date',
-              edit_href:
+              href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
+              action: DescriptionListCellAction.Edit,
               leading_separator: ' — ',
             },
           ],
@@ -281,16 +304,17 @@ export default function PatientSummary(
           {
             value: surgery.name,
             name: 'surgery',
-            edit_href:
-              `${intake_href}/history#focus=major_surgeries.${index}.name`,
+            href: `${intake_href}/history#focus=major_surgeries.${index}.name`,
+            action: DescriptionListCellAction.Edit,
           },
         ],
         [
           {
             value: surgery.start_date,
             name: 'start_date',
-            edit_href:
+            href:
               `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
+            action: DescriptionListCellAction.Edit,
           },
         ],
       ]),
@@ -304,16 +328,18 @@ export default function PatientSummary(
             {
               value: condition.name,
               name: 'Pre-existing Condition',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
+              action: DescriptionListCellAction.Edit,
             },
           ],
           [
             {
               value: condition.start_date,
               name: 'start_date',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
+              action: DescriptionListCellAction.Edit,
             },
             {
               value: 'Present',
@@ -331,8 +357,9 @@ export default function PatientSummary(
             {
               value: `${medication.name} (for ${condition.name})`,
               name: 'medication',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
+              action: DescriptionListCellAction.Edit,
             },
           ],
           [
@@ -345,8 +372,9 @@ export default function PatientSummary(
                 separator: ' ',
               }),
               name: 'strength',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength`,
+              action: DescriptionListCellAction.Edit,
             },
           ],
           [
@@ -361,21 +389,24 @@ export default function PatientSummary(
                 strength_numerator_unit: medication.strength_numerator_unit,
               }),
               name: 'dosage',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
+              action: DescriptionListCellAction.Edit,
             },
             {
               value: medication.route,
               name: 'route',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_id`,
+              action: DescriptionListCellAction.Edit,
               leading_separator: ' ',
             },
             {
               value: intakeFrequencyText(medication.schedules[0].frequency),
               name: 'frequency',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.intake_frequency`,
+              action: DescriptionListCellAction.Edit,
               leading_separator: ' ',
             },
           ],
@@ -383,15 +414,17 @@ export default function PatientSummary(
             {
               value: medication.start_date,
               name: 'start_date',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
+              action: DescriptionListCellAction.Edit,
             },
             {
               // TODO get actual end date
               value: 'End Date',
               name: 'end_date',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
+              action: DescriptionListCellAction.Edit,
               leading_separator: ' — ',
             },
           ],
@@ -399,8 +432,9 @@ export default function PatientSummary(
             {
               value: medication.special_instructions,
               name: 'special_instructions',
-              edit_href:
+              href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
+              action: DescriptionListCellAction.Edit,
             },
           ],
         ])
@@ -412,6 +446,7 @@ export default function PatientSummary(
       ? {
         title: 'Family',
         link: `${intake_href}/family`,
+        action: DescriptionListCellAction.Edit,
         items: family_items,
         sections: [
           {
@@ -431,6 +466,7 @@ export default function PatientSummary(
         title: 'Family',
         items: family_items,
         link: `${intake_href}/family`,
+        action: DescriptionListCellAction.Edit,
         sections: [
           {
             title: 'Guardians',
@@ -443,6 +479,7 @@ export default function PatientSummary(
         title: 'Family',
         items: family_items,
         link: `${intake_href}/family`,
+        action: DescriptionListCellAction.Edit,
         sections: [
           {
             title: 'Next of kin',
@@ -460,6 +497,7 @@ export default function PatientSummary(
   const occupation_page = {
     title: 'Occupation',
     link: `${intake_href}/occupation`,
+    action: DescriptionListCellAction.Edit,
     items: patient.age.age_years <= 18
       ? occupation0_18_rows
       : occupation19_rows,
@@ -470,12 +508,14 @@ export default function PatientSummary(
     {
       title: 'Personal',
       link: `${intake_href}/personal`,
+      action: DescriptionListCellAction.Edit,
       items: personal_items,
       sections: [],
     },
     {
       title: 'Address',
       link: `${intake_href}/address`,
+      action: DescriptionListCellAction.Edit,
       items: address_items,
       sections: [
         {
@@ -490,6 +530,7 @@ export default function PatientSummary(
       title: 'Pre-existing Conditions',
       link: `${intake_href}/conditions#focus=add_condition`,
       items: pre_existing_conditions_items,
+      action: DescriptionListCellAction.Edit,
       sections: [
         {
           title: 'Medications',
@@ -497,7 +538,8 @@ export default function PatientSummary(
         },
         {
           title: 'Allergies',
-          edit_href: `${intake_href}/conditions#focus=allergies_search`,
+          href: `${intake_href}/conditions#focus=allergies_search`,
+          action: DescriptionListCellAction.Edit,
           items: allergies_items,
         },
       ],
@@ -505,12 +547,14 @@ export default function PatientSummary(
     {
       title: 'Past Conditions',
       link: `${intake_href}/history?focus=add_condition`,
+      action: DescriptionListCellAction.Edit,
       items: past_conditions_items,
       sections: [
         {
           title: 'Major Surgeries',
           items: major_surgeries_items,
-          edit_href: `${intake_href}/history#focus=add_surgery`,
+          href: `${intake_href}/history#focus=add_surgery`,
+          action: DescriptionListCellAction.Edit,
         },
       ],
     },

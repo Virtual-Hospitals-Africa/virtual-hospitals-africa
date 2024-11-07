@@ -3,10 +3,16 @@ import { assert } from 'std/assert/assert.ts'
 import DescriptionRow from '../../islands/summary/DescriptionRow.tsx'
 import cls from '../../util/cls.ts'
 
+export const enum DescriptionListCellAction {
+  Edit = 'edit',
+  View = 'view',
+}
+
 export type DescriptionListCell = {
   name: string
   value: string
-  edit_href?: string
+  href?: string
+  action?: DescriptionListCellAction
   className?: string
   leading_separator?: string
 }
@@ -25,6 +31,7 @@ type DescriptionListSection = {
 export type DescriptionListItemProps = {
   title: string
   link: string
+  action: DescriptionListCellAction
   items: DescriptionListRows[]
   sections: DescriptionListSection[]
 }
@@ -94,7 +101,8 @@ export const DescriptionList = (
           row={[{
             value: 'None Provided',
             name: page.title,
-            edit_href: page.link,
+            href: page.link,
+            action: page.action,
             className: 'italic hover-desktop:underline',
           }]}
           row_number={page_row_end}
@@ -133,7 +141,8 @@ export const DescriptionList = (
             row={[{
               value: 'None Provided',
               name: section.title,
-              edit_href: page.link,
+              href: page.link,
+              action: page.action,
               className: 'italic hover-desktop:underline',
             }]}
             row_number={page_row_end}

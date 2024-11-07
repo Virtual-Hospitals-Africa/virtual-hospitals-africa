@@ -73,7 +73,13 @@ import * as $app_patients_patient_id_intake_occupation from './routes/app/patien
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
 import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
+import * as $app_patients_patient_id_profile_appointments from './routes/app/patients/[patient_id]/profile/appointments.tsx'
+import * as $app_patients_patient_id_profile_history from './routes/app/patients/[patient_id]/profile/history.tsx'
+import * as $app_patients_patient_id_profile_orders from './routes/app/patients/[patient_id]/profile/orders.tsx'
+import * as $app_patients_patient_id_profile_profile from './routes/app/patients/[patient_id]/profile/profile.tsx'
+import * as $app_patients_patient_id_profile_review from './routes/app/patients/[patient_id]/profile/review.tsx'
 import * as $app_patients_patient_id_profile_summary from './routes/app/patients/[patient_id]/profile/summary.tsx'
+import * as $app_patients_patient_id_profile_visits from './routes/app/patients/[patient_id]/profile/visits.tsx'
 import * as $app_patients_patient_id_review from './routes/app/patients/[patient_id]/review.tsx'
 import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
 import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
@@ -356,8 +362,20 @@ const manifest = {
       $app_patients_patient_id_intake_summary,
     './routes/app/patients/[patient_id]/profile/_middleware.tsx':
       $app_patients_patient_id_profile_middleware,
+    './routes/app/patients/[patient_id]/profile/appointments.tsx':
+      $app_patients_patient_id_profile_appointments,
+    './routes/app/patients/[patient_id]/profile/history.tsx':
+      $app_patients_patient_id_profile_history,
+    './routes/app/patients/[patient_id]/profile/orders.tsx':
+      $app_patients_patient_id_profile_orders,
+    './routes/app/patients/[patient_id]/profile/profile.tsx':
+      $app_patients_patient_id_profile_profile,
+    './routes/app/patients/[patient_id]/profile/review.tsx':
+      $app_patients_patient_id_profile_review,
     './routes/app/patients/[patient_id]/profile/summary.tsx':
       $app_patients_patient_id_profile_summary,
+    './routes/app/patients/[patient_id]/profile/visits.tsx':
+      $app_patients_patient_id_profile_visits,
     './routes/app/patients/[patient_id]/review.tsx':
       $app_patients_patient_id_review,
     './routes/app/patients/[patient_id]/review/_middleware.tsx':

@@ -45,7 +45,6 @@ export function PatientPage(
     const rendered = await render({
       ctx,
     })
-
     return (
       <Layout
         title='Patient Profile'
@@ -66,16 +65,6 @@ export function PatientPage(
         )}
       >
         <div className='container my-4 mx-6'>
-          {ctx.state.patient.open_encounter && (
-            <Button
-              href={replaceParams(
-                '/app/patients/:patient_id/encounters/open',
-                ctx.params,
-              )}
-            >
-              Go to open encounter
-            </Button>
-          )}
           <Person person={ctx.state.patient} />
 
           <div className='mt-4'>
@@ -98,6 +87,17 @@ export function PatientPage(
           />
           {rendered}
         </div>
+
+        {ctx.state.patient.open_encounter && (
+          <Button
+            href={replaceParams(
+              '/app/patients/:patient_id/encounters/open',
+              ctx.params,
+            )}
+          >
+            Go to open encounter
+          </Button>
+        )}
       </Layout>
     )
   }
