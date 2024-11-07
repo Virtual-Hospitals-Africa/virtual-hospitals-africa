@@ -5,6 +5,7 @@ import { Tabs } from '../../../../../components/library/Tabs.tsx'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { PatientContext } from '../_middleware.tsx'
 import type { FreshContext } from '$fresh/server.ts'
+import { assertOrRedirect } from '../../../../../util/assertOr.ts'
 
 type PatientPageProps = {
   who: 'knows'
@@ -12,7 +13,7 @@ type PatientPageProps = {
 
 export function handler(
   _req: Request,
-  ctx: FreshContext
+  ctx: FreshContext,
 ) {
   return ctx.next()
 }
@@ -20,19 +21,32 @@ export function handler(
 export function PatientPage(
   render: (props: PatientPageProps) => JSX.Element | Promise<JSX.Element>,
 ) {
-  return async function(
+  return async function (
     _req: Request,
     ctx: PatientContext,
   ) {
+    assertOrRedirect(
+      ctx.state.patient.completed_intake,
+      `/app/patients/${ctx.state.patient.id}/intake`,
+    )
+
     /*
       What I want is to define all of our tabs as an array of strings and then have
       the tab props be generated as the result of a computation
     */
 
-    const tabs = ['summary', 'profile', 'visits', 'history', 'appointments', 'review', 'orders']
+    const tabs = [
+      'summary',
+      'profile',
+      'visits',
+      'history',
+      'appointments',
+      'review',
+      'orders',
+    ]
 
     const rendered = await render({
-      who: 'knows'
+      who: 'knows',
     })
 
     return (
@@ -45,14 +59,16 @@ export function PatientPage(
       >
         <div className='container my-4 mx-6'>
           <Person person={ctx.state.patient} />
-          <Tabs tabs={tabs.map(tab => ({
+          <Tabs
+            tabs={tabs.map((tab) => ({
               tab,
               href: replaceParams('/app/patients/:patient_id/profile/:tab', {
                 ...ctx.params,
-                tab
+                tab,
               }),
               active: ctx.url.pathname.endsWith('/' + tab),
-          }))}/>
+            }))}
+          />
           {rendered}
         </div>
       </Layout>
