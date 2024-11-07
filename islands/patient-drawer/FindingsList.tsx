@@ -1,10 +1,9 @@
 import { RenderedPatientExaminationFinding } from '../../types.ts'
-import { FindingsHeader } from './Header.tsx'
-import { FindingsList } from './List.tsx'
 import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import { assertHasNonEmptyString } from '../../util/isString.ts'
+import { FindingsListItem } from './FindingsListItem.tsx'
 
 // TODO remove/edit events
 
@@ -27,7 +26,7 @@ export function removeFinding(snomed_code: string) {
   )
 }
 
-export function FindingsDrawer(
+export function FindingsList(
   props: { findings: RenderedPatientExaminationFinding[] },
 ) {
   const findings = useSignal(props.findings)
@@ -74,9 +73,16 @@ export function FindingsDrawer(
   }, [])
 
   return (
-    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
-      <FindingsHeader />
-      <FindingsList findings={findings.value} />
-    </div>
+    <ul
+      role='list'
+      className='overflow-y-auto'
+    >
+      {findings.value.map((finding) => (
+        <FindingsListItem
+          key={finding.edit_href}
+          finding={finding}
+        />
+      ))}
+    </ul>
   )
 }

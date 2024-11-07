@@ -6,6 +6,7 @@ import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { PatientContext } from '../_middleware.tsx'
 import type { FreshContext } from '$fresh/server.ts'
 import { assertOrRedirect } from '../../../../../util/assertOr.ts'
+import { Button } from '../../../../../components/library/Button.tsx'
 
 type PatientPageProps = {
   who: 'knows'
@@ -30,11 +31,6 @@ export function PatientPage(
       `/app/patients/${ctx.state.patient.id}/intake`,
     )
 
-    /*
-      What I want is to define all of our tabs as an array of strings and then have
-      the tab props be generated as the result of a computation
-    */
-
     const tabs = [
       'summary',
       'profile',
@@ -58,7 +54,18 @@ export function PatientPage(
         variant='practitioner home page'
       >
         <div className='container my-4 mx-6'>
+          {ctx.state.patient.open_encounter && (
+            <Button
+              href={replaceParams(
+                '/app/patients/:patient_id/encounters/open',
+                ctx.params,
+              )}
+            >
+              Go to open encounter
+            </Button>
+          )}
           <Person person={ctx.state.patient} />
+
           <Tabs
             tabs={tabs.map((tab) => ({
               tab,

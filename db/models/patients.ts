@@ -229,7 +229,7 @@ export async function getWithOpenEncounter(
   trx: TrxOrDb,
   opts: {
     ids: string[]
-    health_worker_id?: string
+    health_worker_id: string
   },
 ): Promise<HasStringId<PatientWithOpenEncounter>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')

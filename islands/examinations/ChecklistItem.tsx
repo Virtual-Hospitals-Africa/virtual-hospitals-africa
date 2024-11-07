@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
-import { addFinding, removeFinding } from '../findings/Drawer.tsx'
+import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
 import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'

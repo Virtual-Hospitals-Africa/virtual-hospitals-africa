@@ -39,7 +39,7 @@ import words from '../../../../../../util/words.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
-import { FindingsDrawer } from '../../../../../../islands/findings/Drawer.tsx'
+import { PatientDrawer } from '../../../../../../islands/patient-drawer/Drawer.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -193,7 +193,23 @@ export function EncounterLayout({
           steps_completed={ctx.state.encounter.steps_completed}
         />
       }
-      drawer={<FindingsDrawer findings={key_findings} />}
+      drawer={
+        <PatientDrawer
+          patient={{
+            id: ctx.state.patient.id,
+            name: ctx.state.patient.name,
+            description: ctx.state.patient.description,
+            avatar_url: ctx.state.patient.avatar_url,
+            actions: {
+              chart: replaceParams(
+                '/app/patients/:patient_id/profile/chart',
+                ctx.params,
+              ),
+            },
+          }}
+          findings={key_findings}
+        />
+      }
       url={ctx.url}
       variant='form'
     >

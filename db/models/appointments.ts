@@ -263,7 +263,7 @@ export async function getWithPatientInfo(
   trx: TrxOrDb,
   opts: {
     id?: string
-    health_worker_id?: string
+    health_worker_id: string
   },
 ) {
   let query = trx
@@ -313,6 +313,8 @@ export async function getWithPatientInfo(
 
   const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
+  // TODO: this argument is not being used, so there's likely a bug here. Perhaps
+  // we're only meant to return those patients the health worker has access to?
   const patients = await getWithOpenEncounter(trx, {
     ids: patient_ids,
     health_worker_id: opts.health_worker_id,
@@ -323,14 +325,6 @@ export async function getWithPatientInfo(
     assert(patient, `Could not find patient ${appointment.patient_id}`)
     return { ...appointment, patient }
   })
-}
-
-export async function getWithPatientInfoById(
-  trx: TrxOrDb,
-  id: string,
-): Promise<Maybe<AppointmentWithAllPatientInfo>> {
-  const result = await getWithPatientInfo(trx, { id })
-  return result[0]
 }
 
 export function remove(trx: TrxOrDb, id: string) {

@@ -179,10 +179,6 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $findings_Drawer from './islands/findings/Drawer.tsx'
-import * as $findings_Header from './islands/findings/Header.tsx'
-import * as $findings_List from './islands/findings/List.tsx'
-import * as $findings_ListItem from './islands/findings/ListItem.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
@@ -210,6 +206,9 @@ import * as $nurse_registration_form from './islands/nurse-registration-form.tsx
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
 import * as $patient_cards from './islands/patient-cards.tsx'
+import * as $patient_drawer_Drawer from './islands/patient-drawer/Drawer.tsx'
+import * as $patient_drawer_FindingsList from './islands/patient-drawer/FindingsList.tsx'
+import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -480,10 +479,6 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/findings/Drawer.tsx': $findings_Drawer,
-    './islands/findings/Header.tsx': $findings_Header,
-    './islands/findings/List.tsx': $findings_List,
-    './islands/findings/ListItem.tsx': $findings_ListItem,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/buttons.tsx': $form_buttons,
@@ -514,6 +509,10 @@ const manifest = {
       $past_medical_conditions_Condition,
     './islands/past-medical-conditions/Form.tsx': $past_medical_conditions_Form,
     './islands/patient-cards.tsx': $patient_cards,
+    './islands/patient-drawer/Drawer.tsx': $patient_drawer_Drawer,
+    './islands/patient-drawer/FindingsList.tsx': $patient_drawer_FindingsList,
+    './islands/patient-drawer/FindingsListItem.tsx':
+      $patient_drawer_FindingsListItem,
     './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
