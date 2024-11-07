@@ -14,14 +14,14 @@ export default function RowElement({ row, row_number }: RowElementProps) {
   return (
     <div
       style={{ gridColumn: 2, gridRow: row_number }}
-      className='group flex justify-between content-center rounded-md hover:bg-indigo-50 hover:ring-indigo-50 p-2'
+      className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-2'
       onMouseOver={() => setIsHoveredOnGroup(true)}
       onMouseLeave={() => setIsHoveredOnGroup(false)}
     >
-      <div className='group-hover:text-indigo-900 flex'>
+      <div className='hover-desktop:text-indigo-900 flex'>
         {row.map((cell, index) => {
           return (
-            <div>
+            <div key={index}>
               {cell.leading_separator && <span>{cell.leading_separator}</span>}
               {cell.edit_href
                 ? (
@@ -39,16 +39,14 @@ export default function RowElement({ row, row_number }: RowElementProps) {
                     {cell.value}
                   </a>
                 )
-                : (
-                  <span>
-                    {cell.value}
-                  </span>
-                )}
+                : <span>{cell.value}</span>}
             </div>
           )
         })}
       </div>
-      {isHoveredOnGroup && <PencilSquareIcon className='w-4 h-4' />}
+      {isHoveredOnGroup && (
+        <PencilSquareIcon className='w-4 h-4 hidden show-on-mobile lg:block' />
+      )}
     </div>
   )
 }
