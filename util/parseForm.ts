@@ -14,7 +14,7 @@ export function parseParam(param: string): FormValue {
   if (param === 'on') return true
   if (param === 'false') return false
   if (param === 'off') return false
-  if (/^\d+$/g.test(param)) return parseInt(param)
+  if (/^[-+]?\d*\.?\d+$/g.test(param)) return parseFloat(param)
   if (param[0] === '[') return JSON.parse(param)
   return param
 }
