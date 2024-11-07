@@ -23,6 +23,7 @@ import { parseTsv } from '../../util/parseCsv.ts'
 import { take } from '../../util/take.ts'
 import generateUUID from '../../util/uuid.ts'
 import { OrganizationInsert } from '../../db/models/organizations.ts'
+import last from '../../util/last.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -288,17 +289,19 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
       )
     }
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
+      const key = el.attribs.name && last(el.attribs.name.split('!'))
       set(
         formValues,
         el.attribs.name,
-        el.attribs.value ? parseParam(el.attribs.value) : null,
+        el.attribs.value ? parseParam(key, el.attribs.value) : null,
       )
     }
   })
   $('form select').each((_i, el) => {
     let value = null
     $(el).find('option[selected]').each((_i, option) => {
-      value = option.attribs.value && parseParam(option.attribs.value)
+      const key = option.attribs.name && last(el.attribs.name.split('!'))
+      value = option.attribs.value && parseParam(key, option.attribs.value)
     })
     if (el.attribs.name) {
       set(
