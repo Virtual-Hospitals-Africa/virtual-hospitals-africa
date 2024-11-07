@@ -278,7 +278,7 @@ export default function PatientSummary(
             {
               value: intakeFrequencyText(medication.schedules[0].frequency),
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.frequency`,
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.intake_frequency`,
               leading_separator: ' ',
             },
           ],
