@@ -219,6 +219,7 @@ import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow
 import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
 import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
+import * as $summary_RowElement from './islands/summary/RowElement.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -519,6 +520,7 @@ const manifest = {
     './islands/referral/Form.tsx': $referral_Form,
     './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
     './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
+    './islands/summary/RowElement.tsx': $summary_RowElement,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

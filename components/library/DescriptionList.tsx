@@ -1,6 +1,7 @@
 import { PencilSquareIcon } from './icons/heroicons/outline.tsx'
 import type { JSX } from 'preact/jsx-runtime'
 import { assert } from 'std/assert/assert.ts'
+import RowElement from '../../islands/summary/RowElement.tsx'
 
 export type DescriptionListCell = {
   value: string
@@ -25,46 +26,6 @@ export type DescriptionListItemProps = {
   sections: DescriptionListSection[]
 }
 
-function createRowElement(
-  row: DescriptionListCell[],
-  row_number: number,
-): JSX.Element {
-  const cell_elements: JSX.Element[] = []
-  for (const cell of row) {
-    cell.leading_separator && (
-      cell_elements.push(<span>{cell.leading_separator}</span>)
-    )
-    const element = cell.edit_href
-      ? (
-        <a style={{ display: 'inline-block' }} href={cell.edit_href}>
-          {cell.value}
-        </a>
-      )
-      : (
-        <span>
-          {cell.value}
-        </span>
-      )
-    cell_elements.push(element)
-  }
-  const row_element = <div>{cell_elements}</div>
-  return (
-    <>
-      <div
-        style={{ gridColumn: 2, gridRow: row_number }}
-      >
-        {row_element}
-      </div>
-      <div
-        className='w-4 h-4 text-gray-500'
-        style={{ gridColumn: 3, gridRow: row_number }}
-      >
-        <PencilSquareIcon />
-      </div>
-    </>
-  )
-}
-
 function createTitleElement(
   title: string,
   row_start_number: number,
@@ -72,7 +33,7 @@ function createTitleElement(
 ): JSX.Element {
   return (
     <h3
-      className='text-lg font-semibold text-left'
+      className='text-lg rounded-md font-semibold text-left hover:text-indigo-900 hover:bg-indigo-50 hover:ring-indigo-50 p-2'
       style={{
         gridColumn: 1,
         gridRow: `${row_start_number} / ${row_end_number}`,
@@ -152,7 +113,7 @@ export const DescriptionList = (
 
         for (const row of item) {
           assert(row.length > 0, 'Empty row')
-          const rowElement = createRowElement(row, page_row_end)
+          const rowElement = <RowElement row={row} row_number={page_row_end} />
           if (rowElement) elements.push(rowElement)
           page_row_end += 1
         }
@@ -192,7 +153,9 @@ export const DescriptionList = (
         for (const item of section.items) {
           for (const row of item) {
             assert(row.length > 0, 'Empty row')
-            const rowElement = createRowElement(row, page_row_end)
+            const rowElement = (
+              <RowElement row={row} row_number={page_row_end} />
+            )
             if (rowElement) elements.push(rowElement)
             page_row_end += 1
           }
