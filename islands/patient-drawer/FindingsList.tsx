@@ -72,6 +72,14 @@ export function FindingsList(
     }
   }, [])
 
+  if (findings.value.length === 0) {
+    return (
+      <i>
+        No findings so far. Clinical notes will appear here as you make them.
+      </i>
+    )
+  }
+
   return (
     <ul
       role='list'

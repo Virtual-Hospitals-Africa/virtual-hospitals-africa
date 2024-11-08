@@ -5,7 +5,6 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/Form.tsx'
 import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
-import { Person } from '../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../util/capitalize.ts'
 import { completedStep } from '../../../../../db/models/doctor_reviews.ts'
@@ -78,10 +77,6 @@ export function ReviewLayout({
         <StepsSidebar
           ctx={ctx}
           nav_links={nav_links}
-          top={{
-            href: replaceParams('/app/patients/:patient_id', ctx.params),
-            child: <Person person={ctx.state.doctor_review.patient} />,
-          }}
           steps_completed={ctx.state.doctor_review.steps_completed}
         />
       }

@@ -2,7 +2,6 @@ import Avatar from './Avatar.tsx'
 import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
-import BackLink from '../../islands/BackLink.tsx'
 import { NotificationsButton } from '../../islands/Notifications.tsx'
 import { RenderedNotification } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -55,14 +54,6 @@ function HeaderRightWithAvatar(
   )
 }
 
-function HeaderRightClose() {
-  return (
-    <HeaderRight>
-      <BackLink />
-    </HeaderRight>
-  )
-}
-
 function HeaderBase(
   { className, children }: { className?: string; children: ComponentChildren },
 ) {
@@ -98,7 +89,7 @@ export function Header(
         notifications={(assert(notifications), notifications)}
       />
     )
-    : <HeaderRightClose />
+    : null
 
   return (
     <HeaderBase className='bg-indigo-900 font-ubuntu'>

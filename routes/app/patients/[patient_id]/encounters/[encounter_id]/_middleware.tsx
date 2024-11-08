@@ -18,7 +18,6 @@ import * as send_to from '../../../../../../db/models/send_to.ts'
 import * as findings from '../../../../../../db/models/findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
-import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
@@ -186,10 +185,6 @@ export function EncounterLayout({
         <StepsSidebar
           ctx={ctx}
           nav_links={nav_links}
-          top={{
-            href: replaceParams('/app/patients/:patient_id', ctx.params),
-            child: <Person person={ctx.state.patient} />,
-          }}
           steps_completed={ctx.state.encounter.steps_completed}
         />
       }
@@ -207,6 +202,7 @@ export function EncounterLayout({
               ),
             },
           }}
+          encounter={ctx.state.encounter}
           findings={key_findings}
         />
       }
