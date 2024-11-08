@@ -387,6 +387,5 @@ export default function PatientSummary(
       ],
     },
   ]
-
-  return <DescriptionList pages={pages} />
+  return <DescriptionList pages={pages} baseHref={`${intake_href}`} />
 }

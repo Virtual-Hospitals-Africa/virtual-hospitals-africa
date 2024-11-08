@@ -6,7 +6,6 @@ export type DescriptionListCell = {
   value: string
   edit_href?: string
   leading_separator?: string
-  italics?: boolean
 }
 
 export type EmptyRow = []
@@ -109,7 +108,7 @@ function createEmptyRow(
 }
 
 export const DescriptionList = (
-  { pages }: { pages: DescriptionListItemProps[] },
+  { pages, baseHref }: { pages: DescriptionListItemProps[]; baseHref?: string },
 ) => {
   const elements: JSX.Element[] = []
   let page_row_start: number = 0
@@ -127,12 +126,13 @@ export const DescriptionList = (
     if (page.items.length === 0) {
       elements.push(
         <>
-          <div
+          <a
+            href={baseHref}
             className='italic'
             style={{ gridColumn: 2, gridRow: page_row_end }}
           >
             None provided
-          </div>
+          </a>
           <div
             className='w-4 h-4 text-gray-500'
             style={{ gridColumn: 3, gridRow: page_row_end }}
@@ -173,12 +173,13 @@ export const DescriptionList = (
       if (section.items.length === 0) {
         elements.push(
           <>
-            <div
+            <a
+              href={baseHref}
               className='italic'
               style={{ gridColumn: 2, gridRow: page_row_end }}
             >
               None provided
-            </div>
+            </a>
             <div
               className='w-4 h-4 text-gray-500'
               style={{ gridColumn: 3, gridRow: page_row_end }}
