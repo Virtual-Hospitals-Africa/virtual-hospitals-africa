@@ -7,6 +7,8 @@ import {
 import type { Maybe } from '../../../types.ts'
 import omit from '../../../util/omit.ts'
 import { intakeFrequencyText } from '../../../shared/medication.ts'
+import { parsePhoneNumber } from 'npm:awesome-phonenumber'
+import { international_phone_number } from '../../../util/validators.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -69,7 +71,7 @@ export default function PatientSummary(
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
     }], [{
-      value: personal.phone_number,
+      value: international_phone_number.optional().parse(personal.phone_number),
       edit_href: `${intake_href}/personal#focus=phone_number`,
     }]]),
   ]
@@ -146,7 +148,9 @@ export default function PatientSummary(
         }],
         [
           {
-            value: dependent.patient_phone_number,
+            value: international_phone_number.optional().parse(
+              dependent.patient_phone_number,
+            ),
             edit_href:
               `${intake_href}/family#focus=dependents.${index}.patient_phone_number`,
           },
@@ -168,7 +172,9 @@ export default function PatientSummary(
           leading_separator: ', ',
         }],
         [{
-          value: guardian.patient_phone_number,
+          value: international_phone_number.optional().parse(
+            guardian.patient_phone_number,
+          ),
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
         }],

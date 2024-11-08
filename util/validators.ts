@@ -6,7 +6,7 @@ export const national_id_number = z.string().regex(
 )
   .transform((s) => s.toUpperCase())
 
-export const phone_number = z.string().or(z.number())
+export const e164_phone_number = z.string().or(z.number())
   .transform((data) => String(data))
   .transform((data) => data.startsWith('+') ? data : `+${data}`)
   .transform((data) => parsePhoneNumber(data))
@@ -17,6 +17,18 @@ export const phone_number = z.string().or(z.number())
     },
   )
   .transform((data) => data.number.e164)
+
+export const international_phone_number = z.string().or(z.number())
+  .transform((data) => String(data))
+  .transform((data) => data.startsWith('+') ? data : `+${data}`)
+  .transform((data) => parsePhoneNumber(data))
+  .refine(
+    (data) => data.valid,
+    {
+      message: 'Invalid phone number',
+    },
+  )
+  .transform((data) => data.number.international)
 
 export const gender = z.enum(['male', 'female', 'non-binary'])
 

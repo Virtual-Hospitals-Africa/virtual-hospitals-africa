@@ -2,12 +2,12 @@ import * as patient_family from '../../../../../db/models/family.ts'
 import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 import { z } from 'zod'
-import { phone_number } from '../../../../../util/validators.ts'
+import { e164_phone_number } from '../../../../../util/validators.ts'
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().uuid().optional(),
   patient_name: z.string(),
-  patient_phone_number: phone_number.optional(),
+  patient_phone_number: e164_phone_number.optional(),
   family_relation_gendered: z.string(),
   next_of_kin: z.boolean().default(false),
 })

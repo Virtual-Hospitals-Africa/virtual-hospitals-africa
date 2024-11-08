@@ -11,6 +11,7 @@
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.4.47",
     "npm:@types/node@*": "22.5.4",
     "npm:autoprefixer@10.4.17": "10.4.17_postcss@8.4.35",
+    "npm:awesome-phonenumber@*": "7.2.0",
     "npm:awesome-phonenumber@7.2.0": "7.2.0",
     "npm:cssnano@6.0.3": "6.0.3_postcss@8.4.35",
     "npm:expect@29.7.0": "29.7.0",
