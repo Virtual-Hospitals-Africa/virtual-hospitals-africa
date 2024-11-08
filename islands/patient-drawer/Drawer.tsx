@@ -1,19 +1,19 @@
-import { useSignal } from '@preact/signals'
+// import { useSignal } from '@preact/signals'
 import {
   type Maybe,
   RenderedPatientExaminationFinding,
   type Sendable,
 } from '../../types.ts'
 import { FindingsList } from './FindingsList.tsx'
-import { Person } from '../../components/library/Person.tsx'
+// import { Person } from '../../components/library/Person.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import { Button } from '../../components/library/Button.tsx'
-import { SendableList } from '../SendTo/List.tsx'
+// import { Button } from '../../components/library/Button.tsx'
+// import { SendableList } from '../SendTo/List.tsx'
 import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
 import Menu from '../Menu.tsx'
 
 export function PatientDrawer(
-  { form, patient, encounter, findings, sendables }: {
+  { patient, encounter, findings }: {
     form?: 'intake' | 'encounter'
     patient: {
       id: string
@@ -33,20 +33,20 @@ export function PatientDrawer(
     sendables: Sendable[]
   },
 ) {
-  const open = useSignal(false)
+  // const open = useSignal(false)
 
-  const handleClick = () => {
-    const formElement = form && document.getElementById(form) as HTMLFormElement
-    if (formElement) {
-      if (formElement.checkValidity()) {
-        open.value = true
-      } else {
-        formElement.reportValidity()
-      }
-    }
-  }
+  // const handleClick = () => {
+  //   const formElement = form && document.getElementById(form) as HTMLFormElement
+  //   if (formElement) {
+  //     if (formElement.checkValidity()) {
+  //       open.value = true
+  //     } else {
+  //       formElement.reportValidity()
+  //     }
+  //   }
+  // }
 
-  const selected = useSignal<Sendable | null>(null)
+  // const selected = useSignal<Sendable | null>(null)
 
   return (
     <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2'>

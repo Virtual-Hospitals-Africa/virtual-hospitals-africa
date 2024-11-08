@@ -1,9 +1,7 @@
 import { sql } from 'kysely'
 import {
   Appointment,
-  AppointmentWithAllPatientInfo,
   HasStringId,
-  Maybe,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
   PatientAppointmentRequestMedia,

@@ -96,6 +96,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     const cancelledAppointmet = await appointments.getWithPatientInfo(db, {
       id: appointment.id,
+      health_worker_id: health_worker.id,
     })
     assertEquals(cancelledAppointmet.length, 0)
   })
