@@ -491,7 +491,11 @@ export function PhoneNumberInput(
         placeholder='+263 777 777 777'
         required={required}
         disabled={disabled}
-        onInput={onInput}
+        onInput={(event) => {
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
@@ -532,7 +536,10 @@ export function ImageInput(
         )}
         placeholder={placeholder}
         required={required}
-        onInput={onInput}
+        onInput={(event) => {
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
@@ -581,7 +588,10 @@ export function ImageOrVideoInput(
         )}
         placeholder={placeholder}
         required={required}
-        onInput={onInput}
+        onInput={(event) => {
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
