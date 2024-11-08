@@ -5,7 +5,7 @@ import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
 import pick from '../../util/pick.ts'
-import { itUsesTrxAnd } from '../web/utilities.ts'
+import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 import sortBy from '../../util/sortBy.ts'
 
@@ -101,12 +101,16 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
   describe('getWithOpenEncounter', () => {
     itUsesTrxAnd('finds patients without an open encounter', async (trx) => {
+      const health_worker = await addTestHealthWorker(trx, {
+        scenario: 'approved-nurse',
+      })
       const test_patient = await patients.insert(trx, {
         name: 'Test Patient',
       })
 
       const results = await patients.getWithOpenEncounter(trx, {
         ids: [test_patient.id],
+        health_worker_id: health_worker.id,
       })
       assertEquals(results, [
         {
@@ -135,6 +139,9 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('finds patients with an open encounter', async (trx) => {
+      const health_worker = await addTestHealthWorker(trx, {
+        scenario: 'approved-nurse',
+      })
       const encounter = await patient_encounters.upsert(
         trx,
         '00000000-0000-0000-0000-000000000001',
@@ -147,6 +154,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
       const results = await patients.getWithOpenEncounter(trx, {
         ids: [patient_id],
+        health_worker_id: health_worker.id,
       })
       assertEquals(results, [
         {
@@ -190,6 +198,9 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'returns recommended examinations once date of birth is filled in',
       async (trx) => {
+        const health_worker = await addTestHealthWorker(trx, {
+          scenario: 'approved-nurse',
+        })
         const patient = await patients.insert(trx, {
           name: 'Test Patient',
           date_of_birth: '1989-01-03',
@@ -207,6 +218,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
         const results = await patients.getWithOpenEncounter(trx, {
           ids: [patient_id],
+          health_worker_id: health_worker.id,
         })
         assertEquals(results, [
           {

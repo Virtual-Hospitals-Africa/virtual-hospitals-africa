@@ -200,10 +200,15 @@ export function EncounterLayout({
                 '/app/patients/:patient_id/profile/chart',
                 ctx.params,
               ),
+              clinical_notes: replaceParams(
+                '/app/patients/:patient_id/profile/clinical_notes',
+                ctx.params,
+              ),
             },
           }}
           encounter={ctx.state.encounter}
           findings={key_findings}
+          sendables={sendables}
         />
       }
       url={ctx.url}

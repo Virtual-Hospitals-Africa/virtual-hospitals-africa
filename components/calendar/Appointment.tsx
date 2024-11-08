@@ -133,11 +133,12 @@ export default function Appointment(
         )
         : (
           <Menu
+            icon='DotsVerticalIcon'
             options={[
               { label: 'Cancel', href: `${href}/cancel` },
               { label: 'Reschedule', href: `${href}/reschedule` },
             ]}
-            className='top-2 right-2'
+            className='top-2 right-2 xl:relative xl:right-auto xl:top-auto xl:self-center'
           />
         )}
     </li>

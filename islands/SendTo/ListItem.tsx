@@ -63,7 +63,7 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
 
 export function SendableListItem(
   { form, sendable, is_selected, toggleSelected }: {
-    form: 'intake' | 'encounter'
+    form?: 'intake' | 'encounter'
     sendable: Sendable
     is_selected: boolean
     toggleSelected: () => void
