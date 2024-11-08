@@ -1,0 +1,55 @@
+import { useState } from 'preact/hooks'
+import cls from '../../util/cls.ts'
+import type { DescriptionListCell } from '../../components/library/DescriptionList.tsx'
+import { PencilSquareIcon } from '../../components/library/icons/heroicons/outline.tsx'
+
+type DescriptionRowProps = {
+  row: DescriptionListCell[]
+  row_number: number
+}
+
+export default function DescriptionRow(
+  { row, row_number }: DescriptionRowProps,
+) {
+  const [isHoveredOnGroup, setIsHoveredOnGroup] = useState(false)
+  const [hoveredCellIndex, setHoveredCellIndex] = useState(-1)
+
+  return (
+    <div
+      style={{ gridColumn: 2, gridRow: row_number }}
+      className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1'
+      onMouseOver={() => setIsHoveredOnGroup(true)}
+      onMouseLeave={() => setIsHoveredOnGroup(false)}
+    >
+      <div className='hover-desktop:text-indigo-900 flex content-center'>
+        {row.map((cell, index) => (
+          <div key={index}>
+            {cell.leading_separator}
+            {cell.edit_href
+              ? (
+                <a
+                  style={{ display: 'inline-block' }}
+                  onMouseOver={() => setHoveredCellIndex(index)}
+                  onMouseLeave={() => setHoveredCellIndex(-1)}
+                  className={cls(
+                    hoveredCellIndex === index && 'underline',
+                    cell.className,
+                  )}
+                  href={cell.edit_href}
+                >
+                  {cell.value}
+                </a>
+              )
+              : <span className={cell.className}>{cell.value}</span>}
+          </div>
+        ))}
+      </div>
+      <PencilSquareIcon
+        className={cls(
+          'self-center w-4 h-4 show-on-mobile lg:block',
+          isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
+        )}
+      />
+    </div>
+  )
+}

@@ -1,6 +1,6 @@
 import type { JSX } from 'preact/jsx-runtime'
 import { assert } from 'std/assert/assert.ts'
-import RowElement from '../../islands/summary/RowElement.tsx'
+import DescriptionRow from '../../islands/summary/DescriptionRow.tsx'
 
 export type DescriptionListCell = {
   value: string
@@ -85,7 +85,7 @@ export const DescriptionList = (
 
     if (page.items.length === 0 || page.items[0].length === 0) {
       elements.push(
-        <RowElement
+        <DescriptionRow
           row={[{
             value: 'None Provided',
             edit_href: page.link,
@@ -99,7 +99,7 @@ export const DescriptionList = (
       for (const [item_index, item] of page.items.entries()) {
         for (const row of item) {
           assert(row.length > 0, 'Empty row')
-          elements.push(<RowElement row={row} row_number={page_row_end} />)
+          elements.push(<DescriptionRow row={row} row_number={page_row_end} />)
           page_row_end += 1
         }
 
@@ -117,7 +117,7 @@ export const DescriptionList = (
 
       if (section.items.length === 0 || section.items[0].length === 0) {
         elements.push(
-          <RowElement
+          <DescriptionRow
             row={[{
               value: 'None Provided',
               edit_href: page.link,
@@ -131,7 +131,9 @@ export const DescriptionList = (
         for (const [item_index, item] of section.items.entries()) {
           for (const row of item) {
             assert(row.length > 0, 'Empty row')
-            elements.push(<RowElement row={row} row_number={page_row_end} />)
+            elements.push(
+              <DescriptionRow row={row} row_number={page_row_end} />,
+            )
             page_row_end += 1
           }
 
