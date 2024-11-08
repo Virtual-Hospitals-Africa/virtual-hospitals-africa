@@ -39,17 +39,32 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
             '=',
             'patient_examinations.id',
           )
+          .innerJoin(
+            'snomed_concepts',
+            'snomed_concepts.snomed_concept_id',
+            'patient_examination_findings.snomed_concept_id',
+          )
           .select([
-            'snomed_code',
-            'snomed_english_term',
+            'snomed_concept_id',
+            'snomed_concepts.english_term as snomed_english_term',
             'additional_notes',
           ])
           .select((eb_findings) =>
             jsonArrayFrom(
               eb_findings.selectFrom('patient_examination_finding_body_sites')
+                .whereRef(
+                  'patient_examination_finding_body_sites.patient_examination_finding_id',
+                  '=',
+                  'patient_examination_findings.id',
+                )
+                .innerJoin(
+                  'snomed_concepts',
+                  'snomed_concepts.snomed_concept_id',
+                  'patient_examination_finding_body_sites.snomed_concept_id',
+                )
                 .select([
-                  'snomed_code',
-                  'snomed_english_term',
+                  'snomed_concepts.snomed_concept_id',
+                  'snomed_concepts.english_term as snomed_english_term',
                 ]),
             ).as('body_sites')
           ),

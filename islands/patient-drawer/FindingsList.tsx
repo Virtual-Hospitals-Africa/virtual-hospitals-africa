@@ -18,10 +18,10 @@ export function addFinding(finding: RenderedPatientExaminationFinding) {
   )
 }
 
-export function removeFinding(snomed_code: string) {
+export function removeFinding(snomed_concept_id: string) {
   self.dispatchEvent(
     new CustomEvent(REMOVE_EXAMINATION_FINDING_EVENT_NAME, {
-      detail: { snomed_code },
+      detail: { snomed_concept_id },
     }),
   )
 }
@@ -33,7 +33,7 @@ export function FindingsList(
 
   function onAdd(event: unknown) {
     assert(event instanceof CustomEvent)
-    assertHasNonEmptyString(event.detail, 'snomed_code')
+    assertHasNonEmptyString(event.detail, 'snomed_concept_id')
     assertHasNonEmptyString(event.detail, 'text')
     assertHasNonEmptyString(event.detail, 'edit_href')
     const additional_notes = 'additional_notes' in event.detail &&
@@ -44,7 +44,7 @@ export function FindingsList(
     const finding = { ...event.detail, additional_notes }
 
     const existing_finding_of_code = findings.value.findIndex(
-      (finding) => finding.snomed_code === event.detail.snomed_code,
+      (finding) => finding.snomed_concept_id === event.detail.snomed_concept_id,
     )
 
     findings.value = existing_finding_of_code === -1
@@ -56,9 +56,9 @@ export function FindingsList(
 
   function onRemove(event: unknown) {
     assert(event instanceof CustomEvent)
-    assertHasNonEmptyString(event.detail, 'snomed_code')
+    assertHasNonEmptyString(event.detail, 'snomed_concept_id')
     findings.value = findings.value?.filter(
-      (finding) => finding.snomed_code !== event.detail.snomed_code,
+      (finding) => finding.snomed_concept_id !== event.detail.snomed_concept_id,
     )
   }
 

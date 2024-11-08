@@ -36,7 +36,7 @@ export function ExaminationChecklist(
           checklist_item={checklist_item}
           edit_href={`${patient_examination_href}#edit=${checklist_item.code}`}
           found={findings.find((finding) =>
-            finding.snomed_code === checklist_item.code
+            finding.snomed_concept_id === checklist_item.code
           )}
         />
       ))}

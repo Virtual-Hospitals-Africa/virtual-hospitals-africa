@@ -10,7 +10,7 @@ type ExaminationChecklistProps = {
   edit_href: string
   found?: {
     body_sites: {
-      snomed_code: string
+      snomed_concept_id: string
       snomed_english_term: string
     }[]
     additional_notes: string | null
@@ -57,7 +57,7 @@ export function ExaminationChecklistItem(
       item.value = {
         body_sites: checklist_item.body_sites?.length
           ? [{
-            snomed_code: checklist_item.body_sites[0].code,
+            snomed_concept_id: checklist_item.body_sites[0].code,
             snomed_english_term: checklist_item.body_sites[0].english_term,
           }]
           : [],
@@ -100,7 +100,7 @@ export function ExaminationChecklistItem(
           }
 
           addFinding({
-            snomed_code: checklist_item.code,
+            snomed_concept_id: checklist_item.code,
             text,
             edit_href,
             additional_notes: finding.additional_notes,

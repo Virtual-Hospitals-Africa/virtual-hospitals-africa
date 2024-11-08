@@ -819,8 +819,7 @@ export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_finding_id: string
-  snomed_code: string
-  snomed_english_term: string
+  snomed_concept_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -829,8 +828,7 @@ export interface PatientExaminationFindings {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
-  snomed_code: string
-  snomed_english_term: string
+  snomed_concept_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1120,6 +1118,11 @@ export interface RegulatorSessions {
   updated_at: Generated<Timestamp>
 }
 
+export interface SnomedConcepts {
+  english_term: string
+  snomed_concept_id: string
+}
+
 export interface SpatialRefSys {
   auth_name: string | null
   auth_srid: number | null
@@ -1273,6 +1276,7 @@ export interface DB {
   regulator_google_tokens: RegulatorGoogleTokens
   regulator_sessions: RegulatorSessions
   regulators: Regulators
+  snomed_concepts: SnomedConcepts
   spatial_ref_sys: SpatialRefSys
   waiting_room: WaitingRoom
   wards: Wards

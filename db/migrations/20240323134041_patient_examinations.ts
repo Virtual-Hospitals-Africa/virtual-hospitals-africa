@@ -72,14 +72,10 @@ export async function up(
           ),
       )
         .addColumn(
-          'snomed_code',
+          'snomed_concept_id',
           'varchar(255)',
-          (col) => col.notNull(),
-        )
-        .addColumn(
-          'snomed_english_term',
-          'varchar(255)',
-          (col) => col.notNull(),
+          (col) =>
+            col.notNull().references('snomed_concepts.snomed_concept_id'),
         )
         .addColumn(
           'additional_notes',
@@ -100,14 +96,10 @@ export async function up(
           ),
       )
         .addColumn(
-          'snomed_code',
+          'snomed_concept_id',
           'varchar(255)',
-          (col) => col.notNull(),
-        )
-        .addColumn(
-          'snomed_english_term',
-          'varchar(255)',
-          (col) => col.notNull(),
+          (col) =>
+            col.notNull().references('snomed_concepts.snomed_concept_id'),
         ),
   )
 }
