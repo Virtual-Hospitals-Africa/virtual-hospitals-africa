@@ -1,6 +1,7 @@
 import { PencilSquareIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import type { DescriptionListCell } from '../../components/library/DescriptionList.tsx'
 import { useState } from 'preact/hooks'
+import cls from '../../util/cls.ts'
 
 type RowElementProps = {
   row: DescriptionListCell[]
@@ -36,13 +37,16 @@ export default function RowElement({ row, row_number }: RowElementProps) {
                       onMouseLeave={() => {
                         setHoveredCellIndex(-1)
                       }}
-                      className={`${hoveredCellIndex === index && 'underline'}`}
+                      className={cls(
+                        hoveredCellIndex === index && 'underline',
+                        cell.className,
+                      )}
                       href={cell.edit_href}
                     >
                       {cell.value}
                     </a>
                   )
-                  : <span>{cell.value}</span>}
+                  : <span className={cell.className}>{cell.value}</span>}
               </div>
             )
           })

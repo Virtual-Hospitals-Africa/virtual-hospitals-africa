@@ -120,17 +120,19 @@ export default function PatientSummary(
     ]]),
   ]
 
+  console.log('next_of_kin_items', next_of_kin_items)
+
   const family_items: DescriptionListRows[] = [
     nonEmptyRows([[
       {
         value: family.marital_status,
         edit_href: `${intake_href}/family#focus=family.marital_status`,
       },
+      {
+        value: family.religion,
+        edit_href: `${intake_href}/family#focus=family.religion`,
+      },
     ]]),
-    nonEmptyRows([[{
-      value: family.religion,
-      edit_href: `${intake_href}/family#focus=family.religion`,
-    }]]),
   ]
 
   const dependents_items: DescriptionListRows[] = family.dependents.map(

@@ -5,6 +5,7 @@ import RowElement from '../../islands/summary/RowElement.tsx'
 export type DescriptionListCell = {
   value: string
   edit_href?: string
+  className?: string
   leading_separator?: string
 }
 
@@ -82,8 +83,17 @@ export const DescriptionList = (
   for (const page of pages) {
     elements.push(createTitleElement(page.title, page_row_end, page.link))
 
-    if (page.items.length === 0) {
-      elements.push(<RowElement row={[]} row_number={page_row_end} />)
+    if (page.items.length === 0 || page.items[0].length === 0) {
+      elements.push(
+        <RowElement
+          row={[{
+            value: 'None Provided',
+            edit_href: page.link,
+            className: 'italic hover-desktop:underline',
+          }]}
+          row_number={page_row_end}
+        />,
+      )
       page_row_end += 1
     } else {
       for (const [item_index, item] of page.items.entries()) {
@@ -105,8 +115,17 @@ export const DescriptionList = (
     for (const [section_index, section] of page.sections.entries()) {
       elements.push(createTitleElement(section.title, page_row_end))
 
-      if (section.items.length === 0) {
-        elements.push(<RowElement row={[]} row_number={page_row_end} />)
+      if (section.items.length === 0 || section.items[0].length === 0) {
+        elements.push(
+          <RowElement
+            row={[{
+              value: 'None Provided',
+              edit_href: page.link,
+              className: 'italic hover-desktop:underline',
+            }]}
+            row_number={page_row_end}
+          />,
+        )
         page_row_end += 1
       } else {
         for (const [item_index, item] of section.items.entries()) {
