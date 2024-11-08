@@ -71,7 +71,7 @@ export default function PatientSummary(
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
     }], [{
-      value: international_phone_number.optional().parse(personal.phone_number),
+      value: international_phone_number.nullable().parse(personal.phone_number),
       edit_href: `${intake_href}/personal#focus=phone_number`,
     }]]),
   ]
@@ -150,7 +150,7 @@ export default function PatientSummary(
         }],
         [
           {
-            value: international_phone_number.optional().parse(
+            value: international_phone_number.nullable().parse(
               dependent.patient_phone_number,
             ),
             edit_href:
@@ -174,7 +174,7 @@ export default function PatientSummary(
           leading_separator: ', ',
         }],
         [{
-          value: international_phone_number.optional().parse(
+          value: international_phone_number.nullable().parse(
             guardian.patient_phone_number,
           ),
           edit_href:
