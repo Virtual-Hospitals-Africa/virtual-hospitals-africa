@@ -12,22 +12,9 @@ import omit from '../../../util/omit.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
-/*
-  - [ ] Make each cell editable (link)
-  - [ ] Handle null values in rows/cells
-  - [ ] Handle medications (include end date)
-  - [ ] Get everything type-checking
-  - [ ] Refactor pages to be their own functions (one for each page)
-  - [ ] One edit icon per row, not per cell
-*/
-
-// TODO Do something for displaying international phone numbers
-// function PhoneDisplay({ phone_number }: { phone_number: string }) {
-//   return <span>{phone_number}</span>
-// }
-
 type MaybeCell = {
   value: Maybe<string>
+  name?: string
   edit_href?: string
   leading_separator?: string
 }
@@ -70,18 +57,22 @@ export default function PatientSummary(
     nonEmptyRows([[{
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
+      name: 'first_name',
     }], [{
       value: international_phone_number.nullable().parse(personal.phone_number),
       edit_href: `${intake_href}/personal#focus=phone_number`,
+      name: 'phone_number',
     }]]),
   ]
 
   const address_rows = [{
     value: address.street,
+    name: 'street',
     edit_href: `${intake_href}/address#focus=address.street`,
   }, {
     value: address.locality,
     edit_href: `${intake_href}/address#focus=address.locality`,
+    name: 'Ward',
     leading_separator: ', ',
   }]
   if (
@@ -90,6 +81,7 @@ export default function PatientSummary(
   ) {
     address_rows.push({
       value: address.administrative_area_level_1,
+      name: 'District',
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_1`,
       leading_separator: ', ',
@@ -103,6 +95,7 @@ export default function PatientSummary(
   ) {
     address_rows.push({
       value: address.administrative_area_level_2,
+      name: 'Province',
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_2`,
       leading_separator: ', ',
@@ -118,10 +111,12 @@ export default function PatientSummary(
       {
         value: nearest_health_care.nearest_organization_name,
         edit_href: `${intake_href}/address#focus=nearest_organization_name`,
+        name: 'Nearest Organization',
       },
     ], [{
       value: nearest_health_care.primary_doctor_name,
       edit_href: `${intake_href}/address#focus=primary_doctor_name`,
+      name: 'Primary Doctor',
     }]]),
   ]
 
@@ -130,10 +125,12 @@ export default function PatientSummary(
       {
         value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        name: 'Next of Kin',
       },
       {
         value: patient.family.other_next_of_kin?.relation,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        name: 'Relationship',
         leading_separator: ', ',
       },
     ]]),
@@ -144,10 +141,12 @@ export default function PatientSummary(
       {
         value: family.marital_status,
         edit_href: `${intake_href}/family#focus=family.marital_status`,
+        name: 'marital_status',
       },
       {
         value: family.religion,
         edit_href: `${intake_href}/family#focus=family.religion`,
+        name: 'religion',
       },
     ]]),
   ]
@@ -182,10 +181,12 @@ export default function PatientSummary(
       nonEmptyRows([
         [{
           value: guardian.patient_name,
+          name: 'guardian',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_name`,
         }, {
           value: guardian.family_relation_gendered,
+          name: 'relationship',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
           leading_separator: ', ',
@@ -194,6 +195,7 @@ export default function PatientSummary(
           value: international_phone_number.nullable().parse(
             guardian.patient_phone_number,
           ),
+          name: 'phone_number',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
         }],
@@ -207,6 +209,7 @@ export default function PatientSummary(
           [
             {
               value: condition.name,
+              name: 'condition',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
             },
@@ -214,11 +217,13 @@ export default function PatientSummary(
           [
             {
               value: condition.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
             },
             {
               value: condition.end_date,
+              name: 'end_date',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
               leading_separator: ' — ',
@@ -233,6 +238,7 @@ export default function PatientSummary(
         [
           {
             value: surgery.name,
+            name: 'surgery',
             edit_href:
               `${intake_href}/history#focus=major_surgeries.${index}.name`,
           },
@@ -240,6 +246,7 @@ export default function PatientSummary(
         [
           {
             value: surgery.start_date,
+            name: 'start_date',
             edit_href:
               `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
           },
@@ -254,6 +261,7 @@ export default function PatientSummary(
           [
             {
               value: condition.name,
+              name: 'Pre-existing Condition',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
             },
@@ -261,6 +269,7 @@ export default function PatientSummary(
           [
             {
               value: condition.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
             },
@@ -279,6 +288,7 @@ export default function PatientSummary(
           [
             {
               value: `${medication.name} (for ${condition.name})`,
+              name: 'medication',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
             },
@@ -286,6 +296,7 @@ export default function PatientSummary(
           [
             {
               value: medication.form,
+              name: 'form',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
             },
@@ -293,17 +304,20 @@ export default function PatientSummary(
           [
             {
               value: medication.schedules[0].dosage.toString(),
+              name: 'dosage',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
             },
             {
               value: medication.strength_numerator_unit,
+              name: 'strength',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
               leading_separator: ' ',
             },
             {
               value: intakeFrequencyText(medication.schedules[0].frequency),
+              name: 'frequency',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.intake_frequency`,
               leading_separator: ' ',
@@ -312,12 +326,14 @@ export default function PatientSummary(
           [
             {
               value: medication.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
             },
             {
               // TODO get actual end date
               value: 'End Date',
+              name: 'end_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
               leading_separator: ' — ',
@@ -326,6 +342,7 @@ export default function PatientSummary(
           [
             {
               value: medication.special_instructions,
+              name: 'special_instructions',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
             },

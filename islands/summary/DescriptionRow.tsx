@@ -2,6 +2,8 @@ import { useState } from 'preact/hooks'
 import cls from '../../util/cls.ts'
 import type { DescriptionListCell } from '../../components/library/DescriptionList.tsx'
 import { PencilSquareIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import capitalize from '../../util/capitalize.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type DescriptionRowProps = {
   row: DescriptionListCell[]
@@ -13,13 +15,19 @@ export default function DescriptionRow(
 ) {
   const [isHoveredOnGroup, setIsHoveredOnGroup] = useState(false)
   const [hoveredCellIndex, setHoveredCellIndex] = useState(-1)
+  const [first_cell] = row
+  assert(first_cell, 'DescriptionRow must have at least one cell')
+  const first_edit_href = first_cell.edit_href
+  assert(first_edit_href, 'First cell of DescriptionRow must have edit_href')
 
   return (
     <div
+      role='button'
       style={{ gridColumn: 2, gridRow: row_number }}
       className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1'
       onMouseOver={() => setIsHoveredOnGroup(true)}
       onMouseLeave={() => setIsHoveredOnGroup(false)}
+      onClick={() => self.location.href = first_edit_href}
     >
       <div className='hover-desktop:text-indigo-900 flex content-center'>
         {row.map((cell, index) => (
@@ -28,6 +36,7 @@ export default function DescriptionRow(
             {cell.edit_href
               ? (
                 <a
+                  title={`Edit ${capitalize(cell.name)}`}
                   style={{ display: 'inline-block' }}
                   onMouseOver={() => setHoveredCellIndex(index)}
                   onMouseLeave={() => setHoveredCellIndex(-1)}

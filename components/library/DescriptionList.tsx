@@ -3,6 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import DescriptionRow from '../../islands/summary/DescriptionRow.tsx'
 
 export type DescriptionListCell = {
+  name: string
   value: string
   edit_href?: string
   className?: string
@@ -88,6 +89,7 @@ export const DescriptionList = (
         <DescriptionRow
           row={[{
             value: 'None Provided',
+            name: page.title,
             edit_href: page.link,
             className: 'italic hover-desktop:underline',
           }]}
@@ -120,6 +122,7 @@ export const DescriptionList = (
           <DescriptionRow
             row={[{
               value: 'None Provided',
+              name: section.title,
               edit_href: page.link,
               className: 'italic hover-desktop:underline',
             }]}
