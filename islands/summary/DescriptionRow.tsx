@@ -21,44 +21,47 @@ export default function DescriptionRow(
   assert(first_edit_href, 'First cell of DescriptionRow must have edit_href')
 
   return (
-    <div
-      role='button'
-      style={{ gridColumn: 2, gridRow: row_number }}
-      className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1'
-      onMouseOver={() => setIsHoveredOnGroup(true)}
-      onMouseLeave={() => setIsHoveredOnGroup(false)}
-      onClick={() => self.location.href = first_edit_href}
-    >
-      <div className='hover-desktop:text-indigo-900 flex content-center'>
-        {row.map((cell, index) => (
-          <div key={index}>
-            {cell.leading_separator}
-            {cell.edit_href
-              ? (
-                <a
-                  title={`Edit ${capitalize(cell.name)}`}
-                  style={{ display: 'inline-block' }}
-                  onMouseOver={() => setHoveredCellIndex(index)}
-                  onMouseLeave={() => setHoveredCellIndex(-1)}
-                  className={cls(
-                    hoveredCellIndex === index && 'underline',
-                    cell.className,
-                  )}
-                  href={cell.edit_href}
-                >
-                  {cell.value}
-                </a>
-              )
-              : <span className={cell.className}>{cell.value}</span>}
-          </div>
-        ))}
+    <div style={{ gridColumn: 2, gridRow: row_number }}>
+      <div
+        role='button'
+        className='group flex justify-between content-center rounded-md hover-desktop:bg-indigo-50 hover-desktop:ring-indigo-50 p-1 w-max'
+        onMouseOver={() => setIsHoveredOnGroup(true)}
+        onMouseLeave={() => setIsHoveredOnGroup(false)}
+        onClick={() => self.location.href = first_edit_href}
+      >
+        <div className='hover-desktop:text-indigo-900 flex content-center'>
+          {row.map((cell, index) => (
+            <div key={index}>
+              {cell.leading_separator}
+              {cell.edit_href
+                ? (
+                  <a
+                    title={`Edit ${capitalize(cell.name)}`}
+                    style={{ display: 'inline-block' }}
+                    onMouseOver={() => setHoveredCellIndex(index)}
+                    onMouseLeave={() => setHoveredCellIndex(-1)}
+                    className={cls(
+                      hoveredCellIndex === index && 'underline',
+                      cell.className,
+                    )}
+                    href={cell.edit_href}
+                  >
+                    {cell.value}
+                  </a>
+                )
+                : <span className={cell.className}>{cell.value}</span>}
+            </div>
+          ))}
+        </div>
+        <PencilSquareIcon
+          className={cls(
+            'self-center w-4 h-4 show-on-mobile lg:block ml-1.5',
+            isHoveredOnGroup
+              ? 'transition duration-120 opacity-1'
+              : 'opacity-0',
+          )}
+        />
       </div>
-      <PencilSquareIcon
-        className={cls(
-          'self-center w-4 h-4 show-on-mobile lg:block',
-          isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
-        )}
-      />
     </div>
   )
 }
