@@ -207,11 +207,6 @@ export interface Addresses {
   updated_at: Generated<Timestamp>
 }
 
-export interface Allergies {
-  id: Generated<string>
-  name: string
-}
-
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
@@ -709,10 +704,10 @@ export interface PatientAge {
 }
 
 export interface PatientAllergies {
-  allergy_id: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string
+  snomed_concept_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1119,8 +1114,8 @@ export interface RegulatorSessions {
 }
 
 export interface SnomedConcepts {
-  english_term: string
   snomed_concept_id: string
+  snomed_english_term: string
 }
 
 export interface SpatialRefSys {
@@ -1176,7 +1171,6 @@ export interface WhatsappMessagesSent {
 
 export interface DB {
   addresses: Addresses
-  allergies: Allergies
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments

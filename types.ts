@@ -2241,8 +2241,9 @@ export type PatientLifestyle = {
 }
 
 export type Allergy = {
-  id: string
-  name: string
+  patient_allergy_id: string
+  snomed_concept_id: string
+  snomed_english_term: string
 }
 
 export type PatientAllergies = {
@@ -3041,10 +3042,10 @@ export type RenderedPatientExaminationFinding = {
 export type ExaminationChecklistDefinition = {
   label: string
   code: string
-  english_term: string
+  snomed_english_term: string
 
   body_sites: {
     code: string
-    english_term: string
+    snomed_english_term: string
   }[]
 }

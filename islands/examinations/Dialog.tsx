@@ -42,7 +42,7 @@ function ExaminationFindingDialogContents(
     <div className='bg-white shadow sm:rounded-lg'>
       <div className='px-4 py-5 sm:p-6'>
         <h3 className='text-base text-center font-semibold text-gray-900'>
-          {action} {checklist_item.english_term} as a finding
+          {action} {checklist_item.snomed_english_term} as a finding
         </h3>
         <div
           className={cls(FormClassName, 'mt-5')}

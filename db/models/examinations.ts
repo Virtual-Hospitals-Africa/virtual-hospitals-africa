@@ -285,7 +285,7 @@ export async function getPatientExamination(
           )
           .select([
             'snomed_concepts.snomed_concept_id',
-            'snomed_concepts.english_term as snomed_english_term',
+            'snomed_concepts.snomed_english_term as snomed_english_term',
             'additional_notes',
           ])
           .select((eb_findings) =>
@@ -303,7 +303,7 @@ export async function getPatientExamination(
                 )
                 .select([
                   'snomed_concepts.snomed_concept_id',
-                  'snomed_concepts.english_term as snomed_english_term',
+                  'snomed_concepts.snomed_english_term as snomed_english_term',
                 ]),
             ).as('body_sites')
           ),
