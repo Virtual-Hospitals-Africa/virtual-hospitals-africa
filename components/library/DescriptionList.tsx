@@ -1,6 +1,7 @@
 import type { JSX } from 'preact/jsx-runtime'
 import { assert } from 'std/assert/assert.ts'
 import DescriptionRow from '../../islands/summary/DescriptionRow.tsx'
+import cls from '../../util/cls.ts'
 
 export type DescriptionListCell = {
   name: string
@@ -17,6 +18,7 @@ export type DescriptionListRows = DescriptionListRow[]
 
 type DescriptionListSection = {
   title: string
+  edit_href?: string
   items: DescriptionListRows[]
 }
 
@@ -30,17 +32,19 @@ export type DescriptionListItemProps = {
 function createTitleElement(
   title: string,
   row_end_number: number,
-  link?: string,
+  link: string,
 ): JSX.Element {
   return (
     <a
+      title={`Edit ${title}`}
       href={link}
-      className={`text-lg rounded-md font-semibold text-left hover:text-indigo-900 hover:bg-indigo-50 hover:ring-indigo-50 ${
-        link && 'hover:underline'
-      } p-1`}
+      className={cls(
+        'text-lg rounded-md font-semibold text-left hover:text-indigo-900 hover:bg-indigo-50 hover:ring-indigo-50 p-1',
+        link && 'hover:underline',
+      )}
       style={{
         gridColumn: 1,
-        gridRow: `${row_end_number}`,
+        gridRow: row_end_number,
       }}
     >
       <h3>
@@ -115,7 +119,13 @@ export const DescriptionList = (
     }
 
     for (const [section_index, section] of page.sections.entries()) {
-      elements.push(createTitleElement(section.title, page_row_end))
+      elements.push(
+        createTitleElement(
+          section.title,
+          page_row_end,
+          section.edit_href || page.link,
+        ),
+      )
 
       if (section.items.length === 0 || section.items[0].length === 0) {
         elements.push(

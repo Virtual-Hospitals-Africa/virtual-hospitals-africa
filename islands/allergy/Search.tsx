@@ -6,6 +6,7 @@ export default function AllergySearch({ add }: {
 }) {
   return (
     <AsyncSearch
+      id='allergy_search'
       multi
       search_route='/app/snomed/allergies'
       onSelect={(

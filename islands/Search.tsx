@@ -49,6 +49,7 @@ export function BaseOption<
 export type SearchProps<
   T extends { id?: unknown; name: string },
 > = {
+  id?: string
   name?: string
   required?: boolean
   label?: Maybe<string>
@@ -88,6 +89,7 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
 export default function Search<
   T extends { id?: unknown; name: string },
 >({
+  id,
   name,
   required,
   label = name && capitalize(name),
@@ -148,6 +150,7 @@ export default function Search<
 
   return (
     <Combobox
+      id={id}
       value={selected}
       onChange={(value) => {
         onSelect?.(value ?? undefined)

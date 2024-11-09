@@ -11,14 +11,14 @@ export default function PatientPreExistingConditions(
 ) {
   return (
     <>
-      <FormSection header='Allergies'>
-        <AllergyInput
-          patient_allergies={patient_allergies}
-        />
-      </FormSection>
       <FormSection header='Chronic Conditions & Disabilities'>
         <PreExistingConditionsForm
           pre_existing_conditions={pre_existing_conditions}
+        />
+      </FormSection>
+      <FormSection header='Allergies'>
+        <AllergyInput
+          patient_allergies={patient_allergies}
         />
       </FormSection>
     </>

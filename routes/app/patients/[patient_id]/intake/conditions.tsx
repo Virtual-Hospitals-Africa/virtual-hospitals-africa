@@ -99,8 +99,8 @@ export default IntakePage(async function ConditionsPage({ ctx, patient }) {
 
   return (
     <PatientPreExistingConditions
-      patient_allergies={intake_patient_allergies}
       pre_existing_conditions={pre_existing_conditions}
+      patient_allergies={intake_patient_allergies}
     />
   )
 })
