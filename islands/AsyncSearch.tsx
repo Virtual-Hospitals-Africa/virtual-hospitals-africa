@@ -1,24 +1,21 @@
-import Search, { SearchProps } from './Search.tsx'
-import useAsyncSearch from './useAsyncSearch.tsx'
-
-export type AsyncSearchProps<
-  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
-> = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
-  search_route: string
-  onQuery?: (query: string) => void
-}
+import Search from './Search.tsx'
+import useAsyncSearch, { type AsyncSearchProps } from './useAsyncSearch.tsx'
 
 export default function AsyncSearch<
-  T extends { id?: unknown; name: string },
+  T extends Record<string, unknown>,
 >({
   search_route,
   value,
   onQuery,
+  id_field,
+  name_field,
   ...rest
 }: AsyncSearchProps<T>) {
   const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
     value,
+    id_field,
+    name_field,
   })
   return (
     <Search

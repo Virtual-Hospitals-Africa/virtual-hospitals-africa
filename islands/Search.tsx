@@ -4,7 +4,6 @@ import { assert } from 'std/assert/assert.ts'
 import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
 import { Maybe } from '../types.ts'
-import isObjectLike from '../util/isObjectLike.ts'
 import {
   CheckIcon,
   ChevronUpDownIcon,
@@ -14,28 +13,25 @@ import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { TargetedEvent } from 'preact/compat'
 
-function hasId(value: unknown): value is { id: unknown } {
-  return isObjectLike(value) && !!value.id
-}
-
 export function BaseOption<
   T extends {
-    id?: unknown
-    name: string
     display_name?: string
     description?: string
   },
+  NameField extends keyof T,
 >({
   option,
   selected,
+  name_field,
 }: {
   option: T
   selected: boolean
+  name_field: NameField
 }) {
   return (
     <div className='flex flex-col'>
       <div className={cls('text-base', selected && 'font-bold')}>
-        {option.display_name || option.name}
+        {option.display_name || option[name_field] as string}
       </div>
       {option.description && (
         <div className={cls('text-xs', selected && 'font-bold')}>
@@ -47,7 +43,7 @@ export function BaseOption<
 }
 
 export type SearchProps<
-  T extends { id?: unknown; name: string },
+  T extends Record<string, unknown>,
 > = {
   name?: string
   required?: boolean
@@ -64,6 +60,8 @@ export type SearchProps<
   className?: string
   loading_options?: boolean
   options: T[]
+  id_field?: keyof T
+  name_field?: keyof T
   loadMoreOptions?: () => void
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
@@ -72,9 +70,12 @@ export type SearchProps<
       option: T
       selected: boolean
       active: boolean
+      id_field: keyof T
+      name_field: keyof T
     },
   ): JSX.Element
   optionHref?: (option: T) => string
+  parse(result: unknown): T
   ignoreOptionHref?: boolean
 }
 
@@ -86,7 +87,7 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
 }
 
 export default function Search<
-  T extends { id?: unknown; name: string },
+  T extends Record<string, unknown>,
 >({
   name,
   required,
@@ -100,11 +101,14 @@ export default function Search<
   loading_options,
   options,
   className,
+  id_field = 'id',
+  name_field = 'name',
   loadMoreOptions,
   onQuery,
   onSelect,
   optionHref, // The existence of this prop turns the options into <a> tags
-  Option = BaseOption,
+  // deno-lint-ignore no-explicit-any
+  Option = BaseOption as any,
   ignoreOptionHref,
 }: SearchProps<T>) {
   if (multi) {
@@ -113,13 +117,9 @@ export default function Search<
       'onSelect must be provided for a multi search',
     )
   }
-  const [selected, setSelected] = useState<
-    T | null
-  >(
-    hasId(value) ? value : null,
-  )
+  const [selected, setSelected] = useState<T | null>(value || null)
 
-  const [query, setQuery] = useState(value?.name ?? '')
+  const [query, setQuery] = useState(value ? value[name_field] as string : '')
 
   let formatDisplay = (query: string) => `Add "${query}"`
   if (addable && typeof addable !== 'boolean' && addable.formatDisplay) {
@@ -139,12 +139,17 @@ export default function Search<
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
 
-  const name_field = no_name_form_data ? undefined : (name &&
-    (is_array_or_record_item ? `${name}.name` : `${name}_name`))
-  const id_field = name &&
+  const full_name_field = no_name_form_data ? undefined : (name &&
+    (is_array_or_record_item
+      ? `${name}.${name_field as string}`
+      : `${name}_${name_field as string}`))
+
+  const full_id_field = name &&
     (no_name_form_data
       ? name
-      : (is_array_or_record_item ? `${name}.id` : `${name}_id`))
+      : (is_array_or_record_item
+        ? `${name}.${id_field as string}`
+        : `${name}_${id_field as string}`))
 
   return (
     <Combobox
@@ -165,7 +170,7 @@ export default function Search<
         )}
         <div className='relative'>
           <Combobox.Input
-            name={name_field}
+            name={full_name_field}
             className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
             onChange={(
               event,
@@ -177,7 +182,7 @@ export default function Search<
               onQuery(query)
               event.currentTarget.setCustomValidity('')
             }}
-            value={selected?.name}
+            value={selected ? selected[name_field] as string : undefined}
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
@@ -208,7 +213,7 @@ export default function Search<
           >
             {all_options.map((option) => (
               <Combobox.Option
-                key={option.id}
+                key={option[id_field] as string}
                 value={option}
                 className={({ active }) =>
                   cls(
@@ -223,6 +228,8 @@ export default function Search<
                         option={option}
                         active={active}
                         selected={selected}
+                        id_field={id_field}
+                        name_field={name_field}
                       />
                       {selected && (
                         <span
@@ -293,7 +300,7 @@ export default function Search<
         {(selected?.id && selected.id !== 'add') && (
           <input
             type='hidden'
-            name={id_field}
+            name={full_id_field}
             // deno-lint-ignore no-explicit-any
             value={selected.id as any}
           />

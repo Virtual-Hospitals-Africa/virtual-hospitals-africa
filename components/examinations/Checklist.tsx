@@ -4,11 +4,11 @@ import { ExaminationChecklistItem } from '../../islands/examinations/ChecklistIt
 
 export type ExaminationChecklistItem = {
   label: string
-  english_term: string
+  snomed_english_term: string
   code: string
   body_sites: {
     code: string
-    english_term: string
+    snomed_english_term: string
   }[]
 }
 

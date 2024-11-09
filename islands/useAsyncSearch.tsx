@@ -3,20 +3,21 @@ import { useEffect, useState } from 'preact/hooks'
 import { SearchProps } from './Search.tsx'
 
 export type AsyncSearchProps<
-  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
+  T extends Record<string, unknown>,
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
   search_route: string
   onQuery?: (query: string) => void
 }
 
 export default function useAsyncSearch<
-  T extends { id?: unknown; name: string },
+  T extends Record<string, unknown>,
 >({
   search_route,
   value,
+  name_field = 'name',
 }: AsyncSearchProps<T>) {
   const [search, setSearch] = useState({
-    query: value?.name ?? '',
+    query: value ? value[name_field] as string : '',
     page: 1,
     delay: null as null | number,
     active_request: null as null | XMLHttpRequest,

@@ -58,7 +58,8 @@ export function ExaminationChecklistItem(
         body_sites: checklist_item.body_sites?.length
           ? [{
             snomed_concept_id: checklist_item.body_sites[0].code,
-            snomed_english_term: checklist_item.body_sites[0].english_term,
+            snomed_english_term:
+              checklist_item.body_sites[0].snomed_english_term,
           }]
           : [],
         additional_notes: null,
@@ -93,7 +94,7 @@ export function ExaminationChecklistItem(
         save={(finding) => {
           item.value = finding
 
-          let text = checklist_item.english_term
+          let text = checklist_item.snomed_english_term
           // TODO handle multiple body sites
           if (finding.body_sites.length) {
             text += ` affecting ${finding.body_sites[0].snomed_english_term}`

@@ -4,9 +4,8 @@ import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/
 import FormSection from '../../library/FormSection.tsx'
 
 export default function PatientPreExistingConditions(
-  { pre_existing_conditions, allergies, patient_allergies }: {
+  { pre_existing_conditions, patient_allergies }: {
     pre_existing_conditions: PreExistingConditionWithDrugs[]
-    allergies: Allergy[]
     patient_allergies: Allergy[]
   },
 ) {
@@ -14,7 +13,6 @@ export default function PatientPreExistingConditions(
     <>
       <FormSection header='Allergies'>
         <AllergyInput
-          allergies={allergies}
           patient_allergies={patient_allergies}
         />
       </FormSection>
