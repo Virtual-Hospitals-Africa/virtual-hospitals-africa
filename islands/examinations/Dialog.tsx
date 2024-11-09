@@ -12,7 +12,7 @@ import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
-    snomed_code: string
+    snomed_concept_id: number
     snomed_english_term: string
   }[]
   additional_notes: string | null
@@ -42,7 +42,7 @@ function ExaminationFindingDialogContents(
     <div className='bg-white shadow sm:rounded-lg'>
       <div className='px-4 py-5 sm:p-6'>
         <h3 className='text-base text-center font-semibold text-gray-900'>
-          {action} {checklist_item.english_term} as a finding
+          {action} {checklist_item.snomed_english_term} as a finding
         </h3>
         <div
           className={cls(FormClassName, 'mt-5')}
@@ -52,7 +52,7 @@ function ExaminationFindingDialogContents(
               checklist_item={checklist_item}
               value={found.body_sites.length > 0
                 ? {
-                  id: found.body_sites[0].snomed_code,
+                  id: found.body_sites[0].snomed_concept_id,
                   name: found.body_sites[0].snomed_english_term,
                 }
                 : null}
@@ -61,7 +61,7 @@ function ExaminationFindingDialogContents(
                   ...form_values.value!,
                   body_sites: value
                     ? [{
-                      snomed_code: value.id,
+                      snomed_concept_id: value.id,
                       snomed_english_term: value.name,
                     }]
                     : [],

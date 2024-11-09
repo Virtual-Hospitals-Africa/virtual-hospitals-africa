@@ -17,17 +17,32 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
       'patient_examinations.examination_name',
       'examinations.name',
     )
+    .innerJoin(
+      'snomed_concepts as sc_findings',
+      'sc_findings.snomed_concept_id',
+      'patient_examination_findings.snomed_concept_id',
+    )
     .select((eb) => [
       'examinations.name as examination_name',
       'examinations.path',
-      'snomed_code',
-      'snomed_english_term',
+      'sc_findings.snomed_concept_id',
+      'sc_findings.snomed_english_term',
       'additional_notes',
       jsonArrayFrom(
         eb.selectFrom('patient_examination_finding_body_sites')
+          .whereRef(
+            'patient_examination_finding_id',
+            '=',
+            'patient_examination_findings.id',
+          )
+          .innerJoin(
+            'snomed_concepts as sc_body_sites',
+            'sc_body_sites.snomed_concept_id',
+            'patient_examination_finding_body_sites.snomed_concept_id',
+          )
           .select([
-            'snomed_code',
-            'snomed_english_term',
+            'sc_body_sites.snomed_concept_id',
+            'sc_body_sites.snomed_english_term',
           ]),
       ).as('body_sites'),
     ])
@@ -39,7 +54,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
     const examination_href =
       `/app/patients/${opts.patient_id}/encounters/${opts.encounter_id}${path}`
 
-    const edit_href = `${examination_href}#edit=${ex.snomed_code}`
+    const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
       ...ex,
       examination_name,

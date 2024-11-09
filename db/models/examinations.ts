@@ -278,17 +278,32 @@ export async function getPatientExamination(
             '=',
             'patient_examinations.id',
           )
+          .innerJoin(
+            'snomed_concepts as sc_findings',
+            'sc_findings.snomed_concept_id',
+            'patient_examination_findings.snomed_concept_id',
+          )
           .select([
-            'snomed_code',
-            'snomed_english_term',
+            'sc_findings.snomed_concept_id',
+            'sc_findings.snomed_english_term',
             'additional_notes',
           ])
           .select((eb_findings) =>
             jsonArrayFrom(
               eb_findings.selectFrom('patient_examination_finding_body_sites')
+                .whereRef(
+                  'patient_examination_finding_body_sites.patient_examination_finding_id',
+                  '=',
+                  'patient_examination_findings.id',
+                )
+                .innerJoin(
+                  'snomed_concepts as sc_body_sites',
+                  'sc_body_sites.snomed_concept_id',
+                  'patient_examination_finding_body_sites.snomed_concept_id',
+                )
                 .select([
-                  'snomed_code',
-                  'snomed_english_term',
+                  'sc_body_sites.snomed_concept_id',
+                  'sc_body_sites.snomed_english_term',
                 ]),
             ).as('body_sites')
           ),

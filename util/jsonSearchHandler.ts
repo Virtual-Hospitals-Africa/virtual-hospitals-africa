@@ -20,7 +20,7 @@ export function jsonSearchHandler<SearchTerms, RenderedResult>(
       let page = 1
       // deno-lint-ignore no-explicit-any
       const search_terms: any = {
-        search: null,
+        search: '',
         ...default_search_terms,
       }
       ctx.url.searchParams.forEach((value, key) => {

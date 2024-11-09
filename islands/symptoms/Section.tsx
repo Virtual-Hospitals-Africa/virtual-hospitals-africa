@@ -1,8 +1,6 @@
 import { useSignal } from '@preact/signals'
 import { RenderedPatientSymptom } from '../../types.ts'
 import SymptomInput from './Input.tsx'
-// import { EmptyState } from '../../components/library/EmptyState.tsx'
-// import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
 import { AddRow } from '../AddRemove.tsx'
 
 export type EditingSymptom =
@@ -35,15 +33,6 @@ export default function SymptomSection(props: {
           />
         )
       ))}
-      {
-        /* {patient_symptoms.value.length === 0 && (
-        <EmptyState
-          header='No symptoms'
-          explanation='Use the search box above to add symptoms.'
-          icon={<Symptoms className='mx-auto h-12 w-12 text-gray-400' />}
-        />
-      )} */
-      }
       <AddRow text='Add Symptom' onClick={add} />
     </div>
   )

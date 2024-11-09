@@ -1,32 +1,27 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createTable('allergies')
-    .addColumn(
-      'id',
-      'uuid',
-      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
-    )
-    .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .execute()
-
   await createStandardTable(db, 'patient_allergies', (qb) =>
     qb.addColumn(
-      'allergy_id',
-      'uuid',
-      (col) => col.notNull().references('allergies.id').onDelete('cascade'),
+      'snomed_concept_id',
+      'integer',
+      (col) =>
+        col.notNull().references('snomed_concepts.snomed_concept_id').onDelete(
+          'cascade',
+        ),
     )
       .addColumn(
         'patient_id',
         'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
-      .addUniqueConstraint('patient_allergy', ['allergy_id', 'patient_id']))
+      .addUniqueConstraint('patient_allergy', [
+        'snomed_concept_id',
+        'patient_id',
+      ]))
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_allergies').execute()
-  await db.schema.dropTable('allergies').execute()
 }

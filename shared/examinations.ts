@@ -138,58 +138,58 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'checklist': [
             {
               'label': 'cold',
-              'code': '703883009',
-              'english_term': 'Cold skin',
+              'snomed_concept_id': 703883009,
+              'snomed_english_term': 'Cold skin',
               'body_sites': [
                 {
-                  'code': '12861001',
-                  'english_term': 'Both hands',
+                  'snomed_concept_id': 12861001,
+                  'snomed_english_term': 'Both hands',
                 },
                 {
-                  'code': '85151006',
-                  'english_term': 'Structure of left hand',
+                  'snomed_concept_id': 85151006,
+                  'snomed_english_term': 'Structure of left hand',
                 },
                 {
-                  'code': '78791008',
-                  'english_term': 'Structure of right hand',
+                  'snomed_concept_id': 78791008,
+                  'snomed_english_term': 'Structure of right hand',
                 },
               ],
             },
             {
               'label': 'hot',
-              'code': '707793005',
-              'english_term': 'Hot skin',
+              'snomed_concept_id': 707793005,
+              'snomed_english_term': 'Hot skin',
               'body_sites': [
                 {
-                  'code': '12861001',
-                  'english_term': 'Both hands',
+                  'snomed_concept_id': 12861001,
+                  'snomed_english_term': 'Both hands',
                 },
                 {
-                  'code': '85151006',
-                  'english_term': 'Structure of left hand',
+                  'snomed_concept_id': 85151006,
+                  'snomed_english_term': 'Structure of left hand',
                 },
                 {
-                  'code': '78791008',
-                  'english_term': 'Structure of right hand',
+                  'snomed_concept_id': 78791008,
+                  'snomed_english_term': 'Structure of right hand',
                 },
               ],
             },
             {
               'label': 'clammy',
-              'code': '102598000',
-              'english_term': 'Clammy skin',
+              'snomed_concept_id': 102598000,
+              'snomed_english_term': 'Clammy skin',
               'body_sites': [
                 {
-                  'code': '12861001',
-                  'english_term': 'Both hands',
+                  'snomed_concept_id': 12861001,
+                  'snomed_english_term': 'Both hands',
                 },
                 {
-                  'code': '85151006',
-                  'english_term': 'Structure of left hand',
+                  'snomed_concept_id': 85151006,
+                  'snomed_english_term': 'Structure of left hand',
                 },
                 {
-                  'code': '78791008',
-                  'english_term': 'Structure of right hand',
+                  'snomed_concept_id': 78791008,
+                  'snomed_english_term': 'Structure of right hand',
                 },
               ],
             },
@@ -200,46 +200,46 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'checklist': [
             {
               'label': 'cyanosis',
-              'code': '3415004',
-              'english_term': 'Cyanosis',
+              'snomed_concept_id': 3415004,
+              'snomed_english_term': 'Cyanosis',
               'body_sites': [
                 {
-                  'code': '362779006',
-                  'english_term': 'All fingers',
+                  'snomed_concept_id': 362779006,
+                  'snomed_english_term': 'All fingers',
                 },
                 {
-                  'code': '7569003',
-                  'english_term': 'Finger structure',
+                  'snomed_concept_id': 7569003,
+                  'snomed_english_term': 'Finger structure',
                 },
               ],
             },
             {
               'label': 'nicotine stains',
-              'code': '247439004',
-              'english_term': 'Nicotine staining of finger',
+              'snomed_concept_id': 247439004,
+              'snomed_english_term': 'Nicotine staining of finger',
               'body_sites': [
                 {
-                  'code': '362779006',
-                  'english_term': 'All fingers',
+                  'snomed_concept_id': 362779006,
+                  'snomed_english_term': 'All fingers',
                 },
                 {
-                  'code': '7569003',
-                  'english_term': 'Finger structure',
+                  'snomed_concept_id': 7569003,
+                  'snomed_english_term': 'Finger structure',
                 },
               ],
             },
             {
               'label': 'clubbing',
-              'code': '30760008',
-              'english_term': 'Finger clubbing',
+              'snomed_concept_id': 30760008,
+              'snomed_english_term': 'Finger clubbing',
               'body_sites': [
                 {
-                  'code': '362779006',
-                  'english_term': 'All fingers',
+                  'snomed_concept_id': 362779006,
+                  'snomed_english_term': 'All fingers',
                 },
                 {
-                  'code': '7569003',
-                  'english_term': 'Finger structure',
+                  'snomed_concept_id': 7569003,
+                  'snomed_english_term': 'Finger structure',
                 },
               ],
             },
@@ -250,67 +250,67 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'checklist': [
             {
               'label': 'leukonychia',
-              'code': '111202002',
-              'english_term': 'Leukonychia',
+              'snomed_concept_id': 111202002,
+              'snomed_english_term': 'Leukonychia',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
             {
               'label': 'koilonychia',
-              'code': '66270006',
-              'english_term': 'Koilonychia',
+              'snomed_concept_id': 66270006,
+              'snomed_english_term': 'Koilonychia',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
             {
               'label': 'splinter hemorrhages',
-              'code': '271770005',
-              'english_term': 'Splinter hemorrhages under nail',
+              'snomed_concept_id': 271770005,
+              'snomed_english_term': 'Splinter hemorrhages under nail',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
             {
               'label': 'pitting',
-              'code': '89704006',
-              'english_term': 'Pitting of nails',
+              'snomed_concept_id': 89704006,
+              'snomed_english_term': 'Pitting of nails',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
             {
               'label': 'onycholysis',
-              'code': '75789001',
-              'english_term': 'Onycholysis',
+              'snomed_concept_id': 75789001,
+              'snomed_english_term': 'Onycholysis',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
             {
               'label': 'discolouration',
-              'code': '47415006',
-              'english_term': 'Abnormal color',
+              'snomed_concept_id': 47415006,
+              'snomed_english_term': 'Abnormal color',
               'body_sites': [
                 {
-                  'code': '770802007',
-                  'english_term': 'Nail unit structure',
+                  'snomed_concept_id': 770802007,
+                  'snomed_english_term': 'Nail unit structure',
                 },
               ],
             },
@@ -321,56 +321,56 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
           'checklist': [
             {
               'label': 'erythema',
-              'code': '70819003',
-              'english_term': 'Erythema',
+              'snomed_concept_id': 70819003,
+              'snomed_english_term': 'Erythema',
               'body_sites': [
                 {
-                  'code': '21547004',
-                  'english_term': 'Palm (region) structure',
+                  'snomed_concept_id': 21547004,
+                  'snomed_english_term': 'Palm (region) structure',
                 },
               ],
             },
             {
               'label': "dupuytren's disease",
-              'code': '203045001',
-              'english_term': "Dupuytren's disease of palm",
+              'snomed_concept_id': 203045001,
+              'snomed_english_term': "Dupuytren's disease of palm",
               'body_sites': [
                 {
-                  'code': '21203009',
-                  'english_term': 'Palmar aponeurosis structure',
+                  'snomed_concept_id': 21203009,
+                  'snomed_english_term': 'Palmar aponeurosis structure',
                 },
               ],
             },
             {
               'label': 'pale skin',
-              'code': '403237004',
-              'english_term': 'Pale white constitutive skin colour',
+              'snomed_concept_id': 403237004,
+              'snomed_english_term': 'Pale white constitutive skin colour',
               'body_sites': [
                 {
-                  'code': '21547004',
-                  'english_term': 'Palm (region) structure',
+                  'snomed_concept_id': 21547004,
+                  'snomed_english_term': 'Palm (region) structure',
                 },
               ],
             },
             {
               'label': 'cyanosis',
-              'code': '119419001',
-              'english_term': 'Cyanosis of skin',
+              'snomed_concept_id': 119419001,
+              'snomed_english_term': 'Cyanosis of skin',
               'body_sites': [
                 {
-                  'code': '21547004',
-                  'english_term': 'Palm (region) structure',
+                  'snomed_concept_id': 21547004,
+                  'snomed_english_term': 'Palm (region) structure',
                 },
               ],
             },
             {
               'label': 'jaundice',
-              'code': '18165001',
-              'english_term': 'Jaundice',
+              'snomed_concept_id': 18165001,
+              'snomed_english_term': 'Jaundice',
               'body_sites': [
                 {
-                  'code': '21547004',
-                  'english_term': 'Palm (region) structure',
+                  'snomed_concept_id': 21547004,
+                  'snomed_english_term': 'Palm (region) structure',
                 },
               ],
             },
@@ -449,7 +449,7 @@ export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST = HEAD_TO_TOE_ASSESSMENT_TABS
 
 export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST_BY_SNOMED_CODE = groupByUniq(
   HEAD_TO_TOE_ASSESSMENT_CHECKLIST,
-  'code',
+  'snomed_concept_id',
 )
 
 const CHECKLIST_ITEMS_BY_CATEGORY = groupBy(
@@ -457,14 +457,14 @@ const CHECKLIST_ITEMS_BY_CATEGORY = groupBy(
   'category',
 )
 
-export function getRelevantSnomedCodes(examination: Examination): string[] {
+export function getRelevantSnomedCodes(examination: Examination): number[] {
   if (examination.startsWith('Head-to-toe Assessment')) {
     const category = examination.replace('Head-to-toe Assessment (', '')
       .replace(')', '')
     // deno-lint-ignore no-explicit-any
     const checklist_items = CHECKLIST_ITEMS_BY_CATEGORY.get(category as any) ||
       []
-    return checklist_items.map((item) => item.code)
+    return checklist_items.map((item) => item.snomed_concept_id)
   }
   return []
 }
