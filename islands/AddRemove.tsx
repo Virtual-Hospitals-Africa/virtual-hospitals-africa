@@ -4,6 +4,7 @@ import {
   PlusCircleIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 import cls from '../util/cls.ts'
+import words from '../util/words.ts'
 
 // TODO: Make an AddRemoveRow that smoothly animates from one to the other
 export function AddRow(
@@ -13,10 +14,17 @@ export function AddRow(
     labelled?: boolean
   },
 ): JSX.Element {
+  const id = words(text).map((word) => word.toLowerCase()).join('_')
+
   return (
     <a
-      className='text-indigo-600 flex cursor-pointer gap-2 py-[6px]'
-      onClick={onClick}
+      id={id}
+      className='text-indigo-600 flex cursor-pointer gap-2 py-[6px] px-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-max rounded-md'
+      onClick={(event) => {
+        onClick()
+        event.currentTarget.blur()
+      }}
+      href='#'
     >
       <PlusCircleIcon className='h-6 w-6' />
       {text}
@@ -37,7 +45,7 @@ export function RemoveRow(
       <a
         role='button'
         className={cls(
-          'text-indigo-600 flex cursor-pointer',
+          'text-indigo-600 flex cursor-pointer gap-2 py-[6px] px-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-max rounded-md',
           centered && 'items-center',
         )}
         onClick={onClick}

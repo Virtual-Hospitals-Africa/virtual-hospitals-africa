@@ -3,11 +3,13 @@ import { Address, PatientIntake, TrxOrDb } from '../../types.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
+import * as patient_allergies from './patient_allergies.ts'
 import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import * as patients from './patients.ts'
 import { IntakeStep } from '../../db.d.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export function getById(
   trx: TrxOrDb,
@@ -165,27 +167,46 @@ export async function getSummaryById(
       'completed_intake',
     ])
     .where('patients.id', '=', patient_id)
-    .executeTakeFirst()
 
   const q = { patient_id }
-  const getting_family = patient_family.get(trx, q)
-  const getting_occupation = patient_occupations.get(trx, q)
-  const getting_pre_existing_conditions = patient_conditions
-    .getPreExistingConditionsSummary(trx, q)
-  const getting_past_medical_conditions = patient_conditions
-    .getPastMedicalConditions(trx, q)
-  const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, q)
 
-  const review = await getting_review
+  // const review = await getting_review
+  // assertOr404(review)
+
+  const {
+    review,
+    family,
+    occupation,
+    allergies,
+    pre_existing_conditions,
+    past_medical_conditions,
+    major_surgeries,
+  } = await promiseProps({
+    review: getting_review.executeTakeFirst(),
+    family: patient_family.get(trx, q),
+    occupation: patient_occupations.get(trx, q),
+    allergies: patient_allergies.getWithName(trx, patient_id),
+    pre_existing_conditions: patient_conditions.getPreExistingConditionsSummary(
+      trx,
+      q,
+    ),
+    past_medical_conditions: patient_conditions.getPastMedicalConditions(
+      trx,
+      q,
+    ),
+    major_surgeries: patient_conditions.getMajorSurgeries(trx, q),
+  })
+
   assertOr404(review)
 
   return {
     ...review,
-    family: await getting_family,
-    occupation: await getting_occupation,
-    pre_existing_conditions: await getting_pre_existing_conditions,
-    past_medical_conditions: await getting_past_medical_conditions,
-    major_surgeries: await getting_major_surgeries,
+    family,
+    occupation,
+    allergies,
+    pre_existing_conditions,
+    past_medical_conditions,
+    major_surgeries,
   }
 }
 

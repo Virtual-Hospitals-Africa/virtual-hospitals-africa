@@ -11,7 +11,7 @@ export default function Form(
 ) {
   return (
     <section {...props} className={className}>
-      <SectionHeader>{header}</SectionHeader>
+      <SectionHeader className='mb-2'>{header}</SectionHeader>
       {children}
     </section>
   )

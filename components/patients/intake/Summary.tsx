@@ -51,6 +51,7 @@ export default function PatientSummary(
     pre_existing_conditions,
     past_medical_conditions,
     major_surgeries,
+    allergies,
   } = patient
 
   const personal_items: DescriptionListRows[] = [
@@ -200,6 +201,20 @@ export default function PatientSummary(
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
         }],
       ]),
+  )
+
+  const allergies_items: DescriptionListRows[] = allergies.map(
+    (allergy, index) => {
+      return nonEmptyRows([
+        [
+          {
+            value: allergy.snomed_english_term,
+            name: 'allergy',
+            edit_href: `${intake_href}/conditions#focus=allergies.${index}`,
+          },
+        ],
+      ])
+    },
   )
 
   const past_conditions_items: DescriptionListRows[] = past_medical_conditions
@@ -417,12 +432,17 @@ export default function PatientSummary(
     family_page,
     {
       title: 'Pre-existing Conditions',
-      link: `${intake_href}/conditions`,
+      link: `${intake_href}/conditions#focus=add_condition`,
       items: pre_existing_conditions_items,
       sections: [
         {
           title: 'Medications',
           items: medications_items,
+        },
+        {
+          title: 'Allergies',
+          edit_href: `${intake_href}/conditions#focus=allergies_search`,
+          items: allergies_items,
         },
       ],
     },

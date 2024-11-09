@@ -16,7 +16,7 @@ export function assertHasNonEmptyString<T extends string>(
   // deno-lint-ignore no-explicit-any
   value: any,
   key: T,
-): asserts value is Record<T, number> {
+): asserts value is Record<T, string> {
   assert(key in value, `Expected '${key}' to be a non-empty string`)
   assert(
     isString(value[key]),

@@ -8,5 +8,10 @@ export default function Form(
     className?: string
   },
 ) {
-  return <form className={cls(FormClassName, className)} {...props} />
+  return (
+    <form
+      className={cls(FormClassName, className)}
+      {...props}
+    />
+  )
 }
