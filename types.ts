@@ -2242,7 +2242,7 @@ export type PatientLifestyle = {
 
 export type Allergy = {
   patient_allergy_id: string
-  snomed_concept_id: string
+  snomed_concept_id: number
   snomed_english_term: string
 }
 
@@ -2476,11 +2476,11 @@ export type RenderedPatientExamination = {
   ordered: boolean | null
   href: string
   findings: {
-    snomed_concept_id: string
+    snomed_concept_id: number
     snomed_english_term: string
     additional_notes: string | null
     body_sites: {
-      snomed_concept_id: string
+      snomed_concept_id: number
       snomed_english_term: string
     }[]
   }[]
@@ -3030,22 +3030,22 @@ export type RenderedPrescriptionWithMedications = RenderedPrescription & {
 
 export type RenderedPatientExaminationFinding = {
   edit_href: string
-  snomed_concept_id: string
+  snomed_concept_id: number
   text: string
   additional_notes: string | null
-  // body_sites: {
-  //   snomed_concept_id: string
-  //   snomed_english_term: string
-  // }[]
+  body_sites: {
+    snomed_concept_id: number
+    snomed_english_term: string
+  }[]
 }
 
 export type ExaminationChecklistDefinition = {
   label: string
-  code: string
+  snomed_concept_id: number
   snomed_english_term: string
 
   body_sites: {
-    code: string
+    snomed_concept_id: number
     snomed_english_term: string
   }[]
 }

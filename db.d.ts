@@ -707,7 +707,7 @@ export interface PatientAllergies {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string
-  snomed_concept_id: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -814,7 +814,7 @@ export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_finding_id: string
-  snomed_concept_id: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -823,7 +823,7 @@ export interface PatientExaminationFindings {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
-  snomed_concept_id: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -1114,7 +1114,7 @@ export interface RegulatorSessions {
 }
 
 export interface SnomedConcepts {
-  snomed_concept_id: string
+  snomed_concept_id: number
   snomed_english_term: string
 }
 

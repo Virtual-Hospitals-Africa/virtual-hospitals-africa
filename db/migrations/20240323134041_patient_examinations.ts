@@ -73,7 +73,7 @@ export async function up(
       )
         .addColumn(
           'snomed_concept_id',
-          'varchar(255)',
+          'integer',
           (col) =>
             col.notNull().references('snomed_concepts.snomed_concept_id'),
         )
@@ -97,7 +97,7 @@ export async function up(
       )
         .addColumn(
           'snomed_concept_id',
-          'varchar(255)',
+          'integer',
           (col) =>
             col.notNull().references('snomed_concepts.snomed_concept_id'),
         ),

@@ -403,11 +403,11 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals(allergies_of_patient.length, 2)
     assertEquals(
       allergies_of_patient[0].snomed_concept_id,
-      '91935009',
+      91935009,
     )
     assertEquals(
       allergies_of_patient[1].snomed_concept_id,
-      '1003755004',
+      1003755004,
     )
 
     const getResponse = await fetch(

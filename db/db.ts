@@ -68,6 +68,23 @@ const db = new Kysely<DB>({
       return new PostgresQueryCompiler()
     },
   },
+  log(event) {
+    if (event.level === 'error') {
+      console.error('Query failed : ', {
+        durationMs: event.queryDurationMillis,
+        error: event.error,
+        sql: event.query.sql,
+        params: event.query.parameters, /*.map(maskPII) */
+      })
+    }
+    // else { // `'query'`
+    //   console.log('Query executed : ', {
+    //     durationMs: event.queryDurationMillis,
+    //     sql: event.query.sql,
+    //     params: event.query.parameters, /*.map(maskPII) */
+    //   })
+    // }
+  },
 })
 
 export default db

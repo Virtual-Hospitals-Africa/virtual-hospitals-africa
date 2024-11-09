@@ -2,6 +2,7 @@ import { useSignal } from '@preact/signals'
 import { Allergy } from '../../types.ts'
 import AllergySearch from './Search.tsx'
 import { MinusCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
+import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
 
 export default function AllergyInput(props: {
   patient_allergies: Allergy[]
@@ -25,10 +26,13 @@ export default function AllergyInput(props: {
         <div className='flex-start flex flex-wrap gap-2 w-full'>
           {patient_allergies.value.map((allergy, i) => (
             <>
-              <input
-                type='hidden'
-                name={`allergies.${i}.patient_allergy_id`}
-                value={allergy.patient_allergy_id}
+              <HiddenInputs
+                prefix={`allergies.${i}.`}
+                inputs={{
+                  snomed_concept_id: String(allergy.snomed_concept_id),
+                  snomed_english_term: allergy.snomed_english_term,
+                  patient_allergy_id: allergy.patient_allergy_id,
+                }}
               />
               <button
                 key={allergy.snomed_english_term}

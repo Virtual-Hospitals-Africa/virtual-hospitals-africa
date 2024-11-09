@@ -5,7 +5,7 @@ export async function up(
 ) {
   // There's so much more than just this, but we rely on Snowstorm for all the heavy lifting
   await db.schema.createTable('snomed_concepts')
-    .addColumn('snomed_concept_id', 'varchar(255)', (col) => col.primaryKey())
+    .addColumn('snomed_concept_id', 'integer', (col) => col.primaryKey())
     .addColumn('snomed_english_term', 'varchar(255)', (col) => col.notNull())
     .execute()
 }

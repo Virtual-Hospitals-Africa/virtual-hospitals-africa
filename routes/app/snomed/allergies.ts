@@ -3,6 +3,7 @@ import type { SnomedConcepts } from '../../../db.d.ts'
 import { searchConcepts } from '../../../external-clients/snowstorm.ts'
 import type { ConceptMini } from '../../../external-clients/snowstorm/data-contracts.ts'
 import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
+import { positive_number } from '../../../util/validators.ts'
 
 type SearchTerms = {
   search: string
@@ -13,15 +14,15 @@ const rows_per_page = 10
 function toInternalSnomedConcept(
   { conceptId, pt }: ConceptMini,
 ): SnomedConcepts & {
-  id: string
+  id: number
   name: string
 } {
-  assert(conceptId)
+  const snomed_concept_id = positive_number.parse(conceptId)
   assert(pt?.term)
   return {
-    id: conceptId,
+    id: snomed_concept_id,
     name: pt?.term,
-    snomed_concept_id: conceptId,
+    snomed_concept_id,
     snomed_english_term: pt?.term,
   }
 }

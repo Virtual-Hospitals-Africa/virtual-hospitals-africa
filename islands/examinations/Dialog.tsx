@@ -12,7 +12,7 @@ import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
-    snomed_concept_id: string
+    snomed_concept_id: number
     snomed_english_term: string
   }[]
   additional_notes: string | null

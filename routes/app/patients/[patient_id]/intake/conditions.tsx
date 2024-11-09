@@ -4,12 +4,16 @@ import PatientPreExistingConditions from '../../../../../components/patients/int
 import { IntakePage, postHandler } from './_middleware.tsx'
 import { z } from 'zod'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 export const ConditionsSchema = z.object({
   allergies: z.array(
     z.object({
-      snomed_concept_id: z.string(),
-      snomed_english_term: z.string().optional(),
+      patient_allergy_id: z.string().uuid().optional().transform((value) =>
+        value || generateUUID()
+      ),
+      snomed_concept_id: z.number(),
+      snomed_english_term: z.string(),
     }).optional(),
   ).optional()
     .transform((allergies) =>

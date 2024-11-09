@@ -4,13 +4,14 @@ import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
 import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
+import { positive_number } from '../../util/validators.ts'
 
 type ExaminationChecklistProps = {
   checklist_item: ExaminationChecklistDefinition
   edit_href: string
   found?: {
     body_sites: {
-      snomed_concept_id: string
+      snomed_concept_id: number
       snomed_english_term: string
     }[]
     additional_notes: string | null
@@ -31,15 +32,17 @@ export function ExaminationChecklistItem(
   function isEditing(): boolean {
     const { hash } = self.location
     if (!hash.startsWith(edit_hash)) return false
-    const code = hash.slice(edit_hash.length)
-    return code === checklist_item.code
+    const snomed_concept_id = positive_number.parse(
+      hash.slice(edit_hash.length),
+    )
+    return snomed_concept_id === checklist_item.snomed_concept_id
   }
 
   function isAdding(): boolean {
     const { hash } = self.location
     if (!hash.startsWith(add_hash)) return false
-    const code = hash.slice(add_hash.length)
-    return code === checklist_item.code
+    const snomed_concept_id = positive_number.parse(hash.slice(add_hash.length))
+    return snomed_concept_id === checklist_item.snomed_concept_id
   }
 
   function onHashChange() {
@@ -57,7 +60,7 @@ export function ExaminationChecklistItem(
       item.value = {
         body_sites: checklist_item.body_sites?.length
           ? [{
-            snomed_concept_id: checklist_item.body_sites[0].code,
+            snomed_concept_id: checklist_item.body_sites[0].snomed_concept_id,
             snomed_english_term:
               checklist_item.body_sites[0].snomed_english_term,
           }]
@@ -73,10 +76,10 @@ export function ExaminationChecklistItem(
       checked={!!item.value}
       onChange={(value) => {
         if (value) {
-          self.location.hash = add_hash + checklist_item.code
+          self.location.hash = add_hash + checklist_item.snomed_concept_id
         } else {
           item.value = undefined
-          removeFinding(checklist_item.code)
+          removeFinding(checklist_item.snomed_concept_id)
         }
       }}
     >
@@ -101,10 +104,11 @@ export function ExaminationChecklistItem(
           }
 
           addFinding({
-            snomed_concept_id: checklist_item.code,
+            snomed_concept_id: checklist_item.snomed_concept_id,
             text,
             edit_href,
             additional_notes: finding.additional_notes,
+            body_sites: finding.body_sites,
           })
           self.location.hash = ''
         }}
