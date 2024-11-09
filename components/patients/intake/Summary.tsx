@@ -148,6 +148,7 @@ export default function PatientSummary(
         value: family.religion,
         edit_href: `${intake_href}/family#focus=family.religion`,
         name: 'religion',
+        leading_separator: ', ',
       },
     ]]),
   ]
