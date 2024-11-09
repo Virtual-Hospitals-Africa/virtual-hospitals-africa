@@ -140,6 +140,12 @@ export default function PatientSummary(
   const family_items: DescriptionListRows[] = [
     nonEmptyRows([[
       {
+        value: family.family_type,
+        edit_href: `${intake_href}/family#focus=family.family_type`,
+        name: 'family_type',
+      },
+    ], [
+      {
         value: family.marital_status,
         edit_href: `${intake_href}/family#focus=family.marital_status`,
         name: 'marital_status',
