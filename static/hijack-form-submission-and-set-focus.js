@@ -197,12 +197,10 @@ function focusOnNextFormElement(
   e,
 ) {
   // debugger
-  console.log('focusOnNextFormElement', e)
   const formElements = Array.from(e.target.form.elements)
   const currentIndex = formElements.indexOf(e.target)
   const nextElement = formElements.slice(currentIndex + 1).find(function (el) {
-    return el.tagName !== 'BUTTON' &&
-      el.attributes.getNamedItem('name')?.value &&
+    return el.attributes.getNamedItem('name')?.value &&
       !el.attributes.getNamedItem('disabled')?.value &&
       el.attributes.getNamedItem('type')?.value !== 'hidden'
   })
@@ -240,6 +238,7 @@ addEventListener('input', function (e) {
 // this as a year. We check for the user not being done typing the year
 // by checking if the year is less than 1800.
 addEventListener('change', function (e) {
+  console.log('change', e)
   var is_date = e.target.tagName === 'INPUT' &&
     getAttr(e.target, 'type') === 'date'
 
@@ -255,6 +254,31 @@ addEventListener('change', function (e) {
   }
 
   focusOnNextFormElement(e)
+})
+
+addEventListener('select', function (e) {
+  console.log('select', e)
+  var is_date = e.target.tagName === 'INPUT' &&
+    getAttr(e.target, 'type') === 'date'
+
+  if (is_date) {
+    if (e.target.defaultValue) {
+      return
+    }
+    var date = e.target.value
+    var [year] = date.split('-')
+    if (parseInt(year) < 1800) {
+      return
+    }
+  }
+
+  focusOnNextFormElement(e)
+})
+
+addEventListener('search-select', function (e) {
+  focusOnNextFormElement({
+    target: e.detail,
+  })
 })
 
 /* TODO: turn this back on? It's not working with hash changes and is just kind of overbearing during development

@@ -383,10 +383,12 @@ export default function PatientSummary(
           {
             title: 'Guardians',
             items: guardians_items,
+            edit_href: `${intake_href}/family#focus=add_guardian`,
           },
           {
             title: 'Dependents',
             items: dependents_items,
+            edit_href: `${intake_href}/family#focus=add_dependent`,
           },
         ],
       }
@@ -399,6 +401,7 @@ export default function PatientSummary(
           {
             title: 'Guardians',
             items: guardians_items,
+            edit_href: `${intake_href}/family#focus=add_guardian`,
           },
         ],
       }
@@ -410,10 +413,12 @@ export default function PatientSummary(
           {
             title: 'Next of kin',
             items: next_of_kin_items,
+            edit_href: `${intake_href}/family#focus=next_of_kin.name`,
           },
           {
             title: 'Dependents',
             items: dependents_items,
+            edit_href: `${intake_href}/family#focus=add_dependent`,
           },
         ],
       }
@@ -455,12 +460,13 @@ export default function PatientSummary(
     },
     {
       title: 'Past Conditions',
-      link: `${intake_href}/history`,
+      link: `${intake_href}/history?focus=add_condition`,
       items: past_conditions_items,
       sections: [
         {
           title: 'Major Surgeries',
           items: major_surgeries_items,
+          edit_href: `${intake_href}/history#focus=add_surgery`,
         },
       ],
     },
