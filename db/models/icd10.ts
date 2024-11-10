@@ -245,7 +245,7 @@ export function searchTree(
     ])
     .as('with_includes')
 
-  return trx.selectFrom(with_includes)
+  const final_query = trx.selectFrom(with_includes)
     .selectAll('with_includes')
     .select([
       sql<number>`
@@ -258,7 +258,8 @@ export function searchTree(
     ])
     .orderBy('best_similarity', 'desc')
     .limit(limit)
-    .execute()
+
+  return final_query.execute()
 }
 
 export function searchFlat(
