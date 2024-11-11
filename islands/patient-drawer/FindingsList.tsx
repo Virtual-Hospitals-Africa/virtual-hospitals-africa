@@ -1,11 +1,9 @@
-import { RenderedPatientExaminationFinding } from '../../types.ts'
 import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import { assertHasNonEmptyString } from '../../util/isString.ts'
 import { FindingsListItem } from './FindingsListItem.tsx'
-import { z } from 'zod'
-import { positive_number } from '../../util/validators.ts'
+import { type Finding, FindingSchema } from './FindingsListItemSchema.ts'
 
 // TODO remove/edit events
 
@@ -14,7 +12,7 @@ const REMOVE_EXAMINATION_FINDING_EVENT_NAME = 'remove_examination_finding'
 
 // Rather than prop drilling, we use a custom event to add a finding to the list.
 // edit_href navigates to somewhere where you can edit/remove the finding.
-export function addFinding(finding: RenderedPatientExaminationFinding) {
+export function addFinding(finding: Finding) {
   self.dispatchEvent(
     new CustomEvent(ADD_EXAMINATION_FINDING_EVENT_NAME, { detail: finding }),
   )
@@ -28,21 +26,8 @@ export function removeFinding(snomed_concept_id: number) {
   )
 }
 
-const FindingSchema = z.object({
-  snomed_concept_id: positive_number,
-  text: z.string(),
-  edit_href: z.string(),
-  additional_notes: z.string().optional().nullable().transform((notes) =>
-    notes || null
-  ),
-  body_sites: z.object({
-    snomed_concept_id: positive_number,
-    snomed_english_term: z.string(),
-  }).array(),
-})
-
 export function FindingsList(
-  props: { findings: RenderedPatientExaminationFinding[] },
+  props: { findings: Finding[] },
 ) {
   const findings = useSignal(props.findings)
 

@@ -1,8 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import type { TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import * as findings from './findings.ts'
 import { ensureEncounterId } from './patient_encounters.ts'
 import { assertIsExamination } from '../../shared/examinations.ts'
+import { sql } from 'kysely'
 
 export async function forPatientEncounter(trx: TrxOrDb, opts: {
   patient_id: string
@@ -10,67 +12,39 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
 }) {
   const examinations = await trx.selectFrom('examinations')
     .leftJoin(
-      'patient_examinations',
+      'patient_examinations as pe',
       (qb) =>
         qb
           .onRef(
-            'patient_examinations.examination_name',
+            'pe.examination_name',
             '=',
             'examinations.name',
           )
           .on(
-            'patient_examinations.encounter_id',
+            'pe.encounter_id',
             '=',
             ensureEncounterId(trx, opts),
           ),
     )
-    .select((eb) => [
+    .select([
       'examinations.name as examination_name',
       'examinations.tab',
       'examinations.page',
       'examinations.path',
-      'patient_examinations.id as patient_examination_id',
-      'patient_examinations.completed',
-      'patient_examinations.skipped',
-      'patient_examinations.ordered',
+      'pe.id as patient_examination_id',
+      'pe.patient_id',
+      'pe.encounter_id',
+      'pe.encounter_provider_id',
+      'pe.completed',
+      'pe.skipped',
+      'pe.ordered',
+
       jsonArrayFrom(
-        eb.selectFrom('patient_examination_findings')
-          .whereRef(
-            'patient_examination_findings.patient_examination_id',
-            '=',
-            'patient_examinations.id',
-          )
-          .innerJoin(
-            'snomed_concepts as sc_findings',
-            'sc_findings.snomed_concept_id',
-            'patient_examination_findings.snomed_concept_id',
-          )
-          .select([
-            'patient_examination_findings.id as patient_examination_finding_id',
-            'sc_findings.snomed_concept_id',
-            'sc_findings.snomed_english_term',
-            'additional_notes',
-          ])
-          .select((eb_findings) =>
-            jsonArrayFrom(
-              eb_findings.selectFrom('patient_examination_finding_body_sites')
-                .whereRef(
-                  'patient_examination_finding_body_sites.patient_examination_finding_id',
-                  '=',
-                  'patient_examination_findings.id',
-                )
-                .innerJoin(
-                  'snomed_concepts as sc_body_sites',
-                  'sc_body_sites.snomed_concept_id',
-                  'patient_examination_finding_body_sites.snomed_concept_id',
-                )
-                .select([
-                  'patient_examination_finding_body_sites.id as patient_examination_finding_body_site_id',
-                  'sc_body_sites.snomed_concept_id',
-                  'sc_body_sites.snomed_english_term',
-                ]),
-            ).as('body_sites')
-          ),
+        findings.baseQuery(trx).whereRef(
+          'patient_examination_findings.patient_examination_id',
+          '=',
+          sql.ref('pe.id'),
+        ),
       ).as('findings'),
     ])
     .where('examinations.name', 'like', 'Head-to-toe Assessment%')
@@ -89,7 +63,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
     )
 
     const href =
-      `/app/patients/${opts.patient_id}/encounters/${opts.encounter_id}${ex.path}`
+      `/app/patients/${ex.patient_id}/encounters/${ex.encounter_id}${ex.path}`
 
     return {
       ...ex,

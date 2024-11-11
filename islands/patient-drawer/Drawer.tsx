@@ -49,6 +49,8 @@ export function PatientDrawer(
 
   // const selected = useSignal<Sendable | null>(null)
 
+  console.log('findings', findings)
+
   return (
     <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2 sticky right-0 min-w-[300px]'>
       <div
