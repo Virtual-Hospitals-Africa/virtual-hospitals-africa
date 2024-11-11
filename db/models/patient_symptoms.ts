@@ -18,14 +18,14 @@ export async function upsert(
     symptoms: PatientSymptomUpsert[]
   },
 ) {
+  const symptoms_with_edited_media = symptoms.filter((s) => s.media_edited)
 
-  const symptoms_with_edited_media = symptoms.filter(s => s.media_edited)
-
-  const {removing_media, removing_symptoms} = await deletePatientSymptomsMedia(trx, {
-    patient_id,
-    encounter_id,
-    symptoms: symptoms_with_edited_media
-  })
+  const { removing_media, removing_symptoms } =
+    await deletePatientSymptomsMedia(trx, {
+      patient_id,
+      encounter_id,
+      symptoms: symptoms_with_edited_media,
+    })
 
   const results = await upsertPatientSymptoms(trx, {
     symptoms,
@@ -34,19 +34,19 @@ export async function upsert(
     encounter_provider_id,
   })
 
-  const inserted_ids = results.map(s => s.id)
+  const inserted_ids = results.map((s) => s.id)
 
   let query = trx.deleteFrom('patient_symptoms')
     .where('patient_id', '=', patient_id)
     .where('encounter_id', '=', encounter_id)
     .where('encounter_provider_id', '=', encounter_provider_id)
 
-    if (inserted_ids) {
-      query = query
-        .where('id', 'not in', inserted_ids)
-    }
+  if (inserted_ids) {
+    query = query
+      .where('id', 'not in', inserted_ids)
+  }
 
-    await query.execute()
+  await query.execute()
 
   const patient_symptom_media_to_insert = symptoms.flatMap(
     ({ media }, index) => {
@@ -78,7 +78,6 @@ function deletePatientSymptomsMedia(
     symptoms: PatientSymptomUpsert[]
   },
 ) {
-
   const symptom_codes_to_remove = symptoms
     .filter((s) => s.media_edited)
     .map((s) => s.code)
@@ -90,15 +89,15 @@ function deletePatientSymptomsMedia(
     const patient_symptom_media_to_remove = trx.selectFrom(
       'patient_symptom_media',
     )
-    .innerJoin(
-      'patient_symptoms',
-      'patient_symptoms.id',
-      'patient_symptom_media.patient_symptom_id',
-    )
-    .where('patient_symptoms.patient_id', '=', patient_id)
-    .where('patient_symptoms.encounter_id', '=', encounter_id)
-    .where('patient_symptoms.code', 'in', symptom_codes_to_remove)
-    .select('media_id')
+      .innerJoin(
+        'patient_symptoms',
+        'patient_symptoms.id',
+        'patient_symptom_media.patient_symptom_id',
+      )
+      .where('patient_symptoms.patient_id', '=', patient_id)
+      .where('patient_symptoms.encounter_id', '=', encounter_id)
+      .where('patient_symptoms.code', 'in', symptom_codes_to_remove)
+      .select('media_id')
 
     removing_media = trx.deleteFrom('media')
       .where('media.id', 'in', patient_symptom_media_to_remove)
@@ -111,16 +110,17 @@ function deletePatientSymptomsMedia(
       .execute()
   }
 
-  return {removing_media, removing_symptoms}
+  return { removing_media, removing_symptoms }
 }
 
 function upsertPatientSymptoms(
   trx: TrxOrDb,
-  {symptoms, patient_id, encounter_id, encounter_provider_id}: {
-    symptoms: PatientSymptomUpsert[],
-    patient_id: string,
-    encounter_id: string,
-    encounter_provider_id: string},
+  { symptoms, patient_id, encounter_id, encounter_provider_id }: {
+    symptoms: PatientSymptomUpsert[]
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
+  },
 ) {
   return Promise.all(symptoms.map((s) => {
     const to_insert = {
@@ -133,9 +133,11 @@ function upsertPatientSymptoms(
 
     return trx.insertInto('patient_symptoms')
       .values(to_insert)
-      .onConflict((oc) => oc
-        .column('id')
-        .doUpdateSet(to_insert))
+      .onConflict((oc) =>
+        oc
+          .column('id')
+          .doUpdateSet(to_insert)
+      )
       .returningAll()
       .executeTakeFirstOrThrow()
   }))

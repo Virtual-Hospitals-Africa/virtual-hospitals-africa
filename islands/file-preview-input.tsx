@@ -15,9 +15,9 @@ type FilePreviewInputProps = Omit<TextInputProps, 'value' | 'label'> & {
     url: string
   }>
   onUpload({ mime_type, name, url, file }: {
-    mime_type: string;
-    name: string;
-    url: string;
+    mime_type: string
+    name: string
+    url: string
     file: File | undefined
   }): void
 }
