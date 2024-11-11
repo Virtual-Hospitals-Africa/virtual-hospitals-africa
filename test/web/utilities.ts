@@ -289,7 +289,7 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
       )
     }
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
-      const key = el.attribs.name && last(el.attribs.name.split('!'))
+      const key = el.attribs.name && last(el.attribs.name.split('.'))
       set(
         formValues,
         el.attribs.name,

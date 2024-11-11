@@ -29,6 +29,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
       'examinations.tab',
       'examinations.page',
       'examinations.path',
+      'patient_examinations.id as patient_examination_id',
       'patient_examinations.completed',
       'patient_examinations.skipped',
       'patient_examinations.ordered',
@@ -45,6 +46,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
             'patient_examination_findings.snomed_concept_id',
           )
           .select([
+            'patient_examination_findings.id as patient_examination_finding_id',
             'sc_findings.snomed_concept_id',
             'sc_findings.snomed_english_term',
             'additional_notes',
@@ -63,6 +65,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
                   'patient_examination_finding_body_sites.snomed_concept_id',
                 )
                 .select([
+                  'patient_examination_finding_body_sites.id as patient_examination_finding_body_site_id',
                   'sc_body_sites.snomed_concept_id',
                   'sc_body_sites.snomed_english_term',
                 ]),

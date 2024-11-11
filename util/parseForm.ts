@@ -20,7 +20,12 @@ export function parseParam(key: string | undefined, param: string): FormValue {
   ) {
     return parseFloat(param)
   }
-  if (param[0] === '[') return JSON.parse(param)
+  if (param[0] === '[' && param.lastIndexOf(']') === (param.length - 1)) {
+    return JSON.parse(param)
+  }
+  if (param[0] === '{' && param.lastIndexOf('}') === (param.length - 1)) {
+    return JSON.parse(param)
+  }
   return param
 }
 

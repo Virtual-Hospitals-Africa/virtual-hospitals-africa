@@ -5,12 +5,15 @@ import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
 import { positive_number } from '../../util/validators.ts'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 type ExaminationChecklistProps = {
   checklist_item: ExaminationChecklistDefinition
   edit_href: string
   found?: {
+    patient_examination_finding_id?: string
     body_sites: {
+      patient_examination_finding_body_site_id?: string
       snomed_concept_id: number
       snomed_english_term: string
     }[]
@@ -71,48 +74,58 @@ export function ExaminationChecklistItem(
   }, [adding.value, item.value])
 
   return (
-    <CheckboxGridItem
-      label={checklist_item.label}
-      checked={!!item.value}
-      onChange={(value) => {
-        if (value) {
-          self.location.hash = add_hash + checklist_item.snomed_concept_id
-        } else {
-          item.value = undefined
-          removeFinding(checklist_item.snomed_concept_id)
-        }
-      }}
-    >
-      <ExaminationFindingDialog
-        action={editing.value ? 'Edit' : 'Add'}
-        open={(editing.value || adding.value) && !!item.value}
-        checklist_item={checklist_item}
-        found={item.value}
-        close={() => {
-          if (adding.value) {
-            item.value = undefined
-          }
-          self.location.hash = ''
-        }}
-        save={(finding) => {
-          item.value = finding
-
-          let text = checklist_item.snomed_english_term
-          // TODO handle multiple body sites
-          if (finding.body_sites.length) {
-            text += ` affecting ${finding.body_sites[0].snomed_english_term}`
-          }
-
-          addFinding({
-            snomed_concept_id: checklist_item.snomed_concept_id,
-            text,
-            edit_href,
-            additional_notes: finding.additional_notes,
-            body_sites: finding.body_sites,
-          })
-          self.location.hash = ''
+    <>
+      <HiddenInput
+        name={`findings.snomed_concept:${checklist_item.snomed_concept_id}`}
+        value={item.value && {
+          snomed_concept_id: checklist_item.snomed_concept_id,
+          snomed_english_term: checklist_item.snomed_english_term,
+          ...item.value,
         }}
       />
-    </CheckboxGridItem>
+      <CheckboxGridItem
+        label={checklist_item.label}
+        checked={!!item.value}
+        onChange={(value) => {
+          if (value) {
+            self.location.hash = add_hash + checklist_item.snomed_concept_id
+          } else {
+            item.value = undefined
+            removeFinding(checklist_item.snomed_concept_id)
+          }
+        }}
+      >
+        <ExaminationFindingDialog
+          action={editing.value ? 'Edit' : 'Add'}
+          open={(editing.value || adding.value) && !!item.value}
+          checklist_item={checklist_item}
+          found={item.value}
+          close={() => {
+            if (adding.value) {
+              item.value = undefined
+            }
+            self.location.hash = ''
+          }}
+          save={(finding) => {
+            item.value = finding
+
+            let text = checklist_item.snomed_english_term
+            // TODO handle multiple body sites
+            if (finding.body_sites.length) {
+              text += ` affecting ${finding.body_sites[0].snomed_english_term}`
+            }
+
+            addFinding({
+              snomed_concept_id: checklist_item.snomed_concept_id,
+              text,
+              edit_href,
+              additional_notes: finding.additional_notes,
+              body_sites: finding.body_sites,
+            })
+            self.location.hash = ''
+          }}
+        />
+      </CheckboxGridItem>
+    </>
   )
 }

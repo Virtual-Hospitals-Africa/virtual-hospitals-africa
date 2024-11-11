@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
+import generateUUID from './uuid.ts'
 
 export const national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
@@ -40,3 +41,7 @@ export const positive_number = z.number().or(z.string())
   .refine((n) => isNumber(n) && n > 0, {
     message: 'Expected a positive number',
   })
+
+export const generated_uuid = z.string().uuid().optional().transform((v) =>
+  v || generateUUID()
+)

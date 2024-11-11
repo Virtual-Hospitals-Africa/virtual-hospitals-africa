@@ -5,7 +5,7 @@ export function SendToSelectedPatient(
   { patient }: { patient: SelectedPatient },
 ) {
   return (
-    <div className='px-5 py-4'>
+    <div className='px-3 py-2'>
       <div className='flex items-center'>
         <Avatar src={patient.avatar_url} className='mr-4' />
         <div>

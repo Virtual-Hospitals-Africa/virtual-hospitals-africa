@@ -2470,16 +2470,19 @@ export type Provider = {
   provider_id: string
 }
 export type RenderedPatientExamination = {
+  patient_examination_id: string | null
   examination_name: Examination
   completed: boolean | null
   skipped: boolean | null
   ordered: boolean | null
   href: string
   findings: {
+    patient_examination_finding_id: string
     snomed_concept_id: number
     snomed_english_term: string
     additional_notes: string | null
     body_sites: {
+      patient_examination_finding_body_site_id: string
       snomed_concept_id: number
       snomed_english_term: string
     }[]

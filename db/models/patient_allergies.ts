@@ -1,5 +1,6 @@
 import { type Allergy, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import { insertConcepts } from './snomed.ts'
 
 export async function upsert(
   trx: TrxOrDb,
@@ -19,14 +20,13 @@ export async function upsert(
     'Allergy ids must be unique',
   )
 
-  const inserting_snomed_concepts = allergies.length &&
-    trx.insertInto('snomed_concepts').values(
-      allergies.map(({ snomed_concept_id, snomed_english_term }) => ({
-        snomed_concept_id,
-        snomed_english_term,
-      })),
-    ).onConflict((oc) => oc.doNothing())
-      .returningAll().execute()
+  const inserting_snomed_concepts = insertConcepts(
+    trx,
+    allergies.map(({ snomed_concept_id, snomed_english_term }) => ({
+      snomed_concept_id,
+      snomed_english_term,
+    })),
+  )
 
   const removing_allergies = trx
     .deleteFrom('patient_allergies')

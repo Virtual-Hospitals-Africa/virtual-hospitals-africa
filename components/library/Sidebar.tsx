@@ -21,6 +21,7 @@ import { replaceParams } from '../../util/replaceParams.ts'
 import { MedicineIcon } from './icons/Medicines.tsx'
 import { PharmaciesIcon } from './icons/Pharmacies.tsx'
 import { UsersIcon } from './icons/heroicons/outline.tsx'
+import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 
 export type SidebarProps = {
   top: {
@@ -114,11 +115,23 @@ export function GenericSidebar(
   const activeLink = matchActiveLink(nav_links, route)
   return (
     <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
-      <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-5 pb-4'>
-        <a href={top.href} className='flex h-20 shrink-0 items-center gap-3'>
-          {top.child}
-        </a>
-        <nav className='flex flex-1 flex-col'>
+      <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white'>
+        <div
+          style={{
+            height: HEADER_HEIGHT_PX,
+            display: 'grid',
+            placeItems: 'center',
+            width: '100%',
+          }}
+        >
+          <a
+            href={top.href}
+            className='flex h-20 shrink-0 items-center gap-3 max-w-full '
+          >
+            {top.child}
+          </a>
+        </div>
+        <nav className='flex flex-1 flex-col px-5'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
