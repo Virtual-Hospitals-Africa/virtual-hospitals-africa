@@ -15,11 +15,7 @@ function PatientAllergyButton({ allergy, index, remove }: {
     <>
       <HiddenInput
         name={prefix}
-        inputs={{
-          snomed_concept_id: String(allergy.snomed_concept_id),
-          snomed_english_term: allergy.snomed_english_term,
-          patient_allergy_id: allergy.patient_allergy_id,
-        }}
+        value={allergy}
       />
       <button
         id={prefix}

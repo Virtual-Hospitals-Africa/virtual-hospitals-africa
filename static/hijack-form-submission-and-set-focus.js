@@ -1,5 +1,10 @@
 // deno-lint-ignore-file
 
+function getAttr(el, attr) {
+  var item = el.attributes.getNamedItem(attr)
+  return item && item.value
+}
+
 // A hack? Maybe, but the idea is to hijack all form submissions so that we can
 // do a fetch request and then show an error on the current page if there is one, rather than losing the whole form.
 // The logic for 200s is to replace the current page with the response text. This is more complicated than I'd like,
@@ -21,7 +26,7 @@ addEventListener('submit', function (event) {
           var path = issue.path.join('.')
           var element = document.querySelector('[name="' + path + '"]')
           if (
-            element.attributes.getNamedItem('type').value === 'hidden' &&
+            getAttr(element, 'type') === 'hidden' &&
             path.endsWith('id')
           ) {
             element = document.querySelector(
@@ -174,9 +179,9 @@ var observer = new MutationObserver(function (mutations) {
           node.tagName === 'TEXTAREA' || node.tagName === 'BUTTON'
 
         return hasFormElementTag &&
-          !node.attributes.getNamedItem('disabled')?.value &&
-          !node.attributes.getNamedItem('readonly')?.value &&
-          !node.attributes.getNamedItem('hidden')?.value
+          !getAttr(node, 'disabled') &&
+          !getAttr(node, 'readonly') &&
+          !getAttr(node, 'hidden')
       })
       if (found) {
         found.focus()
@@ -200,9 +205,8 @@ function focusOnNextFormElement(
   const formElements = Array.from(e.target.form.elements)
   const currentIndex = formElements.indexOf(e.target)
   const nextElement = formElements.slice(currentIndex + 1).find(function (el) {
-    return el.attributes.getNamedItem('name')?.value &&
-      !el.attributes.getNamedItem('disabled')?.value &&
-      el.attributes.getNamedItem('type')?.value !== 'hidden'
+    return getAttr(el, 'name') && !getAttr(el, 'disabled') &&
+      (getAttr(el, 'type') !== 'hidden')
   })
 
   if (nextElement) {
@@ -212,13 +216,8 @@ function focusOnNextFormElement(
   }
 }
 
-function getAttr(el, attr) {
-  var item = el.attributes.getNamedItem(attr)
-  return item && item.value
-}
-
 addEventListener('input', function (e) {
-  console.log(e.type)
+  console.log('input', e)
   var is_input = e.target.tagName === 'INPUT'
   if (!is_input) {
     return
@@ -257,25 +256,13 @@ addEventListener('change', function (e) {
 })
 
 addEventListener('select', function (e) {
-  console.log('select', e)
-  var is_date = e.target.tagName === 'INPUT' &&
-    getAttr(e.target, 'type') === 'date'
-
-  if (is_date) {
-    if (e.target.defaultValue) {
-      return
-    }
-    var date = e.target.value
-    var [year] = date.split('-')
-    if (parseInt(year) < 1800) {
-      return
-    }
-  }
-
+  var is_select = e.target.tagName === 'SELECT'
+  if (!is_select) return
   focusOnNextFormElement(e)
 })
 
 addEventListener('search-select', function (e) {
+  console.log('search-select', e)
   focusOnNextFormElement({
     target: e.detail,
   })

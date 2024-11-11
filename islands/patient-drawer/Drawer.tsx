@@ -50,7 +50,7 @@ export function PatientDrawer(
   // const selected = useSignal<Sendable | null>(null)
 
   return (
-    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2'>
+    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2 sticky right-0 min-w-[300px]'>
       <div
         className='grid items-center justify-between border-b-2'
         style={{

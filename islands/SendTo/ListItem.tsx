@@ -89,9 +89,10 @@ export function SendableListItem(
       {is_selected && sendable.to.type === 'entity' && (
         <HiddenInput
           form={form}
-          inputs={{
-            'send_to.entity.type': sendable.to.entity_type,
-            'send_to.entity.id': sendable.to.entity_id,
+          name='send_to.entity'
+          value={{
+            id: sendable.to.entity_id,
+            type: sendable.to.entity_type,
           }}
         />
       )}

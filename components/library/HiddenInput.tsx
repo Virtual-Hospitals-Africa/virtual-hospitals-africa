@@ -19,20 +19,13 @@ export function HiddenInput(
   if (!value) {
     return null
   }
-  if (typeof value === 'string' || typeof value === 'number') {
-    return (
-      <input
-        type='hidden'
-        value={value}
-        form={form}
-        name={name}
-      />
-    )
+  if (typeof value !== 'string' && typeof value !== 'number') {
+    value = JSON.stringify(value)
   }
   return (
     <input
       type='hidden'
-      value={JSON.stringify(value)}
+      value={value}
       form={form}
       name={name}
     />

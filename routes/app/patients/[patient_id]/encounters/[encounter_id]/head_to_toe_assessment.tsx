@@ -29,7 +29,11 @@ import redirect from '../../../../../../util/redirect.ts'
 const ExaminationFindingsSchema = z.object({
   patient_examination_id: generated_uuid,
   findings: z.any()
-    .transform((fs) => Array.from(Object.values(fs)))
+    // .transform((fs) => Array.from(Object.values(fs)))
+    .transform((fs) => {
+      console.log('fs', fs)
+      return Array.from(Object.values(fs))
+    })
     .pipe(z.array(
       z.object({
         patient_examination_finding_id: generated_uuid,
