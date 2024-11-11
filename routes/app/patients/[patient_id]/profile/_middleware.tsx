@@ -7,9 +7,10 @@ import { PatientContext } from '../_middleware.tsx'
 import type { FreshContext } from '$fresh/server.ts'
 import { assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
+import { PatientDrawer } from '../../../../../islands/patient-drawer/Drawer.tsx'
 
 type PatientPageProps = {
-  who: 'knows'
+  ctx: PatientContext
 }
 
 export function handler(
@@ -42,7 +43,7 @@ export function PatientPage(
     ]
 
     const rendered = await render({
-      who: 'knows',
+      ctx,
     })
 
     return (
@@ -52,6 +53,17 @@ export function PatientPage(
         url={ctx.url}
         health_worker={ctx.state.healthWorker}
         variant='practitioner home page'
+        // Show a patient drawer if I am a provider for an open encounter for this patient
+        drawer={ctx.state.patient.open_encounter?.providers.some((p) =>
+          p.health_worker_id === ctx.state.healthWorker.id
+        ) && (
+          <PatientDrawer
+            patient={ctx.state.patient}
+            encounter={ctx.state.patient.open_encounter}
+            findings={[]}
+            sendables={[]}
+          />
+        )}
       >
         <div className='container my-4 mx-6'>
           {ctx.state.patient.open_encounter && (
