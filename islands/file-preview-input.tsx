@@ -14,6 +14,12 @@ type FilePreviewInputProps = Omit<TextInputProps, 'value' | 'label'> & {
     mime_type: string
     url: string
   }>
+  onUpload({ mime_type, name, url, file }: {
+    mime_type: string;
+    name: string;
+    url: string;
+    file: File | undefined
+  }): void
 }
 
 type ImagePreviewInputProps = Omit<FilePreviewInputProps, 'value'> & {
@@ -28,7 +34,7 @@ function mediaType(mime_type: string) {
 
 const twentyFourMb = 24 * 1024 * 1024
 
-function Preview(
+export default function Preview(
   { mime_type, url, name, className, remove }: {
     mime_type: Maybe<string>
     url: Maybe<string>
@@ -45,7 +51,9 @@ function Preview(
   return (
     <div className='flex flex-col gap-0.5 flex-wrap'>
       <RemoveRow
-        onClick={remove}
+        onClick={() => {
+          remove()
+        }}
         centered
       >
         <div
@@ -71,44 +79,47 @@ function Preview(
           )}
         </div>
       </RemoveRow>
-      {name && <span className='text-gray-600 ml-8'>{name}</span>}
+      {/* {name && <span className='text-gray-600 ml-8'>{name}</span>} */}
     </div>
   )
 }
 
-export default function FilePreviewInput(
+export function FilePreviewInput(
   { value, label, ...props }: FilePreviewInputProps,
 ) {
   const [initialImageRemoved, setInitialImageRemoved] = useState(false)
   const [image, setImage] = useState<
     null | {
       mime_type: string
-      name: string
       url: string
+      name: string
+      file?: File
     }
-  >(null)
-  const isShowPreview = image || (value && !initialImageRemoved)
+  >(
+    value
+      ? {
+        mime_type: value.mime_type,
+        url: value.url,
+        name: props.fileName || '',
+      }
+      : null,
+  )
+  const isShowPreview = image?.url || (value?.url && !initialImageRemoved)
 
-  if (isShowPreview) {
-    return (
-      <Label label={label} className='relative'>
-        <Preview
-          mime_type={image?.mime_type || value?.mime_type}
-          url={image?.url || value?.url}
-          name={image?.name || props.fileName}
-          className={props.className}
-          remove={() => {
-            setImage(null)
-            setInitialImageRemoved(true)
-          }}
-        />
-      </Label>
-    )
-  }
-  return (
+  console.log(image, value, initialImageRemoved)
+
+  // Set to False if value.url exists
+
+  // const [newFile, setNewFile] = useState(false)
+
+  console.log('isShowPreview value', value)
+  console.log('label', label)
+
+  const input = (
     <ImageOrVideoInput
       value={initialImageRemoved ? null : value}
-      label={label}
+      label={isShowPreview ? '' : label}
+      // className={image?.file ? 'hidden' : props.className}
       {...props}
       onInput={(e) => {
         const file = e.currentTarget.files?.[0]
@@ -121,10 +132,43 @@ export default function FilePreviewInput(
           mime_type: file.type,
           name: file.name,
           url: URL.createObjectURL(file),
+          file,
+        })
+        setInitialImageRemoved(true)
+        props.onUpload({
+          mime_type: file.type,
+          name: file.name,
+          url: URL.createObjectURL(file),
+          file,
         })
       }}
     />
   )
+
+  if (isShowPreview) {
+    return (
+      <Label label={label + ' Preview'} className='relative'>
+        {input}
+        <Preview
+          mime_type={image?.mime_type || value?.mime_type}
+          url={image?.url || value?.url}
+          className={props.className}
+          remove={() => {
+            setImage(null)
+            setInitialImageRemoved(true)
+            props.onUpload({
+              mime_type: '',
+              name: '',
+              url: '',
+              file: undefined,
+            })
+          }}
+        />
+      </Label>
+    )
+  }
+
+  return input
 }
 
 export function ImagePreviewInput({ value, ...props }: ImagePreviewInputProps) {

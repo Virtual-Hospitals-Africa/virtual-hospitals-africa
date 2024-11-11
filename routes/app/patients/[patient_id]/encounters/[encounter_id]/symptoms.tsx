@@ -14,20 +14,31 @@ import { todayISOInHarare } from '../../../../../../util/date.ts'
 
 const MediaSchema = z.object({
   id: z.string(),
+  // url: z.string(),
+  // mime_type: z.string(),
+  // binary_data: z.string(),
 })
 
 const PatientSymptomUpsertSchema = z.object({
+  patient_symptom_id: z.string().uuid().optional(),
   code: z.string(),
   severity: z.number().min(1).max(10),
   start_date: z.string().date(),
   end_date: z.string().date().optional(),
   notes: z.string().optional(),
   media: z.array(MediaSchema).optional(),
+  media_edited: z.boolean().optional(),
 })
 
 const SymptomsSchema = z.object({
   symptoms: z.array(PatientSymptomUpsertSchema).optional(),
-})
+}).refine(
+  (data) => new Set(data.symptoms?.map((s) => s.code)).size == data.symptoms?.length,
+  {
+    message: 'Symptom codes must be unique, pleas consider removing duplicates.',
+    path: ['Symptom'],
+  },
+)
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,

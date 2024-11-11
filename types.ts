@@ -2390,15 +2390,21 @@ export type PatientMedicationUpsert = {
 }
 
 export type PatientSymptomInsertShared = {
+  patient_symptom_id?: string
   code: string
   severity: number
   start_date: string
   end_date?: Maybe<string>
   notes?: Maybe<string>
+  media_edited?: string
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
-  media?: { id: string }[]
+  media?: {
+    id: string
+    mime_type: string
+    url: string
+  }[]
 }
 
 export type RenderedPatientSymptom =
