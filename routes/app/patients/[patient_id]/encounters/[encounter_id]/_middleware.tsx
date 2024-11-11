@@ -205,22 +205,7 @@ export function EncounterLayout({
       }
       drawer={
         <PatientDrawer
-          patient={{
-            id: ctx.state.patient.id,
-            name: ctx.state.patient.name,
-            description: ctx.state.patient.description,
-            avatar_url: ctx.state.patient.avatar_url,
-            actions: {
-              chart: replaceParams(
-                '/app/patients/:patient_id/profile/chart',
-                ctx.params,
-              ),
-              clinical_notes: replaceParams(
-                '/app/patients/:patient_id/profile/clinical_notes',
-                ctx.params,
-              ),
-            },
-          }}
+          patient={ctx.state.patient}
           encounter={ctx.state.encounter}
           findings={key_findings}
           sendables={sendables}
@@ -235,17 +220,7 @@ export function EncounterLayout({
         <ButtonsContainer>
           <SendToButton
             form='encounter'
-            patient={{
-              name: ctx.state.patient.name,
-              description: ctx.state.patient.description,
-              avatar_url: ctx.state.patient.avatar_url,
-              actions: {
-                clinical_notes: replaceParams(
-                  '/app/patients/:patient_id/encounter/open/clinical_notes',
-                  ctx.params,
-                ),
-              },
-            }}
+            patient={ctx.state.patient}
             sendables={sendables}
           />
           <Button

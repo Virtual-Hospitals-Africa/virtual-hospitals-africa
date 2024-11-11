@@ -82,7 +82,7 @@ export function getById(
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
-        clinical_notes: patients.intake_clinical_notes_href_sql,
+        view: patients.view_href_sql,
       }).as('actions'),
     ])
     .where('patients.id', '=', patient_id)
@@ -150,7 +150,7 @@ export async function getSummaryById(
         .as('avatar_url'),
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonBuildObject({
-        clinical_notes: patients.intake_clinical_notes_href_sql,
+        view: patients.view_href_sql,
       }).as('actions'),
       jsonArrayFromColumn(
         'intake_step',

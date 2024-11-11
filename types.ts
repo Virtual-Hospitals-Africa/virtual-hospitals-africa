@@ -169,7 +169,7 @@ export type Patient = PatientPersonal & {
 
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
-  name: Maybe<string>
+  name: string
   gender: Maybe<Gender>
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
@@ -206,7 +206,7 @@ export type RenderedPatient =
       latitude: number | null
     }
     actions: {
-      view: string | null
+      view: string
     }
   }
 export type Condition = {
@@ -345,7 +345,7 @@ export type PatientIntake =
     age?: RenderedPatientAge
     address?: Maybe<Address>
     actions: {
-      clinical_notes: string
+      view: string
     }
   }
   & Pick<
@@ -1416,6 +1416,9 @@ export type RenderedDoctorReviewBase = {
     avatar_url: string | null
     description: string | null
     primary_doctor_id: string | null
+    actions: {
+      view: string
+    }
   }
   requested_by: {
     profession: 'nurse' | 'doctor'
@@ -2898,7 +2901,7 @@ export type SelectedPatient = {
   avatar_url?: Maybe<string>
   description?: Maybe<string>
   actions: {
-    clinical_notes: string
+    view: string
   }
 }
 
