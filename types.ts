@@ -3032,6 +3032,11 @@ export type RenderedPrescriptionWithMedications = RenderedPrescription & {
 }
 
 export type RenderedPatientExaminationFinding = {
+  patient_examination_id: string
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
+  encounter_open: SqlBool
   edit_href: string
   snomed_concept_id: number
   text: string

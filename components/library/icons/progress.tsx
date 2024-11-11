@@ -46,7 +46,6 @@ export function Progress({ active, completed, skipped }: {
   completed: SqlBool | null
   skipped: SqlBool | null
 }) {
-  console.log('Progress', arguments[0])
   return (completed
     ? <Check active={active} className='w-5 h-5' />
     : skipped && !active

@@ -104,29 +104,44 @@ export function postHandler<T>(
 }
 
 export async function handler(
-  _req: Request,
+  req: Request,
   ctx: EncounterContext,
 ) {
   const encounter_id = getEncounterId(ctx)
+
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const getting_patient_card = patients.getCard(ctx.state.trx, {
-    id: patient_id,
-  })
-  Object.assign(
-    ctx.state,
-    await removeFromWaitingRoomAndAddSelfAsProvider(
-      ctx.state.trx,
-      {
-        encounter_id,
-        patient_id,
-        health_worker: ctx.state.healthWorker,
-      },
-    ),
-  )
-  const patient = await getting_patient_card
+  const { patient, encounter: { encounter, encounter_provider } } =
+    await promiseProps({
+      patient: patients.getCard(ctx.state.trx, {
+        id: patient_id,
+      }),
+      encounter: removeFromWaitingRoomAndAddSelfAsProvider(
+        ctx.state.trx,
+        {
+          encounter_id,
+          patient_id,
+          health_worker: ctx.state.healthWorker,
+        },
+      ),
+    })
+
   assertOr404(patient, 'Patient not found')
+
+  if (encounter_id === 'open' && req.method === 'GET') {
+    return redirect(
+      replaceParams(
+        ctx.route,
+        {
+          ...ctx.params,
+          encounter_id: encounter.encounter_id,
+        },
+      ),
+    )
+  }
   ctx.state.patient = patient
+  ctx.state.encounter = encounter
+  ctx.state.encounter_provider = encounter_provider
   return ctx.next()
 }
 
