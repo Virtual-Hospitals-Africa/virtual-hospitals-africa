@@ -8,7 +8,7 @@ export default function CalendarEmptyState() {
       explanation='Create an appointment with a new or existing patient'
       icon={<MakeAppointmentIcon className='mx-auto h-12 w-12 text-gray-400' />}
       button={{
-        text: 'New Appointment',
+        children: 'New Appointment',
         href: '/app/calendar/appointments/schedule',
       }}
     />
