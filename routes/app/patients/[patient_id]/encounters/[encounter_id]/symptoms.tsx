@@ -14,9 +14,6 @@ import { todayISOInHarare } from '../../../../../../util/date.ts'
 
 const MediaSchema = z.object({
   id: z.string(),
-  // url: z.string(),
-  // mime_type: z.string(),
-  // binary_data: z.string(),
 })
 
 const PatientSymptomUpsertSchema = z.object({

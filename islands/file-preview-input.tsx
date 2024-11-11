@@ -79,7 +79,6 @@ export default function Preview(
           )}
         </div>
       </RemoveRow>
-      {/* {name && <span className='text-gray-600 ml-8'>{name}</span>} */}
     </div>
   )
 }
@@ -106,20 +105,10 @@ export function FilePreviewInput(
   )
   const isShowPreview = image?.url || (value?.url && !initialImageRemoved)
 
-  console.log(image, value, initialImageRemoved)
-
-  // Set to False if value.url exists
-
-  // const [newFile, setNewFile] = useState(false)
-
-  console.log('isShowPreview value', value)
-  console.log('label', label)
-
   const input = (
     <ImageOrVideoInput
       value={initialImageRemoved ? null : value}
       label={isShowPreview ? '' : label}
-      // className={image?.file ? 'hidden' : props.className}
       {...props}
       onInput={(e) => {
         const file = e.currentTarget.files?.[0]
