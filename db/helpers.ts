@@ -382,7 +382,7 @@ export function upsertOne<Table extends keyof DB>(
   return trx
     .insertInto(table)
     .values(values)
-    .onConflict((oc) => oc.doUpdateSet(values as any))
+    .onConflict((oc) => oc.column('id' as any).doUpdateSet(values as any))
     .returningAll()
     .executeTakeFirstOrThrow()
 }

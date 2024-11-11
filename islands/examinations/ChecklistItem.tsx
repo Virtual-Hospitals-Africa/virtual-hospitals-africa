@@ -11,7 +11,9 @@ type ExaminationChecklistProps = {
   checklist_item: ExaminationChecklistDefinition
   edit_href: string
   found?: {
+    patient_examination_finding_id?: string
     body_sites: {
+      patient_examination_finding_body_site_id?: string
       snomed_concept_id: number
       snomed_english_term: string
     }[]
@@ -77,6 +79,7 @@ export function ExaminationChecklistItem(
         name={`findings.snomed_concept:${checklist_item.snomed_concept_id}`}
         value={item.value && {
           snomed_concept_id: checklist_item.snomed_concept_id,
+          snomed_english_term: checklist_item.snomed_english_term,
           ...item.value,
         }}
       />

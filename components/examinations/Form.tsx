@@ -3,6 +3,7 @@ import { RenderedPatientExamination } from '../../types.ts'
 import { HEAD_TO_TOE_ASSESSMENTS_BY_EXAMINATION_NAME } from '../../shared/examinations.ts'
 import { ExaminationCategory } from './Category.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { HiddenInput } from '../library/HiddenInput.tsx'
 
 export function PatientExaminationForm({
   patient_examination,
@@ -22,6 +23,10 @@ export function PatientExaminationForm({
   return (
     <div className='flex content-between p-4'>
       <div className='sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6'>
+        <HiddenInput
+          name='patient_examination_id'
+          value={patient_examination.patient_examination_id}
+        />
         {assessment.categories.map((
           { category, subcategories, checklist },
         ) => (

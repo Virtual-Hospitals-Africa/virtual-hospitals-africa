@@ -268,6 +268,15 @@ export async function upsertForPatientExamination(
     }[]
   },
 ) {
+  console.log({
+    patient_id,
+    encounter_id,
+    encounter_provider_id,
+    examination_name,
+    findings,
+    patient_examination_id,
+  })
+
   const { snomed_concepts, deleting_other_findings, ...rest } =
     await promiseProps({
       deleting_other_findings: trx.deleteFrom('patient_examination_findings')
@@ -293,7 +302,10 @@ export async function upsertForPatientExamination(
       snomed_concepts: insertConcepts(
         trx,
         findings.flatMap((finding) => {
-          const body_sites = finding.body_sites || []
+          const body_sites = (finding.body_sites || []).map((body_site) => ({
+            snomed_concept_id: body_site.snomed_concept_id,
+            snomed_english_term: body_site.snomed_english_term,
+          }))
           return [{
             snomed_concept_id: finding.snomed_concept_id,
             snomed_english_term: finding.snomed_english_term,
@@ -303,6 +315,7 @@ export async function upsertForPatientExamination(
       findings: Promise.all(
         findings.map((finding) =>
           upsertOne(trx, 'patient_examination_findings', {
+            id: finding.patient_examination_finding_id,
             patient_examination_id: patient_examination_id,
             snomed_concept_id: finding.snomed_concept_id,
             additional_notes: finding.additional_notes,
@@ -313,6 +326,7 @@ export async function upsertForPatientExamination(
         findings.flatMap((finding) =>
           (finding.body_sites || []).map((body_site) =>
             upsertOne(trx, 'patient_examination_finding_body_sites', {
+              id: body_site.patient_examination_finding_body_site_id,
               patient_examination_finding_id:
                 finding.patient_examination_finding_id,
               snomed_concept_id: body_site.snomed_concept_id,
