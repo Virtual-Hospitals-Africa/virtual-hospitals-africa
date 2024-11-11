@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import { Allergy } from '../../types.ts'
 import AllergySearch from './Search.tsx'
 import { MinusCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 function PatientAllergyButton({ allergy, index, remove }: {
   allergy: Allergy
@@ -13,8 +13,8 @@ function PatientAllergyButton({ allergy, index, remove }: {
 
   return (
     <>
-      <HiddenInputs
-        prefix={prefix}
+      <HiddenInput
+        name={prefix}
         inputs={{
           snomed_concept_id: String(allergy.snomed_concept_id),
           snomed_english_term: allergy.snomed_english_term,

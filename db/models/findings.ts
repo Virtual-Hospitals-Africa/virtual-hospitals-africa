@@ -1,6 +1,8 @@
 import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, now, upsertOne } from '../helpers.ts'
 import { assertIsExamination } from '../../shared/examinations.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
+import { insertConcepts } from './snomed.ts'
 
 export async function forPatientEncounter(trx: TrxOrDb, opts: {
   patient_id: string
@@ -237,3 +239,88 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
 
 //   await Promise.all([removing, adding])
 // }
+
+export async function upsertForPatientExamination(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    encounter_id,
+    encounter_provider_id,
+    examination_name,
+    findings,
+    patient_examination_id,
+  }: {
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
+    examination_name: string
+    patient_examination_id: string
+    findings: {
+      patient_examination_finding_id: string
+      snomed_concept_id: number
+      snomed_english_term: string
+      additional_notes: string | null
+      body_sites?: {
+        patient_examination_finding_body_site_id: string
+        snomed_concept_id: number
+        snomed_english_term: string
+      }[]
+    }[]
+  },
+) {
+  const { snomed_concepts, deleting_other_findings, ...rest } =
+    await promiseProps({
+      deleting_other_findings: trx.deleteFrom('patient_examination_findings')
+        .where('patient_examination_id', '=', patient_examination_id)
+        .$if(
+          findings.length > 0,
+          (qb) =>
+            qb.where(
+              'id',
+              'not in',
+              findings.map((f) => f.patient_examination_finding_id),
+            ),
+        )
+        .execute(),
+      examination: upsertOne(trx, 'patient_examinations', {
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        examination_name,
+        id: patient_examination_id,
+        completed: true,
+      }),
+      snomed_concepts: insertConcepts(
+        trx,
+        findings.flatMap((finding) => {
+          const body_sites = finding.body_sites || []
+          return [{
+            snomed_concept_id: finding.snomed_concept_id,
+            snomed_english_term: finding.snomed_english_term,
+          }, ...body_sites]
+        }),
+      ),
+      findings: Promise.all(
+        findings.map((finding) =>
+          upsertOne(trx, 'patient_examination_findings', {
+            patient_examination_id: patient_examination_id,
+            snomed_concept_id: finding.snomed_concept_id,
+            additional_notes: finding.additional_notes,
+          })
+        ),
+      ),
+      body_sites: Promise.all(
+        findings.flatMap((finding) =>
+          (finding.body_sites || []).map((body_site) =>
+            upsertOne(trx, 'patient_examination_finding_body_sites', {
+              patient_examination_finding_id:
+                finding.patient_examination_finding_id,
+              snomed_concept_id: body_site.snomed_concept_id,
+            })
+          )
+        ),
+      ),
+    })
+
+  return rest
+}

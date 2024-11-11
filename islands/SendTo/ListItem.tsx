@@ -2,7 +2,7 @@ import { JSX } from 'preact'
 import { Sendable } from '../../types.ts'
 import OnlineIndicator from '../../components/OnlineIndicator.tsx'
 import { CircularImage } from '../../components/library/CircularImage.tsx'
-import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { AdditionalInfo } from '../../components/library/AdditionalInfo.tsx'
 import { AdditionalDescription } from '../../components/library/AdditionalDescription.tsx'
 import { Description } from '../../components/library/Description.tsx'
@@ -87,7 +87,7 @@ export function SendableListItem(
         : 'hover:bg-indigo-200'}
     >
       {is_selected && sendable.to.type === 'entity' && (
-        <HiddenInputs
+        <HiddenInput
           form={form}
           inputs={{
             'send_to.entity.type': sendable.to.entity_type,

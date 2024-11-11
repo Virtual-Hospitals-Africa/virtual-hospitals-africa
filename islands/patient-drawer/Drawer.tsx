@@ -11,6 +11,7 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 // import { SendableList } from '../SendTo/List.tsx'
 import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
 import Menu from '../Menu.tsx'
+import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
 
 export function PatientDrawer(
   { patient, encounter, findings }: {
@@ -50,12 +51,16 @@ export function PatientDrawer(
 
   return (
     <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2'>
-      <div className='py-5 border-b-2'>
-        <div className='h-16 grid items-center justify-between'>
-          {/* <Person person={patient} size='lg' /> */}
-          <SendToSelectedPatient patient={patient} />
-        </div>
+      <div
+        className='grid items-center justify-between border-b-2'
+        style={{
+          height: HEADER_HEIGHT_PX,
+        }}
+      >
+        {/* <Person person={patient} size='lg' /> */}
+        <SendToSelectedPatient patient={patient} />
       </div>
+
       <div className='border-b-2'>
         <div className='w-full py-2'>
           <SectionHeader>Reason for visit</SectionHeader>

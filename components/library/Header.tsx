@@ -5,6 +5,7 @@ import { Maybe } from '../../types.ts'
 import { NotificationsButton } from '../../islands/Notifications.tsx'
 import { RenderedNotification } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 
 export type HeaderProps = {
   title: string
@@ -58,7 +59,12 @@ function HeaderBase(
   { className, children }: { className?: string; children: ComponentChildren },
 ) {
   return (
-    <nav className={className}>
+    <nav
+      className={className}
+      style={{
+        height: HEADER_HEIGHT_PX,
+      }}
+    >
       <div className='w-full p-5'>
         <div className='relative flex h-16 items-center justify-between'>
           {children}
