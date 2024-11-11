@@ -115,8 +115,10 @@ async function sendTo(
       trx,
       { organization_id, patient_encounter_id },
     )
+    const just_completed = step === 'summary' ? 'Intake' : capitalize(step)
+
     const success = encodeURIComponent(
-      `${capitalize(step)} completed and patient added to the waiting room.`,
+      `${just_completed} completed and patient added to the waiting room.`,
     )
     return redirect(
       `/app/organizations/${organization_id}/waiting_room?success=${success}`,
