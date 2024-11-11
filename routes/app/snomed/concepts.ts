@@ -13,6 +13,11 @@ type SearchTerms = {
 
 const rows_per_page = 10
 
+export type SnomedConceptResult = SnomedConcepts & {
+  id: string
+  name: string
+}
+
 export function toInternalSnomedConcept(
   { conceptId, pt }: ConceptMini,
 ): SnomedConcepts & {
