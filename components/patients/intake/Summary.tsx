@@ -6,8 +6,8 @@ import {
 } from '../../library/DescriptionList.tsx'
 import type { Maybe } from '../../../types.ts'
 import { intakeFrequencyText } from '../../../shared/medication.ts'
-
 import { international_phone_number } from '../../../util/validators.ts'
+import { dosageDisplay, strengthDisplay } from '../../../shared/medication.ts'
 import omit from '../../../util/omit.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
@@ -317,24 +317,38 @@ export default function PatientSummary(
           ],
           [
             {
-              value: medication.form,
-              name: 'form',
+              value: strengthDisplay({
+                strength_numerator: Number(medication.strength),
+                strength_numerator_unit: medication.strength_numerator_unit,
+                strength_denominator: Number(medication.strength_denominator),
+                strength_denominator_unit: medication.strength_denominator_unit,
+                separator: ' ',
+              }),
+              name: 'strength',
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength`,
             },
           ],
           [
             {
-              value: medication.schedules[0].dosage.toString(),
+              value: dosageDisplay({
+                dosage: medication.schedules[0].dosage,
+                strength_numerator: Number(medication.strength),
+                strength_denominator: Number(medication.strength_denominator),
+                strength_denominator_unit: medication.strength_denominator_unit,
+                strength_denominator_is_units:
+                  medication.strength_denominator_is_units,
+                strength_numerator_unit: medication.strength_numerator_unit,
+              }),
               name: 'dosage',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
             },
             {
-              value: medication.strength_numerator_unit,
-              name: 'strength',
+              value: medication.route,
+              name: 'route',
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_id`,
               leading_separator: ' ',
             },
             {
