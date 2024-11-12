@@ -2396,14 +2396,14 @@ export type PatientSymptomInsertShared = {
   start_date: string
   end_date?: Maybe<string>
   notes?: Maybe<string>
-  media_edited?: string
+  media_edited?: boolean
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
   media?: {
     id: string
-    mime_type: string
-    url: string
+    mime_type?: string
+    url?: string
   }[]
 }
 

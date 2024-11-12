@@ -14,12 +14,6 @@ type FilePreviewInputProps = Omit<TextInputProps, 'value' | 'label'> & {
     mime_type: string
     url: string
   }>
-  onUpload({ mime_type, name, url, file }: {
-    mime_type: string
-    name: string
-    url: string
-    file: File | undefined
-  }): void
 }
 
 type ImagePreviewInputProps = Omit<FilePreviewInputProps, 'value'> & {
@@ -124,12 +118,6 @@ export function FilePreviewInput(
           file,
         })
         setInitialImageRemoved(true)
-        props.onUpload({
-          mime_type: file.type,
-          name: file.name,
-          url: URL.createObjectURL(file),
-          file,
-        })
       }}
     />
   )
@@ -139,18 +127,13 @@ export function FilePreviewInput(
       <Label label={label + ' Preview'} className='relative'>
         {input}
         <Preview
+          name={image?.name || ''}
           mime_type={image?.mime_type || value?.mime_type}
           url={image?.url || value?.url}
           className={props.className}
           remove={() => {
             setImage(null)
             setInitialImageRemoved(true)
-            props.onUpload({
-              mime_type: '',
-              name: '',
-              url: '',
-              file: undefined,
-            })
           }}
         />
       </Label>

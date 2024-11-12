@@ -24,7 +24,7 @@ const PatientSymptomUpsertSchema = z.object({
   end_date: z.string().date().optional(),
   notes: z.string().optional(),
   media: z.array(MediaSchema).optional(),
-  media_edited: z.boolean().optional(),
+  media_edited: z.boolean(),
 })
 
 const SymptomsSchema = z.object({
