@@ -108,10 +108,14 @@ export default EncounterPage(
       patient_id: encounter.patient_id,
     })
     const symptom_start_dates = symptoms.map((s) => s.start_date)
-    const earliest_start_date = symptom_start_dates.reduce((earliest, current) => {
-      return current < earliest ? current : earliest
-    })
-    
+
+    let earliest_start_date: string | undefined
+    if (symptom_start_dates.length > 0) {
+      earliest_start_date = symptom_start_dates.reduce((earliest, current) => {
+        return current < earliest ? current : earliest
+      })
+    }
+
     return (
       <FormSection header='Diagnoses'>
         <DiagnosesForm
