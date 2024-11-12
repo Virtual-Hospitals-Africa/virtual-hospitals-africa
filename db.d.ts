@@ -207,11 +207,6 @@ export interface Addresses {
   updated_at: Generated<Timestamp>
 }
 
-export interface Allergies {
-  id: Generated<string>
-  name: string
-}
-
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
@@ -709,10 +704,10 @@ export interface PatientAge {
 }
 
 export interface PatientAllergies {
-  allergy_id: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -819,8 +814,7 @@ export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_finding_id: string
-  snomed_code: string
-  snomed_english_term: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -829,8 +823,7 @@ export interface PatientExaminationFindings {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
-  snomed_code: string
-  snomed_english_term: string
+  snomed_concept_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -1120,6 +1113,11 @@ export interface RegulatorSessions {
   updated_at: Generated<Timestamp>
 }
 
+export interface SnomedConcepts {
+  snomed_concept_id: number
+  snomed_english_term: string
+}
+
 export interface SpatialRefSys {
   auth_name: string | null
   auth_srid: number | null
@@ -1173,7 +1171,6 @@ export interface WhatsappMessagesSent {
 
 export interface DB {
   addresses: Addresses
-  allergies: Allergies
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
@@ -1273,6 +1270,7 @@ export interface DB {
   regulator_google_tokens: RegulatorGoogleTokens
   regulator_sessions: RegulatorSessions
   regulators: Regulators
+  snomed_concepts: SnomedConcepts
   spatial_ref_sys: SpatialRefSys
   waiting_room: WaitingRoom
   wards: Wards

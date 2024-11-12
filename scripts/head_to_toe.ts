@@ -66,7 +66,7 @@ const findings = await Promise.all(
     assertEquals(data.conceptId, code)
     return {
       code,
-      english_term: data.pt.term,
+      snomed_english_term: data.pt.term,
     }
   }),
 )
@@ -99,7 +99,7 @@ const snomed_body_structures = await Promise.all(
     assertEquals(data.conceptId, code)
     return {
       code,
-      english_term: data.pt.term,
+      snomed_english_term: data.pt.term,
     }
   }),
 )
@@ -114,13 +114,14 @@ function toChecklist(exs: ExaminationSchema[]) {
     assert(e.snomed_finding_code), {
       label: e.finding_name,
       code: e.snomed_finding_code,
-      english_term: findings_by_code.get(e.snomed_finding_code!)!.english_term,
+      snomed_english_term:
+        findings_by_code.get(e.snomed_finding_code!)!.snomed_english_term,
       body_sites: e.snomed_body_structure_codes?.map((code) => {
         const body_structure = snomed_body_structures_by_code.get(code)
         assert(body_structure)
         return {
           code,
-          english_term: body_structure.english_term,
+          snomed_english_term: body_structure.snomed_english_term,
         }
       }),
     }

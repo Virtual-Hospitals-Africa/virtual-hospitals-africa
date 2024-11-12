@@ -46,6 +46,7 @@ import * as $app_organizations_organization_id_waiting_room from './routes/app/o
 import * as $app_organizations_organization_id_waiting_room_add from './routes/app/organizations/[organization_id]/waiting_room/add.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
+import * as $app_patients_patient_id_middleware from './routes/app/patients/[patient_id]/_middleware.tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
 import * as $app_patients_patient_id_encounters from './routes/app/patients/[patient_id]/encounters.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_ from './routes/app/patients/[patient_id]/encounters/[encounter_id].tsx'
@@ -71,6 +72,8 @@ import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patient
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
+import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
+import * as $app_patients_patient_id_profile_summary from './routes/app/patients/[patient_id]/profile/summary.tsx'
 import * as $app_patients_patient_id_review from './routes/app/patients/[patient_id]/review.tsx'
 import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
 import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
@@ -82,7 +85,8 @@ import * as $app_patients_patient_id_review_revert from './routes/app/patients/[
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
-import * as $app_snomed_body_structures from './routes/app/snomed/body_structures.ts'
+import * as $app_snomed_allergies from './routes/app/snomed/allergies.ts'
+import * as $app_snomed_concepts from './routes/app/snomed/concepts.ts'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
@@ -176,10 +180,6 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $findings_Drawer from './islands/findings/Drawer.tsx'
-import * as $findings_Header from './islands/findings/Header.tsx'
-import * as $findings_List from './islands/findings/List.tsx'
-import * as $findings_ListItem from './islands/findings/ListItem.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
@@ -207,6 +207,10 @@ import * as $nurse_registration_form from './islands/nurse-registration-form.tsx
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
 import * as $patient_cards from './islands/patient-cards.tsx'
+import * as $patient_drawer_Drawer from './islands/patient-drawer/Drawer.tsx'
+import * as $patient_drawer_FindingsList from './islands/patient-drawer/FindingsList.tsx'
+import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
+import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -219,6 +223,7 @@ import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow
 import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
 import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
+import * as $summary_DescriptionRow from './islands/summary/DescriptionRow.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -297,6 +302,8 @@ const manifest = {
       $app_organizations_organization_id_waiting_room_add,
     './routes/app/patients.tsx': $app_patients,
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
+    './routes/app/patients/[patient_id]/_middleware.tsx':
+      $app_patients_patient_id_middleware,
     './routes/app/patients/[patient_id]/avatar.tsx':
       $app_patients_patient_id_avatar,
     './routes/app/patients/[patient_id]/encounters.tsx':
@@ -347,6 +354,10 @@ const manifest = {
       $app_patients_patient_id_intake_personal,
     './routes/app/patients/[patient_id]/intake/summary.tsx':
       $app_patients_patient_id_intake_summary,
+    './routes/app/patients/[patient_id]/profile/_middleware.tsx':
+      $app_patients_patient_id_profile_middleware,
+    './routes/app/patients/[patient_id]/profile/summary.tsx':
+      $app_patients_patient_id_profile_summary,
     './routes/app/patients/[patient_id]/review.tsx':
       $app_patients_patient_id_review,
     './routes/app/patients/[patient_id]/review/_middleware.tsx':
@@ -366,7 +377,8 @@ const manifest = {
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/procurers.tsx': $app_procurers,
     './routes/app/providers.tsx': $app_providers,
-    './routes/app/snomed/body_structures.ts': $app_snomed_body_structures,
+    './routes/app/snomed/allergies.ts': $app_snomed_allergies,
+    './routes/app/snomed/concepts.ts': $app_snomed_concepts,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
@@ -470,10 +482,6 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/findings/Drawer.tsx': $findings_Drawer,
-    './islands/findings/Header.tsx': $findings_Header,
-    './islands/findings/List.tsx': $findings_List,
-    './islands/findings/ListItem.tsx': $findings_ListItem,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/buttons.tsx': $form_buttons,
@@ -504,6 +512,12 @@ const manifest = {
       $past_medical_conditions_Condition,
     './islands/past-medical-conditions/Form.tsx': $past_medical_conditions_Form,
     './islands/patient-cards.tsx': $patient_cards,
+    './islands/patient-drawer/Drawer.tsx': $patient_drawer_Drawer,
+    './islands/patient-drawer/FindingsList.tsx': $patient_drawer_FindingsList,
+    './islands/patient-drawer/FindingsListItem.tsx':
+      $patient_drawer_FindingsListItem,
+    './islands/patient-drawer/FindingsListItemSchema.ts':
+      $patient_drawer_FindingsListItemSchema,
     './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
@@ -519,6 +533,7 @@ const manifest = {
     './islands/referral/Form.tsx': $referral_Form,
     './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
     './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
+    './islands/summary/DescriptionRow.tsx': $summary_DescriptionRow,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

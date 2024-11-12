@@ -1,15 +1,19 @@
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
-import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import { IntakePage, postHandler } from './_middleware.tsx'
 import { z } from 'zod'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 export const ConditionsSchema = z.object({
   allergies: z.array(
     z.object({
-      id: z.string(),
-      name: z.string().optional(),
+      patient_allergy_id: z.string().uuid().optional().transform((value) =>
+        value || generateUUID()
+      ),
+      snomed_concept_id: z.number(),
+      snomed_english_term: z.string(),
     }).optional(),
   ).optional()
     .transform((allergies) =>
@@ -79,24 +83,24 @@ export const handler = postHandler(
 export default IntakePage(async function ConditionsPage({ ctx, patient }) {
   const { trx } = ctx.state
   const patient_id = patient.id
-  const getting_pre_existing_conditions = patient_conditions
-    .getPreExistingConditionsWithDrugs(
-      trx,
-      { patient_id },
-    )
 
-  const getting_allergies = allergies.getAll(trx)
-  const getting_patient_allergies = patient_allergies
-    .getWithName(
-      trx,
-      patient_id,
-    )
+  const { pre_existing_conditions, intake_patient_allergies } =
+    await promiseProps({
+      pre_existing_conditions: patient_conditions
+        .getPreExistingConditionsWithDrugs(
+          trx,
+          { patient_id },
+        ),
+      intake_patient_allergies: patient_allergies.getWithName(
+        trx,
+        patient_id,
+      ),
+    })
 
   return (
     <PatientPreExistingConditions
-      allergies={await getting_allergies}
-      patient_allergies={await getting_patient_allergies}
-      pre_existing_conditions={await getting_pre_existing_conditions}
+      pre_existing_conditions={pre_existing_conditions}
+      patient_allergies={intake_patient_allergies}
     />
   )
 })

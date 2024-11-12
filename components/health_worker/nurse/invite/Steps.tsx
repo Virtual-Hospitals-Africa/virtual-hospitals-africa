@@ -4,9 +4,9 @@ import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
 import {
+  e164_phone_number,
   gender,
   national_id_number,
-  phone_number,
 } from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
@@ -69,7 +69,7 @@ export const PersonalFormFields = z.object({
   ),
   gender,
   national_id_number,
-  mobile_number: z.optional(phone_number),
+  mobile_number: z.optional(e164_phone_number),
   address: z.object({
     country: z.string(),
     administrative_area_level_1: z.string(),

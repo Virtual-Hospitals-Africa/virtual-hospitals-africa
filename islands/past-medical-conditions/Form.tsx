@@ -8,7 +8,9 @@ export default function PastMedicalConditionsForm(props: {
   past_medical_conditions: PastMedicalCondition[]
 }): JSX.Element {
   const past_medical_conditions = useSignal<
-    (Partial<PastMedicalCondition> & { removed?: boolean })[]
+    (Partial<PastMedicalCondition> & {
+      removed?: boolean
+    })[]
   >(
     props.past_medical_conditions,
   )

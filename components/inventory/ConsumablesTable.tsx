@@ -58,7 +58,7 @@ export default function OrganizationConsumablesTable(
             explanation='Add a consumable to get started'
             Icon={ArchiveBoxIcon}
             button={isAdmin
-              ? { text: 'Add Consumable', href: add_href }
+              ? { children: 'Add Consumable', href: add_href }
               : undefined}
           />
         )}

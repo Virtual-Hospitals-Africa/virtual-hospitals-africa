@@ -1,27 +1,37 @@
+import { assert } from 'std/assert/assert.ts'
 import AsyncSearch from '../../islands/AsyncSearch.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
 import { assertHasNonEmptyString } from '../../util/isString.ts'
+import type { SnomedConceptResult } from '../../routes/app/snomed/concepts.ts'
 
 export function BodySiteSelect({ checklist_item, value, onSelect }: {
   checklist_item: ExaminationChecklistDefinition
-  value: { id: string; name: string } | null
-  onSelect(value: { id: string; name: string }): void
+  value: SnomedConceptResult | null
+  onSelect(
+    value: {
+      id: string
+      snomed_concept_id: number
+      name: string
+      snomed_english_term: string
+    },
+  ): void
 }) {
+  console.log('BodySiteSelect value', value)
   return (
     <AsyncSearch
       label='Body site'
       required
-      search_route={`/app/snomed/body_structures?parent_codes=${
-        checklist_item.body_sites.map((s) => s.code).join(
+      search_route={`/app/snomed/concepts?parent_codes=${
+        checklist_item.body_sites.map((s) => s.snomed_concept_id).join(
           ',',
         )
       }`}
       value={value}
-      name='foo'
+      name='body_site'
       onSelect={(value) => {
         if (!value) return
-        assertHasNonEmptyString(value, 'id')
-        assertHasNonEmptyString(value, 'name')
+        assert(typeof value.snomed_concept_id === 'number')
+        assertHasNonEmptyString(value, 'snomed_english_term')
         onSelect(value)
       }}
     />

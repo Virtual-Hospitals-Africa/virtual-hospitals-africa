@@ -169,7 +169,7 @@ export type Patient = PatientPersonal & {
 
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
-  name: Maybe<string>
+  name: string
   gender: Maybe<Gender>
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
@@ -206,7 +206,7 @@ export type RenderedPatient =
       latitude: number | null
     }
     actions: {
-      view: string | null
+      view: string
     }
   }
 export type Condition = {
@@ -345,7 +345,7 @@ export type PatientIntake =
     age?: RenderedPatientAge
     address?: Maybe<Address>
     actions: {
-      clinical_notes: string
+      view: string
     }
   }
   & Pick<
@@ -1416,6 +1416,9 @@ export type RenderedDoctorReviewBase = {
     avatar_url: string | null
     description: string | null
     primary_doctor_id: string | null
+    actions: {
+      view: string
+    }
   }
   requested_by: {
     profession: 'nurse' | 'doctor'
@@ -2241,8 +2244,9 @@ export type PatientLifestyle = {
 }
 
 export type Allergy = {
-  id: string
-  name: string
+  patient_allergy_id: string
+  snomed_concept_id: number
+  snomed_english_term: string
 }
 
 export type PatientAllergies = {
@@ -2386,15 +2390,21 @@ export type PatientMedicationUpsert = {
 }
 
 export type PatientSymptomInsertShared = {
+  patient_symptom_id?: string
   code: string
   severity: number
   start_date: string
   end_date?: Maybe<string>
   notes?: Maybe<string>
+  media_edited?: boolean
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
-  media?: { id: string }[]
+  media?: {
+    id: string
+    mime_type?: string
+    url?: string
+  }[]
 }
 
 export type RenderedPatientSymptom =
@@ -2469,17 +2479,20 @@ export type Provider = {
   provider_id: string
 }
 export type RenderedPatientExamination = {
+  patient_examination_id: string | null
   examination_name: Examination
   completed: boolean | null
   skipped: boolean | null
   ordered: boolean | null
   href: string
   findings: {
-    snomed_code: string
+    patient_examination_finding_id: string
+    snomed_concept_id: number
     snomed_english_term: string
     additional_notes: string | null
     body_sites: {
-      snomed_code: string
+      patient_examination_finding_body_site_id: string
+      snomed_concept_id: number
       snomed_english_term: string
     }[]
   }[]
@@ -2894,7 +2907,7 @@ export type SelectedPatient = {
   avatar_url?: Maybe<string>
   description?: Maybe<string>
   actions: {
-    clinical_notes: string
+    view: string
   }
 }
 
@@ -3028,23 +3041,28 @@ export type RenderedPrescriptionWithMedications = RenderedPrescription & {
 }
 
 export type RenderedPatientExaminationFinding = {
+  patient_examination_id: string
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
+  encounter_open: SqlBool
   edit_href: string
-  snomed_code: string
+  snomed_concept_id: number
   text: string
   additional_notes: string | null
-  // body_sites: {
-  //   snomed_code: string
-  //   snomed_english_term: string
-  // }[]
+  body_sites: {
+    snomed_concept_id: number
+    snomed_english_term: string
+  }[]
 }
 
 export type ExaminationChecklistDefinition = {
   label: string
-  code: string
-  english_term: string
+  snomed_concept_id: number
+  snomed_english_term: string
 
   body_sites: {
-    code: string
-    english_term: string
+    snomed_concept_id: number
+    snomed_english_term: string
   }[]
 }

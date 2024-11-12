@@ -639,6 +639,9 @@ describe(
                       id: patient.id,
                       name: 'Test Patient 1',
                       primary_doctor_id: null,
+                      actions: {
+                        view: `/app/patients/${patient.id}`,
+                      },
                     },
                     requested_by: {
                       avatar_url: nurse.avatar_url,

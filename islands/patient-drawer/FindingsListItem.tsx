@@ -1,9 +1,9 @@
 import { JSX } from 'preact'
-import { RenderedPatientExaminationFinding } from '../../types.ts'
+import type { Finding } from './FindingsListItemSchema.ts'
 
 export function FindingsListItem(
   { finding }: {
-    finding: RenderedPatientExaminationFinding
+    finding: Finding
   },
 ): JSX.Element {
   return (

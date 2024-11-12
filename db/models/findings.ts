@@ -1,45 +1,79 @@
 import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, upsertOne } from '../helpers.ts'
 import { assertIsExamination } from '../../shared/examinations.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
+import { insertConcepts } from './snomed.ts'
+import partition from '../../util/partition.ts'
 
-export async function forPatientEncounter(trx: TrxOrDb, opts: {
-  patient_id: string
-  encounter_id: string
-}): Promise<RenderedPatientExaminationFinding[]> {
-  const examinations = await trx.selectFrom('patient_examination_findings')
+export function baseQuery(trx: TrxOrDb) {
+  return trx.selectFrom('patient_examination_findings')
     .innerJoin(
       'patient_examinations',
       'patient_examination_findings.patient_examination_id',
       'patient_examinations.id',
     )
     .innerJoin(
+      'patient_encounters',
+      'patient_examinations.encounter_id',
+      'patient_encounters.id',
+    )
+    .innerJoin(
       'examinations',
       'patient_examinations.examination_name',
       'examinations.name',
     )
+    .innerJoin(
+      'snomed_concepts as sc_findings',
+      'sc_findings.snomed_concept_id',
+      'patient_examination_findings.snomed_concept_id',
+    )
     .select((eb) => [
       'examinations.name as examination_name',
       'examinations.path',
-      'snomed_code',
-      'snomed_english_term',
+      'sc_findings.snomed_concept_id',
+      'sc_findings.snomed_english_term',
       'additional_notes',
+      'patient_examination_findings.id as patient_examination_finding_id',
+      'patient_examination_findings.patient_examination_id',
+      'patient_examinations.patient_id',
+      'patient_examinations.encounter_id',
+      'patient_examinations.encounter_provider_id',
+      eb('patient_encounters.closed_at', 'is', null).as('encounter_open'),
       jsonArrayFrom(
         eb.selectFrom('patient_examination_finding_body_sites')
+          .whereRef(
+            'patient_examination_finding_id',
+            '=',
+            'patient_examination_findings.id',
+          )
+          .innerJoin(
+            'snomed_concepts as sc_body_sites',
+            'sc_body_sites.snomed_concept_id',
+            'patient_examination_finding_body_sites.snomed_concept_id',
+          )
           .select([
-            'snomed_code',
-            'snomed_english_term',
+            'patient_examination_finding_body_sites.id as patient_examination_finding_body_site_id',
+            'sc_body_sites.snomed_concept_id',
+            'sc_body_sites.snomed_english_term',
           ]),
       ).as('body_sites'),
     ])
     .orderBy(['examinations.order asc', 'patient_examinations.created_at asc'])
-    .execute()
+}
 
+type ExaminationResults = Awaited<
+  ReturnType<Awaited<ReturnType<typeof baseQuery>['execute']>>
+>
+
+function render(
+  examinations: ExaminationResults,
+): RenderedPatientExaminationFinding[] {
   return examinations.map(({ examination_name, path, ...ex }) => {
     assertIsExamination(examination_name)
     const examination_href =
-      `/app/patients/${opts.patient_id}/encounters/${opts.encounter_id}${path}`
+      `/app/patients/${ex.patient_id}/encounters/${ex.encounter_id}${path}`
 
-    const edit_href = `${examination_href}#edit=${ex.snomed_code}`
+    const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
       ...ex,
       examination_name,
@@ -49,176 +83,123 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
   })
 }
 
-// function getFindings(trx: TrxOrDb, examination_name: string) {
-//   return trx
-//     .selectFrom('examinations')
-//     .innerJoin(
-//       'examination_categories',
-//       'examinations.name',
-//       'examination_categories.examination_name',
-//     )
-//     .innerJoin(
-//       'examination_findings',
-//       'examination_categories.id',
-//       'examination_findings.examination_category_id',
-//     )
-//     .where('examinations.name', '=', examination_name)
-//     .selectAll('examination_findings')
-//     .select('category')
-//     .execute()
-// }
+export async function forPatientEncounter(trx: TrxOrDb, opts: {
+  patient_id: string
+  encounter_id: string
+}): Promise<RenderedPatientExaminationFinding[]> {
+  const examinations = await baseQuery(trx)
+    .where('patient_examinations.encounter_id', '=', opts.encounter_id)
+    .where('patient_examinations.patient_id', '=', opts.patient_id)
+    .execute()
 
-// function assertFindingType(examination_finding: {
-//   options: string[] | null
-//   required: boolean
-//   type: ExaminationFindingType
-//   // deno-lint-ignore no-explicit-any
-// }, value: any) {
-//   assert(value != null, 'Value must be present')
-//   switch (examination_finding.type) {
-//     case 'boolean': {
-//       return assertOr400(
-//         value === true || value === false,
-//         'Value must be a boolean',
-//       )
-//     }
-//     case 'integer': {
-//       return assertOr400(
-//         typeof value === 'number' && Math.floor(value) === value,
-//         'Value must be a number',
-//       )
-//     }
-//     case 'float': {
-//       return assertOr400(typeof value === 'number', 'Value must be a float')
-//     }
-//     case 'string': {
-//       return assertOr400(typeof value === 'string', 'Value must be a string')
-//     }
-//     case 'date': {
-//       return assertOr400(
-//         isISODateString(value),
-//         'Value must be an ISO date string',
-//       )
-//     }
-//     case 'select':
-//     case 'multiselect': {
-//       return assertOr400(
-//         typeof value === 'string' &&
-//           examination_finding.options?.includes(value),
-//         `Value must be one of (${examination_finding.options?.join(', ')})`,
-//       )
-//     }
-//     default: {
-//       throw new Error(
-//         `Unknown examination finding type ${examination_finding.type}`,
-//       )
-//     }
-//   }
-// }
+  return render(examinations)
+}
 
-// export async function upsertFindings(
-//   trx: TrxOrDb,
-//   {
-//     patient_id,
-//     encounter_id,
-//     encounter_provider_id,
-//     examination_name,
-//     skipped,
-//     values,
-//   }: {
-//     patient_id: string
-//     encounter_id: string
-//     encounter_provider_id: string
-//     examination_name: string
-//     skipped?: boolean
-//     values: Record<string, Record<string, unknown>>
-//   },
-// ): Promise<void> {
-//   const getting_examination_findings = getFindings(trx, examination_name)
+export async function forPatient(trx: TrxOrDb, opts: {
+  patient_id: string
+}): Promise<{
+  open: RenderedPatientExaminationFinding[]
+  past: RenderedPatientExaminationFinding[]
+}> {
+  const examinations = await baseQuery(trx)
+    .where('patient_examinations.patient_id', '=', opts.patient_id)
+    .execute()
 
-//   const updating_patient_examination = trx
-//     .insertInto('patient_examinations')
-//     .values({
-//       examination_name,
-//       encounter_id,
-//       encounter_provider_id,
-//       completed: !skipped,
-//       skipped,
-//       patient_id: trx.selectFrom('patient_encounters')
-//         .where('id', '=', encounter_id)
-//         .where('patient_id', '=', patient_id)
-//         .select('patient_id'),
-//     })
-//     .onConflict((oc) =>
-//       oc.constraint('patient_examination_unique').doUpdateSet({
-//         encounter_provider_id,
-//         completed: true,
-//       })
-//     )
-//     .returning('id')
-//     .executeTakeFirstOrThrow()
+  const rendered = render(examinations)
 
-//   const removing = trx
-//     .deleteFrom('patient_examination_findings')
-//     .where(
-//       'patient_examination_id',
-//       'in',
-//       trx.selectFrom('patient_examinations')
-//         .select('id')
-//         .where('encounter_id', '=', encounter_id)
-//         .where('examination_name', '=', examination_name),
-//     )
-//     .where('patient_examination_findings.created_at', '<=', now)
-//     .execute()
+  const [open, past] = partition(rendered, (ex) => !!ex.encounter_open)
+  return { open, past }
+}
 
-//   const examination_findings = await getting_examination_findings
-//   const patient_examination = await updating_patient_examination
+export async function upsertForPatientExamination(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    encounter_id,
+    encounter_provider_id,
+    examination_name,
+    findings,
+    patient_examination_id,
+  }: {
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
+    examination_name: string
+    patient_examination_id: string
+    findings: {
+      patient_examination_finding_id: string
+      snomed_concept_id: number
+      snomed_english_term: string
+      additional_notes: string | null
+      body_sites?: {
+        patient_examination_finding_body_site_id: string
+        snomed_concept_id: number
+        snomed_english_term: string
+      }[]
+    }[]
+  },
+) {
+  const result = await promiseProps({
+    deleting_other_findings: trx.deleteFrom('patient_examination_findings')
+      .where('patient_examination_id', '=', patient_examination_id)
+      .$if(
+        findings.length > 0,
+        (qb) =>
+          qb.where(
+            'id',
+            'not in',
+            findings.map((f) => f.patient_examination_finding_id),
+          ),
+      )
+      .execute(),
+    snomed_concepts: insertConcepts(
+      trx,
+      findings.flatMap((finding) => {
+        const body_sites = (finding.body_sites || []).map((body_site) => ({
+          snomed_concept_id: body_site.snomed_concept_id,
+          snomed_english_term: body_site.snomed_english_term,
+        }))
+        return [{
+          snomed_concept_id: finding.snomed_concept_id,
+          snomed_english_term: finding.snomed_english_term,
+        }, ...body_sites]
+      }),
+    ),
+    examination: upsertOne(trx, 'patient_examinations', {
+      patient_id,
+      encounter_id,
+      encounter_provider_id,
+      examination_name,
+      id: patient_examination_id,
+      completed: true,
+    }),
+    findings: Promise.all(
+      findings.map((finding) =>
+        upsertOne(trx, 'patient_examination_findings', {
+          id: finding.patient_examination_finding_id,
+          patient_examination_id: patient_examination_id,
+          snomed_concept_id: finding.snomed_concept_id,
+          additional_notes: finding.additional_notes,
+        })
+      ),
+    ),
+    body_sites: Promise.all(
+      findings.flatMap((finding) =>
+        (finding.body_sites || []).map((body_site) =>
+          upsertOne(trx, 'patient_examination_finding_body_sites', {
+            id: body_site.patient_examination_finding_body_site_id,
+            patient_examination_finding_id:
+              finding.patient_examination_finding_id,
+            snomed_concept_id: body_site.snomed_concept_id,
+          })
+        )
+      ),
+    ),
+  })
 
-//   const required_findings = new Set(
-//     examination_findings.filter((f) => f.required),
-//   )
-
-//   const patient_findings_to_insert: {
-//     patient_examination_id: string
-//     examination_finding_id: string
-//     // deno-lint-ignore no-explicit-any
-//     value: any
-//   }[] = []
-
-//   for (const [category, findings] of Object.entries(values)) {
-//     for (const [finding_name, value] of Object.entries(findings)) {
-//       const examination_finding = examination_findings.find(
-//         (f) => f.name === finding_name && f.category === category,
-//       )
-//       assertOr400(
-//         examination_finding,
-//         `Finding ${category}.${finding_name} not found`,
-//       )
-//       assertFindingType(examination_finding, value)
-//       // TODO assert dependent values are unanswered if dependent on is unanswered
-
-//       patient_findings_to_insert.push({
-//         patient_examination_id: patient_examination.id,
-//         examination_finding_id: examination_finding.id,
-//         value,
-//       })
-//       required_findings.delete(examination_finding)
-//     }
-//   }
-
-//   assertOr400(
-//     required_findings.size === 0,
-//     `Required findings not found: ${
-//       Array.from(required_findings)
-//         .map((f) => `${f.category}.${f.name}`)
-//         .join(', ')
-//     }`,
-//   )
-
-//   const adding = patient_findings_to_insert.length && trx
-//     .insertInto('patient_examination_findings')
-//     .values(patient_findings_to_insert)
-//     .execute()
-
-//   await Promise.all([removing, adding])
-// }
+  return {
+    examination: result.examination,
+    findings: result.findings,
+    body_sites: result.body_sites,
+  }
+}

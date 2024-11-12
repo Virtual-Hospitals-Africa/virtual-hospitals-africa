@@ -90,7 +90,7 @@ export default function OrganizationMedicinesTable(
             explanation='Add a medicine to get started'
             Icon={ArchiveBoxIcon}
             button={isAdmin
-              ? { text: 'Add Medicine', href: add_href }
+              ? { children: 'Add Medicine', href: add_href }
               : undefined}
           />
         )}

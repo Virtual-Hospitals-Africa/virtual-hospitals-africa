@@ -5,9 +5,9 @@ import compact from '../../../../../util/compact.ts'
 import omit from '../../../../../util/omit.ts'
 import { z } from 'zod'
 import {
+  e164_phone_number,
   gender,
   national_id_number,
-  phone_number,
   varchar255,
 } from '../../../../../util/validators.ts'
 
@@ -18,7 +18,7 @@ const PersonalSchema = z.object({
   avatar_media: z.object({ id: z.string().uuid() }).optional(),
   national_id_number: national_id_number.optional(),
   no_national_id: z.boolean().optional(),
-  phone_number: phone_number.optional(),
+  phone_number: e164_phone_number.optional(),
   date_of_birth: z.string().date(),
   gender,
   ethnicity: varchar255.optional(),

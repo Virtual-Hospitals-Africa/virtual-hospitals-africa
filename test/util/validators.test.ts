@@ -39,23 +39,25 @@ describe('validators', () => {
 
   describe('phone_number', () => {
     it('parses a legitimate phone number, returning just the number', () => {
-      const phone_number = validators.phone_number.parse('+254 712 345 678')
+      const phone_number = validators.e164_phone_number.parse(
+        '+254 712 345 678',
+      )
       assertEquals(phone_number, '+254712345678')
     })
 
     it("parses a legitimate phone number as a phone number, even if that string doesn't include a leading +", () => {
-      const phone_number = validators.phone_number.parse('254712345678')
+      const phone_number = validators.e164_phone_number.parse('254712345678')
       assertEquals(phone_number, '+254712345678')
     })
 
     it('parses a legitimate phone number as a phone number, converting it to a string', () => {
-      const phone_number = validators.phone_number.parse(254712345678)
+      const phone_number = validators.e164_phone_number.parse(254712345678)
       assertEquals(phone_number, '+254712345678')
     })
 
     it('throws an error on an illegitimate phone number', () => {
       const error = assertThrows(() =>
-        validators.phone_number.parse('MY HAMSTER IS NAMED TERRENCE')
+        validators.e164_phone_number.parse('MY HAMSTER IS NAMED TERRENCE')
       )
       assert(error instanceof ZodError)
       assertEquals(error.issues, [

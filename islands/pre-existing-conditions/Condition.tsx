@@ -9,6 +9,7 @@ import FormRow from '../../components/library/FormRow.tsx'
 
 export type ConditionState = {
   id?: string
+
   removed?: false
   comorbidities: Array<
     { id?: string; removed?: false } | { removed: true }

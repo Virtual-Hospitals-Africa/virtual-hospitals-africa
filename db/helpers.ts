@@ -17,8 +17,9 @@ import {
 } from 'kysely'
 import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
-import { Location } from '../types.ts'
+import { Location, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import type { InsertObject } from 'kysely/parser/insert-values-parser.js'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -368,4 +369,18 @@ export function upsertTrigger(
       `.execute(db)
     },
   }
+}
+
+export function upsertOne<Table extends keyof DB>(
+  trx: TrxOrDb,
+  table: Table,
+  values: InsertObject<DB, Table>,
+) {
+  return trx
+    .insertInto(table)
+    .values(values)
+    // deno-lint-ignore no-explicit-any
+    .onConflict((oc) => oc.column('id' as any).doUpdateSet(values as any))
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }

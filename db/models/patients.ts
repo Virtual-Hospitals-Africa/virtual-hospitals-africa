@@ -229,7 +229,7 @@ export async function getWithOpenEncounter(
   trx: TrxOrDb,
   opts: {
     ids: string[]
-    health_worker_id?: string
+    health_worker_id: string
   },
 ): Promise<HasStringId<PatientWithOpenEncounter>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
@@ -272,6 +272,9 @@ export type PatientCard = {
   description: string | null
   avatar_url: string | null
   primary_doctor_id: string | null
+  actions: {
+    view: string
+  }
 }
 
 export function getCardQuery(
@@ -287,6 +290,9 @@ export function getCardQuery(
       ),
       avatar_url_sql.as('avatar_url'),
       'patients.primary_doctor_id',
+      jsonBuildObject({
+        view: view_href_sql,
+      }).as('actions'),
     ])
 }
 

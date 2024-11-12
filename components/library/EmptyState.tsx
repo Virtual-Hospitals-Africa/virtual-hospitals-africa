@@ -1,9 +1,9 @@
 import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import { PlusIcon } from './icons/heroicons/outline.tsx'
-import { Button } from './Button.tsx'
 import { Plussable } from './icons/Plussable.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { PlusButton } from './PlusButton.tsx'
 
 type EmptyStateProps = {
   className?: string
@@ -12,7 +12,7 @@ type EmptyStateProps = {
   icon?: JSX.Element
   Icon?: typeof PlusIcon
   button?: {
-    text: string
+    children: string
     href?: string
     onClick?: () => void
   }
@@ -33,17 +33,7 @@ export function EmptyState(
       {explanations.map((e, i) => (
         <p key={i} className='mt-1 text-sm text-gray-500'>{e}</p>
       ))}
-      {button && (
-        <div className='mt-6'>
-          <Button href={button.href} onClick={button.onClick}>
-            <PlusIcon
-              className='-ml-0.5 mr-1.5 h-5 w-5 white'
-              aria-hidden='true'
-            />
-            {button.text}
-          </Button>
-        </div>
-      )}
+      {button && <PlusButton {...button} className='mt-6' />}
     </div>
   )
 }

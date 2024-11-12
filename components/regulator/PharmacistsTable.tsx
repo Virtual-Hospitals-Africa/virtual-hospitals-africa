@@ -81,7 +81,7 @@ export default function PharmacistsTable({
             'If there should be, click below to invite them',
           ]}
           button={{
-            text: 'Invite Pharmacist',
+            children: 'Invite Pharmacist',
             href: path('/regulator/pharmacists/invite', {
               name: search_terms.name_search,
               licence_number: search_terms.licence_number_search,

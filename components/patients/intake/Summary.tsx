@@ -5,27 +5,16 @@ import {
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
 import type { Maybe } from '../../../types.ts'
-import omit from '../../../util/omit.ts'
 import { intakeFrequencyText } from '../../../shared/medication.ts'
+import { international_phone_number } from '../../../util/validators.ts'
+import { dosageDisplay, strengthDisplay } from '../../../shared/medication.ts'
+import omit from '../../../util/omit.ts'
 
 type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
-/*
-  - [ ] Make each cell editable (link)
-  - [ ] Handle null values in rows/cells
-  - [ ] Handle medications (include end date)
-  - [ ] Get everything type-checking
-  - [ ] Refactor pages to be their own functions (one for each page)
-  - [ ] One edit icon per row, not per cell
-*/
-
-// TODO Do something for displaying international phone numbers
-// function PhoneDisplay({ phone_number }: { phone_number: string }) {
-//   return <span>{phone_number}</span>
-// }
-
 type MaybeCell = {
   value: Maybe<string>
+  name?: string
   edit_href?: string
   leading_separator?: string
 }
@@ -62,34 +51,60 @@ export default function PatientSummary(
     pre_existing_conditions,
     past_medical_conditions,
     major_surgeries,
+    allergies,
   } = patient
 
   const personal_items: DescriptionListRows[] = [
     nonEmptyRows([[{
       value: personal.name,
       edit_href: `${intake_href}/personal#focus=first_name`,
+      name: 'first_name',
     }], [{
-      value: personal.phone_number,
+      value: international_phone_number.nullable().parse(personal.phone_number),
       edit_href: `${intake_href}/personal#focus=phone_number`,
+      name: 'phone_number',
     }]]),
   ]
 
-  const address_items: DescriptionListRows[] = [
-    nonEmptyRows([[{
-      value: address.street,
-      edit_href: `${intake_href}/address#focus=address.street`,
-    }], [{
-      value: address.locality,
-      edit_href: `${intake_href}/address#focus=address.locality`,
-    }], [{
+  const address_rows = [{
+    value: address.street,
+    name: 'street',
+    edit_href: `${intake_href}/address#focus=address.street`,
+  }, {
+    value: address.locality,
+    edit_href: `${intake_href}/address#focus=address.locality`,
+    name: 'Ward',
+    leading_separator: ', ',
+  }]
+  if (
+    address.administrative_area_level_1 &&
+    (address.administrative_area_level_1 !== address.locality)
+  ) {
+    address_rows.push({
       value: address.administrative_area_level_1,
+      name: 'District',
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_1`,
-    }], [{
+      leading_separator: ', ',
+    })
+  }
+  if (
+    address.administrative_area_level_2 &&
+    (address.administrative_area_level_2 !==
+      address.administrative_area_level_1) &&
+    (address.administrative_area_level_2 !== address.locality)
+  ) {
+    address_rows.push({
       value: address.administrative_area_level_2,
+      name: 'Province',
       edit_href:
         `${intake_href}/address#focus=address.administrative_area_level_2`,
-    }]]),
+      leading_separator: ', ',
+    })
+  }
+
+  const address_items: DescriptionListRows[] = [
+    nonEmptyRows([address_rows]),
   ]
 
   const nearest_health_care_items: DescriptionListRows[] = [
@@ -97,10 +112,12 @@ export default function PatientSummary(
       {
         value: nearest_health_care.nearest_organization_name,
         edit_href: `${intake_href}/address#focus=nearest_organization_name`,
+        name: 'Nearest Organization',
       },
     ], [{
       value: nearest_health_care.primary_doctor_name,
       edit_href: `${intake_href}/address#focus=primary_doctor_name`,
+      name: 'Primary Doctor',
     }]]),
   ]
 
@@ -109,25 +126,37 @@ export default function PatientSummary(
       {
         value: patient.family.other_next_of_kin?.patient_name,
         edit_href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        name: 'Next of Kin',
+      },
+      {
+        value: patient.family.other_next_of_kin?.relation,
+        edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        name: 'Relationship',
+        leading_separator: ', ',
       },
     ]]),
-    nonEmptyRows([[{
-      value: patient.family.other_next_of_kin?.relation,
-      edit_href: `${intake_href}/family#focus=other_next_of_kin.relation`,
-    }]]),
   ]
 
   const family_items: DescriptionListRows[] = [
     nonEmptyRows([[
       {
+        value: family.family_type,
+        edit_href: `${intake_href}/family#focus=family.family_type`,
+        name: 'family_type',
+      },
+    ], [
+      {
         value: family.marital_status,
         edit_href: `${intake_href}/family#focus=family.marital_status`,
+        name: 'marital_status',
+      },
+      {
+        value: family.religion,
+        edit_href: `${intake_href}/family#focus=family.religion`,
+        name: 'religion',
+        leading_separator: ', ',
       },
     ]]),
-    nonEmptyRows([[{
-      value: family.religion,
-      edit_href: `${intake_href}/family#focus=family.religion`,
-    }]]),
   ]
 
   const dependents_items: DescriptionListRows[] = family.dependents.map(
@@ -141,11 +170,13 @@ export default function PatientSummary(
           value: dependent.family_relation_gendered,
           edit_href:
             `${intake_href}/family#focus=dependents.${index}.family_relation_gendered`,
-          leading_separator: ', ',
+          leading_separator: ', ',
         }],
         [
           {
-            value: dependent.patient_phone_number,
+            value: international_phone_number.nullable().parse(
+              dependent.patient_phone_number,
+            ),
             edit_href:
               `${intake_href}/family#focus=dependents.${index}.patient_phone_number`,
           },
@@ -158,20 +189,39 @@ export default function PatientSummary(
       nonEmptyRows([
         [{
           value: guardian.patient_name,
+          name: 'guardian',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_name`,
         }, {
           value: guardian.family_relation_gendered,
+          name: 'relationship',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
-          leading_separator: ', ',
+          leading_separator: ', ',
         }],
         [{
-          value: guardian.patient_phone_number,
+          value: international_phone_number.nullable().parse(
+            guardian.patient_phone_number,
+          ),
+          name: 'phone_number',
           edit_href:
             `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
         }],
       ]),
+  )
+
+  const allergies_items: DescriptionListRows[] = allergies.map(
+    (allergy, index) => {
+      return nonEmptyRows([
+        [
+          {
+            value: allergy.snomed_english_term,
+            name: 'allergy',
+            edit_href: `${intake_href}/conditions#focus=allergies.${index}`,
+          },
+        ],
+      ])
+    },
   )
 
   const past_conditions_items: DescriptionListRows[] = past_medical_conditions
@@ -181,6 +231,7 @@ export default function PatientSummary(
           [
             {
               value: condition.name,
+              name: 'condition',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
             },
@@ -188,14 +239,16 @@ export default function PatientSummary(
           [
             {
               value: condition.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
             },
             {
               value: condition.end_date,
+              name: 'end_date',
               edit_href:
                 `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
-              leading_separator: ' — ',
+              leading_separator: ' — ',
             },
           ],
         ]),
@@ -207,6 +260,7 @@ export default function PatientSummary(
         [
           {
             value: surgery.name,
+            name: 'surgery',
             edit_href:
               `${intake_href}/history#focus=major_surgeries.${index}.name`,
           },
@@ -214,6 +268,7 @@ export default function PatientSummary(
         [
           {
             value: surgery.start_date,
+            name: 'start_date',
             edit_href:
               `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
           },
@@ -228,6 +283,7 @@ export default function PatientSummary(
           [
             {
               value: condition.name,
+              name: 'Pre-existing Condition',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
             },
@@ -235,11 +291,13 @@ export default function PatientSummary(
           [
             {
               value: condition.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
             },
             {
-              value: ' — Present',
+              value: 'Present',
+              leading_separator: ' — ',
             },
           ],
         ]),
@@ -252,53 +310,75 @@ export default function PatientSummary(
           [
             {
               value: `${medication.name} (for ${condition.name})`,
+              name: 'medication',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
             },
           ],
           [
             {
-              value: medication.form,
+              value: strengthDisplay({
+                strength_numerator: Number(medication.strength),
+                strength_numerator_unit: medication.strength_numerator_unit,
+                strength_denominator: Number(medication.strength_denominator),
+                strength_denominator_unit: medication.strength_denominator_unit,
+                separator: ' ',
+              }),
+              name: 'strength',
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength`,
             },
           ],
           [
             {
-              value: medication.schedules[0].dosage.toString(),
+              value: dosageDisplay({
+                dosage: medication.schedules[0].dosage,
+                strength_numerator: Number(medication.strength),
+                strength_denominator: Number(medication.strength_denominator),
+                strength_denominator_unit: medication.strength_denominator_unit,
+                strength_denominator_is_units:
+                  medication.strength_denominator_is_units,
+                strength_numerator_unit: medication.strength_numerator_unit,
+              }),
+              name: 'dosage',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
             },
             {
-              value: medication.strength_numerator_unit,
+              value: medication.route,
+              name: 'route',
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
-              leading_separator: ' ',
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_id`,
+              leading_separator: ' ',
             },
             {
               value: intakeFrequencyText(medication.schedules[0].frequency),
+              name: 'frequency',
               edit_href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.frequency`,
-              leading_separator: ' ',
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.intake_frequency`,
+              leading_separator: ' ',
             },
           ],
           [
             {
               value: medication.start_date,
+              name: 'start_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
             },
             {
               // TODO get actual end date
               value: 'End Date',
+              name: 'end_date',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
-              leading_separator: ' — ',
+              leading_separator: ' — ',
             },
           ],
           [
             {
               value: medication.special_instructions,
+              name: 'special_instructions',
               edit_href:
                 `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
             },
@@ -311,15 +391,18 @@ export default function PatientSummary(
     (patient.age.age_years < 18 && patient.family.dependents.length > 0)
       ? {
         title: 'Family',
+        link: `${intake_href}/family`,
         items: family_items,
         sections: [
           {
             title: 'Guardians',
             items: guardians_items,
+            edit_href: `${intake_href}/family#focus=add_guardian`,
           },
           {
             title: 'Dependents',
             items: dependents_items,
+            edit_href: `${intake_href}/family#focus=add_dependent`,
           },
         ],
       }
@@ -327,24 +410,29 @@ export default function PatientSummary(
       ? {
         title: 'Family',
         items: family_items,
+        link: `${intake_href}/family`,
         sections: [
           {
             title: 'Guardians',
             items: guardians_items,
+            edit_href: `${intake_href}/family#focus=add_guardian`,
           },
         ],
       }
       : {
         title: 'Family',
         items: family_items,
+        link: `${intake_href}/family`,
         sections: [
           {
             title: 'Next of kin',
             items: next_of_kin_items,
+            edit_href: `${intake_href}/family#focus=next_of_kin.name`,
           },
           {
             title: 'Dependents',
             items: dependents_items,
+            edit_href: `${intake_href}/family#focus=add_dependent`,
           },
         ],
       }
@@ -352,11 +440,13 @@ export default function PatientSummary(
   const pages = [
     {
       title: 'Personal',
+      link: `${intake_href}/personal`,
       items: personal_items,
       sections: [],
     },
     {
       title: 'Address',
+      link: `${intake_href}/address`,
       items: address_items,
       sections: [
         {
@@ -368,21 +458,29 @@ export default function PatientSummary(
     family_page,
     {
       title: 'Pre-existing Conditions',
+      link: `${intake_href}/conditions#focus=add_condition`,
       items: pre_existing_conditions_items,
       sections: [
         {
           title: 'Medications',
           items: medications_items,
         },
+        {
+          title: 'Allergies',
+          edit_href: `${intake_href}/conditions#focus=allergies_search`,
+          items: allergies_items,
+        },
       ],
     },
     {
       title: 'Past Conditions',
+      link: `${intake_href}/history?focus=add_condition`,
       items: past_conditions_items,
       sections: [
         {
           title: 'Major Surgeries',
           items: major_surgeries_items,
+          edit_href: `${intake_href}/history#focus=add_surgery`,
         },
       ],
     },

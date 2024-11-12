@@ -23,7 +23,11 @@ export function assertPersonLike(
 }
 
 export function Person(
-  { person, bold }: { person: PersonData; bold?: boolean },
+  { person, bold, size = 'md' }: {
+    person: PersonData
+    bold?: boolean
+    size?: 'md' | 'lg'
+  },
 ): JSX.Element {
   const Component = person.href ? 'a' : 'div'
   return (
@@ -36,7 +40,10 @@ export function Person(
     >
       <Avatar
         src={person.avatar_url}
-        className='h-6 w-6 flex-shrink-0 rounded-full'
+        className={cls(
+          'flex-shrink-0 rounded-full',
+          size === 'lg' ? 'h-10 w-10' : 'h-6 w-6',
+        )}
       />
       <span className={cls('ml-3 truncate', bold && 'font-bold')}>
         <div>{person.display_name || person.name}</div>

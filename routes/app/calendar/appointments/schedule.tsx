@@ -80,6 +80,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
       }
       const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
         ids: [search.patient_id],
+        health_worker_id: healthWorker.id,
       })
 
       const availability = await availableSlots(ctx.state.trx, {

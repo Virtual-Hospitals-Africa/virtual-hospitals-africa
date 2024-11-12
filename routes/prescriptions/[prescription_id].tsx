@@ -121,7 +121,9 @@ export default async function PrescriptionPage(
                 />
                 <PrescriptionDetail
                   heading='Allergies'
-                  information={allergies.map((allergy) => allergy.name).join(
+                  information={allergies.map((allergy) =>
+                    allergy.snomed_english_term
+                  ).join(
                     ', ',
                   ) || 'None'}
                 />

@@ -115,8 +115,10 @@ async function sendTo(
       trx,
       { organization_id, patient_encounter_id },
     )
+    const just_completed = step === 'summary' ? 'Intake' : capitalize(step)
+
     const success = encodeURIComponent(
-      `${capitalize(step)} completed and patient added to the waiting room.`,
+      `${just_completed} completed and patient added to the waiting room.`,
     )
     return redirect(
       `/app/organizations/${organization_id}/waiting_room?success=${success}`,
@@ -153,7 +155,6 @@ async function sendTo(
     )
   }
 
-  console.log('send_to', send_to)
   throw new Error('TODO: implement send_to')
 }
 
@@ -220,12 +221,7 @@ export function IntakeLayout({
         <ButtonsContainer>
           <SendToButton
             form='intake'
-            patient={{
-              name: ctx.state.patient.name!,
-              description: ctx.state.patient.description,
-              avatar_url: ctx.state.patient.avatar_url,
-              actions: ctx.state.patient.actions,
-            }}
+            patient={ctx.state.patient}
             sendables={sendables}
           />
           <Button

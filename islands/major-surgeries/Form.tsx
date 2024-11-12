@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { useSignal } from '@preact/signals'
+import { effect, useSignal } from '@preact/signals'
 import { MajorSurgery } from '../../types.ts'
 import { AddRow } from '../AddRemove.tsx'
 import Surgery from './Surgery.tsx'
@@ -22,6 +22,9 @@ export default function majorSurgeriesForm(props: {
   const first_not_removed = major_surgeries.value.find(
     (surgery) => !surgery.removed,
   )
+
+  effect(() => {
+  })
 
   return (
     <div className='flex flex-col space-y-2'>

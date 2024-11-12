@@ -9,13 +9,23 @@ type Primitive = string | number | boolean
 
 export type FormValue = Primitive | FormValue[]
 
-export function parseParam(param: string): FormValue {
+export function parseParam(key: string | undefined, param: string): FormValue {
   if (param === 'true') return true
   if (param === 'on') return true
   if (param === 'false') return false
   if (param === 'off') return false
-  if (/^\d+$/g.test(param)) return parseInt(param)
-  if (param[0] === '[') return JSON.parse(param)
+  if (
+    /^[-+]?\d*\.?\d+$/g.test(param) &&
+    !(key && (key.includes('phone') || key === 'mobile_number'))
+  ) {
+    return parseFloat(param)
+  }
+  if (param[0] === '[' && param.lastIndexOf(']') === (param.length - 1)) {
+    return JSON.parse(param)
+  }
+  if (param[0] === '{' && param.lastIndexOf('}') === (param.length - 1)) {
+    return JSON.parse(param)
+  }
   return param
 }
 
@@ -26,7 +36,7 @@ function parseFormWithoutFilesNoTypeCheck(
   params.forEach((value, key) => {
     assert(typeof value === 'string')
     if (value === '') return
-    set(parsed, key, parseParam(value))
+    set(parsed, key, parseParam(key, value))
   })
   return deepRemoveHoles(parsed)
 }

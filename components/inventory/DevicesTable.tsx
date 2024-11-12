@@ -63,7 +63,7 @@ export default function OrganizationDevicesTable(
             explanation='Add a device to get started'
             Icon={ArchiveBoxIcon}
             button={isAdmin
-              ? { text: 'Add Device', href: add_href }
+              ? { children: 'Add Device', href: add_href }
               : undefined}
           />
         )}

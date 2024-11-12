@@ -5,7 +5,6 @@ import {
   addTestHealthWorkerWithSession,
   getFormDisplay,
   getFormValues,
-  readFirstFiveRowsOfSeedDump,
   route,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
@@ -29,8 +28,6 @@ describe('/app/patients/[patient_id]/intake', {
   sanitizeResources: false,
   sanitizeOps: false,
 }, () => {
-  const allergies = readFirstFiveRowsOfSeedDump('allergies')
-
   it('loads the personal page', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
@@ -377,8 +374,10 @@ describe('/app/patients/[patient_id]/intake', {
     })
 
     const body = new FormData()
-    body.set('allergies.0.id', allergies.value[0].id)
-    body.set('allergies.1.id', allergies.value[1].id)
+    body.set('allergies.0.snomed_concept_id', '91935009')
+    body.set('allergies.0.snomed_english_term', 'Allergy to peanuts')
+    body.set('allergies.1.snomed_concept_id', '1003755004')
+    body.set('allergies.1.snomed_english_term', 'Allergy to latex')
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/conditions`,
@@ -396,11 +395,20 @@ describe('/app/patients/[patient_id]/intake', {
       `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const allergies_of_patient = await patient_allergies.get(db, patient_id)
+    const allergies_of_patient = await patient_allergies.getWithName(
+      db,
+      patient_id,
+    )
 
     assertEquals(allergies_of_patient.length, 2)
-    assertEquals(allergies_of_patient[0].id, allergies.value[0].id)
-    assertEquals(allergies_of_patient[1].id, allergies.value[1].id)
+    assertEquals(
+      allergies_of_patient[0].snomed_concept_id,
+      91935009,
+    )
+    assertEquals(
+      allergies_of_patient[1].snomed_concept_id,
+      1003755004,
+    )
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/conditions`,
@@ -581,6 +589,7 @@ describe('/app/patients/[patient_id]/intake', {
       scenario: 'approved-nurse',
     })
     const guardian_phone = randomPhoneNumber()
+    console.log('guardian_phone', guardian_phone)
     const body = new FormData()
     body.set('family.guardians.0.patient_name', 'New Guardian')
     body.set('family.guardians.0.family_relation_gendered', 'biological mother')

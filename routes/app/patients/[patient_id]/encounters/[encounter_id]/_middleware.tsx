@@ -18,7 +18,6 @@ import * as send_to from '../../../../../../db/models/send_to.ts'
 import * as findings from '../../../../../../db/models/findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
-import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
@@ -39,7 +38,7 @@ import words from '../../../../../../util/words.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
-import { FindingsDrawer } from '../../../../../../islands/findings/Drawer.tsx'
+import { PatientDrawer } from '../../../../../../islands/patient-drawer/Drawer.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -105,29 +104,44 @@ export function postHandler<T>(
 }
 
 export async function handler(
-  _req: Request,
+  req: Request,
   ctx: EncounterContext,
 ) {
   const encounter_id = getEncounterId(ctx)
+
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const getting_patient_card = patients.getCard(ctx.state.trx, {
-    id: patient_id,
-  })
-  Object.assign(
-    ctx.state,
-    await removeFromWaitingRoomAndAddSelfAsProvider(
-      ctx.state.trx,
-      {
-        encounter_id,
-        patient_id,
-        health_worker: ctx.state.healthWorker,
-      },
-    ),
-  )
-  const patient = await getting_patient_card
+  const { patient, encounter: { encounter, encounter_provider } } =
+    await promiseProps({
+      patient: patients.getCard(ctx.state.trx, {
+        id: patient_id,
+      }),
+      encounter: removeFromWaitingRoomAndAddSelfAsProvider(
+        ctx.state.trx,
+        {
+          encounter_id,
+          patient_id,
+          health_worker: ctx.state.healthWorker,
+        },
+      ),
+    })
+
   assertOr404(patient, 'Patient not found')
+
+  if (encounter_id === 'open' && req.method === 'GET') {
+    return redirect(
+      replaceParams(
+        ctx.route,
+        {
+          ...ctx.params,
+          encounter_id: encounter.encounter_id,
+        },
+      ),
+    )
+  }
   ctx.state.patient = patient
+  ctx.state.encounter = encounter
+  ctx.state.encounter_provider = encounter_provider
   return ctx.next()
 }
 
@@ -186,14 +200,17 @@ export function EncounterLayout({
         <StepsSidebar
           ctx={ctx}
           nav_links={nav_links}
-          top={{
-            href: replaceParams('/app/patients/:patient_id', ctx.params),
-            child: <Person person={ctx.state.patient} />,
-          }}
           steps_completed={ctx.state.encounter.steps_completed}
         />
       }
-      drawer={<FindingsDrawer findings={key_findings} />}
+      drawer={
+        <PatientDrawer
+          patient={ctx.state.patient}
+          encounter={ctx.state.encounter}
+          findings={key_findings}
+          sendables={sendables}
+        />
+      }
       url={ctx.url}
       variant='form'
     >
@@ -203,17 +220,7 @@ export function EncounterLayout({
         <ButtonsContainer>
           <SendToButton
             form='encounter'
-            patient={{
-              name: ctx.state.patient.name,
-              description: ctx.state.patient.description,
-              avatar_url: ctx.state.patient.avatar_url,
-              actions: {
-                clinical_notes: replaceParams(
-                  '/app/patients/:patient_id/encounter/open/clinical_notes',
-                  ctx.params,
-                ),
-              },
-            }}
+            patient={ctx.state.patient}
             sendables={sendables}
           />
           <Button

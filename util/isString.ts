@@ -1,5 +1,5 @@
+import { assert } from 'std/assert/assert.ts'
 import getTag from './internal/getTag.ts'
-import { assertOr400 } from './assertOr.ts'
 
 export default function isString(value: unknown): value is string {
   const type = typeof value
@@ -17,8 +17,8 @@ export function assertHasNonEmptyString<T extends string>(
   value: any,
   key: T,
 ): asserts value is Record<T, string> {
-  assertOr400(key in value, `Expected '${key}' to be a non-empty string`)
-  assertOr400(
+  assert(key in value, `Expected '${key}' to be a non-empty string`)
+  assert(
     isString(value[key]),
     `Expected '${key}' to be a non-empty string`,
   )

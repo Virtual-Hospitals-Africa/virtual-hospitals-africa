@@ -47,7 +47,7 @@ export function Progress({ active, completed, skipped }: {
   skipped: SqlBool | null
 }) {
   return (completed
-    ? <Check active={active} />
+    ? <Check active={active} className='w-5 h-5' />
     : skipped && !active
     ? <ForwardIcon className='w-5 h-5' />
     : <Dot active={active} />)

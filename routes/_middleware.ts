@@ -16,6 +16,11 @@ export const logError = (err: Error) => {
 }
 
 export function grokPostgresError(err: Error) {
+  console.log(Object.getOwnPropertyNames(err))
+  console.log(err.stack)
+  console.log(err.message)
+  console.log(err.cause)
+  console.log(err.name)
   // deno-lint-ignore no-explicit-any
   const cause: any = err.cause || err
   if (!('fields' in cause)) return

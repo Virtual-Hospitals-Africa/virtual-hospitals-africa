@@ -12,7 +12,7 @@ import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
-    snomed_code: string
+    snomed_concept_id: number
     snomed_english_term: string
   }[]
   additional_notes: string | null
@@ -39,59 +39,68 @@ function ExaminationFindingDialogContents(
   const form_values = useSignal(found)
 
   return (
-    <div className='bg-white shadow sm:rounded-lg'>
-      <div className='px-4 py-5 sm:p-6'>
-        <h3 className='text-base text-center font-semibold text-gray-900'>
-          {action} {checklist_item.english_term} as a finding
-        </h3>
-        <div
-          className={cls(FormClassName, 'mt-5')}
-        >
-          <FormRow>
-            <BodySiteSelect
-              checklist_item={checklist_item}
-              value={found.body_sites.length > 0
-                ? {
-                  id: found.body_sites[0].snomed_code,
-                  name: found.body_sites[0].snomed_english_term,
-                }
-                : null}
-              onSelect={(value) => {
-                form_values.value = {
-                  ...form_values.value!,
-                  body_sites: value
-                    ? [{
-                      snomed_code: value.id,
-                      snomed_english_term: value.name,
-                    }]
-                    : [],
-                }
-              }}
-            />
-          </FormRow>
-          <FormRow>
-            <TextArea
-              label='Additional notes'
-              name='additional_notes'
-              rows={2}
-              value={found.additional_notes ?? ''}
-              onInput={(event) => {
-                form_values.value = {
-                  ...form_values.value!,
-                  additional_notes: event.currentTarget.value,
-                }
-              }}
-            />
-          </FormRow>
-          <FormRow>
-            <FormButtons
-              submitText='Save'
-              onClick={() => save(form_values.value)}
-            />
-          </FormRow>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault()
+      }}
+    >
+      <div className='bg-white shadow sm:rounded-lg'>
+        <div className='px-4 py-5 sm:p-6'>
+          <h3 className='text-base text-center font-semibold text-gray-900'>
+            {action} {checklist_item.snomed_english_term} as a finding
+          </h3>
+          <div
+            className={cls(FormClassName, 'mt-5')}
+          >
+            <FormRow>
+              <BodySiteSelect
+                checklist_item={checklist_item}
+                value={found.body_sites.length > 0
+                  ? {
+                    id: String(found.body_sites[0].snomed_concept_id),
+                    snomed_concept_id: found.body_sites[0].snomed_concept_id,
+                    snomed_english_term:
+                      found.body_sites[0].snomed_english_term,
+                    name: found.body_sites[0].snomed_english_term,
+                  }
+                  : null}
+                onSelect={(value) => {
+                  form_values.value = {
+                    ...form_values.value!,
+                    body_sites: value
+                      ? [{
+                        snomed_concept_id: value.snomed_concept_id,
+                        snomed_english_term: value.snomed_english_term,
+                      }]
+                      : [],
+                  }
+                }}
+              />
+            </FormRow>
+            <FormRow>
+              <TextArea
+                label='Additional notes'
+                name='additional_notes'
+                rows={2}
+                value={found.additional_notes ?? ''}
+                onInput={(event) => {
+                  form_values.value = {
+                    ...form_values.value!,
+                    additional_notes: event.currentTarget.value,
+                  }
+                }}
+              />
+            </FormRow>
+            <FormRow>
+              <FormButtons
+                submitText='Save'
+                onClick={() => save(form_values.value)}
+              />
+            </FormRow>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

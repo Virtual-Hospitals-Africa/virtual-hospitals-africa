@@ -2,10 +2,10 @@ import Avatar from './Avatar.tsx'
 import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
-import BackLink from '../../islands/BackLink.tsx'
 import { NotificationsButton } from '../../islands/Notifications.tsx'
 import { RenderedNotification } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 
 export type HeaderProps = {
   title: string
@@ -55,19 +55,16 @@ function HeaderRightWithAvatar(
   )
 }
 
-function HeaderRightClose() {
-  return (
-    <HeaderRight>
-      <BackLink />
-    </HeaderRight>
-  )
-}
-
 function HeaderBase(
   { className, children }: { className?: string; children: ComponentChildren },
 ) {
   return (
-    <nav className={className}>
+    <nav
+      className={className}
+      style={{
+        height: HEADER_HEIGHT_PX,
+      }}
+    >
       <div className='w-full p-5'>
         <div className='relative flex h-16 items-center justify-between'>
           {children}
@@ -98,7 +95,7 @@ export function Header(
         notifications={(assert(notifications), notifications)}
       />
     )
-    : <HeaderRightClose />
+    : null
 
   return (
     <HeaderBase className='bg-indigo-900 font-ubuntu'>

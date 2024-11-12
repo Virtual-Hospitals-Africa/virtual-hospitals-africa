@@ -4,11 +4,11 @@ import { ExaminationChecklistItem } from '../../islands/examinations/ChecklistIt
 
 export type ExaminationChecklistItem = {
   label: string
-  english_term: string
-  code: string
+  snomed_english_term: string
+  snomed_concept_id: number
   body_sites: {
-    code: string
-    english_term: string
+    snomed_concept_id: number
+    snomed_english_term: string
   }[]
 }
 
@@ -32,11 +32,11 @@ export function ExaminationChecklist(
       )}
       {checklist.map((checklist_item) => (
         <ExaminationChecklistItem
-          key={checklist_item.code}
+          key={checklist_item.snomed_concept_id}
           checklist_item={checklist_item}
-          edit_href={`${patient_examination_href}#edit=${checklist_item.code}`}
+          edit_href={`${patient_examination_href}#edit=${checklist_item.snomed_concept_id}`}
           found={findings.find((finding) =>
-            finding.snomed_code === checklist_item.code
+            finding.snomed_concept_id === checklist_item.snomed_concept_id
           )}
         />
       ))}

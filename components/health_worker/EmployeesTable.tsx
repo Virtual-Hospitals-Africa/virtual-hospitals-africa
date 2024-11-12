@@ -74,7 +74,9 @@ export default function EmployeesTable({
             header='No employees'
             explanation='Invite a health worker to get started'
             Icon={UserCircleIcon}
-            button={isAdmin ? { text: 'Invite', href: add_href } : undefined}
+            button={isAdmin
+              ? { children: 'Invite', href: add_href }
+              : undefined}
           />
         )}
       />

@@ -58,7 +58,7 @@ export function MedicinesTable(
           ]}
           // TODO: create /regulator/medicines/add page
           button={{
-            text: 'Add Medicine',
+            children: 'Add Medicine',
             href: path('/regulator/medicines/add', {
               name: search_terms.search,
             }),

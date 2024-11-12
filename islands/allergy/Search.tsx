@@ -1,37 +1,21 @@
 import { Allergy } from '../../types.ts'
-import Search from '../Search.tsx'
+import AsyncSearch from '../AsyncSearch.tsx'
 
-import { computed, useSignal } from '@preact/signals'
-
-export default function AllergySearch({
-  options,
-  add,
-}: {
-  options: Allergy[]
+export default function AllergySearch({ add }: {
   add(allergy: Allergy): void
 }) {
-  const query = useSignal('')
-  const filtered_options = computed(() => {
-    const query_value = query.value
-    return query_value.length > 0
-      ? options.filter((allergy) =>
-        allergy.name.toLowerCase().includes(query_value.toLowerCase())
-      )
-      : []
-  })
-
   return (
-    <Search
+    <AsyncSearch
+      id='allergy_search'
       multi
-      options={filtered_options.value}
-      onQuery={(new_query) => query.value = new_query}
-      onSelect={(allergy) => {
+      search_route='/app/snomed/allergies'
+      onSelect={(
+        allergy: Allergy & { id: string; name: string } | undefined,
+      ) => {
         if (allergy) {
-          add(allergy)
-          query.value = ''
+          add(allergy as unknown as Allergy)
         }
       }}
     />
-    // create drinksSearch
   )
 }

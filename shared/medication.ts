@@ -210,13 +210,17 @@ export function strengthDisplay({
   strength_numerator_unit,
   strength_denominator,
   strength_denominator_unit,
+  separator,
 }: {
   strength_numerator: number
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
+  separator?: string
 }): string {
-  let strength_display = `${strength_numerator}${strength_numerator_unit}/`
+  let strength_display = `${strength_numerator}${strength_numerator_unit}${
+    separator ?? '/'
+  }`
   if (strength_denominator !== 1) {
     strength_display += strength_denominator
   }

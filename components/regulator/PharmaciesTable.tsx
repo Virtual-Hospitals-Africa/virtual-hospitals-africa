@@ -77,7 +77,7 @@ export function PharmaciesTable(
             'If there should be, click below to add it',
           ]}
           button={{
-            text: 'Add Pharmacy',
+            children: 'Add Pharmacy',
             href: path('/regulator/pharmacies/add', {
               name: search_terms.name_search,
               licence_number: search_terms.licence_number_search,

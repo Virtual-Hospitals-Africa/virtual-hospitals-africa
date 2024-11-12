@@ -1,7 +1,7 @@
 import { JSX } from 'preact'
 import { Combobox } from '@headlessui/react'
 import { assert } from 'std/assert/assert.ts'
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
 import { Maybe } from '../types.ts'
 import isObjectLike from '../util/isObjectLike.ts'
@@ -49,6 +49,7 @@ export function BaseOption<
 export type SearchProps<
   T extends { id?: unknown; name: string },
 > = {
+  id?: string
   name?: string
   required?: boolean
   label?: Maybe<string>
@@ -88,6 +89,7 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
 export default function Search<
   T extends { id?: unknown; name: string },
 >({
+  id,
   name,
   required,
   label = name && capitalize(name),
@@ -146,13 +148,25 @@ export default function Search<
       ? name
       : (is_array_or_record_item ? `${name}.id` : `${name}_id`))
 
+  const input_ref = useRef<HTMLInputElement>(null)
+
   return (
     <Combobox
+      id={id}
       value={selected}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
         // Clear the selection for a multiselect so the user now has space to enter another value
         setSelected(multi ? null : value)
+
+        // Gets picked up by hijack-form-submission-and-set-focus.js to focus on the next input
+        if (value && input_ref.current) {
+          self.dispatchEvent(
+            new CustomEvent('search-select', {
+              detail: input_ref.current,
+            }),
+          )
+        }
       }}
       className={className}
     >
@@ -165,11 +179,13 @@ export default function Search<
         )}
         <div className='relative'>
           <Combobox.Input
+            ref={input_ref}
             name={name_field}
             className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
             onChange={(
               event,
             ) => {
+              console.log('input')
               const query = event.currentTarget.value
               setSelected(null)
               onSelect?.(undefined)

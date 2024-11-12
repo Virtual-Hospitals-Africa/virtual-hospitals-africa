@@ -314,3 +314,21 @@ iframe#youtube_demo_iframe {
   height: calc(390 / 640 * (100vw - 12px));
   max-height: 390px;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .hover-desktop\:bg-indigo-50:hover {
+    background-color: #eef2ff;
+  }
+  .hover-desktop\:ring-indigo-50:hover {
+    box-shadow: 0 0 0 2px #eef2ff;
+  }
+  .hover-desktop\:text-indigo-900:hover {
+    color: #1e3a8a;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .show-on-mobile {
+    display: block !important;
+  }
+}
