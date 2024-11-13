@@ -78,6 +78,14 @@ export function PatientPage(
           )}
           <Person person={ctx.state.patient} />
 
+          <div className='mt-4'>
+            {'Nearest Clinic: ' + ctx.state.patient.nearest_organization}
+            <br />
+            {`Primary Provider: Dr. ` +
+              (ctx.state.patient.open_encounter &&
+                ctx.state.patient.open_encounter.providers[0]
+                  .health_worker_name)}
+          </div>
           <Tabs
             tabs={tabs.map((tab) => ({
               tab,
