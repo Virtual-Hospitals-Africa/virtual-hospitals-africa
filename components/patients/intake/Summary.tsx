@@ -216,7 +216,7 @@ export default function PatientSummary(
       value: occupation?.school.status === 'in school'
         ? occupation.school.current.grade
         : null,
-      name: 'profession',
+      name: 'education_level',
       edit_href: `${intake_href}/occupation#focus=occupation.job.profession`,
     },
   ]])]
@@ -224,7 +224,7 @@ export default function PatientSummary(
   const occupation19_rows: DescriptionListRows[] = [nonEmptyRows([[
     {
       value: occupation?.job && occupation.job.profession,
-      name: 'education_level',
+      name: 'profession',
       edit_href:
         `${intake_href}/occupation#focus=occupation.school.education_level`,
     },
