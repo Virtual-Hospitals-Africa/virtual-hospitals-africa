@@ -243,8 +243,7 @@ export default function PatientSummary(
     {
       value: occupation?.job && occupation.job.profession,
       name: 'profession',
-      href:
-        `${intake_href}/occupation#focus=occupation.school.education_level`,
+      href: `${intake_href}/occupation#focus=occupation.school.education_level`,
       action: DescriptionListCellAction.Edit,
     },
   ]])]
