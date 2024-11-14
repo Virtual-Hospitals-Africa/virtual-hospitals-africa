@@ -1,8 +1,4 @@
-import {
-  FamilyType,
-  MaritalStatus,
-  PatientCohabitation,
-} from '../db.d.ts'
+import { FamilyType, MaritalStatus, PatientCohabitation } from '../db.d.ts'
 import { GuardianRelationName } from '../types.ts'
 
 type UngenderedRelation = [GuardianRelationName, string]
