@@ -42,6 +42,9 @@ export default function Occupation19({
     'Retail',
     'Server',
     'Teacher',
+    'Unemployed',
+    'College Student',
+    'Graduate Student',
   ]
   const job_satisfaction = ['Excellent', 'Good', 'Neutral', 'Bad', 'Worst']
   const stop_education_reasons = [
