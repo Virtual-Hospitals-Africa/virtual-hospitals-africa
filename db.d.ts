@@ -180,15 +180,6 @@ export type PharmacistType =
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
-export type Religion =
-  | 'African Traditional Religion'
-  | 'Apostolic Sect'
-  | 'Islam'
-  | 'Non-Religious'
-  | 'Other'
-  | 'Pentecostal/Protestant Christianity'
-  | 'Roman Catholic'
-
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export interface Addresses {
@@ -847,7 +838,7 @@ export interface PatientFamily {
   marital_status: MaritalStatus | null
   patient_cohabitation: PatientCohabitation | null
   patient_id: string
-  religion: Religion | null
+  religion: string | null
   updated_at: Generated<Timestamp>
 }
 

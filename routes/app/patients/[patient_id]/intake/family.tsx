@@ -18,15 +18,7 @@ export const FamilySchema = z.object({
     guardians: z.array(FamilyRelationInsertSchema).default([]),
     dependents: z.array(FamilyRelationInsertSchema).default([]),
     other_next_of_kin: FamilyRelationInsertSchema.optional(),
-    religion: z.enum([
-      'African Traditional Religion',
-      'Apostolic Sect',
-      'Islam',
-      'Non-Religious',
-      'Other',
-      'Pentecostal/Protestant Christianity',
-      'Roman Catholic',
-    ]).optional(),
+    religion: z.string().optional(),
     family_type: z.enum([
       '2 married parents',
       'Blended',
