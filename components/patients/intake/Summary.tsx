@@ -48,6 +48,7 @@ export default function PatientSummary(
     address,
     nearest_health_care,
     family,
+    occupation,
     pre_existing_conditions,
     past_medical_conditions,
     major_surgeries,
@@ -209,6 +210,25 @@ export default function PatientSummary(
         }],
       ]),
   )
+
+  const occupation0_18_rows: DescriptionListRows[] = [nonEmptyRows([[
+    {
+      value: occupation?.school.status === 'in school'
+        ? occupation.school.current.grade
+        : null,
+      name: 'profession',
+      edit_href: `${intake_href}/occupation#focus=occupation.job.profession`,
+    },
+  ]])]
+
+  const occupation19_rows: DescriptionListRows[] = [nonEmptyRows([[
+    {
+      value: occupation?.job && occupation.job.profession,
+      name: 'education_level',
+      edit_href:
+        `${intake_href}/occupation#focus=occupation.school.education_level`,
+    },
+  ]])]
 
   const allergies_items: DescriptionListRows[] = allergies.map(
     (allergy, index) => {
@@ -437,6 +457,15 @@ export default function PatientSummary(
         ],
       }
 
+  const occupation_page = {
+    title: 'Occupation',
+    link: `${intake_href}/occupation`,
+    items: patient.age.age_years <= 18
+      ? occupation0_18_rows
+      : occupation19_rows,
+    sections: [],
+  }
+
   const pages = [
     {
       title: 'Personal',
@@ -456,6 +485,7 @@ export default function PatientSummary(
       ],
     },
     family_page,
+    occupation_page,
     {
       title: 'Pre-existing Conditions',
       link: `${intake_href}/conditions#focus=add_condition`,
