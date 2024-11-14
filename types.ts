@@ -408,7 +408,7 @@ export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin?: Maybe<FamilyRelationInsert>
-  religion?: string
+  religion?: Maybe<string>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>
   patient_cohabitation?: Maybe<PatientCohabitation>
