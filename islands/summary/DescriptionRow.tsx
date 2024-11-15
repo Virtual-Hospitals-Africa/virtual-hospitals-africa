@@ -1,9 +1,11 @@
 import { useState } from 'preact/hooks'
 import cls from '../../util/cls.ts'
 import type { DescriptionListCell } from '../../components/library/DescriptionList.tsx'
+import { DescriptionListCellAction } from '../../components/library/DescriptionList.tsx'
 import { PencilSquareIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { assert } from 'std/assert/assert.ts'
+import { EyeIcon } from '../../components/library/icons/heroicons/solid.tsx'
 
 type DescriptionRowProps = {
   row: DescriptionListCell[]
@@ -17,7 +19,7 @@ export default function DescriptionRow(
   const [hoveredCellIndex, setHoveredCellIndex] = useState(-1)
   const [first_cell] = row
   assert(first_cell, 'DescriptionRow must have at least one cell')
-  const first_edit_href = first_cell.edit_href
+  const first_edit_href = first_cell.href
   assert(first_edit_href, 'First cell of DescriptionRow must have edit_href')
 
   return (
@@ -33,10 +35,12 @@ export default function DescriptionRow(
           {row.map((cell, index) => (
             <div key={index}>
               {cell.leading_separator}
-              {cell.edit_href
+              {cell.href
                 ? (
                   <a
-                    title={`Edit ${capitalize(cell.name)}`}
+                    title={`${capitalize(cell.action || 'view')} ${
+                      capitalize(cell.name)
+                    }`}
                     style={{ display: 'inline-block' }}
                     onMouseOver={() => setHoveredCellIndex(index)}
                     onMouseLeave={() => setHoveredCellIndex(-1)}
@@ -44,7 +48,7 @@ export default function DescriptionRow(
                       hoveredCellIndex === index && 'underline',
                       cell.className,
                     )}
-                    href={cell.edit_href}
+                    href={cell.href}
                   >
                     {cell.value}
                   </a>
@@ -53,14 +57,26 @@ export default function DescriptionRow(
             </div>
           ))}
         </div>
-        <PencilSquareIcon
-          className={cls(
-            'self-center w-4 h-4 show-on-mobile lg:block ml-1.5',
-            isHoveredOnGroup
-              ? 'transition duration-120 opacity-1'
-              : 'opacity-0',
-          )}
-        />
+        {first_cell.action === DescriptionListCellAction.Edit && (
+          <PencilSquareIcon
+            className={cls(
+              'self-center w-4 h-4 show-on-mobile lg:block',
+              isHoveredOnGroup
+                ? 'transition duration-120 opacity-1'
+                : 'opacity-0',
+            )}
+          />
+        )}
+        {first_cell.action === DescriptionListCellAction.View && (
+          <EyeIcon
+            className={cls(
+              'self-center w-4 h-4 show-on-mobile lg:block',
+              isHoveredOnGroup
+                ? 'transition duration-120 opacity-1'
+                : 'opacity-0',
+            )}
+          />
+        )}
       </div>
     </div>
   )
