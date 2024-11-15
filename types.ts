@@ -1071,7 +1071,7 @@ export type OrganizationEmployee = {
   professions: {
     employee_id: string
     profession: Profession
-    specialty: NurseSpecialty | null
+    specialty: string | null
     registration_status: RegistrationStatus
   }[]
   avatar_url: null | string
@@ -1097,7 +1097,7 @@ export type OrganizationDoctorOrNurse =
   & {
     profession: 'doctor' | 'nurse'
     employee_id: string
-    specialty: NurseSpecialty | null
+    specialty: string | null
   }
 
 export type DoctorsWithoutAction =
@@ -1105,7 +1105,7 @@ export type DoctorsWithoutAction =
   & {
     profession: 'doctor'
     employee_id: string
-    specialty: NurseSpecialty | null
+    specialty: string | null
   }
 
 export type OrganizationEmployeeInvitee = {
@@ -1388,7 +1388,7 @@ export type EmployeeInfo = {
   mobile_number: Maybe<string>
   health_worker_id: Maybe<string>
   date_of_first_practice: Maybe<string>
-  specialty: Maybe<NurseSpecialty>
+  specialty: Maybe<string>
   avatar_url: Maybe<string>
   registration_completed: SqlBool
   registration_needed: SqlBool
@@ -1616,7 +1616,7 @@ export type WhatsAppSingleSendable =
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
 export type ProviderAppointmentSlot = {
-  type: 'slot'
+  type: 'provider_appointment_slot'
   id: string
   patient?: {
     id: string
@@ -1633,7 +1633,7 @@ export type ProviderAppointmentSlot = {
 }
 
 export type ProviderAppointment = {
-  type: 'appointment'
+  type: 'provider_appointment'
   id: string
   patient: {
     id: string
@@ -1652,6 +1652,32 @@ export type ProviderAppointment = {
     href: string
   }
 }
+
+export type PatientAppointment = {
+  type: 'patient_appointment'
+  id: string
+  patient: {
+    id: string
+    avatar_url: Maybe<string>
+    name: Maybe<string>
+    phone_number: Maybe<string>
+  }
+  durationMinutes: number
+  start: ParsedDateTime
+  end: ParsedDateTime
+  providers: Provider[]
+  physicalLocation?: {
+    organization: HasStringId<Organization>
+  }
+  virtualLocation?: {
+    href: string
+  }
+}
+
+export type RenderableAppointment =
+  | ProviderAppointment
+  | ProviderAppointmentSlot
+  | PatientAppointment
 
 export type ParsedDate = {
   day: string
@@ -1821,13 +1847,6 @@ export type LinkDef = {
       className?: string
     },
   ) => JSX.Element
-}
-
-export type CalendarPageProps = {
-  appointments: ProviderAppointment[]
-  day: string
-  today: string
-  healthWorker: EmployedHealthWorker
 }
 
 export type LocationDistance = {

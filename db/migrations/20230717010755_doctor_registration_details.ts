@@ -1,35 +1,7 @@
 import { Kysely, sql } from 'kysely'
-import { DOCTOR_SPECIALTIES } from '../../types.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db
-    .schema
-    .createType('doctor_specialty')
-    .asEnum(DOCTOR_SPECIALTIES)
-    .execute()
-
-  await createStandardTable(
-    db,
-    'doctor_specialties',
-    (qb) =>
-      qb.addColumn('employee_id', 'uuid', (column) =>
-        column
-          .notNull()
-          .unique()
-          .references('employment.id')
-          .onDelete('cascade'))
-        .addColumn(
-          'specialty',
-          sql`doctor_specialty`,
-          (column) => column.notNull(),
-        )
-        .addUniqueConstraint('one_unique_doctor_specialty_per_employee', [
-          'employee_id',
-          'specialty',
-        ]),
-  )
-
   await createStandardTable(
     db,
     'doctor_registration_details_in_progress',
@@ -110,6 +82,4 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('doctor_registration_details_in_progress').execute()
   await db.schema.dropTable('doctor_registration_details').execute()
-  await db.schema.dropTable('doctor_specialties').execute()
-  await db.schema.dropType('doctor_specialty').execute()
 }

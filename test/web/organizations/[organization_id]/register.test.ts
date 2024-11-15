@@ -247,14 +247,10 @@ describe(
           '=',
           nurse.id,
         ).selectAll().executeTakeFirstOrThrow()
-        const specialty = await db.selectFrom('nurse_specialties')
-          .where('employee_id', '=', nurseEmployment.id)
-          .selectAll()
-          .executeTakeFirst()
+
         assert(registrationDetails)
         assert(newNurse)
         assert(nurseEmployment)
-        assert(specialty)
 
         assertEquals(registrationDetails.date_of_birth, '2020-01-01')
         assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
@@ -263,8 +259,7 @@ describe(
         assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
-        assertEquals(specialty.employee_id, nurseEmployment.id)
-        assertEquals(specialty.specialty, 'oncology and palliative care')
+        assertEquals(nurseEmployment.specialty, 'oncology and palliative care')
 
         assertEquals(
           postResponse.url,

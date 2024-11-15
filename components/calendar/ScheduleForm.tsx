@@ -10,7 +10,7 @@ export default function ScheduleForm({ className }: { className?: string }) {
       <FormRow>
         <PersonSearch
           name='patient'
-          search_route='/app/patients'
+          search_route='/app/patients?completed_intake=true'
           required
         />
       </FormRow>

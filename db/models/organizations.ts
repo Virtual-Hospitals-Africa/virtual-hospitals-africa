@@ -52,7 +52,7 @@ export function nearestHospitals(
     .execute()
 }
 
-function baseQuery(trx: TrxOrDb) {
+export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')
     .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
@@ -119,14 +119,8 @@ export function getEmploymentQuery(
         'nurse_registration_details.health_worker_id',
         'employment.health_worker_id',
       )
-      .leftJoin(
-        'nurse_specialties',
-        'nurse_specialties.employee_id',
-        'employment.id',
-      )
       .selectAll('employment')
       .select([
-        'nurse_specialties.specialty',
         sql<'pending_approval' | 'approved' | 'incomplete'>`
           CASE
             WHEN employment.profession = 'admin' THEN 'approved'

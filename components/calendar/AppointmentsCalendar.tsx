@@ -1,10 +1,10 @@
 import Calendar from './Calendar.tsx'
-import { CalendarPageProps } from '../../types.ts'
+import { type ProviderAppointment } from '../../types.ts'
 import Appointments from './Appointments.tsx'
 import { prettyMinimal } from '../../util/date.ts'
 import { Button } from '../library/Button.tsx'
 
-function formHeaderText({ day, today }: { day: string; today: string }) {
+export function formHeaderText({ day, today }: { day: string; today: string }) {
   if (today === day) return 'Today’s Appointments'
   const dayStrMinimal = prettyMinimal(day, today)
   if (dayStrMinimal === 'Tomorrow') return 'Tomorrow’s Appointments'
@@ -12,7 +12,12 @@ function formHeaderText({ day, today }: { day: string; today: string }) {
 }
 
 export default function AppointmentsCalendar(
-  { appointments, day, today, url }: CalendarPageProps & { url: URL },
+  { appointments, day, today, url }: {
+    appointments: ProviderAppointment[]
+    day: string
+    today: string
+    url: URL
+  },
 ) {
   return (
     <div className='lg:grid lg:grid-cols-12 lg:gap-x-16 w-full'>

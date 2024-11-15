@@ -32,12 +32,17 @@ export default function SelectWithOther<T extends string>(
     <Search
       {...props}
       name={name ?? undefined}
+      just_name
       addable={{
         formatDisplay: (query) => query,
       }}
       options={matching_options.value}
       onQuery={(query) => search.value = query}
       onSelect={(value) => onSelect?.(value?.id as T)}
+      value={value && {
+        id: value,
+        name: value,
+      }}
     />
   )
 }

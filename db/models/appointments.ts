@@ -10,6 +10,7 @@ import {
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { getWithOpenEncounter } from './patients.ts'
+import * as organizations from './organizations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
 import { jsonArrayFrom, now } from '../helpers.ts'
@@ -257,27 +258,16 @@ export async function countUpcoming(
   return count
 }
 
-export async function getWithPatientInfo(
-  trx: TrxOrDb,
-  opts: {
-    id?: string
-    health_worker_id: string
-  },
-) {
-  let query = trx
+function baseQuery(trx: TrxOrDb, opts: {
+  time_range: 'all' | 'future' | 'past'
+}) {
+  const q = trx
     .selectFrom('appointments')
-    .innerJoin(
-      'appointment_providers',
-      'appointments.id',
-      'appointment_providers.appointment_id',
-    )
-    .innerJoin('patients', 'appointments.patient_id', 'patients.id')
     .select((eb) => [
       'appointments.id',
       'patient_id',
       'start',
       'reason',
-      'confirmed',
       'gcal_event_id',
       'appointments.created_at',
       'appointments.updated_at',
@@ -294,16 +284,39 @@ export async function getWithPatientInfo(
     ])
     .orderBy('start', 'asc')
 
-  if (opts.id) query = query.where('appointments.id', '=', opts.id)
-  if (opts.health_worker_id) {
-    query = query
-      .innerJoin(
-        'employment',
-        'employment.id',
-        'appointment_providers.provider_id',
-      )
-      .where('employment.health_worker_id', '=', opts.health_worker_id)
+  switch (opts.time_range) {
+    case 'all':
+      return q
+    case 'future':
+      return q.where('appointments.start', '>=', now)
+    case 'past':
+      return q.where('appointments.start', '<', now)
   }
+}
+
+export async function getWithPatientInfo(
+  trx: TrxOrDb,
+  opts: {
+    id?: string
+    health_worker_id: string
+  },
+) {
+  // TODO: check if this is indeed the time_range we want
+  let query = baseQuery(trx, { time_range: 'all' })
+    .innerJoin(
+      'appointment_providers',
+      'appointments.id',
+      'appointment_providers.appointment_id',
+    )
+    .innerJoin(
+      'employment',
+      'employment.id',
+      'appointment_providers.provider_id',
+    )
+    .where('employment.health_worker_id', '=', opts.health_worker_id)
+    .select('confirmed')
+
+  if (opts.id) query = query.where('appointments.id', '=', opts.id)
 
   const appointments = await query.execute()
 
@@ -323,6 +336,97 @@ export async function getWithPatientInfo(
     assert(patient, `Could not find patient ${appointment.patient_id}`)
     return { ...appointment, patient }
   })
+}
+
+export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
+  patient_id: string
+  time_range: 'all' | 'future' | 'past'
+}) {
+  return baseQuery(trx, { time_range })
+    .select((eb) => [
+      jsonArrayFrom(
+        eb.selectFrom('appointment_providers')
+          .whereRef(
+            'appointment_providers.appointment_id',
+            '=',
+            'appointments.id',
+          )
+          .innerJoin(
+            'employment',
+            'appointment_providers.provider_id',
+            'employment.id',
+          )
+          .innerJoin(
+            'organizations',
+            'employment.organization_id',
+            'organizations.id',
+          )
+          .innerJoin(
+            'health_workers',
+            'employment.health_worker_id',
+            'health_workers.id',
+          )
+          .innerJoin(
+            'health_worker_google_tokens',
+            'health_worker_google_tokens.health_worker_id',
+            'health_workers.id',
+          )
+          .innerJoin(
+            'provider_calendars',
+            (join) =>
+              join.onRef(
+                'provider_calendars.health_worker_id',
+                '=',
+                'employment.health_worker_id',
+              )
+                .onRef(
+                  'provider_calendars.organization_id',
+                  '=',
+                  'employment.organization_id',
+                ),
+          ).select((eb) => [
+            'employment.health_worker_id',
+            'appointment_providers.provider_id',
+            eb.ref('employment.profession').$castTo<'doctor' | 'nurse'>().as(
+              'profession',
+            ),
+            'employment.specialty',
+            'health_workers.name',
+            'health_workers.email',
+            'health_workers.avatar_url',
+            'provider_calendars.gcal_availability_calendar_id',
+            'provider_calendars.gcal_appointments_calendar_id',
+            'provider_calendars.availability_set',
+            'health_worker_google_tokens.expires_at',
+            'health_worker_google_tokens.access_token',
+            'health_worker_google_tokens.refresh_token',
+            'appointment_providers.confirmed',
+            // TODO this shouldn't be an array
+            // make a helper that can select 0 or 1
+            jsonArrayFrom(
+              organizations.baseQuery(trx)
+                .whereRef(
+                  'organizations.id',
+                  '=',
+                  sql.ref('employment.organization_id'),
+                ),
+            ).as('organization'),
+          ]),
+      ).as('providers'),
+    ])
+    .where('appointments.patient_id', '=', patient_id)
+    .execute()
+}
+
+export function countForPatient(trx: TrxOrDb, { patient_id, time_range }: {
+  patient_id: string
+  time_range: 'all' | 'future' | 'past'
+}) {
+  return baseQuery(trx, { time_range })
+    .where('patient_id', '=', patient_id)
+    .clearSelect()
+    .select((eb) => eb.fn.countAll().as('count'))
+    .executeTakeFirstOrThrow()
 }
 
 export function remove(trx: TrxOrDb, id: string) {

@@ -16,9 +16,16 @@ type PatientsProps = {
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
   async GET(req, ctx) {
-    const search = ctx.url.searchParams.get('search')
+    const { searchParams } = ctx.url
+    const search = searchParams.get('search')
+    const completed_intake = searchParams.has('completed_intake')
+      ? searchParams.get('completed_intake') === 'true'
+      : undefined
 
-    const patients = await getAllWithNames(ctx.state.trx, search)
+    const patients = await getAllWithNames(ctx.state.trx, {
+      search,
+      completed_intake,
+    })
 
     if (req.headers.get('accept') === 'application/json') {
       return json(patients)
@@ -26,7 +33,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
 
     return ctx.render({
       healthWorker: ctx.state.healthWorker,
-      patients: await getAllWithNames(ctx.state.trx, search),
+      patients,
     })
   },
 }

@@ -93,7 +93,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
       assert(hasName(patient))
 
       const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
-        type: 'slot',
+        type: 'provider_appointment_slot',
         patient,
         id: `${slot.provider.provider_id}-${slot.start}`,
         durationMinutes: slot.durationMinutes,

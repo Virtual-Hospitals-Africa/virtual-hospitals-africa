@@ -180,6 +180,17 @@ export class GoogleClient {
     )
   }
 
+  getEvent(
+    calendarId = 'primary',
+    eventId: string,
+  ): Promise<GCalEvent> {
+    const params = new URLSearchParams()
+    params.set('timeZone', 'Africa/Johannesburg')
+    return this.makeCalendarRequest(
+      `/calendars/${calendarId}/events/${eventId}?${params}`,
+    )
+  }
+
   async getActiveEvents(
     calendarId = 'primary',
     opts: {

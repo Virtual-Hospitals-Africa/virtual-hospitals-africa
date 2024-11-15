@@ -9,7 +9,7 @@ import { assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import { PatientDrawer } from '../../../../../islands/patient-drawer/Drawer.tsx'
 
-type PatientPageProps = {
+export type PatientPageProps = {
   ctx: PatientContext
 }
 

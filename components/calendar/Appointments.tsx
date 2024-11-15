@@ -1,4 +1,4 @@
-import { ProviderAppointment, ProviderAppointmentSlot } from '../../types.ts'
+import type { RenderableAppointment } from '../../types.ts'
 import AppointmentsEmptyState from './EmptyState.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Appointment from './Appointment.tsx'
@@ -7,7 +7,7 @@ import cls from '../../util/cls.ts'
 export default function Appointments(
   { headerText, appointments, url, className }: {
     headerText: string
-    appointments: (ProviderAppointment | ProviderAppointmentSlot)[]
+    appointments: RenderableAppointment[]
     url: URL
     className?: string
   },

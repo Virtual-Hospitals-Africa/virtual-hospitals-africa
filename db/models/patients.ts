@@ -307,13 +307,19 @@ export function getCard(
 
 export async function getAllWithNames(
   trx: TrxOrDb,
-  search?: Maybe<string>,
+  { search, completed_intake }: {
+    search?: Maybe<string>
+    completed_intake?: boolean
+  },
 ): Promise<RenderedPatient[]> {
   let query = baseSelect(trx).where('patients.name', 'is not', null).orderBy(
     'name asc',
   )
 
   if (search) query = query.where('patients.name', 'ilike', `%${search}%`)
+  if (typeof completed_intake === 'boolean') {
+    query = query.where('patients.completed_intake', '=', completed_intake)
+  }
 
   const patients = await query.execute()
 

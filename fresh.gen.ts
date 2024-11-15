@@ -132,6 +132,7 @@ import * as $AddRemove from './islands/AddRemove.tsx'
 import * as $AddressForm from './islands/AddressForm.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
+import * as $BaseOption from './islands/BaseOption.tsx'
 import * as $CloseButton from './islands/CloseButton.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
 import * as $DemoVideo from './islands/DemoVideo.tsx'
@@ -445,6 +446,7 @@ const manifest = {
     './islands/AddressForm.tsx': $AddressForm,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,
+    './islands/BaseOption.tsx': $BaseOption,
     './islands/CloseButton.tsx': $CloseButton,
     './islands/ConditionSearch.tsx': $ConditionSearch,
     './islands/DemoVideo.tsx': $DemoVideo,

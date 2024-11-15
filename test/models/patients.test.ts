@@ -32,7 +32,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         name: 'Other Foo',
       })
 
-      const results = await patients.getAllWithNames(trx, baseUUID)
+      const results = await patients.getAllWithNames(trx, { search: baseUUID })
       assertEquals(
         results,
         sortBy([
@@ -92,7 +92,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           gender: 'female',
         })
 
-        const results = await patients.getAllWithNames(trx, name)
+        const results = await patients.getAllWithNames(trx, { search: name })
         assertEquals(results.length, 1)
         assertEquals(results[0].description, 'female, 01/03/2021')
       },

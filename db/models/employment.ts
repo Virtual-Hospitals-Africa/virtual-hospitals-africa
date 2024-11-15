@@ -169,13 +169,13 @@ export function getOrganizationAdmin(
     .executeTakeFirst()
 }
 
-export async function getEmploymentLocationName(
+export function getEmploymentLocationName(
   trx: TrxOrDb,
   opts: {
     employee_id: string
   },
 ) {
-  return await trx
+  return trx
     .selectFrom('employment')
     .innerJoin(
       'organizations',
@@ -184,5 +184,18 @@ export async function getEmploymentLocationName(
     )
     .select('organizations.name')
     .where('employment.id', '=', opts.employee_id)
+    .executeTakeFirstOrThrow()
+}
+
+export function updateSpecialty(
+  trx: TrxOrDb,
+  opts: {
+    employee_id: string
+    specialty: string
+  },
+) {
+  return trx.updateTable('employment')
+    .where('employment.id', '=', opts.employee_id)
+    .set({ specialty: opts.specialty })
     .executeTakeFirstOrThrow()
 }

@@ -13,39 +13,11 @@ import capitalize from '../util/capitalize.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { TargetedEvent } from 'preact/compat'
+import { BaseOption } from './BaseOption.tsx'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
-
-export function BaseOption<
-  T extends {
-    id?: unknown
-    name: string
-    display_name?: string
-    description?: string
-  },
->({
-  option,
-  selected,
-}: {
-  option: T
-  selected: boolean
-}) {
-  return (
-    <div className='flex flex-col'>
-      <div className={cls('text-base', selected && 'font-bold')}>
-        {option.display_name || option.name}
-      </div>
-      {option.description && (
-        <div className={cls('text-xs', selected && 'font-bold')}>
-          {option.description}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export type SearchProps<
   T extends { id?: unknown; name: string },
 > = {
@@ -53,6 +25,7 @@ export type SearchProps<
   name?: string
   required?: boolean
   label?: Maybe<string>
+  just_name?: boolean
   no_name_form_data?: boolean
   addable?: boolean | {
     href?: string
@@ -95,6 +68,7 @@ export default function Search<
   label = name && capitalize(name),
   value,
   multi,
+  just_name,
   no_name_form_data,
   addable,
   disabled,
@@ -141,12 +115,14 @@ export default function Search<
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
 
-  const name_field = no_name_form_data ? undefined : (name &&
-    (is_array_or_record_item ? `${name}.name` : `${name}_name`))
-  const id_field = name &&
+  const name_field = just_name
+    ? name
+    : (no_name_form_data ? undefined : (name &&
+      (is_array_or_record_item ? `${name}.name` : `${name}_name`)))
+  const id_field = just_name ? undefined : (name &&
     (no_name_form_data
       ? name
-      : (is_array_or_record_item ? `${name}.id` : `${name}_id`))
+      : (is_array_or_record_item ? `${name}.id` : `${name}_id`)))
 
   const input_ref = useRef<HTMLInputElement>(null)
 
@@ -305,7 +281,7 @@ export default function Search<
               )}
           </Combobox.Options>
         </div>
-        {(selected?.id && selected.id !== 'add') && (
+        {(selected?.id && selected.id !== 'add') && id_field && (
           <input
             type='hidden'
             name={id_field}
