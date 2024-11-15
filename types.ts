@@ -13,7 +13,6 @@ import {
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
-  type Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
@@ -409,7 +408,7 @@ export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin?: Maybe<FamilyRelationInsert>
-  religion?: Maybe<Religion>
+  religion?: Maybe<string>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>
   patient_cohabitation?: Maybe<PatientCohabitation>

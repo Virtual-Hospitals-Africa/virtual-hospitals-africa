@@ -1,9 +1,4 @@
-import {
-  FamilyType,
-  MaritalStatus,
-  PatientCohabitation,
-  Religion,
-} from '../db.d.ts'
+import { FamilyType, MaritalStatus, PatientCohabitation } from '../db.d.ts'
 import { GuardianRelationName } from '../types.ts'
 
 type UngenderedRelation = [GuardianRelationName, string]
@@ -83,14 +78,13 @@ export const FAMILY_TYPES: FamilyType[] = [
   'Orphan',
 ]
 
-export const RELIGIONS: Religion[] = [
+export const RELIGIONS: string[] = [
   'Roman Catholic',
   'Pentecostal/Protestant Christianity',
   'Islam',
   'Apostolic Sect',
   'African Traditional Religion',
   'Non-Religious',
-  'Other',
 ]
 
 export const PATIENT_COHABITATIONS: PatientCohabitation[] = [
