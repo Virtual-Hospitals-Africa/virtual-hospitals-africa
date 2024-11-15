@@ -185,7 +185,6 @@ export default function Search<
             onChange={(
               event,
             ) => {
-              console.log('input')
               const query = event.currentTarget.value
               setSelected(null)
               onSelect?.(undefined)

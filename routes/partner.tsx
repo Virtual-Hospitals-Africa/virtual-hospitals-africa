@@ -40,16 +40,18 @@ export default function PartnerPage(
             <SelectWithOther
               name='support'
               label='What kind of support might you be interested in offering?'
+              options={[
+                'Funding',
+                'Technical/Research Partnership',
+                'Local Health Organization Partnership',
+                'Medical Support',
+                'Medical Equipment',
+                'Software Development',
+                'Networking',
+                'Media/Journalism',
+                'Showcases/Events',
+              ]}
             >
-              <option>Funding</option>
-              <option>Technical/Research Partnership</option>
-              <option>Local Health Organization Partnership</option>
-              <option>Medical Support</option>
-              <option>Medical Equipment</option>
-              <option>Software Development</option>
-              <option>Networking</option>
-              <option>Media/Journalism</option>
-              <option>Showcases/Events</option>
             </SelectWithOther>
           </FormRow>
           <FormRow>

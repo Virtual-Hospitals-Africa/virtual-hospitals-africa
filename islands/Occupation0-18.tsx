@@ -4,6 +4,7 @@ import { Select } from './form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
 import { Occupation, School } from '../types.ts'
+import Search from './Search.tsx'
 
 export default function Occupation0_18({
   occupation = {
@@ -190,17 +191,10 @@ export default function Occupation0_18({
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
               name='occupation.school.current.inappropriate_reason'
+              value={school.current.inappropriate_reason}
               required
-            >
-              {class_inappropriate_reason.map((reason) => (
-                <option
-                  value={reason}
-                  selected={reason === school.current.inappropriate_reason}
-                >
-                  {reason}
-                </option>
-              ))}
-            </SelectWithOther>
+              options={class_inappropriate_reason}
+            />
           )}
         </FormRow>
 
@@ -212,16 +206,9 @@ export default function Occupation0_18({
             <SelectWithOther
               label='If the grades are dropping, why?'
               name='occupation.school.current.grades_dropping_reason'
-            >
-              {gradeDropReasons.map((reason) => (
-                <option
-                  value={reason}
-                  selected={reason === school.current.grades_dropping_reason}
-                >
-                  {reason}
-                </option>
-              ))}
-            </SelectWithOther>
+              value={school.current.grades_dropping_reason}
+              options={gradeDropReasons}
+            />
           )}
         </FormRow>
         <FormRow>
@@ -229,16 +216,9 @@ export default function Occupation0_18({
             <SelectWithOther
               label='If the patient stopped their education, why?'
               name='occupation.school.past.stopped_reason'
-            >
-              {stopEducationReasons.map((reason) => (
-                <option
-                  value={reason}
-                  selected={reason === school?.past.stopped_reason}
-                >
-                  {reason}
-                </option>
-              ))}
-            </SelectWithOther>
+              options={stopEducationReasons}
+              value={school.past.stopped_reason}
+            />
           )}
 
           {school.status === 'stopped school' && (

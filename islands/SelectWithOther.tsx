@@ -1,32 +1,43 @@
-import { useState } from 'preact/hooks'
-import { Select, SelectProps, TextInput } from './form/Inputs.tsx'
+import { computed, useSignal } from '@preact/signals'
+import Search, { SearchProps } from './Search.tsx'
 
-export default function SelectWithOther(
-  { name, children, ...props }: SelectProps,
+type SelectWithOtherProps<T extends string> =
+  & Omit<
+    SearchProps<{
+      id?: unknown
+      name: string
+    }>,
+    'options' | 'onSelect' | 'value' | 'onQuery'
+  >
+  & {
+    options: T[]
+    value?: T
+    onSelect?: (value: T | undefined) => void
+  }
+
+export default function SelectWithOther<T extends string>(
+  { name, value, options, onSelect, ...props }: SelectWithOtherProps<T>,
 ) {
-  const [selected, setSelected] = useState<undefined | string>()
-
-  const selectedOther = selected === 'other'
+  const search = useSignal<string>(value ?? '')
+  const matching_options = computed(() =>
+    options.filter((option) =>
+      option.toLowerCase().includes(search.value.toLowerCase())
+    ).map((option) => ({
+      id: option,
+      name: option,
+    }))
+  )
 
   return (
-    <div className='w-full'>
-      <Select
-        {...props}
-        name={selectedOther ? '' : name}
-        onChange={(e) => setSelected(e?.currentTarget?.value)}
-      >
-        <option value=''>Select</option>
-        {children}
-        <option value='other'>Other</option>
-      </Select>
-      {selectedOther && (
-        <TextInput
-          name={name}
-          label=''
-          placeholder=''
-          required
-        />
-      )}
-    </div>
+    <Search
+      {...props}
+      name={name ?? undefined}
+      addable={{
+        formatDisplay: (query) => query,
+      }}
+      options={matching_options.value}
+      onQuery={(query) => search.value = query}
+      onSelect={(value) => onSelect?.(value?.id as T)}
+    />
   )
 }

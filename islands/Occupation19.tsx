@@ -168,29 +168,15 @@ export default function Occupation19({
           <SelectWithOther
             label='Profession'
             name='occupation.job.profession'
-          >
-            {professions.map((profession) => (
-              <option
-                value={profession}
-                selected={profession === job.profession}
-              >
-                {profession}
-              </option>
-            ))}
-          </SelectWithOther>
+            value={job.profession}
+            options={professions}
+          />
           <SelectWithOther
             label='Work Environment/Job Satisfaction'
             name='occupation.job.work_satisfaction'
-          >
-            {job_satisfaction.map((answer) => (
-              <option
-                value={answer}
-                selected={answer === job.work_satisfaction}
-              >
-                {answer}
-              </option>
-            ))}
-          </SelectWithOther>
+            value={job.work_satisfaction}
+            options={job_satisfaction}
+          />
         </FormRow>
         <FormRow>
           {(school.status === 'adult stopped school' ||
@@ -199,32 +185,18 @@ export default function Occupation19({
               <SelectWithOther
                 label='Education level'
                 name='occupation.school.education_level'
-              >
-                {education_levels.map((education_level) => (
-                  <option
-                    value={education_level}
-                    selected={education_level === school.education_level}
-                  >
-                    {education_level}
-                  </option>
-                ))}
-              </SelectWithOther>
+                options={education_levels}
+                value={school.education_level}
+              />
             )}
           {school.status === 'adult stopped school' &&
             (
               <SelectWithOther
                 label='Why did the patient stop their education?'
                 name='occupation.school.reason'
-              >
-                {stop_education_reasons.map((reason) => (
-                  <option
-                    value={reason}
-                    selected={reason === school.reason}
-                  >
-                    {reason}
-                  </option>
-                ))}
-              </SelectWithOther>
+                value={school.reason}
+                options={stop_education_reasons}
+              />
             )}
         </FormRow>
       </section>

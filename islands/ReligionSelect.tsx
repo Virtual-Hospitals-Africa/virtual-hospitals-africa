@@ -14,15 +14,8 @@ export default function ReligionSelect(
       label={label}
       name={name}
       required={required}
-    >
-      {RELIGIONS.map((r) => (
-        <option
-          value={value}
-          selected={r === value}
-        >
-          {r}
-        </option>
-      ))}
-    </SelectWithOther>
+      options={RELIGIONS}
+      value={value}
+    />
   )
 }

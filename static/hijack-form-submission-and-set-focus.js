@@ -237,7 +237,6 @@ addEventListener('input', function (e) {
 // this as a year. We check for the user not being done typing the year
 // by checking if the year is less than 1800.
 addEventListener('change', function (e) {
-  console.log('change', e)
   var is_date = e.target.tagName === 'INPUT' &&
     getAttr(e.target, 'type') === 'date'
 
