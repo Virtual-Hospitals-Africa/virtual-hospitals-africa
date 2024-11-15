@@ -7,7 +7,11 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+<<<<<<< HEAD
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
+=======
+import {VITALS_SNOMED_CODE} from '../../shared/vitals.ts'
+>>>>>>> cb96d64d (Adding the ability to share flagged vitals in drawer)
 
 export async function upsertVitals(
   trx: TrxOrDb,
