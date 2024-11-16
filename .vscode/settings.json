@@ -5,6 +5,7 @@
     "./_fresh",
     "./db/codegen/node_modules"
   ],
+  "deno.documentPreloadLimit": 4000,
   "git.detectSubmodules": false,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescript]": {
