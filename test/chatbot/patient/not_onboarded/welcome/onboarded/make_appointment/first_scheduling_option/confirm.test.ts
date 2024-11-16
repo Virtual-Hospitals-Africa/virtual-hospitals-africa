@@ -91,7 +91,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
             prettyAppointmentTime(start),
           type: 'buttons',
           buttonText: 'Menu',
-          options: [{ id: 'cancel', title: 'Cancel Appointment' }],
+          options: [
+            { id: 'cancel', title: 'Cancel Appointment' },
+            { id: 'main_menu', title: 'Main Menu' },
+          ],
         },
         phone_number,
       },

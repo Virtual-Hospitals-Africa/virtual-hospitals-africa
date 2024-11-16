@@ -613,6 +613,11 @@ const conversationStates: ConversationStates<
           return 'onboarded:appointment_cancelled' as const
         },
       },
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
     ],
   },
   'onboarded:appointment_cancelled': {
