@@ -432,6 +432,8 @@ export type PatientAppointmentOfferedTime = {
   patient_appointment_request_id: string
   provider_id: string
   start: Date
+  end: Date
+  duration_minutes: number
   declined: boolean
 }
 
@@ -602,6 +604,8 @@ export type Appointment = {
   patient_id: string
   reason: string
   start: Date
+  end: Date
+  duration_minutes: number
   gcal_event_id: string
 }
 
@@ -1624,7 +1628,7 @@ export type ProviderAppointmentSlot = {
     name: Maybe<string>
     phone_number: Maybe<string>
   }
-  durationMinutes: number
+  duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
   providers: Provider[]
@@ -1641,7 +1645,7 @@ export type ProviderAppointment = {
     name: Maybe<string>
     phone_number: Maybe<string>
   }
-  durationMinutes: number
+  duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
   providers?: Provider[]
@@ -1662,7 +1666,7 @@ export type PatientAppointment = {
     name: Maybe<string>
     phone_number: Maybe<string>
   }
-  durationMinutes: number
+  duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
   providers: Provider[]

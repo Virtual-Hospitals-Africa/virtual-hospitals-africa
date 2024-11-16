@@ -18,10 +18,17 @@ describe('db/models/appointments.ts', { sanitizeResources: false }, () => {
           { patient_id: patient.id },
         )
 
+        const start = new Date()
+        const end = new Date()
+        end.setHours(start.getHours() + 1)
+        const duration_minutes = 60
+
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
           provider_id: health_worker.employee_id!,
-          start: new Date(),
+          start,
+          end,
+          duration_minutes,
         })
       },
     )
@@ -38,10 +45,17 @@ describe('db/models/appointments.ts', { sanitizeResources: false }, () => {
           { patient_id: patient.id },
         )
 
+        const start = new Date()
+        const end = new Date()
+        end.setHours(start.getHours() + 1)
+        const duration_minutes = 60
+
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
           provider_id: health_worker.employee_id!,
-          start: new Date(),
+          start,
+          end,
+          duration_minutes,
         })
       },
     )

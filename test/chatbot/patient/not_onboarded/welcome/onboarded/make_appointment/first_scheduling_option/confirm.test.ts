@@ -49,13 +49,18 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(health_worker)
 
     // Insert offered time
-    const time = new Date()
-    time.setDate(time.getDate() + 1)
-    time.setHours(9, 30, 0, 0)
+    const start = new Date()
+    start.setDate(start.getDate() + 1)
+    start.setHours(9, 30, 0, 0)
+    const end = new Date(start)
+    end.setMinutes(end.getMinutes() + 30)
+    const duration_minutes = 30
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id!,
-      start: time,
+      start,
+      end,
+      duration_minutes,
     })
 
     await conversations.insertMessageReceived(db, {
@@ -83,7 +88,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         messages: {
           messageBody:
             `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
-            prettyAppointmentTime(time),
+            prettyAppointmentTime(start),
           type: 'buttons',
           buttonText: 'Menu',
           options: [{ id: 'cancel', title: 'Cancel Appointment' }],

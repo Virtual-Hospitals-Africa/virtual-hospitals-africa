@@ -127,18 +127,18 @@ export function getAllProviderAvailability(
  */
 export async function availableSlots(
   trx: TrxOrDb,
-  { dates, declinedTimes = [], count, employment_ids, durationMinutes = 30 }: {
+  { dates, declinedTimes = [], count, employment_ids, duration_minutes = 30 }: {
     count: number
     declinedTimes?: string[]
     dates?: string[]
     employment_ids?: string[]
-    durationMinutes?: number
+    duration_minutes?: number
   },
 ): Promise<{
   provider: Provider
   start: Date
   end: Date
-  durationMinutes: number
+  duration_minutes: number
 }[]> {
   assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
@@ -150,11 +150,11 @@ export async function availableSlots(
     provider: Provider
     start: string
     end: string
-    durationMinutes: number
+    duration_minutes: number
   }[] = []
   for (const { provider, availability } of provider_availability) {
     for (const { start, end } of availability) {
-      const moreSlots = generateSlots({ start, end, durationMinutes })
+      const moreSlots = generateSlots({ start, end, duration_minutes })
         .filter((slot) => !declinedTimes.includes(slot.start))
         .filter((appointment) => {
           if (!dates) return true
@@ -186,7 +186,7 @@ export async function availableSlots(
     provider: slot.provider,
     start: new Date(slot.start),
     end: new Date(slot.end),
-    durationMinutes: slot.durationMinutes,
+    duration_minutes: slot.duration_minutes,
   }))
 
   if (!dates) return slotsWithDates.slice(0, count)
@@ -205,28 +205,28 @@ export async function availableSlots(
 }
 
 function generateSlots(
-  { start, end, durationMinutes = 30 }: {
+  { start, end, duration_minutes = 30 }: {
     start: string
     end: string
-    durationMinutes?: number
+    duration_minutes?: number
   },
-): { start: string; end: string; durationMinutes: number }[] {
-  const durationMillis = durationMinutes * 60 * 1000
+): { start: string; end: string; duration_minutes: number }[] {
+  const durationMillis = duration_minutes * 60 * 1000
   const current = new Date(start)
   current.setMinutes(
-    Math.ceil(current.getMinutes() / durationMinutes) * durationMinutes,
+    Math.ceil(current.getMinutes() / duration_minutes) * duration_minutes,
   ) // 0 or 30
   current.setSeconds(0)
   current.setMilliseconds(0)
 
   const endTime = new Date(end).getTime()
 
-  const slots: { start: string; end: string; durationMinutes: number }[] = []
+  const slots: { start: string; end: string; duration_minutes: number }[] = []
   while (current.getTime() + durationMillis <= endTime) {
     const startDate = formatHarare(current)
     current.setTime(current.getTime() + durationMillis)
     const endDate = formatHarare(current)
-    slots.push({ start: startDate, end: endDate, durationMinutes })
+    slots.push({ start: startDate, end: endDate, duration_minutes })
   }
   return slots
 }

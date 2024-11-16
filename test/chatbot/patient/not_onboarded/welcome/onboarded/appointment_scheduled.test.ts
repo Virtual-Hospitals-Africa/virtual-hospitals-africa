@@ -40,13 +40,19 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(health_worker)
 
     // Insert offered time
-    const time = new Date()
-    time.setDate(time.getDate() + 1)
-    time.setHours(9, 30, 0, 0)
+    const start = new Date()
+    start.setDate(start.getDate() + 1)
+    start.setHours(9, 30, 0, 0)
+    const end = new Date(start)
+    end.setHours(end.getHours() + 1)
+    const duration_minutes = 60
+
     const offeredTime = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id!,
-      start: time,
+      start,
+      end,
+      duration_minutes,
     })
 
     // Insert scheduled appointment

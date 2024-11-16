@@ -391,6 +391,8 @@ const conversationStates: ConversationStates<
               scheduling_appointment_request.patient_appointment_request_id,
             provider_id: firstAvailable[0].provider.provider_id,
             start: firstAvailable[0].start,
+            end: firstAvailable[0].end,
+            duration_minutes: firstAvailable[0].duration_minutes,
           })
           return 'onboarded:make_appointment:first_scheduling_option' as const
         },
@@ -409,7 +411,7 @@ const conversationStates: ConversationStates<
       const scheduling_appointment_request = await patients
         .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
       assert(scheduling_appointment_request)
-      return `Great, the next available appointment is ${
+      return `Great, the next available appointment is on ${
         prettyAppointmentTime(
           scheduling_appointment_request.offered_times[0].start,
         )
@@ -482,6 +484,8 @@ const conversationStates: ConversationStates<
                   scheduling_appointment_request.patient_appointment_request_id,
                 provider_id: timeslot.provider.provider_id,
                 start: timeslot.start,
+                end: timeslot.end,
+                duration_minutes: timeslot.duration_minutes,
               }),
           ))
 

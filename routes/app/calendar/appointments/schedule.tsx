@@ -34,7 +34,7 @@ type SearchFormValues = {
 export type ScheduleFormValues = {
   start: string
   end: string
-  durationMinutes: number
+  duration_minutes: number
   reason: string
   patient_id: string
   provider_ids: string[]
@@ -96,7 +96,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
         type: 'provider_appointment_slot',
         patient,
         id: `${slot.provider.provider_id}-${slot.start}`,
-        durationMinutes: slot.durationMinutes,
+        duration_minutes: slot.duration_minutes,
         start: parseDateTime(new Date(slot.start), 'numeric'),
         end: parseDateTime(new Date(slot.end), 'numeric'),
         providers: [slot.provider],

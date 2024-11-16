@@ -67,7 +67,7 @@ export default async function Calendar(
           type: 'provider_appointment' as const,
           id: appt.id,
           patient: appt.patient,
-          durationMinutes: Math.round(duration / (1000 * 60)),
+          duration_minutes: Math.round(duration / (1000 * 60)),
           start: parseDateTime(startTime, 'numeric'),
           end: parseDateTime(endTime, 'numeric'),
           virtualLocation: gcalItem.hangoutLink
