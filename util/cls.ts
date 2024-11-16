@@ -44,3 +44,5 @@ export default function classNames(...args: ClassNameable[]): string {
 
   return classes.join(' ')
 }
+
+export const cls = classNames

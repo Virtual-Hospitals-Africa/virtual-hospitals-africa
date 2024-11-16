@@ -26,7 +26,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
       organization_id,
       health_worker: ctx.state.healthWorker,
     })
-    const patients = await getAllWithNames(ctx.state.trx, search)
+    const patients = await getAllWithNames(ctx.state.trx, { search })
     const room = await getting_room
 
     const patients_with_href = patients.map((patient) => {

@@ -438,11 +438,6 @@ export function getEmployeeInfo(
               ),
         )
         .leftJoin(
-          'nurse_specialties',
-          'nurse_specialties.employee_id',
-          'nurse_employment.id',
-        )
-        .leftJoin(
           'nurse_registration_details',
           'nurse_registration_details.health_worker_id',
           'health_workers.id',
@@ -466,7 +461,7 @@ export function getEmployeeInfo(
           'nurse_registration_details.mobile_number',
           'nurse_registration_details.national_id_number',
           'nurse_registration_details.ncz_registration_number',
-          'nurse_specialties.specialty',
+          'nurse_employment.specialty',
           'health_workers.email',
           'health_workers.name',
           'health_workers.avatar_url',

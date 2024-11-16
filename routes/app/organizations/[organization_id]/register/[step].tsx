@@ -14,7 +14,6 @@ import {
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import * as employment from '../../../../../db/models/employment.ts'
-import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
 import * as addresses from '../../../../../db/models/addresses.ts'
@@ -91,7 +90,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     const { specialty } = formState
     assert(specialty)
 
-    await nurse_specialties.add(ctx.state.trx, {
+    await employment.updateSpecialty(ctx.state.trx, {
       employee_id: employee.id,
       specialty,
     })

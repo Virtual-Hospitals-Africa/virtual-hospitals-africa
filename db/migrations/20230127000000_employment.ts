@@ -28,6 +28,7 @@ export async function up(db: Kysely<unknown>) {
           sql`profession`,
           (column) => column.notNull(),
         )
+        .addColumn('specialty', 'varchar(255)')
         .addUniqueConstraint('only_employed_once_per_profession', [
           'health_worker_id',
           'organization_id',

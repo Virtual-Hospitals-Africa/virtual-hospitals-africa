@@ -2,7 +2,10 @@ import {
   CalendarIcon,
   MapPinIcon,
 } from '../library/icons/heroicons/outline.tsx'
-import { ProviderAppointment, ProviderAppointmentSlot } from '../../types.ts'
+import type {
+  ProviderAppointmentSlot,
+  RenderableAppointment,
+} from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
 import { GoogleMeetIcon } from '../library/icons/GoogleMeet.tsx'
 import { WhatsAppIcon } from '../library/icons/whatsapp.tsx'
@@ -12,16 +15,16 @@ import { Button } from '../library/Button.tsx'
 
 function AppointmentContents(
   { appointment, href }: {
-    appointment: ProviderAppointment | ProviderAppointmentSlot
+    appointment: RenderableAppointment
     href?: string
   },
 ) {
   // Show the health worker when showing appointment slots,
   // the patient for the actual appointment
   // TODO: revisit whether we want to show all participants
-  const featuring = appointment.type === 'slot'
-    ? appointment.providers[0]
-    : appointment.patient
+  const featuring = appointment.type === 'provider_appointment'
+    ? appointment.patient
+    : appointment.providers[0]
 
   const header = (
     <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
@@ -94,43 +97,49 @@ function AppointmentContents(
   )
 }
 
-export default function Appointment(
-  { url, appointment }: {
-    url: URL
-    appointment: ProviderAppointment | ProviderAppointmentSlot
-  },
-) {
-  const href = appointment.type === 'appointment'
-    ? `${url.pathname}/appointments/${appointment.id}`
-    : undefined
-
+function AppointmentSlot({ slot, url }: {
+  url: URL
+  slot: ProviderAppointmentSlot
+}) {
   const search = new URLSearchParams(url.search)
-  search.set('start', stringify(appointment.start))
-  search.set('end', stringify(appointment.end))
-  search.set('durationMinutes', String(appointment.durationMinutes))
-  if (appointment.providers) {
+  search.set('start', stringify(slot.start))
+  search.set('end', stringify(slot.end))
+  search.set('durationMinutes', String(slot.durationMinutes))
+  if (slot.providers) {
     search.set(
       'provider_ids',
       JSON.stringify(
-        appointment.providers.map((provider) => provider.provider_id),
+        slot.providers.map((provider) => provider.provider_id),
       ),
     )
   }
+  return (
+    <form
+      action={`${url.pathname}?${search}`}
+      method='POST'
+    >
+      <Button>
+        Book
+      </Button>
+    </form>
+  )
+}
+
+export default function Appointment(
+  { url, appointment }: {
+    url: URL
+    appointment: RenderableAppointment
+  },
+) {
+  const href = appointment.type === 'provider_appointment'
+    ? `${url.pathname}/appointments/${appointment.id}`
+    : undefined
 
   return (
     <li className='relative flex space-x-6 xl:static hover:bg-gray-50 px-2 py-3'>
       <AppointmentContents appointment={appointment} href={href} />
-      {appointment.type === 'slot'
-        ? (
-          <form
-            action={`${url.pathname}?${search}`}
-            method='POST'
-          >
-            <Button>
-              Book
-            </Button>
-          </form>
-        )
+      {appointment.type === 'provider_appointment_slot'
+        ? <AppointmentSlot slot={appointment} url={url} />
         : (
           <Menu
             icon='DotsVerticalIcon'

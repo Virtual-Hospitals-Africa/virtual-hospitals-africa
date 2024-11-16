@@ -273,6 +273,19 @@ function debugReplace(parameter: unknown) {
   }
 }
 
+export function debugReplaceAll(
+  sql: string,
+  parameters: readonly unknown[],
+) {
+  parameters.forEach((p: unknown, i: number) => {
+    const sql_index = `$${i + 1}`
+    sql = sql.replace(sql_index, debugReplace(p))
+  })
+  return formatter.format(sql, {
+    language: 'postgresql',
+  })
+}
+
 // Logs the pretty-printed SQL to the console with parameters interpolated.
 export function debugLog(
   qb:
@@ -285,14 +298,10 @@ export function debugLog(
     // deno-lint-ignore no-explicit-any
     | InsertQueryBuilder<any, any, any>,
 ) {
-  let { sql, parameters } = qb.compile()
-  parameters.forEach((p: unknown, i: number) => {
-    const sql_index = `$${i + 1}`
-    sql = sql.replace(sql_index, debugReplace(p))
-  })
-  console.log(formatter.format(sql, {
-    language: 'postgresql',
-  }))
+  const { sql, parameters } = qb.compile()
+  console.log(
+    debugReplaceAll(sql, parameters),
+  )
 }
 
 export function literalNumber(value: number) {

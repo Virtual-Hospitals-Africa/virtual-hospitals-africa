@@ -12,33 +12,6 @@ export type DoctorReviewStep =
   | 'referral'
   | 'revert'
 
-export type DoctorSpecialty =
-  | 'Allergy and Immunology'
-  | 'Anesthesiology'
-  | 'Cardiology'
-  | 'Dermatology'
-  | 'Emergency Medicine'
-  | 'Endocrinology'
-  | 'Family Medicine'
-  | 'Gastroenterology'
-  | 'Geriatrics'
-  | 'Hematology'
-  | 'Infectious Disease'
-  | 'Internal Medicine'
-  | 'Nephrology'
-  | 'Neurology'
-  | 'Obstetrics and Gynecology (OB/GYN)'
-  | 'Oncology'
-  | 'Ophthalmology'
-  | 'Orthopedics'
-  | 'Otolaryngology (ENT)'
-  | 'Pediatrics'
-  | 'Psychiatry'
-  | 'Pulmonology'
-  | 'Radiology'
-  | 'Rheumatology'
-  | 'Urology'
-
 export type EncounterReason =
   | 'appointment'
   | 'checkup'
@@ -128,25 +101,6 @@ export type MaritalStatus =
 export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
 
 export type Numeric = ColumnType<string, number | string, number | string>
-
-export type NurseSpecialty =
-  | 'anaesthetist'
-  | 'clinical care'
-  | 'clinical officer'
-  | 'community'
-  | 'dental'
-  | 'intensive and coronary care'
-  | 'midwife'
-  | 'neonatal intensive care and paediatric'
-  | 'oncology and palliative care'
-  | 'operating theatre'
-  | 'opthalmic'
-  | 'orthopaedic'
-  | 'primary care'
-  | 'psychiatric mental health'
-  | 'registered general'
-  | 'renal'
-  | 'trauma care'
 
 export type PatientCohabitation =
   | 'Father'
@@ -378,14 +332,6 @@ export interface DoctorReviewSteps {
   updated_at: Generated<Timestamp>
 }
 
-export interface DoctorSpecialties {
-  created_at: Generated<Timestamp>
-  employee_id: string
-  id: Generated<string>
-  specialty: DoctorSpecialty
-  updated_at: Generated<Timestamp>
-}
-
 export interface Drugs {
   created_at: Generated<Timestamp>
   generic_name: string
@@ -399,6 +345,7 @@ export interface Employment {
   id: Generated<string>
   organization_id: string
   profession: Profession
+  specialty: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -643,14 +590,6 @@ export interface NurseRegistrationDetailsInProgress {
   data: Generated<Json>
   health_worker_id: string
   id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
-export interface NurseSpecialties {
-  created_at: Generated<Timestamp>
-  employee_id: string
-  id: Generated<string>
-  specialty: NurseSpecialty
   updated_at: Generated<Timestamp>
 }
 
@@ -1182,7 +1121,6 @@ export interface DB {
   doctor_review_requests: DoctorReviewRequests
   doctor_review_steps: DoctorReviewSteps
   doctor_reviews: DoctorReviews
-  doctor_specialties: DoctorSpecialties
   drugs: Drugs
   employment: Employment
   encounter: Encounter
@@ -1213,7 +1151,6 @@ export interface DB {
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails
   nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
-  nurse_specialties: NurseSpecialties
   organization_consumables: OrganizationConsumables
   organization_devices: OrganizationDevices
   organizations: Organizations

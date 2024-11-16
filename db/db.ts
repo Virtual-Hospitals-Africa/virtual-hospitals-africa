@@ -7,6 +7,7 @@ import {
 } from 'kysely'
 import { DB } from '../db.d.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
+import { debugReplaceAll } from './helpers.ts'
 
 let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
 
@@ -69,21 +70,22 @@ const db = new Kysely<DB>({
     },
   },
   log(event) {
-    if (event.level === 'error') {
-      console.error('Query failed : ', {
-        durationMs: event.queryDurationMillis,
-        error: event.error,
-        sql: event.query.sql,
-        params: event.query.parameters, /*.map(maskPII) */
-      })
-    }
-    // else { // `'query'`
-    //   console.log('Query executed : ', {
-    //     durationMs: event.queryDurationMillis,
-    //     sql: event.query.sql,
-    //     params: event.query.parameters, /*.map(maskPII) */
-    //   })
-    // }
+    if (event.level !== 'error') return
+
+    // deno-lint-ignore no-explicit-any
+    const error_due_to_lock = (event.error as any).message.startsWith(
+      'This connection is currently locked',
+    )
+    if (error_due_to_lock) return
+
+    console.error('Query failed')
+    console.error(event.error)
+
+    // TODO, maskPII
+    console.error(debugReplaceAll(
+      event.query.sql,
+      event.query.parameters,
+    ))
   },
 })
 

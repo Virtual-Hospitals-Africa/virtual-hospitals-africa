@@ -1,7 +1,6 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
@@ -230,12 +229,12 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
-        await nurse_specialties.add(trx, {
+        await employment.updateSpecialty(trx, {
           employee_id: healthWorker.employee_id!,
           specialty: 'midwife',
         })
 
-        await nurse_specialties.add(trx, {
+        await employment.updateSpecialty(trx, {
           employee_id: secondEmployment.id,
           specialty: 'clinical care',
         })
@@ -301,7 +300,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
-      await nurse_specialties.add(trx, {
+      await employment.updateSpecialty(trx, {
         employee_id: healthWorker.employee_id!,
         specialty: 'midwife',
       })

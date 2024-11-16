@@ -4,7 +4,6 @@ import { Select } from './form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
 import { Occupation, School } from '../types.ts'
-import Search from './Search.tsx'
 
 export default function Occupation0_18({
   occupation = {
