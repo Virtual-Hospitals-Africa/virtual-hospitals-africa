@@ -30,7 +30,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           start: '2023-10-12T12:30:00+02:00',
           end: '2023-10-12T13:00:00+02:00',
           reason: 'back pain',
-          durationMinutes: 30,
+          duration_minutes: 30,
           patient_id: patient.id,
           provider_ids: [healthWorker.employee_id!],
         }, insertEvent)
@@ -94,6 +94,8 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           patient_id: patient.id,
           reason: 'back pain',
           start: new Date('2023-10-12T10:30:00.000Z'),
+          end: new Date('2023-10-12T11:00:00.000Z'),
+          duration_minutes: 30,
           updated_at: result[0].updated_at,
         }])
       },

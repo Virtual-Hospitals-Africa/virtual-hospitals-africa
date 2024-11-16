@@ -18,16 +18,15 @@ import { ensureProviderId } from './providers.ts'
 
 export function addOfferedTime(
   trx: TrxOrDb,
-  opts: Omit<PatientAppointmentOfferedTime, 'declined'>,
+  { provider_id, ...offered }: Omit<PatientAppointmentOfferedTime, 'declined'>,
 ): Promise<SchedulingAppointmentOfferedTime> {
   return trx.with(
     'inserted_offer_time',
     (qb) =>
       qb.insertInto('patient_appointment_offered_times')
         .values({
-          patient_appointment_request_id: opts.patient_appointment_request_id,
-          provider_id: ensureProviderId(trx, opts.provider_id),
-          start: opts.start,
+          provider_id: ensureProviderId(trx, provider_id),
+          ...offered,
         })
         .returningAll(),
   ).with(
@@ -163,18 +162,23 @@ export async function schedule(
     .select([
       'patient_appointment_request_id',
       'start',
+      'end',
+      'duration_minutes',
       'reason',
       'patient_id',
       'provider_id',
     ])
     .executeTakeFirstOrThrow()
 
-  const { start, patient_id, provider_id, reason } = offered
+  const { start, end, duration_minutes, patient_id, provider_id, reason } =
+    offered
   assert(reason)
 
   const appointmentToInsert = {
     gcal_event_id,
     start,
+    end,
+    duration_minutes,
     patient_id,
     reason,
   }
@@ -267,6 +271,8 @@ function baseQuery(trx: TrxOrDb, opts: {
       'appointments.id',
       'patient_id',
       'start',
+      'end',
+      'duration_minutes',
       'reason',
       'gcal_event_id',
       'appointments.created_at',

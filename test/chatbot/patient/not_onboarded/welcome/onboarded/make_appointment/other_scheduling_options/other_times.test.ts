@@ -116,10 +116,16 @@ describe.skip('patient chatbot', { sanitizeResources: false }, () => {
 
     // Insert previous offered time
     const start = new Date(secondDayBusyTime)
+    const end = new Date()
+    end.setHours(start.getHours() + 1)
+    const duration_minutes = 60
+
     await appointments.addOfferedTime(trx, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id!,
-      start: start,
+      start,
+      end,
+      duration_minutes,
     })
 
     await conversations.insertMessageReceived(trx, {

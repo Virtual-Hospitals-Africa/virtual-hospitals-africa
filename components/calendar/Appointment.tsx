@@ -104,7 +104,7 @@ function AppointmentSlot({ slot, url }: {
   const search = new URLSearchParams(url.search)
   search.set('start', stringify(slot.start))
   search.set('end', stringify(slot.end))
-  search.set('durationMinutes', String(slot.durationMinutes))
+  search.set('duration_minutes', String(slot.duration_minutes))
   if (slot.providers) {
     search.set(
       'provider_ids',

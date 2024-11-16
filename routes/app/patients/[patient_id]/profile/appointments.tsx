@@ -61,7 +61,7 @@ export default PatientPage(
           type: 'patient_appointment' as const,
           id: appt.id,
           patient: ctx.state.patient,
-          durationMinutes: Math.round(duration / (1000 * 60)),
+          duration_minutes: Math.round(duration / (1000 * 60)),
           start: parseDateTime(startTime, 'numeric'),
           end: parseDateTime(endTime, 'numeric'),
           providers: appt.providers,

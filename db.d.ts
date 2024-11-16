@@ -171,6 +171,8 @@ export interface AppointmentProviders {
 
 export interface Appointments {
   created_at: Generated<Timestamp>
+  duration_minutes: number
+  end: Timestamp
   gcal_event_id: string
   id: Generated<string>
   patient_id: string
@@ -644,6 +646,8 @@ export interface PatientAllergies {
 export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
   declined: Generated<boolean>
+  duration_minutes: number
+  end: Timestamp
   id: Generated<string>
   patient_appointment_request_id: string
   provider_id: string

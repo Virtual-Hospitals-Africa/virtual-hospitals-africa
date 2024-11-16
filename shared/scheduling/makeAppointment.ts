@@ -107,7 +107,7 @@ export type ScheduleFormValues = {
   start: string
   end: string
   reason: string
-  durationMinutes: number
+  duration_minutes: number
   patient_id: string
   provider_ids: string[]
 }
@@ -120,7 +120,7 @@ export function assertIsScheduleFormValues(
   assertOr400(isIsoHarare(values.start))
   assertOr400(typeof values.end === 'string')
   assertOr400(isIsoHarare(values.end))
-  assertOr400(typeof values.durationMinutes === 'number')
+  assertOr400(typeof values.duration_minutes === 'number')
   assertOr400(typeof values.reason === 'string')
   assertOr400(typeof values.patient_id === 'string')
   assertOr400(Array.isArray(values.provider_ids))
@@ -142,7 +142,7 @@ export async function makeAppointmentWeb(
   const start = new Date(values.start)
   const end = new Date(values.end)
   assertEquals(
-    values.durationMinutes,
+    values.duration_minutes,
     differenceInMinutes(end, start),
   )
 
@@ -162,6 +162,8 @@ export async function makeAppointmentWeb(
 
   const appointment = await appointments.upsert(trx, {
     start,
+    end,
+    duration_minutes: values.duration_minutes,
     patient_id: values.patient_id,
     reason: values.reason,
     gcal_event_id: insertedEvent.id,
