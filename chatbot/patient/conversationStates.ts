@@ -411,7 +411,7 @@ const conversationStates: ConversationStates<
       const scheduling_appointment_request = await patients
         .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
       assert(scheduling_appointment_request)
-      return `Great, the next available appointment is at ${
+      return `Great, the next available appointment is on ${
         prettyAppointmentTime(
           scheduling_appointment_request.offered_times[0].start,
         )

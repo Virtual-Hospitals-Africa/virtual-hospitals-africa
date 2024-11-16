@@ -118,7 +118,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody: 'Great, the next available appointment is ' +
+          messageBody: 'Great, the next available appointment is on ' +
             prettyAppointmentTime(secondDayBusyTime) +
             '. Would you like to schedule this appointment?',
           type: 'buttons',

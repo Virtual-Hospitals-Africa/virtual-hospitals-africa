@@ -14,7 +14,8 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('duration_minutes', 'integer', (col) =>
         col.notNull().check(sql`duration_minutes > 0`))
       .addColumn('gcal_event_id', 'varchar(255)', (col) =>
-        col.notNull()))
+        col.notNull())
+      .addColumn('gcal_hangout_link', 'varchar(255)'))
 
   await createStandardTable(db, 'appointment_providers', (qb) =>
     qb.addColumn(

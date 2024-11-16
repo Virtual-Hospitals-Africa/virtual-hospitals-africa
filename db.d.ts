@@ -174,6 +174,7 @@ export interface Appointments {
   duration_minutes: number
   end: Timestamp
   gcal_event_id: string
+  gcal_hangout_link: string | null
   id: Generated<string>
   patient_id: string
   reason: string

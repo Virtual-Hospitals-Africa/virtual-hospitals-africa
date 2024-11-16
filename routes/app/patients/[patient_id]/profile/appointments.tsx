@@ -19,6 +19,7 @@ export default PatientPage(
       },
     )
 
+    // TODO: don't recompute
     const renderable_appointments: RenderableAppointment[] = await Promise.all(
       patient_appointments.map(async (appt) => {
         const first_provider = appt.providers[0]
@@ -53,17 +54,13 @@ export default PatientPage(
           `Could not find event ${appt.gcal_event_id} in google calendar for provider ${first_provider.provider_id}`,
         )
 
-        const startTime = new Date(gcalItem.start.dateTime)
-        const endTime = new Date(gcalItem.end.dateTime)
-        const duration = endTime.getTime() - startTime.getTime()
-
         return {
           type: 'patient_appointment' as const,
           id: appt.id,
           patient: ctx.state.patient,
-          duration_minutes: Math.round(duration / (1000 * 60)),
-          start: parseDateTime(startTime, 'numeric'),
-          end: parseDateTime(endTime, 'numeric'),
+          duration_minutes: appt.duration_minutes,
+          start: parseDateTime(appt.start, 'numeric'),
+          end: parseDateTime(appt.end, 'numeric'),
           providers: appt.providers,
           physicalLocation: organizations_with_addresses.length
             ? {

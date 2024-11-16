@@ -35,7 +35,7 @@ if (!Deno.env.get('NO_EXTERNAL_CONNECT')) assert(GOOGLE_MAPS_API_KEY)
 const googleApisUrl = 'https://www.googleapis.com'
 
 type RequestOpts = {
-  method?: 'get' | 'post' | 'put' | 'delete'
+  method?: 'get' | 'post' | 'put' | 'delete' | 'patch'
   data?: unknown
 }
 
@@ -103,6 +103,7 @@ export class GoogleClient {
           return { result: 'insufficient_permission' }
         }
         const errorMessage = data.error?.errors?.[0]?.message || data.error
+        console.error(data.error)
         throw new Error(errorMessage)
       }
       return { result: 'success', data }
@@ -203,14 +204,42 @@ export class GoogleClient {
     return { ...events, items }
   }
 
-  insertEvent(
+  async insertEvent(
     calendarId: string,
     eventDetails: DeepPartial<GCalEvent>,
   ): Promise<GCalEvent> {
-    return this.makeCalendarRequest(`/calendars/${calendarId}/events`, {
-      method: 'post',
-      data: eventDetails,
-    })
+    const inserted: GCalEvent = await this.makeCalendarRequest(
+      `/calendars/${calendarId}/events`,
+      {
+        method: 'post',
+        data: eventDetails,
+      },
+    )
+
+    // TODO: get this on
+    // Hopefully this magically works once we move from having a test account
+    // await this.makeCalendarRequest(
+    //   `/calendars/${calendarId}/events/${inserted.id}?conferenceDataVersion=1&sendUpdates=all`,
+    //   {
+    //     method: 'patch',
+    //     data: {
+    //       id: inserted.id,
+    //       ...eventDetails,
+    //       conferenceData: {
+    //         createRequest: {
+    //           requestId: generateUUID(),
+    //           conferenceSolution: {
+    //             key: {
+    //               type: 'hangoutsMeet',
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // )
+
+    return inserted
   }
 
   updateEvent(
@@ -394,6 +423,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
           this.health_worker,
         )
         if (refreshed.result !== 'success') {
+          console.error(refreshed)
           throw new Error('Failed to refresh tokens')
         }
         this.health_worker.access_token = refreshed.access_token
@@ -472,7 +502,11 @@ export async function getNewAccessTokenFromRefreshToken(
   const json = await result.json()
 
   assert(json)
-  assertEquals(typeof json.access_token, 'string')
+  assertEquals(
+    typeof json.access_token,
+    'string',
+    'No access token in: \n' + JSON.stringify(json, null, 2),
+  )
 
   return json.access_token
 }
