@@ -1,4 +1,5 @@
 import { Kysely, sql } from 'kysely'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(
   db: Kysely<{
@@ -6,20 +7,17 @@ export async function up(
     diagnostic_tests: unknown
   }>,
 ) {
-  await db.schema.createTable('examinations')
-    .addColumn('name', 'varchar(80)', (col) => col.primaryKey())
-    .addColumn('order', 'integer', (col) => col.notNull())
-    .addColumn(
-      'is_head_to_toe',
-      'boolean',
-      (col) => col.notNull().defaultTo(false),
-    )
-    .addColumn('page', 'varchar(255)', (col) => col.notNull())
-    .addColumn('tab', 'varchar(255)', (col) => col.notNull())
-    .addColumn('path', 'varchar(255)', (col) => col.notNull())
-    .addUniqueConstraint('examination_order_unique', ['order'])
-    .addCheckConstraint('examination_order_positive', sql`("order" > 0)`)
-    .execute()
+  await createStandardTable(db, 'examinations', (table) =>
+    table
+      .addColumn('name', 'varchar(80)', (col) => col.notNull().unique())
+      .addColumn('order', 'integer', (col) =>
+        col.notNull().unique().check(sql`("order" > 0)`))
+      .addColumn('route', 'varchar(255)', (col) =>
+        col.notNull()), {
+    id_type: 'varchar(60)',
+  })
+
+  await db.schema.createTable('examination')
 
   await db.schema.createTable('diagnostic_tests')
     .addColumn(

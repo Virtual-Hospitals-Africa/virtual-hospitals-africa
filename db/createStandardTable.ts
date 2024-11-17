@@ -1,6 +1,7 @@
 import { CreateTableBuilder, Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from './addUpdatedAtTrigger.ts'
 import { now } from './helpers.ts'
+import { DataTypeExpression } from 'kysely/parser/data-type-parser.js'
 
 export async function createTableWithTimestamps(
   // deno-lint-ignore no-explicit-any
@@ -32,11 +33,14 @@ export async function createStandardTable(
   callback: (
     builder: CreateTableBuilder<string, never>,
   ) => CreateTableBuilder<string, never>,
+  opts?: {
+    id_type: DataTypeExpression
+  },
 ) {
   const creating_table = db.schema.createTable(table)
     .addColumn(
       'id',
-      'uuid',
+      opts?.id_type || 'uuid',
       (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
     )
     .addColumn(
