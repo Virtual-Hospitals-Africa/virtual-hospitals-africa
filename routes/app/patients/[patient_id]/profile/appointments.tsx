@@ -19,7 +19,9 @@ export default PatientPage(
       },
     )
 
-    // TODO: don't recompute
+    // TODO: don't recompute gcal information. This is pending our figuring out
+    // how to schedule events via the scheduler and maybe having our app approved
+    // by Google as a production app.
     const renderable_appointments: RenderableAppointment[] = await Promise.all(
       patient_appointments.map(async (appt) => {
         const first_provider = appt.providers[0]
