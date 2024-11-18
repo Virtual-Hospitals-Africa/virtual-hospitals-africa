@@ -68,77 +68,79 @@ export function tree(trx: TrxOrDb) {
 export function searchBaseQuery(
   trx: TrxOrDb,
   { term, code_range }: {
-    term: string
+    term?: string
     code_range?: string | string[]
   },
 ) {
-  return trx.with('raw_matches', (qb) =>
-    qb.selectFrom('icd10_diagnoses')
-      .select('code')
-      .where(
-        sql<boolean>`(
-          description_vector @@ plainto_tsquery(${term})
-        )`,
-      )
+  return trx.with('raw_matches', (qb) => {
+    const q = qb.selectFrom('icd10_diagnoses').select('code')
+
+    if (!term) return q
+    return q.where(
+      sql<boolean>`(
+        description_vector @@ plainto_tsquery(${term})
+      )`,
+    )
       .unionAll(
         qb.selectFrom('icd10_diagnoses_includes')
           .select('code')
           .where(
             sql<boolean>`(
-              note_vector @@ plainto_tsquery(${term})
-            )`,
-          ),
-      )).with('matches', (qb) => {
-      const matches_query = qb
-        .selectFrom('icd10_diagnoses')
-        .where(
-          'icd10_diagnoses.code',
-          'in',
-          qb.selectFrom('raw_matches').select('code'),
-        )
-        .select('icd10_diagnoses.code')
-
-      if (!code_range) {
-        return matches_query
-      }
-      const code_range_array = Array.isArray(code_range)
-        ? code_range
-        : [code_range]
-
-      assert(code_range_array.length)
-
-      return matches_query.where(
-        (eb) =>
-          eb.or(
-            code_range_array.map((code_range) => {
-              const [category] = code_range.split('.')
-              const category_equality_clause = eb('category', '=', category)
-              return code_range.length === 3
-                ? category_equality_clause
-                // redundant to also check by category, but category is indexed
-                : eb.and([
-                  category_equality_clause,
-                  sql<
-                    boolean
-                  >`LEFT(code, ${code_range.length}) = ${code_range}`,
-                ])
-            }),
+            note_vector @@ plainto_tsquery(${term})
+          )`,
           ),
       )
-    })
+  }).with('matches', (qb) => {
+    const matches_query = qb
+      .selectFrom('icd10_diagnoses')
+      .where(
+        'icd10_diagnoses.code',
+        'in',
+        qb.selectFrom('raw_matches').select('code'),
+      )
+      .select('icd10_diagnoses.code')
+
+    if (!code_range) {
+      return matches_query
+    }
+    const code_range_array = Array.isArray(code_range)
+      ? code_range
+      : [code_range]
+
+    assert(code_range_array.length)
+
+    return matches_query.where(
+      (eb) =>
+        eb.or(
+          code_range_array.map((code_range) => {
+            const [category] = code_range.split('.')
+            const category_equality_clause = eb('category', '=', category)
+            return code_range.length === 3
+              ? category_equality_clause
+              // redundant to also check by category, but category is indexed
+              : eb.and([
+                category_equality_clause,
+                sql<
+                  boolean
+                >`LEFT(code, ${code_range.length}) = ${code_range}`,
+              ])
+          }),
+        ),
+    )
+  })
 }
 
 const code_regex = /^[A-Z][A-Z0-9][A-Z0-9]\.?\d?\d?\d?\d?$/
 
 export function searchTree(
   trx: TrxOrDb,
-  { term, code_range, limit = 20 }: {
-    term: string
+  { term, code_range, limit = Infinity }: {
+    term?: string
     code_range?: string | string[]
     limit?: number
   },
 ): Promise<RenderedICD10DiagnosisTreeWithOptionalIncludes[]> {
-  const is_code = code_regex.test(term)
+  const is_code = !!term && code_regex.test(term)
 
   if (is_code) {
     return tree(trx)
@@ -257,7 +259,7 @@ export function searchTree(
       `.as('best_similarity'),
     ])
     .orderBy('best_similarity', 'desc')
-    .limit(limit)
+    .$if(limit !== Infinity, (qb) => qb.limit(limit))
     .execute()
 }
 
@@ -320,32 +322,11 @@ const symptoms_chapter = [
   'R60', 'R61', 'R62', 'R63', 'R64', 'R65', 'R66', 'R67', 'R68', 'R69'
 ]
 
+// deno-fmt-ignore
 const other_symptoms = [
-  'G43',
-  'G44',
-  'G50.1',
-  'G54.6',
-  'G89',
-  'H57.1',
-  'H92.0',
-  'K08.8',
-  'K14.6',
-  'K52.9',
-  'K59',
-  'K92.0',
-  'K92.1',
-  'M25.5',
-  'M25.51',
-  'M54',
-  'M79.1',
-  'M79.6',
-  'N23',
-  'N64.4',
-  'N94.81',
-  'T82.84',
-  'T83.84',
-  'T84.84',
-  'T85.84',
+  'G43', 'G44', 'G50.1', 'G54.6', 'G89', 'H57.1', 'H92.0', 'K08.8', 'K14.6', 'K52.9',
+  'K59', 'K92.0', 'K92.1', 'M25.5', 'M25.51', 'M54', 'M79.1', 'M79.6', 'N23', 'N64.4',
+  'N94.81', 'T82.84', 'T83.84', 'T84.84', 'T85.84',
 ]
 
 const symptoms_code_ranges = [
@@ -355,9 +336,14 @@ const symptoms_code_ranges = [
 
 export function searchSymptoms(
   trx: TrxOrDb,
-  term: string,
+  term?: string,
+  opts?: { limit?: number },
 ) {
-  return searchTree(trx, { term, code_range: symptoms_code_ranges })
+  return searchTree(trx, {
+    term,
+    code_range: symptoms_code_ranges,
+    limit: opts?.limit,
+  })
 }
 
 export function byCode(trx: TrxOrDb, code: string) {

@@ -24,7 +24,7 @@
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",
     "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts",
-    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors --unstable-temporal --env --eval-file=repl.ts",
+    "repl": "deno task run:trusted ./scripts/generate_repl_header.ts > repl.ts && DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors --unstable-temporal --env --eval-file=repl.ts",
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unstable-temporal --env --unsafely-ignore-certificate-errors",
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",

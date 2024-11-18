@@ -1,3 +1,4 @@
+import db from '../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export default function* zip<T, U>(
