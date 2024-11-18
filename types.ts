@@ -199,6 +199,8 @@ export type RenderedPatient =
     age_display: Maybe<string>
     avatar_url: string | null
     nearest_organization: string | null
+    nearest_organization_id: string | null
+    primary_doctor_id: string | null
     last_visited: null // TODO: implement
     location: {
       longitude: number | null

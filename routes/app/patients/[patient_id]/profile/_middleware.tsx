@@ -45,6 +45,7 @@ export function PatientPage(
     const rendered = await render({
       ctx,
     })
+
     return (
       <Layout
         title='Patient Profile'
@@ -68,12 +69,27 @@ export function PatientPage(
           <Person person={ctx.state.patient} />
 
           <div className='mt-4'>
-            {'Nearest Clinic: ' + ctx.state.patient.nearest_organization}
+            <a
+              href={replaceParams(
+                '/app/organizations/:org_id',
+                { org_id: ctx.state.patient.nearest_organization_id || '' },
+              )}
+            >
+              {ctx.state.patient.nearest_organization}
+            </a>
             <br />
-            {`Primary Provider: Dr. ` +
-              (ctx.state.patient.open_encounter &&
-                ctx.state.patient.open_encounter.providers[0]
-                  .health_worker_name)}
+
+            <a
+              href={replaceParams(
+                '/app/organizations/00000000-0000-0000-0000-000000000001/employees/:employee_id',
+                { employee_id: ctx.state.patient.primary_doctor_id || '' },
+              )}
+            >
+              {`Dr. ` +
+                (ctx.state.patient.open_encounter &&
+                  ctx.state.patient.open_encounter.providers[0]
+                    .health_worker_name)}
+            </a>
           </div>
           <Tabs
             tabs={tabs.map((tab) => ({

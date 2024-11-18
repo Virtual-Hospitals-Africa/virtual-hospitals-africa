@@ -55,17 +55,19 @@ export default async function EmployeePage(
         />
       </div>
       <hr style={{ margin: '20px 0' }} />
-      {isAdminAtOrganization &&
-        employee.registration_pending_approval && (
-        <form
-          style={{ maxWidth: '200px' }}
-          className='mb-5 float-right'
-          method='POST'
-          action={`${ctx.url.pathname}/approve`}
-        >
-          <FormButtons submitText='Approve' />
-        </form>
-      )}
+      <div>
+        {isAdminAtOrganization &&
+          employee.registration_pending_approval && (
+          <form
+            style={{ maxWidth: '200px' }}
+            className='mb-5 float-right'
+            method='POST'
+            action={`${ctx.url.pathname}/approve`}
+          >
+            <FormButtons submitText='Approve' />
+          </form>
+        )}
+      </div>
     </Layout>
   )
 }

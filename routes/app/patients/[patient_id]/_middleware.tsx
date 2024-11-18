@@ -28,6 +28,7 @@ export async function handler(
   assertOr404(patient, 'Patient not found')
 
   ctx.state.patient = patient
+  console.log('ctx profile/patient', ctx)
   return ctx.next()
 }
 

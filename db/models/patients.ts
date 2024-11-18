@@ -258,6 +258,8 @@ export async function getWithOpenEncounter(
           providers: eb.ref('open_encounters.providers').$notNull(),
           steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
         })).end().as('open_encounter'),
+      eb.ref('patients.primary_doctor_id').as('primary_doctor_id'),
+      eb.ref('patients.nearest_organization_id').as('nearest_organization_id'),
     ])
     .execute()
 
