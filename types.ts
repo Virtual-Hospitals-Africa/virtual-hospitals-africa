@@ -2387,7 +2387,7 @@ export type Measurement<Name extends keyof Measurements> = {
 }
 
 export type MeasurementsUpsert = {
-  [Name in keyof Measurements]?: number
+  [Name in keyof Measurements]?: [number, boolean]
 }
 
 export type PatientMeasurement = {
@@ -2396,6 +2396,7 @@ export type PatientMeasurement = {
   encounter_provider_id: string
   measurement_name: keyof Measurements
   value: number
+  is_flagged: boolean
 }
 
 export type PatientMedicationUpsert = {

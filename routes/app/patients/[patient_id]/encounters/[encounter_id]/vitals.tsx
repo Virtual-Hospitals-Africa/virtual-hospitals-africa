@@ -3,6 +3,7 @@ import {
   EncounterPage,
   EncounterPageChildProps,
 } from './_middleware.tsx'
+import { z } from 'zod'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
   LoggedInHealthWorkerHandler,
@@ -16,11 +17,23 @@ import { completeStep } from './_middleware.tsx'
 import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
 import { MEASUREMENTS } from '../../../../../../shared/measurements.ts'
 
+const VitalUpsertSchema = z.object({
+  measurement_name: z.string(),
+  value: z.number(),
+  is_flagged: z.boolean(),
+})
+
+const VitalsMeasurementsSchema = z.object({
+  vitals: z.array(VitalUpsertSchema).optional(),
+})
+
 function assertIsVitals(
   values: unknown,
 ): asserts values is {
   measurements: MeasurementsUpsert
 } {
+  console.log('values in vitals', values)
+
   assertOr400(isObjectLike(values), 'Invalid form values')
   if (values.no_vitals_required) return
   assertOr400(isObjectLike(values.measurements), 'Invalid form values')
@@ -46,7 +59,8 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
     const { measurements } = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      assertIsVitals,
+      // assertIsVitals,
+      VitalsMeasurementsSchema.parse,
     )
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 

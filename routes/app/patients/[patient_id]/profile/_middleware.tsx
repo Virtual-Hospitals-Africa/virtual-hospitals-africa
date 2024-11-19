@@ -62,6 +62,7 @@ export function PatientPage(
             findings={[]}
             sendables={[]}
             measurements={{}}
+            flaggedVitals={{}}
           />
         )}
       >

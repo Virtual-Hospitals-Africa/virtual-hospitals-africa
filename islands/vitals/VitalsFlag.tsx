@@ -1,29 +1,28 @@
-import { useState } from 'preact/hooks'
 import { FlagIcon } from '../../components/library/icons/heroicons/solid.tsx'
-import { Button } from '../../components/library/Button.tsx'
+import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
+import cls from '../../util/cls.ts'
 
-export default function VitalsFlag(
-    props: {
-        className: string
-    }
-) {
-    const [flag, setFlag] = useState(false)
-
-    return (
-        <div className={props.className}>
-            <button type='button' onClick={() => setFlag(!flag)} onSubmit={() => setFlag(!flag)}>
-                {
-                    flag ?
-                    <FlagIcon
-                        className='h-5 w-5 text-red-400'
-                        aria-hidden='true'
-                    /> :
-                    <FlagIcon
-                        className='h-5 w-5 text-gray-400 fill-black'
-                        aria-hidden='true'
-                    />
-                }
-            </button>
-        </div>
-    )
+export default function FindingFlagToggle({
+  on,
+  description,
+  toggle,
+}: {
+  on: boolean
+  description: string
+  toggle(): void
+}) {
+  const action = on ? 'Unflag' : 'Flag'
+  // vital_description: 'height 200cm'
+  return (
+    <HeroIconButton
+      variant='ghost'
+      type='button'
+      onClick={() => {
+        toggle()
+      }}
+      title={`${action} ${description} as a finding`}
+    >
+      <FlagIcon className={cls('h-5 w-5', on ? 'fill-indigo-900' : '')} />
+    </HeroIconButton>
+  )
 }

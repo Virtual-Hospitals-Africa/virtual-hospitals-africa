@@ -215,6 +215,7 @@ export function EncounterLayout({
           findings={key_findings}
           sendables={sendables}
           measurements={measurements}
+          flaggedVitals={{}}
         />
       }
       url={ctx.url}
@@ -274,29 +275,30 @@ export function EncounterPage(
 
     assert(location, 'Location not found')
 
-    const { rendered, sendables, key_findings, measurements } = await promiseProps({
-      rendered: Promise.resolve(
-        render({ ctx, ...ctx.state, previously_completed }),
-      ),
-      sendables: send_to.forPatientEncounter(
-        trx,
-        patient.id,
-        location,
-        encounter.providers,
-        {
-          exclude_health_worker_id: healthWorker.id,
-          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
-        },
-      ),
-      key_findings: findings.forPatientEncounter(trx, {
-        patient_id: patient.id,
-        encounter_id: encounter.encounter_id,
-      }),
-      measurements: patient_measurements.getEncounterVitals(trx, {
-        patient_id: patient.id,
-        encounter_id: encounter.encounter_id,
+    const { rendered, sendables, key_findings, measurements } =
+      await promiseProps({
+        rendered: Promise.resolve(
+          render({ ctx, ...ctx.state, previously_completed }),
+        ),
+        sendables: send_to.forPatientEncounter(
+          trx,
+          patient.id,
+          location,
+          encounter.providers,
+          {
+            exclude_health_worker_id: healthWorker.id,
+            primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
+          },
+        ),
+        key_findings: findings.forPatientEncounter(trx, {
+          patient_id: patient.id,
+          encounter_id: encounter.encounter_id,
+        }),
+        measurements: patient_measurements.getEncounterVitals(trx, {
+          patient_id: patient.id,
+          encounter_id: encounter.encounter_id,
+        }),
       })
-    })
 
     if (rendered instanceof Response) {
       return rendered

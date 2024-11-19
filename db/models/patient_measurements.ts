@@ -6,7 +6,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import {VITALS_SNOMED_CODE} from '../../shared/vitals.ts'
+import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 
 export async function upsertVitals(
   trx: TrxOrDb,
@@ -40,6 +40,7 @@ export async function upsertVitals(
         value,
         encounter_provider_id,
         measurement_name: name,
+        is_flagged: false,
       }
     },
   )
@@ -102,7 +103,11 @@ export async function getEncounterVitals(
   const measurements: Partial<Measurements> = {}
   for (const { measurement_name, value, units } of measurement_rows) {
     // deno-lint-ignore no-explicit-any
-    const measurement: any = [VITALS_SNOMED_CODE[measurement_name as keyof Measurements], parseFloat(value), units]
+    const measurement: any = [
+      VITALS_SNOMED_CODE[measurement_name as keyof Measurements],
+      parseFloat(value),
+      units,
+    ]
     measurements[measurement_name as keyof Measurements] = measurement
   }
   return measurements

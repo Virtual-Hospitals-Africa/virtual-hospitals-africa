@@ -12,7 +12,7 @@ import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
 import VitalsList from './VitalsList.tsx'
 
 export function PatientDrawer(
-  { patient, encounter, findings, measurements }: {
+  { patient, encounter, findings, measurements, flaggedVitals }: {
     form?: 'intake' | 'encounter'
     patient: {
       id: string
@@ -30,6 +30,7 @@ export function PatientDrawer(
     findings: RenderedPatientExaminationFinding[]
     measurements: Partial<Measurements>
     sendables: Sendable[]
+    flaggedVitals?: Map<string, boolean>
   },
 ) {
   return (
@@ -59,7 +60,10 @@ export function PatientDrawer(
         </div>
         <div className='w-full py-2'>
           <SectionHeader>Vitals</SectionHeader>
-          <VitalsList measurements={measurements}/>
+          <VitalsList
+            measurements={measurements}
+            vitals={flaggedVitals}
+          />
         </div>
       </div>
       <div className='flex flex-col'>

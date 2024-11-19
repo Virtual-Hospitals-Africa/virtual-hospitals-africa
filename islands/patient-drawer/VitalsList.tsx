@@ -1,10 +1,9 @@
-
-
-import { Signal, useSignal } from '@preact/signals'
-import { useEffect } from 'preact/hooks'
+import { useSignal } from '@preact/signals'
+import { useEffect, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
-import { assertHasNonEmptyString } from '../../util/isString.ts'
+// import { assertHasNonEmptyString } from '../../util/isString.ts'
 import { Measurements } from '../../types.ts'
+import { assertHasNonEmptyString } from '../../util/isString.ts'
 
 // import { FindingsListItem } from './FindingsListItem.tsx'
 // import { type Finding, FindingSchema } from './FindingsListItemSchema.ts'
@@ -13,56 +12,78 @@ const ADD_VITALS_FINDING_EVENT_NAME = 'add_vitals_finding'
 const REMOVE_VITALS_EVENT_NAME = 'remove_vitals_finding'
 
 export function addVitalsFinding(vital: string) {
-    // Check if vital exists in Measurements object
-    assertHasNonEmptyString(vital, 'vital')
-
-    // Check if vital exists in Measurements object
-    assert(vital as keyof Measurements, `Vital ${vital} does not exist in Measurements object`)
-
-    // self.dispatchEvent(
-    //     // new CustomEvent(ADD_VITALS_FINDING_EVENT_NAME, { detail: finding }),
-    // )
+  self.dispatchEvent(
+    new CustomEvent(ADD_VITALS_FINDING_EVENT_NAME, { detail: vital }),
+  )
 }
 
-function VitalsList( {measurements}: {
-    measurements: Partial<Measurements>,
+export function removeVitalsFinding(vital: string) {
+  self.dispatchEvent(
+    new CustomEvent(REMOVE_VITALS_EVENT_NAME, { detail: vital }),
+  )
 }
-) {
-    // This is a list of vitals that have been flagged by vitals name
-    // OnAdd and OnRemove, we update this list
-    const flaggedVitals = useSignal<string[]>([
-        // 'height',
-        // 'weight',
-    ])
 
-    // function onAdd(event: unknown) {
-    //     assert(event instanceof CustomEvent)
+function VitalsList({ measurements, vitals }: {
+  measurements: Partial<Measurements>
+  vitals?: Map<string, boolean>
+}) {
+  const [flaggedVitals, setFlaggedVitals] = useState(
+    new Map<string, boolean>(),
+  )
 
-    //     const vital = event.detail as string
-    //     flaggedVitals.value = [...flaggedVitals.value, vital]
-    // }
+  for (const [vital, value] of Object.entries(vitals ?? {})) {
+    if (value) {
+      setFlaggedVitals((prev) => ({
+        ...prev,
+        [vital]: true,
+      }))
+    }
+  }
 
-    // function onRemove(event: unknown) {
-    //     assert(event instanceof CustomEvent)
-    //     assertHasNonEmptyString(event.detail, 'vital')
+  function onAdd(event: unknown) {
+    assert(event instanceof CustomEvent)
 
-    //     const vital = event.detail.vital
-    //     flaggedVitals.value = flaggedVitals.value.filter((v) => v == vital)
-    // }
+    const vital = event.detail as string
+    setFlaggedVitals((prev) => ({ ...prev, [vital]: true }))
+  }
 
-    console.log('measurements', measurements)
-    console.log('flaggedVitals', flaggedVitals.value)
+  function onRemove(event: unknown) {
+    assert(event instanceof CustomEvent)
+    const vital = event.detail as string
 
-    return (
-        <div>
-            {Object.keys(flaggedVitals.value).length === 0 ?
-                <p>No vitals flagged</p> :
-                flaggedVitals.value.map((vital) => (
-                    <p>{vital} : {measurements[vital as keyof Measurements]![1] + ' ' + measurements[vital as keyof Measurements]![2]}</p>
-                ))
-            }
-        </div>
-    )
+    const prevFlaggedVitals = flaggedVitals
+    prevFlaggedVitals.delete(vital)
+
+    setFlaggedVitals(prevFlaggedVitals)
+  }
+
+  useEffect(() => {
+    addEventListener(ADD_VITALS_FINDING_EVENT_NAME, onAdd)
+    addEventListener(REMOVE_VITALS_EVENT_NAME, onRemove)
+
+    return () => {
+      removeEventListener(ADD_VITALS_FINDING_EVENT_NAME, onAdd)
+      removeEventListener(REMOVE_VITALS_EVENT_NAME, onRemove)
+    }
+  }, [])
+
+  // TODO: Handle blood pressure as a separate case
+
+  return (
+    <div>
+      {flaggedVitals.size === 0
+        ? <p>No vitals flagged</p>
+        : Object.keys(flaggedVitals).map((vital) => (
+          <div key={vital}>
+            <p>
+              {vital}:{' '}
+              {measurements[vital as keyof Measurements]![1] + ' ' +
+                measurements[vital as keyof Measurements]![2]}
+            </p>
+          </div>
+        ))}
+    </div>
+  )
 }
 
 export default VitalsList
