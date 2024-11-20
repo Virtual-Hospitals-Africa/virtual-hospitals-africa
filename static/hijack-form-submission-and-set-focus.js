@@ -129,7 +129,8 @@ addEventListener('submit', function (event) {
 function setFocus(focus) {
   var focusableElement = document.getElementById(focus) ||
     document.querySelector(
-      'input[name="' + focus + '"], select[name="' + focus + '"], textarea[name="' + focus + '"]',
+      'input[name="' + focus + '"], select[name="' + focus +
+        '"], textarea[name="' + focus + '"]',
     )
 
   if (focusableElement) {

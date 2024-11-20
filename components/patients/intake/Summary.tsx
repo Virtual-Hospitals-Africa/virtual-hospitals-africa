@@ -206,7 +206,8 @@ export default function PatientSummary(
         [{
           value: guardian.patient_name,
           name: 'guardian',
-          href: `${intake_href}/family#focus=family.guardians.${index}.patient_name`,
+          href:
+            `${intake_href}/family#focus=family.guardians.${index}.patient_name`,
           action: DescriptionListCellAction.Edit,
         }, {
           value: guardian.family_relation_gendered,
