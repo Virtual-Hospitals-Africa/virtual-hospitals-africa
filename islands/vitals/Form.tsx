@@ -1,5 +1,5 @@
 import { CheckboxInput, NumberInput } from '../form/Inputs.tsx'
-import { Measurements } from '../../types.ts'
+import { Measurement, Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
 import { MEASUREMENTS } from '../../shared/measurements.ts'
@@ -9,9 +9,9 @@ import {
 } from '../patient-drawer/VitalsList.tsx'
 import { computed, useSignal } from '@preact/signals'
 import VitalsFlag from './VitalsFlag.tsx'
-import { useEffect } from 'preact/hooks'
-import { useRef } from 'preact/hooks'
-import { useEffectAfterFirstRender } from '../_hooks/useEffectAfterFirstRender.ts'
+// import { useEffect } from 'preact/hooks'
+// import { useRef } from 'preact/hooks'
+// import { useEffectAfterFirstRender } from '../_hooks/useEffectAfterFirstRender.ts'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
@@ -21,7 +21,8 @@ const required_inputs: NormalVitalInput[] = [
   'temperature',
 ]
 
-const other_inputs: NormalVitalInput[] = [
+const all_inputs: NormalVitalInput[] = [
+  ...required_inputs,
   'blood_oxygen_saturation',
   'blood_glucose',
   'pulse',
@@ -31,10 +32,10 @@ const other_inputs: NormalVitalInput[] = [
 function VitalInput({ measurement, required, vitals, name }: {
   measurement: keyof Measurements
   required?: boolean
-  vitals?: Partial<Measurements>
+  vitals: Measurement<keyof Measurements>
   name?: string
 }) {
-  const on = useSignal(false)
+  const on = useSignal(vitals.is_flagged || false)
 
   const vital_description = computed(() => {
     // TODO function of the vital name, numeric measurement, and the units
@@ -68,23 +69,27 @@ function VitalInput({ measurement, required, vitals, name }: {
       </span>
       <NumberInput
         required={required}
-        name={`${name}.${measurement}.value`}
+        name={`${name}.value`}
         label={null}
-        value={vitals?.[measurement]?.[1]}
+        value={vitals.value}
         className='col-start-6'
         min={0}
       />
       <CheckboxInput
-        name={`${name}.${measurement}.is_flagged`}
+        name={`${name}.is_flagged`}
         label={null}
         checked={on.value}
         className='hidden'
         value={on.value ? 'true' : 'false'}
       />
       <input
-        type='text'
-        name={`${name}.${measurement}.measurement_name`}
-        className='hidden'
+        type='hidden'
+        name={`${name}.is_flagged`}
+        value={on.value ? 'true' : 'false'}
+      />
+      <input
+        type='hidden'
+        name={`${name}.measurement_name`}
         value={measurement}
       />
       <span className='col-start-7'>{MEASUREMENTS[measurement]}</span>
@@ -93,24 +98,33 @@ function VitalInput({ measurement, required, vitals, name }: {
 }
 
 export function VitalsForm({ vitals }: {
-  vitals: Partial<Measurements>
+  vitals: Measurement<keyof Measurements>[]
 }) {
-  const all_inputs: [keyof Measurements, boolean][] = [
-    ...required_inputs.map((input) =>
-      [input, true] as [keyof Measurements, boolean]
-    ),
-    ...other_inputs.map((input) =>
-      [input, false] as [keyof Measurements, boolean]
-    ),
-  ]
+  const remaining_inputs = computed(() => {
+    return all_inputs.filter((input) =>
+      !vitals.some((vital) => {
+        return vital.measurement_name === input
+      })
+    )
+  })
+
+  for (const input of remaining_inputs.value) {
+    vitals.push({
+      measurement_name: input,
+      is_flagged: false,
+      units: MEASUREMENTS[input],
+    })
+  }
 
   return (
     <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
-      {all_inputs.map((measurement, index) => (
+      {vitals.map((vital, index) => (
         <VitalInput
-          required={measurement[1]}
-          measurement={measurement[0]}
-          vitals={vitals}
+          required={required_inputs.includes(
+            vital.measurement_name as NormalVitalInput,
+          )}
+          measurement={vital.measurement_name}
+          vitals={vital}
           name={`measurements.${index}`}
         />
       ))}

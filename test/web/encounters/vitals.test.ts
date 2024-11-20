@@ -148,9 +148,9 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        measurements: {
-          height: 100,
-          weight: 100,
+        input_measurements: {
+          height: [100, false],
+          weight: [100, false],
         },
       })
 
@@ -220,10 +220,10 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        measurements: {
-          height: 100,
-          weight: 100,
-          temperature: 50,
+        input_measurements: {
+          height: [100, false],
+          weight: [100, false],
+          temperature: [50, false],
         },
       })
 

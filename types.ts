@@ -2381,13 +2381,19 @@ export type Measurements = {
   midarm_circumference: [string, number, 'cm']
   triceps_skinfold: [string, number, 'cm']
 }
+
 export type Measurement<Name extends keyof Measurements> = {
-  name: Name
-  units: Measurements[Name][1]
+  measurement_name: Name
+  snomed_code: Measurements[Name][0]
+  value?: Measurements[Name][1]
+  units: Measurements[Name][2]
+  is_flagged: boolean
 }
 
 export type MeasurementsUpsert = {
-  [Name in keyof Measurements]?: [number, boolean]
+  value?: number
+  is_flagged: boolean
+  measurement_name: string // keyof Measurements
 }
 
 export type PatientMeasurement = {

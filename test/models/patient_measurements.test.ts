@@ -29,9 +29,9 @@ describe(
           patient_id: patient.id,
           encounter_id: encounter.id,
           encounter_provider_id: encounter.providers[0].encounter_provider_id,
-          measurements: {
-            height: 170.3,
-            weight: 70.4,
+          input_measurements: {
+            height: [170.3, false],
+            weight: [70.4, false],
           },
         })
       })

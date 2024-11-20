@@ -119,6 +119,9 @@ export async function parseRequest<T extends Record<string, unknown>>(
   )
 
   delete parsed.omit
+
+  console.log('parsed', parsed)
+
   return parse(parsed)
 }
 

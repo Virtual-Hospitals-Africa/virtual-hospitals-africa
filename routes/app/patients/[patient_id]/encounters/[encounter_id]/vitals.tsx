@@ -9,7 +9,10 @@ import {
   LoggedInHealthWorkerHandler,
   MeasurementsUpsert,
 } from '../../../../../../types.ts'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
+import {
+  parseRequest,
+  parseRequestAsserts,
+} from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
@@ -19,12 +22,13 @@ import { MEASUREMENTS } from '../../../../../../shared/measurements.ts'
 
 const VitalUpsertSchema = z.object({
   measurement_name: z.string(),
-  value: z.number(),
+  value: z.number().optional(),
   is_flagged: z.boolean(),
 })
 
 const VitalsMeasurementsSchema = z.object({
-  vitals: z.array(VitalUpsertSchema).optional(),
+  // QUESTION: How do we check if it exists in type  Measurement ?
+  measurements: z.array(VitalUpsertSchema).optional(),
 })
 
 function assertIsVitals(
@@ -56,12 +60,14 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   async POST(req, ctx: EncounterContext) {
     const completing_step = completeStep(ctx)
 
-    const { measurements } = await parseRequestAsserts(
+    const { measurements = [] } = await parseRequest(
       ctx.state.trx,
       req,
-      // assertIsVitals,
       VitalsMeasurementsSchema.parse,
     )
+
+    console.log('measurements in POST', measurements)
+
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_measurements.upsertVitals(ctx.state.trx, {
@@ -69,7 +75,7 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
       encounter_id: ctx.state.encounter.encounter_id,
       encounter_provider_id:
         ctx.state.encounter_provider.patient_encounter_provider_id,
-      measurements: measurements || {},
+      input_measurements: measurements,
     })
 
     return completing_step
