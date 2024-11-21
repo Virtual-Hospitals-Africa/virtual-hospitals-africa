@@ -85,8 +85,6 @@ export async function parseRequest<T extends Record<string, unknown>>(
     valuesMap = formData!
   }
 
-  console.log('valuesMap', valuesMap)
-
   // Remove error, warning, success, which may appear in the URL but are never part of form data
   for (const key of ['error', 'warning', 'success']) {
     valuesMap.delete(key)
@@ -119,9 +117,6 @@ export async function parseRequest<T extends Record<string, unknown>>(
   )
 
   delete parsed.omit
-
-  console.log('parsed', parsed)
-
   return parse(parsed)
 }
 

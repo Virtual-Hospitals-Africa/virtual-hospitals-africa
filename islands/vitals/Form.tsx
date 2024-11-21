@@ -9,9 +9,6 @@ import {
 } from '../patient-drawer/VitalsList.tsx'
 import { computed, useSignal } from '@preact/signals'
 import VitalsFlag from './VitalsFlag.tsx'
-// import { useEffect } from 'preact/hooks'
-// import { useRef } from 'preact/hooks'
-// import { useEffectAfterFirstRender } from '../_hooks/useEffectAfterFirstRender.ts'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
@@ -44,11 +41,9 @@ function VitalInput({ measurement, required, vitals, name }: {
 
   const toggle = () => {
     on.value = !on.value
-    if (on.value) {
-      console.log('Clicking on Button')
+    if (on.value === true) {
       addVitalsFinding(vital_description.value)
     } else {
-      console.log('Clicking on remove')
       removeVitalsFinding(vital_description.value)
     }
   }

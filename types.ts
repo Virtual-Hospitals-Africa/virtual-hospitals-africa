@@ -2384,7 +2384,7 @@ export type Measurements = {
 
 export type Measurement<Name extends keyof Measurements> = {
   measurement_name: Name
-  snomed_code: Measurements[Name][0]
+  snomed_code?: Measurements[Name][0]
   value?: Measurements[Name][1]
   units: Measurements[Name][2]
   is_flagged: boolean

@@ -7,6 +7,7 @@ import {
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
   Maybe,
+  Measurement,
   Measurements,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
@@ -195,7 +196,7 @@ export function EncounterLayout({
   key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
-  measurements: Partial<Measurements>
+  measurements: Measurement<keyof Measurements>[]
 }): JSX.Element {
   console.log('measurements in EncounterLayout', measurements)
   return (
@@ -215,7 +216,6 @@ export function EncounterLayout({
           findings={key_findings}
           sendables={sendables}
           measurements={measurements}
-          flaggedVitals={{}}
         />
       }
       url={ctx.url}

@@ -1,12 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { useEffect, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
-// import { assertHasNonEmptyString } from '../../util/isString.ts'
-import { Measurements } from '../../types.ts'
-import { assertHasNonEmptyString } from '../../util/isString.ts'
-
-// import { FindingsListItem } from './FindingsListItem.tsx'
-// import { type Finding, FindingSchema } from './FindingsListItemSchema.ts'
+import { Measurement, Measurements } from '../../types.ts'
 
 const ADD_VITALS_FINDING_EVENT_NAME = 'add_vitals_finding'
 const REMOVE_VITALS_EVENT_NAME = 'remove_vitals_finding'
@@ -24,37 +19,46 @@ export function removeVitalsFinding(vital: string) {
 }
 
 function VitalsList({ measurements, vitals }: {
-  measurements: Partial<Measurements>
-  vitals?: Map<string, boolean>
+  measurements: Measurement<keyof Measurements>[]
+  vitals: Map<string, boolean>
 }) {
-  const [flaggedVitals, setFlaggedVitals] = useState(
-    new Map<string, boolean>(),
+  const [flaggedVitals, setFlaggedVitals] = useState<Map<string, boolean>>(
+    vitals ?? new Map(),
   )
 
-  for (const [vital, value] of Object.entries(vitals ?? {})) {
-    if (value) {
-      setFlaggedVitals((prev) => ({
-        ...prev,
-        [vital]: true,
-      }))
-    }
-  }
+  useEffect(() => {
+    setFlaggedVitals((prevMap) => {
+      const newMap = new Map(prevMap)
+      measurements.forEach((measurement) => {
+        if (measurement.is_flagged) {
+          newMap.set(measurement.measurement_name, true)
+        }
+      })
+      return newMap
+    })
+  }, [measurements])
 
   function onAdd(event: unknown) {
     assert(event instanceof CustomEvent)
 
     const vital = event.detail as string
-    setFlaggedVitals((prev) => ({ ...prev, [vital]: true }))
+
+    setFlaggedVitals((prevMap) => {
+      const newMap = new Map(prevMap)
+      newMap.set(vital, true)
+      return newMap
+    })
   }
 
   function onRemove(event: unknown) {
     assert(event instanceof CustomEvent)
     const vital = event.detail as string
 
-    const prevFlaggedVitals = flaggedVitals
-    prevFlaggedVitals.delete(vital)
-
-    setFlaggedVitals(prevFlaggedVitals)
+    setFlaggedVitals((prevMap) => {
+      const newMap = new Map(prevMap)
+      newMap.delete(vital)
+      return newMap
+    })
   }
 
   useEffect(() => {
@@ -68,19 +72,19 @@ function VitalsList({ measurements, vitals }: {
   }, [])
 
   // TODO: Handle blood pressure as a separate case
-
   return (
     <div>
-      {flaggedVitals.size === 0
-        ? <p>No vitals flagged</p>
-        : Object.keys(flaggedVitals).map((vital) => (
-          <div key={vital}>
-            <p>
-              {vital}:{' '}
-              {measurements[vital as keyof Measurements]![1] + ' ' +
-                measurements[vital as keyof Measurements]![2]}
-            </p>
-          </div>
+      {flaggedVitals.size === 0 ? <p>No vitals flagged</p> : measurements
+        .map((measurement) => (
+          flaggedVitals.has(measurement.measurement_name) &&
+          (
+            <div key={measurement.measurement_name}>
+              <p>
+                {measurement.measurement_name}:
+                {' ' + measurement.value + ' ' + measurement.units}
+              </p>
+            </div>
+          )
         ))}
     </div>
   )

@@ -1,5 +1,6 @@
 import {
   type Maybe,
+  Measurement,
   Measurements,
   RenderedPatientExaminationFinding,
   type Sendable,
@@ -12,7 +13,7 @@ import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
 import VitalsList from './VitalsList.tsx'
 
 export function PatientDrawer(
-  { patient, encounter, findings, measurements, flaggedVitals }: {
+  { patient, encounter, findings, measurements, flaggedVitals = new Map() }: {
     form?: 'intake' | 'encounter'
     patient: {
       id: string
@@ -28,7 +29,7 @@ export function PatientDrawer(
       reason: string
     }
     findings: RenderedPatientExaminationFinding[]
-    measurements: Partial<Measurements>
+    measurements: Measurement<keyof Measurements>[]
     sendables: Sendable[]
     flaggedVitals?: Map<string, boolean>
   },
