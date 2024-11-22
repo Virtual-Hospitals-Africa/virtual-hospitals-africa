@@ -31,7 +31,8 @@ const SymptomsSchema = z.object({
   symptoms: z.array(PatientSymptomUpsertSchema).optional(),
 }).refine(
   (data) =>
-    new Set(data.symptoms?.map((s) => s.code)).size == data.symptoms?.length,
+    new Set(data.symptoms?.map((s) => s.code)).size ==
+      (data.symptoms?.length ?? 0),
   {
     message:
       'Symptom codes must be unique, pleas consider removing duplicates.',

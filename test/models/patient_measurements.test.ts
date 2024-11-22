@@ -29,10 +29,18 @@ describe(
           patient_id: patient.id,
           encounter_id: encounter.id,
           encounter_provider_id: encounter.providers[0].encounter_provider_id,
-          measurements: {
-            height: 170.3,
-            weight: 70.4,
-          },
+          input_measurements: [
+            {
+              measurement_name: 'height',
+              value: 170.3,
+              is_flagged: false,
+            },
+            {
+              measurement_name: 'weight',
+              value: 70.3,
+              is_flagged: false,
+            },
+          ],
         })
       })
     })

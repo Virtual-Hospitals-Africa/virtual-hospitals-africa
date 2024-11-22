@@ -1,10 +1,15 @@
-import { ComponentChildren, JSX } from 'preact'
 import { CheckboxInput, NumberInput } from '../form/Inputs.tsx'
-import { Measurements } from '../../types.ts'
+import { Measurement, Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
 import { MEASUREMENTS } from '../../shared/measurements.ts'
-import { useSignal } from '@preact/signals'
+import {
+  addVitalsFinding,
+  removeVitalsFinding,
+} from '../patient-drawer/VitalsList.tsx'
+import { computed, useSignal } from '@preact/signals'
+import VitalsFlag from './VitalsFlag.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
@@ -14,77 +19,108 @@ const required_inputs: NormalVitalInput[] = [
   'temperature',
 ]
 
-const other_inputs: NormalVitalInput[] = [
+const all_inputs: NormalVitalInput[] = [
+  ...required_inputs,
   'blood_oxygen_saturation',
   'blood_glucose',
   'pulse',
   'respiratory_rate',
 ]
 
-type VitalInputProps = {
+function VitalInput({ measurement, required, vitals, name }: {
+  measurement: keyof Measurements
   required?: boolean
-  measurement: NormalVitalInput
-  vitals?: Partial<Measurements>
-}
-
-function VitalInputDefined({ Icon, name, units, required, children }: {
-  name: string
-  units: string
-  required?: boolean
-  Icon(props: JSX.SVGAttributes<SVGSVGElement>): JSX.Element
-  children: ComponentChildren
+  vitals: Measurement<keyof Measurements>
+  name?: string
 }) {
+  const on = useSignal(vitals.is_flagged || false)
+
+  const vital_description = computed(() => {
+    return measurement
+  })
+
+  const toggle = () => {
+    on.value = !on.value
+    if (on.value === true) {
+      addVitalsFinding(vital_description.value)
+    } else {
+      removeVitalsFinding(vital_description.value)
+    }
+  }
+
+  const Icon = VitalsIcons[measurement as keyof typeof VitalsIcons]
+
   return (
     <>
-      <Icon className='w-6 col-start-1' />
-      <span className='col-start-2'>
-        {capitalize(name)}
+      <VitalsFlag
+        on={on.value}
+        toggle={toggle}
+        description={vital_description.value}
+      />
+      <Icon className='w-6 col-start-2' />
+      <span className='col-start-3'>
+        {capitalize(measurement)}
         {required && <sup>*</sup>}
       </span>
-      {children}
-      <span className='col-start-7'>{units}</span>
+      <NumberInput
+        required={required}
+        name={`${name}.value`}
+        label={null}
+        value={vitals.value}
+        className='col-start-6'
+        min={0}
+      />
+      <CheckboxInput
+        name={`${name}.is_flagged`}
+        label={null}
+        checked={on.value}
+        className='hidden'
+      />
+      <HiddenInput
+        name={`${name}.measurement_name`}
+        value={measurement}
+      />
+      <span className='col-start-7'>{MEASUREMENTS[measurement]}</span>
     </>
   )
 }
 
-function VitalInput({ required, measurement, vitals }: VitalInputProps) {
-  return (
-    <VitalInputDefined
-      required={required}
-      name={measurement}
-      Icon={VitalsIcons[measurement]}
-      units={MEASUREMENTS[measurement]}
-    >
-      <NumberInput
-        required={required}
-        name={`measurements.${measurement}`}
-        label={null}
-        value={vitals?.[measurement]?.[0]}
-        className='col-start-6'
-        min={0}
-      />
-    </VitalInputDefined>
-  )
-}
-
 export function VitalsForm({ vitals }: {
-  vitals: Partial<Measurements>
+  vitals: Measurement<keyof Measurements>[]
 }) {
-  const no_vitals_required = useSignal(false)
+  const remaining_inputs = computed(() => {
+    return all_inputs.filter((input) =>
+      !vitals.some((vital) => {
+        return vital.measurement_name === input
+      })
+    )
+  })
+
+  for (const input of remaining_inputs.value) {
+    vitals.push({
+      measurement_name: input,
+      is_flagged: false,
+      units: MEASUREMENTS[input],
+    })
+  }
 
   return (
     <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
-      {required_inputs.map((measurement) => (
+      {vitals.map((vital, index) => (
         <VitalInput
-          required={!no_vitals_required.value}
-          measurement={measurement}
-          vitals={vitals}
+          required={required_inputs.includes(
+            vital.measurement_name as NormalVitalInput,
+          )}
+          measurement={vital.measurement_name}
+          vitals={vital}
+          name={`measurements.${index}`}
         />
       ))}
       {/* Blood pressure is weird because it's two measurements in one */}
-      <VitalInputDefined
+      {
+        /* <VitalInputDefined
         required={!no_vitals_required.value}
-        name='blood_pressure'
+        measurement='blood_pressure'
         Icon={VitalsIcons.blood_pressure}
         units='mmHg'
       >
@@ -92,7 +128,7 @@ export function VitalsForm({ vitals }: {
           required={!no_vitals_required.value}
           name='measurements.blood_pressure_diastolic'
           label={null}
-          value={vitals?.blood_pressure_diastolic?.[0]}
+          value={vitals?.blood_pressure_diastolic?.[1]}
           className='col-start-4'
           min={0}
         />
@@ -101,25 +137,12 @@ export function VitalsForm({ vitals }: {
           required={!no_vitals_required.value}
           name='measurements.blood_pressure_systolic'
           label={null}
-          value={vitals?.blood_pressure_systolic?.[0]}
+          value={vitals?.blood_pressure_systolic?.[1]}
           className='col-start-6'
           min={0}
         />
-      </VitalInputDefined>
-
-      {other_inputs.map((measurement) => (
-        <VitalInput
-          measurement={measurement}
-          vitals={vitals}
-        />
-      ))}
-      <CheckboxInput
-        name='no_vitals_required'
-        label='No vitals required at this time'
-        checked={no_vitals_required.value}
-        onInput={(event) =>
-          no_vitals_required.value = event.currentTarget.checked}
-      />
+      </VitalInputDefined> */
+      }
     </div>
   )
 }

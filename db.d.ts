@@ -830,6 +830,7 @@ export interface PatientMeasurements {
   encounter_id: string
   encounter_provider_id: string
   id: Generated<string>
+  is_flagged: Generated<boolean | null>
   measurement_name: string
   patient_id: string
   updated_at: Generated<Timestamp>

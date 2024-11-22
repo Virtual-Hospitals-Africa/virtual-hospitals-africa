@@ -61,6 +61,7 @@ export function PatientPage(
             encounter={ctx.state.patient.open_encounter}
             findings={[]}
             sendables={[]}
+            measurements={[]}
           />
         )}
       >

@@ -1,7 +1,7 @@
 import { Measurements } from '../types.ts'
 
 export const MEASUREMENTS: {
-  [Name in keyof Measurements]: Measurements[Name][1]
+  [Name in keyof Measurements]: Measurements[Name][2]
 } = {
   height: 'cm',
   weight: 'kg',
