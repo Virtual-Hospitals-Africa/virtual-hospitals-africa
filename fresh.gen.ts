@@ -167,6 +167,7 @@ import * as $SparklinesExample from './islands/SparklinesExample.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
+import * as $_hooks_useEffectAfterFirstRender from './islands/_hooks/useEffectAfterFirstRender.ts'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
@@ -483,6 +484,8 @@ const manifest = {
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
+    './islands/_hooks/useEffectAfterFirstRender.ts':
+      $_hooks_useEffectAfterFirstRender,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,

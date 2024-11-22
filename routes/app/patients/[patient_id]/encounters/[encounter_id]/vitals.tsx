@@ -43,8 +43,6 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
       VitalsMeasurementsSchema.parse,
     )
 
-    console.log('measurements in POST', measurements)
-
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_measurements.upsertVitals(ctx.state.trx, {

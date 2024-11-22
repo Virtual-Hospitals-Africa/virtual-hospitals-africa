@@ -7,6 +7,7 @@ import {
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
   Maybe,
+  Measurement,
   Measurements,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
@@ -197,7 +198,6 @@ export function EncounterLayout({
   children: ComponentChildren
   measurements: Measurement<keyof Measurements>[]
 }): JSX.Element {
-  console.log('measurements in EncounterLayout', measurements)
   return (
     <Layout
       title={capitalize(ctx.state.encounter.reason)}
