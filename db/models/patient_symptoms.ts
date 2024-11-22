@@ -4,7 +4,7 @@ import {
   RenderedPatientSymptom,
   TrxOrDb,
 } from '../../types.ts'
-import { debugLog, isoDate, jsonArrayFrom } from '../helpers.ts'
+import { isoDate, jsonArrayFrom } from '../helpers.ts'
 import omit from '../../util/omit.ts'
 import { tree } from './icd10.ts'
 import generateUUID from '../../util/uuid.ts'

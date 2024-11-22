@@ -9,58 +9,35 @@ import {
   LoggedInHealthWorkerHandler,
   MeasurementsUpsert,
 } from '../../../../../../types.ts'
-import {
-  parseRequest,
-  parseRequestAsserts,
-} from '../../../../../../util/parseForm.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../../util/assertOr.ts'
+import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { completeStep } from './_middleware.tsx'
 import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
-import { MEASUREMENTS } from '../../../../../../shared/measurements.ts'
 
 const VitalUpsertSchema = z.object({
   measurement_name: z.string(),
-  value: z.number().optional(),
-  is_flagged: z.boolean(),
+  value: z.number().positive().optional(),
+  is_flagged: z.boolean().optional().default(false),
 })
 
 const VitalsMeasurementsSchema = z.object({
   // QUESTION: How do we check if it exists in type  Measurement ?
-  measurements: z.array(VitalUpsertSchema).optional(),
+  measurements: z.array(VitalUpsertSchema).transform((measurements) => {
+    const measurements_with_values: MeasurementsUpsert[] = []
+    for (const { value, is_flagged, measurement_name } of measurements) {
+      if (value) {
+        measurements_with_values.push({ value, measurement_name, is_flagged })
+      }
+    }
+    return measurements_with_values
+  }).optional().default([]),
 })
-
-function assertIsVitals(
-  values: unknown,
-): asserts values is {
-  measurements: MeasurementsUpsert
-} {
-  console.log('values in vitals', values)
-
-  assertOr400(isObjectLike(values), 'Invalid form values')
-  if (values.no_vitals_required) return
-  assertOr400(isObjectLike(values.measurements), 'Invalid form values')
-  for (
-    const [measurement_name, measurement] of Object.entries(values.measurements)
-  ) {
-    assertOr400(
-      // deno-lint-ignore no-explicit-any
-      (MEASUREMENTS as any)[measurement_name],
-      `${measurement_name} is not a valid measurement`,
-    )
-    assertOr400(
-      typeof measurement === 'number',
-      `${measurement_name} must be a number`,
-    )
-  }
-}
 
 export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   async POST(req, ctx: EncounterContext) {
     const completing_step = completeStep(ctx)
 
-    const { measurements = [] } = await parseRequest(
+    const { measurements } = await parseRequest(
       ctx.state.trx,
       req,
       VitalsMeasurementsSchema.parse,

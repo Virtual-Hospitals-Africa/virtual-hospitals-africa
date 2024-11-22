@@ -3,16 +3,13 @@ import { Measurement, Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
 import { MEASUREMENTS } from '../../shared/measurements.ts'
-<<<<<<< HEAD
 import {
   addVitalsFinding,
   removeVitalsFinding,
 } from '../patient-drawer/VitalsList.tsx'
 import { computed, useSignal } from '@preact/signals'
-=======
-import { useSignal } from '@preact/signals'
->>>>>>> cb96d64d (Adding the ability to share flagged vitals in drawer)
 import VitalsFlag from './VitalsFlag.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
@@ -79,15 +76,8 @@ function VitalInput({ measurement, required, vitals, name }: {
         label={null}
         checked={on.value}
         className='hidden'
-        value={on.value ? 'true' : 'false'}
       />
-      <input
-        type='hidden'
-        name={`${name}.is_flagged`}
-        value={on.value ? 'true' : 'false'}
-      />
-      <input
-        type='hidden'
+      <HiddenInput
         name={`${name}.measurement_name`}
         value={measurement}
       />

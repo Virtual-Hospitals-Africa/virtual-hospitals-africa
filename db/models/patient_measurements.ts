@@ -6,12 +6,7 @@ import {
   PatientMeasurement,
   TrxOrDb,
 } from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-<<<<<<< HEAD
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
-=======
-import {VITALS_SNOMED_CODE} from '../../shared/vitals.ts'
->>>>>>> cb96d64d (Adding the ability to share flagged vitals in drawer)
 
 export async function upsertVitals(
   trx: TrxOrDb,
@@ -22,42 +17,20 @@ export async function upsertVitals(
     input_measurements: MeasurementsUpsert[]
   },
 ) {
-  input_measurements = input_measurements.filter(
-    (measurement) => measurement.value != null,
-  )
-
-  console.log('measurements in patient_measurements', input_measurements)
-
-  const measurement_names = Object.keys(
-    input_measurements,
-  ) as (keyof Measurements)[]
-
+  console.log('input_measurements', input_measurements)
   const unseen_vitals = new Set(Object.keys(MEASUREMENTS))
 
-  const patient_measurements: PatientMeasurement[] = measurement_names.map(
-    (current_measurement_idx) => {
-      const curr_measurement: PatientMeasurement =
-        input_measurements[current_measurement_idx]
-
-      console.log('value', curr_measurement)
-      console.log('name', current_measurement_idx)
-
-      assertOr400(
-        typeof curr_measurement.value === 'number',
-        `Value for ${current_measurement_idx} must be a number`,
-      )
-      assertOr400(
-        curr_measurement.value >= 0,
-        `Value for ${current_measurement_idx} must be greater than or equal to 0`,
-      )
-      unseen_vitals.delete(current_measurement_idx)
+  const patient_measurements: PatientMeasurement[] = input_measurements.map(
+    (input_measurement) => {
+      unseen_vitals.delete(input_measurement.measurement_name)
       return {
         patient_id,
         encounter_id,
         encounter_provider_id,
-        measurement_name: curr_measurement.measurement_name,
-        is_flagged: curr_measurement.is_flagged,
-        value: curr_measurement.value,
+        measurement_name: input_measurement
+          .measurement_name as keyof Measurements,
+        is_flagged: input_measurement.is_flagged,
+        value: input_measurement.value!,
       }
     },
   )

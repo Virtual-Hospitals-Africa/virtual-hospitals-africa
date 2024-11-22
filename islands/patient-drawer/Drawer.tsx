@@ -1,9 +1,6 @@
 import {
   type Maybe,
-<<<<<<< HEAD
   Measurement,
-=======
->>>>>>> cb96d64d (Adding the ability to share flagged vitals in drawer)
   Measurements,
   RenderedPatientExaminationFinding,
   type Sendable,

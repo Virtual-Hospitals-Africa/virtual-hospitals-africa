@@ -1,4 +1,3 @@
-import { useSignal } from '@preact/signals'
 import { useEffect, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import { Measurement, Measurements } from '../../types.ts'
