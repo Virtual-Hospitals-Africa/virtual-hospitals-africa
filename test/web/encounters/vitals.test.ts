@@ -346,7 +346,7 @@ describe(
 
       const body = new FormData()
       body.append('measurements.0.measurement_name', 'height')
-      body.append('measurements.0.value', '123')
+      body.append('measurements.0.value', '100')
       body.append('measurements.1.measurement_name', 'weight')
       body.append('measurements.1.value', '456')
 
@@ -367,7 +367,7 @@ describe(
       assertEquals(vitals, [
         {
           measurement_name: 'height',
-          value: 123,
+          value: 100,
           is_flagged: false,
           units: 'cm',
           snomed_code: '---',
