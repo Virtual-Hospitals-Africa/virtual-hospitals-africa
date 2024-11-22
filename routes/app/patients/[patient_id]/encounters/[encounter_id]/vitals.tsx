@@ -21,7 +21,6 @@ const VitalUpsertSchema = z.object({
 })
 
 const VitalsMeasurementsSchema = z.object({
-  // QUESTION: How do we check if it exists in type  Measurement ?
   measurements: z.array(VitalUpsertSchema).transform((measurements) => {
     const measurements_with_values: MeasurementsUpsert[] = []
     for (const { value, is_flagged, measurement_name } of measurements) {

@@ -358,6 +358,28 @@ describe(
         },
       )
       if (!response.ok) throw new Error(await response.text())
+
+      const vitals = await patient_measurements.getEncounterVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+      })
+
+      assertEquals(vitals, [
+        {
+          measurement_name: 'height',
+          value: 123,
+          is_flagged: false,
+          units: 'cm',
+          snomed_code: '---',
+        },
+        {
+          measurement_name: 'weight',
+          value: 456,
+          is_flagged: false,
+          units: 'kg',
+          snomed_code: '---',
+        },
+      ])
     })
   },
 )

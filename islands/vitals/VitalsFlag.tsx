@@ -12,7 +12,6 @@ export default function FindingFlagToggle({
   toggle(): void
 }) {
   const action = on ? 'Unflag' : 'Flag'
-  // vital_description: 'height 200cm'
   return (
     <HeroIconButton
       variant='ghost'

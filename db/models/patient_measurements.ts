@@ -17,7 +17,6 @@ export async function upsertVitals(
     input_measurements: MeasurementsUpsert[]
   },
 ) {
-  console.log('input_measurements', input_measurements)
   const unseen_vitals = new Set(Object.keys(MEASUREMENTS))
 
   const patient_measurements: PatientMeasurement[] = input_measurements.map(

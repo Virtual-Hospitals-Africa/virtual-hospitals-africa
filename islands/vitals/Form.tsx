@@ -36,7 +36,6 @@ function VitalInput({ measurement, required, vitals, name }: {
   const on = useSignal(vitals.is_flagged || false)
 
   const vital_description = computed(() => {
-    // TODO function of the vital name, numeric measurement, and the units
     return measurement
   })
 

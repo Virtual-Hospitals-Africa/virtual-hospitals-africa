@@ -2391,7 +2391,7 @@ export type Measurement<Name extends keyof Measurements> = {
 }
 
 export type MeasurementsUpsert = {
-  value: number // TODO enforce that this _does_ exist
+  value: number
   is_flagged: boolean
   measurement_name: string // keyof Measurements
 }
