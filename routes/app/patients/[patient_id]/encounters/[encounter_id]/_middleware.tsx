@@ -7,6 +7,7 @@ import {
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
   Maybe,
+  Measurements,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   type RenderedPatientExaminationFinding,
@@ -17,6 +18,7 @@ import * as patients from '../../../../../../db/models/patients.ts'
 import * as send_to from '../../../../../../db/models/send_to.ts'
 import * as findings from '../../../../../../db/models/findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
+import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
@@ -186,13 +188,16 @@ export function EncounterLayout({
   key_findings,
   next_step_text,
   children,
+  measurements,
 }: {
   ctx: EncounterContext
   sendables: Sendable[]
   key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
+  measurements: Partial<Measurements>
 }): JSX.Element {
+  console.log('measurements in EncounterLayout', measurements)
   return (
     <Layout
       title={capitalize(ctx.state.encounter.reason)}
@@ -209,6 +214,7 @@ export function EncounterLayout({
           encounter={ctx.state.encounter}
           findings={key_findings}
           sendables={sendables}
+          measurements={measurements}
         />
       }
       url={ctx.url}
@@ -268,7 +274,7 @@ export function EncounterPage(
 
     assert(location, 'Location not found')
 
-    const { rendered, sendables, key_findings } = await promiseProps({
+    const { rendered, sendables, key_findings, measurements } = await promiseProps({
       rendered: Promise.resolve(
         render({ ctx, ...ctx.state, previously_completed }),
       ),
@@ -286,6 +292,10 @@ export function EncounterPage(
         patient_id: patient.id,
         encounter_id: encounter.encounter_id,
       }),
+      measurements: patient_measurements.getEncounterVitals(trx, {
+        patient_id: patient.id,
+        encounter_id: encounter.encounter_id,
+      })
     })
 
     if (rendered instanceof Response) {
@@ -305,6 +315,7 @@ export function EncounterPage(
         next_step_text={next_step_text}
         sendables={sendables}
         key_findings={key_findings}
+        measurements={measurements}
       >
         {children}
       </EncounterLayout>

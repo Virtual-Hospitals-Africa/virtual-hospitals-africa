@@ -218,6 +218,7 @@ import * as $patient_drawer_Drawer from './islands/patient-drawer/Drawer.tsx'
 import * as $patient_drawer_FindingsList from './islands/patient-drawer/FindingsList.tsx'
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
+import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -237,6 +238,7 @@ import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
 import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
+import * as $vitals_VitalsFlag from './islands/vitals/VitalsFlag.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
 import type { Manifest } from '$fresh/server.ts'
@@ -538,6 +540,7 @@ const manifest = {
       $patient_drawer_FindingsListItem,
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
+    './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
     './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
@@ -560,6 +563,7 @@ const manifest = {
     './islands/timer.tsx': $timer,
     './islands/useAsyncSearch.tsx': $useAsyncSearch,
     './islands/vitals/Form.tsx': $vitals_Form,
+    './islands/vitals/VitalsFlag.tsx': $vitals_VitalsFlag,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':
       $waiting_room_AddPatientSearch,

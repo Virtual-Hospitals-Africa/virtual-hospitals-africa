@@ -1,5 +1,6 @@
 import {
   type Maybe,
+  Measurements,
   RenderedPatientExaminationFinding,
   type Sendable,
 } from '../../types.ts'
@@ -8,9 +9,10 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
 import Menu from '../Menu.tsx'
 import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
+import VitalsList from './VitalsList.tsx'
 
 export function PatientDrawer(
-  { patient, encounter, findings }: {
+  { patient, encounter, findings, measurements }: {
     form?: 'intake' | 'encounter'
     patient: {
       id: string
@@ -26,6 +28,7 @@ export function PatientDrawer(
       reason: string
     }
     findings: RenderedPatientExaminationFinding[]
+    measurements: Partial<Measurements>
     sendables: Sendable[]
   },
 ) {
@@ -53,6 +56,10 @@ export function PatientDrawer(
         <div className='w-full py-2'>
           <SectionHeader>Findings</SectionHeader>
           <FindingsList findings={findings} />
+        </div>
+        <div className='w-full py-2'>
+          <SectionHeader>Vitals</SectionHeader>
+          <VitalsList measurements={measurements}/>
         </div>
       </div>
       <div className='flex flex-col'>

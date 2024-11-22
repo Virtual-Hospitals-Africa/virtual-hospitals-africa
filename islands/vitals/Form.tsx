@@ -5,6 +5,7 @@ import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
 import { MEASUREMENTS } from '../../shared/measurements.ts'
 import { useSignal } from '@preact/signals'
+import VitalsFlag from './VitalsFlag.tsx'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
@@ -36,8 +37,9 @@ function VitalInputDefined({ Icon, name, units, required, children }: {
 }) {
   return (
     <>
-      <Icon className='w-6 col-start-1' />
-      <span className='col-start-2'>
+      <VitalsFlag className='col-start-1 w-6'/>
+      <Icon className='w-6 col-start-2' />
+      <span className='col-start-3'>
         {capitalize(name)}
         {required && <sup>*</sup>}
       </span>
@@ -59,7 +61,7 @@ function VitalInput({ required, measurement, vitals }: VitalInputProps) {
         required={required}
         name={`measurements.${measurement}`}
         label={null}
-        value={vitals?.[measurement]?.[0]}
+        value={vitals?.[measurement]?.[1]}
         className='col-start-6'
         min={0}
       />
@@ -92,7 +94,7 @@ export function VitalsForm({ vitals }: {
           required={!no_vitals_required.value}
           name='measurements.blood_pressure_diastolic'
           label={null}
-          value={vitals?.blood_pressure_diastolic?.[0]}
+          value={vitals?.blood_pressure_diastolic?.[1]}
           className='col-start-4'
           min={0}
         />
@@ -101,7 +103,7 @@ export function VitalsForm({ vitals }: {
           required={!no_vitals_required.value}
           name='measurements.blood_pressure_systolic'
           label={null}
-          value={vitals?.blood_pressure_systolic?.[0]}
+          value={vitals?.blood_pressure_systolic?.[1]}
           className='col-start-6'
           min={0}
         />
