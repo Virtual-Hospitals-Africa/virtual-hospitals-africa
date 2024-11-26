@@ -10,21 +10,22 @@ import {
 import { computed, useSignal } from '@preact/signals'
 import VitalsFlag from './VitalsFlag.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { useState } from 'preact/hooks'
 
 type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
 
-const required_inputs: NormalVitalInput[] = [
+const required_inputs: NormalVitalInput[] = []
+
+const all_inputs: NormalVitalInput[] = [
   'height',
   'weight',
   'temperature',
-]
-
-const all_inputs: NormalVitalInput[] = [
-  ...required_inputs,
   'blood_oxygen_saturation',
   'blood_glucose',
   'pulse',
   'respiratory_rate',
+  'blood_pressure_systolic',
+  'blood_pressure_diastolic',
 ]
 
 function VitalInput({ measurement, required, vitals, name }: {
@@ -34,6 +35,7 @@ function VitalInput({ measurement, required, vitals, name }: {
   name?: string
 }) {
   const on = useSignal(vitals.is_flagged || false)
+  const [vitalsValue, setVitalsValue] = useState(vitals.value)
 
   const vital_description = computed(() => {
     return measurement
@@ -42,7 +44,10 @@ function VitalInput({ measurement, required, vitals, name }: {
   const toggle = () => {
     on.value = !on.value
     if (on.value === true) {
-      addVitalsFinding(vital_description.value)
+      addVitalsFinding(
+        vital_description.value,
+        vitalsValue || 0,
+      )
     } else {
       removeVitalsFinding(vital_description.value)
     }
@@ -66,9 +71,21 @@ function VitalInput({ measurement, required, vitals, name }: {
         required={required}
         name={`${name}.value`}
         label={null}
-        value={vitals.value}
+        value={vitalsValue}
         className='col-start-6'
         min={0}
+        onInput={
+          // update drawer
+          (e) => {
+            on.value &&
+              addVitalsFinding(
+                vital_description.value,
+                Number(e.currentTarget.value),
+              )
+
+            setVitalsValue(Number(e.currentTarget.value))
+          }
+        }
       />
       <CheckboxInput
         name={`${name}.is_flagged`}
@@ -80,6 +97,12 @@ function VitalInput({ measurement, required, vitals, name }: {
         name={`${name}.measurement_name`}
         value={measurement}
       />
+      {
+        /* <HiddenInput
+        name={`${name}.is_flagged`}
+        value={on.value ? true : false}
+      /> */
+      }
       <span className='col-start-7'>{MEASUREMENTS[measurement]}</span>
     </>
   )
@@ -106,7 +129,9 @@ export function VitalsForm({ vitals }: {
 
   return (
     <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
-      {vitals.map((vital, index) => (
+      {vitals.sort((a, b) =>
+        a.measurement_name.localeCompare(b.measurement_name)
+      ).map((vital, index) => (
         <VitalInput
           required={required_inputs.includes(
             vital.measurement_name as NormalVitalInput,
@@ -117,6 +142,12 @@ export function VitalsForm({ vitals }: {
         />
       ))}
       {/* Blood pressure is weird because it's two measurements in one */}
+      {
+        /*
+        Ways to handle blood pressure
+        1. Have two inputs for diastolic and systolic
+        */
+      }
       {
         /* <VitalInputDefined
         required={!no_vitals_required.value}

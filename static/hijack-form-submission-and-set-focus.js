@@ -102,7 +102,6 @@ addEventListener('submit', function (event) {
           history.pushState({}, '', response.url)
         })
       case 400:
-        console.log('WELKEWLK')
         return response.text().then(onError)
       case 401:
         return response.text().then(function (text) {
@@ -218,7 +217,7 @@ function focusOnNextFormElement(
 }
 
 addEventListener('input', function (e) {
-  console.log('input', e)
+  // console.log('input', e)
   var is_input = e.target.tagName === 'INPUT'
   if (!is_input) {
     return

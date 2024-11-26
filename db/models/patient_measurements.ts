@@ -46,6 +46,7 @@ export async function upsertVitals(
     .onConflict((oc) =>
       oc.constraint('one_measurement_per_encounter').doUpdateSet((eb) => ({
         value: eb.ref('excluded.value'),
+        is_flagged: eb.ref('excluded.is_flagged'),
       }))
     )
     .execute()
