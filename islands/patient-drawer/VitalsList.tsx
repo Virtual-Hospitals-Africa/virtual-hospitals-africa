@@ -5,9 +5,14 @@ import { Measurement, Measurements } from '../../types.ts'
 const ADD_VITALS_FINDING_EVENT_NAME = 'add_vitals_finding'
 const REMOVE_VITALS_EVENT_NAME = 'remove_vitals_finding'
 
-export function addVitalsFinding(vital: string) {
+export function addVitalsFinding(vitalName: string, vitalValue: number) {
   self.dispatchEvent(
-    new CustomEvent(ADD_VITALS_FINDING_EVENT_NAME, { detail: vital }),
+    new CustomEvent(ADD_VITALS_FINDING_EVENT_NAME, {
+      detail: {
+        vital_name: vitalName,
+        vital_value: vitalValue,
+      },
+    }),
   )
 }
 
@@ -19,9 +24,9 @@ export function removeVitalsFinding(vital: string) {
 
 function VitalsList({ measurements, vitals }: {
   measurements: Measurement<keyof Measurements>[]
-  vitals: Map<string, boolean>
+  vitals: Map<string, number>
 }) {
-  const [flaggedVitals, setFlaggedVitals] = useState<Map<string, boolean>>(
+  const [flaggedVitals, setFlaggedVitals] = useState<Map<string, number>>(
     vitals ?? new Map(),
   )
 
@@ -30,7 +35,7 @@ function VitalsList({ measurements, vitals }: {
       const newMap = new Map(prevMap)
       measurements.forEach((measurement) => {
         if (measurement.is_flagged) {
-          newMap.set(measurement.measurement_name, true)
+          newMap.set(measurement.measurement_name, measurement.value || 0)
         }
       })
       return newMap
@@ -40,11 +45,11 @@ function VitalsList({ measurements, vitals }: {
   function onAdd(event: unknown) {
     assert(event instanceof CustomEvent)
 
-    const vital = event.detail as string
+    const vital = event.detail
 
     setFlaggedVitals((prevMap) => {
       const newMap = new Map(prevMap)
-      newMap.set(vital, true)
+      newMap.set(vital.vital_name, vital.vital_value)
       return newMap
     })
   }
@@ -80,7 +85,8 @@ function VitalsList({ measurements, vitals }: {
             <div key={measurement.measurement_name}>
               <p>
                 {measurement.measurement_name}:
-                {' ' + measurement.value + ' ' + measurement.units}
+                {' ' + flaggedVitals.get(measurement.measurement_name) + ' ' +
+                  measurement.units}
               </p>
             </div>
           )
