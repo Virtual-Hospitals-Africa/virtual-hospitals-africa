@@ -129,7 +129,9 @@ export function VitalsForm({ vitals }: {
 
   return (
     <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
-      {vitals.map((vital, index) => (
+      {vitals.sort((a, b) =>
+        a.measurement_name.localeCompare(b.measurement_name)
+      ).map((vital, index) => (
         <VitalInput
           required={required_inputs.includes(
             vital.measurement_name as NormalVitalInput,

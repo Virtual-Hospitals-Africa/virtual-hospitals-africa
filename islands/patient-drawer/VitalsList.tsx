@@ -93,7 +93,7 @@ function VitalsList({ measurements, vitals }: {
     <div>
       {flaggedVitals.size === 0
         ? <p>No vitals flagged</p>
-        : Array.from(flaggedVitals.entries()).map(([name, value]) => (
+        : Array.from(flaggedVitals.entries()).sort().map(([name, value]) => (
           <div key={name}>
             <p>
               {capitalize(name)}:
