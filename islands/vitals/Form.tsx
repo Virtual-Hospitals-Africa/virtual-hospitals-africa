@@ -88,7 +88,7 @@ function VitalInput({ measurement, required, vitals, name }: {
         }
       />
       <CheckboxInput
-        name={`${name}.is_flagged_na`}
+        name={`${name}.is_flagged`}
         label={null}
         checked={on.value}
         className='hidden'
@@ -97,10 +97,12 @@ function VitalInput({ measurement, required, vitals, name }: {
         name={`${name}.measurement_name`}
         value={measurement}
       />
-      <HiddenInput
+      {
+        /* <HiddenInput
         name={`${name}.is_flagged`}
         value={on.value ? true : false}
-      />
+      /> */
+      }
       <span className='col-start-7'>{MEASUREMENTS[measurement]}</span>
     </>
   )

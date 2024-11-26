@@ -77,6 +77,16 @@ describe(
             measurement_name: 'respiratory_rate',
             value: null,
           },
+          {
+            is_flagged: false,
+            measurement_name: 'blood_pressure_systolic',
+            value: null,
+          },
+          {
+            is_flagged: false,
+            measurement_name: 'blood_pressure_diastolic',
+            value: null,
+          },
         ],
       })
     })
@@ -132,7 +142,7 @@ describe(
           'value': 123,
           'is_flagged': false,
           'units': 'cm',
-          'snomed_code': '---',
+          'snomed_code': '1153637007',
         },
       ])
 
@@ -182,6 +192,16 @@ describe(
             {
               is_flagged: false,
               measurement_name: 'respiratory_rate',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_diastolic',
               value: null,
             },
           ],
@@ -244,14 +264,14 @@ describe(
           value: 123,
           is_flagged: false,
           units: 'cm',
-          snomed_code: '---',
+          snomed_code: '1153637007',
         },
         {
           measurement_name: 'weight',
           value: 456,
           is_flagged: false,
           units: 'kg',
-          snomed_code: '---',
+          snomed_code: '726527001',
         },
       ])
 
@@ -301,6 +321,16 @@ describe(
             {
               is_flagged: false,
               measurement_name: 'respiratory_rate',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_diastolic',
               value: null,
             },
           ],
@@ -370,14 +400,14 @@ describe(
           value: 100,
           is_flagged: false,
           units: 'cm',
-          snomed_code: '---',
+          snomed_code: '1153637007',
         },
         {
           measurement_name: 'weight',
           value: 456,
           is_flagged: false,
           units: 'kg',
-          snomed_code: '---',
+          snomed_code: '726527001',
         },
       ])
     })
