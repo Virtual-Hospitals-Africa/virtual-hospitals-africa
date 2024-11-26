@@ -42,21 +42,7 @@ describe(
       const formValues = getFormValues($)
       assertEquals(formValues, {
         measurements: [
-          {
-            is_flagged: false,
-            measurement_name: 'height',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'weight',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'temperature',
-            value: null,
-          },
+          { is_flagged: false, measurement_name: 'blood_glucose', value: null },
           {
             is_flagged: false,
             measurement_name: 'blood_oxygen_saturation',
@@ -64,17 +50,7 @@ describe(
           },
           {
             is_flagged: false,
-            measurement_name: 'blood_glucose',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'pulse',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'respiratory_rate',
+            measurement_name: 'blood_pressure_diastolic',
             value: null,
           },
           {
@@ -82,11 +58,15 @@ describe(
             measurement_name: 'blood_pressure_systolic',
             value: null,
           },
+          { is_flagged: false, measurement_name: 'height', value: null },
+          { is_flagged: false, measurement_name: 'pulse', value: null },
           {
             is_flagged: false,
-            measurement_name: 'blood_pressure_diastolic',
+            measurement_name: 'respiratory_rate',
             value: null,
           },
+          { is_flagged: false, measurement_name: 'temperature', value: null },
+          { is_flagged: false, measurement_name: 'weight', value: null },
         ],
       })
     })
@@ -161,17 +141,7 @@ describe(
           measurements: [
             {
               is_flagged: false,
-              measurement_name: 'height',
-              value: 123,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'weight',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'temperature',
+              measurement_name: 'blood_glucose',
               value: null,
             },
             {
@@ -181,8 +151,18 @@ describe(
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_glucose',
+              measurement_name: 'blood_pressure_diastolic',
               value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'height',
+              value: 123,
             },
             {
               is_flagged: false,
@@ -196,12 +176,12 @@ describe(
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_pressure_systolic',
+              measurement_name: 'temperature',
               value: null,
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_pressure_diastolic',
+              measurement_name: 'weight',
               value: null,
             },
           ],
@@ -290,17 +270,7 @@ describe(
           measurements: [
             {
               is_flagged: false,
-              measurement_name: 'height',
-              value: 123,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'weight',
-              value: 456,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'temperature',
+              measurement_name: 'blood_glucose',
               value: null,
             },
             {
@@ -310,8 +280,18 @@ describe(
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_glucose',
+              measurement_name: 'blood_pressure_diastolic',
               value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'height',
+              value: 123,
             },
             {
               is_flagged: false,
@@ -325,13 +305,13 @@ describe(
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_pressure_systolic',
+              measurement_name: 'temperature',
               value: null,
             },
             {
               is_flagged: false,
-              measurement_name: 'blood_pressure_diastolic',
-              value: null,
+              measurement_name: 'weight',
+              value: 456,
             },
           ],
         })
