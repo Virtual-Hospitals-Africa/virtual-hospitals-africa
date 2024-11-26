@@ -31,7 +31,7 @@ export function PatientDrawer(
     findings: RenderedPatientExaminationFinding[]
     measurements: Measurement<keyof Measurements>[]
     sendables: Sendable[]
-    flaggedVitals?: Map<string, number>
+    flaggedVitals?: Map<string, Measurement<keyof Measurements>>
   },
 ) {
   return (
