@@ -24,6 +24,8 @@ const all_inputs: NormalVitalInput[] = [
   'blood_glucose',
   'pulse',
   'respiratory_rate',
+  'blood_pressure_systolic',
+  'blood_pressure_diastolic',
 ]
 
 function VitalInput({ measurement, required, vitals, name }: {
@@ -136,6 +138,12 @@ export function VitalsForm({ vitals }: {
         />
       ))}
       {/* Blood pressure is weird because it's two measurements in one */}
+      {
+        /*
+        Ways to handle blood pressure
+        1. Have two inputs for diastolic and systolic
+        */
+      }
       {
         /* <VitalInputDefined
         required={!no_vitals_required.value}
