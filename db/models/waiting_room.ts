@@ -8,7 +8,6 @@ import {
 } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
-import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 import capitalize from '../../util/capitalize.ts'
@@ -474,9 +473,7 @@ export async function get(
         actions: {
           view: action === 'view' ? `/app/patients/${patient.id}` : null,
           intake: action === 'intake'
-            ? `/app/patients/${patient.id}/intake/${
-              awaiting_intake_step || INTAKE_STEPS[0]
-            }`
+            ? `/app/patients/${patient.id}/intake`
             : null,
           review: action === 'review' && can_review
             ? `/app/patients/${patient.id}/review/${

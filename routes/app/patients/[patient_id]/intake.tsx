@@ -4,7 +4,6 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import redirect from '../../../../util/redirect.ts'
-import { INTAKE_STEPS } from '../../../../shared/intake.ts'
 
 export default async function PatientPage(
   _req: Request,
