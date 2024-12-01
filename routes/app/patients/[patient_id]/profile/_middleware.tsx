@@ -93,9 +93,11 @@ export function PatientPage(
                 tab,
               }),
               active: ctx.url.pathname.endsWith('/' + tab),
-              rightIcon: tab === 'appointments' && <span className="flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md">
-                {upcoming_appointments.length}
-              </span>,
+              rightIcon: tab === 'appointments' && (
+                <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
+                  {upcoming_appointments.length}
+                </span>
+              ),
             }))}
           />
           {rendered}
