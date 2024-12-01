@@ -66,16 +66,32 @@ export function PatientPage(
         )}
       >
         <div className='container my-4 mx-6'>
-          <Person person={ctx.state.patient} />
-
-          <div className='mt-4'>
-            {'Nearest Clinic: ' + ctx.state.patient.nearest_organization}
-            <br />
-            {`Primary Provider: Dr. ` +
-              (ctx.state.patient.open_encounter &&
-                ctx.state.patient.open_encounter.providers[0]
-                  .health_worker_name)}
-          </div>
+          <Person
+            person={{
+              ...ctx.state.patient,
+              description: (
+                <>
+                  {ctx.state.patient.description && (
+                    <>
+                      {ctx.state.patient.description}
+                      <br />
+                    </>
+                  )}
+                  {ctx.state.patient.nearest_organization && (
+                    <>
+                      Nearest Clinic: {ctx.state.patient.nearest_organization}
+                      <br />
+                    </>
+                  )}
+                  {ctx.state.patient.primary_provider && (
+                    <>
+                      Primary Provider: Dr. {ctx.state.patient.primary_provider}
+                    </>
+                  )}
+                </>
+              ),
+            }}
+          />
           <Tabs
             tabs={tabs.map((tab) => ({
               tab,

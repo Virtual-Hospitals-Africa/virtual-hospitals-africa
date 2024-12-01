@@ -200,6 +200,7 @@ export type RenderedPatient =
     avatar_url: string | null
     nearest_organization: string | null
     last_visited: null // TODO: implement
+    primary_provider: string | null
     location: {
       longitude: number | null
       latitude: number | null
