@@ -201,6 +201,8 @@ export type RenderedPatient =
     nearest_organization: string | null
     last_visited: null // TODO: implement
     primary_provider: string | null
+    nearest_organization_id: string | null
+    primary_provider_healthworker_id: string | null
     location: {
       longitude: number | null
       latitude: number | null

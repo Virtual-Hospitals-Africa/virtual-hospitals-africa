@@ -86,15 +86,32 @@ export function PatientPage(
                       <br />
                     </>
                   )}
-                  {ctx.state.patient.nearest_organization && (
+
+                  {(ctx.state.patient.nearest_organization ||
+                    ctx.state.patient.primary_provider_healthworker_id) && (
                     <>
-                      Nearest Clinic: {ctx.state.patient.nearest_organization}
+                      {ctx.state.patient.primary_provider_healthworker_id && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_healthworker_id}`}
+                          title={`View details of Dr. ${ctx.state.patient.primary_provider}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          Dr. {ctx.state.patient.primary_provider}
+                        </a>
+                      )}
+                      {ctx.state.patient.nearest_organization &&
+                        ctx.state.patient.primary_provider_healthworker_id &&
+                        ', '}
+                      {ctx.state.patient.nearest_organization && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
+                          title={`View details of ${ctx.state.patient.nearest_organization}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          {ctx.state.patient.nearest_organization}
+                        </a>
+                      )}
                       <br />
-                    </>
-                  )}
-                  {ctx.state.patient.primary_provider && (
-                    <>
-                      Primary Provider: Dr. {ctx.state.patient.primary_provider}
                     </>
                   )}
                 </>

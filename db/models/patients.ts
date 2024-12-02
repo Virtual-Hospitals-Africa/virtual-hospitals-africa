@@ -104,6 +104,8 @@ const baseSelect = (trx: TrxOrDb) =>
         view: view_href_sql,
       }).as('actions'),
       'health_workers.name as primary_provider',
+      'patients.nearest_organization_id',
+      'employment.health_worker_id as primary_provider_healthworker_id',
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
