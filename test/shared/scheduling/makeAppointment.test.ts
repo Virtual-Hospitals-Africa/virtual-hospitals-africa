@@ -75,6 +75,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
             address: null,
             age_display: null,
             description: null,
+            primary_provider: null,
             gender: null,
             ethnicity: null,
             id: patient.id,
