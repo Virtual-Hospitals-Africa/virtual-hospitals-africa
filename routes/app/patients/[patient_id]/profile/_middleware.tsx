@@ -1,4 +1,5 @@
 import { JSX } from 'preact'
+import * as appointments from '../../../../../db/models/appointments.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import { Person } from '../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../components/library/Tabs.tsx'
@@ -27,6 +28,14 @@ export function PatientPage(
     _req: Request,
     ctx: PatientContext,
   ) {
+    const upcoming_appointments = await appointments.getForPatient(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        time_range: 'future',
+      },
+    )
+
     assertOrRedirect(
       ctx.state.patient.completed_intake,
       `/app/patients/${ctx.state.patient.id}/intake`,
@@ -84,6 +93,11 @@ export function PatientPage(
                 tab,
               }),
               active: ctx.url.pathname.endsWith('/' + tab),
+              rightIcon: tab === 'appointments' && (
+                <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
+                  {upcoming_appointments.length}
+                </span>
+              ),
             }))}
           />
           {rendered}
