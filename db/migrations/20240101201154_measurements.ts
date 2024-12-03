@@ -50,7 +50,8 @@ export async function up(db: Kysely<any>) {
         'patient_id',
         'encounter_id',
         'measurement_name',
-      ]))
+      ])
+      .addColumn('is_flagged', 'boolean', (col) => col.defaultTo(false)))
 }
 
 export async function down(db: Kysely<unknown>) {

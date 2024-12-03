@@ -59,6 +59,12 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.address_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .leftJoin('employment', 'employment.id', 'patients.primary_doctor_id')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
     .select((eb) => [
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
@@ -97,6 +103,9 @@ const baseSelect = (trx: TrxOrDb) =>
       jsonBuildObject({
         view: view_href_sql,
       }).as('actions'),
+      'health_workers.name as primary_provider',
+      'patients.nearest_organization_id',
+      'employment.health_worker_id as primary_provider_healthworker_id',
     ])
 
 const selectWithName = (trx: TrxOrDb) =>

@@ -4,6 +4,7 @@ import PatientProfile from '../../../../../components/patients/profile/PatientPr
 
 export default PatientPage(
   async function PatientProfileTab({ ctx }) {
+    console.log('ctx', ctx)
     const patient_summary = await patient_intake.getSummaryById(
       ctx.state.trx,
       ctx.state.patient.id,

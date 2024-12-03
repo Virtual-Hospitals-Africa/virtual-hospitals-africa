@@ -35,6 +35,8 @@ type ButtonProps =
   & JSX.HTMLAttributes<HTMLButtonElement>
   & {
     className?: string
+    type?: HTMLButtonElement['type']
+    onClick?(event: JSX.TargetedEvent<HTMLButtonElement>): void
   }
   & ({
     variant: 'solid'
@@ -55,10 +57,11 @@ export function HeroIconButton({
   color = 'primary',
   className,
   href,
+  type = 'submit',
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex justify-center rounded-md py-1 px-4 text-base font-semibold tracking-tight focus:outline-none',
+    'justify-center rounded-md py-1 px-1 text-base font-semibold tracking-tight focus:outline-none',
     baseStyles[variant],
     // deno-lint-ignore no-explicit-any
     (variantStyles as any)[variant][color],
@@ -73,5 +76,5 @@ export function HeroIconButton({
         {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
       />
     )
-    : <button className={className} type='submit' {...props} />
+    : <button className={className} type={type} {...props} />
 }

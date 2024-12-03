@@ -1,4 +1,5 @@
 import { JSX } from 'preact'
+import * as appointments from '../../../../../db/models/appointments.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import { Person } from '../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../components/library/Tabs.tsx'
@@ -27,6 +28,14 @@ export function PatientPage(
     _req: Request,
     ctx: PatientContext,
   ) {
+    const upcoming_appointments = await appointments.getForPatient(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        time_range: 'future',
+      },
+    )
+
     assertOrRedirect(
       ctx.state.patient.completed_intake,
       `/app/patients/${ctx.state.patient.id}/intake`,
@@ -61,20 +70,54 @@ export function PatientPage(
             encounter={ctx.state.patient.open_encounter}
             findings={[]}
             sendables={[]}
+            measurements={[]}
           />
         )}
       >
         <div className='container my-4 mx-6'>
-          <Person person={ctx.state.patient} />
+          <Person
+            person={{
+              ...ctx.state.patient,
+              description: (
+                <>
+                  {ctx.state.patient.description && (
+                    <>
+                      {ctx.state.patient.description}
+                      <br />
+                    </>
+                  )}
 
-          <div className='mt-4'>
-            {'Nearest Clinic: ' + ctx.state.patient.nearest_organization}
-            <br />
-            {`Primary Provider: Dr. ` +
-              (ctx.state.patient.open_encounter &&
-                ctx.state.patient.open_encounter.providers[0]
-                  .health_worker_name)}
-          </div>
+                  {(ctx.state.patient.nearest_organization ||
+                    ctx.state.patient.primary_provider_healthworker_id) && (
+                    <>
+                      {ctx.state.patient.primary_provider_healthworker_id && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_healthworker_id}`}
+                          title={`View details of Dr. ${ctx.state.patient.primary_provider}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          Dr. {ctx.state.patient.primary_provider}
+                        </a>
+                      )}
+                      {ctx.state.patient.nearest_organization &&
+                        ctx.state.patient.primary_provider_healthworker_id &&
+                        ', '}
+                      {ctx.state.patient.nearest_organization && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
+                          title={`View details of ${ctx.state.patient.nearest_organization}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          {ctx.state.patient.nearest_organization}
+                        </a>
+                      )}
+                      <br />
+                    </>
+                  )}
+                </>
+              ),
+            }}
+          />
           <Tabs
             tabs={tabs.map((tab) => ({
               tab,
@@ -83,6 +126,11 @@ export function PatientPage(
                 tab,
               }),
               active: ctx.url.pathname.endsWith('/' + tab),
+              rightIcon: tab === 'appointments' && (
+                <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
+                  {upcoming_appointments.length}
+                </span>
+              ),
             }))}
           />
           {rendered}

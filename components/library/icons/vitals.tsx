@@ -240,3 +240,11 @@ export function triceps_skinfold(props: Props) {
     </svg>
   )
 }
+
+export function blood_pressure_systolic(props: Props) {
+  return blood_pressure(props)
+}
+
+export function blood_pressure_diastolic(props: Props) {
+  return blood_pressure(props)
+}

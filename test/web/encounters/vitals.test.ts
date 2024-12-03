@@ -41,18 +41,33 @@ describe(
 
       const formValues = getFormValues($)
       assertEquals(formValues, {
-        measurements: {
-          height: null,
-          weight: null,
-          temperature: null,
-          blood_pressure_diastolic: null,
-          blood_pressure_systolic: null,
-          blood_oxygen_saturation: null,
-          blood_glucose: null,
-          pulse: null,
-          respiratory_rate: null,
-        },
-        no_vitals_required: false,
+        measurements: [
+          { is_flagged: false, measurement_name: 'blood_glucose', value: null },
+          {
+            is_flagged: false,
+            measurement_name: 'blood_oxygen_saturation',
+            value: null,
+          },
+          {
+            is_flagged: false,
+            measurement_name: 'blood_pressure_diastolic',
+            value: null,
+          },
+          {
+            is_flagged: false,
+            measurement_name: 'blood_pressure_systolic',
+            value: null,
+          },
+          { is_flagged: false, measurement_name: 'height', value: null },
+          { is_flagged: false, measurement_name: 'pulse', value: null },
+          {
+            is_flagged: false,
+            measurement_name: 'respiratory_rate',
+            value: null,
+          },
+          { is_flagged: false, measurement_name: 'temperature', value: null },
+          { is_flagged: false, measurement_name: 'weight', value: null },
+        ],
       })
     })
 
@@ -85,7 +100,9 @@ describe(
       )
 
       const body = new FormData()
-      body.append('measurements.height', '123')
+      // body.append('measurements.height', '123')
+      body.append('measurements.0.measurement_name', 'height')
+      body.append('measurements.0.value', '123')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
@@ -99,9 +116,15 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
       })
-      assertEquals(vitals, {
-        height: [123, 'cm'],
-      })
+      assertEquals(vitals, [
+        {
+          'measurement_name': 'height',
+          'value': 123,
+          'is_flagged': false,
+          'units': 'cm',
+          'snomed_code': '1153637007',
+        },
+      ])
 
       {
         const response = await fetch(
@@ -115,18 +138,53 @@ describe(
 
         const formValues = getFormValues($)
         assertEquals(formValues, {
-          measurements: {
-            height: 123,
-            weight: null,
-            temperature: null,
-            blood_pressure_diastolic: null,
-            blood_pressure_systolic: null,
-            blood_oxygen_saturation: null,
-            blood_glucose: null,
-            pulse: null,
-            respiratory_rate: null,
-          },
-          no_vitals_required: false,
+          measurements: [
+            {
+              is_flagged: false,
+              measurement_name: 'blood_glucose',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_oxygen_saturation',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_diastolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'height',
+              value: 123,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'pulse',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'respiratory_rate',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'temperature',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'weight',
+              value: null,
+            },
+          ],
         })
       }
     })
@@ -148,15 +206,25 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        measurements: {
-          height: 100,
-          weight: 100,
-        },
+        input_measurements: [
+          {
+            measurement_name: 'height',
+            value: 100,
+            is_flagged: false,
+          },
+          {
+            measurement_name: 'weight',
+            value: 100,
+            is_flagged: false,
+          },
+        ],
       })
 
       const body = new FormData()
-      body.append('measurements.height', '123')
-      body.append('measurements.weight', '456')
+      body.append('measurements.0.measurement_name', 'height')
+      body.append('measurements.0.value', '123')
+      body.append('measurements.1.measurement_name', 'weight')
+      body.append('measurements.1.value', '456')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
@@ -170,10 +238,22 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
       })
-      assertEquals(vitals, {
-        height: [123, 'cm'],
-        weight: [456, 'kg'],
-      })
+      assertEquals(vitals, [
+        {
+          measurement_name: 'height',
+          value: 123,
+          is_flagged: false,
+          units: 'cm',
+          snomed_code: '1153637007',
+        },
+        {
+          measurement_name: 'weight',
+          value: 456,
+          is_flagged: false,
+          units: 'kg',
+          snomed_code: '726527001',
+        },
+      ])
 
       {
         const response = await fetch(
@@ -187,18 +267,53 @@ describe(
 
         const formValues = getFormValues($)
         assertEquals(formValues, {
-          measurements: {
-            height: 123,
-            weight: 456,
-            temperature: null,
-            blood_pressure_diastolic: null,
-            blood_pressure_systolic: null,
-            blood_oxygen_saturation: null,
-            blood_glucose: null,
-            pulse: null,
-            respiratory_rate: null,
-          },
-          no_vitals_required: false,
+          measurements: [
+            {
+              is_flagged: false,
+              measurement_name: 'blood_glucose',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_oxygen_saturation',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_diastolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'blood_pressure_systolic',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'height',
+              value: 123,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'pulse',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'respiratory_rate',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'temperature',
+              value: null,
+            },
+            {
+              is_flagged: false,
+              measurement_name: 'weight',
+              value: 456,
+            },
+          ],
         })
       }
     })
@@ -220,16 +335,30 @@ describe(
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        measurements: {
-          height: 100,
-          weight: 100,
-          temperature: 50,
-        },
+        input_measurements: [
+          {
+            measurement_name: 'height',
+            value: 170.3,
+            is_flagged: false,
+          },
+          {
+            measurement_name: 'weight',
+            value: 70.3,
+            is_flagged: false,
+          },
+          {
+            measurement_name: 'temperature',
+            value: 50,
+            is_flagged: false,
+          },
+        ],
       })
 
       const body = new FormData()
-      body.append('measurements.height', '123')
-      body.append('measurements.weight', '456')
+      body.append('measurements.0.measurement_name', 'height')
+      body.append('measurements.0.value', '100')
+      body.append('measurements.1.measurement_name', 'weight')
+      body.append('measurements.1.value', '456')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
@@ -239,14 +368,28 @@ describe(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      // const vitals = await patient_measurements.getEncounterVitals(db, {
-      //   encounter_id: encounter.id,
-      //   patient_id: encounter.patient_id,
-      // })
-      // assertEquals(vitals, {
-      //   height: [123, 'cm'],
-      //   weight: [456, 'kg'],
-      // })
+
+      const vitals = await patient_measurements.getEncounterVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+      })
+
+      assertEquals(vitals, [
+        {
+          measurement_name: 'height',
+          value: 100,
+          is_flagged: false,
+          units: 'cm',
+          snomed_code: '1153637007',
+        },
+        {
+          measurement_name: 'weight',
+          value: 456,
+          is_flagged: false,
+          units: 'kg',
+          snomed_code: '726527001',
+        },
+      ])
     })
   },
 )

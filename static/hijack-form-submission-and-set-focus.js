@@ -102,7 +102,6 @@ addEventListener('submit', function (event) {
           history.pushState({}, '', response.url)
         })
       case 400:
-        console.log('WELKEWLK')
         return response.text().then(onError)
       case 401:
         return response.text().then(function (text) {
@@ -129,7 +128,8 @@ addEventListener('submit', function (event) {
 function setFocus(focus) {
   var focusableElement = document.getElementById(focus) ||
     document.querySelector(
-      'input[name="' + focus + '"], select[name="' + focus + '"]',
+      'input[name="' + focus + '"], select[name="' + focus +
+        '"], textarea[name="' + focus + '"]',
     )
 
   if (focusableElement) {
@@ -217,7 +217,7 @@ function focusOnNextFormElement(
 }
 
 addEventListener('input', function (e) {
-  console.log('input', e)
+  // console.log('input', e)
   var is_input = e.target.tagName === 'INPUT'
   if (!is_input) {
     return

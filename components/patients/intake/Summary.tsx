@@ -206,13 +206,14 @@ export default function PatientSummary(
         [{
           value: guardian.patient_name,
           name: 'guardian',
-          href: `${intake_href}/family#focus=guardians.${index}.patient_name`,
+          href:
+            `${intake_href}/family#focus=family.guardians.${index}.patient_name`,
           action: DescriptionListCellAction.Edit,
         }, {
           value: guardian.family_relation_gendered,
           name: 'relationship',
           href:
-            `${intake_href}/family#focus=guardians.${index}.family_relation_gendered`,
+            `${intake_href}/family#focus=family.guardians.${index}.family_relation_gendered`,
           action: DescriptionListCellAction.Edit,
           leading_separator: ', ',
         }],
@@ -222,7 +223,7 @@ export default function PatientSummary(
           ),
           name: 'phone_number',
           href:
-            `${intake_href}/family#focus=guardians.${index}.patient_phone_number`,
+            `${intake_href}/family#focus=family.guardians.${index}.patient_phone_number`,
           action: DescriptionListCellAction.Edit,
         }],
       ]),
@@ -234,7 +235,7 @@ export default function PatientSummary(
         ? occupation.school.current.grade
         : null,
       name: 'education_level',
-      href: `${intake_href}/occupation#focus=occupation.job.profession`,
+      href: `${intake_href}/occupation#focus=occupation.school.current.grade`,
       action: DescriptionListCellAction.Edit,
     },
   ]])]
@@ -243,7 +244,7 @@ export default function PatientSummary(
     {
       value: occupation?.job && occupation.job.profession,
       name: 'profession',
-      href: `${intake_href}/occupation#focus=occupation.school.education_level`,
+      href: `${intake_href}/occupation#focus=occupation.job.profession`,
       action: DescriptionListCellAction.Edit,
     },
   ]])]
@@ -396,7 +397,7 @@ export default function PatientSummary(
               value: medication.route,
               name: 'route',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_id`,
+                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.route`,
               action: DescriptionListCellAction.Edit,
               leading_separator: ' ',
             },

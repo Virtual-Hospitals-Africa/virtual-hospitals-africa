@@ -17,7 +17,7 @@ export default function PartnersContent() {
             <p className='mt-6 text-lg leading-8 text-gray-600'>
               We’re interested in collaborating with funders passionate about
               global health to pilot this system in 5 rural clinics in Zimbabwe
-              in early 2024. Your support will enable software development,
+              in early 2025. Your support will enable software development,
               health worker training, internet access, point of care testing,
               implementation, and other essential services.
             </p>

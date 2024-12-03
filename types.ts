@@ -200,6 +200,9 @@ export type RenderedPatient =
     avatar_url: string | null
     nearest_organization: string | null
     last_visited: null // TODO: implement
+    primary_provider: string | null
+    nearest_organization_id: string | null
+    primary_provider_healthworker_id: string | null
     location: {
       longitude: number | null
       latitude: number | null
@@ -2369,25 +2372,31 @@ export type RenderedPatientEncounter = {
 }
 
 export type Measurements = {
-  height: [number, 'cm']
-  weight: [number, 'kg']
-  temperature: [number, 'celsius']
-  blood_pressure_diastolic: [number, 'mmHg']
-  blood_pressure_systolic: [number, 'mmHg']
-  blood_oxygen_saturation: [number, '%']
-  blood_glucose: [number, 'mg/dL']
-  pulse: [number, 'bpm']
-  respiratory_rate: [number, 'bpm']
-  midarm_circumference: [number, 'cm']
-  triceps_skinfold: [number, 'cm']
+  height: [string, number, 'cm']
+  weight: [string, number, 'kg']
+  temperature: [string, number, 'celsius']
+  blood_pressure_diastolic: [string, number, 'mmHg']
+  blood_pressure_systolic: [string, number, 'mmHg']
+  blood_oxygen_saturation: [string, number, '%']
+  blood_glucose: [string, number, 'mg/dL']
+  pulse: [string, number, 'bpm']
+  respiratory_rate: [string, number, 'bpm']
+  midarm_circumference: [string, number, 'cm']
+  triceps_skinfold: [string, number, 'cm']
 }
+
 export type Measurement<Name extends keyof Measurements> = {
-  name: Name
-  units: Measurements[Name][1]
+  measurement_name: Name
+  snomed_code?: Measurements[Name][0]
+  value?: Measurements[Name][1]
+  units: Measurements[Name][2]
+  is_flagged: boolean
 }
 
 export type MeasurementsUpsert = {
-  [Name in keyof Measurements]?: number
+  value: number
+  is_flagged: boolean
+  measurement_name: string // keyof Measurements
 }
 
 export type PatientMeasurement = {
@@ -2396,6 +2405,7 @@ export type PatientMeasurement = {
   encounter_provider_id: string
   measurement_name: keyof Measurements
   value: number
+  is_flagged: boolean
 }
 
 export type PatientMedicationUpsert = {

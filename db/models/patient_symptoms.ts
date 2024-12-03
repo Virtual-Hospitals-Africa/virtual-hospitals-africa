@@ -41,7 +41,7 @@ export async function upsert(
     .where('encounter_id', '=', encounter_id)
     .where('encounter_provider_id', '=', encounter_provider_id)
 
-  if (inserted_ids) {
+  if (inserted_ids.length > 0) {
     query = query
       .where('id', 'not in', inserted_ids)
   }
