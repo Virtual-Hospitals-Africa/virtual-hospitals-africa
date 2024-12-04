@@ -38,8 +38,8 @@ export default function DescriptionRow(
               {cell.href
                 ? (
                   <a
-                    title={`${capitalize(cell.action || 'view')} ${
-                      capitalize(cell.name)
+                    title={`${cell.action && capitalize(cell.action || 'view')} ${
+                      cell.name && capitalize(cell.name)
                     }`}
                     style={{ display: 'inline-block' }}
                     onMouseOver={() => setHoveredCellIndex(index)}
