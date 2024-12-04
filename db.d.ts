@@ -357,6 +357,17 @@ export interface Encounter {
   step: EncounterStep
 }
 
+export interface Events {
+  backoff_until: Timestamp | null
+  created_at: Generated<Timestamp>
+  data: Json
+  error_message: string | null
+  id: Generated<string>
+  processed_at: Timestamp | null
+  type: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Examinations {
   is_head_to_toe: Generated<boolean>
   name: string
@@ -1130,6 +1141,7 @@ export interface DB {
   drugs: Drugs
   employment: Employment
   encounter: Encounter
+  events: Events
   examinations: Examinations
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns

@@ -3098,3 +3098,8 @@ export type ExaminationChecklistDefinition = {
     snomed_english_term: string
   }[]
 }
+
+export type EventData = {
+  id: string
+  data: unknown
+}
