@@ -43,7 +43,7 @@ export type ScheduleFormValues = {
 type SchedulePageProps = {
   healthWorker: EmployedHealthWorker
   slots?: ProviderAppointmentSlot[]
-  patient_info?: {id: string, name: string}
+  patient_info?: { id: string; name: string }
 }
 
 function assertIsSearchFormValues(
@@ -81,7 +81,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
         return ctx.render({ healthWorker })
       } else {
         const patient = await patients.getByID(ctx.state.trx, {
-          id: search.patient_id
+          id: search.patient_id,
         })
 
         patient_info = { id: patient.id, name: patient.name }
@@ -114,7 +114,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
       return ctx.render({
         healthWorker,
         slots,
-        patient_info
+        patient_info,
       })
     },
     async POST(req, ctx) {
@@ -145,7 +145,10 @@ export default function SchedulePage(
       variant='practitioner home page'
     >
       <div className='flex gap-x-4'>
-        <ScheduleForm className='w-1/2' patient_info={props.data.patient_info}/>
+        <ScheduleForm
+          className='w-1/2'
+          patient_info={props.data.patient_info}
+        />
         {props.data.slots && (
           <Appointments
             headerText='Slots available'

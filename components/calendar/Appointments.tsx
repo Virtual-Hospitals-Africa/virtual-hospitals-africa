@@ -23,7 +23,7 @@ export default function Appointments(
     return (
       <div className={useClassName}>
         {header}
-        <AppointmentsEmptyState patient_id={patient_id}/>
+        <AppointmentsEmptyState patient_id={patient_id} />
       </div>
     )
   }

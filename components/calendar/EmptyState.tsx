@@ -1,8 +1,10 @@
 import { MakeAppointmentIcon } from '../library/icons/MakeAppointment.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 
-export default function CalendarEmptyState({ patient_id }: { patient_id: string | undefined }) {
-  let search;
+export default function CalendarEmptyState(
+  { patient_id }: { patient_id: string | undefined },
+) {
+  let search
   if (patient_id) {
     search = new URLSearchParams({ patient_id }).toString()
   }
@@ -14,7 +16,9 @@ export default function CalendarEmptyState({ patient_id }: { patient_id: string 
       icon={<MakeAppointmentIcon className='mx-auto h-12 w-12 text-gray-400' />}
       button={{
         children: 'New Appointment',
-        href: search ? `/app/calendar/appointments/schedule?${search}` : '/app/calendar/appointments/schedule',
+        href: search
+          ? `/app/calendar/appointments/schedule?${search}`
+          : '/app/calendar/appointments/schedule',
       }}
     />
   )
