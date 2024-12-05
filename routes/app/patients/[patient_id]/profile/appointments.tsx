@@ -81,6 +81,7 @@ export default PatientPage(
     return (
       <Appointments
         headerText='Upcoming patient appointments'
+        patient_id={ctx.state.patient.id}
         appointments={renderable_appointments}
         url={ctx.url}
         className='mt-4'

@@ -4,12 +4,13 @@ import FormRow from '../library/FormRow.tsx'
 import FormButtons from '../../islands/form/buttons.tsx'
 import PersonSearch from '../../islands/PersonSearch.tsx'
 
-export default function ScheduleForm({ className }: { className?: string }) {
+export default function ScheduleForm({ className, patient_info }: { className?: string, patient_info?: { id: string, name: string } }) {
   return (
     <Form className={className}>
       <FormRow>
         <PersonSearch
           name='patient'
+          value={patient_info}
           search_route='/app/patients?completed_intake=true'
           required
         />
