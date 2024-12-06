@@ -7,7 +7,7 @@ import cls from '../../util/cls.ts'
 export default function Appointments(
   { headerText, patient_id, appointments, url, className }: {
     headerText: string
-    patient_id: string
+    patient_id?: string | undefined
     appointments: RenderableAppointment[]
     url: URL
     className?: string
