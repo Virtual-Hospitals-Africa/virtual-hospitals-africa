@@ -125,10 +125,6 @@ describe(
               patient_id: patient.id,
               intake_step_just_completed: 'personal',
             })
-            await patient_intake.updateCompletion(trx, {
-              patient_id: patient.id,
-              intake_step_just_completed: 'address',
-            })
 
             const { id: health_worker_id } = await addTestHealthWorker(trx, {
               scenario: 'nurse',
@@ -198,10 +194,6 @@ describe(
             await patient_intake.updateCompletion(trx, {
               patient_id: patient.id,
               intake_step_just_completed: 'personal',
-            })
-            await patient_intake.updateCompletion(trx, {
-              patient_id: patient.id,
-              intake_step_just_completed: 'address',
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
