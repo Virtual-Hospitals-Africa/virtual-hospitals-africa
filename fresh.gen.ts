@@ -219,6 +219,9 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
+import * as $patient_intake_AddressForm from './islands/patient-intake/AddressForm.tsx'
+import * as $patient_intake_FamilyForm from './islands/patient-intake/FamilyForm.tsx'
+import * as $patient_intake_IntakeForm from './islands/patient-intake/IntakeForm.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -541,6 +544,9 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
+    './islands/patient-intake/AddressForm.tsx': $patient_intake_AddressForm,
+    './islands/patient-intake/FamilyForm.tsx': $patient_intake_FamilyForm,
+    './islands/patient-intake/IntakeForm.tsx': $patient_intake_IntakeForm,
     './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,

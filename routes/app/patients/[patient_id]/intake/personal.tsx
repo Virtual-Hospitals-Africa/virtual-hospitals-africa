@@ -1,5 +1,4 @@
-import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
-import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
+import { IntakePage, postHandler } from './_middleware.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as addresses from '../../../../../db/models/addresses.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
@@ -12,8 +11,7 @@ import {
   national_id_number,
   varchar255,
 } from '../../../../../util/validators.ts'
-import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
-import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
+import PatientIntakeForm from '../../../../../islands/patient-intake/IntakeForm.tsx'
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().uuid().optional(),
@@ -141,7 +139,6 @@ export default IntakePage(
   async function PersonalPage({ ctx, patient, previously_completed }) {
     const { healthWorker, trx } = ctx.state
     const country_address_tree = await addresses.getCountryAddressTree(trx)
-    const age_years = assertAgeYearsKnown(ctx)
     const family = await patient_family.get(ctx.state.trx, {
       patient_id: patient.id,
     })
@@ -163,19 +160,11 @@ export default IntakePage(
 
     return (
       <div>
-        <PatientPersonalForm
+        <PatientIntakeForm
           patient={patient}
           previously_completed={previously_completed}
-        />
-        <hr className='my-2' />
-        <PatientAddressForm
-          patient={patient}
           default_organization={default_organization}
           country_address_tree={country_address_tree}
-        />
-        <hr className='my-2' />
-        <PatientFamilyForm
-          age_years={age_years}
           family={family}
         />
       </div>

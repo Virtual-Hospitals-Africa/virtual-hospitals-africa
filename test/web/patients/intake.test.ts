@@ -56,7 +56,7 @@ describe('/app/patients/[patient_id]/intake', {
     assert($('input[name="nonexistant"]').length === 0)
   })
 
-  it('supports POST on the personal step, moving you to the address step', async () => {
+  it('supports POST on the personal step, moving you to the conditions step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -79,6 +79,10 @@ describe('/app/patients/[patient_id]/intake', {
     body.set('gender', 'female')
     body.set('ethnicity', 'african')
     body.set('phone_number', phone_number)
+    body.set('address.locality', 'Test Lane')
+    body.set('address.administrative_area_level_2', 'Test Area Level 2')
+    body.set('address.administrative_area_level_1', 'Test Area Level 1')
+    body.set('address.country', 'Test Country')
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/personal`,
       {
@@ -106,7 +110,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/conditions`,
     )
 
     const getPersonalResponse = await fetch(
@@ -128,7 +132,8 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals($('input[name="phone_number"]').val(), phone_number)
   })
 
-  it('supports POST on the address step, moving you to the conditions step', async () => {
+  // There's no Address step anymore
+  it.skip('supports address information POST on the Address step, moving you to the conditions step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -572,7 +577,8 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST on the family step, moving you to the lifestyle step', async () => {
+  // Removed the family step
+  it.skip('supports POST on the family step, moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -681,7 +687,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST on the occupation step(0-18), moving you to the family step', async () => {
+  it('supports POST on the occupation step(0-18), moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -724,7 +730,7 @@ describe('/app/patients/[patient_id]/intake', {
     }
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/family`,
+      `${route}/app/patients/${patient_id}/intake/lifestyle`,
     )
 
     const occupation = await patient_occupations.get(db, {
@@ -777,7 +783,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST on the occupation step(19+), moving you to the family step', async () => {
+  it('supports POST on the occupation step(19+), moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -821,7 +827,7 @@ describe('/app/patients/[patient_id]/intake', {
     }
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/family`,
+      `${route}/app/patients/${patient_id}/intake/lifestyle`,
     )
 
     const occupation = await patient_occupations.get(db, {
