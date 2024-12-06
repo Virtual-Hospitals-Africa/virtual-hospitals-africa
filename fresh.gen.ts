@@ -64,9 +64,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './ro
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
 import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
-import * as $app_patients_patient_id_intake_address from './routes/app/patients/[patient_id]/intake/address.tsx'
 import * as $app_patients_patient_id_intake_conditions from './routes/app/patients/[patient_id]/intake/conditions.tsx'
-import * as $app_patients_patient_id_intake_family from './routes/app/patients/[patient_id]/intake/family.tsx'
 import * as $app_patients_patient_id_intake_history from './routes/app/patients/[patient_id]/intake/history.tsx'
 import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
@@ -350,12 +348,8 @@ const manifest = {
       $app_patients_patient_id_intake,
     './routes/app/patients/[patient_id]/intake/_middleware.tsx':
       $app_patients_patient_id_intake_middleware,
-    './routes/app/patients/[patient_id]/intake/address.tsx':
-      $app_patients_patient_id_intake_address,
     './routes/app/patients/[patient_id]/intake/conditions.tsx':
       $app_patients_patient_id_intake_conditions,
-    './routes/app/patients/[patient_id]/intake/family.tsx':
-      $app_patients_patient_id_intake_family,
     './routes/app/patients/[patient_id]/intake/history.tsx':
       $app_patients_patient_id_intake_history,
     './routes/app/patients/[patient_id]/intake/lifestyle.tsx':
