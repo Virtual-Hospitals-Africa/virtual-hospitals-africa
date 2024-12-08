@@ -64,9 +64,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './ro
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
 import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
-import * as $app_patients_patient_id_intake_address from './routes/app/patients/[patient_id]/intake/address.tsx'
 import * as $app_patients_patient_id_intake_conditions from './routes/app/patients/[patient_id]/intake/conditions.tsx'
-import * as $app_patients_patient_id_intake_family from './routes/app/patients/[patient_id]/intake/family.tsx'
 import * as $app_patients_patient_id_intake_history from './routes/app/patients/[patient_id]/intake/history.tsx'
 import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
@@ -219,6 +217,9 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
+import * as $patient_intake_AddressForm from './islands/patient-intake/AddressForm.tsx'
+import * as $patient_intake_FamilyForm from './islands/patient-intake/FamilyForm.tsx'
+import * as $patient_intake_IntakeForm from './islands/patient-intake/IntakeForm.tsx'
 import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -347,12 +348,8 @@ const manifest = {
       $app_patients_patient_id_intake,
     './routes/app/patients/[patient_id]/intake/_middleware.tsx':
       $app_patients_patient_id_intake_middleware,
-    './routes/app/patients/[patient_id]/intake/address.tsx':
-      $app_patients_patient_id_intake_address,
     './routes/app/patients/[patient_id]/intake/conditions.tsx':
       $app_patients_patient_id_intake_conditions,
-    './routes/app/patients/[patient_id]/intake/family.tsx':
-      $app_patients_patient_id_intake_family,
     './routes/app/patients/[patient_id]/intake/history.tsx':
       $app_patients_patient_id_intake_history,
     './routes/app/patients/[patient_id]/intake/lifestyle.tsx':
@@ -541,6 +538,9 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
+    './islands/patient-intake/AddressForm.tsx': $patient_intake_AddressForm,
+    './islands/patient-intake/FamilyForm.tsx': $patient_intake_FamilyForm,
+    './islands/patient-intake/IntakeForm.tsx': $patient_intake_IntakeForm,
     './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,

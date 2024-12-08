@@ -2,11 +2,11 @@ import { IntakeStep } from '../db.d.ts'
 
 export const INTAKE_STEPS: IntakeStep[] = [
   'personal',
-  'address',
+  // 'address',
+  // 'family',
   'conditions',
   'history',
   'occupation',
-  'family',
   'lifestyle',
   'summary',
 ]

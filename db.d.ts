@@ -68,9 +68,7 @@ export type Int8 = ColumnType<
 >
 
 export type IntakeStep =
-  | 'address'
   | 'conditions'
-  | 'family'
   | 'history'
   | 'lifestyle'
   | 'occupation'
