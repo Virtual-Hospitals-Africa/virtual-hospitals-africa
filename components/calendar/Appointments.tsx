@@ -5,8 +5,9 @@ import Appointment from './Appointment.tsx'
 import cls from '../../util/cls.ts'
 
 export default function Appointments(
-  { headerText, appointments, url, className }: {
+  { headerText, patient_id, appointments, url, className }: {
     headerText: string
+    patient_id?: string | undefined
     appointments: RenderableAppointment[]
     url: URL
     className?: string
@@ -22,7 +23,7 @@ export default function Appointments(
     return (
       <div className={useClassName}>
         {header}
-        <AppointmentsEmptyState />
+        <AppointmentsEmptyState patient_id={patient_id} />
       </div>
     )
   }
