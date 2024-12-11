@@ -362,6 +362,7 @@ export interface Events {
   error_message: string | null
   id: Generated<string>
   processed_at: Timestamp | null
+  retry_count: Generated<number>
   type: string
   updated_at: Generated<Timestamp>
 }

@@ -22,11 +22,14 @@ export async function insert(
 }
 
 export const EventUpsert = z.object({
-  error_message: z.string().optional(),
-  backoff_until: z.string().datetime().optional(),
+  error_message: z.string().nullable().optional(),
+  retry_count: z.number().int().optional(),
+  backoff_until: z.string().datetime().nullable().optional(),
   processed_at: z.string().datetime().optional(),
 }).refine((data) => {
-  if (data.backoff_until) return !!data.error_message && !data.processed_at
+  if (data.backoff_until) {
+    return !!data.error_message && !data.processed_at && !!data.retry_count
+  }
   return !data.error_message && !!data.processed_at
 }, {
   message:
@@ -66,10 +69,17 @@ export async function selectAll(
     .execute()
 }
 
+function calculateBackoff(retryCount: number): string {
+  // Exponential backoff: 1s, 2s, 4s, 8s, etc.
+  const backoffMs = Math.pow(2, retryCount) * 1000
+  return new Date(Date.now() + backoffMs).toISOString()
+}
+
 export async function processEvents(
   trx: TrxOrDb,
   type: string,
   handler: (trx: TrxOrDb, data: EventData) => Promise<void>,
+  max_retry_count: number = 3,
 ) {
   await trx.transaction().execute(async (trx) => {
     const eventsToProcess = await trx
@@ -77,6 +87,7 @@ export async function processEvents(
       .where((eb) =>
         eb.and([
           eb('processed_at', 'is', null),
+          eb('retry_count', '<', max_retry_count),
           eb.or([
             eb('backoff_until', '<', now),
             eb('backoff_until', 'is', null),
@@ -86,10 +97,7 @@ export async function processEvents(
       .where('type', '=', type)
       .forUpdate()
       .skipLocked()
-      .select([
-        'id',
-        'data',
-      ])
+      .select(['id', 'data', 'retry_count'])
       .execute()
 
     for (const eventData of eventsToProcess) {
@@ -97,22 +105,25 @@ export async function processEvents(
         await handler(trx, eventData)
         await upsert(trx, eventData.id, {
           processed_at: new Date().toISOString(),
-          backoff_until: undefined,
-          error_message: undefined,
+          backoff_until: null,
+          error_message: null,
         })
       } catch (error) {
         const errorMessage = (error instanceof Error)
           ? error.message
           : 'Error performing the task'
+
+        const newRetryCount = eventData.retry_count + 1
+        const hasReachedMaxRetries = newRetryCount >= max_retry_count
+
         await upsert(trx, eventData.id, {
-          error_message: errorMessage,
-          backoff_until: calculateBackoff(),
+          error_message: hasReachedMaxRetries ? null : errorMessage,
+          retry_count: newRetryCount,
+          backoff_until: hasReachedMaxRetries
+            ? null
+            : calculateBackoff(eventData.retry_count),
         })
       }
     }
   })
-}
-
-function calculateBackoff() {
-  return new Date(Date.now() + 60000).toISOString()
 }
