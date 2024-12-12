@@ -12,7 +12,7 @@ const ExaminationSchema = z.object({
   category: z.string(),
   subcategory: z.string().nullable(),
   finding_name: z.string().nullable(),
-  notes: z.string().nullable(),
+  // notes: z.string().nullable(),
   snomed_finding_code: z.string().nullable(),
   snomed_body_structure_codes: z.string().nullable().transform((x) =>
     x?.split(',')

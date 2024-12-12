@@ -1,394 +1,345 @@
-examination_name	category	subcategory	finding_name	notes	snomed_finding_code	snomed_body_structure_codes	snomed_additional_relationships
-General	Patient state		ill				
-General	Patient state		unalert				
-General	Patient state		confused				
-General	Patient state		drowsy				
-General	Patient state		febrile				
-General	Patient state		dehydrated				
-General	Patient state		uncooperative				
-General	Patient state		sad				
-General	Patient state		resentful				
-General	Patient state		fat				
-General	Patient state		muscular				
-General	Patient state		edema				
-General	Patient state		wasted				
-General	Patient state		in pain				
-General	Patient state		in distress				
-General	Hands	Texture	cold		703883009	"12861001,85151006,78791008"	
-General	Hands	Texture	hot		707793005	"12861001,85151006,78791008"	
-General	Hands	Texture	clammy		102598000	"12861001,85151006,78791008"	
-General	Hands	Fingers	cyanosis		3415004	"362779006,7569003"	
-General	Hands	Fingers	nicotine stains		247439004	"362779006,7569003"	
-General	Hands	Fingers	clubbing		30760008	"362779006,7569003"	
-General	Hands	Nails	leukonychia		111202002	770802007	
-General	Hands	Nails	koilonychia		66270006	770802007	
-General	Hands	Nails	splinter hemorrhages		271770005	770802007	
-General	Hands	Nails	pitting		89704006	770802007	
-General	Hands	Nails	onycholysis		75789001	770802007	
-General	Hands	Nails	discolouration		47415006	770802007	
-General	Hands	Palms	erythema		70819003	21547004	
-General	Hands	Palms	dupuytren's disease		203045001	21203009	
-General	Hands	Palms	pale skin		403237004	21547004	
-General	Hands	Palms	cyanosis		119419001	21547004	
-General	Hands	Palms	jaundice		18165001	21547004	
-Skin	Colour		hypopigment	User must select site			
-Skin	Colour		hyperpigment	User must select site			
-Skin	Colour		discolouration	User must select site			
-Skin	Colour		jaundice				
-Skin	Colour		cyanosis				
-Skin	Colour		pale				
-Skin	Texture		diaphoresis				
-Skin	Texture		thin				
-Skin	Texture		thick				
-Skin	Texture		dry				
-Skin	Temperature		apyrexial				
-Skin	Temperature		pyrexial				
-Skin	Temperature		hypothermia				
-Skin	Temperature		hyperthermia				
-Skin	Wound	Type	abrasion	User must select site			
-Skin	Wound	Type	avulsion	User must select site			
-Skin	Wound	Type	contusion	User must select site			
-Skin	Wound	Type	laceration	User must select site			
-Skin	Wound	Type	burn	User must select site			
-Skin	Wound	Type	surgical incision	User must select site			
-Skin	Wound	Type	pressure injury	User must select site			
-Skin	Wound	Type	puncture	User must select site			
-Skin	Wound	Type	skin tear	User must select site			
-Skin	Wound	Type	ulcer	User must select site			
-Skin	Wound	Foreign Body	organic				
-Skin	Wound	Foreign Body	metallic				
-Skin	Wound	Foreign Body	fiberglass spicules				
-Skin	Wound	Foreign Body	fishhooks				
-Skin	Wound	Foreign Body	glass				
-Skin	Wound	Foreign Body	gravel				
-Skin	Wound	Foreign Body	pencil lead				
-Skin	Wound	Foreign Body	plastic				
-Skin	Rash	Pattern	linear				
-Skin	Rash	Pattern	annular				
-Skin	Rash	Pattern	serpiginous				
-Skin	Rash	Pattern	reticular				
-Skin	Rash	Pattern	star shaped				
-Skin	Rash	Pattern	discrete				
-Skin	Rash	Pattern	confluent				
-Skin	Rash	Description	flat macular	User must select site			
-Skin	Rash	Description	raised papular	User must select site			
-Skin	Rash	Description	localized plaque	User must select site			
-Skin	Rash	Description	wheal	User must select site			
-Skin	Rash	Description	blisters	User must select site			
-Skin	Rash	Description	bullae	User must select site			
-Skin	Rash	Description	large vesicles	User must select site			
-Skin	Rash	Description	nodules	User must select site			
-Skin	Rash	Description	purpura	User must select site			
-Skin	Rash	Surface	scaly				
-Skin	Rash	Surface	shiny				
-Skin	Rash	Surface	well demarcated edges				
-Skin	Rash	Surface	rough edges				
-Skin	Rash	Surface	pigment				
-Skin	Rash	Character	cold				
-Skin	Rash	Character	hot				
-Skin	Rash	Character	sweating				
-Skin	Rash	Character	warm				
-Skin	Rash	Character	tender				
-Skin	Rash	Character	blanching				
-Skin	Rash	Character	discharging				
-Skin	Rash	Distribution	hands and feet				
-Skin	Rash	Distribution	extensor surfaces				
-Skin	Rash	Distribution	flexural surfaces				
-Skin	Rash	Distribution	truncal				
-Skin	Rash	Distribution	exposed sites				
-Skin	Rash	Distribution	symmetrical				
-Skin	Rash	Distribution	asymmetrical				
-Head and Neck	Face		drooping				
-Head and Neck	Face		swelling				
-Head and Neck	Eyes	Sclera	erythema	User must select site			
-Head and Neck	Eyes	Sclera	jaundice	User must select site			
-Head and Neck	Eyes	Conjunctiva	jaundice	User must select site			
-Head and Neck	Eyes	Conjunctiva	pale	User must select site			
-Head and Neck	Eyes	Conjunctiva	erythema	User must select site			
-Head and Neck	Eyes	Conjunctiva	swelling	User must select site			
-Head and Neck	Eyes	Pupils	constricted	User must select site			
-Head and Neck	Eyes	Pupils	dilated	User must select site			
-Head and Neck	Eyes	Pupils	anisocoria	User must select site			
-Head and Neck	Eyes	Pupils	cataract	User must select site			
-Head and Neck	Eyes	Movement	nystagmus	User must select site			
-Head and Neck	Eyes	Movement	strabismus	User must select site			
-Head and Neck	Eyes	Movement	twitching	User must select site			
-Head and Neck	Eyes	Foreign Body	eyelash	User must select site			
-Head and Neck	Eyes	Foreign Body	dried mucus	User must select site			
-Head and Neck	Eyes	Foreign Body	sawdust	User must select site			
-Head and Neck	Eyes	Foreign Body	dirt	User must select site			
-Head and Neck	Eyes	Foreign Body	sand	User must select site			
-Head and Neck	Eyes	Foreign Body	cosmetics	User must select site			
-Head and Neck	Eyes	Foreign Body	contact lens	User must select site			
-Head and Neck	Eyes	Foreign Body	metal particles	User must select site			
-Head and Neck	Eyes	Foreign Body	glass shards	User must select site			
-Head and Neck	Ears		tender	User must select site			
-Head and Neck	Ears		discharge	User must select site			
-Head and Neck	Ears		wax impaction	User must select site			
-Head and Neck	Ears	Foreign Body	toy part	User must select site			
-Head and Neck	Ears	Foreign Body	coin	User must select site			
-Head and Neck	Ears	Foreign Body	nut	User must select site			
-Head and Neck	Ears	Foreign Body	seed	User must select site			
-Head and Neck	Ears	Foreign Body	stone	User must select site			
-Head and Neck	Ears	Foreign Body	button	User must select site			
-Head and Neck	Nose		Asymmetry	User must select site			
-Head and Neck	Nose		Mass	User must select site			
-Head and Neck	Nose		Bleeding	User must select site			
-Head and Neck	Nose		Discharge	User must select site			
-Head and Neck	Nose		Swelling	User must select site			
-Head and Neck	Nose		malformation	User must select site			
-Head and Neck	Nose	Foreign Body	toy part	User must select site			
-Head and Neck	Nose	Foreign Body	coin	User must select site			
-Head and Neck	Nose	Foreign Body	nut	User must select site			
-Head and Neck	Nose	Foreign Body	seed	User must select site			
-Head and Neck	Nose	Foreign Body	stone	User must select site			
-Head and Neck	Nose	Foreign Body	button	User must select site			
-Head and Neck	Nose	Foreign Body	other	User must select site			
-Head and Neck	Mouth	Lips	angular cheilitis				
-Head and Neck	Mouth	Lips	cyanosis				
-Head and Neck	Mouth	Lips	malformation				
-Head and Neck	Mouth	Tongue	pale				
-Head and Neck	Mouth	Tongue	cyanosis				
-Head and Neck	Mouth	Tongue	moist				
-Head and Neck	Mouth	Tongue	dry tongue				
-Head and Neck	Mouth	Tongue	big tongue				
-Head and Neck	Mouth	Tongue	deviation				
-Head and Neck	Mouth	Teeth	caries				
-Head and Neck	Mouth	Teeth	poor hygiene				
-Head and Neck	Mouth	Teeth	false teeth				
-Head and Neck	Mouth	Teeth	missing teeth				
-Head and Neck	Mouth	Teeth	dentures				
-Head and Neck	Mouth	Teeth	braces				
-Head and Neck	Mouth	Teeth	implants				
-Head and Neck	Mouth	Gums	bleeding				
-Head and Neck	Mouth	Gums	swollen				
-Head and Neck	Mouth	Tonsils	swollen				
-Head and Neck	Mouth	Tonsils	red				
-Head and Neck	Mouth	Tonsils	ulcer				
-Head and Neck	Mouth	Pharynx	swollen				
-Head and Neck	Mouth	Pharynx	red				
-Head and Neck	Mouth	Pharynx	ulcer				
-Head and Neck	Mouth	Breath	ketosis				
-Head and Neck	Mouth	Breath	alcohol				
-Head and Neck	Mouth	Breath	fetor				
-Head and Neck	Mouth	Breath	musty				
-Head and Neck	Neck		tenderness				
-Head and Neck	Neck		mass				
-Head and Neck	Neck		enlarged lymph nodes	User must select site			
-Cardiovascular	General		extremity coolness				
-Cardiovascular	General		pallor				
-Cardiovascular	General		delayed capillary refill				
-Cardiovascular	General		lower limb swelling				
-Cardiovascular	General		edema				
-Cardiovascular	General		cyanosis				
-Cardiovascular	General		clubbing				
-Cardiovascular	Blood Pressure		low				
-Cardiovascular	Blood Pressure		elevated				
-Cardiovascular	Blood Pressure		high				
-Cardiovascular	Pulse		no pulse				
-Cardiovascular	Pulse	Rate	absent				
-Cardiovascular	Pulse	Rate	bradycardia				
-Cardiovascular	Pulse	Rate	tachycardia				
-Cardiovascular	Pulse	Pattern	regular				
-Cardiovascular	Pulse	Pattern	weak				
-Cardiovascular	Pulse	Pattern	pulsus alternans				
-Cardiovascular	Pulse	Pattern	pulsus paradoxicus				
-Cardiovascular	Pulse	Pressure	wide				
-Cardiovascular	Heart	Precordium	no activity				
-Cardiovascular	Heart	Precordium	heaves				
-Cardiovascular	Heart	Precordium	thrills				
-Cardiovascular	Heart	Apex beat	present				
-Cardiovascular	Heart	Apex beat	not present				
-Cardiovascular	Heart	Apex beat	feeble				
-Cardiovascular	Heart	Apex beat	palpable				
-Cardiovascular	Heart	Apex beat	not palpable				
-Cardiovascular	Heart	Apex beat	thrusting				
-Cardiovascular	Heart	Apex beat	displaced				
-Cardiovascular	Heart	Dullness	shift to the left				
-Cardiovascular	Heart	Dullness	shift to the right				
-Cardiovascular	Heart	Dullness	increased				
-Cardiovascular	Heart	Sounds	no sounds				
-Cardiovascular	Heart	Sounds	gallop				
-Cardiovascular	Heart	Sounds	extra heart sounds				
-Cardiovascular	Heart	Sounds	diastolic murmur	User must select site			
-Cardiovascular	Heart	Sounds	systolic murmur	User must select site			
-Cardiovascular	Heart	Sounds	continuous murmur	User must select site			
-Cardiovascular	Heart	Sounds	pericardial rub				
-Respiratory	General		alar flaring				
-Respiratory	General		retractions				
-Respiratory	General		pursed lip breathing				
-Respiratory	General		noisy breathing				
-Respiratory	General		stridor				
-Respiratory	General		wheezes				
-Respiratory	General		pallor				
-Respiratory	General		cyanosis				
-Respiratory	General		clubbing				
-Respiratory	Trachea		deviation				
-Respiratory	Trachea		tug				
-Respiratory	Chest	Shape	barrel chest				
-Respiratory	Chest	Shape	pigeon chest				
-Respiratory	Chest	Shape	kyphosis				
-Respiratory	Chest	Shape	scar	User must select site			
-Respiratory	Chest	Shape	mass	User must select site			
-Respiratory	Chest	Expansion	no movement				
-Respiratory	Chest	Expansion	symmetrical				
-Respiratory	Chest	Expansion	asymmetrical				
-Respiratory	Chest	Expansion	crepitus	User must select site			
-Respiratory	Chest	Tactile Fremitus	decreased	User must select site			
-Respiratory	Chest	Tactile Fremitus	increased	User must select site			
-Respiratory	Chest	Tactile Fremitus	crepitus	User must select site			
-Respiratory	Chest	Vocal Fremitus	decreased	User must select site			
-Respiratory	Chest	Vocal Fremitus	increased	User must select site			
-Respiratory	Chest	Dullness	absent				
-Respiratory	Chest	Dullness	stony	User must select site			
-Respiratory	Chest	Dullness	liver				
-Respiratory	Breathing		no breathing				
-Respiratory	Breathing	Rate	bradypnea				
-Respiratory	Breathing	Rate	tachypnea				
-Respiratory	Breathing	Oxygen Saturation	low				
-Respiratory	Breathing	Pattern	shallow				
-Respiratory	Breathing	Pattern	labored				
-Respiratory	Breathing	Sounds	absent				
-Respiratory	Breathing	Sounds	decreased	User must select site			
-Respiratory	Breathing	Sounds	increased	User must select site			
-Respiratory	Breathing	Sounds	bronchial	User must select site			
-Respiratory	Breathing	Sounds	bronchovesicular	User must select site			
-Respiratory	Breathing	Sounds	vesicular	User must select site			
-Respiratory	Breathing	Sounds	crackles	User must select site			
-Respiratory	Breathing	Sounds	crepitus	User must select site			
-Respiratory	Breathing	Sounds	wheezes	User must select site			
-Respiratory	Breathing	Sounds	pleural rub				
-Gastrointestinal	General		scratch marks				
-Gastrointestinal	General		striae				
-Gastrointestinal	General		obesity				
-Gastrointestinal	General		feeding tube	User must select site			
-Gastrointestinal	General		catheter	User must select site			
-Gastrointestinal	Abdomen	Shape	asymmetry				
-Gastrointestinal	Abdomen	Shape	scar	User must select site			
-Gastrointestinal	Abdomen	Shape	wound	User must select site			
-Gastrointestinal	Abdomen	Shape	hernia	User must select site			
-Gastrointestinal	Abdomen	Shape	distended	User must select site			
-Gastrointestinal	Abdomen	Shape	mass	User must select site			
-Gastrointestinal	Abdomen	Pain	no pain				
-Gastrointestinal	Abdomen	Pain	tenderness	User must select site			
-Gastrointestinal	Abdomen	Pain	guarding	User must select site			
-Gastrointestinal	Abdomen	Pain	rigidity	User must select site			
-Gastrointestinal	Abdomen	Pain	rebound tenderness				
-Gastrointestinal	Abdomen	Motion	pulsation				
-Gastrointestinal	Abdomen	Motion	visible peristalsis				
-Gastrointestinal	Abdomen	Liver	shrunken				
-Gastrointestinal	Abdomen	Liver	hepatomegaly				
-Gastrointestinal	Abdomen	Kidneys	not palpable				
-Gastrointestinal	Abdomen	Kidneys	palpable				
-Gastrointestinal	Abdomen	Spleen	not palpable				
-Gastrointestinal	Abdomen	Spleen	palpable				
-Gastrointestinal	Abdomen	Spleen	splenomegaly				
-Gastrointestinal	Abdomen	Bladder	not palpable				
-Gastrointestinal	Abdomen	Bladder	palpable				
-Gastrointestinal	Abdomen	Bladder	distended				
-Gastrointestinal	Abdomen	Bowel Sounds	absent				
-Gastrointestinal	Abdomen	Bowel Sounds	reduced				
-Gastrointestinal	Abdomen	Bowel Sounds	hyperactive				
-Gastrointestinal	Rectum	Appearance	anal tags				
-Gastrointestinal	Rectum	Appearance	hemorrhoids				
-Gastrointestinal	Rectum	Appearance	mass				
-Gastrointestinal	Rectum	Sphincter Tone	decreased				
-Gastrointestinal	Rectum	Sphincter Tone	increased				
-Gastrointestinal	Stool		no stool				
-Gastrointestinal	Stool	Form	hard				
-Gastrointestinal	Stool	Form	loose				
-Gastrointestinal	Stool	Form	watery				
-Gastrointestinal	Stool	Form	fatty				
-Gastrointestinal	Stool	Form	worms				
-Gastrointestinal	Stool	Colour	dark				
-Gastrointestinal	Stool	Colour	pale				
-Gastrointestinal	Stool	Colour	bloody				
-Gastrointestinal	Stool	Colour	tarry				
-Gastrointestinal	Urine		no urine				
-Gastrointestinal	Urine	Colour	clear				
-Gastrointestinal	Urine	Colour	dark				
-Gastrointestinal	Urine	Colour	pale				
-Gastrointestinal	Urine	Colour	red				
-Gastrointestinal	Urine	Colour	orange				
-Gastrointestinal	Urine	Colour	black				
-Gastrointestinal	Urine	Colour	bloody				
-Gastrointestinal	Urine	Smell	no odour				
-Gastrointestinal	Urine	Smell	ammonia odour				
-Gastrointestinal	Urine	Smell	foul odour				
-Gastrointestinal	Urine	Smell	sweet odour				
-Neuromuscular	Consciousness	Level	Alert				
-Neuromuscular	Consciousness	Level	Voice				
-Neuromuscular	Consciousness	Level	Pain				
-Neuromuscular	Consciousness	Level	Unresponsive				
-Neuromuscular	Cranial Nerves	Sight	no sight				
-Neuromuscular	Cranial Nerves	Sight	far				
-Neuromuscular	Cranial Nerves	Sight	partial				
-Neuromuscular	Cranial Nerves	Sight	near				
-Neuromuscular	Cranial Nerves	Smell	no smell				
-Neuromuscular	Cranial Nerves	Smell	impaired				
-Neuromuscular	Cranial Nerves	Taste	no taste				
-Neuromuscular	Cranial Nerves	Taste	decreased				
-Neuromuscular	Cranial Nerves	Taste	impaired				
-Neuromuscular	Cranial Nerves	Taste	increased				
-Neuromuscular	Cranial Nerves	Speech	no speech				
-Neuromuscular	Cranial Nerves	Speech	Slurred				
-Neuromuscular	Cranial Nerves	Speech	Sounds				
-Neuromuscular	Cranial Nerves	Speech	stuttering				
-Neuromuscular	Cranial Nerves	Voice	no voice				
-Neuromuscular	Cranial Nerves	Voice	whispers				
-Neuromuscular	Cranial Nerves	Voice	hoarse				
-Neuromuscular	Cranial Nerves	Swallowing	no swallowing				
-Neuromuscular	Cranial Nerves	Swallowing	slow				
-Neuromuscular	Cranial Nerves	Swallowing	restricted				
-Neuromuscular	Cranial Nerves	Swallowing	difficulty				
-Neuromuscular	Cranial Nerves	Hearing	no hearing				
-Neuromuscular	Cranial Nerves	Hearing	decreased				
-Neuromuscular	Cranial Nerves	Hearing	impaired				
-Neuromuscular	Cranial Nerves	Hearing	increased				
-Neuromuscular	Central System	Cognition	confusion				
-Neuromuscular	Central System	Cognition	disorientation				
-Neuromuscular	Central System	Cognition	impaired				
-Neuromuscular	Central System	Memory	no memory				
-Neuromuscular	Central System	Memory	impaired				
-Neuromuscular	Central System	Gait	abnormal				
-Neuromuscular	Central System	Gait	ataxic				
-Neuromuscular	Central System	Gait	bouncy				
-Neuromuscular	Central System	Gait	staggering				
-Neuromuscular	Central System	Gait	unsteady				
-Neuromuscular	Central System	Balance	no balance				
-Neuromuscular	Central System	Balance	impaired				
-Neuromuscular	Central System	Coordination	no coordination				
-Neuromuscular	Central System	Coordination	decreased				
-Neuromuscular	Central System	Coordination	stumbling				
-Neuromuscular	Extremities	Shape	scar	User must select site			
-Neuromuscular	Extremities	Shape	amputation	User must select site			
-Neuromuscular	Extremities	Shape	deformity	User must select site			
-Neuromuscular	Extremities	Shape	swelling	User must select site			
-Neuromuscular	Extremities	Shape	mass	User must select site			
-Neuromuscular	Extremities	Power	weakness	User must select site			
-Neuromuscular	Extremities	Power	paralysis	User must select site			
-Neuromuscular	Extremities	Movement	limited	User must select site			
-Neuromuscular	Extremities	Movement	extended	User must select site			
-Neuromuscular	Extremities	Movement	fasciculation	User must select site			
-Neuromuscular	Extremities	Movement	spasticity	User must select site			
-Neuromuscular	Extremities	Movement	rigidity	User must select site			
-Neuromuscular	Extremities	Tone	decreased	User must select site			
-Neuromuscular	Extremities	Tone	increased	User must select site			
-Neuromuscular	Extremities	Reflexes	absent	User must select site			
-Neuromuscular	Extremities	Reflexes	decreased	User must select site			
-Neuromuscular	Extremities	Reflexes	increased	User must select site			
-Neuromuscular	Joints	Shape	swelling	User must select site			
-Neuromuscular	Joints	Shape	deformity	User must select site			
-Neuromuscular	Joints	Shape	mass	User must select site			
-Neuromuscular	Joints	Temperature	cool	User must select site			
-Neuromuscular	Joints	Temperature	warm	User must select site			
-Neuromuscular	Joints	Temperature	hot	User must select site			
-Neuromuscular	Joints	Movements	laxity	User must select site			
-Neuromuscular	Joints	Movements	instability	User must select site			
-Neuromuscular	Joints	Movements	stiff	User must select site			
-Neuromuscular	Joints	Movements	locked	User must select site			
-Neuromuscular	Joints	Pain	not tender				
-Neuromuscular	Joints	Pain	tender	User must select site			
-Neuromuscular	Joints	Sounds	no sounds				
-Neuromuscular	Joints	Sounds	clicking	User must select site			
-Neuromuscular	Joints	Sounds	crepitus	User must select site			
+examination_name	category	subcategory	finding_name	snomed_finding_code	snomed_body_structure_codes	snomed_additional_relationships
+General	Patient state		ill	302772006		
+General	Patient state		unalert	704426000		
+General	Patient state		confused	40917007		
+General	Patient state		drowsy	271782001		
+General	Patient state		febrile	386661006		
+General	Patient state		dehydrated	55241000087106		
+General	Patient state		uncooperative	248042003		
+General	Patient state		sad	420038007		
+General	Patient state		resentful	162219004		
+General	Patient state		fat	271590003		
+General	Patient state		muscular	827072007		
+General	Patient state		edema	267038008		
+General	Patient state		wasted	371597004		
+General	Patient state		in pain	76948002		
+General	Patient state		in distress	69328002		
+General	Hands	Texture	cold	703883009	12861001,85151006,78791008	
+General	Hands	Texture	hot	707793005	12861001,85151006,78791008	
+General	Hands	Texture	clammy	102598000	12861001,85151006,78791008	
+General	Hands	Fingers	cyanosis	3415004	362779006,7569003	
+General	Hands	Fingers	nicotine stains	247439004	362779006,7569003	
+General	Hands	Fingers	clubbing	30760008	362779006,7569003	
+General	Hands	Nails	leukonychia	111202002	770802007	
+General	Hands	Nails	koilonychia	66270006	770802007	
+General	Hands	Nails	splinter hemorrhages	271770005	770802007	
+General	Hands	Nails	pitting	89704006	770802007	
+General	Hands	Nails	onycholysis	75789001	770802007	
+General	Hands	Nails	discolouration	47415006	770802007	
+General	Hands	Palms	erythema	70819003	21547004	
+General	Hands	Palms	dupuytren's disease	203045001	21203009	
+General	Hands	Palms	pale skin	1237486008	21547004	
+General	Hands	Palms	cyanosis	119419001	21547004	
+General	Hands	Palms	jaundice	18165001	21547004	
+Skin	Colour		hypopigment	89031001	39937001	
+Skin	Colour		hyperpigment	49765009	39937001	
+Skin	Colour		discolouration	3253007	39937001	
+Skin	Colour		jaundice	18165001	39937001	
+Skin	Colour		cyanosis	3415004	39937001	
+Skin	Colour		pale	1237486008	39937001	
+Skin	Texture		diaphoresis	52613005	39937001	
+Skin	Texture		thin	277797007	39937001	
+Skin	Texture		thick	271815000	39937001	
+Skin	Texture		dry	52475004	39937001	
+Skin	Temperature		apyrexial	86699002	39937001	
+Skin	Temperature		pyrexial	386661006	39937001	
+Skin	Temperature		hypothermia	386689009	39937001	
+Skin	Temperature		hyperthermia	409702008	39937001	
+Skin	Wound	Type	abrasion	400168005	39937001	
+Skin	Wound	Type	avulsion	27515001	39937001	
+Skin	Wound	Type	contusion	308492005	39937001	
+Skin	Wound	Type	laceration	35933005	39937001	
+Skin	Wound	Type	burn	48333001	39937001	
+Skin	Wound	Type	surgical incision	609343002	39937001	
+Skin	Wound	Type	pressure injury	1163214006	39937001	
+Skin	Wound	Type	puncture	11639007	39937001	
+Skin	Wound	Type	skin tear	428220001	39937001	
+Skin	Wound	Type	ulcer	56208002	39937001	
+Skin	Wound	Type	wound with foreign body	397175005	39937001	prompt for user to enter in foreign body
+Skin	Rash	Description	flat macular	112629002	39937001	
+Skin	Rash	Description	raised papular	25694009	39937001	
+Skin	Rash	Description	localized plaque	1522000	39937001	
+Skin	Rash	Description	wheal	247472004	39937001	
+Skin	Rash	Description	blisters	339008	39937001	
+Skin	Rash	Description	bullae	339008	39937001	
+Skin	Rash	Description	large vesicles	82515000	39937001	
+Skin	Rash	Description	nodules	27925004	39937001	
+Skin	Rash	Description	purpura	12393003	39937001	
+Head and Neck	Face		drooping	95666008	89545001	
+Head and Neck	Face		swelling	278528006	89545001	
+Head and Neck	Eyes	Sclera	erythema	781682005,246980005	40638003	
+Head and Neck	Eyes	Sclera	jaundice	246975001	40638003	
+Head and Neck	Eyes	Conjunctiva	discharge 	425317008	40638003	
+Head and Neck	Eyes	Conjunctiva	pale	719640000	40638003	
+Head and Neck	Eyes	Conjunctiva	erythema	193894004	40638003	
+Head and Neck	Eyes	Conjunctiva	swelling	193967004	40638003	
+Head and Neck	Eyes	Pupils	constricted	301939004	40638003	
+Head and Neck	Eyes	Pupils	dilated	37125009	40638003	
+Head and Neck	Eyes	Pupils	anisocoria	13045009	40638003	
+Head and Neck	Eyes	Pupils	cataract	247052002	40638003	
+Head and Neck	Eyes	Movement	nystagmus	267664003	40638003	
+Head and Neck	Eyes	Movement	strabismus	22066006	40638003	
+Head and Neck	Eyes	Movement	twitching	699377006	40638003	
+Head and Neck	Eyes	Foreign Body	foreign body	787018009	40638003	eyelash,dried mucus,sawdust,dirt,sand,cosmetics,contact lens,metal particles,glass shards
+Head and Neck	Ears		tender	301388005	34338003,89644007,25577004	
+Head and Neck	Ears		discharge	300132001	34338003,89644007,25577004	
+Head and Neck	Ears		wax impaction	18070006	34338003,89644007,25577004	
+Head and Neck	Ears	 	foreign body	75441006	34338003,89644007,25577004	toy part,coin,nut,seed,stone,button,other
+Head and Neck	Nose		asymmetry	301189006	45206002	
+Head and Neck	Nose		mass	441766009	45206002	
+Head and Neck	Nose		bleeding	249366005	45206002	
+Head and Neck	Nose		discharge	64531003	45206002	
+Head and Neck	Nose		swelling	162383006	45206002	
+Head and Neck	Nose		malformation	72089000	45206002	
+Head and Neck	Nose		foreign body	74699008	45206002	toy part,coin,nut,seed,stone,button,other
+Head and Neck	Mouth	Lips	angular cheilitis	266429005	81083006,11681001,32032005	
+Head and Neck	Mouth	Lips	cyanosis	95837007	81083006,11681001,32032005	
+Head and Neck	Mouth	Lips	malformation	109549008	81083006,11681001,32032005	
+Head and Neck	Mouth	Tongue	pale	719637000	21974007	
+Head and Neck	Mouth	Tongue	cyanosis	95837007	21974007	
+Head and Neck	Mouth	Tongue	moist	300248006	21974007	
+Head and Neck	Mouth	Tongue	dry tongue	271669001	21974007	
+Head and Neck	Mouth	Tongue	large tongue	25273001	21974007	
+Head and Neck	Mouth	Tongue	deviation	91391009	21974007	
+Head and Neck	Mouth	Teeth	caries	65413006	245543004	
+Head and Neck	Mouth	Teeth	poor hygiene	110299009	245543004	
+Head and Neck	Mouth	Teeth	false teeth	278615005	245543004	
+Head and Neck	Mouth	Teeth	missing teeth	37320007	245543004	
+Head and Neck	Mouth	Teeth	dentures	8060009	245543004	
+Head and Neck	Mouth	Teeth	braces	272363005	245543004	
+Head and Neck	Mouth	Teeth	implants	737286006	245543004	
+Head and Neck	Mouth	Gums	bleeding	86276007	362102006	
+Head and Neck	Mouth	Gums	swollen	309685001	362102006	
+Head and Neck	Mouth	Tonsils	swollen	442394001	303337002	
+Head and Neck	Mouth	Tonsils	red	281795003	303337002	
+Head and Neck	Mouth	Tonsils	ulcer	16485001	303337002	
+Head and Neck	Mouth	Pharynx	swollen	421581006	54066008	
+Head and Neck	Mouth	Pharynx	red	126662008	54066008	
+Head and Neck	Mouth	Pharynx	ulcer	126666006	54066008	
+Head and Neck	Mouth	Breath	ketosis	2538008	700016008	
+Head and Neck	Mouth	Breath	alcohol	28045007	700016008	
+Head and Neck	Mouth	Breath	fetor	65870008	700016008	
+Head and Neck	Mouth	Breath	musty	79879001	700016008	
+Head and Neck	Neck		tenderness	309522006	45048000	
+Head and Neck	Neck		mass	299703001	45048000	
+Head and Neck	Neck		enlarged lymph nodes	425061006	45048000	
+Cardiovascular	General		extremity cold	771542000		
+Cardiovascular	General		pallor	1237486008		
+Cardiovascular	General		delayed capillary refill	50427001		
+Cardiovascular	General		lower limb swelling	762898005		
+Cardiovascular	General		edema	267038008		
+Cardiovascular	General		cyanosis	119419001		
+Cardiovascular	General		clubbing	4373005		
+Cardiovascular	Blood Pressure		low	12763006		
+Cardiovascular	Blood Pressure		elevated	24184005		
+Cardiovascular	Blood Pressure		high	38341003		
+Cardiovascular	Pulse	Rate	no pulse	54518005		
+Cardiovascular	Pulse	Rate	deficit	34624004		
+Cardiovascular	Pulse	Rate	bradycardia	48867003		
+Cardiovascular	Pulse	Rate	tachycardia	3424008		
+Cardiovascular	Pulse	Pattern	regular	271636001		
+Cardiovascular	Pulse	Pattern	weak	64661000		
+Cardiovascular	Pulse	Pattern	pulsus alternans	42807005		
+Cardiovascular	Pulse	Pattern	pulsus paradoxicus	52099006		
+Cardiovascular	Pulse	Pressure	wide	64798005		
+Cardiovascular	Heart	Precordium	no activity	419099009	80891009	
+Cardiovascular	Heart	Precordium	heave	421433001	80891009	
+Cardiovascular	Heart	Precordium	thrills	271656000	80891009	
+Cardiovascular	Heart	Apex beat	present	177029008	80891009	
+Cardiovascular	Heart	Apex beat	not present	399333009	80891009	
+Cardiovascular	Heart	Apex beat	feeble	301136005	80891009	
+Cardiovascular	Heart	Apex beat	palpable	177029008	80891009	
+Cardiovascular	Heart	Apex beat	not palpable	399333009	80891009	
+Cardiovascular	Heart	Apex beat	thrusting	301135009	80891009	
+Cardiovascular	Heart	Apex beat	displaced	248661003	80891009	
+Cardiovascular	Heart	Dullness	shift to the left	301265006	80891009	
+Cardiovascular	Heart	Dullness	shift to the right	301266007	80891009	
+Cardiovascular	Heart	Dullness	increased	29130009	80891009	
+Cardiovascular	Heart	Sounds	no sounds	18632008	80891009	
+Cardiovascular	Heart	Sounds	gallop	2170000	80891009	
+Cardiovascular	Heart	Sounds	extra heart sounds	248690009	80891009	
+Cardiovascular	Heart	Sounds	diastolic murmur	30782001	80891009	
+Cardiovascular	Heart	Sounds	systolic murmur	31574009	80891009	
+Cardiovascular	Heart	Sounds	continuous murmur	59685007	80891009	
+Cardiovascular	Heart	Sounds	pericardial rub	7036007	80891009	
+Respiratory	General		alar flaring	21558008		
+Respiratory	General		retractions	67909005		
+Respiratory	General		pursed lip breathing	248564001		
+Respiratory	General		noisy breathing	248573009		
+Respiratory	General		stridor	70407001		
+Respiratory	General		wheezes	56018004		
+Respiratory	General		pallor	1237486008		
+Respiratory	General		cyanosis	3415004		
+Respiratory	General		clubbing	367004		
+Respiratory	Trachea		deviation	13206009	44567001	
+Respiratory	Trachea		tug	67158008	44567001	
+Respiratory	Chest	Shape	barrel chest	24228002	51185008	
+Respiratory	Chest	Shape	pigeon chest	38774000	51185008	
+Respiratory	Chest	Shape	kyphosis	414564002	51185008	
+Respiratory	Chest	Shape	scar	12402003	51185008	
+Respiratory	Chest	Shape	mass	440299000	51185008	
+Respiratory	Chest	Expansion	no movement	18632008	51185008	
+Respiratory	Chest	Expansion	reduced	45508002	51185008	
+Respiratory	Chest	Expansion	hyperinflated	249674001	51185008	
+Respiratory	Chest	Expansion	crepitus	64205004	51185008	
+Respiratory	Chest	Tactile Fremitus	decreased	301278006	51185008	
+Respiratory	Chest	Tactile Fremitus	increased	301277001	51185008	
+Respiratory	Chest	Tactile Fremitus	crepitus	64205004	51185008	
+Respiratory	Chest	Vocal Fremitus	decreased	301278006	51185008	
+Respiratory	Chest	Vocal Fremitus	increased	301277001	51185008	
+Respiratory	Chest	Dullness	absent	59948002	51185008	
+Respiratory	Chest	Dullness	stony	47861000	51185008	
+Respiratory	Chest	Dullness	liver	248610008	51185008	
+Respiratory	Breathing	Rate	no breathing	18632008		
+Respiratory	Breathing	Rate	bradypnea	86684002		
+Respiratory	Breathing	Rate	tachypnea	271823003		
+Respiratory	Breathing	Oxygen Saturation	low	449171008		
+Respiratory	Breathing	Pattern	shallow	386616007		
+Respiratory	Breathing	Pattern	labored	248549001		
+Respiratory	Breathing	Sounds	absent	65503000		
+Respiratory	Breathing	Sounds	decreased	58840004		
+Respiratory	Breathing	Sounds	increased	65949001		
+Respiratory	Breathing	Sounds	bronchial	79451004		
+Respiratory	Breathing	Sounds	bronchovesicular	33778004		
+Respiratory	Breathing	Sounds	vesicular	77047003		
+Respiratory	Breathing	Sounds	crackles	48409008		
+Respiratory	Breathing	Sounds	crepitation 	48409008		
+Respiratory	Breathing	Sounds	wheezes	56018004		
+Respiratory	Breathing	Sounds	pleural rub	37636003		
+Gastrointestinal	General		scratch marks	53181008		
+Gastrointestinal	General		striae	47212006		
+Gastrointestinal	General		obesity	414916001		
+Gastrointestinal	General		feeding tube	25062003		
+Gastrointestinal	General		catheter	19923001		
+Gastrointestinal	Abdomen	Shape	asymmetry	271677002	818983003	
+Gastrointestinal	Abdomen	Shape	scar	12402003	818983003	
+Gastrointestinal	Abdomen	Shape	wound	225552003	818983003	
+Gastrointestinal	Abdomen	Shape	hernia	414403008,414396006	818983003	
+Gastrointestinal	Abdomen	Shape	distended	60728008	818983003	
+Gastrointestinal	Abdomen	Shape	mass	271860004	818983003	
+Gastrointestinal	Abdomen	Pain	no pain	162037008	818983003	
+Gastrointestinal	Abdomen	Pain	tenderness	43478001	818983003	
+Gastrointestinal	Abdomen	Pain	guarding	249545003	818983003	
+Gastrointestinal	Abdomen	Pain	rigidity	72300008	818983003	
+Gastrointestinal	Abdomen	Pain	rebound tenderness	35611005	818983003	
+Gastrointestinal	Abdomen	Motion	pulsation	249550009	818983003	
+Gastrointestinal	Abdomen	Motion	visible peristalsis	271837007	818983003	
+Gastrointestinal	Abdomen	Liver	shrunken	300325003	10200004	
+Gastrointestinal	Abdomen	Liver	hepatomegaly	80515008	10200004	
+Gastrointestinal	Abdomen	Kidneys	not palpable	274613006	17373004,18639004,9846003	
+Gastrointestinal	Abdomen	Kidneys	palpable	249579002	17373004,18639004,9846003	
+Gastrointestinal	Abdomen	Spleen	not palpable	271738005	78961009	
+Gastrointestinal	Abdomen	Spleen	palpable	249572006	78961009	
+Gastrointestinal	Abdomen	Spleen	splenomegaly	16294009	78961009	
+Gastrointestinal	Abdomen	Bladder	not palpable	271686007	89837001	
+Gastrointestinal	Abdomen	Bladder	palpable	249586005	89837001	
+Gastrointestinal	Abdomen	Bladder	distended	54768000	89837001	
+Gastrointestinal	Abdomen	Bowel Sounds	absent	16268000		
+Gastrointestinal	Abdomen	Bowel Sounds	reduced	15280003		
+Gastrointestinal	Abdomen	Bowel Sounds	hyperactive	18101008		
+Gastrointestinal	Rectum	Appearance	anal tags	195469007	34402009	
+Gastrointestinal	Rectum	Appearance	hemorrhoids	70153002	34402009	
+Gastrointestinal	Rectum	Appearance	mass	4147007	34402009	
+Gastrointestinal	Rectum	Sphincter Tone	absent	249646006	41178004	
+Gastrointestinal	Rectum	Sphincter Tone	decreased	249647002	41178004	
+Gastrointestinal	Stool	Form	no stool	14760008		
+Gastrointestinal	Stool	Form	hard	75295004		
+Gastrointestinal	Stool	Form	loose	398032003		
+Gastrointestinal	Stool	Form	watery	398212009		
+Gastrointestinal	Stool	Form	fatty	66187002		
+Gastrointestinal	Stool	Form	worms	267059001		
+Gastrointestinal	Stool	Colour	dark	35064005		
+Gastrointestinal	Stool	Colour	pale	70396004		
+Gastrointestinal	Stool	Colour	bloody	405729008		
+Gastrointestinal	Stool	Colour	tarry	2901004		
+Gastrointestinal	Urine		no urine	2472002		
+Gastrointestinal	Urine	Colour	clear	167236000		
+Gastrointestinal	Urine	Colour	dark	39575007		
+Gastrointestinal	Urine	Colour	pale	162135003		
+Gastrointestinal	Urine	Colour	red	720003003,167235001		
+Gastrointestinal	Urine	Colour	orange	167233008		
+Gastrointestinal	Urine	Colour	black	88746009		
+Gastrointestinal	Urine	Colour	bloody	34436003		
+Gastrointestinal	Urine	Smell	fishy odor	167249005		
+Gastrointestinal	Urine	Smell	ammonia odor	167248002		
+Gastrointestinal	Urine	Smell	foul odor	690701000119101		
+Gastrointestinal	Urine	Smell	sweet odor	773318006		
+Neuromuscular	Consciousness	Level	Alert	248234008		
+Neuromuscular	Consciousness	Level	Voice	286328007		
+Neuromuscular	Consciousness	Level	Pain	427304006		
+Neuromuscular	Consciousness	Level	Unresponsive	422768004		
+Neuromuscular	Cranial Nerves	Sight	no sight	105597003		
+Neuromuscular	Cranial Nerves	Sight	far	38101003		
+Neuromuscular	Cranial Nerves	Sight	partial	7973008		
+Neuromuscular	Cranial Nerves	Sight	near	57190000		
+Neuromuscular	Cranial Nerves	Smell	no smell	44169009		
+Neuromuscular	Cranial Nerves	Smell	impaired	83156004		
+Neuromuscular	Cranial Nerves	Taste	no taste	36955009		
+Neuromuscular	Cranial Nerves	Taste	decreased	697990000		
+Neuromuscular	Cranial Nerves	Taste	impaired	271801002		
+Neuromuscular	Cranial Nerves	Taste	increased	247319002		
+Neuromuscular	Cranial Nerves	Speech	no speech	286369003		
+Neuromuscular	Cranial Nerves	Speech	Slurred	289195008		
+Neuromuscular	Cranial Nerves	Speech	Sounds	286300001		
+Neuromuscular	Cranial Nerves	Speech	stuttering	39423001		
+Neuromuscular	Cranial Nerves	Voice	no voice	44564008		
+Neuromuscular	Cranial Nerves	Voice	whispers	21313003		
+Neuromuscular	Cranial Nerves	Voice	hoarse	50219008		
+Neuromuscular	Cranial Nerves	Swallowing	no swallowing	288938004		
+Neuromuscular	Cranial Nerves	Swallowing	slow	289919004		
+Neuromuscular	Cranial Nerves	Swallowing	restricted	306774005,288960001		
+Neuromuscular	Cranial Nerves	Swallowing	difficulty	288945004		
+Neuromuscular	Cranial Nerves	Hearing	no hearing	95820000		
+Neuromuscular	Cranial Nerves	Hearing	decreased	103276001		
+Neuromuscular	Cranial Nerves	Hearing	impaired	15188001		
+Neuromuscular	Cranial Nerves	Hearing	increased	25289003		
+Neuromuscular	Central System	Cognition	confusion	40917007		
+Neuromuscular	Central System	Cognition	disorientation	62476001		
+Neuromuscular	Central System	Cognition	impaired	386806002		
+Neuromuscular	Central System	Memory	no memory	48167000		
+Neuromuscular	Central System	Memory	impaired	386807006		
+Neuromuscular	Central System	Gait	abnormal	22325002		
+Neuromuscular	Central System	Gait	ataxic	25136009		
+Neuromuscular	Central System	Gait	bouncy	250021008		
+Neuromuscular	Central System	Gait	staggering	78691002		
+Neuromuscular	Central System	Gait	unsteady	22631008		
+Neuromuscular	Central System	Balance	no balance	282301004		
+Neuromuscular	Central System	Balance	impaired	387603000		
+Neuromuscular	Central System	Coordination	no coordination	20262006		
+Neuromuscular	Central System	Coordination	decreased	422576004		
+Neuromuscular	Central System	Coordination	stumbling	85711000119103		
+Neuromuscular	Extremities	Shape	scar	12402003		
+Neuromuscular	Extremities	Shape	amputation	41944006		
+Neuromuscular	Extremities	Shape	deformity	445144002		
+Neuromuscular	Extremities	Shape	swelling	80068009		
+Neuromuscular	Extremities	Shape	mass (upper limb)	309525008	53120007	
+Neuromuscular	Extremities	Shape	mass (lower limb)	309527000	61685007	
+Neuromuscular	Extremities	Power	weakness	713514005		
+Neuromuscular	Extremities	Power	paralysis (upper limb)	41764006	53120007	
+Neuromuscular	Extremities	Power	paralysis (lower limb)	80420005	61685007	
+Neuromuscular	Extremities	Movement	limited	82971005		
+Neuromuscular	Extremities	Movement	jerky	249962002		
+Neuromuscular	Extremities	Movement	fasciculation	82470000		
+Neuromuscular	Extremities	Movement	spasticity	221360009		
+Neuromuscular	Extremities	Movement	rigidity	16046003		
+Neuromuscular	Extremities	Tone	decreased	398151007		
+Neuromuscular	Extremities	Tone	increased	56731001		
+Neuromuscular	Extremities	Reflexes	absent	37280007		
+Neuromuscular	Extremities	Reflexes	decreased	835279003		
+Neuromuscular	Extremities	Reflexes	increased	86854008		
+Neuromuscular	Joints	Shape	swelling	271771009		
+Neuromuscular	Joints	Shape	deformity	250087009		
+Neuromuscular	Joints	Shape	mass	428637004,428670009,1293203000,1293199000,431041003,323971000119103,429650005,323981000119100		
+Neuromuscular	Joints	Temperature	cold	298258006		
+Neuromuscular 	Joints	Temperature 	cool	298257001		
+Neuromuscular	Joints	Temperature	warm	298256005		
+Neuromuscular	Joints	Temperature	hot	276330000		
+Neuromuscular	Joints	Movements	laxity	298203008		
+Neuromuscular	Joints	Movements	instability	67374007		
+Neuromuscular	Joints	Movements	stiff	84445001		
+Neuromuscular	Joints	Movements	locked	249923006		
+Neuromuscular	Joints	Pain	not tender	298252007		
+Neuromuscular	Joints	Pain	tender	110288007		
+Neuromuscular	Joints	Sounds	no sounds	298245005		
+Neuromuscular	Joints	Sounds	clicking	202596000		
+Neuromuscular	Joints	Sounds	crepitus	2764000		
