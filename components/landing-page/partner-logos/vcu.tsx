@@ -5,6 +5,7 @@ export default function VCULogo(props: JSX.SVGAttributes<SVGSVGElement>) {
     <svg
       fill='none'
       viewBox='27.08 58.27 239.95 72.05'
+      alt='Virginia Commonwealth University'
       {...props}
     >
       <path

@@ -1,6 +1,6 @@
 export default function USFLogo() {
   return (
-    <svg viewBox='0 0 300 67'>
+    <svg viewBox='0 0 300 67' alt='University of San Francisco'>
       <mask fill='#004934'>
         <path
           d='m0 .80348184h14.3822505v23.74570366h-14.3822505z'
