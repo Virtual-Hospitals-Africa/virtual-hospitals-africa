@@ -4,6 +4,8 @@ import { MHILink } from '../../islands/landing-page/MHIDotsLogo.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import USFLogo from './partner-logos/usf.tsx'
 import VCULogo from './partner-logos/vcu.tsx'
+import MedicalCollegeOfWisconsin from './partner-logos/mcw.tsx'
+import UniversityOfMichiganLawSchool from './partner-logos/umichlaw.tsx'
 
 export default function PartnersContent() {
   return (
@@ -45,6 +47,18 @@ export default function PartnersContent() {
                 width={304}
               />
             </a>
+            <span className='pr-8'>
+              <MedicalCollegeOfWisconsin />
+            </span>
+            <img
+              className='max-h-12 w-full object-contain object-left ml-[-6px]'
+              src='/images/logos/msu.webp'
+              alt='Midlands State University'
+              height={112}
+            />
+            <span className='col-start-1 col-end-3'>
+              <UniversityOfMichiganLawSchool />
+            </span>
             <span className='pr-8'>
               <USFLogo />
             </span>
