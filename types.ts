@@ -3105,7 +3105,7 @@ export type EventData = {
 }
 
 export enum EventType {
-  HealthWorkerFirstLoggedIn ='HealthWorkerFirstLoggedIn'
+  HealthWorkerFirstLoggedIn = 'HealthWorkerFirstLoggedIn',
 }
 
 export type HealthWorkerFirstLoggedInData = {
