@@ -3103,3 +3103,11 @@ export type EventData = {
   id: string
   data: unknown
 }
+
+export enum EventType {
+  HealthWorkerFirstLoggedIn ='HealthWorkerFirstLoggedIn'
+}
+
+export type HealthWorkerFirstLoggedInData = {
+  health_worker_id: string
+}

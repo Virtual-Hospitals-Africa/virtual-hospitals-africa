@@ -9,8 +9,9 @@ import * as sessions from '../db/models/sessions.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
+import * as events from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
-import { GoogleProfile, Profession, TrxOrDb } from '../types.ts'
+import { GoogleProfile, Profession, TrxOrDb, EventType } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
@@ -81,6 +82,11 @@ export async function initializeHealthWorker(
       )
     ),
   )
+
+  await events.insert(trx, {
+    type: EventType.HealthWorkerFirstLoggedIn,
+    data: { health_worker_id },
+  })
 
   return { id: health_worker_id }
 }
