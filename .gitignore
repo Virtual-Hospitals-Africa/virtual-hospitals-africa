@@ -4,7 +4,6 @@ npm-debug.log
 tmp/
 compiled/
 sessions/
-events/
 projections/
 coverage/
 html-report/
