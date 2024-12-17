@@ -38,7 +38,14 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
         ? `/app/patients/${patient.id}`
         : `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient?.id}`
 
-      return { id: patient.id, name: patient.name, href, in_waiting_room }
+      return {
+        id: patient.id,
+        name: patient.name,
+        href,
+        in_waiting_room,
+        avatar_url: patient.avatar_url,
+        description: patient.gender + ' - ' + patient.dob_formatted,
+      }
     })
 
     return json(sortBy(patients_with_href, 'in_waiting_room').reverse())

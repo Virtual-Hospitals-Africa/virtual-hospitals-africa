@@ -48,6 +48,8 @@ describe(
             name: patient_in_waiting_room_name,
             href: `/app/patients/${encounter.patient_id}`,
             in_waiting_room: true,
+            avatar_url: null,
+            description: 'null - null',
           },
           {
             id: patient_not_in_waiting_room.id,
@@ -55,6 +57,8 @@ describe(
             href:
               `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient_not_in_waiting_room.id}`,
             in_waiting_room: false,
+            avatar_url: null,
+            description: 'null - null',
           },
         ])
       }))
