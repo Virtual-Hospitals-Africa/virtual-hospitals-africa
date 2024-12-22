@@ -1,6 +1,6 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from './Header.tsx'
-import { Footer } from '../../components/landing-page/Footer.tsx'
+import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import {
@@ -87,7 +87,7 @@ function JustLogoLayoutContents(
       />
       <section className='min-h-full flex flex-col align-center justify-between flex-grow'>
         {children}
-        <Footer />
+        <SimpleFooter />
       </section>
     </>
   )
