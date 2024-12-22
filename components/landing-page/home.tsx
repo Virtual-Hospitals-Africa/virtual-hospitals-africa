@@ -1,5 +1,5 @@
 import { Partners } from './Partners.tsx'
-import { Footer } from './Footer.tsx'
+import { FullFooter } from './Footer.tsx'
 import { ScheduleADemo } from './ScheduleADemo.tsx'
 import { Hero } from './Hero.tsx'
 import { Introduction } from './Introduction.tsx'
@@ -50,7 +50,7 @@ export default function Home() {
       <ScheduleADemo />
       <Partners />
       <TeamSection />
-      <Footer withMhi />
+      <FullFooter />
     </>
   )
 }
