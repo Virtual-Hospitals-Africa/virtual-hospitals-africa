@@ -2374,7 +2374,7 @@ export type RenderedPatientEncounter = {
 export type Measurements = {
   height: [string, number, 'cm']
   weight: [string, number, 'kg']
-  temperature: [string, number, 'celsius']
+  temperature: [string, number, '°C']
   blood_pressure_diastolic: [string, number, 'mmHg']
   blood_pressure_systolic: [string, number, 'mmHg']
   blood_oxygen_saturation: [string, number, '%']

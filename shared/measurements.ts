@@ -5,7 +5,7 @@ export const MEASUREMENTS: {
 } = {
   height: 'cm',
   weight: 'kg',
-  temperature: 'celsius',
+  temperature: '°C',
   blood_pressure_diastolic: 'mmHg',
   blood_pressure_systolic: 'mmHg',
   blood_oxygen_saturation: '%',
