@@ -15,7 +15,6 @@ const ReviewRequestSchema = z.object({
   id: z.string().uuid().optional(),
   organization_id: z.string().uuid().optional(),
   doctor_id: z.string().uuid().optional(),
-  doctor_name: z.string().optional(),
   requester_notes: z.string().optional(),
 }).refine(
   (data) => (console.log(data), data.organization_id || data.doctor_id),
