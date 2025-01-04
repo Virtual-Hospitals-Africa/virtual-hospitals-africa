@@ -76,18 +76,18 @@ const nav_links = INTAKE_STEPS.map((step) => ({
 const next_links_by_route = groupByMapped(
   nav_links,
   (link) => link.route,
-  (link, i) => {
+  (_, i) => {
     const next_link = nav_links[i + 1]
     if (!next_link) {
       assertEquals(i, nav_links.length - 1)
-      assertEquals(link.step, 'summary')
+      // assertEquals(link.step, 'summary')
     }
     return {
       route: next_link?.route ||
         `/app/patients/:patient_id/encounters/open/vitals`,
       button_text: next_link
         ? `Continue to ${capitalize(next_link.step)}`
-        : 'Start visit',
+        : 'Complete Intake',
     }
   },
 )
@@ -171,8 +171,7 @@ async function upsertPatientAndRedirect(
 
   await patient_intake.updateCompletion(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
-    completed_intake: ctx.state.patient.completed_intake ||
-      (step === 'summary'),
+    completed_intake: ctx.state.patient.completed_intake, // ctx.state.patient.completed_intake || (step === 'summary'),
     intake_step_just_completed: step,
   })
 
@@ -204,15 +203,15 @@ export function IntakeLayout({
   return (
     <Layout
       title='Patient Intake'
-      sidebar={
-        <StepsSidebar
-          ctx={ctx}
-          nav_links={nav_links}
-          steps_completed={ctx.state.patient.intake_steps_completed}
-        />
-      }
+      // sidebar={
+      //   <StepsSidebar
+      //     ctx={ctx}
+      //     nav_links={nav_links}
+      //     steps_completed={ctx.state.patient.intake_steps_completed}
+      //   />
+      // }
       url={ctx.url}
-      variant='form'
+      variant='just logo'
     >
       <Form id='intake' method='POST'>
         {children}

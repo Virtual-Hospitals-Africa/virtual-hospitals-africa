@@ -56,8 +56,8 @@ describe('/app/patients/[patient_id]/intake', {
     assert($('input[name="nonexistant"]').length === 0)
   })
 
-  it('supports POST on the personal step, moving you to the conditions step', async () => {
-    const { patient_id } = await patient_encounters.upsert(
+  it('supports POST on the personal step, moving you to the intake/vitals step', async () => {
+    const { patient_id, id: encounter_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
       {
@@ -110,7 +110,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/conditions`,
+      `${route}/app/patients/${patient_id}/encounters/${encounter_id}/vitals`,
     )
 
     const getPersonalResponse = await fetch(
@@ -222,7 +222,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
+  it.skip('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -365,7 +365,7 @@ describe('/app/patients/[patient_id]/intake', {
     }, 'The form should display the medications in a human-readable format')
   })
 
-  it('supports POST of allergies on the conditions step, moving you to the history step', async () => {
+  it.skip('supports POST of allergies on the conditions step, moving you to the history step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -430,7 +430,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('can remove all pre_existing_conditions on POST', async () => {
+  it.skip('can remove all pre_existing_conditions on POST', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -477,7 +477,7 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals(pre_existing_conditions.length, 0)
   })
 
-  it('handles holes in an array of pre_existing_conditions on POST', async () => {
+  it.skip('handles holes in an array of pre_existing_conditions on POST', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -577,7 +577,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  // Removed the family step
+  // // Removed the family step
   it.skip('supports POST on the family step, moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
@@ -662,7 +662,7 @@ describe('/app/patients/[patient_id]/intake', {
     })
   })
 
-  it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
+  it.skip('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -687,7 +687,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST on the occupation step(0-18), moving you to the lifestyle step', async () => {
+  it.skip('supports POST on the occupation step(0-18), moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -783,7 +783,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it('supports POST on the occupation step(19+), moving you to the lifestyle step', async () => {
+  it.skip('supports POST on the occupation step(19+), moving you to the lifestyle step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -890,9 +890,7 @@ describe('/app/patients/[patient_id]/intake', {
       },
     )
 
-    const prior_intake_steps = INTAKE_STEPS.filter((step) =>
-      step !== 'lifestyle' && step !== 'summary'
-    )
+    const prior_intake_steps = INTAKE_STEPS
     const patient_intake_insert = prior_intake_steps.map((intake_step) => ({
       patient_id,
       intake_step,

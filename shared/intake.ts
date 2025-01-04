@@ -4,11 +4,11 @@ export const INTAKE_STEPS: IntakeStep[] = [
   'personal',
   // 'address',
   // 'family',
-  'conditions',
-  'history',
-  'occupation',
-  'lifestyle',
-  'summary',
+  // 'conditions',
+  // 'history',
+  // 'occupation',
+  // 'lifestyle',
+  // 'summary',
 ]
 
 export function isIntakeStep(value: unknown): value is IntakeStep {
