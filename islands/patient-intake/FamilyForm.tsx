@@ -47,10 +47,17 @@ export default function PatientFamilyForm({
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
+<<<<<<< HEAD
   const showGuardians = false //age_years <= 18
   const showDependents = false // age_years >= 10
   const showNextOfKin = true //age_years >= 19
   // const showPatientCohabitation = age_years <= 18
+=======
+  const showGuardians = age_years <= 18
+  const showDependents = false // age_years >= 10
+  const showNextOfKin = age_years >= 19
+  const showPatientCohabitation = age_years <= 18
+>>>>>>> d6a4c741 (Updating intake page with design changes)
 
   //Default values
   family.marital_status ??= age_years <= 18 ? 'Never Married' : null
