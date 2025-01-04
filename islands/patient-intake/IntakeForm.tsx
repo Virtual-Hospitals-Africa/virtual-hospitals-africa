@@ -36,19 +36,17 @@ export default function PatientIntakeForm(
   }, [dobInput.value])
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <PatientPersonalForm
         patient={patient}
         previously_completed={previously_completed}
         strAge={dobInput}
       />
-      <hr className='my-2' />
       <PatientAddressForm
         patient={patient}
         default_organization={default_organization}
         country_address_tree={country_address_tree}
       />
-      <hr className='my-2' />
       <PatientFamilyForm
         age_years={ageEntered.value}
         family={family}

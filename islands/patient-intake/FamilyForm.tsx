@@ -48,7 +48,7 @@ export default function PatientFamilyForm({
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
   const showGuardians = age_years <= 18
-  const showDependents = age_years >= 10
+  const showDependents = false // age_years >= 10
   const showNextOfKin = age_years >= 19
   const showPatientCohabitation = age_years <= 18
 
@@ -121,7 +121,8 @@ export default function PatientFamilyForm({
           </div>
         )}
 
-      <FormSection header='Family Status'>
+      {
+        /* <FormSection header='Family Status'>
         <FormRow>
           <MaritalStatusSelect
             label='Marital Status'
@@ -150,7 +151,8 @@ export default function PatientFamilyForm({
             />
           )}
         </FormRow>
-      </FormSection>
+      </FormSection> */
+      }
     </>
   )
 }
