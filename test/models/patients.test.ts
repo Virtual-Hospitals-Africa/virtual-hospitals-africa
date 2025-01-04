@@ -232,6 +232,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           ids: [patient_id],
           health_worker_id: health_worker.id,
         })
+
         assertEquals(results, [
           {
             id: patient_id,
@@ -239,7 +240,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             name: 'Test Patient',
             dob_formatted: '3 January 1989',
             address: null,
-            age_display: '35 years',
+            age_display: '36 years',
             description: 'male, 03/01/1989',
             gender: 'male',
             ethnicity: null,
