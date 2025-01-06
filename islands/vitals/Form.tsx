@@ -1,4 +1,4 @@
-import { CheckboxInput, NumberInput, UnitInput } from '../form/Inputs.tsx'
+import { CheckboxInput, UnitInput } from '../form/Inputs.tsx'
 import { Measurement, Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
