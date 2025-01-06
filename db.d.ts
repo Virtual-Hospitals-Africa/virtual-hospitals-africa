@@ -68,11 +68,6 @@ export type Int8 = ColumnType<
 >
 
 export type IntakeStep = 'personal'
-// | 'conditions'
-// | 'history'
-// | 'lifestyle'
-// | 'occupation'
-// | 'summary'
 
 export type Json = JsonValue
 

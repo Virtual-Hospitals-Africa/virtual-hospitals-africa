@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@luca/esbuild-deno-loader@0.11.0": "0.11.0",
     "jsr:@std/bytes@^1.0.2": "1.0.4",
+    "jsr:@std/cli@~0.224.7": "0.224.7",
     "jsr:@std/encoding@^1.0.5": "1.0.6",
     "jsr:@std/path@^1.0.6": "1.0.8",
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.4.49",
@@ -30,6 +31,9 @@
     },
     "@std/bytes@1.0.4": {
       "integrity": "11a0debe522707c95c7b7ef89b478c13fb1583a7cfb9a85674cd2cc2e3a28abc"
+    },
+    "@std/cli@0.224.7": {
+      "integrity": "654ca6477518e5e3a0d3fabafb2789e92b8c0febf1a1d24ba4b567aba94b5977"
     },
     "@std/encoding@1.0.6": {
       "integrity": "ca87122c196e8831737d9547acf001766618e78cd8c33920776c7f5885546069"
