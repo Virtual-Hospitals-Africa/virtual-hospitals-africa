@@ -213,6 +213,66 @@ export function NumberInput(
   )
 }
 
+export function UnitInput(
+  {
+    name,
+    label,
+    required,
+    signal,
+    value,
+    onInput,
+    onFocus,
+    onBlur,
+    disabled,
+    readonly,
+    className,
+    inputClassName,
+    min,
+    max,
+    units,
+  }: WrapperInputProps<HTMLInputElement, number> & {
+    min?: number
+    max?: number
+    units: string
+  },
+) {
+  return (
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('flex gap-1 flex-col flex-grow-0', className)}
+    >
+      <div className='flex items-center rounded-md bg-white pl-0 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600'>
+        <span className='text-gray-500 ml-2'>{units}</span>
+        <input
+          type='text'
+          inputmode='numeric'
+          {...(name && { name })}
+          className={cls(
+            'block w-full rounded-md border-0 outline-0 focus:ring-0 focus:outline-none text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6',
+            inputClassName,
+            disabled && 'bg-gray-300',
+          )}
+          required={required}
+          disabled={disabled}
+          readonly={readonly}
+          value={signal?.value ?? value ?? undefined}
+          onInput={(event) => {
+            if (signal) signal.value = parseInt(event.currentTarget.value)
+            onInput?.(event)
+            event.currentTarget.setCustomValidity('')
+          }}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          min={min}
+          max={max}
+        />
+      </div>
+    </LabeledInput>
+  )
+}
+
 export function CheckboxInput(
   {
     name,

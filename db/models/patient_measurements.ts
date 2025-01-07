@@ -99,7 +99,7 @@ export async function getEncounterVitals(
       measurement_name: measurement_name as keyof Measurements,
       snomed_code: VITALS_SNOMED_CODE[measurement_name as keyof Measurements],
       value: parseFloat(value),
-      units: units as 'cm' | 'kg' | 'celsius' | 'mmHg' | '%' | 'mg/dL' | 'bpm',
+      units: units as 'cm' | 'kg' | '°C' | 'mmHg' | '%' | 'mg/dL' | 'bpm',
       is_flagged: is_flagged || false,
     }
     measurements.push(measurement)

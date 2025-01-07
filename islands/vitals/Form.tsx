@@ -1,4 +1,4 @@
-import { CheckboxInput, NumberInput } from '../form/Inputs.tsx'
+import { CheckboxInput, UnitInput } from '../form/Inputs.tsx'
 import { Measurement, Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
@@ -56,55 +56,62 @@ function VitalInput({ measurement, required, vitals, name }: {
   const Icon = VitalsIcons[measurement as keyof typeof VitalsIcons]
 
   return (
-    <>
-      <VitalsFlag
-        on={on.value}
-        toggle={toggle}
-        description={vital_description.value}
-      />
-      <Icon className='w-6 col-start-2' />
-      <span className='col-start-3'>
-        {capitalize(measurement)}
-        {required && <sup>*</sup>}
-      </span>
-      <NumberInput
-        required={required}
-        name={`${name}.value`}
-        label={null}
-        value={vitalsValue}
-        className='col-start-6'
-        min={0}
-        onInput={
-          // update drawer
-          (e) => {
-            on.value &&
-              addVitalsFinding(
-                vital_description.value,
-                Number(e.currentTarget.value),
-              )
-
-            setVitalsValue(Number(e.currentTarget.value))
-          }
+    <div className='flex justify-between w-full'>
+      <div className='flex flex-row gap-2'>
+        <VitalsFlag
+          on={on.value}
+          toggle={toggle}
+          description={vital_description.value}
+        />
+        <Icon className='w-6' />
+        {
+          /* <div className='align-middle'>
+        </div> */
         }
-      />
-      <CheckboxInput
-        name={`${name}.is_flagged`}
-        label={null}
-        checked={on.value}
-        className='hidden'
-      />
-      <HiddenInput
-        name={`${name}.measurement_name`}
-        value={measurement}
-      />
+        <span class='flex items-center'>
+          {capitalize(measurement)}
+          {required && <sup>*</sup>}
+        </span>
+      </div>
+      <div className='min-w-30 max-w-30'>
+        <UnitInput
+          required={required}
+          name={`${name}.value`}
+          label={null}
+          value={vitalsValue}
+          className='col-start-6 justify-end'
+          min={0}
+          onInput={
+            // update drawer
+            (e) => {
+              on.value &&
+                addVitalsFinding(
+                  vital_description.value,
+                  Number(e.currentTarget.value),
+                )
+              setVitalsValue(Number(e.currentTarget.value))
+            }
+          }
+          units={MEASUREMENTS[measurement]}
+        />
+        <CheckboxInput
+          name={`${name}.is_flagged`}
+          label={null}
+          checked={on.value}
+          className='hidden'
+        />
+        <HiddenInput
+          name={`${name}.measurement_name`}
+          value={measurement}
+        />
+      </div>
       {
         /* <HiddenInput
         name={`${name}.is_flagged`}
         value={on.value ? true : false}
       /> */
       }
-      <span className='col-start-7'>{MEASUREMENTS[measurement]}</span>
-    </>
+    </div>
   )
 }
 
@@ -128,7 +135,7 @@ export function VitalsForm({ vitals }: {
   }
 
   return (
-    <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
+    <div className='flex flex-col gap-1'>
       {vitals.sort((a, b) =>
         a.measurement_name.localeCompare(b.measurement_name)
       ).map((vital, index) => (
