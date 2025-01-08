@@ -11,7 +11,7 @@ import {
   national_id_number,
   varchar255,
 } from '../../../../../util/validators.ts'
-import PatientIntakeForm from '../../../../../islands/patient-intake/IntakeForm.tsx'
+import PatientIntakeForm from '../../../../../components/patient-intake/IntakeForm.tsx'
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().uuid().optional(),
@@ -159,15 +159,13 @@ export default IntakePage(
     }
 
     return (
-      <div>
-        <PatientIntakeForm
-          patient={patient}
-          previously_completed={previously_completed}
-          default_organization={default_organization}
-          country_address_tree={country_address_tree}
-          family={family}
-        />
-      </div>
+      <PatientIntakeForm
+        patient={patient}
+        previously_completed={previously_completed}
+        default_organization={default_organization}
+        country_address_tree={country_address_tree}
+        family={family}
+      />
     )
   },
 )

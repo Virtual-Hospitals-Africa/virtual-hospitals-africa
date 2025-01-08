@@ -85,10 +85,10 @@ function JustLogoLayoutContents(
         title={title}
         variant='just logo'
       />
-      <section className='min-h-full flex flex-col align-center justify-between flex-grow'>
+      <section className='min-h-full flex flex-col align-center justify-between flex-grow p-6'>
         {children}
-        <SimpleFooter />
       </section>
+      <SimpleFooter />
     </>
   )
 }
