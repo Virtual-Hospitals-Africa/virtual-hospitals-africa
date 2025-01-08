@@ -112,9 +112,11 @@ export default async function DiagnosisPage(
     patient_id: ctx.state.doctor_review.patient.id,
   })
   const symptom_start_dates = symptoms.map((s) => s.start_date)
-  const earliest_date = symptom_start_dates.reduce((earliest, current) => {
-    return current < earliest ? current : earliest
-  })
+  const earliest_date = symptom_start_dates.length
+    ? symptom_start_dates.reduce((earliest, current) =>
+      current < earliest ? current : earliest
+    )
+    : undefined
 
   return (
     <ReviewLayout ctx={ctx}>
