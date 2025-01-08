@@ -4,11 +4,10 @@ import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
 import * as patient_allergies from './patient_allergies.ts'
-import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
+import { jsonBuildObject } from '../helpers.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import * as patients from './patients.ts'
-import { IntakeStep } from '../../db.d.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 
 export function getById(
@@ -39,7 +38,7 @@ export function getById(
       'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .select((eb) => [
+    .select([
       'patients.id',
       'patients.name',
       'patients.phone_number',
@@ -58,18 +57,6 @@ export function getById(
         ),
       sql<null | Address>`TO_JSON(addresses)`.as('address'),
       'patients.completed_intake',
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'patients.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
       sql<
@@ -152,18 +139,6 @@ export async function getSummaryById(
       jsonBuildObject({
         view: patients.view_href_sql,
       }).as('actions'),
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'patients.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
       'completed_intake',
     ])
     .where('patients.id', '=', patient_id)
@@ -210,31 +185,16 @@ export async function getSummaryById(
   }
 }
 
-export async function updateCompletion(
+export function completed(
   trx: TrxOrDb,
   {
     patient_id,
-    intake_step_just_completed,
-    completed_intake,
   }: {
     patient_id: string
-    intake_step_just_completed: IntakeStep
-    completed_intake?: boolean
   },
-): Promise<void> {
-  const upserting_intake_step = trx
-    .insertInto('patient_intake')
-    .values({
-      patient_id: patient_id,
-      intake_step: intake_step_just_completed,
-    })
-    .onConflict((oc) => oc.doNothing())
-    .execute()
-
-  const updating_patient = completed_intake && trx.updateTable('patients')
+) {
+  return trx.updateTable('patients')
     .where('id', '=', patient_id)
-    .set({ completed_intake })
+    .set({ completed_intake: true })
     .execute()
-
-  await Promise.all([upserting_intake_step, updating_patient])
 }

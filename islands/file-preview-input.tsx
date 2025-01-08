@@ -124,7 +124,7 @@ export function FilePreviewInput(
 
   if (isShowPreview) {
     return (
-      <Label label={label + ' Preview'} className='relative'>
+      <Label label={label} className='relative'>
         {input}
         <Preview
           name={image?.name || ''}

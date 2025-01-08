@@ -6,7 +6,6 @@ import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as patients from '../../db/models/patients.ts'
-import * as patient_intake from '../../db/models/patient_intake.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   itUsesTrxAnd,
@@ -74,7 +73,8 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient1.id}/intake/personal`,
+                intake:
+                  `/app/organizations/${organization_id}/patients/${patient1.id}/intake`,
                 review: null,
                 awaiting_review: null,
               },
@@ -96,7 +96,8 @@ describe(
               status: 'Awaiting Intake',
               actions: {
                 view: null,
-                intake: `/app/patients/${patient2.id}/intake/personal`,
+                intake:
+                  `/app/organizations/${organization_id}/patients/${patient2.id}/intake`,
                 review: null,
                 awaiting_review: null,
               },
@@ -105,133 +106,6 @@ describe(
               reason: 'seeking treatment',
               is_emergency: false,
             })
-          }),
-      )
-
-      itUsesTrxAnd(
-        'shows what step of the intake process the patient is awaiting',
-        (trx) =>
-          withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.insert(trx, {
-              name: 'Test Patient 1',
-            })
-
-            await patient_encounters.upsert(trx, organization_id, {
-              patient_id: patient.id,
-              reason: 'seeking treatment',
-            })
-
-            await patient_intake.updateCompletion(trx, {
-              patient_id: patient.id,
-              intake_step_just_completed: 'personal',
-            })
-
-            const { id: health_worker_id } = await addTestHealthWorker(trx, {
-              scenario: 'nurse',
-            })
-            const health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id,
-            })
-
-            const waiting_room_results = await waiting_room.get(trx, {
-              organization_id,
-              health_worker,
-            })
-
-            assertEquals(waiting_room_results, [{
-              appointment: null,
-              patient: {
-                avatar_url: null,
-                id: patient.id,
-                name: 'Test Patient 1',
-                description: null,
-              },
-              in_waiting_room: true,
-              arrived_ago_display: 'Just now',
-              status: 'Awaiting Intake (Conditions)',
-              actions: {
-                view: null,
-                intake: `/app/patients/${patient.id}/intake/conditions`,
-                review: null,
-                awaiting_review: null,
-              },
-              providers: [],
-              reviewers: [],
-              reason: 'seeking treatment',
-              is_emergency: false,
-            }])
-          }),
-      )
-
-      itUsesTrxAnd(
-        'shows what step of the intake process the patient is in',
-        (trx) =>
-          withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.insert(trx, {
-              name: 'Test Patient 1',
-            })
-
-            await patient_encounters.upsert(trx, organization_id, {
-              patient_id: patient.id,
-              reason: 'seeking treatment',
-            })
-
-            const nurse = await addTestHealthWorker(trx, {
-              organization_id,
-              scenario: 'approved-nurse',
-            })
-
-            const nurse_health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id: nurse.id,
-            })
-
-            await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
-              patient_id: patient.id,
-              health_worker: nurse_health_worker,
-              encounter_id: 'open',
-            })
-
-            await patient_intake.updateCompletion(trx, {
-              patient_id: patient.id,
-              intake_step_just_completed: 'personal',
-            })
-
-            const waiting_room_results = await waiting_room.get(trx, {
-              organization_id,
-              health_worker: nurse_health_worker,
-            })
-
-            assertEquals(waiting_room_results, [{
-              appointment: null,
-              patient: {
-                avatar_url: null,
-                id: patient.id,
-                name: 'Test Patient 1',
-                description: null,
-              },
-              in_waiting_room: false,
-              arrived_ago_display: 'Just now',
-              status: 'In Intake (Conditions)',
-              actions: {
-                view: null,
-                intake: `/app/patients/${patient.id}/intake/conditions`,
-                review: null,
-                awaiting_review: null,
-              },
-              providers: [{
-                name: nurse.name,
-                profession: 'nurse',
-                href:
-                  `/app/organizations/${organization_id}/employees/${nurse.id}`,
-                avatar_url: nurse.avatar_url,
-                seen: true,
-                health_worker_id: nurse.id,
-                employee_id: nurse.employee_id!,
-              }],
-              reviewers: [],
-              reason: 'seeking treatment',
-              is_emergency: false,
-            }])
           }),
       )
 
@@ -291,7 +165,8 @@ describe(
                   status: 'Awaiting Intake',
                   actions: {
                     view: null,
-                    intake: `/app/patients/${patient1.id}/intake/personal`,
+                    intake:
+                      `/app/organizations/${organization_id}/patients/${patient1.id}/intake`,
                     review: null,
                     awaiting_review: null,
                   },
@@ -313,7 +188,8 @@ describe(
                   status: 'Awaiting Intake',
                   actions: {
                     view: null,
-                    intake: `/app/patients/${patient2.id}/intake/personal`,
+                    intake:
+                      `/app/organizations/${organization_id}/patients/${patient2.id}/intake`,
                     review: null,
                     awaiting_review: null,
                   },

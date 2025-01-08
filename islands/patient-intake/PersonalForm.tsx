@@ -64,7 +64,7 @@ export default function PatientPersonalForm(
         <FormRow className='flex-wrap'>
           <ImagePreviewInput
             name='avatar_media'
-            label='Photo'
+            label='Profile Picture'
             className='w-36'
             value={patient.avatar_url}
           />

@@ -39,7 +39,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const { intake } = to_upsert
 
     const next_url = intake
-      ? `/app/patients/${upserted.patient_id}/intake/personal`
+      ? `/app/organizations/${organization_id}/patients/${upserted.patient_id}/intake`
       : `/app/organizations/${organization_id}/waiting_room?just_encountered_id=${upserted.id}`
 
     return redirect(next_url)

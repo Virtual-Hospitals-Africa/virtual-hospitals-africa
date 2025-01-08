@@ -53,7 +53,8 @@ describe(
                   actions: {
                     view: null,
                     review: null,
-                    intake: `/app/patients/${patient.id}/intake/personal`,
+                    intake:
+                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
                     awaiting_review: null,
                   },
                   providers: [],
@@ -104,7 +105,8 @@ describe(
                   actions: {
                     view: null,
                     review: null,
-                    intake: `/app/patients/${patient.id}/intake/personal`,
+                    intake:
+                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
                     awaiting_review: null,
                   },
                   providers: [

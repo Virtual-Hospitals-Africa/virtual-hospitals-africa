@@ -871,7 +871,7 @@ export function RadioGroup(
 }
 
 export function GenderSelect(
-  { value }: { value: Maybe<Gender> },
+  { value }: { value?: Maybe<Gender> },
 ) {
   return (
     <Select
@@ -892,7 +892,7 @@ export function GenderSelect(
 }
 
 export function EthnicitySelect(
-  { value }: { value: Maybe<string> },
+  { value }: { value?: Maybe<string> },
 ) {
   return (
     <Select

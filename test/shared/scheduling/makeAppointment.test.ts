@@ -88,7 +88,6 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             completed_intake: false,
-            intake_steps_completed: [],
             actions: {
               view: `/app/patients/${patient.id}`,
             },

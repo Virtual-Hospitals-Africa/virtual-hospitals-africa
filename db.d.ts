@@ -67,14 +67,6 @@ export type Int8 = ColumnType<
   bigint | number | string
 >
 
-export type IntakeStep =
-  | 'conditions'
-  | 'history'
-  | 'lifestyle'
-  | 'occupation'
-  | 'personal'
-  | 'summary'
-
 export type Json = JsonValue
 
 export type JsonArray = JsonValue[]
@@ -504,11 +496,6 @@ export interface Icd10Sections {
   section: string
 }
 
-export interface Intake {
-  order: Int8
-  step: IntakeStep
-}
-
 export interface MailingList {
   created_at: Generated<Timestamp>
   email: string
@@ -802,14 +789,6 @@ export interface PatientGuardians {
   guardian_patient_id: string
   guardian_relation: GuardianRelation
   id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientIntake {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  intake_step: IntakeStep
-  patient_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1158,7 +1137,6 @@ export interface DB {
   icd10_diagnoses_excludes_codes: Icd10DiagnosesExcludesCodes
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
-  intake: Intake
   mailing_list: MailingList
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
@@ -1189,7 +1167,6 @@ export interface DB {
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
   patient_guardians: PatientGuardians
-  patient_intake: PatientIntake
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements

@@ -40,6 +40,7 @@ import * as $app_organizations_organization_id_inventory_add_procurer from './ro
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
 import * as $app_organizations_organization_id_patients from './routes/app/organizations/[organization_id]/patients.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx'
 import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
 import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
 import * as $app_organizations_organization_id_waiting_room from './routes/app/organizations/[organization_id]/waiting_room.tsx'
@@ -62,14 +63,6 @@ import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from 
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
-import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
-import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
-import * as $app_patients_patient_id_intake_conditions from './routes/app/patients/[patient_id]/intake/conditions.tsx'
-import * as $app_patients_patient_id_intake_history from './routes/app/patients/[patient_id]/intake/history.tsx'
-import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
-import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
-import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
-import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
 import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
 import * as $app_patients_patient_id_profile_appointments from './routes/app/patients/[patient_id]/profile/appointments.tsx'
 import * as $app_patients_patient_id_profile_history from './routes/app/patients/[patient_id]/profile/history.tsx'
@@ -300,6 +293,8 @@ const manifest = {
       $app_organizations_organization_id_inventory_history,
     './routes/app/organizations/[organization_id]/patients.tsx':
       $app_organizations_organization_id_patients,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake,
     './routes/app/organizations/[organization_id]/register.tsx':
       $app_organizations_organization_id_register,
     './routes/app/organizations/[organization_id]/register/[step].tsx':
@@ -342,22 +337,6 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
-    './routes/app/patients/[patient_id]/intake.tsx':
-      $app_patients_patient_id_intake,
-    './routes/app/patients/[patient_id]/intake/_middleware.tsx':
-      $app_patients_patient_id_intake_middleware,
-    './routes/app/patients/[patient_id]/intake/conditions.tsx':
-      $app_patients_patient_id_intake_conditions,
-    './routes/app/patients/[patient_id]/intake/history.tsx':
-      $app_patients_patient_id_intake_history,
-    './routes/app/patients/[patient_id]/intake/lifestyle.tsx':
-      $app_patients_patient_id_intake_lifestyle,
-    './routes/app/patients/[patient_id]/intake/occupation.tsx':
-      $app_patients_patient_id_intake_occupation,
-    './routes/app/patients/[patient_id]/intake/personal.tsx':
-      $app_patients_patient_id_intake_personal,
-    './routes/app/patients/[patient_id]/intake/summary.tsx':
-      $app_patients_patient_id_intake_summary,
     './routes/app/patients/[patient_id]/profile/_middleware.tsx':
       $app_patients_patient_id_profile_middleware,
     './routes/app/patients/[patient_id]/profile/appointments.tsx':

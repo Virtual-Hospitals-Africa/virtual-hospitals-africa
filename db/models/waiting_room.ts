@@ -8,7 +8,6 @@ import {
 } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
-import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 import capitalize from '../../util/capitalize.ts'
@@ -147,33 +146,6 @@ export async function get(
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
-
-      eb.selectFrom('intake')
-        .leftJoin(
-          'patient_intake',
-          (join) =>
-            join
-              .onRef('patient_intake.intake_step', '=', 'intake.step')
-              .onRef('patient_intake.patient_id', '=', 'patients.id'),
-        )
-        .where('patient_intake.id', 'is', null)
-        .orderBy('intake.order', 'asc')
-        .select('step')
-        .limit(1)
-        .as('awaiting_intake_step'),
-
-      eb.selectFrom('intake')
-        .innerJoin(
-          'patient_intake',
-          (join) =>
-            join
-              .onRef('patient_intake.intake_step', '=', 'intake.step')
-              .onRef('patient_intake.patient_id', '=', 'patients.id'),
-        )
-        .orderBy('intake.order', 'desc')
-        .select('step')
-        .limit(1)
-        .as('last_completed_intake_step'),
 
       eb.selectFrom('encounter')
         .leftJoin(
@@ -380,8 +352,6 @@ export async function get(
         wait_time,
         completed_intake,
         in_waiting_room,
-        awaiting_intake_step,
-        last_completed_intake_step,
         awaiting_encounter_step,
         last_completed_encounter_step,
         awaiting_review,
@@ -436,15 +406,9 @@ export async function get(
         }
       } else {
         if (in_waiting_room) {
-          if (last_completed_intake_step) {
-            assert(awaiting_intake_step)
-            status = `Awaiting Intake (${capitalize(awaiting_intake_step)})`
-          } else {
-            status = 'Awaiting Intake'
-          }
+          status = 'Awaiting Intake'
         } else {
-          assert(awaiting_intake_step)
-          status = `In Intake (${capitalize(awaiting_intake_step)})`
+          status = 'In Intake'
         }
       }
       assert(status)
@@ -474,9 +438,7 @@ export async function get(
         actions: {
           view: action === 'view' ? `/app/patients/${patient.id}` : null,
           intake: action === 'intake'
-            ? `/app/patients/${patient.id}/intake/${
-              awaiting_intake_step || INTAKE_STEPS[0]
-            }`
+            ? `/app/organizations/${organization_id}/patients/${patient.id}/intake`
             : null,
           review: action === 'review' && can_review
             ? `/app/patients/${patient.id}/review/${
