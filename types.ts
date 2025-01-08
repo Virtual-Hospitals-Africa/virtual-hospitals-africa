@@ -10,7 +10,6 @@ import {
   EncounterReason,
   EncounterStep,
   FamilyType,
-  IntakeStep,
   MaritalStatus,
   PatientCohabitation,
 } from './db.d.ts'
@@ -163,7 +162,6 @@ export type Patient = PatientPersonal & {
   completed_intake: boolean
   address_id: Maybe<string>
   unregistered_primary_doctor_name: Maybe<string>
-  intake_steps_completed: IntakeStep[]
 }
 
 export type PatientDemographicInfo = {
@@ -188,7 +186,6 @@ export type RenderedPatient =
     | 'national_id_number'
     | 'phone_number'
     | 'completed_intake'
-    | 'intake_steps_completed'
   >
   & {
     id: string
@@ -360,7 +357,6 @@ export type PatientIntake =
     | 'national_id_number'
     | 'nearest_organization_id'
     | 'completed_intake'
-    | 'intake_steps_completed'
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >

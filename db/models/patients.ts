@@ -16,7 +16,6 @@ import { getWalkingDistance } from '../../external-clients/google.ts'
 import * as conversations from './conversations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import {
-  jsonArrayFromColumn,
   jsonBuildObject,
   literalLocation,
   longFormattedDate,
@@ -35,10 +34,6 @@ export const avatar_url_sql = sql<string | null>`
     THEN concat('/app/patients/', patients.id::text, '/avatar') 
     ELSE NULL 
   END
-`
-
-export const intake_clinical_notes_href_sql = sql<string>`
-  concat('/app/patients/', patients.id::text, '/intake/review')
 `
 
 const dob_formatted = longFormattedDate('patients.date_of_birth').as(
@@ -80,18 +75,6 @@ const baseSelect = (trx: TrxOrDb) =>
         'description',
       ),
       'patients.national_id_number',
-      jsonArrayFromColumn(
-        'intake_step',
-        eb.selectFrom('patient_intake')
-          .innerJoin(
-            'intake',
-            'intake.step',
-            'patient_intake.intake_step',
-          )
-          .whereRef('patient_id', '=', 'patients.id')
-          .orderBy(['intake.order desc'])
-          .select(['intake_step']),
-      ).as('intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'organizations.name as nearest_organization',

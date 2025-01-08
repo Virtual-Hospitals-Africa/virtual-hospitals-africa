@@ -34,10 +34,8 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
             provider_ids: [nurse.employee_id!],
           },
         )
-        await patient_intake.updateCompletion(trx, {
+        await patient_intake.completed(trx, {
           patient_id: patient.id,
-          intake_step_just_completed: 'personal',
-          completed_intake: true,
         })
 
         await doctor_reviews.upsertRequest(trx, {

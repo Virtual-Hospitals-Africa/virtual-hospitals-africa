@@ -8,7 +8,6 @@ import { addTestHealthWorker } from '../test/web/utilities.ts'
 import { randomZimbabweanDemographics } from '../util/zimbabweanDemographics.ts'
 import { EncounterReason } from '../db.d.ts'
 import { ENCOUNTER_STEPS } from '../shared/encounter.ts'
-import { INTAKE_STEPS } from '../shared/intake.ts'
 import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
@@ -146,21 +145,7 @@ async function addPatientsToWaitingRoom() {
 
       const in_intake = Math.random() < 0.2
 
-      if (in_intake) {
-        const on_intake_step = shuffle(INTAKE_STEPS)[0]
-        const intake_steps_completed = INTAKE_STEPS.slice(
-          0,
-          INTAKE_STEPS.indexOf(on_intake_step),
-        )
-        if (intake_steps_completed.length > 0) {
-          await db.insertInto('patient_intake')
-            .values(intake_steps_completed.map((intake_step) => ({
-              patient_id: patient.id,
-              intake_step,
-            })))
-            .execute()
-        }
-      } else {
+      if (!in_intake) {
         await db.updateTable('patients')
           .where('patients.id', '=', patient.id)
           .set({ completed_intake: true })
