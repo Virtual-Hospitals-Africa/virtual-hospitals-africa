@@ -12,6 +12,7 @@ import * as diagnoses from '../../../../../db/models/diagnoses.ts'
 import * as patient_symptoms from '../../../../../db/models/patient_symptoms.ts'
 import FormSection from '../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
+import { min } from '../../../../../util/min.ts'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]
@@ -111,12 +112,7 @@ export default async function DiagnosisPage(
     encounter_id: ctx.state.doctor_review.encounter.id,
     patient_id: ctx.state.doctor_review.patient.id,
   })
-  const symptom_start_dates = symptoms.map((s) => s.start_date)
-  const earliest_date = symptom_start_dates.length
-    ? symptom_start_dates.reduce((earliest, current) =>
-      current < earliest ? current : earliest
-    )
-    : undefined
+  const earliest_date = min(symptoms.map((s) => s.start_date))
 
   return (
     <ReviewLayout ctx={ctx}>
