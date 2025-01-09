@@ -46,7 +46,7 @@ export default function AppointmentPage(
       route={props.route}
       url={props.url}
       health_worker={props.data.healthWorker}
-      variant='practitioner home page'
+      variant='health worker home page'
     >
       <PatientDetailedCard patient={props.data.appointment.patient} />
       <AppointmentDetail

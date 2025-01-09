@@ -29,6 +29,12 @@ describe(
           patient_name: patient_in_waiting_room_name,
           reason: 'seeking treatment',
         })
+        await patients.update(db, {
+          id: encounter.patient_id,
+          date_of_birth: '2021-01-01',
+          gender: 'female',
+          completed_intake: true,
+        })
 
         const response = await fetch(
           `${route}/app/organizations/${organization_id}/patients?search=${unique_name}`,
@@ -49,16 +55,16 @@ describe(
             href: `/app/patients/${encounter.patient_id}`,
             in_waiting_room: true,
             avatar_url: null,
-            description: 'null - null',
+            description: 'female - 1 January 2021',
           },
           {
             id: patient_not_in_waiting_room.id,
             name: patient_not_in_waiting_room.name,
             href:
-              `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient_not_in_waiting_room.id}`,
+              `/app/organizations/${organization_id}/patients/intake?patient_id=${patient_not_in_waiting_room.id}`,
             in_waiting_room: false,
             avatar_url: null,
-            description: 'null - null',
+            description: 'Requires intake',
           },
         ])
       }))

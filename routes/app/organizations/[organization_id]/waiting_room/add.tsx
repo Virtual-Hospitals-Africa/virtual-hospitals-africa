@@ -96,11 +96,11 @@ export default async function WaitingRoomAdd(
 
   return (
     <Layout
-      title={'Add patient to waiting room'}
+      title='Add patient to waiting room'
       route={route}
       url={url}
       health_worker={state.healthWorker}
-      variant='practitioner home page'
+      variant='health worker home page'
     >
       <AddPatientForm
         providers={await gettingProviders}

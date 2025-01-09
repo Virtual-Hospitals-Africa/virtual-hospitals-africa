@@ -80,7 +80,7 @@ export default async function Calendar(
     )
   return (
     <Layout
-      variant='practitioner home page'
+      variant='health worker home page'
       title='My Calendar'
       route={ctx.route}
       url={ctx.url}

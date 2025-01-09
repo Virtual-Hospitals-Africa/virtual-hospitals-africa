@@ -7,21 +7,29 @@ import {
   WaitingRoom,
 } from '../../types.ts'
 import * as patients from './patients.ts'
+import * as events from './events.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 import capitalize from '../../util/capitalize.ts'
 import sortBy from '../../util/sortBy.ts'
 
-export function add(
+export async function add(
   trx: TrxOrDb,
   opts: WaitingRoom,
 ) {
-  return trx
+  const added = await trx
     .insertInto('waiting_room')
     .values(opts)
     .returning('id')
     .executeTakeFirstOrThrow()
+
+  await events.insert(trx, {
+    type: 'AddToWaitingRoom',
+    data: opts,
+  })
+
+  return added
 }
 
 export function remove(

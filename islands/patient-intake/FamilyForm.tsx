@@ -3,6 +3,7 @@ import { Signal, useSignal } from '@preact/signals'
 import {
   FamilyRelation,
   GuardianFamilyRelation,
+  NextOfKin,
   PatientFamily,
 } from '../../types.ts'
 import { AddRow } from '../AddRemove.tsx'
@@ -23,6 +24,19 @@ type DependentFamilyRelationState =
     removed?: boolean
   }
 
+export function NextOfKinFormSection(
+  { next_of_kin }: { next_of_kin?: Partial<NextOfKin> },
+) {
+  return (
+    <FormSection header='Next Of Kin'>
+      <NextOfKinInput
+        name='family.next_of_kin'
+        value={next_of_kin}
+      />
+    </FormSection>
+  )
+}
+
 export default function PatientFamilyForm({
   family,
   age_years,
@@ -40,9 +54,9 @@ export default function PatientFamilyForm({
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
-  const showGuardians = false //age_years <= 18
-  const showDependents = false // age_years >= 10
-  const showNextOfKin = true //age_years >= 19
+  const showGuardians = age_years <= 18
+  const showDependents = age_years >= 10
+  const showNextOfKin = age_years >= 19
   // const showPatientCohabitation = age_years <= 18
 
   //Default values
@@ -53,15 +67,9 @@ export default function PatientFamilyForm({
       {showGuardians && (
         <input type='hidden' name='family.under_18' value='on' />
       )}
-      {showNextOfKin &&
-        (
-          <FormSection header='Next Of Kin'>
-            <NextOfKinInput
-              name='family.other_next_of_kin'
-              value={family.other_next_of_kin ?? undefined}
-            />
-          </FormSection>
-        )}
+      {showNextOfKin && (
+        <NextOfKinFormSection next_of_kin={family.next_of_kin} />
+      )}
 
       {showGuardians &&
         (

@@ -69,7 +69,7 @@ export default async function DeviceAdd(
 
   return (
     <Layout
-      variant='practitioner home page'
+      variant='health worker home page'
       title='Add Device'
       route={route}
       url={url}

@@ -10,7 +10,7 @@ export default function WaitingRoomEmptyState(
       explanation='Add a patient'
       icon={<AddPatientIcon className='mx-auto h-12 w-12 text-gray-400' />}
       button={{
-        children: 'Add patient',
+        children: 'Intake new patient',
         href: add_href,
       }}
     />

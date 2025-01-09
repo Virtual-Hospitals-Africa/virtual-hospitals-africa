@@ -142,7 +142,7 @@ export default function SchedulePage(
       route={props.route}
       url={props.url}
       health_worker={props.data.healthWorker}
-      variant='practitioner home page'
+      variant='health worker home page'
     >
       <div className='flex gap-x-4'>
         <ScheduleForm

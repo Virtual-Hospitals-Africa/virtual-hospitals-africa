@@ -11,7 +11,7 @@ import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as events from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
-import { EventType, GoogleProfile, Profession, TrxOrDb } from '../types.ts'
+import { GoogleProfile, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
@@ -84,7 +84,7 @@ export async function initializeHealthWorker(
   )
 
   await events.insert(trx, {
-    type: EventType.HealthWorkerFirstLoggedIn,
+    type: 'HealthWorkerFirstLoggedIn',
     data: { health_worker_id },
   })
 

@@ -1,4 +1,4 @@
-import { Signal, useSignal } from '@preact/signals'
+import { useSignal } from '@preact/signals'
 import {
   DateInput,
   EthnicitySelect,
@@ -14,15 +14,14 @@ import NationalIdInputCheckbox from '../NationalIdInputCheckbox.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 
 export default function PatientPersonalForm(
-  { patient, previously_completed, strAge }: {
-    patient: Partial<PatientIntake>
-    previously_completed: boolean
-    strAge: Signal<string>
+  { patient = {}, previously_completed }: {
+    patient?: Partial<PatientIntake>
+    previously_completed?: boolean
   },
 ) {
   const names = patient.name ? patient.name.split(/\s+/) : []
   const no_national_id = useSignal<boolean>(
-    previously_completed && !patient.national_id_number,
+    !!previously_completed && !patient.national_id_number,
   )
   return (
     <>
@@ -44,8 +43,7 @@ export default function PatientPersonalForm(
           <GenderSelect value={patient.gender} />
           <DateInput
             name='date_of_birth'
-            signal={strAge}
-            value={strAge.value}
+            value={patient.date_of_birth}
             required
           />
           <EthnicitySelect value={patient.ethnicity} />

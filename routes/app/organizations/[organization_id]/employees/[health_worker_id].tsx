@@ -32,7 +32,7 @@ export default async function EmployeePage(
       route={ctx.route}
       url={ctx.url}
       health_worker={ctx.state.healthWorker}
-      variant='practitioner home page'
+      variant='health worker home page'
     >
       <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
         <div className='my-6 overflow-hidden bg-slate-50'>

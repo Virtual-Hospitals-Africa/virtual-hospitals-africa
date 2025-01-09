@@ -14,7 +14,7 @@ export function AddPatientSearch({
       label=''
       addable={can_add_patients && {
         href:
-          `/app/organizations/${organization_id}/waiting_room/add?patient_name=`,
+          `/app/organizations/${organization_id}/patients/intake?patient_name=`,
       }}
     />
   )
