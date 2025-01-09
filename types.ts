@@ -364,7 +364,7 @@ export type PatientIntake =
 export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
-  other_next_of_kin: Maybe<NextOfKin>
+  next_of_kin?: NextOfKin
   religion: Maybe<string>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
@@ -406,7 +406,7 @@ export type FamilyRelationInsert = {
 export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
-  other_next_of_kin?: Maybe<FamilyRelationInsert>
+  next_of_kin?: Maybe<FamilyRelationInsert>
   religion?: Maybe<string>
   family_type?: Maybe<FamilyType>
   marital_status?: Maybe<MaritalStatus>
@@ -3093,17 +3093,4 @@ export type ExaminationChecklistDefinition = {
     snomed_concept_id: number
     snomed_english_term: string
   }[]
-}
-
-export type EventData = {
-  id: string
-  data: unknown
-}
-
-export enum EventType {
-  HealthWorkerFirstLoggedIn = 'HealthWorkerFirstLoggedIn',
-}
-
-export type HealthWorkerFirstLoggedInData = {
-  health_worker_id: string
 }

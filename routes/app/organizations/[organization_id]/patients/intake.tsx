@@ -1,25 +1,26 @@
-import Layout from '../../../../../../components/library/Layout.tsx'
-import Form from '../../../../../../components/library/Form.tsx'
-import * as patient_intake from '../../../../../../db/models/patient_intake.ts'
-import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
-import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
-import { Button } from '../../../../../../components/library/Button.tsx'
-import { parseRequest } from '../../../../../../util/parseForm.ts'
-import * as patients from '../../../../../../db/models/patients.ts'
-import * as addresses from '../../../../../../db/models/addresses.ts'
-import * as patient_family from '../../../../../../db/models/family.ts'
-import compact from '../../../../../../util/compact.ts'
-import omit from '../../../../../../util/omit.ts'
+import Layout from '../../../../../components/library/Layout.tsx'
+import Form from '../../../../../components/library/Form.tsx'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
+import { ButtonsContainer } from '../../../../../islands/form/buttons.tsx'
+import { Button } from '../../../../../components/library/Button.tsx'
+import { parseRequest } from '../../../../../util/parseForm.ts'
+import * as patients from '../../../../../db/models/patients.ts'
+import * as patient_intake from '../../../../../db/models/patient_intake.ts'
+import * as events from '../../../../../db/models/events.ts'
+import * as addresses from '../../../../../db/models/addresses.ts'
+import * as patient_family from '../../../../../db/models/family.ts'
+import compact from '../../../../../util/compact.ts'
 import { z } from 'zod'
 import {
   e164_phone_number,
   gender,
   national_id_number,
   varchar255,
-} from '../../../../../../util/validators.ts'
-import { OrganizationContext } from '../../_middleware.ts'
-import PatientIntakeForm from '../../../../../../islands/patient-intake/IntakeForm.tsx'
-import redirect from '../../../../../../util/redirect.ts'
+} from '../../../../../util/validators.ts'
+import { OrganizationContext } from '../_middleware.ts'
+import PatientIntakeForm from '../../../../../islands/patient-intake/IntakeForm.tsx'
+import redirect from '../../../../../util/redirect.ts'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().uuid().optional(),
@@ -60,9 +61,21 @@ const IntakeSchema = z.object({
     path: ['national_id_number'],
   },
 ).transform((
-  { avatar_media, first_name, middle_names, last_name, ...data },
+  {
+    avatar_media,
+    first_name,
+    middle_names,
+    last_name,
+    primary_doctor_name,
+    // deno-lint-ignore no-unused-vars
+    no_national_id,
+    ...data
+  },
 ) => ({
-  ...omit(data, ['no_national_id']),
+  ...data,
+  unregistered_primary_doctor_name: data.primary_doctor_id
+    ? undefined
+    : primary_doctor_name,
   avatar_media_id: avatar_media?.id,
   name: compact(
     [first_name, middle_names, last_name],
@@ -80,13 +93,18 @@ export default async function IntakePage(
   ctx: OrganizationContext,
 ) {
   const { trx } = ctx.state
-  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const patient = await patient_intake.getById(ctx.state.trx, patient_id)
+  const patient_id = ctx.url.searchParams.get('patient_id')
+  const patient_name = ctx.url.searchParams.get('patient_name') ?? undefined
 
-  const country_address_tree = await addresses.getCountryAddressTree(trx)
-  const family = await patient_family.get(ctx.state.trx, {
-    patient_id: patient.id,
+  const {
+    patient,
+    country_address_tree,
+  } = await promiseProps({
+    patient: patient_id
+      ? patient_intake.getById(trx, patient_id)
+      : Promise.resolve(patient_name ? { name: patient_name } : {}),
+    country_address_tree: addresses.getCountryAddressTree(trx),
   })
 
   const default_organization = OrganizationWithAddressSchema.parse(
@@ -105,7 +123,7 @@ export default async function IntakePage(
           previously_completed={false}
           default_organization={default_organization}
           country_address_tree={country_address_tree}
-          family={family}
+          family={{}}
         />
         <hr className='my-2' />
 
@@ -124,45 +142,43 @@ export default async function IntakePage(
 
 export const handler = {
   async POST(req: Request, ctx: OrganizationContext) {
-    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+    const { trx } = ctx.state
     const organization_id = getRequiredUUIDParam(ctx, 'organization_id')
 
-    const patient = await parseRequest(
-      ctx.state.trx,
+    const { address, family, ...patient_form_values } = await parseRequest(
+      trx,
       req,
       IntakeSchema.parse,
     )
 
     const created_address = await addresses.insert(
-      ctx.state.trx,
-      patient.address,
+      trx,
+      address,
     )
 
-    await patients.update(ctx.state.trx, {
-      id: patient_id,
-      phone_number: patient.phone_number,
-      avatar_media_id: patient.avatar_media_id,
-      national_id_number: patient.national_id_number,
-      date_of_birth: patient.date_of_birth,
-      gender: patient.gender,
-      ethnicity: patient.ethnicity,
-      name: patient.name,
-      // Address information
+    const { id: patient_id } = await patients.insert(trx, {
+      ...patient_form_values,
       address_id: created_address.id,
-      nearest_organization_id: patient.nearest_organization_id,
-      primary_doctor_id: patient.primary_doctor_id,
       completed_intake: true,
     })
 
-    await patient_family.upsert(
-      ctx.state.trx,
-      patient_id,
-      {
-        guardians: [],
-        dependents: [],
-        other_next_of_kin: patient.family.next_of_kin,
-      },
-    )
+    await events.insert(trx, {
+      type: 'PatientIntake',
+      data: { patient_id },
+    })
+
+    if (family.next_of_kin) {
+      await patient_family.setNextOfKin(
+        trx,
+        patient_id,
+        family.next_of_kin,
+      )
+
+      await events.insert(trx, {
+        type: 'PatientNextOfKinSet',
+        data: { patient_id },
+      })
+    }
 
     return redirect(
       `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient_id}`,

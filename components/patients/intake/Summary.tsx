@@ -133,14 +133,14 @@ export default function PatientSummary(
   const next_of_kin_items: DescriptionListRows[] = [
     nonEmptyRows([[
       {
-        value: patient.family.other_next_of_kin?.patient_name,
-        href: `${intake_href}/family#focus=other_next_of_kin.patient_name`,
+        value: patient.family.next_of_kin?.patient_name,
+        href: `${intake_href}/family#focus=next_of_kin.patient_name`,
         action: DescriptionListCellAction.Edit,
         name: 'Next of Kin',
       },
       {
-        value: patient.family.other_next_of_kin?.relation,
-        href: `${intake_href}/family#focus=other_next_of_kin.relation`,
+        value: patient.family.next_of_kin?.relation,
+        href: `${intake_href}/family#focus=next_of_kin.relation`,
         action: DescriptionListCellAction.Edit,
         name: 'Relationship',
         leading_separator: ', ',

@@ -21,7 +21,7 @@ export type LayoutProps =
     drawer?: ComponentChild
   }
   & ({
-    variant: 'practitioner home page'
+    variant: 'health worker home page'
     route: string
     health_worker: EmployedHealthWorker
     params?: Record<string, string>
@@ -115,20 +115,20 @@ export default function Layout(props: LayoutProps) {
         initialError={error}
       />
       {props.variant === 'landing page' && props.children}
-      {((props.variant === 'practitioner home page') ||
+      {((props.variant === 'health worker home page') ||
         (props.variant === 'regulator home page')) && (
         <AppLayoutContents
           {...props}
           variant='home page'
-          avatarUrl={props.variant === 'practitioner home page'
+          avatarUrl={props.variant === 'health worker home page'
             ? props.health_worker.avatar_url
             : ''}
-          notifications={props.variant === 'practitioner home page'
+          notifications={props.variant === 'health worker home page'
             ? notifications.ofEmployedHealthWorker(
               props.health_worker,
             )
             : []}
-          sidebar={props.variant === 'practitioner home page'
+          sidebar={props.variant === 'health worker home page'
             ? (
               <PractitionerHomePageSidebar
                 route={props.route}

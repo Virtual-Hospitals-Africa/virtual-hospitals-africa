@@ -60,7 +60,7 @@ export function PatientPage(
         route={ctx.route}
         url={ctx.url}
         health_worker={ctx.state.healthWorker}
-        variant='practitioner home page'
+        variant='health worker home page'
         // Show a patient drawer if I am a provider for an open encounter for this patient
         drawer={ctx.state.patient.open_encounter?.providers.some((p) =>
           p.health_worker_id === ctx.state.healthWorker.id

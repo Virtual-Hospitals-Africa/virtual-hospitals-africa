@@ -82,7 +82,7 @@ export default async function AppPage(
 
   return (
     <Layout
-      variant='practitioner home page'
+      variant='health worker home page'
       title={`Good day, ${firstName(healthWorker.name)}!`}
       route={ctx.route}
       url={ctx.url}

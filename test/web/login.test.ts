@@ -120,9 +120,9 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
 
         const $ = await mock.fetchCheerio(`${route}/app`)
         const waiting_room_add_link = $(
-          `a[href="/app/organizations/${organization_id}/waiting_room/add"]`,
+          `a[href="/app/organizations/${organization_id}/patients/intake"]`,
         )
-        assertEquals(waiting_room_add_link.first().text(), 'Add Patient')
+        assertEquals(waiting_room_add_link.first().text(), 'Intake new patient')
 
         const patients_link = $('a[href="/app/patients"]')
         assert(patients_link.first().text().includes('My Patients'))

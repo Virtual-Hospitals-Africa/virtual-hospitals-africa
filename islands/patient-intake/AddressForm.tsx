@@ -4,8 +4,8 @@ import { NearestHealthCare } from '../../islands/NearestHealthCare.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 
 function PatientAddress(
-  { patient, country_address_tree }: {
-    patient: PatientIntake
+  { patient = {}, country_address_tree }: {
+    patient?: Partial<PatientIntake>
     country_address_tree: CountryAddressTree
   },
 ) {
@@ -20,8 +20,8 @@ function PatientAddress(
 }
 
 export default function PatientAddressForm(
-  { patient, default_organization, country_address_tree }: {
-    patient: PatientIntake
+  { patient = {}, default_organization, country_address_tree }: {
+    patient?: Partial<PatientIntake>
     default_organization?: { id: string; name: string; address: string }
     country_address_tree: CountryAddressTree
   },

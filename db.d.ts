@@ -351,10 +351,13 @@ export interface Events {
   backoff_until: Timestamp | null
   created_at: Generated<Timestamp>
   data: Json
+  error_count: Generated<number>
   error_message: string | null
+  error_no_retry: Generated<boolean>
+  errored_listeners: Generated<string[]>
   id: Generated<string>
   processed_at: Timestamp | null
-  retry_count: Generated<number>
+  processed_listeners: Generated<string[]>
   type: string
   updated_at: Generated<Timestamp>
 }

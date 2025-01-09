@@ -34,7 +34,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
         entry.patient.id === patient.id
       )
 
-      const href = in_waiting_room
+      const href = !patient.completed_intake
+        ? `/app/organizations/${organization_id}/patients/intake?patient_id=${patient?.id}`
+        : in_waiting_room
         ? `/app/patients/${patient.id}`
         : `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient?.id}`
 
@@ -44,7 +46,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
         href,
         in_waiting_room,
         avatar_url: patient.avatar_url,
-        description: patient.gender + ' - ' + patient.dob_formatted,
+        description: patient.completed_intake
+          ? patient.gender + ' - ' + patient.dob_formatted
+          : 'Requires intake',
       }
     })
 

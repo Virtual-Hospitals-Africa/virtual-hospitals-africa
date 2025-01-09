@@ -40,7 +40,7 @@ import * as $app_organizations_organization_id_inventory_add_procurer from './ro
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
 import * as $app_organizations_organization_id_patients from './routes/app/organizations/[organization_id]/patients.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_intake from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx'
+import * as $app_organizations_organization_id_patients_intake from './routes/app/organizations/[organization_id]/patients/intake.tsx'
 import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
 import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
 import * as $app_organizations_organization_id_waiting_room from './routes/app/organizations/[organization_id]/waiting_room.tsx'
@@ -169,7 +169,6 @@ import * as $examinations_Dialog from './islands/examinations/Dialog.tsx'
 import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
-import * as $family_Form from './islands/family/Form.tsx'
 import * as $family_Guardian from './islands/family/Guardian.tsx'
 import * as $family_MaritalStatusSelect from './islands/family/MaritalStatusSelect.tsx'
 import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
@@ -293,8 +292,8 @@ const manifest = {
       $app_organizations_organization_id_inventory_history,
     './routes/app/organizations/[organization_id]/patients.tsx':
       $app_organizations_organization_id_patients,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx':
-      $app_organizations_organization_id_patients_patient_id_intake,
+    './routes/app/organizations/[organization_id]/patients/intake.tsx':
+      $app_organizations_organization_id_patients_intake,
     './routes/app/organizations/[organization_id]/register.tsx':
       $app_organizations_organization_id_register,
     './routes/app/organizations/[organization_id]/register/[step].tsx':
@@ -468,7 +467,6 @@ const manifest = {
     './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
-    './islands/family/Form.tsx': $family_Form,
     './islands/family/Guardian.tsx': $family_Guardian,
     './islands/family/MaritalStatusSelect.tsx': $family_MaritalStatusSelect,
     './islands/family/NextOfKin.tsx': $family_NextOfKin,

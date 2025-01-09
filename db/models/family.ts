@@ -180,7 +180,7 @@ export async function get(
     patient_cohabitation: patient_family?.patient_cohabitation,
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
-    other_next_of_kin: await gettingOtherNextOfKin,
+    next_of_kin: await gettingOtherNextOfKin,
   }
 }
 
@@ -251,7 +251,7 @@ export async function upsert(
 ): Promise<void> {
   const total_next_of_kin =
     family_to_upsert.guardians.filter((c) => c.next_of_kin).length +
-    Number(!!family_to_upsert.other_next_of_kin)
+    Number(!!family_to_upsert.next_of_kin)
   assertOr400(total_next_of_kin <= 1, 'Cannot have more than one next of kin')
 
   // TODO more fully validate family_type and marital_status
@@ -281,7 +281,7 @@ export async function upsert(
     family_to_upsert.dependents,
     hasPatientId,
   )
-  const other_kin = family_to_upsert.other_next_of_kin
+  const other_kin = family_to_upsert.next_of_kin
 
   // Update patients that already exist
   const updating_existing_patients: Promise<unknown>[] = []
@@ -490,7 +490,7 @@ export async function upsert(
     const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ??
       other_kin
     const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ??
-      existing_family.other_next_of_kin
+      existing_family.next_of_kin
 
     // kins is removed
     if (existingKin && !new_kin) {
@@ -591,4 +591,25 @@ export async function upsert(
     removing_kin,
     upsert_kin,
   ])
+}
+
+export async function setNextOfKin(
+  trx: TrxOrDb,
+  patient_id: string,
+  next_of_kin: NonNullable<FamilyUpsert['next_of_kin']>,
+) {
+  const inserted = await upsertPatient(trx, {
+    id: next_of_kin.patient_id ?? undefined,
+    name: next_of_kin.patient_name,
+    phone_number: next_of_kin.patient_phone_number,
+  })
+
+  return trx.insertInto('patient_kin')
+    .values({
+      patient_id,
+      relationship: next_of_kin.family_relation_gendered,
+      next_of_kin_patient_id: inserted.id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
