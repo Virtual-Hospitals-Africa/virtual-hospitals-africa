@@ -14,6 +14,7 @@ export default async function AppPage(
   _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
+  localStorage.setItem('api_activity_timestamp', Date.now().toString())
   const { healthWorker, trx } = ctx.state
   const { searchParams } = ctx.url
   // We may revisit this, but for now there's only one tab

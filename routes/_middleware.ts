@@ -2,6 +2,8 @@ import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../util/redirect.ts'
 import { ZodError } from 'npm:zod'
+import { Cookie, setCookie } from 'std/http/cookie.ts'
+import * as cookie from '../shared/cookie.ts'
 
 // TODO: only do this on dev & test?
 const log_file = Deno.env.get('LOG_FILE') || 'server.log'
@@ -28,8 +30,14 @@ export function grokPostgresError(err: Error) {
 }
 
 export const handler = (_req: Request, ctx: FreshContext) =>
-  // deno-lint-ignore no-explicit-any
-  ctx.next().catch(function handleError(err: any) {
+  ctx.next().then(
+    // deno-lint-ignore no-explicit-any
+    (res: any) => {
+      localStorage.setItem('api_activity_timestamp', Date.now().toString())
+      return res
+    },
+    // deno-lint-ignore no-explicit-any
+  ).catch(function handleError(err: any) {
     if (err.status === 302) {
       assert(err.location, '302 redirect must have a location')
       return redirect(err.location)
