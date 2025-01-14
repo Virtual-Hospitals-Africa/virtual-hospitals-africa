@@ -12,6 +12,7 @@ import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import WarningMessage from '../../islands/WarningMessage.tsx'
 import * as notifications from '../../shared/notifications.ts'
 import { RenderedNotification } from '../../types.ts'
+import { IdleTimer } from '../../islands/IdleTimer.tsx'
 
 export type LayoutProps =
   & {
@@ -103,6 +104,7 @@ export default function Layout(props: LayoutProps) {
 
   return (
     <>
+      <IdleTimer timer={60 * 60 * 3} url={props.url} />
       <SuccessMessage
         message={success}
         className='fixed z-50 top-0 left-0 right-0 m-12'
@@ -136,7 +138,8 @@ export default function Layout(props: LayoutProps) {
                   ? props.params
                   : {
                     ...props.params,
-                    organization_id: props.health_worker.default_organization_id
+                    organization_id: props.health_worker
+                      .default_organization_id
                       .toString(),
                   }}
                 urlSearchParams={props.url.searchParams}

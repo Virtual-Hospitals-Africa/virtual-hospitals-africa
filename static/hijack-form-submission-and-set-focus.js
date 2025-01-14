@@ -196,6 +196,7 @@ addEventListener('click', function () {
     childList: true,
     subtree: true,
   })
+  localStorage.setItem('api_activity_timestamp', Date.now().toString())
 }, { capture: true })
 
 function focusOnNextFormElement(
@@ -265,6 +266,14 @@ addEventListener('search-select', function (e) {
   focusOnNextFormElement({
     target: e.detail,
   })
+})
+
+addEventListener('scroll', function (e) {
+  localStorage.setItem('api_activity_timestamp', Date.now().toString())
+})
+
+addEventListener('keypress', function (e) {
+  localStorage.setItem('api_activity_timestamp', Date.now().toString())
 })
 
 /* TODO: turn this back on? It's not working with hash changes and is just kind of overbearing during development

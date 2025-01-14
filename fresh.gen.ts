@@ -135,6 +135,7 @@ import * as $DemoVideo from './islands/DemoVideo.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
+import * as $IdleTimer from './islands/IdleTimer.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $Menu from './islands/Menu.tsx'
@@ -448,6 +449,7 @@ const manifest = {
     './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
+    './islands/IdleTimer.tsx': $IdleTimer,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/Menu.tsx': $Menu,

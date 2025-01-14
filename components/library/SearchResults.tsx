@@ -25,7 +25,7 @@ export function SearchResult(
     <li
       className={cls(
         'relative cursor-default select-none py-2 pl-3 pr-9 w-fit',
-        isActive ? 'text-white bg-indigo-600' : 'text-gray-900',
+        isActive ? 'text-white bg-indigo-600' : 'text-indigo-900',
       )}
       role='option'
       tabIndex={-1}

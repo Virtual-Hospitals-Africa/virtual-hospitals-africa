@@ -34,7 +34,7 @@ export function Person(
     <Component
       className={cls(
         'flex items-center',
-        person.href && 'text-indigo-600 hover:text-indigo-900',
+        person.href && 'hover:text-white',
       )}
       href={person.href ?? undefined}
     >

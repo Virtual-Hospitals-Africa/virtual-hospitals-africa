@@ -9,6 +9,7 @@ export const login_href =
 // TODO check if cookie legit first?
 export const handler: Handlers = {
   GET(req) {
+    localStorage.setItem('api_activity_timestamp', Date.now().toString())
     return redirect(
       getHealthWorkerCookie(req) ? '/app?from_login=true' : login_href,
     )

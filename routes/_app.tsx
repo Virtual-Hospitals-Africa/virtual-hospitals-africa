@@ -1,11 +1,15 @@
 import { PageProps } from '$fresh/server.ts'
 
 export default function App({ Component, ...props }: PageProps) {
+  localStorage.setItem('api_activity_timestamp', Date.now().toString())
   return (
     <html className='scroll-smooth bg-white antialiased' lang='en'>
       <head>
         <meta charset='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0'
+        />
         <title>Virtual Hospitals Africa</title>
         <link rel='stylesheet' href='/styles.css' />
         <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -61,7 +65,10 @@ export default function App({ Component, ...props }: PageProps) {
             <meta property='og:image:width' content='256' />
             <meta property='og:image:height' content='256' />
 
-            <meta property='og:site_name' content='Virtual Hospitals Africa' />
+            <meta
+              property='og:site_name'
+              content='Virtual Hospitals Africa'
+            />
             <meta
               property='og:url'
               content='https://virtualhospitalsafrica.org'
@@ -75,6 +82,7 @@ export default function App({ Component, ...props }: PageProps) {
               src='https://youtube.com/iframe_api'
               async
             />
+            <script src='/set-local-time.js' />
           </>
         )}
         {props.route.startsWith('/app') && (
