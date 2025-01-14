@@ -6,6 +6,7 @@ export function insert(
   trx: TrxOrDb,
   { type, data }: EventInsertAny,
 ): Promise<{ id: string }> {
+  console.log(type, EVENTS[type])
   return trx
     .insertInto('events')
     .values({
@@ -16,55 +17,89 @@ export function insert(
     .executeTakeFirstOrThrow()
 }
 
-export function selectUnprocessed(
+export function getById(
+  trx: TrxOrDb,
+  event_id: string,
+) {
+  return trx
+    .selectFrom('events')
+    .selectAll()
+    .where('id', '=', event_id)
+    .executeTakeFirstOrThrow()
+}
+
+export function withoutListeners(
+  trx: TrxOrDb,
+) {
+  return trx
+    .selectFrom('events')
+    .where('listeners_inserted_at', 'is', null)
+    .where('error_message_no_automated_retry', 'is', null)
+    .forUpdate()
+    .skipLocked()
+    .select(['id', 'type', 'data'])
+    .limit(50)
+    .execute()
+}
+
+export function selectUnprocessedListeners(
   trx: TrxOrDb,
   opts: {
     max_error_count?: number
     limit?: number
   } = {},
 ) {
-  const { max_error_count = 3, limit = 5 } = opts
+  const { max_error_count = 3, limit = 8 } = opts
   return trx
-    .selectFrom('events')
-    .where('processed_at', 'is', null)
-    .where('error_count', '<', max_error_count)
-    .where('error_no_retry', '=', false)
+    .selectFrom('event_listeners')
+    .innerJoin('events', 'event_listeners.event_id', 'events.id')
+    .where('event_listeners.processed_at', 'is', null)
+    .where('event_listeners.error_count', '<', max_error_count)
+    .where('events.error_message_no_automated_retry', 'is', null)
     .where((eb) =>
       eb.or([
-        eb('backoff_until', '<', now),
-        eb('backoff_until', 'is', null),
+        eb('event_listeners.backoff_until', '<', now),
+        eb('event_listeners.backoff_until', 'is', null),
       ])
     )
     .forUpdate()
     .skipLocked()
-    .select([
-      'id',
-      'type',
-      'data',
-      'error_count',
-      'errored_listeners',
-      'processed_listeners',
-    ])
+    .selectAll('event_listeners')
+    .select('events.type')
+    .select('events.data')
     .limit(limit)
     .execute()
 }
 
-export function processed(
+export function selectListenersOfEvent(
   trx: TrxOrDb,
-  id: string,
-  processed_listeners: string[],
+  { event_id }: {
+    event_id: string
+  },
 ) {
   return trx
-    .updateTable('events')
+    .selectFrom('event_listeners')
+    .innerJoin('events', 'event_listeners.event_id', 'events.id')
+    .selectAll('event_listeners')
+    .select('events.type')
+    .select('events.data')
+    .where('event_listeners.event_id', '=', event_id)
+    .execute()
+}
+
+export function processedListener(
+  trx: TrxOrDb,
+  { event_listener_id }: { event_listener_id: string },
+) {
+  return trx
+    .updateTable('event_listeners')
     .set({
       error_message: null,
-      error_no_retry: false,
-      errored_listeners: [],
+      error_count: 0,
       backoff_until: null,
       processed_at: now,
-      processed_listeners,
     })
-    .where('id', '=', id)
+    .where('id', '=', event_listener_id)
     .executeTakeFirstOrThrow()
 }
 
@@ -76,13 +111,7 @@ export function markUnrecoverableError(
   console.error(error)
   return trx
     .updateTable('events')
-    .set({
-      error_message: error.message,
-      error_no_retry: true,
-      errored_listeners: [],
-      backoff_until: null,
-      processed_at: null,
-    })
+    .set({ error_message_no_automated_retry: error.message })
     .where('id', '=', id)
     .executeTakeFirstOrThrow()
 }
@@ -99,32 +128,32 @@ function calculateBackoff(error_count: number): string {
   return new Date(Date.now() + backoff_ms).toISOString()
 }
 
-export function markErroredListeners(
+export function markErroredListener(
   trx: TrxOrDb,
-  id: string,
-  {
-    error_count,
-    error_message,
-    errored_listeners,
-    processed_listeners,
-  }: {
-    error_count: number
+  { event_listener_id, error_message, error_count }: {
+    event_listener_id: string
     error_message: string
-    errored_listeners: string[]
-    processed_listeners: string[]
+    error_count: number
   },
 ) {
   return trx
-    .updateTable('events')
+    .updateTable('event_listeners')
     .set({
       error_count,
       error_message,
-      errored_listeners,
-      processed_listeners,
-      error_no_retry: false,
       processed_at: null,
       backoff_until: calculateBackoff(error_count),
     })
-    .where('id', '=', id)
+    .where('id', '=', event_listener_id)
+    .executeTakeFirstOrThrow()
+}
+
+export function clearBackoff(
+  trx: TrxOrDb,
+  { event_listener_id }: { event_listener_id: string },
+) {
+  return trx.updateTable('event_listeners')
+    .where('id', '=', event_listener_id)
+    .set({ backoff_until: null })
     .executeTakeFirstOrThrow()
 }

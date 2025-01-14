@@ -17,14 +17,14 @@ export default function createMigration(migrationName: string) {
 
   const initialContents = `import { Kysely } from "kysely";
 
-  export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<unknown>) {
 
-  }
+}
 
-  export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<unknown>) {
 
-  }
-  `
+}
+`
 
   const filePath = `db/migrations/${migrationFileName}`
 

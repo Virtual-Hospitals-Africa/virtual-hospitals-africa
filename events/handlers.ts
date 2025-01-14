@@ -2,8 +2,10 @@ import { TrxOrDb } from '../types.ts'
 
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+// import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
+import { debug } from '../util/debug.ts'
 
 export const EVENTS = {
   HealthWorkerFirstLoggedIn: defineEvent(
@@ -43,6 +45,40 @@ export const EVENTS = {
     }),
     {},
   ),
+  ReviewRequested: defineEvent(
+    z.object({
+      review_request_id: z.string().uuid(),
+    }),
+    {
+      async notifyHealthWorker(_trx, _payload) {
+        // const review_request = await doctor_reviews.getRequest()
+      },
+    },
+  ),
+  TEST_WORKS_ON_SECOND_TRY: defineEvent(
+    z.object({
+      foo: z.string().uuid(),
+    }),
+    {
+      // deno-lint-ignore require-await
+      async workOnSecondTry(_trx, payload) {
+        debug('foo bar')
+        if (payload.metadata.error_count === 0) {
+          throw new Error('Fails at first')
+        }
+      },
+    },
+  ),
+  TEST_NEVER_WORKS: defineEvent(
+    z.object({
+      bar: z.string().uuid(),
+    }),
+    {
+      neverWorks(_trx, _payload) {
+        throw new Error('Never Works')
+      },
+    },
+  ),
 }
 
 export type EventType = keyof typeof EVENTS
@@ -52,7 +88,11 @@ export type EventInsert<ET extends EventType> = {
   data: z.infer<(typeof EVENTS)[ET]['schema']>
 }
 
-export type EventInsertAny = EventInsert<EventType>
+export type EventInsertRecord = {
+  [K in EventType]: EventInsert<K>
+}
+
+export type EventInsertAny = EventInsertRecord[keyof EventInsertRecord]
 
 export function isEventType(
   event_type: string,
@@ -66,7 +106,11 @@ export function defineEvent<T extends z.ZodRawShape>(
     string,
     (
       trx: TrxOrDb,
-      payload: { id: string; data: z.infer<z.ZodObject<T>> },
+      payload: {
+        id: string
+        data: z.infer<z.ZodObject<T>>
+        metadata: { error_count: number }
+      },
     ) => Promise<unknown>
   >,
 ) {

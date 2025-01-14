@@ -9,6 +9,7 @@ import * as patient_encounters from '../../../../../../db/models/patient_encount
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../../util/assertAllPriorStepsCompleted.ts'
 import redirect from '../../../../../../util/redirect.ts'
+import { promiseProps } from '../../../../../../util/promiseProps.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
@@ -16,12 +17,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 > = {
   async POST(_req: Request, ctx: EncounterContext) {
     const { trx, encounter } = ctx.state
-    const completing_step = completeStep(ctx)
-    const completing_encounter = patient_encounters.close(trx, {
-      encounter_id: encounter.encounter_id,
+    await promiseProps({
+      completing_step: completeStep(ctx),
+      completing_encounter: patient_encounters.close(trx, {
+        encounter_id: encounter.encounter_id,
+      }),
     })
-    await completing_step
-    await completing_encounter
+
     const success = `🩺 Thanks for seeing ${ctx.state.patient.name}!`
 
     return redirect(`/app?success=${encodeURIComponent(success)}`)

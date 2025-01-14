@@ -2,85 +2,127 @@ import db from '../db/db.ts'
 import { EVENTS, isEventType } from './handlers.ts'
 import * as events from '../db/models/events.ts'
 import { forEach } from '../util/inParallel.ts'
+import { TrxOrDb } from '../types.ts'
+import { now } from '../db/helpers.ts'
 
 export type EventProcessor = { start(): void; exit(): void }
 
-export function createEventProcessor(): EventProcessor {
-  let timer: number
+export async function addListeners(trx: TrxOrDb) {
+  const unprocessed = await events.withoutListeners(trx)
+  await forEach(unprocessed, async (event) => {
+    if (!isEventType(event.type)) {
+      return events.markUnrecoverableError(
+        trx,
+        event.id,
+        new Error(`No event with type: ${event.type}`),
+      )
+    }
 
-  function processEvents(): Promise<void> {
-    return db.transaction().execute(async (trx) => {
-      const unprocessed = await events.selectUnprocessed(trx)
-      await forEach(unprocessed, async (event) => {
-        if (!isEventType(event.type)) {
-          return events.markUnrecoverableError(
-            trx,
-            event.id,
-            new Error(`No event with type: ${event.type}`),
-          )
-        }
+    const handler = EVENTS[event.type]
+    const parsed = handler.schema.safeParse(event.data)
+    if (parsed.error) {
+      return events.markUnrecoverableError(
+        trx,
+        event.id,
+        parsed.error,
+      )
+    }
 
-        const handler = EVENTS[event.type]
-        const parsed = handler.schema.safeParse(event.data)
-        if (parsed.error) {
-          return events.markUnrecoverableError(
-            trx,
-            event.id,
-            parsed.error,
-          )
-        }
+    const listeners = Object.keys(handler.listeners)
+    await trx
+      .insertInto('event_listeners')
+      .values(listeners.map((listener_name) => ({
+        listener_name,
+        event_id: event.id,
+      })))
+      .execute()
 
-        const error_messages: string[] = []
-        const errored_listeners: string[] = []
-        const processed_listeners: string[] = event.processed_listeners
-        await forEach(
-          Object.entries(handler.listeners),
-          async ([listener_name, listener]) => {
-            const already_ran_listener = processed_listeners.includes(
-              listener_name,
-            )
+    await trx.updateTable('events')
+      .where('id', '=', event.id)
+      .set({
+        listeners_inserted_at: now,
+      })
+      .execute()
+  })
+}
 
-            if (already_ran_listener) return
+export async function processListeners(
+  trx: TrxOrDb,
+) {
+  const unprocessed = await events.selectUnprocessedListeners(trx)
 
-            await listener(trx, {
-              id: event.id,
-              data: parsed.data,
-            })
-              .then(() => {
-                processed_listeners.push(listener_name)
-              })
-              // deno-lint-ignore no-explicit-any
-              .catch((error: any) => {
-                console.error(listener_name, error)
-                error_messages.push(`${listener_name}: ${error.message}`)
-                errored_listeners.push(listener_name)
-              })
+  await forEach(
+    unprocessed,
+    async (event_listener) => {
+      if (!isEventType(event_listener.type)) {
+        return events.markUnrecoverableError(
+          trx,
+          event_listener.event_id,
+          new Error(`No event with type: ${event_listener.type}`),
+        )
+      }
+
+      const handler = EVENTS[event_listener.type]
+
+      const listener = handler.listeners[event_listener.listener_name]
+
+      if (!listener) {
+        return events.markErroredListener(
+          trx,
+          {
+            event_listener_id: event_listener.id,
+            error_message: 'No such listener found by name',
+            error_count: event_listener.error_count + 1,
           },
         )
+      }
+      try {
+        await listener(trx, {
+          id: event_listener.event_id,
+          // deno-lint-ignore no-explicit-any
+          data: event_listener.data as any,
+          metadata: {
+            error_count: event_listener.error_count,
+          },
+        })
+        await events.processedListener(trx, {
+          event_listener_id: event_listener.id,
+        })
+      } catch (error) {
+        console.error(error)
+        await events.markErroredListener(trx, {
+          event_listener_id: event_listener.id,
+          // deno-lint-ignore no-explicit-any
+          error_message: (error as any).message,
+          error_count: event_listener.error_count + 1,
+        })
+      }
+    },
+  )
+}
 
-        if (errored_listeners.length) {
-          return events.markErroredListeners(trx, event.id, {
-            errored_listeners,
-            processed_listeners,
-            error_message: error_messages.join('\n\n'),
-            error_count: event.error_count + 1,
-          })
-        }
+export function createEventProcessor(): EventProcessor {
+  let add_listeners_timer: number
+  let process_listeners_timer: number
 
-        return events.processed(trx, event.id, processed_listeners)
-      })
-
-      timer = setTimeout(processEvents, 100)
-    })
+  async function addListenersOnLoop(): Promise<void> {
+    await db.transaction().execute(addListeners)
+    add_listeners_timer = setTimeout(addListenersOnLoop, 100)
+  }
+  async function processListenersOnLoop(): Promise<void> {
+    await db.transaction().execute(processListeners)
+    process_listeners_timer = setTimeout(processListenersOnLoop, 100)
   }
   return {
     start: () => {
       console.log('Starting event processor')
-      processEvents()
+      addListenersOnLoop()
+      processListenersOnLoop()
     },
     exit: () => {
       console.log('Stopping event processor')
-      clearTimeout(timer)
+      clearTimeout(add_listeners_timer)
+      clearTimeout(process_listeners_timer)
     },
   }
 }

@@ -4,10 +4,12 @@
     "jsr:@luca/esbuild-deno-loader@0.11.0": "0.11.0",
     "jsr:@std/bytes@^1.0.2": "1.0.4",
     "jsr:@std/cli@~0.224.7": "0.224.7",
+    "jsr:@std/crypto@^1.0.3": "1.0.3",
     "jsr:@std/encoding@^1.0.5": "1.0.6",
     "jsr:@std/fmt@*": "1.0.2",
     "jsr:@std/io@*": "0.225.0",
     "jsr:@std/path@^1.0.6": "1.0.8",
+    "jsr:@std/uuid@*": "1.0.4",
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.4.49",
     "npm:@types/node@*": "22.5.4",
     "npm:autoprefixer@10.4.17": "10.4.17_postcss@8.4.35",
@@ -40,6 +42,9 @@
     "@std/cli@0.224.7": {
       "integrity": "654ca6477518e5e3a0d3fabafb2789e92b8c0febf1a1d24ba4b567aba94b5977"
     },
+    "@std/crypto@1.0.3": {
+      "integrity": "a2a32f51ddef632d299e3879cd027c630dcd4d1d9a5285d6e6788072f4e51e7f"
+    },
     "@std/encoding@1.0.6": {
       "integrity": "ca87122c196e8831737d9547acf001766618e78cd8c33920776c7f5885546069"
     },
@@ -51,6 +56,13 @@
     },
     "@std/path@1.0.8": {
       "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    },
+    "@std/uuid@1.0.4": {
+      "integrity": "f4233149cc8b4753cc3763fd83a7c4101699491f55c7be78dc7b30281946d7a0",
+      "dependencies": [
+        "jsr:@std/bytes",
+        "jsr:@std/crypto"
+      ]
     }
   },
   "npm": {
