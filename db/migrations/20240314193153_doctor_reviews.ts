@@ -43,7 +43,6 @@ export async function up(db: Kysely<any>) {
           .references('employment.id')
           .onDelete('cascade'))
       .addColumn('requester_notes', 'text')
-      .addColumn('pending', 'boolean', (col) => col.notNull().defaultTo(true))
       .addUniqueConstraint('once_per_patient_organization', [
         'patient_id',
         'organization_id',

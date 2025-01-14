@@ -45,11 +45,6 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           requested_by: encounter.providers[0].encounter_provider_id,
         })
 
-        await doctor_reviews.finalizeRequest(trx, {
-          patient_encounter_id: encounter.id,
-          requested_by: encounter.providers[0].encounter_provider_id,
-        })
-
         const employed_doctor = await health_workers.getEmployed(trx, {
           health_worker_id: doctor.id,
         })

@@ -247,11 +247,6 @@ describe(
                 organization_id: virtual_organization_id,
               })
 
-              await doctor_reviews.finalizeRequest(trx, {
-                requested_by: encounter_provider.patient_encounter_provider_id,
-                patient_encounter_id: encounter.encounter_id,
-              })
-
               const doctor = await addTestHealthWorker(trx, {
                 organization_id: virtual_organization_id,
                 scenario: 'doctor',
@@ -409,11 +404,6 @@ describe(
                 encounter_id: encounter.encounter_id,
                 requested_by: encounter_provider.patient_encounter_provider_id,
                 doctor_id: doctor.employee_id!,
-              })
-
-              await doctor_reviews.finalizeRequest(trx, {
-                requested_by: encounter_provider.patient_encounter_provider_id,
-                patient_encounter_id: encounter.encounter_id,
               })
 
               const nurse_waiting_room_results = await waiting_room.get(trx, {
@@ -586,11 +576,6 @@ describe(
                 encounter_id: encounter.encounter_id,
                 requested_by: encounter_provider.patient_encounter_provider_id,
                 doctor_id: doctor.employee_id!,
-              })
-
-              await doctor_reviews.finalizeRequest(trx, {
-                requested_by: encounter_provider.patient_encounter_provider_id,
-                patient_encounter_id: encounter.encounter_id,
               })
 
               await doctor_reviews.addSelfAsReviewer(trx, {
