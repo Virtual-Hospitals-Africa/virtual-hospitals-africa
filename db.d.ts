@@ -298,7 +298,6 @@ export interface DoctorReviewRequests {
   id: Generated<string>
   organization_id: string | null
   patient_id: string
-  pending: Generated<boolean>
   requested_by: string
   requester_notes: string | null
   updated_at: Generated<Timestamp>

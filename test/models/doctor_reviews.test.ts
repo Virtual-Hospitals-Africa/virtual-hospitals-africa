@@ -48,12 +48,6 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
               doctor_id: doctor.employee_id!,
             })
 
-            await doctor_reviews.finalizeRequest(trx, {
-              patient_encounter_id: patient_encounter.id,
-              requested_by:
-                patient_encounter.providers[0].encounter_provider_id,
-            })
-
             const patient_review_requests = await trx.selectFrom(
               'doctor_review_requests',
             )

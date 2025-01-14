@@ -169,7 +169,6 @@ export function requests(
         }),
       }).as('requested_by'),
     ])
-    .where('doctor_review_requests.pending', '=', false)
 }
 
 export function requestsOfHealthWorker(
@@ -360,20 +359,6 @@ export function deleteRequest(trx: TrxOrDb, id: string) {
   return trx.deleteFrom('doctor_review_requests')
     .where('id', '=', id)
     .execute()
-}
-
-export function finalizeRequest(
-  trx: TrxOrDb,
-  opts: {
-    patient_encounter_id: string
-    requested_by: string
-  },
-) {
-  return trx.updateTable('doctor_review_requests')
-    .set('pending', false)
-    .where('encounter_id', '=', opts.patient_encounter_id)
-    .where('requested_by', '=', opts.requested_by)
-    .executeTakeFirst()
 }
 
 export function getRequest(

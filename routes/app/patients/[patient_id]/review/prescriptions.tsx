@@ -1,66 +1,107 @@
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'
 import * as prescriptions from '../../../../../db/models/prescriptions.ts'
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-  MedicationSchedule,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { assertAllUniqueBy } from '../../../../../util/assertAllUniqueBy.ts'
 import PrescriptionsForm from '../../../../../islands/prescriptions/Form.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { isUUID } from '../../../../../util/uuid.ts'
-import { isIntakeFrequency } from '../../../../../shared/medication.ts'
+import { parseRequest } from '../../../../../util/parseForm.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
+import { z } from 'zod'
 
-type PrescriptionsFormValues = {
-  prescriptions: {
-    [medication_id: string]: {
-      patient_condition_id: string
-      route: string
-      strength: number
-      special_instructions?: string
-      schedules: MedicationSchedule[]
-    }
-  }
-}
+const PrescriptionsSchema = z.object({
+  prescriptions: z.record(
+    z.object({
+      patient_condition_id: z.string().uuid(),
+      route: z.string(),
+      strength: z.number(),
+      special_instructions: z.string().optional(),
+      schedules: z.object({
+        dosage: z.number(),
+        frequency: z.enum([
+          'ac',
+          'am',
+          'bd',
+          'nocte',
+          'od',
+          'pm',
+          'q15',
+          'q30',
+          'q1h',
+          'q2h',
+          'q4h',
+          'q6h',
+          'q8h',
+          'qd',
+          'qid',
+          'qod',
+          'qs',
+          'mane',
+          'qmane',
+          'qn',
+          'stat',
+          'tds',
+          'q24h',
+          'q30h',
+          'q48h',
+          'q72h',
+          'hs',
+          'qhs',
+          'qw',
+          'bw',
+          'tw',
+          'qm',
+          'bm',
+          'tm',
+          'prn',
+        ]),
+        duration: z.number(),
+        duration_unit: z.enum([
+          'days',
+          'weeks',
+          'months',
+          'years',
+        ]),
+      }).array(),
+    }),
+  ).default({}),
+})
 
-function assertIsPrescriptions(
-  value: unknown,
-): asserts value is PrescriptionsFormValues {
-  assertOr400(isObjectLike(value))
-  assertOr400(isObjectLike(value.prescriptions))
-  for (
-    const [medication_id, prescription] of Object.entries(
-      value.prescriptions,
-    )
-  ) {
-    assertOr400(isUUID(medication_id))
-    assertOr400(isObjectLike(prescription))
-    assertOr400(typeof prescription.patient_condition_id === 'string')
-    assertOr400(isUUID(prescription.patient_condition_id))
-    assertOr400(typeof prescription.strength === 'number')
-    assertOr400(Array.isArray(prescription.schedules))
-    assertOr400(prescription.schedules.length > 0)
-    for (const schedule of prescription.schedules) {
-      assertOr400(isObjectLike(schedule))
-      assertOr400(typeof schedule.dosage === 'number')
-      assertOr400(typeof schedule.frequency === 'string')
-      assertOr400(isIntakeFrequency(schedule.frequency))
-      assertOr400(typeof schedule.duration === 'number')
-      assertOr400(schedule.duration > 0)
-      assertOr400(
-        schedule.duration_unit === 'days' ||
-          schedule.duration_unit === 'weeks' ||
-          schedule.duration_unit === 'months' ||
-          schedule.duration_unit === 'years',
-      )
-    }
-  }
+async function addPrescription(
+  ctx: ReviewContext,
+  form_values: z.infer<typeof PrescriptionsSchema>,
+) {
+  const prescribing = Object.entries(form_values.prescriptions).map(
+    (
+      [
+        medication_id,
+        medication,
+      ],
+    ) => ({
+      medication_id,
+      ...medication,
+    }),
+  )
+
+  if (!prescribing.length) return
+
+  const { id } = await prescriptions.upsert(ctx.state.trx, {
+    doctor_review_id: ctx.state.doctor_review.review_id,
+    prescriber_id: ctx.state.doctor_review.employment_id,
+    patient_id: ctx.state.doctor_review.patient.id,
+    prescribing,
+  })
+
+  const prescription = await prescriptions.getById(
+    ctx.state.trx,
+    id,
+  )
+  assert(prescription)
+  return encodeURIComponent(
+    `A prescription was made with code ${prescription.alphanumeric_code}`,
+  )
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -68,49 +109,26 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   ReviewContext['state']
 > = {
   async POST(req, ctx: ReviewContext) {
-    const form_values = await parseRequestAsserts(
+    const form_values = await parseRequest(
       ctx.state.trx,
       req,
-      assertIsPrescriptions,
+      PrescriptionsSchema.parse,
     )
 
-    const prescribing = Object.entries(form_values.prescriptions).map(
-      (
-        [
-          medication_id,
-          medication,
-        ],
-      ) => ({
-        medication_id,
-        ...medication,
-      }),
+    const { completed_step, prescription_success_message } = await promiseProps(
+      {
+        completed_step: await completeStep(ctx),
+        prescription_success_message: addPrescription(ctx, form_values),
+      },
     )
 
-    const { id } = await prescriptions.upsert(ctx.state.trx, {
-      doctor_review_id: ctx.state.doctor_review.review_id,
-      prescriber_id: ctx.state.doctor_review.employment_id,
-      patient_id: ctx.state.doctor_review.patient.id,
-      prescribing,
-    })
-
-    const prescription = await prescriptions.getById(
-      ctx.state.trx,
-      id,
-    )
-    assert(prescription)
-    prescription.alphanumeric_code
-    const completed_step = await completeStep(ctx)
-
-    if (!prescribing.length) {
+    if (!prescription_success_message) {
       return completed_step
     }
 
     const Location = completed_step.headers.get('Location')
     assert(Location)
-    const success = encodeURIComponent(
-      `A prescription was made with code ${prescription.alphanumeric_code}`,
-    )
-    return redirect(`${Location}?success=${success}`)
+    return redirect(`${Location}?success=${prescription_success_message}`)
   },
 }
 

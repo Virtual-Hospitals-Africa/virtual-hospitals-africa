@@ -5,7 +5,6 @@ import {
   EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
-import * as doctor_reviews from '../../../../../../db/models/doctor_reviews.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../../util/assertAllPriorStepsCompleted.ts'
@@ -16,23 +15,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   EncounterContext['state']
 > = {
   async POST(_req: Request, ctx: EncounterContext) {
-    const { trx, encounter, encounter_provider } = ctx.state
+    const { trx, encounter } = ctx.state
     const completing_step = completeStep(ctx)
-    const finalizing_request = doctor_reviews.finalizeRequest(trx, {
-      requested_by: encounter_provider.patient_encounter_provider_id,
-      patient_encounter_id: encounter.encounter_id,
-    })
     const completing_encounter = patient_encounters.close(trx, {
       encounter_id: encounter.encounter_id,
     })
     await completing_step
-    const review_request = await finalizing_request
     await completing_encounter
-    let success = `🩺 Thanks for seeing ${ctx.state.patient.name}!`
-    if (review_request) {
-      success +=
-        ` Your review request has been sent out and you'll be notified when the review is complete.`
-    }
+    const success = `🩺 Thanks for seeing ${ctx.state.patient.name}!`
+
     return redirect(`/app?success=${encodeURIComponent(success)}`)
   },
 }
