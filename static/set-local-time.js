@@ -1,13 +1,13 @@
 localStorage.setItem('api_activity_timestamp', Date.now().toString())
 
-addEventListener('scroll', function (e) {
+addEventListener('scroll', function () {
   localStorage.setItem('api_activity_timestamp', Date.now().toString())
 })
 
-addEventListener('keypress', function (e) {
+addEventListener('keypress', function () {
   localStorage.setItem('api_activity_timestamp', Date.now().toString())
 })
 
-addEventListener('click', function (e) {
+addEventListener('click', function () {
   localStorage.setItem('api_activity_timestamp', Date.now().toString())
 })
