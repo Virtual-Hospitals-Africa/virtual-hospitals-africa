@@ -2,6 +2,7 @@ import { TrxOrDb } from '../types.ts'
 
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 
@@ -42,6 +43,16 @@ export const EVENTS = {
       patient_id: z.string().uuid(),
     }),
     {},
+  ),
+  ReviewRequested: defineEvent(
+    z.object({
+      review_request_id: z.string().uuid(),
+    }),
+    {
+      async notifyHealthWorker(trx, payload) {
+        const review_request = await doctor_reviews.getRequest()
+      },
+    },
   ),
 }
 

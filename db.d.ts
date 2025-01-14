@@ -418,6 +418,20 @@ export interface HealthWorkerInvitees {
   updated_at: Generated<Timestamp>
 }
 
+export interface HealthWorkerNotifications {
+  action_title: string
+  avatar_url: string
+  created_at: Generated<Timestamp>
+  description: string
+  entity_id: string
+  health_worker_id: string
+  id: Generated<string>
+  notification_type: string
+  seen_at: Timestamp | null
+  title: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
@@ -1128,6 +1142,7 @@ export interface DB {
   guardian_relations: GuardianRelations
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
+  health_worker_notifications: HealthWorkerNotifications
   health_worker_sessions: HealthWorkerSessions
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories

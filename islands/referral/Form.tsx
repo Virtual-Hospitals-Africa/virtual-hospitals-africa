@@ -6,10 +6,10 @@ import PersonSearch from '../PersonSearch.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import { RenderedRequestFormValues } from '../../types.ts'
 
-export function ReferralForm(props: {
-  review_request?: RenderedRequestFormValues
-}) {
-  const review_request = useSignal(props.review_request)
+export function ReferralForm() {
+  const review_request = useSignal<RenderedRequestFormValues | undefined>(
+    undefined,
+  )
 
   if (!review_request.value) {
     return (
