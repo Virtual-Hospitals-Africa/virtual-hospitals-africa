@@ -2,8 +2,6 @@ import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../util/redirect.ts'
 import { ZodError } from 'npm:zod'
-import { Cookie, setCookie } from 'std/http/cookie.ts'
-import * as cookie from '../shared/cookie.ts'
 
 // TODO: only do this on dev & test?
 const log_file = Deno.env.get('LOG_FILE') || 'server.log'
