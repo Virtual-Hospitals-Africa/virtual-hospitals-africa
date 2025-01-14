@@ -28,14 +28,8 @@ export function grokPostgresError(err: Error) {
 }
 
 export const handler = (_req: Request, ctx: FreshContext) =>
-  ctx.next().then(
-    // deno-lint-ignore no-explicit-any
-    (res: any) => {
-      localStorage.setItem('api_activity_timestamp', Date.now().toString())
-      return res
-    },
-    // deno-lint-ignore no-explicit-any
-  ).catch(function handleError(err: any) {
+  // deno-lint-ignore no-explicit-any
+  ctx.next().catch(function handleError(err: any) {
     if (err.status === 302) {
       assert(err.location, '302 redirect must have a location')
       return redirect(err.location)
