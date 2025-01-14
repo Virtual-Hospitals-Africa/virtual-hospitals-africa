@@ -7,13 +7,14 @@ export function insert(
     avatar_url: string
     description: string
     health_worker_id: string
-    entity_id: string
+    table_name: string
+    row_id: string
     notification_type: string
     title: string
   },
 ): Promise<{ id: string }> {
   return trx
-    .insertInto('health_worker_notifications')
+    .insertInto('health_worker_web_notifications')
     .values(notification)
     .returning('id')
     .executeTakeFirstOrThrow()

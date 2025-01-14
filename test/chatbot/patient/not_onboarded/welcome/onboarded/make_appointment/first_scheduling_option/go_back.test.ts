@@ -1,4 +1,3 @@
-import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
@@ -8,6 +7,7 @@ import * as patients from '../../../../../../../../db/models/patients.ts'
 import { randomPhoneNumber } from '../../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { mockWhatsApp } from '../../../../../../mocks.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('ends after not confriming first scheduling option ', async () => {

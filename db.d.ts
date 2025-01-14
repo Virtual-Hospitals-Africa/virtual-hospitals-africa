@@ -346,17 +346,24 @@ export interface Encounter {
   step: EncounterStep
 }
 
-export interface Events {
+export interface EventListeners {
   backoff_until: Timestamp | null
   created_at: Generated<Timestamp>
-  data: Json
   error_count: Generated<number>
   error_message: string | null
-  error_no_retry: Generated<boolean>
-  errored_listeners: Generated<string[]>
+  event_id: string
   id: Generated<string>
+  listener_name: string
   processed_at: Timestamp | null
-  processed_listeners: Generated<string[]>
+  updated_at: Generated<Timestamp>
+}
+
+export interface Events {
+  created_at: Generated<Timestamp>
+  data: Json
+  error_message_no_automated_retry: string | null
+  id: Generated<string>
+  listeners_inserted_at: Timestamp | null
   type: string
   updated_at: Generated<Timestamp>
 }
@@ -418,20 +425,6 @@ export interface HealthWorkerInvitees {
   updated_at: Generated<Timestamp>
 }
 
-export interface HealthWorkerNotifications {
-  action_title: string
-  avatar_url: string
-  created_at: Generated<Timestamp>
-  description: string
-  entity_id: string
-  health_worker_id: string
-  id: Generated<string>
-  notification_type: string
-  seen_at: Timestamp | null
-  title: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
@@ -445,6 +438,21 @@ export interface HealthWorkerSessions {
   created_at: Generated<Timestamp>
   entity_id: string
   id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerWebNotifications {
+  action_title: string
+  avatar_url: string
+  created_at: Generated<Timestamp>
+  description: string
+  health_worker_id: string
+  id: Generated<string>
+  notification_type: string
+  row_id: string
+  seen_at: Timestamp | null
+  table_name: string
+  title: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1135,6 +1143,7 @@ export interface DB {
   drugs: Drugs
   employment: Employment
   encounter: Encounter
+  event_listeners: EventListeners
   events: Events
   examinations: Examinations
   geography_columns: GeographyColumns
@@ -1142,8 +1151,8 @@ export interface DB {
   guardian_relations: GuardianRelations
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
-  health_worker_notifications: HealthWorkerNotifications
   health_worker_sessions: HealthWorkerSessions
+  health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
