@@ -14,9 +14,9 @@ export function up(db: Kysely<unknown>) {
         .addColumn('row_id', 'uuid', (col) =>
           col.notNull())
         .addColumn('notification_type', 'varchar(255)', (col) => col.notNull())
-        .addColumn('avatar_url', 'text', (col) => col.notNull())
         .addColumn('title', 'text', (col) => col.notNull())
         .addColumn('description', 'text', (col) => col.notNull())
+        .addColumn('avatar_url', 'text', (col) => col.notNull())
         .addColumn('action_title', 'text', (col) => col.notNull())
         .addColumn('seen_at', 'timestamptz'),
   )

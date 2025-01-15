@@ -19,3 +19,14 @@ export function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
 }
+
+export function ofHealthWorker(
+  trx: TrxOrDb,
+  health_worker_id: string,
+) {
+  return trx
+    .selectFrom('health_worker_web_notifications')
+    .selectAll('health_worker_web_notifications')
+    .where('health_worker_id', '=', health_worker_id)
+    .execute()
+}

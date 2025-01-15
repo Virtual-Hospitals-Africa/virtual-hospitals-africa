@@ -2,7 +2,8 @@ import { TrxOrDb } from '../types.ts'
 
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
-// import * as doctor_reviews from '../db/models/doctor_reviews.ts'
+import * as notifications from '../db/models/notifications.ts'
+import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import { debug } from '../util/debug.ts'
@@ -50,8 +51,25 @@ export const EVENTS = {
       review_request_id: z.string().uuid(),
     }),
     {
-      async notifyHealthWorker(_trx, _payload) {
-        // const review_request = await doctor_reviews.getRequest()
+      async notifyDoctor(trx, payload) {
+        const doctor_review_request = await doctor_reviews.requestById(
+          trx,
+          payload.data.review_request_id,
+        )
+        if (!doctor_review_request.requesting.doctor_id) return
+
+        await notifications.insert(trx, {
+          action_title: 'Review',
+          avatar_url: doctor_review_request.requested_by.avatar_url ||
+            '/images/heroicons/24/solid/slipboard-document-list.svg',
+          description:
+            `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
+          health_worker_id: doctor_review_request.requesting.doctor_id,
+          table_name: 'doctor_review_requests',
+          row_id: payload.data.review_request_id,
+          notification_type: 'doctor_review_request',
+          title: 'Review Requested',
+        })
       },
     },
   ),
