@@ -18,6 +18,7 @@ export function up(db: Kysely<unknown>) {
         .addColumn('description', 'text', (col) => col.notNull())
         .addColumn('avatar_url', 'text', (col) => col.notNull())
         .addColumn('action_title', 'text', (col) => col.notNull())
+        .addColumn('action_href', 'text', (col) => col.notNull())
         .addColumn('seen_at', 'timestamptz'),
   )
 }
