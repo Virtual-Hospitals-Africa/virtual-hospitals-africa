@@ -261,7 +261,6 @@ addEventListener('select', function (e) {
 })
 
 addEventListener('search-select', function (e) {
-  console.log('search-select', e)
   focusOnNextFormElement({
     target: e.detail,
   })

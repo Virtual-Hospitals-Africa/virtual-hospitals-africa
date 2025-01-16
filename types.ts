@@ -1442,6 +1442,10 @@ export type RenderedDoctorReview = RenderedDoctorReviewBase & {
 }
 export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
   review_request_id: string
+  requesting: {
+    doctor_id: string | null
+    organization_id: string | null
+  }
 }
 
 export type RenderedDoctorReviewRequestOfSpecificDoctor =
@@ -2541,11 +2545,12 @@ export type RenderedRequestFormValues = {
   requester_notes: null | string
 }
 
-export type NotificationType = 'doctor_review_request'
+export type NotificationType = string
+// export type NotificationType = 'doctor_review_request'
 
 export type RenderedNotification = {
-  type: NotificationType
-  entity_id: string
+  notification_id: string
+  notification_type: NotificationType
   avatar_url: string | null
   title: string
   description: string

@@ -17,7 +17,7 @@ import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
 import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
-import { could_not_locate_account_href } from './app/_middleware.ts'
+import { could_not_locate_account_href } from './app/_middleware.tsx'
 import * as cookie from '../shared/cookie.ts'
 
 async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(

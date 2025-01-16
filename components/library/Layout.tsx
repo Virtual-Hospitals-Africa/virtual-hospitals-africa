@@ -10,7 +10,6 @@ import {
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import WarningMessage from '../../islands/WarningMessage.tsx'
-import * as notifications from '../../shared/notifications.ts'
 import { RenderedNotification } from '../../types.ts'
 
 export type LayoutProps =
@@ -24,6 +23,7 @@ export type LayoutProps =
     variant: 'health worker home page'
     route: string
     health_worker: EmployedHealthWorker
+    notifications: RenderedNotification[]
     params?: Record<string, string>
   } | {
     variant: 'regulator home page'
@@ -124,9 +124,7 @@ export default function Layout(props: LayoutProps) {
             ? props.health_worker.avatar_url
             : ''}
           notifications={props.variant === 'health worker home page'
-            ? notifications.ofEmployedHealthWorker(
-              props.health_worker,
-            )
+            ? props.notifications
             : []}
           sidebar={props.variant === 'health worker home page'
             ? (

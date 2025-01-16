@@ -13,6 +13,7 @@ import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 import capitalize from '../../util/capitalize.ts'
 import sortBy from '../../util/sortBy.ts'
+import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 
 export async function add(
   trx: TrxOrDb,
@@ -40,28 +41,6 @@ export function remove(
     .deleteFrom('waiting_room')
     .where('id', '=', id)
     .execute()
-}
-
-export function arrivedAgoDisplay(wait_time: string) {
-  const day_regex = /(^\d+ days?)/
-
-  const day_match = wait_time.match(day_regex)
-
-  if (day_match) {
-    return `${day_match[1]} ago`
-  }
-  const [hours, minutes] = wait_time.split(':').map(Number)
-
-  if (!hours && !minutes) {
-    return 'Just now'
-  }
-  if (hours > 1) {
-    return `${hours} hours ago`
-  }
-  if (hours === 0 && minutes === 1) {
-    return '1 minute ago'
-  }
-  return `${(60 * hours) + minutes} minutes ago`
 }
 
 // A slight misnomer, this function returns the patients in the waiting room
@@ -442,7 +421,7 @@ export async function get(
         in_waiting_room,
         appointment,
         reviewers,
-        arrived_ago_display: arrivedAgoDisplay(wait_time),
+        arrived_ago_display: timeAgoDisplay(wait_time),
         actions: {
           view: action === 'view' ? `/app/patients/${patient.id}` : null,
           intake: action === 'intake'

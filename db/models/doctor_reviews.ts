@@ -146,6 +146,10 @@ export function requests(
     .select((eb) => [
       'doctor_review_requests.id as review_request_id',
       jsonBuildObject({
+        doctor_id: eb.ref('doctor_review_requests.doctor_id'),
+        organization_id: eb.ref('doctor_review_requests.organization_id'),
+      }).as('requesting'),
+      jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
         reason: eb.ref('patient_encounters.reason'),
       }).as('encounter'),
@@ -169,6 +173,15 @@ export function requests(
         }),
       }).as('requested_by'),
     ])
+}
+
+export function requestById(
+  trx: TrxOrDb,
+  doctor_review_id: string,
+) {
+  return requests(trx)
+    .where('doctor_review_requests.id', '=', doctor_review_id)
+    .executeTakeFirstOrThrow()
 }
 
 export function requestsOfHealthWorker(

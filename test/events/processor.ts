@@ -67,7 +67,6 @@ describe(
           event_id: event.id,
         })
 
-        console.log('listener_after', listener_after)
         assertEquals(listener_after.listener_name, 'neverWorks')
         assertEquals(listener_after.error_message, 'Never Works')
         assertEquals(listener_after.error_count, 1)

@@ -36,7 +36,7 @@ export function Notifications(
                 <Notification
                   notification={notification}
                   dismiss={() => dismiss(notification)}
-                  key={`${notification.type}:${notification.entity_id}`}
+                  key={notification.notification_id}
                 />
               ))}
             </div>
@@ -108,12 +108,8 @@ export function NotificationsButton(
     notifications.value = notifications.value.filter((n) => n !== notification)
 
     // TODO: error handling?
-    fetch(`/api/notifications/dismiss`, {
+    fetch(`/api/notifications/${notification.notification_id}/dismiss`, {
       method: 'POST',
-      body: JSON.stringify({
-        type: notification.type,
-        entity_id: notification.entity_id,
-      }),
     })
   }
 

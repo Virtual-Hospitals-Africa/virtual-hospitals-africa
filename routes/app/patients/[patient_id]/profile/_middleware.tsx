@@ -1,6 +1,5 @@
 import { JSX } from 'preact'
 import * as appointments from '../../../../../db/models/appointments.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import { Person } from '../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../components/library/Tabs.tsx'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
@@ -9,10 +8,7 @@ import type { FreshContext } from '$fresh/server.ts'
 import { assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import { PatientDrawer } from '../../../../../islands/patient-drawer/Drawer.tsx'
-
-export type PatientPageProps = {
-  ctx: PatientContext
-}
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function handler(
   _req: Request,
@@ -21,50 +17,43 @@ export function handler(
   return ctx.next()
 }
 
-export function PatientPage(
-  render: (props: PatientPageProps) => JSX.Element | Promise<JSX.Element>,
-) {
-  return async function (
-    _req: Request,
+export const PatientPage = (
+  title: string,
+  render: (
+    req: Request,
     ctx: PatientContext,
-  ) {
-    const upcoming_appointments = await appointments.getForPatient(
-      ctx.state.trx,
-      {
-        patient_id: ctx.state.patient.id,
-        time_range: 'future',
-      },
-    )
+  ) => JSX.Element | Promise<JSX.Element>,
+) =>
+  HealthWorkerHomePageLayout<PatientContext>(
+    title,
+    async function PatientContents(req, ctx) {
+      const upcoming_appointments = await appointments.getForPatient(
+        ctx.state.trx,
+        {
+          patient_id: ctx.state.patient.id,
+          time_range: 'future',
+        },
+      )
 
-    assertOrRedirect(
-      ctx.state.patient.completed_intake,
-      `/app/patients/${ctx.state.patient.id}/intake`,
-    )
+      assertOrRedirect(
+        ctx.state.patient.completed_intake,
+        `/app/patients/${ctx.state.patient.id}/intake`,
+      )
 
-    const tabs = [
-      'summary',
-      'profile',
-      'visits',
-      'history',
-      'appointments',
-      'review',
-      'orders',
-    ]
+      const tabs = [
+        'summary',
+        'profile',
+        'visits',
+        'history',
+        'appointments',
+        'review',
+        'orders',
+      ]
 
-    const rendered = await render({
-      ctx,
-    })
-    return (
-      <Layout
-        title='Patient Profile'
-        route={ctx.route}
-        url={ctx.url}
-        health_worker={ctx.state.healthWorker}
-        variant='health worker home page'
-        // Show a patient drawer if I am a provider for an open encounter for this patient
-        drawer={ctx.state.patient.open_encounter?.providers.some((p) =>
+      const drawer = ctx.state.patient.open_encounter?.providers.some((p) =>
           p.health_worker_id === ctx.state.healthWorker.id
-        ) && (
+        )
+        ? (
           <PatientDrawer
             patient={ctx.state.patient}
             encounter={ctx.state.patient.open_encounter}
@@ -72,82 +61,95 @@ export function PatientPage(
             sendables={[]}
             measurements={[]}
           />
-        )}
-      >
-        <div className='container my-4 mx-6'>
-          <Person
-            person={{
-              ...ctx.state.patient,
-              description: (
-                <>
-                  {ctx.state.patient.description && (
-                    <>
-                      {ctx.state.patient.description}
-                      <br />
-                    </>
-                  )}
+        )
+        : undefined
 
-                  {(ctx.state.patient.nearest_organization ||
-                    ctx.state.patient.primary_provider_healthworker_id) && (
-                    <>
-                      {ctx.state.patient.primary_provider_healthworker_id && (
-                        <a
-                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_healthworker_id}`}
-                          title={`View details of Dr. ${ctx.state.patient.primary_provider}`}
-                          className='hover:underline text-blue-600'
-                        >
-                          Dr. {ctx.state.patient.primary_provider}
-                        </a>
-                      )}
-                      {ctx.state.patient.nearest_organization &&
-                        ctx.state.patient.primary_provider_healthworker_id &&
-                        ', '}
-                      {ctx.state.patient.nearest_organization && (
-                        <a
-                          href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
-                          title={`View details of ${ctx.state.patient.nearest_organization}`}
-                          className='hover:underline text-blue-600'
-                        >
-                          {ctx.state.patient.nearest_organization}
-                        </a>
-                      )}
-                      <br />
-                    </>
-                  )}
-                </>
-              ),
-            }}
-          />
-          <Tabs
-            tabs={tabs.map((tab) => ({
-              tab,
-              href: replaceParams('/app/patients/:patient_id/profile/:tab', {
-                ...ctx.params,
-                tab,
-              }),
-              active: ctx.url.pathname.endsWith('/' + tab),
-              rightIcon: tab === 'appointments' &&
-                upcoming_appointments.length > 0 && (
-                <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
-                  {upcoming_appointments.length}
-                </span>
-              ),
-            }))}
-          />
-          {rendered}
-        </div>
+      const rendered = await render(req, ctx)
 
-        {ctx.state.patient.open_encounter && (
-          <Button
-            href={replaceParams(
-              '/app/patients/:patient_id/encounters/open',
-              ctx.params,
+      return {
+        drawer,
+        children: (
+          <>
+            <div className='container my-4 mx-6'>
+              <Person
+                person={{
+                  ...ctx.state.patient,
+                  description: (
+                    <>
+                      {ctx.state.patient.description && (
+                        <>
+                          {ctx.state.patient.description}
+                          <br />
+                        </>
+                      )}
+
+                      {(ctx.state.patient.nearest_organization ||
+                        ctx.state.patient.primary_provider_healthworker_id) && (
+                        <>
+                          {ctx.state.patient.primary_provider_healthworker_id &&
+                            (
+                              <a
+                                href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_healthworker_id}`}
+                                title={`View details of Dr. ${ctx.state.patient.primary_provider}`}
+                                className='hover:underline text-blue-600'
+                              >
+                                Dr. {ctx.state.patient.primary_provider}
+                              </a>
+                            )}
+                          {ctx.state.patient.nearest_organization &&
+                            ctx.state.patient
+                              .primary_provider_healthworker_id &&
+                            ', '}
+                          {ctx.state.patient.nearest_organization && (
+                            <a
+                              href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
+                              title={`View details of ${ctx.state.patient.nearest_organization}`}
+                              className='hover:underline text-blue-600'
+                            >
+                              {ctx.state.patient.nearest_organization}
+                            </a>
+                          )}
+                          <br />
+                        </>
+                      )}
+                    </>
+                  ),
+                }}
+              />
+              <Tabs
+                tabs={tabs.map((tab) => ({
+                  tab,
+                  href: replaceParams(
+                    '/app/patients/:patient_id/profile/:tab',
+                    {
+                      ...ctx.params,
+                      tab,
+                    },
+                  ),
+                  active: ctx.url.pathname.endsWith('/' + tab),
+                  rightIcon: tab === 'appointments' &&
+                    upcoming_appointments.length > 0 && (
+                    <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
+                      {upcoming_appointments.length}
+                    </span>
+                  ),
+                }))}
+              />
+              {rendered}
+            </div>
+
+            {ctx.state.patient.open_encounter && (
+              <Button
+                href={replaceParams(
+                  '/app/patients/:patient_id/encounters/open',
+                  ctx.params,
+                )}
+              >
+                Go to open encounter
+              </Button>
             )}
-          >
-            Go to open encounter
-          </Button>
-        )}
-      </Layout>
-    )
-  }
-}
+          </>
+        ),
+      }
+    },
+  )

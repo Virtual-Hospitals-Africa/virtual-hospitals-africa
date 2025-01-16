@@ -1,7 +1,7 @@
 import { Handlers } from '$fresh/server.ts'
 import { oauthParams } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
-import { getHealthWorkerCookie } from './app/_middleware.ts'
+import { getHealthWorkerCookie } from './app/_middleware.tsx'
 
 export const login_href =
   `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`

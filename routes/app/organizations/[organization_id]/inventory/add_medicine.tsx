@@ -1,4 +1,3 @@
-import Layout from '../../../../../components/library/Layout.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
@@ -11,6 +10,7 @@ import isString from '../../../../../util/isString.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function assertIsUpsertMedicine(
   obj: unknown,
@@ -75,48 +75,42 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function MedicineAdd(
-  _req: Request,
-  { route, url, state: { trx, organization, healthWorker } }:
-    OrganizationContext,
-) {
-  const strength = parseInt(url.searchParams.get('strength')!) || undefined
+export default HealthWorkerHomePageLayout(
+  'Add Medicine',
+  async function MedicineAdd(
+    _req: Request,
+    { url, state: { trx, organization } }: OrganizationContext,
+  ) {
+    const strength = parseInt(url.searchParams.get('strength')!) || undefined
 
-  const manufactured_medication_id = url.searchParams.get(
-    'manufactured_medication_id',
-  )
+    const manufactured_medication_id = url.searchParams.get(
+      'manufactured_medication_id',
+    )
 
-  const { manufactured_medication, last_procurement } =
-    !manufactured_medication_id
-      ? { manufactured_medication: null, last_procurement: null }
-      : await promiseProps({
-        last_procurement: inventory.getLatestProcurement(
-          trx,
-          {
+    const { manufactured_medication, last_procurement } =
+      !manufactured_medication_id
+        ? { manufactured_medication: null, last_procurement: null }
+        : await promiseProps({
+          last_procurement: inventory.getLatestProcurement(
+            trx,
+            {
+              manufactured_medication_id,
+              strength,
+              organization_id: organization.id,
+            },
+          ),
+          manufactured_medication: manufactured_medications.getById(
+            trx,
             manufactured_medication_id,
-            strength,
-            organization_id: organization.id,
-          },
-        ),
-        manufactured_medication: manufactured_medications.getById(
-          trx,
-          manufactured_medication_id,
-        ),
-      })
+          ),
+        })
 
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Add Medicine'
-      route={route}
-      url={url}
-      health_worker={healthWorker}
-    >
+    return (
       <InventoryMedicineForm
         today={todayISOInHarare()}
         manufactured_medication={manufactured_medication}
         last_procurement={last_procurement}
       />
-    </Layout>
-  )
-}
+    )
+  },
+)

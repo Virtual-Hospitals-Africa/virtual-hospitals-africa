@@ -29,13 +29,15 @@ export async function addListeners(trx: TrxOrDb) {
     }
 
     const listeners = Object.keys(handler.listeners)
-    await trx
-      .insertInto('event_listeners')
-      .values(listeners.map((listener_name) => ({
-        listener_name,
-        event_id: event.id,
-      })))
-      .execute()
+    if (listeners.length) {
+      await trx
+        .insertInto('event_listeners')
+        .values(listeners.map((listener_name) => ({
+          listener_name,
+          event_id: event.id,
+        })))
+        .execute()
+    }
 
     await trx.updateTable('events')
       .where('id', '=', event.id)

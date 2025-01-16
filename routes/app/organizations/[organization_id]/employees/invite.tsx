@@ -1,5 +1,3 @@
-import { PageProps } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import {
   HasStringId,
   LoggedInHealthWorkerHandlerWithProps,
@@ -13,6 +11,8 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { EmployedHealthWorker } from '../../../../../types.ts'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { OrganizationContext } from '../_middleware.ts'
 
 type InvitePageProps = {
   healthWorker: EmployedHealthWorker
@@ -44,10 +44,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
   organization: HasStringId<Organization>
   isAdminAtOrganization: boolean
 }> = {
-  GET(_req, ctx) {
-    assertOr403(ctx.state.isAdminAtOrganization)
-    return ctx.render({ healthWorker: ctx.state.healthWorker })
-  },
   async POST(req, ctx) {
     assertOr403(ctx.state.isAdminAtOrganization)
 
@@ -74,16 +70,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
   },
 }
 
-export default function InviteEmployees(props: PageProps) {
-  return (
-    <Layout
-      title='Invite Employees'
-      route={props.route}
-      url={props.url}
-      health_worker={props.data.healthWorker}
-      variant='health worker home page'
-    >
-      <InviteEmployeesForm />
-    </Layout>
-  )
-}
+export default HealthWorkerHomePageLayout<OrganizationContext>(
+  'Invite Employees',
+  function InviteEmployeesPage(_req, ctx) {
+    assertOr403(ctx.state.isAdminAtOrganization)
+    return <InviteEmployeesForm />
+  },
+)

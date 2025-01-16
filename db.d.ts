@@ -442,6 +442,7 @@ export interface HealthWorkerSessions {
 }
 
 export interface HealthWorkerWebNotifications {
+  action_href: string
   action_title: string
   avatar_url: string
   created_at: Generated<Timestamp>

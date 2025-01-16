@@ -1,21 +1,11 @@
-import { PageProps } from '$fresh/server.ts'
-import Layout from '../../components/library/Layout.tsx'
-import {
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-  RenderedPatient,
-} from '../../types.ts'
 import PatientsView from '../../components/patients/View.tsx'
 import { getAllWithNames } from '../../db/models/patients.ts'
 import { json } from '../../util/responses.ts'
+import { HealthWorkerHomePageLayout } from './_middleware.tsx'
 
-type PatientsProps = {
-  healthWorker: EmployedHealthWorker
-  patients: RenderedPatient[]
-}
-
-export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
-  async GET(req, ctx) {
+export default HealthWorkerHomePageLayout(
+  'Patients',
+  async function PatientsPage(req, ctx) {
     const { searchParams } = ctx.url
     const search = searchParams.get('search')
     const completed_intake = searchParams.has('completed_intake')
@@ -31,25 +21,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
       return json(patients)
     }
 
-    return ctx.render({
-      healthWorker: ctx.state.healthWorker,
-      patients,
-    })
+    return <PatientsView patients={patients} />
   },
-}
-
-export default function PatientsPage(
-  props: PageProps<PatientsProps>,
-) {
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Patients'
-      route={props.route}
-      url={props.url}
-      health_worker={props.data.healthWorker}
-    >
-      <PatientsView patients={props.data.patients} />
-    </Layout>
-  )
-}
+)

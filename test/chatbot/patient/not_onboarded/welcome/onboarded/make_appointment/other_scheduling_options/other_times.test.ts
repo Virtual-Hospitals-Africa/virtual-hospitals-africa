@@ -164,7 +164,6 @@ describe.skip('patient chatbot', { sanitizeResources: false }, () => {
 
     const date = formatHarare(firstOtherTime).substring(0, 10)
 
-    console.log('message.action.sections', message.action.sections)
     assertEquals(message.action.sections[0].title, date)
     const time = convertToTimeString(formatHarare(firstOtherTime))
     assertEquals(message.action.sections[0].rows[0].title, time)

@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import Appointments from '../../../../../components/calendar/Appointments.tsx'
 import * as appointments from '../../../../../db/models/appointments.ts'
 import type { RenderableAppointment } from '../../../../../types.ts'
-import { PatientPage, type PatientPageProps } from './_middleware.tsx'
+import { PatientPage } from './_middleware.tsx'
 import {
   HealthWorkerGoogleClient,
 } from '../../../../../external-clients/google.ts'
@@ -10,7 +10,8 @@ import { parseDateTime } from '../../../../../util/date.ts'
 import { uniqBy } from '../../../../../util/uniq.ts'
 
 export default PatientPage(
-  async function AppointmentsPage({ ctx }: PatientPageProps) {
+  'Appointments',
+  async function AppointmentsPage(_req, ctx) {
     const patient_appointments = await appointments.getForPatient(
       ctx.state.trx,
       {

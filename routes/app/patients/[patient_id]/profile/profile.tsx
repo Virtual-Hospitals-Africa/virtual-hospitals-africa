@@ -3,7 +3,8 @@ import * as patient_intake from '../../../../../db/models/patient_intake.ts'
 import PatientProfile from '../../../../../components/patients/profile/PatientProfile.tsx'
 
 export default PatientPage(
-  async function PatientProfileTab({ ctx }) {
+  'Profile',
+  async function PatientProfileTab(_req, ctx) {
     console.log('ctx', ctx)
     const patient_summary = await patient_intake.getSummaryById(
       ctx.state.trx,

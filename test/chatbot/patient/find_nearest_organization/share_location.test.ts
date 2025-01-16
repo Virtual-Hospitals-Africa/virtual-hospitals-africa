@@ -65,11 +65,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       o.name === 'Braeside Clinic'
     )!
 
-    console.log(
-      'message.action.sections[0].rows',
-      message.action.sections[0].rows,
-    )
-
     assertEquals(
       message.action.sections[0].rows[0].id,
       arcadia.id,
