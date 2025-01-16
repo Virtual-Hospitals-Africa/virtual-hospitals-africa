@@ -1,5 +1,5 @@
 export const MHILink = () => (
-  <a href='https://morehumaninternet.org' alt='More Human Internet'>
+  <a href='https://morehumaninternet.org' aria-label='More Human Internet'>
     <svg
       width='132'
       height='49'

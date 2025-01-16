@@ -32,9 +32,10 @@ const variantStyles = {
 }
 
 type ButtonProps =
-  & JSX.HTMLAttributes<HTMLButtonElement>
+  & JSX.ButtonHTMLAttributes<HTMLButtonElement>
   & {
     className?: string
+    href?: string
   }
   & ({
     variant: 'solid'
@@ -55,6 +56,7 @@ export function Button({
   color = 'primary',
   className,
   href,
+  type = 'submit',
   ...props
 }: ButtonProps) {
   className = cls(
@@ -73,5 +75,5 @@ export function Button({
         {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
       />
     )
-    : <button className={className} type='submit' {...props} />
+    : <button className={className} type={type} {...props} />
 }

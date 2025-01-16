@@ -5,7 +5,7 @@ export default function MedicalCollegeOfWisconsin() {
       width='128'
       fill='none'
       viewBox='0 0 164 164'
-      alt='Medical College of Wisconsin'
+      aria-label='Medical College of Wisconsin'
     >
       <path fill='#007066' d='M163.614 0H0v163.889h163.614z'></path>
       <path

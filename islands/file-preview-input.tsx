@@ -67,7 +67,7 @@ export default function Preview(
             <video
               className='w-full h-full object-cover'
               src={url}
-              alt={name ? `Uploaded ${name}` : ''}
+              aria-label={name ? `Uploaded ${name}` : ''}
               controls
             />
           )}

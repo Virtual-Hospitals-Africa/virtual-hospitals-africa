@@ -5,7 +5,7 @@ export default function UniversityOfMichiganLawSchool() {
       height='70'
       fill='none'
       viewBox='0 0 872 194'
-      alt='University of Michigan Law School'
+      aria-label='University of Michigan Law School'
     >
       <path fill='#002343' d='M0 0h872v194H0z'></path>
       <path

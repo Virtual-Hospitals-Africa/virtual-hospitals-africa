@@ -92,12 +92,14 @@ export default function DietSection(
               label='Content of meal'
               value={meal.foods_eaten}
             />
-            <input
-              type='time'
-              name={`lifestyle.diet.typical_foods_eaten_time.${index}`}
-              label='Time of meal'
-              value={meal.time}
-            />
+            <label>
+              Time of meal
+              <input
+                type='time'
+                name={`lifestyle.diet.typical_foods_eaten_time.${index}`}
+                value={meal.time}
+              />
+            </label>
           </FormRow>
         </RemoveRow>
       ))}
