@@ -24,6 +24,7 @@ import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_manufactured_medications from './routes/app/manufactured_medications.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
+import * as $app_messaging from './routes/app/messaging.tsx'
 import * as $app_organizations from './routes/app/organizations.tsx'
 import * as $app_organizations_organization_id_ from './routes/app/organizations/[organization_id].tsx'
 import * as $app_organizations_organization_id_middleware from './routes/app/organizations/[organization_id]/_middleware.ts'
@@ -198,6 +199,7 @@ import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx
 import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
 import * as $manufactured_medication_Search from './islands/manufactured_medication/Search.tsx'
 import * as $medication_Input from './islands/medication/Input.tsx'
+import * as $message_MessageList from './islands/message/MessageList.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
@@ -261,6 +263,7 @@ const manifest = {
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/manufactured_medications.tsx': $app_manufactured_medications,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
+    './routes/app/messaging.tsx': $app_messaging,
     './routes/app/organizations.tsx': $app_organizations,
     './routes/app/organizations/[organization_id].tsx':
       $app_organizations_organization_id_,
@@ -499,6 +502,7 @@ const manifest = {
     './islands/manufactured_medication/Search.tsx':
       $manufactured_medication_Search,
     './islands/medication/Input.tsx': $medication_Input,
+    './islands/message/MessageList.tsx': $message_MessageList,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,
     './islands/past-medical-conditions/Condition.tsx':
       $past_medical_conditions_Condition,
