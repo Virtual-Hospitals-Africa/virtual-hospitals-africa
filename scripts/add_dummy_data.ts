@@ -98,7 +98,6 @@ async function addPatientsToWaitingRoom() {
       })
     }),
   )
-  console.log('nurses')
 
   // const doctors: HW[] = await Promise.all(
   //   range(num_medical_staff).map(() => {
@@ -114,11 +113,8 @@ async function addPatientsToWaitingRoom() {
   //   }),
   // )
 
-  console.log('DOC')
-
   await Promise.all(
     patient_scenarios.map(async ([gender, reason, review_status], i) => {
-      console.log('WEL::L')
       const demo = randomZimbabweanDemographics(gender)
 
       const random_avatar = randomAvatarNotYetUsed(gender)
@@ -201,8 +197,6 @@ async function addPatientsToWaitingRoom() {
           requester_notes: 'Patient has lower back pain',
         })
       }
-
-      console.log('finished', reason)
     }),
   )
 

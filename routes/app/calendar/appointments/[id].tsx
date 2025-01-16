@@ -1,24 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { PageProps } from '$fresh/server.ts'
 import * as appointments from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
-import {
-  AppointmentWithAllPatientInfo,
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../types.ts'
-import Layout from '../../../../components/library/Layout.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
+import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 
-type AppointmentPageProps = {
-  appointment: AppointmentWithAllPatientInfo
-  healthWorker: EmployedHealthWorker
-}
-
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  AppointmentPageProps
-> = {
-  async GET(_, ctx) {
+export default HealthWorkerHomePageLayout(
+  async function AppointmentPage(
+    _req,
+    ctx,
+  ) {
     const { healthWorker } = ctx.state
 
     const { id } = ctx.params
@@ -29,29 +19,14 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     })
 
     assert(appointment, 'Appointment not found')
-
-    return ctx.render({
-      appointment,
-      healthWorker,
-    })
+    return {
+      title: `Appointment with ${appointment.patient.name}`,
+      children: (
+        <>
+          <PatientDetailedCard patient={appointment.patient} />
+          <AppointmentDetail appointment={appointment} />
+        </>
+      ),
+    }
   },
-}
-
-export default function AppointmentPage(
-  props: PageProps<AppointmentPageProps>,
-) {
-  return (
-    <Layout
-      title={`Appointment with ${props.data.appointment.patient.name}`}
-      route={props.route}
-      url={props.url}
-      health_worker={props.data.healthWorker}
-      variant='health worker home page'
-    >
-      <PatientDetailedCard patient={props.data.appointment.patient} />
-      <AppointmentDetail
-        appointment={props.data.appointment}
-      />
-    </Layout>
-  )
-}
+)

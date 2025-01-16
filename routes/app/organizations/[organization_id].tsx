@@ -1,22 +1,15 @@
-import Layout from '../../../components/library/Layout.tsx'
+import { HealthWorkerHomePageLayout } from '../_middleware.tsx'
 import { OrganizationContext } from './[organization_id]/_middleware.ts'
 
-// deno-lint-ignore require-await
-export default async function OrganizationPage(
-  _req: Request,
-  ctx: OrganizationContext,
-) {
-  const { organization } = ctx.state
-
-  return (
-    <Layout
-      title={organization.name}
-      route={ctx.route}
-      url={ctx.url}
-      health_worker={ctx.state.healthWorker}
-      variant='health worker home page'
-    >
-      TODO: organization page
-    </Layout>
-  )
-}
+export default HealthWorkerHomePageLayout<OrganizationContext>(
+  function OrganizationPage(
+    _req: Request,
+    ctx: OrganizationContext,
+  ) {
+    const { organization } = ctx.state
+    return {
+      title: organization.name,
+      children: <>TODO: organization page</>,
+    }
+  },
+)

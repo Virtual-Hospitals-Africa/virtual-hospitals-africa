@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
@@ -14,6 +13,7 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import devices from '../../../../../db/models/devices.ts'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function assertIsUpsertDevice(
   obj: unknown,
@@ -55,27 +55,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function DeviceAdd(
-  _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
-) {
-  let device: RenderedDevice | null = null
-  const device_id = url.searchParams.get(
-    'device_id',
-  )
-  if (device_id) {
-    device = await devices.getById(state.trx, device_id)
-  }
+export default HealthWorkerHomePageLayout(
+  'Add Device',
+  async function DeviceAdd(
+    _req: Request,
+    { url, state }: FreshContext<LoggedInHealthWorker>,
+  ) {
+    let device: RenderedDevice | null = null
+    const device_id = url.searchParams.get(
+      'device_id',
+    )
+    if (device_id) {
+      device = await devices.getById(state.trx, device_id)
+    }
 
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Add Device'
-      route={route}
-      url={url}
-      health_worker={state.healthWorker}
-    >
-      <OrganizationDeviceForm device={device} />
-    </Layout>
-  )
-}
+    return <OrganizationDeviceForm device={device} />
+  },
+)

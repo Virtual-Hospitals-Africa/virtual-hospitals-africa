@@ -1432,10 +1432,6 @@ export type RenderedDoctorReviewBase = {
     }
     patient_encounter_provider_id: string
   }
-  requesting: {
-    doctor_id: string | null
-    organization_id: string | null
-  }
 }
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
@@ -1446,6 +1442,10 @@ export type RenderedDoctorReview = RenderedDoctorReviewBase & {
 }
 export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
   review_request_id: string
+  requesting: {
+    doctor_id: string | null
+    organization_id: string | null
+  }
 }
 
 export type RenderedDoctorReviewRequestOfSpecificDoctor =

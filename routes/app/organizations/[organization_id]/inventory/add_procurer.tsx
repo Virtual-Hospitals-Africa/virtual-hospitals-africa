@@ -1,7 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Procurer,
 } from '../../../../../types.ts'
@@ -13,6 +10,7 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function assertIsUpsertProcurer(obj: unknown): asserts obj {
   assertOr400(isObjectLike(obj))
@@ -47,20 +45,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
-export default async function ProcurerPage(
-  _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
-) {
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Add Procurer'
-      route={route}
-      url={url}
-      health_worker={state.healthWorker}
-    >
-      <ProcurerForm />
-    </Layout>
-  )
-}
+export default HealthWorkerHomePageLayout(
+  'Add Procurer',
+  ProcurerForm,
+)

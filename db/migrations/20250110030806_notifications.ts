@@ -9,7 +9,7 @@ export function up(db: Kysely<unknown>) {
       qb
         .addColumn('health_worker_id', 'uuid', (col) =>
           col.notNull().references('health_workers.id'))
-        .addColumn('table_name', 'uuid', (col) =>
+        .addColumn('table_name', 'varchar(255)', (col) =>
           col.notNull())
         .addColumn('row_id', 'uuid', (col) =>
           col.notNull())

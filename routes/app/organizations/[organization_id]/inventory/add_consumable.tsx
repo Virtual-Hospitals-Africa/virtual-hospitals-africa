@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
@@ -16,6 +15,7 @@ import { todayISOInHarare } from '../../../../../util/date.ts'
 import consumables from '../../../../../db/models/consumables.ts'
 import isNumber from '../../../../../util/isNumber.ts'
 import isString from '../../../../../util/isString.ts'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   quantity: number
@@ -73,32 +73,27 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function ConsumableAdd(
-  _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
-) {
-  const consumable_id = url.searchParams.get(
-    'consumable_id',
-  )
-  const consumable = consumable_id
-    ? await consumables.getById(
-      state.trx,
-      consumable_id,
+export default HealthWorkerHomePageLayout(
+  'Add Consumable',
+  async function ConsumableAdd(
+    _req: Request,
+    { url, state }: FreshContext<LoggedInHealthWorker>,
+  ) {
+    const consumable_id = url.searchParams.get(
+      'consumable_id',
     )
-    : null
+    const consumable = consumable_id
+      ? await consumables.getById(
+        state.trx,
+        consumable_id,
+      )
+      : null
 
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Add Consumable'
-      route={route}
-      url={url}
-      health_worker={state.healthWorker}
-    >
+    return (
       <OrganizationConsumableForm
         today={todayISOInHarare()}
         consumable={consumable}
       />
-    </Layout>
-  )
-}
+    )
+  },
+)

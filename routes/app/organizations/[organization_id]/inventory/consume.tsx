@@ -1,9 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
-import {
-  LoggedInHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
@@ -11,6 +6,7 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function assertIsUpsert(obj: unknown): asserts obj is {
   quantity: number
@@ -62,20 +58,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
-export default async function Consume(
-  _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
-) {
-  return (
-    <Layout
-      variant='health worker home page'
-      title='Consumption Test'
-      route={route}
-      url={url}
-      health_worker={state.healthWorker}
-    >
-      <ConsumeForm />
-    </Layout>
-  )
-}
+export default HealthWorkerHomePageLayout(
+  'Consumption Test',
+  ConsumeForm,
+)

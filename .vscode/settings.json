@@ -13,7 +13,8 @@
   },
   "search.exclude": {
     "**/node_modules": true,
-    "**/*.xml": true
+    "**/*.xml": true,
+    "static/images/heroicons/**/*.svg": true
     // "**/*.json": true,
     // "**/*.tsv": true
   }

@@ -116,30 +116,54 @@ function redirectIfRegistrationNeeded(
   return ctx.next()
 }
 
-export type HealthWorkerHomePageProps = {
-  ctx: LoggedInHealthWorkerContext
-  req: Request
+type RenderedSeparately = {
+  drawer?: JSX.Element
+  title?: string
+  children: JSX.Element
 }
 
-export function HealthWorkerHomePageLayout(
-  title: string,
-  render: (
-    props: HealthWorkerHomePageProps,
+type RenderedSeparatelyWithTitle = RenderedSeparately & {
+  title: string
+}
+
+export function HealthWorkerHomePageLayout<
+  Context extends LoggedInHealthWorkerContext,
+>(
+  title:
+    | string
+    | ((
+      req: Request,
+      ctx: Context,
+    ) =>
+      | Response
+      | RenderedSeparatelyWithTitle
+      | Promise<RenderedSeparatelyWithTitle | Response>),
+  render?: (
+    req: Request,
+    ctx: Context,
   ) =>
     | JSX.Element
+    | RenderedSeparately
     | Promise<JSX.Element>
     | Promise<Response>
-    | Promise<JSX.Element | Response>,
+    | Promise<JSX.Element | Response>
+    | Promise<RenderedSeparately | Response>,
 ) {
   return async function (
     req: Request,
-    ctx: LoggedInHealthWorkerContext,
+    ctx: Context,
   ) {
     const { healthWorker, trx } = ctx.state
+    if (typeof title === 'function') {
+      // deno-lint-ignore no-explicit-any
+      render = title as any
+      // deno-lint-ignore no-explicit-any
+      title = undefined as any
+    }
 
-    const { rendered, health_worker_notifications } = await promiseProps({
+    let { rendered, health_worker_notifications } = await promiseProps({
       rendered: Promise.resolve(
-        render({ req, ctx }),
+        render!(req, ctx),
       ),
       health_worker_notifications: notifications.ofHealthWorker(
         trx,
@@ -147,18 +171,29 @@ export function HealthWorkerHomePageLayout(
       ),
     })
 
+    let drawer: JSX.Element | undefined
     if (rendered instanceof Response) {
       return rendered
+    }
+    if ('drawer' in rendered) {
+      drawer = rendered.drawer
+    }
+    if ('title' in rendered) {
+      title = rendered.title as string
+    }
+    if ('children' in rendered) {
+      rendered = rendered.children
     }
 
     return (
       <Layout
         variant='health worker home page'
-        title={title}
+        title={title as string}
         route={ctx.route}
         url={ctx.url}
         health_worker={healthWorker}
         notifications={health_worker_notifications}
+        drawer={drawer}
       >
         {rendered}
       </Layout>

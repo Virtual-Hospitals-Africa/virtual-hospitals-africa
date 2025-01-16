@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as organizations from '../../../../../db/models/organizations.ts'
@@ -15,6 +14,7 @@ import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import { EncounterReason } from '../../../../../db.d.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
+import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -46,67 +46,62 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function WaitingRoomAdd(
-  _req: Request,
-  { url, state, params, route }: FreshContext<LoggedInHealthWorker>,
-) {
-  const { trx } = state
-  const { searchParams } = url
-  const patient_id = searchParams.get('patient_id')
-  const encounter_id = searchParams.get('encounter_id')
-  assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
+export default HealthWorkerHomePageLayout(
+  'Add patient to waiting room',
+  async function WaitingRoomAdd(
+    _req: Request,
+    { url, state, params }: FreshContext<LoggedInHealthWorker>,
+  ) {
+    const { trx } = state
+    const { searchParams } = url
+    const patient_id = searchParams.get('patient_id')
+    const encounter_id = searchParams.get('encounter_id')
+    assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
 
-  const patient_name = searchParams.get('patient_name')
-  const just_completed_intake = url.searchParams.get('intake') === 'completed'
-  let completing_intake: Promise<unknown> = Promise.resolve()
-  if (just_completed_intake) {
-    assertOr400(patient_id, 'patient_id is required')
-    completing_intake = patients.update(trx, {
-      id: patient_id,
-      completed_intake: true,
-    })
-  }
+    const patient_name = searchParams.get('patient_name')
+    const just_completed_intake = url.searchParams.get('intake') === 'completed'
+    let completing_intake: Promise<unknown> = Promise.resolve()
+    if (just_completed_intake) {
+      assertOr400(patient_id, 'patient_id is required')
+      completing_intake = patients.update(trx, {
+        id: patient_id,
+        completed_intake: true,
+      })
+    }
 
-  const { organization_id } = params
-  assert(organization_id)
+    const { organization_id } = params
+    assert(organization_id)
 
-  const gettingProviders = organizations.getApprovedProviders(
-    trx,
-    organization_id,
-  )
+    const gettingProviders = organizations.getApprovedProviders(
+      trx,
+      organization_id,
+    )
 
-  let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
-  let patient: { id?: string | 'add'; name: string } | undefined
-  if (patient_id) {
-    const getting_open_encounter = patient_encounters.get(trx, {
-      patient_id,
-      encounter_id: 'open',
-    })
-    await completing_intake
-    const fetched_patient = await patients.getByID(trx, {
-      id: patient_id,
-    })
+    let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
+    let patient: { id?: string | 'add'; name: string } | undefined
+    if (patient_id) {
+      const getting_open_encounter = patient_encounters.get(trx, {
+        patient_id,
+        encounter_id: 'open',
+      })
+      await completing_intake
+      const fetched_patient = await patients.getByID(trx, {
+        id: patient_id,
+      })
 
-    assert(hasName(fetched_patient))
-    patient = fetched_patient
-    open_encounter = await getting_open_encounter
-  } else if (patient_name) {
-    patient = { name: patient_name, id: 'add' }
-  }
+      assert(hasName(fetched_patient))
+      patient = fetched_patient
+      open_encounter = await getting_open_encounter
+    } else if (patient_name) {
+      patient = { name: patient_name, id: 'add' }
+    }
 
-  return (
-    <Layout
-      title='Add patient to waiting room'
-      route={route}
-      url={url}
-      health_worker={state.healthWorker}
-      variant='health worker home page'
-    >
+    return (
       <AddPatientForm
         providers={await gettingProviders}
         open_encounter={open_encounter}
         patient={patient}
       />
-    </Layout>
-  )
-}
+    )
+  },
+)

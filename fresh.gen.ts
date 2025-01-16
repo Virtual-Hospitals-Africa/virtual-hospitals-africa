@@ -241,7 +241,7 @@ const manifest = {
     './routes/_app.tsx': $_app,
     './routes/_middleware.ts': $_middleware,
     './routes/app.tsx': $app,
-    './routes/app/_middleware.ts': $app_middleware,
+    './routes/app/_middleware.tsx': $app_middleware,
     './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx':
       $app_calendar_appointments_appointment_id_media_media_id_,

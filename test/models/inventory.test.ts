@@ -170,7 +170,6 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           .values({ name: generateUUID() })
           .executeTakeFirstOrThrow()
 
-        console.log('inventory.zzz')
         const first_added = await inventory.procureConsumable(
           db,
           organization_id,
@@ -186,7 +185,6 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           },
         )
 
-        console.log('inventory.procureConsumable')
         await inventory.procureConsumable(db, organization_id, {
           consumable_id: consumable.id,
           created_by: admin.employee_id!,
@@ -198,7 +196,6 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           number_of_containers: 1,
         })
 
-        console.log('inventory.consumeConsumable')
         // deno-lint-ignore no-explicit-any
         const error: any = await assertRejects(() =>
           inventory.consumeConsumable(db, organization_id, {
@@ -208,8 +205,6 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             procurement_id: first_added.id,
           })
         )
-
-        console.log(error)
 
         assertEquals(
           error.fields.message,

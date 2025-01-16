@@ -64,11 +64,13 @@ export const EVENTS = {
             '/images/heroicons/24/solid/slipboard-document-list.svg',
           description:
             `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
-          health_worker_id: doctor_review_request.requesting.doctor_id,
+          employment_id: doctor_review_request.requesting.doctor_id,
           table_name: 'doctor_review_requests',
           row_id: payload.data.review_request_id,
           notification_type: 'doctor_review_request',
           title: 'Review Requested',
+          action_href:
+            `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
         })
       },
     },

@@ -515,7 +515,7 @@ describe(
                       profession: 'nurse',
                     },
                     requesting: {
-                      doctor_id: null,
+                      doctor_id: doctor.employee_id!,
                       organization_id: null,
                     },
                     review_request_id: review_request.id,

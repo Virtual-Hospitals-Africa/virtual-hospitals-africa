@@ -6,7 +6,6 @@ export function insert(
   trx: TrxOrDb,
   { type, data }: EventInsertAny,
 ): Promise<{ id: string }> {
-  console.log(type, EVENTS[type])
   return trx
     .insertInto('events')
     .values({

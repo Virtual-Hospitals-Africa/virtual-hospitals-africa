@@ -4,21 +4,33 @@ import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 
 export function insert(
   trx: TrxOrDb,
-  notification: {
-    action_title: string
-    action_href: string
-    avatar_url: string
-    description: string
-    health_worker_id: string
-    table_name: string
-    row_id: string
-    notification_type: string
-    title: string
-  },
+  { health_worker_id, employment_id, ...notification }:
+    & {
+      action_title: string
+      action_href: string
+      avatar_url: string
+      description: string
+      table_name: string
+      row_id: string
+      notification_type: string
+      title: string
+    }
+    & (
+      | { health_worker_id: string; employment_id?: never }
+      | { health_worker_id?: never; employment_id: string }
+    ),
 ): Promise<{ id: string }> {
   return trx
     .insertInto('health_worker_web_notifications')
-    .values(notification)
+    .values({
+      ...notification,
+      health_worker_id: health_worker_id ||
+        trx.selectFrom('employment').select('health_worker_id').where(
+          'id',
+          '=',
+          employment_id!,
+        ),
+    })
     .returning('id')
     .executeTakeFirstOrThrow()
 }
