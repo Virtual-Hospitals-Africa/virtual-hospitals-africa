@@ -96,10 +96,7 @@ export default function NavBar() {
                 <span className='absolute inset-0' />
               </>
             )}
-            <ChevronUpDownIcon
-              open={open}
-              className='h-6 w-6 stroke-slate-700'
-            />
+            <ChevronUpDownIcon className='h-6 w-6 stroke-slate-700' />
           </button>
         </div>
         <div

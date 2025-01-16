@@ -358,7 +358,7 @@ export function TextArea(
         placeholder={placeholder}
         required={required}
         disabled={disabled}
-        readonly={readonly}
+        readOnly={readonly}
         value={signal?.value ?? value ?? undefined}
         onInput={(event) => {
           if (signal) signal.value = event.currentTarget.value
@@ -424,7 +424,7 @@ export const Select = forwardRef(
 
 export const SelectWithOptions = forwardRef(
   function SelectWithOptions<
-    V extends JSX.HTMLAttributes<HTMLOptionElement>['value'],
+    V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
   >(
     {
       options,

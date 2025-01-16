@@ -12,7 +12,7 @@ export function LogoWithFullText(
       viewBox='0 0 321 123'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
-      alt='Virtual Hospitals Africa'
+      aria-label='Virtual Hospitals Africa'
       {...props}
     >
       <path

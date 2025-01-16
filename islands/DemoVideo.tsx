@@ -75,7 +75,8 @@ export default function DemoVideo() {
   effect(() => {
     if (!youtube_script_loaded.value) return
     if (document.getElementById('youtube_demo_iframe')) {
-      return youtube_demo_iframe_on_page.value = true
+      youtube_demo_iframe_on_page.value = true
+      return
     }
 
     const observer = new MutationObserver(

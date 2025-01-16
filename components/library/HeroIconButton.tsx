@@ -32,10 +32,10 @@ const variantStyles = {
 }
 
 type ButtonProps =
-  & JSX.HTMLAttributes<HTMLButtonElement>
+  & JSX.ButtonHTMLAttributes<HTMLButtonElement>
   & {
     className?: string
-    type?: HTMLButtonElement['type']
+    href?: string
     onClick?(event: JSX.TargetedEvent<HTMLButtonElement>): void
   }
   & ({
