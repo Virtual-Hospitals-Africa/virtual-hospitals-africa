@@ -425,6 +425,14 @@ export interface HealthWorkerInvitees {
   updated_at: Generated<Timestamp>
 }
 
+export interface HealthWorkerMessages {
+  created_at: Generated<Timestamp>
+  health_worker_id: string
+  id: Generated<string>
+  message: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
@@ -1152,6 +1160,7 @@ export interface DB {
   guardian_relations: GuardianRelations
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
+  health_worker_messages: HealthWorkerMessages
   health_worker_sessions: HealthWorkerSessions
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
