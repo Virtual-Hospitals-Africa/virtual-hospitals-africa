@@ -5,6 +5,7 @@ const APPLICATIONS = {
   'vha-snowstorm': 'web',
   'vha-pharmacist-chatbot': 'worker',
   'vha-patient-chatbot': 'worker',
+  'vha-events-processor': 'worker',
 }
 
 type Application = keyof typeof APPLICATIONS
