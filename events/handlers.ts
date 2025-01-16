@@ -99,6 +99,18 @@ export const EVENTS = {
       },
     },
   ),
+  DoctorReviewCompleted: defineEvent(
+    z.object({
+      review_id: z.string().uuid(),
+    }),
+    {
+      async notifyOriginalRequester(trx, payload) {
+        console.log(
+          'TODO: add notication for whoever originally requested to review this patient',
+        )
+      },
+    },
+  ),
 }
 
 export type EventType = keyof typeof EVENTS

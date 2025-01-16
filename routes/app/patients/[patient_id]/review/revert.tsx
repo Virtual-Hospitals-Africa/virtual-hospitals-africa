@@ -1,15 +1,33 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
+import * as events from '../../../../../db/models/events.ts'
+import { complete } from '../../../../../db/models/doctor_reviews.ts'
+import redirect from '../../../../../util/redirect.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  // deno-lint-ignore require-await
   async POST(_req, ctx: ReviewContext) {
-    const completing_step = completeStep(ctx)
-    return completing_step
+    const { review_id } = ctx.state.doctor_review
+    await Promise.all([
+      complete(ctx.state.trx, { review_id }),
+      completeStep(ctx),
+      events.insert(ctx.state.trx, {
+        type: 'DoctorReviewCompleted',
+        data: {
+          review_id,
+        },
+      }),
+    ])
+
+    const success = encodeURIComponent(
+      'Thanks for your review! The original requester has been notified 🩺',
+    )
+    return redirect(
+      `/app/organizations/${ctx.state.reviewing_via_employment.organization_id}/waiting_room?success=${success}`,
+    )
   },
 }
 

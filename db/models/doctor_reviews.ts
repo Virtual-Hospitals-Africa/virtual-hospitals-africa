@@ -423,3 +423,15 @@ export function getRequest(
     ])
     .executeTakeFirst()
 }
+
+export function complete(
+  trx: TrxOrDb,
+  opts: {
+    review_id: string
+  },
+) {
+  return trx.updateTable('doctor_reviews')
+    .set({ completed_at: now })
+    .where('id', '=', opts.review_id)
+    .execute()
+}

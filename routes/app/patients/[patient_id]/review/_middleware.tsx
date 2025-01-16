@@ -13,10 +13,15 @@ import { DOCTOR_REVIEW_STEPS } from '../../../../../shared/review.ts'
 import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import { RenderedDoctorReview } from '../../../../../types.ts'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 
 export type ReviewContext = LoggedInHealthWorkerContext<
   {
     doctor_review: RenderedDoctorReview
+    reviewing_via_employment: {
+      organization_id: string
+      employment_id: string
+    }
   }
 >
 
@@ -24,13 +29,32 @@ export async function handler(
   _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
-  Object.assign(
-    ctx.state,
-    await doctor_reviews.addSelfAsReviewer(ctx.state.trx, {
+  const { doctor_review } = await doctor_reviews.addSelfAsReviewer(
+    ctx.state.trx,
+    {
       patient_id: getRequiredUUIDParam(ctx, 'patient_id'),
       health_worker: ctx.state.healthWorker,
-    }),
+    },
   )
+
+  const { employment } = ctx.state.healthWorker
+  const { review_id, employment_id } = doctor_review
+  const reviewing_via_employment = employment.find((e) =>
+    e.roles.doctor?.employment_id === employment_id
+  )
+  assertOr400(reviewing_via_employment, 'Doctor employment not found')
+
+  Object.assign(
+    ctx.state,
+    {
+      doctor_review,
+      reviewing_via_employment: {
+        employment_id,
+        organization_id: reviewing_via_employment.organization.id,
+      },
+    },
+  )
+
   return ctx.next()
 }
 
