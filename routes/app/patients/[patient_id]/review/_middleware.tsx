@@ -38,7 +38,7 @@ export async function handler(
   )
 
   const { employment } = ctx.state.healthWorker
-  const { review_id, employment_id } = doctor_review
+  const { employment_id } = doctor_review
   const reviewing_via_employment = employment.find((e) =>
     e.roles.doctor?.employment_id === employment_id
   )
