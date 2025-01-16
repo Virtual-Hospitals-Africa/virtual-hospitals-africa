@@ -1,4 +1,4 @@
-name: Deploy Patient Chatbot
+name: Deploy Events Processor
 
 on:
   push:
