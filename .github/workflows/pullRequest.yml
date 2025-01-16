@@ -22,7 +22,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.0.6
+          deno-version: v2.1.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -72,7 +72,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.0.6
+          deno-version: v2.1.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -134,7 +134,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.0.6
+          deno-version: v2.1.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -182,7 +182,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.0.6
+          deno-version: v2.1.5
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -197,7 +197,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.0.6
+          deno-version: v2.1.5
 
       - name: Build web
         run: deno task build
