@@ -99,6 +99,31 @@ export const EVENTS = {
       },
     },
   ),
+  DoctorReviewCompleted: defineEvent(
+    z.object({
+      review_id: z.string().uuid(),
+    }),
+    {
+      notifyOriginalRequester(_trx, _payload) {
+        console.log('TODO!')
+        return Promise.resolve()
+        // return notifications.insert(trx, {
+        //   action_title: 'Review Completed',
+        //   avatar_url: doctor_review_request.requested_by.avatar_url ||
+        //     '/images/heroicons/24/solid/slipboard-document-list.svg',
+        //   description:
+        //     `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
+        //   employment_id: doctor_review_request.requesting.doctor_id,
+        //   table_name: 'doctor_review_requests',
+        //   row_id: payload.data.review_request_id,
+        //   notification_type: 'doctor_review_request',
+        //   title: 'Review Requested',
+        //   action_href:
+        //     `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+        // })
+      },
+    },
+  ),
 }
 
 export type EventType = keyof typeof EVENTS
