@@ -7,13 +7,13 @@ type ThreadListProps = {
   threads: RenderedMessageThread[]
 }
 
-function MessageContent(content: string): JSX.Element {
-  return (
-    <article class='py-3 px-2 bg-white'>
-      {content}
-    </article>
-  )
-}
+// function MessageContent(content: string): JSX.Element {
+//   return (
+//     <article class='py-3 px-2 bg-white'>
+//       {content}
+//     </article>
+//   )
+// }
 
 function MessageControllers(): JSX.Element {
   return (
@@ -96,9 +96,9 @@ function SingleThread({
   isSelected,
   toggleSelection,
 }: SingleMessageProps): JSX.Element {
-  const { sender, content, timestamp, isRead } = thread
+  // TODO
   return (
-    <details class={cls(isRead && 'bg-gray-100')}>
+    <details class={cls(thread.most_recent_message.read_at && 'bg-gray-100')}>
       <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>
         <div class='flex items-center border-y hover:bg-gray-200 px-2'>
           <input
@@ -110,21 +110,21 @@ function SingleThread({
           <div class='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
             <div class='flex items-center'>
               <span class='w-56 ml-2 pr-2 truncate'>
-                {sender}
+                {thread.most_recent_message.sender.display.name}
               </span>
               <span class='w-96 text-gray-600 text-sm truncate'>
-                {content}
+                {thread.most_recent_message.body}
               </span>
             </div>
             <div class='w-32 flex items-center justify-end'>
               <span x-show='!messageHover' class='text-sm text-gray-500'>
-                {timestamp}
+                {thread.most_recent_message.created_at.toLocaleDateString()}
               </span>
             </div>
           </div>
         </div>
       </summary>
-      {MessageContent(content)}
+      {/* <Message */}
     </details>
   )
 }
@@ -152,15 +152,15 @@ export default function ThreadList(
           {MessageControllers()}
         </div>
       </div>
-      {threads.map((message) => (
+      {threads.map((thread) => (
         <SingleThread
-          message={message}
-          isSelected={selected.value.has(message)}
+          thread={thread}
+          isSelected={selected.value.has(thread)}
           toggleSelection={() => {
             const newSelected = new Set(selected.value)
-            selected.value.has(message)
-              ? newSelected.delete(message)
-              : newSelected.add(message)
+            selected.value.has(thread)
+              ? newSelected.delete(thread)
+              : newSelected.add(thread)
             selected.value = newSelected
             isSelectAll.value = selected.value.size === threads.length
           }}

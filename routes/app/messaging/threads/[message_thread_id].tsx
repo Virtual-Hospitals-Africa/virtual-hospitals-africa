@@ -1,19 +1,17 @@
 import { FreshContext } from '$fresh/server.ts'
 import { z } from 'zod'
-import * as events from '../../../../db/models/events.ts'
 import { LoggedInHealthWorker } from '../../../../types.ts'
-import redirect from '../../../../util/redirect.ts'
 import * as messages from '../../../../db/models/messages.ts'
 import {
   EmployedHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../types.ts'
-import ThreadList from '../../../../islands/messages/ThreadList.tsx'
 import Form from '../../../../components/library/Form.tsx'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { json } from '../../../../util/responses.ts'
+import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
 
 type MessagingProps = {
   healthWorker: EmployedHealthWorker
@@ -54,15 +52,15 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInHealthWorker>,
   ) {
-    const threads = await messages.getAllThreadsForHealthWorker(
+    const _threads = await messages.getAllThreadsForHealthWorker(
       ctx.state.trx,
       ctx.state.healthWorker.id,
     )
-    const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
+    // const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     return (
       <div>
-        <MessageList threads={threads} />
+        <ChatThread />
         <Form method='POST' className='mt-5'>
           <label className='block' for='message'>Testing: Post a message</label>
           <textarea
