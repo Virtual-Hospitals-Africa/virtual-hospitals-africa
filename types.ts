@@ -3106,11 +3106,9 @@ type RenderedMessageThreadOtherParticipantHealthWorker = {
   participant_id: string
   health_worker_id: string
   pharmacist_id: null
-  display: {
-    avatar_url: string
-    name: string
-    role: string
-  }
+  avatar_url?: Maybe<string>
+  name: string
+  description: string | string[]
 }
 
 type RenderedMessageThreadOtherParticipantPharmacist = {
@@ -3118,18 +3116,17 @@ type RenderedMessageThreadOtherParticipantPharmacist = {
   participant_id: string
   health_worker_id: null
   pharmacist_id: string
-  display: {
-    avatar_url: string
-    name: string
-    role: string
-  }
+  avatar_url?: Maybe<string>
+  name: string
+  description: string | string[]
 }
 
-type RenderedMessageThreadOtherParticipant =
+export type RenderedMessageThreadOtherParticipant =
   | RenderedMessageThreadOtherParticipantHealthWorker
   | RenderedMessageThreadOtherParticipantPharmacist
 export type RenderedMessageThread = {
   most_recent_message: {
+    sent_by_me: SqlBool
     read_at: Date | null
     created_at: Date
     id: string

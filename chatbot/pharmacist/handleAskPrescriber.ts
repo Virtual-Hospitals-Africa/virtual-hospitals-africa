@@ -39,8 +39,10 @@ export async function handleAskPrescriber(
   ) {
     await messages.send(trx, {
       thread_id: thread.thread_id,
-      sender_id: thread.sender_participant_id,
-      message: { body },
+      body,
+      sender: {
+        participant_id: thread.sender_participant_id,
+      },
     })
   } else {
     const thread = await messages.createThread(trx, {
