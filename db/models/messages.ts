@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { RenderedMessageThread, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
@@ -60,11 +61,11 @@ export async function createThread(
   { sender, recipient, concerning, initial_message }: {
     sender: {
       health_worker_id?: string
-      pharmacist?: string
+      pharmacist_id?: string
     }
     recipient: {
       health_worker_id?: string
-      pharmacist?: string
+      pharmacist_id?: string
     }
     concerning: {
       patient_id: string
@@ -114,21 +115,37 @@ export async function createThread(
   }
 }
 
+type Sender =
+  | { participant_id: string; health_worker_id?: never; pharmacist_id?: never }
+  | { participant_id?: never; health_worker_id: string; pharmacist_id?: never }
+  | { participant_id?: never; health_worker_id?: never; pharmacist_id: string }
+
+function senderId(trx: TrxOrDb, sender: Sender) {
+  if (sender.participant_id) return sender.participant_id
+  if (sender.health_worker_id) {
+    return trx.selectFrom('message_thread_participants')
+      .where('health_worker_id', '=', sender.health_worker_id)
+      .select('id')
+  }
+  assert(sender.pharmacist_id, 'Sender must include an id')
+  return trx.selectFrom('message_thread_participants')
+    .where('pharmacist_id', '=', sender.pharmacist_id)
+    .select('id')
+}
+
 export function send(
   trx: TrxOrDb,
-  { thread_id, sender_id, message }: {
+  { thread_id, sender, body }: {
     thread_id: string
-    sender_id: string
-    message: {
-      body: string
-    }
+    sender: Sender
+    body: string
   },
 ) {
   return trx.insertInto('messages')
     .values({
       thread_id,
-      sender_id,
-      body: message.body,
+      sender_id: senderId(trx, sender),
+      body,
     })
     .returning('id')
     .executeTakeFirstOrThrow()

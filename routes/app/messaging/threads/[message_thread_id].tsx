@@ -12,6 +12,7 @@ import ThreadList from '../../../../islands/messages/ThreadList.tsx'
 import Form from '../../../../components/library/Form.tsx'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 type MessagingProps = {
   healthWorker: EmployedHealthWorker
@@ -26,16 +27,25 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 > = {
   async POST(req, ctx) {
     const { healthWorker } = ctx.state
+    const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
-    const { message } = await parseRequest(
+    const form_values = await parseRequest(
       ctx.state.trx,
       req,
       MessageSchema.parse,
     )
 
+    const message = await messages.send(ctx.state.trx, {
+      thread_id: message_thread_id,
+      body: form_values.message,
+      sender: {
+        health_worker_id: healthWorker.id,
+      },
+    })
+
     await events.insert(ctx.state.trx, {
       type: 'HealthWorkerMessageSent',
-      data: { health_worker_id: healthWorker.id, message },
+      data: { message_id: message.id },
     })
 
     return redirect('/app/messaging')
