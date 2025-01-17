@@ -92,11 +92,11 @@ type SingleMessageProps = {
 }
 
 function SingleThread({
-  message,
+  thread,
   isSelected,
   toggleSelection,
 }: SingleMessageProps): JSX.Element {
-  const { sender, content, timestamp, isRead } = message
+  const { sender, content, timestamp, isRead } = thread
   return (
     <details class={cls(isRead && 'bg-gray-100')}>
       <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>

@@ -13,6 +13,7 @@ import Form from '../../../../components/library/Form.tsx'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
+import { json } from '../../../../util/responses.ts'
 
 type MessagingProps = {
   healthWorker: EmployedHealthWorker
@@ -43,12 +44,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       },
     })
 
-    await events.insert(ctx.state.trx, {
-      type: 'HealthWorkerMessageSent',
-      data: { message_id: message.id },
-    })
-
-    return redirect('/app/messaging')
+    return json({ message })
   },
 }
 
@@ -62,10 +58,11 @@ export default HealthWorkerHomePageLayout(
       ctx.state.trx,
       ctx.state.healthWorker.id,
     )
+    const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     return (
       <div>
-        <ThreadList threads={threads} />
+        <MessageList threads={threads} />
         <Form method='POST' className='mt-5'>
           <label className='block' for='message'>Testing: Post a message</label>
           <textarea
