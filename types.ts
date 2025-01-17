@@ -462,6 +462,7 @@ export type PharmacistConversationState =
   | 'onboarded:fill_prescription:ask_dispense_one'
   | 'onboarded:fill_prescription:ask_dispense_all'
   | 'onboarded:fill_prescription:confirm_done'
+  | 'onboarded:fill_prescription:ask_prescriber'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
