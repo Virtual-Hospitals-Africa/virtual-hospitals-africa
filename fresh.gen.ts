@@ -200,6 +200,7 @@ import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx
 import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
 import * as $manufactured_medication_Search from './islands/manufactured_medication/Search.tsx'
 import * as $medication_Input from './islands/medication/Input.tsx'
+import * as $messages_ChatThread from './islands/messages/ChatThread.tsx'
 import * as $messages_ThreadList from './islands/messages/ThreadList.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
@@ -505,6 +506,7 @@ const manifest = {
     './islands/manufactured_medication/Search.tsx':
       $manufactured_medication_Search,
     './islands/medication/Input.tsx': $medication_Input,
+    './islands/messages/ChatThread.tsx': $messages_ChatThread,
     './islands/messages/ThreadList.tsx': $messages_ThreadList,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,
     './islands/past-medical-conditions/Condition.tsx':

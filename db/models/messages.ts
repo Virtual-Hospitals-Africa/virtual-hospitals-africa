@@ -2,11 +2,28 @@ import { assert } from 'std/assert/assert.ts'
 import { RenderedMessageThread, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
-export async function getAllThreadsForHealthWorker(
+async function appendMostRecentMessage(
+  trx: TrxOrDb,
+  { other_participants, ...thread }: Awaited<ReturnType<typeof getThreadsForHealthWorker>>[number]
+) {
+  const { sender_id, ...most_recent_message } = await trx
+    .selectFrom('messages')
+    .where('messages.thread_id', '=', thread.id)
+    .orderBy('messages.created_at desc')
+    .selectAll()
+    .executeTakeFirstOrThrow()
+  const sender = other_participants.find(p => p.)
+  return {
+    ...thread,
+    most_recent_message,
+}
+}
+
+function getThreadsForHealthWorker(
   trx: TrxOrDb,
   health_worker_id: string,
-): Promise<RenderedMessageThread[]> {
-  const threads = await trx
+) {
+  return trx
     .selectFrom('message_threads')
     .innerJoin(
       'message_thread_participants',
@@ -19,9 +36,12 @@ export async function getAllThreadsForHealthWorker(
       jsonArrayFrom(
         eb
           .selectFrom('message_thread_participants as other_participants')
-          .select([
-            'health_worker_id',
-            'pharmacist_id',
+          .leftJoin('health_workers', 'other_participants.health_worker_id', 'health_workers.id')
+          .leftJoin('pharmacists', 'other_participants.pharmacist_id', 'pharmacists.id')
+          .select(eb_other_participants => [
+            'other_participants.id as participant_id',
+            'other_participants.health_worker_id',
+            'other_participants.pharmacist_id',
           ])
           .whereRef(
             'other_participants.thread_id',
@@ -41,19 +61,16 @@ export async function getAllThreadsForHealthWorker(
       health_worker_id,
     )
     .execute()
+}
 
-  return Promise.all(threads.map(async (thread) => {
-    const most_recent_message = await trx
-      .selectFrom('messages')
-      .where('messages.thread_id', '=', thread.id)
-      .orderBy('messages.created_at desc')
-      .selectAll()
-      .executeTakeFirstOrThrow()
-    return {
-      ...thread,
-      most_recent_message,
-    }
-  }))
+export async function getAllThreadsForHealthWorker(
+  trx: TrxOrDb,
+  health_worker_id: string,
+): Promise<RenderedMessageThread[]> {
+  const threads = await getThreadsForHealthWorker(trx, health_worker_id)
+  
+
+  return Promise.all(threads.map(thread => appendMostRecentMessage(trx, thread)))
 }
 
 export async function createThread(
