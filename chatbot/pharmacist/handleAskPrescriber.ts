@@ -5,25 +5,69 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import * as messages from '../../db/models/messages.ts'
+import * as conversations from '../../db/models/conversations.ts'
+import * as prescriptions from '../../db/models/prescriptions.ts'
 import { handleDispense } from './prescriptionMedications.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
 
 export async function handleAskPrescriber(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ): Promise<PharmacistConversationState> {
-  const message = pharmacistState.unhandled_message.trimmed_body
-  if (message === 'done' || message === 'dispense') {
+  const body = pharmacistState.unhandled_message.trimmed_body
+  if (body === 'done' || body === 'dispense') {
     return handleDispense(trx, pharmacistState)
   }
 
-  const { prescription_id } = pharmacistState.chatbot_user.data
+  assert(body, 'Expected a message, not an attachment or something else')
+
+  const { prescription_id, thread } = pharmacistState.chatbot_user.data
   assert(
-    prescription_id,
+    typeof prescription_id === 'string',
     'Cannot messsage prescriber about prescription as no prescription can be found',
   )
 
-  await await makeThreadIfNotExists
-  await sendMessage
+  const prescription = await prescriptions.getById(trx, prescription_id)
+  assert(
+    prescription,
+    'Cannot messsage prescriber about prescription as no prescription can be found',
+  )
 
-  return 'onboarded:fill_prescription:ask_prescriber'
+  if (
+    isObjectLike(thread) && typeof thread.thread_id === 'string' &&
+    typeof thread.sender_participant_id === 'string'
+  ) {
+    await messages.send(trx, {
+      thread_id: thread.thread_id,
+      sender_id: thread.sender_participant_id,
+      message: { body },
+    })
+  } else {
+    const thread = await messages.createThread(trx, {
+      sender: {
+        pharmacist_id: pharmacistState.chatbot_user.entity_id!,
+      },
+      recipient: {
+        health_worker_id: prescription.prescriber_id,
+      },
+      concerning: {
+        patient_id: prescription.patient_id,
+      },
+      initial_message: {
+        body: body,
+      },
+    })
+    await conversations.updateChatbotUser(
+      trx,
+      pharmacistState.chatbot_user,
+      {
+        data: {
+          ...pharmacistState.chatbot_user.data,
+          thread_id: thread.thread_id,
+          sender_participant_id: thread.sender_participant_id,
+        },
+      },
+    )
+  }
+  return 'onboarded:fill_prescription:ask_prescriber' as const
 }

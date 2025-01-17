@@ -4,7 +4,6 @@ import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as notifications from '../db/models/notifications.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
-import * as health_worker_messages from '../db/models/messages.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import { debug } from '../util/debug.ts'
@@ -127,15 +126,12 @@ export const EVENTS = {
   ),
   HealthWorkerMessageSent: defineEvent(
     z.object({
-      health_worker_id: z.string().uuid(),
-      message: z.string(),
+      message_id: z.string().uuid(),
     }),
     {
-      async addToHealthWorkerInbox(trx, payload) {
-        await health_worker_messages.insert(trx, {
-          health_worker_id: payload.data.health_worker_id,
-          message: payload.data.message,
-        })
+      // deno-lint-ignore no-unused-vars require-await
+      async sendToPharmacistWhatsapp(trx, payload) {
+        console.log('TODO!')
       },
     },
   ),
