@@ -3099,3 +3099,23 @@ export type ExaminationChecklistDefinition = {
     snomed_english_term: string
   }[]
 }
+
+export type RenderedMessageThread = {
+  most_recent_message: {
+    created_at: Date
+    id: string
+    updated_at: Date
+    thread_id: string
+    body: string
+    sender_id: string
+  }
+  created_at: Date
+  id: string
+  patient_id: string
+  updated_at: Date
+  participant_id: string
+  other_participants: {
+    health_worker_id: string | null
+    pharmacist_id: string | null
+  }[]
+}
