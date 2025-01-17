@@ -147,6 +147,6 @@ export function send(
       sender_id: senderId(trx, sender),
       body,
     })
-    .returning('id')
+    .returningAll()
     .executeTakeFirstOrThrow()
 }
