@@ -199,7 +199,7 @@ import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx
 import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
 import * as $manufactured_medication_Search from './islands/manufactured_medication/Search.tsx'
 import * as $medication_Input from './islands/medication/Input.tsx'
-import * as $message_MessageList from './islands/message/MessageList.tsx'
+import * as $message_MessageList from './islands/messages/ThreadList.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
