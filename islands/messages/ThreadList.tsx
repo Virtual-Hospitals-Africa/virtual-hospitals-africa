@@ -110,7 +110,7 @@ function SingleThread({
           <div class='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
             <div class='flex items-center'>
               <span class='w-56 ml-2 pr-2 truncate'>
-                {thread.most_recent_message.sender.display.name}
+                {thread.most_recent_message.sender.name}
               </span>
               <span class='w-96 text-gray-600 text-sm truncate'>
                 {thread.most_recent_message.body}

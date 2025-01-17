@@ -1,24 +1,74 @@
 import { assert } from 'std/assert/assert.ts'
-import { RenderedMessageThread, TrxOrDb } from '../../types.ts'
+import {
+  RenderedMessageThread,
+  RenderedMessageThreadOtherParticipant,
+  TrxOrDb,
+} from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import { sql } from 'kysely/index.js'
+
+function toRenderedParticipant(
+  { health_worker_id, pharmacist_id, ...participant }: Awaited<
+    ReturnType<typeof getThreadsForHealthWorker>
+  >[number]['other_participants_raw'][number],
+): RenderedMessageThreadOtherParticipant {
+  if (pharmacist_id) {
+    return {
+      ...participant,
+      pharmacist_id,
+      health_worker_id: null,
+      type: 'pharmacist',
+    }
+  }
+  if (health_worker_id) {
+    return {
+      ...participant,
+      health_worker_id,
+      pharmacist_id: null,
+      type: 'health_worker',
+    }
+  }
+  throw new Error('Nope!')
+}
 
 async function appendMostRecentMessage(
   trx: TrxOrDb,
-  { other_participants, ...thread }: Awaited<ReturnType<typeof getThreadsForHealthWorker>>[number]
-) {
+  { other_participants_raw, ...thread }: Awaited<
+    ReturnType<typeof getThreadsForHealthWorker>
+  >[number],
+): Promise<RenderedMessageThread> {
+  const other_participants = other_participants_raw.map(toRenderedParticipant)
   const { sender_id, ...most_recent_message } = await trx
     .selectFrom('messages')
+    .leftJoin(
+      'message_read_status',
+      'message_read_status.message_id',
+      'messages.id',
+    )
     .where('messages.thread_id', '=', thread.id)
     .orderBy('messages.created_at desc')
-    .selectAll()
+    .selectAll('messages')
+    .select('message_read_status.read_at')
+    .select((eb) => [
+      eb('messages.sender_id', '=', thread.participant_id).as(
+        'sent_by_me',
+      ),
+    ])
     .executeTakeFirstOrThrow()
-  const sender = other_participants.find(p => p.)
+
+  const sender = other_participants.find((p) => p.participant_id === sender_id)
+  assert(sender)
   return {
     ...thread,
-    most_recent_message,
-}
+    other_participants,
+    most_recent_message: {
+      ...most_recent_message,
+      sender,
+    },
+  }
 }
 
+// TODO: support system messages
 function getThreadsForHealthWorker(
   trx: TrxOrDb,
   health_worker_id: string,
@@ -36,13 +86,42 @@ function getThreadsForHealthWorker(
       jsonArrayFrom(
         eb
           .selectFrom('message_thread_participants as other_participants')
-          .leftJoin('health_workers', 'other_participants.health_worker_id', 'health_workers.id')
-          .leftJoin('pharmacists', 'other_participants.pharmacist_id', 'pharmacists.id')
-          .select(eb_other_participants => [
+          .leftJoin(
+            'health_workers',
+            'other_participants.health_worker_id',
+            'health_workers.id',
+          )
+          .leftJoin(
+            'employment',
+            'health_workers.id',
+            'employment.health_worker_id',
+          )
+          .leftJoin(
+            'pharmacists',
+            'other_participants.pharmacist_id',
+            'pharmacists.id',
+          )
+          .select((eb_x) => [
             'other_participants.id as participant_id',
             'other_participants.health_worker_id',
             'other_participants.pharmacist_id',
+            'health_workers.avatar_url',
+            eb_x.fn.coalesce(
+              'health_workers.name',
+              sql<
+                string
+              >`(pharmacists.given_name || ' ' || pharmacists.family_name)`,
+            ).as('name'),
+            eb_x.case()
+              .when('employment.profession', '=', 'doctor')
+              .then('Doctor')
+              .when('employment.profession', '=', 'nurse')
+              .then('nurse')
+              .else('Pharmacist')
+              .end()
+              .as('description'),
           ])
+          .where('employment.profession', 'in', ['doctor', 'nurse'])
           .whereRef(
             'other_participants.thread_id',
             '=',
@@ -53,7 +132,7 @@ function getThreadsForHealthWorker(
             '!=',
             'message_thread_participants.health_worker_id',
           ),
-      ).as('other_participants'),
+      ).as('other_participants_raw'),
     ])
     .where(
       'message_thread_participants.health_worker_id',
@@ -68,9 +147,10 @@ export async function getAllThreadsForHealthWorker(
   health_worker_id: string,
 ): Promise<RenderedMessageThread[]> {
   const threads = await getThreadsForHealthWorker(trx, health_worker_id)
-  
 
-  return Promise.all(threads.map(thread => appendMostRecentMessage(trx, thread)))
+  return Promise.all(
+    threads.map((thread) => appendMostRecentMessage(trx, thread)),
+  )
 }
 
 export async function createThread(
