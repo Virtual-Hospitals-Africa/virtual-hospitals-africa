@@ -28,6 +28,7 @@ import {
   medicationDisplay,
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
+import { handleAskPrescriber } from './handleAskPrescriber.ts'
 
 async function checkOnboardingStatus(
   trx: TrxOrDb,
@@ -343,6 +344,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           id: 'dispense',
           title: 'Dispense',
         }, {
+          id: 'ask_prescriber',
+          title: 'Ask Prescriber',
+        }, {
           id: 'main_menu',
           title: 'Back to Menu',
         }],
@@ -351,6 +355,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
 
     onExit: dispenseType,
+  },
+  'onboarded:fill_prescription:ask_prescriber': {
+    type: 'string',
+    prompt:
+      'Chat with the prescriber here. When finished type you may type done or click the dispense button.',
+    onExit: handleAskPrescriber,
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',
