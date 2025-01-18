@@ -96,36 +96,40 @@ function SingleThread({
   isSelected,
   toggleSelection,
 }: SingleMessageProps): JSX.Element {
-  // TODO
+  console.log(thread)
   return (
-    <details class={cls(thread.most_recent_message.read_at && 'bg-gray-100')}>
-      <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>
-        <div class='flex items-center border-y hover:bg-gray-200 px-2'>
-          <input
-            onInput={toggleSelection}
-            checked={isSelected}
-            type='checkbox'
-            class='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
-          />
-          <div class='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
-            <div class='flex items-center'>
-              <span class='w-56 ml-2 pr-2 truncate'>
-                {thread.most_recent_message.sender.name}
-              </span>
-              <span class='w-96 text-gray-600 text-sm truncate'>
-                {thread.most_recent_message.body}
-              </span>
-            </div>
-            <div class='w-32 flex items-center justify-end'>
-              <span x-show='!messageHover' class='text-sm text-gray-500'>
-                {thread.most_recent_message.created_at.toLocaleDateString()}
-              </span>
+    <a href={`/app/messaging/threads/${thread.id}`}>
+      <details class={cls(thread.most_recent_message.read_at && 'bg-gray-100')}>
+        <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>
+          <div class='flex items-center border-y hover:bg-gray-200 px-2'>
+            <input
+              onInput={toggleSelection}
+              checked={isSelected}
+              type='checkbox'
+              class='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
+            />
+
+            <div class='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
+              <div class='flex items-center'>
+                <span class='w-56 ml-2 pr-2 truncate'>
+                  {thread.most_recent_message.sender.name}
+                </span>
+                <span class='w-96 text-gray-600 text-sm truncate'>
+                  {thread.most_recent_message.body}
+                </span>
+              </div>
+              <div class='w-32 flex items-center justify-end'>
+                <span x-show='!messageHover' class='text-sm text-gray-500'>
+                  {new Date(thread.most_recent_message.created_at)
+                    .toLocaleDateString()}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </summary>
-      {/* <Message */}
-    </details>
+        </summary>
+        {/* <Message */}
+      </details>
+    </a>
   )
 }
 
@@ -149,7 +153,7 @@ export default function ThreadList(
               selected.value = new Set(isSelectedAll ? [] : threads)
             }}
           />
-          {MessageControllers()}
+          <MessageControllers />
         </div>
       </div>
       {threads.map((thread) => (

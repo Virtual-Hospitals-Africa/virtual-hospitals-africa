@@ -56,6 +56,8 @@ async function appendMostRecentMessage(
     ])
     .executeTakeFirstOrThrow()
 
+  console.log({ most_recent_message })
+  console.log({ other_participants })
   const sender = other_participants.find((p) => p.participant_id === sender_id)
   assert(sender)
   return {
@@ -93,8 +95,13 @@ function getThreadsForHealthWorker(
           )
           .leftJoin(
             'employment',
-            'health_workers.id',
-            'employment.health_worker_id',
+            (join) =>
+              join.onRef(
+                'health_workers.id',
+                '=',
+                'employment.health_worker_id',
+              )
+                .on('employment.profession', 'in', ['doctor', 'nurse']),
           )
           .leftJoin(
             'pharmacists',
@@ -121,16 +128,20 @@ function getThreadsForHealthWorker(
               .end()
               .as('description'),
           ])
-          .where('employment.profession', 'in', ['doctor', 'nurse'])
           .whereRef(
             'other_participants.thread_id',
             '=',
             'message_threads.id',
           )
-          .whereRef(
-            'other_participants.health_worker_id',
-            '!=',
-            'message_thread_participants.health_worker_id',
+          .where((eb) =>
+            eb.or([
+              eb('other_participants.health_worker_id', 'is', null),
+              eb(
+                'other_participants.health_worker_id',
+                '!=',
+                health_worker_id,
+              ),
+            ])
           ),
       ).as('other_participants_raw'),
     ])
@@ -162,6 +173,7 @@ export async function createThread(
     }
     recipient: {
       health_worker_id?: string
+      employment_id?: string
       pharmacist_id?: string
     }
     concerning: {
@@ -190,7 +202,11 @@ export async function createThread(
   )
     .values({
       thread_id: thread.id,
-      ...recipient,
+      pharmacist_id: recipient.pharmacist_id,
+      health_worker_id: recipient.employment_id
+        ? trx.selectFrom('employment').where('id', '=', recipient.employment_id)
+          .select('health_worker_id')
+        : recipient.health_worker_id,
     })
     .returning('id')
     .executeTakeFirstOrThrow()
