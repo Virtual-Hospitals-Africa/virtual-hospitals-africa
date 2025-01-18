@@ -20,6 +20,7 @@ import { DB } from '../db.d.ts'
 import { Location, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject } from 'kysely/parser/insert-values-parser.js'
+import { isUUID } from '../util/uuid.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -312,6 +313,12 @@ export function literalNumber(value: number) {
 export function literalString(value: string) {
   assert(typeof value === 'string', 'Value must be a string')
   return sql.lit<string>(value)
+}
+
+export function literalUUID(value: string) {
+  assert(typeof value === 'string', 'Value must be a string')
+  assert(isUUID(value))
+  return sql.raw(`'${value}'::uuid`)
 }
 
 // deno-lint-ignore no-explicit-any

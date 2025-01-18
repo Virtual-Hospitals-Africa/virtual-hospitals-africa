@@ -99,5 +99,5 @@ export async function determineResponse(
   console.log('nextConversationState', nextConversationState)
   assert(nextState, 'nextState not found')
 
-  return await formatMessageToSend(trx, userState, nextState)
+  return formatMessageToSend(trx, userState, nextState)
 }

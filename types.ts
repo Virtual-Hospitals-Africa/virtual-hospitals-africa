@@ -462,6 +462,9 @@ export type PharmacistConversationState =
   | 'onboarded:fill_prescription:ask_dispense_one'
   | 'onboarded:fill_prescription:ask_dispense_all'
   | 'onboarded:fill_prescription:confirm_done'
+  | 'onboarded:fill_prescription:decision'
+  | 'onboarded:fill_prescription:ask_prescriber'
+  | 'onboarded:fill_prescription:ask_prescriber_continue'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
@@ -3098,4 +3101,46 @@ export type ExaminationChecklistDefinition = {
     snomed_concept_id: number
     snomed_english_term: string
   }[]
+}
+
+type RenderedMessageThreadOtherParticipantHealthWorker = {
+  type: 'health_worker'
+  participant_id: string
+  health_worker_id: string
+  pharmacist_id: null
+  avatar_url?: Maybe<string>
+  name: string
+  description: string | string[]
+}
+
+type RenderedMessageThreadOtherParticipantPharmacist = {
+  type: 'pharmacist'
+  participant_id: string
+  health_worker_id: null
+  pharmacist_id: string
+  avatar_url?: Maybe<string>
+  name: string
+  description: string | string[]
+}
+
+export type RenderedMessageThreadOtherParticipant =
+  | RenderedMessageThreadOtherParticipantHealthWorker
+  | RenderedMessageThreadOtherParticipantPharmacist
+export type RenderedMessageThread = {
+  most_recent_message: {
+    sent_by_me: SqlBool
+    read_at: Date | null
+    created_at: Date
+    id: string
+    updated_at: Date
+    thread_id: string
+    body: string
+    sender: RenderedMessageThreadOtherParticipant
+  }
+  created_at: Date
+  id: string
+  patient_id: string
+  updated_at: Date
+  participant_id: string
+  other_participants: RenderedMessageThreadOtherParticipant[]
 }

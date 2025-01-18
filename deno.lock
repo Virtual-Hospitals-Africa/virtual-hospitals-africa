@@ -5,7 +5,7 @@
     "jsr:@std/bytes@^1.0.2": "1.0.4",
     "jsr:@std/cli@~0.224.7": "0.224.7",
     "jsr:@std/encoding@^1.0.5": "1.0.6",
-    "jsr:@std/fmt@*": "1.0.3",
+    "jsr:@std/fmt@*": "1.0.2",
     "jsr:@std/io@*": "0.225.0",
     "jsr:@std/path@^1.0.6": "1.0.8",
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.5.1",
@@ -43,8 +43,8 @@
     "@std/encoding@1.0.6": {
       "integrity": "ca87122c196e8831737d9547acf001766618e78cd8c33920776c7f5885546069"
     },
-    "@std/fmt@1.0.3": {
-      "integrity": "97765c16aa32245ff4e2204ecf7d8562496a3cb8592340a80e7e554e0bb9149f"
+    "@std/fmt@1.0.2": {
+      "integrity": "87e9dfcdd3ca7c066e0c3c657c1f987c82888eb8103a3a3baa62684ffeb0f7a7"
     },
     "@std/io@0.225.0": {
       "integrity": "c1db7c5e5a231629b32d64b9a53139445b2ca640d828c26bf23e1c55f8c079b3"

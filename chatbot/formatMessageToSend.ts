@@ -28,8 +28,6 @@ export default async function formatMessageToSend<
     ? state.prompt
     : await state.prompt(trx, userState)
 
-  console.log('messageBody', messageBody)
-
   switch (state.type) {
     case 'select':
     case 'expect_media': {

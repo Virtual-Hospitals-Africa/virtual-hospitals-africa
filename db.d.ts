@@ -425,14 +425,6 @@ export interface HealthWorkerInvitees {
   updated_at: Generated<Timestamp>
 }
 
-export interface HealthWorkerMessages {
-  created_at: Generated<Timestamp>
-  health_worker_id: string
-  id: Generated<string>
-  message: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
@@ -596,6 +588,40 @@ export interface Medications {
   strength_denominator_unit: string
   strength_numerator_unit: string
   strength_numerators: number[]
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageReadStatus {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  message_id: string
+  participant_id: string
+  read_at: Timestamp | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface Messages {
+  body: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  sender_id: string
+  thread_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageThreadParticipants {
+  created_at: Generated<Timestamp>
+  health_worker_id: string | null
+  id: Generated<string>
+  pharmacist_id: string | null
+  thread_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageThreads {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1160,7 +1186,6 @@ export interface DB {
   guardian_relations: GuardianRelations
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
-  health_worker_messages: HealthWorkerMessages
   health_worker_sessions: HealthWorkerSessions
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
@@ -1180,6 +1205,10 @@ export interface DB {
   measurements: Measurements
   media: Media
   medications: Medications
+  message_read_status: MessageReadStatus
+  message_thread_participants: MessageThreadParticipants
+  message_threads: MessageThreads
+  messages: Messages
   nurse_registration_details: NurseRegistrationDetails
   nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
   organization_consumables: OrganizationConsumables

@@ -25,9 +25,11 @@ import {
   dispenseSkip,
   dispenseType,
   getPrescriber,
+  handleDispense,
   medicationDisplay,
 } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
+import { handleAskPrescriber } from './handleAskPrescriber.ts'
 
 async function checkOnboardingStatus(
   trx: TrxOrDb,
@@ -114,7 +116,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'not_onboarded:enter_licence_number': {
     type: 'string',
     prompt:
-      `Looks like you are not onboarded, to start, enter your licence number.`,
+      `This is the first time we've received a message from this phone number. To confirm you are a licensed pharmacist, please enter your licence number.`,
     onExit: handleLicenceInput,
   },
   'not_onboarded:reenter_licence_number': {
@@ -343,6 +345,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           id: 'dispense',
           title: 'Dispense',
         }, {
+          id: 'ask_prescriber',
+          title: 'Ask Prescriber',
+        }, {
           id: 'main_menu',
           title: 'Back to Menu',
         }],
@@ -351,6 +356,35 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
 
     onExit: dispenseType,
+  },
+  'onboarded:fill_prescription:decision': {
+    type: 'select',
+    prompt: 'Click below to continue dispensing medications',
+    options: [{
+      id: 'dispense',
+      title: 'Dispense',
+      onExit: handleDispense,
+    }, {
+      id: 'ask_prescriber',
+      title: 'Ask Prescriber',
+      onExit: 'onboarded:fill_prescription:ask_prescriber',
+    }, {
+      id: 'main_menu',
+      title: 'Back to Menu',
+      onExit: 'initial_message',
+    }],
+  },
+  'onboarded:fill_prescription:ask_prescriber': {
+    type: 'string',
+    prompt:
+      'Chat with the prescriber here. When finished type you may type done or click the dispense button.',
+    onExit: handleAskPrescriber,
+  },
+  'onboarded:fill_prescription:ask_prescriber_continue': {
+    type: 'string',
+    prompt:
+      "Your message has been sent to the prescriber. You'll receive a message here when they reply.",
+    onExit: handleAskPrescriber,
   },
   'onboarded:fill_prescription:ask_dispense_one': {
     type: 'select',

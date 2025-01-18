@@ -39,18 +39,10 @@ export function activePresciptionMedication(
   )
 }
 
-export async function dispenseType(
+export async function handleDispense(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const unhandled_message = pharmacistState.unhandled_message.trimmed_body!
-
-  if (
-    unhandled_message !== 'dispense' && unhandled_message !== 'restart_dispense'
-  ) {
-    return 'initial_message' as const
-  }
-
   const { prescription_id } = pharmacistState.chatbot_user
     .data as PharmacistStateData
 
@@ -84,6 +76,25 @@ export async function dispenseType(
   )
 
   return 'onboarded:fill_prescription:ask_dispense_one' as const
+}
+
+export function dispenseType(
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+) {
+  const unhandled_message = pharmacistState.unhandled_message.trimmed_body!
+
+  if (unhandled_message === 'ask_prescriber') {
+    return 'onboarded:fill_prescription:ask_prescriber' as const
+  }
+  if (
+    unhandled_message !== 'dispense' &&
+    unhandled_message !== 'restart_dispense'
+  ) {
+    return 'initial_message' as const
+  }
+
+  return handleDispense(trx, pharmacistState)
 }
 
 export async function getPrescriber(
