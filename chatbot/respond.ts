@@ -27,8 +27,6 @@ async function respondToMessage(
       .setIsolationLevel('read committed')
       .execute((trx: TrxOrDb) => determineResponse(trx, unhandled_message))
 
-    console.log('responseToSend', responseToSend)
-
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
       chatbot_name,

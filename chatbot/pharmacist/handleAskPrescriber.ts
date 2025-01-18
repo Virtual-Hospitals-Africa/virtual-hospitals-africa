@@ -50,7 +50,7 @@ export async function handleAskPrescriber(
         pharmacist_id: pharmacistState.chatbot_user.entity_id!,
       },
       recipient: {
-        health_worker_id: prescription.prescriber_id,
+        employment_id: prescription.prescriber_id,
       },
       concerning: {
         patient_id: prescription.patient_id,
@@ -71,5 +71,5 @@ export async function handleAskPrescriber(
       },
     )
   }
-  return 'onboarded:fill_prescription:ask_prescriber' as const
+  return 'onboarded:fill_prescription:ask_prescriber_continue' as const
 }

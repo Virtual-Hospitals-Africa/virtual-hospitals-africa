@@ -19,6 +19,7 @@ export async function runCommand(
   const result = await Command(command, options).output()
   if (result.code) {
     const error = new TextDecoder().decode(result.stderr)
+    console.error(command, options)
     throw new Error(error)
   }
   if (options?.stdout === 'inherit') {

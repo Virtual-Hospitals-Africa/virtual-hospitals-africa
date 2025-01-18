@@ -1,7 +1,7 @@
 {
   "tasks": {
     "chatbot:patient": "deno task run:trusted chatbot/chatbot.ts patient",
-    "chatbot:pharmacist": "deno task run:trusted chatbot/chatbot.ts pharmacist",
+    "chatbot:pharmacist": "mkdir -p temp_files && deno task run:trusted chatbot/chatbot.ts pharmacist",
     "build": "NO_EXTERNAL_CONNECT=1 deno task run:trusted dev.ts build",
     "start": "deno task run:trusted --watch=chatbot/,db/,islands/,util/,components/,external-clients/,routes/,static/,shared/ dev.ts",
     "start:beep": "./scripts/watch_and_beep.sh '(Error|error)' deno start",
