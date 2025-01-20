@@ -513,6 +513,7 @@ describe(
                         doctor_after_review_request.reviews.requested[0]
                           .requested_by.patient_encounter_provider_id,
                       profession: 'nurse',
+                      health_worker_id: nurse.id,
                     },
                     requesting: {
                       doctor_id: doctor.employee_id!,

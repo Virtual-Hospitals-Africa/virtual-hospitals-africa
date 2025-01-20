@@ -10,7 +10,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   ReviewContext['state']
 > = {
   async POST(_req, ctx: ReviewContext) {
-    const { review_id } = ctx.state.doctor_review
+    const { review_id, requested_by, employment_id, patient } =
+      ctx.state.doctor_review
     await Promise.all([
       complete(ctx.state.trx, { review_id }),
       completeStep(ctx),
@@ -18,6 +19,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         type: 'DoctorReviewCompleted',
         data: {
           review_id,
+          requested_by,
+          employment_id,
+          patient_id: patient.id,
+          patient_name: patient.name,
         },
       }),
     ])
