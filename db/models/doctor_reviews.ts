@@ -85,6 +85,7 @@ export function ofHealthWorker(
           id: eb.ref('organizations.id'),
           name: eb.ref('organizations.name'),
         }),
+        health_worker_id: eb.ref('requested_by_health_worker.id'),
       }).as('requested_by'),
       jsonArrayFromColumn(
         'step',
@@ -171,6 +172,7 @@ export function requests(
           id: eb.ref('requested_by_organization.id'),
           name: eb.ref('requested_by_organization.name'),
         }),
+        health_worker_id: eb.ref('requested_by_health_worker.id'),
       }).as('requested_by'),
     ])
 }

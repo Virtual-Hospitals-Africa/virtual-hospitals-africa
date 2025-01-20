@@ -1434,6 +1434,7 @@ export type RenderedDoctorReviewBase = {
       name: string
     }
     patient_encounter_provider_id: string
+    health_worker_id: string
   }
 }
 
