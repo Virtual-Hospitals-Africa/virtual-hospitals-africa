@@ -1824,7 +1824,7 @@ export type GoogleAddressComponent = {
   formatted_address: string
   address_components: {
     long_name?: string
-    short_name?: string
+    query_slug?: string
     types?: string[]
   }[]
   types: string[]
@@ -2516,36 +2516,13 @@ export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
   encounter_step: EncounterStep
-  short_name: string
+  query_slug: string
+  display_name: string
   completed: SqlBool | null
   skipped: SqlBool | null
   ordered: SqlBool | null
   href: string
 }
-
-export type RenderedPatientExaminationWithRecommendations =
-  & RenderedPatientExamination
-  & {
-    recommended: SqlBool | null
-  }
-
-export type RenderedPatientExaminationFindingX = {
-  patient_examination_finding_id: string
-  snomed_concept_id: number
-  snomed_english_term: string
-  additional_notes: string | null
-  body_sites: {
-    patient_examination_finding_body_site_id: string
-    snomed_concept_id: number
-    snomed_english_term: string
-  }[]
-}
-
-export type RenderedPatientExaminationWithFindings =
-  & RenderedPatientExamination
-  & {
-    findings: RenderedPatientExaminationFindingX[]
-  }
 
 export type DatabaseSchema = DB
 export type RenderedRequestFormValues = {
@@ -3095,6 +3072,7 @@ export type RenderedPatientExaminationFinding = {
   patient_id: string
   encounter_id: string
   encounter_provider_id: string
+  examination_identifier: string
   encounter_open: SqlBool
   edit_href: string
   snomed_concept_id: number

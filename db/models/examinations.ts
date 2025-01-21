@@ -1,179 +1,50 @@
-import { sql, SqlBool } from 'kysely'
-import { jsonArrayFrom, literalBoolean } from '../helpers.ts'
-import { ensureEncounterId } from './patient_encounters.ts'
-import {
-  RenderedPatientExamination,
-  RenderedPatientExaminationWithRecommendations,
-  TrxOrDb,
-} from '../../types.ts'
+import { sql } from 'kysely'
+import { literalBoolean } from '../helpers.ts'
+import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { literalString } from '../helpers.ts'
+import { EncounterStep } from '../../db.d.ts'
 
-function examinationIdentifier(identifier: string) {
-  return sql<string>`${identifier}::varchar(80)`.as('examination_identifier')
-}
-
-export async function forPatientEncounter(
+export function forPatientEncounter(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    encounter_id: string | 'open'
+    encounter_id: string
+    encounter_step?: EncounterStep
   },
-): Promise<RenderedPatientExaminationWithRecommendations[]> {
-  const exs = await trx.with('recommended_examinations', (qb) => {
-    const patient_encounter = qb.selectFrom('patients')
-      .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-      .innerJoin(
-        'patient_encounters',
-        'patient_encounters.patient_id',
-        'patients.id',
-      ).select([
-        'patients.id as patient_id',
-        'patient_encounters.id as encounter_id',
-      ])
-      .where('patients.id', '=', opts.patient_id)
-      .where(
-        'patient_encounters.id',
-        '=',
-        ensureEncounterId(trx, opts),
-      )
-
-    const head_to_toe_assessment_general = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_general'),
-    )
-    const head_to_toe_assessment_skin = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_skin'),
-    )
-    const head_to_toe_assessment_head_and_neck = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_head_and_neck'),
-    )
-    const head_to_toe_assessment_cardiovascular = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_cardiovascular'),
-    )
-    const head_to_toe_assessment_respiratory = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_respiratory'),
-    )
-    const head_to_toe_assessment_gastrointestinal = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_gastrointestinal'),
-    )
-    const head_to_toe_assessment_neuromuscular = patient_encounter.select(
-      examinationIdentifier('head_to_toe_assessment_neuromuscular'),
-    )
-
-    const womens_health = patient_encounter
-      .where('patients.gender', '=', 'female')
-      .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-      .select(examinationIdentifier('womens_health_assessment'))
-
-    const mens_health = patient_encounter
-      .where('patients.gender', '=', 'male')
-      .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-      .select(examinationIdentifier('mens_health_assessment'))
-
-    const child_health = patient_encounter
-      .where(sql.ref('patient_age.age_years').$castTo<number>(), '<', 18)
-      .select(examinationIdentifier('child_health_assessment'))
-
-    const maternity = patient_encounter
-      .where('patient_encounters.reason', '=', 'maternity')
-      .select(examinationIdentifier('maternity_assessment'))
-
-    return head_to_toe_assessment_general
-      .unionAll(head_to_toe_assessment_skin)
-      .unionAll(head_to_toe_assessment_head_and_neck)
-      .unionAll(head_to_toe_assessment_cardiovascular)
-      .unionAll(head_to_toe_assessment_respiratory)
-      .unionAll(head_to_toe_assessment_gastrointestinal)
-      .unionAll(head_to_toe_assessment_neuromuscular)
-      .unionAll(womens_health)
-      .unionAll(mens_health)
-      .unionAll(child_health)
-      .unionAll(maternity)
-  })
-    .with('patient_examinations_with_recommendations_unordered', (qb) => {
-      const recommendations_not_yet_addressed = qb.selectFrom(
-        'recommended_examinations',
-      )
-        .leftJoin(
-          'patient_examinations',
-          (join) =>
-            join
-              .onRef(
-                'recommended_examinations.encounter_id',
-                '=',
-                'patient_examinations.encounter_id',
-              )
-              .onRef(
-                'recommended_examinations.examination_identifier',
-                '=',
-                'patient_examinations.examination_identifier',
-              ),
-        )
-        .where('patient_examinations.id', 'is', null)
-        .selectAll('recommended_examinations')
-        .select([
-          sql<SqlBool>`FALSE`.as('completed'),
-          sql<SqlBool>`FALSE`.as('skipped'),
-          sql<SqlBool>`FALSE`.as('ordered'),
-          sql<SqlBool>`TRUE`.as('recommended'),
-          sql<null | string>`NULL`.as('patient_examination_id'),
-        ])
-
-      const patient_examinations = qb.selectFrom('patient_examinations')
-        .leftJoin(
-          'recommended_examinations',
-          (join) =>
-            join
-              .onRef(
-                'recommended_examinations.encounter_id',
-                '=',
-                'patient_examinations.encounter_id',
-              )
-              .onRef(
-                'recommended_examinations.examination_identifier',
-                '=',
-                'patient_examinations.examination_identifier',
-              ),
-        )
-        .select((eb) => [
-          'patient_examinations.patient_id',
-          'patient_examinations.encounter_id',
-          'patient_examinations.examination_identifier',
-          'patient_examinations.completed',
-          'patient_examinations.skipped',
-          'patient_examinations.ordered',
-          eb('recommended_examinations.encounter_id', 'is not', null).as(
-            'recommended',
+): Promise<RenderedPatientExamination[]> {
+  return trx.selectFrom('examinations')
+    .leftJoin(
+      'patient_examinations',
+      (join) =>
+        join.on('patient_examinations.encounter_id', '=', opts.encounter_id)
+          .onRef(
+            'patient_examinations.examination_identifier',
+            '=',
+            'examinations.identifier',
           ),
-          'patient_examinations.id as patient_examination_id',
-        ])
-        .where('patient_examinations.id', '=', opts.patient_id)
-        .where(
-          'patient_examinations.encounter_id',
-          '=',
-          ensureEncounterId(trx, opts),
-        )
-
-      return recommendations_not_yet_addressed.unionAll(patient_examinations)
-    })
-    .selectFrom('patient_examinations_with_recommendations_unordered')
-    .innerJoin(
-      'examinations',
-      'examinations.identifier',
-      'examination_identifier',
     )
-    .selectAll('patient_examinations_with_recommendations_unordered')
     .select([
+      'patient_examinations.id as patient_examination_id',
+      'patient_examinations.completed',
+      'patient_examinations.skipped',
+      'patient_examinations.ordered',
+      'examinations.identifier as examination_identifier',
       'examinations.path',
       'examinations.encounter_step',
+      'examinations.query_slug',
+      'examinations.display_name',
+      sql<
+        string
+      >`'/app/patients/' || ${opts.patient_id} || '/encounters/' || ${opts.encounter_id} || examinations.path`
+        .as('href'),
     ])
+    .$if(
+      !!opts.encounter_step,
+      (qb) =>
+        qb.where('examinations.encounter_step', '=', opts.encounter_step!),
+    )
     .orderBy('examinations.order', 'asc')
     .execute()
-
-  return exs.map((ex) => ({
-    ...ex,
-    href:
-      `/app/patients/${opts.patient_id}/encounters/${opts.encounter_id}${ex.path}`,
-  }))
 }
 
 export async function add(
@@ -271,87 +142,4 @@ export function skip(trx: TrxOrDb, values: {
       skipped: true,
     })
     .executeTakeFirstOrThrow()
-}
-
-export async function getPatientExamination(
-  trx: TrxOrDb,
-  { patient_id, encounter_id, examination_identifier }: {
-    patient_id: string
-    encounter_id: string
-    examination_identifier: string
-  },
-): Promise<RenderedPatientExamination> {
-  const ex = await trx
-    .selectFrom('examinations')
-    .where('examinations.identifier', '=', examination_identifier)
-    .leftJoin(
-      'patient_examinations',
-      (join) =>
-        join.onRef(
-          'patient_examinations.examination_identifier',
-          '=',
-          'examinations.identifier',
-        )
-          .on('patient_examinations.patient_id', '=', patient_id)
-          .on(
-            'patient_examinations.encounter_id',
-            '=',
-            ensureEncounterId(trx, { patient_id, encounter_id }),
-          ),
-    )
-    .select((eb) => [
-      'patient_examinations.id as patient_examination_id',
-      'patient_examinations.completed',
-      'patient_examinations.skipped',
-      'patient_examinations.ordered',
-      'examinations.path',
-      'examinations.encounter_step',
-      // 'examinations.short_name',
-      jsonArrayFrom(
-        eb.selectFrom('patient_examination_findings')
-          .whereRef(
-            'patient_examination_findings.patient_examination_id',
-            '=',
-            'patient_examinations.id',
-          )
-          .innerJoin(
-            'snomed_concepts as sc_findings',
-            'sc_findings.snomed_concept_id',
-            'patient_examination_findings.snomed_concept_id',
-          )
-          .select([
-            'patient_examination_findings.id as patient_examination_finding_id',
-            'sc_findings.snomed_concept_id',
-            'sc_findings.snomed_english_term',
-            'additional_notes',
-          ])
-          .select((eb_findings) =>
-            jsonArrayFrom(
-              eb_findings.selectFrom('patient_examination_finding_body_sites')
-                .whereRef(
-                  'patient_examination_finding_body_sites.patient_examination_finding_id',
-                  '=',
-                  'patient_examination_findings.id',
-                )
-                .innerJoin(
-                  'snomed_concepts as sc_body_sites',
-                  'sc_body_sites.snomed_concept_id',
-                  'patient_examination_finding_body_sites.snomed_concept_id',
-                )
-                .select([
-                  'patient_examination_finding_body_sites.id as patient_examination_finding_body_site_id',
-                  'sc_body_sites.snomed_concept_id',
-                  'sc_body_sites.snomed_english_term',
-                ]),
-            ).as('body_sites')
-          ),
-      ).as('findings'),
-    ])
-    .executeTakeFirstOrThrow()
-
-  return {
-    ...ex,
-    examination_identifier,
-    href: `/app/patients/${patient_id}/encounters/${encounter_id}${ex.path}`,
-  }
 }

@@ -19,10 +19,10 @@ import {
   PaperAirplaneIcon,
   PlusCircleIcon,
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
-import { PatientExaminationForm } from '../../../../../../components/examinations/Form.tsx'
-import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
+// import { PatientExaminationForm } from '../../../../../../components/examinations/Form.tsx'
+// import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
-import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
+// import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
@@ -234,6 +234,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       {
         patient_id: ctx.state.encounter.patient_id,
         encounter_id: ctx.params.encounter_id,
+        encounter_step: 'examinations',
       },
     )
 
@@ -250,7 +251,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export async function ExaminationsPage(
   { ctx }: EncounterPageChildProps,
 ) {
-  const { trx, encounter, encounter_provider } = ctx.state
+  const { trx, encounter /*, encounter_provider */ } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   const placing_orders = ctx.url.searchParams.get('place') === 'orders'
 
@@ -259,6 +260,7 @@ export async function ExaminationsPage(
   const patient_examinations = await examinations.forPatientEncounter(trx, {
     patient_id: encounter.patient_id,
     encounter_id: ctx.params.encounter_id,
+    encounter_step: 'examinations',
   })
 
   console.log('patient_examinations', patient_examinations)
@@ -322,18 +324,19 @@ export async function ExaminationsPage(
       <>
         <Tabs tabs={tabs} />
         {adding_examinations && (
-          <NewExaminationForm
-            recommended_examinations={patient_examinations.filter((ex) =>
-              ex.recommended
-            ).map((ex) => ex.examination_identifier)}
-            selected_examinations={patient_examinations.map((ex) =>
-              ex.examination_identifier
-            )}
-            available_diagnostic_tests={await getAvailableTests(trx, {
-              organization_id: ctx.state.encounter.providers[0].organization_id,
-            })}
-            allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
-          />
+          <>TODO: reimplement</>
+          // <NewExaminationForm
+          //   recommended_examinations={patient_examinations.filter((ex) =>
+          //     ex.recommended
+          //   ).map((ex) => ex.examination_identifier)}
+          //   selected_examinations={patient_examinations.map((ex) =>
+          //     ex.examination_identifier
+          //   )}
+          //   available_diagnostic_tests={await getAvailableTests(trx, {
+          //     organization_id: ctx.state.encounter.providers[0].organization_id,
+          //   })}
+          //   allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
+          // />
         )}
         {placing_orders && (
           <div>
@@ -346,13 +349,14 @@ export async function ExaminationsPage(
           </div>
         )}
         {examination && (
-          <PatientExaminationForm
-            patient_examination={await examinations.getPatientExamination(trx, {
-              patient_id: encounter.patient_id,
-              encounter_id: encounter.encounter_id,
-              examination_identifier: examination.examination_identifier,
-            })}
-          />
+          <>TODO implement examinations</>
+          // <PatientExaminationForm
+          //   patient_examination={await examinations.getPatientExamination(trx, {
+          //     patient_id: encounter.patient_id,
+          //     encounter_id: encounter.encounter_id,
+          //     examination_identifier: examination.examination_identifier,
+          //   })}
+          // />
         )}
       </>
     ),

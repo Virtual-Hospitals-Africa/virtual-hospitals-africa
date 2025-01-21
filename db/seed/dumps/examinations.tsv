@@ -1,4 +1,4 @@
-identifier	display_name	encounter_step	short_name	path	order
+identifier	display_name	encounter_step	query_slug	path	order
 head_to_toe_assessment_general	Head-to-toe Assessment (General)	head_to_toe_assessment	general	/head_to_toe_assessment?exam=general	1
 head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	head_to_toe_assessment	skin	/head_to_toe_assessment?exam=skin	2
 head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	head_to_toe_assessment	head_and_neck	/head_to_toe_assessment?exam=head_and_neck	3

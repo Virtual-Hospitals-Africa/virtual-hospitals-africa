@@ -1,9 +1,7 @@
 import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, upsertOne } from '../helpers.ts'
-import { assertIsExamination } from '../../shared/head_to_toe_assessment.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { insertConcepts } from './snomed.ts'
-import partition from '../../util/partition.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx.selectFrom('patient_examination_findings')
@@ -68,15 +66,13 @@ type ExaminationResults = Awaited<
 function render(
   examinations: ExaminationResults,
 ): RenderedPatientExaminationFinding[] {
-  return examinations.map(({ examination_identifier, path, ...ex }) => {
-    assertIsExamination(examination_identifier)
+  return examinations.map(({ path, ...ex }) => {
     const examination_href =
       `/app/patients/${ex.patient_id}/encounters/${ex.encounter_id}${path}`
 
     const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
       ...ex,
-      examination_identifier,
       edit_href,
       text: ex.snomed_english_term,
     }
@@ -93,22 +89,6 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
     .execute()
 
   return render(examinations)
-}
-
-export async function forPatient(trx: TrxOrDb, opts: {
-  patient_id: string
-}): Promise<{
-  open: RenderedPatientExaminationFinding[]
-  past: RenderedPatientExaminationFinding[]
-}> {
-  const examinations = await baseQuery(trx)
-    .where('patient_examinations.patient_id', '=', opts.patient_id)
-    .execute()
-
-  const rendered = render(examinations)
-
-  const [open, past] = partition(rendered, (ex) => !!ex.encounter_open)
-  return { open, past }
 }
 
 export async function upsertForPatientExamination(

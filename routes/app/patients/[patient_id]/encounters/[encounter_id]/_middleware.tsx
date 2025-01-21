@@ -17,7 +17,7 @@ import {
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as send_to from '../../../../../../db/models/send_to.ts'
-import * as findings from '../../../../../../db/models/findings.ts'
+import * as examination_findings from '../../../../../../db/models/examination_findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
@@ -54,6 +54,7 @@ type EncounterPageProps = {
   patient: patients.PatientCard
   encounter: RenderedPatientEncounter
   encounter_provider: RenderedPatientEncounterProvider
+  findings: RenderedPatientExaminationFinding[]
 }
 
 export type EncounterContext = LoggedInHealthWorkerContext<
@@ -111,27 +112,19 @@ export async function handler(
   ctx: EncounterContext,
 ) {
   const encounter_id = getEncounterId(ctx)
-
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const { patient, encounter: { encounter, encounter_provider } } =
-    await promiseProps({
-      patient: patients.getCard(ctx.state.trx, {
-        id: patient_id,
-      }),
-      encounter: removeFromWaitingRoomAndAddSelfAsProvider(
-        ctx.state.trx,
-        {
-          encounter_id,
-          patient_id,
-          health_worker: ctx.state.healthWorker,
-        },
-      ),
-    })
-
-  assertOr404(patient, 'Patient not found')
+  const promised_encounter = removeFromWaitingRoomAndAddSelfAsProvider(
+    ctx.state.trx,
+    {
+      encounter_id,
+      patient_id,
+      health_worker: ctx.state.healthWorker,
+    },
+  )
 
   if (encounter_id === 'open' && req.method === 'GET') {
+    const { encounter } = await promised_encounter
     return redirect(
       replaceParams(
         ctx.route,
@@ -142,9 +135,25 @@ export async function handler(
       ),
     )
   }
+
+  const { patient, encounter: { encounter, encounter_provider }, findings } =
+    await promiseProps({
+      patient: patients.getCard(ctx.state.trx, {
+        id: patient_id,
+      }),
+      encounter: promised_encounter,
+      findings: examination_findings.forPatientEncounter(ctx.state.trx, {
+        patient_id,
+        encounter_id,
+      }),
+    })
+
+  assertOr404(patient, 'Patient not found')
+
   ctx.state.patient = patient
   ctx.state.encounter = encounter
   ctx.state.encounter_provider = encounter_provider
+  ctx.state.findings = findings
   return ctx.next()
 }
 
@@ -274,30 +283,25 @@ export function EncounterPage(
 
     assert(location, 'Location not found')
 
-    const { rendered, sendables, key_findings, measurements } =
-      await promiseProps({
-        rendered: Promise.resolve(
-          render({ ctx, ...ctx.state, previously_completed }),
-        ),
-        sendables: send_to.forPatientEncounter(
-          trx,
-          patient.id,
-          location,
-          encounter.providers,
-          {
-            exclude_health_worker_id: healthWorker.id,
-            primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
-          },
-        ),
-        key_findings: findings.forPatientEncounter(trx, {
-          patient_id: patient.id,
-          encounter_id: encounter.encounter_id,
-        }),
-        measurements: patient_measurements.getEncounterVitals(trx, {
-          patient_id: patient.id,
-          encounter_id: encounter.encounter_id,
-        }),
-      })
+    const { rendered, sendables, measurements } = await promiseProps({
+      rendered: Promise.resolve(
+        render({ ctx, ...ctx.state, previously_completed }),
+      ),
+      sendables: send_to.forPatientEncounter(
+        trx,
+        patient.id,
+        location,
+        encounter.providers,
+        {
+          exclude_health_worker_id: healthWorker.id,
+          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
+        },
+      ),
+      measurements: patient_measurements.getEncounterVitals(trx, {
+        patient_id: patient.id,
+        encounter_id: encounter.encounter_id,
+      }),
+    })
 
     if (rendered instanceof Response) {
       return rendered
@@ -315,7 +319,7 @@ export function EncounterPage(
         ctx={ctx}
         next_step_text={next_step_text}
         sendables={sendables}
-        key_findings={key_findings}
+        key_findings={ctx.state.findings}
         measurements={measurements}
       >
         {children}

@@ -1,9 +1,10 @@
 import type { ExaminationChecklistDefinition } from '../types.ts'
 import { groupByUniq } from '../util/groupBy.ts'
 
-export const HEAD_TO_TOE_ASSESSMENT_TABS = [
+export const HEAD_TO_TOE_ASSESSMENTS = [
   {
     examination_identifier: 'head_to_toe_assessment_general',
+    query_slug: 'general',
     categories: [{
       'category': 'Hands' as const,
       'examination_identifier': 'head_to_toe_assessment_hands',
@@ -256,73 +257,64 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
     }],
   },
   {
-    tab: 'Skin' as const,
     examination_identifier: 'head_to_toe_assessment_skin',
+    query_slug: 'skin',
     categories: [],
   },
   {
-    tab: 'Head and Neck' as const,
     examination_identifier: 'head_to_toe_assessment_head_and_neck',
+    query_slug: 'head_and_neck',
     categories: [],
   },
   {
-    tab: 'Cardiovascular' as const,
     examination_identifier: 'head_to_toe_assessment_cardiovascular',
+    query_slug: 'cardiovascular',
     categories: [],
   },
   {
-    tab: 'Respiratory' as const,
     examination_identifier: 'head_to_toe_assessment_respiratory',
+    query_slug: 'respiratory',
     categories: [],
   },
   {
-    tab: 'Gastrointestinal' as const,
     examination_identifier: 'head_to_toe_assessment_gastrointestinal',
+    query_slug: 'gastrointestinal',
     categories: [],
   },
   {
-    tab: 'Neuromuscular' as const,
     examination_identifier: 'head_to_toe_assessment_neuromuscular',
+    query_slug: 'neuromuscular',
     categories: [],
   },
 ]
 
-export const HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier = groupByUniq(
-  HEAD_TO_TOE_ASSESSMENT_TABS,
+export const HEAD_TO_TOE_ASSESSMENTS_BY_IDENTIFIER = groupByUniq(
+  HEAD_TO_TOE_ASSESSMENTS,
   'examination_identifier',
 )
 
-export type HeadToToeAssessment =
-  typeof HEAD_TO_TOE_ASSESSMENT_TABS[number]['exam']
+// export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST = HEAD_TO_TOE_ASSESSMENTS
+//   .flatMap(({ exam, examination_identifier, categories }) =>
+//     categories.flatMap(({ category, checklist, subcategories }) =>
+//       subcategories.flatMap(({ checklist, subcategory }) =>
+//         checklist.map((item) => ({
+//           ...item,
+//           category,
+//           tab,
+//           examination_identifier,
+//           subcategory: subcategory as string | null,
+//         }))
+//       ).concat(checklist.map((item) => ({
+//         ...item,
+//         category,
+//         tab,
+//         examination_identifier,
+//         subcategory: null,
+//       })))
+//     )
+//   )
 
-export function isHeadToToeAssessment(
-  tab: string,
-): tab is HeadToToeAssessment {
-  return HEAD_TO_TOE_ASSESSMENT_TABS.some((t) => t.exam === tab)
-}
-
-export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST = HEAD_TO_TOE_ASSESSMENT_TABS
-  .flatMap(({ exam, examination_identifier, categories }) =>
-    categories.flatMap(({ category, checklist, subcategories }) =>
-      subcategories.flatMap(({ checklist, subcategory }) =>
-        checklist.map((item) => ({
-          ...item,
-          category,
-          tab,
-          examination_identifier,
-          subcategory: subcategory as string | null,
-        }))
-      ).concat(checklist.map((item) => ({
-        ...item,
-        category,
-        tab,
-        examination_identifier,
-        subcategory: null,
-      })))
-    )
-  )
-
-export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST_BY_SNOMED_CODE = groupByUniq(
-  HEAD_TO_TOE_ASSESSMENT_CHECKLIST,
-  'snomed_concept_id',
-)
+// export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST_BY_SNOMED_CODE = groupByUniq(
+//   HEAD_TO_TOE_ASSESSMENT_CHECKLIST,
+//   'snomed_concept_id',
+// )
