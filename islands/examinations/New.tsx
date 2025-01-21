@@ -1,7 +1,10 @@
 import { JSX } from 'preact'
-import { ASSESSMENTS, DIAGNOSTIC_TESTS } from '../../shared/examinations.ts'
+import {
+  ASSESSMENTS,
+  DIAGNOSTIC_TESTS,
+} from '../../shared/head_to_toe_assessment.ts'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
-import { Examination } from '../../shared/examinations.ts'
+import { Examination } from '../../shared/head_to_toe_assessment.ts'
 import partition from '../../util/partition.ts'
 
 export function NewExaminationForm({

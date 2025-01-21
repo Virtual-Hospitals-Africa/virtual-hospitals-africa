@@ -10,12 +10,8 @@ import {
   RenderedPatientEncounterExamination,
 } from '../../../../../../types.ts'
 import * as examinations from '../../../../../../db/models/examinations.ts'
-import {
-  assertOr400,
-  assertOrRedirect,
-} from '../../../../../../util/assertOr.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
+import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
+import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
@@ -27,46 +23,17 @@ import { PatientExaminationForm } from '../../../../../../components/examination
 import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
-import {
-  Examination,
-  EXAMINATIONS,
-} from '../../../../../../shared/examinations.ts'
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import { Progress } from '../../../../../../components/library/icons/progress.tsx'
+import { z } from 'zod'
 
-function assertIsAddExaminations(
-  values: unknown,
-): asserts values is {
-  assessments?: Examination[]
-  diagnostic_tests_at_organization?: Examination[]
-  diagnostic_test_orders?: Examination[]
-} {
-  assertOr400(isObjectLike(values), 'Invalid form values')
-  for (const key in values) {
-    assertOr400(
-      key === 'assessments' || key === 'diagnostic_tests_at_organization' ||
-        key === 'diagnostic_test_orders',
-      `Unrecognized examination type: ${key}`,
-    )
-    const examinations = values[key]
-    assertOr400(
-      Array.isArray(examinations),
-      `Invalid ${key} value, must be an array`,
-    )
-    for (const exam of examinations) {
-      assertOr400(
-        typeof exam === 'string',
-        `Invalid examination value, must be a string`,
-      )
-      assertOr400(
-        EXAMINATIONS.includes(exam as Examination),
-        `Invalid examination value, ${exam} is not a valid examination`,
-      )
-    }
-  }
-}
+const AddExaminationsSchema = z.object({
+  assessments: z.string().array().default([]),
+  diagnostic_tests_at_organization: z.string().array().default([]),
+  diagnostic_test_orders: z.string().array().default([]),
+})
 
 function noExaminationSpecifiedHref(ctx: EncounterContext) {
   return hrefFromCtx(ctx, (url) => {
@@ -142,13 +109,13 @@ async function handleAddExaminations(
   const { trx, encounter, encounter_provider } = ctx.state
 
   const {
-    assessments = [],
-    diagnostic_tests_at_organization = [],
-    diagnostic_test_orders = [],
-  } = await parseRequestAsserts(
+    assessments,
+    diagnostic_tests_at_organization,
+    diagnostic_test_orders,
+  } = await parseRequest(
     trx,
     req,
-    assertIsAddExaminations,
+    AddExaminationsSchema.parse,
   )
 
   if (diagnostic_test_orders.length) {

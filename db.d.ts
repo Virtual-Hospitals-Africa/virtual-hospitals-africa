@@ -371,7 +371,7 @@ export interface Examinations {
   identifier: string
   order: number
   path: string
-  tab: string
+  short_name: string
 }
 
 export interface GeographyColumns {

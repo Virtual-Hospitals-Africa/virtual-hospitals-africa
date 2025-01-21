@@ -30,7 +30,7 @@ import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
 import {
   Examination,
   EXAMINATIONS,
-} from '../../../../../../shared/examinations.ts'
+} from '../../../../../../shared/head_to_toe_assessment.ts'
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { Progress } from '../../../../../../components/library/icons/progress.tsx'

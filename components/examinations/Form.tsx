@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import { RenderedPatientExamination } from '../../types.ts'
-import { HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier } from '../../shared/examinations.ts'
+import { HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier } from '../../shared/head_to_toe_assessment.ts'
 import { ExaminationCategory } from './Category.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'

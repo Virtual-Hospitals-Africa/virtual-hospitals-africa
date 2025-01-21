@@ -17,9 +17,9 @@ import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { z } from 'zod'
 import {
   HEAD_TO_TOE_ASSESSMENT_TABS,
-  type HeadToToeAssessmentTab,
-  isHeadToToeAssessmentTab,
-} from '../../../../../../shared/examinations.ts'
+  type HeadToToeAssessment,
+  isHeadToToeAssessment,
+} from '../../../../../../shared/head_to_toe_assessment.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { Progress } from '../../../../../../components/library/icons/progress.tsx'
 import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
@@ -51,23 +51,23 @@ const ExaminationFindingsSchema = z.object({
     )).optional().transform((fs) => fs || []),
 })
 
-function tabHref(
+function examHref(
   ctx: EncounterContext,
-  tab: HeadToToeAssessmentTab,
+  exam: HeadToToeAssessment,
 ) {
   return hrefFromCtx(ctx, (url) => {
-    url.searchParams.set('tab', tab)
+    url.searchParams.set('exam', exam)
   })
 }
 
 async function findPatientExaminations(ctx: EncounterContext) {
   const { trx, encounter } = ctx.state
-  const tab = ctx.url.searchParams.get('tab')
-  assertOrRedirect(tab, tabHref(ctx, 'General'))
+  const exam = ctx.url.searchParams.get('exam')
+  assertOrRedirect(exam, examHref(ctx, 'General'))
 
   assert(
-    isHeadToToeAssessmentTab(tab),
-    `Expected ${tab} to be a Head-to-toe assessment tab`,
+    isHeadToToeAssessment(exam),
+    `Expected ${exam} to be a Head-to-toe assessment exam`,
   )
 
   const assessments = await head_to_toe_assessments.forPatientEncounter(trx, {
@@ -76,11 +76,11 @@ async function findPatientExaminations(ctx: EncounterContext) {
   })
 
   const active_assessment = assessments.find(
-    (assessment) => assessment.tab === tab,
+    (assessment) => assessment.exam === exam,
   )
   assert(
     active_assessment,
-    `No head to toe assessment for ${tab}`,
+    `No head to toe assessment for ${exam}`,
   )
   const active_assessment_index = assessments.indexOf(active_assessment)
   const next_incomplete_assessment = assessments.find(
@@ -89,7 +89,7 @@ async function findPatientExaminations(ctx: EncounterContext) {
   )
 
   const next_step = next_incomplete_assessment
-    ? next_incomplete_assessment.tab
+    ? next_incomplete_assessment.exam
     : 'examinations'
 
   return {
@@ -97,7 +97,7 @@ async function findPatientExaminations(ctx: EncounterContext) {
     active_assessment,
     next_step,
     next_incomplete_assessment,
-    tab,
+    exam,
   }
 }
 
@@ -115,9 +115,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         ? completeStep(ctx)
         : Promise.resolve(
           redirect(
-            tabHref(
+            examHref(
               ctx,
-              next_incomplete_assessment.tab as HeadToToeAssessmentTab,
+              next_incomplete_assessment.exam as HeadToToeAssessment,
             ),
           ),
         ),
@@ -145,23 +145,23 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export async function HeadToToeAssessmentPage(
   { ctx }: EncounterPageChildProps,
 ) {
-  const { assessments, active_assessment, next_step, tab } =
+  const { assessments, active_assessment, next_step, exam } =
     await findPatientExaminations(ctx)
-  const tabs: TabProps[] = HEAD_TO_TOE_ASSESSMENT_TABS.map(
-    (head_to_tab) => {
-      const active = tab === head_to_tab.tab
+  const exams: TabProps[] = HEAD_TO_TOE_ASSESSMENT_TABS.map(
+    (head_to_exam) => {
+      const active = exam === head_to_exam.exam
       const matching_assessment = assessments.find(
         (assessment) =>
           assessment.examination_identifier ===
-            head_to_tab.examination_identifier,
+            head_to_exam.examination_identifier,
       )
       assert(
         matching_assessment,
-        `No head to toe assessment for ${head_to_tab.examination_identifier}`,
+        `No head to toe assessment for ${head_to_exam.examination_identifier}`,
       )
       return {
-        tab: head_to_tab.tab,
-        href: tabHref(ctx, head_to_tab.tab),
+        exam: head_to_exam.exam,
+        href: examHref(ctx, head_to_exam.exam),
         active,
         leftIcon: <Progress {...matching_assessment} active={active} />,
       }
@@ -172,7 +172,7 @@ export async function HeadToToeAssessmentPage(
     next_step_text: `Continue to ${next_step}`,
     children: (
       <>
-        <Tabs tabs={tabs} />
+        <Tabs exams={exams} />
         <PatientExaminationForm
           patient_examination={active_assessment}
         />

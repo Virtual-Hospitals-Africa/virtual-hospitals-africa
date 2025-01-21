@@ -6,11 +6,10 @@ import {
   RenderedPatientExaminationWithRecommendations,
   TrxOrDb,
 } from '../../types.ts'
-import { assertIsExamination, Examination } from '../../shared/examinations.ts'
 import { literalString } from '../helpers.ts'
 
-function examinationName(name: Examination) {
-  return sql<Examination>`${name}::varchar(80)`.as('examination_identifier')
+function examinationIdentifier(identifier: string) {
+  return sql<string>`${identifier}::varchar(80)`.as('examination_identifier')
 }
 
 export async function forPatientEncounter(
@@ -38,25 +37,54 @@ export async function forPatientEncounter(
         ensureEncounterId(trx, opts),
       )
 
+    const head_to_toe_assessment_general = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_general'),
+    )
+    const head_to_toe_assessment_skin = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_skin'),
+    )
+    const head_to_toe_assessment_head_and_neck = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_head_and_neck'),
+    )
+    const head_to_toe_assessment_cardiovascular = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_cardiovascular'),
+    )
+    const head_to_toe_assessment_respiratory = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_respiratory'),
+    )
+    const head_to_toe_assessment_gastrointestinal = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_gastrointestinal'),
+    )
+    const head_to_toe_assessment_neuromuscular = patient_encounter.select(
+      examinationIdentifier('head_to_toe_assessment_neuromuscular'),
+    )
+
     const womens_health = patient_encounter
       .where('patients.gender', '=', 'female')
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-      .select(examinationName("Women's Health Assessment"))
+      .select(examinationIdentifier('womens_health_assessment'))
 
     const mens_health = patient_encounter
       .where('patients.gender', '=', 'male')
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-      .select(examinationName("Men's Health Assessment"))
+      .select(examinationIdentifier('mens_health_assessment'))
 
     const child_health = patient_encounter
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '<', 18)
-      .select(examinationName('Child Health Assessment'))
+      .select(examinationIdentifier('child_health_assessment'))
 
     const maternity = patient_encounter
       .where('patient_encounters.reason', '=', 'maternity')
-      .select(examinationName('Maternity Assessment'))
+      .select(examinationIdentifier('maternity_assessment'))
 
-    return womens_health
+    return head_to_toe_assessment_general
+      .unionAll(head_to_toe_assessment_skin)
+      .unionAll(head_to_toe_assessment_head_and_neck)
+      .unionAll(head_to_toe_assessment_cardiovascular)
+      .unionAll(head_to_toe_assessment_respiratory)
+      .unionAll(head_to_toe_assessment_gastrointestinal)
+      .unionAll(head_to_toe_assessment_neuromuscular)
+      .unionAll(womens_health)
       .unionAll(mens_health)
       .unionAll(child_health)
       .unionAll(maternity)
@@ -109,10 +137,7 @@ export async function forPatientEncounter(
         .select((eb) => [
           'patient_examinations.patient_id',
           'patient_examinations.encounter_id',
-          eb.ref('patient_examinations.examination_identifier').$castTo<
-            Examination
-          >()
-            .as('examination_identifier'),
+          'patient_examinations.examination_identifier',
           'patient_examinations.completed',
           'patient_examinations.skipped',
           'patient_examinations.ordered',
@@ -131,9 +156,16 @@ export async function forPatientEncounter(
       return recommendations_not_yet_addressed.unionAll(patient_examinations)
     })
     .selectFrom('patient_examinations_with_recommendations_unordered')
-    .innerJoin('examinations', 'examinations.name', 'examination_identifier')
+    .innerJoin(
+      'examinations',
+      'examinations.identifier',
+      'examination_identifier',
+    )
     .selectAll('patient_examinations_with_recommendations_unordered')
-    .select('examinations.path')
+    .select([
+      'examinations.path',
+      'examinations.encounter_step',
+    ])
     .orderBy('examinations.order', 'asc')
     .execute()
 
@@ -151,8 +183,8 @@ export async function add(
     encounter_id: string
     encounter_provider_id: string
     examinations: {
-      during_this_encounter: Examination[]
-      orders: Examination[]
+      during_this_encounter: string[]
+      orders: string[]
     }
   },
 ) {
@@ -192,24 +224,28 @@ export async function add(
           join.onRef(
             'patient_examinations.examination_identifier',
             '=',
-            'examinations.name',
+            'examinations.identifier',
           )
             .on('patient_examinations.encounter_id', '=', encounter_id)
             .on('patient_examinations.patient_id', '=', patient_id))
         .where('patient_examinations.id', 'is', null)
         .select([
-          'examinations.name as examination_identifier',
+          'examinations.identifier as examination_identifier',
           literalString(patient_id).as('patient_id'),
           literalString(encounter_id).as('encounter_id'),
           literalString(encounter_provider_id).as('encounter_provider_id'),
         ])
 
       const during_this_encounter = base_insert
-        .where('examinations.name', 'in', examinations.during_this_encounter)
+        .where(
+          'examinations.identifier',
+          'in',
+          examinations.during_this_encounter,
+        )
         .select(literalBoolean(false).as('ordered'))
 
       const orders = base_insert
-        .where('examinations.name', 'in', examinations.orders)
+        .where('examinations.identifier', 'in', examinations.orders)
         .select(literalBoolean(true).as('ordered'))
 
       if (!examinations.during_this_encounter.length) return orders
@@ -223,7 +259,7 @@ export async function add(
 }
 
 export function skip(trx: TrxOrDb, values: {
-  examination_identifier: Examination
+  examination_identifier: string
   patient_id: string
   encounter_id: string
   encounter_provider_id: string
@@ -245,17 +281,16 @@ export async function getPatientExamination(
     examination_identifier: string
   },
 ): Promise<RenderedPatientExamination> {
-  assertIsExamination(examination_identifier)
   const ex = await trx
     .selectFrom('examinations')
-    .where('examinations.name', '=', examination_identifier)
+    .where('examinations.identifier', '=', examination_identifier)
     .leftJoin(
       'patient_examinations',
       (join) =>
         join.onRef(
           'patient_examinations.examination_identifier',
           '=',
-          'examinations.name',
+          'examinations.identifier',
         )
           .on('patient_examinations.patient_id', '=', patient_id)
           .on(
@@ -270,6 +305,8 @@ export async function getPatientExamination(
       'patient_examinations.skipped',
       'patient_examinations.ordered',
       'examinations.path',
+      'examinations.encounter_step',
+      // 'examinations.short_name',
       jsonArrayFrom(
         eb.selectFrom('patient_examination_findings')
           .whereRef(

@@ -13,7 +13,6 @@ import {
   MaritalStatus,
   PatientCohabitation,
 } from './db.d.ts'
-import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { ExtendedActionData } from './components/library/Table.tsx'
 
@@ -2354,7 +2353,7 @@ export type RenderedPatientEncounterProvider = {
 }
 
 export type RenderedPatientEncounterExamination = {
-  examination_identifier: Examination
+  examination_identifier: string
   completed: SqlBool | null
   skipped: SqlBool | null
   ordered: SqlBool | null
@@ -2515,7 +2514,9 @@ export type Provider = {
 }
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
-  examination_identifier: Examination
+  examination_identifier: string
+  encounter_step: EncounterStep
+  short_name: string
   completed: SqlBool | null
   skipped: SqlBool | null
   ordered: SqlBool | null

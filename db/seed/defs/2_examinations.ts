@@ -15,8 +15,9 @@ async function addSeedData(trx: TrxOrDb) {
     {
       ...exam,
       order: ++order,
-      path: `/${exam.encounter_step}?exam=${exam.tab}`,
+      path: `/${exam.encounter_step}?exam=${exam.short_name}`,
     }
   ))
+  // deno-lint-ignore no-explicit-any
   await trx.insertInto('examinations').values(exams as any).execute()
 }

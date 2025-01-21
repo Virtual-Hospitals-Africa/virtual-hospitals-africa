@@ -1,6 +1,6 @@
 import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, upsertOne } from '../helpers.ts'
-import { assertIsExamination } from '../../shared/examinations.ts'
+import { assertIsExamination } from '../../shared/head_to_toe_assessment.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { insertConcepts } from './snomed.ts'
 import partition from '../../util/partition.ts'
@@ -20,7 +20,7 @@ export function baseQuery(trx: TrxOrDb) {
     .innerJoin(
       'examinations',
       'patient_examinations.examination_identifier',
-      'examinations.name',
+      'examinations.identifier',
     )
     .innerJoin(
       'snomed_concepts as sc_findings',
@@ -28,7 +28,7 @@ export function baseQuery(trx: TrxOrDb) {
       'patient_examination_findings.snomed_concept_id',
     )
     .select((eb) => [
-      'examinations.name as examination_identifier',
+      'examinations.identifier as examination_identifier',
       'examinations.path',
       'sc_findings.snomed_concept_id',
       'sc_findings.snomed_english_term',
