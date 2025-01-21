@@ -12,7 +12,7 @@ import * as patient_measurements from '../../../db/models/patient_measurements.t
 import db from '../../../db/db.ts'
 
 describe(
-  '/app/patients/[patient_id]/encounters/open/vitals',
+  '/app/patients/[patient_id]/encounters/${encounter.id}/vitals',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a page on GET for an open encounter', async () => {
@@ -20,7 +20,7 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      await patient_encounters.upsert(
+      const encounter = await patient_encounters.upsert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -31,7 +31,7 @@ describe(
       )
 
       const response = await fetch(
-        `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        `${route}/app/patients/${patient.id}/encounters/${encounter.id}/vitals`,
       )
 
       if (!response.ok) throw new Error(await response.text())
@@ -105,7 +105,7 @@ describe(
       body.append('measurements.0.value', '123')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
         {
           method: 'POST',
           body,
@@ -128,7 +128,7 @@ describe(
 
       {
         const response = await fetch(
-          `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+          `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
         )
 
         if (!response.ok) throw new Error(await response.text())
@@ -227,7 +227,7 @@ describe(
       body.append('measurements.1.value', '456')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
         {
           method: 'POST',
           body,
@@ -257,7 +257,7 @@ describe(
 
       {
         const response = await fetch(
-          `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+          `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
         )
 
         if (!response.ok) throw new Error(await response.text())
@@ -361,7 +361,7 @@ describe(
       body.append('measurements.1.value', '456')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
         {
           method: 'POST',
           body,

@@ -1,0 +1,100 @@
+identifier	display_name	encounter_step	query_slug
+head_to_toe_assessment_general	Head-to-toe Assessment (General)	head_to_toe_assessment	general
+head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	head_to_toe_assessment	skin
+head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	head_to_toe_assessment	head_and_neck
+head_to_toe_assessment_cardiovascular	Head-to-toe Assessment (Cardiovascular)	head_to_toe_assessment	cardiovascular
+head_to_toe_assessment_respiratory	Head-to-toe Assessment (Respiratory)	head_to_toe_assessment	respiratory
+head_to_toe_assessment_gastrointestinal	Head-to-toe Assessment (Gastrointestinal)	head_to_toe_assessment	gastrointestinal
+head_to_toe_assessment_neuromuscular	Head-to-toe Assessment (Neuromuscular)	head_to_toe_assessment	neuromuscular
+womens_health_assessment	Women's Health Assessment	examinations	womens_health_assessment
+maternity_assessment	Maternity Assessment	examinations	maternity_assessment
+mens_health_assessment	Men's Health Assessment	examinations	mens_health_assessment
+mental_health_assessment	Mental Health Assessment	examinations	mental_health_assessment
+child_health_assessment	Child Health Assessment	examinations	child_health_assessment
+gastroenterology	Gastroenterology	examinations	gastroenterology
+endocrine	Endocrine	examinations	endocrine
+osteopathy	Osteopathy	examinations	osteopathy
+trauma	Trauma	examinations	trauma
+oncology	Oncology	examinations	oncology
+dental	Dental	examinations	dental
+otolaryngology	Otolaryngology	examinations	otolaryngology
+immunology	Immunology	examinations	immunology
+urology	Urology	examinations	urology
+gynecological	Gynecological	examinations	gynecological
+neurology	Neurology	examinations	neurology
+anesthetic	Anesthetic	examinations	anesthetic
+obstetric	Obstetric	examinations	obstetric
+ophthalmology	Ophthalmology	examinations	ophthalmology
+geriatric	Geriatric	examinations	geriatric
+pulmonology	Pulmonology	examinations	pulmonology
+haematology	Haematology	examinations	haematology
+dermatology	Dermatology	examinations	dermatology
+paediatric	Paediatric	examinations	paediatric
+rheumatology	Rheumatology	examinations	rheumatology
+vascular	Vascular	examinations	vascular
+cardiology	Cardiology	examinations	cardiology
+psychiatry	Psychiatry	examinations	psychiatry
+maxillofacial	Maxillofacial	examinations	maxillofacial
+nephrology	Nephrology	examinations	nephrology
+urine_analysis	Urine Analysis	diagnostic_tests	urine_analysis
+malaria	Malaria	diagnostic_tests	malaria
+hiv	HIV	diagnostic_tests	hiv
+pregnancy	Pregnancy	diagnostic_tests	pregnancy
+cholesterol	Cholesterol	diagnostic_tests	cholesterol
+blood_glucose	Blood Glucose	diagnostic_tests	blood_glucose
+hemoglobin	Hemoglobin	diagnostic_tests	hemoglobin
+uric_acid	Uric Acid	diagnostic_tests	uric_acid
+covid_19	Covid 19	diagnostic_tests	covid_19
+diabetes	Diabetes	diagnostic_tests	diabetes
+inflammation	Inflammation	diagnostic_tests	inflammation
+cardiac	Cardiac	diagnostic_tests	cardiac
+hormone	Hormone	diagnostic_tests	hormone
+thyroid	Thyroid	diagnostic_tests	thyroid
+bone_metabolism	Bone Metabolism	diagnostic_tests	bone_metabolism
+gastric_function	Gastric Function	diagnostic_tests	gastric_function
+anemia	Anemia	diagnostic_tests	anemia
+tumor	Tumor	diagnostic_tests	tumor
+brain_injury	Brain Injury	diagnostic_tests	brain_injury
+angiocapy	Angiocapy	diagnostic_tests	angiocapy
+immune_system	Immune System	diagnostic_tests	immune_system
+renal_function	Renal Function	diagnostic_tests	renal_function
+nervous_system	Nervous System	diagnostic_tests	nervous_system
+blood_pressure	Blood Pressure	diagnostic_tests	blood_pressure
+blood_oxygen_saturation	Blood Oxygen Saturation	diagnostic_tests	blood_oxygen_saturation
+body_mass_index	Body Mass Index	diagnostic_tests	body_mass_index
+spirometry_fvc	Spirometry FVC	diagnostic_tests	spirometry_fvc
+spirometry_fev	Spirometry FEV	diagnostic_tests	spirometry_fev
+spirometry_pef	Spirometry PEF	diagnostic_tests	spirometry_pef
+hepatitis_c	Hepatitis C	diagnostic_tests	hepatitis_c
+tuberculosis	Tuberculosis	diagnostic_tests	tuberculosis
+body_fat	Body Fat	diagnostic_tests	body_fat
+bone_mass	Bone Mass	diagnostic_tests	bone_mass
+water_weight	Water Weight	diagnostic_tests	water_weight
+muscle_mass	Muscle Mass	diagnostic_tests	muscle_mass
+body_weight	Body Weight	diagnostic_tests	body_weight
+basal_metabolic_rate	Basal Metabolic Rate	diagnostic_tests	basal_metabolic_rate
+typhoid	Typhoid	diagnostic_tests	typhoid
+syphilis	Syphilis	diagnostic_tests	syphilis
+chlamydia	Chlamydia	diagnostic_tests	chlamydia
+gonorrhea	Gonorrhea	diagnostic_tests	gonorrhea
+hepatitis_a_b_c	Hepatitis A/B/C	diagnostic_tests	hepatitis_a_b_c
+herpes_simplex_virus_1_2	Herpes Simplex Virus 1 & 2	diagnostic_tests	herpes_simplex_virus_1_2
+trichomonas	Trichomonas	diagnostic_tests	trichomonas
+cholera	Cholera	diagnostic_tests	cholera
+abdominal_ultrasound	Abdominal Ultrasound	diagnostic_tests	abdominal_ultrasound
+renal_ultrasound	Renal Ultrasound	diagnostic_tests	renal_ultrasound
+breast_ultrasound	Breast Ultrasound	diagnostic_tests	breast_ultrasound
+doppler_ultrasound	Doppler Ultrasound	diagnostic_tests	doppler_ultrasound
+pelvic_ultrasound	Pelvic Ultrasound	diagnostic_tests	pelvic_ultrasound
+transvaginal_ultrasound	Transvaginal Ultrasound	diagnostic_tests	transvaginal_ultrasound
+thyroid_ultrasound	Thyroid Ultrasound	diagnostic_tests	thyroid_ultrasound
+transrectal_ultrasound	Transrectal Ultrasound	diagnostic_tests	transrectal_ultrasound
+pregnancy_ultrasound	Pregnancy Ultrasound	diagnostic_tests	pregnancy_ultrasound
+chest_x_ray	Chest X-ray	diagnostic_tests	chest_x_ray
+abdominal_x_ray	Abdominal X-ray	diagnostic_tests	abdominal_x_ray
+kidney_ureter_and_bladder_x_ray	Kidney, Ureter and Bladder X-ray	diagnostic_tests	kidney_ureter_and_bladder_x_ray
+neck_x_ray	Neck X-ray	diagnostic_tests	neck_x_ray
+hand_x_ray	Hand X-ray	diagnostic_tests	hand_x_ray
+joint_x_ray	Joint X-ray	diagnostic_tests	joint_x_ray
+skull_x_ray	Skull X-ray	diagnostic_tests	skull_x_ray
+temperature	Temperature	diagnostic_tests	temperature

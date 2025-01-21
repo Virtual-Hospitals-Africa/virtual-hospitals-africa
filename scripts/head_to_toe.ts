@@ -8,7 +8,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import uniq from '../util/uniq.ts'
 
 const ExaminationSchema = z.object({
-  examination_name: z.string(),
+  examination_identifier: z.string(),
   category: z.string(),
   subcategory: z.string().nullable(),
   finding_name: z.string().nullable(),

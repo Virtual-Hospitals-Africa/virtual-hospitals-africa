@@ -10,12 +10,8 @@ import {
   RenderedPatientEncounterExamination,
 } from '../../../../../../types.ts'
 import * as examinations from '../../../../../../db/models/examinations.ts'
-import {
-  assertOr400,
-  assertOrRedirect,
-} from '../../../../../../util/assertOr.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
+import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
+import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
@@ -23,50 +19,21 @@ import {
   PaperAirplaneIcon,
   PlusCircleIcon,
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
-import { PatientExaminationForm } from '../../../../../../components/examinations/Form.tsx'
-import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
+// import { PatientExaminationForm } from '../../../../../../components/examinations/Form.tsx'
+// import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
-import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
-import {
-  Examination,
-  EXAMINATIONS,
-} from '../../../../../../shared/examinations.ts'
+// import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
 import partition from '../../../../../../util/partition.ts'
 import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import { Progress } from '../../../../../../components/library/icons/progress.tsx'
+import { z } from 'zod'
 
-function assertIsAddExaminations(
-  values: unknown,
-): asserts values is {
-  assessments?: Examination[]
-  diagnostic_tests_at_organization?: Examination[]
-  diagnostic_test_orders?: Examination[]
-} {
-  assertOr400(isObjectLike(values), 'Invalid form values')
-  for (const key in values) {
-    assertOr400(
-      key === 'assessments' || key === 'diagnostic_tests_at_organization' ||
-        key === 'diagnostic_test_orders',
-      `Unrecognized examination type: ${key}`,
-    )
-    const examinations = values[key]
-    assertOr400(
-      Array.isArray(examinations),
-      `Invalid ${key} value, must be an array`,
-    )
-    for (const exam of examinations) {
-      assertOr400(
-        typeof exam === 'string',
-        `Invalid examination value, must be a string`,
-      )
-      assertOr400(
-        EXAMINATIONS.includes(exam as Examination),
-        `Invalid examination value, ${exam} is not a valid examination`,
-      )
-    }
-  }
-}
+const AddExaminationsSchema = z.object({
+  assessments: z.string().array().default([]),
+  diagnostic_tests_at_organization: z.string().array().default([]),
+  diagnostic_test_orders: z.string().array().default([]),
+})
 
 function noExaminationSpecifiedHref(ctx: EncounterContext) {
   return hrefFromCtx(ctx, (url) => {
@@ -84,10 +51,13 @@ function placeOrdersHref(ctx: EncounterContext) {
   })
 }
 
-function examinationHref(ctx: EncounterContext, examination_name: string) {
+function examinationHref(
+  ctx: EncounterContext,
+  examination_identifier: string,
+) {
   return hrefFromCtx(ctx, (url) => {
     url.searchParams.delete('add')
-    url.searchParams.set('examination', examination_name)
+    url.searchParams.set('examination', examination_identifier)
     url.searchParams.delete('place')
   })
 }
@@ -112,20 +82,21 @@ function matchingExamination(
 ): RenderedPatientEncounterExamination | null {
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   if (adding_examinations) return null
-  const examination_name = ctx.url.searchParams.get('examination')
+  const examination_identifier = ctx.url.searchParams.get('examination')
 
   const next_incomplete_exam = patient_examinations.find(
     (exam) => !exam.completed && !exam.skipped,
   ) || patient_examinations[0]
-  if (!examination_name) {
+  if (!examination_identifier) {
     return next_incomplete_exam
   }
   const matching_examination = patient_examinations.find(
-    (examination) => examination.examination_name === examination_name,
+    (examination) =>
+      examination.examination_identifier === examination_identifier,
   )
   assertOrRedirect(
     matching_examination,
-    examinationHref(ctx, next_incomplete_exam.examination_name),
+    examinationHref(ctx, next_incomplete_exam.examination_identifier),
   )
   return matching_examination
 }
@@ -138,13 +109,13 @@ async function handleAddExaminations(
   const { trx, encounter, encounter_provider } = ctx.state
 
   const {
-    assessments = [],
-    diagnostic_tests_at_organization = [],
-    diagnostic_test_orders = [],
-  } = await parseRequestAsserts(
+    assessments,
+    diagnostic_tests_at_organization,
+    diagnostic_test_orders,
+  } = await parseRequest(
     trx,
     req,
-    assertIsAddExaminations,
+    AddExaminationsSchema.parse,
   )
 
   if (diagnostic_test_orders.length) {
@@ -194,7 +165,9 @@ async function handlePlaceOrders(
   )
 
   return next_incomplete_exam
-    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    ? redirect(
+      examinationHref(ctx, next_incomplete_exam.examination_identifier),
+    )
     : completeStep(ctx)
 }
 
@@ -218,7 +191,9 @@ async function handleExaminationFindings(
   )
 
   const once_done = next_incomplete_exam
-    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    ? redirect(
+      examinationHref(ctx, next_incomplete_exam.examination_identifier),
+    )
     : orders.length
     ? redirect(placeOrdersHref(ctx))
     : completeStep(ctx)
@@ -237,7 +212,7 @@ async function handleExaminationFindings(
   //     patient_id,
   //     encounter_id: encounter.encounter_id,
   //     encounter_provider_id: encounter_provider.patient_encounter_provider_id,
-  //     examination_name: examination.examination_name,
+  //     examination_identifier: examination.examination_identifier,
   //     skipped: !!skipped,
   //     values: skipped ? {} : omit(values, ['examination']),
   //   },
@@ -259,6 +234,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       {
         patient_id: ctx.state.encounter.patient_id,
         encounter_id: ctx.params.encounter_id,
+        encounter_step: 'examinations',
       },
     )
 
@@ -275,7 +251,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export async function ExaminationsPage(
   { ctx }: EncounterPageChildProps,
 ) {
-  const { trx, encounter, encounter_provider } = ctx.state
+  const { trx, encounter /*, encounter_provider */ } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   const placing_orders = ctx.url.searchParams.get('place') === 'orders'
 
@@ -284,6 +260,7 @@ export async function ExaminationsPage(
   const patient_examinations = await examinations.forPatientEncounter(trx, {
     patient_id: encounter.patient_id,
     encounter_id: ctx.params.encounter_id,
+    encounter_step: 'examinations',
   })
 
   console.log('patient_examinations', patient_examinations)
@@ -308,7 +285,7 @@ export async function ExaminationsPage(
   )
 
   const once_done = next_incomplete_exam
-    ? next_incomplete_exam.examination_name
+    ? next_incomplete_exam.examination_identifier
     : orders.length
     ? 'Orders'
     : 'Diagnosis'
@@ -316,8 +293,8 @@ export async function ExaminationsPage(
   const tabs: TabProps[] = during_this_encounter.map((exam) => {
     const active = exam === examination
     return {
-      tab: exam.examination_name as string,
-      href: examinationHref(ctx, exam.examination_name),
+      tab: exam.examination_identifier as string,
+      href: examinationHref(ctx, exam.examination_identifier),
       active,
       leftIcon: <Progress {...exam} active={active} />,
     }
@@ -347,37 +324,39 @@ export async function ExaminationsPage(
       <>
         <Tabs tabs={tabs} />
         {adding_examinations && (
-          <NewExaminationForm
-            recommended_examinations={patient_examinations.filter((ex) =>
-              ex.recommended
-            ).map((ex) => ex.examination_name)}
-            selected_examinations={patient_examinations.map((ex) =>
-              ex.examination_name
-            )}
-            available_diagnostic_tests={await getAvailableTests(trx, {
-              organization_id: ctx.state.encounter.providers[0].organization_id,
-            })}
-            allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
-          />
+          <>TODO: reimplement</>
+          // <NewExaminationForm
+          //   recommended_examinations={patient_examinations.filter((ex) =>
+          //     ex.recommended
+          //   ).map((ex) => ex.examination_identifier)}
+          //   selected_examinations={patient_examinations.map((ex) =>
+          //     ex.examination_identifier
+          //   )}
+          //   available_diagnostic_tests={await getAvailableTests(trx, {
+          //     organization_id: ctx.state.encounter.providers[0].organization_id,
+          //   })}
+          //   allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
+          // />
         )}
         {placing_orders && (
           <div>
             TODO
             {orders.map((order) => (
               <p>
-                {order.examination_name}
+                {order.examination_identifier}
               </p>
             ))}
           </div>
         )}
         {examination && (
-          <PatientExaminationForm
-            patient_examination={await examinations.getPatientExamination(trx, {
-              patient_id: encounter.patient_id,
-              encounter_id: encounter.encounter_id,
-              examination_name: examination.examination_name,
-            })}
-          />
+          <>TODO implement examinations</>
+          // <PatientExaminationForm
+          //   patient_examination={await examinations.getPatientExamination(trx, {
+          //     patient_id: encounter.patient_id,
+          //     encounter_id: encounter.encounter_id,
+          //     examination_identifier: examination.examination_identifier,
+          //   })}
+          // />
         )}
       </>
     ),

@@ -1,4 +1,4 @@
-examination_name	category	subcategory	finding_name	notes	snomed_finding_code	snomed_body_structure_codes	snomed_additional_relationships
+examination_identifier	category	subcategory	finding_name	notes	snomed_finding_code	snomed_body_structure_codes	snomed_additional_relationships
 General	Patient state		ill				
 General	Patient state		unalert				
 General	Patient state		confused				

@@ -1,5 +1,5 @@
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-import { RenderedPatientExamination } from '../../types.ts'
+import { RenderedPatientExaminationFinding } from '../../types.ts'
 import { ExaminationChecklistItem } from '../../islands/examinations/ChecklistItem.tsx'
 
 export type ExaminationChecklistItem = {
@@ -16,7 +16,7 @@ type ExaminationChecklistProps = {
   patient_examination_href: string
   subcategory?: string
   checklist: ExaminationChecklistItem[]
-  findings: RenderedPatientExamination['findings']
+  findings: RenderedPatientExaminationFinding[]
 }
 
 export function ExaminationChecklist(

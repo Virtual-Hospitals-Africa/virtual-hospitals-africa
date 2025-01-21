@@ -1,7 +1,7 @@
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import type {
   ExaminationChecklistDefinition,
-  RenderedPatientExamination,
+  RenderedPatientExaminationFinding,
 } from '../../types.ts'
 import { ExaminationChecklist } from './Checklist.tsx'
 
@@ -13,7 +13,7 @@ type ExaminationCategoryProps = {
     subcategory: string
     checklist: ExaminationChecklistDefinition[]
   }[]
-  findings: RenderedPatientExamination['findings']
+  findings: RenderedPatientExaminationFinding[]
 }
 
 export function ExaminationCategory(

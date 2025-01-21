@@ -10,7 +10,10 @@ export default create(
 )
 
 async function seedDataFromJSON(trx: TrxOrDb) {
-  const tests = await trx.selectFrom('diagnostic_tests').select('name')
+  const tests = await trx
+    .selectFrom('examinations')
+    .where('encounter_step', '=', 'diagnostic_tests')
+    .select('identifier')
     .execute()
 
   const devices: {
@@ -30,13 +33,15 @@ async function seedDataFromJSON(trx: TrxOrDb) {
 
     const capabilities = device.capabilities.map((c) => c.name)
     if (!capabilities.length) return
-    const device_capabilities = capabilities.map((name) => (
+    const device_capabilities = capabilities.map((
+      diagnostic_test_identifier,
+    ) => (
       assert(
-        tests.some((test) => test.name === name),
-        `No diagnostic test named ${name}`,
+        tests.some((test) => test.identifier === diagnostic_test_identifier),
+        `No diagnostic test named ${diagnostic_test_identifier}`,
       ), {
         device_id: id,
-        diagnostic_test: name,
+        diagnostic_test: diagnostic_test_identifier,
       }
     ))
     await trx.insertInto('device_capabilities')

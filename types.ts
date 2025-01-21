@@ -13,7 +13,6 @@ import {
   MaritalStatus,
   PatientCohabitation,
 } from './db.d.ts'
-import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { ExtendedActionData } from './components/library/Table.tsx'
 
@@ -1825,7 +1824,7 @@ export type GoogleAddressComponent = {
   formatted_address: string
   address_components: {
     long_name?: string
-    short_name?: string
+    query_slug?: string
     types?: string[]
   }[]
   types: string[]
@@ -2354,11 +2353,10 @@ export type RenderedPatientEncounterProvider = {
 }
 
 export type RenderedPatientEncounterExamination = {
-  examination_name: Examination
-  completed: SqlBool
-  skipped: SqlBool
-  ordered: SqlBool
-  recommended: SqlBool
+  examination_identifier: string
+  completed: SqlBool | null
+  skipped: SqlBool | null
+  ordered: SqlBool | null
 }
 
 export type RenderedPatientEncounter = {
@@ -2516,22 +2514,14 @@ export type Provider = {
 }
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
-  examination_name: Examination
-  completed: boolean | null
-  skipped: boolean | null
-  ordered: boolean | null
+  examination_identifier: string
+  encounter_step: EncounterStep
+  query_slug: string
+  display_name: string
+  completed: SqlBool | null
+  skipped: SqlBool | null
+  ordered: SqlBool | null
   href: string
-  findings: {
-    patient_examination_finding_id: string
-    snomed_concept_id: number
-    snomed_english_term: string
-    additional_notes: string | null
-    body_sites: {
-      patient_examination_finding_body_site_id: string
-      snomed_concept_id: number
-      snomed_english_term: string
-    }[]
-  }[]
 }
 
 export type DatabaseSchema = DB
@@ -3082,6 +3072,7 @@ export type RenderedPatientExaminationFinding = {
   patient_id: string
   encounter_id: string
   encounter_provider_id: string
+  examination_identifier: string
   encounter_open: SqlBool
   edit_href: string
   snomed_concept_id: number
@@ -3127,6 +3118,7 @@ type RenderedMessageThreadOtherParticipantPharmacist = {
 export type RenderedMessageThreadOtherParticipant =
   | RenderedMessageThreadOtherParticipantHealthWorker
   | RenderedMessageThreadOtherParticipantPharmacist
+
 export type RenderedMessageThread = {
   most_recent_message: {
     sent_by_me: SqlBool

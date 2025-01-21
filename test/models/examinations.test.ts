@@ -34,14 +34,14 @@
 
 //             const recommended = await examinations.recommended(trx)
 //               .selectFrom('recommended_examinations')
-//               .select('examination_name')
+//               .select('examination_identifier')
 //               .where('patient_id', '=', patient.id)
 //               .where('encounter_id', '=', patient_encounter.id)
 //               .execute()
 
 //             assertEquals(recommended, [
-//               { examination_name: 'Head-to-toe Assessment' },
-//               { examination_name: "Women's Health Assessment" },
+//               { examination_identifier: 'Head-to-toe Assessment' },
+//               { examination_identifier: "Women's Health Assessment" },
 //             ])
 //           }),
 //       )
@@ -66,15 +66,15 @@
 
 //             const recommended = await examinations.recommended(trx)
 //               .selectFrom('recommended_examinations')
-//               .select('examination_name')
+//               .select('examination_identifier')
 //               .where('patient_id', '=', patient.id)
 //               .where('encounter_id', '=', patient_encounter.id)
 //               .execute()
 
 //             assertEquals(recommended, [
-//               { examination_name: 'Head-to-toe Assessment' },
-//               { examination_name: "Women's Health Assessment" },
-//               { examination_name: 'Maternity Assessment' },
+//               { examination_identifier: 'Head-to-toe Assessment' },
+//               { examination_identifier: "Women's Health Assessment" },
+//               { examination_identifier: 'Maternity Assessment' },
 //             ])
 //           }),
 //       )
@@ -110,7 +110,7 @@
 //               encounter_id: patient_encounter.id,
 //               encounter_provider_id:
 //                 patient_encounter.providers[0].encounter_provider_id,
-//               examination_name: 'Dental',
+//               examination_identifier: 'Dental',
 //               values: {},
 //             })
 
@@ -118,7 +118,7 @@
 //               .forPatientEncounter(trx)
 //               .selectFrom('patient_examinations_with_recommendations')
 //               .select([
-//                 'examination_name',
+//                 'examination_identifier',
 //                 'completed',
 //                 'skipped',
 //                 'recommended',
@@ -129,19 +129,19 @@
 
 //             assertEquals(for_patient_encounter, [
 //               {
-//                 examination_name: 'Head-to-toe Assessment',
+//                 examination_identifier: 'Head-to-toe Assessment',
 //                 completed: false,
 //                 skipped: false,
 //                 recommended: true,
 //               },
 //               {
-//                 examination_name: "Women's Health Assessment",
+//                 examination_identifier: "Women's Health Assessment",
 //                 completed: false,
 //                 skipped: false,
 //                 recommended: true,
 //               },
 //               {
-//                 examination_name: 'Dental',
+//                 examination_identifier: 'Dental',
 //                 completed: true,
 //                 skipped: false,
 //                 recommended: false,
@@ -173,7 +173,7 @@
 //             patient_id: patient.id,
 //             encounter_id: encounter.id,
 //             encounter_provider_id: encounter.providers[0].encounter_provider_id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
 //                 ill: true,
@@ -186,7 +186,7 @@
 //             {
 //               patient_id: patient.id,
 //               encounter_id: encounter.id,
-//               examination_name: 'Head-to-toe Assessment',
+//               examination_identifier: 'Head-to-toe Assessment',
 //             },
 //           )
 
@@ -1030,7 +1030,7 @@
 //             patient_id: patient.id,
 //             encounter_id: encounter.id,
 //             encounter_provider_id: encounter.providers[0].encounter_provider_id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
 //                 wasted: true,
@@ -1045,7 +1045,7 @@
 //             patient_id: patient.id,
 //             encounter_id: encounter.id,
 //             encounter_provider_id: encounter.providers[0].encounter_provider_id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
 //                 wasted: true,
@@ -1061,7 +1061,7 @@
 //             {
 //               patient_id: patient.id,
 //               encounter_id: encounter.id,
-//               examination_name: 'Head-to-toe Assessment',
+//               examination_identifier: 'Head-to-toe Assessment',
 //             },
 //           )
 

@@ -29,6 +29,7 @@ export type EncounterStep =
   | 'diagnostic_tests'
   | 'examinations'
   | 'head_to_toe_assessment'
+  | 'history'
   | 'orders'
   | 'prescriptions'
   | 'referral'
@@ -249,10 +250,6 @@ export interface DiagnosesCollaboration {
   updated_at: Generated<Timestamp>
 }
 
-export interface DiagnosticTests {
-  name: string
-}
-
 export interface Districts {
   id: Generated<string>
   name: string
@@ -369,12 +366,12 @@ export interface Events {
 }
 
 export interface Examinations {
-  is_head_to_toe: Generated<boolean>
-  name: string
+  display_name: string
+  encounter_step: EncounterStep
+  identifier: string
   order: number
-  page: string
   path: string
-  tab: string
+  query_slug: string
 }
 
 export interface GeographyColumns {
@@ -823,7 +820,7 @@ export interface PatientExaminations {
   created_at: Generated<Timestamp>
   encounter_id: string
   encounter_provider_id: string
-  examination_name: string
+  examination_identifier: string
   id: Generated<string>
   ordered: Generated<boolean>
   patient_id: string
@@ -1167,7 +1164,6 @@ export interface DB {
   devices: Devices
   diagnoses: Diagnoses
   diagnoses_collaboration: DiagnosesCollaboration
-  diagnostic_tests: DiagnosticTests
   districts: Districts
   doctor_registration_details: DoctorRegistrationDetails
   doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
