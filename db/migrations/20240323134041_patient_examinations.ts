@@ -33,10 +33,12 @@ export async function up(
             ),
         )
         .addColumn(
-          'examination_name',
+          'examination_identifier',
           'varchar(80)',
           (col) =>
-            col.notNull().references('examinations.name').onDelete('cascade'),
+            col.notNull().references('examinations.identifier').onDelete(
+              'cascade',
+            ),
         )
         .addColumn(
           'completed',
@@ -55,7 +57,7 @@ export async function up(
         )
         .addUniqueConstraint('patient_examination_unique', [
           'encounter_id',
-          'examination_name',
+          'examination_identifier',
         ]),
   )
 

@@ -16,7 +16,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
       (qb) =>
         qb
           .onRef(
-            'pe.examination_name',
+            'pe.examination_identifier',
             '=',
             'examinations.name',
           )
@@ -27,7 +27,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
           ),
     )
     .select([
-      'examinations.name as examination_name',
+      'examinations.name as examination_identifier',
       'examinations.tab',
       'examinations.page',
       'examinations.path',
@@ -51,11 +51,11 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
     .orderBy('examinations.order', 'asc')
     .execute()
 
-  return examinations.map(({ examination_name, ...ex }) => {
-    assertIsExamination(examination_name)
+  return examinations.map(({ examination_identifier, ...ex }) => {
+    assertIsExamination(examination_identifier)
     assert(
-      examination_name.startsWith('Head-to-toe Assessment'),
-      `examination_name must start with Head-to-toe Assessment but got ${examination_name}`,
+      examination_identifier.startsWith('Head-to-toe Assessment'),
+      `examination_identifier must start with Head-to-toe Assessment but got ${examination_identifier}`,
     )
     assert(
       ex.path.startsWith('/head_to_toe_assessment'),
@@ -67,7 +67,7 @@ export async function forPatientEncounter(trx: TrxOrDb, opts: {
 
     return {
       ...ex,
-      examination_name,
+      examination_identifier,
       href,
     }
   })

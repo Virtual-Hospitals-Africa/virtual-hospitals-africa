@@ -19,7 +19,7 @@ export function baseQuery(trx: TrxOrDb) {
     )
     .innerJoin(
       'examinations',
-      'patient_examinations.examination_name',
+      'patient_examinations.examination_identifier',
       'examinations.name',
     )
     .innerJoin(
@@ -28,7 +28,7 @@ export function baseQuery(trx: TrxOrDb) {
       'patient_examination_findings.snomed_concept_id',
     )
     .select((eb) => [
-      'examinations.name as examination_name',
+      'examinations.name as examination_identifier',
       'examinations.path',
       'sc_findings.snomed_concept_id',
       'sc_findings.snomed_english_term',
@@ -68,15 +68,15 @@ type ExaminationResults = Awaited<
 function render(
   examinations: ExaminationResults,
 ): RenderedPatientExaminationFinding[] {
-  return examinations.map(({ examination_name, path, ...ex }) => {
-    assertIsExamination(examination_name)
+  return examinations.map(({ examination_identifier, path, ...ex }) => {
+    assertIsExamination(examination_identifier)
     const examination_href =
       `/app/patients/${ex.patient_id}/encounters/${ex.encounter_id}${path}`
 
     const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
       ...ex,
-      examination_name,
+      examination_identifier,
       edit_href,
       text: ex.snomed_english_term,
     }
@@ -117,14 +117,14 @@ export async function upsertForPatientExamination(
     patient_id,
     encounter_id,
     encounter_provider_id,
-    examination_name,
+    examination_identifier,
     findings,
     patient_examination_id,
   }: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
-    examination_name: string
+    examination_identifier: string
     patient_examination_id: string
     findings: {
       patient_examination_finding_id: string
@@ -169,7 +169,7 @@ export async function upsertForPatientExamination(
       patient_id,
       encounter_id,
       encounter_provider_id,
-      examination_name,
+      examination_identifier,
       id: patient_examination_id,
       completed: true,
     }),

@@ -84,10 +84,13 @@ function placeOrdersHref(ctx: EncounterContext) {
   })
 }
 
-function examinationHref(ctx: EncounterContext, examination_name: string) {
+function examinationHref(
+  ctx: EncounterContext,
+  examination_identifier: string,
+) {
   return hrefFromCtx(ctx, (url) => {
     url.searchParams.delete('add')
-    url.searchParams.set('examination', examination_name)
+    url.searchParams.set('examination', examination_identifier)
     url.searchParams.delete('place')
   })
 }
@@ -112,20 +115,21 @@ function matchingExamination(
 ): RenderedPatientEncounterExamination | null {
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   if (adding_examinations) return null
-  const examination_name = ctx.url.searchParams.get('examination')
+  const examination_identifier = ctx.url.searchParams.get('examination')
 
   const next_incomplete_exam = patient_examinations.find(
     (exam) => !exam.completed && !exam.skipped,
   ) || patient_examinations[0]
-  if (!examination_name) {
+  if (!examination_identifier) {
     return next_incomplete_exam
   }
   const matching_examination = patient_examinations.find(
-    (examination) => examination.examination_name === examination_name,
+    (examination) =>
+      examination.examination_identifier === examination_identifier,
   )
   assertOrRedirect(
     matching_examination,
-    examinationHref(ctx, next_incomplete_exam.examination_name),
+    examinationHref(ctx, next_incomplete_exam.examination_identifier),
   )
   return matching_examination
 }
@@ -194,7 +198,9 @@ async function handlePlaceOrders(
   )
 
   return next_incomplete_exam
-    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    ? redirect(
+      examinationHref(ctx, next_incomplete_exam.examination_identifier),
+    )
     : completeStep(ctx)
 }
 
@@ -218,7 +224,9 @@ async function handleExaminationFindings(
   )
 
   const once_done = next_incomplete_exam
-    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    ? redirect(
+      examinationHref(ctx, next_incomplete_exam.examination_identifier),
+    )
     : orders.length
     ? redirect(placeOrdersHref(ctx))
     : completeStep(ctx)
@@ -237,7 +245,7 @@ async function handleExaminationFindings(
   //     patient_id,
   //     encounter_id: encounter.encounter_id,
   //     encounter_provider_id: encounter_provider.patient_encounter_provider_id,
-  //     examination_name: examination.examination_name,
+  //     examination_identifier: examination.examination_identifier,
   //     skipped: !!skipped,
   //     values: skipped ? {} : omit(values, ['examination']),
   //   },
@@ -308,7 +316,7 @@ export async function ExaminationsPage(
   )
 
   const once_done = next_incomplete_exam
-    ? next_incomplete_exam.examination_name
+    ? next_incomplete_exam.examination_identifier
     : orders.length
     ? 'Orders'
     : 'Diagnosis'
@@ -316,8 +324,8 @@ export async function ExaminationsPage(
   const tabs: TabProps[] = during_this_encounter.map((exam) => {
     const active = exam === examination
     return {
-      tab: exam.examination_name as string,
-      href: examinationHref(ctx, exam.examination_name),
+      tab: exam.examination_identifier as string,
+      href: examinationHref(ctx, exam.examination_identifier),
       active,
       leftIcon: <Progress {...exam} active={active} />,
     }
@@ -350,9 +358,9 @@ export async function ExaminationsPage(
           <NewExaminationForm
             recommended_examinations={patient_examinations.filter((ex) =>
               ex.recommended
-            ).map((ex) => ex.examination_name)}
+            ).map((ex) => ex.examination_identifier)}
             selected_examinations={patient_examinations.map((ex) =>
-              ex.examination_name
+              ex.examination_identifier
             )}
             available_diagnostic_tests={await getAvailableTests(trx, {
               organization_id: ctx.state.encounter.providers[0].organization_id,
@@ -365,7 +373,7 @@ export async function ExaminationsPage(
             TODO
             {orders.map((order) => (
               <p>
-                {order.examination_name}
+                {order.examination_identifier}
               </p>
             ))}
           </div>
@@ -375,7 +383,7 @@ export async function ExaminationsPage(
             patient_examination={await examinations.getPatientExamination(trx, {
               patient_id: encounter.patient_id,
               encounter_id: encounter.encounter_id,
-              examination_name: examination.examination_name,
+              examination_identifier: examination.examination_identifier,
             })}
           />
         )}

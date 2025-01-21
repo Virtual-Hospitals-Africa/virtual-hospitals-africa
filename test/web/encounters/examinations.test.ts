@@ -54,7 +54,7 @@
 //           {
 //             patient_id: encounter.patient_id,
 //             encounter_id: encounter.id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
 //         assertEquals(patient_examination.completed, true)
@@ -106,7 +106,7 @@
 //           patient_id: encounter.patient_id,
 //           encounter_id: encounter.id,
 //           encounter_provider_id: encounter.providers[0].encounter_provider_id,
-//           examination_name: 'Head-to-toe Assessment',
+//           examination_identifier: 'Head-to-toe Assessment',
 //           values: {
 //             'Character': {
 //               'cold': true,
@@ -129,7 +129,7 @@
 //           {
 //             patient_id: encounter.patient_id,
 //             encounter_id: encounter.id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
 //         assertEquals(patient_examination.completed, true)
@@ -150,7 +150,7 @@
 
 //         const categories = await db
 //           .selectFrom('examination_categories')
-//           .where('examination_name', '=', 'Head-to-toe Assessment')
+//           .where('examination_identifier', '=', 'Head-to-toe Assessment')
 //           .selectAll()
 //           .execute()
 
@@ -197,7 +197,7 @@
 //           patient_id: encounter.patient_id,
 //           encounter_id: encounter.id,
 //           encounter_provider_id: encounter.providers[0].encounter_provider_id,
-//           examination_name: 'Head-to-toe Assessment',
+//           examination_identifier: 'Head-to-toe Assessment',
 //           values: {
 //             'Character': {
 //               'cold': true,
@@ -221,7 +221,7 @@
 //           {
 //             patient_id: encounter.patient_id,
 //             encounter_id: encounter.id,
-//             examination_name: 'Head-to-toe Assessment',
+//             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
 //         assertEquals(patient_examination.completed, true)
@@ -254,7 +254,7 @@
 
 //         const categories = await db
 //           .selectFrom('examination_categories')
-//           .where('examination_name', '=', 'Head-to-toe Assessment')
+//           .where('examination_identifier', '=', 'Head-to-toe Assessment')
 //           .selectAll()
 //           .execute()
 
@@ -314,7 +314,7 @@
 
 //         const categories = await db
 //           .selectFrom('examination_categories')
-//           .where('examination_name', '=', 'Head-to-toe Assessment')
+//           .where('examination_identifier', '=', 'Head-to-toe Assessment')
 //           .selectAll()
 //           .execute()
 
@@ -434,7 +434,7 @@
 //             {
 //               patient_id: encounter.patient_id,
 //               encounter_id: encounter.id,
-//               examination_name: 'Head-to-toe Assessment',
+//               examination_identifier: 'Head-to-toe Assessment',
 //               completed: false,
 //               skipped: false,
 //               ordered: false,
@@ -443,7 +443,7 @@
 //             {
 //               patient_id: encounter.patient_id,
 //               encounter_id: encounter.id,
-//               examination_name: "Women's Health Assessment",
+//               examination_identifier: "Women's Health Assessment",
 //               completed: false,
 //               skipped: false,
 //               ordered: false,
@@ -452,7 +452,7 @@
 //             {
 //               patient_id: encounter.patient_id,
 //               encounter_id: encounter.id,
-//               examination_name: 'Diabetes',
+//               examination_identifier: 'Diabetes',
 //               completed: false,
 //               skipped: false,
 //               ordered: true,

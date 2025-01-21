@@ -131,7 +131,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
           encounter_id: ctx.state.encounter.encounter_id,
           encounter_provider_id:
             ctx.state.encounter_provider.patient_encounter_provider_id,
-          examination_name: active_assessment.examination_name,
+          examination_identifier: active_assessment.examination_identifier,
           findings: form_values.findings,
           patient_examination_id: form_values.patient_examination_id,
         })
@@ -152,11 +152,12 @@ export async function HeadToToeAssessmentPage(
       const active = tab === head_to_tab.tab
       const matching_assessment = assessments.find(
         (assessment) =>
-          assessment.examination_name === head_to_tab.examination_name,
+          assessment.examination_identifier ===
+            head_to_tab.examination_identifier,
       )
       assert(
         matching_assessment,
-        `No head to toe assessment for ${head_to_tab.examination_name}`,
+        `No head to toe assessment for ${head_to_tab.examination_identifier}`,
       )
       return {
         tab: head_to_tab.tab,

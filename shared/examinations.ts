@@ -128,10 +128,10 @@ export type Examination = typeof EXAMINATIONS[number]
 export const HEAD_TO_TOE_ASSESSMENT_TABS = [
   {
     tab: 'General' as const,
-    examination_name: 'Head-to-toe Assessment (General)',
+    examination_identifier: 'Head-to-toe Assessment (General)',
     categories: [{
       'category': 'Hands' as const,
-      'examination_name': 'Head-to-toe Assessment (Hands)',
+      'examination_identifier': 'Head-to-toe Assessment (Hands)',
       'subcategories': [
         {
           'subcategory': 'Texture',
@@ -382,39 +382,39 @@ export const HEAD_TO_TOE_ASSESSMENT_TABS = [
   },
   {
     tab: 'Skin' as const,
-    examination_name: 'Head-to-toe Assessment (Skin)',
+    examination_identifier: 'Head-to-toe Assessment (Skin)',
     categories: [],
   },
   {
     tab: 'Head and Neck' as const,
-    examination_name: 'Head-to-toe Assessment (Head and Neck)',
+    examination_identifier: 'Head-to-toe Assessment (Head and Neck)',
     categories: [],
   },
   {
     tab: 'Cardiovascular' as const,
-    examination_name: 'Head-to-toe Assessment (Cardiovascular)',
+    examination_identifier: 'Head-to-toe Assessment (Cardiovascular)',
     categories: [],
   },
   {
     tab: 'Respiratory' as const,
-    examination_name: 'Head-to-toe Assessment (Respiratory)',
+    examination_identifier: 'Head-to-toe Assessment (Respiratory)',
     categories: [],
   },
   {
     tab: 'Gastrointestinal' as const,
-    examination_name: 'Head-to-toe Assessment (Gastrointestinal)',
+    examination_identifier: 'Head-to-toe Assessment (Gastrointestinal)',
     categories: [],
   },
   {
     tab: 'Neuromuscular' as const,
-    examination_name: 'Head-to-toe Assessment (Neuromuscular)',
+    examination_identifier: 'Head-to-toe Assessment (Neuromuscular)',
     categories: [],
   },
 ]
 
-export const HEAD_TO_TOE_ASSESSMENTS_BY_EXAMINATION_NAME = groupByUniq(
+export const HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier = groupByUniq(
   HEAD_TO_TOE_ASSESSMENT_TABS,
-  'examination_name',
+  'examination_identifier',
 )
 
 export type HeadToToeAssessmentTab =
@@ -427,21 +427,21 @@ export function isHeadToToeAssessmentTab(
 }
 
 export const HEAD_TO_TOE_ASSESSMENT_CHECKLIST = HEAD_TO_TOE_ASSESSMENT_TABS
-  .flatMap(({ tab, examination_name, categories }) =>
+  .flatMap(({ tab, examination_identifier, categories }) =>
     categories.flatMap(({ category, checklist, subcategories }) =>
       subcategories.flatMap(({ checklist, subcategory }) =>
         checklist.map((item) => ({
           ...item,
           category,
           tab,
-          examination_name,
+          examination_identifier,
           subcategory: subcategory as string | null,
         }))
       ).concat(checklist.map((item) => ({
         ...item,
         category,
         tab,
-        examination_name,
+        examination_identifier,
         subcategory: null,
       })))
     )

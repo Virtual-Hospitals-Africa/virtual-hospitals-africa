@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import { RenderedPatientExamination } from '../../types.ts'
-import { HEAD_TO_TOE_ASSESSMENTS_BY_EXAMINATION_NAME } from '../../shared/examinations.ts'
+import { HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier } from '../../shared/examinations.ts'
 import { ExaminationCategory } from './Category.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
@@ -10,15 +10,17 @@ export function PatientExaminationForm({
 }: {
   patient_examination: RenderedPatientExamination
 }): JSX.Element {
-  const assessment = HEAD_TO_TOE_ASSESSMENTS_BY_EXAMINATION_NAME.get(
-    patient_examination.examination_name,
+  const assessment = HEAD_TO_TOE_ASSESSMENTS_BY_examination_identifier.get(
+    patient_examination.examination_identifier,
   )
   if (!assessment) {
-    return <p>TODO Imlement form for {patient_examination.examination_name}</p>
+    return (
+      <p>TODO Imlement form for {patient_examination.examination_identifier}</p>
+    )
   }
   assert(
     assessment,
-    `No head to toe assessment for ${patient_examination.examination_name}`,
+    `No head to toe assessment for ${patient_examination.examination_identifier}`,
   )
   return (
     <div className='flex content-between p-4'>

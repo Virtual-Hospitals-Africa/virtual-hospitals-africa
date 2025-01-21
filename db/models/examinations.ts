@@ -1,12 +1,16 @@
 import { sql, SqlBool } from 'kysely'
 import { jsonArrayFrom, literalBoolean } from '../helpers.ts'
 import { ensureEncounterId } from './patient_encounters.ts'
-import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
+import {
+  RenderedPatientExamination,
+  RenderedPatientExaminationWithRecommendations,
+  TrxOrDb,
+} from '../../types.ts'
 import { assertIsExamination, Examination } from '../../shared/examinations.ts'
 import { literalString } from '../helpers.ts'
 
 function examinationName(name: Examination) {
-  return sql<Examination>`${name}::varchar(80)`.as('examination_name')
+  return sql<Examination>`${name}::varchar(80)`.as('examination_identifier')
 }
 
 export async function forPatientEncounter(
@@ -15,7 +19,7 @@ export async function forPatientEncounter(
     patient_id: string
     encounter_id: string | 'open'
   },
-) {
+): Promise<RenderedPatientExaminationWithRecommendations[]> {
   const exs = await trx.with('recommended_examinations', (qb) => {
     const patient_encounter = qb.selectFrom('patients')
       .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
@@ -34,10 +38,6 @@ export async function forPatientEncounter(
         ensureEncounterId(trx, opts),
       )
 
-    // const head_to_toe = patient_encounter.select(
-    //   examinationName('Head-to-toe Assessment'),
-    // )
-
     const womens_health = patient_encounter
       .where('patients.gender', '=', 'female')
       .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
@@ -55,12 +55,6 @@ export async function forPatientEncounter(
     const maternity = patient_encounter
       .where('patient_encounters.reason', '=', 'maternity')
       .select(examinationName('Maternity Assessment'))
-
-    // return head_to_toe
-    //   .unionAll(womens_health)
-    //   .unionAll(mens_health)
-    //   .unionAll(child_health)
-    //   .unionAll(maternity)
 
     return womens_health
       .unionAll(mens_health)
@@ -81,9 +75,9 @@ export async function forPatientEncounter(
                 'patient_examinations.encounter_id',
               )
               .onRef(
-                'recommended_examinations.examination_name',
+                'recommended_examinations.examination_identifier',
                 '=',
-                'patient_examinations.examination_name',
+                'patient_examinations.examination_identifier',
               ),
         )
         .where('patient_examinations.id', 'is', null)
@@ -93,6 +87,7 @@ export async function forPatientEncounter(
           sql<SqlBool>`FALSE`.as('skipped'),
           sql<SqlBool>`FALSE`.as('ordered'),
           sql<SqlBool>`TRUE`.as('recommended'),
+          sql<null | string>`NULL`.as('patient_examination_id'),
         ])
 
       const patient_examinations = qb.selectFrom('patient_examinations')
@@ -106,22 +101,25 @@ export async function forPatientEncounter(
                 'patient_examinations.encounter_id',
               )
               .onRef(
-                'recommended_examinations.examination_name',
+                'recommended_examinations.examination_identifier',
                 '=',
-                'patient_examinations.examination_name',
+                'patient_examinations.examination_identifier',
               ),
         )
         .select((eb) => [
           'patient_examinations.patient_id',
           'patient_examinations.encounter_id',
-          eb.ref('patient_examinations.examination_name').$castTo<Examination>()
-            .as('examination_name'),
+          eb.ref('patient_examinations.examination_identifier').$castTo<
+            Examination
+          >()
+            .as('examination_identifier'),
           'patient_examinations.completed',
           'patient_examinations.skipped',
           'patient_examinations.ordered',
           eb('recommended_examinations.encounter_id', 'is not', null).as(
             'recommended',
           ),
+          'patient_examinations.id as patient_examination_id',
         ])
         .where('patient_examinations.id', '=', opts.patient_id)
         .where(
@@ -133,7 +131,7 @@ export async function forPatientEncounter(
       return recommendations_not_yet_addressed.unionAll(patient_examinations)
     })
     .selectFrom('patient_examinations_with_recommendations_unordered')
-    .innerJoin('examinations', 'examinations.name', 'examination_name')
+    .innerJoin('examinations', 'examinations.name', 'examination_identifier')
     .selectAll('patient_examinations_with_recommendations_unordered')
     .select('examinations.path')
     .orderBy('examinations.order', 'asc')
@@ -170,7 +168,7 @@ export async function add(
 
   if (all_examinations.length > 0) {
     delete_query = delete_query.where(
-      'examination_name',
+      'examination_identifier',
       'not in',
       all_examinations,
     )
@@ -181,7 +179,7 @@ export async function add(
   all_examinations.length && await trx
     .insertInto('patient_examinations')
     .columns([
-      'examination_name',
+      'examination_identifier',
       'patient_id',
       'encounter_id',
       'encounter_provider_id',
@@ -192,7 +190,7 @@ export async function add(
       const base_insert = eb.selectFrom('examinations')
         .leftJoin('patient_examinations', (join) =>
           join.onRef(
-            'patient_examinations.examination_name',
+            'patient_examinations.examination_identifier',
             '=',
             'examinations.name',
           )
@@ -200,7 +198,7 @@ export async function add(
             .on('patient_examinations.patient_id', '=', patient_id))
         .where('patient_examinations.id', 'is', null)
         .select([
-          'examinations.name as examination_name',
+          'examinations.name as examination_identifier',
           literalString(patient_id).as('patient_id'),
           literalString(encounter_id).as('encounter_id'),
           literalString(encounter_provider_id).as('encounter_provider_id'),
@@ -225,7 +223,7 @@ export async function add(
 }
 
 export function skip(trx: TrxOrDb, values: {
-  examination_name: Examination
+  examination_identifier: Examination
   patient_id: string
   encounter_id: string
   encounter_provider_id: string
@@ -241,21 +239,21 @@ export function skip(trx: TrxOrDb, values: {
 
 export async function getPatientExamination(
   trx: TrxOrDb,
-  { patient_id, encounter_id, examination_name }: {
+  { patient_id, encounter_id, examination_identifier }: {
     patient_id: string
     encounter_id: string
-    examination_name: string
+    examination_identifier: string
   },
 ): Promise<RenderedPatientExamination> {
-  assertIsExamination(examination_name)
+  assertIsExamination(examination_identifier)
   const ex = await trx
     .selectFrom('examinations')
-    .where('examinations.name', '=', examination_name)
+    .where('examinations.name', '=', examination_identifier)
     .leftJoin(
       'patient_examinations',
       (join) =>
         join.onRef(
-          'patient_examinations.examination_name',
+          'patient_examinations.examination_identifier',
           '=',
           'examinations.name',
         )
@@ -316,7 +314,7 @@ export async function getPatientExamination(
 
   return {
     ...ex,
-    examination_name,
+    examination_identifier,
     href: `/app/patients/${patient_id}/encounters/${encounter_id}${ex.path}`,
   }
 }
