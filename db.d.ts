@@ -601,7 +601,8 @@ export interface Messages {
   body: string
   created_at: Generated<Timestamp>
   id: Generated<string>
-  sender_id: string
+  is_from_system: Generated<boolean>
+  sender_id: string | null
   thread_id: string
   updated_at: Generated<Timestamp>
 }
@@ -618,7 +619,15 @@ export interface MessageThreadParticipants {
 export interface MessageThreads {
   created_at: Generated<Timestamp>
   id: Generated<string>
-  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageThreadSubjects {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  row_id: string
+  table_name: string
+  thread_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1203,6 +1212,7 @@ export interface DB {
   medications: Medications
   message_read_status: MessageReadStatus
   message_thread_participants: MessageThreadParticipants
+  message_thread_subjects: MessageThreadSubjects
   message_threads: MessageThreads
   messages: Messages
   nurse_registration_details: NurseRegistrationDetails

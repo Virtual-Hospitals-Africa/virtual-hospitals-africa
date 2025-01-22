@@ -144,6 +144,16 @@ function getThreadsForHealthWorker(
             ])
           ),
       ).as('other_participants_raw'),
+      jsonArrayFrom(
+        eb
+          .selectFrom('message_thread_subjects')
+          .select(['table_name', 'row_id'])
+          .whereRef(
+            'message_thread_subjects.thread_id',
+            '=',
+            'message_threads.id',
+          ),
+      ).as('subjects'),
     ])
     .where(
       'message_thread_participants.health_worker_id',
@@ -185,8 +195,16 @@ export async function createThread(
   },
 ) {
   const thread = await trx.insertInto('message_threads')
-    .values(concerning)
+    .values({})
     .returning('id')
+    .executeTakeFirstOrThrow()
+
+  await trx.insertInto('message_thread_subjects')
+    .values({
+      thread_id: thread.id,
+      table_name: 'patients',
+      row_id: concerning.patient_id,
+    })
     .executeTakeFirstOrThrow()
 
   const sender_participant = await trx.insertInto('message_thread_participants')

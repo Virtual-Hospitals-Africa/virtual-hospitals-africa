@@ -1,4 +1,4 @@
-import { InsertResult, sql, UpdateResult } from 'kysely'
+import { InsertResult, UpdateResult } from 'kysely'
 import {
   ChatbotName,
   ChatbotUser,

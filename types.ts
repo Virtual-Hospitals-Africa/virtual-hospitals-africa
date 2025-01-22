@@ -3133,8 +3133,11 @@ export type RenderedMessageThread = {
   }
   created_at: Date
   id: string
-  patient_id: string
   updated_at: Date
   participant_id: string
   other_participants: RenderedMessageThreadOtherParticipant[]
+  subjects: {
+    table_name: string
+    row_id: string
+  }[]
 }
