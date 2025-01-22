@@ -588,12 +588,11 @@ export interface Medications {
   updated_at: Generated<Timestamp>
 }
 
-export interface MessageReadStatus {
+export interface MessageReads {
   created_at: Generated<Timestamp>
   id: Generated<string>
   message_id: string
   participant_id: string
-  read_at: Timestamp | null
   updated_at: Generated<Timestamp>
 }
 
@@ -609,9 +608,9 @@ export interface Messages {
 
 export interface MessageThreadParticipants {
   created_at: Generated<Timestamp>
-  employee_id: string | null
   id: Generated<string>
-  pharmacist_id: string | null
+  row_id: string
+  table_name: string
   thread_id: string
   updated_at: Generated<Timestamp>
 }
@@ -1210,7 +1209,7 @@ export interface DB {
   measurements: Measurements
   media: Media
   medications: Medications
-  message_read_status: MessageReadStatus
+  message_reads: MessageReads
   message_thread_participants: MessageThreadParticipants
   message_thread_subjects: MessageThreadSubjects
   message_threads: MessageThreads

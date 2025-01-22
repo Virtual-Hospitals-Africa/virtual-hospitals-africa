@@ -1,10 +1,10 @@
 import { JSX } from 'preact'
 import { useSignal } from '@preact/signals'
 import cls from '../../util/cls.ts'
-import { RenderedMessageThread } from '../../types.ts'
+import { RenderedMessageThreadWithMostRecentMessage } from '../../types.ts'
 
 type ThreadListProps = {
-  threads: RenderedMessageThread[]
+  threads: RenderedMessageThreadWithMostRecentMessage[]
 }
 
 // function MessageContent(content: string): JSX.Element {
@@ -86,7 +86,7 @@ function MessageControllers(): JSX.Element {
 }
 
 type SingleMessageProps = {
-  thread: RenderedMessageThread
+  thread: RenderedMessageThreadWithMostRecentMessage
   isSelected: boolean
   toggleSelection(): void
 }
@@ -99,7 +99,9 @@ function SingleThread({
   console.log(thread)
   return (
     <a href={`/app/messaging/threads/${thread.id}`}>
-      <details class={cls(thread.most_recent_message.read_at && 'bg-gray-100')}>
+      <details
+        class={cls(thread.most_recent_message.read_by_me_at && 'bg-gray-100')}
+      >
         <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>
           <div class='flex items-center border-y hover:bg-gray-200 px-2'>
             <input
@@ -137,7 +139,9 @@ export default function ThreadList(
   { threads }: ThreadListProps,
 ): JSX.Element {
   const isSelectAll = useSignal<boolean>(false)
-  const selected = useSignal<Set<RenderedMessageThread>>(new Set())
+  const selected = useSignal<Set<RenderedMessageThreadWithMostRecentMessage>>(
+    new Set(),
+  )
 
   return (
     <>

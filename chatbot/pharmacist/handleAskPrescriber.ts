@@ -40,17 +40,17 @@ export async function handleAskPrescriber(
     await messages.send(trx, {
       thread_id: thread.thread_id,
       body,
-      sender: {
-        participant_id: thread.sender_participant_id,
-      },
+      sender: thread.sender_participant_id,
     })
   } else {
     const thread = await messages.createThread(trx, {
       sender: {
-        pharmacist_id: pharmacistState.chatbot_user.entity_id!,
+        table_name: 'pharmacists',
+        row_id: pharmacistState.chatbot_user.entity_id!,
       },
       recipient: {
-        employee_id: prescription.prescriber_id,
+        table_name: 'employment',
+        row_id: prescription.prescriber_id,
       },
       concerning: {
         patient_id: prescription.patient_id,

@@ -28,17 +28,10 @@ export async function up(db: Kysely<unknown>) {
       qb
         .addColumn('thread_id', 'uuid', (col) =>
           col.notNull().references('message_threads.id'))
-        .addColumn('employee_id', 'uuid', (col) =>
-          col.references('employment.id'))
-        .addColumn('pharmacist_id', 'uuid', (col) =>
-          col.references('pharmacists.id'))
-        .addCheckConstraint(
-          'pharmacist_or_employee',
-          sql`(
-          (employee_id is not null and pharmacist_id is null) or
-          (employee_id is null and pharmacist_id is not null)
-        )`,
-        ),
+        .addColumn('table_name', 'varchar(255)', (col) =>
+          col.notNull())
+        .addColumn('row_id', 'uuid', (col) =>
+          col.notNull()),
   )
 
   await createStandardTable(
@@ -62,19 +55,18 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'message_read_status',
+    'message_reads',
     (qb) =>
       qb
         .addColumn('message_id', 'uuid', (col) =>
           col.notNull().references('message_threads.id'))
         .addColumn('participant_id', 'uuid', (col) =>
-          col.notNull().references('message_thread_participants.id'))
-        .addColumn('read_at', 'timestamptz'),
+          col.notNull().references('message_thread_participants.id')),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('message_read_status').execute()
+  await db.schema.dropTable('message_reads').execute()
   await db.schema.dropTable('messages').execute()
   await db.schema.dropTable('message_thread_participants').execute()
   await db.schema.dropTable('message_thread_subjects').execute()

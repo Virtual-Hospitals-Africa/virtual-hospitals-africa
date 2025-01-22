@@ -3103,6 +3103,7 @@ type RenderedMessageThreadParticipantHealthWorker = {
   name: string
   description: string | string[]
   is_me: SqlBool
+  is_system?: false
 }
 
 type RenderedMessageThreadParticipantPharmacist = {
@@ -3112,13 +3113,22 @@ type RenderedMessageThreadParticipantPharmacist = {
   name: string
   description: string | string[]
   is_me: SqlBool
+  is_system?: false
 }
 
 export type RenderedMessageThreadParticipant =
   | RenderedMessageThreadParticipantHealthWorker
   | RenderedMessageThreadParticipantPharmacist
 
-export type RenderedMessageSender = RenderedMessageThreadParticipant | 'system'
+export type RenderedMessageSender = RenderedMessageThreadParticipant | {
+  is_system: true
+  name: 'System'
+  participant_id?: never
+  avatar_url?: never
+  href?: never
+  description?: never
+  is_me?: never
+}
 
 export type RenderedMessageThreadBase = {
   created_at: Date
@@ -3134,13 +3144,17 @@ export type RenderedMessageThreadBase = {
 
 export type RenderedMessage = {
   sent_by_me: SqlBool
-  read_at: Date | null
+  read_by_me_at: Date | null
   created_at: Date
   id: string
   updated_at: Date
   thread_id: string
   body: string
   sender: RenderedMessageSender
+  read_by_others: {
+    participant_id: string
+    read_at: Date
+  }[]
 }
 
 export type RenderedMessageThreadWithMostRecentMessage =
