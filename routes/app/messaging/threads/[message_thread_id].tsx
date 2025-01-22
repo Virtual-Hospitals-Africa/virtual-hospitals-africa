@@ -25,7 +25,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   MessagingProps
 > = {
   async POST(req, ctx) {
-    const { healthWorker } = ctx.state
     const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     const form_values = await parseRequest(
@@ -37,9 +36,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const message = await messages.send(ctx.state.trx, {
       thread_id: message_thread_id,
       body: form_values.message,
-      sender: {
-        health_worker_id: healthWorker.id,
-      },
+      sender: messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
     })
 
     return json({ message })
@@ -52,15 +49,16 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInHealthWorker>,
   ) {
-    const _threads = await messages.getAllThreadsForHealthWorker(
+    const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
+    const thread = await messages.getThread(
       ctx.state.trx,
-      ctx.state.healthWorker.id,
+      messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
+      thread_id,
     )
-    // const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     return (
       <div>
-        <ChatThread />
+        <ChatThread thread={thread} />
         <Form method='POST' className='mt-5'>
           <label className='block' for='message'>Testing: Post a message</label>
           <textarea

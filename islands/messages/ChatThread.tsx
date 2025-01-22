@@ -1,4 +1,9 @@
-export function ChatThread() {
+import { RenderedMessageThreadWithAllMessages } from '../../types.ts'
+
+export function ChatThread(
+  { thread }: { thread: RenderedMessageThreadWithAllMessages },
+) {
+  console.log('thread', thread)
   return (
     <div className='flex h-screen antialiased text-gray-800'>
       <div className='flex flex-row h-full w-full overflow-x-hidden'>

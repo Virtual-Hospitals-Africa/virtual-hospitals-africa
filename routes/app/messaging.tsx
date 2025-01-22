@@ -10,11 +10,10 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInHealthWorker>,
   ) {
-    const threads = await messages.getAllThreadsForHealthWorker(
+    const threads = await messages.getThreadsWithMostRecentMessages(
       ctx.state.trx,
-      ctx.state.healthWorker.id,
+      messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
     )
-
     return <ThreadList threads={threads} />
   },
 )

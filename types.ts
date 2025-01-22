@@ -3096,48 +3096,73 @@ export type ExaminationChecklistDefinition = {
   }[]
 }
 
-type RenderedMessageThreadOtherParticipantHealthWorker = {
-  type: 'health_worker'
+type RenderedMessageThreadParticipantHealthWorker = {
   participant_id: string
-  health_worker_id: string
-  pharmacist_id: null
   avatar_url?: Maybe<string>
+  href: string
   name: string
   description: string | string[]
+  is_me: SqlBool
+  is_system?: false
 }
 
-type RenderedMessageThreadOtherParticipantPharmacist = {
-  type: 'pharmacist'
+type RenderedMessageThreadParticipantPharmacist = {
   participant_id: string
-  health_worker_id: null
-  pharmacist_id: string
   avatar_url?: Maybe<string>
+  href: string
   name: string
   description: string | string[]
+  is_me: SqlBool
+  is_system?: false
 }
 
-export type RenderedMessageThreadOtherParticipant =
-  | RenderedMessageThreadOtherParticipantHealthWorker
-  | RenderedMessageThreadOtherParticipantPharmacist
+export type RenderedMessageThreadParticipant =
+  | RenderedMessageThreadParticipantHealthWorker
+  | RenderedMessageThreadParticipantPharmacist
 
-export type RenderedMessageThread = {
-  most_recent_message: {
-    sent_by_me: SqlBool
-    read_at: Date | null
-    created_at: Date
-    id: string
-    updated_at: Date
-    thread_id: string
-    body: string
-    sender: RenderedMessageThreadOtherParticipant
-  }
+export type RenderedMessageSender = RenderedMessageThreadParticipant | {
+  is_system: true
+  name: 'System'
+  participant_id?: never
+  avatar_url?: never
+  href?: never
+  description?: never
+  is_me?: never
+}
+
+export type RenderedMessageThreadBase = {
   created_at: Date
   id: string
   updated_at: Date
   participant_id: string
-  other_participants: RenderedMessageThreadOtherParticipant[]
+  participants: RenderedMessageThreadParticipant[]
   subjects: {
     table_name: string
     row_id: string
   }[]
+}
+
+export type RenderedMessage = {
+  sent_by_me: SqlBool
+  read_by_me_at: Date | null
+  created_at: Date
+  id: string
+  updated_at: Date
+  thread_id: string
+  body: string
+  sender: RenderedMessageSender
+  read_by_others: {
+    participant_id: string
+    read_at: Date
+  }[]
+}
+
+export type RenderedMessageThreadWithMostRecentMessage =
+  & RenderedMessageThreadBase
+  & {
+    most_recent_message: RenderedMessage
+  }
+
+export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
+  messages: RenderedMessage[]
 }
