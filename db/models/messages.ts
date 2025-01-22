@@ -121,10 +121,10 @@ function getThreads(
               .then(
                 sql<
                   string
-                >`'/app/organizations/' || employment.organization_id || '/employees/ || employment.health_worker_id'`,
+                >`'/app/organizations/' || employment.organization_id || '/employees/ || employment.row_id'`,
               )
               .else(
-                sql<string>`'/app/pharmacists/' || participants.pharmacist_id`,
+                sql<string>`'/app/pharmacists/' || participants.row_id`,
               )
               .end()
               .as('href'),
