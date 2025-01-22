@@ -113,6 +113,8 @@ export default async function respond(
   const by_phone_number = groupBy(unhandledMessages, 'sent_by_phone_number')
 
   return forEach(by_phone_number.values(), async (messages) => {
+    // If we have a backlog of messages from a user, it's probably because the chatbot was down for some time.
+    // In this case, handle them one by one in the order received
     for (const message of sortBy(messages, 'created_at')) {
       await respondToMessage(
         whatsapp,
