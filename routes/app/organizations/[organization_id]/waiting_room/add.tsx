@@ -1,3 +1,4 @@
+import z from 'zod'
 import { FreshContext } from '$fresh/server.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
@@ -5,16 +6,31 @@ import * as organizations from '../../../../../db/models/organizations.ts'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
 } from '../../../../../types.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { hasName } from '../../../../../util/haveNames.ts'
-import { EncounterReason } from '../../../../../db.d.ts'
+import { assertOr404 } from '../../../../../util/assertOr.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
+
+const AddPatientFormSchema = z.object({
+  encounter_id: z.string().uuid().optional(),
+  patient_id: z.string().uuid(),
+  reason: z.enum([
+    'seeking treatment',
+    'maternity',
+    'appointment',
+    'follow up',
+    'referral',
+    'checkup',
+    'emergency',
+    'other',
+  ]),
+  notes: z.string().optional(),
+  waiting_room: z.boolean().default(false),
+})
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -25,10 +41,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async POST(req, ctx) {
     const { organization_id } = ctx.params
     assert(organization_id)
-    const to_upsert = await parseRequestAsserts(
+    const to_upsert = await parseRequest(
       ctx.state.trx,
       req,
-      patient_encounters.assertIsUpsert,
+      AddPatientFormSchema.parse,
     )
 
     const upserted = await patient_encounters.upsert(
@@ -36,11 +52,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       organization_id,
       to_upsert,
     )
-    const { intake } = to_upsert
+    const { waiting_room } = to_upsert
 
-    const next_url = intake
-      ? `/app/organizations/${organization_id}/patients/${upserted.patient_id}/intake`
-      : `/app/organizations/${organization_id}/waiting_room?just_encountered_id=${upserted.id}`
+    const next_url = waiting_room
+      ? `/app/organizations/${organization_id}/waiting_room?just_encountered_id=${upserted.id}`
+      : `/app/patients/${upserted.patient_id}/encounters/${upserted.id}`
 
     return redirect(next_url)
   },
@@ -55,53 +71,33 @@ export default HealthWorkerHomePageLayout(
     const { trx } = state
     const { searchParams } = url
     const patient_id = searchParams.get('patient_id')
-    const encounter_id = searchParams.get('encounter_id')
-    assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
-
-    const patient_name = searchParams.get('patient_name')
-    const just_completed_intake = url.searchParams.get('intake') === 'completed'
-    let completing_intake: Promise<unknown> = Promise.resolve()
-    if (just_completed_intake) {
-      assertOr400(patient_id, 'patient_id is required')
-      completing_intake = patients.update(trx, {
-        id: patient_id,
-        completed_intake: true,
-      })
-    }
-
+    assertOr404(patient_id, 'Must add a specific patient')
     const { organization_id } = params
     assert(organization_id)
 
-    const gettingProviders = organizations.getApprovedProviders(
-      trx,
-      organization_id,
-    )
-
-    let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
-    let patient: { id?: string | 'add'; name: string } | undefined
-    if (patient_id) {
-      const getting_open_encounter = patient_encounters.get(trx, {
+    const { patient, providers, open_encounter } = await promiseProps({
+      patient: patients.getByID(trx, {
+        id: patient_id,
+      }),
+      providers: organizations.getApprovedProviders(
+        trx,
+        organization_id,
+      ),
+      open_encounter: patient_encounters.get(trx, {
         patient_id,
         encounter_id: 'open',
-      })
-      await completing_intake
-      const fetched_patient = await patients.getByID(trx, {
-        id: patient_id,
-      })
+      }),
+    })
 
-      assert(hasName(fetched_patient))
-      patient = fetched_patient
-      open_encounter = await getting_open_encounter
-    } else if (patient_name) {
-      patient = { name: patient_name, id: 'add' }
+    if (open_encounter) {
+      const warning = encodeURIComponent(
+        'Please use the existing patient visit.',
+      )
+      return redirect(
+        `/app/organizations/${organization_id}/waiting_room?warning=${warning}`,
+      )
     }
 
-    return (
-      <AddPatientForm
-        providers={await gettingProviders}
-        open_encounter={open_encounter}
-        patient={patient}
-      />
-    )
+    return <AddPatientForm providers={providers} patient={patient} />
   },
 )
