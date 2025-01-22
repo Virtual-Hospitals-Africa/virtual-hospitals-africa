@@ -2566,6 +2566,7 @@ export type UnhandledMessage = {
   has_media: boolean
   media_id: string | null
   sent_by_phone_number: string
+  created_at: Date
 }
 
 export type PatientSchedulingAppointmentRequest = {

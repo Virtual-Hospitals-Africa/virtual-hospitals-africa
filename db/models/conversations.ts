@@ -10,7 +10,7 @@ import {
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { literalString } from '../helpers.ts'
+import { literalString, now } from '../helpers.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -97,12 +97,18 @@ export async function getUnhandledMessages(
       eb.or([
         eb('whatsapp_messages_received.started_responding_at', 'is', null),
         eb.and([
+          eb(
+            'whatsapp_messages_received.started_responding_at',
+            'is not',
+            null,
+          ),
+          eb('whatsapp_messages_received.error_message', 'is', null),
           eb('whatsapp_messages_received.error_commit_hash', 'is not', null),
           eb('whatsapp_messages_received.error_commit_hash', '!=', commitHash),
         ]),
       ])
     )
-    .set('started_responding_at', sql`now()`)
+    .set('started_responding_at', now)
     .returning([
       'whatsapp_messages_received.chatbot_name',
       'whatsapp_messages_received.id as message_received_id',
@@ -111,6 +117,7 @@ export async function getUnhandledMessages(
       'whatsapp_messages_received.has_media',
       'whatsapp_messages_received.media_id',
       'whatsapp_messages_received.sent_by_phone_number',
+      'whatsapp_messages_received.created_at',
     ])
 
   if (sent_by_phone_number) {

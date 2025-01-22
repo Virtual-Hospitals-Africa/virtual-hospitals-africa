@@ -10,6 +10,9 @@ import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
+import { groupBy } from '../util/groupBy.ts'
+import { forEach } from '../util/inParallel.ts'
+import sortBy from '../util/sortBy.ts'
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
 console.log('error_family', error_family)
@@ -104,16 +107,17 @@ export default async function respond(
     sent_by_phone_number,
   })
 
-  if (unhandledMessages.length !== 0) {
-    console.log('unhandledMessages', unhandledMessages)
-  }
+  if (!unhandledMessages.length) return
 
-  return Promise.all(
-    unhandledMessages.map((msg) =>
-      respondToMessage(
+  console.log('unhandledMessages', unhandledMessages)
+  const by_phone_number = groupBy(unhandledMessages, 'sent_by_phone_number')
+
+  return forEach(by_phone_number.values(), async (messages) => {
+    for (const message of sortBy(messages, 'created_at')) {
+      await respondToMessage(
         whatsapp,
-        msg,
+        message,
       )
-    ),
-  )
+    }
+  })
 }
