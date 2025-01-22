@@ -23,6 +23,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
           employment_id,
           patient_id: patient.id,
           patient_name: patient.name,
+          doctor_name: ctx.state.healthWorker.name,
+          doctor_avatar_url: ctx.state.healthWorker.avatar_url,
         },
       }),
     ])

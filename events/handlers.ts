@@ -105,6 +105,8 @@ export const EVENTS = {
       employment_id: z.string().uuid(),
       patient_id: z.string().uuid(),
       patient_name: z.string(),
+      doctor_name: z.string(),
+      doctor_avatar_url: z.string().nullable(),
       requested_by: z.object({
         health_worker_id: z.string().uuid(),
         profession: z.string(),
@@ -120,12 +122,12 @@ export const EVENTS = {
     {
       notifyOriginalRequester(_trx, _payload) {
         return notifications.insert(_trx, {
-          action_title: 'Review Completed',
-          avatar_url: _payload.data.requested_by.avatar_url ||
+          action_title: 'View completed review',
+          avatar_url: _payload.data.doctor_avatar_url ||
             '/images/heroicons/24/solid/slipboard-document-list.svg',
           description:
-            `${_payload.data.requested_by.name} at ${_payload.data.requested_by.organization.name} has requested that you review a recent encounter with ${_payload.data.patient_name}`,
-          employment_id: _payload.data.employment_id,
+            `Doctor ${_payload.data.doctor_name} at ${_payload.data.requested_by.organization.name} has reviewed ${_payload.data.patient_name}`,
+          health_worker_id: _payload.data.requested_by.health_worker_id,
           table_name: 'doctor_review_requests',
           row_id: _payload.data.review_id,
           notification_type: 'doctor_review_request',
