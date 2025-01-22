@@ -1,3 +1,4 @@
+import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   EmployedHealthWorker,
@@ -6,7 +7,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { sql } from 'kysely/index.js'
 import compact from '../../util/compact.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
@@ -221,7 +221,9 @@ export async function createThread(
   },
 ) {
   const thread = await trx.insertInto('message_threads')
-    .values({})
+    .values({
+      id: sql`gen_random_uuid()`,
+    })
     .returning('id')
     .executeTakeFirstOrThrow()
 
