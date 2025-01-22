@@ -1,44 +1,18 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  RenderedMessageThread,
-  RenderedMessageThreadOtherParticipant,
+  RenderedMessageThreadWithMostRecentMessage,
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { sql } from 'kysely/index.js'
 
-function toRenderedParticipant(
-  { health_worker_id, pharmacist_id, ...participant }: Awaited<
-    ReturnType<typeof getThreadsForHealthWorker>
-  >[number]['other_participants_raw'][number],
-): RenderedMessageThreadOtherParticipant {
-  if (pharmacist_id) {
-    return {
-      ...participant,
-      pharmacist_id,
-      health_worker_id: null,
-      type: 'pharmacist',
-    }
-  }
-  if (health_worker_id) {
-    return {
-      ...participant,
-      health_worker_id,
-      pharmacist_id: null,
-      type: 'health_worker',
-    }
-  }
-  throw new Error('Nope!')
-}
-
 async function appendMostRecentMessage(
   trx: TrxOrDb,
-  { other_participants_raw, ...thread }: Awaited<
-    ReturnType<typeof getThreadsForHealthWorker>
+  { participants, ...thread }: Awaited<
+    ReturnType<typeof getThreads>
   >[number],
-): Promise<RenderedMessageThread> {
-  const other_participants = other_participants_raw.map(toRenderedParticipant)
-  const { sender_id, ...most_recent_message } = await trx
+): Promise<RenderedMessageThreadWithMostRecentMessage> {
+  const { sender_id, is_from_system, ...most_recent_message } = await trx
     .selectFrom('messages')
     .leftJoin(
       'message_read_status',
@@ -56,13 +30,15 @@ async function appendMostRecentMessage(
     ])
     .executeTakeFirstOrThrow()
 
-  console.log({ most_recent_message })
-  console.log({ other_participants })
-  const sender = other_participants.find((p) => p.participant_id === sender_id)
+  const sender = is_from_system
+    ? 'system'
+    : participants.find((p) => p.participant_id === sender_id)
+
   assert(sender)
+
   return {
     ...thread,
-    other_participants,
+    participants,
     most_recent_message: {
       ...most_recent_message,
       sender,
@@ -70,10 +46,13 @@ async function appendMostRecentMessage(
   }
 }
 
-// TODO: support system messages
-function getThreadsForHealthWorker(
+function getThreads(
   trx: TrxOrDb,
-  health_worker_id: string,
+  opts: {
+    employee_ids?: string[]
+    thread_ids?: string[]
+    pharmacist_id?: string
+  },
 ) {
   return trx
     .selectFrom('message_threads')
@@ -87,63 +66,68 @@ function getThreadsForHealthWorker(
     .select((eb) => [
       jsonArrayFrom(
         eb
-          .selectFrom('message_thread_participants as other_participants')
+          .selectFrom('message_thread_participants as participants')
+          .leftJoin('employment', 'participants.employee_id', 'employment.id')
           .leftJoin(
             'health_workers',
-            'other_participants.health_worker_id',
+            'employment.health_worker_id',
             'health_workers.id',
           )
           .leftJoin(
-            'employment',
-            (join) =>
-              join.onRef(
-                'health_workers.id',
-                '=',
-                'employment.health_worker_id',
-              )
-                .on('employment.profession', 'in', ['doctor', 'nurse']),
-          )
-          .leftJoin(
             'pharmacists',
-            'other_participants.pharmacist_id',
+            'participants.pharmacist_id',
             'pharmacists.id',
           )
-          .select((eb_x) => [
-            'other_participants.id as participant_id',
-            'other_participants.health_worker_id',
-            'other_participants.pharmacist_id',
+          .select((eb) => [
+            'participants.id as participant_id',
             'health_workers.avatar_url',
-            eb_x.fn.coalesce(
+
+            eb.case()
+              .when(eb('participants.employee_id', 'is not', null))
+              .then(
+                sql<
+                  string
+                >`'/app/organizations/' || employment.organization_id || '/employees/ || employment.health_worker_id'`,
+              )
+              .else(
+                sql<string>`'/app/pharmacists/' || participants.pharmacist_id`,
+              )
+              .end()
+              .as('href'),
+
+            (opts.employee_ids
+              ? eb(
+                'participants.employee_id',
+                'in',
+                opts.employee_ids,
+              )
+              : eb(
+                'participants.pharmacist_id',
+                '=',
+                opts.pharmacist_id!,
+              ))
+              .as('is_me'),
+            eb.fn.coalesce(
               'health_workers.name',
               sql<
                 string
               >`(pharmacists.given_name || ' ' || pharmacists.family_name)`,
             ).as('name'),
-            eb_x.case()
+            eb.case()
               .when('employment.profession', '=', 'doctor')
               .then('Doctor')
               .when('employment.profession', '=', 'nurse')
-              .then('nurse')
+              .then('Nurse')
               .else('Pharmacist')
               .end()
               .as('description'),
           ])
           .whereRef(
-            'other_participants.thread_id',
+            'participants.thread_id',
             '=',
             'message_threads.id',
-          )
-          .where((eb) =>
-            eb.or([
-              eb('other_participants.health_worker_id', 'is', null),
-              eb(
-                'other_participants.health_worker_id',
-                '!=',
-                health_worker_id,
-              ),
-            ])
           ),
-      ).as('other_participants_raw'),
+      ).as('participants'),
       jsonArrayFrom(
         eb
           .selectFrom('message_thread_subjects')
@@ -155,19 +139,32 @@ function getThreadsForHealthWorker(
           ),
       ).as('subjects'),
     ])
-    .where(
-      'message_thread_participants.health_worker_id',
-      '=',
-      health_worker_id,
+    .$if(!!opts.employee_ids, (qb) =>
+      qb.where(
+        'message_thread_participants.employee_id',
+        'in',
+        opts.employee_ids!,
+      ))
+    .$if(!!opts.pharmacist_id, (qb) =>
+      qb.where(
+        'message_thread_participants.pharmacist_id',
+        '=',
+        opts.pharmacist_id!,
+      ))
+    .$if(
+      !!opts?.thread_ids,
+      (qb) => qb.where('message_threads.id', 'in', opts?.thread_ids!),
     )
     .execute()
 }
 
-export async function getAllThreadsForHealthWorker(
+export async function getThreadsWithMostRecentMessages(
   trx: TrxOrDb,
-  health_worker_id: string,
-): Promise<RenderedMessageThread[]> {
-  const threads = await getThreadsForHealthWorker(trx, health_worker_id)
+  { employee_ids }: { employee_ids: string[] },
+): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
+  const threads = await getThreads(trx, {
+    employee_ids,
+  })
 
   return Promise.all(
     threads.map((thread) => appendMostRecentMessage(trx, thread)),
@@ -182,8 +179,7 @@ export async function createThread(
       pharmacist_id?: string
     }
     recipient: {
-      health_worker_id?: string
-      employment_id?: string
+      employee_id?: string
       pharmacist_id?: string
     }
     concerning: {
@@ -221,10 +217,7 @@ export async function createThread(
     .values({
       thread_id: thread.id,
       pharmacist_id: recipient.pharmacist_id,
-      health_worker_id: recipient.employment_id
-        ? trx.selectFrom('employment').where('id', '=', recipient.employment_id)
-          .select('health_worker_id')
-        : recipient.health_worker_id,
+      employee_id: recipient.employee_id,
     })
     .returning('id')
     .executeTakeFirstOrThrow()
@@ -247,15 +240,15 @@ export async function createThread(
 }
 
 type Sender =
-  | { participant_id: string; health_worker_id?: never; pharmacist_id?: never }
-  | { participant_id?: never; health_worker_id: string; pharmacist_id?: never }
-  | { participant_id?: never; health_worker_id?: never; pharmacist_id: string }
+  | { participant_id: string; employee_id?: never; pharmacist_id?: never }
+  | { participant_id?: never; employee_id: string; pharmacist_id?: never }
+  | { participant_id?: never; employee_id?: never; pharmacist_id: string }
 
 function senderId(trx: TrxOrDb, sender: Sender) {
   if (sender.participant_id) return sender.participant_id
-  if (sender.health_worker_id) {
+  if (sender.employee_id) {
     return trx.selectFrom('message_thread_participants')
-      .where('health_worker_id', '=', sender.health_worker_id)
+      .where('employee_id', '=', sender.employee_id)
       .select('id')
   }
   assert(sender.pharmacist_id, 'Sender must include an id')
@@ -280,4 +273,10 @@ export function send(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+export function getThread(
+  trx: TrxOrDb,
+  message_thread_id,
+) {
 }

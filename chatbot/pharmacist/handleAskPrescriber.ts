@@ -50,13 +50,13 @@ export async function handleAskPrescriber(
         pharmacist_id: pharmacistState.chatbot_user.entity_id!,
       },
       recipient: {
-        employment_id: prescription.prescriber_id,
+        employee_id: prescription.prescriber_id,
       },
       concerning: {
         patient_id: prescription.patient_id,
       },
       initial_message: {
-        body: body,
+        body,
       },
     })
     await conversations.updateChatbotUser(

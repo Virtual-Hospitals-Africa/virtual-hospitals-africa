@@ -609,7 +609,7 @@ export interface Messages {
 
 export interface MessageThreadParticipants {
   created_at: Generated<Timestamp>
-  health_worker_id: string | null
+  employee_id: string | null
   id: Generated<string>
   pharmacist_id: string | null
   thread_id: string

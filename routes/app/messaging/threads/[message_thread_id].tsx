@@ -52,11 +52,11 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInHealthWorker>,
   ) {
-    const _threads = await messages.getAllThreadsForHealthWorker(
+    const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
+    const thread = await messages.getThread(
       ctx.state.trx,
-      ctx.state.healthWorker.id,
+      thread_id,
     )
-    // const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     return (
       <div>

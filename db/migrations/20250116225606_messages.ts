@@ -28,15 +28,15 @@ export async function up(db: Kysely<unknown>) {
       qb
         .addColumn('thread_id', 'uuid', (col) =>
           col.notNull().references('message_threads.id'))
-        .addColumn('health_worker_id', 'uuid', (col) =>
-          col.references('health_workers.id'))
+        .addColumn('employee_id', 'uuid', (col) =>
+          col.references('employment.id'))
         .addColumn('pharmacist_id', 'uuid', (col) =>
           col.references('pharmacists.id'))
         .addCheckConstraint(
-          'pharmacist_or_health_worker',
+          'pharmacist_or_employee',
           sql`(
-          (health_worker_id is not null and pharmacist_id is null) or
-          (health_worker_id is null and pharmacist_id is not null)
+          (employee_id is not null and pharmacist_id is null) or
+          (employee_id is null and pharmacist_id is not null)
         )`,
         ),
   )
