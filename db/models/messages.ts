@@ -6,8 +6,9 @@ import {
   RenderedMessageThreadWithMostRecentMessage,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, literalBoolean } from '../helpers.ts'
 import compact from '../../util/compact.ts'
+import * as events from './events.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 
@@ -68,15 +69,19 @@ type ParticipantsQuery = {
 
 function getThreads(
   trx: TrxOrDb,
-  my_participants: ParticipantsQuery,
-  opts?: {
+  { my_participants, thread_ids, message_ids }: {
+    my_participants?: ParticipantsQuery
     thread_ids?: string[]
+    message_ids?: string[]
   },
 ) {
-  assert(
-    my_participants.length,
-    'Must provide at least one participant representing the person wishing to view the threads. Messages & partipants are marked as "sent_by_me" so the calling entity must be known.',
-  )
+  if (my_participants) {
+    assert(
+      my_participants.length,
+      'Must provide at least one participant representing the person wishing to view the threads. Messages & partipants are marked as "sent_by_me" so the calling entity must be known.',
+    )
+  }
+
   return trx
     .selectFrom('message_threads')
     .innerJoin(
@@ -109,6 +114,8 @@ function getThreads(
           )
           .select((eb) => [
             'participants.id as participant_id',
+            'participants.table_name',
+            'participants.row_id',
             'health_workers.avatar_url',
 
             eb.case()
@@ -116,7 +123,7 @@ function getThreads(
               .then(
                 sql<
                   string
-                >`'/app/organizations/' || employment.organization_id || '/employees/ || employment.row_id'`,
+                >`'/app/organizations/' || employment.organization_id || '/employees/' || employment.health_worker_id`,
               )
               .else(
                 sql<string>`'/app/pharmacists/' || participants.row_id`,
@@ -124,13 +131,14 @@ function getThreads(
               .end()
               .as('href'),
 
-            eb.or(my_participants.map((p) =>
-              eb.and([
-                eb('table_name', '=', p.table_name),
-                eb('row_id', '=', p.row_id),
-              ])
-            ))
-              .as('is_me'),
+            my_participants
+              ? eb.or(my_participants!.map((p) =>
+                eb.and([
+                  eb('table_name', '=', p.table_name),
+                  eb('row_id', '=', p.row_id),
+                ])
+              )).as('is_me')
+              : literalBoolean(false).as('is_me'),
             eb.fn.coalesce(
               'health_workers.name',
               sql<
@@ -163,24 +171,37 @@ function getThreads(
           ),
       ).as('subjects'),
     ])
-    .where(
-      'message_threads.id',
-      'in',
-      trx.selectFrom('message_thread_participants')
-        .where((eb) =>
-          eb.or(my_participants.map((p) =>
-            eb.and([
-              eb('table_name', '=', p.table_name),
-              eb('row_id', '=', p.row_id),
-            ])
-          ))
-        )
-        .select('thread_id')
-        .distinct(),
+    .$if(!!my_participants, (qb) =>
+      qb.where(
+        'message_threads.id',
+        'in',
+        trx.selectFrom('message_thread_participants')
+          .where((eb) =>
+            eb.or(my_participants!.map((p) =>
+              eb.and([
+                eb('table_name', '=', p.table_name),
+                eb('row_id', '=', p.row_id),
+              ])
+            ))
+          )
+          .select('thread_id')
+          .distinct(),
+      ))
+    .$if(
+      !!thread_ids,
+      (qb) => qb.where('message_threads.id', 'in', thread_ids!),
     )
     .$if(
-      !!opts?.thread_ids,
-      (qb) => qb.where('message_threads.id', 'in', opts?.thread_ids!),
+      !!message_ids,
+      (qb) =>
+        qb.where(
+          'message_threads.id',
+          'in',
+          trx.selectFrom('messages')
+            .where('messages.id', 'in', message_ids!)
+            .select('thread_id')
+            .distinct(),
+        ),
     )
     .execute()
 }
@@ -189,7 +210,7 @@ export async function getThreadsWithMostRecentMessages(
   trx: TrxOrDb,
   my_participants: ParticipantsQuery,
 ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
-  const threads = await getThreads(trx, my_participants)
+  const threads = await getThreads(trx, { my_participants })
 
   return Promise.all(
     threads.map((thread) => appendMostRecentMessage(trx, thread)),
@@ -286,7 +307,7 @@ function senderId(trx: TrxOrDb, thread_id: string, sender: Sender) {
     .select('id')
 }
 
-export function send(
+export async function send(
   trx: TrxOrDb,
   { thread_id, sender, body }: {
     thread_id: string
@@ -294,7 +315,7 @@ export function send(
     sender: Sender
   },
 ) {
-  return trx.insertInto('messages')
+  const message = await trx.insertInto('messages')
     .values({
       thread_id,
       body,
@@ -302,6 +323,14 @@ export function send(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  await events.insert(trx, {
+    type: 'MessageSend',
+    data: {
+      message_id: message.id,
+    },
+  })
+  return message
 }
 
 export function sendFromSystem(
@@ -321,30 +350,37 @@ export function sendFromSystem(
     .executeTakeFirstOrThrow()
 }
 
+function messagesBaseQuery(
+  trx: TrxOrDb,
+) {
+  return trx
+    .selectFrom('messages')
+    .orderBy('messages.created_at desc')
+    .selectAll('messages')
+    .select((eb) =>
+      jsonArrayFrom(
+        eb.selectFrom('message_reads')
+          .whereRef('message_reads.message_id', '=', 'messages.id')
+          .select([
+            'message_reads.participant_id',
+            'message_reads.created_at as read_at',
+          ]),
+      ).as('reads')
+    )
+}
+
 export async function getThread(
   trx: TrxOrDb,
   my_participants: ParticipantsQuery,
   message_thread_id: string,
 ): Promise<RenderedMessageThreadWithAllMessages> {
   const { threads, raw_messages } = await promiseProps({
-    threads: getThreads(trx, my_participants, {
+    threads: getThreads(trx, {
+      my_participants,
       thread_ids: [message_thread_id],
     }),
-    raw_messages: trx
-      .selectFrom('messages')
+    raw_messages: messagesBaseQuery(trx)
       .where('messages.thread_id', '=', message_thread_id)
-      .orderBy('messages.created_at desc')
-      .selectAll('messages')
-      .select((eb) =>
-        jsonArrayFrom(
-          eb.selectFrom('message_reads')
-            .whereRef('message_reads.message_id', '=', 'messages.id')
-            .select([
-              'message_reads.participant_id',
-              'message_reads.created_at as read_at',
-            ]),
-        ).as('reads')
-      )
       .execute(),
   })
   const [thread] = threads
@@ -394,4 +430,21 @@ export function participantsQueryForHealthWorker(
     table_name: 'employment',
     row_id,
   }))
+}
+
+// is_me doesn't matter here
+export async function getByIdForSystem(
+  trx: TrxOrDb,
+  message_id: string,
+) {
+  const { threads, message } = await promiseProps({
+    threads: getThreads(trx, { message_ids: [message_id] }),
+    message: messagesBaseQuery(trx)
+      .where('messages.id', '=', message_id)
+      .executeTakeFirstOrThrow(),
+  })
+
+  const [thread] = threads
+  assertOr404(thread)
+  return { ...message, thread }
 }

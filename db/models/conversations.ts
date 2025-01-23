@@ -71,7 +71,8 @@ export function insertMessageSent(
     sent_by_phone_number: string
     sent_to_phone_number: string
     chatbot_name: ChatbotName
-    responding_to_received_id: string
+    responding_to_received_id: string | null
+    corresponding_message_id: string | null
     whatsapp_id: string
     body: string
   },

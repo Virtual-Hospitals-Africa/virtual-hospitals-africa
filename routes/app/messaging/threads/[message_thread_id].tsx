@@ -9,7 +9,6 @@ import {
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
-import { json } from '../../../../util/responses.ts'
 import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
 
 type MessagingProps = {

@@ -48,6 +48,7 @@ async function respondToMessage(
         sent_by_phone_number: whatsapp.phone_number,
         sent_to_phone_number: unhandled_message.sent_by_phone_number,
         responding_to_received_id: unhandled_message.message_received_id,
+        corresponding_message_id: null,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
       })

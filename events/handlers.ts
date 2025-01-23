@@ -4,9 +4,12 @@ import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as notifications from '../db/models/notifications.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
+import * as messages from '../db/models/messages.ts'
+import * as conversations from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import { debug } from '../util/debug.ts'
+import * as whatsapp from '../external-clients/whatsapp.ts'
 
 export const EVENTS = {
   HealthWorkerFirstLoggedIn: defineEvent(
@@ -72,6 +75,65 @@ export const EVENTS = {
           action_href:
             `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
         })
+      },
+    },
+  ),
+  MessageSend: defineEvent(
+    z.object({
+      message_id: z.string().uuid(),
+    }),
+    {
+      async sendPharmacistWhatsApp(trx, payload) {
+        const message = await messages.getByIdForSystem(
+          trx,
+          payload.data.message_id,
+        )
+
+        const pharmacist_participants = message.thread.participants.filter(
+          (p) => p.table_name === 'pharmacists',
+        )
+
+        if (!pharmacist_participants.length) return
+
+        for (const pharmacist_participant of pharmacist_participants) {
+          const pharmacist_chatbot_user = await trx.selectFrom(
+            'pharmacist_chatbot_users',
+          )
+            .where('entity_id', '=', pharmacist_participant.row_id)
+            .select('phone_number')
+            .executeTakeFirst()
+          if (!pharmacist_chatbot_user) {
+            console.error(
+              'How is the health worker sending to a pharmacist that is not using whatsapp?',
+            )
+            continue
+          }
+
+          const whatsapp_to_send = {
+            type: 'string' as const,
+            messageBody: message.body,
+          }
+          const whatsapp_response = await whatsapp.sendMessage({
+            chatbot_name: 'pharmacist',
+            phone_number: pharmacist_chatbot_user.phone_number,
+            message: whatsapp_to_send,
+          })
+
+          if ('error' in whatsapp_response) {
+            console.log('whatsapp_response', JSON.stringify(whatsapp_response))
+            throw new Error(whatsapp_response.error.details)
+          }
+
+          await conversations.insertMessageSent(trx, {
+            chatbot_name: 'pharmacist',
+            sent_by_phone_number: whatsapp.phoneNumbers.pharmacist,
+            sent_to_phone_number: pharmacist_chatbot_user.phone_number,
+            responding_to_received_id: null,
+            corresponding_message_id: message.id,
+            whatsapp_id: whatsapp_response.messages[0].id,
+            body: JSON.stringify(whatsapp_to_send),
+          })
+        }
       },
     },
   ),
