@@ -66,8 +66,10 @@ export async function handleAskPrescriber(
       {
         data: {
           ...pharmacistState.chatbot_user.data,
-          thread_id: thread.thread_id,
-          sender_participant_id: thread.sender_participant_id,
+          thread: {
+            thread_id: thread.thread_id,
+            sender_participant_id: thread.sender_participant_id,
+          },
         },
       },
     )
