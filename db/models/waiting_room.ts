@@ -208,7 +208,7 @@ export async function get(
       ).as('review_steps'),
 
       eb('doctor_review_requests.id', 'is not', null).as('awaiting_review'),
-      eb('doctor_reviews.id', 'is not', null).as('in_review'),
+      eb('doctor_reviews.id', 'is not', null).as('review_initialized'),
 
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
@@ -342,7 +342,7 @@ export async function get(
         awaiting_encounter_step,
         last_completed_encounter_step,
         awaiting_review,
-        in_review,
+        review_initialized,
         review_steps,
         requesting_organization_id,
         reviewers,
@@ -372,10 +372,10 @@ export async function get(
       let status: string
       if (awaiting_review) {
         status = 'Awaiting Review'
-      } else if (in_review) {
-        status = 'In Review'
+      } else if (review_initialized) {
+        status = 'Review Completed'
         if (awaiting_review_step) {
-          status += ` (${capitalize(awaiting_review_step)})`
+          status = 'In Review' + ` (${capitalize(awaiting_review_step)})`
         }
       } else if (completed_intake) {
         if (in_waiting_room) {
@@ -408,7 +408,7 @@ export async function get(
           )
         )
 
-      const action = awaiting_review || in_review
+      const action = awaiting_review || review_initialized
         ? 'review'
         : completed_intake
         ? 'view'
@@ -433,10 +433,21 @@ export async function get(
             }`
             : null,
           awaiting_review: action === 'review' && !can_review
-            ? {
-              text: 'Awaiting Review',
-              disabled: true,
-            }
+            ? review_initialized
+              ? (!awaiting_review_step
+                ? {
+                  text: 'Review Completed',
+                  disabled: false,
+                  href: `/app/patients/${patient.id}/profile/summary`,
+                }
+                : {
+                  text: 'Review in Progress',
+                  disabled: true,
+                })
+              : {
+                text: 'Awaiting Review',
+                disabled: true,
+              }
             : null,
         },
       }
