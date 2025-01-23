@@ -121,7 +121,6 @@ import * as $AddDeviceSearch from './islands/AddDeviceSearch.tsx'
 import * as $AddPharmacistSearch from './islands/AddPharmacistSearch.tsx'
 import * as $AddPharmacySearch from './islands/AddPharmacySearch.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
-import * as $AddressForm from './islands/AddressForm.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
 import * as $BaseOption from './islands/BaseOption.tsx'
@@ -134,8 +133,7 @@ import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $Menu from './islands/Menu.tsx'
-import * as $NationalIdInput from './islands/NationalIdInput.tsx'
-import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
+import * as $NationalId from './islands/NationalId.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
@@ -212,10 +210,7 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
-import * as $patient_intake_AddressForm from './islands/patient-intake/AddressForm.tsx'
 import * as $patient_intake_FamilyForm from './islands/patient-intake/FamilyForm.tsx'
-import * as $patient_intake_IntakeForm from './islands/patient-intake/IntakeForm.tsx'
-import * as $patient_intake_PersonalForm from './islands/patient-intake/PersonalForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
@@ -426,7 +421,6 @@ const manifest = {
     './islands/AddPharmacistSearch.tsx': $AddPharmacistSearch,
     './islands/AddPharmacySearch.tsx': $AddPharmacySearch,
     './islands/AddRemove.tsx': $AddRemove,
-    './islands/AddressForm.tsx': $AddressForm,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,
     './islands/BaseOption.tsx': $BaseOption,
@@ -439,8 +433,7 @@ const manifest = {
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/Menu.tsx': $Menu,
-    './islands/NationalIdInput.tsx': $NationalIdInput,
-    './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,
+    './islands/NationalId.tsx': $NationalId,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
     './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
@@ -523,10 +516,7 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
-    './islands/patient-intake/AddressForm.tsx': $patient_intake_AddressForm,
     './islands/patient-intake/FamilyForm.tsx': $patient_intake_FamilyForm,
-    './islands/patient-intake/IntakeForm.tsx': $patient_intake_IntakeForm,
-    './islands/patient-intake/PersonalForm.tsx': $patient_intake_PersonalForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':

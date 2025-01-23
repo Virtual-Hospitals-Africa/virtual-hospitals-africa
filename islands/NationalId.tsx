@@ -1,12 +1,32 @@
 import { JSX } from 'preact'
-import { TextInput } from './form/Inputs.tsx'
+import { CheckboxInput, TextInput } from './form/Inputs.tsx'
 import { Maybe } from '../types.ts'
-import { Signal } from '@preact/signals'
+import { useSignal } from '@preact/signals'
 
-export default function NationalIdInput(
-  { value, no_national_id }: {
+export function NationalIdFormGroup({ national_id_number }: {
+  national_id_number: Maybe<string>
+}) {
+  const no_national_id = useSignal(false)
+  return (
+    <>
+      <NationalIdInput
+        value={national_id_number}
+        no_national_id_checked={no_national_id.value}
+      />
+      <CheckboxInput
+        name='no_national_id'
+        label='Patient has no national id'
+        checked={no_national_id.value}
+        onInput={({ currentTarget }) =>
+          no_national_id.value = currentTarget.checked}
+      />
+    </>
+  )
+}
+export function NationalIdInput(
+  { value, no_national_id_checked }: {
     value?: Maybe<string>
-    no_national_id?: Signal<boolean>
+    no_national_id_checked?: boolean
   },
 ) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
@@ -36,8 +56,6 @@ export default function NationalIdInput(
     inputElement.setAttribute('data-prev-value', formatted)
   }
 
-  const required = no_national_id ? !no_national_id.value : true
-
   return (
     <TextInput
       name='national_id_number'
@@ -46,7 +64,8 @@ export default function NationalIdInput(
       pattern='^\d{2}-\d{6,7}\s[a-zA-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       onInput={handleIdInput}
-      required={required}
+      required={!no_national_id_checked}
+      disabled={no_national_id_checked}
     />
   )
 }

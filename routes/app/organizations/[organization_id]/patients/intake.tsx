@@ -18,7 +18,7 @@ import {
   varchar255,
 } from '../../../../../util/validators.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import PatientIntakeForm from '../../../../../islands/patient-intake/IntakeForm.tsx'
+import PatientIntakeForm from '../../../../../components/patient-intake/IntakeForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 

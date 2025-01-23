@@ -1,12 +1,15 @@
-import FormRow from '../components/library/FormRow.tsx'
-import { /* Select,*/ TextInput } from './form/Inputs.tsx'
-import { CountryAddressTree, PatientIntake } from '../types.ts'
+// // deno-lint-ignore-file
+// import FormRow from '../library/FormRow.tsx'
+// import { /* Select,*/ TextInput } from '../../islands/form/Inputs.tsx'
+// import { CountryAddressTree, PatientIntake } from '../../types.ts'
 // import { computed, effect, useSignal } from '@preact/signals'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 
-// TODO: bring back address tree usage
+// import FormSection from '../../components/library/FormSection.tsx'
+
+// // TODO: bring back address tree usage
 // export default function AddressForm(
-//   { address }: {
+//   { address, country_address_tree }: {
 //     address: Partial<PatientIntake['address']>
 //     country_address_tree: CountryAddressTree
 //   },
@@ -121,51 +124,3 @@ import { CountryAddressTree, PatientIntake } from '../types.ts'
 //     </section>
 //   )
 // }
-
-export default function AddressForm(
-  { address }: {
-    address: Partial<PatientIntake['address']>
-    country_address_tree: CountryAddressTree
-  },
-) {
-  return (
-    <section>
-      <FormRow>
-        <TextInput
-          name='address.street'
-          label='Street Address'
-          value={address?.street}
-        />
-      </FormRow>
-      <FormRow>
-        <TextInput
-          required
-          name='address.locality'
-          label='Ward (City/Village)'
-          value={address?.locality}
-        />
-      </FormRow>
-      <FormRow>
-        <TextInput
-          name='address.administrative_area_level_2'
-          label='District'
-          value={address?.administrative_area_level_2}
-        />
-      </FormRow>
-      <FormRow>
-        <TextInput
-          name='address.administrative_area_level_1'
-          label='Province'
-          value={address?.administrative_area_level_1}
-        />
-      </FormRow>
-      <FormRow>
-        <input
-          type='hidden'
-          name='address.country'
-          value='Zimbabwe'
-        />
-      </FormRow>
-    </section>
-  )
-}
