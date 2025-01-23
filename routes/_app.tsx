@@ -77,7 +77,8 @@ export default function App({ Component, ...props }: PageProps) {
             />
           </>
         )}
-        {props.route.startsWith('/app') && (
+        {(props.route.startsWith('/app') ||
+          props.route.startsWith('/regulator')) && (
           <>
             <script src='/scripts/focus-on-location-hash.js' async />
             <script
