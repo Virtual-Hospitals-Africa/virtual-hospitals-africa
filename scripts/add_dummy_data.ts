@@ -172,7 +172,7 @@ async function addPatientsToWaitingRoom() {
           .where('patients.id', '=', patient.id)
           .set({ completed_intake: true })
           .execute()
-        const on_encounter_step = shuffle(ENCOUNTER_STEPS)[0]
+        const on_encounter_step = ENCOUNTER_STEPS[10]
         const encounter_steps_completed = ENCOUNTER_STEPS.slice(
           0,
           ENCOUNTER_STEPS.indexOf(on_encounter_step),
