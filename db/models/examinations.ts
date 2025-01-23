@@ -12,11 +12,24 @@ export function forPatientEncounter(
     encounter_step?: EncounterStep
   },
 ): Promise<RenderedPatientExamination[]> {
-  return trx.selectFrom('examinations')
+  return trx
+    .selectFrom('patients')
+    .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .innerJoin(
+      'patient_encounters',
+      (join) =>
+        join.onRef('patient_encounters.patient_id', '=', 'patients.id')
+          .on('patient_encounters.id', '=', opts.encounter_id),
+    )
+    .innerJoin('examinations', (join) => join.onTrue())
     .leftJoin(
       'patient_examinations',
       (join) =>
-        join.on('patient_examinations.encounter_id', '=', opts.encounter_id)
+        join.onRef(
+          'patient_examinations.encounter_id',
+          '=',
+          'patient_encounters.id',
+        )
           .onRef(
             'patient_examinations.examination_identifier',
             '=',
@@ -38,6 +51,30 @@ export function forPatientEncounter(
       >`'/app/patients/' || ${opts.patient_id} || '/encounters/' || ${opts.encounter_id} || examinations.path`
         .as('href'),
     ])
+    .where('patients.id', '=', opts.patient_id)
+    .where((eb) =>
+      eb.or([
+        eb('encounter_step', '=', 'head_to_toe_assessment'),
+        eb.and([
+          eb('patients.gender', '=', 'female'),
+          eb(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18),
+          eb('examinations.identifier', '=', 'womens_health_assessment'),
+        ]),
+        eb.and([
+          eb('patients.gender', '=', 'male'),
+          eb(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18),
+          eb('examinations.identifier', '=', 'mens_health_assessment'),
+        ]),
+        eb.and([
+          eb(sql.ref('patient_age.age_years').$castTo<number>(), '<', 18),
+          eb('examinations.identifier', '=', 'child_health_assessment'),
+        ]),
+        eb.and([
+          eb('patient_encounters.reason', '=', 'maternity'),
+          eb('examinations.identifier', '=', 'maternity_assessment'),
+        ]),
+      ])
+    )
     .$if(
       !!opts.encounter_step,
       (qb) =>
