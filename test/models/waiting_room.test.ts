@@ -615,7 +615,7 @@ describe(
                       intake: null,
                       review: null,
                       awaiting_review: {
-                        text: 'Awaiting Review',
+                        text: 'Review in Progress',
                         disabled: true,
                       },
                     },
