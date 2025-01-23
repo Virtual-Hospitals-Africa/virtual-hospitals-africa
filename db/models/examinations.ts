@@ -54,6 +54,7 @@ export function forPatientEncounter(
     .where('patients.id', '=', opts.patient_id)
     .where((eb) =>
       eb.or([
+        eb('patient_examinations.id', 'is not', null),
         eb('encounter_step', '=', 'head_to_toe_assessment'),
         eb.and([
           eb('patients.gender', '=', 'female'),
