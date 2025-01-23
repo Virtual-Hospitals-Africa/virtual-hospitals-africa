@@ -92,7 +92,16 @@ export async function up(db: Kysely<unknown>) {
           'responding_to_received_id',
           'uuid',
           (col) =>
-            col.notNull().references('whatsapp_messages_received.id')
+            col.references('whatsapp_messages_received.id')
+              .onDelete(
+                'cascade',
+              ),
+        )
+        .addColumn(
+          'corresponding_message_id',
+          'uuid',
+          (col) =>
+            col.references('messages.id')
               .onDelete(
                 'cascade',
               ),
@@ -111,6 +120,12 @@ export async function up(db: Kysely<unknown>) {
           'read_status',
           'varchar(255)',
           (col) => col.notNull(),
+        )
+        .addCheckConstraint(
+          'responding_to_whatsapp_or_has_corresponding_message',
+          sql`
+          (responding_to_received_id is null) != (corresponding_message_id = null)
+        `,
         ),
   )
 

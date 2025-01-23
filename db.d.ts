@@ -1148,10 +1148,11 @@ export interface WhatsappMessagesReceived {
 export interface WhatsappMessagesSent {
   body: string
   chatbot_name: ChatbotName
+  corresponding_message_id: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   read_status: string
-  responding_to_received_id: string
+  responding_to_received_id: string | null
   sent_by_phone_number: string
   sent_to_phone_number: string
   updated_at: Generated<Timestamp>

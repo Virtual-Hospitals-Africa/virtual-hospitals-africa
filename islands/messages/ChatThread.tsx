@@ -46,6 +46,7 @@ function MessageSendForm({ onSubmit }: {
 }) {
   return (
     <form
+      id='message-send-form'
       method='POST'
       className='flex flex-row items-center h-16 rounded-xl bg-white w-full px-4'
       onSubmit={(event) => {
@@ -53,6 +54,10 @@ function MessageSendForm({ onSubmit }: {
           'message',
         ) as HTMLInputElement
         onSubmit(message.value)
+        setTimeout(() => {
+          ;(document.getElementById('message-send-form') as HTMLFormElement)
+            .reset()
+        }, 0)
       }}
     >
       <div>
@@ -132,7 +137,6 @@ export function ChatThread(
   { thread }: { thread: RenderedMessageThreadWithAllMessages },
 ) {
   const messages = useSignal(thread.messages)
-  console.log('messages', messages.value)
 
   return (
     <div className='flex h-screen antialiased text-gray-800'>
@@ -154,7 +158,7 @@ export function ChatThread(
               </div>
             </div>
             <MessageSendForm
-              onSubmit={(message) => {
+              onSubmit={(message: string) => {
                 messages.value = [
                   {
                     read_by_me_at: null,

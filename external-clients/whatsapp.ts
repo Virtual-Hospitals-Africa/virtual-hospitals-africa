@@ -11,7 +11,7 @@ import { basename } from 'node:path'
 import { deletePDF, generatePDF } from '../util/pdfUtils.ts'
 import { delay } from '../util/delay.ts'
 
-const phoneNumbers = {
+export const phoneNumbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
   pharmacist: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST')!,
 }
