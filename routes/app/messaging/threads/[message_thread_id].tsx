@@ -6,7 +6,6 @@ import {
   EmployedHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../types.ts'
-import Form from '../../../../components/library/Form.tsx'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
@@ -39,7 +38,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       sender: messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
     })
 
-    return json({ message })
+    console.log('message', message)
+    return new Response('Message Created', {
+      status: 201,
+    })
   },
 }
 
@@ -56,25 +58,6 @@ export default HealthWorkerHomePageLayout(
       thread_id,
     )
 
-    return (
-      <div>
-        <ChatThread thread={thread} />
-        <Form method='POST' className='mt-5'>
-          <label className='block' for='message'>Testing: Post a message</label>
-          <textarea
-            className='border p-2'
-            placeholder='Type your message here'
-            name='message'
-            id='message'
-          />
-          <button
-            className='bg-blue-500 text-white p-2 rounded-md'
-            type='submit'
-          >
-            Send
-          </button>
-        </Form>
-      </div>
-    )
+    return <ChatThread thread={thread} />
   },
 )

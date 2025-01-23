@@ -3143,7 +3143,6 @@ export type RenderedMessageThreadBase = {
 }
 
 export type RenderedMessage = {
-  sent_by_me: SqlBool
   read_by_me_at: Date | null
   created_at: Date
   id: string
@@ -3165,4 +3164,5 @@ export type RenderedMessageThreadWithMostRecentMessage =
 
 export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   messages: RenderedMessage[]
+  last_message_read_by_everyone_else_id?: string
 }

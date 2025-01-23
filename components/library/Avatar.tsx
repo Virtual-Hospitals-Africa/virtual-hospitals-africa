@@ -21,9 +21,10 @@ function EmptyAvatar({ className }: { className?: string }) {
 }
 
 export default function Avatar(
-  { src, className, hide_when_empty }: {
+  { src, className, initials, hide_when_empty }: {
     src?: Maybe<string>
     icon?: string
+    initials?: string
     className?: string
     hide_when_empty?: boolean
   },
@@ -40,6 +41,18 @@ export default function Avatar(
   }
   if (hide_when_empty) {
     return null
+  }
+  if (initials) {
+    return (
+      <div
+        className={cls(
+          'flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0',
+          className,
+        )}
+      >
+        {initials}
+      </div>
+    )
   }
   return <EmptyAvatar className={fullClassName} />
 }

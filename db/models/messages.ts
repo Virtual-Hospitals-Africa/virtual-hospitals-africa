@@ -29,11 +29,6 @@ async function appendMostRecentMessage(
     .orderBy('messages.created_at desc')
     .selectAll('messages')
     .select('message_reads_by_me.created_at as read_by_me_at')
-    .select((eb) => [
-      eb('messages.sender_id', '=', thread.participant_id).as(
-        'sent_by_me',
-      ),
-    ])
     .select((eb) =>
       jsonArrayFrom(
         eb.selectFrom('message_reads as message_reads_by_others')
@@ -203,7 +198,7 @@ export async function getThreadsWithMostRecentMessages(
 
 export async function createThread(
   trx: TrxOrDb,
-  { sender, recipient, concerning, initial_message }: {
+  { sender, recipient, subjects, initial_message }: {
     sender: {
       table_name: string
       row_id: string
@@ -212,9 +207,10 @@ export async function createThread(
       table_name: string
       row_id: string
     }
-    concerning: {
-      patient_id: string
-    }
+    subjects: {
+      table_name: string
+      row_id: string
+    }[]
     initial_message: {
       body: string
     }
@@ -228,11 +224,10 @@ export async function createThread(
     .executeTakeFirstOrThrow()
 
   await trx.insertInto('message_thread_subjects')
-    .values({
+    .values(subjects.map((s) => ({
+      ...s,
       thread_id: thread.id,
-      table_name: 'patients',
-      row_id: concerning.patient_id,
-    })
+    })))
     .executeTakeFirstOrThrow()
 
   const sender_participant = await trx.insertInto('message_thread_participants')
@@ -309,6 +304,23 @@ export function send(
     .executeTakeFirstOrThrow()
 }
 
+export function sendFromSystem(
+  trx: TrxOrDb,
+  values: {
+    thread_id: string
+    body: string
+    created_at?: Date
+  },
+) {
+  return trx.insertInto('messages')
+    .values({
+      ...values,
+      is_from_system: true,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
 export async function getThread(
   trx: TrxOrDb,
   my_participants: ParticipantsQuery,
@@ -342,7 +354,6 @@ export async function getThread(
     { reads, sender_id, is_from_system, ...m },
   ) => ({
     ...m,
-    sent_by_me: sender_id === thread.participant_id,
     read_by_me_at:
       reads.find((read) => read.participant_id === thread.participant_id)
         ?.read_at || null,
@@ -354,7 +365,16 @@ export async function getThread(
       : thread.participants.find((p) => p.participant_id === sender_id)!,
   }))
 
-  return { ...thread, messages }
+  const last_message_read_by_everyone_else = messages.find((m) =>
+    m.read_by_others.length === thread.participants.length - 1
+  )
+
+  return {
+    ...thread,
+    messages,
+    last_message_read_by_everyone_else_id: last_message_read_by_everyone_else
+      ?.id,
+  }
 }
 
 export function participantsQueryForHealthWorker(

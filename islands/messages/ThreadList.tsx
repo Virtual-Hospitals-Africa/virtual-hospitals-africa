@@ -9,7 +9,7 @@ type ThreadListProps = {
 
 // function MessageContent(content: string): JSX.Element {
 //   return (
-//     <article class='py-3 px-2 bg-white'>
+//     <article className='py-3 px-2 bg-white'>
 //       {content}
 //     </article>
 //   )
@@ -17,16 +17,16 @@ type ThreadListProps = {
 
 function MessageControllers(): JSX.Element {
   return (
-    <div class='flex items-center'>
-      <span class='bg-gray-300 h-6 w-[.5px] mx-3'></span>
-      <div class='flex items-center space-x-2'>
+    <div className='flex items-center'>
+      <span className='bg-gray-300 h-6 w-[.5px] mx-3'></span>
+      <div className='flex items-center space-x-2'>
         <button
           title='Delete'
-          class='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
+          className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            class='h-5 w-5'
+            className='h-5 w-5'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -42,11 +42,11 @@ function MessageControllers(): JSX.Element {
         </button>
         <button
           title='Mark As Read'
-          class='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
+          className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            class='h-5 w-5'
+            className='h-5 w-5'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -62,11 +62,11 @@ function MessageControllers(): JSX.Element {
         </button>
         <button
           title='Mark As Unread'
-          class='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
+          className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            class='h-5 w-5'
+            className='h-5 w-5'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -99,38 +99,38 @@ function SingleThread({
   console.log(thread)
   return (
     <a href={`/app/messaging/threads/${thread.id}`}>
-      <details
-        class={cls(thread.most_recent_message.read_by_me_at && 'bg-gray-100')}
+      <summary
+        className={cls(
+          'marker:content-[""] [&::-webkit-details-marker]:hidden',
+          thread.most_recent_message.read_by_me_at && 'bg-gray-100',
+        )}
       >
-        <summary class='marker:content-[""] [&::-webkit-details-marker]:hidden'>
-          <div class='flex items-center border-y hover:bg-gray-200 px-2'>
-            <input
-              onInput={toggleSelection}
-              checked={isSelected}
-              type='checkbox'
-              class='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
-            />
+        <div className='flex items-center border-y hover:bg-gray-200 px-2'>
+          <input
+            onInput={toggleSelection}
+            checked={isSelected}
+            type='checkbox'
+            className='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
+          />
 
-            <div class='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
-              <div class='flex items-center'>
-                <span class='w-56 ml-2 pr-2 truncate'>
-                  {thread.most_recent_message.sender.name}
-                </span>
-                <span class='w-96 text-gray-600 text-sm truncate'>
-                  {thread.most_recent_message.body}
-                </span>
-              </div>
-              <div class='w-32 flex items-center justify-end'>
-                <span x-show='!messageHover' class='text-sm text-gray-500'>
-                  {new Date(thread.most_recent_message.created_at)
-                    .toLocaleDateString()}
-                </span>
-              </div>
+          <div className='w-full flex items-center justify-between p-1 my-1 cursor-pointer'>
+            <div className='flex items-center'>
+              <span className='w-56 ml-2 pr-2 truncate'>
+                {thread.most_recent_message.sender.name}
+              </span>
+              <span className='w-96 text-gray-600 text-sm truncate'>
+                {thread.most_recent_message.body}
+              </span>
+            </div>
+            <div className='w-32 flex items-center justify-end'>
+              <span x-show='!messageHover' className='text-sm text-gray-500'>
+                {new Date(thread.most_recent_message.created_at)
+                  .toLocaleDateString()}
+              </span>
             </div>
           </div>
-        </summary>
-        {/* <Message */}
-      </details>
+        </div>
+      </summary>
     </a>
   )
 }
@@ -145,12 +145,12 @@ export default function ThreadList(
 
   return (
     <>
-      <div class='h-16 px-2 flex items-center justify-between border-b'>
-        <div class='flex items-center'>
+      <div className='h-16 px-2 flex items-center justify-between border-b'>
+        <div className='flex items-center'>
           <input
             checked={isSelectAll.value}
             type='checkbox'
-            class='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
+            className='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
             onInput={() => {
               const isSelectedAll = isSelectAll.value
               isSelectAll.value = !isSelectedAll
@@ -162,6 +162,7 @@ export default function ThreadList(
       </div>
       {threads.map((thread) => (
         <SingleThread
+          key={thread.id}
           thread={thread}
           isSelected={selected.value.has(thread)}
           toggleSelection={() => {

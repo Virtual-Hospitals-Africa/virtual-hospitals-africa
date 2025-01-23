@@ -101,6 +101,8 @@ addEventListener('submit', function (event) {
           load(text)
           history.pushState({}, '', response.url)
         })
+      case 201:
+        return
       case 400:
         return response.text().then(onError)
       case 401:

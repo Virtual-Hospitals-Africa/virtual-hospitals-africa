@@ -52,9 +52,10 @@ export async function handleAskPrescriber(
         table_name: 'employment',
         row_id: prescription.prescriber_id,
       },
-      concerning: {
-        patient_id: prescription.patient_id,
-      },
+      subjects: [
+        { table_name: 'prescriptions', row_id: prescription.id },
+        { table_name: 'patients', row_id: prescription.patient_id },
+      ],
       initial_message: {
         body,
       },
