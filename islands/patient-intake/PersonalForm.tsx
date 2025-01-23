@@ -49,11 +49,13 @@ export default function PatientPersonalForm(
           <EthnicitySelect value={patient.ethnicity} />
         </FormRow>
         <FormRow>
-          <NationalIdInputCheckbox no_national_id={no_national_id} />
-          <NationalIdInput
-            value={patient.national_id_number}
-            no_national_id={no_national_id}
-          />
+          <fieldset>
+            <NationalIdInputCheckbox no_national_id={no_national_id} />
+            <NationalIdInput
+              value={patient.national_id_number}
+              no_national_id={no_national_id}
+            />
+          </fieldset>
           <PhoneNumberInput
             name='phone_number'
             value={patient.phone_number}

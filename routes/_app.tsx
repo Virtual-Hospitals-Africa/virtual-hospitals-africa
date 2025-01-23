@@ -77,8 +77,20 @@ export default function App({ Component, ...props }: PageProps) {
             />
           </>
         )}
-        {props.route.startsWith('/app') && (
-          <script src='/hijack-form-submission-and-set-focus.js' async />
+        {(props.route.startsWith('/app') ||
+          props.route.startsWith('/regulator')) && (
+          <>
+            <script src='/scripts/focus-on-location-hash.js' async />
+            <script
+              src='/scripts/focus-on-next-incomplete-form-element.js'
+              async
+            />
+            <script
+              src='/scripts/hijack-form-submission-a-la-turbolinks.js'
+              async
+            />
+            <script src='/scripts/unsaved-form-dialog.js' async />
+          </>
         )}
       </head>
       <body className='min-h-screen flex flex-col relative justify-between'>
