@@ -7,9 +7,9 @@ import {
 import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
-import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
+import { NationalIdInput } from '../../../../islands/NationalId.tsx'
 import { CountryAddressTree } from '../../../../types.ts'
-import AddressForm from '../../../../islands/AddressForm.tsx'
+import AddressSection from '../../../patient-intake/AddressSection.tsx'
 
 export default function NursePersonalForm(
   { formData, country_address_tree }: {
@@ -67,7 +67,7 @@ export default function NursePersonalForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <AddressForm
+      <AddressSection
         address={formData.address || {}}
         country_address_tree={country_address_tree}
       />

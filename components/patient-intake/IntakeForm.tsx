@@ -1,29 +1,24 @@
-import { CountryAddressTree, PatientIntake } from '../../types.ts'
-import AddressForm from '../../islands/AddressForm.tsx'
-import { NearestHealthCare } from '../../islands/NearestHealthCare.tsx'
-import FormSection from '../../components/library/FormSection.tsx'
+import { NearestHealthCareSection } from '../../islands/NearestHealthCare.tsx'
+import { NextOfKinFormSection } from '../../islands/patient-intake/FamilyForm.tsx'
+import {
+  CountryAddressTree,
+  PatientFamily,
+  PatientIntake,
+} from '../../types.ts'
+import AddressSection from './AddressSection.tsx'
+import PersonalSection from './PersonalSection.tsx'
 
-function PatientAddress(
-  { patient = {}, country_address_tree }: {
-    patient?: Partial<PatientIntake>
-    country_address_tree: CountryAddressTree
-  },
-) {
-  return (
-    <FormSection header='Patient Address'>
-      <AddressForm
-        address={patient.address}
-        country_address_tree={country_address_tree}
-      />
-    </FormSection>
-  )
-}
-
-export default function PatientAddressForm(
-  { patient = {}, default_organization, country_address_tree }: {
-    patient?: Partial<PatientIntake>
+export default function PatientIntakeForm(
+  {
+    patient,
+    default_organization,
+    country_address_tree,
+  }: {
+    patient: Partial<PatientIntake>
+    previously_completed: boolean
     default_organization?: { id: string; name: string; address: string }
     country_address_tree: CountryAddressTree
+    family: Partial<PatientFamily>
   },
 ) {
   const nearest_organization =
@@ -51,14 +46,18 @@ export default function PatientAddressForm(
 
   return (
     <>
-      <PatientAddress
+      <PersonalSection
         patient={patient}
+      />
+      <AddressSection
+        address={patient.address}
         country_address_tree={country_address_tree}
       />
-      <NearestHealthCare
+      <NearestHealthCareSection
         nearest_organization={nearest_organization}
         primary_doctor={primary_doctor}
       />
+      <NextOfKinFormSection />
     </>
   )
 }
