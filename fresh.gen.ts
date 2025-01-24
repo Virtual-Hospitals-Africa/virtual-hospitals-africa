@@ -63,7 +63,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessm
 import * as $app_patients_patient_id_encounters_encounter_id_history from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_request_review from './routes/app/patients/[patient_id]/encounters/[encounter_id]/request_review.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
@@ -222,6 +222,7 @@ import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow
 import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
 import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
+import * as $request_review_OrganizationView from './islands/request-review/OrganizationView.tsx'
 import * as $summary_DescriptionRow from './islands/summary/DescriptionRow.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
@@ -335,8 +336,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':
       $app_patients_patient_id_encounters_encounter_id_prescriptions,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx':
-      $app_patients_patient_id_encounters_encounter_id_referral,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/request_review.tsx':
+      $app_patients_patient_id_encounters_encounter_id_request_review,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx':
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
@@ -531,6 +532,8 @@ const manifest = {
     './islands/referral/Form.tsx': $referral_Form,
     './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
     './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
+    './islands/request-review/OrganizationView.tsx':
+      $request_review_OrganizationView,
     './islands/summary/DescriptionRow.tsx': $summary_DescriptionRow,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
