@@ -20,9 +20,14 @@ export function OrganizationView() {
       <FormRow>
         <OrganizationSearch
           name='review_request.organization'
-          kind='virtual'
-          label='Virtual Organization'
           value={review_request.value?.organization}
+          sort={{
+            by: 'nearest',
+            direction: 'asc',
+          }}
+          filters={{
+            accepting_patients: true,
+          }}
         />
       </FormRow>
     </div>

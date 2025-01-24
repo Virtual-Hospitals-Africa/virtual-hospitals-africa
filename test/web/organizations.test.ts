@@ -31,6 +31,8 @@ describe(
         category: 'Clinic',
         description: '123 Main St, Bristol, UK, 23456',
         name: 'VHA Test Clinic',
+        distance_meters: 12100,
+        google_maps_link: 'https://maps.google.com',
         location: {
           latitude: 51.4545,
           longitude: -2.5879,
@@ -43,6 +45,8 @@ describe(
         description: null,
         name: 'VHA Test Virtual Hospital',
         location: null,
+        distance_meters: 12100,
+        google_maps_link: 'https://maps.google.com',
       })
     })
   },
