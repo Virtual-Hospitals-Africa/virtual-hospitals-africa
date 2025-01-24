@@ -39,9 +39,10 @@ export function ReferralForm() {
         <FormRow>
           <OrganizationSearch
             name='review_request.organization'
-            kind='virtual'
+            filters={{ is_physical: false }}
             label='Virtual Organization'
             value={review_request.value?.organization}
+            sort={{ by: 'nearest', direction: 'asc' }}
           />
         </FormRow>
         <FormRow>

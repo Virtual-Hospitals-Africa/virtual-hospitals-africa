@@ -11,7 +11,7 @@ export const ENCOUNTER_STEPS: EncounterStep[] = [
   'prescriptions',
   'orders',
   'clinical_notes',
-  'referral',
+  'request_review',
   'close_visit',
 ]
 

@@ -21,6 +21,7 @@ import {
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
+  literalNumber,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
@@ -62,6 +63,8 @@ export function baseQuery(trx: TrxOrDb) {
       'organizations.category',
       'addresses.formatted as address',
       'addresses.formatted as description',
+      literalNumber(12100).as('distance_meters'),
+      sql<string>`'https://maps.google.com'`.as('google_maps_link'),
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,

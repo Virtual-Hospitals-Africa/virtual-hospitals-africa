@@ -60,9 +60,10 @@ export function NearestHealthCareSection(
       <FormRow>
         <OrganizationSearch
           name='nearest_organization'
-          kind='physical'
+          filters={{ is_physical: true }}
           label='Nearest Organization'
           value={nearest_organization_signal.value}
+          sort={{ by: 'nearest', direction: 'asc' }}
           onSelect={(organization) =>
             nearest_organization_signal.value = organization}
           required
