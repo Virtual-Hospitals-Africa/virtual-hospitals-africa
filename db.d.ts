@@ -32,7 +32,7 @@ export type EncounterStep =
   | 'history'
   | 'orders'
   | 'prescriptions'
-  | 'referral'
+  | 'request_review'
   | 'symptoms'
   | 'vitals'
 
