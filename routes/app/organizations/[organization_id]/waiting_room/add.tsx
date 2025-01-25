@@ -1,19 +1,14 @@
 import z from 'zod'
-import { FreshContext } from '$fresh/server.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as organizations from '../../../../../db/models/organizations.ts'
-import {
-  LoggedInHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../types.ts'
 import { parseRequest } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
+import { OrganizationContext } from '../_middleware.ts'
 
 const AddPatientFormSchema = z.object({
   encounter_id: z.string().uuid().optional(),
@@ -28,37 +23,37 @@ const AddPatientFormSchema = z.object({
     'emergency',
     'other',
   ]),
+  location: z.object({
+    latitude: z.number(),
+    longitude: z.number(),
+  }).optional(),
   notes: z.string().optional(),
   waiting_room: z.boolean().default(false),
 })
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  {
-    organization: { id: string; name: string }
-  }
-> = {
-  async POST(req, ctx) {
-    const { organization_id } = ctx.params
-    assert(organization_id)
-    const to_upsert = await parseRequest(
-      ctx.state.trx,
+export const handler = {
+  async POST(
+    req: Request,
+    { state: { trx, organization } }: OrganizationContext,
+  ) {
+    const to_insert = await parseRequest(
+      trx,
       req,
       AddPatientFormSchema.parse,
     )
 
-    const upserted = await patient_encounters.insert(
-      ctx.state.trx,
-      organization_id,
-      to_upsert,
+    const inserted = await patient_encounters.insert(
+      trx,
+      organization.id,
+      {
+        ...to_insert,
+        location: to_insert.location || organization.location!,
+      },
     )
-    const { waiting_room } = to_upsert
 
-    const next_url = waiting_room
-      ? `/app/organizations/${organization_id}/waiting_room?just_encountered_id=${upserted.id}`
-      : `/app/patients/${upserted.patient_id}/encounters/${upserted.id}`
-
-    return redirect(next_url)
+    return redirect(
+      `/app/organizations/${organization.id}/waiting_room?just_encountered_id=${inserted.id}`,
+    )
   },
 }
 
@@ -66,14 +61,11 @@ export default HealthWorkerHomePageLayout(
   'Add patient to waiting room',
   async function WaitingRoomAdd(
     _req: Request,
-    { url, state, params }: FreshContext<LoggedInHealthWorker>,
+    { url, state: { organization, trx } }: OrganizationContext,
   ) {
-    const { trx } = state
     const { searchParams } = url
     const patient_id = searchParams.get('patient_id')
     assertOr404(patient_id, 'Must add a specific patient')
-    const { organization_id } = params
-    assert(organization_id)
 
     const { patient, providers, open_encounter } = await promiseProps({
       patient: patients.getByID(trx, {
@@ -81,7 +73,7 @@ export default HealthWorkerHomePageLayout(
       }),
       providers: organizations.getApprovedProviders(
         trx,
-        organization_id,
+        organization.id,
       ),
       open_encounter: patient_encounters.get(trx, {
         patient_id,
@@ -94,7 +86,7 @@ export default HealthWorkerHomePageLayout(
         'Please use the existing patient visit.',
       )
       return redirect(
-        `/app/organizations/${organization_id}/waiting_room?warning=${warning}`,
+        `/app/organizations/${organization.id}/waiting_room?warning=${warning}`,
       )
     }
 
