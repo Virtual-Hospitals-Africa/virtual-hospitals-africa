@@ -437,10 +437,11 @@ export async function withTestOrganizations(
   )
 
   const creating = to_create.map(({ kind }) => {
-    const category = kind ? 'Clinic' : 'Virtual Hospital'
+    const is_virtual = kind === 'virtual'
+    const category = is_virtual ? 'Virtual Hospital' : 'Clinic'
     const name = `Test ${generateUUID()} ${category}`
     const to_create: OrganizationInsert = { name, category }
-    if (kind === 'physical') {
+    if (!is_virtual) {
       to_create.address = {
         street: '123 Test St',
         locality: 'Test City',

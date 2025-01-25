@@ -1,17 +1,20 @@
 import { sql } from 'kysely'
 import {
-  Maybe,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   TrxOrDb,
 } from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
+import * as organizations from './organizations.ts'
 import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
-import { jsonArrayFrom, jsonArrayFromColumn, now } from '../helpers.ts'
-import { EncounterReason, EncounterStep } from '../../db.d.ts'
-import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  literalLocation,
+  now,
+} from '../helpers.ts'
+import { EncounterStep } from '../../db.d.ts'
 import { ensureProviderId } from './providers.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -19,59 +22,36 @@ import uniq from '../../util/uniq.ts'
 import { inBackground } from '../../util/inBackground.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { isUUID } from '../../util/uuid.ts'
+import z from 'zod'
 
-export type Upsert =
-  & {
-    encounter_id?: Maybe<string>
-    reason: EncounterReason
-    provider_ids?: string[]
-    appointment_id?: Maybe<string>
-    notes?: Maybe<string>
-    intake?: Maybe<string>
-  }
-  & (
-    | { patient_id: string; patient_name?: Maybe<string> }
-    | { patient_id?: Maybe<string>; patient_name: string }
-  )
+export const UpsertSchema = z.object({
+  patient_id: z.string().uuid().optional(),
+  patient_name: z.string().optional(),
+  location: z.object({
+    latitude: z.number(),
+    longitude: z.number(),
+  }).optional(),
+  reason: z.enum([
+    'appointment',
+    'checkup',
+    'emergency',
+    'follow up',
+    'maternity',
+    'other',
+    'referral',
+    'seeking treatment',
+  ]),
+  provider_ids: z.string().uuid().array().optional(),
+  appointment_id: z.string().uuid().optional(),
+  notes: z.string().optional(),
+})
 
-export function assertIsEncounterReason(
-  str: string,
-): asserts str is EncounterReason {
-  assertOr400(ENCOUNTER_REASONS.has(str as EncounterReason))
-}
+export type Upsert = z.infer<typeof UpsertSchema>
 
-export function assertIsUpsert(
-  obj: unknown,
-): asserts obj is Upsert {
-  assertOr400(isObjectLike(obj))
-  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'string')
-  assertOr400(obj.patient_id == null || typeof obj.patient_id === 'string')
-  assertOr400(typeof obj.reason === 'string')
-  assertIsEncounterReason(obj.reason)
-  assertOr400(
-    !obj.provider_ids ||
-      (Array.isArray(obj.provider_ids) &&
-        obj.provider_ids.every((id: unknown) => typeof id === 'string')),
-  )
-  assertOr400(
-    obj.appointment_id == null || typeof obj.appointment_id === 'string',
-  )
-  assertOr400(obj.notes == null || typeof obj.notes === 'string')
-  assertOr400(obj.intake == null || typeof obj.intake === 'string')
-}
-
-export async function upsert(
+export async function insert(
   trx: TrxOrDb,
   organization_id: string,
-  {
-    encounter_id,
-    patient_id,
-    patient_name,
-    reason,
-    appointment_id,
-    notes,
-    provider_ids,
-  }: Upsert,
+  to_upsert: Upsert,
 ): Promise<{
   id: string
   patient_id: string
@@ -82,10 +62,30 @@ export async function upsert(
     provider_id: string
   }[]
 }> {
+  const data = UpsertSchema.parse(to_upsert)
+
+  let {
+    patient_id,
+    patient_name,
+    location,
+    reason,
+    appointment_id,
+    notes,
+    provider_ids,
+  } = data
+
   if (!patient_id) {
-    assertOr400(!encounter_id)
     assertOr400(patient_name)
     patient_id = (await patients.insert(trx, { name: patient_name })).id
+  }
+
+  if (!location) {
+    const organization = await organizations.getById(trx, organization_id)
+    assert(
+      organization.location,
+      "If no location is provided, the encounter's ",
+    )
+    location = organization.location
   }
 
   const values = {
@@ -93,29 +93,21 @@ export async function upsert(
     reason,
     notes,
     appointment_id: appointment_id || null,
+    location: literalLocation(location),
   }
 
-  const upserted = await (
-    encounter_id
-      ? trx
-        .updateTable('patient_encounters')
-        .set(values)
-        .where('id', '=', encounter_id)
-        .returning(['id', 'patient_id', 'created_at'])
-        .executeTakeFirstOrThrow()
-      : trx
-        .insertInto('patient_encounters')
-        .values(values)
-        .returning(['id', 'patient_id', 'created_at'])
-        .executeTakeFirstOrThrow()
-  )
+  const inserted = await trx
+    .insertInto('patient_encounters')
+    .values(values)
+    .returning(['id', 'patient_id', 'created_at'])
+    .executeTakeFirstOrThrow()
 
   const others = await promiseProps({
     providers: provider_ids?.length
       ? trx
         .insertInto('patient_encounter_providers')
         .values(provider_ids.map((provider_id) => ({
-          patient_encounter_id: upserted.id,
+          patient_encounter_id: inserted.id,
           provider_id: ensureProviderId(trx, provider_id),
         })))
         .returning([
@@ -125,13 +117,13 @@ export async function upsert(
         .execute()
       : Promise.resolve([]),
     waiting_room_id: await waiting_room.add(trx, {
-      patient_encounter_id: upserted.id,
+      patient_encounter_id: inserted.id,
       organization_id,
     }).then((w) => w.id),
   })
 
   return {
-    ...upserted,
+    ...inserted,
     ...others,
   }
 }

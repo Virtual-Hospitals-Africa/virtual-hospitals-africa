@@ -30,7 +30,7 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
               organization_id: virtual_hospital_id,
             })
 
-            const patient_encounter = await patient_encounters.upsert(
+            const patient_encounter = await patient_encounters.insert(
               trx,
               clinic_id,
               {

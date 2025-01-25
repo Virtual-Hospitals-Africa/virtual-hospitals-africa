@@ -15,6 +15,7 @@ import {
 import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
+import { literalLocation } from '../../db/helpers.ts'
 
 describe(
   'db/models/waiting_room.ts',
@@ -32,12 +33,12 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, organization_id, {
+            await patient_encounters.insert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'seeking treatment',
             })
 
-            await patient_encounters.upsert(trx, organization_id, {
+            await patient_encounters.insert(trx, organization_id, {
               patient_id: patient2.id,
               reason: 'seeking treatment',
             })
@@ -121,7 +122,7 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, organization_id, {
+            await patient_encounters.insert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'emergency',
             })
@@ -131,6 +132,7 @@ describe(
                 patient_id: patient2.id,
                 reason: 'seeking treatment',
                 created_at: sql`NOW() - INTERVAL '1 hour'`,
+                location: literalLocation({ latitude: 5, longitude: 6 }),
               }).returning('id').executeTakeFirstOrThrow()
 
             await trx.insertInto('waiting_room').values({
@@ -214,7 +216,7 @@ describe(
               const patient = await patients.insert(trx, {
                 name: 'Test Patient 1',
               })
-              await patient_encounters.upsert(
+              await patient_encounters.insert(
                 trx,
                 clinic_organization_id,
                 {
@@ -361,7 +363,7 @@ describe(
               const patient = await patients.insert(trx, {
                 name: 'Test Patient 1',
               })
-              await patient_encounters.upsert(
+              await patient_encounters.insert(
                 trx,
                 clinic_organization_id,
                 {
@@ -538,7 +540,7 @@ describe(
               const patient = await patients.insert(trx, {
                 name: 'Test Patient 1',
               })
-              await patient_encounters.upsert(
+              await patient_encounters.insert(
                 trx,
                 clinic_organization_id,
                 {

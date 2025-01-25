@@ -118,7 +118,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         scenario: 'approved-nurse',
       })
 
-      const just_nurse1 = await patient_encounters.upsert(
+      const just_nurse1 = await patient_encounters.insert(
         trx,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -128,7 +128,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         },
       )
 
-      const both = await patient_encounters.upsert(
+      const both = await patient_encounters.insert(
         trx,
         '00000000-0000-0000-0000-000000000001',
         {

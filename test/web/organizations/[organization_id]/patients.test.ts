@@ -25,7 +25,7 @@ describe(
         })
 
         const patient_in_waiting_room_name = unique_name + ' in waiting room'
-        const encounter = await patient_encounters.upsert(db, organization_id, {
+        const encounter = await patient_encounters.insert(db, organization_id, {
           patient_name: patient_in_waiting_room_name,
           reason: 'seeking treatment',
         })

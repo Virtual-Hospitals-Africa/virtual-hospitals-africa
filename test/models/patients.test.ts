@@ -148,7 +148,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const health_worker = await addTestHealthWorker(trx, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(
+      const encounter = await patient_encounters.insert(
         trx,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -214,7 +214,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           date_of_birth: '1989-01-03',
           gender: 'male',
         })
-        const encounter = await patient_encounters.upsert(
+        const encounter = await patient_encounters.insert(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {

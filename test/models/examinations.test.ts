@@ -23,7 +23,7 @@
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.upsert(
+//             const patient_encounter = await patient_encounters.insert(
 //               trx,
 //               organization_id,
 //               {
@@ -55,7 +55,7 @@
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.upsert(
+//             const patient_encounter = await patient_encounters.insert(
 //               trx,
 //               organization_id,
 //               {
@@ -93,7 +93,7 @@
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.upsert(
+//             const patient_encounter = await patient_encounters.insert(
 //               trx,
 //               organization_id,
 //               {
@@ -159,7 +159,7 @@
 //             scenario: 'approved-nurse',
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
-//           const encounter = await patient_encounters.upsert(
+//           const encounter = await patient_encounters.insert(
 //             trx,
 //             '00000000-0000-0000-0000-000000000001',
 //             {
@@ -1016,7 +1016,7 @@
 //             scenario: 'approved-nurse',
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
-//           const encounter = await patient_encounters.upsert(
+//           const encounter = await patient_encounters.insert(
 //             trx,
 //             '00000000-0000-0000-0000-000000000001',
 //             {

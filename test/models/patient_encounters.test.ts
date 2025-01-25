@@ -20,7 +20,7 @@ describe(
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.insert(trx, { name: 'Test Patient' })
-            await patient_encounters.upsert(trx, organization_id, {
+            await patient_encounters.insert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
             })
@@ -75,7 +75,7 @@ describe(
               scenario: 'approved-nurse',
             })
             const patient = await patients.insert(trx, { name: 'Test Patient' })
-            await patient_encounters.upsert(trx, organization_id, {
+            await patient_encounters.insert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
               provider_ids: [nurse.employee_id!],

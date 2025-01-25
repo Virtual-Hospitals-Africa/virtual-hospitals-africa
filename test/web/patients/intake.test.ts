@@ -28,7 +28,7 @@
 //   sanitizeOps: false,
 // }, () => {
 //   it('loads the personal page', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -56,7 +56,7 @@
 //   })
 
 //   it('supports POST on the personal step, moving you to the intake/vitals step', async () => {
-//     const { patient_id, id: encounter_id } = await patient_encounters.upsert(
+//     const { patient_id, id: encounter_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -133,7 +133,7 @@
 
 //   // There's no Address step anymore
 //   it.skip('supports address information POST on the Address step, moving you to the conditions step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -222,7 +222,7 @@
 //   })
 
 //   it.skip('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -365,7 +365,7 @@
 //   })
 
 //   it.skip('supports POST of allergies on the conditions step, moving you to the history step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -430,7 +430,7 @@
 //   })
 
 //   it.skip('can remove all pre_existing_conditions on POST', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -477,7 +477,7 @@
 //   })
 
 //   it.skip('handles holes in an array of pre_existing_conditions on POST', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -578,7 +578,7 @@
 
 //   // // Removed the family step
 //   it.skip('supports POST on the family step, moving you to the lifestyle step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -662,7 +662,7 @@
 //   })
 
 //   it.skip('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -687,7 +687,7 @@
 //   })
 
 //   it.skip('supports POST on the occupation step(0-18), moving you to the lifestyle step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -783,7 +783,7 @@
 //   })
 
 //   it.skip('supports POST on the occupation step(19+), moving you to the lifestyle step', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -880,7 +880,7 @@
 //   })
 
 //   it.skip('supports POST on the lifestyle step, moving you to the summary step if you already completed all other sections', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {
@@ -1122,7 +1122,7 @@
 //   })
 
 //   it.skip('supports POST on the lifestyle step, returning you to the first incomplete step before summary if any are not yet done', async () => {
-//     const { patient_id } = await patient_encounters.upsert(
+//     const { patient_id } = await patient_encounters.insert(
 //       db,
 //       '00000000-0000-0000-0000-000000000001',
 //       {

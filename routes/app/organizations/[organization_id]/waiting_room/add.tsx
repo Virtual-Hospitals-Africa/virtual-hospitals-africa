@@ -47,7 +47,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       AddPatientFormSchema.parse,
     )
 
-    const upserted = await patient_encounters.upsert(
+    const upserted = await patient_encounters.insert(
       ctx.state.trx,
       organization_id,
       to_upsert,

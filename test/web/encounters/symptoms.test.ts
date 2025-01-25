@@ -17,7 +17,7 @@ describe(
         await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
         })
-      const { patient_id } = await patient_encounters.upsert(
+      const { patient_id } = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {

@@ -24,13 +24,12 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
         })
 
         const patient = await patients.insert(trx, { name: 'Billy Bob' })
-        const encounter = await patient_encounters.upsert(
+        const encounter = await patient_encounters.insert(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {
             patient_id: patient.id,
             reason: 'seeking treatment',
-            notes: null,
             provider_ids: [nurse.employee_id!],
           },
         )

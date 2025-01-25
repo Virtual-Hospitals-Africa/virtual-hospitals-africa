@@ -20,7 +20,7 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(
+      const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -89,7 +89,7 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(
+      const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -193,7 +193,7 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(
+      const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
@@ -322,7 +322,7 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(
+      const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {

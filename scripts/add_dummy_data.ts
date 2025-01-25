@@ -134,7 +134,7 @@ async function addPatientsToWaitingRoom() {
         avatar_media_id: inserted_media.id,
       })
 
-      const patient_encounter = await patient_encounters.upsert(
+      const patient_encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
