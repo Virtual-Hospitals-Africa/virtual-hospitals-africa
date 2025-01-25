@@ -792,6 +792,7 @@ export interface PatientEncounters {
   closed_at: Timestamp | null
   created_at: Generated<Timestamp>
   id: Generated<string>
+  location: string
   notes: string | null
   patient_id: string
   reason: EncounterReason

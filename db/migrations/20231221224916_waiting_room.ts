@@ -23,6 +23,7 @@ export async function up(db: Kysely<unknown>) {
         (col) => col.references('appointments.id').onDelete('cascade'),
       )
       .addColumn('notes', 'text')
+      .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, (col) => col.notNull())
       .addColumn(
         'closed_at',
         'timestamptz',
