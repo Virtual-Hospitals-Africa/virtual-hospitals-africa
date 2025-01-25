@@ -2371,6 +2371,10 @@ export type RenderedPatientEncounter = {
   waiting_room_organization_id: null | string
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
+  location: {
+    latitude: number
+    longitude: number
+  }
 }
 
 export type Measurements = {
