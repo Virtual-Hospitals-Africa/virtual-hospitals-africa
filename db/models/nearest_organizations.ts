@@ -15,7 +15,7 @@ export function baseQuery(
   trx: TrxOrDb,
   search: SearchOpts,
 ) {
-  assert(search, '')
+  assert(search?.location, 'Must provide a location to measure distance from')
 
   const distance_sql = sql<
     number
@@ -37,8 +37,12 @@ export function baseQuery(
       distance_sql.as('distance_meters'),
     ])
     .$if(
-      search?.kind === 'hospital',
+      search.kind === 'hospital',
       (qb) => qb.where('category', 'ilike', '%hospital%'),
+    )
+    .$if(
+      !!search.search,
+      (qb) => qb.where('organizations.name', 'ilike', `%${search.search}%`),
     )
     .orderBy(
       distance_sql,

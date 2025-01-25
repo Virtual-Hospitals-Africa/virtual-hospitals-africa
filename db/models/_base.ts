@@ -57,6 +57,16 @@ type StandardTables = {
     : never
 }[keyof DB]
 
+export type SearchResult<
+  BM extends BaseModel<
+    Partial<Record<string, unknown>>,
+    // deno-lint-ignore no-explicit-any
+    Record<string, any>
+  >,
+> = Awaited<
+  ReturnType<BM['search']>
+>['results'][number]
+
 export function base<
   SearchTerms extends Partial<Record<string, unknown>>,
   Tables,

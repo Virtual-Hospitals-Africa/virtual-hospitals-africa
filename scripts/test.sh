@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
-deno task switch:local &>/dev/null
+if [ -f .env.local ]; then
+  deno task switch:local &>/dev/null
+fi
 
 VHA_SERVER_PORT=8005
 
