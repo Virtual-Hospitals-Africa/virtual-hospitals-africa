@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
+deno task switch:local &>/dev/null
+
 VHA_SERVER_PORT=8005
 
 watch_mode=false
