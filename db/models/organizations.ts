@@ -27,15 +27,25 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base } from './_base.ts'
 
-export function nearestHospitals(
+export type SearchOpts = {
+  location: Location
+  search?: Maybe<string>
+  kind?: 'hospital'
+  limit?: number
+}
+
+export function nearest(
   trx: TrxOrDb,
-  location: Location,
+  opts: SearchOpts,
 ): Promise<HasStringId<Organization>[]> {
+  const distance_sql = sql<
+    number
+  >`organizations.location <-> ST_SetSRID(ST_MakePoint(${opts.location.longitude}, ${opts.location.latitude}), 4326)::geography`
+
   return trx.selectFrom('organizations')
     .innerJoin('addresses', 'address_id', 'addresses.id')
     .where('inactive_reason', 'is', null)
     .where('location', 'is not', null)
-    .where('category', 'ilike', '%hospital%')
     .select([
       'organizations.id',
       'organizations.name',
@@ -45,11 +55,16 @@ export function nearestHospitals(
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
+      distance_sql.as('distance_meters'),
     ])
-    .orderBy(
-      sql`organizations.location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography`,
+    .$if(
+      opts?.kind === 'hospital',
+      (qb) => qb.where('category', 'ilike', '%hospital%'),
     )
-    .limit(2)
+    .orderBy(
+      distance_sql,
+    )
+    .limit(opts?.limit || 5)
     .execute()
 }
 

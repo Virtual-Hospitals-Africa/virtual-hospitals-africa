@@ -35,12 +35,14 @@ function OrganizationCard<T>({ option: organization, selected }: {
 export default function OrganizationSearch(
   {
     name,
+    url = '/app/organizations',
     filters = {},
     sort,
     label = 'Virtual Organization',
     required,
   }: {
     name: string
+    url?: string
     label?: string
     value?: Maybe<{
       id: string
@@ -66,14 +68,15 @@ export default function OrganizationSearch(
   params.set('sort_by', sort.by)
   params.set('sort_direction', sort.direction)
 
-  const href = `/app/organizations?${params}`
+  const search_route = `${url}?${params}`
+  console.log({ search_route })
   return (
     <AsyncSearch
       name={name}
       label={label}
       // deno-lint-ignore no-explicit-any
       Option={OrganizationCard as any}
-      search_route={href}
+      search_route={search_route}
       // onSelect={(selected) => {
       //   if (selected && props.kind === 'physical') {
       //     assert(selected.address)

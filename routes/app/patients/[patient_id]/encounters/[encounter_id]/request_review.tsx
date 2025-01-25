@@ -8,46 +8,54 @@ import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
 import { OrganizationView } from '../../../../../../islands/request-review/OrganizationView.tsx'
 
-function searchByHref(
-  ctx: EncounterContext,
-  searchBy: string,
-) {
-  return hrefFromCtx(ctx, (url) => {
-    url.searchParams.set('searchBy', searchBy)
-  })
-}
+// function searchByHref(
+//   ctx: EncounterContext,
+//   searchBy: string,
+// ) {
+//   return hrefFromCtx(ctx, (url) => {
+//     url.searchParams.set('searchBy', searchBy)
+//   })
+// }
 
-function getView(ctx: EncounterContext) {
-  const searchBy = ctx.url.searchParams.get('searchBy')
-  const organization_href = searchByHref(ctx, 'organizations')
-  assertOrRedirect(searchBy, organization_href)
+// function getView(ctx: EncounterContext) {
+//   const searchBy = ctx.url.searchParams.get('searchBy')
+//   const organization_href = searchByHref(ctx, 'organizations')
+//   assertOrRedirect(searchBy, organization_href)
 
-  const tabs: TabProps[] = [
-    {
-      tab: 'organizations',
-      href: searchByHref(ctx, 'organizations'),
-      active: searchBy === 'organizations',
-    },
-    {
-      tab: 'health professionals',
-      href: searchByHref(ctx, 'professionals'),
-      active: searchBy === 'professionals',
-    },
-  ]
+//   const tabs: TabProps[] = [
+//     {
+//       tab: 'organizations',
+//       href: searchByHref(ctx, 'organizations'),
+//       active: searchBy === 'organizations',
+//     },
+//     {
+//       tab: 'health professionals',
+//       href: searchByHref(ctx, 'professionals'),
+//       active: searchBy === 'professionals',
+//     },
+//   ]
 
-  return { tabs }
-}
+//   return { tabs }
+// }
 
 export function RequestReviewPage(
   { ctx }: EncounterPageChildProps,
 ) {
-  const { tabs } = getView(ctx)
-  const show_tabs = false
+  // const { tabs } = getView(ctx)
+  // const show_tabs = false
+
+  const organization_search_url = ctx.url.pathname.replace(
+    '/request_review',
+    '/nearest_organizations',
+  )
+  console.log({
+    organization_search_url,
+  })
 
   return (
     <>
-      {show_tabs && <Tabs tabs={tabs} />}
-      <OrganizationView />
+      {/* {show_tabs && <Tabs tabs={tabs} />} */}
+      <OrganizationView search_url={organization_search_url} />
     </>
   )
 }

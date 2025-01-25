@@ -207,6 +207,7 @@ export function EncounterLayout({
   children: ComponentChildren
   measurements: Measurement<keyof Measurements>[]
 }): JSX.Element {
+  console.log('why layout?', ctx)
   return (
     <Layout
       title={capitalize(ctx.state.encounter.reason)}
@@ -268,6 +269,7 @@ export function EncounterPage(
     _req: Request,
     ctx: EncounterContext,
   ) {
+    console.log('somehow in here?', ctx)
     const { healthWorker, patient, encounter, encounter_provider, trx } =
       ctx.state
     const step = ctx.route.split('/').pop()!

@@ -4,6 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
+import { debugLog } from '../helpers.ts'
 
 export type SearchResults<SearchTerms, RenderedResult> = {
   page: number
@@ -26,7 +27,7 @@ type BaseModelInput<
     trx: TrxOrDb,
     terms: SearchTerms,
   ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  handleSearch: (
+  handleSearch?: (
     qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
     terms: SearchTerms,
     trx: TrxOrDb,
@@ -96,19 +97,29 @@ export function base<
       opts?: {
         page?: number
         rows_per_page?: number
+        verbose?: boolean | string
       },
     ): Promise<SearchResults<SearchTerms, RenderedResult>> {
       const page = opts?.page ?? 1
       const rows_per_page = opts?.rows_per_page ?? 10
       const offset = (page - 1) * rows_per_page
 
-      const base_query = baseQuery(trx, search_terms as SearchTerms)
+      let query = baseQuery(trx, search_terms as SearchTerms)
         .limit(rows_per_page + 1)
         .offset(offset)
 
-      const search_query = handleSearch(base_query, search_terms, trx)
+      if (handleSearch) {
+        query = handleSearch(query, search_terms, trx)
+      }
 
-      const intermediate_results = await search_query.execute()
+      if (opts?.verbose) {
+        if (typeof opts.verbose === 'string') {
+          console.log(opts.verbose)
+        }
+        debugLog(query)
+      }
+
+      const intermediate_results = await query.execute()
 
       const results = intermediate_results.slice(0, rows_per_page).map(
         formatResult,

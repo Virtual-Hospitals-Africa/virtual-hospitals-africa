@@ -11,7 +11,7 @@ import capitalize from '../../util/capitalize.ts'
 import {
   getApprovedDoctorsWithoutAction,
   getApprovedProviders,
-  nearestHospitals,
+  nearest,
 } from './organizations.ts'
 // import { getMany } from './providers.ts'
 // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
@@ -105,7 +105,7 @@ export async function forPatientIntake(
   const { nearestFacilities, employees, organization, patient } =
     await promiseProps({
       nearestFacilities: location
-        ? nearestHospitals(trx, location)
+        ? nearest(trx, { location })
         : Promise.resolve([]),
       employees: getApprovedProviders(
         trx,
@@ -261,7 +261,7 @@ export async function forPatientEncounter(
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, patient } = await promiseProps({
     nearestFacilities: location
-      ? nearestHospitals(trx, location)
+      ? nearest(trx, { location })
       : Promise.resolve([]),
     employees: getApprovedDoctorsWithoutAction(
       trx,

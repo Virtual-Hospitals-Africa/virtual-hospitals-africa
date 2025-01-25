@@ -3,7 +3,9 @@ import FormRow from '../../components/library/FormRow.tsx'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { RenderedRequestFormValues } from '../../types.ts'
 
-export function OrganizationView() {
+export function OrganizationView({ search_url }: {
+  search_url: string
+}) {
   const review_request = useSignal<RenderedRequestFormValues | undefined>(
     undefined,
   )
@@ -20,6 +22,7 @@ export function OrganizationView() {
       <FormRow>
         <OrganizationSearch
           name='review_request.organization'
+          url={search_url}
           value={review_request.value?.organization}
           sort={{
             by: 'nearest',
