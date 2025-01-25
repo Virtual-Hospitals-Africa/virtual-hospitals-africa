@@ -61,6 +61,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests fr
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment from './routes/app/patients/[patient_id]/encounters/[encounter_id]/head_to_toe_assessment.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_history from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_nearest_organizations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/nearest_organizations.ts'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_request_review from './routes/app/patients/[patient_id]/encounters/[encounter_id]/request_review.tsx'
@@ -332,6 +333,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx':
       $app_patients_patient_id_encounters_encounter_id_history,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/nearest_organizations.ts':
+      $app_patients_patient_id_encounters_encounter_id_nearest_organizations,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':

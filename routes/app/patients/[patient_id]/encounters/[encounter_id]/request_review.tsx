@@ -41,13 +41,16 @@ function getView(ctx: EncounterContext) {
 export function RequestReviewPage(
   { ctx }: EncounterPageChildProps,
 ) {
-  const { tabs } = getView(ctx)
+  const organization_search_url = ctx.url.pathname.replace(
+    '/request_review',
+    '/nearest_organizations',
+  )
   const show_tabs = false
 
   return (
     <>
-      {show_tabs && <Tabs tabs={tabs} />}
-      <OrganizationView />
+      {show_tabs && <Tabs {...getView(ctx)} />}
+      <OrganizationView search_url={organization_search_url} />
     </>
   )
 }

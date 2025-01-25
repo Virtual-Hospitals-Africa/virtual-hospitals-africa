@@ -27,32 +27,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base } from './_base.ts'
 
-export function nearestHospitals(
-  trx: TrxOrDb,
-  location: Location,
-): Promise<HasStringId<Organization>[]> {
-  return trx.selectFrom('organizations')
-    .innerJoin('addresses', 'address_id', 'addresses.id')
-    .where('inactive_reason', 'is', null)
-    .where('location', 'is not', null)
-    .where('category', 'ilike', '%hospital%')
-    .select([
-      'organizations.id',
-      'organizations.name',
-      'organizations.category',
-      'addresses.formatted as address',
-      jsonBuildObject({
-        longitude: sql<number>`ST_X(location::geometry)`,
-        latitude: sql<number>`ST_Y(location::geometry)`,
-      }).as('location'),
-    ])
-    .orderBy(
-      sql`organizations.location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography`,
-    )
-    .limit(2)
-    .execute()
-}
-
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')

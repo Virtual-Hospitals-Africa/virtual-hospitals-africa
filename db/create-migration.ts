@@ -5,6 +5,7 @@ export default function createMigration(migrationName: string) {
     console.error(
       'Please provide a migration name as in\ndeno task migrate:create name',
     )
+    Deno.exit(1)
   }
 
   const { year, month, day, hour, minute, second } = parseDateTime(

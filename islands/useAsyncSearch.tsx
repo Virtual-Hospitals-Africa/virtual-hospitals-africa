@@ -24,6 +24,8 @@ export default function useAsyncSearch<
     has_next_page: false,
   })
 
+  console.log('EWLKEKL', search_route)
+
   // Make a cancellable request when the query changes
   useEffect(() => {
     const url = new URL(`${location.origin}${search_route}`)

@@ -11,8 +11,10 @@ import capitalize from '../../util/capitalize.ts'
 import {
   getApprovedDoctorsWithoutAction,
   getApprovedProviders,
-  nearestHospitals,
 } from './organizations.ts'
+
+import * as nearest_organizations from './nearest_organizations.ts'
+
 // import { getMany } from './providers.ts'
 // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -97,16 +99,14 @@ async function processEmployee(
 export async function forPatientIntake(
   trx: TrxOrDb,
   patient_id: string,
-  location: Location | null,
+  location: Location,
   organization_id: string,
   patient_encounter_providers: RenderedPatientEncounterProvider[],
   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, organization, patient } =
     await promiseProps({
-      nearestFacilities: location
-        ? nearestHospitals(trx, location)
-        : Promise.resolve([]),
+      nearestFacilities: nearest_organizations.search(trx, { location }),
       employees: getApprovedProviders(
         trx,
         organization_id,
@@ -117,7 +117,7 @@ export async function forPatientIntake(
       organization: organizations.getById(trx, organization_id),
       patient: patients.getByID(trx, { id: patient_id }),
     })
-  const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
+  const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
     (facility) => ({
       key: `facility/${facility.id}`,
       name: facility.name,
@@ -255,14 +255,12 @@ export async function forPatientIntake(
 export async function forPatientEncounter(
   trx: TrxOrDb,
   patient_id: string,
-  location: Location | null,
+  location: Location,
   patient_encounter_providers: RenderedPatientEncounterProvider[],
   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, patient } = await promiseProps({
-    nearestFacilities: location
-      ? nearestHospitals(trx, location)
-      : Promise.resolve([]),
+    nearestFacilities: nearest_organizations.search(trx, { location }),
     employees: getApprovedDoctorsWithoutAction(
       trx,
       {
@@ -272,7 +270,7 @@ export async function forPatientEncounter(
     patient: patients.getByID(trx, { id: patient_id }),
   })
 
-  const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
+  const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
     (facility) => ({
       key: `facility/${facility.id}`,
       name: facility.name,

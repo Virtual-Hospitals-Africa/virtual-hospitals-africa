@@ -37,7 +37,6 @@ export async function up(db: Kysely<unknown>) {
       SELECT patient_id,
             json_agg(json_build_object(
                 'organization_id', organizations.id,
-                'location_id', "patient_organization_location_results".id,
                 'organization_name', organizations.name,
                 'address', "addresses".formatted,
                 'longitude', ST_X("patient_organization_location_results".location::geometry),
