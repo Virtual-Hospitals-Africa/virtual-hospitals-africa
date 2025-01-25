@@ -11,6 +11,7 @@ import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
 import {
   jsonArrayFrom,
   jsonArrayFromColumn,
+  jsonBuildObject,
   literalLocation,
   now,
 } from '../helpers.ts'
@@ -174,8 +175,8 @@ export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: string) =>
     .select('patient_encounter_providers.patient_encounter_id')
     .distinct()
 
-export const baseQuery = (trx: TrxOrDb) =>
-  trx
+export function baseQuery(trx: TrxOrDb) {
+  return trx
     .selectFrom('patient_encounters')
     .leftJoin(
       'waiting_room',
@@ -190,6 +191,10 @@ export const baseQuery = (trx: TrxOrDb) =>
       'patient_encounters.notes',
       'patient_encounters.appointment_id',
       'patient_encounters.patient_id',
+      jsonBuildObject({
+        longitude: sql<number>`ST_X(patient_encounters.location::geometry)`,
+        latitude: sql<number>`ST_Y(patient_encounters.location::geometry)`,
+      }).as('location'),
       'waiting_room.id as waiting_room_id',
       'waiting_room.organization_id as waiting_room_organization_id',
       jsonArrayFromColumn(
@@ -234,7 +239,7 @@ export const baseQuery = (trx: TrxOrDb) =>
       ).as('providers'),
     ])
     .orderBy('patient_encounters.created_at', 'desc')
-
+}
 export const openQuery = (trx: TrxOrDb) =>
   baseQuery(trx).where('patient_encounters.closed_at', 'is', null)
 

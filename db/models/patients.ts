@@ -247,6 +247,7 @@ export async function getWithOpenEncounter(
           waiting_room_organization_id: eb.ref(
             'open_encounters.waiting_room_organization_id',
           ),
+          location: eb.ref('open_encounters.location').$notNull(),
           providers: eb.ref('open_encounters.providers').$notNull(),
           steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
         })).end().as('open_encounter'),
