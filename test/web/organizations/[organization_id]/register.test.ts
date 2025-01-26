@@ -263,8 +263,13 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/app/pending_approval`,
+          `${route}/app`,
         )
+        // TODO turn off SKIP_NURSE_REGISTRATION
+        // assertEquals(
+        //   postResponse.url,
+        //   `${route}/app/pending_approval`,
+        // )
       }
     })
   },

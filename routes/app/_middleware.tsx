@@ -12,6 +12,8 @@ import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import Layout from '../../components/library/Layout.tsx'
 
+const SKIP_NURSE_REGISTRATION = true
+
 export const handler = [
   ensureCookiePresent,
   startTrx,
@@ -90,14 +92,14 @@ function redirectIfRegistrationNeeded(
       : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
   }
 
-  if (role_needing_registration) {
+  if (role_needing_registration && !SKIP_NURSE_REGISTRATION) {
     return redirectIfNotAlreadyOnPage(
       `/app/organizations/${role_needing_registration.organization.id}/register`,
     )
   }
 
   // TODO make a page for this purpose
-  if (role_pending_approval) {
+  if (role_pending_approval && !SKIP_NURSE_REGISTRATION) {
     return redirectIfNotAlreadyOnPage('/app/pending_approval')
   }
 

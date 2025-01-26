@@ -56,12 +56,7 @@ async function inviteVhaStaff(trx: TrxOrDb) {
   const invitees = vhaClinicStaff.flatMap((email) => [
     {
       email,
-      profession: 'admin' as const,
-      organization_id: '00000000-0000-0000-0000-000000000001',
-    },
-    {
-      email,
-      profession: 'doctor' as const,
+      profession: 'nurse' as const,
       organization_id: '00000000-0000-0000-0000-000000000001',
     },
   ]).concat(vhaVirtualHospitalStaff.flatMap((email) =>
