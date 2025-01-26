@@ -6,14 +6,14 @@ import { H2 } from '../../components/library/typography/H2.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import { Person } from '../../components/library/Person.tsx'
 import { TextArea } from '../form/Inputs.tsx'
-import { PatientCard } from '../../db/models/patients.ts'
 import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {
     requesting_organization?: NearestOrganizationSearchResult
-    concerning_patient: PatientCard
+    concerning_patient: EncounterContext['state']['patient']
   },
 ) {
   return (
@@ -65,7 +65,7 @@ function DialogContents({
   concerning_patient,
   requesting_organization,
 }: {
-  concerning_patient: PatientCard
+  concerning_patient: EncounterContext['state']['patient']
   requesting_organization: NearestOrganizationSearchResult
 }) {
   return (

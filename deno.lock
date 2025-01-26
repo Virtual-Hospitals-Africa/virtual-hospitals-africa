@@ -8,6 +8,7 @@
     "jsr:@std/fmt@*": "1.0.2",
     "jsr:@std/io@*": "0.225.0",
     "jsr:@std/path@^1.0.6": "1.0.8",
+    "npm:@headlessui/tailwindcss@0.2.1": "0.2.1_tailwindcss@3.3.5__postcss@8.5.1",
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.3.5__postcss@8.5.1",
     "npm:@types/node@*": "22.5.4",
     "npm:autoprefixer@10.4.17": "10.4.17_postcss@8.4.35",
@@ -67,6 +68,12 @@
     },
     "@babel/helper-validator-identifier@7.25.9": {
       "integrity": "sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ=="
+    },
+    "@headlessui/tailwindcss@0.2.1_tailwindcss@3.3.5__postcss@8.5.1": {
+      "integrity": "sha512-2+5+NZ+RzMyrVeCZOxdbvkUSssSxGvcUxphkIfSVLpRiKsj+/63T2TOL9dBYMXVfj/CGr6hMxSRInzXv6YY7sA==",
+      "dependencies": [
+        "tailwindcss"
+      ]
     },
     "@isaacs/cliui@8.0.2": {
       "integrity": "sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==",
@@ -2704,6 +2711,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/cli@~0.224.7",
+      "npm:@headlessui/tailwindcss@0.2.1",
       "npm:@tailwindcss/forms@0.5.7",
       "npm:awesome-phonenumber@7.2.0",
       "npm:fast-levenshtein@3.0.0",

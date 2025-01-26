@@ -4,9 +4,11 @@ import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../components/library/Form.tsx'
 import {
+  HasStringId,
   LoggedInHealthWorkerContext,
   Measurement,
   Measurements,
+  PatientWithOpenEncounter,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   type RenderedPatientExaminationFinding,
@@ -25,7 +27,6 @@ import {
 } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
-import { assertOr404 } from '../../../../../../util/assertOr.ts'
 import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
 import { Button } from '../../../../../../components/library/Button.tsx'
 import { EncounterStep } from '../../../../../../db.d.ts'
@@ -43,7 +44,7 @@ export function getEncounterId(ctx: FreshContext): 'open' | string {
 }
 
 type EncounterPageProps = {
-  patient: patients.PatientCard
+  patient: HasStringId<PatientWithOpenEncounter>
   encounter: RenderedPatientEncounter
   encounter_provider: RenderedPatientEncounterProvider
   findings: RenderedPatientExaminationFinding[]
@@ -94,17 +95,16 @@ export async function handler(
 
   const { patient, encounter: { encounter, encounter_provider }, findings } =
     await promiseProps({
-      patient: patients.getCard(ctx.state.trx, {
-        id: patient_id,
-      }),
       encounter: promised_encounter,
       findings: examination_findings.forPatientEncounter(ctx.state.trx, {
         patient_id,
         encounter_id,
       }),
+      patient: patients.getWithOpenEncounter(ctx.state.trx, {
+        ids: [patient_id],
+        health_worker_id: ctx.state.healthWorker.id,
+      }).then((patients) => patients[0]),
     })
-
-  assertOr404(patient, 'Patient not found')
 
   ctx.state.patient = patient
   ctx.state.encounter = encounter
@@ -154,12 +154,15 @@ export function EncounterLayout({
   next_step_text,
   children,
   measurements,
+  care_team,
 }: {
   ctx: EncounterContext
   key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
   measurements: Measurement<keyof Measurements>[]
+  // deno-lint-ignore no-explicit-any
+  care_team: any[]
 }): JSX.Element {
   return (
     <Layout
@@ -177,6 +180,7 @@ export function EncounterLayout({
           encounter={ctx.state.encounter}
           findings={key_findings}
           measurements={measurements}
+          care_team={care_team}
         />
       }
       url={ctx.url}
@@ -257,6 +261,12 @@ export function EncounterPage(
         next_step_text={next_step_text}
         key_findings={ctx.state.findings}
         measurements={measurements}
+        care_team={[
+          {
+            health_worker_id: patient.primary_provider_health_worker_id,
+            name: patient.primary_provider_name,
+          },
+        ]}
       >
         {children}
       </EncounterLayout>

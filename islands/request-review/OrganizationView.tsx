@@ -9,8 +9,8 @@ import Table, {
 import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
-import { PatientCard } from '../../db/models/patients.ts'
 import { OrganizationCard } from './OrganizationCard.tsx'
+import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 
 const columns: TableColumn<NearestOrganizationSearchResult>[] = [
   {
@@ -63,7 +63,7 @@ export default function OrganizationsTable(
 
 export function OrganizationView(props: {
   search_url: string
-  concerning_patient: PatientCard
+  concerning_patient: EncounterContext['state']['patient']
   organizations: NearestOrganizationSearchResult[]
 }) {
   const organizations = useSignal(props.organizations)

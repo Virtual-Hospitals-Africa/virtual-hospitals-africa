@@ -86,9 +86,9 @@ const baseSelect = (trx: TrxOrDb) =>
       jsonBuildObject({
         view: view_href_sql,
       }).as('actions'),
-      'health_workers.name as primary_provider',
       'patients.nearest_organization_id',
-      'employment.health_worker_id as primary_provider_healthworker_id',
+      'health_workers.name as primary_provider_name',
+      'employment.health_worker_id as primary_provider_health_worker_id',
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
