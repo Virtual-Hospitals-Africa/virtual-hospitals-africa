@@ -206,7 +206,10 @@ import * as $nurse_registration_form from './islands/nurse-registration-form.tsx
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
 import * as $patient_cards from './islands/patient-cards.tsx'
+import * as $patient_drawer_Accordion from './islands/patient-drawer/Accordion.tsx'
+import * as $patient_drawer_CareTeamSection from './islands/patient-drawer/CareTeamSection.tsx'
 import * as $patient_drawer_Drawer from './islands/patient-drawer/Drawer.tsx'
+import * as $patient_drawer_DrawerV2 from './islands/patient-drawer/DrawerV2.tsx'
 import * as $patient_drawer_FindingsList from './islands/patient-drawer/FindingsList.tsx'
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
@@ -516,7 +519,11 @@ const manifest = {
       $past_medical_conditions_Condition,
     './islands/past-medical-conditions/Form.tsx': $past_medical_conditions_Form,
     './islands/patient-cards.tsx': $patient_cards,
+    './islands/patient-drawer/Accordion.tsx': $patient_drawer_Accordion,
+    './islands/patient-drawer/CareTeamSection.tsx':
+      $patient_drawer_CareTeamSection,
     './islands/patient-drawer/Drawer.tsx': $patient_drawer_Drawer,
+    './islands/patient-drawer/DrawerV2.tsx': $patient_drawer_DrawerV2,
     './islands/patient-drawer/FindingsList.tsx': $patient_drawer_FindingsList,
     './islands/patient-drawer/FindingsListItem.tsx':
       $patient_drawer_FindingsListItem,

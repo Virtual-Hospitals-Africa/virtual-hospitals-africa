@@ -1,5 +1,6 @@
 import { type Config } from 'tailwindcss'
 import formsPlugin from '@tailwindcss/forms'
+import headlessuiPlugin from '@headlessui/tailwindcss'
 
 export default {
   content: ['{routes,islands,components}/**/*.{ts,tsx}'],
@@ -35,5 +36,5 @@ export default {
       '9xl': ['8rem', { lineHeight: '1' }],
     },
   },
-  plugins: [formsPlugin],
+  plugins: [formsPlugin, headlessuiPlugin],
 } satisfies Config

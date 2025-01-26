@@ -4,15 +4,16 @@ import {
   Measurements,
   RenderedPatientExaminationFinding,
 } from '../../types.ts'
-import { FindingsList } from './FindingsList.tsx'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
-import Menu from '../Menu.tsx'
 import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
-import VitalsList from './VitalsList.tsx'
+import { PatientDrawerAccordion } from './Accordion.tsx'
+import Badge from '../../components/library/Badge.tsx'
+// import { FindingsList } from './FindingsList.tsx'
+// import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+// import VitalsList from './VitalsList.tsx'
 
 /* TODO
-  - PatientHeader
+  - PatientHeader - Done for now
     - PatientCard
     - In Treatment Status Badge (<Badge />)
   - General Accordion
@@ -26,7 +27,14 @@ import VitalsList from './VitalsList.tsx'
 */
 
 export function PatientDrawerV2(
-  { patient, encounter, findings, measurements, flaggedVitals = new Map() }: {
+  {
+    patient,
+    encounter,
+    // findings,
+    // measurements,
+    // flaggedVitals = new Map(),
+    care_team,
+  }: {
     form?: 'intake' | 'encounter'
     patient: {
       id: string
@@ -41,6 +49,8 @@ export function PatientDrawerV2(
       reason: string
       notes: string | null
     }
+    // deno-lint-ignore no-explicit-any
+    care_team: any[]
     findings: RenderedPatientExaminationFinding[]
     measurements: Measurement<keyof Measurements>[]
     flaggedVitals?: Map<string, Measurement<keyof Measurements>>
@@ -49,17 +59,25 @@ export function PatientDrawerV2(
   return (
     <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2 sticky right-0 min-w-[300px]'>
       <div
-        className='grid items-center justify-between border-b-2'
+        className='w-full flex flex-row items-center justify-between border-b-2'
         style={{
           height: HEADER_HEIGHT_PX,
         }}
       >
         {/* <Person person={patient} size='lg' /> */}
         <SendToSelectedPatient patient={patient} />
+
+        {/* If patient is in treatment, let the badgecolor be green otherwise red*/}
+        <Badge content={'In Treatment'} color='green' />
       </div>
 
       <div className='border-b-2'>
-        <div className='w-full py-2'>
+        <PatientDrawerAccordion
+          encounter_reason={encounter.reason}
+          care_team={care_team}
+        />
+        {
+          /* <div className='w-full py-2'>
           <SectionHeader>Reason for visit</SectionHeader>
           <p>{encounter.notes || encounter.reason}</p>
         </div>
@@ -77,18 +95,8 @@ export function PatientDrawerV2(
             measurements={measurements}
             vitals={flaggedVitals}
           />
-        </div>
-      </div>
-      <div className='flex flex-col'>
-        <Menu
-          icon='ChevronDownIcon'
-          options={[{
-            href: 'https://www.google.com',
-            label: 'Google',
-          }]}
-          button_contents='Send to'
-        >
-        </Menu>
+        </div> */
+        }
       </div>
     </div>
   )

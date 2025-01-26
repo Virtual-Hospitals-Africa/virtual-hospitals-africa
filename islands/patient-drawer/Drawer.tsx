@@ -76,22 +76,6 @@ export function PatientDrawer(
         >
         </Menu>
       </div>
-      {
-        /* <Button
-        type='button'
-        variant='outline'
-        color='blue'
-        className='flex-1 max-w-xl'
-        onClick={handleClick}
-      >
-        Send to
-      </Button>
-      <SendableList
-        form={form}
-        sendables={sendables}
-        selected={selected}
-      /> */
-      }
     </div>
   )
 }

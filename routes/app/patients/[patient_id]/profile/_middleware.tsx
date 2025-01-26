@@ -7,7 +7,6 @@ import { PatientContext } from '../_middleware.tsx'
 import type { FreshContext } from '$fresh/server.ts'
 import { assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import { PatientDrawer } from '../../../../../islands/patient-drawer/Drawer.tsx'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export function handler(
@@ -50,18 +49,7 @@ export const PatientPage = (
         'orders',
       ]
 
-      const drawer = ctx.state.patient.open_encounter?.providers.some((p) =>
-          p.health_worker_id === ctx.state.healthWorker.id
-        )
-        ? (
-          <PatientDrawer
-            patient={ctx.state.patient}
-            encounter={ctx.state.patient.open_encounter}
-            findings={[]}
-            measurements={[]}
-          />
-        )
-        : undefined
+      const drawer = undefined
 
       const rendered = await render(req, ctx)
 
@@ -83,34 +71,36 @@ export const PatientPage = (
                       )}
 
                       {(ctx.state.patient.nearest_organization ||
-                        ctx.state.patient.primary_provider_healthworker_id) && (
-                        <>
-                          {ctx.state.patient.primary_provider_healthworker_id &&
-                            (
+                        ctx.state.patient.primary_provider_health_worker_id) &&
+                        (
+                          <>
+                            {ctx.state.patient
+                              .primary_provider_health_worker_id &&
+                              (
+                                <a
+                                  href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_health_worker_id}`}
+                                  title={`View details of Dr. ${ctx.state.patient.primary_provider_name}`}
+                                  className='hover:underline text-blue-600'
+                                >
+                                  Dr. {ctx.state.patient.primary_provider_name}
+                                </a>
+                              )}
+                            {ctx.state.patient.nearest_organization &&
+                              ctx.state.patient
+                                .primary_provider_health_worker_id &&
+                              ', '}
+                            {ctx.state.patient.nearest_organization && (
                               <a
-                                href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_healthworker_id}`}
-                                title={`View details of Dr. ${ctx.state.patient.primary_provider}`}
+                                href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
+                                title={`View details of ${ctx.state.patient.nearest_organization}`}
                                 className='hover:underline text-blue-600'
                               >
-                                Dr. {ctx.state.patient.primary_provider}
+                                {ctx.state.patient.nearest_organization}
                               </a>
                             )}
-                          {ctx.state.patient.nearest_organization &&
-                            ctx.state.patient
-                              .primary_provider_healthworker_id &&
-                            ', '}
-                          {ctx.state.patient.nearest_organization && (
-                            <a
-                              href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
-                              title={`View details of ${ctx.state.patient.nearest_organization}`}
-                              className='hover:underline text-blue-600'
-                            >
-                              {ctx.state.patient.nearest_organization}
-                            </a>
-                          )}
-                          <br />
-                        </>
-                      )}
+                            <br />
+                          </>
+                        )}
                     </>
                   ),
                 }}
