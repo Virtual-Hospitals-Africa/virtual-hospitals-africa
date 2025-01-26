@@ -1,4 +1,5 @@
 import type { JSX } from 'preact'
+import isObjectLike from '../../util/isObjectLike.ts'
 
 type JsonSerializable =
   | string
@@ -19,13 +20,34 @@ export function HiddenInput(
   if (!value) {
     return null
   }
-  if (typeof value !== 'string' && typeof value !== 'number') {
-    value = JSON.stringify(value)
+  if (Array.isArray(value)) {
+    return (
+      <input
+        type='hidden'
+        value={JSON.stringify(value)}
+        form={form}
+        name={name}
+      />
+    )
+  }
+
+  if (isObjectLike(value)) {
+    return (
+      <>
+        {Object.keys(value).map((key) => (
+          <HiddenInput
+            value={value[key]}
+            form={form}
+            name={name ? `${name}.${key}` : key}
+          />
+        ))}
+      </>
+    )
   }
   return (
     <input
       type='hidden'
-      value={value}
+      value={value === true ? 'true' : value}
       form={form}
       name={name}
     />

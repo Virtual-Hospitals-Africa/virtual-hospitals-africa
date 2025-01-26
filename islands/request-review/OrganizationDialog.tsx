@@ -73,7 +73,9 @@ function DialogContents({
       method='POST'
       className='bg-white shadow sm:rounded-lgoverflow-hidden'
     >
-      <HiddenInput value={{ organization_id: requesting_organization.id }} />
+      <HiddenInput
+        value={{ 'review_request.organization_id': requesting_organization.id }}
+      />
       <ViewIconWithBackground />
       <div className='p-12'>
         <H2>Requesting a patient review</H2>
@@ -91,7 +93,7 @@ function DialogContents({
         </div>
         <div>
           <h3>Additional Notes</h3>
-          <TextArea name='additional_notes' />
+          <TextArea name='review_request.additional_notes' />
         </div>
         <FormButtons
           cancel={{
