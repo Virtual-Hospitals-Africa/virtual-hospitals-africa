@@ -27,26 +27,29 @@ describe(
       const [test_clinic, test_virtual_hospital] = json.results
       assertEquals(test_clinic, {
         id: '00000000-0000-0000-0000-000000000001',
-        address: '123 Main St, Bristol, UK, 23456',
+        address: '123 Main St, Gweru, Zimbabwe, 23456',
         category: 'Clinic',
-        description: '123 Main St, Bristol, UK, 23456',
+        description: '123 Main St, Gweru, Zimbabwe, 23456',
         name: 'VHA Test Clinic',
         distance_meters: 12100,
         google_maps_link: 'https://maps.google.com',
         location: {
-          latitude: 51.4545,
-          longitude: -2.5879,
+          latitude: -19.4554096,
+          longitude: 29.7739353,
         },
       })
       assertEquals(test_virtual_hospital, {
         id: '00000000-0000-0000-0000-000000000002',
-        address: null,
-        category: 'Virtual Hospital',
-        description: null,
-        name: 'VHA Test Virtual Hospital',
-        location: null,
+        address: '12356 Main St, Gweru, Zimbabwe, 23456',
+        category: 'Regional Medical Center',
+        description: '12356 Main St, Gweru, Zimbabwe, 23456',
+        name: 'VHA Test Regional Medical Center',
         distance_meters: 12100,
         google_maps_link: 'https://maps.google.com',
+        location: {
+          latitude: -19.4555096,
+          longitude: 29.7738353,
+        },
       })
     })
   },

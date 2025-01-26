@@ -198,7 +198,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             waiting_room_organization_id:
               '00000000-0000-0000-0000-000000000001',
             steps_completed: [],
-            location: { latitude: 51.4545, longitude: -2.5879 },
+            location: { latitude: -19.4554096, longitude: 29.7739353 },
           },
         },
       ])
@@ -266,7 +266,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
               waiting_room_organization_id:
                 '00000000-0000-0000-0000-000000000001',
               steps_completed: [],
-              location: { latitude: 51.4545, longitude: -2.5879 },
+              location: { latitude: -19.4554096, longitude: 29.7739353 },
             },
           },
         ])
