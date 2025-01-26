@@ -33,7 +33,7 @@ import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import words from '../../../../../../util/words.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
-import { PatientDrawer } from '../../../../../../islands/patient-drawer/Drawer.tsx'
+import { PatientDrawerV2 } from '../../../../../../islands/patient-drawer/DrawerV2.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -172,7 +172,7 @@ export function EncounterLayout({
         />
       }
       drawer={
-        <PatientDrawer
+        <PatientDrawerV2
           patient={ctx.state.patient}
           encounter={ctx.state.encounter}
           findings={key_findings}
