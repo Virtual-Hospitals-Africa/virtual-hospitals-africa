@@ -1,5 +1,6 @@
 import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
+import { assert } from 'std/assert/assert.ts'
 
 const baseStyles = {
   solid: 'shadow-sm py-1 px-4',
@@ -36,6 +37,8 @@ type ButtonProps =
   & {
     className?: string
     href?: string
+    action?: string
+    method?: 'GET' | 'POST'
   }
   & ({
     variant: 'solid'
@@ -56,6 +59,8 @@ export function Button({
   color = 'primary',
   className,
   href,
+  action,
+  method,
   type = 'submit',
   ...props
 }: ButtonProps) {
@@ -66,6 +71,20 @@ export function Button({
     (variantStyles as any)[variant][color],
     className,
   )
+
+  if (method === 'POST') {
+    assert(action, 'inline form submit button must have action')
+    assert(
+      type === 'submit',
+      'inline form submit button must be of type sybmit',
+    )
+
+    return (
+      <form method='POST' action={action}>
+        <button className={className} type='submit' {...props} />
+      </form>
+    )
+  }
 
   return href
     ? (

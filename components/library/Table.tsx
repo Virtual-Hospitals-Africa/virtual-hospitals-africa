@@ -6,6 +6,7 @@ import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertPersonLike, Person, PersonData } from './Person.tsx'
 import Pagination from './Pagination.tsx'
+import { Button } from './Button.tsx'
 
 type Showable =
   | string
@@ -22,6 +23,7 @@ type Row = Record<string, unknown> & {
 export type ExtendedActionData = string | {
   text: string
   href?: string
+  method?: 'GET' | 'POST'
   disabled?: boolean
 }
 
@@ -71,31 +73,24 @@ function ActionButton(
 ) {
   if (!action) return null
 
-  if (typeof action === 'string') {
-    return (
-      <a
-        href={action}
-        className='text-indigo-600 hover:text-indigo-900 capitalize'
-      >
-        {name}
-      </a>
-    )
-  }
+  const href = typeof action === 'string' ? action : action.href
 
-  return action.disabled
-    ? (
-      <span className='text-gray-400 capitalize'>
-        {action.text || name}
-      </span>
-    )
-    : (
-      <a
-        href={action.href}
-        className='text-indigo-600 hover:text-indigo-900 capitalize'
-      >
-        {action.text || name}
-      </a>
-    )
+  const disabled = isObjectLike(action) && action.disabled
+
+  const text = (isObjectLike(action) && action.text) || name
+
+  const is_post = isObjectLike(action) && action.method === 'POST'
+
+  return (
+    <Button
+      href={!is_post ? href : undefined}
+      action={is_post ? href : undefined}
+      disabled={disabled}
+      className='text-indigo-600 hover:text-indigo-900 capitalize'
+    >
+      {text}
+    </Button>
+  )
 }
 
 function TableCellInnerContents<T extends Row>(

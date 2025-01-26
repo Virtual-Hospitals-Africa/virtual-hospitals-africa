@@ -1,36 +1,6 @@
 import { Maybe } from '../types.ts'
 import AsyncSearch from './AsyncSearch.tsx'
-import cls from '../util/cls.ts'
-
-// TODO @mike implementing the info on the card
-function OrganizationCard<T>({ option: organization, selected }: {
-  option: {
-    id: string
-    name: string
-    address: string
-    location: {
-      latitude: number
-      longitude: number
-    }
-    distance_meters: number
-    google_maps_link: string
-  }
-  selected: boolean
-}) {
-  return (
-    <a href={`#request_review_from_organization_id=${organization.id}`}>
-      <div className='flex flex-col'>
-        <div className={cls('text-base', selected && 'font-bold')}>
-          {organization.name}
-        </div>
-        <div className={cls('text-xs', selected && 'font-bold')}>
-          {organization.address} {organization.distance_meters}{' '}
-          {organization.google_maps_link}
-        </div>
-      </div>
-    </a>
-  )
-}
+import { NearestOrganizationSearchResult } from '../db/models/nearest_organizations.ts'
 
 export default function OrganizationSearch(
   {
@@ -40,15 +10,13 @@ export default function OrganizationSearch(
     sort,
     label = 'Virtual Organization',
     required,
+    do_not_render_built_in_options,
+    onUpdate,
   }: {
     name: string
     url?: string
     label?: string
-    value?: Maybe<{
-      id: string
-      name: string
-      address: string | null
-    }>
+    value?: Maybe<NearestOrganizationSearchResult>
     filters?: {
       accepting_patients?: boolean
       is_physical?: boolean
@@ -57,8 +25,15 @@ export default function OrganizationSearch(
       by: 'nearest'
       direction: 'asc' | 'desc'
     }
-    onSelect?: (selected: { id: string; name: string; address: string }) => void
+    onSelect?: (selected: NearestOrganizationSearchResult) => void
     required?: boolean
+    do_not_render_built_in_options?: boolean
+    onUpdate?(values: {
+      current_page: {
+        results: NearestOrganizationSearchResult[]
+        page: number
+      }
+    }): void
   },
 ) {
   const params = new URLSearchParams()
@@ -74,8 +49,6 @@ export default function OrganizationSearch(
     <AsyncSearch
       name={name}
       label={label}
-      // deno-lint-ignore no-explicit-any
-      Option={OrganizationCard as any}
       search_route={search_route}
       // onSelect={(selected) => {
       //   if (selected && props.kind === 'physical') {
@@ -86,6 +59,8 @@ export default function OrganizationSearch(
       //   )
       // }}
       required={required}
+      do_not_render_built_in_options={do_not_render_built_in_options}
+      onUpdate={onUpdate}
     />
   )
 }

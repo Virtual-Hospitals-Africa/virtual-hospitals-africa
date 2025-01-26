@@ -58,11 +58,13 @@ export function NearestHealthCareSection(
   return (
     <FormSection header='Nearest Health Care'>
       <FormRow>
+        {/* TODO point to organization's nearest organizations  */}
         <OrganizationSearch
           name='nearest_organization'
           filters={{ is_physical: true }}
           label='Nearest Organization'
-          value={nearest_organization_signal.value}
+          // deno-lint-ignore no-explicit-any
+          value={nearest_organization_signal.value as any}
           sort={{ by: 'nearest', direction: 'asc' }}
           onSelect={(organization) =>
             nearest_organization_signal.value = organization}

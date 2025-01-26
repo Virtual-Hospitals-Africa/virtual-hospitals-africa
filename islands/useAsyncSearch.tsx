@@ -6,7 +6,22 @@ export type AsyncSearchProps<
   T extends { id?: unknown; name: string } = { id?: unknown; name: string },
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
   search_route: string
-  onQuery?: (query: string) => void
+  onQuery?(query: string): void
+  onUpdate?(values: {
+    query: string
+    page: number
+    delay: null | number
+    active_request: null | XMLHttpRequest
+    pages: {
+      results: T[]
+      page: number
+    }[]
+    current_page: {
+      results: T[]
+      page: number
+    }
+    has_next_page: boolean
+  }): void
 }
 
 export default function useAsyncSearch<
@@ -14,6 +29,7 @@ export default function useAsyncSearch<
 >({
   search_route,
   value,
+  onUpdate,
 }: AsyncSearchProps<T>) {
   const [search, setSearch] = useState({
     query: value?.name ?? '',
@@ -23,8 +39,6 @@ export default function useAsyncSearch<
     pages: [] as { results: T[]; page: number }[],
     has_next_page: false,
   })
-
-  console.log('EWLKEKL', search_route)
 
   // Make a cancellable request when the query changes
   useEffect(() => {
@@ -77,14 +91,17 @@ export default function useAsyncSearch<
             search.page === page.page,
             'Expected the page to match the request page',
           )
-          return {
+          const next_search = {
             query: search.query,
             page: page.page,
             delay: null,
             active_request: null,
+            current_page: page,
             pages: [...search.pages, page],
             has_next_page: page.has_next_page,
           }
+          onUpdate?.(next_search)
+          return next_search
         }
         return search
       })
@@ -120,6 +137,7 @@ export default function useAsyncSearch<
   return {
     loading,
     loadMore,
+    search,
     results: search.pages.flatMap((page) => page.results),
     setQuery: (query: string) =>
       setSearch((search) => ({
