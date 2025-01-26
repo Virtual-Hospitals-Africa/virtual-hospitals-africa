@@ -1,13 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
 import * as waiting_room from '../db/models/waiting_room.ts'
-import * as appointments from '../db/models/appointments.ts'
-import { TabProps, Tabs } from '../components/library/Tabs.tsx'
 import { LoggedInHealthWorker } from '../types.ts'
 import WaitingRoomView from '../components/waiting_room/View.tsx'
 import { firstName } from '../util/name.ts'
 import redirect from '../util/redirect.ts'
-import Badge from '../components/library/Badge.tsx'
 import { HealthWorkerHomePageLayout } from './app/_middleware.tsx'
 
 export default HealthWorkerHomePageLayout(
@@ -50,33 +47,6 @@ export default HealthWorkerHomePageLayout(
       organization_id,
       health_worker: healthWorker,
     })
-    const appointments_count = await appointments.countUpcoming(
-      trx,
-      {
-        health_worker_id: healthWorker.id,
-      },
-    )
-
-    const tabs: TabProps[] = [
-      {
-        tab: 'waiting_room',
-        href: `/app`,
-        active: true,
-      },
-      {
-        tab: 'appointments',
-        href: '/app/calendar',
-        active: false,
-        rightIcon: appointments_count
-          ? <Badge content={appointments_count} />
-          : null,
-      },
-      {
-        tab: 'orders',
-        href: '/app/calendar',
-        active: false,
-      },
-    ]
 
     const { organization } = ctx.state.healthWorker.employment.find((e) =>
       e.organization.id === organization_id
@@ -86,14 +56,11 @@ export default HealthWorkerHomePageLayout(
     return {
       title: `Good day, ${firstName(healthWorker.name)}!`,
       children: (
-        <>
-          <Tabs tabs={tabs} />
-          <WaitingRoomView
-            organization_id={organization_id}
-            waiting_room={await getting_waiting_room}
-            can_add_patients={can_add_patients}
-          />
-        </>
+        <WaitingRoomView
+          organization_id={organization_id}
+          waiting_room={await getting_waiting_room}
+          can_add_patients={can_add_patients}
+        />
       ),
     }
   },
