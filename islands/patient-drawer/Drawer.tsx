@@ -3,7 +3,6 @@ import {
   Measurement,
   Measurements,
   RenderedPatientExaminationFinding,
-  type Sendable,
 } from '../../types.ts'
 import { FindingsList } from './FindingsList.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
@@ -30,7 +29,6 @@ export function PatientDrawer(
     }
     findings: RenderedPatientExaminationFinding[]
     measurements: Measurement<keyof Measurements>[]
-    sendables: Sendable[]
     flaggedVitals?: Map<string, Measurement<keyof Measurements>>
   },
 ) {
