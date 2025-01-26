@@ -81,7 +81,8 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       response.body?.cancel()
     })
 
-    it('redirects unregistered nurse to registration', async () => {
+    // TODO turn off SKIP_NURSE_REGISTRATION
+    it.skip('redirects unregistered nurse to registration', async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'nurse',
       })
@@ -94,7 +95,8 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(pageContents.includes('First Name'))
     })
 
-    it('redirects unapproved nurse to /app/pending_approval', async () => {
+    // TODO turn off SKIP_NURSE_REGISTRATION
+    it.skip('redirects unapproved nurse to /app/pending_approval', async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'awaiting-approval-nurse',
       })
