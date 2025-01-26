@@ -5,18 +5,13 @@ import Layout from '../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
-  LoggedInHealthWorkerHandler,
-  Maybe,
   Measurement,
   Measurements,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   type RenderedPatientExaminationFinding,
-  Sendable,
-  SendToFormSubmission,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
-import * as send_to from '../../../../../../db/models/send_to.ts'
 import * as examination_findings from '../../../../../../db/models/examination_findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
@@ -30,17 +25,14 @@ import {
 } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
-import { assertOr400, assertOr404 } from '../../../../../../util/assertOr.ts'
+import { assertOr404 } from '../../../../../../util/assertOr.ts'
 import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
-import { SendToButton } from '../../../../../../islands/SendTo/Button.tsx'
 import { Button } from '../../../../../../components/library/Button.tsx'
 import { EncounterStep } from '../../../../../../db.d.ts'
 import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import words from '../../../../../../util/words.ts'
-import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
-import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import { PatientDrawer } from '../../../../../../islands/patient-drawer/Drawer.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
@@ -69,42 +61,6 @@ export async function completeStep(ctx: EncounterContext) {
     step,
   })
   return redirect(nextLink(ctx))
-}
-
-export function postHandler<T>(
-  assertion: (
-    form_values: unknown,
-  ) => asserts form_values is T,
-  handleForm: (
-    ctx: EncounterContext,
-    form_values: T,
-  ) => Promise<void>,
-): LoggedInHealthWorkerHandler<EncounterContext> {
-  function assertSendToAnd(
-    form_values: unknown,
-  ): asserts form_values is T & {
-    send_to?: Maybe<SendToFormSubmission>
-  } {
-    assertOr400(isObjectLike(form_values))
-    if (form_values.send_to) send_to.SendToSchema.parse(form_values.send_to)
-    assertion(form_values)
-  }
-
-  return {
-    async POST(req, ctx) {
-      const form_values = await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertSendToAnd,
-      )
-      await handleForm(ctx, form_values)
-      const response = await completeStep(ctx)
-      if (form_values.send_to) {
-        throw new Error('TODO: implement send to')
-      }
-      return response
-    },
-  }
 }
 
 export async function handler(
@@ -194,14 +150,12 @@ const nextLink = (ctx: FreshContext) =>
 
 export function EncounterLayout({
   ctx,
-  sendables,
   key_findings,
   next_step_text,
   children,
   measurements,
 }: {
   ctx: EncounterContext
-  sendables: Sendable[]
   key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
@@ -222,7 +176,6 @@ export function EncounterLayout({
           patient={ctx.state.patient}
           encounter={ctx.state.encounter}
           findings={key_findings}
-          sendables={sendables}
           measurements={measurements}
         />
       }
@@ -233,11 +186,6 @@ export function EncounterLayout({
         {children}
         <hr />
         <ButtonsContainer>
-          <SendToButton
-            form='encounter'
-            patient={ctx.state.patient}
-            sendables={sendables}
-          />
           <Button
             type='submit'
             className='flex-1 max-w-xl'
@@ -268,8 +216,7 @@ export function EncounterPage(
     _req: Request,
     ctx: EncounterContext,
   ) {
-    const { healthWorker, patient, encounter, encounter_provider, trx } =
-      ctx.state
+    const { patient, encounter, encounter_provider, trx } = ctx.state
     const step = ctx.route.split('/').pop()!
     const previously_completed = encounter.steps_completed.includes(
       step as unknown as EncounterStep,
@@ -283,19 +230,9 @@ export function EncounterPage(
 
     assert(location, 'Location not found')
 
-    const { rendered, sendables, measurements } = await promiseProps({
+    const { rendered, measurements } = await promiseProps({
       rendered: Promise.resolve(
         render({ ctx, ...ctx.state, previously_completed }),
-      ),
-      sendables: send_to.forPatientEncounter(
-        trx,
-        patient.id,
-        location,
-        encounter.providers,
-        {
-          exclude_health_worker_id: healthWorker.id,
-          primary_doctor_id: ctx.state.patient.primary_doctor_id ?? undefined,
-        },
       ),
       measurements: patient_measurements.getEncounterVitals(trx, {
         patient_id: patient.id,
@@ -318,7 +255,6 @@ export function EncounterPage(
       <EncounterLayout
         ctx={ctx}
         next_step_text={next_step_text}
-        sendables={sendables}
         key_findings={ctx.state.findings}
         measurements={measurements}
       >

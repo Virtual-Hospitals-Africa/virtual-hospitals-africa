@@ -58,7 +58,6 @@ export const PatientPage = (
             patient={ctx.state.patient}
             encounter={ctx.state.patient.open_encounter}
             findings={[]}
-            sendables={[]}
             measurements={[]}
           />
         )
