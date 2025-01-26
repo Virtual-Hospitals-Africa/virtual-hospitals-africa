@@ -65,7 +65,12 @@ const patient_scenarios: PatientScenario[] = [
 
 type HW = Awaited<ReturnType<typeof addTestHealthWorker>>
 
-async function addPatientsToWaitingRoom() {
+async function addPatientsToWaitingRoom(
+  { rural_clinic_organization_id, requesting_review_of_organization_id }: {
+    rural_clinic_organization_id: string
+    requesting_review_of_organization_id: string
+  },
+) {
   const avatars_used = new Set<string>()
   function randomAvatarNotYetUsed(gender: 'male' | 'female') {
     let random_avatar = randomAvatar(gender)
@@ -136,7 +141,7 @@ async function addPatientsToWaitingRoom() {
 
       const patient_encounter = await patient_encounters.insert(
         db,
-        '00000000-0000-0000-0000-000000000001',
+        rural_clinic_organization_id,
         {
           patient_id: patient.id,
           reason,
@@ -192,7 +197,7 @@ async function addPatientsToWaitingRoom() {
           patient_id: patient.id,
           encounter_id: patient_encounter.id,
           requested_by: patient_encounter.providers[0].encounter_provider_id,
-          organization_id: '00000000-0000-0000-0000-000000000002',
+          organization_id: requesting_review_of_organization_id,
           doctor_id: null,
           requester_notes: 'Patient has lower back pain',
         })
@@ -252,7 +257,11 @@ async function addPatientsToWaitingRoom() {
 
 async function addDummyData() {
   /*const { admin, nurses } = */
-  await addPatientsToWaitingRoom()
+  await addPatientsToWaitingRoom({
+    rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+    requesting_review_of_organization_id:
+      '00000000-0000-0000-0000-000000000002',
+  })
   // await addInventoryTransactions(admin, nurses)
 }
 

@@ -30,7 +30,6 @@ export function jsonSearchHandler<
 ): LoggedInHealthWorkerHandlerWithProps<unknown> {
   return {
     GET(req, ctx) {
-      console.log('IN HERE!!KL!KLLK')
       assertEquals(req.headers.get('accept'), 'application/json')
       let page = 1
       // deno-lint-ignore no-explicit-any

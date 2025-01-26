@@ -220,10 +220,13 @@ import * as $prescriptions_MedicationInput from './islands/prescriptions/Medicat
 import * as $prescriptions_MedicationRow from './islands/prescriptions/MedicationRow.tsx'
 import * as $prescriptions_ScheduleInput from './islands/prescriptions/ScheduleInput.tsx'
 import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow.tsx'
-import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
 import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
+import * as $request_review_OrganizationCard from './islands/request-review/OrganizationCard.tsx'
+import * as $request_review_OrganizationDialog from './islands/request-review/OrganizationDialog.tsx'
 import * as $request_review_OrganizationView from './islands/request-review/OrganizationView.tsx'
+import * as $request_review_OrganizationsTable from './islands/request-review/OrganizationsTable.tsx'
+import * as $request_review_ViewIconWithBackground from './islands/request-review/ViewIconWithBackground.tsx'
 import * as $summary_DescriptionRow from './islands/summary/DescriptionRow.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
@@ -532,11 +535,18 @@ const manifest = {
     './islands/prescriptions/MedicationRow.tsx': $prescriptions_MedicationRow,
     './islands/prescriptions/ScheduleInput.tsx': $prescriptions_ScheduleInput,
     './islands/prescriptions/ScheduleRow.tsx': $prescriptions_ScheduleRow,
-    './islands/referral/Form.tsx': $referral_Form,
     './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
     './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
+    './islands/request-review/OrganizationCard.tsx':
+      $request_review_OrganizationCard,
+    './islands/request-review/OrganizationDialog.tsx':
+      $request_review_OrganizationDialog,
     './islands/request-review/OrganizationView.tsx':
       $request_review_OrganizationView,
+    './islands/request-review/OrganizationsTable.tsx':
+      $request_review_OrganizationsTable,
+    './islands/request-review/ViewIconWithBackground.tsx':
+      $request_review_ViewIconWithBackground,
     './islands/summary/DescriptionRow.tsx': $summary_DescriptionRow,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,

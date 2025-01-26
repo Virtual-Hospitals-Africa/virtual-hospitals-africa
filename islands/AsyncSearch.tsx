@@ -5,7 +5,22 @@ export type AsyncSearchProps<
   T extends { id?: unknown; name: string } = { id?: unknown; name: string },
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
   search_route: string
-  onQuery?: (query: string) => void
+  onQuery?(query: string): void
+  onUpdate?(values: {
+    query: string
+    page: number
+    delay: null | number
+    active_request: null | XMLHttpRequest
+    pages: {
+      results: T[]
+      page: number
+    }[]
+    current_page: {
+      results: T[]
+      page: number
+    }
+    has_next_page: boolean
+  }): void
 }
 
 export default function AsyncSearch<
@@ -14,11 +29,13 @@ export default function AsyncSearch<
   search_route,
   value,
   onQuery,
+  onUpdate,
   ...rest
 }: AsyncSearchProps<T>) {
   const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
     value,
+    onUpdate,
   })
   return (
     <Search

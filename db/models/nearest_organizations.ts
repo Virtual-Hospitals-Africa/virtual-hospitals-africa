@@ -1,8 +1,8 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { Location, Maybe, TrxOrDb } from '../../types.ts'
-import { jsonBuildObject } from '../helpers.ts'
-import { base } from './_base.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { base, SearchResult } from './_base.ts'
 
 export type SearchOpts = {
   location: Location
@@ -25,7 +25,7 @@ export function baseQuery(
     .innerJoin('addresses', 'address_id', 'addresses.id')
     .where('inactive_reason', 'is', null)
     .where('location', 'is not', null)
-    .select([
+    .select((eb) => [
       'organizations.id',
       'organizations.name',
       'organizations.category',
@@ -35,6 +35,26 @@ export function baseQuery(
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
       distance_sql.as('distance_meters'),
+      sql<string>`'https://maps.google.com'`.as('google_maps_link'),
+      sql<string>`'Open'`.as('status'),
+      jsonArrayFrom(
+        eb.selectFrom('employment')
+          .innerJoin(
+            'health_workers',
+            'employment.health_worker_id',
+            'health_workers.id',
+          )
+          .select([
+            'health_workers.name',
+            'health_workers.avatar_url',
+          ])
+          .whereRef(
+            'employment.organization_id',
+            '=',
+            'organizations.id',
+          )
+          .where('employment.profession', '=', 'doctor'),
+      ).as('doctors'),
     ])
     .$if(
       search.kind === 'hospital',
@@ -55,6 +75,8 @@ const model = base({
   baseQuery,
   formatResult: (x) => x,
 })
+
+export type NearestOrganizationSearchResult = SearchResult<typeof model>
 
 export const search = model.search
 export const getById = model.getById

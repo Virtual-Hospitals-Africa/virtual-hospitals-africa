@@ -38,6 +38,7 @@ function getView(ctx: EncounterContext) {
   return { tabs }
 }
 
+// TODO support initial search
 export function RequestReviewPage(
   { ctx }: EncounterPageChildProps,
 ) {
@@ -50,7 +51,11 @@ export function RequestReviewPage(
   return (
     <>
       {show_tabs && <Tabs {...getView(ctx)} />}
-      <OrganizationView search_url={organization_search_url} />
+      <OrganizationView
+        search_url={organization_search_url}
+        organizations={[]}
+        concerning_patient={ctx.state.patient}
+      />
     </>
   )
 }
