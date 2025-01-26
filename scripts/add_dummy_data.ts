@@ -273,19 +273,20 @@ async function addPatientsToWaitingRoom(
 //   // }
 // }
 
+// TODO make organizations, scenarios, etc. configurable. For now, hardcoding
 async function addDummyData() {
   /*const { admin, nurses } = */
-  // await addPatientsToWaitingRoom({
-  //   rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
-  //   requesting_review_of_organization_id:
-  //     '00000000-0000-0000-0000-000000000002',
-  // })
-
   await addPatientsToWaitingRoom({
     rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
     requesting_review_of_organization_id:
-      '94f25f33-a472-4743-959d-403796ee9ad4',
+      '00000000-0000-0000-0000-000000000002',
   })
+
+  // await addPatientsToWaitingRoom({
+  //   rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+  //   requesting_review_of_organization_id:
+  //     '94f25f33-a472-4743-959d-403796ee9ad4',
+  // })
 
   // await addInventoryTransactions(admin, nurses)
 }
