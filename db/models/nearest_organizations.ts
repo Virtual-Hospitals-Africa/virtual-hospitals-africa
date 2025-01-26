@@ -70,10 +70,25 @@ export function baseQuery(
       !!search.excluding_id,
       (qb) => qb.where('organizations.id', '!=', search.excluding_id!),
     )
-    // .$if(
-    //   !!search.has_doctors,
-    //   (qb) => qb.having(sql<number>`json_array_length(doctors)`, '>', 0),
-    // )
+    .$if(
+      !!search.has_doctors,
+      (qb) =>
+        qb.where(
+          (eb) =>
+            eb.selectFrom('employment as doctor_employment')
+              .whereRef(
+                'doctor_employment.organization_id',
+                '=',
+                'organizations.id',
+              )
+              .where('doctor_employment.profession', '=', 'doctor')
+              .select((eb2) =>
+                eb2.fn.count('doctor_employment.id').as('doctor_count')
+              ),
+          '>',
+          0,
+        ),
+    )
     .orderBy(
       distance_sql,
     )

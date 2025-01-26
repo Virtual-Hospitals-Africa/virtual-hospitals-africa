@@ -108,6 +108,7 @@ async function addPatientsToWaitingRoom(
 
   console.log('adding doctors...')
   const num_regional_medical_center_staff = 2
+  // deno-lint-ignore no-unused-vars
   const doctors: HW[] = await Promise.all(
     range(num_regional_medical_center_staff).map(() => {
       const demo = randomZimbabweanDemographics()
