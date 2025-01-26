@@ -6,9 +6,11 @@ import { base, SearchResult } from './_base.ts'
 
 export type SearchOpts = {
   location: Location
+  excluding_id?: string
   search?: Maybe<string>
   kind?: 'hospital'
   limit?: number
+  has_doctors?: boolean
 }
 
 export function baseQuery(
@@ -64,6 +66,14 @@ export function baseQuery(
       !!search.search,
       (qb) => qb.where('organizations.name', 'ilike', `%${search.search}%`),
     )
+    .$if(
+      !!search.excluding_id,
+      (qb) => qb.where('organizations.id', '!=', search.excluding_id!),
+    )
+    // .$if(
+    //   !!search.has_doctors,
+    //   (qb) => qb.having(sql<number>`json_array_length(doctors)`, '>', 0),
+    // )
     .orderBy(
       distance_sql,
     )

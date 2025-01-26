@@ -81,7 +81,7 @@ async function addPatientsToWaitingRoom(
     return random_avatar
   }
 
-  const num_medical_staff = 5
+  const num_rural_clinic_medical_staff = 5
   const admin_demo = randomZimbabweanDemographics()
   const admin = await addTestHealthWorker(db, {
     scenario: 'admin',
@@ -90,9 +90,9 @@ async function addPatientsToWaitingRoom(
       avatar_url: randomAvatarNotYetUsed(admin_demo.gender),
     },
   })
-  console.log('admin')
+
   const nurses: HW[] = await Promise.all(
-    range(num_medical_staff).map(() => {
+    range(num_rural_clinic_medical_staff).map(() => {
       const demo = randomZimbabweanDemographics()
       return addTestHealthWorker(db, {
         scenario: 'approved-nurse',
@@ -104,19 +104,20 @@ async function addPatientsToWaitingRoom(
     }),
   )
 
-  // const doctors: HW[] = await Promise.all(
-  //   range(num_medical_staff).map(() => {
-  //     const demo = randomZimbabweanDemographics()
-  //     return addTestHealthWorker(db, {
-  //       scenario: 'doctor',
-  //       organization_id: '00000000-0000-0000-0000-000000000002',
-  //       health_worker_attrs: {
-  //         name: demo.name,
-  //         avatar_url: randomAvatarNotYetUsed(demo.gender),
-  //       },
-  //     })
-  //   }),
-  // )
+  const num_regional_medical_center_staff = 2
+  const doctors: HW[] = await Promise.all(
+    range(num_regional_medical_center_staff).map(() => {
+      const demo = randomZimbabweanDemographics()
+      return addTestHealthWorker(db, {
+        scenario: 'doctor',
+        organization_id: requesting_review_of_organization_id,
+        health_worker_attrs: {
+          name: demo.name,
+          avatar_url: randomAvatarNotYetUsed(demo.gender),
+        },
+      })
+    }),
+  )
 
   await Promise.all(
     patient_scenarios.map(async ([gender, reason, review_status], i) => {
@@ -257,11 +258,18 @@ async function addPatientsToWaitingRoom(
 
 async function addDummyData() {
   /*const { admin, nurses } = */
+  // await addPatientsToWaitingRoom({
+  //   rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+  //   requesting_review_of_organization_id:
+  //     '00000000-0000-0000-0000-000000000002',
+  // })
+
   await addPatientsToWaitingRoom({
     rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
     requesting_review_of_organization_id:
-      '00000000-0000-0000-0000-000000000002',
+      '94f25f33-a472-4743-959d-403796ee9ad4',
   })
+
   // await addInventoryTransactions(admin, nurses)
 }
 
