@@ -21,8 +21,8 @@ export default function AvatarGroup({ people, plus_count }: AvatarGroupProps) {
       ))}
       {plus_count != null && plus_count > 0 && (
         <Avatar
-          initials={'+' + plus_count}
-          className='inline-block size-6 rounded-full ring-2 ring-white'
+          plus_count={plus_count}
+          className='inline-block size-6 rounded-full ring-2 ring-white font-semibold'
         />
       )}
     </div>

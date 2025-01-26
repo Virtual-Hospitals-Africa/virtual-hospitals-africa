@@ -1,5 +1,5 @@
 export async function forEach<T>(
-  generator: Iterable<T> | AsyncIterable<T>,
+  generator: Iterable<T> | AsyncIterable<T> | Array<T>,
   fn: (item: T) => Promise<unknown>,
   { concurrency } = { concurrency: 10 },
 ): Promise<void> {

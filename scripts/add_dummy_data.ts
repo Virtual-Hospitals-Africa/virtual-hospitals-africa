@@ -12,6 +12,7 @@ import { ENCOUNTER_STEPS } from '../shared/encounter.ts'
 import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
+import { forEach } from '../util/inParallel.ts'
 // import manufactured_medications from '../db/models/manufactured_medications.ts'
 // import sample from '../util/sample.ts'
 
@@ -81,7 +82,7 @@ async function addPatientsToWaitingRoom(
     return random_avatar
   }
 
-  const num_medical_staff = 5
+  const num_rural_clinic_medical_staff = 5
   const admin_demo = randomZimbabweanDemographics()
   const admin = await addTestHealthWorker(db, {
     scenario: 'admin',
@@ -90,9 +91,10 @@ async function addPatientsToWaitingRoom(
       avatar_url: randomAvatarNotYetUsed(admin_demo.gender),
     },
   })
-  console.log('admin')
+
+  console.log('adding nurses...')
   const nurses: HW[] = await Promise.all(
-    range(num_medical_staff).map(() => {
+    range(num_rural_clinic_medical_staff).map(() => {
       const demo = randomZimbabweanDemographics()
       return addTestHealthWorker(db, {
         scenario: 'approved-nurse',
@@ -104,22 +106,27 @@ async function addPatientsToWaitingRoom(
     }),
   )
 
-  // const doctors: HW[] = await Promise.all(
-  //   range(num_medical_staff).map(() => {
-  //     const demo = randomZimbabweanDemographics()
-  //     return addTestHealthWorker(db, {
-  //       scenario: 'doctor',
-  //       organization_id: '00000000-0000-0000-0000-000000000002',
-  //       health_worker_attrs: {
-  //         name: demo.name,
-  //         avatar_url: randomAvatarNotYetUsed(demo.gender),
-  //       },
-  //     })
-  //   }),
-  // )
+  console.log('adding doctors...')
+  const num_regional_medical_center_staff = 2
+  const doctors: HW[] = await Promise.all(
+    range(num_regional_medical_center_staff).map(() => {
+      const demo = randomZimbabweanDemographics()
+      return addTestHealthWorker(db, {
+        scenario: 'doctor',
+        organization_id: requesting_review_of_organization_id,
+        health_worker_attrs: {
+          name: demo.name,
+          avatar_url: randomAvatarNotYetUsed(demo.gender),
+        },
+      })
+    }),
+  )
 
-  await Promise.all(
-    patient_scenarios.map(async ([gender, reason, review_status], i) => {
+  console.log('adding patient scenarios...')
+  await forEach(
+    patient_scenarios.entries(),
+    async ([i, [gender, reason, review_status]]) => {
+      // console.log('here')
       const demo = randomZimbabweanDemographics(gender)
 
       const random_avatar = randomAvatarNotYetUsed(gender)
@@ -128,10 +135,12 @@ async function addPatientsToWaitingRoom(
         mime_type: 'image/png',
         binary_data: file,
       })
+      console.log('inserted media')
 
       const nurse = nurses[i % nurses.length]
       // const doctor = doctors[i % doctors.length]
 
+      console.log('inserting patient...')
       const patient = await patients.insert(db, {
         name: `${demo.first_name} ${demo.last_name}`,
         date_of_birth: randomDateOfBirth(),
@@ -153,6 +162,7 @@ async function addPatientsToWaitingRoom(
         ? 0
         : i * 4 + (3 - Math.floor(Math.random() * 3))
 
+      console.log('Setting arrived at...')
       await db.updateTable('patient_encounters')
         .where('patient_encounters.id', '=', patient_encounter.id)
         .set({
@@ -162,6 +172,7 @@ async function addPatientsToWaitingRoom(
         })
         .execute()
 
+      console.log('Adding nurse as provider...')
       await patient_encounters.removeFromWaitingRoomAndAddSelfAsProvider(db, {
         health_worker: await health_workers.getEmployed(db, {
           health_worker_id: nurse.id,
@@ -173,6 +184,7 @@ async function addPatientsToWaitingRoom(
       const in_intake = Math.random() < 0.2
 
       if (!in_intake) {
+        console.log('Completing intake...')
         await db.updateTable('patients')
           .where('patients.id', '=', patient.id)
           .set({ completed_intake: true })
@@ -182,6 +194,8 @@ async function addPatientsToWaitingRoom(
           0,
           ENCOUNTER_STEPS.indexOf(on_encounter_step),
         )
+
+        console.log('Adding encounter steps...')
         if (encounter_steps_completed.length > 0) {
           await db.insertInto('patient_encounter_steps')
             .values(encounter_steps_completed.map((encounter_step) => ({
@@ -192,6 +206,7 @@ async function addPatientsToWaitingRoom(
         }
       }
 
+      console.log('Making doctor request...')
       if (review_status === 'review requested') {
         await doctor_reviews.upsertRequest(db, {
           patient_id: patient.id,
@@ -202,7 +217,10 @@ async function addPatientsToWaitingRoom(
           requester_notes: 'Patient has lower back pain',
         })
       }
-    }),
+
+      console.log(`Completed patient scenario.`)
+    },
+    { concurrency: 8 },
   )
 
   return { admin, nurses }
@@ -255,6 +273,7 @@ async function addPatientsToWaitingRoom(
 //   // }
 // }
 
+// TODO make organizations, scenarios, etc. configurable. For now, hardcoding
 async function addDummyData() {
   /*const { admin, nurses } = */
   await addPatientsToWaitingRoom({
@@ -262,6 +281,13 @@ async function addDummyData() {
     requesting_review_of_organization_id:
       '00000000-0000-0000-0000-000000000002',
   })
+
+  // await addPatientsToWaitingRoom({
+  //   rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+  //   requesting_review_of_organization_id:
+  //     '94f25f33-a472-4743-959d-403796ee9ad4',
+  // })
+
   // await addInventoryTransactions(admin, nurses)
 }
 

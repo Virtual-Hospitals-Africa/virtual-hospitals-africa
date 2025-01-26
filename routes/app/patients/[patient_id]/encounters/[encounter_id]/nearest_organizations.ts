@@ -9,6 +9,8 @@ export const handler = jsonSearchHandler<
   EncounterContext
 >(nearest_organizations, (ctx) => ({
   location: ctx.state.encounter.location,
+  excluding_id: ctx.state.encounter_provider.organization_id,
+  has_doctors: true,
 }), {
-  verbose: false, // turn on to log every query
+  verbose: true, // turn on to log every query
 })

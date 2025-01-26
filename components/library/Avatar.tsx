@@ -21,10 +21,11 @@ function EmptyAvatar({ className }: { className?: string }) {
 }
 
 export default function Avatar(
-  { src, className, initials, hide_when_empty }: {
+  { src, className, initials, plus_count, hide_when_empty }: {
     src?: Maybe<string>
     icon?: string
     initials?: string
+    plus_count?: number
     className?: string
     hide_when_empty?: boolean
   },
@@ -41,6 +42,18 @@ export default function Avatar(
   }
   if (hide_when_empty) {
     return null
+  }
+  if (plus_count) {
+    return (
+      <div
+        className={cls(
+          'flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 text-indigo-700 flex-shrink-0',
+          className,
+        )}
+      >
+        +{plus_count}
+      </div>
+    )
   }
   if (initials) {
     return (
