@@ -74,6 +74,15 @@ if (import.meta.main) {
     Deno.exit(1)
   }
 
+  if (app_arg === 'all') {
+    for (const app in APPLICATIONS) {
+      console.log(`\n${app} up`)
+      // deno-lint-ignore no-explicit-any
+      await COMMANDS[cmd](app as any)
+    }
+    Deno.exit(0)
+  }
+
   const app = asApplication(app_arg)
   if (!app) {
     console.log(
