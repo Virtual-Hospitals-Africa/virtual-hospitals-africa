@@ -6,31 +6,11 @@ import Table, {
   ExtendedActionData,
   TableColumn,
 } from '../../components/library/Table.tsx'
-import cls from '../../util/cls.ts'
 import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
 import { PatientCard } from '../../db/models/patients.ts'
-
-// TODO @mike implementing the info on the card
-function OrganizationCard({ organization, selected }: {
-  organization: NearestOrganizationSearchResult
-  selected?: boolean
-}) {
-  return (
-    <a href={`#request_review_from_organization_id=${organization.id}`}>
-      <div className='flex flex-col'>
-        <div className={cls('text-base', selected && 'font-bold')}>
-          {organization.name}
-        </div>
-        <div className={cls('text-xs', selected && 'font-bold')}>
-          {organization.address} {organization.distance_meters}{' '}
-          {organization.google_maps_link}
-        </div>
-      </div>
-    </a>
-  )
-}
+import { OrganizationCard } from './OrganizationCard.tsx'
 
 const columns: TableColumn<NearestOrganizationSearchResult>[] = [
   {
