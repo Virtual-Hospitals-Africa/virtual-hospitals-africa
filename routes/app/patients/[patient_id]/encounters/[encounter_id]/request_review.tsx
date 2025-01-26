@@ -6,6 +6,7 @@ import {
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
+import * as doctor_reviews from '../../../../../../db/models/doctor_reviews.ts'
 import { OrganizationView } from '../../../../../../islands/request-review/OrganizationView.tsx'
 
 function searchByHref(
@@ -36,6 +37,12 @@ function getView(ctx: EncounterContext) {
   ]
 
   return { tabs }
+}
+
+export const handler = {
+  async POST(req: Request, ctx: EncounterContext) {
+    await doctor_reviews.upsertRequest(ctx.state.trx, {})
+  },
 }
 
 // TODO support initial search

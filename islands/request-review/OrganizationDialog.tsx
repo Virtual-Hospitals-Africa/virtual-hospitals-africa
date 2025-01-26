@@ -7,6 +7,8 @@ import { OrganizationCard } from './OrganizationCard.tsx'
 import { Person } from '../../components/library/Person.tsx'
 import { TextArea } from '../form/Inputs.tsx'
 import { PatientCard } from '../../db/models/patients.ts'
+import FormButtons from '../form/buttons.tsx'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {
@@ -71,6 +73,7 @@ function DialogContents({
       method='POST'
       className='bg-white shadow sm:rounded-lgoverflow-hidden'
     >
+      <HiddenInput value={{ organization_id: requesting_organization.id }} />
       <ViewIconWithBackground />
       <div className='p-12'>
         <H2>Requesting a patient review</H2>
@@ -90,6 +93,11 @@ function DialogContents({
           <h3>Additional Notes</h3>
           <TextArea name='additional_notes' />
         </div>
+        <FormButtons
+          cancel={{
+            href: '#',
+          }}
+        />
       </div>
     </form>
   )
