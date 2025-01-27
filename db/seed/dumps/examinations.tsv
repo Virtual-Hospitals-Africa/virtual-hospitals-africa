@@ -98,3 +98,4 @@ hand_x_ray	Hand X-ray	diagnostic_tests	hand_x_ray	/diagnostic_tests?exam=hand_x_
 joint_x_ray	Joint X-ray	diagnostic_tests	joint_x_ray	/diagnostic_tests?exam=joint_x_ray	97
 skull_x_ray	Skull X-ray	diagnostic_tests	skull_x_ray	/diagnostic_tests?exam=skull_x_ray	98
 temperature	Temperature	diagnostic_tests	temperature	/diagnostic_tests?exam=temperature	99
+history_pre_existing_conditions	Pre-existing Conditions	history	conditions	/history?exam=conditions	100

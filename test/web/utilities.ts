@@ -159,7 +159,7 @@ export async function addTestHealthWorker(
     }
   }
 
-  return healthWorker
+  return { ...healthWorker, organization_id }
 }
 
 export async function addTestHealthWorkerWithSession(

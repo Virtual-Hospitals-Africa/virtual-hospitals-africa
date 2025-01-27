@@ -1,12 +1,13 @@
 import { sql } from 'kysely'
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import permutations from '../../util/permutations.ts'
+import { upsertOne } from '../../db/helpers.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -17,7 +18,28 @@ describe(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           const tablet = await trx
             .selectFrom('manufactured_medications')
@@ -43,8 +65,8 @@ describe(
             .executeTakeFirstOrThrow()
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -64,7 +86,7 @@ describe(
           })
           const preExistingConditions = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
           assertEquals(preExistingConditions.length, 1)
           const [preExistingCondition] = preExistingConditions
@@ -124,7 +146,28 @@ describe(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           const tablet = await trx
             .selectFrom('medications')
@@ -142,8 +185,8 @@ describe(
             ).executeTakeFirstOrThrow()
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -163,7 +206,7 @@ describe(
           })
           const preExistingConditions = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
           assertEquals(preExistingConditions.length, 1)
           const [preExistingCondition] = preExistingConditions
@@ -223,7 +266,28 @@ describe(
         'converts a medication with an end_date into schedule with a duration in days',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           const tablet = await trx
             .selectFrom('medications')
@@ -241,8 +305,8 @@ describe(
             ).executeTakeFirstOrThrow()
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -264,7 +328,7 @@ describe(
           })
           const preExistingConditions = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
           assertEquals(preExistingConditions.length, 1)
           const [preExistingCondition] = preExistingConditions
@@ -313,7 +377,7 @@ describe(
               'patient_condition_medications.patient_condition_id',
             )
             .where('medication_id', '=', tablet.id)
-            .where('patient_id', '=', patient.id)
+            .where('patient_id', '=', encounter.patient_id)
             .select(sql`TO_JSON(schedules)`.as('schedules'))
             .executeTakeFirstOrThrow()
 
@@ -328,11 +392,31 @@ describe(
 
       itUsesTrxAnd('handles comorbidities', async (trx) => {
         const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-        const patient = await patients.insert(trx, { name: 'Billy Bob' })
+        const encounter = await patient_encounters.insert(
+          trx,
+          nurse.organization_id,
+          {
+            patient_name: 'Billy Bob',
+            reason: 'seeking treatment',
+            provider_ids: [nurse.employee_id!],
+          },
+        )
+
+        const patient_examination = await upsertOne(
+          trx,
+          'patient_examinations',
+          {
+            patient_id: encounter.patient_id,
+            encounter_id: encounter.id,
+            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            examination_identifier: 'history_pre_existing_conditions',
+            completed: true,
+          },
+        )
 
         await patient_conditions.upsertPreExisting(trx, {
-          patient_id: patient.id,
-          employment_id: nurse.employee_id!,
+          patient_id: encounter.patient_id,
+          patient_examination_id: patient_examination.id,
           patient_conditions: [
             {
               id: 'c_22401',
@@ -343,7 +427,7 @@ describe(
         })
         const preExistingConditions = await patient_conditions
           .getPreExistingConditions(trx, {
-            patient_id: patient.id,
+            patient_id: encounter.patient_id,
           })
         assertEquals(preExistingConditions.length, 1)
         const [preExistingCondition] = preExistingConditions
@@ -364,11 +448,32 @@ describe(
         'removes comorbidities if not present by their id, while editing others',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -379,12 +484,12 @@ describe(
           })
           const [preExistingConditionBefore] = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [{
               ...preExistingConditionBefore,
               comorbidities: [{
@@ -396,7 +501,7 @@ describe(
 
           const [preExistingConditionAfter] = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
 
           assertEquals(preExistingConditionAfter, {
@@ -420,7 +525,28 @@ describe(
         'removes medications if not present by their id, while editing others',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           const injection = await trx
             .selectFrom('medications')
@@ -454,8 +580,8 @@ describe(
             .executeTakeFirstOrThrow()
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -483,7 +609,7 @@ describe(
           })
           const [preExistingConditionBefore] = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
 
           const medication_to_keep = preExistingConditionBefore.medications
@@ -491,8 +617,8 @@ describe(
               (m) => m.medication_id === capsule.id,
             )!
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [{
               ...preExistingConditionBefore,
               medications: [{
@@ -508,7 +634,7 @@ describe(
 
           const [preExistingConditionAfter] = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
 
           assertEquals(preExistingConditionAfter.medications.length, 1)
@@ -537,11 +663,32 @@ describe(
         'removes pre-existing conditions no longer present',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -551,8 +698,8 @@ describe(
           })
 
           await patient_conditions.upsertPreExisting(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_8815',
@@ -563,7 +710,7 @@ describe(
 
           const preExistingConditions = await patient_conditions
             .getPreExistingConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
           assertEquals(preExistingConditions.length, 1)
           assertEquals(preExistingConditions[0].id, 'c_8815')
@@ -574,12 +721,34 @@ describe(
         '400s if the condition is a procedure or surgery',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
+
           await assertRejects(
             () =>
               patient_conditions.upsertPreExisting(trx, {
-                patient_id: patient.id,
-                employment_id: nurse.employee_id!,
+                patient_id: encounter.patient_id,
+                patient_examination_id: patient_examination.id,
                 patient_conditions: [
                   {
                     id: 'c_4145',
@@ -599,11 +768,32 @@ describe(
         'upserts past conditions, those with an end_date',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           await patient_conditions.upsertPastMedical(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             patient_conditions: [
               {
                 id: 'c_22401',
@@ -614,7 +804,7 @@ describe(
           })
           const past_conditions = await patient_conditions
             .getPastMedicalConditions(trx, {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             })
           assertEquals(past_conditions.length, 1)
           const [preExistingCondition] = past_conditions
@@ -626,13 +816,33 @@ describe(
       )
       itUsesTrxAnd('400s if no end date is provided', async (trx) => {
         const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-        const patient = await patients.insert(trx, { name: 'Billy Bob' })
+        const encounter = await patient_encounters.insert(
+          trx,
+          nurse.organization_id,
+          {
+            patient_name: 'Billy Bob',
+            reason: 'seeking treatment',
+            provider_ids: [nurse.employee_id!],
+          },
+        )
+
+        const patient_examination = await upsertOne(
+          trx,
+          'patient_examinations',
+          {
+            patient_id: encounter.patient_id,
+            encounter_id: encounter.id,
+            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            examination_identifier: 'history_pre_existing_conditions',
+            completed: true,
+          },
+        )
 
         await assertRejects(
           () =>
             patient_conditions.upsertPastMedical(trx, {
-              patient_id: patient.id,
-              employment_id: nurse.employee_id!,
+              patient_id: encounter.patient_id,
+              patient_examination_id: patient_examination.id,
               patient_conditions: [
                 {
                   id: 'c_22401',
@@ -652,11 +862,32 @@ describe(
         'upserts major surgery, those condition with is_procedure = true',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           await patient_conditions.upsertMajorSurgeries(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             major_surgeries: [
               { id: 'c_4145', start_date: '2020-02-01' },
             ],
@@ -665,7 +896,7 @@ describe(
           const major_surgeries = await patient_conditions.getMajorSurgeries(
             trx,
             {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             },
           )
           assertEquals(major_surgeries.length, 1)
@@ -678,13 +909,33 @@ describe(
 
       itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
         const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-        const patient = await patients.insert(trx, { name: 'Billy Bob' })
+        const encounter = await patient_encounters.insert(
+          trx,
+          nurse.organization_id,
+          {
+            patient_name: 'Billy Bob',
+            reason: 'seeking treatment',
+            provider_ids: [nurse.employee_id!],
+          },
+        )
+
+        const patient_examination = await upsertOne(
+          trx,
+          'patient_examinations',
+          {
+            patient_id: encounter.patient_id,
+            encounter_id: encounter.id,
+            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            examination_identifier: 'history_pre_existing_conditions',
+            completed: true,
+          },
+        )
 
         await assertRejects(
           () =>
             patient_conditions.upsertMajorSurgeries(trx, {
-              patient_id: patient.id,
-              employment_id: nurse.employee_id!,
+              patient_id: encounter.patient_id,
+              patient_examination_id: patient_examination.id,
               major_surgeries: [
                 {
                   id: 'c_22401',
@@ -701,11 +952,32 @@ describe(
         'allows 2 surgeries if the dates are distinct',
         async (trx) => {
           const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          const patient = await patients.insert(trx, { name: 'Billy Bob' })
+          const encounter = await patient_encounters.insert(
+            trx,
+            nurse.organization_id,
+            {
+              patient_name: 'Billy Bob',
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
+
+          const patient_examination = await upsertOne(
+            trx,
+            'patient_examinations',
+            {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.id,
+              encounter_provider_id:
+                encounter.providers[0].encounter_provider_id,
+              examination_identifier: 'history_pre_existing_conditions',
+              completed: true,
+            },
+          )
 
           await patient_conditions.upsertMajorSurgeries(trx, {
-            patient_id: patient.id,
-            employment_id: nurse.employee_id!,
+            patient_id: encounter.patient_id,
+            patient_examination_id: patient_examination.id,
             major_surgeries: [
               { id: 'c_4145', start_date: '2020-02-01' },
               { id: 'c_4145', start_date: '2020-03-01' },
@@ -715,7 +987,7 @@ describe(
           const major_surgeries = await patient_conditions.getMajorSurgeries(
             trx,
             {
-              patient_id: patient.id,
+              patient_id: encounter.patient_id,
             },
           )
           assertEquals(major_surgeries.length, 2)
@@ -724,13 +996,33 @@ describe(
 
       itUsesTrxAnd('400s if 2 surgeries have the same date', async (trx) => {
         const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-        const patient = await patients.insert(trx, { name: 'Billy Bob' })
+        const encounter = await patient_encounters.insert(
+          trx,
+          nurse.organization_id,
+          {
+            patient_name: 'Billy Bob',
+            reason: 'seeking treatment',
+            provider_ids: [nurse.employee_id!],
+          },
+        )
+
+        const patient_examination = await upsertOne(
+          trx,
+          'patient_examinations',
+          {
+            patient_id: encounter.patient_id,
+            encounter_id: encounter.id,
+            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            examination_identifier: 'history_pre_existing_conditions',
+            completed: true,
+          },
+        )
 
         const error = await assertRejects(
           () =>
             patient_conditions.upsertMajorSurgeries(trx, {
-              patient_id: patient.id,
-              employment_id: nurse.employee_id!,
+              patient_id: encounter.patient_id,
+              patient_examination_id: patient_examination.id,
               major_surgeries: [
                 { id: 'c_4145', start_date: '2020-02-01' },
                 { id: 'c_4145', start_date: '2020-02-01' },
@@ -747,14 +1039,27 @@ describe(
       itUsesTrxAnd(
         'can add conditions and surgeries in any order, with all being preserved',
         async (trx) => {
-          const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
-          let patient: { id: string }
+          // let patient: { id: string }
 
           const insertions = [
-            () =>
+            ({ encounter, patient_examination }: {
+              encounter: Awaited<ReturnType<typeof patient_encounters.insert>>
+              patient_examination: {
+                patient_id: string
+                created_at: Date
+                id: string
+                updated_at: Date
+                encounter_provider_id: string
+                encounter_id: string
+                completed: boolean
+                examination_identifier: string
+                ordered: boolean
+                skipped: boolean
+              }
+            }) =>
               patient_conditions.upsertPreExisting(trx, {
-                patient_id: patient.id,
-                employment_id: nurse.employee_id!,
+                patient_id: encounter.patient_id,
+                patient_examination_id: patient_examination.id,
                 patient_conditions: [
                   {
                     id: 'c_22401',
@@ -762,10 +1067,24 @@ describe(
                   },
                 ],
               }),
-            () =>
+            ({ encounter, patient_examination }: {
+              encounter: Awaited<ReturnType<typeof patient_encounters.insert>>
+              patient_examination: {
+                patient_id: string
+                created_at: Date
+                id: string
+                updated_at: Date
+                encounter_provider_id: string
+                encounter_id: string
+                completed: boolean
+                examination_identifier: string
+                ordered: boolean
+                skipped: boolean
+              }
+            }) =>
               patient_conditions.upsertPastMedical(trx, {
-                patient_id: patient.id,
-                employment_id: nurse.employee_id!,
+                patient_id: encounter.patient_id,
+                patient_examination_id: patient_examination.id,
                 patient_conditions: [
                   {
                     id: 'c_8815',
@@ -774,10 +1093,24 @@ describe(
                   },
                 ],
               }),
-            () =>
+            ({ encounter, patient_examination }: {
+              encounter: Awaited<ReturnType<typeof patient_encounters.insert>>
+              patient_examination: {
+                patient_id: string
+                created_at: Date
+                id: string
+                updated_at: Date
+                encounter_provider_id: string
+                encounter_id: string
+                completed: boolean
+                examination_identifier: string
+                ordered: boolean
+                skipped: boolean
+              }
+            }) =>
               patient_conditions.upsertMajorSurgeries(trx, {
-                patient_id: patient.id,
-                employment_id: nurse.employee_id!,
+                patient_id: encounter.patient_id,
+                patient_examination_id: patient_examination.id,
                 major_surgeries: [
                   { id: 'c_4145', start_date: '2020-02-01' },
                 ],
@@ -786,28 +1119,50 @@ describe(
 
           const insertionOrders = permutations(insertions)
           for (const insertionOrder of insertionOrders) {
-            patient = await patients.insert(trx, { name: 'Billy Bob' })
+            const nurse = await addTestHealthWorker(trx, { scenario: 'nurse' })
+            const encounter = await patient_encounters.insert(
+              trx,
+              nurse.organization_id,
+              {
+                patient_name: 'Billy Bob',
+                reason: 'seeking treatment',
+                provider_ids: [nurse.employee_id!],
+              },
+            )
+
+            const patient_examination = await upsertOne(
+              trx,
+              'patient_examinations',
+              {
+                patient_id: encounter.patient_id,
+                encounter_id: encounter.id,
+                encounter_provider_id:
+                  encounter.providers[0].encounter_provider_id,
+                examination_identifier: 'history_pre_existing_conditions',
+                completed: true,
+              },
+            )
             for (const insertion of insertionOrder) {
-              await insertion()
+              await insertion({ encounter, patient_examination })
             }
             const pre_existing_conditions = await patient_conditions
               .getPreExistingConditions(
                 trx,
                 {
-                  patient_id: patient.id,
+                  patient_id: encounter.patient_id,
                 },
               )
             const past_conditions = await patient_conditions
               .getPastMedicalConditions(
                 trx,
                 {
-                  patient_id: patient.id,
+                  patient_id: encounter.patient_id,
                 },
               )
             const major_surgeries = await patient_conditions.getMajorSurgeries(
               trx,
               {
-                patient_id: patient.id,
+                patient_id: encounter.patient_id,
               },
             )
 
