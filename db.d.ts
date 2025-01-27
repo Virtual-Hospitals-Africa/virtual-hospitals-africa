@@ -772,7 +772,7 @@ export interface PatientConditions {
   created_at: Generated<Timestamp>
   end_date: Timestamp | null
   id: Generated<string>
-  noted_during_patient_intake_by: string | null
+  patient_examination_id: string | null
   patient_id: string
   start_date: Timestamp
   updated_at: Generated<Timestamp>
