@@ -206,6 +206,9 @@ export type RenderedPatient =
     actions: {
       view: string
     }
+    primary_provider_profession: Maybe<string>
+    primary_provider_organization_name: Maybe<string>
+    primary_provider_avatar_url: Maybe<string>
   }
 export type Condition = {
   id: string

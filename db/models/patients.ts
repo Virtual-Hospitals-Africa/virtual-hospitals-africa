@@ -30,9 +30,9 @@ export const view_href_sql = sql<string>`
 `
 
 export const avatar_url_sql = sql<string | null>`
-  CASE WHEN patients.avatar_media_id IS NOT NULL 
-    THEN concat('/app/patients/', patients.id::text, '/avatar') 
-    ELSE NULL 
+  CASE WHEN patients.avatar_media_id IS NOT NULL
+    THEN concat('/app/patients/', patients.id::text, '/avatar')
+    ELSE NULL
   END
 `
 
@@ -89,6 +89,13 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.nearest_organization_id',
       'health_workers.name as primary_provider_name',
       'employment.health_worker_id as primary_provider_health_worker_id',
+      eb.ref('employment.profession').as('primary_provider_profession'),
+      trx.selectFrom('organizations').where(
+        'organizations.id',
+        '=',
+        eb.ref('employment.organization_id'),
+      ).select('organizations.name').as('primary_provider_organization_name'),
+      eb.ref('health_workers.avatar_url').as('primary_provider_avatar_url'),
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
@@ -380,7 +387,7 @@ export async function schedulingAppointmentRequest(
           JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
           JOIN health_workers ON employment.health_worker_id = health_workers.id
       )
-  
+
       SELECT patient_appointment_requests.id as patient_appointment_request_id,
              patient_appointment_requests.reason,
              json_agg(aot_pre.*) as offered_times
