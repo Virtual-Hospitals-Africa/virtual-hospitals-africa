@@ -9,7 +9,6 @@ import {
   CheckIcon,
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
-import capitalize from '../util/capitalize.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { TargetedEvent } from 'preact/compat'
@@ -51,6 +50,7 @@ export type SearchProps<
   optionHref?(option: T): string
   ignore_option_href?: boolean
   do_not_render_built_in_options?: boolean
+  placeholder?: string
 }
 
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
@@ -66,7 +66,7 @@ export default function Search<
   id,
   name,
   required,
-  label = name && capitalize(name),
+  label,
   value,
   multi,
   just_name,
@@ -84,6 +84,7 @@ export default function Search<
   Option = BaseOption,
   ignore_option_href,
   do_not_render_built_in_options,
+  placeholder = '',
 }: SearchProps<T>) {
   if (multi) {
     assert(
@@ -180,6 +181,7 @@ export default function Search<
               onSelect?.(add_option)
               setSelected(add_option)
             }}
+            placeholder={placeholder}
           />
           <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
             <ChevronUpDownIcon

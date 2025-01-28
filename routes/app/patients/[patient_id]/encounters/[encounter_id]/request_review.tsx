@@ -126,6 +126,7 @@ export function RequestReviewPage(
     <>
       {show_tabs && <Tabs {...getView(ctx)} />}
       <OrganizationView
+        current_url={ctx.url.toString()}
         search_url={organization_search_url}
         organizations={[]}
         concerning_patient={ctx.state.patient}

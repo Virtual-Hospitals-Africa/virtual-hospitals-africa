@@ -8,7 +8,7 @@ export default function OrganizationSearch(
     url = '/app/organizations',
     filters = {},
     sort,
-    label = 'Virtual Organization',
+    label,
     required,
     do_not_render_built_in_options,
     onUpdate,
@@ -48,7 +48,6 @@ export default function OrganizationSearch(
   return (
     <AsyncSearch
       name={name}
-      label={label}
       search_route={search_route}
       // onSelect={(selected) => {
       //   if (selected && props.kind === 'physical') {
@@ -61,6 +60,8 @@ export default function OrganizationSearch(
       required={required}
       do_not_render_built_in_options={do_not_render_built_in_options}
       onUpdate={onUpdate}
+      label={label}
+      placeholder='Find an organization'
     />
   )
 }

@@ -11,6 +11,8 @@ import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import Dropdown, { DropdownItem } from '../../islands/Dropdown.tsx'
 
 const columns: TableColumn<NearestOrganizationSearchResult>[] = [
   {
@@ -61,7 +63,33 @@ export default function OrganizationsTable(
   )
 }
 
+const getFilterUrl = (url: string, available?: boolean) => {
+  const currentUrl = new URL(url)
+  const params = currentUrl.searchParams
+  if (available === undefined) {
+    params.delete('available')
+  } else {
+    params.set('available', String(available))
+  }
+  return currentUrl.toString()
+}
+
+const getDropdownItems = (url: string): DropdownItem[] => [
+  {
+    title: 'Yes',
+    href: getFilterUrl(url, true),
+  },
+  {
+    title: 'No',
+    href: getFilterUrl(url, false),
+  },
+  {
+    title: 'All',
+    href: getFilterUrl(url),
+  },
+]
 export function OrganizationView(props: {
+  current_url: string
   search_url: string
   concerning_patient: EncounterContext['state']['patient']
   organizations: NearestOrganizationSearchResult[]
@@ -109,6 +137,35 @@ export function OrganizationView(props: {
             organizations.value = organization_results.current_page.results
             checkHash()
           }}
+        />
+        <Dropdown
+          button={
+            <Button
+              className='d-flex items-center gap-1'
+              variant='outline'
+              size='sm'
+              color='gray'
+              type='button'
+            >
+              Accepting Patients
+              <svg
+                width='20'
+                height='18'
+                viewBox='0 0 20 18'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M18.3346 1.5H1.66797L8.33464 9.38333V14.8333L11.668 16.5V9.38333L18.3346 1.5Z'
+                  stroke='currentColor'
+                  stroke-width='1.66667'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </svg>
+            </Button>
+          }
+          items={getDropdownItems(props.current_url)}
         />
       </FormRow>
       <OrganizationsTable
