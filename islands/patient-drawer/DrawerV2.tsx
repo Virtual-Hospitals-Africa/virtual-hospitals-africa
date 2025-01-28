@@ -24,7 +24,13 @@ import Badge from '../../components/library/Badge.tsx'
   - Care Team Section
     - Primary Doctor
     - Those recently seen
-*/
+
+    - We need the following form the medcal team
+      - Avatar URL
+      - Name
+      - Clinic they saw the patient as a member of
+      - Their role in the patient care
+    */
 
 export function PatientDrawerV2(
   {

@@ -297,6 +297,10 @@ export function EncounterPage<
           {
             health_worker_id: patient.primary_provider_health_worker_id,
             name: patient.primary_provider_name,
+            role: 'Primary Care Provider',
+            avatar_url: patient.primary_provider_avatar_url,
+            profession: patient.primary_provider_profession,
+            organization_name: patient.primary_provider_organization_name,
           },
         ]}
       >
