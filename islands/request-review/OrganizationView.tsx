@@ -71,24 +71,31 @@ const getDistanceSortUrl = (url: string, value: 'asc' | 'dec') => {
   return currentUrl.toString()
 }
 
-const getDistanceSortDropdownItems = (url: string): DropdownItem[] => [
-  {
-    title: 'Nearest',
-    href: getDistanceSortUrl(url, 'asc'),
-  },
-  {
-    title: 'Farthest',
-    href: getDistanceSortUrl(url, 'dec'),
-  },
-]
+const getDistanceSortDropdownItems = (url: string): DropdownItem[] => {
+  const currentUrl = new URL(url)
+  const params = currentUrl.searchParams
+  const selectedValue = params.get('distance')
+  return [
+    {
+      title: 'Nearest',
+      href: getDistanceSortUrl(url, 'asc'),
+      selected: selectedValue === 'asc',
+    },
+    {
+      title: 'Farthest',
+      href: getDistanceSortUrl(url, 'dec'),
+      selected: selectedValue === 'dec',
+    },
+  ]
+}
 
 const getAcceptedPatientFilterItems = (url: string): Option[] => {
   const currentUrl = new URL(url)
   const params = currentUrl.searchParams
-  const value = params.getAll('accepting_patients')
+  const selectedValues = params.getAll('accepting_patients')
   return [
-    { value: 'true', label: 'Yes', checked: value.includes('true') },
-    { value: 'false', label: 'No', checked: value.includes('false') },
+    { value: 'true', label: 'Yes', checked: selectedValues.includes('true') },
+    { value: 'false', label: 'No', checked: selectedValues.includes('false') },
   ]
 }
 

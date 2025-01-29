@@ -1,9 +1,11 @@
 import { Fragment, JSX } from 'preact'
 import { Menu } from '@headlessui/react'
+import cls from '../util/cls.ts'
 
 export type DropdownItem = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
   href?: string
   title: string
+  selected?: boolean
 }
 
 export type DropdownProps = {
@@ -12,9 +14,9 @@ export type DropdownProps = {
   items: DropdownItem[]
 }
 
-function DropdownItem({ href, title, ...props }: DropdownItem) {
+function DropdownItem({ href, title, selected, ...props }: DropdownItem) {
   const baseStyles =
-    'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none'
+    'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none hover:bg-gray-50'
   return (
     <Menu.Item>
       {href
@@ -22,7 +24,7 @@ function DropdownItem({ href, title, ...props }: DropdownItem) {
           <a
             href={href}
             {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
-            className={baseStyles}
+            className={cls(baseStyles, selected && 'bg-gray-100')}
           >
             {title}
           </a>
