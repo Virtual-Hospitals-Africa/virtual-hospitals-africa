@@ -110,6 +110,8 @@ export function OrganizationView(props: {
     NearestOrganizationSearchResult | null
   >(null)
 
+  const search_url = useSignal(props.search_url)
+
   function checkHash() {
     const params = new URLSearchParams('?' + self.location.hash.slice(1))
     const request_review_from_organization_id = params.get(
@@ -134,7 +136,7 @@ export function OrganizationView(props: {
       <FormRow>
         <OrganizationSearch
           name='review_request.organization'
-          url={props.search_url}
+          url={search_url.value}
           value={null}
           // value={review_request.value?.organization}
           sort={{
@@ -148,6 +150,7 @@ export function OrganizationView(props: {
             organizations.value = organization_results.current_page.results
             checkHash()
           }}
+          do_not_render_built_in_options
         />
         <Filter
           id='accepting_patients'

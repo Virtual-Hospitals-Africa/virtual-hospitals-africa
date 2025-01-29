@@ -10,7 +10,7 @@ export const handler = jsonSearchHandler<
 >(nearest_organizations, (ctx) => ({
   location: ctx.state.encounter.location,
   excluding_id: ctx.state.encounter_provider.organization_id,
-  has_doctors: true,
+  // has_doctors: true,
 }), {
   verbose: true, // turn on to log every query
 })
