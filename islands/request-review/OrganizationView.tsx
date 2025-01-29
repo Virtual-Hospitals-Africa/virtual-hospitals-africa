@@ -86,7 +86,6 @@ const getAcceptedPatientFilterItems = (url: string): Option[] => {
   const currentUrl = new URL(url)
   const params = currentUrl.searchParams
   const value = params.getAll('accepting_patients')
-  console.log('selected value', value)
   return [
     { value: 'true', label: 'Yes', checked: value.includes('true') },
     { value: 'false', label: 'No', checked: value.includes('false') },
