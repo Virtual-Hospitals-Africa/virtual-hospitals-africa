@@ -20,6 +20,7 @@ export default function Filter({
       id={`filter-${id}`}
       className='relative inline-block text-left'
     >
+      {/* TODO: Use custom Button component */}
       <Popover.Button className='py-1 px-4 inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none text-base/6 border border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent items-center gap-1'>
         {name}
         <svg
