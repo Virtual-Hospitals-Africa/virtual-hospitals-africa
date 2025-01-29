@@ -1,5 +1,10 @@
 // deno-lint-ignore-file
 
+if (window.ALREADY_RAN_GENERAL_SCRIPT) {
+  throw new Error('This script is only supposed to load once')
+}
+window.ALREADY_RAN_GENERAL_SCRIPT = true
+
 /* FOCUS ON LOCATION HASH */
 
 // Set focus on an element by its id or name
@@ -245,6 +250,7 @@ addEventListener('submit', function (event) {
   }).then(function (response) {
     switch (response.status) {
       case 200:
+        // TODO assert content type html
         return response.text().then(function (text) {
           load(text)
           history.pushState({}, '', response.url)
