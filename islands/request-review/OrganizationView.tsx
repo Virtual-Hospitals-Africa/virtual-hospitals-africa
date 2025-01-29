@@ -13,6 +13,7 @@ import { OrganizationCard } from './OrganizationCard.tsx'
 import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import Dropdown, { DropdownItem } from '../../islands/Dropdown.tsx'
+import Filter, { Option } from '../../islands/Filter.tsx'
 
 const columns: TableColumn<NearestOrganizationSearchResult>[] = [
   {
@@ -63,31 +64,35 @@ export default function OrganizationsTable(
   )
 }
 
-const getFilterUrl = (url: string, available?: boolean) => {
+const getDistanceSortUrl = (url: string, value: 'asc' | 'dec') => {
   const currentUrl = new URL(url)
   const params = currentUrl.searchParams
-  if (available === undefined) {
-    params.delete('available')
-  } else {
-    params.set('available', String(available))
-  }
+  params.set('distance', value)
   return currentUrl.toString()
 }
 
-const getDropdownItems = (url: string): DropdownItem[] => [
+const getDistanceSortDropdownItems = (url: string): DropdownItem[] => [
   {
-    title: 'Yes',
-    href: getFilterUrl(url, true),
+    title: 'Nearest',
+    href: getDistanceSortUrl(url, 'asc'),
   },
   {
-    title: 'No',
-    href: getFilterUrl(url, false),
-  },
-  {
-    title: 'All',
-    href: getFilterUrl(url),
+    title: 'Farthest',
+    href: getDistanceSortUrl(url, 'dec'),
   },
 ]
+
+const getAcceptedPatientFilterItems = (url: string): Option[] => {
+  const currentUrl = new URL(url)
+  const params = currentUrl.searchParams
+  const value = params.getAll('accepting_patients')
+  console.log('selected value', value)
+  return [
+    { value: 'true', label: 'Yes', checked: value.includes('true') },
+    { value: 'false', label: 'No', checked: value.includes('false') },
+  ]
+}
+
 export function OrganizationView(props: {
   current_url: string
   search_url: string
@@ -138,6 +143,11 @@ export function OrganizationView(props: {
             checkHash()
           }}
         />
+        <Filter
+          id='accepting_patients'
+          name='Accepting Patients'
+          options={getAcceptedPatientFilterItems(props.current_url)}
+        />
         <Dropdown
           button={
             <Button
@@ -147,7 +157,7 @@ export function OrganizationView(props: {
               color='gray'
               type='button'
             >
-              Accepting Patients
+              Distance
               <svg
                 width='20'
                 height='18'
@@ -165,7 +175,7 @@ export function OrganizationView(props: {
               </svg>
             </Button>
           }
-          items={getDropdownItems(props.current_url)}
+          items={getDistanceSortDropdownItems(props.current_url)}
         />
       </FormRow>
       <OrganizationsTable
