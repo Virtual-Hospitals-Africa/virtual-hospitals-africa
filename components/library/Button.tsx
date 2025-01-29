@@ -8,6 +8,11 @@ const baseStyles = {
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
+const sizeStyles = {
+  sm: 'text-base/6',
+  md: 'text-base',
+}
+
 const variantStyles = {
   solid: {
     primary:
@@ -28,6 +33,8 @@ const variantStyles = {
       'border-blue-300 text-blue-600 hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
     blueTwo:
       'border-slate-500 text-slate-900 px-1 py-1 text-xl font-extrabold hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
+    gray:
+      'border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent',
   },
   ghost: {},
 }
@@ -39,6 +46,7 @@ type ButtonProps =
     href?: string
     action?: string
     method?: 'GET' | 'POST'
+    size?: 'sm' | 'md'
   }
   & ({
     variant: 'solid'
@@ -57,6 +65,7 @@ type ButtonProps =
 export function Button({
   variant = 'solid',
   color = 'primary',
+  size = 'md',
   className,
   href,
   action,
@@ -65,10 +74,11 @@ export function Button({
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex justify-center rounded-md text-base font-semibold tracking-tight focus:outline-none',
+    'inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none',
     baseStyles[variant],
     // deno-lint-ignore no-explicit-any
     (variantStyles as any)[variant][color],
+    sizeStyles[size],
     className,
   )
 

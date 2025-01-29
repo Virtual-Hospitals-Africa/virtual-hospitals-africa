@@ -128,8 +128,10 @@ import * as $BaseOption from './islands/BaseOption.tsx'
 import * as $CloseButton from './islands/CloseButton.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
 import * as $DemoVideo from './islands/DemoVideo.tsx'
+import * as $Dropdown from './islands/Dropdown.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
+import * as $Filter from './islands/Filter.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
@@ -437,8 +439,10 @@ const manifest = {
     './islands/CloseButton.tsx': $CloseButton,
     './islands/ConditionSearch.tsx': $ConditionSearch,
     './islands/DemoVideo.tsx': $DemoVideo,
+    './islands/Dropdown.tsx': $Dropdown,
     './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,
+    './islands/Filter.tsx': $Filter,
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
