@@ -95,10 +95,61 @@ export function baseQuery(
     .limit(search?.limit || 5)
 }
 
+type Wait = {
+  status: 'open (short wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'open (long wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'closing soon'
+  minutes: number
+  display: string
+} | {
+  status: 'closed'
+}
+
+function randomWait(): Wait {
+  const seed = Math.random()
+  if (seed < .7) {
+    return {
+      status: 'open (short wait)',
+      minutes: 57,
+      display: '1 hour',
+    }
+  }
+  if (seed < .8) {
+    return {
+      status: 'open (long wait)',
+      minutes: 235,
+      display: '4 hours',
+    }
+  }
+  if (seed < .9) {
+    return {
+      status: 'closing soon',
+      minutes: 110,
+      display: '2 hours',
+    }
+  }
+  return {
+    status: 'closed',
+  }
+}
+
 const model = base({
   top_level_table: 'organizations',
   baseQuery,
-  formatResult: (x) => x,
+  formatResult: (organization) => ({
+    ...organization,
+    business_hours: 'M-F 9am-5pm',
+    wait: randomWait(),
+    re_opens: {
+      display: 'Reopens tomorrow 9am',
+    },
+  }),
 })
 
 export type NearestOrganizationSearchResult = SearchResult<typeof model>
