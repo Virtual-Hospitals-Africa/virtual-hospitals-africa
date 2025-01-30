@@ -229,19 +229,20 @@ export function upsert(trx: TrxOrDb, upsert: {
   return upsertOne(trx, 'patient_examinations', upsert)
 }
 
-export async function createIfNoneExists(trx: TrxOrDb, exam_details: {
+export async function createCompletedIfNoneExists(trx: TrxOrDb, exam_details: {
   patient_id: string
   encounter_id: string
   encounter_provider_id: string
   examination_identifier: string
 }) {
-  const exam = await trx.selectFrom('patient_examinations')
-    .select('id')
+  const exam = await trx.updateTable('patient_examinations')
+    .set({ completed: true })
     .where('patient_id', '=', exam_details.patient_id)
     .where('encounter_id', '=', exam_details.encounter_id)
     .where('encounter_provider_id', '=', exam_details.encounter_provider_id)
     .where('examination_identifier', '=', exam_details.examination_identifier)
+    .returning('id')
     .executeTakeFirst()
 
-  return exam || upsert(trx, exam_details)
+  return exam || upsert(trx, { ...exam_details, completed: true })
 }

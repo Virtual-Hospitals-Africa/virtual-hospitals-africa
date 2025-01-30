@@ -1,13 +1,17 @@
 import { JSX } from 'preact'
 import * as examinations from '../../../../../../../db/models/examinations.ts'
-import { EncounterContext, EncounterPage } from '../_middleware.tsx'
+import {
+  completeStep,
+  EncounterContext,
+  EncounterPage,
+} from '../_middleware.tsx'
 import { RenderedPatientExamination } from '../../../../../../../types.ts'
-import redirect from '../../../../../../../util/redirect.ts'
 import {
   TabProps,
   Tabs,
 } from '../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../components/library/icons/progress.tsx'
+import redirect from '../../../../../../../util/redirect.ts'
 
 type HistoryState = {
   history_assessments: RenderedPatientExamination[]
@@ -55,6 +59,18 @@ export async function handler(
 export type HistoryPageChildProps = {
   ctx: EncounterContext
   previously_completed: boolean
+}
+
+export function completeAssessment(ctx: HistoryContext) {
+  const next_incomplete_assessment = ctx.state.history_assessments.find((a) =>
+    !a.completed &&
+    a.examination_identifier !==
+      ctx.state.current_assessment.examination_identifier
+  )
+  if (!next_incomplete_assessment) {
+    return completeStep(ctx)
+  }
+  return redirect(next_incomplete_assessment.href)
 }
 
 export function HistoryPage(

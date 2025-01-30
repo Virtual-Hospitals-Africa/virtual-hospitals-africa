@@ -193,6 +193,7 @@ export type RenderedPatient =
     name: string
     description: string | null
     age_display: Maybe<string>
+    age_years: Maybe<string>
     avatar_url: string | null
     nearest_organization: string | null
     last_visited: null // TODO: implement

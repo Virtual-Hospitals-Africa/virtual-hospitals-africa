@@ -175,6 +175,7 @@ import * as $examinations_ChecklistItem from './islands/examinations/ChecklistIt
 import * as $examinations_Dialog from './islands/examinations/Dialog.tsx'
 import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
+import * as $family_FamilyForm from './islands/family/FamilyForm.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
 import * as $family_Guardian from './islands/family/Guardian.tsx'
 import * as $family_MaritalStatusSelect from './islands/family/MaritalStatusSelect.tsx'
@@ -219,7 +220,6 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
-import * as $patient_intake_FamilyForm from './islands/patient-intake/FamilyForm.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
@@ -492,6 +492,7 @@ const manifest = {
     './islands/examinations/Dialog.tsx': $examinations_Dialog,
     './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
+    './islands/family/FamilyForm.tsx': $family_FamilyForm,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
     './islands/family/Guardian.tsx': $family_Guardian,
     './islands/family/MaritalStatusSelect.tsx': $family_MaritalStatusSelect,
@@ -543,7 +544,6 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
-    './islands/patient-intake/FamilyForm.tsx': $patient_intake_FamilyForm,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':

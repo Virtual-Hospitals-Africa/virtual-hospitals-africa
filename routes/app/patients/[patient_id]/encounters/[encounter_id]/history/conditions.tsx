@@ -5,9 +5,12 @@ import PatientPreExistingConditions from '../../../../../../../components/patien
 import { z } from 'zod'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
-import { completeStep, EncounterContext } from '../_middleware.tsx'
 import { parseRequest } from '../../../../../../../util/parseForm.ts'
-import { HistoryPage } from './_middleware.tsx'
+import {
+  completeAssessment,
+  HistoryContext,
+  HistoryPage,
+} from './_middleware.tsx'
 
 export const ConditionsSchema = z.object({
   allergies: z.array(
@@ -62,22 +65,25 @@ export const ConditionsSchema = z.object({
 })
 
 export const handler = {
-  async POST(req: Request, ctx: EncounterContext) {
+  async POST(req: Request, ctx: HistoryContext) {
     // TODO, parallelize
-    const completing_step = await completeStep(ctx)
+    const completing_assessment = await completeAssessment(ctx)
     const form_values = await parseRequest(
       ctx.state.trx,
       req,
       ConditionsSchema.parse,
     )
 
-    const examination = await examinations.createIfNoneExists(ctx.state.trx, {
-      patient_id: ctx.state.patient.id,
-      encounter_id: ctx.state.encounter.encounter_id,
-      encounter_provider_id:
-        ctx.state.encounter_provider.patient_encounter_provider_id,
-      examination_identifier: 'history_pre_existing_conditions',
-    })
+    const examination = await examinations.createCompletedIfNoneExists(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        encounter_id: ctx.state.encounter.encounter_id,
+        encounter_provider_id:
+          ctx.state.encounter_provider.patient_encounter_provider_id,
+        examination_identifier: 'history_pre_existing_conditions',
+      },
+    )
 
     const upserting_conditions = patient_conditions.upsertPreExisting(
       ctx.state.trx,
@@ -96,7 +102,7 @@ export const handler = {
 
     await Promise.all([upserting_conditions, upserting_allergies])
 
-    return completing_step
+    return completing_assessment
   },
 }
 
