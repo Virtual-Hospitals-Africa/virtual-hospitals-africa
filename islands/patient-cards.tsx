@@ -21,7 +21,7 @@ const DISPLAYED_COLUMNS: {
   },
 ]
 
-function CardHeader(
+export function CardHeader(
   { name, avatar_url }: { name: Maybe<string>; avatar_url?: Maybe<string> },
 ) {
   return (
