@@ -2,7 +2,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 
@@ -19,7 +18,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default EncounterPage(
   function PrescriptionsPage(
-    _props: EncounterPageChildProps,
+    _ctx: EncounterContext,
   ) {
     return <p>TODO</p>
   },

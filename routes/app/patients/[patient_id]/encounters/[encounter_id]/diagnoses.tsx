@@ -97,15 +97,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default EncounterPage(
   async function DiagnosisPage(
-    { ctx, encounter }: EncounterPageChildProps,
+    ctx,
   ) {
     const patient_diagnoses = await diagnoses.getFromReview(ctx.state.trx, {
-      encounter_id: encounter.encounter_id,
+      encounter_id: ctx.state.encounter.encounter_id,
       employment_id: ctx.state.encounter_provider.employment_id,
     })
     const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
-      encounter_id: encounter.encounter_id,
-      patient_id: encounter.patient_id,
+      encounter_id: ctx.state.encounter.encounter_id,
+      patient_id: ctx.state.encounter.patient_id,
     })
     const symptom_start_dates = symptoms.map((s) => s.start_date)
 

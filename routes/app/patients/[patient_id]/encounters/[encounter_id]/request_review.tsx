@@ -114,7 +114,7 @@ export const handler = {
 
 // TODO support initial search
 export function RequestReviewPage(
-  { ctx }: EncounterPageChildProps,
+  ctx: EncounterContext,
 ) {
   const organization_search_url = ctx.url.pathname.replace(
     '/request_review',

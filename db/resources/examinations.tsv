@@ -1,16 +1,16 @@
 identifier	display_name	encounter_step	query_slug
-head_to_toe_assessment_general	Head-to-toe Assessment (General)	head_to_toe_assessment	general
-head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	head_to_toe_assessment	skin
-head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	head_to_toe_assessment	head_and_neck
-head_to_toe_assessment_cardiovascular	Head-to-toe Assessment (Cardiovascular)	head_to_toe_assessment	cardiovascular
-head_to_toe_assessment_respiratory	Head-to-toe Assessment (Respiratory)	head_to_toe_assessment	respiratory
-head_to_toe_assessment_gastrointestinal	Head-to-toe Assessment (Gastrointestinal)	head_to_toe_assessment	gastrointestinal
-head_to_toe_assessment_neuromuscular	Head-to-toe Assessment (Neuromuscular)	head_to_toe_assessment	neuromuscular
-womens_health_assessment	Women's Health Assessment	examinations	womens_health_assessment
+head_to_toe_assessment_general	Head-to-toe Assessment (General)	general_assessments	general
+head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	general_assessments	skin
+head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	general_assessments	head_and_neck
+head_to_toe_assessment_cardiovascular	Head-to-toe Assessment (Cardiovascular)	general_assessments	cardiovascular
+head_to_toe_assessment_respiratory	Head-to-toe Assessment (Respiratory)	general_assessments	respiratory
+head_to_toe_assessment_gastrointestinal	Head-to-toe Assessment (Gastrointestinal)	general_assessments	gastrointestinal
+head_to_toe_assessment_neuromuscular	Head-to-toe Assessment (Neuromuscular)	general_assessments	neuromuscular
+womens_health_assessment	Women's Health Assessment	general_assessments	womens_health_assessment
+mens_health_assessment	Men's Health Assessment	general_assessments	mens_health_assessment
+child_health_assessment	Child Health Assessment	general_assessments	child_health_assessment
 maternity_assessment	Maternity Assessment	examinations	maternity_assessment
-mens_health_assessment	Men's Health Assessment	examinations	mens_health_assessment
 mental_health_assessment	Mental Health Assessment	examinations	mental_health_assessment
-child_health_assessment	Child Health Assessment	examinations	child_health_assessment
 gastroenterology	Gastroenterology	examinations	gastroenterology
 endocrine	Endocrine	examinations	endocrine
 osteopathy	Osteopathy	examinations	osteopathy
@@ -99,3 +99,4 @@ joint_x_ray	Joint X-ray	diagnostic_tests	joint_x_ray
 skull_x_ray	Skull X-ray	diagnostic_tests	skull_x_ray
 temperature	Temperature	diagnostic_tests	temperature
 history_pre_existing_conditions	Pre-existing Conditions	history	conditions
+history_family	Family	history	family

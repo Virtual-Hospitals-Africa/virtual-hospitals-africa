@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { literalBoolean } from '../helpers.ts'
+import { literalBoolean, upsertOne } from '../helpers.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { literalString } from '../helpers.ts'
 import { EncounterStep } from '../../db.d.ts'
@@ -55,7 +55,33 @@ export function forPatientEncounter(
     .where((eb) =>
       eb.or([
         eb('patient_examinations.id', 'is not', null),
-        eb('encounter_step', '=', 'head_to_toe_assessment'),
+        eb('examinations.identifier', '=', 'head_to_toe_assessment_general'),
+        eb('examinations.identifier', '=', 'head_to_toe_assessment_skin'),
+        eb(
+          'examinations.identifier',
+          '=',
+          'head_to_toe_assessment_head_and_neck',
+        ),
+        eb(
+          'examinations.identifier',
+          '=',
+          'head_to_toe_assessment_cardiovascular',
+        ),
+        eb(
+          'examinations.identifier',
+          '=',
+          'head_to_toe_assessment_respiratory',
+        ),
+        eb(
+          'examinations.identifier',
+          '=',
+          'head_to_toe_assessment_gastrointestinal',
+        ),
+        eb(
+          'examinations.identifier',
+          '=',
+          'head_to_toe_assessment_neuromuscular',
+        ),
         eb.and([
           eb('patients.gender', '=', 'female'),
           eb(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18),
@@ -74,6 +100,16 @@ export function forPatientEncounter(
           eb('patient_encounters.reason', '=', 'maternity'),
           eb('examinations.identifier', '=', 'maternity_assessment'),
         ]),
+        eb(
+          'examinations.identifier',
+          '=',
+          'history_pre_existing_conditions',
+        ),
+        eb(
+          'examinations.identifier',
+          '=',
+          'history_family',
+        ),
       ])
     )
     .$if(
@@ -180,4 +216,32 @@ export function skip(trx: TrxOrDb, values: {
       skipped: true,
     })
     .executeTakeFirstOrThrow()
+}
+
+export function upsert(trx: TrxOrDb, upsert: {
+  id?: string
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
+  examination_identifier: string
+  completed?: boolean
+}) {
+  return upsertOne(trx, 'patient_examinations', upsert)
+}
+
+export async function createIfNoneExists(trx: TrxOrDb, exam_details: {
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
+  examination_identifier: string
+}) {
+  const exam = await trx.selectFrom('patient_examinations')
+    .select('id')
+    .where('patient_id', '=', exam_details.patient_id)
+    .where('encounter_id', '=', exam_details.encounter_id)
+    .where('encounter_provider_id', '=', exam_details.encounter_provider_id)
+    .where('examination_identifier', '=', exam_details.examination_identifier)
+    .executeTakeFirst()
+
+  return exam || upsert(trx, exam_details)
 }

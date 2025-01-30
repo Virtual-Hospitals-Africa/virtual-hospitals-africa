@@ -1,26 +1,13 @@
-import {
-  completeStep,
-  EncounterContext,
-  EncounterPage,
-  EncounterPageChildProps,
-} from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
+import redirect from '../../../../../../util/redirect.ts'
+import { HistoryContext } from './history/_middleware.tsx'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  EncounterContext['state']
-> = {
-  // deno-lint-ignore require-await
-  async POST(_req, ctx: EncounterContext) {
-    const completing_step = completeStep(ctx)
-    return completing_step
-  },
+// deno-lint-ignore require-await
+export default async function (_req: Request, ctx: HistoryContext) {
+  if (ctx.state.current_assessment) return ctx.next()
+
+  const goto_assessment = ctx.state.next_incomplete_assessment ||
+    ctx.state.history_assessments[0]
+  const url = new URL(ctx.url)
+  url.pathname += '/' + goto_assessment.query_slug
+  return redirect(url)
 }
-
-export default EncounterPage(
-  function HistoryPage(
-    _props: EncounterPageChildProps,
-  ) {
-    return <p>TODO</p>
-  },
-)
