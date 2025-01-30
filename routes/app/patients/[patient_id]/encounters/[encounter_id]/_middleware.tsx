@@ -255,6 +255,8 @@ export function EncounterPage(
       children = rendered.children
     }
 
+    console.log("258 _middleware.ts 'patient'", patient)
+
     return (
       <EncounterLayout
         ctx={ctx}
@@ -263,11 +265,11 @@ export function EncounterPage(
         measurements={measurements}
         care_team={[
           {
-            health_worker_id: patient.primary_provider_health_worker_id,
             name: patient.primary_provider_name,
-            role: 'Primary Care Provider',
+            health_worker_id: patient.primary_provider_health_worker_id,
+            specialty: 'Primary Care Provider',
             avatar_url: patient.primary_provider_avatar_url,
-            profession: patient.primary_provider_profession,
+            professions: [patient.primary_provider_profession],
             organization_name: patient.primary_provider_organization_name,
           },
         ]}
