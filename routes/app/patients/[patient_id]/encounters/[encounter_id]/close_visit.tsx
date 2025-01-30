@@ -38,10 +38,10 @@ const assertAllEncounterStepsCompleted = assertAllPriorStepsCompleted(
 
 export default EncounterPage(
   function CloseVisitPage(
-    { ctx, encounter }: EncounterPageChildProps,
+    ctx,
   ) {
     assertAllEncounterStepsCompleted(
-      encounter.steps_completed,
+      ctx.state.encounter.steps_completed,
       ctx.params,
     )
     return <p>TODO</p>

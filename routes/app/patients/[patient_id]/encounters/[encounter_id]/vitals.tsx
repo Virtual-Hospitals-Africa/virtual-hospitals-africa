@@ -56,7 +56,7 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   },
 }
 
-export async function VitalsPage({ ctx }: EncounterPageChildProps) {
+export async function VitalsPage(ctx: EncounterContext) {
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
     patient_id: ctx.state.patient.id,

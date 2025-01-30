@@ -28,7 +28,7 @@ export type EncounterStep =
   | 'diagnoses'
   | 'diagnostic_tests'
   | 'examinations'
-  | 'head_to_toe_assessment'
+  | 'general_assessments'
   | 'history'
   | 'orders'
   | 'prescriptions'

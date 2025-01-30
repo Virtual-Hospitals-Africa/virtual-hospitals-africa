@@ -2,9 +2,9 @@
 // import {
 //   ASSESSMENTS,
 //   DIAGNOSTIC_TESTS,
-// } from '../../shared/head_to_toe_assessment.ts'
+// } from '../../shared/general_assessments.ts'
 // import { LabelledListboxMulti } from '../form/Listbox.tsx'
-// import { Examination } from '../../shared/head_to_toe_assessment.ts'
+// import { Examination } from '../../shared/general_assessments.ts'
 // import partition from '../../util/partition.ts'
 
 // export function NewExaminationForm({

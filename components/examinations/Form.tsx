@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { HEAD_TO_TOE_ASSESSMENTS_BY_IDENTIFIER } from '../../shared/head_to_toe_assessment.ts'
+import { GENERAL_ASSESSMENTS_BY_IDENTIFIER } from '../../shared/general_assessments.ts'
 import { ExaminationCategory } from './Category.tsx'
 import { HiddenInput } from '../library/HiddenInput.tsx'
 import {
@@ -14,7 +14,7 @@ export function PatientExaminationForm({
   patient_examination: RenderedPatientExamination
   findings: RenderedPatientExaminationFinding[]
 }): JSX.Element {
-  const assessment = HEAD_TO_TOE_ASSESSMENTS_BY_IDENTIFIER.get(
+  const assessment = GENERAL_ASSESSMENTS_BY_IDENTIFIER.get(
     patient_examination.examination_identifier,
   )
   if (!assessment) {

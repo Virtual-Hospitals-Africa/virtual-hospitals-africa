@@ -59,8 +59,11 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnoses from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment from './routes/app/patients/[patient_id]/encounters/[encounter_id]/head_to_toe_assessment.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_general_assessments from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_history from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_history_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/_middleware.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_history_conditions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/conditions.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_history_family from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/family.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_nearest_organizations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/nearest_organizations.ts'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
@@ -337,10 +340,16 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/head_to_toe_assessment.tsx':
-      $app_patients_patient_id_encounters_encounter_id_head_to_toe_assessment,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx':
+      $app_patients_patient_id_encounters_encounter_id_general_assessments,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx':
       $app_patients_patient_id_encounters_encounter_id_history,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/_middleware.tsx':
+      $app_patients_patient_id_encounters_encounter_id_history_middleware,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/conditions.tsx':
+      $app_patients_patient_id_encounters_encounter_id_history_conditions,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/family.tsx':
+      $app_patients_patient_id_encounters_encounter_id_history_family,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/nearest_organizations.ts':
       $app_patients_patient_id_encounters_encounter_id_nearest_organizations,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':

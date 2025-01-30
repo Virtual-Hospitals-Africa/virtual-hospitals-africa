@@ -30,10 +30,3 @@ export async function handler(
   ctx.state.patient = patient
   return ctx.next()
 }
-
-export function postHandler(
-  _req: Request,
-  ctx: FreshContext,
-) {
-  return ctx.next()
-}
