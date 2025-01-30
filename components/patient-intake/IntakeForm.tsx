@@ -1,5 +1,5 @@
 import { NearestHealthCareSection } from '../../islands/NearestHealthCare.tsx'
-import { NextOfKinFormSection } from '../../islands/patient-intake/FamilyForm.tsx'
+import { NextOfKinFormSection } from '../../islands/family/FamilyForm.tsx'
 import {
   CountryAddressTree,
   PatientFamily,

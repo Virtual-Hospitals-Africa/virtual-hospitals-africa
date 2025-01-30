@@ -7,10 +7,10 @@ import {
   PatientFamily,
 } from '../../types.ts'
 import { AddRow } from '../AddRemove.tsx'
-import Guardian from '../../islands/family/Guardian.tsx'
+import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import Dependent from '../../islands/family/Dependent.tsx'
-import NextOfKinInput from '../../islands/family/NextOfKin.tsx'
+import Dependent from './Dependent.tsx'
+import NextOfKinInput from './NextOfKin.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 
 type GuardianFamilyRelationState =

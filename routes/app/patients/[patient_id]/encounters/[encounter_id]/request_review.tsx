@@ -2,7 +2,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'

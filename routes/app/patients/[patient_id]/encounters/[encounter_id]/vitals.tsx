@@ -1,8 +1,4 @@
-import {
-  EncounterContext,
-  EncounterPage,
-  EncounterPageChildProps,
-} from './_middleware.tsx'
+import { EncounterContext, EncounterPage } from './_middleware.tsx'
 import { z } from 'zod'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {

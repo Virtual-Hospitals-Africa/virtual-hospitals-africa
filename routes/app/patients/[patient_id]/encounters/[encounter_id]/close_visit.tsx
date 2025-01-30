@@ -2,7 +2,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'

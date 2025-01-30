@@ -13,8 +13,8 @@ export function postHandler<
 >(
   schema: z.ZodObject<T>,
   callback: (
-    ctx: Context,
     req: Request,
+    ctx: Context,
     form_values: T,
   ) => Response | Promise<Response>,
 ) {
@@ -22,7 +22,7 @@ export function postHandler<
     async POST(req: Request, ctx: Context) {
       const form_values = await parseRequest(ctx.state.trx, req, schema.parse)
       // deno-lint-ignore no-explicit-any
-      return callback(ctx, req, form_values as any)
+      return callback(req, ctx, form_values as any)
     },
   }
 }
