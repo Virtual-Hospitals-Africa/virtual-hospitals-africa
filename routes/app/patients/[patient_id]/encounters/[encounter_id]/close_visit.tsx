@@ -2,7 +2,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
@@ -38,10 +37,10 @@ const assertAllEncounterStepsCompleted = assertAllPriorStepsCompleted(
 
 export default EncounterPage(
   function CloseVisitPage(
-    { ctx, encounter }: EncounterPageChildProps,
+    ctx,
   ) {
     assertAllEncounterStepsCompleted(
-      encounter.steps_completed,
+      ctx.state.encounter.steps_completed,
       ctx.params,
     )
     return <p>TODO</p>

@@ -3,11 +3,11 @@ import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
+import * as examinations from '../../db/models/examinations.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import permutations from '../../util/permutations.ts'
-import { upsertOne } from '../../db/helpers.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -28,9 +28,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -156,9 +155,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -276,9 +274,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -402,9 +399,8 @@ describe(
           },
         )
 
-        const patient_examination = await upsertOne(
+        const patient_examination = await examinations.upsert(
           trx,
-          'patient_examinations',
           {
             patient_id: encounter.patient_id,
             encounter_id: encounter.id,
@@ -458,9 +454,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -535,9 +530,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -673,9 +667,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -731,9 +724,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -778,9 +770,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -826,9 +817,8 @@ describe(
           },
         )
 
-        const patient_examination = await upsertOne(
+        const patient_examination = await examinations.upsert(
           trx,
-          'patient_examinations',
           {
             patient_id: encounter.patient_id,
             encounter_id: encounter.id,
@@ -872,9 +862,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -919,9 +908,8 @@ describe(
           },
         )
 
-        const patient_examination = await upsertOne(
+        const patient_examination = await examinations.upsert(
           trx,
-          'patient_examinations',
           {
             patient_id: encounter.patient_id,
             encounter_id: encounter.id,
@@ -962,9 +950,8 @@ describe(
             },
           )
 
-          const patient_examination = await upsertOne(
+          const patient_examination = await examinations.upsert(
             trx,
-            'patient_examinations',
             {
               patient_id: encounter.patient_id,
               encounter_id: encounter.id,
@@ -1006,9 +993,8 @@ describe(
           },
         )
 
-        const patient_examination = await upsertOne(
+        const patient_examination = await examinations.upsert(
           trx,
-          'patient_examinations',
           {
             patient_id: encounter.patient_id,
             encounter_id: encounter.id,
@@ -1130,9 +1116,8 @@ describe(
               },
             )
 
-            const patient_examination = await upsertOne(
+            const patient_examination = await examinations.upsert(
               trx,
-              'patient_examinations',
               {
                 patient_id: encounter.patient_id,
                 encounter_id: encounter.id,

@@ -20,7 +20,10 @@ import * as patient_measurements from '../../../../../../db/models/patient_measu
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
-import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
+import {
+  ENCOUNTER_STEPS,
+  isEncounterStep,
+} from '../../../../../../shared/encounter.ts'
 import {
   completedStep,
   removeFromWaitingRoomAndAddSelfAsProvider,
@@ -32,9 +35,9 @@ import { Button } from '../../../../../../components/library/Button.tsx'
 import { EncounterStep } from '../../../../../../db.d.ts'
 import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import words from '../../../../../../util/words.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { PatientDrawerV2 } from '../../../../../../islands/patient-drawer/DrawerV2.tsx'
+import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -46,16 +49,49 @@ export function getEncounterId(ctx: FreshContext): 'open' | string {
 type EncounterPageProps = {
   patient: HasStringId<PatientWithOpenEncounter>
   encounter: RenderedPatientEncounter
+  current_encounter_step: EncounterStep
   encounter_provider: RenderedPatientEncounterProvider
   findings: RenderedPatientExaminationFinding[]
+  previously_completed?: boolean
 }
 
 export type EncounterContext = LoggedInHealthWorkerContext<
   EncounterPageProps
 >
 
+const nav_links = ENCOUNTER_STEPS.map((step) => ({
+  step,
+  route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
+}))
+
+const next_links_by_step = groupByMapped(
+  nav_links,
+  (link) => link.step,
+  (link, i) => {
+    const next_link = nav_links[i + 1]
+    if (!next_link) {
+      assertEquals(i, nav_links.length - 1)
+      assertEquals(link.step, 'close_visit')
+    }
+    return {
+      route: next_link?.route ||
+        `/app/patients/:patient_id/encounters/open/vitals`,
+      button_text: next_link ? `Continue` : 'Conclude visit',
+    }
+  },
+)
+
+const nextStep = ({ state: { current_encounter_step } }: EncounterContext) => {
+  const next_link = next_links_by_step.get(current_encounter_step)
+  assert(next_link, `No next link for step ${current_encounter_step}`)
+  return next_link
+}
+
+const nextLink = (ctx: EncounterContext) =>
+  replaceParams(nextStep(ctx).route, ctx.params)
+
 export async function completeStep(ctx: EncounterContext) {
-  const step = nav_links.find((link) => link.route === ctx.route)?.step
+  const step = nav_links.find((link) => ctx.route.startsWith(link.route))?.step
   assert(step)
   await completedStep(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
@@ -106,47 +142,35 @@ export async function handler(
       }).then((patients) => patients[0]),
     })
 
+  const next_incomplete_step = ENCOUNTER_STEPS.find((step) =>
+    !encounter.steps_completed.includes(step)
+  )
+
+  let step = ctx.route.replace(
+    '/app/patients/:patient_id/encounters/:encounter_id/',
+    '',
+  )
+  if (step.includes('/')) {
+    step = step.split('/')[0]
+  }
+
+  assertOrRedirect(
+    isEncounterStep(step),
+    `/app/patients/${patient_id}/encounters/${encounter_id}/${
+      next_incomplete_step || 'vitals'
+    }`,
+  )
+  const previously_completed = encounter.steps_completed.includes(
+    step as unknown as EncounterStep,
+  )
   ctx.state.patient = patient
   ctx.state.encounter = encounter
   ctx.state.encounter_provider = encounter_provider
+  ctx.state.current_encounter_step = step
   ctx.state.findings = findings
+  ctx.state.previously_completed = previously_completed
   return ctx.next()
 }
-
-const nav_links = ENCOUNTER_STEPS.map((step) => ({
-  step,
-  route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
-}))
-
-const buttonText = (step: string) => words(step).map(capitalize).join(' ')
-
-const next_links_by_route = groupByMapped(
-  nav_links,
-  (link) => link.route,
-  (link, i) => {
-    const next_link = nav_links[i + 1]
-    if (!next_link) {
-      assertEquals(i, nav_links.length - 1)
-      assertEquals(link.step, 'close_visit')
-    }
-    return {
-      route: next_link?.route ||
-        `/app/patients/:patient_id/encounters/open/vitals`,
-      button_text: next_link
-        ? `Continue to ${buttonText(next_link.step)}`
-        : 'Conclude visit',
-    }
-  },
-)
-
-const nextStep = ({ route }: FreshContext) => {
-  const next_link = next_links_by_route.get(route)
-  assert(next_link, `No next link for route ${route}`)
-  return next_link
-}
-
-const nextLink = (ctx: FreshContext) =>
-  replaceParams(nextStep(ctx).route, ctx.params)
 
 export function EncounterLayout({
   ctx,
@@ -207,24 +231,23 @@ export type EncounterPageChildProps = EncounterPageProps & {
   previously_completed: boolean
 }
 
-export function EncounterPage(
+export function EncounterPage<
+  Context extends EncounterContext = EncounterContext,
+>(
   render: (
-    props: EncounterPageChildProps,
+    ctx: Context,
   ) =>
     | JSX.Element
     | Promise<JSX.Element>
     | Promise<{ next_step_text: string; children: JSX.Element }>
-    | Promise<Response>,
+    | Promise<Response>
+    | Promise<Response | JSX.Element>,
 ) {
   return async function (
     _req: Request,
     ctx: EncounterContext,
   ) {
     const { patient, encounter, encounter_provider, trx } = ctx.state
-    const step = ctx.route.split('/').pop()!
-    const previously_completed = encounter.steps_completed.includes(
-      step as unknown as EncounterStep,
-    )
 
     const { organization_id } = encounter_provider
     const { location } = await organizations.getById(
@@ -236,7 +259,7 @@ export function EncounterPage(
 
     const { rendered, measurements } = await promiseProps({
       rendered: Promise.resolve(
-        render({ ctx, ...ctx.state, previously_completed }),
+        render(ctx as Context),
       ),
       measurements: patient_measurements.getEncounterVitals(trx, {
         patient_id: patient.id,

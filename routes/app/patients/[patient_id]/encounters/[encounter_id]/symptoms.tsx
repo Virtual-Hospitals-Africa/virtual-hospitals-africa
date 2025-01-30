@@ -3,7 +3,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
@@ -67,11 +66,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 export async function SymptomsPage(
-  { ctx, patient, encounter }: EncounterPageChildProps,
+  ctx: EncounterContext,
 ) {
   const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
-    encounter_id: encounter.encounter_id,
-    patient_id: patient.id,
+    encounter_id: ctx.state.encounter.encounter_id,
+    patient_id: ctx.state.patient.id,
   })
 
   const today = todayISOInHarare()

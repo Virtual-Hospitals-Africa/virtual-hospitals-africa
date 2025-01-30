@@ -2,7 +2,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
@@ -114,7 +113,7 @@ export const handler = {
 
 // TODO support initial search
 export function RequestReviewPage(
-  { ctx }: EncounterPageChildProps,
+  ctx: EncounterContext,
 ) {
   const organization_search_url = ctx.url.pathname.replace(
     '/request_review',

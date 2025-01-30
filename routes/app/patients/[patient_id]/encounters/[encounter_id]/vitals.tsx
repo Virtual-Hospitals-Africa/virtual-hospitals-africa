@@ -1,8 +1,4 @@
-import {
-  EncounterContext,
-  EncounterPage,
-  EncounterPageChildProps,
-} from './_middleware.tsx'
+import { EncounterContext, EncounterPage } from './_middleware.tsx'
 import { z } from 'zod'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
@@ -56,7 +52,7 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   },
 }
 
-export async function VitalsPage({ ctx }: EncounterPageChildProps) {
+export async function VitalsPage(ctx: EncounterContext) {
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
     patient_id: ctx.state.patient.id,

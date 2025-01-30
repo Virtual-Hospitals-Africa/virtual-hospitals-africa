@@ -6,7 +6,6 @@ import type {
 } from '../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
-import type { FreshContext } from '$fresh/server.ts'
 
 export type PatientContext = LoggedInHealthWorkerContext<
   {
@@ -28,12 +27,5 @@ export async function handler(
   assertOr404(patient, 'Patient not found')
 
   ctx.state.patient = patient
-  return ctx.next()
-}
-
-export function postHandler(
-  _req: Request,
-  ctx: FreshContext,
-) {
   return ctx.next()
 }

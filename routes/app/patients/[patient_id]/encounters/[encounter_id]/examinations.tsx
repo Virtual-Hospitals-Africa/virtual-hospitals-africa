@@ -3,7 +3,6 @@ import {
   completeStep,
   EncounterContext,
   EncounterPage,
-  EncounterPageChildProps,
 } from './_middleware.tsx'
 import {
   LoggedInHealthWorkerHandlerWithProps,
@@ -249,7 +248,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 export async function ExaminationsPage(
-  { ctx }: EncounterPageChildProps,
+  ctx: EncounterContext,
 ) {
   const { trx, encounter /*, encounter_provider */ } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
