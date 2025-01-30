@@ -81,7 +81,8 @@ export const handler = {
         encounter_id: ctx.state.encounter.encounter_id,
         encounter_provider_id:
           ctx.state.encounter_provider.patient_encounter_provider_id,
-        examination_identifier: 'history_pre_existing_conditions',
+        examination_identifier:
+          ctx.state.current_assessment.examination_identifier,
       },
     )
 
