@@ -278,8 +278,6 @@ export function EncounterPage<
       children = rendered.children
     }
 
-    console.log("258 _middleware.ts 'patient'", patient)
-
     return (
       <EncounterLayout
         ctx={ctx}
