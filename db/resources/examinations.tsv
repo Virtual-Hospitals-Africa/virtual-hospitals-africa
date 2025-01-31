@@ -101,4 +101,4 @@ temperature	Temperature	diagnostic_tests	temperature
 history_pre_existing_conditions	Pre-existing Conditions	history	pre_existing_conditions
 history_family	Family	history	family
 history_past_conditions	Past Conditions	history	past_conditions
-history_major_surgeries	Pre-existing Conditions	history	major_surgeries
+history_major_surgeries	Major Surgeries	history	major_surgeries
