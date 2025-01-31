@@ -66,6 +66,7 @@ export default function App({ Component, ...props }: PageProps) {
               property='og:url'
               content='https://virtualhospitalsafrica.org'
             />
+            <link rel='manifest' href='manifest.json'></link>
             <link
               rel='apple-touch-icon'
               sizes='180x180'
