@@ -301,6 +301,7 @@ export function EncounterPage<
             avatar_url: patient.primary_provider_avatar_url,
             professions: [patient.primary_provider_profession],
             organization_name: patient.primary_provider_organization_name,
+            last_visit: 'Last visit 2 months ago',
           },
         ]}
       >
