@@ -65,7 +65,7 @@ export function NearestHealthCareSection(
           label='Nearest Organization'
           // deno-lint-ignore no-explicit-any
           value={nearest_organization_signal.value as any}
-          sort={{ by: 'nearest', direction: 'asc' }}
+          sort={{ by: 'Closest', direction: 'asc' }}
           onSelect={(organization) =>
             nearest_organization_signal.value = organization}
           required

@@ -154,7 +154,8 @@ export async function handler(
     })
 
   const step = stepFromUrl(ctx)
-  const getting_json = req.method === 'GET' && req.headers.get('accept') === 'application/json'
+  const getting_json = req.method === 'GET' &&
+    req.headers.get('accept') === 'application/json'
 
   if (!getting_json) {
     const next_incomplete_step = ENCOUNTER_STEPS.find((step) =>
@@ -167,7 +168,6 @@ export async function handler(
       }`,
     )
   }
-
 
   const previously_completed = encounter.steps_completed.includes(
     step as unknown as EncounterStep,

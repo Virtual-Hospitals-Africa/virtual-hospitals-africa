@@ -1,6 +1,5 @@
 import { useSignal } from '@preact/signals'
 import { DOCTOR_SPECIALTIES } from '../../types.ts'
-import FormRow from '../../components/library/FormRow.tsx'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
 import Table, {
