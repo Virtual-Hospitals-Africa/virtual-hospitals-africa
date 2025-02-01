@@ -17,6 +17,7 @@
     "db:restore": "deno task run:trusted db/restore.ts",
     "db:recreate": "deno task run:trusted db/recreate.ts",
     "db:create": "deno task run:trusted db/create.ts",
+    "db:demo": "deno task db:local reset && deno task run:trusted ./scripts/add_dummy_data.ts",
     "events:processor": "deno task run:trusted events/processor.ts",
     "heroku": "deno task run:trusted ./scripts/heroku.ts",
     "local": "./scripts/local.sh",

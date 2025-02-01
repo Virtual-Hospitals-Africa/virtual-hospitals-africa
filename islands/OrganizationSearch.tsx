@@ -1,4 +1,4 @@
-import { Maybe } from '../types.ts'
+import { Maybe, OrganizationSortOptions } from '../types.ts'
 import AsyncSearch from './AsyncSearch.tsx'
 import { NearestOrganizationSearchResult } from '../db/models/nearest_organizations.ts'
 
@@ -22,7 +22,7 @@ export default function OrganizationSearch(
       is_physical?: boolean
     }
     sort: {
-      by: 'Closest' | 'Shortest Waiting Time'
+      by: OrganizationSortOptions
       direction: 'asc' | 'desc'
     }
     onSelect?: (selected: NearestOrganizationSearchResult) => void
