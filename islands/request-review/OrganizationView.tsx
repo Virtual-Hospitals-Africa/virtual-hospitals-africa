@@ -1,4 +1,5 @@
 import { useSignal } from '@preact/signals'
+import { DOCTOR_SPECIALTIES } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
@@ -64,16 +65,6 @@ export default function OrganizationsTable(
   )
 }
 
-const getAcceptedPatientFilterItems = (url: string): Option[] => {
-  const currentUrl = new URL(url)
-  const params = currentUrl.searchParams
-  const selectedValues = params.getAll('accepting_patients')
-  return [
-    { value: 'true', label: 'Yes', checked: selectedValues.includes('true') },
-    { value: 'false', label: 'No', checked: selectedValues.includes('false') },
-  ]
-}
-
 export function OrganizationView(props: {
   current_url: string
   search_url: string
@@ -87,6 +78,7 @@ export function OrganizationView(props: {
 
   const search_url = useSignal(props.search_url)
   const sort = useSignal<'asc' | 'desc'>('asc')
+  const filters = useSignal<Set<string>>(new Set())
 
   function checkHash() {
     const params = new URLSearchParams('?' + self.location.hash.slice(1))
@@ -99,23 +91,43 @@ export function OrganizationView(props: {
       )) || null
   }
 
-  const getDistanceSortDropdownItems = (url: string): DropdownItem[] => {
-    return [
-      {
-        title: 'Nearest',
-        selected: sort.value === 'asc',
-        onClick: () => {
-          sort.value = 'asc'
-        },
+  const getDistanceSortDropdownItems: DropdownItem[] = [
+    {
+      title: 'Nearest',
+      selected: sort.value === 'asc',
+      onClick: () => {
+        sort.value = 'asc'
       },
-      {
-        title: 'Farthest',
-        selected: sort.value === 'desc',
-        onClick: () => {
-          sort.value = 'desc'
-        },
+    },
+    {
+      title: 'Farthest',
+      selected: sort.value === 'desc',
+      onClick: () => {
+        sort.value = 'desc'
       },
-    ]
+    },
+  ]
+
+  const updateFilter = (newValue: string, filters: Set<string>) => {
+    if (filters.has(newValue)) {
+      filters.delete(newValue)
+    } else {
+      filters.add(newValue)
+    }
+    return new Set([...filters])
+  }
+
+  const getAcceptedPatientFilterItems = (
+    selectedFilters: Set<string>,
+  ): Option<string>[] => {
+    return DOCTOR_SPECIALTIES.map((specialty) => ({
+      value: specialty,
+      label: specialty,
+      checked: selectedFilters.has(specialty),
+      onChanged: (newValue) => {
+        filters.value = updateFilter(newValue, filters.value)
+      },
+    }))
   }
 
   useEffect(() => {
@@ -139,7 +151,7 @@ export function OrganizationView(props: {
             direction: sort.value,
           }}
           filters={{
-            accepting_patients: true,
+            specialties: [...filters.value],
           }}
           onUpdate={(organization_results) => {
             organizations.value = organization_results.current_page.results
@@ -148,9 +160,9 @@ export function OrganizationView(props: {
           do_not_render_built_in_options
         />
         <Filter
-          id='accepting_patients'
-          name='Accepting Patients'
-          options={getAcceptedPatientFilterItems(props.current_url)}
+          id='specialties'
+          name='specialties'
+          options={getAcceptedPatientFilterItems(filters.value)}
         />
         <Dropdown
           button={
@@ -161,7 +173,7 @@ export function OrganizationView(props: {
               color='gray'
               type='button'
             >
-              Distance
+              Closest
               <svg
                 width='16'
                 height='14'
@@ -173,7 +185,7 @@ export function OrganizationView(props: {
               </svg>
             </Button>
           }
-          items={getDistanceSortDropdownItems(props.current_url)}
+          items={getDistanceSortDropdownItems}
         />
       </FormRow>
       <OrganizationsTable
