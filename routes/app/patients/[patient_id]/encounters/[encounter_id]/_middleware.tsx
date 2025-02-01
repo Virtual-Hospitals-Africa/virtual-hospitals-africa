@@ -100,6 +100,17 @@ export async function completeStep(ctx: EncounterContext) {
   return redirect(nextLink(ctx))
 }
 
+function stepFromUrl(ctx: EncounterContext) {
+  const step = ctx.route.replace(
+    '/app/patients/:patient_id/encounters/:encounter_id/',
+    '',
+  )
+  if (step.includes('/')) {
+    return step.split('/')[0]
+  }
+  return step
+}
+
 export async function handler(
   req: Request,
   ctx: EncounterContext,
@@ -142,31 +153,29 @@ export async function handler(
       }).then((patients) => patients[0]),
     })
 
-  const next_incomplete_step = ENCOUNTER_STEPS.find((step) =>
-    !encounter.steps_completed.includes(step)
-  )
+  const step = stepFromUrl(ctx)
+  const getting_json = req.method === 'GET' && req.headers.get('accept') === 'application/json'
 
-  let step = ctx.route.replace(
-    '/app/patients/:patient_id/encounters/:encounter_id/',
-    '',
-  )
-  if (step.includes('/')) {
-    step = step.split('/')[0]
+  if (!getting_json) {
+    const next_incomplete_step = ENCOUNTER_STEPS.find((step) =>
+      !encounter.steps_completed.includes(step)
+    )
+    assertOrRedirect(
+      isEncounterStep(step),
+      `/app/patients/${patient_id}/encounters/${encounter_id}/${
+        next_incomplete_step || 'vitals'
+      }`,
+    )
   }
 
-  assertOrRedirect(
-    isEncounterStep(step),
-    `/app/patients/${patient_id}/encounters/${encounter_id}/${
-      next_incomplete_step || 'vitals'
-    }`,
-  )
+
   const previously_completed = encounter.steps_completed.includes(
     step as unknown as EncounterStep,
   )
   ctx.state.patient = patient
   ctx.state.encounter = encounter
   ctx.state.encounter_provider = encounter_provider
-  ctx.state.current_encounter_step = step
+  ctx.state.current_encounter_step = step as EncounterStep
   ctx.state.findings = findings
   ctx.state.previously_completed = previously_completed
   return ctx.next()
