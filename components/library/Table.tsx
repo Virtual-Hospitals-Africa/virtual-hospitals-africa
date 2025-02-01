@@ -248,7 +248,9 @@ function* columnsWithSomeNonNullValue<T extends Row>(
     // Kinda ugly, but we determine the actions to show within TableCellInnerContents
     // and thus don't need to compute the cell_contents here
     if (column.type === 'actions') {
-      if (rows.some((row) => row.actions)) {
+      const actions_are_computed = typeof column.data === 'function'
+      const some_row_has_actions = rows.some((row) => row.actions)
+      if (actions_are_computed || some_row_has_actions) {
         yield { column, cell_contents: [] }
       }
       continue

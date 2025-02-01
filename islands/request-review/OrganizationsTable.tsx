@@ -31,6 +31,7 @@ const columns: TableColumn<NearestOrganizationSearchResult>[] = [
     label: 'Actions',
     type: 'actions',
     data(row): ExtendedActionData {
+      console.log('ewlkekwllkew')
       return {
         text: 'review',
         href: `#request_review_from_organization_id=${row.id}`,
@@ -44,6 +45,7 @@ export function OrganizationsTable(
     organizations: NearestOrganizationSearchResult[]
   },
 ) {
+  console.log('ZZZZZ', { organizations })
   return (
     <Table
       columns={columns}
