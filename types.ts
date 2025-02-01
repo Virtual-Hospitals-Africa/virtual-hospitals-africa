@@ -1338,6 +1338,7 @@ export const DOCTOR_SPECIALTIES = [
   'Family Medicine' as const,
   'Gastroenterology' as const,
   'Geriatrics' as const,
+  'General Practitioner' as const,
   'Hematology' as const,
   'Infectious Disease' as const,
   'Internal Medicine' as const,
@@ -1355,6 +1356,8 @@ export const DOCTOR_SPECIALTIES = [
   'Rheumatology' as const,
   'Urology' as const,
 ]
+
+export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
 export type NurseRegistrationDetails = {
   health_worker_id: string
@@ -3170,4 +3173,9 @@ export type RenderedMessageThreadWithMostRecentMessage =
 export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   messages: RenderedMessage[]
   last_message_read_by_everyone_else_id?: string
+}
+
+export enum OrganizationSortOptions {
+  closest = 'Closest',
+  shortest_wait = 'Shortest Wait',
 }

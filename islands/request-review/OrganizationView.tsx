@@ -1,73 +1,18 @@
 import { useSignal } from '@preact/signals'
-import { DOCTOR_SPECIALTIES } from '../../types.ts'
+import {
+  DOCTOR_SPECIALTIES,
+  DoctorSpecialty,
+  OrganizationSortOptions,
+} from '../../types.ts'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
-import Table, {
-  ExtendedActionData,
-  TableColumn,
-} from '../../components/library/Table.tsx'
-import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
-import { OrganizationCard } from './OrganizationCard.tsx'
 import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import Dropdown, { DropdownItem } from '../../islands/Dropdown.tsx'
 import Filter, { Option } from '../../islands/Filter.tsx'
-
-const columns: TableColumn<NearestOrganizationSearchResult>[] = [
-  {
-    label: 'Organization',
-    data: (row) => <OrganizationCard organization={row} />,
-    cellClassName: 'mb-1 font-medium',
-  },
-  {
-    label: 'Status',
-    data: 'status',
-  },
-  {
-    label: 'Doctors Available',
-    data(row) {
-      return (
-        <AvatarGroup
-          people={row.doctors.slice(0, 3)}
-          plus_count={row.doctors.length - 3}
-        />
-      )
-    },
-  },
-  {
-    label: 'Actions',
-    type: 'actions',
-    data(row): ExtendedActionData {
-      return {
-        text: 'review',
-        href: `#request_review_from_organization_id=${row.id}`,
-      }
-    },
-  },
-]
-
-export default function OrganizationsTable(
-  { organizations }: {
-    organizations: NearestOrganizationSearchResult[]
-  },
-) {
-  return (
-    <Table
-      columns={columns}
-      rows={organizations}
-      EmptyState={() => (
-        <p>No matching organizations found with those criteria.</p>
-      )}
-    />
-  )
-}
-
-enum SortOptions {
-  Closest = 'Closest',
-  ShortestWaitingTime = 'Shortest Waiting Time',
-}
+import { OrganizationsTable } from './OrganizationsTable.tsx'
 
 export function OrganizationView(props: {
   current_url: string
@@ -81,8 +26,13 @@ export function OrganizationView(props: {
   >(null)
 
   const search_url = useSignal(props.search_url)
-  const sort = useSignal<SortOptions>(SortOptions.Closest)
-  const filters = useSignal<Set<string>>(new Set())
+  const sort = useSignal<OrganizationSortOptions>(
+    OrganizationSortOptions.closest,
+  )
+
+  const specialties = useSignal(
+    new Set<DoctorSpecialty>(['General Practitioner']),
+  )
 
   function checkHash() {
     const params = new URLSearchParams('?' + self.location.hash.slice(1))
@@ -96,7 +46,7 @@ export function OrganizationView(props: {
   }
 
   const getSortItems = (): DropdownItem[] => {
-    return Object.values(SortOptions).map((option) => ({
+    return Object.values(OrganizationSortOptions).map((option) => ({
       title: option,
       selected: sort.value === option,
       onClick: () => {
@@ -105,7 +55,10 @@ export function OrganizationView(props: {
     }))
   }
 
-  const updateFilter = (newValue: string, filters: Set<string>) => {
+  const updateFilter = (
+    newValue: DoctorSpecialty,
+    filters: Set<DoctorSpecialty>,
+  ) => {
     if (filters.has(newValue)) {
       filters.delete(newValue)
     } else {
@@ -114,15 +67,15 @@ export function OrganizationView(props: {
     return new Set([...filters])
   }
 
-  const getAcceptedPatientFilterItems = (
+  const getSpecialtiesFilterItems = (
     selectedFilters: Set<string>,
-  ): Option<string>[] => {
+  ): Option<DoctorSpecialty>[] => {
     return DOCTOR_SPECIALTIES.map((specialty) => ({
       value: specialty,
       label: specialty,
       checked: selectedFilters.has(specialty),
       onChanged: (newValue) => {
-        filters.value = updateFilter(newValue, filters.value)
+        specialties.value = updateFilter(newValue, specialties.value)
       },
     }))
   }
@@ -148,7 +101,7 @@ export function OrganizationView(props: {
             direction: 'asc',
           }}
           filters={{
-            specialties: [...filters.value],
+            specialties: [...specialties.value],
           }}
           onUpdate={(organization_results) => {
             organizations.value = organization_results.current_page.results
@@ -159,7 +112,7 @@ export function OrganizationView(props: {
         <Filter
           id='specialties'
           name='specialties'
-          options={getAcceptedPatientFilterItems(filters.value)}
+          options={getSpecialtiesFilterItems(specialties.value)}
         />
         <Dropdown
           button={

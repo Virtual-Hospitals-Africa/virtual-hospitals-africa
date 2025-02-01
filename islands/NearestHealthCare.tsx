@@ -3,6 +3,7 @@ import FormRow from '../components/library/FormRow.tsx'
 import OrganizationSearch from './OrganizationSearch.tsx'
 import PersonSearch from './PersonSearch.tsx'
 import FormSection from '../components/library/FormSection.tsx'
+import { OrganizationSortOptions } from '../types.ts'
 
 // export default function AddressSection(
 //   { patient = {}, default_organization, country_address_tree }: {
@@ -65,7 +66,7 @@ export function NearestHealthCareSection(
           label='Nearest Organization'
           // deno-lint-ignore no-explicit-any
           value={nearest_organization_signal.value as any}
-          sort={{ by: 'Closest', direction: 'asc' }}
+          sort={{ by: OrganizationSortOptions.closest, direction: 'asc' }}
           onSelect={(organization) =>
             nearest_organization_signal.value = organization}
           required
