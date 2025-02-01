@@ -64,31 +64,6 @@ export default function OrganizationsTable(
   )
 }
 
-const getDistanceSortUrl = (url: string, value: 'asc' | 'dec') => {
-  const currentUrl = new URL(url)
-  const params = currentUrl.searchParams
-  params.set('distance', value)
-  return currentUrl.toString()
-}
-
-const getDistanceSortDropdownItems = (url: string): DropdownItem[] => {
-  const currentUrl = new URL(url)
-  const params = currentUrl.searchParams
-  const selectedValue = params.get('distance')
-  return [
-    {
-      title: 'Nearest',
-      href: getDistanceSortUrl(url, 'asc'),
-      selected: selectedValue === 'asc',
-    },
-    {
-      title: 'Farthest',
-      href: getDistanceSortUrl(url, 'dec'),
-      selected: selectedValue === 'dec',
-    },
-  ]
-}
-
 const getAcceptedPatientFilterItems = (url: string): Option[] => {
   const currentUrl = new URL(url)
   const params = currentUrl.searchParams
@@ -111,6 +86,7 @@ export function OrganizationView(props: {
   >(null)
 
   const search_url = useSignal(props.search_url)
+  const sort = useSignal<'asc' | 'desc'>('asc')
 
   function checkHash() {
     const params = new URLSearchParams('?' + self.location.hash.slice(1))
@@ -121,6 +97,25 @@ export function OrganizationView(props: {
       organizations.value.find((o) =>
         o.id === request_review_from_organization_id
       )) || null
+  }
+
+  const getDistanceSortDropdownItems = (url: string): DropdownItem[] => {
+    return [
+      {
+        title: 'Nearest',
+        selected: sort.value === 'asc',
+        onClick: () => {
+          sort.value = 'asc'
+        },
+      },
+      {
+        title: 'Farthest',
+        selected: sort.value === 'desc',
+        onClick: () => {
+          sort.value = 'desc'
+        },
+      },
+    ]
   }
 
   useEffect(() => {
@@ -141,7 +136,7 @@ export function OrganizationView(props: {
           // value={review_request.value?.organization}
           sort={{
             by: 'nearest',
-            direction: 'asc',
+            direction: sort.value,
           }}
           filters={{
             accepting_patients: true,
@@ -160,7 +155,7 @@ export function OrganizationView(props: {
         <Dropdown
           button={
             <Button
-              className='d-flex items-center gap-1'
+              className='d-flex items-center gap-2'
               variant='outline'
               size='sm'
               color='gray'
@@ -168,19 +163,13 @@ export function OrganizationView(props: {
             >
               Distance
               <svg
-                width='20'
-                height='18'
-                viewBox='0 0 20 18'
-                fill='none'
+                width='16'
+                height='14'
+                viewBox='0 0 16 14'
+                fill='currentColor'
                 xmlns='http://www.w3.org/2000/svg'
               >
-                <path
-                  d='M18.3346 1.5H1.66797L8.33464 9.38333V14.8333L11.668 16.5V9.38333L18.3346 1.5Z'
-                  stroke='currentColor'
-                  stroke-width='1.66667'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                />
+                <path d='M1 0C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1C0 1.26522 0.105357 1.51957 0.292893 1.70711C0.48043 1.89464 0.734784 2 1 2H12C12.2652 2 12.5196 1.89464 12.7071 1.70711C12.8946 1.51957 13 1.26522 13 1C13 0.734784 12.8946 0.48043 12.7071 0.292893C12.5196 0.105357 12.2652 0 12 0H1ZM1 4C0.734784 4 0.48043 4.10536 0.292893 4.29289C0.105357 4.48043 0 4.73478 0 5C0 5.26522 0.105357 5.51957 0.292893 5.70711C0.48043 5.89464 0.734784 6 1 6H6C6.26522 6 6.51957 5.89464 6.70711 5.70711C6.89464 5.51957 7 5.26522 7 5C7 4.73478 6.89464 4.48043 6.70711 4.29289C6.51957 4.10536 6.26522 4 6 4H1ZM1 8C0.734784 8 0.48043 8.10536 0.292893 8.29289C0.105357 8.48043 0 8.73478 0 9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10H5C5.26522 10 5.51957 9.89464 5.70711 9.70711C5.89464 9.51957 6 9.26522 6 9C6 8.73478 5.89464 8.48043 5.70711 8.29289C5.51957 8.10536 5.26522 8 5 8H1ZM11 13C11 13.2652 11.1054 13.5196 11.2929 13.7071C11.4804 13.8946 11.7348 14 12 14C12.2652 14 12.5196 13.8946 12.7071 13.7071C12.8946 13.5196 13 13.2652 13 13V7.414L14.293 8.707C14.4816 8.88916 14.7342 8.98995 14.9964 8.98767C15.2586 8.9854 15.5094 8.88023 15.6948 8.69482C15.8802 8.50941 15.9854 8.2586 15.9877 7.9964C15.99 7.7342 15.8892 7.4816 15.707 7.293L12.707 4.293C12.5195 4.10553 12.2652 4.00021 12 4.00021C11.7348 4.00021 11.4805 4.10553 11.293 4.293L8.293 7.293C8.19749 7.38525 8.12131 7.49559 8.0689 7.6176C8.01649 7.7396 7.9889 7.87082 7.98775 8.0036C7.9866 8.13638 8.0119 8.26806 8.06218 8.39095C8.11246 8.51385 8.18671 8.6255 8.28061 8.71939C8.3745 8.81329 8.48615 8.88754 8.60905 8.93782C8.73194 8.9881 8.86362 9.0134 8.9964 9.01225C9.12918 9.0111 9.2604 8.98351 9.3824 8.9311C9.50441 8.87869 9.61475 8.80251 9.707 8.707L11 7.414V13Z' />
               </svg>
             </Button>
           }

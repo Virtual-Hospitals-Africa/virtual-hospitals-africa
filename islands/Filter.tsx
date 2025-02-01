@@ -84,9 +84,6 @@ export default function Filter({
               </label>
             </div>
           ))}
-          <Button type='submit' variant='solid' size='sm' className='w-full'>
-            Apply
-          </Button>
         </form>
       </Popover.Panel>
     </Popover>
