@@ -65,6 +65,11 @@ export default function OrganizationsTable(
   )
 }
 
+enum SortOptions {
+  Closest = 'Closest',
+  ShortestWaitingTime = 'Shortest Waiting Time',
+}
+
 export function OrganizationView(props: {
   current_url: string
   search_url: string
@@ -77,7 +82,7 @@ export function OrganizationView(props: {
   >(null)
 
   const search_url = useSignal(props.search_url)
-  const sort = useSignal<'asc' | 'desc'>('asc')
+  const sort = useSignal<SortOptions>(SortOptions.Closest)
   const filters = useSignal<Set<string>>(new Set())
 
   function checkHash() {
@@ -91,22 +96,15 @@ export function OrganizationView(props: {
       )) || null
   }
 
-  const getDistanceSortDropdownItems: DropdownItem[] = [
-    {
-      title: 'Nearest',
-      selected: sort.value === 'asc',
+  const getSortItems = (): DropdownItem[] => {
+    return Object.values(SortOptions).map((option) => ({
+      title: option,
+      selected: sort.value === option,
       onClick: () => {
-        sort.value = 'asc'
+        sort.value = option
       },
-    },
-    {
-      title: 'Farthest',
-      selected: sort.value === 'desc',
-      onClick: () => {
-        sort.value = 'desc'
-      },
-    },
-  ]
+    }))
+  }
 
   const updateFilter = (newValue: string, filters: Set<string>) => {
     if (filters.has(newValue)) {
@@ -140,15 +138,15 @@ export function OrganizationView(props: {
 
   return (
     <div className='flex flex-col w-full gap-2'>
-      <FormRow>
+      <div className='grid grid-cols-[1fr_auto_156px] gap-2'>
         <OrganizationSearch
           name='review_request.organization'
           url={search_url.value}
           value={null}
           // value={review_request.value?.organization}
           sort={{
-            by: 'nearest',
-            direction: sort.value,
+            by: sort.value,
+            direction: 'asc',
           }}
           filters={{
             specialties: [...filters.value],
@@ -167,13 +165,15 @@ export function OrganizationView(props: {
         <Dropdown
           button={
             <Button
-              className='d-flex items-center gap-2'
+              className='d-flex items-center gap-2 w-full'
               variant='outline'
               size='sm'
               color='gray'
               type='button'
             >
-              Closest
+              <p className='truncate flex-1'>
+                {sort.value}
+              </p>
               <svg
                 width='16'
                 height='14'
@@ -185,9 +185,9 @@ export function OrganizationView(props: {
               </svg>
             </Button>
           }
-          items={getDistanceSortDropdownItems}
+          items={getSortItems()}
         />
-      </FormRow>
+      </div>
       <OrganizationsTable
         organizations={organizations.value}
       />

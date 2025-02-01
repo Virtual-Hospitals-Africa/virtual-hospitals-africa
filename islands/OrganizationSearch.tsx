@@ -22,7 +22,7 @@ export default function OrganizationSearch(
       is_physical?: boolean
     }
     sort: {
-      by: 'nearest'
+      by: 'Closest' | 'Shortest Waiting Time'
       direction: 'asc' | 'desc'
     }
     onSelect?: (selected: NearestOrganizationSearchResult) => void

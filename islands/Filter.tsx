@@ -25,8 +25,7 @@ export default function Filter<T extends string | number | undefined>({
       className='relative inline-block text-left'
     >
       {/* TODO: Use custom Button component */}
-      <Popover.Button className='py-1 px-4 inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none text-base/6 border border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent items-center gap-1'>
-        {name}
+      <Popover.Button className='py-1 px-4 inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none text-base/6 border border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent items-center gap-2 w-full'>
         <svg
           width='20'
           height='18'
@@ -42,9 +41,10 @@ export default function Filter<T extends string | number | undefined>({
             stroke-linejoin='round'
           />
         </svg>
+        {name}
       </Popover.Button>
 
-      <Popover.Panel className='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in'>
+      <Popover.Panel className='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in max-h-[20rem] overflow-y-auto'>
         <div className='space-y-4'>
           {options.map((option, optionIdx) => (
             <div key={option.value} className='flex gap-3'>
@@ -56,7 +56,8 @@ export default function Filter<T extends string | number | undefined>({
                     name={`${id}`}
                     type='checkbox'
                     checked={option.checked}
-                    onInput={(e) => option.onChanged?.(e.currentTarget.value)}
+                    onInput={(e) =>
+                      option.onChanged?.(e.currentTarget.value)}
                     className='col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto'
                   />
                   <svg
