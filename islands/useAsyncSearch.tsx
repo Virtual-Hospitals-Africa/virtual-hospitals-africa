@@ -121,7 +121,7 @@ export default function useAsyncSearch<
       delay,
       active_request: null,
     }))
-  }, [search.query, search.page])
+  }, [search.query, search.page, search_route])
 
   const loading = !!search.active_request
 

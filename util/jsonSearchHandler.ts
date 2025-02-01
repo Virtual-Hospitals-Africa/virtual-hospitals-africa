@@ -30,6 +30,12 @@ export function jsonSearchHandler<
 ): LoggedInHealthWorkerHandlerWithProps<unknown> {
   return {
     GET(req, ctx) {
+      if (opts?.verbose) {
+        console.log('Searching', {
+          url: req.url,
+          state: ctx.state,
+        })
+      }
       assertEquals(req.headers.get('accept'), 'application/json')
       let page = 1
       // deno-lint-ignore no-explicit-any

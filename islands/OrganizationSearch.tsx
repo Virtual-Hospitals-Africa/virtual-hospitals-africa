@@ -18,11 +18,11 @@ export default function OrganizationSearch(
     label?: string
     value?: Maybe<NearestOrganizationSearchResult>
     filters?: {
-      accepting_patients?: boolean
+      specialties?: Array<string>
       is_physical?: boolean
     }
     sort: {
-      by: 'nearest'
+      by: 'Closest' | 'Shortest Waiting Time'
       direction: 'asc' | 'desc'
     }
     onSelect?: (selected: NearestOrganizationSearchResult) => void
@@ -38,7 +38,10 @@ export default function OrganizationSearch(
 ) {
   const params = new URLSearchParams()
   for (const name in filters) {
-    params.set(name, 'true')
+    const key = name as keyof typeof filters
+    const values = Array.isArray(filters[key]) ? filters[key] : [filters[key]]
+    if (values.length === 0) continue
+    params.set(name, values.join(','))
   }
   params.set('sort_by', sort.by)
   params.set('sort_direction', sort.direction)
