@@ -7,7 +7,7 @@ export type AsyncSearchProps<
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
   search_route: string
   onQuery?(query: string): void
-  onUpdate?(values: {
+  onSearchResults?(values: {
     query: string
     page: number
     delay: null | number
@@ -29,7 +29,7 @@ export default function useAsyncSearch<
 >({
   search_route,
   value,
-  onUpdate,
+  onSearchResults,
 }: AsyncSearchProps<T>) {
   const [search, setSearch] = useState({
     query: value?.name ?? '',
@@ -100,7 +100,7 @@ export default function useAsyncSearch<
             pages: [...search.pages, page],
             has_next_page: page.has_next_page,
           }
-          onUpdate?.(next_search)
+          onSearchResults?.(next_search)
           return next_search
         }
         return search

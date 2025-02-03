@@ -19,8 +19,11 @@ import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
 import { could_not_locate_account_href } from './app/_middleware.tsx'
 import * as cookie from '../shared/cookie.ts'
+import { promiseProps } from '../util/promiseProps.ts'
 
-async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
+
+export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   organization_ids: string[],
@@ -35,8 +38,7 @@ async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
     ...calendars,
   }))
 }
-
-export async function initializeHealthWorker(
+export async function initializeHealthWorkerWithInvites(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
@@ -84,11 +86,60 @@ export async function initializeHealthWorker(
   )
 
   await events.insert(trx, {
-    type: 'HealthWorkerFirstLoggedIn',
+    type: 'HealthWorkerLogin',
     data: { health_worker_id },
   })
 
   return { id: health_worker_id }
+}
+
+export async function initializeHealthWorkerWithoutInvites(
+  trx: TrxOrDb,
+  googleClient: google.GoogleClient,
+  profile: GoogleProfile,
+): Promise<Response> {
+  const { existing_employment, health_worker } = await promiseProps({
+    existing_employment: trx.selectFrom('health_workers')
+      .innerJoin(
+        'employment',
+        'employment.health_worker_id',
+        'health_workers.id',
+      )
+      .where('health_workers.email', '=', profile.email)
+      .select('employment.id')
+      .executeTakeFirst(),
+    health_worker: health_workers.upsertWithGoogleCredentials(
+      trx,
+      {
+        name: profile.name,
+        email: profile.email,
+        avatar_url: profile.picture,
+        ...health_workers.pickTokens(googleClient.tokens),
+      },
+    ),
+  })
+
+  const health_worker_id = health_worker.id
+
+  await events.insert(trx, {
+    type: 'HealthWorkerLogin',
+    data: { health_worker_id },
+  })
+
+  const session = await sessions.create(trx, 'health_worker', {
+    entity_id: health_worker.id,
+  })
+
+  const response = redirect(
+    existing_employment ? '/app' : '/onboarding/welcome',
+  )
+
+  setCookie(response.headers, {
+    name: cookie.sessionKey('health_worker'),
+    value: session.id,
+  })
+
+  return response
 }
 
 async function checkPermissions(
@@ -145,13 +196,21 @@ export const handler: Handlers<Record<string, never>> = {
           return response
         }
 
+        if (!USE_INVITE_SYSTEM) {
+          return initializeHealthWorkerWithoutInvites(
+            trx,
+            googleClient,
+            profile,
+          )
+        }
+
         const health_worker_invitees = await employment.getInvitees(trx, {
           email: profile.email,
         })
 
         const health_worker = await (
           health_worker_invitees.length
-            ? initializeHealthWorker(
+            ? initializeHealthWorkerWithInvites(
               trx,
               googleClient,
               profile,

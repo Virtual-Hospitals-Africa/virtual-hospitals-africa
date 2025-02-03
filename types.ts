@@ -1057,6 +1057,7 @@ export type Employee = {
   health_worker_id: string
   profession: Profession
   organization_id: string
+  specialty?: Maybe<string>
 }
 
 export type HealthWorkerInvitee = {
@@ -1487,9 +1488,9 @@ export type HealthWorkerEmployment = {
       employment_id: string
     }
   }
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  availability_set: boolean
+  gcal_appointments_calendar_id: string | null
+  gcal_availability_calendar_id: string | null
+  availability_set: SqlBool | null
 }
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
@@ -3178,4 +3179,13 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
 export enum OrganizationSortOptions {
   closest = 'Closest',
   shortest_wait = 'Shortest Wait',
+}
+
+export type OrganizationLike = {
+  id: string
+  name: string
+  address?: Maybe<string>
+  description?: Maybe<string>
+  distance_meters?: Maybe<number>
+  google_maps_link?: Maybe<string>
 }

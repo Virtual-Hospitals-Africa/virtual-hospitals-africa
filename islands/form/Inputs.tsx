@@ -8,6 +8,7 @@ import {
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import {
+  DOCTOR_SPECIALTIES,
   Gender,
   Maybe,
   NURSE_SPECIALTIES,
@@ -943,7 +944,12 @@ export function EthnicitySelect(
   )
 }
 
-export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
+export function NurseSpecialtySelect(
+  { value, onChange }: {
+    value?: Maybe<string>
+    onChange?: SelectProps['onChange']
+  },
+) {
   const prettierSpecialtyName = (specialtyName: string): string => {
     const name = specialtyName.replaceAll('\_', ' ')
     return name.charAt(0).toUpperCase() + name.slice(1)
@@ -954,12 +960,44 @@ export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
       name='specialty'
       label='Specialty'
       required
+      onChange={onChange}
     >
       {NURSE_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
           label={prettierSpecialtyName(specialty)}
           selected={value === specialty}
+          className='capitalize'
+        />
+      ))}
+    </Select>
+  )
+}
+
+export function DoctorSpecialtySelect(
+  { value, onChange }: {
+    value?: Maybe<string>
+    onChange?: SelectProps['onChange']
+  },
+) {
+  const prettierSpecialtyName = (specialtyName: string): string => {
+    const name = specialtyName.replaceAll('\_', ' ')
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
+
+  return (
+    <Select
+      name='specialty'
+      label='Specialty'
+      required
+      onChange={onChange}
+    >
+      {DOCTOR_SPECIALTIES.map((specialty) => (
+        <option
+          value={specialty}
+          label={prettierSpecialtyName(specialty)}
+          selected={value === specialty}
+          className='capitalize'
         />
       ))}
     </Select>

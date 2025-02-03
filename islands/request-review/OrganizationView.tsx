@@ -103,7 +103,7 @@ export function OrganizationView(props: {
           filters={{
             specialties: [...specialties.value],
           }}
-          onUpdate={(organization_results) => {
+          onSearchResults={(organization_results) => {
             organizations.value = organization_results.current_page.results
             checkHash()
           }}

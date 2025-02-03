@@ -20,6 +20,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     id: '00000000-0000-0000-0000-000000000001',
     name: 'VHA Test Clinic',
     category: 'Clinic',
+    is_test: true,
     address: {
       street_number: '123',
       route: 'Main St',
@@ -37,6 +38,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     id: '00000000-0000-0000-0000-000000000002',
     name: 'VHA Test Regional Medical Center',
     category: 'Regional Medical Center',
+    is_test: true,
     address: {
       street_number: '12356',
       route: 'Main St',

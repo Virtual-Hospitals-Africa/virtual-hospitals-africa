@@ -259,7 +259,7 @@ export async function get(
             'organizations.address_id',
             'organization_address.id',
           )
-          .innerJoin(
+          .leftJoin(
             'provider_calendars',
             (join) =>
               join

@@ -31,8 +31,6 @@ describe(
         category: 'Clinic',
         description: '123 Main St, Gweru, Zimbabwe, 23456',
         name: 'VHA Test Clinic',
-        distance_meters: 12100,
-        google_maps_link: 'https://maps.google.com',
         location: {
           latitude: -19.4554096,
           longitude: 29.7739353,
@@ -44,8 +42,6 @@ describe(
         category: 'Regional Medical Center',
         description: '12356 Main St, Gweru, Zimbabwe, 23456',
         name: 'VHA Test Regional Medical Center',
-        distance_meters: 12100,
-        google_maps_link: 'https://maps.google.com',
         location: {
           latitude: -19.4555096,
           longitude: 29.7738353,
