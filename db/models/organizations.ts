@@ -21,11 +21,10 @@ import {
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
-  literalNumber,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
-import { base } from './_base.ts'
+import { base, SearchResult } from './_base.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -37,8 +36,6 @@ export function baseQuery(trx: TrxOrDb) {
       'organizations.category',
       'addresses.formatted as address',
       'addresses.formatted as description',
-      literalNumber(12100).as('distance_meters'),
-      sql<string>`'https://maps.google.com'`.as('google_maps_link'),
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
@@ -52,7 +49,11 @@ const model = base({
   formatResult: (x): HasStringId<Organization> => x,
   handleSearch(
     qb,
-    opts: { search: string | null; kind: 'physical' | 'virtual' | null },
+    opts: {
+      search?: string | null
+      kind?: 'physical' | 'virtual' | null
+      is_test?: boolean
+    },
   ) {
     if (opts.search) {
       qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
@@ -64,6 +65,9 @@ const model = base({
         null,
       )
     }
+    if (opts.is_test) {
+      qb = qb.where('organizations.is_test', '=', true)
+    }
     return qb
   },
 })
@@ -71,6 +75,8 @@ const model = base({
 export const search = model.search
 export const getById = model.getById
 export const getByIds = model.getByIds
+
+export type OrganizationSearchResult = SearchResult<typeof model>
 
 type EmployeeQueryOpts = {
   organization_id?: string
@@ -505,6 +511,7 @@ export async function invite(
       inEmployeeTable.map((invite) => ({
         organization_id,
         profession: invite.profession,
+        specialty: null,
         health_worker_id: existingEmployees.find((employee) =>
           employee.email === invite.email
         )!.health_worker_id!,
@@ -528,6 +535,7 @@ export type OrganizationInsert = {
   inactive_reason?: string
   address?: addresses.AddressInsert
   location?: Location
+  is_test?: boolean
 }
 
 export async function add(

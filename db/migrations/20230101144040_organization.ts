@@ -10,6 +10,11 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('category', 'varchar(255)')
         .addColumn('inactive_reason', 'varchar(255)')
         .addColumn(
+          'is_test',
+          'boolean',
+          (col) => col.notNull().defaultTo(false),
+        )
+        .addColumn(
           'address_id',
           'uuid',
           (col) => col.references('addresses.id').onDelete('cascade'),

@@ -45,10 +45,10 @@ export function Person(
           size === 'lg' ? 'h-10 w-10' : 'h-6 w-6',
         )}
       />
-      <span className={cls('ml-3 truncate', bold && 'font-bold')}>
+      <span className={cls('ml-3 truncate text-md', bold && 'font-bold')}>
         <div>{person.display_name || person.name}</div>
         {person.description && (
-          <div className='font-normal capitalize'>
+          <div className='font-normal capitalize text-sm'>
             {person.description}
           </div>
         )}

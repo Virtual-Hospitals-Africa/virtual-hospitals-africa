@@ -12,7 +12,7 @@ import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 
 export const EVENTS = {
-  HealthWorkerFirstLoggedIn: defineEvent(
+  HealthWorkerLogin: defineEvent(
     z.object({
       health_worker_id: z.string().uuid(),
     }),

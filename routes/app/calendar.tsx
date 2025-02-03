@@ -9,6 +9,8 @@ import { parseDateTime, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from './_middleware.tsx'
+import { assertOrRedirect } from '../../util/assertOr.ts'
+import { warning } from '../../util/alerts.ts'
 
 export default HealthWorkerHomePageLayout(
   'My Calendar',
@@ -22,8 +24,17 @@ export default HealthWorkerHomePageLayout(
     // if there's no day in the query, use today in Harare
     const day = ctx.url.searchParams.get('day') || today
 
-    const appointment_calendars = ctx.state.healthWorker.employment.map((e) =>
-      e.gcal_appointments_calendar_id
+    const appointment_calendars = ctx.state.healthWorker.employment.map(
+      ({ organization, gcal_appointments_calendar_id }) => {
+        assertOrRedirect(
+          gcal_appointments_calendar_id,
+          warning(
+            `Please set your availability to manage appointments at ${organization.name}`,
+            `/app/organizations/${organization.id}/availability`,
+          ),
+        )
+        return gcal_appointments_calendar_id
+      },
     )
 
     const { appointmentsOfHealthWorker, calendar_events } = await promiseProps({

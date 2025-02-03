@@ -1,15 +1,15 @@
-import { GoogleMapsIcon } from '../../components/library/icons/GoogleMaps.tsx'
-import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
+import { OrganizationLike } from '../../types.ts'
 import cls from '../../util/cls.ts'
 
 // TODO @mike implementing the info on the card
 export function OrganizationCard({ organization, selected, className }: {
-  organization: NearestOrganizationSearchResult
+  organization: OrganizationLike
   selected?: boolean
   className?: string
 }) {
-  const km = (organization.distance_meters / 1000).toPrecision(1)
-  console.log('in here')
+  const km = typeof organization.distance_meters === 'number'
+    ? (organization.distance_meters / 1000).toPrecision(1)
+    : null
 
   return (
     <a
@@ -21,11 +21,12 @@ export function OrganizationCard({ organization, selected, className }: {
           {organization.name}
         </div>
         <div className={cls('text-xs flex', selected && 'font-bold')}>
-          <GoogleMapsIcon />
-          {organization.address}
-          <a href={organization.google_maps_link}>
-            ({km}km)
-          </a>
+          {organization.address || organization.description}
+          {organization.google_maps_link && (
+            <a href={organization.google_maps_link}>
+              ({km}km)
+            </a>
+          )}
         </div>
       </div>
     </a>

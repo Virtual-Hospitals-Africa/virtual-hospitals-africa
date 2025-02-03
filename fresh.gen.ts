@@ -12,7 +12,6 @@ import * as $app_calendar from './routes/app/calendar.tsx'
 import * as $app_calendar_appointments_appointment_id_media_media_id_ from './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
-import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
 import * as $app_chart from './routes/app/chart.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
@@ -29,6 +28,7 @@ import * as $app_messaging_threads_message_thread_id_ from './routes/app/messagi
 import * as $app_organizations from './routes/app/organizations.tsx'
 import * as $app_organizations_organization_id_ from './routes/app/organizations/[organization_id].tsx'
 import * as $app_organizations_organization_id_middleware from './routes/app/organizations/[organization_id]/_middleware.ts'
+import * as $app_organizations_organization_id_availability from './routes/app/organizations/[organization_id]/availability.tsx'
 import * as $app_organizations_organization_id_employees from './routes/app/organizations/[organization_id]/employees.tsx'
 import * as $app_organizations_organization_id_employees_health_worker_id_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id].tsx'
 import * as $app_organizations_organization_id_employees_health_worker_id_approve from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/approve.tsx'
@@ -103,6 +103,8 @@ import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
+import * as $onboarding_middleware from './routes/onboarding/_middleware.tsx'
+import * as $onboarding_welcome from './routes/onboarding/welcome.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
@@ -146,7 +148,9 @@ import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
 import * as $Occupation19 from './islands/Occupation19.tsx'
+import * as $Onboarding from './islands/Onboarding.tsx'
 import * as $OrganizationSearch from './islands/OrganizationSearch.tsx'
+import * as $OrganizationsSelect from './islands/OrganizationsSelect.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
@@ -264,7 +268,6 @@ const manifest = {
       $app_calendar_appointments_id_,
     './routes/app/calendar/appointments/schedule.tsx':
       $app_calendar_appointments_schedule,
-    './routes/app/calendar/availability.tsx': $app_calendar_availability,
     './routes/app/chart.tsx': $app_chart,
     './routes/app/conditions.tsx': $app_conditions,
     './routes/app/consumables.tsx': $app_consumables,
@@ -284,6 +287,8 @@ const manifest = {
       $app_organizations_organization_id_,
     './routes/app/organizations/[organization_id]/_middleware.ts':
       $app_organizations_organization_id_middleware,
+    './routes/app/organizations/[organization_id]/availability.tsx':
+      $app_organizations_organization_id_availability,
     './routes/app/organizations/[organization_id]/employees.tsx':
       $app_organizations_organization_id_employees,
     './routes/app/organizations/[organization_id]/employees/[health_worker_id].tsx':
@@ -415,6 +420,8 @@ const manifest = {
     './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
+    './routes/onboarding/_middleware.tsx': $onboarding_middleware,
+    './routes/onboarding/welcome.tsx': $onboarding_welcome,
     './routes/partner.tsx': $partner,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
@@ -467,7 +474,9 @@ const manifest = {
     './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
     './islands/Occupation19.tsx': $Occupation19,
+    './islands/Onboarding.tsx': $Onboarding,
     './islands/OrganizationSearch.tsx': $OrganizationSearch,
+    './islands/OrganizationsSelect.tsx': $OrganizationsSelect,
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,

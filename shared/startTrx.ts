@@ -2,13 +2,15 @@ import { FreshContext } from '$fresh/server.ts'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 
+export type TrxContext = FreshContext<
+  {
+    trx: TrxOrDb
+  }
+>
+
 export function startTrx(
   _req: Request,
-  ctx: FreshContext<
-    {
-      trx: TrxOrDb
-    }
-  >,
+  ctx: TrxContext,
 ) {
   return db
     .transaction()

@@ -28,12 +28,15 @@ export default function AppointmentsCalendar(
         >
           Schedule Appointment
         </Button>
-        <Button
+        {/* TODO turn this back on: slightly tricky to design around as there are technically multiple calendars */}
+        {
+          /* <Button
           className='mt-2 w-full'
           href={`${url.pathname}/availability`}
         >
           Set Availability
-        </Button>
+        </Button> */
+        }
       </Calendar>
       <Appointments
         headerText={formHeaderText({ day, today })}

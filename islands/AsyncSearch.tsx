@@ -6,7 +6,7 @@ export type AsyncSearchProps<
 > = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
   search_route: string
   onQuery?(query: string): void
-  onUpdate?(values: {
+  onSearchResults?(values: {
     query: string
     page: number
     delay: null | number
@@ -29,13 +29,13 @@ export default function AsyncSearch<
   search_route,
   value,
   onQuery,
-  onUpdate,
+  onSearchResults,
   ...rest
 }: AsyncSearchProps<T>) {
   const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
     value,
-    onUpdate,
+    onSearchResults,
   })
   return (
     <Search

@@ -163,6 +163,7 @@ export function getOrganizationAdmin(
       'health_workers.name',
       'email',
       'profession',
+      'specialty',
       'organization_id',
       'organizations.name as organization_name',
     ])

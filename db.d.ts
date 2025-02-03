@@ -683,6 +683,7 @@ export interface Organizations {
   created_at: Generated<Timestamp>
   id: Generated<string>
   inactive_reason: string | null
+  is_test: Generated<boolean>
   location: string | null
   name: string
   updated_at: Generated<Timestamp>

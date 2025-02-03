@@ -4,31 +4,32 @@ import { NearestOrganizationSearchResult } from '../db/models/nearest_organizati
 
 export default function OrganizationSearch(
   {
-    name,
+    name = 'organization',
     url = '/app/organizations',
     filters = {},
     sort,
     label,
     required,
     do_not_render_built_in_options,
-    onUpdate,
+    onSearchResults,
   }: {
-    name: string
+    name?: string
     url?: string
     label?: string
     value?: Maybe<NearestOrganizationSearchResult>
     filters?: {
       specialties?: Array<string>
       is_physical?: boolean
+      is_test?: boolean
     }
-    sort: {
+    sort?: {
       by: OrganizationSortOptions
       direction: 'asc' | 'desc'
     }
-    onSelect?: (selected: NearestOrganizationSearchResult) => void
     required?: boolean
     do_not_render_built_in_options?: boolean
-    onUpdate?(values: {
+    onSelect?: (selected: NearestOrganizationSearchResult) => void
+    onSearchResults?(values: {
       current_page: {
         results: NearestOrganizationSearchResult[]
         page: number
@@ -43,26 +44,22 @@ export default function OrganizationSearch(
     if (values.length === 0) continue
     params.set(name, values.join(','))
   }
-  params.set('sort_by', sort.by)
-  params.set('sort_direction', sort.direction)
+  if (sort) {
+    params.set('sort_by', sort.by)
+    params.set('sort_direction', sort.direction)
+  }
 
-  const search_route = `${url}?${params}`
-  console.log({ search_route })
+  const search_route = url.includes('?')
+    ? `${url}&${params}`
+    : `${url}&${params}`
+
   return (
     <AsyncSearch
       name={name}
       search_route={search_route}
-      // onSelect={(selected) => {
-      //   if (selected && props.kind === 'physical') {
-      //     assert(selected.address)
-      //   }
-      //   return props.onSelect?.(
-      //     selected as HasStringId<{ name: string; address: string }>,
-      //   )
-      // }}
       required={required}
       do_not_render_built_in_options={do_not_render_built_in_options}
-      onUpdate={onUpdate}
+      onSearchResults={onSearchResults}
       label={label}
       placeholder='Find an organization'
     />
