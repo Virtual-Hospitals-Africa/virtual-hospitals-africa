@@ -171,8 +171,7 @@ export function Onboarding(
     organizations: OrganizationLike[]
   },
 ) {
-  // const progress = useSignal<OnboardingProgress>({ type: 'welcome' })
-  const progress = useSignal<OnboardingProgress>({ type: 'enter profession' })
+  const progress = useSignal<OnboardingProgress>({ type: 'welcome' })
   const getStarted = () => progress.value = { type: 'enter profession' }
   const onProfession = () => progress.value = { type: 'select organization' }
   return (
