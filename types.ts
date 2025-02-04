@@ -3191,4 +3191,5 @@ export type OrganizationLike = {
   description?: Maybe<string>
   distance_meters?: Maybe<number>
   google_maps_link?: Maybe<string>
+  business_hours?: Maybe<string>
 }
