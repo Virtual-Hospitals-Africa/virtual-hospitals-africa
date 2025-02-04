@@ -196,8 +196,9 @@ addEventListener('submit', function (event) {
       }
     }
 
-    var event = new CustomEvent('show-error', { detail: errorMessage })
-    dispatchEvent(event)
+    dispatchEvent(
+      new CustomEvent('show-error', { detail: errorMessage }),
+    )
   }
 
   var form = event.target
@@ -335,3 +336,36 @@ addEventListener('submit', function (event) {
 // addEventListener('input', onInput)
 // addEventListener('submit', onSubmit)
 // addEventListener('beforeunload', onBeforeUnload)
+
+/* NOTIFICATIONS SUBSCRIPTION */
+Notification.requestPermission().then(function (result) {
+  if (result !== 'granted') {
+    return console.log('Permissions not granted', result)
+  }
+
+  var wsUri = 'wss://' + self.location.host + '/app/notifications-websocket'
+  var websocket = new WebSocket(wsUri)
+
+  function dispatchNotification(notification) {
+    dispatchEvent(
+      new CustomEvent('notification', { detail: { notification } }),
+    )
+  }
+
+  websocket.onopen = function () {
+    console.log('open')
+  }
+
+  websocket.onclose = function () {
+    console.log('close')
+  }
+
+  websocket.onmessage = function (e) {
+    console.log('received!')
+    dispatchNotification(`RECEIVED: ${e.data}`)
+  }
+
+  websocket.onerror = function (e) {
+    console.error(e)
+  }
+})

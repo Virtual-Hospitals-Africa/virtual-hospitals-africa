@@ -4,6 +4,8 @@ import { BellIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { RenderedNotification } from '../types.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import { useSignal } from '@preact/signals'
+import { useEffect } from 'preact/hooks'
+import { assert } from 'std/assert/assert.ts'
 
 export function Notifications(
   { show, notifications, dismiss }: {
@@ -12,6 +14,17 @@ export function Notifications(
     dismiss: (notification: RenderedNotification) => void
   },
 ) {
+  const notifications_signal = useSignal(notifications)
+
+  useEffect(() => {
+    function listener(event: Event) {
+      console.log('notification event', event)
+      assert(event instanceof CustomEvent)
+    }
+    self.addEventListener('notification', listener)
+    return () => self.removeEventListener('notification', listener)
+  }, [notifications_signal.value])
+
   return (
     <>
       {/* Global notification live region, render this permanently at the end of the document */}
@@ -32,7 +45,7 @@ export function Notifications(
             leaveTo='opacity-0'
           >
             <div className='w-full flex flex-col gap-2'>
-              {notifications.map((notification) => (
+              {notifications_signal.value.map((notification) => (
                 <Notification
                   notification={notification}
                   dismiss={() => dismiss(notification)}

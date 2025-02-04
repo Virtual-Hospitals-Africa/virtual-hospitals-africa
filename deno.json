@@ -48,7 +48,10 @@
     "proseWrap": "preserve"
   },
   "lint": {
-    "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
+    "rules": {
+      "include": ["no-unused-vars"],
+      "tags": ["fresh", "recommended"]
+    }
   },
   "imports": {
     "$fresh-testing-library": "https://deno.land/x/fresh_testing_library@0.12.0/mod.ts",

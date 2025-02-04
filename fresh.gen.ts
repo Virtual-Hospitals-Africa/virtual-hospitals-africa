@@ -25,6 +25,7 @@ import * as $app_manufactured_medications from './routes/app/manufactured_medica
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_messaging from './routes/app/messaging.tsx'
 import * as $app_messaging_threads_message_thread_id_ from './routes/app/messaging/threads/[message_thread_id].tsx'
+import * as $app_notifications_websocket from './routes/app/notifications-websocket.tsx'
 import * as $app_organizations from './routes/app/organizations.tsx'
 import * as $app_organizations_organization_id_ from './routes/app/organizations/[organization_id].tsx'
 import * as $app_organizations_organization_id_middleware from './routes/app/organizations/[organization_id]/_middleware.ts'
@@ -282,6 +283,7 @@ const manifest = {
     './routes/app/messaging.tsx': $app_messaging,
     './routes/app/messaging/threads/[message_thread_id].tsx':
       $app_messaging_threads_message_thread_id_,
+    './routes/app/notifications-websocket.tsx': $app_notifications_websocket,
     './routes/app/organizations.tsx': $app_organizations,
     './routes/app/organizations/[organization_id].tsx':
       $app_organizations_organization_id_,
