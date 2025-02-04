@@ -13,6 +13,7 @@ import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
 import { forEach } from '../util/inParallel.ts'
+import sample from '../util/sample.ts'
 // import manufactured_medications from '../db/models/manufactured_medications.ts'
 // import sample from '../util/sample.ts'
 
@@ -108,7 +109,7 @@ async function addPatientsToWaitingRoom(
 
   console.log('adding doctors...')
   const num_regional_medical_center_staff = 2
-  // deno-lint-ignore no-unused-vars
+
   const doctors: HW[] = await Promise.all(
     range(num_regional_medical_center_staff).map(() => {
       const demo = randomZimbabweanDemographics()
@@ -147,6 +148,7 @@ async function addPatientsToWaitingRoom(
         date_of_birth: randomDateOfBirth(),
         gender: demo.gender,
         avatar_media_id: inserted_media.id,
+        primary_doctor_id: sample(doctors).employee_id!,
       })
 
       const patient_encounter = await patient_encounters.insert(
@@ -182,7 +184,7 @@ async function addPatientsToWaitingRoom(
         encounter_id: patient_encounter.id,
       })
 
-      const in_intake = Math.random() < 0.2
+      const in_intake = Math.random() < 0.1
 
       if (!in_intake) {
         console.log('Completing intake...')
