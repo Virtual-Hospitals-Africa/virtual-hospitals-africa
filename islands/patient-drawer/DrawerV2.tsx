@@ -8,9 +8,6 @@ import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
 import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
 import { PatientDrawerAccordion } from './Accordion.tsx'
 import Badge from '../../components/library/Badge.tsx'
-// import { FindingsList } from './FindingsList.tsx'
-// import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-// import VitalsList from './VitalsList.tsx'
 
 /* TODO
   - PatientHeader - Done for now

@@ -4,6 +4,53 @@ import {
 } from '../../components/library/icons/heroicons/solid.tsx'
 // import { H2 } from '../../components/library/typography/H2.tsx'
 import { CareTeamSection } from './CareTeamSection.tsx'
+import VerticalProgressBar from '../../components/library/VerticalProgressBar.tsx'
+
+type ProgressSteps = {
+  name: string
+  description: string
+  href: string
+  status: 'complete' | 'current' | 'upcoming'
+}
+
+const progressSteps: ProgressSteps[] = [
+  {
+    name: 'Chief Complaint',
+    description: 'Persistent Groin Iritation.',
+    href: '#',
+    status: 'complete',
+  },
+  {
+    name: 'Symptoms',
+    description: 'Severe rash in groin area for 2 weeks.',
+    href: '#',
+    status: 'complete',
+  },
+  {
+    name: 'Physical Examination',
+    description: 'Enlarged Lymph Nodes.',
+    href: '#',
+    status: 'complete',
+  },
+  {
+    name: 'Atypical Vitals',
+    description: 'Blood Pressure 145/90.',
+    href: '#',
+    status: 'complete',
+  },
+  {
+    name: 'Diagnostic Test',
+    description: 'Positive HIV Test.',
+    href: '#',
+    status: 'complete',
+  },
+  {
+    name: 'HIV Positive Diagnosis',
+    description: 'High confidence.',
+    href: '#',
+    status: 'complete',
+  },
+]
 
 export function PatientDrawerAccordion({ encounter_reason, care_team }: {
   encounter_reason: string
@@ -11,7 +58,7 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
   care_team: any[]
 }) {
   return (
-    <div className='w-full px-4 pt-16'>
+    <div className='w-full px-4 pt-4'>
       <div className='mx-auto w-full max-w-md rounded-2xl bg-white p-2'>
         <Disclosure>
           {({ open }) => (
@@ -25,8 +72,9 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
                 />
               </Disclosure.Button>
               <Disclosure.Panel className='px-4 pb-2 pt-4 text-sm text-gray-500'>
-                If you're unhappy with your purchase for any reason, email us
-                within 90 days and we'll refund you in full, no questions asked.
+                {progressSteps.length > 0
+                  ? <VerticalProgressBar steps={progressSteps} />
+                  : "See a list of the patient's treatment steps here."}
               </Disclosure.Panel>
             </>
           )}
