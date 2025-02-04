@@ -1,5 +1,6 @@
 import { Maybe } from '../../types.ts'
 import cls from '../../util/cls.ts'
+import { twMerge } from 'tailwind-merge'
 
 function EmptyAvatar({ className }: { className?: string }) {
   return (
@@ -30,7 +31,7 @@ export default function Avatar(
     hide_when_empty?: boolean
   },
 ) {
-  const fullClassName = cls('flex-none rounded-full w-10 h-10', className)
+  const fullClassName = twMerge('flex-none rounded-full w-10 h-10', className)
   if (src) {
     return (
       <img
