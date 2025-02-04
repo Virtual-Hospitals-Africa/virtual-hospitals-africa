@@ -51,7 +51,7 @@ export default function OrganizationSearch(
 
   const search_route = url.includes('?')
     ? `${url}&${params}`
-    : `${url}&${params}`
+    : `${url}?${params}`
 
   return (
     <AsyncSearch
