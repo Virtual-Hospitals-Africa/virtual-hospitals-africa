@@ -248,6 +248,7 @@ addEventListener('submit', function (event) {
     method: 'POST',
     body: formData,
   }).then(function (response) {
+    submitButton.disabled = false
     switch (response.status) {
       case 200:
         // TODO assert content type html
@@ -275,6 +276,7 @@ addEventListener('submit', function (event) {
         return onError('Unexpected response status: ' + response.status)
     }
   }, function (error) {
+    submitButton.disabled = false
     console.error(error)
     return onError('Offline: ' + error.message || error)
   })
