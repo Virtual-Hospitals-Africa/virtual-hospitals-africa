@@ -13,6 +13,16 @@ export function OrganizationCard({ organization, selected, className }: {
     ? (parseInt(organization.distance_meters) / 1000).toPrecision(1)
     : null
 
+  const href = organization.location
+    ? `https://www.google.com/maps/search/?api=1&query=${organization.location.latitude},${organization.location.longitude}`
+    : ''
+
+  let description = organization.address || organization.description || ''
+
+  if (description.length > 30) {
+    description = description.substring(0, 30) + '...'
+  }
+
   return (
     <a
       href={`#request_review_from_organization_id=${organization.id}`}
@@ -28,11 +38,13 @@ export function OrganizationCard({ organization, selected, className }: {
             selected && 'font-bold',
           )}
         >
-          {organization.address || organization.description}
+          {description}
           {organization.google_maps_link && (
             <a
-              href={organization.google_maps_link}
+              href={href}
               className='flex gap-2 text-sky-600 items-center'
+              target='_blank'
+              rel='noopener noreferrer'
             >
               ({km}km)
               <svg
