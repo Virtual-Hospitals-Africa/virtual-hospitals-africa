@@ -80,7 +80,7 @@ const columns: TableColumn<NearestOrganizationSearchResult>[] = [
     cellClassName: 'mb-1 font-medium',
   },
   {
-    label: 'Status(Wait time)',
+    label: 'Status (Wait time)',
     data(row) {
       return StatusBadge(row)
     },
