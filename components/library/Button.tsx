@@ -74,11 +74,12 @@ export function Button({
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none',
+    'inline-flex rounded-md font-semibold tracking-tight focus:outline-none',
     baseStyles[variant],
     // deno-lint-ignore no-explicit-any
     (variantStyles as any)[variant][color],
     sizeStyles[size],
+    variant !== 'ghost' && 'justify-center', // TODO, do this more elegantly for ActionButton ?
     className,
   )
 

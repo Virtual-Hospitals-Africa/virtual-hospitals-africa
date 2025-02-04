@@ -86,7 +86,8 @@ function ActionButton(
       href={!is_post ? href : undefined}
       action={is_post ? href : undefined}
       disabled={disabled}
-      className='text-indigo-600 hover:text-indigo-900 capitalize'
+      variant='ghost'
+      className='text-indigo-600 hover:text-indigo-900 capitalize justify-start'
     >
       {text}
     </Button>
