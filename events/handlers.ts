@@ -3,6 +3,7 @@ import { TrxOrDb } from '../types.ts'
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as notifications from '../db/models/notifications.ts'
+import * as organizations from '../db/models/organizations.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import * as messages from '../db/models/messages.ts'
 import * as conversations from '../db/models/conversations.ts'
@@ -54,7 +55,7 @@ export const EVENTS = {
       review_request_id: z.string().uuid(),
     }),
     {
-      async notifyDoctor(trx, payload) {
+      async notifyRequestedDoctor(trx, payload) {
         const doctor_review_request = await doctor_reviews.requestById(
           trx,
           payload.data.review_request_id,
@@ -75,6 +76,42 @@ export const EVENTS = {
           action_href:
             `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
         })
+      },
+      async notifyDoctorsOrOrganization(trx, payload) {
+        const doctor_review_request = await doctor_reviews.requestById(
+          trx,
+          payload.data.review_request_id,
+        )
+
+        const { organization_id } = doctor_review_request.requesting
+        if (!organization_id) return
+
+        const doctors_at_organization = await organizations.getEmployees(
+          trx,
+          organization_id,
+          {
+            professions: ['doctor'],
+          },
+        )
+
+        for (const doctor of doctors_at_organization) {
+          await notifications.insert(trx, {
+            action_title: 'Review',
+            avatar_url: doctor_review_request.requested_by.avatar_url ||
+              '/images/heroicons/24/solid/slipboard-document-list.svg',
+            description:
+              `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
+            employment_id: doctor.professions.find((p) =>
+              p.profession === 'doctor'
+            )!.employee_id,
+            table_name: 'doctor_review_requests',
+            row_id: payload.data.review_request_id,
+            notification_type: 'doctor_review_request',
+            title: 'Review Requested',
+            action_href:
+              `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+          })
+        }
       },
     },
   ),

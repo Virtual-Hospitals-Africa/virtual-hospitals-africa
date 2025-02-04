@@ -7,7 +7,7 @@ export default function PageHeader(
   return (
     <h1
       className={cls(
-        'text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl',
+        'text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-2',
         className,
       )}
     >

@@ -107,18 +107,21 @@ function EnterProfession(
             />
           )}
       </FormRow>
-      <FormRow>
-        <div className='mt-6 rounded-lg border-gray-200 border-2 p-3'>
-          <Person
-            person={{
-              name: doctor_prefix + name.value,
-              avatar_url: health_worker.avatar_url,
-              description: specialty.value + nurse_prefix,
-            }}
-            size='lg'
-          />
-        </div>
-      </FormRow>
+
+      <p className='mt-4'>
+        <i>How you'll appear in the platform</i>
+      </p>
+      <div className='mt-2 rounded-lg border-gray-200 border-2 p-3'>
+        <Person
+          person={{
+            name: doctor_prefix + name.value,
+            avatar_url: health_worker.avatar_url,
+            description: specialty.value + nurse_prefix,
+          }}
+          size='lg'
+        />
+      </div>
+
       <div className='mt-10 flex'>
         <Button
           type='button'
@@ -151,12 +154,12 @@ function SelectOrganization(
       )}
     >
       <PageHeader className='h1'>Select your organization</PageHeader>
-      <FormRow>
+      <FormRow className='mt-2'>
         <OrganizationsSelect organizations={organizations} />
       </FormRow>
       <div className='mt-10 flex'>
         <Button type='submit'>
-          gidd<span aria-hidden='true'>
+          Let's go<span aria-hidden='true'>
             &nbsp;&nbsp;&rarr;
           </span>
         </Button>
