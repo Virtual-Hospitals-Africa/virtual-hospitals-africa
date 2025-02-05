@@ -62,7 +62,7 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
   return (
     <div className='w-full px-0 pt-2'>
       <div className='mx-auto w-full rounded-2xl bg-white'>
-        <Disclosure>
+        <Disclosure defaultOpen>
           {({ open }) => (
             <>
               <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
@@ -138,7 +138,7 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
             </>
           )}
         </Disclosure>
-        <Disclosure as='div' className='mt-2'>
+        <Disclosure as='div' className='mt-2' defaultOpen>
           {({ open }) => (
             <>
               <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
