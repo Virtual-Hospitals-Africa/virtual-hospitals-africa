@@ -22,7 +22,7 @@ export const EVENTS = {
         const { health_worker_id } = payload.data
         const health_worker = await health_workers.getEmployed(trx, {
           health_worker_id,
-        })
+        }).catch((_err) => null)
         assert(health_worker, 'Health worker not found')
 
         const message =
