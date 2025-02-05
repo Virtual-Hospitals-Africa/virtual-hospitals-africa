@@ -83,9 +83,9 @@
     "spinners": "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/mod.ts",
     "std/": "https://deno.land/std@0.214.0/",
     "tailwind-merge": "npm:tailwind-merge@^2.6.0",
-    "tailwindcss": "npm:tailwindcss@3.3.5",
-    "tailwindcss/": "npm:/tailwindcss@3.3.5/",
-    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "tailwindcss": "npm:tailwindcss@3.4.17",
+    "tailwindcss/": "npm:/tailwindcss@3.4.17/",
+    "tailwindcss/plugin": "npm:/tailwindcss@3.4.17/plugin.js",
     "zod": "npm:zod@3.23.8"
   },
   "exclude": ["**/_fresh/*"],
