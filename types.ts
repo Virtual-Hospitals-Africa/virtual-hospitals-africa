@@ -2561,6 +2561,7 @@ export type RenderedNotification = {
   title: string
   description: string
   time_display: string
+  created_at: Date
   action: {
     title: string
     href: string

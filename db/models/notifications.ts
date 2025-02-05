@@ -38,6 +38,9 @@ export function insert(
 export async function ofHealthWorker(
   trx: TrxOrDb,
   health_worker_id: string,
+  opts?: {
+    past_ts: number | Date
+  },
 ): Promise<RenderedNotification[]> {
   const notifications = await trx
     .selectFrom('health_worker_web_notifications')
@@ -49,6 +52,16 @@ export async function ofHealthWorker(
         .as('wait_time'),
     )
     .where('health_worker_id', '=', health_worker_id)
+    .orderBy('health_worker_web_notifications.created_at asc')
+    .$if(
+      !!opts?.past_ts,
+      (qb) =>
+        qb.where(
+          'health_worker_web_notifications.created_at',
+          '>',
+          new Date(opts?.past_ts!),
+        ),
+    )
     .execute()
 
   return notifications.map((

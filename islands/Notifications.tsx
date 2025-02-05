@@ -7,6 +7,8 @@ import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 
+/* NOTIFICATIONS SUBSCRIPTION */
+
 export function Notifications(
   { show, notifications, dismiss }: {
     show: boolean
@@ -20,10 +22,15 @@ export function Notifications(
     function listener(event: Event) {
       console.log('notification event', event)
       assert(event instanceof CustomEvent)
+      notifications_signal.value = [event.detail, ...notifications_signal.value]
     }
     self.addEventListener('notification', listener)
     return () => self.removeEventListener('notification', listener)
   }, [notifications_signal.value])
+
+  useEffect(() => {
+    new CustomEvent('notifications:last', { detail: { notification: e.data } }),
+  }, [])
 
   return (
     <>

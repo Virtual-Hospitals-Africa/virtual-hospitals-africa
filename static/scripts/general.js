@@ -346,23 +346,22 @@ Notification.requestPermission().then(function (result) {
   var wsUri = 'wss://' + self.location.host + '/app/notifications-websocket'
   var websocket = new WebSocket(wsUri)
 
-  function dispatchNotification(notification) {
-    dispatchEvent(
-      new CustomEvent('notification', { detail: { notification } }),
-    )
-  }
-
   websocket.onopen = function () {
-    console.log('open')
+    console.log('websocket open')
   }
 
   websocket.onclose = function () {
-    console.log('close')
+    console.log('websocket close')
   }
 
   websocket.onmessage = function (e) {
-    console.log('received!')
-    dispatchNotification(`RECEIVED: ${e.data}`)
+    const notification = new Notification('To do list', {
+      body: text,
+      icon: img,
+    })
+    dispatchEvent(
+      new CustomEvent('notification', { detail: { notification: e.data } }),
+    )
   }
 
   websocket.onerror = function (e) {
