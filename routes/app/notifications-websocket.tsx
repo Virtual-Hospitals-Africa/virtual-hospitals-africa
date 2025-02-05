@@ -2,7 +2,7 @@ import { FreshContext } from '$fresh/server.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as notifications from '../../db/models/notifications.ts'
 import { LoggedInHealthWorker } from '../../types.ts'
-import last from '../../util/last.ts'
+// import last from '../../util/last.ts'
 
 // deno-lint-ignore require-await
 export default async function NotificationsWebsocket(
@@ -37,12 +37,12 @@ export default async function NotificationsWebsocket(
   }
 
   socket.onopen = async () => {
-    const notifs = await notifications.ofHealthWorker(
-      ctx.state.trx,
-      ctx.state.healthWorker.id,
-    )
-    past_ts = last(notifs)?.created_at
-    await loop()
+    // const notifs = await notifications.ofHealthWorker(
+    //   ctx.state.trx,
+    //   ctx.state.healthWorker.id,
+    // )
+    // past_ts = last(notifs)?.created_at
+    // await loop()
   }
   socket.onclose = () => clearTimeout(timeout)
   socket.onerror = (error) => {
