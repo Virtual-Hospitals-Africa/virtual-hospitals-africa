@@ -6,6 +6,8 @@ import {
 import { CareTeamSection } from './CareTeamSection.tsx'
 import VerticalProgressBar from '../../components/library/VerticalProgressBar.tsx'
 
+import capitalize from '../../util/capitalize.ts'
+
 type ProgressSteps = {
   name: string
   description: string
@@ -58,20 +60,20 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
   care_team: any[]
 }) {
   return (
-    <div className='w-full px-4 pt-4'>
-      <div className='mx-auto w-full max-w-md rounded-2xl bg-white p-2'>
+    <div className='w-full px-0 pt-2'>
+      <div className='mx-auto w-full rounded-2xl bg-white'>
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75'>
-                <span>{encounter_reason}</span>
+              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+                <span>{capitalize(encounter_reason)}</span>
                 <ChevronUpIcon
                   className={`${
                     open ? 'rotate-180 transform' : ''
                   } h-5 w-5 text-purple-500`}
                 />
               </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-4 text-sm text-gray-500'>
+              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
                 {progressSteps.length > 0
                   ? <VerticalProgressBar steps={progressSteps} />
                   : "See a list of the patient's treatment steps here."}
@@ -82,7 +84,64 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
         <Disclosure as='div' className='mt-2'>
           {({ open }) => (
             <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75'>
+              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+                <span>Conditions and Medications</span>
+                <ChevronUpIcon
+                  className={`${
+                    open ? 'rotate-180 transform' : ''
+                  } h-5 w-5 text-purple-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+                <div>
+                  See a list of the patient's medication here.
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as='div' className='mt-2'>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+                <span>History</span>
+                <ChevronUpIcon
+                  className={`${
+                    open ? 'rotate-180 transform' : ''
+                  } h-5 w-5 text-purple-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+                <div>
+                  See a list of the patient's medical history here.
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as='div' className='mt-2'>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+                <span>Contacts</span>
+                <ChevronUpIcon
+                  className={`${
+                    open ? 'rotate-180 transform' : ''
+                  } h-5 w-5 text-purple-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+                <div>
+                  See a list of the patient's contacts here.
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as='div' className='mt-2'>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
                 <span>Care Team</span>
                 <ChevronUpIcon
                   className={`${
@@ -90,7 +149,7 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
                   } h-5 w-5 text-purple-500`}
                 />
               </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-4 text-sm text-gray-500'>
+              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
                 <CareTeamSection care_team={care_team} />
               </Disclosure.Panel>
             </>
