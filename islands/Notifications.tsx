@@ -28,10 +28,6 @@ export function Notifications(
     return () => self.removeEventListener('notification', listener)
   }, [notifications_signal.value])
 
-  useEffect(() => {
-    new CustomEvent('notifications:last', { detail: { notification: e.data } }),
-  }, [])
-
   return (
     <>
       {/* Global notification live region, render this permanently at the end of the document */}
