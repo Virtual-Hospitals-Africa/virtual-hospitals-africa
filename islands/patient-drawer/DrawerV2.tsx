@@ -60,7 +60,7 @@ export function PatientDrawerV2(
   },
 ) {
   return (
-    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl px-2 sticky right-0 min-w-[300px]'>
+    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl sticky right-0 min-w-[300px]'>
       <div
         className='w-full flex flex-row items-center justify-between border-b-2'
         style={{
@@ -73,7 +73,7 @@ export function PatientDrawerV2(
         <Badge content={'In Treatment'} color='yellow' />
       </div>
 
-      <div className='border-b-2'>
+      <div className='border-b-2 px-4'>
         <PatientDrawerAccordion
           encounter_reason={encounter.reason}
           care_team={care_team}
