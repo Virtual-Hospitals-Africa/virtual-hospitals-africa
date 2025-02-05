@@ -5,6 +5,73 @@ import Table, {
 } from '../../components/library/Table.tsx'
 import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
+import cls from '../../util/cls.ts'
+import Badge, { BadgeColor } from '../../components/library/Badge.tsx'
+
+const StatusBadge = (row: NearestOrganizationSearchResult) => {
+  let theme: BadgeColor
+  let iconColor
+  let message
+
+  switch (row.wait.status) {
+    case 'open (short wait)': {
+      theme = 'green'
+      iconColor = 'fill-green-500'
+      message = `${row.wait.display} wait time`
+      break
+    }
+    case 'open (long wait)': {
+      theme = 'yellow'
+      iconColor = 'fill-yellow-500'
+      message = `${row.wait.display} wait time`
+      break
+    }
+    case 'closing soon': {
+      theme = 'yellow'
+      iconColor = 'fill-yellow-500'
+      message = (
+        <div>
+          <span className='block'>Close in {row.wait.display}</span>
+          <span className='block'>{row.re_opens.display}</span>
+        </div>
+      )
+      break
+    }
+    case 'closed': {
+      theme = 'gray'
+      iconColor = 'fill-gray-400'
+      message = (
+        <div>
+          <div className='block'>Closed</div>
+          <div className='block'>{row.re_opens.display}</div>
+        </div>
+      )
+      break
+    }
+  }
+
+  const badge_content = (
+    <>
+      <svg
+        viewBox='0 0 6 6'
+        aria-hidden='true'
+        className={cls('w-[6px]', iconColor)}
+      >
+        <circle r={3} cx={3} cy={3} />
+      </svg>
+      {message}
+    </>
+  )
+
+  return (
+    <Badge
+      content={badge_content}
+      color={theme}
+      round='md'
+      classNames='gap-x-1.5'
+    />
+  )
+}
 
 const columns: TableColumn<NearestOrganizationSearchResult>[] = [
   {
@@ -13,8 +80,10 @@ const columns: TableColumn<NearestOrganizationSearchResult>[] = [
     cellClassName: 'mb-1 font-medium',
   },
   {
-    label: 'Status',
-    data: 'status',
+    label: 'Status (Wait time)',
+    data(row) {
+      return StatusBadge(row)
+    },
   },
   {
     label: 'Doctors Available',
