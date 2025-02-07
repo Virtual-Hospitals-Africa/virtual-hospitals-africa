@@ -1,4 +1,4 @@
-identifier	display_name	encounter_step	query_slug
+identifier	display_name	encounter_step	slug
 head_to_toe_assessment_general	Head-to-toe Assessment (General)	general_assessments	general
 head_to_toe_assessment_skin	Head-to-toe Assessment (Skin)	general_assessments	skin
 head_to_toe_assessment_head_and_neck	Head-to-toe Assessment (Head and Neck)	general_assessments	head_and_neck

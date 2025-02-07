@@ -4,7 +4,7 @@ import { groupByUniq } from '../util/groupBy.ts'
 export const GENERAL_ASSESSMENTS = [
   {
     examination_identifier: 'head_to_toe_assessment_general',
-    query_slug: 'general',
+    slug: 'general',
     categories: [{
       'category': 'Hands' as const,
       'examination_identifier': 'head_to_toe_assessment_hands',
@@ -258,32 +258,32 @@ export const GENERAL_ASSESSMENTS = [
   },
   {
     examination_identifier: 'head_to_toe_assessment_skin',
-    query_slug: 'skin',
+    slug: 'skin',
     categories: [],
   },
   {
     examination_identifier: 'head_to_toe_assessment_head_and_neck',
-    query_slug: 'head_and_neck',
+    slug: 'head_and_neck',
     categories: [],
   },
   {
     examination_identifier: 'head_to_toe_assessment_cardiovascular',
-    query_slug: 'cardiovascular',
+    slug: 'cardiovascular',
     categories: [],
   },
   {
     examination_identifier: 'head_to_toe_assessment_respiratory',
-    query_slug: 'respiratory',
+    slug: 'respiratory',
     categories: [],
   },
   {
     examination_identifier: 'head_to_toe_assessment_gastrointestinal',
-    query_slug: 'gastrointestinal',
+    slug: 'gastrointestinal',
     categories: [],
   },
   {
     examination_identifier: 'head_to_toe_assessment_neuromuscular',
-    query_slug: 'neuromuscular',
+    slug: 'neuromuscular',
     categories: [],
   },
 ]
