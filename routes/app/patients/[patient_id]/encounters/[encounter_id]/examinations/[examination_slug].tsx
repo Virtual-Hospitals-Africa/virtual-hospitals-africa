@@ -17,5 +17,5 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 export default ExaminationPage((ctx) => {
-  return <p>TODO {ctx.state.current_examination.display_name}</p>
+  return <p>TODO {ctx.state.current_examination!.display_name}</p>
 })

@@ -17,7 +17,7 @@ import { PlusCircleIcon } from '../../../../../../../components/library/icons/he
 
 type ExaminationState = {
   patient_examinations: RenderedPatientExamination[]
-  current_examination: RenderedPatientExamination
+  current_examination?: RenderedPatientExamination
   next_incomplete_examination?: RenderedPatientExamination
 }
 
@@ -65,15 +65,10 @@ export type ExaminationPageChildProps = {
 }
 
 export function completeExamination(ctx: ExaminationContext) {
-  const next_incomplete_examination = ctx.state.patient_examinations.find((a) =>
-    !a.completed &&
-    a.examination_identifier !==
-      ctx.state.current_examination.examination_identifier
-  )
-  if (!next_incomplete_examination) {
-    return completeStep(ctx)
-  }
-  return redirect(next_incomplete_examination.href)
+  const { next_incomplete_examination } = ctx.state
+  return next_incomplete_examination
+    ? redirect(next_incomplete_examination.href)
+    : completeStep(ctx)
 }
 
 export function ExaminationPage(
@@ -94,7 +89,7 @@ export function ExaminationPage(
     const tabs: TabProps[] = ctx.state.patient_examinations
       .map((assessment) => {
         const active = assessment.examination_identifier ===
-          ctx.state.current_examination.examination_identifier
+          ctx.state.current_examination?.examination_identifier
         return {
           tab: assessment.display_name,
           href: assessment.href,
