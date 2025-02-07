@@ -60,7 +60,13 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnoses from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_examinations_examination_slug_ from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/[examination_slug].tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_examinations_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/_middleware.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_examinations_add from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/add.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_examinations_none from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/none.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_general_assessments from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_general_assessments_general_assessment_slug_ from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments/[general_assessment_slug].tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_general_assessments_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments/_middleware.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_history from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_history_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/_middleware.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_history_family from './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/family.tsx'
@@ -175,12 +181,13 @@ import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
 import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
 import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
+import * as $diagnostic_tests_Orders from './islands/diagnostic_tests/Orders.tsx'
 import * as $drug_Input from './islands/drug/Input.tsx'
 import * as $drug_Search from './islands/drug/Search.tsx'
+import * as $examinations_Add from './islands/examinations/Add.tsx'
 import * as $examinations_BodySiteSelect from './islands/examinations/BodySiteSelect.tsx'
 import * as $examinations_ChecklistItem from './islands/examinations/ChecklistItem.tsx'
 import * as $examinations_Dialog from './islands/examinations/Dialog.tsx'
-import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyForm from './islands/family/FamilyForm.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
@@ -349,8 +356,20 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/[examination_slug].tsx':
+      $app_patients_patient_id_encounters_encounter_id_examinations_examination_slug_,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/_middleware.tsx':
+      $app_patients_patient_id_encounters_encounter_id_examinations_middleware,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/add.tsx':
+      $app_patients_patient_id_encounters_encounter_id_examinations_add,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations/none.tsx':
+      $app_patients_patient_id_encounters_encounter_id_examinations_none,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx':
       $app_patients_patient_id_encounters_encounter_id_general_assessments,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments/[general_assessment_slug].tsx':
+      $app_patients_patient_id_encounters_encounter_id_general_assessments_general_assessment_slug_,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments/_middleware.tsx':
+      $app_patients_patient_id_encounters_encounter_id_general_assessments_middleware,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/history.tsx':
       $app_patients_patient_id_encounters_encounter_id_history,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/history/_middleware.tsx':
@@ -502,12 +521,13 @@ const manifest = {
     './islands/availability-form.tsx': $availability_form,
     './islands/diagnoses/Form.tsx': $diagnoses_Form,
     './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
+    './islands/diagnostic_tests/Orders.tsx': $diagnostic_tests_Orders,
     './islands/drug/Input.tsx': $drug_Input,
     './islands/drug/Search.tsx': $drug_Search,
+    './islands/examinations/Add.tsx': $examinations_Add,
     './islands/examinations/BodySiteSelect.tsx': $examinations_BodySiteSelect,
     './islands/examinations/ChecklistItem.tsx': $examinations_ChecklistItem,
     './islands/examinations/Dialog.tsx': $examinations_Dialog,
-    './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyForm.tsx': $family_FamilyForm,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,

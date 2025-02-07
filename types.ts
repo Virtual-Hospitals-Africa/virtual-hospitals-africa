@@ -1832,7 +1832,7 @@ export type GoogleAddressComponent = {
   formatted_address: string
   address_components: {
     long_name?: string
-    query_slug?: string
+    slug?: string
     types?: string[]
   }[]
   types: string[]
@@ -2528,7 +2528,7 @@ export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
   encounter_step: EncounterStep
-  query_slug: string
+  slug: string
   display_name: string
   completed: SqlBool | null
   skipped: SqlBool | null

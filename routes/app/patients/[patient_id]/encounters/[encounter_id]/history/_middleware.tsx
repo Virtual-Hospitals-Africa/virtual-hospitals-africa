@@ -42,7 +42,7 @@ export async function handler(
 
   const current_assessment_slug = ctx.url.pathname.match(/\/history\/(.*)$/)
   const current_assessment = current_assessment_slug &&
-    history_assessments.find((a) => a.query_slug === current_assessment_slug[1])
+    history_assessments.find((a) => a.slug === current_assessment_slug[1])
 
   Object.assign(
     ctx.state,

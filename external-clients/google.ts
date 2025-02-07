@@ -583,7 +583,7 @@ function getAddressFromData(results: GoogleAddressComponent[]): AddressInsert {
     if (!types_we_care_about.has(type)) continue
     const address_component = result.address_components[0]
     assert(address_component)
-    const value = address_component.long_name || address_component.query_slug
+    const value = address_component.long_name || address_component.slug
     assert(value, `No value for ${type}`)
     if (type === 'route' && !isRouteUseful(value)) continue
     address[type] = value
