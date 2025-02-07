@@ -101,14 +101,9 @@ export function forPatientEncounter(
           eb('examinations.identifier', '=', 'maternity_assessment'),
         ]),
         eb(
-          'examinations.identifier',
+          'examinations.encounter_step',
           '=',
-          'history_pre_existing_conditions',
-        ),
-        eb(
-          'examinations.identifier',
-          '=',
-          'history_family',
+          'history',
         ),
       ])
     )
