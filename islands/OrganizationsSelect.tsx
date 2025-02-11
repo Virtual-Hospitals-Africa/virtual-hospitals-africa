@@ -47,7 +47,10 @@ function OrganizationSelectOption(
 }
 
 export default function OrganizationsSelect(
-  { organizations }: { organizations: OrganizationLike[] },
+  { organizations, onSelect }: {
+    organizations: OrganizationLike[]
+    onSelect?: (organization: OrganizationLike) => void
+  },
 ) {
   const selected = useSignal<OrganizationLike>(organizations[0])
 
@@ -58,7 +61,10 @@ export default function OrganizationsSelect(
           key={organization.id}
           organization={organization}
           selected={selected.value.id === organization.id}
-          toggleSelection={() => selected.value = organization}
+          toggleSelection={() => {
+            selected.value = organization
+            onSelect?.(organization)
+          }}
         />
       ))}
       <HiddenInput value={{ organization_id: selected.value.id }} />

@@ -8,7 +8,7 @@ import { TrxOrDb } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export default create(
-  ['addresses', 'organizations'],
+  ['addresses', 'organizations', 'organization_departments'],
   async (trx) => {
     await addTestOrganizations(trx)
     await importDataFromCSV(trx)
@@ -32,6 +32,16 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4554096,
       longitude: 29.7739353,
     },
+    departments_accepting_patients: [
+      'maternity',
+      'immunizations',
+      'pharmacy',
+      'acute care',
+      'chronic diseases',
+    ],
+    administrative_departments: [
+      'administration',
+    ],
   })
 
   await organizations.add(trx, {
@@ -50,6 +60,10 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4555096,
       longitude: 29.7738353,
     },
+    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
+    administrative_departments: [
+      'administration',
+    ],
   })
 }
 
@@ -121,20 +135,13 @@ async function importDataFromCSV(trx: TrxOrDb) {
         names.set(name, { address, location, count: 0 })
       }
 
-      console.log({
-        name: suffix ? `${name} (${suffix})` : name,
-        address,
-        inactive_reason,
-        category: category_capitalized,
-        location,
-      })
-
       await organizations.add(trx, {
         name: suffix ? `${name} (${suffix})` : name,
         address,
         inactive_reason,
         category: category_capitalized,
         location,
+        departments_accepting_patients: [],
       })
     },
   )

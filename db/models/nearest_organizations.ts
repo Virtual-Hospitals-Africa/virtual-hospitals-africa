@@ -57,6 +57,19 @@ export function baseQuery(
           )
           .where('employment.profession', '=', 'doctor'),
       ).as('doctors'),
+      jsonArrayFrom(
+        eb.selectFrom('organization_departments')
+          .select([
+            'organization_departments.id',
+            'organization_departments.name',
+            'organization_departments.accepts_patients',
+          ])
+          .whereRef(
+            'organization_departments.organization_id',
+            '=',
+            'organizations.id',
+          ),
+      ).as('departments'),
     ])
     .$if(
       search.kind === 'hospital',

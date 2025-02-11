@@ -214,6 +214,14 @@ export interface Countries {
   name: string
 }
 
+export interface DepartmentEmployment {
+  created_at: Generated<Timestamp>
+  department_id: string
+  employment_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface DeviceCapabilities {
   created_at: Generated<Timestamp>
   device_id: string
@@ -663,6 +671,18 @@ export interface OrganizationConsumables {
   id: Generated<string>
   organization_id: string
   quantity_on_hand: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface OrganizationDepartments {
+  accepts_patients: Generated<boolean>
+  address_id: string | null
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  inactive_reason: string | null
+  location: string | null
+  name: string
+  organization_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1171,6 +1191,7 @@ export interface DB {
   consumables: Consumables
   consumption: Consumption
   countries: Countries
+  department_employment: DepartmentEmployment
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnoses: Diagnoses
@@ -1220,6 +1241,7 @@ export interface DB {
   nurse_registration_details: NurseRegistrationDetails
   nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
   organization_consumables: OrganizationConsumables
+  organization_departments: OrganizationDepartments
   organization_devices: OrganizationDevices
   organizations: Organizations
   patient_age: PatientAge

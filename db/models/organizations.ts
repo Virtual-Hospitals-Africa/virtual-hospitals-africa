@@ -18,6 +18,7 @@ import * as addresses from './addresses.ts'
 import partition from '../../util/partition.ts'
 import {
   jsonAgg,
+  jsonArrayFrom,
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
@@ -40,13 +41,34 @@ export function baseQuery(trx: TrxOrDb) {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
+      jsonArrayFrom(
+        eb.selectFrom('organization_departments')
+          .select([
+            'organization_departments.id',
+            'organization_departments.name',
+            'organization_departments.accepts_patients',
+          ])
+          .whereRef(
+            'organization_departments.organization_id',
+            '=',
+            'organizations.id',
+          ),
+      ).as('departments'),
     ])
 }
 
 const model = base({
   top_level_table: 'organizations',
   baseQuery,
-  formatResult: (x): HasStringId<Organization> => x,
+  formatResult: (x): HasStringId<
+    Organization & {
+      departments: {
+        id: string
+        name: string
+        accepts_patients: boolean
+      }[]
+    }
+  > => x,
   handleSearch(
     qb,
     opts: {
@@ -536,6 +558,8 @@ export type OrganizationInsert = {
   address?: addresses.AddressInsert
   location?: Location
   is_test?: boolean
+  departments_accepting_patients: string[]
+  administrative_departments?: string[]
 }
 
 export async function add(
@@ -543,6 +567,8 @@ export async function add(
   {
     address,
     location,
+    departments_accepting_patients,
+    administrative_departments,
     ...rest
   }: OrganizationInsert,
 ) {
@@ -551,7 +577,7 @@ export async function add(
     const inserted_address = await addresses.insert(trx, address)
     address_id = inserted_address.id
   }
-  return trx
+  const organization = await trx
     .insertInto('organizations')
     .values({
       ...rest,
@@ -560,6 +586,28 @@ export async function add(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  departments_accepting_patients.length && await trx
+    .insertInto('organization_departments')
+    .values(departments_accepting_patients.map((name) => ({
+      organization_id: organization.id,
+      name,
+      accepts_patients: true,
+    })))
+    .returningAll()
+    .execute()
+
+  administrative_departments?.length && await trx
+    .insertInto('organization_departments')
+    .values(administrative_departments.map((name) => ({
+      organization_id: organization.id,
+      name,
+      accepts_patients: false,
+    })))
+    .returningAll()
+    .execute()
+
+  return organization
 }
 
 export function remove(

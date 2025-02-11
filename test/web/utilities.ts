@@ -34,7 +34,9 @@ type TestHealthWorkerOpts = {
     | 'approved-nurse'
     | 'awaiting-approval-nurse'
   organization_id?: string
-  health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
+  health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens> & {
+    department_name?: string
+  }
 }
 
 export const route = `https://localhost:8005`
@@ -60,13 +62,28 @@ export async function addTestHealthWorker(
     ...health_worker_attrs,
   })
 
+  const department = await trx.selectFrom('organization_departments')
+    .where('organization_id', '=', organization_id)
+    .selectAll()
+    .$if(
+      !!health_worker_attrs?.department_name,
+      (qb) =>
+        qb.where(
+          'organization_departments.name',
+          '=',
+          health_worker_attrs?.department_name!,
+        ),
+    )
+    .executeTakeFirstOrThrow()
+
   switch (scenario) {
     case 'awaiting-approval-nurse': {
-      const [created_employee] = await employment.add(trx, [{
+      const created_employee = await employment.addOne(trx, {
         organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-      }])
+        department_id: department.id,
+      })
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
@@ -84,15 +101,27 @@ export async function addTestHealthWorker(
     }
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
-      const [created_employee] = await employment.add(trx, [{
+      const admin_department = await trx.selectFrom('organization_departments')
+        .where('organization_id', '=', organization_id)
+        .selectAll()
+        .where(
+          'organization_departments.name',
+          '=',
+          'administration',
+        )
+        .executeTakeFirstOrThrow()
+      const created_employee = await employment.addOne(trx, {
         organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-      }, {
+        department_id: department.id,
+      })
+      await employment.addOne(trx, {
         organization_id,
         health_worker_id: admin.id,
         profession: 'admin',
-      }])
+        department_id: admin_department.id,
+      })
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
@@ -113,11 +142,12 @@ export async function addTestHealthWorker(
       break
     }
     case 'admin': {
-      const [created_employee] = await employment.add(trx, [{
+      const created_employee = await employment.addOne(trx, {
         organization_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
-      }])
+        department_id: department.id,
+      })
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
@@ -128,11 +158,12 @@ export async function addTestHealthWorker(
       break
     }
     case 'doctor': {
-      const [created_employee] = await employment.add(trx, [{
+      const created_employee = await employment.addOne(trx, {
         organization_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
-      }])
+        department_id: department.id,
+      })
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
@@ -143,11 +174,12 @@ export async function addTestHealthWorker(
       break
     }
     case 'nurse': {
-      const [created_employee] = await employment.add(trx, [{
+      const created_employee = await employment.addOne(trx, {
         organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-      }])
+        department_id: department.id,
+      })
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
@@ -440,7 +472,12 @@ export async function withTestOrganizations(
     const is_virtual = kind === 'virtual'
     const category = is_virtual ? 'Virtual Hospital' : 'Clinic'
     const name = `Test ${generateUUID()} ${category}`
-    const to_create: OrganizationInsert = { name, category }
+    const to_create: OrganizationInsert = {
+      name,
+      category,
+      departments_accepting_patients: ['immunizations', 'maternity'],
+      administrative_departments: ['administration'],
+    }
     if (!is_virtual) {
       to_create.address = {
         street: '123 Test St',
