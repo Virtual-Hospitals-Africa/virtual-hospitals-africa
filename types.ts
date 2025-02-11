@@ -1056,13 +1056,6 @@ export type GoogleProfile = {
   locale: string
 }
 
-export type Employee = {
-  health_worker_id: string
-  profession: Profession
-  organization_id: string
-  specialty?: Maybe<string>
-}
-
 export type HealthWorkerInvitee = {
   email: string
   organization_id: string
@@ -3194,4 +3187,8 @@ export type OrganizationLike = {
   google_maps_link?: Maybe<string>
   business_hours?: Maybe<string>
   location?: Maybe<{ latitude: number; longitude: number }>
+  departments: {
+    id: string
+    name: string
+  }[]
 }

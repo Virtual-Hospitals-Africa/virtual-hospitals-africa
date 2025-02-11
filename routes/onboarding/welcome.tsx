@@ -9,6 +9,7 @@ import redirect from '../../util/redirect.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
+  department_id: z.string().uuid(),
   profession: z.enum(['nurse', 'doctor']),
   specialty: z.string(),
 })
@@ -16,10 +17,10 @@ const OnboardingSchema = z.object({
 export const handler = postHandler(
   OnboardingSchema,
   async (_req, ctx: OnboardingContext, form_values) => {
-    await employment.add(ctx.state.trx, [{
+    await employment.addOne(ctx.state.trx, {
       health_worker_id: ctx.state.healthWorker.id,
       ...form_values,
-    }])
+    })
 
     return redirect('/app')
   },

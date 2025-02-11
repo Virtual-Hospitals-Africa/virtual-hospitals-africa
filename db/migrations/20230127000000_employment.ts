@@ -38,6 +38,24 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
+    'department_employment',
+    (qb) =>
+      qb.addColumn('employment_id', 'uuid', (col) =>
+        col.notNull()
+          .references('employment.id')
+          .onDelete('cascade'))
+        .addColumn('department_id', 'uuid', (col) =>
+          col.notNull()
+            .references('organization_departments.id')
+            .onDelete('cascade'))
+        .addUniqueConstraint('only_in_department_once', [
+          'employment_id',
+          'department_id',
+        ]),
+  )
+
+  await createStandardTable(
+    db,
     'provider_calendars',
     (qb) =>
       qb.addColumn(
@@ -79,6 +97,7 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('provider_calendars').execute()
+  await db.schema.dropTable('department_employment').execute()
   await db.schema.dropTable('employment').execute()
   await db.schema.dropType('profession').execute()
 }

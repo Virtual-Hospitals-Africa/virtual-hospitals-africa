@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  Employee,
   HasStringId,
   HealthWorkerInvitee,
   Maybe,
@@ -9,6 +8,13 @@ import {
 } from '../../types.ts'
 import { SqlBool } from 'kysely'
 import { now } from '../helpers.ts'
+
+type Employee = {
+  health_worker_id: string
+  profession: Profession
+  organization_id: string
+  specialty?: Maybe<string>
+}
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
@@ -25,6 +31,31 @@ export type OrganizationAdmin = {
   name: string
   organization_name: string
 } & Employee
+
+export async function addOne(
+  trx: TrxOrDb,
+  { department_id, ...rest }: Employee & {
+    department_id: string
+  },
+) {
+  const employee = await trx
+    .insertInto('employment')
+    .values(rest)
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
+  const department = await trx.insertInto('department_employment')
+    .values({
+      department_id,
+      employment_id: employee.id,
+    })
+    .executeTakeFirstOrThrow()
+
+  return {
+    ...employee,
+    departments: [department],
+  }
+}
 
 export function add(
   trx: TrxOrDb,
