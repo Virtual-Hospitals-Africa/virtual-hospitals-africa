@@ -49,6 +49,7 @@ export function NearestHealthCareSection(
     primary_doctor?: { id: string; name: string }
   },
 ) {
+  console.log({ nearest_organization })
   const nearest_organization_signal = useSignal(nearest_organization)
   let doctor_search_href = '/app/providers?profession=doctor'
   if (nearest_organization_signal.value) {

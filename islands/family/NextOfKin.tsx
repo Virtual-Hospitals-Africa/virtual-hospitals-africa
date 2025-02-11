@@ -24,6 +24,7 @@ export default function NextOfKinInput({
           search_route='/app/patients'
           label='Name'
           addable
+          required
           value={patientKin &&
             {
               id: patientKin.patient_id,
@@ -45,6 +46,7 @@ export default function NextOfKinInput({
           value={patientKin?.patient_phone_number}
         />
         <RelationshipSelect
+          required
           name={`${name}.family_relation_gendered`}
           family_relation_gendered={patientKin
             ?.relation ?? undefined}

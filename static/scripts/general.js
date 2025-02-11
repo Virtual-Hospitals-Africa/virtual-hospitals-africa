@@ -5,6 +5,11 @@ if (window.ALREADY_RAN_GENERAL_SCRIPT) {
 }
 window.ALREADY_RAN_GENERAL_SCRIPT = true
 
+function getAttr(el, attr) {
+  var item = el.attributes.getNamedItem(attr)
+  return item && item.value
+}
+
 /* FOCUS ON LOCATION HASH */
 
 // Set focus on an element by its id or name
@@ -38,11 +43,6 @@ addEventListener('navigate', hashFocus)
 hashFocus()
 
 /* FOCUS ON NEXT INCOMPLETE FORM ELEMENT */
-
-// function getAttr(el, attr) {
-//   var item = el.attributes.getNamedItem(attr)
-//   return item && item.value
-// }
 
 // function findNode(nodes, callback) {
 //   for (var i = 0; i < nodes.length; i++) {

@@ -9,6 +9,7 @@ export default function OrganizationSearch(
     filters = {},
     sort,
     label,
+    value,
     required,
     do_not_render_built_in_options,
     onSearchResults,
@@ -62,6 +63,7 @@ export default function OrganizationSearch(
       onSearchResults={onSearchResults}
       label={label}
       placeholder='Find an organization'
+      value={value}
     />
   )
 }
