@@ -177,7 +177,13 @@ addEventListener('submit', function (event) {
       if (json.name === 'ZodError') {
         json.issues.forEach(function (issue, index) {
           var path = issue.path.join('.')
-          var element = document.querySelector('[name="' + path + '"]')
+          var element = document.querySelector('[name="' + path + '"]') ||
+            document.querySelector('input[name^="' + path + '"]')
+          if (!element) {
+            return dispatchEvent(
+              new CustomEvent('show-error', { detail: issue.message }),
+            )
+          }
           if (
             getAttr(element, 'type') === 'hidden' &&
             path.endsWith('id')
