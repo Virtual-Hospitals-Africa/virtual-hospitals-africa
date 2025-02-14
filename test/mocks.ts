@@ -84,24 +84,23 @@ export const testRegistrationDetails = async (
   address_id: (await insertTestAddress(trx)).id,
 })
 
-export async function createTestAddress(trx: TrxOrDb) {
-  const fullCountryInfo = await addresses.getCountryAddressTree(trx)
-  const country = sample(fullCountryInfo)
-  const province = sample(country.provinces)
-  const district = sample(province.districts)
-  const ward = sample(district.wards)
+export function createTestAddress() {
+  const country = 'ZA'
+  const province = sample(['Province 1', 'Province 2'])
+  const district = sample(['District 1', 'District 2'])
+  const ward = sample(['Ward 1', 'Ward 2'])
   const street_number = Math.random().toString(36).substring(7)
   return {
     street: `${street_number} Main Street`,
-    locality: ward.name,
-    administrative_area_level_2: district.name,
-    administrative_area_level_1: province.name,
-    country: country.name,
+    locality: ward,
+    administrative_area_level_2: district,
+    administrative_area_level_1: province,
+    country: country,
   }
 }
 
-export async function insertTestAddress(
+export function insertTestAddress(
   trx: TrxOrDb,
 ) {
-  return addresses.insert(trx, await createTestAddress(trx))
+  return addresses.insert(trx, createTestAddress())
 }

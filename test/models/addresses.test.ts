@@ -10,7 +10,7 @@ describe('db/models/address.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'inserts addresses, making a new id each time',
       async (trx) => {
-        const randomAddress = await createTestAddress(trx)
+        const randomAddress = await createTestAddress()
 
         const address1 = await addresses.insert(trx, randomAddress)
         const address2 = await addresses.insert(trx, randomAddress)

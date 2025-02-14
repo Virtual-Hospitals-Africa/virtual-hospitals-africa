@@ -64,7 +64,7 @@
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
     "@headlessui/tailwindcss": "npm:@headlessui/tailwindcss@0.2.1",
     "awesome-phonenumber": "npm:awesome-phonenumber@7.2.0",
-    "cheerio": "https://esm.sh/cheerio",
+    "cheerio": "https://esm.sh/cheerio@1.0.0",
     "client-only": "https://esm.sh/v135/client-only@0.0.1/",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",

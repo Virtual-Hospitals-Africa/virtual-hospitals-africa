@@ -1,46 +1,7 @@
-import { jsonArrayFrom } from '../helpers.ts'
-import { CountryAddressTree, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-
-let fullCountryInfo: CountryAddressTree | undefined
-export async function getCountryAddressTree(
-  trx: TrxOrDb,
-): Promise<CountryAddressTree> {
-  if (fullCountryInfo) return fullCountryInfo
-  return fullCountryInfo = await trx
-    .selectFrom('countries')
-    .select((ebProvinces) => [
-      'id',
-      'name',
-      jsonArrayFrom(
-        ebProvinces.selectFrom('provinces')
-          .select((ebDistricts) => [
-            'id',
-            'name',
-            jsonArrayFrom(
-              ebDistricts.selectFrom('districts')
-                .select((ebWards) => [
-                  'id',
-                  'name',
-                  jsonArrayFrom(
-                    ebWards.selectFrom('wards')
-                      .select([
-                        'id',
-                        'name',
-                      ])
-                      .whereRef('wards.district_id', '=', 'districts.id'),
-                  ).as('wards'),
-                ])
-                .whereRef('districts.province_id', '=', 'provinces.id'),
-            ).as('districts'),
-          ])
-          .whereRef('provinces.country_id', '=', 'countries.id'),
-      ).as('provinces'),
-    ])
-    .execute()
-}
+import { assertOr400, StatusError } from '../../util/assertOr.ts'
 
 export type AddressInsert = {
   street_number?: string
@@ -60,6 +21,16 @@ const isApartmentOrUnit = (word: string) => {
     lower_word === 'suite' || lower_word === 'apt' || lower_word === 'ste'
 }
 
+const TO_COUNTRY_ISO_3601 = new Map([
+  ['South Africa', 'ZA'],
+  ['Zimbabwe', 'ZW'],
+])
+
+const TO_COUNTRY_FULL_NAME = new Map([
+  ['ZA', 'South Africa'],
+  ['ZW', 'Zimbabwe'],
+])
+
 export function insert(
   trx: TrxOrDb,
   address: AddressInsert,
@@ -69,9 +40,20 @@ export function insert(
     route,
     unit,
     street,
+    country,
   } = address
   if (route) {
     assertOr400(!street, 'street is not allowed when route is present')
+  }
+
+  let country_full_name = country
+  let country_iso_3601 = country
+  if (TO_COUNTRY_ISO_3601.has(country)) {
+    country_iso_3601 = TO_COUNTRY_ISO_3601.get(country)!
+  } else if (TO_COUNTRY_FULL_NAME.has(country)) {
+    country_full_name = TO_COUNTRY_FULL_NAME.get(country)!
+  } else {
+    throw new StatusError(`Unrecognized country ${country}`, 400)
   }
 
   // Extract street number, route, and unit from street if present
@@ -116,17 +98,18 @@ export function insert(
       address.administrative_area_level_2,
       address.administrative_area_level_1,
     ]),
-    address.country,
+    country_full_name,
     address.postal_code,
   ]).join(', ')
   return trx.insertInto('addresses')
     .values({
+      ...address,
       street,
       formatted,
       street_number,
       route,
       unit,
-      ...address,
+      country: country_iso_3601,
     })
     .returningAll()
     .executeTakeFirstOrThrow()

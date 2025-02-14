@@ -1,11 +1,11 @@
 import FormRow from '../library/FormRow.tsx'
 import { TextInput } from '../../islands/form/Inputs.tsx'
-import { CountryAddressTree, PatientIntake } from '../../types.ts'
+import { PatientIntake } from '../../types.ts'
 
 export default function AddressSection(
   { address }: {
     address: Partial<PatientIntake['address']>
-    country_address_tree: CountryAddressTree
+    // country_address_tree: CountryAddressTree
   },
 ) {
   return (

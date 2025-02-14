@@ -210,8 +210,8 @@ export interface Consumption {
 }
 
 export interface Countries {
-  id: Generated<string>
-  name: string
+  full_name: string
+  iso_3166: string
 }
 
 export interface DepartmentEmployment {
@@ -256,12 +256,6 @@ export interface DiagnosesCollaboration {
   id: Generated<string>
   is_approved: boolean
   updated_at: Generated<Timestamp>
-}
-
-export interface Districts {
-  id: Generated<string>
-  name: string
-  province_id: string
 }
 
 export interface DoctorRegistrationDetails {
@@ -1092,12 +1086,6 @@ export interface ProviderCalendars {
   updated_at: Generated<Timestamp>
 }
 
-export interface Provinces {
-  country_id: string
-  id: Generated<string>
-  name: string
-}
-
 export interface RegulatorGoogleTokens {
   access_token: string
   created_at: Generated<Timestamp>
@@ -1145,12 +1133,6 @@ export interface WaitingRoom {
   updated_at: Generated<Timestamp>
 }
 
-export interface Wards {
-  district_id: string
-  id: Generated<string>
-  name: string
-}
-
 export interface WhatsappMessagesReceived {
   body: string | null
   chatbot_name: ChatbotName
@@ -1196,7 +1178,6 @@ export interface DB {
   devices: Devices
   diagnoses: Diagnoses
   diagnoses_collaboration: DiagnosesCollaboration
-  districts: Districts
   doctor_registration_details: DoctorRegistrationDetails
   doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
   doctor_review: DoctorReview
@@ -1283,14 +1264,12 @@ export interface DB {
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars
-  provinces: Provinces
   regulator_google_tokens: RegulatorGoogleTokens
   regulator_sessions: RegulatorSessions
   regulators: Regulators
   snomed_concepts: SnomedConcepts
   spatial_ref_sys: SpatialRefSys
   waiting_room: WaitingRoom
-  wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
 }

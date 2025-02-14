@@ -59,7 +59,7 @@ describe(
         await addTestHealthWorkerWithSession(db, {
           scenario: 'nurse',
         })
-      const address = await createTestAddress(db)
+      const address = createTestAddress()
 
       {
         const body = new FormData()

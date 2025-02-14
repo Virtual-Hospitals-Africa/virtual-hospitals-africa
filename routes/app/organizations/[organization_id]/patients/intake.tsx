@@ -20,7 +20,6 @@ import {
 import { OrganizationContext } from '../_middleware.ts'
 import PatientIntakeForm from '../../../../../components/patient-intake/IntakeForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import { promiseProps } from '../../../../../util/promiseProps.ts'
 
 const FamilyRelationInsertSchema = z.object({
   patient_id: z.string().uuid().optional(),
@@ -97,15 +96,11 @@ export default async function IntakePage(
   const patient_id = ctx.url.searchParams.get('patient_id')
   const patient_name = ctx.url.searchParams.get('patient_name') ?? undefined
 
-  const {
-    patient,
-    country_address_tree,
-  } = await promiseProps({
-    patient: patient_id
+  const patient = await (
+    patient_id
       ? patient_intake.getById(trx, patient_id)
-      : Promise.resolve(patient_name ? { name: patient_name } : {}),
-    country_address_tree: addresses.getCountryAddressTree(trx),
-  })
+      : Promise.resolve(patient_name ? { name: patient_name } : {})
+  )
 
   const default_organization = OrganizationWithAddressSchema.parse(
     ctx.state.organization_employment.organization,
@@ -122,7 +117,6 @@ export default async function IntakePage(
           patient={patient}
           previously_completed={false}
           default_organization={default_organization}
-          country_address_tree={country_address_tree}
           family={{}}
         />
         <hr className='my-2' />

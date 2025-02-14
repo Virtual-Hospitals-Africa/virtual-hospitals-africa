@@ -15,7 +15,7 @@ type TableName = keyof DB
 
 export function create(
   table_names: TableName[],
-  generate: (trx: TrxOrDb) => Promise<void>,
+  generate: (trx: TrxOrDb) => Promise<unknown>,
   opts?: { never_dump?: boolean },
 ) {
   async function drop(tables: TableName[] = table_names) {

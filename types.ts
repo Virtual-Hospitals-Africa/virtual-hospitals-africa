@@ -1883,32 +1883,6 @@ export type PatientAppointmentRequestMedia = {
   patient_appointment_request_id: string
   media_id: string
 }
-
-export type Country = { name: string }
-
-export type Province = { name: string; country_id: string }
-
-export type District = { name: string; province_id: string }
-
-export type Ward = { name: string; district_id: string }
-
-export type CountryAddressTree = {
-  id: string
-  name: string
-  provinces: {
-    id: string
-    name: string
-    districts: {
-      id: string
-      name: string
-      wards: {
-        id: string
-        name: string
-      }[]
-    }[]
-  }[]
-}[]
-
 export type MailingListRecipient = {
   name: string
   email: string

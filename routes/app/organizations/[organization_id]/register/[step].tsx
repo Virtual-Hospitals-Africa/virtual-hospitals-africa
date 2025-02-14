@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  CountryAddressTree,
   HasStringId,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
@@ -16,7 +15,6 @@ import redirect from '../../../../../util/redirect.ts'
 import * as employment from '../../../../../db/models/employment.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
-import * as addresses from '../../../../../db/models/addresses.ts'
 import {
   DocumentFormFields,
   PersonalFormFields,
@@ -31,7 +29,6 @@ import SectionHeader from '../../../../../components/library/typography/SectionH
 
 type RegisterPageProps = {
   formState: FormState
-  country_address_tree: CountryAddressTree | undefined
 }
 
 export type FormState =
@@ -175,10 +172,6 @@ export default async function RegisterPage(
 
   formState.email = healthWorker.email
 
-  const country_address_tree = step == 'personal'
-    ? await addresses.getCountryAddressTree(ctx.state.trx)
-    : undefined
-
   const stepState = useNurseRegistrationSteps(ctx)
 
   return (
@@ -194,7 +187,6 @@ export default async function RegisterPage(
       <NurseRegistrationForm
         currentStep={stepState.currentStep}
         formData={formState}
-        country_address_tree={country_address_tree}
       />
     </Layout>
   )
