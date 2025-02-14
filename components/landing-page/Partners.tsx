@@ -47,15 +47,14 @@ export default function PartnersContent() {
                 width={304}
               />
             </a>
-            <span className='pr-8'>
+            <img
+              className='w-full object-contain object-left ml-[-6px]'
+              src='/images/logos/ul.png'
+              alt='University of Limpopo'
+            />
+            <span className='pl-3'>
               <MedicalCollegeOfWisconsin />
             </span>
-            <img
-              className='max-h-12 w-full object-contain object-left ml-[-6px]'
-              src='/images/logos/msu.webp'
-              alt='Midlands State University'
-              height={112}
-            />
             <span className='col-start-1 col-end-3'>
               <UniversityOfMichiganLawSchool />
             </span>
