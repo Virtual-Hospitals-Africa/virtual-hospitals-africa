@@ -5,8 +5,6 @@ import {
   DayOfWeek,
   DeepPartial,
   GCalEvent,
-  HealthWorkerEmployment,
-  LoggedInHealthWorkerContext,
   Time,
 } from '../../../../types.ts'
 import SetAvailabilityForm from '../../../../islands/availability-form.tsx'
@@ -19,19 +17,17 @@ import {
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
-import { assertOr403 } from '../../../../util/assertOr.ts'
-import hrefFromCtx from '../../../../util/hrefFromCtx.ts'
 import {
   addCalendars,
   markAvailabilitySet,
 } from '../../../../db/models/providers.ts'
-import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs } from '../../../logged-in.tsx'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { forEach } from '../../../../util/inParallel.ts'
 import { postHandler } from '../../../../util/postHandler.ts'
 import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
+import { OrganizationContext } from './_middleware.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -122,12 +118,11 @@ const AvailabilitySchema = z.object({
 })
 
 async function writeCalendarsToGoogle(
-  ctx: LoggedInHealthWorkerContext,
-  matching_employment: HealthWorkerEmployment,
+  ctx: OrganizationContext,
   availability: Partial<AvailabilityJSON>,
 ) {
   let gcal_availability_calendar_id =
-    matching_employment!.gcal_availability_calendar_id
+    ctx.state.organization_employment.gcal_availability_calendar_id
 
   const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
 
@@ -136,7 +131,7 @@ async function writeCalendarsToGoogle(
       await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
         ctx.state.trx,
         googleClient,
-        [matching_employment.organization.id],
+        [ctx.state.organization.id],
       )
     await addCalendars(ctx.state.trx, ctx.state.healthWorker.id, [calendars])
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
@@ -164,31 +159,20 @@ async function writeCalendarsToGoogle(
 
 export const handler = postHandler(
   AvailabilitySchema,
-  async (_req, ctx: LoggedInHealthWorkerContext, form_values) => {
-    const { healthWorker, trx } = ctx.state
-
+  async (_req, ctx: OrganizationContext, form_values) => {
+    const { healthWorker, trx, organization } = ctx.state
     const from_url = !!ctx.url.searchParams.get('from_url')
-    const organization_id = getRequiredUUIDParam(ctx, 'organization_id')
-
-    const matching_employment = healthWorker.employment.find(
-      (employment) => employment.organization.id === organization_id,
-    )
-    assertOr403(
-      matching_employment,
-      'Health worker not employed at this organization',
-    )
 
     await promiseProps({
       marking_availability_set: markAvailabilitySet(
         trx,
         {
           health_worker_id: healthWorker.id,
-          organization_id,
+          organization_id: organization.id,
         },
       ),
       write_calendars_to_google: writeCalendarsToGoogle(
         ctx,
-        matching_employment,
         form_values,
       ),
     })
@@ -205,32 +189,12 @@ export default HealthWorkerHomePageLayout(
   'Set Availability',
   async function SetAvailability(
     _req: Request,
-    ctx: LoggedInHealthWorkerContext,
+    ctx: OrganizationContext,
   ) {
-    const { healthWorker } = ctx.state
+    const { healthWorker, organization, organization_employment } = ctx.state
+    const from_url = ctx.url.searchParams.get('from_url')
 
-    const organization_id_param = ctx.url.searchParams.get('organization_id')
-
-    if (healthWorker.employment.length > 1 && !organization_id_param) {
-      return redirect(hrefFromCtx(ctx, (url) => {
-        url.searchParams.set(
-          'organization_id',
-          String(healthWorker.default_organization_id),
-        )
-      }))
-    }
-
-    const organization_id = organization_id_param ||
-      healthWorker.default_organization_id
-    const matching_employment = healthWorker.employment.find(
-      (employment) => employment.organization.id === organization_id,
-    )
-    assertOr403(
-      matching_employment,
-      'Health worker not employed at this organization',
-    )
-    const gcal_availability_calendar_id =
-      matching_employment!.gcal_availability_calendar_id
+    const { gcal_availability_calendar_id } = organization_employment
 
     const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
     const events = gcal_availability_calendar_id
@@ -250,12 +214,12 @@ export default HealthWorkerHomePageLayout(
     }
 
     // If initially directed here by _middleware, but you already have availability in google calendar, mark that the availability is set
-    if (events.items.length && !!ctx.url.searchParams.get('from_url')) {
+    if (events.items.length && !!from_url) {
       await markAvailabilitySet(
         ctx.state.trx,
         {
           health_worker_id: healthWorker.id,
-          organization_id,
+          organization_id: organization.id,
         },
       )
       return redirect('/app')
