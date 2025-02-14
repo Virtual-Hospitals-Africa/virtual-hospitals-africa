@@ -1,14 +1,12 @@
-import { PageProps } from '$fresh/server.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import Layout from '../../../../components/library/Layout.tsx'
 import {
   AvailabilityJSON,
   DayOfWeek,
   DeepPartial,
   GCalEvent,
-  HealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
+  HealthWorkerEmployment,
+  LoggedInHealthWorkerContext,
   Time,
 } from '../../../../types.ts'
 import SetAvailabilityForm from '../../../../islands/availability-form.tsx'
@@ -21,14 +19,19 @@ import {
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
-import { parseRequestAsserts } from '../../../../util/parseForm.ts'
-import { assertIsPartialAvailability } from '../../../../shared/scheduling/availability.tsx'
 import { assertOr403 } from '../../../../util/assertOr.ts'
 import hrefFromCtx from '../../../../util/hrefFromCtx.ts'
-import { markAvailabilitySet } from '../../../../db/models/providers.ts'
-import { PractitionerHomePageSidebar } from '../../../../components/library/Sidebar.tsx'
+import {
+  addCalendars,
+  markAvailabilitySet,
+} from '../../../../db/models/providers.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs } from '../../../logged-in.tsx'
+import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { forEach } from '../../../../util/inParallel.ts'
+import { postHandler } from '../../../../util/postHandler.ts'
+import z from 'zod'
+import { promiseProps } from '../../../../util/promiseProps.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -97,10 +100,113 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  { availability: AvailabilityJSON; healthWorker: HealthWorker }
-> = {
-  async GET(_req, ctx) {
+const TimeSchema = z.object({
+  hour: z.number().int().min(1).max(12),
+  minute: z.number().int().min(0).max(55),
+  amPm: z.enum(['am', 'pm']),
+})
+
+const TimeWindowSchema = z.object({
+  start: TimeSchema,
+  end: TimeSchema,
+})
+
+const AvailabilitySchema = z.object({
+  Sunday: TimeWindowSchema.array().optional(),
+  Monday: TimeWindowSchema.array().optional(),
+  Tuesday: TimeWindowSchema.array().optional(),
+  Wednesday: TimeWindowSchema.array().optional(),
+  Thursday: TimeWindowSchema.array().optional(),
+  Friday: TimeWindowSchema.array().optional(),
+  Saturday: TimeWindowSchema.array().optional(),
+})
+
+async function writeCalendarsToGoogle(
+  ctx: LoggedInHealthWorkerContext,
+  matching_employment: HealthWorkerEmployment,
+  availability: Partial<AvailabilityJSON>,
+) {
+  let gcal_availability_calendar_id =
+    matching_employment!.gcal_availability_calendar_id
+
+  const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
+
+  if (!gcal_availability_calendar_id) {
+    const [calendars] =
+      await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+        ctx.state.trx,
+        googleClient,
+        [matching_employment.organization.id],
+      )
+    await addCalendars(ctx.state.trx, ctx.state.healthWorker.id, [calendars])
+    gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
+  }
+
+  const existingAvailability = await googleClient.getActiveEvents(
+    gcal_availability_calendar_id,
+  )
+
+  const existingAvailabilityEvents = existingAvailability.items || []
+
+  // Google rate limits you if you try to do these in parallel :(
+  // TODO: revisit whether to clear all these out
+  await forEach(
+    existingAvailabilityEvents,
+    (event) =>
+      googleClient.deleteEvent(gcal_availability_calendar_id, event.id),
+  )
+
+  await forEach(
+    availabilityBlocks(availability),
+    (event) => googleClient.insertEvent(gcal_availability_calendar_id, event),
+  )
+}
+
+export const handler = postHandler(
+  AvailabilitySchema,
+  async (_req, ctx: LoggedInHealthWorkerContext, form_values) => {
+    const { healthWorker, trx } = ctx.state
+
+    const from_url = !!ctx.url.searchParams.get('from_url')
+    const organization_id = getRequiredUUIDParam(ctx, 'organization_id')
+
+    const matching_employment = healthWorker.employment.find(
+      (employment) => employment.organization.id === organization_id,
+    )
+    assertOr403(
+      matching_employment,
+      'Health worker not employed at this organization',
+    )
+
+    await promiseProps({
+      marking_availability_set: markAvailabilitySet(
+        trx,
+        {
+          health_worker_id: healthWorker.id,
+          organization_id,
+        },
+      ),
+      write_calendars_to_google: writeCalendarsToGoogle(
+        ctx,
+        matching_employment,
+        form_values,
+      ),
+    })
+
+    const success = encodeURIComponent(
+      'Thanks! With your availability updated your coworkers can now book appointments with you and know when you are available 📆',
+    )
+    const next_page = from_url || '/app/calendar'
+    return redirect(`${next_page}?success=${success}`)
+  },
+)
+
+export default HealthWorkerHomePageLayout(
+  'Set Availability',
+  async function SetAvailability(
+    _req: Request,
+    ctx: LoggedInHealthWorkerContext,
+  ) {
     const { healthWorker } = ctx.state
 
     const organization_id_param = ctx.url.searchParams.get('organization_id')
@@ -171,93 +277,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       })
     })
 
-    return ctx.render({ availability, healthWorker })
+    return <SetAvailabilityForm availability={availability} />
   },
-  async POST(req, ctx) {
-    const { healthWorker } = ctx.state
-    const availability = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsPartialAvailability,
-    )
-
-    const from_url = !!ctx.url.searchParams.get('from_url')
-    const organization_id = getRequiredUUIDParam(ctx, 'organization_id')
-
-    const matching_employment = healthWorker.employment.find(
-      (employment) => employment.organization.id === organization_id,
-    )
-    assertOr403(
-      matching_employment,
-      'Health worker not employed at this organization',
-    )
-
-    const marking_availability_set = markAvailabilitySet(
-      ctx.state.trx,
-      {
-        health_worker_id: healthWorker.id,
-        organization_id,
-      },
-    )
-
-    let gcal_availability_calendar_id =
-      matching_employment!.gcal_availability_calendar_id
-
-    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
-
-    if (!gcal_availability_calendar_id) {
-      const [calendars] =
-        await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-          ctx.state.trx,
-          googleClient,
-          [organization_id],
-        )
-      gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
-    }
-
-    const existingAvailability = await googleClient.getActiveEvents(
-      gcal_availability_calendar_id,
-    )
-
-    const existingAvailabilityEvents = existingAvailability.items || []
-
-    // Google rate limits you if you try to do these in parallel :(
-    // TODO: revisit whether to clear all these out
-    for (const event of existingAvailabilityEvents) {
-      await googleClient.deleteEvent(gcal_availability_calendar_id, event.id)
-    }
-    for (const event of availabilityBlocks(availability)) {
-      await googleClient.insertEvent(gcal_availability_calendar_id, event)
-    }
-
-    await marking_availability_set
-    const success = encodeURIComponent(
-      'Thanks! With your availability updated your coworkers can now book appointments with you and know when you are available 📆',
-    )
-    const next_page = from_url || '/app/calendar'
-    return redirect(`${next_page}?success=${success}`)
-  },
-}
-
-export default function SetAvailability(
-  props: PageProps<
-    { availability: AvailabilityJSON; healthWorker: HealthWorker }
-  >,
-) {
-  return (
-    <Layout
-      title='Set Availability'
-      url={props.url}
-      variant='form'
-      sidebar={
-        <PractitionerHomePageSidebar
-          route={props.route}
-          urlSearchParams={props.url.searchParams}
-          params={{}}
-        />
-      }
-    >
-      <SetAvailabilityForm availability={props.data.availability} />
-    </Layout>
-  )
-}
+)
