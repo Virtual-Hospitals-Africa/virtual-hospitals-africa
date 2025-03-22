@@ -23,6 +23,7 @@ import { groupBy } from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as doctor_reviews from './doctor_reviews.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
+import { combine } from '../../util/combine.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -115,7 +116,7 @@ export async function upsertWithGoogleCredentials(
     health_worker.id,
     tokens,
   )
-  return { ...health_worker, ...tokens }
+  return combine(health_worker, tokens)
 }
 
 export const getWithTokensQuery = (trx: TrxOrDb) =>

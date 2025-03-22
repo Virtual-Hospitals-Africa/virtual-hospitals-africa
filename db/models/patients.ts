@@ -102,25 +102,17 @@ const baseSelect = (trx: TrxOrDb) =>
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
 
-export async function getLastConversationState(
+export function getLastConversationState(
   trx: TrxOrDb,
   query: { phone_number: string },
 ) {
-  const getting_patient = baseSelect(trx)
-    .where('patients.phone_number', '=', query.phone_number)
-    .executeTakeFirst()
-
-  const getting_last_message = conversations.getUser(
+  return conversations.getUser(
     trx,
     'patient',
     {
       phone_number: query.phone_number,
     },
   )
-
-  const patient = await getting_patient
-  const last_message = await getting_last_message
-  return { ...patient, ...last_message }
 }
 
 export function insertMany(
