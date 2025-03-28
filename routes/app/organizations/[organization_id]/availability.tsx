@@ -98,7 +98,7 @@ function* availabilityBlocks(
 
 const TimeSchema = z.object({
   hour: z.number().int().min(1).max(12),
-  minute: z.number().int().min(0).max(55),
+  minute: z.number().int().min(0).max(55).optional().default(0),
   amPm: z.enum(['am', 'pm']),
 })
 
