@@ -2,6 +2,7 @@ import { TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import { countries } from '../seed/defs/1_countries.ts'
 
 export type AddressInsert = {
   street_number?: string
@@ -21,15 +22,16 @@ const isApartmentOrUnit = (word: string) => {
     lower_word === 'suite' || lower_word === 'apt' || lower_word === 'ste'
 }
 
-const TO_COUNTRY_ISO_3601 = new Map([
-  ['South Africa', 'ZA'],
-  ['Zimbabwe', 'ZW'],
-])
+// South Africa => ZA
+const TO_COUNTRY_ISO_3601 = new Map<string, string>()
 
-const TO_COUNTRY_FULL_NAME = new Map([
-  ['ZA', 'South Africa'],
-  ['ZW', 'Zimbabwe'],
-])
+// ZA => South Africa
+const TO_COUNTRY_FULL_NAME = new Map<string, string>()
+
+countries.forEach(({ full_name, iso_3166 }) => {
+  TO_COUNTRY_ISO_3601.set(full_name, iso_3166)
+  TO_COUNTRY_FULL_NAME.set(iso_3166, full_name)
+})
 
 export function insert(
   trx: TrxOrDb,
