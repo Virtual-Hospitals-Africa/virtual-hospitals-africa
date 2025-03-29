@@ -56,8 +56,8 @@ export default function SubstanceUseSection(
 
       {substance_use.value.has_ever_used_substance === true && (
         <LabelledListboxMulti
-          label={'Which substances does the patient use?'}
-          name={'lifestyle.substance_use.substances_used_names'}
+          label='Which substances does the patient use?'
+          name='lifestyle.substance_use.substances_used_names'
           options={substances}
           selected={substance_use.value.substances_used.length > 0
             ? substance_use.value.substances_used.map((substance) =>

@@ -21,8 +21,7 @@ export function FeatureGrid({ features }: {
             <img
               className='h-40 w-60 rounded-2xl shadow-lg'
               src={feature.image}
-            >
-            </img>
+            />
             <h3 className='mt-4 text-lg font-medium tracking-tight text-slate-900 before:mb-2 before:block before:font-mono before:text-sm before:text-slate-500'>
               {feature.title}
             </h3>

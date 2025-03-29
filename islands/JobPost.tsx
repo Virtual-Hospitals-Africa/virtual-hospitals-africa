@@ -85,7 +85,10 @@ export default function JobPost(
             </a>
           )
           : (
-            <button className='mt-6 border-t border-gray-900/5 px-6 py-6 w-full grid place-items-center text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50'>
+            <button
+              type='button'
+              className='mt-6 border-t border-gray-900/5 px-6 py-6 w-full grid place-items-center text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+            >
               <span className='flex items-center justify-between'>
                 <MagnifyingGlassIcon className='mr-1.5' />
                 Learn More

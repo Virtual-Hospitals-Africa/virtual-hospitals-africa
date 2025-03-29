@@ -127,8 +127,8 @@ export default function SmokingSection(
       {smoking.value.has_ever_smoked === true &&
         smoking.value.quit_more_than_six_months === true && (
         <NumberInput
-          name={'lifestyle.smoking.quit_smoking_years'}
-          label={'How many cumulative years has the patient quit smoking?'}
+          name='lifestyle.smoking.quit_smoking_years'
+          label='How many cumulative years has the patient quit smoking?'
           value={smoking.value.quit_smoking_years}
           className='col-start-6'
           min={0}
@@ -139,8 +139,8 @@ export default function SmokingSection(
       {smoking.value.has_ever_smoked && (
         <>
           <NumberInput
-            name={'lifestyle.smoking.first_smoke_age'}
-            label={"At what age was the patient's first smoke?"}
+            name='lifestyle.smoking.first_smoke_age'
+            label="At what age was the patient's first smoke?"
             value={smoking.value.first_smoke_age}
             className='col-start-6'
             min={0}
@@ -148,16 +148,16 @@ export default function SmokingSection(
           />
 
           <NumberInput
-            name={'lifestyle.smoking.weekly_smokes'}
-            label={'How often do you smoke per week?'}
+            name='lifestyle.smoking.weekly_smokes'
+            label='How often do you smoke per week?'
             value={smoking.value.weekly_smokes}
             className='col-start-6'
             min={0}
           />
 
           <NumberInput
-            name={'lifestyle.smoking.number_of_products'}
-            label={'When smoking, how many cigarettes or other tobacco products do you smoke?'}
+            name='lifestyle.smoking.number_of_products'
+            label='When smoking, how many cigarettes or other tobacco products do you smoke?'
             value={smoking.value.number_of_products}
             className='col-start-6'
             min={0}

@@ -4,7 +4,7 @@ import { MajorSurgery } from '../../types.ts'
 import { AddRow } from '../AddRemove.tsx'
 import Surgery from './Surgery.tsx'
 
-export default function majorSurgeriesForm(props: {
+export default function MajorSurgeriesForm(props: {
   major_surgeries: MajorSurgery[]
 }): JSX.Element {
   const major_surgeries = useSignal<

@@ -112,14 +112,18 @@ export default function DietSection(
         name='lifestyle.diet.eating_takeout_fast_food_frequency'
         label='How often does the patient eat takeout, restaurant meals, or fast food?'
       >
-        {DIET_FREQUENCIES.map((freq) => <option value={freq}>{freq}</option>)}
+        {DIET_FREQUENCIES.map((freq) => (
+          <option key={freq} value={freq}>{freq}</option>
+        ))}
       </Select>
 
       <Select
         name='lifestyle.diet.eating_home_cooked_frequency'
         label='How often does the patient eat home cooked meals?'
       >
-        {DIET_FREQUENCIES.map((freq) => <option value={freq}>{freq}</option>)}
+        {DIET_FREQUENCIES.map((freq) => (
+          <option key={freq} value={freq}>{freq}</option>
+        ))}
       </Select>
 
       <LabelledListboxMulti

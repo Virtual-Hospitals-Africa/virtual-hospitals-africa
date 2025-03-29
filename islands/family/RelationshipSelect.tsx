@@ -132,30 +132,28 @@ export default function RelationshipSelect({
       label='Relationship'
       required={required}
     >
-      <>
-        <option value='' selected={!selected_family_relation_gendered.value}>
-          Select a relationship
-        </option>
-        {GUARDIAN_RELATIONS.flatMap((relation) =>
-          Options({
-            gender,
-            relation,
-            selected_family_relation_gendered,
-          })
-        )}
+      <option value='' selected={!selected_family_relation_gendered.value}>
+        Select a relationship
+      </option>
+      {GUARDIAN_RELATIONS.flatMap((relation) =>
+        Options({
+          gender,
+          relation,
+          selected_family_relation_gendered,
+        })
+      )}
 
-        {additionalRelations && (
-          Array.from(additionalRelations.entries()).map(([key, name]) => (
-            <option
-              key={key}
-              value={key}
-              selected={selected_family_relation_gendered.value === key}
-            >
-              {name}
-            </option>
-          ))
-        )}
-      </>
+      {additionalRelations && (
+        Array.from(additionalRelations.entries()).map(([key, name]) => (
+          <option
+            key={key}
+            value={key}
+            selected={selected_family_relation_gendered.value === key}
+          >
+            {name}
+          </option>
+        ))
+      )}
     </Select>
   )
 }

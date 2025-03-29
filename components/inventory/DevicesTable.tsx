@@ -24,7 +24,8 @@ const columns: TableColumn<RenderedOrganizationDevice>[] = [
     data(row) {
       return (
         <div className='flex flex-col'>
-          {row.diagnostic_test_capabilities.map((c) => <span>{c}</span>)}
+          {row.diagnostic_test_capabilities.map((c) => <span key={c}>{c}
+          </span>)}
         </div>
       )
     },

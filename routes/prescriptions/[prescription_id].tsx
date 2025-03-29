@@ -157,7 +157,7 @@ export default async function PrescriptionPage(
                 />
                 <PrescriptionDetail
                   heading='Signature'
-                  information={'__________________'}
+                  information='__________________'
                 />
               </div>
             </div>

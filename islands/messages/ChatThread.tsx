@@ -61,7 +61,10 @@ function MessageSendForm({ onSubmit }: {
       }}
     >
       <div>
-        <button className='flex items-center justify-center text-gray-400 hover:text-gray-600'>
+        <button
+          type='button'
+          className='flex items-center justify-center text-gray-400 hover:text-gray-600'
+        >
           <svg
             className='w-5 h-5'
             fill='none'
@@ -87,7 +90,10 @@ function MessageSendForm({ onSubmit }: {
             value={undefined}
             required
           />
-          <button className='absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600'>
+          <button
+            type='button'
+            className='absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600'
+          >
             <svg
               className='w-6 h-6'
               fill='none'
@@ -228,13 +234,19 @@ function LeftPanel() {
           </span>
         </div>
         <div className='flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto'>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full'>
               H
             </div>
             <div className='ml-2 text-sm font-semibold'>Henry Boyd</div>
           </button>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full'>
               M
             </div>
@@ -243,19 +255,28 @@ function LeftPanel() {
               2
             </div>
           </button>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full'>
               P
             </div>
             <div className='ml-2 text-sm font-semibold'>Philip Tucker</div>
           </button>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full'>
               C
             </div>
             <div className='ml-2 text-sm font-semibold'>Christine Reid</div>
           </button>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full'>
               J
             </div>
@@ -269,7 +290,10 @@ function LeftPanel() {
           </span>
         </div>
         <div className='flex flex-col space-y-1 mt-4 -mx-2'>
-          <button className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'>
+          <button
+            type='button'
+            className='flex flex-row items-center hover:bg-gray-100 rounded-xl p-2'
+          >
             <div className='flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full'>
               H
             </div>

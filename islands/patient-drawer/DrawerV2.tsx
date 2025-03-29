@@ -70,7 +70,7 @@ export function PatientDrawerV2(
         {/* <Person person={patient} size='lg' /> */}
         <SendToSelectedPatient patient={patient} />
 
-        <Badge content={'In Treatment'} color='yellow' />
+        <Badge content='In Treatment' color='yellow' />
       </div>
 
       <div className='border-b-2 px-4'>

@@ -90,6 +90,7 @@ export function Team() {
               </p>
               <p
                 className='mt-6 text-base leading-7 text-gray-600'
+                // deno-lint-ignore react-no-danger
                 dangerouslySetInnerHTML={{ __html: person.bio }}
               />
               {person.linkedinUrl && (

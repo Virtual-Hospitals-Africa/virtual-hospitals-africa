@@ -21,6 +21,7 @@ function MessageControllers(): JSX.Element {
       <span className='bg-gray-300 h-6 w-[.5px] mx-3'></span>
       <div className='flex items-center space-x-2'>
         <button
+          type='button'
           title='Delete'
           className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >
@@ -41,6 +42,7 @@ function MessageControllers(): JSX.Element {
           </svg>
         </button>
         <button
+          type='button'
           title='Mark As Read'
           className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >
@@ -61,6 +63,7 @@ function MessageControllers(): JSX.Element {
           </svg>
         </button>
         <button
+          type='button'
           title='Mark As Unread'
           className='text-gray-700 px-2 py-1 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition duration-100'
         >

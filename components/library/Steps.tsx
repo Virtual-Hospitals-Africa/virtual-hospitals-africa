@@ -177,7 +177,7 @@ export function Steps<S extends string>(
   )
 }
 
-export function useSteps<Step extends string>(
+export function getSteps<Step extends string>(
   stepNames: Step[],
 ) {
   return function (ctx: FreshContext) {

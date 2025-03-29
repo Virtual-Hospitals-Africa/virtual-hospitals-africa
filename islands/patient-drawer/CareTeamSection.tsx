@@ -42,14 +42,14 @@ export function CareTeamSection({ care_team }: {
               <p className='font-semibold text-gray-900 min-w-0 flex-1 flex'>
                 Dr. {health_worker.name}
               </p>
-              <div className={'flex flex-row items-center text-sm'}>
+              <div className='flex flex-row items-center text-sm'>
                 <svg
                   width='14'
                   height='15'
                   viewBox='0 0 14 15'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
-                  className={'mr-2'}
+                  className='mr-2'
                 >
                   <path
                     d='M6.42205 12.7499H5.60422C3.51297 12.7499 2.46764 12.7499 1.8178 12.0878C1.16797 11.4258 1.16797 10.36 1.16797 8.22909C1.16797 6.09817 1.16797 5.03242 1.8178 4.37034C2.46764 3.70825 3.51297 3.70825 5.60422 3.70825H7.82264C9.91389 3.70825 10.9598 3.70825 11.6096 4.37034C12.1096 4.87959 12.2245 5.628 12.2513 6.91659'
@@ -66,7 +66,7 @@ export function CareTeamSection({ care_team }: {
                 </svg>
                 <p className='text-xs'>{health_worker.specialty}</p>
               </div>
-              <div className={'flex flex-row items-center text-sm my-2'}>
+              <div className='flex flex-row items-center text-sm my-2'>
                 <svg
                   viewBox='0 0 13 14'
                   fill='none'
@@ -105,11 +105,9 @@ export function CareTeamSection({ care_team }: {
                     />
                   </g>
                 </svg>
-                <p className={'text-xs'}>{health_worker.organization_name}</p>
+                <p className='text-xs'>{health_worker.organization_name}</p>
               </div>
-              <p
-                className={'text-xs font-medium text-purple-600 flex flex-row items-center'}
-              >
+              <p className='text-xs font-medium text-purple-600 flex flex-row items-center'>
                 <DoctorIcon className='w-4 h-4 mr-2' />
                 {health_worker.specialty}
               </p>

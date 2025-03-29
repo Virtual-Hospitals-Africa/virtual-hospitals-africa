@@ -176,7 +176,7 @@ export default function AlcoholSection(
         alcohol.value.quit_for_six_or_more_months && (
         <NumberInput
           name={`lifestyle.alcohol.abstinence_length_months`}
-          label={'How many months has the patient practiced abstinence from alcohol?'}
+          label='How many months has the patient practiced abstinence from alcohol?'
           value={alcohol.value.abstinence_length_months}
           className='col-start-6'
           min={0}
@@ -186,24 +186,24 @@ export default function AlcoholSection(
       {alcohol.value.has_ever_drank && (
         <>
           <NumberInput
-            name={'lifestyle.alcohol.first_drink'}
-            label={'At what age was the patient’s first drink?'}
+            name='lifestyle.alcohol.first_drink'
+            label='At what age was the patient’s first drink?'
             value={alcohol.value.first_drink}
             className='col-start-6'
             min={0}
             max={age_years}
           />
           <NumberInput
-            name={'lifestyle.alcohol.years_drinking'}
-            label={'For how many years has the patient been drinking alcohol?'}
+            name='lifestyle.alcohol.years_drinking'
+            label='For how many years has the patient been drinking alcohol?'
             value={alcohol.value.years_drinking}
             className='col-start-6'
             min={0}
             max={age_years}
           />
           <NumberInput
-            name={'lifestyle.alcohol.number_drinks_per_sitting'}
-            label={'How many drinks when you do drink on average?'}
+            name='lifestyle.alcohol.number_drinks_per_sitting'
+            label='How many drinks when you do drink on average?'
             value={alcohol.value.number_drinks_per_sitting}
             className='col-start-6'
             min={0}

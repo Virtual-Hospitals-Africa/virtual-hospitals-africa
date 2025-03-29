@@ -1,5 +1,4 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
@@ -44,15 +43,17 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
-      phone_number,
-    })
+    const { id, conversation_state } =
+      (await patients.getLastConversationState(db, {
+        phone_number,
+      }))!
 
-    assert(patient)
     assertEquals(
-      patient.conversation_state,
+      conversation_state,
       'not_onboarded:make_appointment:enter_national_id_number',
     )
+
+    const patient = await patients.getByID(db, { id })
     assertEquals(
       patient.dob_formatted,
       '1 January 2023',
