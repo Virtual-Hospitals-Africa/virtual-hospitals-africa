@@ -24,6 +24,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
 import { ensureDoctorId } from './doctor.ts'
+import { assertFoundEventually } from '../../util/assertEventually.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -102,17 +103,23 @@ const baseSelect = (trx: TrxOrDb) =>
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
 
-export function getLastConversationState(
+export async function getLastConversationState(
   trx: TrxOrDb,
   query: { phone_number: string },
 ) {
-  return conversations.getUser(
+  const user = await assertFoundEventually(conversations.getUser(
     trx,
     'patient',
     {
       phone_number: query.phone_number,
     },
-  )
+  ))
+  assert(user.entity_id)
+  return {
+    patient_id: user.entity_id,
+    chatbot_user_id: user.id,
+    conversation_state: user.conversation_state,
+  }
 }
 
 export function insertMany(

@@ -51,17 +51,20 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       },
     ])
 
-    const { conversation_state, id } =
-      (await patients.getLastConversationState(db, {
-        phone_number,
-      }))!
+    const { conversation_state, patient_id } = await patients
+      .getLastConversationState(
+        db,
+        {
+          phone_number,
+        },
+      )
 
     assertEquals(
       conversation_state,
-      'not_onboarded:make_appointment:enter_date_of_birth',
+      'not_onboarded:make_appointment:enter_gender',
     )
 
-    const patient = await patients.getByID(db, { id })
+    const patient = await patients.getByID(db, { id: patient_id })
     assertEquals(patient.name, 'test')
   })
 })

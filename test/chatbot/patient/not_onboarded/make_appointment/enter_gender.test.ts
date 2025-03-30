@@ -44,17 +44,17 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const { conversation_state, id } =
-      (await patients.getLastConversationState(db, {
+    const { conversation_state, patient_id } = await patients
+      .getLastConversationState(db, {
         phone_number,
-      }))!
+      })!
 
     assertEquals(
       conversation_state,
       'not_onboarded:make_appointment:enter_date_of_birth',
     )
 
-    const patient = await patients.getByID(db, { id })
+    const patient = await patients.getByID(db, { id: patient_id })
     assertEquals(patient.gender, 'non-binary')
   })
 })
