@@ -38,7 +38,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
       if (!row.supervisors || row.supervisors.length === 0) return null
       return (
         <div className='flex flex-wrap gap-2'>
-          {row.supervisors.map((s) => <Person person={s} />)}
+          {row.supervisors.map((s) => <Person key={s.id} person={s} />)}
         </div>
       )
     },

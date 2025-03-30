@@ -83,6 +83,7 @@ export default function NavBar() {
             </>
           )}
           <button
+            type='button'
             className={cls(
               '-mr-1 ml-auto flex h-8 w-8 items-center justify-center',
               open && 'relative z-10',

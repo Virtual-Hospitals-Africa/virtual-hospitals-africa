@@ -4,7 +4,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
-import * as patients from '../../../db/models/patients.ts'
 import { randomPhoneNumber } from '../../mocks.ts'
 import generateUUID from '../../../util/uuid.ts'
 import { mockWhatsApp } from '../mocks.ts'
@@ -41,11 +40,13 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+
+    const user = await conversations.getUser(db, 'patient', {
       phone_number,
     })
 
-    assert(patient)
-    assertEquals(patient.conversation_state, 'initial_message')
+    assert(user)
+    assertEquals(user.conversation_state, 'initial_message')
+    assertEquals(user.entity_id, null)
   })
 })

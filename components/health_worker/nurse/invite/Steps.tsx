@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { useSteps } from '../../../library/Steps.tsx'
+import { getSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
@@ -20,7 +20,7 @@ export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
   'documents' as const,
 ]
 
-export const useNurseRegistrationSteps = useSteps(NurseRegistrationStepNames)
+export const getNurseRegistrationSteps = getSteps(NurseRegistrationStepNames)
 
 export function getStepFormData(
   currentStep: string,

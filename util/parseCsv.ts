@@ -42,7 +42,7 @@ export default async function* parseCsv(
 
 export async function* parseTsv(
   filePath: string,
-  opts: Partial<CommonCSVReaderOptions> = {},
+  opts: Omit<Partial<CommonCSVReaderOptions>, 'columnSeparator'> = {},
 ) {
   yield* parseCsv(filePath, { ...opts, columnSeparator: '\t' })
 }

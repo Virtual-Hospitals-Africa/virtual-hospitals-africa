@@ -1,10 +1,16 @@
+import { parseTsvResource } from '../../parseTsvResource.ts'
 import { create } from '../create.ts'
+import z from 'zod'
 
-export default create(['countries'], (trx) => {
-  return trx.insertInto('countries')
-    .values([
-      { iso_3166: 'ZA', full_name: 'South Africa' },
-      { iso_3166: 'ZW', full_name: 'Zimbabwe' },
-    ])
-    .execute()
-})
+export const countries = await parseTsvResource(
+  'countries',
+  z.object({
+    iso_3166: z.string().length(2),
+    full_name: z.string(),
+  }),
+)
+
+export default create(['countries'], (trx) =>
+  trx.insertInto('countries')
+    .values(countries)
+    .execute())

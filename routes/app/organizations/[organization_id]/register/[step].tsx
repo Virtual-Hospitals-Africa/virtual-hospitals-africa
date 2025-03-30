@@ -6,10 +6,10 @@ import {
   Organization,
 } from '../../../../../types.ts'
 import {
+  getNurseRegistrationSteps,
   getStepFormData,
   NurseRegistrationStep,
   NurseRegistrationStepNames,
-  useNurseRegistrationSteps,
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import * as employment from '../../../../../db/models/employment.ts'
@@ -172,7 +172,7 @@ export default async function RegisterPage(
 
   formState.email = healthWorker.email
 
-  const stepState = useNurseRegistrationSteps(ctx)
+  const stepState = getNurseRegistrationSteps(ctx)
 
   return (
     <Layout

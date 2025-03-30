@@ -129,16 +129,16 @@ export default function SexualActivitySection(
       {sexual_activity.value.ever_been_sexually_active === true && (
         <>
           <NumberInput
-            name={'lifestyle.sexual_activity.first_encounter'}
-            label={"At what age was the patient's first sexual encounter?"}
+            name='lifestyle.sexual_activity.first_encounter'
+            label="At what age was the patient's first sexual encounter?"
             value={sexual_activity.value.first_encounter}
             className='col-start-6'
             min={0}
             max={age_years}
           />
           <NumberInput
-            name={'lifestyle.sexual_activity.current_sexual_partners'}
-            label={'How many sexual partners does the patient have currently?'}
+            name='lifestyle.sexual_activity.current_sexual_partners'
+            label='How many sexual partners does the patient have currently?'
             value={sexual_activity.value.current_sexual_partners}
             className='col-start-6'
             min={0}

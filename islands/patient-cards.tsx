@@ -85,7 +85,9 @@ export default function PatientCards(
         'sm:px-6 lg:px-8 mt-8 flex flex-col gap-3',
       )}
     >
-      {patients.map((patient) => <PatientCard patient={patient} />)}
+      {patients.map((patient) => (
+        <PatientCard key={patient.id} patient={patient} />
+      ))}
     </section>
   )
 }

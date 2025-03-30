@@ -1867,7 +1867,7 @@ export type LocationDistance = {
 
 export type Media = {
   mime_type: string
-  binary_data: BinaryData
+  binary_data: ArrayBuffer | ArrayBufferView
 }
 
 export type PatientMedia = Media & {

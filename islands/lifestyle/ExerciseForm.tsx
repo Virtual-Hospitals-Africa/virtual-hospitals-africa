@@ -158,7 +158,7 @@ const MUSCULOSKELETAL_INJURIES = [ //Make all caps
   name,
 }))
 
-export default function exerciseSection(
+export default function ExerciseSection(
   { lifestyle }: { lifestyle?: Lifestyle },
 ) {
   const currently_exercises = useSignal<null | boolean>(
@@ -246,8 +246,8 @@ export default function exerciseSection(
             />
           ))}
           <LabelledListboxMulti
-            label={'Which sports do the patient engage in?'}
-            name={'lifestyle.exercise.sports'}
+            label='Which sports do the patient engage in?'
+            name='lifestyle.exercise.sports'
             options={SPORTS}
             selected={sports.value.map(({ name }) => name)}
             onChange={(selected_sports) => {
@@ -271,8 +271,8 @@ export default function exerciseSection(
             />
           ))}
           <LabelledListboxMulti
-            label={'Does the patient engage in any of these exercise types? Select all that apply'}
-            name={'lifestyle.exercise.types_of_exercises'}
+            label='Does the patient engage in any of these exercise types? Select all that apply'
+            name='lifestyle.exercise.types_of_exercises'
             options={TYPES_OF_EXERCISES_OPTIONS}
             selected={types_of_exercises.value}
             onChange={(type_of_exercise) => {
@@ -280,25 +280,25 @@ export default function exerciseSection(
             }}
           />
           <LabelledListboxMulti
-            label={'Does the patient have physical injuries or disability that may limit their physical activity?'}
-            name={'lifestyle.exercise.physical_injuries_or_disability.disabilities'}
+            label='Does the patient have physical injuries or disability that may limit their physical activity?'
+            name='lifestyle.exercise.physical_injuries_or_disability.disabilities'
             options={INJURIES_DISABILITIES_LIST}
             selected={disabilities.value}
             onChange={(selected) => disabilities.value = selected}
           />
           {disabilities.value.includes('Musculoskeletal injuries') && (
             <LabelledListboxMulti
-              key={'musculoskeletal_injuries'}
-              label={'Which musculoskeletal injuries afflict the patient? Select all that apply'}
-              name={'lifestyle.exercise.physical_injuries_or_disability.musculoskeletal_injuries'}
+              key='musculoskeletal_injuries'
+              label='Which musculoskeletal injuries afflict the patient? Select all that apply'
+              name='lifestyle.exercise.physical_injuries_or_disability.musculoskeletal_injuries'
               options={MUSCULOSKELETAL_INJURIES}
               selected={musculoskeletal_injuries.value}
               onChange={(selected) => musculoskeletal_injuries.value = selected}
             />
           )}
           <LabelledListboxMulti
-            label={'Does the patient have any exercise limitations? Select all that apply'}
-            name={'lifestyle.exercise.limitations.limits'}
+            label='Does the patient have any exercise limitations? Select all that apply'
+            name='lifestyle.exercise.limitations.limits'
             options={LIMITATIONS_LIST}
             selected={limitations.value}
             onChange={(selectedValues) => {
@@ -308,9 +308,9 @@ export default function exerciseSection(
 
           {limitations.value.includes('Structural conditions') && (
             <LabelledListboxMulti
-              key={'structural_conditions'}
-              label={'Which structural conditions afflict the patient? Select all that apply'}
-              name={'lifestyle.exercise.limitations.structural_conditions'}
+              key='structural_conditions'
+              label='Which structural conditions afflict the patient? Select all that apply'
+              name='lifestyle.exercise.limitations.structural_conditions'
               options={STRUCTURAL_CONDITIONS_LIST}
               selected={structural.value}
               onChange={(selectedValues) => {
@@ -320,9 +320,9 @@ export default function exerciseSection(
           )}
           {limitations.value.includes('Medical conditions') && (
             <LabelledListboxMulti
-              key={'medical_conditions'}
-              label={'Which medical conditions afflict the patient? Select all that apply'}
-              name={'lifestyle.exercise.limitations.medical_conditions'}
+              key='medical_conditions'
+              label='Which medical conditions afflict the patient? Select all that apply'
+              name='lifestyle.exercise.limitations.medical_conditions'
               options={MEDICAL_CONDITIONS_LIST}
               selected={medical.value}
               onChange={(selectedValues) => {

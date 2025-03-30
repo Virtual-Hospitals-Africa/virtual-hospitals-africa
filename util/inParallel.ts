@@ -59,6 +59,17 @@ export async function collect<T>(
   return results
 }
 
+export async function map<T, U>(
+  generator: Iterable<T> | AsyncIterable<T>,
+  callback: (t: T) => U,
+): Promise<U[]> {
+  const results: U[] = []
+  for await (const item of generator) {
+    results.push(callback(item))
+  }
+  return results
+}
+
 // Does not respect the order of the input iterable
 export async function filter<T>(
   generator: Iterable<T> | AsyncIterable<T>,

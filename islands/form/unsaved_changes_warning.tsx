@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 
-export default function unsavedChangesWarning() {
+export default function useUnsavedChangesWarning() {
   useEffect(() => {
     const modified_inputs = new Set<HTMLElement>()
     const defaultValue = ''
