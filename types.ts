@@ -48,6 +48,8 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'non-binary'
 
+export type Nationality = 'option1' | 'option2' | 'option3'
+
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
 export const PREFIXES: Prefix[] = ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss', 'Sr']
@@ -170,6 +172,7 @@ export type PatientDemographicInfo = {
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
+  nationality: Maybe<Nationality>
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState
@@ -362,6 +365,7 @@ export type PatientIntake =
     | 'completed_intake'
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
+    | 'nationality'
   >
 
 export type PatientFamily = {
