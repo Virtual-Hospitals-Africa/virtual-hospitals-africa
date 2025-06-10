@@ -470,19 +470,19 @@ export const SelectWithOptions = forwardRef(
 
 export function DateInput(
   {
-    name = 'date',
-    signal,
-    value,
-    label,
-    required,
-    className,
-    inputClassName,
-    disabled,
-    onInput,
-    onFocus,
-    onBlur,
-    min,
-    max,
+    name = 'date',         // 欄位名稱，預設為 'date'
+    signal,                // Preact signals 用於雙向綁定
+    value,                 // 欄位值
+    label,                 // 標籤文字
+    required,              // 是否必填
+    className,             // 外層 class
+    inputClassName,        // 輸入框 class
+    disabled,              // 是否禁用
+    onInput,               // 輸入事件
+    onFocus,               // 聚焦事件
+    onBlur,                // 失焦事件
+    min,                   // 最小日期
+    max,                   // 最大日期
   }: DateInputProps,
 ) {
   return (
@@ -490,28 +490,28 @@ export function DateInput(
       name={name}
       label={label}
       required={required}
-      className={cls('w-40', className)}
+      className={cls('w-40', className)} // 設定寬度
     >
       <input
-        type='date'
-        {...(name && { name })}
+        type='date' // 這是一個日期輸入框，瀏覽器會自動顯示日曆選單
+        {...(name && { name })} // 如果有 name 屬性就加上
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
-          inputClassName,
-          disabled && 'bg-gray-300',
+          inputClassName,           // 可以額外加自訂 class
+          disabled && 'bg-gray-300' // 如果禁用就加灰色背景
         )}
-        required={required}
-        disabled={disabled}
-        onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value
-          onInput?.(event)
-          event.currentTarget.setCustomValidity('')
+        required={required}         // 是否必填,如果 required 為真就加上，否則不加
+        disabled={disabled}         // 是否禁用
+        onInput={(event) => {       // 當使用者輸入時觸發
+          if (signal) signal.value = event.currentTarget.value // 雙向綁定（Preact signals）
+          onInput?.(event)          // 如果有自訂 onInput 也會執行
+          event.currentTarget.setCustomValidity('') // 清除自訂驗證訊息
         }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        value={signal?.value ?? value ?? undefined}
-        min={min ?? undefined}
-        max={max ?? undefined}
+        onFocus={onFocus}           // 聚焦事件
+        onBlur={onBlur}             // 失焦事件
+        value={signal?.value ?? value ?? undefined} // 目前的值（優先用 signal）
+        min={min ?? undefined}      // 最小可選日期
+        max={max ?? undefined}      // 最大可選日期
       />
     </LabeledInput>
   )
@@ -520,17 +520,17 @@ export function DateInput(
 // Make this pretty with an icon and/or flag + area code helper
 export function PhoneNumberInput(
   {
-    name,
-    label,
-    required,
-    disabled,
-    className,
-    inputClassName,
-    onInput,
-    onFocus,
-    onBlur,
-    signal,
-    value,
+    name,             // 欄位名稱
+    label,            // 標籤文字
+    required,         // 是否必填
+    disabled,         // 是否禁用
+    className,        // 外層 class
+    inputClassName,   // 輸入框 class
+    onInput,          // 輸入事件
+    onFocus,          // 聚焦事件
+    onBlur,           // 失焦事件
+    signal,           // Preact signals 用於雙向綁定
+    value,            // 欄位值
   }: TextInputProps,
 ) {
   return (
@@ -541,7 +541,7 @@ export function PhoneNumberInput(
       className={className}
     >
       <input
-        type='tel'
+        type='tel' // 電話號碼輸入框
         {...(name && { name })}
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
@@ -549,11 +549,11 @@ export function PhoneNumberInput(
           disabled && 'bg-gray-300',
         )}
         value={signal?.value ?? value ?? undefined}
-        placeholder='+263 777 777 777'
+        placeholder='+263 777 777 777' // 預設範例
         required={required}
         disabled={disabled}
         onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value
+          if (signal) signal.value = event.currentTarget.value // 雙向綁定
           onInput?.(event)
           event.currentTarget.setCustomValidity('')
         }}
@@ -939,6 +939,25 @@ export function EthnicitySelect(
         label='Pacific Islander'
         selected={value === 'pacific islander'}
       />
+      <option value='other' label='Other' selected={value === 'other'} />
+    </Select>
+  )
+}
+
+//NationalitySelect component
+export function NationalitySelect(
+  { value }: { value?: Maybe<string> },
+) {
+  return (
+    <Select
+      required
+      name='nationality'
+      label='Nationality'
+    >
+      <option value=''>Select</option>
+      <option value='option1' label='Option1' selected={value === 'option1'}/>
+      <option value='option2' label='Option2' selected={value === 'option2'}/>
+      <option value='option3' label='Option3' selected={value === 'option3'}/>
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>
   )
