@@ -83,6 +83,10 @@ import * as $app_patients_patient_id_profile_middleware from './routes/app/patie
 import * as $app_patients_patient_id_profile_appointments from './routes/app/patients/[patient_id]/profile/appointments.tsx'
 import * as $app_patients_patient_id_profile_history from './routes/app/patients/[patient_id]/profile/history.tsx'
 import * as $app_patients_patient_id_profile_orders from './routes/app/patients/[patient_id]/profile/orders.tsx'
+import * as $app_patients_patient_id_profile_patient_information from './routes/app/patients/[patient_id]/profile/patient_information.tsx'
+import * as $app_patients_patient_id_profile_patient_information_middleware from './routes/app/patients/[patient_id]/profile/patient_information/_middleware.tsx'
+import * as $app_patients_patient_id_profile_patient_information_general from './routes/app/patients/[patient_id]/profile/patient_information/general.tsx'
+import * as $app_patients_patient_id_profile_patient_information_primary_care from './routes/app/patients/[patient_id]/profile/patient_information/primary_care.tsx'
 import * as $app_patients_patient_id_profile_profile from './routes/app/patients/[patient_id]/profile/profile.tsx'
 import * as $app_patients_patient_id_profile_review from './routes/app/patients/[patient_id]/profile/review.tsx'
 import * as $app_patients_patient_id_profile_summary from './routes/app/patients/[patient_id]/profile/summary.tsx'
@@ -402,6 +406,14 @@ const manifest = {
       $app_patients_patient_id_profile_history,
     './routes/app/patients/[patient_id]/profile/orders.tsx':
       $app_patients_patient_id_profile_orders,
+    './routes/app/patients/[patient_id]/profile/patient_information.tsx':
+      $app_patients_patient_id_profile_patient_information,
+    './routes/app/patients/[patient_id]/profile/patient_information/_middleware.tsx':
+      $app_patients_patient_id_profile_patient_information_middleware,
+    './routes/app/patients/[patient_id]/profile/patient_information/general.tsx':
+      $app_patients_patient_id_profile_patient_information_general,
+    './routes/app/patients/[patient_id]/profile/patient_information/primary_care.tsx':
+      $app_patients_patient_id_profile_patient_information_primary_care,
     './routes/app/patients/[patient_id]/profile/profile.tsx':
       $app_patients_patient_id_profile_profile,
     './routes/app/patients/[patient_id]/profile/review.tsx':

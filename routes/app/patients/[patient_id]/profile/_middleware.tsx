@@ -13,6 +13,7 @@ export function handler(
   _req: Request,
   ctx: FreshContext,
 ) {
+  console.log('I am in the patient profile _middleware')
   return ctx.next()
 }
 
@@ -47,6 +48,7 @@ export const PatientPage = (
         'appointments',
         'review',
         'orders',
+        'patient_information',
       ]
 
       const drawer = undefined
@@ -115,7 +117,9 @@ export const PatientPage = (
                       tab,
                     },
                   ),
-                  active: ctx.url.pathname.endsWith('/' + tab),
+                  // 'https://localhost:8000/app/patients/04811b0f-6907-41ae-80b1-399d7ba8cbe5/profile/patient_information/general'.endsWith('/patient_information')
+
+                  active: ctx.url.pathname.includes('/' + tab),
                   rightIcon: tab === 'appointments' &&
                     upcoming_appointments.length > 0 && (
                     <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
