@@ -16,6 +16,7 @@ import { getWalkingDistance } from '../../external-clients/google.ts'
 import * as conversations from './conversations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import {
+  debugLog,
   jsonBuildObject,
   literalLocation,
   longFormattedDate,
@@ -237,6 +238,34 @@ export async function getWithOpenEncounter(
     .where('patient_encounters.patient_id', 'in', opts.ids)
     .as('open_encounters')
 
+  debugLog(
+    selectWithName(trx)
+      .where('patients.id', 'in', opts.ids)
+      .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
+      .select((eb) => [
+        eb.case().when(eb('open_encounters.encounter_id', 'is', null)).then(
+          null,
+        )
+          .else(jsonBuildObject({
+            encounter_id: eb.ref('open_encounters.encounter_id').$notNull(),
+            created_at: eb.ref('open_encounters.created_at').$notNull(),
+            closed_at: eb.ref('open_encounters.closed_at'),
+            reason: eb.ref('open_encounters.reason').$notNull(),
+            notes: eb.ref('open_encounters.notes'),
+            patient_id: eb.ref('open_encounters.patient_id').$notNull(),
+            appointment_id: eb.ref('open_encounters.appointment_id'),
+            waiting_room_id: eb.ref('open_encounters.waiting_room_id'),
+            waiting_room_organization_id: eb.ref(
+              'open_encounters.waiting_room_organization_id',
+            ),
+            location: eb.ref('open_encounters.location').$notNull(),
+            providers: eb.ref('open_encounters.providers').$notNull(),
+            steps_completed: eb.ref('open_encounters.steps_completed')
+              .$notNull(),
+          })).end().as('open_encounter'),
+      ]),
+  )
+
   const patients = await selectWithName(trx)
     .where('patients.id', 'in', opts.ids)
     .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
@@ -300,6 +329,7 @@ export function getCard(
   trx: TrxOrDb,
   { id }: { id: string },
 ): Promise<PatientCard | undefined> {
+  debugLog(getCardQuery(trx))
   return getCardQuery(trx)
     .where('patients.id', '=', id)
     .executeTakeFirst()
