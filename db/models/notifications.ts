@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { RenderedNotification, TrxOrDb } from '../../types.ts'
+import { PostgresInterval, RenderedNotification, TrxOrDb } from '../../types.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 
 export function insert(
@@ -47,7 +47,7 @@ export async function ofHealthWorker(
     .selectAll('health_worker_web_notifications')
     .select(
       sql<
-        string
+        PostgresInterval
       >`(current_timestamp - health_worker_web_notifications.created_at)::interval`
         .as('wait_time'),
     )

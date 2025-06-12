@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -11,8 +11,10 @@ import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { itUsesTrxAnd, withTestOrganizations } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
+describe('db/models/organizations.ts', () => {
+  afterAll(() => db.destroy())
   describe('getEmployees', () => {
     itUsesTrxAnd(
       'gets the employees of a organization, with or without invitees',

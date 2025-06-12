@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
@@ -7,8 +7,11 @@ import * as employment from '../../db/models/employment.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import last from '../../util/last.ts'
 import generateUUID from '../../util/uuid.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/providers.ts', { sanitizeResources: false }, () => {
+describe('db/models/providers.ts', () => {
+  afterAll(() => db.destroy())
+
   describe('search', () => {
     itUsesTrxAnd(
       'returns providers matching a search with their employment information',

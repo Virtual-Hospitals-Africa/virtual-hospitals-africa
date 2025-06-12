@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -9,11 +9,12 @@ import {
   itUsesTrxAnd,
   withTestOrganization,
 } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/patient_encounters.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('create', () => {
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',

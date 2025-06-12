@@ -11,8 +11,8 @@
 
 // describe(
 //   'db/models/examinations.ts',
-//   { sanitizeResources: false },
 //   () => {
+//     afterAll(() => db.destroy())
 //     describe('recommended', () => {
 //       itUsesTrxAnd(
 //         'returns the recommended examinations for an adult woman',

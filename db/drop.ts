@@ -14,7 +14,7 @@ export async function drop() {
     'Dropping database',
     () =>
       runCommand('dropdb', {
-        args: [db_opts.dbname, '-U', db_opts.username],
+        args: [db_opts.database, '-U', db_opts.user],
       }).catch((e) => {
         if (e.message.includes('other session')) {
           throw new Error('Database is in use, cannot drop.')

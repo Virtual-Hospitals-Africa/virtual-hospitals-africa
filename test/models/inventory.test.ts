@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as inventory from '../../db/models/inventory.ts'
 import {
@@ -10,7 +10,8 @@ import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 
-describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
+describe('db/models/inventory.ts', () => {
+  afterAll(() => db.destroy())
   describe('getAvailableTests', () => {
     itUsesTrxAnd(
       'resolves with the available diagnostic tests in a organization',
@@ -207,8 +208,8 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
         )
 
         assertEquals(
-          error.fields.message,
-          'new row for relation "procurement" violates check constraint "procurement_consumed_amount_less_than_quantity"',
+          error.constraint,
+          'procurement_consumed_amount_less_than_quantity',
         )
       })
     })

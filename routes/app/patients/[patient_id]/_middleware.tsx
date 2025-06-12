@@ -17,8 +17,6 @@ export async function handler(
   _req: Request,
   ctx: PatientContext,
 ) {
-  console.log('I am in the patient _middleware')
-
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {

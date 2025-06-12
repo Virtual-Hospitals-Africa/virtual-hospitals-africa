@@ -19,7 +19,7 @@ import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
 import { Location, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import type { InsertObject } from 'kysely/parser/insert-values-parser.js'
+import type { InsertObject } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
 
 /**

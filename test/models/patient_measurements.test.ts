@@ -1,14 +1,15 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patient_measurements from '../../db/models/patient_measurements.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/patient_measurements.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('upsert', () => {
       itUsesTrxAnd('can add height and weight in cm and kg', async (trx) => {
         const nurse = await addTestHealthWorker(trx, {

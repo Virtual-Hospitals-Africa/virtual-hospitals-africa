@@ -1,4 +1,4 @@
-// import { describe } from 'std/testing/bdd.ts'
+// import { describe, afterAll } from 'std/testing/bdd.ts'
 // import {
 //   searchBaseQuery,
 //   searchSymptoms,
@@ -8,8 +8,10 @@
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 // import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 // import { assert } from 'std/assert/assert.ts'
+// import db from '../../db/db.ts'
 
-// describe('db/models/icd10.ts', { sanitizeResources: false }, () => {
+// describe('db/models/icd10.ts', () => {
+// afterAll(() => db.destroy())
 //   describe('search', () => {
 //     itUsesTrxAnd.only(
 //       'can return sane results, even with a misspelling',

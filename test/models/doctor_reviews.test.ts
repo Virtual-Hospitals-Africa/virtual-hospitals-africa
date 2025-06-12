@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -9,8 +9,10 @@ import {
   itUsesTrxAnd,
   withTestOrganizations,
 } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
+describe('db/models/doctor_reviews.ts', () => {
+  afterAll(() => db.destroy())
   describe('create', () => {
     itUsesTrxAnd(
       'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',

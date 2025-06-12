@@ -114,7 +114,6 @@ export function OrganizationsTable(
     organizations: NearestOrganizationSearchResult[]
   },
 ) {
-  console.log('ZZZZZ', { organizations })
   return (
     <Table
       columns={columns}

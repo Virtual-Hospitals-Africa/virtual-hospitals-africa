@@ -1,4 +1,4 @@
-import type { SelectQueryBuilder } from 'kysely/index.d.ts'
+import type { SelectQueryBuilder } from 'kysely'
 import { Condition, TrxOrDb } from '../../types.ts'
 import { base } from './_base.ts'
 import type { DB } from '../../db.d.ts'

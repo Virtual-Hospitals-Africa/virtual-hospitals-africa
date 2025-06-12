@@ -22,7 +22,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.2.6
+          deno-version: v2.3.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -48,7 +48,7 @@ jobs:
       postgres:
         image: postgis/postgis:15-3.3
         env:
-          POSTGRES_USER: testuser
+          POSTGRES_USER: runner
           POSTGRES_PASSWORD: testpw
           POSTGRES_DB: vha_test
         ports:
@@ -72,7 +72,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.2.6
+          deno-version: v2.3.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -83,7 +83,7 @@ jobs:
 
       - name: Write .env file
         run: |
-          echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
+          echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
@@ -110,7 +110,7 @@ jobs:
       postgres:
         image: postgis/postgis:15-3.3
         env:
-          POSTGRES_USER: testuser
+          POSTGRES_USER: runner
           POSTGRES_PASSWORD: testpw
           POSTGRES_DB: vha_test
         ports:
@@ -134,7 +134,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.2.6
+          deno-version: v2.3.5
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -145,7 +145,7 @@ jobs:
 
       - name: Write .env file
         run: |
-          echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
+          echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
@@ -182,7 +182,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.2.6
+          deno-version: v2.3.5
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -197,7 +197,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.2.6
+          deno-version: v2.3.5
 
       - name: Build web
         run: deno task build

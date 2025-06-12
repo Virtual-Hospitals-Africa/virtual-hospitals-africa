@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   EmployedHealthWorker,
+  PostgresInterval,
   RenderedWaitingRoom,
   TrxOrDb,
   WaitingRoom,
@@ -130,7 +131,9 @@ export async function get(
       'doctor_review_requests.organization_id as requesting_organization_id',
       'completed_intake',
 
-      sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
+      sql<
+        PostgresInterval
+      >`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
 

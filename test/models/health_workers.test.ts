@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -14,8 +14,10 @@ import {
 } from '../mocks.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
+describe('db/models/health_workers.ts', () => {
+  afterAll(() => db.destroy())
   describe('upsertWithGoogleCredentials', () => {
     itUsesTrxAnd(
       'works even if a previous health worker without tokens was inserted',

@@ -93,8 +93,6 @@ export function GeneralAssessmentsPage(
       return rendered
     }
 
-    // console.log('ctx.state', ctx.state)
-
     const tabs: TabProps[] = ctx.state.patient_general_assessments
       .map((assessment) => {
         const active = assessment.examination_identifier ===

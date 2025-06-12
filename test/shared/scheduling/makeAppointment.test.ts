@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
@@ -7,8 +7,10 @@ import { addTestHealthWorker } from '../../web/utilities.ts'
 import { itUsesTrxAnd } from '../../web/utilities.ts'
 import { spy } from 'std/testing/mock.ts'
 import { GCalEvent, GoogleTokens } from '../../../types.ts'
+import db from '../../../db/db.ts'
 
-describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
+describe('scheduling/makeAppointment.ts', () => {
+  afterAll(() => db.destroy())
   describe('makeAppointmentWeb', () => {
     itUsesTrxAnd(
       "inserts an event on the specified health worker's google calendar, adding that event to the db",

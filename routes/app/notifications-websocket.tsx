@@ -9,8 +9,6 @@ export default async function NotificationsWebsocket(
   req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
-  console.log('we out here', req)
-
   assertEquals(
     req.headers.get('upgrade'),
     'websocket',

@@ -1,11 +1,13 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_allergies from '../../db/models/patient_allergies.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
+describe('db/models/patient_allergies.ts', () => {
+  afterAll(() => db.destroy())
   describe('upsertAllergies', () => {
     itUsesTrxAnd('upserts allergies when no allergies exist', async (trx) => {
       const patient = await patients.insert(trx, { name: 'Billy Bob' })

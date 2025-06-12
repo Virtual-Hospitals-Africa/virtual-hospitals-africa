@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as events from '../../db/models/events.ts'
 import db from '../../db/db.ts'
@@ -8,8 +8,8 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describe(
   'events/processor.ts',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     describe('addListeners', () => {
       it('adds a row for each event listener that we want to run', async () => {
         const bar = generateUUID()
