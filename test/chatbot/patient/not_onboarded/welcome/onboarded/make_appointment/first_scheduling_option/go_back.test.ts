@@ -7,9 +7,10 @@ import * as patients from '../../../../../../../../db/models/patients.ts'
 import { randomPhoneNumber } from '../../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { mockWhatsApp } from '../../../../../../mocks.ts'
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 
-describe('patient chatbot', { sanitizeResources: false }, () => {
+describe('patient chatbot', () => {
+  afterAll(() => db.destroy())
   it('ends after not confriming first scheduling option ', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {

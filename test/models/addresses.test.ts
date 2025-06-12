@@ -1,11 +1,14 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as addresses from '../../db/models/addresses.ts'
 import { createTestAddress } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
-import { assertNotEquals } from 'https://deno.land/std@0.216.0/assert/assert_not_equals.ts'
+import db from '../../db/db.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
-describe('db/models/address.ts', { sanitizeResources: false }, () => {
+describe('db/models/address.ts', () => {
+  afterAll(() => db.destroy())
+
   describe('upsert', () => {
     itUsesTrxAnd(
       'inserts addresses, making a new id each time',

@@ -34,7 +34,6 @@ export function getHealthWorkerCookie(req: Request): string | undefined {
 }
 
 export function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  console.log('ensuring health worker cookie present')
   return getHealthWorkerCookie(req) ? ctx.next() : noSession()
 }
 

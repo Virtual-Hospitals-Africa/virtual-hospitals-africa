@@ -1,10 +1,12 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/appointments.ts', { sanitizeResources: false }, () => {
+describe('db/models/appointments.ts', () => {
+  afterAll(() => db.destroy())
   describe('addOfferedTime', () => {
     itUsesTrxAnd.rejects(
       'does not add an offered time if provider_id is an admin',

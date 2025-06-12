@@ -12,7 +12,6 @@ export function startTrx(
   _req: Request,
   ctx: TrxContext,
 ) {
-  console.log('starting transaction')
   return db
     .transaction()
     .setIsolationLevel('read committed')

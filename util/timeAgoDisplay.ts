@@ -1,13 +1,32 @@
-export function timeAgoDisplay(wait_time: string) {
-  const day_regex = /(^\d+ days?)/
+import { PostgresInterval } from '../types.ts'
 
-  const day_match = wait_time.match(day_regex)
-
-  if (day_match) {
-    return `${day_match[1]} ago`
+export function timeAgoDisplay(wait_time: PostgresInterval) {
+  const { years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0 } =
+    wait_time
+  if (years > 1) {
+    return `${years} years ago`
   }
-  const [hours, minutes] = wait_time.split(':').map(Number)
-
+  if (years === 1) {
+    return '1 year ago'
+  }
+  if (months > 1) {
+    return `${months} months ago`
+  }
+  if (months === 1) {
+    return '1 month ago'
+  }
+  if (weeks > 1) {
+    return `${weeks} weeks ago`
+  }
+  if (weeks === 1) {
+    return '1 week ago'
+  }
+  if (days > 1) {
+    return `${days} days ago`
+  }
+  if (days === 1) {
+    return '1 day ago'
+  }
   if (!hours && !minutes) {
     return 'Just now'
   }

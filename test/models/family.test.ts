@@ -1,14 +1,15 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as family from '../../db/models/family.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 import { randomPhoneNumber } from '../mocks.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/family.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('addGuardian', () => {
       itUsesTrxAnd(
         'stores the gender-neutral guardian relationship',

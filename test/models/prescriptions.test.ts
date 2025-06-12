@@ -1,4 +1,4 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as patient_intake from '../../db/models/patient_intake.ts'
@@ -9,8 +9,10 @@ import * as diagnoses from '../../db/models/diagnoses.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import { sql } from 'kysely'
+import db from '../../db/db.ts'
 
-describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
+describe('db/models/prescriptions.ts', () => {
+  afterAll(() => db.destroy())
   describe('insert', () => {
     itUsesTrxAnd(
       'makes a prescription for a given prescriber and patient with 1 or more medications',

@@ -1,13 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patient_occupations from '../../db/models/patient_occupations.ts'
 import * as patients from '../../db/models/patients.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/patient_occupation.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('upsert', () => {
       itUsesTrxAnd('inserts patient_occupations', async (trx) => {
         const patient = await patients.insert(trx, { name: 'Test Patient' })

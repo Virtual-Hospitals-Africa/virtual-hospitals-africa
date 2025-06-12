@@ -3,8 +3,8 @@ import { spinner } from '../util/spinner.ts'
 import { onLocalhost } from './onLocalhost.ts'
 
 export function create() {
-  const { host, dbname, username, password } = onLocalhost()
-  const args = ['-h', host, '-U', username, '-w', dbname]
+  const { host, database, user, password } = onLocalhost()
+  const args = ['-h', host, '-U', user, '-w', database]
   if (password) {
     args.push('-W')
     args.push(password)

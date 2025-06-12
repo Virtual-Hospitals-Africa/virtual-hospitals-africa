@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../db/db.ts'
@@ -9,7 +9,8 @@ import { randomPhoneNumber } from '../../../../../../mocks.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
 import { mockWhatsApp } from '../../../../../mocks.ts'
 
-describe('patient chatbot', { sanitizeResources: false }, () => {
+describe('patient chatbot', () => {
+  afterAll(() => db.destroy())
   it('ends after not confirming details', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {

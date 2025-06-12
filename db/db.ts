@@ -1,12 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
+import { Pool } from 'pg'
 import {
   Kysely,
   PostgresAdapter,
+  PostgresDriver,
   PostgresIntrospector,
   PostgresQueryCompiler,
 } from 'kysely'
 import { DB } from '../db.d.ts'
-import { PostgreSQLDriver } from 'kysely-deno-postgres'
 import { debugReplaceAll } from './helpers.ts'
 
 let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
@@ -40,11 +41,11 @@ export function parseConnectionString(
   assert(match, 'Invalid postgres connection string format.')
 
   return {
-    username: match[1],
+    user: match[1],
     password: match[2],
     host: match[3],
     port: parseInt(match[4], 10),
-    dbname: match[5],
+    database: match[5],
     ssl: match[6] ? { require: true, rejectUnauthorized: false } : undefined,
   }
 }
@@ -59,8 +60,9 @@ const db = new Kysely<DB>({
       return new PostgresAdapter()
     },
     createDriver() {
-      // deno-lint-ignore no-explicit-any
-      return new PostgreSQLDriver(uri as any) as any
+      return new PostgresDriver({
+        pool: new Pool(opts || {}),
+      })
     },
     createIntrospector(db: Kysely<unknown>) {
       return new PostgresIntrospector(db)

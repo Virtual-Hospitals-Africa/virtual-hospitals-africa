@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
@@ -16,11 +16,12 @@ import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { literalLocation } from '../../db/helpers.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/waiting_room.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('get', () => {
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',
@@ -707,31 +708,58 @@ describe(
     describe('arrivedAgoDisplay', () => {
       it('returns "Just now" for a patient who arrived less than 1 minute ago', () => {
         assertEquals(
-          timeAgoDisplay('00:00:02.0'),
+          timeAgoDisplay({
+            hours: 0,
+            minutes: 0,
+            seconds: 2,
+            milliseconds: 0,
+          }),
           'Just now',
         )
       }),
         it('returns "5 minutes ago" for a patient who arrived 5 minutes ago', () => {
           assertEquals(
-            timeAgoDisplay('00:05:02.0'),
+            timeAgoDisplay({
+              hours: 0,
+              minutes: 5,
+              seconds: 2,
+              milliseconds: 0,
+            }),
             '5 minutes ago',
           )
         }),
         it('returns "2 hours ago" for a patient who arrived 2 hours ago', () => {
           assertEquals(
-            timeAgoDisplay('02:05:02.0'),
+            timeAgoDisplay({
+              hours: 2,
+              minutes: 5,
+              seconds: 2,
+              milliseconds: 0,
+            }),
             '2 hours ago',
           )
         }),
         it('returns "1 day ago" for a patient who arrived 1 day ago', () => {
           assertEquals(
-            timeAgoDisplay('1 day 02:05:02.0'),
+            timeAgoDisplay({
+              days: 1,
+              hours: 2,
+              minutes: 5,
+              seconds: 2,
+              milliseconds: 0,
+            }),
             '1 day ago',
           )
         }),
         it('returns "2 days ago" for a patient who arrived 2 days ago', () => {
           assertEquals(
-            timeAgoDisplay('2 days 02:05:02.0'),
+            timeAgoDisplay({
+              days: 2,
+              hours: 2,
+              minutes: 5,
+              seconds: 2,
+              milliseconds: 0,
+            }),
             '2 days ago',
           )
         })

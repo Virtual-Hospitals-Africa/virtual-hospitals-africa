@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
@@ -8,8 +8,10 @@ import pick from '../../util/pick.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 import sortBy from '../../util/sortBy.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/patients.ts', { sanitizeResources: false }, () => {
+describe('db/models/patients.ts', () => {
+  afterAll(() => db.destroy())
   describe('getAllWithNames', () => {
     itUsesTrxAnd('finds patients by their name', async (trx) => {
       const insertedMedia = await media.insert(trx, {
@@ -312,10 +314,11 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           patient_id: test_patient.id,
         })
 
-        assertEquals(avatar, {
-          binary_data: new Uint8Array([1, 2, 3]),
-          mime_type: 'image/jpeg',
-        })
+        assertEquals(avatar?.mime_type, 'image/jpeg')
+        assertEquals(avatar?.binary_data.length, 3)
+        assertEquals(avatar?.binary_data[0], 1)
+        assertEquals(avatar?.binary_data[1], 2)
+        assertEquals(avatar?.binary_data[2], 3)
       },
     )
   })

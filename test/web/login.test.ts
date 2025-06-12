@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
@@ -14,7 +14,8 @@ import {
 import sample from '../../util/sample.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 
-describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
+describe('/login', () => {
+  afterAll(() => db.destroy())
   it('redirects to google if not already logged in', async () => {
     const response = await fetch(`${route}/login`, {
       redirect: 'manual',
@@ -39,6 +40,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         response.url ===
           `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
       )
+      await response.body?.cancel()
     })
 
     it('allows admin access to /app', async () => {
@@ -78,7 +80,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       })
       const redirectLocation = response.headers.get('location')
       assertEquals(redirectLocation, '/app?from_login=true')
-      response.body?.cancel()
+      return response.body?.cancel()
     })
 
     // TODO turn off SKIP_NURSE_REGISTRATION
@@ -232,6 +234,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees?expectedTestError=1`,
       )
       assertEquals(response.status, 403)
+      await response.body?.cancel()
     })
 
     it("doesn't allow non-admin to invite page", async () => {
@@ -262,6 +265,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       )
 
       assertEquals(invitesResponse.status, 403)
+      await invitesResponse.body?.cancel()
     })
   })
 })

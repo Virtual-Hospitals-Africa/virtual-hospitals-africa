@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
@@ -8,11 +8,12 @@ import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import permutations from '../../util/permutations.ts'
+import db from '../../db/db.ts'
 
 describe(
   'db/models/patient_conditions.ts',
-  { sanitizeResources: false },
   () => {
+    afterAll(() => db.destroy())
     describe('upsertPreExisting', () => {
       itUsesTrxAnd(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',

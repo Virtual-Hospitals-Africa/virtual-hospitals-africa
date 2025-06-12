@@ -1,7 +1,8 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { route } from './utilities.ts'
 import * as cheerio from 'cheerio'
+import db from '../../db/db.ts'
 
 const expectedLinks = [
   '/waitlist?entrypoint=hero',
@@ -15,8 +16,8 @@ const expectedLinks = [
 
 describe(
   'landing page',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     it('can be accessed', async () => {
       const response = await fetch(route)
       assert((await response.text()).includes('Virtual Hospitals Africa'))
@@ -38,6 +39,7 @@ describe(
       it(`can load ${expectedLink}`, async () => {
         const response = await fetch(`${route}${expectedLink}`)
         if (!response.ok) throw new Error(await response.text())
+        await response.body?.cancel()
       })
     }
   },

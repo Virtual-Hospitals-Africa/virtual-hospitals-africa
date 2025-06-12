@@ -1,11 +1,13 @@
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import manufactured_medications from '../../db/models/manufactured_medications.ts'
 import deepOmit from '../../util/deepOmit.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import db from '../../db/db.ts'
 
-describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
+describe('db/models/drugs.ts', () => {
+  afterAll(() => db.destroy())
   describe('search', () => {
     itUsesTrxAnd(
       'gets search results for drugs with their forms, strengths, and manufacturers',

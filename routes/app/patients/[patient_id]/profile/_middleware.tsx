@@ -13,7 +13,6 @@ export function handler(
   _req: Request,
   ctx: FreshContext,
 ) {
-  console.log('I am in the patient profile _middleware')
   return ctx.next()
 }
 

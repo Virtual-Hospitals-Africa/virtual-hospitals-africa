@@ -19,7 +19,6 @@ export function getAvailability(
   },
   freeBusy: GCalFreeBusy,
 ): Availability {
-  console.log('freeBusy', freeBusy)
   const availability = [
     ...freeBusy.calendars[provider.gcal_availability_calendar_id].busy,
   ]

@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { addTestHealthWorkerWithSession, route } from './utilities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -7,8 +7,8 @@ import omit from '../../util/omit.ts'
 
 describe(
   '/app/organizations',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     it('can search for organizations by name', async () => {
       const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',

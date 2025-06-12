@@ -73,8 +73,6 @@ export async function getFromReview(
     (d) => d.provider_id === employment_id,
   )
 
-  console.log('diagnoses', diagnoses)
-
   return {
     all: diagnoses,
     self,

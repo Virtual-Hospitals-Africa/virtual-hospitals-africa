@@ -173,7 +173,6 @@ export default function SymptomInput({
               onInput={(e) => {
                 const file = e.currentTarget.files?.[0]
                 mediaUpdated.value = true
-                console.log('changeMedia.value', media.value)
                 media.value = {
                   mime_type: file?.type!,
                   url: URL.createObjectURL(file!),
