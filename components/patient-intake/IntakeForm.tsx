@@ -47,7 +47,7 @@ export default function PatientIntakeForm(
         address={patient.address}
       />
       <NearestHealthCareSection
-        nearest_organization={nearest_organization}
+        nearest_health_facility={nearest_organization}
         primary_doctor={primary_doctor}
       />
       <NextOfKinFormSection />

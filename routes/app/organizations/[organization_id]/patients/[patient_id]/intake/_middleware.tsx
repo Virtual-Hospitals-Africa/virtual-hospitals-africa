@@ -3,7 +3,8 @@ import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../../components/library/Form.tsx'
-import { Maybe, Patient } from '../../../../../../../types.ts'
+import { Address, Maybe, Patient } from '../../../../../../../types.ts'
+import * as patient_address from '../../../../../../../db/models/patient_address.ts'
 import * as patient_personal from '../../../../../../../db/models/patient_personal.ts'
 import * as patient_primary_care from '../../../../../../../db/models/patient_primary_care.ts'
 import * as patient_intake_this_visit from '../../../../../../../db/models/patient_intake_this_visit.ts'
@@ -69,6 +70,7 @@ export type PatientIntake = {
     department_id: Maybe<string>
     notes: Maybe<string>
   }
+  address?: Address
 }
 
 type IntakingPatient =
@@ -153,7 +155,13 @@ export async function completeStep(
     })
   } else {
     assertEquals(ctx.state.intake.patient.personal.id, patient_id)
+    if (ctx.state.step === 'biometrics') {
+      await patient_intake_this_visit.startEncounter(ctx.state.trx, {
+        patient_intake_id: ctx.state.intake.patient.this_visit.id,
+      })
+    }
   }
+
   return redirect(nextLink(ctx, patient_id))
 }
 
@@ -207,14 +215,36 @@ export async function handler(
         patient_id,
         organization_id,
       }),
+      address: patient_address.getById(trx, { patient_id }),
     })
+
+    // To determine whether certain steps are completed we look for the presence of those forms' required fields
     const steps_completed: PatientIntakeStep[] = ['personal' as const]
+    if (patient.this_visit.reason && patient.this_visit.department_id) {
+      steps_completed.push('this_visit')
+    }
     if (
       patient.primary_care.primary_doctor &&
       patient.primary_care.nearest_health_facility
     ) {
       steps_completed.push('primary_care')
     }
+    if (
+      patient.primary_care.primary_doctor &&
+      patient.primary_care.nearest_health_facility
+    ) {
+      steps_completed.push('primary_care')
+    }
+    if (
+      patient.address?.formatted
+    ) {
+      steps_completed.push('contacts')
+    }
+    // TODO revisit when we actually implement biometrics
+    if (patient.personal.completed_intake) {
+      steps_completed.push('biometrics')
+    }
+
     patient_intake_props = {
       organization_id,
       step,

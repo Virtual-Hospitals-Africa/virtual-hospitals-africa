@@ -51,6 +51,7 @@ export const handler: LoggedInHealthWorkerHandler<PatientIntakeContext> = {
   },
 }
 
+// deno-lint-ignore require-await
 export async function PatientIntakePrimaryCarePage(ctx: PatientIntakeContext) {
   const patient = patientIdentified(ctx)
   return <NearestHealthCareSection {...patient.primary_care} />

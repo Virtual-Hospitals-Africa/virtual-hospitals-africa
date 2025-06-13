@@ -1,8 +1,6 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
-import { assert } from 'node:console'
-import { isUUID } from '../../util/uuid.ts'
 
 export function getPrimaryDoctor(
   trx: TrxOrDb,

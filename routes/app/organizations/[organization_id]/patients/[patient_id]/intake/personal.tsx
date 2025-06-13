@@ -75,6 +75,7 @@ export const handler: LoggedInHealthWorkerHandler<PatientIntakeContext> = {
   },
 }
 
+// deno-lint-ignore require-await
 export async function PatientIntakePersonalPage(ctx: PatientIntakeContext) {
   const { intake } = ctx.state
   const personal: Partial<PatientIntake['personal']> = intake.new
