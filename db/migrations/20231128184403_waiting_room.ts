@@ -1,14 +1,7 @@
 import { Kysely, sql } from 'kysely'
-import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db
-    .schema
-    .createType('encounter_reason')
-    .asEnum(Array.from(ENCOUNTER_REASONS))
-    .execute()
-
   await createStandardTable(db, 'patient_encounters', (qb) =>
     qb
       .addColumn(
@@ -89,5 +82,4 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('waiting_room').execute()
   await db.schema.dropTable('patient_encounter_providers').execute()
   await db.schema.dropTable('patient_encounters').execute()
-  await db.schema.dropType('encounter_reason').execute()
 }

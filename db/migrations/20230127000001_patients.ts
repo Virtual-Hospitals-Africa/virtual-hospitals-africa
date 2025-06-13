@@ -20,6 +20,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('gender', sql`gender`)
         .addColumn('date_of_birth', 'date')
         .addColumn('national_id_number', 'varchar(50)')
+        .addColumn('first_language', 'varchar(50)')
         .addColumn(
           'avatar_media_id',
           'uuid',

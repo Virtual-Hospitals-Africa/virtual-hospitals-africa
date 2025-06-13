@@ -435,7 +435,7 @@ export const SelectWithOptions = forwardRef(
     }: Omit<SelectProps, 'children'> & {
       blank_option?: string | true
       value?: V
-      options: { value: V; label?: string }[] | V[]
+      options: { value: V; label?: string }[] | V[] | { id: V; name: string }[]
     },
     ref: Ref<HTMLSelectElement>,
   ) {
@@ -453,6 +453,16 @@ export const SelectWithOptions = forwardRef(
                 value={option.value}
                 label={'label' in option ? option.label : String(option.value)}
                 selected={value === option.value}
+              />
+            )
+            : (
+                isObjectLike(option) && 'id' in option
+              )
+            ? (
+              <option
+                value={option.id}
+                label={option.name}
+                selected={value === option.id}
               />
             )
             : (

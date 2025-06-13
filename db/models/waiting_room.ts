@@ -428,7 +428,7 @@ export async function get(
         actions: {
           view: action === 'view' ? `/app/patients/${patient.id}` : null,
           intake: action === 'intake'
-            ? `/app/organizations/${organization_id}/patients/intake?patient_id=${patient.id}`
+            ? `/app/organizations/${organization_id}/patients/${patient.id}/intake`
             : null,
           review: action === 'review' && can_review
             ? `/app/patients/${patient.id}/review/${

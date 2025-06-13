@@ -11,7 +11,7 @@ export default function WaitingRoomView(
     can_add_patients: boolean
   },
 ) {
-  const add_href = `/app/organizations/${organization_id}/patients/intake`
+  const add_href = `/app/organizations/${organization_id}/patients/new/intake`
   return (
     <>
       <FormRow className='mb-4'>

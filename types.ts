@@ -170,6 +170,7 @@ export type PatientDemographicInfo = {
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
+  first_language: Maybe<string>
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState
@@ -1484,6 +1485,7 @@ export type HealthWorkerEmployment = {
       employment_id: string
     }
   }
+  provider_id: string | null
   gcal_appointments_calendar_id: string | null
   gcal_availability_calendar_id: string | null
   availability_set: SqlBool | null

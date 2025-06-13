@@ -19,7 +19,7 @@ export function isEncounterStep(value: unknown): value is EncounterStep {
   return ENCOUNTER_STEPS.includes(value as EncounterStep)
 }
 
-export const ENCOUNTER_REASONS = new Set<EncounterReason>([
+export const ENCOUNTER_REASONS: EncounterReason[] = [
   'seeking treatment',
   'maternity',
   'appointment',
@@ -28,4 +28,4 @@ export const ENCOUNTER_REASONS = new Set<EncounterReason>([
   'checkup',
   'emergency',
   'other',
-])
+]

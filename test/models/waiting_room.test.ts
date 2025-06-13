@@ -77,7 +77,7 @@ describe(
               actions: {
                 view: null,
                 intake:
-                  `/app/organizations/${organization_id}/patients/intake?patient_id=${patient1.id}`,
+                  `/app/organizations/${organization_id}/patients/${patient1.id}/intake`,
                 review: null,
                 awaiting_review: null,
               },
@@ -100,7 +100,7 @@ describe(
               actions: {
                 view: null,
                 intake:
-                  `/app/organizations/${organization_id}/patients/intake?patient_id=${patient2.id}`,
+                  `/app/organizations/${organization_id}/patients/${patient2.id}/intake`,
                 review: null,
                 awaiting_review: null,
               },
@@ -170,7 +170,7 @@ describe(
                   actions: {
                     view: null,
                     intake:
-                      `/app/organizations/${organization_id}/patients/intake?patient_id=${patient1.id}`,
+                      `/app/organizations/${organization_id}/patients/${patient1.id}/intake`,
                     review: null,
                     awaiting_review: null,
                   },
@@ -193,7 +193,7 @@ describe(
                   actions: {
                     view: null,
                     intake:
-                      `/app/organizations/${organization_id}/patients/intake?patient_id=${patient2.id}`,
+                      `/app/organizations/${organization_id}/patients/${patient2.id}/intake`,
                     review: null,
                     awaiting_review: null,
                   },
