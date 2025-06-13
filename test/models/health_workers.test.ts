@@ -91,6 +91,7 @@ describe('db/models/health_workers.ts', () => {
                   employment_id: healthWorker.employee_id!,
                 },
               },
+              provider_id: healthWorker.employee_id!,
               gcal_appointments_calendar_id:
                 healthWorker.calendars!.gcal_appointments_calendar_id,
               gcal_availability_calendar_id:

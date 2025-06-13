@@ -8,7 +8,13 @@ import { assertOr403 } from '../../../../util/assertOr.ts'
 import { HealthWorkerEmployment } from '../../../../types.ts'
 
 export type OrganizationContext = LoggedInHealthWorkerContext<{
-  organization: HasStringId<Organization>
+  organization: HasStringId<Organization> & {
+    departments: {
+      id: string
+      name: string
+      accepts_patients: boolean
+    }[]
+  }
   organization_employment: HealthWorkerEmployment
   isAdminAtOrganization: boolean
 }>

@@ -5,56 +5,17 @@ import PersonSearch from './PersonSearch.tsx'
 import FormSection from '../components/library/FormSection.tsx'
 import { OrganizationSortOptions } from '../types.ts'
 
-// export default function AddressSection(
-//   { patient = {}, default_organization, country_address_tree }: {
-//     patient?: Partial<PatientIntake>
-//     default_organization?: { id: string; name: string; address: string }
-//     country_address_tree: CountryAddressTree
-//   },
-// ) {
-//   const nearest_organization =
-//     patient.nearest_organization_id && patient.nearest_organization_name &&
-//       patient.nearest_organization_address
-//       ? {
-//         id: patient.nearest_organization_id,
-//         name: patient.nearest_organization_name,
-//         address: patient.nearest_organization_address,
-//       }
-//       : default_organization
-
-//   const primary_doctor =
-//     patient.primary_doctor_id && patient.primary_doctor_name
-//       ? {
-//         id: patient.primary_doctor_id,
-//         name: patient.primary_doctor_name,
-//       }
-//       : patient.unregistered_primary_doctor_name
-//       ? {
-//         name: patient.unregistered_primary_doctor_name,
-//         id: '',
-//       }
-//       : undefined
-
-//   return (
-//     <AddressSection
-//       address={patient.address}
-//       country_address_tree={country_address_tree}
-//     />
-//   )
-// }
-
 export function NearestHealthCareSection(
-  { nearest_organization, primary_doctor }: {
-    nearest_organization?: { id: string; name: string; address: string }
-    primary_doctor?: { id: string; name: string }
+  { nearest_health_facility, primary_doctor }: {
+    nearest_health_facility?: { id: string; name: string; address?: string }
+    primary_doctor?: { id: string | null; name: string }
   },
 ) {
-  console.log({ nearest_organization })
-  const nearest_organization_signal = useSignal(nearest_organization)
+  const nearest_health_facility_signal = useSignal(nearest_health_facility)
   let doctor_search_href = '/app/providers?profession=doctor'
-  if (nearest_organization_signal.value) {
+  if (nearest_health_facility_signal.value) {
     doctor_search_href +=
-      `&prioritize_organization_id=${nearest_organization_signal.value.id}`
+      `&prioritize_organization_id=${nearest_health_facility_signal.value.id}`
   }
 
   return (
@@ -64,12 +25,12 @@ export function NearestHealthCareSection(
         <OrganizationSearch
           name='nearest_organization'
           filters={{ is_physical: true }}
-          label='Nearest Organization'
+          label='Nearest Health Facility'
           // deno-lint-ignore no-explicit-any
-          value={nearest_organization_signal.value as any}
+          value={nearest_health_facility_signal.value as any}
           sort={{ by: OrganizationSortOptions.closest, direction: 'asc' }}
           onSelect={(organization) =>
-            nearest_organization_signal.value = organization}
+            nearest_health_facility_signal.value = organization}
           required
         />
       </FormRow>
@@ -79,7 +40,10 @@ export function NearestHealthCareSection(
           label='Primary/Family Doctor'
           search_route={doctor_search_href}
           required
-          value={primary_doctor}
+          value={primary_doctor && {
+            id: primary_doctor.id || 'add',
+            name: primary_doctor.name,
+          }}
           addable
         />
       </FormRow>

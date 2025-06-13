@@ -872,6 +872,26 @@ export interface PatientGuardians {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientIntake {
+  being_taken_by: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  organization_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientIntakeVisitReason {
+  created_at: Generated<Timestamp>
+  department_id: string
+  emergency: Generated<boolean>
+  id: Generated<string>
+  notes: string | null
+  patient_intake_id: string
+  reason: EncounterReason
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientKin {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -926,6 +946,7 @@ export interface Patients {
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
+  first_language: string | null
   gender: Gender | null
   id: Generated<string>
   location: string | null
@@ -1243,6 +1264,8 @@ export interface DB {
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
   patient_guardians: PatientGuardians
+  patient_intake: PatientIntake
+  patient_intake_visit_reason: PatientIntakeVisitReason
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements

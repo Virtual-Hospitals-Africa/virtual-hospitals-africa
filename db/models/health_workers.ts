@@ -348,6 +348,8 @@ export async function get(
         gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
         gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
         availability_set: roles[0].availability_set,
+        provider_id: nurse_role?.employment_id || doctor_role?.employment_id ||
+          null,
         roles: {
           nurse: nurse_role && {
             registration_needed: !!registration_needed,

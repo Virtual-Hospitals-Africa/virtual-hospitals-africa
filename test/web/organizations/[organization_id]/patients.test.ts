@@ -61,7 +61,7 @@ describe(
             id: patient_not_in_waiting_room.id,
             name: patient_not_in_waiting_room.name,
             href:
-              `/app/organizations/${organization_id}/patients/intake?patient_id=${patient_not_in_waiting_room.id}`,
+              `/app/organizations/${organization_id}/patients/${patient_not_in_waiting_room.id}/intake`,
             in_waiting_room: false,
             avatar_url: null,
             description: 'Requires intake',

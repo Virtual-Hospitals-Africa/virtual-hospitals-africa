@@ -55,7 +55,7 @@ describe(
                     view: null,
                     review: null,
                     intake:
-                      `/app/organizations/${organization_id}/patients/intake?patient_id=${patient.id}`,
+                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
                     awaiting_review: null,
                   },
                   providers: [],
@@ -107,7 +107,7 @@ describe(
                     view: null,
                     review: null,
                     intake:
-                      `/app/organizations/${organization_id}/patients/intake?patient_id=${patient.id}`,
+                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
                     awaiting_review: null,
                   },
                   providers: [

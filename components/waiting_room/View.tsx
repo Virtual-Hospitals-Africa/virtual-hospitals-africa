@@ -11,7 +11,10 @@ export default function WaitingRoomView(
     can_add_patients: boolean
   },
 ) {
-  const add_href = `/app/organizations/${organization_id}/patients/intake`
+  const intake_patient_href =
+    `/app/organizations/${organization_id}/patients/new/intake`
+  const old_intake_patient_href =
+    `/app/organizations/${organization_id}/patients/xintake`
   return (
     <>
       <FormRow className='mb-4'>
@@ -20,18 +23,27 @@ export default function WaitingRoomView(
           can_add_patients={can_add_patients}
         />
         {can_add_patients && (
-          <Button
-            type='button'
-            href={add_href}
-            className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
-          >
-            Intake new patient
-          </Button>
+          <>
+            <Button
+              type='button'
+              href={intake_patient_href}
+              className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+            >
+              Intake patient (new experience)
+            </Button>
+            <Button
+              type='button'
+              href={old_intake_patient_href}
+              className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+            >
+              Intake patient (to be deprecated experience)
+            </Button>
+          </>
         )}
       </FormRow>
       <WaitingRoomTable
         waiting_room={waiting_room}
-        add_href={add_href}
+        add_href={old_intake_patient_href}
         can_add_patients={can_add_patients}
       />
     </>

@@ -7,7 +7,7 @@ import Form from '../../components/library/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 
-const radio_group_options = Array.from(ENCOUNTER_REASONS).map((
+const radio_group_options = ENCOUNTER_REASONS.map((
   value,
 ) => ({
   value,

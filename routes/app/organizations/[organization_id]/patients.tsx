@@ -35,10 +35,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
       )
 
       const href = !patient.completed_intake
-        ? `/app/organizations/${organization_id}/patients/intake?patient_id=${patient?.id}`
+        ? `/app/organizations/${organization_id}/patients/${patient.id}/intake`
         : in_waiting_room
         ? `/app/patients/${patient.id}`
-        : `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient?.id}`
+        : `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient.id}`
 
       return {
         id: patient.id,

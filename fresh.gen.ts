@@ -43,7 +43,14 @@ import * as $app_organizations_organization_id_inventory_add_procurer from './ro
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
 import * as $app_organizations_organization_id_patients from './routes/app/organizations/[organization_id]/patients.tsx'
-import * as $app_organizations_organization_id_patients_intake from './routes/app/organizations/[organization_id]/patients/intake.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_biometrics from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/biometrics.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_contacts from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/contacts.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_personal from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/personal.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_primary_care from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/primary_care.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_intake_this_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/this_visit.tsx'
+import * as $app_organizations_organization_id_patients_xintake from './routes/app/organizations/[organization_id]/patients/xintake.tsx'
 import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
 import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
 import * as $app_organizations_organization_id_waiting_room from './routes/app/organizations/[organization_id]/waiting_room.tsx'
@@ -328,8 +335,22 @@ const manifest = {
       $app_organizations_organization_id_inventory_history,
     './routes/app/organizations/[organization_id]/patients.tsx':
       $app_organizations_organization_id_patients,
-    './routes/app/organizations/[organization_id]/patients/intake.tsx':
-      $app_organizations_organization_id_patients_intake,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/biometrics.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_biometrics,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/contacts.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_contacts,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/personal.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_personal,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/primary_care.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_primary_care,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/this_visit.tsx':
+      $app_organizations_organization_id_patients_patient_id_intake_this_visit,
+    './routes/app/organizations/[organization_id]/patients/xintake.tsx':
+      $app_organizations_organization_id_patients_xintake,
     './routes/app/organizations/[organization_id]/register.tsx':
       $app_organizations_organization_id_register,
     './routes/app/organizations/[organization_id]/register/[step].tsx':
