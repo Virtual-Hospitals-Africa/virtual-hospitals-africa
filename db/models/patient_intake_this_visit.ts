@@ -18,8 +18,8 @@ export function get(
     )
     .where('patients.id', '=', patient_id)
     .where('patient_intake.organization_id', '=', organization_id)
-    .selectAll('patient_intake')
     .selectAll('patient_intake_visit_reason')
+    .selectAll('patient_intake')
     .executeTakeFirstOrThrow()
 }
 
@@ -47,8 +47,9 @@ export function upsertReason(
     notes?: string
   },
 ) {
+  console.log(values)
   return trx.insertInto('patient_intake_visit_reason')
     .values(values)
-    .onConflict((oc) => oc.doUpdateSet(values))
+    .onConflict((oc) => oc.column('patient_intake_id').doUpdateSet(values))
     .executeTakeFirstOrThrow()
 }

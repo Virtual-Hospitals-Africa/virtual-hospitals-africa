@@ -52,13 +52,13 @@ export type PatientIntake = {
       avatar_url: string | null
     }
   primary_care: {
-    primary_doctor: undefined | {
-      primary_doctor_id: string | null
-      primary_doctor_name: string
+    primary_doctor?: {
+      id: string | null
+      name: string
     }
-    nearest_health_facility: undefined | {
-      organization_id: string
-      organization_name: string
+    nearest_health_facility?: {
+      id: string
+      name: string
     }
   }
   this_visit: {

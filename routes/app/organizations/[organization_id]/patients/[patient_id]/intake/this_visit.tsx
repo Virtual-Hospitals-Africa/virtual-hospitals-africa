@@ -37,6 +37,8 @@ export const handler: LoggedInHealthWorkerHandler<PatientIntakeContext> = {
       PatientIntakeThisVisitSchema.parse,
     )
 
+    console.log('z', patient)
+
     await patient_intake_this_visit.upsertReason(trx, {
       patient_intake_id: patient.this_visit.id,
       ...this_visit_updates,
