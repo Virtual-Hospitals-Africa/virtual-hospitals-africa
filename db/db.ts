@@ -26,7 +26,7 @@ if (Deno.env.get('IS_TEST')) {
 
 if (
   DATABASE_URL && !DATABASE_URL.includes('localhost') &&
-  !DATABASE_URL.includes('sslmode')
+  !DATABASE_URL.includes('sslmode') && !Deno.env.get('NO_DATABASE_SSL')
 ) {
   DATABASE_URL += '?sslmode=require'
 }
