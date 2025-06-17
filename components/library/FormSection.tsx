@@ -1,6 +1,7 @@
 import { ComponentChildren, JSX } from 'preact'
 
 import SectionHeader from './typography/SectionHeader.tsx'
+import cls from '../../util/cls.ts'
 
 export default function Form(
   { className, header, children, ...props }: JSX.HTMLAttributes<HTMLElement> & {
@@ -10,9 +11,11 @@ export default function Form(
   },
 ) {
   return (
-    <section {...props} className={className}>
+    <section {...props} className={cls('flex gap-12', className)}>
       <SectionHeader className='mb-2'>{header}</SectionHeader>
-      {children}
+      <div>
+        {children}
+      </div>
     </section>
   )
 }
