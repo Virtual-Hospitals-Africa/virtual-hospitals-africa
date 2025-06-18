@@ -127,21 +127,21 @@ export function PatientDrawerV2({
 
   if (patient.age_year != null && patient.age_year > 0) {
     age = patient.age_year
-    ageDisplay = age + ' years old'
+    ageDisplay = age + ' years'
   } else if (patient.age_display) {
     ageDisplay = patient.age_display
   } else if (patient.age != null && patient.age > 0) {
     age = patient.age
-    ageDisplay = age + ' years old'
+    ageDisplay = age + ' years'
   } else if (patient.date_of_birth) {
     age = calculateAge(patient.date_of_birth)
     if (age > 0) {
-      ageDisplay = age + ' years old'
+      ageDisplay = age + ' years'
     }
   } else if (patient.dob_formatted) {
     age = calculateAge(patient.dob_formatted)
     if (age > 0) {
-      ageDisplay = age + ' years old'
+      ageDisplay = age + ' years'
     }
   }
 
