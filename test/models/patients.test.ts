@@ -256,7 +256,7 @@ describe('db/models/patients.ts', () => {
             dob_formatted: '3 January 1989',
             address: null,
             age_display: '36 years',
-            age_years: '36',
+            age_years: 36,
             description: 'male, 03/01/1989',
             gender: 'male',
             ethnicity: null,

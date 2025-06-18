@@ -53,7 +53,7 @@ export function calculateAge(dateOfBirth: string): number {
   let age = today.getFullYear() - birthDate.getFullYear()
   const monthDiff = today.getMonth() - birthDate.getMonth()
   if (
-    monthDiff < 0 || monthDiff === 0 && today.getDay() - birthDate.getMonth()
+    monthDiff < 0 || monthDiff === 0 && today.getDate() < birthDate.getDate()
   ) {
     age--
   }
@@ -98,12 +98,14 @@ export function PatientDrawerV2({
     name: string
     description: string | null
     avatar_url?: Maybe<string>
-    date_of_birth: string
+    date_of_birth?: string
+    dob_formatted?: string | null
     gender?: Maybe<Gender>
     age?: number
     age_year?: number
-    age_display?: string
-    allergies: string
+    age_years?: Maybe<number> | string | null
+    age_display?: Maybe<string>
+    allergies?: string
     actions: {
       view: string
     }
@@ -111,13 +113,13 @@ export function PatientDrawerV2({
   encounter: {
     reason: string
     notes: string | null
-    created_at?: string
+    created_at?: string | Date
     admit_reasons?: string[]
   }
   // deno-lint-ignore no-explicit-any
   care_team: any[]
-  findings: RenderedPatientExaminationFinding[]
-  measurements: Measurement<keyof Measurements>[]
+  findings?: RenderedPatientExaminationFinding[]
+  measurements?: Measurement<keyof Measurements>[]
   flaggedVitals?: Map<string, Measurement<keyof Measurements>>
 }) {
   let ageDisplay: string = ''

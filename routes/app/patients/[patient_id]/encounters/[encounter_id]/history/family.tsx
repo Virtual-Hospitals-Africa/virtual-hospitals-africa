@@ -88,7 +88,7 @@ export default HistoryPage(async function FamilyPage(ctx) {
   const patient_id = ctx.state.patient.id
   const family = await patient_family.get(ctx.state.trx, { patient_id })
   assert(ctx.state.patient.age_years != null)
-  const age_years = parseInt(ctx.state.patient.age_years, 10)
+  const age_years = ctx.state.patient.age_years
   assert(typeof age_years === 'number' && age_years >= 0)
 
   return (
