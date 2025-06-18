@@ -138,6 +138,11 @@ export function PatientDrawerV2({
     if (age > 0) {
       ageDisplay = age + ' years old'
     }
+  } else if (patient.dob_formatted) {
+    age = calculateAge(patient.dob_formatted)
+    if (age > 0) {
+      ageDisplay = age + ' years old'
+    }
   }
 
   return (
