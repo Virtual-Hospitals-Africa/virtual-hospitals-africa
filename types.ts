@@ -2352,6 +2352,7 @@ export type RenderedPatientEncounter = {
     latitude: number
     longitude: number
   }
+  admit_reasons?: string[]
 }
 
 export type Measurements = {
