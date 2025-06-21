@@ -46,6 +46,9 @@ export type Location = {
   latitude: number
 }
 
+// feat: Language select(option need to be comfirmed)
+export type Language = 'Option1' | 'Option2' | 'Option3'
+
 export type Gender = 'male' | 'female' | 'non-binary'
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
@@ -350,6 +353,8 @@ export type PatientIntake =
     actions: {
       view: string
     }
+    // feat: Language select(patient's attributes)
+    language?: Maybe<Language>
   }
   & Pick<
     Patient,

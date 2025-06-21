@@ -4,6 +4,8 @@ import {
   GenderSelect,
   PhoneNumberInput,
   TextInput,
+  // feat: language select
+  FirstLangSelect,
 } from '../../islands/form/Inputs.tsx'
 import FormRow from '../library/FormRow.tsx'
 import { PatientIntake } from '../../types.ts'
@@ -49,6 +51,8 @@ export default function PatientSection(
         <NationalIdFormGroup
           national_id_number={patient.national_id_number}
         />
+        {/* feat: language select*/}
+        <FirstLangSelect value={patient.language} ></FirstLangSelect>
       </FormSection>
     </>
   )

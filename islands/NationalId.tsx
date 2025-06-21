@@ -2,6 +2,8 @@ import { JSX } from 'preact'
 import { CheckboxInput, TextInput } from './form/Inputs.tsx'
 import { Maybe } from '../types.ts'
 import { useSignal } from '@preact/signals'
+// fix: ID check box layout
+import FormRow from '../components/library/FormRow.tsx'
 
 export function NationalIdFormGroup({ national_id_number }: {
   national_id_number: Maybe<string>
@@ -13,13 +15,16 @@ export function NationalIdFormGroup({ national_id_number }: {
         value={national_id_number}
         no_national_id_checked={no_national_id.value}
       />
-      <CheckboxInput
-        name='no_national_id'
-        label='Patient has no national id'
-        checked={no_national_id.value}
-        onInput={({ currentTarget }) =>
-          no_national_id.value = currentTarget.checked}
-      />
+      {/* fix: ID check box layout and context*/}
+      <FormRow>
+        <CheckboxInput
+          name='no_national_id'
+          label='Patient has no National ID'
+          checked={no_national_id.value}
+          onInput={({ currentTarget }) =>
+            no_national_id.value = currentTarget.checked}
+        />
+      </FormRow>
     </>
   )
 }
@@ -59,7 +64,8 @@ export function NationalIdInput(
   return (
     <TextInput
       name='national_id_number'
-      label='National ID Number'
+      //fix: Id input label
+      label='National ID'
       value={value}
       pattern='^\d{2}-\d{6,7}\s[a-zA-Z]\s\d{2}$'
       placeholder='00-000000 D 00'

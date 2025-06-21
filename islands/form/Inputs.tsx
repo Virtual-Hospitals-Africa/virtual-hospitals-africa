@@ -18,6 +18,8 @@ import {
   PharmacyType,
   Prefix,
   PREFIXES,
+  // fear: First Language component
+  Language,
 } from '../../types.ts'
 import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -295,13 +297,8 @@ export function CheckboxInput(
   },
 ) {
   return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={cls('flex flex-col flex-grow-0', className)}
-    >
-      <div className='grid place-items-center h-full'>
+    //fix: ID checkbox layout and font
+    <label className={cls('flex items-center gap-2 text-gray-600 text-sm', className)}>
         <input
           type='checkbox'
           {...(name && { name })}
@@ -319,8 +316,11 @@ export function CheckboxInput(
           onBlur={onBlur}
           value={value}
         />
-      </div>
-    </LabeledInput>
+        {typeof label === 'string' || typeof label === 'number' ? (
+        <span>{label}</span>
+      ) : null}
+      {required && <span className="text-red-500 ml-1">*</span>}
+    </label>
   )
 }
 
@@ -898,6 +898,24 @@ export function GenderSelect(
         label='Non-binary'
         selected={value === 'non-binary'}
       />
+    </Select>
+  )
+}
+
+// feat: Language select
+export function FirstLangSelect(
+  { value }: { value?: Maybe<Language> },
+) {
+  return (
+    <Select
+      required
+      name='First Language'
+      label='First Language'
+    >
+      <option value=''>Select Language</option>
+      <option value='Option1' label='Option1' selected={value === 'Option1'} />
+      <option value='Option2' label='Option2' selected={value === 'Option2'} />
+      <option value='Option3' label='Option3' selected={value === 'Option3'} />
     </Select>
   )
 }
