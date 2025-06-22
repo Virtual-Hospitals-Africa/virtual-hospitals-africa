@@ -19,7 +19,7 @@ function HeaderLeft(
 ) {
   return (
     <div className='flex items-center gap-2'>
-      <h1 className='text-xl text-white'>{title}</h1>
+      <h1 className='text-3xl font-bold text-gray-900'>{title}</h1>
     </div>
   )
 }
@@ -60,15 +60,13 @@ function HeaderBase(
 ) {
   return (
     <nav
-      className={className}
+      className={`px-6 sm:px-10 ${className ?? ''}`}
       style={{
         height: HEADER_HEIGHT_PX,
       }}
     >
-      <div className='w-full p-5'>
-        <div className='relative flex h-16 items-center justify-between'>
-          {children}
-        </div>
+      <div className='max-w-7xl mx-auto flex items-center h-full'>
+        {children}
       </div>
     </nav>
   )
@@ -98,7 +96,7 @@ export function Header(
     : null
 
   return (
-    <HeaderBase className='bg-indigo-900 font-ubuntu'>
+    <HeaderBase className='bg-white border-b shadow-sm'>
       <HeaderLeft title={title} />
       {right}
     </HeaderBase>

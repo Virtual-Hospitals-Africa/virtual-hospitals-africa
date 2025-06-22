@@ -13,15 +13,17 @@ export default function FindingFlagToggle({
 }) {
   const action = on ? 'Unflag' : 'Flag'
   return (
-    <HeroIconButton
-      variant='ghost'
+    <button
       type='button'
-      onClick={() => {
-        toggle()
-      }}
+      onClick={toggle}
       title={`${action} ${description} as a finding`}
+      className={cls(
+        'p-1 rounded',
+        'transition hover:bg-gray-100',
+        on ? 'text-indigo-700' : 'text-gray-300',
+      )}
     >
-      <FlagIcon className={cls('h-5 w-5', on ? 'fill-indigo-900' : '')} />
-    </HeroIconButton>
+      <FlagIcon className='h-5 w-5' />
+    </button>
   )
 }
