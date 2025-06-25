@@ -27,6 +27,8 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { EncounterReason } from '../../../../../../../db.d.ts'
 import { SqlBool } from 'kysely'
 import { OrganizationContext } from '../../../_middleware.ts'
+// test: waht is this
+import { useMemo } from 'preact/hooks'
 
 export function getPatientIntakeId(ctx: FreshContext): 'new' | string {
   if (ctx.params.patient_id === 'new') {
@@ -92,12 +94,17 @@ export type PatientIntakeContext = OrganizationContext & {
   state: PatientIntakePageProps
 }
 
+//assign every step to a route
+//nav_links is an array containing obj. with step and route
 const nav_links = PATIENT_INTAKE_STEPS.map((step) => ({
   step,
   route:
     `/app/organizations/:organization_id/patients/:patient_id/intake/${step}`,
 }))
 
+//construct next links by step
+//analyse nav_links(an array) and group them by step
+//groupByMapped(T, KeyBy, ValueBy), nav_links => T, (link) => KeyBy, (link, i) => ValueBy
 const next_links_by_step = groupByMapped(
   nav_links,
   (link) => link.step,
@@ -129,6 +136,43 @@ const nextLink = (ctx: PatientIntakeContext, patient_id: string) => {
     params.patient_id = patient_id
   }
   return replaceParams(nextStep(ctx).route, params)
+}
+
+// feat: previous links
+const previous_links_by_step = groupByMapped(
+  nav_links,
+  (link) => link.step,
+  (link, i) => {
+    const previous_link = nav_links[i - 1]
+    // test: bypass assertation
+    /*if (!previous_link) {
+      assertEquals(i, nav_links.length - 1)
+      assertEquals(link.step, 'biometrics')
+    }*/
+    return {
+      route: previous_link?.route ||
+        `/app/organizations/:organization_id/waiting_room?just_encountered_id=:patient_id`,
+      button_text: `Back`,
+    }
+  },
+)
+
+// feat: previous links
+const previousStep = (
+  { state: { step } }: PatientIntakeContext,
+) => {
+  const previous_link = previous_links_by_step.get(step)
+  assert(previous_link, `No previous link for step ${step}`)
+  return previous_link
+}
+
+// feat: previous links
+const previousLink = (ctx: PatientIntakeContext, patient_id: string) => {
+  const params = { ...ctx.params }
+  if (patient_id) {
+    params.patient_id = patient_id
+  }
+  return replaceParams(previousStep(ctx).route, params)
 }
 
 function assertProvider(ctx: PatientIntakeContext): string {
@@ -260,6 +304,7 @@ export async function handler(
   return ctx.next()
 }
 
+// feat: previous links
 export function PatientIntakeLayout({
   ctx,
   next_step_text,
@@ -269,6 +314,12 @@ export function PatientIntakeLayout({
   next_step_text?: string
   children: ComponentChildren
 }): JSX.Element {
+  // get previous link
+  const patient_id = ctx.state.intake.new
+    ? 'new'
+    : ctx.state.intake.patient.personal.id
+  const prev_link = previousLink(ctx, patient_id)
+
   return (
     <Layout
       title='Patient Intake'
@@ -286,6 +337,19 @@ export function PatientIntakeLayout({
         {children}
         <hr />
         <ButtonsContainer>
+          {/* Back button */}
+          <Button
+            type='button'
+            className='flex-1 max-w-xl'
+            // test: what is this
+            onClick={() => {
+              if (typeof prev_link === 'string' && prev_link) {
+                window.location.href = prev_link
+              }
+            }}
+          >
+          </Button>
+          {/* Next button */}
           <Button
             type='submit'
             className='flex-1 max-w-xl'
