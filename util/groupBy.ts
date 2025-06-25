@@ -52,6 +52,10 @@ export function groupByUniq<
 
 export function groupByMapped<
   T extends Record<string, unknown>,
+  //keyof T = the set of the name of T elements
+  //value, i are parameters
+  //KeyBy = the key of the parameter
+  //ValueBy = the value of the parameter
   KeyBy extends (
     | keyof T
     | ((value: T, i: number) => string | number | symbol)
