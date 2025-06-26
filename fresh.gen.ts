@@ -116,9 +116,10 @@ import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $fade_in_heart_indigo_on_transparent from './routes/fade-in-heart/indigo-on-transparent.tsx'
+import * as $fade_in_heart_white_on_indigo from './routes/fade-in-heart/white-on-indigo.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
-import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
 import * as $onboarding_middleware from './routes/onboarding/_middleware.tsx'
@@ -469,9 +470,12 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/fade-in-heart/indigo-on-transparent.tsx':
+      $fade_in_heart_indigo_on_transparent,
+    './routes/fade-in-heart/white-on-indigo.tsx':
+      $fade_in_heart_white_on_indigo,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
-    './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
     './routes/onboarding/_middleware.tsx': $onboarding_middleware,
