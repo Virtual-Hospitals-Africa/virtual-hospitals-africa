@@ -23,7 +23,7 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
-import { cacheable } from './redis.ts'
+import { cacheable } from './cache.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
 import isObjectLike from '../util/isObjectLike.ts'

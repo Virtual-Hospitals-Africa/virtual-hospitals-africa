@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import { useEffect } from 'preact/hooks/src/index.d.ts'
+import { useEffect } from 'preact/hooks'
 
 export function useLocationHash<T>(
   callback: (hash: string) => T,

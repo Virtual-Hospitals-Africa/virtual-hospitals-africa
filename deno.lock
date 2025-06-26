@@ -4,6 +4,8 @@
     "jsr:@luca/esbuild-deno-loader@0.11.0": "0.11.0",
     "jsr:@std/bytes@^1.0.2": "1.0.6",
     "jsr:@std/encoding@^1.0.5": "1.0.10",
+    "jsr:@std/fmt@*": "1.0.2",
+    "jsr:@std/io@*": "0.225.0",
     "jsr:@std/path@^1.0.6": "1.1.0",
     "npm:@headlessui/tailwindcss@0.2.1": "0.2.1_tailwindcss@3.4.17__postcss@8.5.6",
     "npm:@tailwindcss/forms@0.5.7": "0.5.7_tailwindcss@3.4.17__postcss@8.5.6",
@@ -38,6 +40,12 @@
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
+    },
+    "@std/fmt@1.0.2": {
+      "integrity": "87e9dfcdd3ca7c066e0c3c657c1f987c82888eb8103a3a3baa62684ffeb0f7a7"
+    },
+    "@std/io@0.225.0": {
+      "integrity": "c1db7c5e5a231629b32d64b9a53139445b2ca640d828c26bf23e1c55f8c079b3"
     },
     "@std/path@1.1.0": {
       "integrity": "ddc94f8e3c275627281cbc23341df6b8bcc874d70374f75fec2533521e3d6886"
@@ -1639,6 +1647,7 @@
     "https://deno.land/x/esbuild@v0.20.2/mod.js": "67c608ee283233f5d0faa322b887356857c547a8e6a00981f798b2cd38e02436",
     "https://deno.land/x/esbuild@v0.20.2/wasm.js": "5a887c1e38ad1056af11c58d45b6084d33bd33a62afa480d805801739370eed0",
     "https://deno.land/x/events@v1.0.0/mod.ts": "3e2655ffa5e86a6ee01022f964b7fdc6152c007106c47b02958e766c6614dbaf",
+    "https://deno.land/x/fresh@1.7.3/dev.ts": "720dd3a64b62b852db7b6ae471c246c5c605cf4a3091c4cbc802790f36d43e4c",
     "https://deno.land/x/fresh@1.7.3/plugins/tailwind.ts": "0e5451ce2845c869e0c4e5744505e3bff179ff2ef51356326ba24aeeeb88b05c",
     "https://deno.land/x/fresh@1.7.3/plugins/tailwind/compiler.ts": "9658827e8717076e6d1f7815c081ef6a93bdca409640cd55b6cc171435cd189c",
     "https://deno.land/x/fresh@1.7.3/plugins/tailwind/types.ts": "745dded1323498ebd8c439a8975dfcaae3db376566f2ab47b82a34643da85898",
@@ -1648,13 +1657,25 @@
     "https://deno.land/x/fresh@1.7.3/src/build/esbuild.ts": "fdad9cc58f0ead0f954faad4a3c6b07da312acbe3306da742ba083ddb666d4b3",
     "https://deno.land/x/fresh@1.7.3/src/build/mod.ts": "b9d1695a86746ac3a1c52f0e07e723faa2310d1dfd109b9a2eebab6727c4702b",
     "https://deno.land/x/fresh@1.7.3/src/constants.ts": "4795d194b6c6b95f0e876c0a997fbaf57f94cfe253442c5819f95410870b79b3",
+    "https://deno.land/x/fresh@1.7.3/src/dev/build.ts": "9aaf84a781ee4d11d73ec549425f273fe8339812fdd8f726e1ec1ba61bdf0e9d",
     "https://deno.land/x/fresh@1.7.3/src/dev/deps.ts": "93af624becfb2d8497e3d7ef0cf5ef48df61495dc5951b5f922c6a129a9fb75c",
+    "https://deno.land/x/fresh@1.7.3/src/dev/dev_command.ts": "3e3dcc80180faf8868d44d892ddfa8c5ad06033e4d94c0934302e157db1de63d",
+    "https://deno.land/x/fresh@1.7.3/src/dev/error.ts": "21a38d240c00279662e6adde41367f1da0ae7e2836d993f818ea94aabab53e7b",
+    "https://deno.land/x/fresh@1.7.3/src/dev/manifest.ts": "18911c84ee422799faf7dff2eeed75c7c9670ee26a01d0a33ab3b2aba1ba0381",
+    "https://deno.land/x/fresh@1.7.3/src/dev/mod.ts": "d44f3063d157bce53ba534d37b7ff8f262c379ab75229bc63d06c47c67b6b7e6",
+    "https://deno.land/x/fresh@1.7.3/src/dev/update_check.ts": "0b8e4659b49e3a951c684b7faf66be7428948c3e7d492d37397f9a485874515a",
     "https://deno.land/x/fresh@1.7.3/src/runtime/Partial.tsx": "92e16fa7edf37dc8e254024a5410ea2c8986804a6ddf911af4d30209dff80a22",
     "https://deno.land/x/fresh@1.7.3/src/runtime/active_url.ts": "c718797b11189c7e2c86569355d55056148907121e958e00f71c56593aecc329",
     "https://deno.land/x/fresh@1.7.3/src/runtime/build_id.ts": "8376e70e42ce456dfa6932c638409d2ef1bca4833b4ceba0bf74510080a7f976",
     "https://deno.land/x/fresh@1.7.3/src/runtime/csp.ts": "9ee900e9b0b786057b1009da5976298c202d1b86d1f1e4d2510bde5f06530ac9",
     "https://deno.land/x/fresh@1.7.3/src/runtime/deserializer.ts": "1b83e75fa61c48b074ea121f33647d1ed15c68fa2f2a11b0a7f7a12cd38af627",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/entrypoints/client.ts": "a9224606e41bc58d81f37b7125650432920a7d136bdf416051e925ac9bbd1f05",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/entrypoints/deserializer.ts": "e836f44c454e1f67c86eab30f108eb9be05a38489604a24e418b564b77058b96",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/entrypoints/main.ts": "99e9882a376176b017059a8cda05e4f74caf3ea8c18e45a017c8562a50807c77",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/entrypoints/main_dev.ts": "d2960e339119e45017954c7cf6798b9e0a3110d173cc378e1e3e7bc84bd68c34",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/entrypoints/signals.ts": "782c81f97d125ad4f92aa0160dad3a2e8b6ea7a61cec7fdab87bbbbd8c0d215c",
     "https://deno.land/x/fresh@1.7.3/src/runtime/head.ts": "0f9932874497ab6e57ed1ba01d549e843523df4a5d36ef97460e7a43e3132fdc",
+    "https://deno.land/x/fresh@1.7.3/src/runtime/polyfills.ts": "c3de932b2f23df9a4ade1ab4f8890730c0db0a71bf85faa41742a1763631e917",
     "https://deno.land/x/fresh@1.7.3/src/runtime/utils.ts": "4f40630c308e8ea7d53860687905caf1a2f2a46ad8692f24e905a8e996b584c3",
     "https://deno.land/x/fresh@1.7.3/src/server/boot.ts": "3a574c4baa6120f6770f419af6d8d6d5ae32c8e1bdddf2bb14cb258ba18ac62f",
     "https://deno.land/x/fresh@1.7.3/src/server/build_id.ts": "82d9cb985de6b1e38c3108e5a00667b16e80eedc145d73835d6b44349ebe6389",
@@ -1681,6 +1702,7 @@
     "https://deno.land/x/fresh@1.7.3/src/server/tailwind_aot_error_page.tsx": "7265b66dc76a2e54b40774bbeb3cc7d4deb2eac537e08712e90e9c7b9399e53a",
     "https://deno.land/x/fresh@1.7.3/src/server/types.ts": "cf4943a6d3e7df100aed20f243c0464cebb6af657749f742bd2c13e78c40dff2",
     "https://deno.land/x/fresh@1.7.3/src/types.ts": "05169e3389979d8283de0ec1db3a765324ffd730b6af29ffe02752f341ae7d35",
+    "https://deno.land/x/fresh@1.7.3/versions.json": "953bb3cfa81ef8048733f47431f6683447aec211dd149a341a7d7244cf72d2cd",
     "https://deno.land/x/redis@v0.25.5/command.ts": "1b49e8215941e53c61c7b9d408a57f54e8774263170f9a179c96e98f6e200453",
     "https://deno.land/x/redis@v0.25.5/connection.ts": "74e69aca7538367b8a95cd1e73e26d7fa483d409bbd7d645481a46344a067af3",
     "https://deno.land/x/redis@v0.25.5/errors.ts": "b4d05747d2002190593a8aa436442a9a62beae0a92351c49aeb1f8220c8401cf",
@@ -1731,7 +1753,11 @@
     "https://esm.sh/preact@10.25.4/denonext/jsx-runtime.mjs": "28db928810c77a6aa3a8690826a773d6bb08bea2bb5a2d9935b7b0a32808449e",
     "https://esm.sh/preact@10.25.4/denonext/preact.mjs": "5b19c5a3daab9e9f4f4bed775afbb84dd4de2b8cc670ee332f5458c53a6a2d45",
     "https://esm.sh/preact@10.25.4/hooks": "70f392f6cb4a1622b4d5d9263daf887a21bebbbb39dbd16b45019565617c7dd5",
-    "https://esm.sh/preact@10.25.4/jsx-runtime": "b9feb114168d102397dc3d6b09e00630b9ef61c4fa98316c0b18b4c02996356b"
+    "https://esm.sh/preact@10.25.4/jsx-runtime": "b9feb114168d102397dc3d6b09e00630b9ef61c4fa98316c0b18b4c02996356b",
+    "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/mod.ts": "ed5b3562d4ea6c6887bc7e9844612b08a3bc3a3678ca77cc7dfdf461c362751e",
+    "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/spinner-types.ts": "c67e6962a0c738aa57b4d3ad9fe06c8c0131f93360acbf95456f2ba200fd8826",
+    "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/terminal-spinner.ts": "aa2fcf87060caf79fbd26f741c2d8e0093f196b891aca9ffd0a709aba11a1620",
+    "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/util.ts": "22c7cafa1d1138c0009ddafe6c3fd1e0c335a92b53bb3a42d9e4d38727108251"
   },
   "workspace": {
     "dependencies": [
