@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { connect } from 'redis'
-import Redlock from 'redlock'
+// import Redlock from 'redlock'
 
 interface RedisConnectionOptions {
   username?: string
@@ -35,25 +35,9 @@ const connectionOpts = () => {
 }
 
 export const opts = connectionOpts()
+console.log({ opts })
 
 export const redis =
   (Deno.env.get('NO_EXTERNAL_CONNECT') ? undefined : await connect(opts))!
 
-// deno-lint-ignore no-explicit-any
-export function cacheable<F extends (...args: any[]) => Promise<any>>(
-  fn: F,
-): F {
-  const function_name = fn.name
-  assert(function_name, 'Function must have a name')
-  return ((async (...args: Parameters<F>) => {
-    const key = `${function_name}:${JSON.stringify(args)}`
-    const result = await redis.get(key)
-    if (result) return JSON.parse(result)
-    return fn(...args).then((result) => {
-      redis.set(key, JSON.stringify(result))
-      return result
-    })
-  }) as unknown as F)
-}
-
-export const lock = redis && new Redlock([redis])
+// export const lock = redis && new Redlock([redis])

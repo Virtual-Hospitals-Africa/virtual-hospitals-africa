@@ -189,33 +189,16 @@ export default function LoadingTest() {
       style={{
         height: '100vh',
         padding: 20,
-        backgroundColor: '#312E81',
+        backgroundColor: '#000',
         position: 'relative',
         display: 'grid',
         placeItems: 'center',
       }}
     >
       <div className='flex items-center gap-8'>
-        <WifiHeart variant='white' width='400px' />
-        <VHAText variant='white' />
+        <WifiHeart variant='indigo' width='400px' />
+        <VHAText variant='indigo' />
       </div>
-
-      {
-        /* <svg
-          viewBox='0 0 400 400'
-          className='absolute h-full w-full top-0 left-0 wifi-heart-final-circle'
-        >
-          <circle
-            cx='200'
-            cy='200'
-            r='190'
-            fill='none'
-            stroke='#fff'
-            strokeWidth='20'
-          />
-        </svg> */
-      }
-      {/* <span className='wifi-heart-final-circle absolute inline-flex h-2/3 w-2/3 top-1/6 left-1/6 rounded-full bg-white' /> */}
     </div>
   )
 }
