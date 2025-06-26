@@ -115,7 +115,10 @@ import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
+import * as $book_demo from './routes/book-demo.tsx'
+import * as $book_intro_call from './routes/book-intro-call.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $contact_us from './routes/contact-us.tsx'
 import * as $fade_in_heart_indigo_on_transparent from './routes/fade-in-heart/indigo-on-transparent.tsx'
 import * as $fade_in_heart_white_on_indigo from './routes/fade-in-heart/white-on-indigo.tsx'
 import * as $index from './routes/index.tsx'
@@ -139,6 +142,7 @@ import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharm
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
+import * as $request_investor_deck from './routes/request-investor-deck.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -469,7 +473,10 @@ const manifest = {
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
+    './routes/book-demo.tsx': $book_demo,
+    './routes/book-intro-call.tsx': $book_intro_call,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/contact-us.tsx': $contact_us,
     './routes/fade-in-heart/indigo-on-transparent.tsx':
       $fade_in_heart_indigo_on_transparent,
     './routes/fade-in-heart/white-on-indigo.tsx':
@@ -502,6 +509,7 @@ const manifest = {
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
+    './routes/request-investor-deck.tsx': $request_investor_deck,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
