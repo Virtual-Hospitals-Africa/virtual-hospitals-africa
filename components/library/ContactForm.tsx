@@ -18,11 +18,7 @@ export type ContactReason = (typeof CONTACT_REASON_OPTIONS)[number]["value"];
 
 export default function ContactForm({ reason }: { reason: ContactReason }) {
   return (
-    <Form
-      method="POST"
-      action="/interest"
-      className="w-full mt-4 min-w-[450px]"
-    >
+    <Form method="POST" action="/interest" className="w-full min-w-[450px]">
       <FormRow className="w-full">
         <SelectWithOptions
           name="reason"
