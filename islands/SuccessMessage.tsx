@@ -7,11 +7,14 @@ import { CheckIcon } from '../components/library/icons/heroicons/solid.tsx'
 interface SuccessMessageProps {
   className?: string
   message: string | null
+  notDismissable?: boolean
 }
 
-export default function SuccessMessage(
-  { className, message }: SuccessMessageProps,
-): JSX.Element | null {
+export default function SuccessMessage({
+  className,
+  message,
+  notDismissable,
+}: SuccessMessageProps): JSX.Element | null {
   const [isVisible, setIsVisible] = useState(!!message)
   return isVisible
     ? (
@@ -25,21 +28,21 @@ export default function SuccessMessage(
               />
             </div>
             <div className='ml-3'>
-              <h3 className='text-sm font-medium text-green-800'>
-                {message}
-              </h3>
+              <h3 className='text-sm font-medium text-green-800'>{message}</h3>
             </div>
           </div>
-          <button
-            className='ml-auto'
-            type='button'
-            onClick={() => setIsVisible(false)}
-          >
-            <XMarkIcon
+          {!notDismissable && (
+            <button
+              className='ml-auto'
               type='button'
-              className='text-green-400 hover:text-green-600 h-5 w-5'
-            />
-          </button>
+              onClick={() => setIsVisible(false)}
+            >
+              <XMarkIcon
+                type='button'
+                className='text-green-400 hover:text-green-600 h-5 w-5'
+              />
+            </button>
+          )}
         </div>
       </div>
     )

@@ -118,7 +118,12 @@ import * as $apply from './routes/apply.tsx'
 import * as $book_demo from './routes/book-demo.tsx'
 import * as $book_intro_call from './routes/book-intro-call.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $contact_form from './routes/contact-form.tsx'
 import * as $contact_us from './routes/contact-us.tsx'
+import * as $contact_book_a_demo from './routes/contact/book_a_demo.tsx'
+import * as $contact_book_an_intro_call from './routes/contact/book_an_intro_call.tsx'
+import * as $contact_general_inquiry from './routes/contact/general_inquiry.tsx'
+import * as $contact_request_investor_deck from './routes/contact/request_investor_deck.tsx'
 import * as $fade_in_heart_indigo_on_transparent from './routes/fade-in-heart/indigo-on-transparent.tsx'
 import * as $fade_in_heart_white_on_indigo from './routes/fade-in-heart/white-on-indigo.tsx'
 import * as $index from './routes/index.tsx'
@@ -144,6 +149,7 @@ import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $request_investor_deck from './routes/request-investor-deck.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
+import * as $thank_you from './routes/thank-you.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
@@ -476,7 +482,13 @@ const manifest = {
     './routes/book-demo.tsx': $book_demo,
     './routes/book-intro-call.tsx': $book_intro_call,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/contact-form.tsx': $contact_form,
     './routes/contact-us.tsx': $contact_us,
+    './routes/contact/book_a_demo.tsx': $contact_book_a_demo,
+    './routes/contact/book_an_intro_call.tsx': $contact_book_an_intro_call,
+    './routes/contact/general_inquiry.tsx': $contact_general_inquiry,
+    './routes/contact/request_investor_deck.tsx':
+      $contact_request_investor_deck,
     './routes/fade-in-heart/indigo-on-transparent.tsx':
       $fade_in_heart_indigo_on_transparent,
     './routes/fade-in-heart/white-on-indigo.tsx':
@@ -511,6 +523,7 @@ const manifest = {
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
     './routes/request-investor-deck.tsx': $request_investor_deck,
     './routes/schedule-demo.tsx': $schedule_demo,
+    './routes/thank-you.tsx': $thank_you,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
     './routes/waitlist.tsx': $waitlist,

@@ -19,35 +19,46 @@ export type LayoutProps =
     children: ComponentChildren
     drawer?: ComponentChild
   }
-  & ({
-    variant: 'health worker home page'
-    route: string
-    health_worker: EmployedHealthWorker
-    notifications: RenderedNotification[]
-    params?: Record<string, string>
-  } | {
-    variant: 'regulator home page'
-    route: string
-    regulator: { id: string }
-    params?: Record<string, string>
-  } | {
-    variant: 'form'
-    sidebar: ComponentChild
-  } | {
-    variant: 'just logo' | 'landing page'
-  })
+  & (
+    | {
+      variant: 'health worker home page'
+      route: string
+      health_worker: EmployedHealthWorker
+      notifications: RenderedNotification[]
+      params?: Record<string, string>
+    }
+    | {
+      variant: 'regulator home page'
+      route: string
+      regulator: { id: string }
+      params?: Record<string, string>
+    }
+    | {
+      variant: 'form'
+      sidebar: ComponentChild
+    }
+    | {
+      variant: 'just logo' | 'landing page' | 'empty'
+    }
+  )
 
-function AppLayoutContents(
-  { title, avatarUrl, notifications, variant, sidebar, drawer, children }: {
-    title: string
-    avatarUrl?: Maybe<string>
-    notifications?: RenderedNotification[]
-    variant: 'home page' | 'form'
-    sidebar: ComponentChild
-    drawer?: ComponentChild
-    children: ComponentChildren
-  },
-) {
+function AppLayoutContents({
+  title,
+  avatarUrl,
+  notifications,
+  variant,
+  sidebar,
+  drawer,
+  children,
+}: {
+  title: string
+  avatarUrl?: Maybe<string>
+  notifications?: RenderedNotification[]
+  variant: 'home page' | 'form'
+  sidebar: ComponentChild
+  drawer?: ComponentChild
+  children: ComponentChildren
+}) {
   return (
     <>
       {sidebar}
@@ -59,9 +70,7 @@ function AppLayoutContents(
             avatarUrl={avatarUrl}
             notifications={notifications}
           />
-          <div className='p-4'>
-            {children}
-          </div>
+          <div className='p-4'>{children}</div>
         </section>
         {drawer && (
           <div className='h-screen w-[400px] border-l border-gray-200'>
@@ -73,18 +82,16 @@ function AppLayoutContents(
   )
 }
 
-function JustLogoLayoutContents(
-  { title, children }: {
-    title: string
-    children: ComponentChildren
-  },
-) {
+function JustLogoLayoutContents({
+  title,
+  children,
+}: {
+  title: string
+  children: ComponentChildren
+}) {
   return (
     <>
-      <Header
-        title={title}
-        variant='just logo'
-      />
+      <Header title={title} variant='just logo' />
       <section className='min-h-full flex flex-col align-center justify-between flex-grow p-6'>
         {children}
       </section>
@@ -106,17 +113,16 @@ export default function Layout(props: LayoutProps) {
       <SuccessMessage
         message={success}
         className='fixed z-50 top-0 left-0 right-0 m-12'
+        notDismissable={props.variant === 'empty'}
       />
       <WarningMessage
         message={warning}
         className='fixed z-50 top-0 left-0 right-0 m-12'
       />
-      <ErrorListener
-        initialError={error}
-      />
+      <ErrorListener initialError={error} />
       {props.variant === 'landing page' && props.children}
-      {((props.variant === 'health worker home page') ||
-        (props.variant === 'regulator home page')) && (
+      {(props.variant === 'health worker home page' ||
+        props.variant === 'regulator home page') && (
         <AppLayoutContents
           {...props}
           variant='home page'
@@ -130,7 +136,7 @@ export default function Layout(props: LayoutProps) {
             ? (
               <PractitionerHomePageSidebar
                 route={props.route}
-                params={props.params && ('organization_id' in props.params)
+                params={props.params && 'organization_id' in props.params
                   ? props.params
                   : {
                     ...props.params,
