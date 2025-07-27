@@ -50,7 +50,8 @@ export function update(
     .updateTable('regulators')
     .set({ name, avatar_url })
     .where('id', '=', id)
-    .execute()
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function upsert(trx: TrxOrDb, regulator: Regulator) {

@@ -7,6 +7,9 @@ import { deleteCookie, getCookies } from 'std/http/cookie.ts'
 import { startTrx } from '../../shared/startTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import { login_href } from '../login.tsx'
+import { JSX } from 'preact/jsx-runtime'
+import { promiseProps } from '../../util/promiseProps.ts'
+import Layout from '../../components/library/Layout.tsx'
 
 export const handler = [
   ensureCookiePresent,
@@ -56,4 +59,85 @@ async function getLoggedInRegulator(
 
   ctx.state.regulator = regulator
   return ctx.next()
+}
+
+type RenderedSeparately = {
+  drawer?: JSX.Element
+  title?: string
+  children: JSX.Element
+}
+
+type RenderedSeparatelyWithTitle = RenderedSeparately & {
+  title: string
+}
+
+export function RegulatorHomePageLayout<
+  Context extends LoggedInRegulatorContext,
+>(
+  title:
+    | string
+    | ((
+      req: Request,
+      ctx: Context,
+    ) =>
+      | Response
+      | RenderedSeparatelyWithTitle
+      | Promise<RenderedSeparatelyWithTitle | Response>),
+  render?: (
+    req: Request,
+    ctx: Context,
+  ) =>
+    | JSX.Element
+    | RenderedSeparately
+    | Promise<JSX.Element>
+    | Promise<Response>
+    | Promise<JSX.Element | Response>
+    | Promise<RenderedSeparately | Response>,
+) {
+  return async function (
+    req: Request,
+    ctx: Context,
+  ) {
+    const { regulator } = ctx.state
+    if (typeof title === 'function') {
+      // deno-lint-ignore no-explicit-any
+      render = title as any
+      // deno-lint-ignore no-explicit-any
+      title = undefined as any
+    }
+
+    let { rendered } = await promiseProps({
+      rendered: Promise.resolve(
+        render!(req, ctx),
+      ),
+      // regulator_notifications: notifications.ofRegulator(
+      //   trx,
+      //   Regulator.id,
+      // ),
+    })
+
+    if (rendered instanceof Response) {
+      return rendered
+    }
+
+    if ('title' in rendered) {
+      title = rendered.title as string
+    }
+    if ('children' in rendered) {
+      rendered = rendered.children
+    }
+
+    return (
+      <Layout
+        variant='regulator home page'
+        title={title as string}
+        route={ctx.route}
+        url={ctx.url}
+        regulator={regulator}
+        params={ctx.params}
+      >
+        {rendered}
+      </Layout>
+    )
+  }
 }

@@ -4,8 +4,8 @@ import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import * as pharmacies from '../../../../db/models/pharmacies.ts'
-import Layout from '../../../../components/library/Layout.tsx'
 import { LoggedInRegulator } from '../../../../types.ts'
+import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
 const UpsertPharmacySchema = z.object({
   name: z.string(),
@@ -55,25 +55,19 @@ export const handler = {
   },
 }
 
-// deno-lint-ignore require-await
-export default async function Add(
-  _req: Request,
-  ctx: FreshContext<LoggedInRegulator>,
-) {
-  return (
-    <Layout
-      title='Pharmacies'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={ctx.state.regulator}
-      variant='regulator home page'
-    >
+export default RegulatorHomePageLayout(
+  'Pharmacies',
+  function Add(
+    _req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    return (
       <PharmacyForm
         formData={{
           name: ctx.url.searchParams.get('name') || '',
           licence_number: ctx.url.searchParams.get('licence_number') || '',
         }}
       />
-    </Layout>
-  )
-}
+    )
+  },
+)

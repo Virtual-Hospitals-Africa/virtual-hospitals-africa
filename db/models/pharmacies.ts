@@ -40,6 +40,7 @@ function baseQuery(trx: TrxOrDb) {
             'pharmacists.prefix',
             'pharmacists.family_name',
             'pharmacists.given_name',
+            'pharmacists.country',
             nameSql('pharmacists').as('name'),
             sql<
               string
@@ -61,16 +62,26 @@ export const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
+  country: string
   name_search: string | null
   licence_number_search: string | null
 }
 
-export const toSearchTerms = (search: string | null): SearchTerms => {
-  if (!search) return { name_search: null, licence_number_search: null }
-  if (isLicenceLike(search)) {
-    return { name_search: null, licence_number_search: search.toUpperCase() }
+export const toSearchTerms = (
+  country: string,
+  search: string | null,
+): SearchTerms => {
+  if (!search) {
+    return { country, name_search: null, licence_number_search: null }
   }
-  return { name_search: search, licence_number_search: null }
+  if (isLicenceLike(search)) {
+    return {
+      country,
+      name_search: null,
+      licence_number_search: search.toUpperCase(),
+    }
+  }
+  return { country, name_search: search, licence_number_search: null }
 }
 
 const model = base({

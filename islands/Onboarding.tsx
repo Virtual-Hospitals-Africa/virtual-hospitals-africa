@@ -62,6 +62,16 @@ function EnterProfession(
   const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
   const nurse_suffix = profession.value === 'nurse' ? ' Nurse' : ''
 
+  const description = (() => {
+    if (profession.value === 'doctor') {
+      return specialty.value
+    }
+    if (profession.value === 'nurse') {
+      return specialty.value + ' Nurse'
+    }
+    return 'Regulator'
+  })()
+
   return (
     <div
       className={cls(
@@ -89,7 +99,7 @@ function EnterProfession(
           options={[
             { value: 'nurse', label: 'Nurse' },
             { value: 'doctor', label: 'Doctor' },
-            { value: 'superadmin', label: 'Super Admin (regulator)' },
+            { value: 'regulator', label: 'Regulator' },
           ]}
           onChange={(event) => profession.value = event.currentTarget.value}
           className='capitalize'
@@ -112,7 +122,7 @@ function EnterProfession(
         </FormRow>
       )}
 
-      {profession.value === 'superadmin' && (
+      {profession.value === 'regulator' && (
         <FormRow>
           <CountrySelect name='country' value='ZW' />
         </FormRow>
@@ -126,7 +136,7 @@ function EnterProfession(
           person={{
             name: doctor_prefix + name.value,
             avatar_url: health_worker.avatar_url,
-            description: specialty.value + nurse_suffix,
+            description,
           }}
           size='lg'
         />
@@ -134,8 +144,8 @@ function EnterProfession(
 
       <div className='mt-10 flex'>
         <Button
-          type={profession.value === 'superadmin' ? 'submit' : 'button'}
-          onClick={profession.value === 'superadmin'
+          type={profession.value === 'regulator' ? 'submit' : 'button'}
+          onClick={profession.value === 'regulator'
             ? undefined
             : () =>
               onProfession({

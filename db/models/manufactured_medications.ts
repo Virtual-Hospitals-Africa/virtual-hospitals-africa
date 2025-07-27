@@ -42,7 +42,6 @@ export default base({
     opts: {
       include_recalled?: Maybe<boolean>
       search: string | null
-      country?: string
     },
   ) =>
     trx
@@ -78,20 +77,6 @@ export default base({
         (eb) =>
           eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
       )
-      .$if(
-        !!opts.country,
-        (eb) =>
-          eb.where(
-            'manufactured_medications.id',
-            'in',
-            trx.selectFrom('manufactured_medication_availabilities')
-              .select('manufactured_medication_id').where(
-                'country',
-                '=',
-                opts.country!,
-              ),
-          ),
-      )
       .orderBy([
         'drugs.generic_name asc',
         'manufactured_medications.trade_name asc',
@@ -112,8 +97,26 @@ export default base({
   },
   handleSearch(
     qb,
-    opts: { search: string | null; include_recalled?: Maybe<boolean> },
+    opts: {
+      search: string | null
+      country?: Maybe<string>
+      include_recalled?: Maybe<boolean>
+    },
+    trx,
   ) {
+    if (opts.country) {
+      qb = qb.where(
+        'manufactured_medications.id',
+        'in',
+        trx.selectFrom('manufactured_medication_availabilities')
+          .select('manufactured_medication_id').where(
+            'country',
+            '=',
+            opts.country!,
+          ),
+      )
+    }
+
     if (!opts.search) return qb
 
     return qb.where((eb) =>

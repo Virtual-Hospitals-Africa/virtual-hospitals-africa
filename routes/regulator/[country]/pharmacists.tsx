@@ -1,4 +1,3 @@
-import Layout from '../../../components/library/Layout.tsx'
 import PharmacistsTable from '../../../components/regulator/PharmacistsTable.tsx'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
 import { FreshContext } from '$fresh/server.ts'
@@ -9,32 +8,28 @@ import { Button } from '../../../components/library/Button.tsx'
 import { searchPage } from '../../../util/searchPage.ts'
 import { TextInput } from '../../../islands/form/Inputs.tsx'
 import { json } from '../../../util/responses.ts'
+import { RegulatorHomePageLayout } from '../../regulator/_middleware.tsx'
 
-export default async function PharmacistsPage(
-  req: Request,
-  ctx: FreshContext<LoggedInRegulator>,
-) {
-  const page = searchPage(ctx)
-  const search = ctx.url.searchParams.get('search')
-  const search_terms = pharmacists.toSearchTerms(search)
-  const search_results = await pharmacists.search(
-    ctx.state.trx,
-    search_terms,
-    { page },
-  )
+export default RegulatorHomePageLayout(
+  'Pharmacists',
+  async function PharmacistsPage(
+    req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    const page = searchPage(ctx)
+    const search = ctx.url.searchParams.get('search')
+    const search_terms = pharmacists.toSearchTerms(search)
+    const search_results = await pharmacists.search(
+      ctx.state.trx,
+      search_terms,
+      { page },
+    )
 
-  if (req.headers.get('accept') === 'application/json') {
-    return json(search_results)
-  }
+    if (req.headers.get('accept') === 'application/json') {
+      return json(search_results)
+    }
 
-  return (
-    <Layout
-      title='Pharmacists'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={ctx.state.regulator}
-      variant='regulator home page'
-    >
+    return (
       <Form>
         <FormRow className='mb-4'>
           <TextInput
@@ -52,6 +47,6 @@ export default async function PharmacistsPage(
         </FormRow>
         <PharmacistsTable {...search_results} />
       </Form>
-    </Layout>
-  )
-}
+    )
+  },
+)

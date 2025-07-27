@@ -1,12 +1,11 @@
 import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import PharmacistForm from '../../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequest } from '../../../../../util/parseForm.ts'
 import * as pharmacists from '../../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
-import { error } from '../../../../../util/alerts.ts'
+import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
   async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
@@ -29,30 +28,28 @@ export const handler = {
   },
 }
 
-export default async function EditPharmacistPage(
-  _req: Request,
-  ctx: FreshContext<LoggedInRegulator>,
-) {
-  const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
+export default RegulatorHomePageLayout(
+  'Pharmacists',
+  async function EditPharmacistPage(
+    _req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 
-  const pharmacist = await pharmacists.getById(
-    ctx.state.trx,
-    pharmacist_id,
-  )
-  if (!pharmacist) {
-    return error('Pharmacist not found', '/regulator/pharmacists')
-  }
+    const pharmacist = await pharmacists.getById(
+      ctx.state.trx,
+      pharmacist_id,
+    )
+    if (!pharmacist) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: '/regulator/pharmacists?error=' +
+            encodeURIComponent('Pharmacist not found'),
+        },
+      })
+    }
 
-  return (
-    <Layout
-      title='Pharmacists'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={ctx.state.regulator}
-      params={ctx.params}
-      variant='regulator home page'
-    >
-      <PharmacistForm formData={pharmacist} />
-    </Layout>
-  )
-}
+    return <PharmacistForm formData={pharmacist} />
+  },
+)

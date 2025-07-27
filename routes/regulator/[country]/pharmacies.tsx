@@ -1,4 +1,3 @@
-import Layout from '../../../components/library/Layout.tsx'
 import { PharmaciesTable } from '../../../components/regulator/PharmaciesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
 import * as pharmacies from '../../../db/models/pharmacies.ts'
@@ -9,35 +8,31 @@ import Form from '../../../components/library/Form.tsx'
 import { searchPage } from '../../../util/searchPage.ts'
 import { TextInput } from '../../../islands/form/Inputs.tsx'
 import { json } from '../../../util/responses.ts'
+import { RegulatorHomePageLayout } from '../_middleware.tsx'
 
-export default async function PharmaciesPage(
-  req: Request,
-  ctx: FreshContext<LoggedInRegulator>,
-) {
-  const page = searchPage(ctx)
-  const search = ctx.url.searchParams.get('search')
+export default RegulatorHomePageLayout(
+  'Pharmacies',
+  async function PharmaciesPage(
+    req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    const { country } = ctx.params
+    const page = searchPage(ctx)
+    const search = ctx.url.searchParams.get('search')
 
-  const search_terms = pharmacies.toSearchTerms(search)
+    const search_terms = pharmacies.toSearchTerms(country, search)
 
-  const search_results = await pharmacies.search(
-    ctx.state.trx,
-    search_terms,
-    { page },
-  )
+    const search_results = await pharmacies.search(
+      ctx.state.trx,
+      search_terms,
+      { page },
+    )
 
-  if (req.headers.get('accept') === 'application/json') {
-    return json(search_results)
-  }
+    if (req.headers.get('accept') === 'application/json') {
+      return json(search_results)
+    }
 
-  return (
-    <Layout
-      title='Pharmacies'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={ctx.state.regulator}
-      params={ctx.params}
-      variant='regulator home page'
-    >
+    return (
       <Form>
         <FormRow className='mb-4'>
           <TextInput
@@ -55,6 +50,6 @@ export default async function PharmaciesPage(
         </FormRow>
         <PharmaciesTable {...search_results} />
       </Form>
-    </Layout>
-  )
-}
+    )
+  },
+)

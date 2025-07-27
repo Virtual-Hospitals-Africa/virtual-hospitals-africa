@@ -9,6 +9,7 @@ import { Onboarding } from '../../islands/Onboarding.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../util/postHandler.ts'
 import redirect from '../../util/redirect.ts'
+import { startRegulatorSession } from '../logged-in.tsx'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
@@ -23,17 +24,18 @@ const OnboardingSchema = z.object({
 export const handler = postHandler(
   OnboardingSchema,
   async (_req, ctx: OnboardingContext, form_values) => {
+    const { trx, healthWorker } = ctx.state
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead
     if (form_values.profession === 'regulator') {
-      await health_workers.removeById(ctx.state.trx, ctx.state.healthWorker.id)
-      await regulators.upsert(ctx.state.trx, {
-        name: ctx.state.healthWorker.name,
-        email: ctx.state.healthWorker.email,
-        avatar_url: ctx.state.healthWorker.avatar_url,
+      await health_workers.removeById(trx, healthWorker.id)
+      const regulator = await regulators.upsert(trx, {
+        name: healthWorker.name,
+        email: healthWorker.email,
+        avatar_url: healthWorker.avatar_url,
         country: form_values.country,
       })
-      return redirect('/regulator')
+      return startRegulatorSession(trx, regulator)
     }
 
     await employment.addOne(ctx.state.trx, {

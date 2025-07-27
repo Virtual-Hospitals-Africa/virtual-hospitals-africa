@@ -90,13 +90,17 @@ const practitioner_home_page_nav_links: LinkDef[] = [
 
 const regulator_home_page_nav_links: LinkDef[] = [
   {
-    route: '/regulator/pharmacists',
+    route: '/regulator/:country/pharmacists',
     title: 'Pharmacists',
     Icon: UsersIcon,
   },
-  { route: '/regulator/pharmacies', title: 'Pharmacies', Icon: PharmaciesIcon },
   {
-    route: '/regulator/medicines',
+    route: '/regulator/:country/pharmacies',
+    title: 'Pharmacies',
+    Icon: PharmaciesIcon,
+  },
+  {
+    route: '/regulator/:country/medicines',
     title: 'Medicines',
     Icon: MedicineIcon,
   },
@@ -159,7 +163,7 @@ export const RegulatorDefaultTop = {
   child: <LogoWithFullText variant='indigo' className='h-16' />,
 }
 
-export function PractitionerHomePageSidebar(
+export function HealthWorkerHomePageSidebar(
   { route, params, urlSearchParams }: {
     route: string
     params: Record<string, string>
@@ -184,6 +188,7 @@ export function RegulatorHomePageSidebar(
     urlSearchParams: URLSearchParams
   },
 ) {
+  console.log({ params })
   return (
     <GenericSidebar
       route={route}

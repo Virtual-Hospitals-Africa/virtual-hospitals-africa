@@ -147,7 +147,7 @@ import * as $regulator_country_pharmacists_pharmacist_id_ from './routes/regulat
 import * as $regulator_country_pharmacists_pharmacist_id_edit from './routes/regulator/[country]/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_country_pharmacists_pharmacist_id_revoke from './routes/regulator/[country]/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_country_pharmacists_invite from './routes/regulator/[country]/pharmacists/invite.tsx'
-import * as $regulator_middleware from './routes/regulator/_middleware.ts'
+import * as $regulator_middleware from './routes/regulator/_middleware.tsx'
 import * as $request_investor_deck from './routes/request-investor-deck.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $thank_you from './routes/thank-you.tsx'
@@ -528,7 +528,7 @@ const manifest = {
       $regulator_country_pharmacists_pharmacist_id_revoke,
     './routes/regulator/[country]/pharmacists/invite.tsx':
       $regulator_country_pharmacists_invite,
-    './routes/regulator/_middleware.ts': $regulator_middleware,
+    './routes/regulator/_middleware.tsx': $regulator_middleware,
     './routes/request-investor-deck.tsx': $request_investor_deck,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/thank-you.tsx': $thank_you,

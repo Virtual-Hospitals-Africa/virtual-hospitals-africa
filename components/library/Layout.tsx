@@ -4,7 +4,7 @@ import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import {
-  PractitionerHomePageSidebar,
+  HealthWorkerHomePageSidebar,
   RegulatorHomePageSidebar,
 } from './Sidebar.tsx'
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
@@ -134,7 +134,7 @@ export default function Layout(props: LayoutProps) {
             : []}
           sidebar={props.variant === 'health worker home page'
             ? (
-              <PractitionerHomePageSidebar
+              <HealthWorkerHomePageSidebar
                 route={props.route}
                 params={props.params && 'organization_id' in props.params
                   ? props.params
