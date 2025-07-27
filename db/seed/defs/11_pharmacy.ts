@@ -19,7 +19,7 @@ async function importFromCsv(trx: TrxOrDb) {
     const pharmacy of parseTsvTyped(
       './db/resources/zimbabwe_pharmacies.tsv',
       z.object({
-        address: z.string(),
+        address: z.string().nullable(),
         town: z.string(),
         expiry_date: z.string(),
         licence_number: z.string(),

@@ -135,18 +135,19 @@ import * as $onboarding_welcome from './routes/onboarding/welcome.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_country_middleware from './routes/regulator/[country]/_middleware.ts'
+import * as $regulator_country_medicines from './routes/regulator/[country]/medicines.tsx'
+import * as $regulator_country_medicines_medicine_id_recall from './routes/regulator/[country]/medicines/[medicine_id]/recall.tsx'
+import * as $regulator_country_pharmacies from './routes/regulator/[country]/pharmacies.tsx'
+import * as $regulator_country_pharmacies_pharmacy_name_ from './routes/regulator/[country]/pharmacies/[pharmacy.name].tsx'
+import * as $regulator_country_pharmacies_pharmacy_id_ from './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx'
+import * as $regulator_country_pharmacies_add from './routes/regulator/[country]/pharmacies/add.tsx'
+import * as $regulator_country_pharmacists from './routes/regulator/[country]/pharmacists.tsx'
+import * as $regulator_country_pharmacists_pharmacist_id_ from './routes/regulator/[country]/pharmacists/[pharmacist_id].tsx'
+import * as $regulator_country_pharmacists_pharmacist_id_edit from './routes/regulator/[country]/pharmacists/[pharmacist_id]/edit.tsx'
+import * as $regulator_country_pharmacists_pharmacist_id_revoke from './routes/regulator/[country]/pharmacists/[pharmacist_id]/revoke.tsx'
+import * as $regulator_country_pharmacists_invite from './routes/regulator/[country]/pharmacists/invite.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
-import * as $regulator_medicines from './routes/regulator/[country]/medicines.tsx'
-import * as $regulator_medicines_medicine_id_recall from './routes/regulator/medicines/[medicine_id]/recall.tsx'
-import * as $regulator_pharmacies from './routes/regulator/[country]/pharmacies.tsx'
-import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
-import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
-import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
-import * as $regulator_pharmacists from './routes/regulator/[country]/pharmacists.tsx'
-import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
-import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
-import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
-import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $request_investor_deck from './routes/request-investor-deck.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $thank_you from './routes/thank-you.tsx'
@@ -163,6 +164,7 @@ import * as $BackLink from './islands/BackLink.tsx'
 import * as $BaseOption from './islands/BaseOption.tsx'
 import * as $CloseButton from './islands/CloseButton.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
+import * as $CountrySelect from './islands/CountrySelect.tsx'
 import * as $DemoVideo from './islands/DemoVideo.tsx'
 import * as $Dropdown from './islands/Dropdown.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
@@ -503,24 +505,30 @@ const manifest = {
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/[country]/_middleware.ts':
+      $regulator_country_middleware,
+    './routes/regulator/[country]/medicines.tsx': $regulator_country_medicines,
+    './routes/regulator/[country]/medicines/[medicine_id]/recall.tsx':
+      $regulator_country_medicines_medicine_id_recall,
+    './routes/regulator/[country]/pharmacies.tsx':
+      $regulator_country_pharmacies,
+    './routes/regulator/[country]/pharmacies/[pharmacy.name].tsx':
+      $regulator_country_pharmacies_pharmacy_name_,
+    './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx':
+      $regulator_country_pharmacies_pharmacy_id_,
+    './routes/regulator/[country]/pharmacies/add.tsx':
+      $regulator_country_pharmacies_add,
+    './routes/regulator/[country]/pharmacists.tsx':
+      $regulator_country_pharmacists,
+    './routes/regulator/[country]/pharmacists/[pharmacist_id].tsx':
+      $regulator_country_pharmacists_pharmacist_id_,
+    './routes/regulator/[country]/pharmacists/[pharmacist_id]/edit.tsx':
+      $regulator_country_pharmacists_pharmacist_id_edit,
+    './routes/regulator/[country]/pharmacists/[pharmacist_id]/revoke.tsx':
+      $regulator_country_pharmacists_pharmacist_id_revoke,
+    './routes/regulator/[country]/pharmacists/invite.tsx':
+      $regulator_country_pharmacists_invite,
     './routes/regulator/_middleware.ts': $regulator_middleware,
-    './routes/regulator/medicines.tsx': $regulator_medicines,
-    './routes/regulator/medicines/[medicine_id]/recall.tsx':
-      $regulator_medicines_medicine_id_recall,
-    './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
-    './routes/regulator/pharmacies/[pharmacy.name].tsx':
-      $regulator_pharmacies_pharmacy_name_,
-    './routes/regulator/pharmacies/[pharmacy_id].tsx':
-      $regulator_pharmacies_pharmacy_id_,
-    './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
-    './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
-    './routes/regulator/pharmacists/[pharmacist_id].tsx':
-      $regulator_pharmacists_pharmacist_id_,
-    './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':
-      $regulator_pharmacists_pharmacist_id_edit,
-    './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
-      $regulator_pharmacists_pharmacist_id_revoke,
-    './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
     './routes/request-investor-deck.tsx': $request_investor_deck,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/thank-you.tsx': $thank_you,
@@ -539,6 +547,7 @@ const manifest = {
     './islands/BaseOption.tsx': $BaseOption,
     './islands/CloseButton.tsx': $CloseButton,
     './islands/ConditionSearch.tsx': $ConditionSearch,
+    './islands/CountrySelect.tsx': $CountrySelect,
     './islands/DemoVideo.tsx': $DemoVideo,
     './islands/Dropdown.tsx': $Dropdown,
     './islands/ErrorListener.tsx': $ErrorListener,

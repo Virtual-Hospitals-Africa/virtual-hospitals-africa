@@ -11,12 +11,13 @@ export default async function MedicinesPage(
   _req: Request,
   ctx: FreshContext<LoggedInRegulator>,
 ) {
+  const { country } = ctx.params
   const page = searchPage(ctx)
   const search = ctx.url.searchParams.get('search')
 
   const search_results = await manufactured_medications.search(
     ctx.state.trx,
-    { search },
+    { search, country },
     { page },
   )
 

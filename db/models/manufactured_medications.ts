@@ -39,7 +39,11 @@ export default base({
   top_level_table: 'manufactured_medications',
   baseQuery: (
     trx: TrxOrDb,
-    opts: { include_recalled?: Maybe<boolean>; search: string | null },
+    opts: {
+      include_recalled?: Maybe<boolean>
+      search: string | null
+      country?: string
+    },
   ) =>
     trx
       .selectFrom('manufactured_medications')
@@ -73,6 +77,20 @@ export default base({
         !opts.include_recalled,
         (eb) =>
           eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
+      )
+      .$if(
+        !!opts.country,
+        (eb) =>
+          eb.where(
+            'manufactured_medications.id',
+            'in',
+            trx.selectFrom('manufactured_medication_availabilities')
+              .select('manufactured_medication_id').where(
+                'country',
+                '=',
+                opts.country!,
+              ),
+          ),
       )
       .orderBy([
         'drugs.generic_name asc',

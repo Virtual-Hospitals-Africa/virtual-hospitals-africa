@@ -15,6 +15,7 @@ export default create([
   'consumables',
   'manufactured_medications',
   'manufactured_medication_strengths',
+  'manufactured_medication_availabilities',
 ], seedDataFromJSON)
 
 const unaffiliated_form_to_route = {
@@ -72,7 +73,7 @@ async function seedDataFromJSON(trx: TrxOrDb) {
     .executeTakeFirst()
 
   const data: ManufacturedMedicationCsvRow[] = await parseJSON(
-    './db/resources/list_of_medications.json',
+    './db/resources/zimbabwe_list_of_medications.json',
   )
 
   for (const row of data) {
@@ -226,6 +227,14 @@ async function addDrug(
         })
         .returning('id')
         .executeTakeFirstOrThrow()
+
+      await trx
+        .insertInto('manufactured_medication_availabilities')
+        .values({
+          manufactured_medication_id: mm.id,
+          country: 'ZW',
+        })
+        .execute()
 
       for (const strength_numerator of strengths.strength_numerators) {
         const consumable = await trx

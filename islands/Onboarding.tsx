@@ -111,7 +111,12 @@ function EnterProfession(
           />
         </FormRow>
       )}
-      <CountrySelect name='country' />
+
+      {profession.value === 'superadmin' && (
+        <FormRow>
+          <CountrySelect name='country' value='ZW' />
+        </FormRow>
+      )}
 
       <p className='mt-4'>
         <i>How you'll appear in the platform</i>

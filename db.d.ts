@@ -532,6 +532,14 @@ export interface MailingList {
   updated_at: Generated<Timestamp>
 }
 
+export interface ManufacturedMedicationAvailabilities {
+  country: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  manufactured_medication_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface ManufacturedMedicationRecalls {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1232,6 +1240,7 @@ export interface DB {
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
   mailing_list: MailingList
+  manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
