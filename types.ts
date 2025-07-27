@@ -1768,9 +1768,7 @@ export type LoggedInHealthWorker = {
 
 export type LoggedInRegulator = {
   trx: TrxOrDb
-  regulator: {
-    id: string
-  }
+  regulator: HasStringId<Regulator>
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
@@ -3027,7 +3025,8 @@ export type RenderedManufacturedMedication = {
 export type Regulator = {
   name: string
   email: string
-  avatar_url?: string
+  avatar_url?: Maybe<string>
+  country: string
 }
 
 export type RenderedPrescription = {

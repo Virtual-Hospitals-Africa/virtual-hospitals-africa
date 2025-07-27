@@ -10,9 +10,9 @@ import { login_href } from '../login.tsx'
 
 export const handler = [
   ensureCookiePresent,
-  redirectIfAtRoot,
   startTrx,
   getLoggedInRegulator,
+  redirectIfAtRoot,
 ]
 
 export const could_not_locate_account_href = warning(
@@ -30,9 +30,9 @@ function ensureCookiePresent(req: Request, ctx: FreshContext) {
   return getRegulatorCookie(req) ? ctx.next() : noSession()
 }
 
-function redirectIfAtRoot(req: Request, ctx: FreshContext) {
+function redirectIfAtRoot(req: Request, ctx: LoggedInRegulatorContext) {
   return req.url === '/regulator'
-    ? redirect('/regulator/pharmacists')
+    ? redirect(`/regulator/${ctx.state.regulator.country}/pharmacists`)
     : ctx.next()
 }
 

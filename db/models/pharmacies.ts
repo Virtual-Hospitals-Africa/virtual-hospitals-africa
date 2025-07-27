@@ -116,6 +116,7 @@ export type PharmacyInsert = {
   licence_number: string
   licensee: string
   name: string
+  country: string
   pharmacies_types: PharmaciesTypes
   supervisors?: PharmacySupervisorInsert[]
 }

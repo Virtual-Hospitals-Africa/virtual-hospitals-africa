@@ -8,6 +8,12 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
+        .addColumn(
+          'country',
+          'varchar(2)',
+          (col) =>
+            col.notNull().references('countries.iso_3166').onDelete('cascade'),
+        )
         .addColumn('avatar_url', 'text'),
   )
 

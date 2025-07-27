@@ -578,3 +578,11 @@ export function getEmployeeInfo(
     .selectAll()
     .executeTakeFirst()
 }
+
+export function removeById(
+  trx: TrxOrDb,
+  id: string,
+) {
+  return trx.deleteFrom('health_workers').where('id', '=', id)
+    .executeTakeFirstOrThrow()
+}

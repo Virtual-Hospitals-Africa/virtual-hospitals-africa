@@ -983,6 +983,7 @@ export interface PatientSymptoms {
 
 export interface Pharmacies {
   address: string | null
+  country: string
   created_at: Generated<Timestamp>
   expiry_date: Timestamp
   id: Generated<string>
@@ -1015,6 +1016,7 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
 
 export interface Pharmacists {
   address: string | null
+  country: string
   created_at: Generated<Timestamp>
   expiry_date: Timestamp
   family_name: string
@@ -1119,6 +1121,7 @@ export interface RegulatorGoogleTokens {
 
 export interface Regulators {
   avatar_url: string | null
+  country: string
   created_at: Generated<Timestamp>
   email: string
   id: Generated<string>

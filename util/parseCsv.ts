@@ -1,4 +1,5 @@
 import { CommonCSVReaderOptions, readCSV } from 'csv'
+import z from 'zod'
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
@@ -22,6 +23,11 @@ export default async function* parseCsv(
     }
 
     if (isFirstRow) {
+      if (rowDataArray.some((row) => row === '')) {
+        throw new Error(
+          `Error parsing ${filePath}. Check the header for extraneous trailing characters`,
+        )
+      }
       // Assuming the first row of the CSV contains the header
       header = rowDataArray
       isFirstRow = false
@@ -45,4 +51,13 @@ export async function* parseTsv(
   opts: Omit<Partial<CommonCSVReaderOptions>, 'columnSeparator'> = {},
 ) {
   yield* parseCsv(filePath, { ...opts, columnSeparator: '\t' })
+}
+
+export async function* parseTsvTyped<Schema extends z.ZodTypeAny>(
+  filePath: string,
+  schema: Schema,
+): AsyncGenerator<z.infer<Schema>> {
+  for await (const row of parseCsv(filePath, { columnSeparator: '\t' })) {
+    yield schema.parse(row)
+  }
 }

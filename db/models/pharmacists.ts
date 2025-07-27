@@ -258,6 +258,7 @@ export type PharmacistInsert = {
   town: string
   expiry_date: string
   pharmacist_type: PharmacistType
+  country: string
   pharmacies?: PharmacyEmploymentInsert[]
 }
 

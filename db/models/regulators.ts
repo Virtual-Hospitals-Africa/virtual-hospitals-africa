@@ -58,6 +58,6 @@ export function upsert(trx: TrxOrDb, regulator: Regulator) {
     .insertInto('regulators')
     .values(regulator)
     .onConflict((oc) => oc.column('email').doUpdateSet(regulator))
-    .returning(['id', 'name', 'email', 'avatar_url'])
+    .returning(['id', 'name', 'email', 'avatar_url', 'country'])
     .executeTakeFirstOrThrow()
 }

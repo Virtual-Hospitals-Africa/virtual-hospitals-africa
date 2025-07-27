@@ -1,9 +1,12 @@
 import Layout from '../../components/library/Layout.tsx'
 import * as organizations from '../../db/models/organizations.ts'
+import * as regulators from '../../db/models/regulators.ts'
+
 import * as employment from '../../db/models/employment.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 import { OnboardingContext } from './_middleware.tsx'
 import { Onboarding } from '../../islands/Onboarding.tsx'
-import z from 'zod'
+import { z } from 'zod'
 import { postHandler } from '../../util/postHandler.ts'
 import redirect from '../../util/redirect.ts'
 
@@ -12,11 +15,27 @@ const OnboardingSchema = z.object({
   department_id: z.string().uuid(),
   profession: z.enum(['nurse', 'doctor']),
   specialty: z.string(),
-})
+}).or(z.object({
+  profession: z.enum(['regulator']),
+  country: z.string(),
+}))
 
 export const handler = postHandler(
   OnboardingSchema,
   async (_req, ctx: OnboardingContext, form_values) => {
+    // We had previously created a health worker for the user, but since they are indicating they are a regulator
+    // this was incorrect, so we need to remove the health worker and create a regulator instead
+    if (form_values.profession === 'regulator') {
+      await health_workers.removeById(ctx.state.trx, ctx.state.healthWorker.id)
+      await regulators.upsert(ctx.state.trx, {
+        name: ctx.state.healthWorker.name,
+        email: ctx.state.healthWorker.email,
+        avatar_url: ctx.state.healthWorker.avatar_url,
+        country: form_values.country,
+      })
+      return redirect('/regulator')
+    }
+
     await employment.addOne(ctx.state.trx, {
       health_worker_id: ctx.state.healthWorker.id,
       ...form_values,

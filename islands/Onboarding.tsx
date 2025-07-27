@@ -13,6 +13,7 @@ import {
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
+import CountrySelect from './CountrySelect.tsx'
 
 type OnboardingProgress =
   | { type: 'welcome' }
@@ -59,7 +60,7 @@ function EnterProfession(
   const specialty = useSignal<string>('Primary care')
 
   const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
-  const nurse_prefix = profession.value === 'nurse' ? ' Nurse' : ''
+  const nurse_suffix = profession.value === 'nurse' ? ' Nurse' : ''
 
   return (
     <div
@@ -88,26 +89,29 @@ function EnterProfession(
           options={[
             { value: 'nurse', label: 'Nurse' },
             { value: 'doctor', label: 'Doctor' },
+            { value: 'superadmin', label: 'Super Admin (regulator)' },
           ]}
           onChange={(event) => profession.value = event.currentTarget.value}
           className='capitalize'
         />
       </FormRow>
-      <FormRow>
-        {profession.value === 'nurse'
-          ? (
-            <NurseSpecialtySelect
-              value={specialty.value}
-              onChange={(event) => specialty.value = event.currentTarget.value}
-            />
-          )
-          : (
-            <DoctorSpecialtySelect
-              value={specialty.value}
-              onChange={(event) => specialty.value = event.currentTarget.value}
-            />
-          )}
-      </FormRow>
+      {profession.value === 'nurse' && (
+        <FormRow>
+          <NurseSpecialtySelect
+            value={specialty.value}
+            onChange={(event) => specialty.value = event.currentTarget.value}
+          />
+        </FormRow>
+      )}
+      {profession.value === 'doctor' && (
+        <FormRow>
+          <DoctorSpecialtySelect
+            value={specialty.value}
+            onChange={(event) => specialty.value = event.currentTarget.value}
+          />
+        </FormRow>
+      )}
+      <CountrySelect name='country' />
 
       <p className='mt-4'>
         <i>How you'll appear in the platform</i>
@@ -117,7 +121,7 @@ function EnterProfession(
           person={{
             name: doctor_prefix + name.value,
             avatar_url: health_worker.avatar_url,
-            description: specialty.value + nurse_prefix,
+            description: specialty.value + nurse_suffix,
           }}
           size='lg'
         />
@@ -125,12 +129,14 @@ function EnterProfession(
 
       <div className='mt-10 flex'>
         <Button
-          type='button'
-          onClick={() =>
-            onProfession({
-              profession: profession.value,
-              specialty: specialty.value,
-            })}
+          type={profession.value === 'superadmin' ? 'submit' : 'button'}
+          onClick={profession.value === 'superadmin'
+            ? undefined
+            : () =>
+              onProfession({
+                profession: profession.value,
+                specialty: specialty.value,
+              })}
         >
           Continue<span aria-hidden='true'>
             &nbsp;&nbsp;&rarr;
@@ -224,6 +230,7 @@ export function Onboarding(
   const onProfession = () => progress.value = { type: 'select organization' }
   const onOrganization = (organization: OrganizationLike) =>
     progress.value = { type: 'select department', organization }
+
   return (
     <Form method='POST'>
       <div className='overflow-hidden bg-white py-32'>
