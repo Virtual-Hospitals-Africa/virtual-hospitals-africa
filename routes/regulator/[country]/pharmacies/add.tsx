@@ -50,7 +50,7 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/pharmacies/${id}?success=${success}`,
+      `/regulator/${country}/pharmacies/${id}?success=${success}`,
     )
   },
 }
@@ -63,10 +63,11 @@ export default RegulatorHomePageLayout(
   ) {
     return (
       <PharmacyForm
-        formData={{
+        form_data={{
           name: ctx.url.searchParams.get('name') || '',
           licence_number: ctx.url.searchParams.get('licence_number') || '',
         }}
+        country={ctx.params.country}
       />
     )
   },

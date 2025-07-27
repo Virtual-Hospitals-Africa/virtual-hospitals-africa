@@ -51,6 +51,7 @@ const columns: TableColumn<RenderedPharmacist>[] = [
   },
 ]
 type PharmacistsTableProps = {
+  country: string
   results: RenderedPharmacist[]
   has_next_page: boolean
   page: number
@@ -61,6 +62,7 @@ type PharmacistsTableProps = {
 }
 
 export default function PharmacistsTable({
+  country,
   results,
   search_terms,
   page,
@@ -82,7 +84,7 @@ export default function PharmacistsTable({
           ]}
           button={{
             children: 'Invite Pharmacist',
-            href: path('/regulator/pharmacists/invite', {
+            href: path(`/regulator/${country}/pharmacists/invite`, {
               name: search_terms.name_search,
               licence_number: search_terms.licence_number_search,
             }),

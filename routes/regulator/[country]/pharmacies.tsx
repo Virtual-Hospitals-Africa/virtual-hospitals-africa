@@ -48,7 +48,7 @@ export default RegulatorHomePageLayout(
             Search
           </Button>
         </FormRow>
-        <PharmaciesTable {...search_results} />
+        <PharmaciesTable country={country} {...search_results} />
       </Form>
     )
   },

@@ -265,6 +265,7 @@ interface CountrySelectProps {
   onChange?: (event: Event) => void
   className?: string
   disabled?: boolean
+  defaultValue?: string
 }
 
 export default function CountrySelect({
@@ -276,6 +277,7 @@ export default function CountrySelect({
   onChange,
   className,
   disabled,
+  defaultValue,
 }: CountrySelectProps) {
   return (
     <SelectWithOptions
@@ -288,6 +290,7 @@ export default function CountrySelect({
       options={COUNTRIES}
       className={className}
       disabled={disabled}
+      defaultValue={defaultValue}
     />
   )
 }

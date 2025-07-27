@@ -139,7 +139,6 @@ import * as $regulator_country_middleware from './routes/regulator/[country]/_mi
 import * as $regulator_country_medicines from './routes/regulator/[country]/medicines.tsx'
 import * as $regulator_country_medicines_medicine_id_recall from './routes/regulator/[country]/medicines/[medicine_id]/recall.tsx'
 import * as $regulator_country_pharmacies from './routes/regulator/[country]/pharmacies.tsx'
-import * as $regulator_country_pharmacies_pharmacy_name_ from './routes/regulator/[country]/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_country_pharmacies_pharmacy_id_ from './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_country_pharmacies_add from './routes/regulator/[country]/pharmacies/add.tsx'
 import * as $regulator_country_pharmacists from './routes/regulator/[country]/pharmacists.tsx'
@@ -512,8 +511,6 @@ const manifest = {
       $regulator_country_medicines_medicine_id_recall,
     './routes/regulator/[country]/pharmacies.tsx':
       $regulator_country_pharmacies,
-    './routes/regulator/[country]/pharmacies/[pharmacy.name].tsx':
-      $regulator_country_pharmacies_pharmacy_name_,
     './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx':
       $regulator_country_pharmacies_pharmacy_id_,
     './routes/regulator/[country]/pharmacies/add.tsx':

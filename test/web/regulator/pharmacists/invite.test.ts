@@ -7,16 +7,21 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../db/db.ts'
 
 describe(
-  '/regulator/pharmacists/invite',
+  '/regulator/[country]/pharmacists/invite',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders an invite page on GET', async () => {
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`/regulator/pharmacists/invite`)
+      const response = await fetch(
+        `/regulator/${regulator.country}/pharmacists/invite`,
+      )
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/regulator/pharmacists/invite`)
+      assert(
+        response.url ===
+          `${route}/regulator/${regulator.country}/pharmacists/invite`,
+      )
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
@@ -32,7 +37,7 @@ describe(
     })
 
     it('can create a pharmacist via POST', async () => {
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       {
         const givenName = `Test Given Name ${generateUUID()}`
@@ -49,7 +54,7 @@ describe(
         body.set('pharmacist_type', 'Pharmacist')
 
         const postResponse = await fetch(
-          `${route}/regulator/pharmacists/invite`,
+          `${route}/regulator/${regulator.country}/pharmacists/invite`,
           {
             method: 'POST',
             body,
@@ -62,7 +67,7 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/regulator/pharmacists?success=${
+          `${route}/regulator/${regulator.country}/pharmacists?success=${
             encodeURIComponent('New pharmacist added')
           }`,
         )

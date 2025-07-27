@@ -18,7 +18,7 @@ export default RegulatorHomePageLayout(
   ) {
     const page = searchPage(ctx)
     const search = ctx.url.searchParams.get('search')
-    const search_terms = pharmacists.toSearchTerms(search)
+    const search_terms = pharmacists.toSearchTerms(ctx.params.country, search)
     const search_results = await pharmacists.search(
       ctx.state.trx,
       search_terms,
@@ -45,7 +45,7 @@ export default RegulatorHomePageLayout(
             Invite
           </Button>
         </FormRow>
-        <PharmacistsTable {...search_results} />
+        <PharmacistsTable {...search_results} country={ctx.params.country} />
       </Form>
     )
   },

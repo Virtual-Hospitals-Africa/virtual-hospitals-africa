@@ -373,8 +373,8 @@ export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
             'health_workers.id',
           )
           .innerJoin(
-            'health_worker_google_tokens',
-            'health_worker_google_tokens.health_worker_id',
+            'google_tokens',
+            'google_tokens.entity_id',
             'health_workers.id',
           )
           .innerJoin(
@@ -403,9 +403,9 @@ export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
             'provider_calendars.gcal_availability_calendar_id',
             'provider_calendars.gcal_appointments_calendar_id',
             'provider_calendars.availability_set',
-            'health_worker_google_tokens.expires_at',
-            'health_worker_google_tokens.access_token',
-            'health_worker_google_tokens.refresh_token',
+            'google_tokens.expires_at',
+            'google_tokens.access_token',
+            'google_tokens.refresh_token',
             'appointment_providers.confirmed',
             // TODO this shouldn't be an array
             // make a helper that can select 0 or 1

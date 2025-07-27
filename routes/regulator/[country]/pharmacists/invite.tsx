@@ -3,7 +3,11 @@ import PharmacistForm from '../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import * as pharmacists from '../../../../db/models/pharmacists.ts'
-import { LoggedInRegulator, RenderedPharmacist } from '../../../../types.ts'
+import {
+  LoggedInRegulator,
+  LoggedInRegulatorContext,
+  RenderedPharmacist,
+} from '../../../../types.ts'
 import compact from '../../../../util/compact.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
@@ -26,16 +30,16 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/pharmacists?success=${success}`,
+      `/regulator/${country}/pharmacists?success=${success}`,
     )
   },
 }
 
 export default RegulatorHomePageLayout(
   'Pharmacists',
-  async function InvitePage(
+  function InvitePage(
     _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: LoggedInRegulatorContext,
   ) {
     const name = ctx.url.searchParams.get('name')
     const licence_number = ctx.url.searchParams.get('licence_number')
@@ -53,6 +57,6 @@ export default RegulatorHomePageLayout(
       form_data.licence_number = licence_number
     }
 
-    return <PharmacistForm formData={form_data} />
+    return <PharmacistForm form_data={form_data} country={ctx.params.country} />
   },
 )

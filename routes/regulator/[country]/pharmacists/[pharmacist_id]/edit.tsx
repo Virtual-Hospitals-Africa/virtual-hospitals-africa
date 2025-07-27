@@ -9,6 +9,7 @@ import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
   async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+    const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
     const to_update = await parseRequest(
       ctx.state.trx,
@@ -23,7 +24,7 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/pharmacists?success=${success}`,
+      `/regulator/${country}/pharmacists?success=${success}`,
     )
   },
 }
@@ -34,22 +35,25 @@ export default RegulatorHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
+    const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 
     const pharmacist = await pharmacists.getById(
       ctx.state.trx,
       pharmacist_id,
     )
-    if (!pharmacist) {
+    if (!pharmacist || pharmacist.country !== country) {
       return new Response(null, {
         status: 302,
         headers: {
-          Location: '/regulator/pharmacists?error=' +
+          Location: `/regulator/${country}/pharmacists?error=` +
             encodeURIComponent('Pharmacist not found'),
         },
       })
     }
 
-    return <PharmacistForm formData={pharmacist} />
+    return (
+      <PharmacistForm form_data={pharmacist} country={ctx.params.country} />
+    )
   },
 )

@@ -3,7 +3,8 @@ import { LoggedInRegulatorContext } from '../../types.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import { deleteCookie, getCookies } from 'std/http/cookie.ts'
+import { deleteCookie } from 'std/http/cookie.ts'
+import * as cookie from '../../shared/cookie.ts'
 import { startTrx } from '../../shared/startTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import { login_href } from '../login.tsx'
@@ -25,12 +26,8 @@ function noSession() {
   return redirect(could_not_locate_account_href)
 }
 
-export function getRegulatorCookie(req: Request): string | undefined {
-  return getCookies(req.headers).regulator_session_id
-}
-
 function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  return getRegulatorCookie(req) ? ctx.next() : noSession()
+  return cookie.get(req) ? ctx.next() : noSession()
 }
 
 function redirectIfAtRoot(req: Request, ctx: LoggedInRegulatorContext) {
@@ -43,17 +40,17 @@ async function getLoggedInRegulator(
   req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
-  const regulator_session_id = getRegulatorCookie(req)
-  assert(regulator_session_id)
+  const session_id = cookie.get(req)
+  assert(session_id)
 
   const regulator = await regulators.getBySession(ctx.state.trx, {
-    regulator_session_id,
+    session_id,
   })
 
   if (!regulator) {
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()
-    deleteCookie(response.headers, 'regulator_session_id')
+    deleteCookie(response.headers, cookie.session_key)
     return response
   }
 

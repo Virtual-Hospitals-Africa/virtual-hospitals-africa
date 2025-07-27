@@ -13,6 +13,7 @@ export const handler = {
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
+    const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 
     const pharmacist = await pharmacists.getById(ctx.state.trx, pharmacist_id)
@@ -24,7 +25,7 @@ export const handler = {
       regulator_id: ctx.state.regulator.id,
     })
 
-    return redirect('/regulator/pharmacists')
+    return redirect(`/regulator/${country}/pharmacists`)
   },
 }
 

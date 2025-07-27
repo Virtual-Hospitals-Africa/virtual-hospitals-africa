@@ -12,7 +12,12 @@ import * as pharmacists from '../../db/models/pharmacists.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import {
+  HasStringId,
+  HealthWorkerWithGoogleTokens,
+  Regulator,
+  TrxOrDb,
+} from '../../types.ts'
 import { testCalendars, testPharmacist, testRegulator } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
@@ -214,7 +219,7 @@ export async function addTestHealthWorkerWithSession(
       {
         headers: {
           ...headers,
-          Cookie: `health_worker_session_id=${session.id}`,
+          Cookie: `session_id=${session.id}`,
         },
         ...rest,
       },
@@ -230,7 +235,7 @@ export async function addTestHealthWorkerWithSession(
   }
 
   return {
-    health_worker_session_id: session.id,
+    session_id: session.id,
     healthWorker,
     fetch: fetchWithSession,
     fetchCheerio,
@@ -264,7 +269,7 @@ export async function addTestRegulatorWithSession(
       {
         headers: {
           ...headers,
-          Cookie: `regulator_session_id=${session.id}`,
+          Cookie: `session_id=${session.id}`,
         },
         ...rest,
       },
@@ -280,10 +285,19 @@ export async function addTestRegulatorWithSession(
   }
 
   return {
-    regulator_session_id: session.id,
+    session_id: session.id,
     regulator,
     fetch: fetchWithSession,
     fetchCheerio,
+  }
+}
+
+export function withTestRegulator(
+  callback: (trx: TrxOrDb, regulator: HasStringId<Regulator>) => Promise<void>,
+) {
+  return async function (trx: TrxOrDb) {
+    const regulator = await addTestRegulator(db)
+    return callback(trx, regulator)
   }
 }
 

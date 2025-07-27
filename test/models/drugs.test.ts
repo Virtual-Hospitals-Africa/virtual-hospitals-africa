@@ -3,7 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import manufactured_medications from '../../db/models/manufactured_medications.ts'
 import deepOmit from '../../util/deepOmit.ts'
-import { itUsesTrxAnd } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestRegulator } from '../web/utilities.ts'
 import db from '../../db/db.ts'
 
 describe('db/models/drugs.ts', () => {
@@ -30,22 +30,16 @@ describe('db/models/drugs.ts', () => {
 
     itUsesTrxAnd(
       "returns search results for drugs even if some manufacturers were recalled as long as some weren't if include_recalled: false",
-      async (trx) => {
+      withTestRegulator(async (trx, regulator) => {
         const { results } = await drugs.search(trx, { search: 'NIFEDIPINE' })
         assertEquals(results.length, 1)
 
         const NIFEDIPINE = results[0]
 
-        const { id: regulator_id } = await trx
-          .selectFrom('regulators')
-          .select('id')
-          .limit(1)
-          .executeTakeFirstOrThrow()
-
         const recalled = await manufactured_medications.recall(trx, {
           manufactured_medication_id: NIFEDIPINE.medications[0].manufacturers[0]
             .manufactured_medication_id,
-          regulator_id,
+          regulator_id: regulator.id,
         })
 
         const { results: after_recall_results } = await drugs.search(trx, {
@@ -61,30 +55,24 @@ describe('db/models/drugs.ts', () => {
         await manufactured_medications.unrecall(trx, {
           id: recalled.id,
         })
-      },
+      }),
     )
 
     itUsesTrxAnd(
       'does not return a drug if all manufacturers were recalled when include_recalled: false',
-      async (trx) => {
+      withTestRegulator(async (trx, regulator) => {
         const { results } = await drugs.search(trx, { search: 'NIFEDIPINE' })
         assertEquals(results.length, 1)
 
         const NIFEDIPINE = results[0]
         assertEquals(NIFEDIPINE.medications.length, 1)
 
-        const { id: regulator_id } = await trx
-          .selectFrom('regulators')
-          .select('id')
-          .limit(1)
-          .executeTakeFirstOrThrow()
-
         const recalling = NIFEDIPINE.medications[0].manufacturers.map(
           (manufacturer) =>
             manufactured_medications.recall(trx, {
               manufactured_medication_id:
                 manufacturer.manufactured_medication_id,
-              regulator_id,
+              regulator_id: regulator.id,
             }),
         )
 
@@ -103,7 +91,7 @@ describe('db/models/drugs.ts', () => {
             })
           ),
         )
-      },
+      }),
     )
   })
 })

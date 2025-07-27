@@ -140,8 +140,10 @@ export async function initializeHealthWorkerWithoutInvites(
     existing_employment ? '/app' : '/onboarding/welcome',
   )
 
+  console.log('mmmwemmmmmm', session)
+
   setCookie(response.headers, {
-    name: cookie.sessionKey('health_worker'),
+    name: cookie.session_key,
     value: session.id,
   })
 
@@ -172,7 +174,7 @@ export async function startRegulatorSession(
   )
 
   setCookie(response.headers, {
-    name: 'regulator_session_id',
+    name: cookie.session_key,
     value: session.id,
   })
 
@@ -246,8 +248,10 @@ export const handler: Handlers<Record<string, never>> = {
 
         const response = redirect('/app')
 
+        console.log('awkjejkawejkeaw')
+
         setCookie(response.headers, {
-          name: cookie.sessionKey('health_worker'),
+          name: cookie.session_key,
           value: session.id,
         })
 

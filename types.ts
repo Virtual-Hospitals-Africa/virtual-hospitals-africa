@@ -2921,6 +2921,7 @@ export type SelectedPatient = {
 
 export type RenderedPharmacy = {
   id: string
+  country: string
   address: string | null
   town: string | null
   address_display: string | null
@@ -2961,6 +2962,7 @@ export type RenderedPharmacist = {
   family_name: string
   address: string | null
   full_address?: string | null
+  country: string
   town: string | null
   address_display: string | null
   expiry_date: string

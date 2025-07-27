@@ -9,7 +9,7 @@ import { base } from './_base.ts'
 
 const view_sql = sql<
   string
->`concat('/regulator/pharmacies/', pharmacies.id::text)`
+>`'/regulator/' || pharmacies.country || '/pharmacies/' || pharmacies.id::text`
 
 function baseQuery(trx: TrxOrDb) {
   return trx
@@ -21,6 +21,7 @@ function baseQuery(trx: TrxOrDb) {
       'pharmacies.licensee',
       'pharmacies.address',
       'pharmacies.town',
+      'pharmacies.country',
       addressDisplaySql('pharmacies').as('address_display'),
       view_sql.as('href'),
       sql<string>`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`.as(
@@ -44,7 +45,7 @@ function baseQuery(trx: TrxOrDb) {
             nameSql('pharmacists').as('name'),
             sql<
               string
-            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+            >`'/regulator/' || pharmacies.country || '/pharmacists/' || pharmacy_employment.pharmacist_id`
               .as(
                 'href',
               ),
@@ -100,6 +101,9 @@ const model = base({
         '=',
         opts.licence_number_search,
       )
+    }
+    if (opts.country) {
+      qb = qb.where('pharmacies.country', '=', opts.country)
     }
     return qb
   },

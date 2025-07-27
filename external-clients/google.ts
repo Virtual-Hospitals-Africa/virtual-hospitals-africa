@@ -18,11 +18,8 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import { FreshContext } from '$fresh/src/server/mod.ts'
-import {
-  isHealthWorkerWithGoogleTokens,
-  removeExpiredAccessToken,
-  updateAccessToken,
-} from '../db/models/health_workers.ts'
+import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
+import * as google_tokens from '../db/models/google_tokens.ts'
 import { cacheable } from './cache.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
@@ -523,11 +520,20 @@ export async function refreshTokens(
     const access_token = await getNewAccessTokenFromRefreshToken(
       health_worker.refresh_token,
     )
-    await updateAccessToken(trx, health_worker.id, access_token)
+    await google_tokens.updateAccessToken(
+      trx,
+      'health_worker',
+      health_worker.id,
+      access_token,
+    )
     return { result: 'success', access_token }
   } catch (err) {
     console.error(err)
-    removeExpiredAccessToken(trx, { health_worker_id: health_worker.id })
+    google_tokens.removeExpiredAccessToken(
+      trx,
+      'health_worker',
+      health_worker.id,
+    )
     return { result: 'expiry' }
   }
 }

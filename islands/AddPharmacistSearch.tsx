@@ -27,13 +27,15 @@ function PharmacistOption({
 }
 
 export default function AddPharmacistSearch(
-  props: Omit<AsyncSearchProps<PharmacistOption>, 'Option' | 'search_route'>,
+  props: Omit<AsyncSearchProps<PharmacistOption>, 'Option' | 'search_route'> & {
+    country: string
+  },
 ) {
   return (
     <AsyncSearch
       {...props}
       ignore_option_href
-      search_route='/regulator/pharmacists'
+      search_route={`/regulator/${props.country}/pharmacists`}
       Option={PharmacistOption}
     />
   )

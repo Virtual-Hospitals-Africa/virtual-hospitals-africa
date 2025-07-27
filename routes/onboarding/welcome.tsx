@@ -9,7 +9,7 @@ import { Onboarding } from '../../islands/Onboarding.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../util/postHandler.ts'
 import redirect from '../../util/redirect.ts'
-import { startRegulatorSession } from '../logged-in.tsx'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
@@ -27,15 +27,43 @@ export const handler = postHandler(
     const { trx, healthWorker } = ctx.state
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead
+    // Very hacky, but we move the google tokens and session to the regulator
+    console.log('form_values', form_values)
     if (form_values.profession === 'regulator') {
-      await health_workers.removeById(trx, healthWorker.id)
-      const regulator = await regulators.upsert(trx, {
-        name: healthWorker.name,
-        email: healthWorker.email,
-        avatar_url: healthWorker.avatar_url,
-        country: form_values.country,
+      await promiseProps({
+        health_worker: health_workers.removeById(trx, healthWorker.id),
+        session: trx.updateTable('sessions').where(
+          'entity_id',
+          '=',
+          healthWorker.id,
+        ).where('entity_type', '=', 'health_worker').set({
+          entity_type: 'regulator',
+        })
+          .returning('sessions.id')
+          .executeTakeFirstOrThrow(),
+        google_token: trx.updateTable('google_tokens').where(
+          'entity_id',
+          '=',
+          healthWorker.id,
+        ).where('entity_type', '=', 'health_worker').set({
+          entity_type: 'regulator',
+        }).executeTakeFirstOrThrow(),
+        regulator: regulators.upsert(trx, {
+          id: healthWorker.id,
+          name: healthWorker.name,
+          email: healthWorker.email,
+          avatar_url: healthWorker.avatar_url,
+          country: form_values.country,
+        }),
       })
-      return startRegulatorSession(trx, regulator)
+
+      const response = redirect(
+        `/regulator/${form_values.country}/pharmacies`,
+      )
+
+      console.log('response', response)
+
+      return response
     }
 
     await employment.addOne(ctx.state.trx, {

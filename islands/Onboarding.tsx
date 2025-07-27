@@ -60,7 +60,6 @@ function EnterProfession(
   const specialty = useSignal<string>('Primary care')
 
   const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
-  const nurse_suffix = profession.value === 'nurse' ? ' Nurse' : ''
 
   const description = (() => {
     if (profession.value === 'doctor') {
