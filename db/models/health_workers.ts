@@ -22,13 +22,9 @@ import pick from '../../util/pick.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as doctor_reviews from './doctor_reviews.ts'
+import * as google_tokens from './google_tokens.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { combine } from '../../util/combine.ts'
-
-// Shave a minute so that we refresh too early rather than too late
-const expiresInAnHourSql = sql<
-  Date
->`(SELECT now() + (59 * interval '1 minute'))`
 
 export function upsert(
   trx: TrxOrDb,
@@ -56,44 +52,12 @@ export function updateName(
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
-export function upsertGoogleTokens(
-  trx: TrxOrDb,
-  health_worker_id: string,
-  tokens: GoogleTokens,
-): Promise<HasStringId<GoogleTokens> | undefined> {
-  assert(health_worker_id)
-  return trx
-    .insertInto('health_worker_google_tokens')
-    .values({
-      health_worker_id,
-      access_token: tokens.access_token,
-      refresh_token: tokens.refresh_token,
-      expires_at: tokens.expires_at,
-    })
-    .onConflict((oc) =>
-      oc.column('health_worker_id').doUpdateSet({
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token,
-        expires_at: tokens.expires_at,
-      })
-    )
-    .returningAll()
-    .executeTakeFirst()
-}
-
-export async function updateTokens(
+export function updateTokens(
   trx: TrxOrDb,
   email: string,
   tokens: GoogleTokens,
 ): Promise<null | { id: string }> {
-  const healthWorker = await trx.selectFrom('health_workers').where(
-    'email',
-    '=',
-    email,
-  ).select('id').executeTakeFirst()
-  if (!healthWorker) return null
-  await upsertGoogleTokens(trx, healthWorker.id, tokens)
-  return healthWorker
+  return google_tokens.updateTokensByEmail(trx, 'health_worker', email, tokens)
 }
 
 const pickHealthWorkerDetails = pick([
@@ -111,8 +75,9 @@ export async function upsertWithGoogleCredentials(
   assert(tokens.access_token)
   assert(tokens.refresh_token)
   assert(tokens.expires_at)
-  await upsertGoogleTokens(
+  await google_tokens.upsert(
     trx,
+    'health_worker',
     health_worker.id,
     tokens,
   )
@@ -123,11 +88,14 @@ export const getWithTokensQuery = (trx: TrxOrDb) =>
   trx
     .selectFrom('health_workers')
     .innerJoin(
-      'health_worker_google_tokens',
-      'health_workers.id',
-      'health_worker_google_tokens.health_worker_id',
+      'google_tokens',
+      (join) =>
+        join
+          .onRef('health_workers.id', '=', 'google_tokens.entity_id')
+          .on('google_tokens.entity_type', '=', 'health_worker'),
     )
     .select([
+      'health_workers.id',
       'avatar_url',
       'email',
       'name',
@@ -164,48 +132,40 @@ export function isEmployed(
     typeof health_worker.default_organization_id === 'string'
 }
 
-export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
-  HealthWorkerWithGoogleTokens[]
-> {
-  return getWithTokensQuery(trx).select('id').where(
-    'health_worker_google_tokens.expires_at',
-    '<',
-    sql<Date>`now() + (5 * interval '1 minute')`,
-  ).execute()
-}
-
 export function updateAccessToken(
   trx: TrxOrDb,
   health_worker_id: string,
   access_token: string,
 ): Promise<UpdateResult> {
-  return trx
-    .updateTable('health_worker_google_tokens')
-    .where('health_worker_id', '=', health_worker_id)
-    .set({ access_token, expires_at: expiresInAnHourSql })
-    .executeTakeFirstOrThrow()
+  return google_tokens.updateAccessToken(
+    trx,
+    'health_worker',
+    health_worker_id,
+    access_token,
+  )
 }
 
 export function removeExpiredAccessToken(
   trx: TrxOrDb,
   opts: { health_worker_id: string },
 ): Promise<DeleteResult> {
-  return trx.deleteFrom('health_worker_google_tokens').where(
-    'health_worker_id',
-    '=',
+  return google_tokens.removeExpiredAccessToken(
+    trx,
+    'health_worker',
     opts.health_worker_id,
-  ).executeTakeFirstOrThrow()
+  )
 }
 
 // TODO: See if we can do the update and get in a single query
-export async function getBySession(trx: TrxOrDb, { health_worker_session_id }: {
-  health_worker_session_id: string
+export async function getBySession(trx: TrxOrDb, { session_id }: {
+  session_id: string
 }): Promise<Maybe<PossiblyEmployedHealthWorker>> {
-  const session = await trx.updateTable('health_worker_sessions').where(
+  const session = await trx.updateTable('sessions').where(
     'id',
     '=',
-    health_worker_session_id,
+    session_id,
   )
+    .where('entity_type', '=', 'health_worker')
     .set({ updated_at: now })
     .returning('entity_id')
     .executeTakeFirst()
@@ -227,23 +187,27 @@ export async function get(
       'nurse_registration_details.health_worker_id',
     )
     .leftJoin(
-      'health_worker_sessions',
-      'health_workers.id',
-      'health_worker_sessions.entity_id',
+      'sessions',
+      (join) =>
+        join
+          .onRef('health_workers.id', '=', 'sessions.entity_id')
+          .on('sessions.entity_type', '=', 'health_worker'),
     )
     .leftJoin(
-      'health_worker_google_tokens',
-      'health_workers.id',
-      'health_worker_google_tokens.health_worker_id',
+      'google_tokens',
+      (join) =>
+        join
+          .onRef('health_workers.id', '=', 'google_tokens.entity_id')
+          .on('google_tokens.entity_type', '=', 'health_worker'),
     )
     .select((eb) => [
       'health_workers.id',
       'health_workers.name',
       'health_workers.email',
       'health_workers.avatar_url',
-      'health_worker_google_tokens.access_token',
-      'health_worker_google_tokens.refresh_token',
-      'health_worker_google_tokens.expires_at',
+      'google_tokens.access_token',
+      'google_tokens.refresh_token',
+      'google_tokens.expires_at',
       eb('nurse_registration_details.health_worker_id', 'is', null).as(
         'registration_needed',
       ),
@@ -577,4 +541,12 @@ export function getEmployeeInfo(
     .selectFrom('employee_info')
     .selectAll()
     .executeTakeFirst()
+}
+
+export function removeById(
+  trx: TrxOrDb,
+  id: string,
+) {
+  return trx.deleteFrom('health_workers').where('id', '=', id)
+    .executeTakeFirstOrThrow()
 }

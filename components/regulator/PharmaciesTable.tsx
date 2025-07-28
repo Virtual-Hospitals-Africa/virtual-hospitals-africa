@@ -50,6 +50,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
 ]
 
 type PharmaciesTableProps = {
+  country: string
   results: RenderedPharmacy[]
   has_next_page: boolean
   page: number
@@ -60,7 +61,7 @@ type PharmaciesTableProps = {
 }
 
 export function PharmaciesTable(
-  { results, search_terms, page, has_next_page }: PharmaciesTableProps,
+  { country, results, search_terms, page, has_next_page }: PharmaciesTableProps,
 ): JSX.Element {
   return (
     <Table
@@ -78,7 +79,7 @@ export function PharmaciesTable(
           ]}
           button={{
             children: 'Add Pharmacy',
-            href: path('/regulator/pharmacies/add', {
+            href: path(`/regulator/${country}/pharmacies/add`, {
               name: search_terms.name_search,
               licence_number: search_terms.licence_number_search,
             }),

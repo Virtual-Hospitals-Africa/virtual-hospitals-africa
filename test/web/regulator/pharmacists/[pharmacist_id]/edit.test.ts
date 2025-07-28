@@ -12,21 +12,21 @@ import db from '../../../../../db/db.ts'
 import { Prefix } from '../../../../../types.ts'
 
 describe(
-  '/regulator/pharmacists/[pharmacist_id]/edit',
+  '/regulator/[country]/pharmacists/[pharmacist_id]/edit',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders the edit page with correct pharmacist data on GET', async () => {
       const newPharmacist = await addTestPharmacist(db)
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(
-        `${route}/regulator/pharmacists/${newPharmacist.id}/edit`,
+        `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
       )
 
       assert(response.ok, 'should have returned ok')
       assert(
         response.url ===
-          `${route}/regulator/pharmacists/${newPharmacist.id}/edit`,
+          `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
       )
       const pageContents = await response.text()
 
@@ -72,16 +72,16 @@ describe(
 
     it('can update a pharmacist via POST', async () => {
       const newPharmacist = await addTestPharmacist(db)
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(
-        `${route}/regulator/pharmacists/${newPharmacist.id}/edit`,
+        `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
       )
 
       assert(response.ok, 'should have returned ok')
       assert(
         response.url ===
-          `${route}/regulator/pharmacists/${newPharmacist.id}/edit`,
+          `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
       )
 
       {
@@ -99,7 +99,7 @@ describe(
         body.set('pharmacist_type', newPharmacist.pharmacist_type)
 
         const postResponse = await fetch(
-          `${route}/regulator/pharmacists/${newPharmacist.id}/edit`,
+          `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
           {
             method: 'POST',
             body,
@@ -112,7 +112,7 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/regulator/pharmacists?success=${
+          `${route}/regulator/${regulator.country}/pharmacists?success=${
             encodeURIComponent(
               'Pharmacist updated',
             )

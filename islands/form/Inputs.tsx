@@ -36,6 +36,7 @@ type LabeledInputProps<El extends HTMLElement> = {
   readonly?: boolean
   ref?: Ref<El>
   className?: string
+  defaultValue?: string
   onInput?: HTMLAttributes<El>['onInput']
   onFocus?: HTMLAttributes<El>['onFocus']
   onBlur?: HTMLAttributes<El>['onBlur']

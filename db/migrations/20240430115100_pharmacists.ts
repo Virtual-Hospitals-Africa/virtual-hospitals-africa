@@ -35,7 +35,14 @@ export async function up(db: Kysely<unknown>) {
         'pharmacist_type',
         sql`pharmacist_type`,
         (col) => col.notNull(),
-      ).addColumn('revoked_at', 'timestamp')
+      )
+      .addColumn(
+        'country',
+        'varchar(2)',
+        (col) =>
+          col.notNull().references('countries.iso_3166').onDelete('cascade'),
+      )
+      .addColumn('revoked_at', 'timestamp')
       .addColumn(
         'revoked_by',
         'uuid',

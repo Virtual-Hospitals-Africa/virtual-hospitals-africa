@@ -15,14 +15,15 @@ import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import { PharmacyOption } from '../AddPharmacySearch.tsx'
 
 type PharmacistForm = {
-  formData: Partial<RenderedPharmacist>
+  form_data: Partial<RenderedPharmacist>
+  country: string
 }
 
 export default function PharmacistForm(
-  { formData }: PharmacistForm,
+  { form_data, country }: PharmacistForm,
 ) {
   const selectedPharmacies = useSignal<PharmacyOption[]>(
-    formData.pharmacies ?? [],
+    form_data.pharmacies ?? [],
   )
   const addPharmacy = () => {
     selectedPharmacies.value = [
@@ -54,14 +55,14 @@ export default function PharmacistForm(
           required
           type='text'
           label='Given Name'
-          value={formData.given_name}
+          value={form_data.given_name}
         />
         <TextInput
           name='family_name'
           required
           type='text'
           label='Family Names'
-          value={formData.family_name}
+          value={form_data.family_name}
         />
       </FormRow>
       <FormRow>
@@ -70,7 +71,7 @@ export default function PharmacistForm(
           required
           type='text'
           label='Licence Number'
-          value={formData.licence_number}
+          value={form_data.licence_number}
           placeholder='P01-0805-2024'
           pattern='^[A-Z]{1}[0-9]{2}-[0-9]{4}-[0-9]{4}$'
         />
@@ -78,12 +79,12 @@ export default function PharmacistForm(
           name='expiry_date'
           required
           label='Expiry Date'
-          value={formData.expiry_date}
+          value={form_data.expiry_date}
         />
       </FormRow>
       <FormRow>
-        <PrefixSelect value={formData.prefix} />
-        <PharmacistTypeSelect value={formData.pharmacist_type} />
+        <PrefixSelect value={form_data.prefix} />
+        <PharmacistTypeSelect value={form_data.pharmacist_type} />
       </FormRow>
       <FormRow>
         <TextInput
@@ -91,14 +92,14 @@ export default function PharmacistForm(
           required
           type='text'
           label='Town'
-          value={formData.town}
+          value={form_data.town}
         />
         <TextInput
           name='address'
           required
           type='text'
           label='Address'
-          value={formData.address}
+          value={form_data.address}
         />
       </FormRow>
       <hr className='my-2' />
@@ -107,6 +108,7 @@ export default function PharmacistForm(
           <RemoveRow onClick={() => remove(index)} key={index} labelled>
             <FormRow>
               <AddPharmacySearch
+                country={country}
                 name={`pharmacies.${index}`}
                 label='Pharmacy'
                 value={selectedPharmacy}

@@ -12,16 +12,20 @@ import { path } from '../../../util/path.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describe(
-  '/regulator/pharmacists',
+  '/regulator/[country]/pharmacists',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a search input with GET', async () => {
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch('/regulator/pharmacists')
+      const response = await fetch(
+        `/regulator/${regulator.country}/pharmacists`,
+      )
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/regulator/pharmacists`)
+      assert(
+        response.url === `${route}/regulator/${regulator.country}/pharmacists`,
+      )
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
@@ -33,14 +37,16 @@ describe(
 
     it('renders a pharmacist table and a pharmacist with GET', async () => {
       const newPharmacist = await addTestPharmacist(db)
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const pharmacist_name =
         `${newPharmacist.given_name} ${newPharmacist.family_name}`
 
-      const response = await fetch(path('/regulator/pharmacists', {
-        search: pharmacist_name,
-      }))
+      const response = await fetch(
+        path(`/regulator/${regulator.country}/pharmacists`, {
+          search: pharmacist_name,
+        }),
+      )
 
       if (!response.ok) {
         throw new Error(await response.text())

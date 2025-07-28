@@ -105,9 +105,30 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('consumable_id', 'uuid', (col) =>
           col.notNull().references('consumables.id').onDelete('cascade')),
   )
+
+  await createStandardTable(
+    db,
+    'manufactured_medication_availabilities',
+    (qb) =>
+      qb.addColumn(
+        'manufactured_medication_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('manufactured_medications.id').onDelete(
+            'cascade',
+          ),
+      )
+        .addColumn(
+          'country',
+          'varchar(2)',
+          (col) =>
+            col.notNull().references('countries.iso_3166').onDelete('cascade'),
+        ),
+  )
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('manufactured_medication_availabilities').execute()
   await db.schema.dropTable('manufactured_medication_strengths').execute()
   await db.schema.dropTable('manufactured_medications').execute()
   await db.schema.dropTable('medications').execute()

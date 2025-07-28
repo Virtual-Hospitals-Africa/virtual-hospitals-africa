@@ -1,6 +1,7 @@
 import * as health_workers from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 import { deleteCookie } from 'std/http/cookie.ts'
+import * as cookie from '../../shared/cookie.ts'
 import { startTrx, TrxContext } from '../../shared/startTrx.ts'
 import { login_href } from '../login.tsx'
 import {
@@ -31,7 +32,7 @@ async function getLoggedInHealthWorker(
   if (!healthWorker) {
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()
-    deleteCookie(response.headers, 'health_worker_session_id')
+    deleteCookie(response.headers, cookie.session_key)
     return response
   }
 

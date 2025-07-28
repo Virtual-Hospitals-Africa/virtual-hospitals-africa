@@ -1,11 +1,11 @@
 import { z } from 'zod'
 import { FreshContext } from '$fresh/server.ts'
-import PharmacyForm from '../../../islands/regulator/PharmacyForm.tsx'
-import redirect from '../../../util/redirect.ts'
-import { parseRequest } from '../../../util/parseForm.ts'
-import * as pharmacies from '../../../db/models/pharmacies.ts'
-import Layout from '../../../components/library/Layout.tsx'
-import { LoggedInRegulator } from '../../../types.ts'
+import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
+import redirect from '../../../../util/redirect.ts'
+import { parseRequest } from '../../../../util/parseForm.ts'
+import * as pharmacies from '../../../../db/models/pharmacies.ts'
+import { LoggedInRegulator } from '../../../../types.ts'
+import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
 const UpsertPharmacySchema = z.object({
   name: z.string(),
@@ -32,6 +32,7 @@ const UpsertPharmacySchema = z.object({
 
 export const handler = {
   async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+    const { country } = ctx.params
     const { trx } = ctx.state
     const pharmacy = await parseRequest(
       trx,
@@ -39,37 +40,35 @@ export const handler = {
       UpsertPharmacySchema.parse,
     )
 
-    const { id } = await pharmacies.insert(trx, pharmacy)
+    const { id } = await pharmacies.insert(trx, {
+      ...pharmacy,
+      country,
+    })
 
     const success = encodeURIComponent(
       'New pharmacy added',
     )
 
     return redirect(
-      `/regulator/pharmacies/${id}?success=${success}`,
+      `/regulator/${country}/pharmacies/${id}?success=${success}`,
     )
   },
 }
 
-// deno-lint-ignore require-await
-export default async function Add(
-  _req: Request,
-  ctx: FreshContext<LoggedInRegulator>,
-) {
-  return (
-    <Layout
-      title='Pharmacies'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={ctx.state.regulator}
-      variant='regulator home page'
-    >
+export default RegulatorHomePageLayout(
+  'Pharmacies',
+  function Add(
+    _req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    return (
       <PharmacyForm
-        formData={{
+        form_data={{
           name: ctx.url.searchParams.get('name') || '',
           licence_number: ctx.url.searchParams.get('licence_number') || '',
         }}
+        country={ctx.params.country}
       />
-    </Layout>
-  )
-}
+    )
+  },
+)

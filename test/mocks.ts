@@ -22,6 +22,7 @@ export const testRegulator = () => {
     name: `Test Regulator ${generateUUID()}`,
     email: generateUUID() + '@example.com',
     avatar_url: generateUUID() + '.com',
+    country: 'ZW',
   }
 }
 
@@ -34,6 +35,7 @@ export const testPharmacist = () => ({
   town: 'Test Town',
   expiry_date: '2030-01-01',
   pharmacist_type: 'Pharmacist' as const,
+  country: 'ZW',
 })
 
 export const testCalendars = () => ({

@@ -4,7 +4,11 @@ import PersonSearch from '../../islands/PersonSearch.tsx'
 import FormRow from '../library/FormRow.tsx'
 import { TextArea } from '../../islands/form/Inputs.tsx'
 
-export default function InvitePhamacistForm() {
+export default function InvitePharmacistForm({
+  country,
+}: {
+  country: string
+}) {
   return (
     <Form method='POST'>
       <div className='flex flex-col w-full gap-2'>
@@ -15,10 +19,10 @@ export default function InvitePhamacistForm() {
         </FormRow>
         <PersonSearch
           name='pharmacist'
-          search_route='/regulator/pharmacists'
+          search_route={`/regulator/${country}/pharmacists`}
           label=''
           addable={{
-            href: '/regulator/pharmacists/invite?pharmacist_name=',
+            href: `/regulator/${country}/pharmacists/invite?pharmacist_name=`,
           }}
         />
         <FormRow>

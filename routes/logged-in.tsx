@@ -11,7 +11,13 @@ import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as events from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
-import { GoogleProfile, Profession, TrxOrDb } from '../types.ts'
+import {
+  GoogleProfile,
+  HasStringId,
+  Profession,
+  Regulator,
+  TrxOrDb,
+} from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
@@ -134,8 +140,10 @@ export async function initializeHealthWorkerWithoutInvites(
     existing_employment ? '/app' : '/onboarding/welcome',
   )
 
+  console.log('mmmwemmmmmm', session)
+
   setCookie(response.headers, {
-    name: cookie.sessionKey('health_worker'),
+    name: cookie.session_key,
     value: session.id,
   })
 
@@ -152,6 +160,26 @@ async function checkPermissions(
 const insufficient_permissions = warning(
   'You need to grant permission to access your Google Calendar to use this app.',
 )
+
+export async function startRegulatorSession(
+  trx: TrxOrDb,
+  regulator: HasStringId<Regulator>,
+) {
+  const session = await sessions.create(trx, 'regulator', {
+    entity_id: regulator.id,
+  })
+
+  const response = redirect(
+    `/regulator/${regulator.country}/pharmacies`,
+  )
+
+  setCookie(response.headers, {
+    name: cookie.session_key,
+    value: session.id,
+  })
+
+  return response
+}
 
 export const handler: Handlers<Record<string, never>> = {
   GET(_req, ctx) {
@@ -182,18 +210,7 @@ export const handler: Handlers<Record<string, never>> = {
             })
           }
 
-          const session = await sessions.create(trx, 'regulator', {
-            entity_id: regulator.id,
-          })
-
-          const response = redirect('/regulator/pharmacies')
-
-          setCookie(response.headers, {
-            name: 'regulator_session_id',
-            value: session.id,
-          })
-
-          return response
+          return startRegulatorSession(trx, regulator)
         }
 
         if (!USE_INVITE_SYSTEM) {
@@ -231,8 +248,10 @@ export const handler: Handlers<Record<string, never>> = {
 
         const response = redirect('/app')
 
+        console.log('awkjejkawejkeaw')
+
         setCookie(response.headers, {
-          name: cookie.sessionKey('health_worker'),
+          name: cookie.session_key,
           value: session.id,
         })
 

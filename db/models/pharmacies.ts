@@ -9,7 +9,7 @@ import { base } from './_base.ts'
 
 const view_sql = sql<
   string
->`concat('/regulator/pharmacies/', pharmacies.id::text)`
+>`'/regulator/' || pharmacies.country || '/pharmacies/' || pharmacies.id::text`
 
 function baseQuery(trx: TrxOrDb) {
   return trx
@@ -21,6 +21,7 @@ function baseQuery(trx: TrxOrDb) {
       'pharmacies.licensee',
       'pharmacies.address',
       'pharmacies.town',
+      'pharmacies.country',
       addressDisplaySql('pharmacies').as('address_display'),
       view_sql.as('href'),
       sql<string>`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`.as(
@@ -40,10 +41,11 @@ function baseQuery(trx: TrxOrDb) {
             'pharmacists.prefix',
             'pharmacists.family_name',
             'pharmacists.given_name',
+            'pharmacists.country',
             nameSql('pharmacists').as('name'),
             sql<
               string
-            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+            >`'/regulator/' || pharmacies.country || '/pharmacists/' || pharmacy_employment.pharmacist_id`
               .as(
                 'href',
               ),
@@ -61,16 +63,26 @@ export const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
+  country: string
   name_search: string | null
   licence_number_search: string | null
 }
 
-export const toSearchTerms = (search: string | null): SearchTerms => {
-  if (!search) return { name_search: null, licence_number_search: null }
-  if (isLicenceLike(search)) {
-    return { name_search: null, licence_number_search: search.toUpperCase() }
+export const toSearchTerms = (
+  country: string,
+  search: string | null,
+): SearchTerms => {
+  if (!search) {
+    return { country, name_search: null, licence_number_search: null }
   }
-  return { name_search: search, licence_number_search: null }
+  if (isLicenceLike(search)) {
+    return {
+      country,
+      name_search: null,
+      licence_number_search: search.toUpperCase(),
+    }
+  }
+  return { country, name_search: search, licence_number_search: null }
 }
 
 const model = base({
@@ -89,6 +101,9 @@ const model = base({
         '=',
         opts.licence_number_search,
       )
+    }
+    if (opts.country) {
+      qb = qb.where('pharmacies.country', '=', opts.country)
     }
     return qb
   },
@@ -116,6 +131,7 @@ export type PharmacyInsert = {
   licence_number: string
   licensee: string
   name: string
+  country: string
   pharmacies_types: PharmaciesTypes
   supervisors?: PharmacySupervisorInsert[]
 }

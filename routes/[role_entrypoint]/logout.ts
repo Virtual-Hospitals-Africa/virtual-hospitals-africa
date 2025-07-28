@@ -20,14 +20,14 @@ export const handler: LoggedInHealthWorkerHandler = {
     const role =
       entrypoint_to_role[role_entrypoint as keyof typeof entrypoint_to_role]
 
-    const session_id = cookie.get(req, role)
+    const session_id = cookie.get(req)
     if (session_id) {
       await sessions.remove(db, role, {
         session_id,
       })
     }
     const response = redirect('/')
-    deleteCookie(response.headers, cookie.sessionKey(role))
+    deleteCookie(response.headers, cookie.session_key)
     return response
   },
 }

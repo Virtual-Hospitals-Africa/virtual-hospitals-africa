@@ -217,16 +217,16 @@ export function getEmployeesQuery(
           'health_workers.email as email',
           'health_workers.name as display_name',
           'health_workers.avatar_url as avatar_url',
-          eb.selectFrom('health_worker_sessions')
+          eb.selectFrom('sessions')
             .whereRef(
-              'health_worker_sessions.entity_id',
+              'sessions.entity_id',
               '=',
               'health_workers.id',
             )
             .select(sql<boolean>`
-            max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
+            max(sessions.updated_at) >= NOW() - INTERVAL '1 hour'
           `.as('online'))
-            .groupBy('health_worker_sessions.entity_id')
+            .groupBy('sessions.entity_id')
             .as('online'),
           sql<false>`FALSE`.as('is_invitee'),
           'health_workers_at_organization.professions',
@@ -295,16 +295,16 @@ export function getAllEmployeesWithoutActionQuery(
           'health_workers.email as email',
           'health_workers.name as display_name',
           'health_workers.avatar_url as avatar_url',
-          eb.selectFrom('health_worker_sessions')
+          eb.selectFrom('sessions')
             .whereRef(
-              'health_worker_sessions.entity_id',
+              'sessions.entity_id',
               '=',
               'health_workers.id',
             )
             .select(sql<boolean>`
-            max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
+            max(sessions.updated_at) >= NOW() - INTERVAL '1 hour'
           `.as('online'))
-            .groupBy('health_worker_sessions.entity_id')
+            .groupBy('sessions.entity_id')
             .as('online'),
           sql<false>`FALSE`.as('is_invitee'),
           'health_workers_at_organization.professions',

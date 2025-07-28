@@ -26,9 +26,10 @@ describe('db/models/pharmacists.ts', () => {
           town: 'HARARE',
           address_display:
             'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON, HARARE',
-          href: `/regulator/pharmacists/${id}`,
+          href: `/regulator/ZW/pharmacists/${id}`,
           expiry_date: '2024-09-30',
           pharmacist_type: 'Ind Clinic Nurse',
+          country: 'ZW',
           pharmacies: [{
             id: result.pharmacies[0].id,
             address: 'NO 1 MANCHESTER ROAD',
@@ -39,13 +40,14 @@ describe('db/models/pharmacists.ts', () => {
             licensee: 'B A T ZIMBABWE LTD',
             name: 'B A T ZIMBABWE CLINIC',
             pharmacies_types: 'Clinics: Class C',
-            href: `/regulator/pharmacies/${result.pharmacies[0].id}`,
+            href: `/regulator/ZW/pharmacies/${result.pharmacies[0].id}`,
             is_supervisor: true,
+            country: 'ZW',
           }],
           actions: {
-            view: `/regulator/pharmacists/${id}`,
-            revoke: `/regulator/pharmacists/${id}/revoke`,
-            edit: `/regulator/pharmacists/${id}/edit`,
+            view: `/regulator/ZW/pharmacists/${id}`,
+            revoke: `/regulator/ZW/pharmacists/${id}/revoke`,
+            edit: `/regulator/ZW/pharmacists/${id}/edit`,
           },
         })
       },

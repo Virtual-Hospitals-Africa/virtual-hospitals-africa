@@ -1,4 +1,4 @@
-import { Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
+import { Maybe, Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 import { PharmacistType } from '../../db.d.ts'
@@ -110,8 +110,12 @@ function baseQuery(trx: TrxOrDb) {
       nameSql('pharmacists').as('name'),
       'pharmacists.address',
       'pharmacists.town',
+      'pharmacists.country',
       addressDisplaySql('pharmacists').as('address_display'),
-      sql<string>`'/regulator/pharmacists/' || pharmacists.id`.as('href'),
+      sql<
+        string
+      >`'/regulator/' || pharmacists.country || '/pharmacists/' || pharmacists.id`
+        .as('href'),
       sql<string>`TO_CHAR(pharmacists.expiry_date, 'YYYY-MM-DD')`.as(
         'expiry_date',
       ),
@@ -131,23 +135,29 @@ function baseQuery(trx: TrxOrDb) {
             'pharmacies.licence_number',
             'pharmacies.licensee',
             'pharmacies.name',
+            'pharmacies.country',
             'pharmacies.pharmacies_types',
             'pharmacy_employment.is_supervisor',
             addressDisplaySql('pharmacies').as('address_display'),
             sql<string>`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`.as(
               'expiry_date',
             ),
-            sql<string>`'/regulator/pharmacies/' || pharmacies.id`.as('href'),
+            sql<
+              string
+            >`'/regulator/' || pharmacies.country || '/pharmacies/' || pharmacies.id`
+              .as('href'),
           ]),
       ).as('pharmacies'),
       jsonBuildObject({
-        view: sql<string>`'/regulator/pharmacists/' || pharmacists.id`,
+        view: sql<
+          string
+        >`'/regulator/' || pharmacists.country || '/pharmacists/' || pharmacists.id`,
         revoke: sql<
           string
-        >`'/regulator/pharmacists/' || pharmacists.id || '/revoke'`,
+        >`'/regulator/' || pharmacists.country || '/pharmacists/' || pharmacists.id || '/revoke'`,
         edit: sql<
           string
-        >`'/regulator/pharmacists/' || pharmacists.id || '/edit'`,
+        >`'/regulator/' || pharmacists.country || '/pharmacists/' || pharmacists.id || '/edit'`,
       }).as('actions'),
     ])
     .orderBy([
@@ -160,18 +170,28 @@ const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
+  country?: Maybe<string>
   name_search: string | null
   licence_number_search: string | null
   pharmacist_type?: PharmacistType
   include_revoked?: boolean
 }
 
-export function toSearchTerms(search: string | null): SearchTerms {
-  if (!search) return { name_search: null, licence_number_search: null }
-  if (isLicenceLike(search)) {
-    return { name_search: null, licence_number_search: search.toUpperCase() }
+export function toSearchTerms(
+  country: string,
+  search: string | null,
+): SearchTerms {
+  if (!search) {
+    return { country, name_search: null, licence_number_search: null }
   }
-  return { name_search: search, licence_number_search: null }
+  if (isLicenceLike(search)) {
+    return {
+      country,
+      name_search: null,
+      licence_number_search: search.toUpperCase(),
+    }
+  }
+  return { country, name_search: search, licence_number_search: null }
 }
 
 const model = base({
@@ -206,6 +226,9 @@ const model = base({
         '=',
         opts.pharmacist_type,
       )
+    }
+    if (opts.country) {
+      qb = qb.where('pharmacists.country', '=', opts.country)
     }
     return qb
   },
@@ -258,6 +281,7 @@ export type PharmacistInsert = {
   town: string
   expiry_date: string
   pharmacist_type: PharmacistType
+  country: string
   pharmacies?: PharmacyEmploymentInsert[]
 }
 

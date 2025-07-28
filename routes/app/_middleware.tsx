@@ -4,7 +4,8 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as notifications from '../../db/models/notifications.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import { deleteCookie, getCookies } from 'std/http/cookie.ts'
+import { deleteCookie } from 'std/http/cookie.ts'
+import * as cookie from '../../shared/cookie.ts'
 import { startTrx, TrxContext } from '../../shared/startTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import { login_href } from '../login.tsx'
@@ -29,23 +30,19 @@ export function noSession() {
   return redirect(could_not_locate_account_href)
 }
 
-export function getHealthWorkerCookie(req: Request): string | undefined {
-  return getCookies(req.headers).health_worker_session_id
-}
-
 export function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  return getHealthWorkerCookie(req) ? ctx.next() : noSession()
+  return cookie.get(req) ? ctx.next() : noSession()
 }
 
 export function getLoggedInHealthWorkerFromCookie(
   req: Request,
   ctx: TrxContext,
 ) {
-  const health_worker_session_id = getHealthWorkerCookie(req)
-  assert(health_worker_session_id)
+  const session_id = cookie.get(req)
+  assert(session_id)
 
   return health_workers.getBySession(ctx.state.trx, {
-    health_worker_session_id,
+    session_id,
   })
 }
 
@@ -58,7 +55,7 @@ async function getLoggedInHealthWorker(
   if (!healthWorker || !health_workers.isEmployed(healthWorker)) {
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()
-    deleteCookie(response.headers, 'health_worker_session_id')
+    deleteCookie(response.headers, cookie.session_key)
     return response
   }
 

@@ -5,16 +5,18 @@ import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
 
 describe(
-  '/regulator/pharmacies',
+  '/regulator/[country]/pharmacies',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a search input with GET', async () => {
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`/regulator/pharmacies`)
+      const response = await fetch(`/regulator/${regulator.country}/pharmacies`)
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/regulator/pharmacies`)
+      assert(
+        response.url === `${route}/regulator/${regulator.country}/pharmacies`,
+      )
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
@@ -26,12 +28,14 @@ describe(
     })
 
     it('renders a pharmacy table with GET', async () => {
-      const { fetch } = await addTestRegulatorWithSession(db)
+      const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`/regulator/pharmacies`)
+      const response = await fetch(`/regulator/${regulator.country}/pharmacies`)
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/regulator/pharmacies`)
+      assert(
+        response.url === `${route}/regulator/${regulator.country}/pharmacies`,
+      )
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)

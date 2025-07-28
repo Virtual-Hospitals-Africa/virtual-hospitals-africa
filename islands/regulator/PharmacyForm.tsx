@@ -10,14 +10,15 @@ import AddPharmacistSearch, {
 } from '../AddPharmacistSearch.tsx'
 
 type PharmacyForm = {
-  formData: Partial<RenderedPharmacy>
+  form_data: Partial<RenderedPharmacy>
+  country: string
 }
 
 export default function PharmacyForm(
-  { formData }: PharmacyForm,
+  { form_data, country }: PharmacyForm,
 ) {
   const selectedSupervisors = useSignal<PharmacistOption[]>(
-    formData.supervisors ?? [],
+    form_data.supervisors ?? [],
   )
   const addSupervisor = () => {
     selectedSupervisors.value = [
@@ -48,14 +49,14 @@ export default function PharmacyForm(
           required
           type='text'
           label='Name'
-          value={formData.name}
+          value={form_data.name}
         />
         <TextInput
           name='licensee'
           required
           type='text'
           label='licensee'
-          value={formData.licensee}
+          value={form_data.licensee}
         />
       </FormRow>
       <FormRow>
@@ -64,7 +65,7 @@ export default function PharmacyForm(
           required
           type='text'
           label='Licence Number'
-          value={formData.licence_number}
+          value={form_data.licence_number}
           placeholder='P01-0805-2024'
           pattern='^[A-Z]{1}[0-9]{2}-[0-9]{4}-[0-9]{4}$'
         />
@@ -72,12 +73,12 @@ export default function PharmacyForm(
           name='expiry_date'
           required
           label='Expiry Date'
-          value={formData.expiry_date}
+          value={form_data.expiry_date}
         />
       </FormRow>
 
       <FormRow>
-        <PharmacyTypeSelect value={formData.pharmacies_types} />
+        <PharmacyTypeSelect value={form_data.pharmacies_types} />
       </FormRow>
 
       <FormRow>
@@ -86,14 +87,14 @@ export default function PharmacyForm(
           required
           type='text'
           label='Town'
-          value={formData.town}
+          value={form_data.town}
         />
         <TextInput
           name='address'
           required
           type='text'
           label='Address'
-          value={formData.address}
+          value={form_data.address}
         />
       </FormRow>
       <hr className='my-2' />
@@ -106,6 +107,7 @@ export default function PharmacyForm(
           >
             <FormRow>
               <AddPharmacistSearch
+                country={country}
                 name={`supervisors.${index}`}
                 label='Supervisor'
                 value={selectedSupervisor}

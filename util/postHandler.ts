@@ -9,13 +9,13 @@ export function postHandler<
       trx: TrxOrDb
     }
   },
-  T extends z.ZodRawShape,
+  Schema extends z.ZodTypeAny,
 >(
-  schema: z.ZodObject<T>,
+  schema: Schema,
   callback: (
     req: Request,
     ctx: Context,
-    form_values: z.infer<z.ZodObject<T>>,
+    form_values: z.infer<Schema>,
   ) => Response | Promise<Response>,
 ) {
   return {

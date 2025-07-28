@@ -1,22 +1,71 @@
 import Layout from '../../components/library/Layout.tsx'
 import * as organizations from '../../db/models/organizations.ts'
+import * as regulators from '../../db/models/regulators.ts'
+
 import * as employment from '../../db/models/employment.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 import { OnboardingContext } from './_middleware.tsx'
 import { Onboarding } from '../../islands/Onboarding.tsx'
-import z from 'zod'
+import { z } from 'zod'
 import { postHandler } from '../../util/postHandler.ts'
 import redirect from '../../util/redirect.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
   department_id: z.string().uuid(),
   profession: z.enum(['nurse', 'doctor']),
   specialty: z.string(),
-})
+}).or(z.object({
+  profession: z.enum(['regulator']),
+  country: z.string(),
+}))
 
 export const handler = postHandler(
   OnboardingSchema,
   async (_req, ctx: OnboardingContext, form_values) => {
+    const { trx, healthWorker } = ctx.state
+    // We had previously created a health worker for the user, but since they are indicating they are a regulator
+    // this was incorrect, so we need to remove the health worker and create a regulator instead
+    // Very hacky, but we move the google tokens and session to the regulator
+    console.log('form_values', form_values)
+    if (form_values.profession === 'regulator') {
+      await promiseProps({
+        health_worker: health_workers.removeById(trx, healthWorker.id),
+        session: trx.updateTable('sessions').where(
+          'entity_id',
+          '=',
+          healthWorker.id,
+        ).where('entity_type', '=', 'health_worker').set({
+          entity_type: 'regulator',
+        })
+          .returning('sessions.id')
+          .executeTakeFirstOrThrow(),
+        google_token: trx.updateTable('google_tokens').where(
+          'entity_id',
+          '=',
+          healthWorker.id,
+        ).where('entity_type', '=', 'health_worker').set({
+          entity_type: 'regulator',
+        }).executeTakeFirstOrThrow(),
+        regulator: regulators.upsert(trx, {
+          id: healthWorker.id,
+          name: healthWorker.name,
+          email: healthWorker.email,
+          avatar_url: healthWorker.avatar_url,
+          country: form_values.country,
+        }),
+      })
+
+      const response = redirect(
+        `/regulator/${form_values.country}/pharmacies`,
+      )
+
+      console.log('response', response)
+
+      return response
+    }
+
     await employment.addOne(ctx.state.trx, {
       health_worker_id: ctx.state.healthWorker.id,
       ...form_values,

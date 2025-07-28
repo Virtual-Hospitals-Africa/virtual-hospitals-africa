@@ -13,6 +13,7 @@ import {
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
+import CountrySelect from './CountrySelect.tsx'
 
 type OnboardingProgress =
   | { type: 'welcome' }
@@ -59,7 +60,16 @@ function EnterProfession(
   const specialty = useSignal<string>('Primary care')
 
   const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
-  const nurse_prefix = profession.value === 'nurse' ? ' Nurse' : ''
+
+  const description = (() => {
+    if (profession.value === 'doctor') {
+      return specialty.value
+    }
+    if (profession.value === 'nurse') {
+      return specialty.value + ' Nurse'
+    }
+    return 'Regulator'
+  })()
 
   return (
     <div
@@ -88,26 +98,34 @@ function EnterProfession(
           options={[
             { value: 'nurse', label: 'Nurse' },
             { value: 'doctor', label: 'Doctor' },
+            { value: 'regulator', label: 'Regulator' },
           ]}
           onChange={(event) => profession.value = event.currentTarget.value}
           className='capitalize'
         />
       </FormRow>
-      <FormRow>
-        {profession.value === 'nurse'
-          ? (
-            <NurseSpecialtySelect
-              value={specialty.value}
-              onChange={(event) => specialty.value = event.currentTarget.value}
-            />
-          )
-          : (
-            <DoctorSpecialtySelect
-              value={specialty.value}
-              onChange={(event) => specialty.value = event.currentTarget.value}
-            />
-          )}
-      </FormRow>
+      {profession.value === 'nurse' && (
+        <FormRow>
+          <NurseSpecialtySelect
+            value={specialty.value}
+            onChange={(event) => specialty.value = event.currentTarget.value}
+          />
+        </FormRow>
+      )}
+      {profession.value === 'doctor' && (
+        <FormRow>
+          <DoctorSpecialtySelect
+            value={specialty.value}
+            onChange={(event) => specialty.value = event.currentTarget.value}
+          />
+        </FormRow>
+      )}
+
+      {profession.value === 'regulator' && (
+        <FormRow>
+          <CountrySelect name='country' value='ZW' />
+        </FormRow>
+      )}
 
       <p className='mt-4'>
         <i>How you'll appear in the platform</i>
@@ -117,7 +135,7 @@ function EnterProfession(
           person={{
             name: doctor_prefix + name.value,
             avatar_url: health_worker.avatar_url,
-            description: specialty.value + nurse_prefix,
+            description,
           }}
           size='lg'
         />
@@ -125,12 +143,14 @@ function EnterProfession(
 
       <div className='mt-10 flex'>
         <Button
-          type='button'
-          onClick={() =>
-            onProfession({
-              profession: profession.value,
-              specialty: specialty.value,
-            })}
+          type={profession.value === 'regulator' ? 'submit' : 'button'}
+          onClick={profession.value === 'regulator'
+            ? undefined
+            : () =>
+              onProfession({
+                profession: profession.value,
+                specialty: specialty.value,
+              })}
         >
           Continue<span aria-hidden='true'>
             &nbsp;&nbsp;&rarr;
@@ -224,6 +244,7 @@ export function Onboarding(
   const onProfession = () => progress.value = { type: 'select organization' }
   const onOrganization = (organization: OrganizationLike) =>
     progress.value = { type: 'select department', organization }
+
   return (
     <Form method='POST'>
       <div className='overflow-hidden bg-white py-32'>

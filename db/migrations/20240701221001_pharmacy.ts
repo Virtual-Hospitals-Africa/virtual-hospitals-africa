@@ -22,6 +22,12 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'pharmacies', (qb) =>
     qb
+      .addColumn(
+        'country',
+        'varchar(2)',
+        (col) =>
+          col.notNull().references('countries.iso_3166').onDelete('cascade'),
+      )
       .addColumn('licence_number', 'varchar(255)', (col) => col.notNull())
       .addColumn('name', 'varchar(255)', (col) => col.notNull())
       .addColumn('licensee', 'varchar(255)', (col) => col.notNull())

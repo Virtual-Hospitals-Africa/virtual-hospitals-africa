@@ -39,7 +39,10 @@ export default base({
   top_level_table: 'manufactured_medications',
   baseQuery: (
     trx: TrxOrDb,
-    opts: { include_recalled?: Maybe<boolean>; search: string | null },
+    opts: {
+      include_recalled?: Maybe<boolean>
+      search: string | null
+    },
   ) =>
     trx
       .selectFrom('manufactured_medications')
@@ -94,8 +97,26 @@ export default base({
   },
   handleSearch(
     qb,
-    opts: { search: string | null; include_recalled?: Maybe<boolean> },
+    opts: {
+      search: string | null
+      country?: Maybe<string>
+      include_recalled?: Maybe<boolean>
+    },
+    trx,
   ) {
+    if (opts.country) {
+      qb = qb.where(
+        'manufactured_medications.id',
+        'in',
+        trx.selectFrom('manufactured_medication_availabilities')
+          .select('manufactured_medication_id').where(
+            'country',
+            '=',
+            opts.country!,
+          ),
+      )
+    }
+
     if (!opts.search) return qb
 
     return qb.where((eb) =>

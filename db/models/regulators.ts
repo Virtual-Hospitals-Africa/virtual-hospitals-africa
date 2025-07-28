@@ -1,20 +1,21 @@
 import { Regulator, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
 
-export function getBySession(trx: TrxOrDb, { regulator_session_id }: {
-  regulator_session_id: string
+export function getBySession(trx: TrxOrDb, { session_id }: {
+  session_id: string
 }) {
   return trx.with(
     'matching_session',
     (qb) =>
-      qb.updateTable('regulator_sessions')
+      qb.updateTable('sessions')
         .where(
-          'regulator_sessions.id',
+          'sessions.id',
           '=',
-          regulator_session_id,
+          session_id,
         )
+        .where('sessions.entity_type', '=', 'regulator')
         .set({ updated_at: now })
-        .returning('regulator_sessions.entity_id'),
+        .returning('sessions.entity_id'),
   )
     .selectFrom('regulators')
     .innerJoin(
@@ -50,14 +51,24 @@ export function update(
     .updateTable('regulators')
     .set({ name, avatar_url })
     .where('id', '=', id)
-    .execute()
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
-export function upsert(trx: TrxOrDb, regulator: Regulator) {
+export function upsert(trx: TrxOrDb, regulator: Regulator & { id?: string }) {
   return trx
     .insertInto('regulators')
     .values(regulator)
     .onConflict((oc) => oc.column('email').doUpdateSet(regulator))
-    .returning(['id', 'name', 'email', 'avatar_url'])
+    .onConflict((oc) => oc.column('id').doUpdateSet(regulator))
+    .returning(['id', 'name', 'email', 'avatar_url', 'country'])
+    .executeTakeFirstOrThrow()
+}
+
+export function insert(trx: TrxOrDb, regulator: Regulator & { id: string }) {
+  return trx
+    .insertInto('regulators')
+    .values(regulator)
+    .returning(['id', 'name', 'email', 'avatar_url', 'country'])
     .executeTakeFirstOrThrow()
 }

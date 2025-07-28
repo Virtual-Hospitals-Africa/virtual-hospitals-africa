@@ -64,9 +64,9 @@ describe('/login', () => {
       assert(pageContents.includes('My Patients'))
     })
 
-    it('allows regulator to access /regulator/pharmacies', async () => {
+    it('allows regulator to access /regulator/[country]/pharmacies', async () => {
       const { fetchCheerio } = await addTestRegulatorWithSession(db)
-      const $ = await fetchCheerio(`/regulator/pharmacies`)
+      const $ = await fetchCheerio(`/regulator/ZW/pharmacies`)
       assertEquals($('h1').text(), 'Pharmacies')
     })
 

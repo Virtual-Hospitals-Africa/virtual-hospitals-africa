@@ -36,6 +36,8 @@ export type EncounterStep =
   | 'symptoms'
   | 'vitals'
 
+export type EntityType = 'health_worker' | 'regulator'
+
 export type FamilyType =
   | '2 married parents'
   | 'Blended'
@@ -396,6 +398,17 @@ export interface GeometryColumns {
   type: string | null
 }
 
+export interface GoogleTokens {
+  access_token: string
+  created_at: Generated<Timestamp>
+  entity_id: string
+  entity_type: EntityType
+  expires_at: Timestamp
+  id: Generated<string>
+  refresh_token: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface GuardianRelations {
   dependent: string
   female_dependent: string | null
@@ -403,16 +416,6 @@ export interface GuardianRelations {
   guardian: GuardianRelation
   male_dependent: string | null
   male_guardian: string | null
-}
-
-export interface HealthWorkerGoogleTokens {
-  access_token: string
-  created_at: Generated<Timestamp>
-  expires_at: Timestamp
-  health_worker_id: string
-  id: Generated<string>
-  refresh_token: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface HealthWorkerInvitees {
@@ -430,13 +433,6 @@ export interface HealthWorkers {
   email: string
   id: Generated<string>
   name: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface HealthWorkerSessions {
-  created_at: Generated<Timestamp>
-  entity_id: string
-  id: Generated<string>
   updated_at: Generated<Timestamp>
 }
 
@@ -529,6 +525,14 @@ export interface MailingList {
   message: string | null
   name: string
   support: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface ManufacturedMedicationAvailabilities {
+  country: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  manufactured_medication_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -983,6 +987,7 @@ export interface PatientSymptoms {
 
 export interface Pharmacies {
   address: string | null
+  country: string
   created_at: Generated<Timestamp>
   expiry_date: Timestamp
   id: Generated<string>
@@ -1015,6 +1020,7 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
 
 export interface Pharmacists {
   address: string | null
+  country: string
   created_at: Generated<Timestamp>
   expiry_date: Timestamp
   family_name: string
@@ -1107,18 +1113,9 @@ export interface ProviderCalendars {
   updated_at: Generated<Timestamp>
 }
 
-export interface RegulatorGoogleTokens {
-  access_token: string
-  created_at: Generated<Timestamp>
-  expires_at: Timestamp
-  id: Generated<string>
-  refresh_token: string
-  regulator_id: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface Regulators {
   avatar_url: string | null
+  country: string
   created_at: Generated<Timestamp>
   email: string
   id: Generated<string>
@@ -1126,9 +1123,10 @@ export interface Regulators {
   updated_at: Generated<Timestamp>
 }
 
-export interface RegulatorSessions {
+export interface Sessions {
   created_at: Generated<Timestamp>
   entity_id: string
+  entity_type: EntityType
   id: Generated<string>
   updated_at: Generated<Timestamp>
 }
@@ -1213,10 +1211,9 @@ export interface DB {
   examinations: Examinations
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns
+  google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
-  health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
-  health_worker_sessions: HealthWorkerSessions
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
@@ -1229,6 +1226,7 @@ export interface DB {
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
   mailing_list: MailingList
+  manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
@@ -1287,9 +1285,8 @@ export interface DB {
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars
-  regulator_google_tokens: RegulatorGoogleTokens
-  regulator_sessions: RegulatorSessions
   regulators: Regulators
+  sessions: Sessions
   snomed_concepts: SnomedConcepts
   spatial_ref_sys: SpatialRefSys
   waiting_room: WaitingRoom
