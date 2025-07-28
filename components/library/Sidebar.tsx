@@ -22,6 +22,7 @@ import { MedicineIcon } from './icons/Medicines.tsx'
 import { PharmaciesIcon } from './icons/Pharmacies.tsx'
 import { UsersIcon } from './icons/heroicons/outline.tsx'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
+import { BuildingOffice2Icon } from './icons/heroicons/solid.tsx'
 
 export type SidebarProps = {
   top: {
@@ -103,6 +104,11 @@ const regulator_home_page_nav_links: LinkDef[] = [
     route: '/regulator/:country/medicines',
     title: 'Medicines',
     Icon: MedicineIcon,
+  },
+  {
+    route: '/regulator/:country/organizations',
+    title: 'organizations',
+    Icon: BuildingOffice2Icon,
   },
   {
     route: '/regulator/logout',

@@ -37,6 +37,7 @@ export function baseQuery(trx: TrxOrDb) {
       'organizations.category',
       'addresses.formatted as address',
       'addresses.formatted as description',
+      'addresses.country',
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
@@ -62,6 +63,7 @@ const model = base({
   baseQuery,
   formatResult: (x): HasStringId<
     Organization & {
+      country: string | null
       departments: {
         id: string
         name: string
@@ -75,10 +77,18 @@ const model = base({
       search?: string | null
       kind?: 'physical' | 'virtual' | null
       is_test?: boolean
+      country?: string
+      name_search?: string | null
     },
   ) {
     if (opts.search) {
       qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
+    }
+    if (opts.name_search) {
+      qb = qb.where('organizations.name', 'ilike', `%${opts.name_search}%`)
+    }
+    if (opts.country) {
+      qb = qb.where('addresses.country', '=', opts.country)
     }
     if (opts.kind) {
       qb = qb.where(
@@ -99,6 +109,21 @@ export const getById = model.getById
 export const getByIds = model.getByIds
 
 export type OrganizationSearchResult = SearchResult<typeof model>
+
+export type SearchTerms = {
+  country?: string
+  name_search: string | null
+}
+
+export function toSearchTerms(
+  country: string,
+  search: string | null,
+): SearchTerms {
+  return {
+    country,
+    name_search: search || null,
+  }
+}
 
 type EmployeeQueryOpts = {
   organization_id?: string
