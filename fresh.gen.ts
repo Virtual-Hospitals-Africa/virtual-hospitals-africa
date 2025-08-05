@@ -140,6 +140,7 @@ import * as $regulator_country_medicines from './routes/regulator/[country]/medi
 import * as $regulator_country_medicines_medicine_id_recall from './routes/regulator/[country]/medicines/[medicine_id]/recall.tsx'
 import * as $regulator_country_organizations from './routes/regulator/[country]/organizations.tsx'
 import * as $regulator_country_organizations_organization_id_ from './routes/regulator/[country]/organizations/[organization_id].tsx'
+import * as $regulator_country_organizations_add from './routes/regulator/[country]/organizations/add.tsx'
 import * as $regulator_country_pharmacies from './routes/regulator/[country]/pharmacies.tsx'
 import * as $regulator_country_pharmacies_pharmacy_id_ from './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_country_pharmacies_add from './routes/regulator/[country]/pharmacies/add.tsx'
@@ -258,6 +259,7 @@ import * as $patient_drawer_DrawerV2 from './islands/patient-drawer/DrawerV2.tsx
 import * as $patient_drawer_FindingsList from './islands/patient-drawer/FindingsList.tsx'
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
+import * as $patient_drawer_PatientDrawerCard from './islands/patient-drawer/PatientDrawerCard.tsx'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -267,6 +269,7 @@ import * as $prescriptions_MedicationInput from './islands/prescriptions/Medicat
 import * as $prescriptions_MedicationRow from './islands/prescriptions/MedicationRow.tsx'
 import * as $prescriptions_ScheduleInput from './islands/prescriptions/ScheduleInput.tsx'
 import * as $prescriptions_ScheduleRow from './islands/prescriptions/ScheduleRow.tsx'
+import * as $regulator_OrganizationForm from './islands/regulator/OrganizationForm.tsx'
 import * as $regulator_PharmacistForm from './islands/regulator/PharmacistForm.tsx'
 import * as $regulator_PharmacyForm from './islands/regulator/PharmacyForm.tsx'
 import * as $request_review_OrganizationCard from './islands/request-review/OrganizationCard.tsx'
@@ -515,6 +518,8 @@ const manifest = {
       $regulator_country_organizations,
     './routes/regulator/[country]/organizations/[organization_id].tsx':
       $regulator_country_organizations_organization_id_,
+    './routes/regulator/[country]/organizations/add.tsx':
+      $regulator_country_organizations_add,
     './routes/regulator/[country]/pharmacies.tsx':
       $regulator_country_pharmacies,
     './routes/regulator/[country]/pharmacies/[pharmacy_id].tsx':
@@ -650,6 +655,8 @@ const manifest = {
       $patient_drawer_FindingsListItem,
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
+    './islands/patient-drawer/PatientDrawerCard.tsx':
+      $patient_drawer_PatientDrawerCard,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
@@ -662,6 +669,7 @@ const manifest = {
     './islands/prescriptions/MedicationRow.tsx': $prescriptions_MedicationRow,
     './islands/prescriptions/ScheduleInput.tsx': $prescriptions_ScheduleInput,
     './islands/prescriptions/ScheduleRow.tsx': $prescriptions_ScheduleRow,
+    './islands/regulator/OrganizationForm.tsx': $regulator_OrganizationForm,
     './islands/regulator/PharmacistForm.tsx': $regulator_PharmacistForm,
     './islands/regulator/PharmacyForm.tsx': $regulator_PharmacyForm,
     './islands/request-review/OrganizationCard.tsx':
