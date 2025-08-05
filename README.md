@@ -1,6 +1,5 @@
-# Virtual Hospitals Africa monorepo
+# Virtual Hospitals Africa
 
-Built with ❤️ by the team at <a href="https://morehumaninternet.org">More Human
-Internet</a>
+Learn more about how we're connecting patients with care at [virtualhospitalsafrica.org](https://virtualhospitalsafrica.org)
 
-See the [Engineering](https://www.notion.so/morehumaninternet/Engineering-bd877fee6c2f477e9f8b33550162304e?pvs=4) docs for details about tech setup
+Wanting to contribute? See our open positions on [Idealist](https://www.idealist.org/en/nonprofit/318fda9457534eafa3fa691bba19f5ae-virtual-hospitals-africa-polokwane)
