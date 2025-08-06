@@ -23,22 +23,13 @@ export default function WaitingRoomView(
           can_add_patients={can_add_patients}
         />
         {can_add_patients && (
-          <>
-            <Button
-              type='button'
-              href={intake_patient_href}
-              className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
-            >
-              Intake patient (new experience)
-            </Button>
-            <Button
-              type='button'
-              href={old_intake_patient_href}
-              className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
-            >
-              Intake patient (to be deprecated experience)
-            </Button>
-          </>
+          <Button
+            type='button'
+            href={intake_patient_href}
+            className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+          >
+            Intake patient
+          </Button>
         )}
       </FormRow>
       <WaitingRoomTable
