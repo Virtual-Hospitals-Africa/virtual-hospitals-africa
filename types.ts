@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
+import { FreshContext, Handlers } from '$fresh/server.ts'
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
-import { FreshContext, Handlers } from '$fresh/server.ts'
-import db from './db/db.ts'
+import { ExtendedActionData } from './components/library/Table.tsx'
 import {
   AgeUnit,
   DB,
@@ -13,8 +13,8 @@ import {
   MaritalStatus,
   PatientCohabitation,
 } from './db.d.ts'
+import db from './db/db.ts'
 import { DietFrequency } from './shared/diet.ts'
-import { ExtendedActionData } from './components/library/Table.tsx'
 
 export type Maybe<T> = T | null | undefined
 
@@ -2366,11 +2366,34 @@ export type Measurements = {
   triceps_skinfold: [string, number, 'cm']
 }
 
-export type Measurement<Name extends keyof Measurements> = {
-  measurement_name: Name
-  snomed_code?: Measurements[Name][0]
-  value?: Measurements[Name][1]
-  units: Measurements[Name][2]
+export type Unit =
+  | 'cm'
+  | 'kg'
+  | '°C'
+  | 'mmHg'
+  | '%'
+  | 'mg/dL'
+  | 'bpm'
+
+type MeasurementName = keyof Measurements
+
+export type LastKnown = {
+  value?: Measurements[MeasurementName][1]
+  created_at: number | Date
+}
+export type Measurement = {
+  measurement_name: string
+  snomed_code?: string
+  value: number
+  units: string
+  is_flagged: boolean
+}
+
+export type VitalX = {
+  vital_name: string
+  snomed_code?: string
+  measurements: Measurement[]
+  last_known: LastKnown[]
   is_flagged: boolean
 }
 

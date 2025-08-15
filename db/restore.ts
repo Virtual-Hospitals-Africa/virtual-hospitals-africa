@@ -1,6 +1,6 @@
-import * as db from './db.ts'
-import { runCommand } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
+import { runCommand } from '../util/command.ts'
+import * as db from './db.ts'
 
 export function restore(name: string) {
   const dump_file = `./db/dumps/${name}`

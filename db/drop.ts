@@ -1,6 +1,6 @@
 import * as cache from '../external-clients/cache.ts'
-import { spinner } from '../util/spinner.ts'
 import { runCommand } from '../util/command.ts'
+import { spinner } from '../util/spinner.ts'
 import { onLocalhost } from './onLocalhost.ts'
 
 export async function drop() {
@@ -14,7 +14,13 @@ export async function drop() {
     'Dropping database',
     () =>
       runCommand('dropdb', {
-        args: [db_opts.database, '-U', db_opts.user],
+        args: [
+          db_opts.database,
+          '-U',
+          db_opts.user,
+          '--port',
+          String(Deno.env.get('DOCKER_POSTGRES_PORT') || db_opts.port),
+        ],
       }).catch((e) => {
         if (e.message.includes('other session')) {
           throw new Error('Database is in use, cannot drop.')

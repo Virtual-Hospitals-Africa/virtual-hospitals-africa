@@ -1,186 +1,172 @@
-import { CheckboxInput, UnitInput } from '../form/Inputs.tsx'
-import { Measurement, Measurements } from '../../types.ts'
-import capitalize from '../../util/capitalize.ts'
-import * as VitalsIcons from '../../components/library/icons/vitals.tsx'
-import { MEASUREMENTS } from '../../shared/measurements.ts'
-import {
-  addVitalsFinding,
-  removeVitalsFinding,
-} from '../patient-drawer/VitalsList.tsx'
-import { computed, useSignal } from '@preact/signals'
-import VitalsFlag from './VitalsFlag.tsx'
-import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { useState } from 'preact/hooks'
+import Card from "../../components/library/Card.tsx";
+import SectionHeader from "../../components/library/typography/SectionHeader.tsx";
+import { VitalX } from "../../types.ts";
+import { UnitInput } from "../form/Inputs.tsx";
 
-type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
+const patientObservations = [
+  { id: "1", code: "asdf", value: 60, serverityLevel: 0, note: null },
+  { id: "2", code: "qwer", value: 55, serverityLevel: 0, note: null },
+  { id: "3", code: "zxcv", value: 80, serverityLevel: 0, note: "Great job!" },
+];
 
-const required_inputs: NormalVitalInput[] = []
+const vitalsForm = [
+  { code: "asdf", is_required: false },
+  { code: "qwer", is_required: true },
+];
 
-const all_inputs: NormalVitalInput[] = [
-  'height',
-  'weight',
-  'temperature',
-  'blood_oxygen_saturation',
-  'blood_glucose',
-  'pulse',
-  'respiratory_rate',
-  'blood_pressure_systolic',
-  'blood_pressure_diastolic',
-]
+const codeDictionary = {
+  asdf: { display: "Standing Height", unit: "cm" },
+  qewr: { display: "Standing Weight", unit: "kg" },
+  zxcv: { display: "Sitting Heartrate", unit: "BPM" },
+};
 
-function VitalInput({ measurement, required, vitals, name }: {
-  measurement: keyof Measurements
-  required?: boolean
-  vitals: Measurement<keyof Measurements>
-  name?: string
-}) {
-  const on = useSignal(vitals.is_flagged || false)
-  const [vitalsValue, setVitalsValue] = useState(vitals.value)
-
-  const vital_description = computed(() => {
-    return measurement
-  })
-
-  const toggle = () => {
-    on.value = !on.value
-    if (on.value === true) {
-      addVitalsFinding(
-        vital_description.value,
-        vitalsValue || 0,
-      )
-    } else {
-      removeVitalsFinding(vital_description.value)
-    }
-  }
-
-  const Icon = VitalsIcons[measurement as keyof typeof VitalsIcons]
-
-  return (
-    <div className='flex justify-between w-full'>
-      <div className='flex flex-row gap-2'>
-        <VitalsFlag
-          on={on.value}
-          toggle={toggle}
-          description={vital_description.value}
-        />
-        <Icon className='w-6' />
-        {
-          /* <div className='align-middle'>
-        </div> */
-        }
-        <span class='flex items-center'>
-          {capitalize(measurement)}
-          {required && <sup>*</sup>}
-        </span>
-      </div>
-      <div className='min-w-30 max-w-30'>
-        <UnitInput
-          required={required}
-          name={`${name}.value`}
-          label={null}
-          value={vitalsValue}
-          className='col-start-6 justify-end'
-          min={0}
-          onInput={
-            // update drawer
-            (e) => {
-              on.value &&
-                addVitalsFinding(
-                  vital_description.value,
-                  Number(e.currentTarget.value),
-                )
-              setVitalsValue(Number(e.currentTarget.value))
-            }
-          }
-          units={MEASUREMENTS[measurement]}
-        />
-        <CheckboxInput
-          name={`${name}.is_flagged`}
-          label={null}
-          checked={on.value}
-          className='hidden'
-        />
-        <HiddenInput
-          name={`${name}.measurement_name`}
-          value={measurement}
-        />
-      </div>
-      {
-        /* <HiddenInput
-        name={`${name}.is_flagged`}
-        value={on.value ? true : false}
-      /> */
+vitalsForm.map((vital) => (
+  <div>
+    <label>{codeDictionary[vital].display}</label>
+    <input
+      placeholder={
+        patientObservations.findOne((o) => o.code === vital) +
+        codeDictionary[vital].unit
       }
-    </div>
-  )
-}
+    ></input>
+  </div>
+));
 
-export function VitalsForm({ vitals }: {
-  vitals: Measurement<keyof Measurements>[]
+export type VitalCard = {
+  title: string;
+  sections: MeasurementX[][];
+};
+
+export type MeasurementX = {
+  label: string;
+  name: string;
+  required: boolean;
+  measurements: Array<{ name: string; units: string }>;
+};
+
+export function VitalsForm({
+  cards,
+  patient_vitals,
+}: {
+  cards: VitalCard[];
+  patient_vitals: VitalX[];
 }) {
-  const remaining_inputs = computed(() => {
-    return all_inputs.filter((input) =>
-      !vitals.some((vital) => {
-        return vital.measurement_name === input
-      })
-    )
-  })
-
-  for (const input of remaining_inputs.value) {
-    vitals.push({
-      measurement_name: input,
-      is_flagged: false,
-      units: MEASUREMENTS[input],
-    })
-  }
-
   return (
-    <div className='flex flex-col gap-1'>
-      {vitals.sort((a, b) =>
-        a.measurement_name.localeCompare(b.measurement_name)
-      ).map((vital, index) => (
-        <VitalInput
-          required={required_inputs.includes(
-            vital.measurement_name as NormalVitalInput,
+    <div className="flex flex-col gap-1">
+      {cards.map((card) => (
+        <Card className="flex flex-col gap-1" orientation="vertical">
+          <SectionHeader>{card.title}</SectionHeader>
+          {card.sections.map((section) =>
+            section.map((measurement_row) => {
+              return (
+                // Measurement Row
+                <div>
+                  {measurement_row.label}
+                  {/* Last Known */}
+                  {/* Intersperse with a slash */}
+
+                  {measurement_row.measurements.map((measurement) => {
+                    const patient_vital = patient_vitals.find(
+                      (vital) => vital.vital === measurement.name
+                    );
+
+                    return (
+                      <UnitInput
+                        required={measurement_row.required}
+                        name={`${measurement.name}.value`}
+                        label={null}
+                        value={patient_measurement?.value}
+                        className="col-start-6 justify-end"
+                        min={0}
+                        units={measurement.units}
+                      />
+                    );
+                  })}
+
+                  {/* <CheckboxInput
+                    name={`${measurement_row.name}.is_flagged`}
+                    value={measurement_row.is_flagged}
+                  /> */}
+
+                  {/* Flag */}
+                </div>
+              );
+            })
           )}
-          measurement={vital.measurement_name}
-          vitals={vital}
-          name={`measurements.${index}`}
-        />
+        </Card>
       ))}
-      {/* Blood pressure is weird because it's two measurements in one */}
-      {
-        /*
-        Ways to handle blood pressure
-        1. Have two inputs for diastolic and systolic
-        */
-      }
-      {
-        /* <VitalInputDefined
-        required={!no_vitals_required.value}
-        measurement='blood_pressure'
-        Icon={VitalsIcons.blood_pressure}
-        units='mmHg'
-      >
-        <NumberInput
-          required={!no_vitals_required.value}
-          name='measurements.blood_pressure_diastolic'
-          label={null}
-          value={vitals?.blood_pressure_diastolic?.[1]}
-          className='col-start-4'
-          min={0}
-        />
-        <span className='col-start-5'>/</span>
-        <NumberInput
-          required={!no_vitals_required.value}
-          name='measurements.blood_pressure_systolic'
-          label={null}
-          value={vitals?.blood_pressure_systolic?.[1]}
-          className='col-start-6'
-          min={0}
-        />
-      </VitalInputDefined> */
-      }
     </div>
-  )
+  );
 }
+
+// type NormalVitalInput = Exclude<keyof typeof VitalsIcons, "blood_pressure">;
+
+// const required_inputs: NormalVitalInput[] = [];
+
+// const all_inputs: NormalVitalInput[] = [
+//   "height",
+//   "weight",
+//   "temperature",
+//   "blood_oxygen_saturation",
+//   "blood_glucose",
+//   "pulse",
+//   "respiratory_rate",
+//   "blood_pressure_systolic",
+//   "blood_pressure_diastolic",
+// ];
+
+// function VitalInput({
+//   required,
+//   label,
+//   units,
+//   name,
+//   value,
+//   is_flagged,
+//   last_known,
+// }: {
+//   required?: boolean;
+//   label: string;
+//   units: string;
+//   name: string;
+//   value?: number;
+//   is_flagged?: boolean;
+//   last_known?: LastKnown;
+// }) {
+//   return (
+//     <div className="flex justify-between w-full">
+//       <div className="flex flex-row gap-2">
+//         <span class="flex items-center">
+//           {label}
+//           {required && <sup>*</sup>}
+//         </span>
+//       </div>
+//       <div className="min-w-30 max-w-30">
+//         <UnitInput
+//           required={required}
+//           name={`${name}.value`}
+//           label={null}
+//           value={value}
+//           className="col-start-6 justify-end"
+//           min={0}
+//           units={units}
+//         />
+//         {/* <VitalsFlag
+//           on={on.value}
+//           toggle={toggle}
+//           description={vital_description.value}
+//         /> */}
+//         {/* <HiddenInput name={`${name}.measurement_name`} value={measurement} /> */}
+//       </div>
+//       {/* <CheckboxInput
+//         name={`${name}.is_flagged`}
+//         label={null}
+//         checked={on.value}
+//         className="hidden"
+//       /> */}
+//       {/* <HiddenInput
+//         name={`${name}.is_flagged`}
+//         value={on.value ? true : false}
+//       /> */}
+//     </div>
+//   );
+// }
