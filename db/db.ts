@@ -83,7 +83,7 @@ const db = new Kysely<DB>({
     console.error('Query failed')
     console.error(event.error)
 
-    // TODO, maskPII
+    // TODO, mask PII
     console.error(debugReplaceAll(
       event.query.sql,
       event.query.parameters,

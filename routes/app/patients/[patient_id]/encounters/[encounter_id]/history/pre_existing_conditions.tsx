@@ -11,6 +11,7 @@ import {
   HistoryContext,
   HistoryPage,
 } from './_middleware.tsx'
+import { snomed_concept_id } from '../../../../../../../util/validators.ts'
 
 export const ConditionsSchema = z.object({
   allergies: z.array(
@@ -18,7 +19,7 @@ export const ConditionsSchema = z.object({
       patient_allergy_id: z.string().uuid().optional().transform((value) =>
         value || generateUUID()
       ),
-      snomed_concept_id: z.number(),
+      snomed_concept_id,
       snomed_english_term: z.string(),
     }).optional(),
   ).optional()

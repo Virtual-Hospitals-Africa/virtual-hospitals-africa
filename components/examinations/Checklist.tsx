@@ -5,9 +5,9 @@ import { ExaminationChecklistItem } from '../../islands/examinations/ChecklistIt
 export type ExaminationChecklistItem = {
   label: string
   snomed_english_term: string
-  snomed_concept_id: number
+  snomed_concept_id: string
   body_sites: {
-    snomed_concept_id: number
+    snomed_concept_id: string
     snomed_english_term: string
   }[]
 }

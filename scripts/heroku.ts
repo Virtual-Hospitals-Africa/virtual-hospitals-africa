@@ -1,4 +1,4 @@
-import { runCommand } from '../util/command.ts'
+import { runCommandAssertExitCodeZero } from '../util/command.ts'
 
 const APPLICATIONS = {
   'virtual-hospitals-africa': 'web',
@@ -11,7 +11,7 @@ const APPLICATIONS = {
 type Application = keyof typeof APPLICATIONS
 
 function heroku(args: string[]) {
-  return runCommand('heroku', {
+  return runCommandAssertExitCodeZero('heroku', {
     args,
     stdout: 'inherit',
     stderr: 'inherit',

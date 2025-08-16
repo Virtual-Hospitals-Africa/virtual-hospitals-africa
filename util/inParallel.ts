@@ -1,15 +1,17 @@
 export async function forEach<T>(
   generator: Iterable<T> | AsyncIterable<T> | Array<T>,
   fn: (item: T) => Promise<unknown>,
-  { concurrency } = { concurrency: 10 },
+  { concurrency } = { concurrency: 8 },
 ): Promise<void> {
   let inFlight = 0
   let belowConcurrencyLimit = Promise.resolve()
   let resolveBelowConcurrencyLimit: () => void
-  let resolveAllDone = () => {
-    return
-  }
-  let allDone = new Promise<void>((resolve) => (resolveAllDone = resolve))
+  let resolveAllDone: () => void
+  let rejectAllDone: (reason?: string | Error) => void
+  const allDone = new Promise<void>((resolve, reject) => {
+    resolveAllDone = resolve
+    rejectAllDone = reject
+  })
 
   let looping = true
   let errored = false
@@ -37,16 +39,76 @@ export async function forEach<T>(
       .catch((err) => {
         if (!errored) {
           errored = true
-          allDone = Promise.reject(err)
+          rejectAllDone(err)
         }
       })
   }
 
   looping = false
   if (inFlight === 0) {
-    resolveAllDone()
+    Promise.resolve().then(() => resolveAllDone())
   }
   return allDone
+}
+
+// Processes a generator in parallel, but returns collects the results
+// in the order of the source generator, not in the order they are returned
+export async function pMap<T, U>(
+  generator: Iterable<T> | AsyncIterable<T> | Array<T>,
+  fn: (item: T) => Promise<U>,
+  { concurrency } = { concurrency: 8 },
+): Promise<U[]> {
+  let inFlight = 0
+  let belowConcurrencyLimit = Promise.resolve()
+  let resolveBelowConcurrencyLimit: () => void
+  const results: U[] = []
+  let resolveAllDone: () => void
+  let rejectAllDone: (reason?: string | Error) => void
+  const allDone = new Promise<void>((resolve, reject) => {
+    resolveAllDone = resolve
+    rejectAllDone = reject
+  })
+
+  let looping = true
+  let errored = false
+  let index = 0
+
+  for await (const item of generator) {
+    const i = index
+    index++
+    if (errored) {
+      break
+    }
+    await belowConcurrencyLimit
+    inFlight++
+    if (inFlight === concurrency) {
+      belowConcurrencyLimit = new Promise<void>((
+        resolve,
+      ) => (resolveBelowConcurrencyLimit = resolve))
+    }
+    fn(item)
+      .then((result) => {
+        results[i] = result
+        inFlight--
+        if (inFlight === 0 && !looping) {
+          resolveAllDone()
+        } else if (inFlight === concurrency - 1) {
+          resolveBelowConcurrencyLimit()
+        }
+      })
+      .catch((err) => {
+        if (!errored) {
+          errored = true
+          rejectAllDone(err)
+        }
+      })
+  }
+
+  looping = false
+  if (inFlight === 0) {
+    Promise.resolve().then(() => resolveAllDone())
+  }
+  return allDone.then(() => results)
 }
 
 export async function collect<T>(

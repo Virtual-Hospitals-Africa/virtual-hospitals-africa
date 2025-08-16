@@ -1,8 +1,8 @@
-import { parseTsvResource } from '../../parseTsvResource.ts'
+import { collectTsvResource } from '../../parseTsvResource.ts'
 import { create } from '../create.ts'
 import z from 'zod'
 
-export const countries = await parseTsvResource(
+export const countries = await collectTsvResource(
   'countries',
   z.object({
     iso_3166: z.string().length(2),

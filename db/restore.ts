@@ -1,11 +1,11 @@
 import * as db from './db.ts'
-import { runCommand } from '../util/command.ts'
+import { runCommandAssertExitCodeZero } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export function restore(name: string) {
   const dump_file = `./db/dumps/${name}`
   console.log(`Restoring database from ${dump_file}...`)
-  return runCommand('pg_restore', {
+  return runCommandAssertExitCodeZero('pg_restore', {
     args: ['--no-owner', '-d', db.uri, dump_file],
   })
 }

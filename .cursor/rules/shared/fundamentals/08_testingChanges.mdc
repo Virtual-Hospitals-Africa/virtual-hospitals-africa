@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Testing After Changes
+
+- After making any code changes, you MUST validate those changes by running the corresponding tests:
+  - After modifying a model, run the model tests:
+    ```bash
+    deno task test test/models/[ModifiedModelName].ts
+    ```
+  - After modifying a resource, run the resource tests:
+    ```bash
+    yarn mocha test/resources/[path/to/ResourceFile].ts
+    ```
+  - After modifying a query builder, ensure all model tests that use this query builder pass.
+- Never consider a change complete until the relevant tests are passing.
+- If tests fail after your changes, fix the issues before proceeding. Check [05_terminalCommands.mdc](mdc:.cursor/rules/shared/fundamentals/05_terminalCommands.mdc) for instructions.

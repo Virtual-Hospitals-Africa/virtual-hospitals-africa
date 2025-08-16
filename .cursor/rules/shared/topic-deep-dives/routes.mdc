@@ -1,0 +1,11 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Routes Documentation
+
+Files in /routes define API endpoints. As per Fresh, handler functions defined in a directory's _middleware handle logic we want to run for all requests hitting that URL-space. Generally follow Fresh's documentation for how this works.
+
+For the intake, encounter (seeking treatment), review, and seeking treatment workflows the `_middleware.tsx` files also define a layout that abstracts the general layout for these multi-step processes. As an example, the routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx uses the EncounterPage defined in the _middleware. You won't need to make new instances of these files, but it's important to understand how they work.
+

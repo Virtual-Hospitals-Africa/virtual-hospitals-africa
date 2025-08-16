@@ -35,7 +35,6 @@ const connectionOpts = () => {
 }
 
 export const opts = connectionOpts()
-console.log({ opts })
 
 export const redis =
   (Deno.env.get('NO_EXTERNAL_CONNECT') ? undefined : await connect(opts))!

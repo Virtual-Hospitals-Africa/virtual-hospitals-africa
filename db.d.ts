@@ -720,7 +720,7 @@ export interface PatientAllergies {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string
-  snomed_concept_id: number
+  snomed_concept_id: Int8
   updated_at: Generated<Timestamp>
 }
 
@@ -830,7 +830,7 @@ export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_finding_id: string
-  snomed_concept_id: number
+  snomed_concept_id: Int8
   updated_at: Generated<Timestamp>
 }
 
@@ -839,7 +839,7 @@ export interface PatientExaminationFindings {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_examination_id: string
-  snomed_concept_id: number
+  snomed_concept_id: Int8
   updated_at: Generated<Timestamp>
 }
 
@@ -1131,9 +1131,238 @@ export interface Sessions {
   updated_at: Generated<Timestamp>
 }
 
-export interface SnomedConcepts {
-  snomed_concept_id: number
-  snomed_english_term: string
+export interface SnomedCciRefsetRefsetDescriptor {
+  active: boolean
+  attribute_description: Int8
+  attribute_order: Int8
+  attribute_type: Int8
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedCiRefsetDescriptionType {
+  active: boolean
+  description_format: Int8
+  description_length: Int8
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedCissccRefsetMrcmAttributeDomain {
+  active: boolean
+  attribute_cardinality: string
+  attribute_in_group_cardinality: string
+  content_type_id: Int8
+  domain_id: Int8
+  effective_time: Timestamp
+  grouped: boolean
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+  rule_strength_id: Int8
+}
+
+export interface SnomedConcept {
+  active: boolean
+  definition_status_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  module_id: Int8
+}
+
+export interface SnomedCRefsetAssociation {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+  target_component_id: Int8
+}
+
+export interface SnomedCRefsetAttributeValue {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+  value_id: Int8
+}
+
+export interface SnomedCRefsetLanguage {
+  acceptability_id: Int8
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedCRefsetMrcmModuleScope {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  mrcm_rule_refset_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedDescription {
+  active: boolean
+  case_significance_id: Int8
+  concept_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  language_code: string
+  module_id: Int8
+  term: string
+  type_id: Int8
+}
+
+export interface SnomedIisssccRefsetExtendedMap {
+  active: boolean
+  correlation_id: Int8
+  effective_time: Timestamp
+  id: string
+  map_advice: string | null
+  map_category_id: Int8
+  map_group: Int8
+  map_priority: Int8
+  map_rule: string | null
+  map_target: string | null
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedRefsetSimple {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedRelationship {
+  active: boolean
+  characteristic_type_id: Int8
+  destination_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  modifier_id: Int8
+  module_id: Int8
+  relationship_group: Int8
+  source_id: Int8
+  type_id: Int8
+}
+
+export interface SnomedRelationshipConcreteValues {
+  active: boolean
+  characteristic_type_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  modifier_id: Int8
+  module_id: Int8
+  relationship_group: Int8
+  source_id: Int8
+  type_id: Int8
+  value: string
+}
+
+export interface SnomedSRefsetOwlExpression {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  owl_expression: string
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedSRefsetSimpleMap {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  map_target: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedSsccRefsetMrcmAttributeRange {
+  active: boolean
+  attribute_rule: string
+  content_type_id: Int8
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  range_constraint: string
+  referenced_component_id: Int8
+  refset_id: Int8
+  rule_strength_id: Int8
+}
+
+export interface SnomedSsRefsetModuleDependency {
+  active: boolean
+  effective_time: Timestamp
+  id: string
+  module_id: Int8
+  referenced_component_id: Int8
+  refset_id: Int8
+  source_effective_time: Timestamp
+  target_effective_time: Timestamp
+}
+
+export interface SnomedSssssssRefsetMrcmDomain {
+  active: boolean
+  domain_constraint: string
+  domain_template_for_postcoordination: string
+  domain_template_for_precoordination: string
+  effective_time: Timestamp
+  guide_url: string | null
+  id: string
+  module_id: Int8
+  parent_domain: string | null
+  proximal_primitive_constraint: string
+  proximal_primitive_refinement: string | null
+  referenced_component_id: Int8
+  refset_id: Int8
+}
+
+export interface SnomedStatedRelationship {
+  active: boolean
+  characteristic_type_id: Int8
+  destination_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  modifier_id: Int8
+  module_id: Int8
+  relationship_group: Int8
+  source_id: Int8
+  type_id: Int8
+}
+
+export interface SnomedTextDefinition {
+  active: boolean
+  case_significance_id: Int8
+  concept_id: Int8
+  effective_time: Timestamp
+  id: Int8
+  language_code: string
+  module_id: Int8
+  term: string
+  type_id: Int8
 }
 
 export interface SpatialRefSys {
@@ -1287,7 +1516,27 @@ export interface DB {
   provider_calendars: ProviderCalendars
   regulators: Regulators
   sessions: Sessions
-  snomed_concepts: SnomedConcepts
+  snomed_c_refset_association: SnomedCRefsetAssociation
+  snomed_c_refset_attribute_value: SnomedCRefsetAttributeValue
+  snomed_c_refset_language: SnomedCRefsetLanguage
+  snomed_c_refset_mrcm_module_scope: SnomedCRefsetMrcmModuleScope
+  snomed_cci_refset_refset_descriptor: SnomedCciRefsetRefsetDescriptor
+  snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
+  snomed_cisscc_refset_mrcm_attribute_domain:
+    SnomedCissccRefsetMrcmAttributeDomain
+  snomed_concept: SnomedConcept
+  snomed_description: SnomedDescription
+  snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
+  snomed_refset_simple: SnomedRefsetSimple
+  snomed_relationship: SnomedRelationship
+  snomed_relationship_concrete_values: SnomedRelationshipConcreteValues
+  snomed_s_refset_owl_expression: SnomedSRefsetOwlExpression
+  snomed_s_refset_simple_map: SnomedSRefsetSimpleMap
+  snomed_ss_refset_module_dependency: SnomedSsRefsetModuleDependency
+  snomed_sscc_refset_mrcm_attribute_range: SnomedSsccRefsetMrcmAttributeRange
+  snomed_sssssss_refset_mrcm_domain: SnomedSssssssRefsetMrcmDomain
+  snomed_stated_relationship: SnomedStatedRelationship
+  snomed_text_definition: SnomedTextDefinition
   spatial_ref_sys: SpatialRefSys
   waiting_room: WaitingRoom
   whatsapp_messages_received: WhatsappMessagesReceived

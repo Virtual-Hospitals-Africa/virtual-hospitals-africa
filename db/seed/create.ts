@@ -1,7 +1,8 @@
 import db, { uri } from '../db.ts'
-import { runCommand } from '../../util/command.ts'
+import { runCommandAssertExitCodeZero } from '../../util/command.ts'
 import { DB } from '../../db.d.ts'
 import { TrxOrDb } from '../../types.ts'
+import { pMap } from '../../util/inParallel.ts'
 
 const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
@@ -24,19 +25,21 @@ export function create(
     }
   }
   async function load() {
-    const have_rows = await Promise.all(
-      table_names.map(async (table_name) => {
+    const have_rows = await pMap(
+      table_names,
+      async (table_name) => {
         const row = await db
           .selectFrom(table_name)
           .selectAll()
+          .limit(1)
           .executeTakeFirst()
         return !!row
-      }),
+      },
     )
-    const needs_loading = table_names.some((_table_name, index) =>
+    const needs_loading = table_names.filter((_table_name, index) =>
       !have_rows[index]
     )
-    if (!needs_loading) {
+    if (!needs_loading.length) {
       return 'already loaded'
     }
 
@@ -56,13 +59,13 @@ export function create(
       )
     }
 
-    await runCommand('./db/seed/tsv_load.sh', {
+    await runCommandAssertExitCodeZero('./db/seed/tsv_load.sh', {
       args: [uri].concat(table_names),
     })
   }
   async function dump() {
     if (opts?.never_dump) return
-    await runCommand('./db/seed/tsv_dump.sh', {
+    await runCommandAssertExitCodeZero('./db/seed/tsv_dump.sh', {
       args: [uri].concat(table_names),
     })
   }

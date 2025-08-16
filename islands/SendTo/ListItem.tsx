@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import { Sendable } from '../../types.ts'
-import OnlineIndicator from '../../components/OnlineIndicator.tsx'
+import OnlineIndicator from '../../components/library/OnlineIndicator.tsx'
 import { CircularImage } from '../../components/library/CircularImage.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { AdditionalInfo } from '../../components/library/AdditionalInfo.tsx'

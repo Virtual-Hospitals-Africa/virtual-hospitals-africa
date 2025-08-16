@@ -12,7 +12,7 @@ import type { ExaminationChecklistDefinition } from '../../types.ts'
 
 type FindingDialogFormValues = {
   body_sites: {
-    snomed_concept_id: number
+    snomed_concept_id: string
     snomed_english_term: string
   }[]
   additional_notes: string | null
@@ -58,9 +58,6 @@ function ExaminationFindingDialogContents(
                 value={found.body_sites.length > 0
                   ? {
                     id: String(found.body_sites[0].snomed_concept_id),
-                    snomed_concept_id: found.body_sites[0].snomed_concept_id,
-                    snomed_english_term:
-                      found.body_sites[0].snomed_english_term,
                     name: found.body_sites[0].snomed_english_term,
                   }
                   : null}
@@ -69,8 +66,8 @@ function ExaminationFindingDialogContents(
                     ...form_values.value!,
                     body_sites: value
                       ? [{
-                        snomed_concept_id: value.snomed_concept_id,
-                        snomed_english_term: value.snomed_english_term,
+                        snomed_concept_id: value.id,
+                        snomed_english_term: value.name,
                       }]
                       : [],
                   }

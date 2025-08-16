@@ -5,9 +5,9 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'patient_allergies', (qb) =>
     qb.addColumn(
       'snomed_concept_id',
-      'integer',
+      'bigint',
       (col) =>
-        col.notNull().references('snomed_concepts.snomed_concept_id').onDelete(
+        col.notNull().references('snomed_concept.id').onDelete(
           'cascade',
         ),
     )
