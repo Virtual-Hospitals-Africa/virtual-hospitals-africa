@@ -35,4 +35,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('sessions').execute()
   await db.schema.dropTable('google_tokens').execute()
+  await db.schema.dropType('entity_type').execute()
 }

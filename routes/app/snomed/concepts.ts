@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { searchConcepts } from '../../../external-clients/snowstorm.ts'
 import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
-import type { SnomedConcepts } from '../../../db.d.ts'
 import type { ConceptMini } from '../../../external-clients/snowstorm/data-contracts.ts'
 import { positive_number } from '../../../util/validators.ts'
 import type { TrxOrDb } from '../../../types.ts'
@@ -13,14 +12,14 @@ type SearchTerms = {
 
 const rows_per_page = 10
 
-export type SnomedConceptResult = SnomedConcepts & {
+export type SnomedConceptResult = {
   id: string
   name: string
 }
 
 export function toInternalSnomedConcept(
   { conceptId, pt }: ConceptMini,
-): SnomedConcepts & {
+): {
   id: string
   name: string
 } {
@@ -29,8 +28,6 @@ export function toInternalSnomedConcept(
   return {
     id: String(snomed_concept_id),
     name: pt?.term,
-    snomed_concept_id,
-    snomed_english_term: pt?.term,
   }
 }
 

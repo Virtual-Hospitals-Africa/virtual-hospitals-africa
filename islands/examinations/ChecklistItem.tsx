@@ -4,7 +4,7 @@ import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
 import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
-import { positive_number } from '../../util/validators.ts'
+import { snomed_concept_id as snomed_concept_id_validator } from '../../util/validators.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 type ExaminationChecklistProps = {
@@ -14,7 +14,7 @@ type ExaminationChecklistProps = {
     patient_examination_finding_id?: string
     body_sites: {
       patient_examination_finding_body_site_id?: string
-      snomed_concept_id: number
+      snomed_concept_id: string
       snomed_english_term: string
     }[]
     additional_notes: string | null
@@ -35,7 +35,7 @@ export function ExaminationChecklistItem(
   function isEditing(): boolean {
     const { hash } = self.location
     if (!hash.startsWith(edit_hash)) return false
-    const snomed_concept_id = positive_number.parse(
+    const snomed_concept_id = snomed_concept_id_validator.parse(
       hash.slice(edit_hash.length),
     )
     return snomed_concept_id === checklist_item.snomed_concept_id
@@ -44,7 +44,9 @@ export function ExaminationChecklistItem(
   function isAdding(): boolean {
     const { hash } = self.location
     if (!hash.startsWith(add_hash)) return false
-    const snomed_concept_id = positive_number.parse(hash.slice(add_hash.length))
+    const snomed_concept_id = snomed_concept_id_validator.parse(
+      hash.slice(add_hash.length),
+    )
     return snomed_concept_id === checklist_item.snomed_concept_id
   }
 

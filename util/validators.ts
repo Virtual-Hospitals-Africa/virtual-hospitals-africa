@@ -45,3 +45,5 @@ export const positive_number = z.number().or(z.string())
 export const generated_uuid = z.string().uuid().optional().transform((v) =>
   v || generateUUID()
 )
+
+export const snomed_concept_id = z.string().regex(/^\d+$/)

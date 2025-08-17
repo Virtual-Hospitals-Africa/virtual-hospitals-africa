@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Detailed Repository Structure
+
+```
+virtual-hospitals-africa/
+├── deno.json            # Project tasks & dependencies
+├── chatbot              # Chatbot processes to respond to messages via WhatsApp Cloud API
+│   ├── patient          # Patient chatbot
+│   ├── pharmacist       # Pharmacist chatbot
+├── components           # Preact components not requiring client-side javascript (hooks)
+│   ├── library          # Design system
+├── db                   # Postgres Database
+│   ├── dumps            # Database Dumps
+│   ├── migrations       # Chronological database migrations
+│   ├── models           # Database functions
+│   ├── resources        # Raw files used by seeds
+│   ├── scripts          # TS & Shell scripts
+│   └── seed             # Loading seed data
+├── db.d.ts              # Auto-generated types of our database; regenerate via deno task db:codegen
+├── docker-compose.yml   # Docker Compose configurations
+├── Dockerfile*          # Container definitions
+├── events               # Asynchonous events processing
+├── external-clients     # External dependencies
+├── islands              # Preact components requiring client-side javascript (hooks)
+├── routes               # Web-accessible routes
+│   ├── app              # The primary web application for health workers
+│   ├── chatbot          # WhatsApp Cloud API webhook
+│   ├── regulator        # The regulator web application
+├── scripts              # Grab bag of useful TS & shell scripts
+├── shared               # Logic that can be safely shared (imported) by client & server
+├── static               # Static files served by web server
+├── tailwind.config.ts   # Core styles
+├── test                 # Tests
+│   ├── chatbot          # Chatbot tests
+│   ├── events           # Event tests
+│   ├── islands          # Island tests
+│   ├── models           # Model tests
+│   ├── shared           # Shared tests
+│   ├── util             # Utility tests
+│   └── web              # Round trip web tests
+├── types.ts             # Dictionary of composite types not part of db.d.ts; Put new types here instead
+└── util                 # Utility functions
+├── .github/             # GitHub workflows
+
+```

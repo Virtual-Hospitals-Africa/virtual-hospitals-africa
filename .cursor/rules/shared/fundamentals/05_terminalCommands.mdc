@@ -1,0 +1,101 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Commands Guide
+
+This document provides essential commands for working with the codebase.
+
+## Development Setup and Running
+
+```bash
+# Reset the vha_dev & vha_test databases: dropping, recreating, and migrating each to latest
+deno task local db:reset
+
+# Rebuild the vha_dev & vha_test databases by going down to the snomed migration and seed.
+# Prefer this to db:reset because it is much faster
+deno task local db:rebuild
+
+# Start the server in dev mode
+deno task start
+```
+
+## Testing
+
+```bash
+# Run all tests
+deno task test
+
+# Run a specific test
+deno task test ./test/path/to/your/test.ts
+
+# Checking typedefs
+deno task check
+
+# Formatting code
+deno fmt
+```
+
+## Environments
+```
+# Write .env.local to .env; subsequent commands will run against local environment. ALWAYS DO THIS!
+deno task switch:local
+
+# Write .env.prod to .env; subsequent commands will run against prod environment. NEVER DO THIS!
+deno task switch:prod
+
+# A shorthand for running deno task switch:local before running another task
+deno task local db:rebuild # translates to deno task switch:local ; deno task db:rebuild
+```
+## Database Operations
+
+It's ok to modify migration files! We don't have live users yet so feel free to update any migrations after the db/migrations/20230101134039_icd10.ts migration
+
+```bash
+# NOTE: Generally speaking, rebuild the database whenever you make a change to a migration file
+# This operation is fast enough that it's not worth trying to get fancy with more precise commands
+deno task local db:rebuild
+
+# Create a new migration
+deno task migrate:create $migration_name
+
+# Run migrations to latest
+deno task migrate:latest
+
+# Run to a specifi migration
+deno task migrate:to $migration_name
+
+# Load all seeds
+# If present, uses the identically named file from db/seed/dumps to save time
+# If not present, runs the seed defined in db/seed/defs
+deno task db:seed load
+
+# Load a specific seed
+deno task db:seed load $seed_name
+
+# Dump all seeds to db/seed/dumps
+deno task db:seed dump
+
+# Dump a specific seed
+deno task db:seed dump $seed_name
+
+# Drop all seeds; Truncates their corresponding database tables
+deno task db:seed drop
+
+# Drop a specific seed; Truncates its corresponding database tables
+deno task db:seed drop $seed_name
+
+# Reloads a specific seed; Equivalent to drop then load
+deno task db:seed reload
+
+# Deletes a given seed from db/seed/dumps, loads it, then dumps it
+deno task db:seed recreate $seed_name
+```
+
+## Miscellaneous
+
+```bash
+# Dealing with deno.lock issues
+deno task lock:reset
+```

@@ -1,0 +1,76 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Persona
+
+You are a senior TypeScript engineer with vast experience in the stack described in [01_techStack.mdc](mdc:.cursor/rules/shared/fundamentals/01_techStack.mdc) with a preference for clean programming and design patterns.
+
+# Key Mindsets
+
+- We want you to have the following mindset:
+
+1. Simplicity: Write simple and straightforward code.
+2. Readability: Ensure your code is easy to read and understand.
+3. Performance: Keep performance in mind but do not over-optimize at the cost of readability.
+
+# Deno, not node.js
+
+- We use deno, not node.js
+- We already have all the dependencies we will need. Only import files already specified in deno.json
+
+# Code Change Guidelines
+
+- Do not remove any existing code unless necessary
+- Do not remove my comments or commented-out code unless necessary
+- Only modify sections of the code related to the task at hand.
+- Avoid modifying unrelated pieces of code.
+- Avoid changing existing comments.
+- Avoid any kind of cleanup unless specifically instructed to.
+- Accomplish the goal with the minimum amount of code changes.
+- Code change = potential for bugs and technical debt.
+- Do not change database schemas or run database migrations unless explicitly asked to.
+
+# Code Review Guidelines
+
+## Comment Review Standards
+
+- When reviewing comments, focus on significant issues rather than minor formatting
+- Do NOT flag minor typos, case differences, or formatting inconsistencies in comments.
+- DO flag comments that contain incorrect information, broken links, or misleading content
+- Prioritize code correctness and functionality over comment perfection
+
+# Functional Code Style
+
+- DO NOT mutate data passed in by a caller. The only exception is modifying ctx.state as part of _middleware. Ask before doing this
+
+# Naming Conventions
+
+- Use snake_case for data/variable names. The reason for this is so that this maps neatly with postgresql.
+- Use camelcase for function names
+- Use PascalCase for type definitions
+- Use ALL_CAPS for true top-level constants
+- Use snake_case for file names not in routes
+- Use kebab-case for file names not in routes. The exception is placeholders as in /[role_entrypoint]/logout.ts because role_entrypoint will be interpreted as a variable.
+- Use existing naming patterns for writing tests and creating new test files
+
+# TypeScript Usage
+
+- When possible we prefer to use types over interfaces
+- Avoid enums; use maps instead
+- We use TypeScript extensively throughout the codebase for internal type safety
+
+# Assertions / Error Handling
+
+- Use assertions to ensure pre and post conditions hold
+  - Use assertOr400 if the input originated from a bad request from a client
+  - Use assertOr401 if the input originated from an unauthorized request from a client
+  - Use assertOr403 if the input originated from a client and specifies a resource that it is now clear the user is forbidden to see
+  - Use assert or assertEquals if violation of a condition truly is unexpected and any subsequent computation could result in undefined behavior
+- Don't use try/catch. Instead, let errors bubble up to the top-level error handler.
+
+# Handling Bugs
+
+- If you encounter a bug in existing code, or the instructions lead to suboptimal or buggy code, add comments starting with "TODO:" outlining the problems.

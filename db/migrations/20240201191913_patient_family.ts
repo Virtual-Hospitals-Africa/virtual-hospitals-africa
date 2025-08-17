@@ -33,6 +33,5 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_family').execute()
   await db.schema.dropType('marital_status').execute()
   await db.schema.dropType('family_type').execute()
-  await db.schema.dropType('religion').execute()
   await db.schema.dropType('patient_cohabitation').execute()
 }

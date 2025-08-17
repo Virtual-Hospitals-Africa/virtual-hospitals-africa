@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Models File Documentation
+
+Use kysely & kysely-postgres. Any new functions that interact with the database must accept (trx: TrxOrDb) as the first argument, representing the database or a transaction.
+
+The models/_base.ts wraps a baseQuery enabling a rendered object to be returned as a result of finding by id or search.

@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Just use forms
+
+There's no need to use hooks to handle saving form data. Generally speaking, just use a `<Form method="POST>` and let the backend handle most of the business logic.
+
+The form inputs must then match a zod schema that is the first argument of the corresponding `postHandler`

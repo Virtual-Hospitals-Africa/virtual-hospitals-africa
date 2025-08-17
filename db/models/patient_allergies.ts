@@ -1,31 +1,22 @@
 import { type Allergy, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { insertConcepts } from './snomed.ts'
 
 export async function upsert(
   trx: TrxOrDb,
   patient_id: string,
   allergies: {
     patient_allergy_id: string
-    snomed_concept_id: number
+    snomed_concept_id: string
     snomed_english_term: string
   }[],
 ): Promise<{
   id: string
-  snomed_concept_id: number
+  snomed_concept_id: string
 }[]> {
   assertOr400(
     allergies.length ===
       new Set(allergies.map((item) => item.snomed_concept_id)).size,
     'Allergy ids must be unique',
-  )
-
-  const inserting_snomed_concepts = insertConcepts(
-    trx,
-    allergies.map(({ snomed_concept_id, snomed_english_term }) => ({
-      snomed_concept_id,
-      snomed_english_term,
-    })),
   )
 
   const removing_allergies = trx
@@ -55,8 +46,7 @@ export async function upsert(
       .execute()
     : Promise.resolve([])
 
-  const [, , inserted_allergies] = await Promise.all([
-    inserting_snomed_concepts,
+  const [, inserted_allergies] = await Promise.all([
     removing_allergies,
     adding_allergies,
   ])
@@ -70,15 +60,20 @@ export function getWithName(
   return trx
     .selectFrom('patient_allergies')
     .innerJoin(
-      'snomed_concepts',
+      'snomed_concept',
       'patient_allergies.snomed_concept_id',
-      'snomed_concepts.snomed_concept_id',
+      'snomed_concept.id',
+    )
+    .innerJoin(
+      'snomed_description',
+      'snomed_concept.id',
+      'snomed_description.concept_id',
     )
     .where('patient_allergies.patient_id', '=', patient_id)
     .select([
       'patient_allergies.id as patient_allergy_id',
-      'snomed_concepts.snomed_concept_id',
-      'snomed_concepts.snomed_english_term',
+      'snomed_concept.id as snomed_concept_id',
+      'snomed_description.term as snomed_english_term',
     ])
     .execute()
 }

@@ -1,0 +1,24 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Database Schema Organization
+
+## PostgreSQL Schema
+
+The primary relational database follows these organizational patterns:
+
+- Normalized structure: Tables are normalized to reduce redundancy
+- UUIDs are used for primary keys unless the table defines an entity type with a primary key given by some other coding system
+  - Use createStandardTable to create standard tables with a uuid id column as well as created_at / updated_at fields
+- Indexing strategy: Indexes on frequently queried columns and join conditions
+- Foreign key constraints: 
+- Deletes: Don't delete data. Instead make soft-deleted timestamp fields with semantic meanings. For example, organizations.inactive_at, employment.inactive_at
+
+## Core Tables
+
+- Patients are stored in the `patients` table
+  - Prefix all tables with patient related data with `patient_` and include patient_id as a foreign key
+- Health organizations are in the `organizations` table
+- db.d.ts defines all the tables and the names generally suggest what they mean semantically

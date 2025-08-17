@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Core Technologies
+- Use TypeScript for Statically typed JavaScript for enhanced developer experience
+- Use Deno for JavaScript runtime for server-side execution
+- Use Fresh for multi-page web framework with file-based routing & middleware architecture
+- Use Kysely as SQL query builder for database operations
+- Use Postgres 16 as primary database
+- Use Zod as schema validation library
+- Use Preact for frontend web components
+- Use Tailwind for styling
+- Use SNOMED for encoding medical concepts
+- Use Google for authentication
+- Use Google Maps for geospatial navigation
+- Use Google Calendar for scheduling
+- Use WhatsApp Cloud API for messaging via WhatsApp

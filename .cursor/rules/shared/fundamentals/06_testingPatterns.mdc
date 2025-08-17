@@ -1,0 +1,24 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Testing Patterns and Framework
+
+## Test Structure Organization
+- Test files generally mirror the directory structure in `test/`.
+
+## Testing Philosophy
+Follow a **database-first testing approach**, which means:
+- Only mock functions in `external-clients`. For everything else use the database
+- Modify real data in tests and verify the changes were applied correctly
+- Create test fixtures in the database and verify they're retrieved as expected
+- You can assume that data in seeds is present in the database. This includes 2 test organizations:
+  - VHA Test Clinic with id: 00000000-0000-0000-0000-000000000001
+  - VHA Test Regional Medical Center with id: 00000000-0000-0000-0000-000000000002
+- No need to cleanup the database at the end of the test. 
+  - As a result of this, don't make assertions about counts in the database unless the query is precisely looking for entities related to rows you inserted during the test
+
+
+## Notes
+Our testing runner automatically cleans up after each test.  So no need to do lots of manual restoring

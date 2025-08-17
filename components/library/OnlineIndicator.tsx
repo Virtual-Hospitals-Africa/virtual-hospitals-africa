@@ -1,5 +1,5 @@
-import { Maybe } from '../types.ts'
-import cls from '../util/cls.ts'
+import { Maybe } from '../../types.ts'
+import cls from '../../util/cls.ts'
 
 export default function OnlineIndicator(
   { online }: { online?: Maybe<boolean> },

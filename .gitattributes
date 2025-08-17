@@ -1,2 +1,5 @@
 node_modules/**/*.* linguist-generated=true
 _fresh/**/*.* linguist-generated=true
+db/dumps/snomed filter=lfs diff=lfs merge=lfs -text
+db/resources/SnomedCT_ManagedServiceUS_PRODUCTION_US1000124_20240301T120000Z.zip filter=lfs diff=lfs merge=lfs -text
+db/dumps/latest filter=lfs diff=lfs merge=lfs -text

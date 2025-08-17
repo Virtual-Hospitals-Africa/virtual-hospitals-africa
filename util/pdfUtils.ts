@@ -1,12 +1,12 @@
 import fs from 'node:fs'
 import crypto from 'node:crypto'
-import { runCommand } from './command.ts'
+import { runCommandAssertExitCodeZero } from './command.ts'
 
 export async function generatePDF(url: string): Promise<string> {
   const filename = crypto.createHash('md5').update(url).digest('hex')
   const outputPath = `temp_files/${filename}.pdf`
 
-  await runCommand('wkhtmltopdf', {
+  await runCommandAssertExitCodeZero('wkhtmltopdf', {
     args: [url, outputPath],
   })
 

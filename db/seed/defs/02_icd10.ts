@@ -26,7 +26,7 @@ export default create([
 ], async (trx: TrxOrDb) => {
   await loadTabularData(trx)
   await loadIndexData(trx)
-})
+}, { never_dump: true })
 
 type Exclude = {
   note: string

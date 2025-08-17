@@ -1,5 +1,6 @@
 import { CommonCSVReaderOptions, readCSV } from 'csv'
 import z from 'zod'
+import snakeCase from './snakeCase.ts'
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
@@ -36,28 +37,69 @@ export default async function* parseCsv(
 
     const rowData: Record<string, string | null> = {}
 
+    let at_least_one_column_is_not_null = false
     header.forEach((column, i) => {
-      rowData[column] = rowDataArray[i] || null
+      const value = rowDataArray[i] || null
+      rowData[column] = value
+      if (value) {
+        at_least_one_column_is_not_null = true
+      }
     })
 
-    yield rowData
+    if (at_least_one_column_is_not_null) {
+      yield rowData
+    }
   }
 
   file.close()
 }
 
+export type ParseTsvOptions =
+  & Omit<Partial<CommonCSVReaderOptions>, 'columnSeparator'>
+  & {
+    convert_to_snake_case?: boolean
+    interpret_integers?: boolean
+  }
+
+function interpretIntegers(row: Record<string, string | null>) {
+  return Object.fromEntries(
+    Object.entries(row).map((
+      [key, value],
+    ) => [
+      key,
+      typeof value === 'string' && /^\d+$/.test(value) ? Number(value) : value,
+    ]),
+  )
+}
+
 export async function* parseTsv(
   filePath: string,
-  opts: Omit<Partial<CommonCSVReaderOptions>, 'columnSeparator'> = {},
+  opts: ParseTsvOptions = {},
 ) {
-  yield* parseCsv(filePath, { ...opts, columnSeparator: '\t' })
+  for await (
+    let row of parseCsv(filePath, { columnSeparator: '\t', ...opts })
+  ) {
+    if (opts.convert_to_snake_case) {
+      row = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [snakeCase(key), value]),
+      )
+    }
+    if (opts.interpret_integers) {
+      yield interpretIntegers(row)
+    } else {
+      yield row
+    }
+  }
 }
 
 export async function* parseTsvTyped<Schema extends z.ZodTypeAny>(
   filePath: string,
   schema: Schema,
+  opts: ParseTsvOptions = {},
 ): AsyncGenerator<z.infer<Schema>> {
-  for await (const row of parseCsv(filePath, { columnSeparator: '\t' })) {
+  for await (
+    const row of parseTsv(filePath, opts)
+  ) {
     yield schema.parse(row)
   }
 }

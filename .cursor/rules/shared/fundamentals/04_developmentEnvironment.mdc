@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Environment
+
+## Development Workflow
+
+- We Follow Git commit standards
+- We Follow PR review process
+- If migrations are needed follow Migration guidelines in [databaseMigrations.mdc](mdc:.cursor/rules/shared/topic-deep-dives/databaseMigrations.mdc)
+
+## Setup Steps
+- To run the project you need to follow the following steps:
+```
+1. Install required deno version (see runtime.txt).
+2. Run migrations if needed: `deno task local db:rebuild`
+```
+
+For detailed commands, see @Terminal Commands.
+
+## Environment Configuration
+
+Required in `.env`:
+
+- Add Database connection strings to `.env`
+
+
+## Build & Development
+
+For specific development commands, see [Terminal Commands](mdc:.cursor/rules/shared/fundamentals/05_terminalCommands.mdc).

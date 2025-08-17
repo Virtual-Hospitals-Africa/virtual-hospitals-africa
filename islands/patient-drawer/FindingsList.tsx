@@ -18,7 +18,7 @@ export function addFinding(finding: Finding) {
   )
 }
 
-export function removeFinding(snomed_concept_id: number) {
+export function removeFinding(snomed_concept_id: string) {
   self.dispatchEvent(
     new CustomEvent(REMOVE_EXAMINATION_FINDING_EVENT_NAME, {
       detail: { snomed_concept_id },

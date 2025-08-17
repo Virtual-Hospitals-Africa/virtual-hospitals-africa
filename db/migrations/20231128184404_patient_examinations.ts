@@ -75,9 +75,8 @@ export async function up(
       )
         .addColumn(
           'snomed_concept_id',
-          'integer',
-          (col) =>
-            col.notNull().references('snomed_concepts.snomed_concept_id'),
+          'bigint',
+          (col) => col.notNull().references('snomed_concept.id'),
         )
         .addColumn(
           'additional_notes',
@@ -99,9 +98,8 @@ export async function up(
       )
         .addColumn(
           'snomed_concept_id',
-          'integer',
-          (col) =>
-            col.notNull().references('snomed_concepts.snomed_concept_id'),
+          'bigint',
+          (col) => col.notNull().references('snomed_concept.id'),
         ),
   )
 }
