@@ -1,21 +1,45 @@
 version: '3.4'
 services:
-  virtualhospitalsafrica:
-    container_name: vha
-    image: virtualhospitalsafrica:latest
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: vha_postgres
     environment:
-      - REDISCLOUD_URL=redis://redis-docker:6379
-      - SAME_AS_ENV_PROD=prod
+      POSTGRES_USER: runner
+      POSTGRES_PASSWORD: testpw
+      POSTGRES_DB: vha_dev
     ports:
-      - '8000:8000'
-    depends_on:
-      - redis-docker
-  redis-docker:
-    container_name: redis-docker
-    image: 'redis:7.2.3-alpine'
+      - 5432:5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U runner -d vha_dev']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mylocalnetwork
+    volumes:
+      - ./db:/db
+
+  redis:
+    image: redis:latest
+    container_name: vha_redis
     ports:
-      - '6380:6379'
-    sysctls:
-      - net.core.somaxconn=511
+      - 6381:6379
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mylocalnetwork
+
+  adminer:
+    image: adminer
+    container_name: vha_adminer
+    ports:
+      - '8888:8080'
+    networks:
+      - mylocalnetwork
+
+networks:
+  mylocalnetwork:
+    driver: bridge
