@@ -37,6 +37,13 @@ const connectionOpts = () => {
 export const opts = connectionOpts()
 
 export const redis =
-  (Deno.env.get('NO_EXTERNAL_CONNECT') ? undefined : await connect(opts))!
+  (Deno.env.get('NO_EXTERNAL_CONNECT')
+    ? undefined
+    : await connect(opts).catch((err) => {
+      console.warn(
+        'Failed to make connection to redis. The app can run without it, using an inMemoryCache, so we are proceeding.',
+      )
+      console.warn(err)
+    }))!
 
 // export const lock = redis && new Redlock([redis])

@@ -19,19 +19,6 @@ services:
     volumes:
       - ./db:/db
 
-  redis:
-    image: redis:latest
-    container_name: vha_redis
-    ports:
-      - 6381:6379
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - mylocalnetwork
-
   adminer:
     image: adminer
     container_name: vha_adminer
