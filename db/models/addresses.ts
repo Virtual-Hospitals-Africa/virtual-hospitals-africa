@@ -2,7 +2,7 @@ import { TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
-import { countries } from '../seed/defs/1_countries.ts'
+import { countries } from '../seed/defs/03_countries.ts'
 
 export type AddressInsert = {
   street_number?: string

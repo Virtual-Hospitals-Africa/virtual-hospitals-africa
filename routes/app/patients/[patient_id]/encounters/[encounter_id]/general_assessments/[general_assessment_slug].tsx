@@ -11,7 +11,10 @@ import { parseRequest } from '../../../../../../../util/parseForm.ts'
 import { PatientExaminationForm } from '../../../../../../../components/examinations/Form.tsx'
 import { z } from 'zod'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
-import { generated_uuid } from '../../../../../../../util/validators.ts'
+import {
+  generated_uuid,
+  snomed_concept_id,
+} from '../../../../../../../util/validators.ts'
 
 const ExaminationFindingsSchema = z.object({
   patient_examination_id: generated_uuid,
@@ -20,14 +23,14 @@ const ExaminationFindingsSchema = z.object({
     .pipe(z.array(
       z.object({
         patient_examination_finding_id: generated_uuid,
-        snomed_concept_id: z.number(),
+        snomed_concept_id,
         snomed_english_term: z.string(),
         additional_notes: z.string().nullable().optional().transform((v) =>
           v || null
         ),
         body_sites: z.array(z.object({
           patient_examination_finding_body_site_id: generated_uuid,
-          snomed_concept_id: z.number(),
+          snomed_concept_id,
           snomed_english_term: z.string(),
         })).optional(),
       }),

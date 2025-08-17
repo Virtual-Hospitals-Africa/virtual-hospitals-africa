@@ -1,7 +1,6 @@
 import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, upsertOne } from '../helpers.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
-import { insertConcepts } from './snomed.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx.selectFrom('patient_examination_findings')
@@ -21,15 +20,21 @@ export function baseQuery(trx: TrxOrDb) {
       'examinations.identifier',
     )
     .innerJoin(
-      'snomed_concepts as sc_findings',
-      'sc_findings.snomed_concept_id',
+      'snomed_concept',
+      'snomed_concept.id',
+      'patient_examination_findings.snomed_concept_id',
+    )
+    // TODO support more than english
+    .innerJoin(
+      'snomed_description',
+      'snomed_description.concept_id',
       'patient_examination_findings.snomed_concept_id',
     )
     .select((eb) => [
       'examinations.identifier as examination_identifier',
       'examinations.path',
-      'sc_findings.snomed_concept_id',
-      'sc_findings.snomed_english_term',
+      'snomed_concept.id as snomed_concept_id',
+      'snomed_description.term as snomed_english_term',
       'additional_notes',
       'patient_examination_findings.id as patient_examination_finding_id',
       'patient_examination_findings.patient_examination_id',
@@ -45,14 +50,19 @@ export function baseQuery(trx: TrxOrDb) {
             'patient_examination_findings.id',
           )
           .innerJoin(
-            'snomed_concepts as sc_body_sites',
-            'sc_body_sites.snomed_concept_id',
+            'snomed_concept as sc_body_sites',
+            'sc_body_sites.id',
+            'patient_examination_finding_body_sites.snomed_concept_id',
+          )
+          .innerJoin(
+            'snomed_description as sd_body_sites',
+            'sd_body_sites.concept_id',
             'patient_examination_finding_body_sites.snomed_concept_id',
           )
           .select([
             'patient_examination_finding_body_sites.id as patient_examination_finding_body_site_id',
-            'sc_body_sites.snomed_concept_id',
-            'sc_body_sites.snomed_english_term',
+            'sc_body_sites.id as snomed_concept_id',
+            'sd_body_sites.term as snomed_english_term',
           ]),
       ).as('body_sites'),
     ])
@@ -108,12 +118,12 @@ export async function upsertForPatientExamination(
     patient_examination_id: string
     findings: {
       patient_examination_finding_id: string
-      snomed_concept_id: number
+      snomed_concept_id: string
       snomed_english_term: string
       additional_notes: string | null
       body_sites?: {
         patient_examination_finding_body_site_id: string
-        snomed_concept_id: number
+        snomed_concept_id: string
         snomed_english_term: string
       }[]
     }[]
@@ -132,19 +142,6 @@ export async function upsertForPatientExamination(
           ),
       )
       .execute(),
-    snomed_concepts: insertConcepts(
-      trx,
-      findings.flatMap((finding) => {
-        const body_sites = (finding.body_sites || []).map((body_site) => ({
-          snomed_concept_id: body_site.snomed_concept_id,
-          snomed_english_term: body_site.snomed_english_term,
-        }))
-        return [{
-          snomed_concept_id: finding.snomed_concept_id,
-          snomed_english_term: finding.snomed_english_term,
-        }, ...body_sites]
-      }),
-    ),
     examination: upsertOne(trx, 'patient_examinations', {
       patient_id,
       encounter_id,
@@ -170,7 +167,7 @@ export async function upsertForPatientExamination(
             id: body_site.patient_examination_finding_body_site_id,
             patient_examination_finding_id:
               finding.patient_examination_finding_id,
-            snomed_concept_id: body_site.snomed_concept_id,
+            snomed_concept_id: String(body_site.snomed_concept_id),
           })
         )
       ),

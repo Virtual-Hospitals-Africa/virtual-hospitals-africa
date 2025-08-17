@@ -1,3 +1,5 @@
+import { assert } from 'std/assert/assert.ts'
+
 export const Command: (
   command: string,
   options?: Deno.CommandOptions,
@@ -12,11 +14,30 @@ export const Command: (
     )
   : (cmd, options) => new Deno.Command(cmd, options)
 
-export async function runCommand(
+type Opts = Deno.CommandOptions & {
+  verbose?: boolean
+}
+
+export function runCommand(
   command: string,
-  options?: Deno.CommandOptions,
+  { args, verbose, ...opts }: Opts = {},
 ) {
-  const result = await Command(command, options).output()
+  const [program, ...args_in_command] = command.split(' ')
+  if (args_in_command.length) {
+    assert(!args, 'Ambiguous args')
+    args = args_in_command
+  }
+  if (verbose) {
+    console.log([program].concat(args || []).join(' '))
+  }
+  return Command(program, { args, ...opts }).output()
+}
+
+export async function runCommandAssertExitCodeZero(
+  command: string,
+  options?: Opts,
+) {
+  const result = await runCommand(command, options)
   if (result.code) {
     const error = new TextDecoder().decode(result.stderr)
     console.error(command, options)
@@ -26,4 +47,19 @@ export async function runCommand(
     return ''
   }
   return new TextDecoder().decode(result.stdout)
+}
+
+export async function directoryExists(
+  path: string,
+): Promise<boolean> {
+  const { code } = await runCommand('test', {
+    args: ['-d', path],
+  })
+  return code === 0
+}
+
+export async function rmrf(path: string) {
+  await runCommand('rm', {
+    args: ['-rf', path],
+  })
 }

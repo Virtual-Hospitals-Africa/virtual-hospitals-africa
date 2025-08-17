@@ -41,6 +41,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_intake_steps').execute()
+  await db.schema.dropTable('patient_intake_visit_reason').execute()
   await db.schema.dropTable('patient_intake').execute()
 }

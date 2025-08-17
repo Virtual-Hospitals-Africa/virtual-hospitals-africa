@@ -1,4 +1,4 @@
-import { runCommand } from '../util/command.ts'
+import { runCommandAssertExitCodeZero } from '../util/command.ts'
 import { spinner } from '../util/spinner.ts'
 import { onLocalhost } from './onLocalhost.ts'
 
@@ -10,7 +10,7 @@ export function create() {
     args.push(password)
   }
   return spinner('Creating database', async () => {
-    await runCommand('createdb', {
+    await runCommandAssertExitCodeZero('createdb', {
       args,
     })
   })

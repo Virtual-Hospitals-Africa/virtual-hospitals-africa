@@ -63,8 +63,10 @@ _fresh/
 
 .vscode/launch.json
 
-# turbo dev server
-.turbo/
-
 # Temporary files directory
 /temp_files/
+
+# SNOMED and other large files
+db/resources/extracted
+
+db/dumps/latest

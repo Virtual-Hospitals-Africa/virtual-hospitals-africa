@@ -1,6 +1,6 @@
 import * as cache from '../external-clients/cache.ts'
 import { spinner } from '../util/spinner.ts'
-import { runCommand } from '../util/command.ts'
+import { runCommandAssertExitCodeZero } from '../util/command.ts'
 import { onLocalhost } from './onLocalhost.ts'
 
 export async function drop() {
@@ -13,7 +13,7 @@ export async function drop() {
   await spinner(
     'Dropping database',
     () =>
-      runCommand('dropdb', {
+      runCommandAssertExitCodeZero('dropdb', {
         args: [db_opts.database, '-U', db_opts.user],
       }).catch((e) => {
         if (e.message.includes('other session')) {

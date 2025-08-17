@@ -10,9 +10,7 @@ export function BodySiteSelect({ checklist_item, value, onSelect }: {
   onSelect(
     value: {
       id: string
-      snomed_concept_id: number
       name: string
-      snomed_english_term: string
     },
   ): void
 }) {
@@ -30,7 +28,7 @@ export function BodySiteSelect({ checklist_item, value, onSelect }: {
       name='body_site'
       onSelect={(value) => {
         if (!value) return
-        assert(typeof value.snomed_concept_id === 'number')
+        assert(typeof value.id === 'string')
         assertHasNonEmptyString(value, 'snomed_english_term')
         onSelect(value)
       }}
