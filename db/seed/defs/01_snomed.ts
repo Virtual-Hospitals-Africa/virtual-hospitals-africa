@@ -222,22 +222,22 @@ const snomed_tables: {
       referenced_component_id: z.number().int(),
     }),
   },
-  {
-    table: 'snomed_scs_refset_component_annotation_string_value',
-    text_file:
-      'der2_scsRefset_ComponentAnnotationStringValueSnapshot_US1000124_20240301.txt',
-    schema: z.object({
-      id: z.string(),
-      effective_time,
-      active,
-      module_id: z.number().int(),
-      refset_id: z.number().int(),
-      referenced_component_id: z.number().int(),
-      language_code: z.string(),
-      type_id: z.number().int(),
-      value: z.string().optional(),
-    }),
-  },
+  // {
+  //   table: 'snomed_scs_refset_component_annotation_string_value',
+  //   text_file:
+  //     'der2_scsRefset_ComponentAnnotationStringValueSnapshot_US1000124_20240301.txt',
+  //   schema: z.object({
+  //     id: z.string(),
+  //     effective_time,
+  //     active,
+  //     module_id: z.number().int(),
+  //     refset_id: z.number().int(),
+  //     referenced_component_id: z.number().int(),
+  //     language_code: z.string(),
+  //     type_id: z.number().int(),
+  //     value: z.string().optional(),
+  //   }),
+  // },
   {
     table: 'snomed_s_refset_simple_map',
     text_file: 'der2_sRefset_SimpleMapSnapshot_US1000124_20240301.txt',
@@ -268,23 +268,23 @@ const snomed_tables: {
       content_type_id: z.number().int(),
     }),
   },
-  {
-    table: 'snomed_sscs_refset_member_annotation_string_value',
-    text_file:
-      'der2_sscsRefset_MemberAnnotationStringValueSnapshot_US1000124_20240301.txt',
-    schema: z.object({
-      id: z.string(),
-      effective_time,
-      active,
-      module_id: z.number().int(),
-      refset_id: z.number().int(),
-      referenced_component_id: z.number().int(),
-      referenced_member_id: z.string(),
-      language_code: z.string(),
-      type_id: z.number().int(),
-      value: z.string().optional(),
-    }),
-  },
+  // {
+  //   table: 'snomed_sscs_refset_member_annotation_string_value',
+  //   text_file:
+  //     'der2_sscsRefset_MemberAnnotationStringValueSnapshot_US1000124_20240301.txt',
+  //   schema: z.object({
+  //     id: z.string(),
+  //     effective_time,
+  //     active,
+  //     module_id: z.number().int(),
+  //     refset_id: z.number().int(),
+  //     referenced_component_id: z.number().int(),
+  //     referenced_member_id: z.string(),
+  //     language_code: z.string(),
+  //     type_id: z.number().int(),
+  //     value: z.string().optional(),
+  //   }),
+  // },
   {
     table: 'snomed_ss_refset_module_dependency',
     text_file: 'der2_ssRefset_ModuleDependencySnapshot_US1000124_20240301.txt',
