@@ -1,5 +1,5 @@
 import { Migration, MigrationResult, Migrator } from 'kysely'
-import db, { opts } from './db.ts'
+import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
@@ -60,7 +60,6 @@ export const migrate = {
   },
   latest() {
     return spinner('Migrating to latest', async () => {
-      console.log(opts)
       logMigrationResults(await migrator.migrateToLatest())
     })
   },

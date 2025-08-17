@@ -51,6 +51,7 @@ async function getLoggedInHealthWorker(
   ctx: LoggedInHealthWorkerContext,
 ) {
   const healthWorker = await getLoggedInHealthWorkerFromCookie(req, ctx)
+  console.log({ healthWorker })
 
   if (!healthWorker || !health_workers.isEmployed(healthWorker)) {
     const from_login = ctx.url.searchParams.has('from_login')

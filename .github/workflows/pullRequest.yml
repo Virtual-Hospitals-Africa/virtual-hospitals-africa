@@ -34,13 +34,6 @@ jobs:
       - name: Run check
         run: deno task check
 
-      - name: Cache deno-modules
-        id: cache-deno-modules-save
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/deno
-          key: deno-modules
-
   test_web:
     runs-on: ubuntu-latest
 
@@ -69,10 +62,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.3.5
 
@@ -82,6 +75,16 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+
+      - uses: actions/cache/restore@v4
+        name: Restore git lfs cache
+        id: cache-git-lfs-restore
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
+
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Write .env file
         run: |
@@ -101,12 +104,20 @@ jobs:
       - name: Run tests
         run: deno task test --skip-migrate-check
 
+      # The test_web step owns the cache, so only overwrite the cache if test_web passes
       - name: Cache deno-modules
         id: cache-deno-modules-save
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/deno
           key: deno-modules
+
+      - name: Cache git-lfs
+        id: cache-git-lfs-save
+        uses: actions/cache/save@v4
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
 
   test_chatbot:
     runs-on: ubuntu-latest
@@ -136,10 +147,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.3.5
 
@@ -149,6 +160,16 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+
+      - uses: actions/cache/restore@v4
+        name: Restore git lfs cache
+        id: cache-git-lfs-restore
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
+
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Write .env file
         run: |
@@ -165,12 +186,75 @@ jobs:
       - name: Run tests
         run: deno task test:chatbot
 
-      - name: Cache deno-modules
-        id: cache-deno-modules-save
-        uses: actions/cache/save@v4
+  test_migrations:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
         with:
           path: ~/.cache/deno
           key: deno-modules
+
+      - uses: actions/cache/restore@v4
+        name: Restore git lfs cache
+        id: cache-git-lfs-restore
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
+
+      - name: Git lfs pull
+        run: git lfs pull
+
+      - name: Write .env file
+        run: |
+          echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
+          echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+          echo "SKIP_GOOGLE_MAPS=true" >> .env
+
+      - name: Restore snomed dump
+        run: deno task db:restore snomed
+
+      - name: Migrate database to latest
+        run: deno task db:migrate all
+
+      - name: Migrate back down
+        run: deno task db:migrate to _icd10.ts
+
+      - name: Migrate back up
+        run: deno task db:migrate latest
 
   build_container:
     runs-on: ubuntu-latest
@@ -188,11 +272,20 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          lfs: false
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.3.5
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -203,11 +296,20 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          lfs: false
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.3.5
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
       - name: Build web
         run: deno task build

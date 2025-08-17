@@ -5,3 +5,16 @@
 💌 Wanting to contribute? See our open positions on [Idealist](https://www.idealist.org/en/nonprofit/318fda9457534eafa3fa691bba19f5ae-virtual-hospitals-africa-polokwane)
 
 🛠️ Check out our [Engineering](https://virtualhospitalsafrica.notion.site/Engineering-bd877fee6c2f477e9f8b33550162304e?source=copy_link) documentation to learn how the system is architected and how to run it
+
+# Quickstart
+
+```shell
+# In one terminal window
+docker compose up
+
+# In main terminal window
+deno task docker:setup
+
+# Once done,
+deno task start
+```
