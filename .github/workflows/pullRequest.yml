@@ -156,7 +156,10 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-      - name: Migrate database
+      - name: Restore snomed dump
+        run: deno task db:restore snomed
+
+      - name: Migrate database to latest
         run: deno task db:migrate all
 
       - name: Run tests
