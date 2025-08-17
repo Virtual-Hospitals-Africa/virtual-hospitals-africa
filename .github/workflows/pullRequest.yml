@@ -12,34 +12,28 @@ env:
   BUILD_STRING: '${{ github.run_number }}-${{ github.sha }}'
 
 jobs:
-  # check:
-  #   runs-on: ubuntu-latest
+  check:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
-  #     - name: Set up Deno
-  #       uses: denoland/setup-deno@v2
-  #       with:
-  #         deno-version: v2.3.5
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
 
-  #     - uses: actions/cache/restore@v4
-  #       name: Restore deno modules
-  #       id: cache-deno-modules-restore
-  #       with:
-  #         path: ~/.cache/deno
-  #         key: deno-modules
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
-  #     - name: Run check
-  #       run: deno task check
+      - name: Run check
+        run: deno task check
 
-  #     - name: Cache deno-modules
-  #       id: cache-deno-modules-save
-  #       uses: actions/cache/save@v4
-  #       with:
-  #         path: ~/.cache/deno
-  #         key: deno-modules
   test_web:
     runs-on: ubuntu-latest
 
@@ -71,7 +65,7 @@ jobs:
           lfs: false
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v2.3.5
 
@@ -110,6 +104,7 @@ jobs:
       - name: Run tests
         run: deno task test --skip-migrate-check
 
+      # The test_web step owns the cache, so only overwrite the cache if test_web passes
       - name: Cache deno-modules
         id: cache-deno-modules-save
         uses: actions/cache/save@v4
@@ -124,109 +119,200 @@ jobs:
           path: .git/lfs/objects
           key: git-lfs
 
-  # test_chatbot:
-  #   runs-on: ubuntu-latest
+  test_chatbot:
+    runs-on: ubuntu-latest
 
-  #   services:
-  #     postgres:
-  #       image: postgis/postgis:15-3.3
-  #       env:
-  #         POSTGRES_USER: runner
-  #         POSTGRES_PASSWORD: testpw
-  #         POSTGRES_DB: vha_test
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  #     redis:
-  #       image: redis:latest
-  #       ports:
-  #         - 6379:6379
-  #       options: >-
-  #         --health-cmd "redis-cli ping"
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 5
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
-  #       with:
-  #         lfs: true
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
 
-  #     - name: Set up Deno
-  #       uses: denoland/setup-deno@v1
-  #       with:
-  #         deno-version: v2.3.5
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
 
-  #     - uses: actions/cache/restore@v4
-  #       name: Restore deno modules
-  #       id: cache-deno-modules-restore
-  #       with:
-  #         path: ~/.cache/deno
-  #         key: deno-modules
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
-  #     - name: Write .env file
-  #       run: |
-  #         echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
-  #         echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
-  #         echo "SKIP_GOOGLE_MAPS=true" >> .env
+      - uses: actions/cache/restore@v4
+        name: Restore git lfs cache
+        id: cache-git-lfs-restore
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
 
-  #     - name: Restore snomed dump
-  #       run: deno task db:restore snomed
+      - name: Git lfs pull
+        run: git lfs pull
 
-  #     - name: Migrate database to latest
-  #       run: deno task db:migrate all
+      - name: Write .env file
+        run: |
+          echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
+          echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+          echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-  #     - name: Run tests
-  #       run: deno task test:chatbot
+      - name: Restore snomed dump
+        run: deno task db:restore snomed
 
-  #     - name: Cache deno-modules
-  #       id: cache-deno-modules-save
-  #       uses: actions/cache/save@v4
-  #       with:
-  #         path: ~/.cache/deno
-  #         key: deno-modules
+      - name: Migrate database to latest
+        run: deno task db:migrate all
 
-  # build_container:
-  #   runs-on: ubuntu-latest
+      - name: Run tests
+        run: deno task test:chatbot
 
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
+  test_migrations:
+    runs-on: ubuntu-latest
 
-  #     - name: Build Docker image
-  #       run: docker build -t vha .
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  # compile_others:
-  #   runs-on: ubuntu-latest
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
 
-  #     - name: Set up Deno
-  #       uses: denoland/setup-deno@v1
-  #       with:
-  #         deno-version: v2.3.5
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
 
-  #     - name: Compile chatbot
-  #       run: deno task compile:chatbot
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
 
-  # compile_web:
-  #   runs-on: ubuntu-latest
+      - uses: actions/cache/restore@v4
+        name: Restore git lfs cache
+        id: cache-git-lfs-restore
+        with:
+          path: .git/lfs/objects
+          key: git-lfs
 
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v4
+      - name: Git lfs pull
+        run: git lfs pull
 
-  #     - name: Set up Deno
-  #       uses: denoland/setup-deno@v1
-  #       with:
-  #         deno-version: v2.3.5
+      - name: Write .env file
+        run: |
+          echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
+          echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+          echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-  #     - name: Build web
-  #       run: deno task build
+      - name: Restore snomed dump
+        run: deno task db:restore snomed
 
-  #     - name: Compile web
-  #       run: deno task compile:web
+      - name: Migrate database to latest
+        run: deno task db:migrate all
+
+      - name: Migrate back down
+        run: deno task db:migrate to _icd10.ts
+
+      - name: Migrate back up
+        run: deno task db:migrate latest
+
+  build_container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t vha .
+
+  compile_others:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+      - name: Compile chatbot
+        run: deno task compile:chatbot
+
+  compile_web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.3.5
+
+      - uses: actions/cache/restore@v4
+        name: Restore deno modules
+        id: cache-deno-modules-restore
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+      - name: Build web
+        run: deno task build
+
+      - name: Compile web
+        run: deno task compile:web
