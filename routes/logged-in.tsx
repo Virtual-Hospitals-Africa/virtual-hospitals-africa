@@ -140,8 +140,6 @@ export async function initializeHealthWorkerWithoutInvites(
     existing_employment ? '/app' : '/onboarding/welcome',
   )
 
-  console.log('mmmwemmmmmm', session)
-
   setCookie(response.headers, {
     name: cookie.session_key,
     value: session.id,

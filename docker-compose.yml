@@ -4,13 +4,13 @@ services:
     image: postgis/postgis:15-3.3
     container_name: vha_postgres
     environment:
-      POSTGRES_USER: runner
-      POSTGRES_PASSWORD: testpw
+      POSTGRES_USER: vha_superadmin
+      POSTGRES_PASSWORD: local_docker_pw
       POSTGRES_DB: vha_dev
     ports:
       - 5432:5432
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U runner -d vha_dev']
+      test: ['CMD-SHELL', 'pg_isready -U vha_superadmin -d vha_dev']
       interval: 10s
       timeout: 5s
       retries: 5

@@ -1,8 +1,8 @@
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
-import { opts as db_opts } from './db/db.ts'
 import { promiseProps } from './util/promiseProps.ts'
+import { onProduction } from './util/onProduction.ts'
 
 const { SELF_URL, PORT } = Deno.env.toObject()
 
@@ -42,7 +42,7 @@ export default defineConfig({
         colors.bgRgb8(colors.rgb8('Virtual Hospitals Africa ready', 255), 57),
     )
 
-    const is_prod = !!db_opts && db_opts.host !== 'localhost'
+    const is_prod = onProduction()
     if (is_prod) {
       console.log(
         `     ` +

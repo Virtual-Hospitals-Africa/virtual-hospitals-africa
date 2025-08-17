@@ -1,5 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { connect } from 'redis'
+import { onProduction } from '../util/onProduction.ts'
 // import Redlock from 'redlock'
 
 interface RedisConnectionOptions {
@@ -40,10 +41,10 @@ export const redis =
   (Deno.env.get('NO_EXTERNAL_CONNECT')
     ? undefined
     : await connect(opts).catch((err) => {
-      console.warn(
-        'Failed to make connection to redis. The app can run without it, using an inMemoryCache, so we are proceeding.',
-      )
-      console.warn(err)
+      // Redis isn't needed to run locally
+      if (onProduction()) {
+        throw err
+      }
     }))!
 
 // export const lock = redis && new Redlock([redis])

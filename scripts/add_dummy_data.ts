@@ -14,6 +14,7 @@ import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely'
 import { forEach } from '../util/inParallel.ts'
 import sample from '../util/sample.ts'
+import { randomAvatar } from '../util/randomAvatar.ts'
 // import manufactured_medications from '../db/models/manufactured_medications.ts'
 // import sample from '../util/sample.ts'
 
@@ -39,12 +40,6 @@ function randomReason(gender: 'female' | 'male'): EncounterReason {
   } else {
     return 'seeking treatment'
   }
-}
-
-function randomAvatar(gender: 'male' | 'female') {
-  return `/images/avatars/random/${gender}/${
-    1 + Math.floor(Math.random() * 10)
-  }.png`
 }
 
 type PatientScenario =

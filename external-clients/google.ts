@@ -25,9 +25,13 @@ import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
+import { getEnvVariableRequiredOutsideDockerQuickstart } from '../util/getEnvVariableRequiredOutsideDockerQuickstart.ts'
 
-const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
-if (!Deno.env.get('NO_EXTERNAL_CONNECT')) assert(GOOGLE_MAPS_API_KEY)
+const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
+  'GOOGLE_MAPS_API_KEY',
+)
+
+Deno.env.get('GOOGLE_MAPS_API_KEY')
 
 const googleApisUrl = 'https://www.googleapis.com'
 

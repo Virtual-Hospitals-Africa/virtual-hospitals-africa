@@ -6,19 +6,15 @@
 
 🛠️ Check out our [Engineering](https://virtualhospitalsafrica.notion.site/Engineering-bd877fee6c2f477e9f8b33550162304e?source=copy_link) documentation to learn how the system is architected and how to run it
 
-# To get up and running
+# Quickstart
 
-- Create `.env` file and add variables
+```shell
+# In one terminal window
+docker compose up
 
+# In main terminal window
+deno task docker:setup
+
+# Once done,
+deno task start
 ```
-FOO=BAR
-```
-
-- Run `docker compose up -d` (or `docker compose up` if you want to see logs in real-time)
-- Run `deno task db:reset`
-- Run `deno task start`
-
-*** To view/modify the Postgres database ***
-
-- Navigate to http://localhost:8888/?pgsql=postgres&username=runner&db=vha_dev
-- Enter password `testpw`
