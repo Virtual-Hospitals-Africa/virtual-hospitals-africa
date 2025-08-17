@@ -128,7 +128,7 @@ describe('/login', () => {
         )
         assertEquals(
           waiting_room_add_link.first().text(),
-          'Intake patient (new experience)',
+          'Intake patient',
         )
 
         const patients_link = $('a[href="/app/patients"]')
