@@ -23,6 +23,8 @@ const POSTGRES_COMMANDS = new Set([
   'createdb',
   'pg_dump',
   'pg_restore',
+  './db/seed/tsv_load.sh',
+  './db/seed/tsv_dump.sh',
 ])
 
 type Opts = Deno.CommandOptions & {
@@ -52,8 +54,14 @@ export function runCommand(
     args = args_in_command
   }
   if (USE_DOCKER_FOR_POSTGRES_COMMANDS && POSTGRES_COMMANDS.has(program)) {
-    args = ['exec', 'vha_postgres', program].concat(args || [])
-    program = 'docker'
+    args = args || []
+    if (program.endsWith('.sh')) {
+      args = ['exec', 'vha_postgres', 'bash', program].concat(args)
+      program = 'docker'
+    } else {
+      args = ['exec', 'vha_postgres', program].concat(args)
+      program = 'docker'
+    }
   }
   if (verbose) {
     console.log([program].concat(args || []).join(' '))
