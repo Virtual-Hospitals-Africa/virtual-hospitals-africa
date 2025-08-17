@@ -68,3 +68,5 @@ _fresh/
 
 # SNOMED and other large files
 db/resources/extracted
+
+db/dumps/latest
