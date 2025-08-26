@@ -8,7 +8,13 @@
 
 # Quickstart
 
+You'll need deno, docker, and git-lfs
+
 ```shell
+# Clone the repository and pull large files
+git clone git@github.com:Virtual-Hospitals-Africa/virtual-hospitals-africa.git
+git lfs pull
+
 # In one terminal window
 docker compose up
 
