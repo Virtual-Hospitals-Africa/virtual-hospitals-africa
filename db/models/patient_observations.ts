@@ -1,5 +1,4 @@
 import { MostRecentVitalMeasurement, TrxOrDb } from '../../types.ts'
-import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 
 /*
   Treat patient_observations as an append only log
@@ -41,11 +40,12 @@ export async function insertMeasurements(
 // TODO
 // deno-lint-ignore require-await
 export async function getMostRecent(
-  trx: TrxOrDb,
+  _trx: TrxOrDb,
   { patient_id, snomed_concept_ids }: {
     patient_id: string
     snomed_concept_ids: string[]
   },
 ): Promise<MostRecentVitalMeasurement[]> {
+  console.log({ patient_id, snomed_concept_ids })
   return []
 }

@@ -1,10 +1,7 @@
 import { EncounterContext, EncounterPage } from './_middleware.tsx'
 import { z } from 'zod'
-import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import * as vitals from '../../../../../../db/models/vitals.ts'
 import * as patient_observations from '../../../../../../db/models/patient_observations.ts'
-
-import { MeasurementsUpsert } from '../../../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { completeStep } from './_middleware.tsx'
 import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
@@ -44,8 +41,6 @@ export const handler = postHandler(
 
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-    // .transform(observations => observations)
-
     await patient_observations.insertMeasurements(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
@@ -57,30 +52,6 @@ export const handler = postHandler(
     return completing_step
   },
 )
-
-// export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
-//   async POST(req, ctx: EncounterContext) {
-//     const completing_step = completeStep(ctx)
-
-//     const { measurements } = await parseRequest(
-//       ctx.state.trx,
-//       req,
-//       VitalsMeasurementsSchema.parse,
-//     )
-
-//     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-
-//     await patient_measurements.upsertVitals(ctx.state.trx, {
-//       patient_id,
-//       encounter_id: ctx.state.encounter.encounter_id,
-//       encounter_provider_id:
-//         ctx.state.encounter_provider.patient_encounter_provider_id,
-//       input_measurements: measurements,
-//     })
-
-//     return completing_step
-//   },
-// }
 
 export async function VitalsPage(ctx: EncounterContext) {
   const vital_observations_for_this_encounter = await vitals

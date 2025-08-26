@@ -13,6 +13,7 @@ function VitalInput({ vital, name, most_recent_patient_observation }: {
   name: string
   most_recent_patient_observation: Maybe<MostRecentVitalMeasurement>
 }) {
+  console.log(most_recent_patient_observation)
   // const on = useSignal(vitals.is_flagged || false)
   // const [vitalsValue, setVitalsValue] = useState(vitals.value)
 
@@ -85,6 +86,7 @@ export function VitalsForm(
     most_recent_patient_vitals: MostRecentVitalMeasurement[]
   },
 ) {
+  console.log(most_recent_patient_vitals)
   const observation_id = generateUUID()
 
   return (
