@@ -1,9 +1,12 @@
 import { UnitInput } from '../form/Inputs.tsx'
-import { Maybe, MostRecentVitalMeasurement, VitalObservationFormInputDefition } from '../../types.ts'
+import {
+  Maybe,
+  MostRecentVitalMeasurement,
+  VitalObservationFormInputDefition,
+} from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import generateUUID from '../../util/uuid.ts'
-
 
 function VitalInput({ vital, name, most_recent_patient_observation }: {
   vital: VitalObservationFormInputDefition
@@ -17,17 +20,19 @@ function VitalInput({ vital, name, most_recent_patient_observation }: {
   //   return measurement
   // })
 
-  // TODO use this 
+  // TODO use this
   // most_recent_patient_observation?.value_display
 
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-row gap-2'>
-        {/* <VitalsFlag
+        {
+          /* <VitalsFlag
           on={on.value}
           toggle={toggle}
           description={vital_description.value}
-        /> */}
+        /> */
+        }
         {
           /* <div className='align-middle'>
         </div> */
@@ -47,12 +52,14 @@ function VitalInput({ vital, name, most_recent_patient_observation }: {
           min={0}
           units={vital.units}
         />
-        {/* <CheckboxInput
+        {
+          /* <CheckboxInput
           name={`${name}.is_flagged`}
           label={null}
           checked={on.value}
           className='hidden'
-        /> */}
+        /> */
+        }
         <HiddenInput
           name={`${name}.snomed_concept_id`}
           value={vital.snomed_concept_id}
@@ -72,11 +79,12 @@ function VitalInput({ vital, name, most_recent_patient_observation }: {
   )
 }
 
-export function VitalsForm({ vital_observations_for_this_encounter, most_recent_patient_vitals }: {
-  vital_observations_for_this_encounter: VitalObservationFormInputDefition[],
-  most_recent_patient_vitals: MostRecentVitalMeasurement[],
-}) {
-
+export function VitalsForm(
+  { vital_observations_for_this_encounter, most_recent_patient_vitals }: {
+    vital_observations_for_this_encounter: VitalObservationFormInputDefition[]
+    most_recent_patient_vitals: MostRecentVitalMeasurement[]
+  },
+) {
   const observation_id = generateUUID()
 
   return (

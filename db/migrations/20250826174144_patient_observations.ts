@@ -1,8 +1,8 @@
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-await createStandardTable(db, 'patient_observations', (qb) =>
+  await createStandardTable(db, 'patient_observations', (qb) =>
     qb.addColumn(
       'patient_id',
       'uuid',
@@ -27,10 +27,11 @@ await createStandardTable(db, 'patient_observations', (qb) =>
         'bigint',
         (col) => col.notNull().references('snomed_concept.id'),
       )
-      .addColumn('referent_observation_id', 'uuid', col => col.references('patient_observations.id').onDelete('cascade'))
-      .addColumn('observation_type', 'varchar(255)', col => col.notNull().check(sql`(observation_type = 'measurement')`))
-      .addColumn('value', 'json')
-    )
+      .addColumn('referent_observation_id', 'uuid', (col) =>
+        col.references('patient_observations.id').onDelete('cascade'))
+      .addColumn('observation_type', 'varchar(255)', (col) =>
+        col.notNull().check(sql`(observation_type = 'measurement')`))
+      .addColumn('value', 'json'))
 }
 
 export async function down(db: Kysely<unknown>) {

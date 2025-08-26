@@ -23,18 +23,18 @@ export async function insertMeasurements(
 ) {
   await trx.insertInto('patient_observations')
     .values(input_measurements.map(
-    (input_measurement) => ({
-      patient_id,
-      encounter_id,
-      encounter_provider_id,
-      observation_type: 'measurement',
-      snomed_concept_id: input_measurement.snomed_concept_id,
-      value: {
-        value: input_measurement.value,
-        units: input_measurement.units,
-      }
-    }),
-  ))
+      (input_measurement) => ({
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        observation_type: 'measurement',
+        snomed_concept_id: input_measurement.snomed_concept_id,
+        value: {
+          value: input_measurement.value,
+          units: input_measurement.units,
+        },
+      }),
+    ))
     .execute()
 }
 
@@ -42,8 +42,10 @@ export async function insertMeasurements(
 // deno-lint-ignore require-await
 export async function getMostRecent(
   trx: TrxOrDb,
-  { patient_id, snomed_concept_ids }:
-  { patient_id: string, snomed_concept_ids: string[] }
+  { patient_id, snomed_concept_ids }: {
+    patient_id: string
+    snomed_concept_ids: string[]
+  },
 ): Promise<MostRecentVitalMeasurement[]> {
   return []
 }
