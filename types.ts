@@ -3180,3 +3180,23 @@ export type PostgresInterval = {
   seconds?: number
   milliseconds?: number
 }
+
+export type VitalObservationFormInputDefition = {
+  snomed_concept_id: string
+  required: true
+  label: string
+  units: string
+}
+
+export type MostRecentVitalMeasurement = {
+  observation_id: string
+  snomed_concept_id: string
+  value_display: string
+  encounter_id: string
+  created_at: string
+  provider: {
+    encounter_provider_id: string
+    name: string
+    profession: string
+  }
+}
