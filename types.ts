@@ -3182,6 +3182,7 @@ export type PostgresInterval = {
 }
 
 export type VitalObservationFormInputDefition = {
+  observation_id: string
   snomed_concept_id: string
   required: true
   label: string
@@ -3193,9 +3194,16 @@ export type MostRecentVitalMeasurement = {
   snomed_concept_id: string
   value_display: string
   encounter_id: string
-  created_at: string
+  created_at: Date
   provider: {
-    encounter_provider_id: string
+    patient_encounter_provider_id: string
+    employee_id: string
+    organization: {
+      id: string
+      name: string
+    }
+    health_worker_id: string
+    avatar_url: string | null
     name: string
     profession: string
   }

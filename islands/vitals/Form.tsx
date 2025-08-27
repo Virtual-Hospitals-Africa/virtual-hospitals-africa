@@ -6,13 +6,12 @@ import {
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import generateUUID from '../../util/uuid.ts'
 
-function VitalInput({ vital, name, most_recent_patient_observation }: {
+function VitalInput({ vital, most_recent_patient_observation }: {
   vital: VitalObservationFormInputDefition
-  name: string
   most_recent_patient_observation: Maybe<MostRecentVitalMeasurement>
 }) {
+  const name = `observations.${vital.observation_id}`
   console.log(most_recent_patient_observation)
   // const on = useSignal(vitals.is_flagged || false)
   // const [vitalsValue, setVitalsValue] = useState(vitals.value)
@@ -86,16 +85,16 @@ export function VitalsForm(
     most_recent_patient_vitals: MostRecentVitalMeasurement[]
   },
 ) {
-  console.log(most_recent_patient_vitals)
-  const observation_id = generateUUID()
-
   return (
     <div className='flex flex-col gap-1'>
       {vital_observations_for_this_encounter.map((vital) => (
         <VitalInput
           vital={vital}
-          most_recent_patient_observation={null}
-          name={`observations.${observation_id}`}
+          most_recent_patient_observation={most_recent_patient_vitals.find(
+            (patient_vital) => (
+              patient_vital.snomed_concept_id === vital.snomed_concept_id
+            ),
+          )}
         />
       ))}
     </div>

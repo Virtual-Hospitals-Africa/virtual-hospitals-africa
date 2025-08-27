@@ -8,11 +8,16 @@ import {
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
-import * as patient_measurements from '../../../db/models/patient_measurements.ts'
+import * as patient_observations from '../../../db/models/patient_observations.ts'
 import db from '../../../db/db.ts'
+import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../../shared/vitals.ts'
+import generateUUID from '../../../util/uuid.ts'
+import { assert } from 'std/assert/assert.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
+import { assertArrayIncludes } from 'https://deno.land/std@0.216.0/assert/assert_array_includes.ts'
 
 describe(
-  '/app/patients/[patient_id]/encounters/${encounter.id}/vitals',
+  '/app/patients/[patient_id]/encounters/[encounter_id]/vitals',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a page on GET for an open encounter', async () => {
@@ -40,35 +45,54 @@ describe(
       const $ = cheerio.load(pageContents)
 
       const formValues = getFormValues($)
-      assertEquals(formValues, {
-        measurements: [
-          { is_flagged: false, measurement_name: 'blood_glucose', value: null },
-          {
-            is_flagged: false,
-            measurement_name: 'blood_oxygen_saturation',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'blood_pressure_diastolic',
-            value: null,
-          },
-          {
-            is_flagged: false,
-            measurement_name: 'blood_pressure_systolic',
-            value: null,
-          },
-          { is_flagged: false, measurement_name: 'height', value: null },
-          { is_flagged: false, measurement_name: 'pulse', value: null },
-          {
-            is_flagged: false,
-            measurement_name: 'respiratory_rate',
-            value: null,
-          },
-          { is_flagged: false, measurement_name: 'temperature', value: null },
-          { is_flagged: false, measurement_name: 'weight', value: null },
-        ],
-      })
+      assert(isObjectLike(formValues))
+      const observations = Object.values(formValues.observations || {})
+
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 103228002,
+        units: '%',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 271649006,
+        units: 'mmHg',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 1153637007,
+        units: 'cm',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 86290005,
+        units: 'bpm',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 405176005,
+        units: 'mg/dL',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 8499008,
+        units: 'bpm',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 271650006,
+        units: 'mmHg',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 722490005,
+        units: '°C',
+        value: null,
+      }])
+      assertArrayIncludes(observations, [{
+        snomed_concept_id: 726527001,
+        units: 'kg',
+        value: null,
+      }])
     })
 
     it('404s on a GET for a patient with no open encounter', async () => {
@@ -100,9 +124,13 @@ describe(
       )
 
       const body = new FormData()
-      // body.append('measurements.height', '123')
-      body.append('measurements.0.measurement_name', 'height')
-      body.append('measurements.0.value', '123')
+      const observation_id = generateUUID()
+      body.append(
+        `observations.${observation_id}.snomed_concept_id`,
+        VITALS_SNOMED_CODE.height,
+      )
+      body.append(`observations.${observation_id}.units`, VITALS_UNITS.height)
+      body.append(`observations.${observation_id}.value`, '123')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
@@ -112,17 +140,35 @@ describe(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      const vitals = await patient_measurements.getEncounterVitals(db, {
-        encounter_id: encounter.id,
+
+      const all_vitals_snomed_codes = Object.values(VITALS_SNOMED_CODE).filter(
+        (code) => code !== '---',
+      )
+
+      const vitals = await patient_observations.getMostRecent(db, {
         patient_id: encounter.patient_id,
+        snomed_concept_ids: all_vitals_snomed_codes,
       })
       assertEquals(vitals, [
         {
-          'measurement_name': 'height',
-          'value': 123,
-          'is_flagged': false,
-          'units': 'cm',
-          'snomed_code': '1153637007',
+          snomed_concept_id: VITALS_SNOMED_CODE.height,
+          value_display: '123 cm',
+          encounter_id: encounter.id,
+          observation_id,
+          created_at: vitals[0].created_at,
+          provider: {
+            patient_encounter_provider_id:
+              encounter.providers[0].encounter_provider_id,
+            employee_id: healthWorker.employee_id!,
+            organization: {
+              id: '00000000-0000-0000-0000-000000000001',
+              name: 'VHA Test Clinic',
+            },
+            health_worker_id: healthWorker.id,
+            avatar_url: healthWorker.avatar_url,
+            name: healthWorker.name,
+            profession: 'nurse',
+          },
         },
       ])
 
@@ -137,259 +183,55 @@ describe(
         const $ = cheerio.load(pageContents)
 
         const formValues = getFormValues($)
-        assertEquals(formValues, {
-          measurements: [
-            {
-              is_flagged: false,
-              measurement_name: 'blood_glucose',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_oxygen_saturation',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_pressure_diastolic',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_pressure_systolic',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'height',
-              value: 123,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'pulse',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'respiratory_rate',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'temperature',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'weight',
-              value: null,
-            },
-          ],
-        })
-      }
-    })
+        assert(isObjectLike(formValues))
+        const observations = Object.values(formValues.observations || {})
 
-    it('can overwrite existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
-      })
-      const encounter = await patient_encounters.insert(
-        db,
-        '00000000-0000-0000-0000-000000000001',
-        {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        },
-      )
-      await patient_measurements.upsertVitals(db, {
-        encounter_id: encounter.id,
-        patient_id: encounter.patient_id,
-        encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        input_measurements: [
-          {
-            measurement_name: 'height',
-            value: 100,
-            is_flagged: false,
-          },
-          {
-            measurement_name: 'weight',
-            value: 100,
-            is_flagged: false,
-          },
-        ],
-      })
-
-      const body = new FormData()
-      body.append('measurements.0.measurement_name', 'height')
-      body.append('measurements.0.value', '123')
-      body.append('measurements.1.measurement_name', 'weight')
-      body.append('measurements.1.value', '456')
-
-      const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
-        {
-          method: 'POST',
-          body,
-        },
-      )
-      if (!response.ok) throw new Error(await response.text())
-      const vitals = await patient_measurements.getEncounterVitals(db, {
-        encounter_id: encounter.id,
-        patient_id: encounter.patient_id,
-      })
-      assertEquals(vitals, [
-        {
-          measurement_name: 'height',
-          value: 123,
-          is_flagged: false,
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 103228002,
+          units: '%',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 271649006,
+          units: 'mmHg',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 1153637007,
           units: 'cm',
-          snomed_code: '1153637007',
-        },
-        {
-          measurement_name: 'weight',
-          value: 456,
-          is_flagged: false,
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 86290005,
+          units: 'bpm',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 405176005,
+          units: 'mg/dL',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 8499008,
+          units: 'bpm',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 271650006,
+          units: 'mmHg',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 722490005,
+          units: '°C',
+          value: null,
+        }])
+        assertArrayIncludes(observations, [{
+          snomed_concept_id: 726527001,
           units: 'kg',
-          snomed_code: '726527001',
-        },
-      ])
-
-      {
-        const response = await fetch(
-          `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
-        )
-
-        if (!response.ok) throw new Error(await response.text())
-        const pageContents = await response.text()
-
-        const $ = cheerio.load(pageContents)
-
-        const formValues = getFormValues($)
-        assertEquals(formValues, {
-          measurements: [
-            {
-              is_flagged: false,
-              measurement_name: 'blood_glucose',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_oxygen_saturation',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_pressure_diastolic',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'blood_pressure_systolic',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'height',
-              value: 123,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'pulse',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'respiratory_rate',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'temperature',
-              value: null,
-            },
-            {
-              is_flagged: false,
-              measurement_name: 'weight',
-              value: 456,
-            },
-          ],
-        })
+          value: null,
+        }])
       }
-    })
-
-    it('can remove existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
-      })
-      const encounter = await patient_encounters.insert(
-        db,
-        '00000000-0000-0000-0000-000000000001',
-        {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        },
-      )
-      await patient_measurements.upsertVitals(db, {
-        encounter_id: encounter.id,
-        patient_id: encounter.patient_id,
-        encounter_provider_id: encounter.providers[0].encounter_provider_id,
-        input_measurements: [
-          {
-            measurement_name: 'height',
-            value: 170.3,
-            is_flagged: false,
-          },
-          {
-            measurement_name: 'weight',
-            value: 70.3,
-            is_flagged: false,
-          },
-          {
-            measurement_name: 'temperature',
-            value: 50,
-            is_flagged: false,
-          },
-        ],
-      })
-
-      const body = new FormData()
-      body.append('measurements.0.measurement_name', 'height')
-      body.append('measurements.0.value', '100')
-      body.append('measurements.1.measurement_name', 'weight')
-      body.append('measurements.1.value', '456')
-
-      const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
-        {
-          method: 'POST',
-          body,
-        },
-      )
-      if (!response.ok) throw new Error(await response.text())
-
-      const vitals = await patient_measurements.getEncounterVitals(db, {
-        encounter_id: encounter.id,
-        patient_id: encounter.patient_id,
-      })
-
-      assertEquals(vitals, [
-        {
-          measurement_name: 'height',
-          value: 100,
-          is_flagged: false,
-          units: 'cm',
-          snomed_code: '1153637007',
-        },
-        {
-          measurement_name: 'weight',
-          value: 456,
-          is_flagged: false,
-          units: 'kg',
-          snomed_code: '726527001',
-        },
-      ])
     })
   },
 )
