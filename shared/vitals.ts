@@ -1,4 +1,3 @@
-//TODO: Map of vital signs to SNOMED CT codes
 export const VITALS_SNOMED_CODE = {
   height: '1153637007',
   weight: '726527001',
@@ -11,4 +10,18 @@ export const VITALS_SNOMED_CODE = {
   respiratory_rate: '86290005',
   midarm_circumference: '---',
   triceps_skinfold: '---',
+}
+
+export const VITALS_UNITS = {
+  height: 'cm',
+  weight: 'kg',
+  temperature: '°C',
+  blood_pressure_diastolic: 'mmHg',
+  blood_pressure_systolic: 'mmHg',
+  blood_oxygen_saturation: '%',
+  blood_glucose: 'mg/dL',
+  pulse: 'bpm',
+  respiratory_rate: 'bpm',
+  midarm_circumference: 'cm',
+  triceps_skinfold: 'cm',
 }
