@@ -188,7 +188,6 @@ export function RegulatorHomePageSidebar(
     urlSearchParams: URLSearchParams
   },
 ) {
-  console.log({ params })
   return (
     <GenericSidebar
       route={route}

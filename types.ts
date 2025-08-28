@@ -2352,43 +2352,6 @@ export type RenderedPatientEncounter = {
   }
 }
 
-export type Measurements = {
-  height: [string, number, 'cm']
-  weight: [string, number, 'kg']
-  temperature: [string, number, '°C']
-  blood_pressure_diastolic: [string, number, 'mmHg']
-  blood_pressure_systolic: [string, number, 'mmHg']
-  blood_oxygen_saturation: [string, number, '%']
-  blood_glucose: [string, number, 'mg/dL']
-  pulse: [string, number, 'bpm']
-  respiratory_rate: [string, number, 'bpm']
-  midarm_circumference: [string, number, 'cm']
-  triceps_skinfold: [string, number, 'cm']
-}
-
-export type Measurement<Name extends keyof Measurements> = {
-  measurement_name: Name
-  snomed_code?: Measurements[Name][0]
-  value?: Measurements[Name][1]
-  units: Measurements[Name][2]
-  is_flagged: boolean
-}
-
-export type MeasurementsUpsert = {
-  value: number
-  is_flagged: boolean
-  measurement_name: string // keyof Measurements
-}
-
-export type PatientMeasurement = {
-  patient_id: string
-  encounter_id: string
-  encounter_provider_id: string
-  measurement_name: keyof Measurements
-  value: number
-  is_flagged: boolean
-}
-
 export type PatientMedicationUpsert = {
   id?: Maybe<string>
   dosage: number
@@ -3181,8 +3144,8 @@ export type PostgresInterval = {
   milliseconds?: number
 }
 
-export type VitalObservationFormInputDefition = {
-  observation_id: string
+export type VitalMeasurementFormInputDefition = {
+  finding_id: string
   snomed_concept_id: string
   required: true
   label: string
@@ -3190,7 +3153,7 @@ export type VitalObservationFormInputDefition = {
 }
 
 export type MostRecentVitalMeasurement = {
-  observation_id: string
+  finding_id: string
   snomed_concept_id: string
   value_display: string
   encounter_id: string
@@ -3207,4 +3170,11 @@ export type MostRecentVitalMeasurement = {
     name: string
     profession: string
   }
+}
+
+export type Measurement = {
+  finding_id?: string
+  snomed_concept_id: string
+  value: number
+  units: string
 }

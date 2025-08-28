@@ -1,16 +1,16 @@
 import { EncounterContext, EncounterPage } from './_middleware.tsx'
 import { z } from 'zod'
 import * as vitals from '../../../../../../db/models/vitals.ts'
-import * as patient_observations from '../../../../../../db/models/patient_observations.ts'
+import * as patient_findings from '../../../../../../db/models/patient_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { completeStep } from './_middleware.tsx'
-import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
 import { postHandler } from '../../../../../../util/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../util/validators.ts'
 import { filterOfType } from '../../../../../../util/assertAll.ts'
+import { VitalsForm } from '../../../../../../components/vitals/Form.tsx'
 
 const VitalsSchema = z.object({
-  observations: z.record(
+  findings: z.record(
     z.string().uuid(),
     z.object({
       snomed_concept_id,
@@ -21,17 +21,17 @@ const VitalsSchema = z.object({
       ]).optional(),
       note: z.string().optional(),
     }),
-  ).optional().transform((observations) =>
-    Object.entries(observations || {}).map(([observation_id, observation]) => (
-      { observation_id, ...observation }
+  ).optional().transform((findings) =>
+    Object.entries(findings || {}).map(([finding_id, finding]) => (
+      { finding_id, ...finding }
     ))
   ),
 })
 
 function hasValue(
-  observation: { value?: number },
-): observation is { value: number } {
-  return typeof observation.value === 'number'
+  finding: { value?: number },
+): finding is { value: number } {
+  return typeof finding.value === 'number'
 }
 
 export const handler = postHandler(
@@ -41,12 +41,12 @@ export const handler = postHandler(
 
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-    await patient_observations.insertMeasurements(ctx.state.trx, {
+    await vitals.insertMeasurements(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
       encounter_provider_id:
         ctx.state.encounter_provider.patient_encounter_provider_id,
-      input_measurements: filterOfType(form_values.observations, hasValue),
+      input_measurements: filterOfType(form_values.findings, hasValue),
     })
 
     return completing_step
@@ -54,25 +54,26 @@ export const handler = postHandler(
 )
 
 export async function VitalsPage(ctx: EncounterContext) {
-  const vital_observations_for_this_encounter = await vitals
-    .observationsNeededForEncounter(
+  const vital_measurements_for_this_encounter = await vitals
+    .measurementsNeededForEncounter(
       ctx.state.trx,
       ctx.state.patient,
     )
 
-  const most_recent_patient_vitals = await patient_observations.getMostRecent(
-    ctx.state.trx,
-    {
-      patient_id: ctx.state.patient.id,
-      snomed_concept_ids: vital_observations_for_this_encounter.map((o) =>
-        o.snomed_concept_id
-      ),
-    },
-  )
+  const most_recent_patient_vitals = await patient_findings
+    .getMostRecentMeasurements(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        snomed_concept_ids: vital_measurements_for_this_encounter.map((o) =>
+          o.snomed_concept_id
+        ),
+      },
+    )
 
   return (
     <VitalsForm
-      vital_observations_for_this_encounter={vital_observations_for_this_encounter}
+      vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
       most_recent_patient_vitals={most_recent_patient_vitals}
     />
   )

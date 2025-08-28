@@ -28,7 +28,6 @@ export const handler = postHandler(
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead
     // Very hacky, but we move the google tokens and session to the regulator
-    console.log('form_values', form_values)
     if (form_values.profession === 'regulator') {
       await promiseProps({
         health_worker: health_workers.removeById(trx, healthWorker.id),

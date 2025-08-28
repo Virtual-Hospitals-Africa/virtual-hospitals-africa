@@ -8,13 +8,13 @@ import {
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
-import * as patient_observations from '../../../db/models/patient_observations.ts'
+import * as patient_findings from '../../../db/models/patient_findings.ts'
 import db from '../../../db/db.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../../shared/vitals.ts'
 import generateUUID from '../../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
-import { assertArrayIncludes } from 'https://deno.land/std@0.216.0/assert/assert_array_includes.ts'
+import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 
 describe(
   '/app/patients/[patient_id]/encounters/[encounter_id]/vitals',
@@ -46,49 +46,49 @@ describe(
 
       const formValues = getFormValues($)
       assert(isObjectLike(formValues))
-      const observations = Object.values(formValues.observations || {})
+      const findings = Object.values(formValues.findings || {})
 
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 103228002,
         units: '%',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 271649006,
         units: 'mmHg',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 1153637007,
         units: 'cm',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 86290005,
         units: 'bpm',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 405176005,
         units: 'mg/dL',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 8499008,
         units: 'bpm',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 271650006,
         units: 'mmHg',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 722490005,
         units: '°C',
         value: null,
       }])
-      assertArrayIncludes(observations, [{
+      assertArrayIncludes(findings, [{
         snomed_concept_id: 726527001,
         units: 'kg',
         value: null,
@@ -124,13 +124,13 @@ describe(
       )
 
       const body = new FormData()
-      const observation_id = generateUUID()
+      const finding_id = generateUUID()
       body.append(
-        `observations.${observation_id}.snomed_concept_id`,
+        `findings.${finding_id}.snomed_concept_id`,
         VITALS_SNOMED_CODE.height,
       )
-      body.append(`observations.${observation_id}.units`, VITALS_UNITS.height)
-      body.append(`observations.${observation_id}.value`, '123')
+      body.append(`findings.${finding_id}.units`, VITALS_UNITS.height)
+      body.append(`findings.${finding_id}.value`, '123')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
@@ -145,7 +145,7 @@ describe(
         (code) => code !== '---',
       )
 
-      const vitals = await patient_observations.getMostRecent(db, {
+      const vitals = await patient_findings.getMostRecentMeasurements(db, {
         patient_id: encounter.patient_id,
         snomed_concept_ids: all_vitals_snomed_codes,
       })
@@ -154,7 +154,7 @@ describe(
           snomed_concept_id: VITALS_SNOMED_CODE.height,
           value_display: '123 cm',
           encounter_id: encounter.id,
-          observation_id,
+          finding_id,
           created_at: vitals[0].created_at,
           provider: {
             patient_encounter_provider_id:
@@ -184,49 +184,49 @@ describe(
 
         const formValues = getFormValues($)
         assert(isObjectLike(formValues))
-        const observations = Object.values(formValues.observations || {})
+        const findings = Object.values(formValues.findings || {})
 
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 103228002,
           units: '%',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 271649006,
           units: 'mmHg',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 1153637007,
           units: 'cm',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 86290005,
           units: 'bpm',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 405176005,
           units: 'mg/dL',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 8499008,
           units: 'bpm',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 271650006,
           units: 'mmHg',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 722490005,
           units: '°C',
           value: null,
         }])
-        assertArrayIncludes(observations, [{
+        assertArrayIncludes(findings, [{
           snomed_concept_id: 726527001,
           units: 'kg',
           value: null,
