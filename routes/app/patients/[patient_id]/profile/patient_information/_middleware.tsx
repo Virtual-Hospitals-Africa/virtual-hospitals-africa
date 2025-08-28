@@ -6,7 +6,6 @@ export function handler(
   _req: Request,
   ctx: FreshContext,
 ) {
-  console.log('in here', ctx)
   if (ctx.route.endsWith('/patient_information')) {
     return redirect(replaceParams(
       '/app/patients/:patient_id/profile/patient_information/general',

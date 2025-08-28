@@ -6,8 +6,6 @@ import Form from '../../../../../../components/library/Form.tsx'
 import {
   HasStringId,
   LoggedInHealthWorkerContext,
-  Measurement,
-  Measurements,
   PatientWithOpenEncounter,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
@@ -16,7 +14,6 @@ import {
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as examination_findings from '../../../../../../db/models/examination_findings.ts'
 import * as organizations from '../../../../../../db/models/organizations.ts'
-import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
@@ -186,14 +183,13 @@ export function EncounterLayout({
   key_findings,
   next_step_text,
   children,
-  measurements,
   care_team,
 }: {
   ctx: EncounterContext
   key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
-  measurements: Measurement<keyof Measurements>[]
+  measurements: unknown
   // deno-lint-ignore no-explicit-any
   care_team: any[]
 }): JSX.Element {
@@ -212,7 +208,7 @@ export function EncounterLayout({
           patient={ctx.state.patient}
           encounter={ctx.state.encounter}
           findings={key_findings}
-          measurements={measurements}
+          // measurements={measurements}
           care_team={care_team}
         />
       }
@@ -256,7 +252,7 @@ export function EncounterPage<
     _req: Request,
     ctx: EncounterContext,
   ) {
-    const { patient, encounter, encounter_provider, trx } = ctx.state
+    const { patient, encounter_provider, trx } = ctx.state
 
     const { organization_id } = encounter_provider
     const { location } = await organizations.getById(
@@ -270,10 +266,7 @@ export function EncounterPage<
       rendered: Promise.resolve(
         render(ctx as Context),
       ),
-      measurements: patient_measurements.getEncounterVitals(trx, {
-        patient_id: patient.id,
-        encounter_id: encounter.encounter_id,
-      }),
+      measurements: [],
     })
 
     if (rendered instanceof Response) {

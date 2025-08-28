@@ -1,9 +1,4 @@
-import {
-  type Maybe,
-  Measurement,
-  Measurements,
-  RenderedPatientExaminationFinding,
-} from '../../types.ts'
+import { type Maybe, RenderedPatientExaminationFinding } from '../../types.ts'
 import { SendToSelectedPatient } from '../SendTo/SelectedPatient.tsx'
 import { HEADER_HEIGHT_PX } from '../../components/library/HeaderHeight.ts'
 import { PatientDrawerAccordion } from './Accordion.tsx'
@@ -55,8 +50,8 @@ export function PatientDrawerV2(
     // deno-lint-ignore no-explicit-any
     care_team: any[]
     findings: RenderedPatientExaminationFinding[]
-    measurements: Measurement<keyof Measurements>[]
-    flaggedVitals?: Map<string, Measurement<keyof Measurements>>
+    // measurements: Measurement<keyof Measurements>[]
+    // flaggedVitals?: Map<string, Measurement<keyof Measurements>>
   },
 ) {
   return (

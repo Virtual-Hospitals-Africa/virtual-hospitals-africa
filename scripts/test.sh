@@ -21,6 +21,7 @@ migrate_check=true
 
 # Set up a temporary file for the test server output so we can check if it's ready
 test_vha_server_output=$(mktemp)
+echo "xyz $test_vha_server_output"
 
 kill_test_server() {
   ./scripts/kill_process_on_port.sh $VHA_SERVER_PORT

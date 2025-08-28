@@ -1,18 +1,18 @@
-import { UnitInput } from '../form/Inputs.tsx'
 import {
   Maybe,
   MostRecentVitalMeasurement,
-  VitalObservationFormInputDefition,
+  VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { UnitInput } from '../../islands/form/Inputs.tsx'
 
-function VitalInput({ vital, most_recent_patient_observation }: {
-  vital: VitalObservationFormInputDefition
-  most_recent_patient_observation: Maybe<MostRecentVitalMeasurement>
+function VitalInput({ vital, most_recent_patient_finding }: {
+  vital: VitalMeasurementFormInputDefition
+  most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
 }) {
-  const name = `observations.${vital.observation_id}`
-  console.log(most_recent_patient_observation)
+  const name = `findings.${vital.finding_id}`
+  console.log(most_recent_patient_finding)
   // const on = useSignal(vitals.is_flagged || false)
   // const [vitalsValue, setVitalsValue] = useState(vitals.value)
 
@@ -21,7 +21,7 @@ function VitalInput({ vital, most_recent_patient_observation }: {
   // })
 
   // TODO use this
-  // most_recent_patient_observation?.value_display
+  // most_recent_patient_finding?.value_display
 
   return (
     <div className='flex justify-between w-full'>
@@ -80,17 +80,17 @@ function VitalInput({ vital, most_recent_patient_observation }: {
 }
 
 export function VitalsForm(
-  { vital_observations_for_this_encounter, most_recent_patient_vitals }: {
-    vital_observations_for_this_encounter: VitalObservationFormInputDefition[]
+  { vital_measurements_for_this_encounter, most_recent_patient_vitals }: {
+    vital_measurements_for_this_encounter: VitalMeasurementFormInputDefition[]
     most_recent_patient_vitals: MostRecentVitalMeasurement[]
   },
 ) {
   return (
     <div className='flex flex-col gap-1'>
-      {vital_observations_for_this_encounter.map((vital) => (
+      {vital_measurements_for_this_encounter.map((vital) => (
         <VitalInput
           vital={vital}
-          most_recent_patient_observation={most_recent_patient_vitals.find(
+          most_recent_patient_finding={most_recent_patient_vitals.find(
             (patient_vital) => (
               patient_vital.snomed_concept_id === vital.snomed_concept_id
             ),
