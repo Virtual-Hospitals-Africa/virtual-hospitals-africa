@@ -11,6 +11,11 @@ type PatientRecord = unknown
 
 const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
 
+/*
+  If nurse didn't flag and didn't add a note -> do not save an evaluation
+  If nurse didn't flag and added a note -> save an evaluation with priority: normal & with the note
+  If nurse flagged -> save an evaluation with the flag's priority and with the optional note
+*/
 export async function insertMeasurements(
   trx: TrxOrDb,
   { patient_id, encounter_id, encounter_provider_id, input_measurements }: {
@@ -20,23 +25,27 @@ export async function insertMeasurements(
     input_measurements: Measurement[]
   },
 ) {
-  const procedure = await trx.insertInto('patient_procedures')
-    .values({
+  const procedure_id = generateUUID()
+
+  await Promise.all([
+    trx.insertInto('patient_procedures')
+      .values({
+        id: procedure_id,
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
+      })
+      .returning('id')
+      .executeTakeFirstOrThrow(),
+    patient_findings.insertMeasurements(trx, {
       patient_id,
       encounter_id,
       encounter_provider_id,
-      snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
-  return patient_findings.insertMeasurements(trx, {
-    patient_id,
-    encounter_id,
-    encounter_provider_id,
-    input_measurements,
-    procedure_id: procedure.id,
-  })
+      input_measurements,
+      procedure_id,
+    }),
+  ])
 }
 
 // deno-lint-ignore require-await
