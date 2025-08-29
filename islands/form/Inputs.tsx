@@ -1,13 +1,13 @@
-import { Signal } from "@preact/signals";
-import { ComponentChildren, JSX, Ref } from "preact";
-import { forwardRef, HTMLAttributes } from "preact/compat";
-import { assert } from "std/assert/assert.ts";
+import { Signal } from '@preact/signals'
+import { ComponentChildren, JSX, Ref } from 'preact'
+import { forwardRef, HTMLAttributes } from 'preact/compat'
+import { assert } from 'std/assert/assert.ts'
 import {
-  MagnifyingGlassIcon,
   CheckCircleIcon as OutlineCheckCircleIcon,
+  MagnifyingGlassIcon,
   XCircleIcon as OutlineXCircleIcon,
-} from "../../components/library/icons/heroicons/outline.tsx";
-import { Label } from "../../components/library/Label.tsx";
+} from '../../components/library/icons/heroicons/outline.tsx'
+import { Label } from '../../components/library/Label.tsx'
 import {
   DOCTOR_SPECIALTIES,
   Gender,
@@ -19,114 +19,115 @@ import {
   PharmacyType,
   Prefix,
   PREFIXES,
-} from "../../types.ts";
-import capitalize from "../../util/capitalize.ts";
-import cls from "../../util/cls.ts";
-import isObjectLike from "../../util/isObjectLike.ts";
-import last from "../../util/last.ts";
+} from '../../types.ts'
+import capitalize from '../../util/capitalize.ts'
+import cls from '../../util/cls.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import last from '../../util/last.ts'
 
 export const NoLabelButSpaceAsPlaceholder = Symbol(
-  "NoLabelButSpaceAsPlaceholder"
-);
+  'NoLabelButSpaceAsPlaceholder',
+)
 
 type LabeledInputProps<El extends HTMLElement> = {
-  name: string | null;
-  label?: Maybe<string | typeof NoLabelButSpaceAsPlaceholder>;
-  required?: boolean;
-  disabled?: boolean;
-  readonly?: boolean;
-  ref?: Ref<El>;
-  className?: string;
-  defaultValue?: string;
-  onInput?: HTMLAttributes<El>["onInput"];
-  onFocus?: HTMLAttributes<El>["onFocus"];
-  onBlur?: HTMLAttributes<El>["onBlur"];
-};
+  name: string | null
+  label?: Maybe<string | typeof NoLabelButSpaceAsPlaceholder>
+  required?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  ref?: Ref<El>
+  className?: string
+  defaultValue?: string
+  onInput?: HTMLAttributes<El>['onInput']
+  onFocus?: HTMLAttributes<El>['onFocus']
+  onBlur?: HTMLAttributes<El>['onBlur']
+}
 
 type WrapperInputProps<
   El extends HTMLElement,
-  Value
+  Value,
 > = LabeledInputProps<El> & {
-  inputClassName?: string;
-  value?: Maybe<Value>;
-  signal?: Signal<Value>;
-};
+  inputClassName?: string
+  value?: Maybe<Value>
+  signal?: Signal<Value>
+}
 
-type SearchInputProps = Partial<
-  Omit<WrapperInputProps<HTMLInputElement, string>, "signal">
-> & {
-  placeholder?: string;
-  children?: ComponentChildren;
-};
+type SearchInputProps =
+  & Partial<
+    Omit<WrapperInputProps<HTMLInputElement, string>, 'signal'>
+  >
+  & {
+    placeholder?: string
+    children?: ComponentChildren
+  }
 
 type DateInputProps = Partial<WrapperInputProps<HTMLInputElement, string>> & {
-  value?: Maybe<string>;
-  min?: Maybe<string>;
-  max?: Maybe<string>;
-};
+  value?: Maybe<string>
+  min?: Maybe<string>
+  max?: Maybe<string>
+}
 
-export type TextInputProps = WrapperInputProps<HTMLInputElement, string> & {
-  type?: "text" | "email" | "tel";
-  placeholder?: string;
-  pattern?: string;
-  onKeyDown?: (event: KeyboardEvent) => void;
-  characterCountLimit?: number;
-  leftIcon?: ComponentChildren;
-  rightIcon?: ComponentChildren;
-  suffix?: string;
-  guidanceText?: string;
-  errorText?: string;
-  size?: InputSize;
-} & (
+export type TextInputProps =
+  & WrapperInputProps<HTMLInputElement, string>
+  & {
+    type?: 'text' | 'email' | 'tel'
+    placeholder?: string
+    pattern?: string
+    onKeyDown?: (event: KeyboardEvent) => void
+    characterCountLimit?: number
+    leftIcon?: ComponentChildren
+    rightIcon?: ComponentChildren
+    suffix?: string
+    guidanceText?: string
+    errorText?: string
+    size?: InputSize
+  }
+  & (
     | {
-        inputmode?: undefined;
-        min?: undefined;
-        max?: undefined;
-      }
+      inputmode?: undefined
+      min?: undefined
+      max?: undefined
+    }
     | {
-        inputmode: "numeric";
-        min?: number;
-        max?: number;
-      }
-  );
+      inputmode: 'numeric'
+      min?: number
+      max?: number
+    }
+  )
 
 export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {
-  placeholder?: string;
-  rows?: number;
-};
+  placeholder?: string
+  rows?: number
+}
 
 export function LabeledInput({
   name,
-  label = name && capitalize(last(name.split("."))!),
+  label = name && capitalize(last(name.split('.'))!),
   required,
   children,
   className,
 }: LabeledInputProps<HTMLInputElement> & {
-  children: ComponentChildren;
+  children: ComponentChildren
 }) {
   return (
     <Label
-      className={
-        label === NoLabelButSpaceAsPlaceholder
-          ? cls(className, "pt-6")
-          : className
-      }
-      label={
-        label &&
+      className={label === NoLabelButSpaceAsPlaceholder
+        ? cls(className, 'pt-6')
+        : className}
+      label={label &&
         label !== NoLabelButSpaceAsPlaceholder && (
-          <span className="mb-1 ml-0.5">
-            {label}
-            {label && required && <sup>*</sup>}
-          </span>
-        )
-      }
+        <span className='mb-1 ml-0.5'>
+          {label}
+          {label && required && <sup>*</sup>}
+        </span>
+      )}
     >
       {children}
     </Label>
-  );
+  )
 }
 
-type InputSize = "normal" | "large" | "small";
+type InputSize = 'normal' | 'large' | 'small'
 
 export function TextInput({
   name,
@@ -157,8 +158,8 @@ export function TextInput({
   min,
   max,
 }: TextInputProps) {
-  assert(!characterCountLimit);
-  assert(!rightIcon || !suffix);
+  assert(!characterCountLimit)
+  assert(!rightIcon || !suffix)
 
   return (
     <>
@@ -166,13 +167,13 @@ export function TextInput({
         name={name}
         label={label}
         required={required}
-        className={cls("w-full flex-1", className)}
+        className={cls('w-full flex-1', className)}
       >
-        <div className="mt-2 grid grid-cols-1">
+        <div className='mt-2 grid grid-cols-1'>
           {leftIcon && (
             <div
-              aria-hidden="true"
-              className="pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400"
+              aria-hidden='true'
+              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
             >
               {leftIcon}
             </div>
@@ -181,14 +182,14 @@ export function TextInput({
             type={type}
             {...(name && { name })}
             className={cls(
-              "col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5",
+              'col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
               inputClassName,
-              disabled && "bg-gray-300",
-              !!leftIcon && "pl-3",
-              !!rightIcon && "pr-3",
+              disabled && 'bg-gray-300',
+              !!leftIcon && 'pl-3',
+              !!rightIcon && 'pr-3',
               errorText
-                ? "text-red-900 outline-red-300 focus:outline-red-600  dark:outline-red-500/50 dark:text-red-400 dark:placeholder:text-red-400/70 dark:focus:outline-red-400"
-                : "text-black-900 dark:focus:text-black-900" // TODO
+                ? 'text-red-900 outline-red-300 focus:outline-red-600  dark:outline-red-500/50 dark:text-red-400 dark:placeholder:text-red-400/70 dark:focus:outline-red-400'
+                : 'text-black-900 dark:focus:text-black-900', // TODO
             )}
             inputmode={inputmode}
             placeholder={placeholder}
@@ -197,43 +198,43 @@ export function TextInput({
             readonly={readonly}
             value={signal?.value || value || undefined}
             onInput={(event) => {
-              if (signal) signal.value = event.currentTarget.value;
-              onInput?.(event);
-              event.currentTarget.setCustomValidity("");
+              if (signal) signal.value = event.currentTarget.value
+              onInput?.(event)
+              event.currentTarget.setCustomValidity('')
             }}
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyDown={onKeyDown}
             pattern={pattern}
-            autoComplete="off"
+            autoComplete='off'
             min={min}
             max={max}
           />
           {suffix && (
             <div
-              id="price-currency"
-              className="pointer-events-none  select-none self-center col-start-1 row-start-1 mr-3 text-base justify-self-end text-gray-500 sm:text-sm/6 dark:text-gray-400"
+              id='price-currency'
+              className='pointer-events-none  select-none self-center col-start-1 row-start-1 mr-3 text-base justify-self-end text-gray-500 sm:text-sm/6 dark:text-gray-400'
             >
               {suffix}
             </div>
           )}
           {rightIcon && (
             <div
-              aria-hidden="true"
-              className="pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400"
+              aria-hidden='true'
+              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
             >
               {rightIcon}
             </div>
           )}
         </div>
       </LabeledInput>
-      {errorText ? (
-        <span className="text-red-400">{errorText}</span>
-      ) : guidanceText ? (
-        <span className="text-gray-400">{guidanceText}</span>
-      ) : null}
+      {errorText
+        ? <span className='text-red-400'>{errorText}</span>
+        : guidanceText
+        ? <span className='text-gray-400'>{guidanceText}</span>
+        : null}
     </>
-  );
+  )
 }
 
 export function NumberInput({
@@ -252,33 +253,33 @@ export function NumberInput({
   min,
   max,
 }: WrapperInputProps<HTMLInputElement, number> & {
-  min?: number;
-  max?: number;
+  min?: number
+  max?: number
 }) {
   return (
     <LabeledInput
       name={name}
       label={label}
       required={required}
-      className={cls("w-full flex-1", className)}
+      className={cls('w-full flex-1', className)}
     >
       <input
-        type="text"
-        inputmode="numeric"
+        type='text'
+        inputmode='numeric'
         {...(name && { name })}
         className={cls(
-          "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2",
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         required={required}
         disabled={disabled}
         readonly={readonly}
         value={signal?.value ?? value ?? undefined}
         onInput={(event) => {
-          if (signal) signal.value = parseInt(event.currentTarget.value);
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          if (signal) signal.value = parseInt(event.currentTarget.value)
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -286,7 +287,7 @@ export function NumberInput({
         max={max}
       />
     </LabeledInput>
-  );
+  )
 }
 
 export function UnitInput({
@@ -306,36 +307,36 @@ export function UnitInput({
   max,
   units,
 }: WrapperInputProps<HTMLInputElement, number> & {
-  min?: number;
-  max?: number;
-  units: string;
+  min?: number
+  max?: number
+  units: string
 }) {
   return (
     <LabeledInput
       name={name}
       label={label}
       required={required}
-      className={cls("flex gap-1 flex-col flex-grow-0", className)}
+      className={cls('flex gap-1 flex-col flex-grow-0', className)}
     >
-      <div className="flex items-center rounded-md bg-white pl-0 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600">
-        <span className="text-gray-500 ml-2">{units}</span>
+      <div className='flex items-center rounded-md bg-white pl-0 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600'>
+        <span className='text-gray-500 ml-2'>{units}</span>
         <input
-          type="text"
-          inputmode="numeric"
+          type='text'
+          inputmode='numeric'
           {...(name && { name })}
           className={cls(
-            "block w-full rounded-md border-0 outline-0 focus:ring-0 focus:outline-none text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6",
+            'block w-full rounded-md border-0 outline-0 focus:ring-0 focus:outline-none text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6',
             inputClassName,
-            disabled && "bg-gray-300"
+            disabled && 'bg-gray-300',
           )}
           required={required}
           disabled={disabled}
           readonly={readonly}
           value={signal?.value ?? value ?? undefined}
           onInput={(event) => {
-            if (signal) signal.value = parseInt(event.currentTarget.value);
-            onInput?.(event);
-            event.currentTarget.setCustomValidity("");
+            if (signal) signal.value = parseInt(event.currentTarget.value)
+            onInput?.(event)
+            event.currentTarget.setCustomValidity('')
           }}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -344,7 +345,7 @@ export function UnitInput({
         />
       </div>
     </LabeledInput>
-  );
+  )
 }
 
 export function CheckboxInput({
@@ -360,26 +361,26 @@ export function CheckboxInput({
   className,
   inputClassName,
   value,
-}: Omit<WrapperInputProps<HTMLInputElement, boolean>, "signal" | "value"> & {
-  checked?: boolean;
-  onInput?: JSX.GenericEventHandler<HTMLInputElement>;
-  value?: string;
+}: Omit<WrapperInputProps<HTMLInputElement, boolean>, 'signal' | 'value'> & {
+  checked?: boolean
+  onInput?: JSX.GenericEventHandler<HTMLInputElement>
+  value?: string
 }) {
   return (
     <LabeledInput
       name={name}
       label={label}
       required={required}
-      className={cls("flex flex-col flex-grow-0", className)}
+      className={cls('flex flex-col flex-grow-0', className)}
     >
-      <div className="grid place-items-center h-full">
+      <div className='grid place-items-center h-full'>
         <input
-          type="checkbox"
+          type='checkbox'
           {...(name && { name })}
           className={cls(
-            "h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600",
+            'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600',
             inputClassName,
-            disabled && "bg-gray-300"
+            disabled && 'bg-gray-300',
           )}
           required={required}
           disabled={disabled}
@@ -392,7 +393,7 @@ export function CheckboxInput({
         />
       </div>
     </LabeledInput>
-  );
+  )
 }
 
 export function TextArea({
@@ -416,14 +417,14 @@ export function TextArea({
       name={name}
       label={label}
       required={required}
-      className={cls("w-full", className)}
+      className={cls('w-full', className)}
     >
       <textarea
         {...(name && { name })}
         className={cls(
-          "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2",
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         placeholder={placeholder}
         required={required}
@@ -431,26 +432,28 @@ export function TextArea({
         readOnly={readonly}
         value={signal?.value ?? value ?? undefined}
         onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value;
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
         rows={rows}
       />
     </LabeledInput>
-  );
+  )
 }
 
-export type SelectProps = Omit<
-  LabeledInputProps<HTMLSelectElement>,
-  "onInput"
-> & {
-  onChange?: HTMLAttributes<HTMLSelectElement>["onChange"];
-  selectClassName?: string;
-  children: ComponentChildren;
-};
+export type SelectProps =
+  & Omit<
+    LabeledInputProps<HTMLSelectElement>,
+    'onInput'
+  >
+  & {
+    onChange?: HTMLAttributes<HTMLSelectElement>['onChange']
+    selectClassName?: string
+    children: ComponentChildren
+  }
 
 export const Select = forwardRef(
   (
@@ -464,7 +467,7 @@ export const Select = forwardRef(
       children,
       disabled,
     }: SelectProps,
-    ref: Ref<HTMLSelectElement>
+    ref: Ref<HTMLSelectElement>,
   ) => {
     return (
       <LabeledInput
@@ -472,14 +475,14 @@ export const Select = forwardRef(
         label={label}
         required={required}
         disabled={disabled}
-        className={cls("flex-grow", className)}
+        className={cls('flex-grow', className)}
       >
         <select
           {...(name && { name })}
           className={cls(
-            "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white",
+            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
             selectClassName,
-            disabled && "text-gray-600"
+            disabled && 'text-gray-600',
           )}
           required={required}
           onChange={onChange}
@@ -489,59 +492,63 @@ export const Select = forwardRef(
           {children}
         </select>
       </LabeledInput>
-    );
-  }
-);
+    )
+  },
+)
 
 export const SelectWithOptions = forwardRef(function SelectWithOptions<
-  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>["value"]
+  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
 >(
   {
     options,
     blank_option,
     value,
     ...rest
-  }: Omit<SelectProps, "children"> & {
-    blank_option?: string | true;
-    value?: V;
-    options: { value: V; label?: string }[] | V[] | { id: V; name: string }[];
+  }: Omit<SelectProps, 'children'> & {
+    blank_option?: string | true
+    value?: V
+    options: { value: V; label?: string }[] | V[] | { id: V; name: string }[]
   },
-  ref: Ref<HTMLSelectElement>
+  ref: Ref<HTMLSelectElement>,
 ) {
   return (
     <Select {...rest} ref={ref}>
       {blank_option && (
-        <option value="">
-          {typeof blank_option === "string" ? blank_option : "Select"}
+        <option value=''>
+          {typeof blank_option === 'string' ? blank_option : 'Select'}
         </option>
       )}
       {options.map((option) =>
-        isObjectLike(option) && "value" in option ? (
-          <option
-            value={option.value}
-            label={"label" in option ? option.label : String(option.value)}
-            selected={value === option.value}
-          />
-        ) : isObjectLike(option) && "id" in option ? (
-          <option
-            value={option.id}
-            label={option.name}
-            selected={value === option.id}
-          />
-        ) : (
-          <option
-            value={option}
-            label={String(option)}
-            selected={value === option}
-          />
-        )
+        isObjectLike(option) && 'value' in option
+          ? (
+            <option
+              value={option.value}
+              label={'label' in option ? option.label : String(option.value)}
+              selected={value === option.value}
+            />
+          )
+          : isObjectLike(option) && 'id' in option
+          ? (
+            <option
+              value={option.id}
+              label={option.name}
+              selected={value === option.id}
+            />
+          )
+          : (
+            <option
+              value={option}
+              label={String(option)}
+              selected={value === option}
+            />
+          )
       )}
     </Select>
-  );
-});
+  )
+})
 
 export function DateInput({
-  name = "date",
+  name = 'date',
   signal,
   value,
   label,
@@ -560,22 +567,22 @@ export function DateInput({
       name={name}
       label={label}
       required={required}
-      className={cls("w-40", className)}
+      className={cls('w-40', className)}
     >
       <input
-        type="date"
+        type='date'
         {...(name && { name })}
         className={cls(
-          "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2",
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         required={required}
         disabled={disabled}
         onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value;
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -584,7 +591,7 @@ export function DateInput({
         max={max ?? undefined}
       />
     </LabeledInput>
-  );
+  )
 }
 
 // Make this pretty with an icon and/or flag + area code helper
@@ -609,27 +616,27 @@ export function PhoneNumberInput({
       className={className}
     >
       <input
-        type="tel"
+        type='tel'
         {...(name && { name })}
         className={cls(
-          "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2",
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         value={signal?.value ?? value ?? undefined}
-        placeholder="+263 777 777 777"
+        placeholder='+263 777 777 777'
         required={required}
         disabled={disabled}
         onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value;
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
     </LabeledInput>
-  );
+  )
 }
 
 export function ImageInput({
@@ -643,7 +650,7 @@ export function ImageInput({
   onInput,
   onFocus,
   onBlur,
-}: Omit<TextInputProps, "signal">) {
+}: Omit<TextInputProps, 'signal'>) {
   return (
     <LabeledInput
       name={name}
@@ -653,28 +660,28 @@ export function ImageInput({
       className={className}
     >
       <input
-        type="file"
-        accept=".jpg,.jpeg,.png"
+        type='file'
+        accept='.jpg,.jpeg,.png'
         {...(name && { name })}
         className={cls(
-          "w-0 h-0 overflow-hidden",
+          'w-0 h-0 overflow-hidden',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         placeholder={placeholder}
         required={required}
         onInput={(event) => {
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <span className="inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer">
+      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
         Upload
       </span>
     </LabeledInput>
-  );
+  )
 }
 
 export function ImageOrVideoInput({
@@ -688,11 +695,11 @@ export function ImageOrVideoInput({
   onInput,
   onFocus,
   onBlur,
-}: Omit<TextInputProps, "value" | "signal"> & {
+}: Omit<TextInputProps, 'value' | 'signal'> & {
   value?: Maybe<{
-    mime_type: string;
-    url: string;
-  }>;
+    mime_type: string
+    url: string
+  }>
 }) {
   return (
     <LabeledInput
@@ -703,32 +710,32 @@ export function ImageOrVideoInput({
       className={className}
     >
       <input
-        type="file"
-        accept=".jpg,.jpeg,.png,.gif,.mov,.mp4,.avi,.wav,.webm"
+        type='file'
+        accept='.jpg,.jpeg,.png,.gif,.mov,.mp4,.avi,.wav,.webm'
         {...(name && { name })}
         className={cls(
-          "w-0 h-0 overflow-hidden",
+          'w-0 h-0 overflow-hidden',
           inputClassName,
-          disabled && "bg-gray-300"
+          disabled && 'bg-gray-300',
         )}
         placeholder={placeholder}
         required={required}
         onInput={(event) => {
-          onInput?.(event);
-          event.currentTarget.setCustomValidity("");
+          onInput?.(event)
+          event.currentTarget.setCustomValidity('')
         }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <span className="inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer">
+      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
         Upload
       </span>
     </LabeledInput>
-  );
+  )
 }
 
 export function SearchInput({
-  name = "search",
+  name = 'search',
   label,
   value,
   placeholder,
@@ -747,25 +754,25 @@ export function SearchInput({
       name={name}
       label={label}
       required={required}
-      className={cls("w-full", className)}
+      className={cls('w-full', className)}
     >
-      <div className="relative flex items-center">
-        <div className="absolute inset-y-0 left-0 pl-1.5 grid place-items-center">
+      <div className='relative flex items-center'>
+        <div className='absolute inset-y-0 left-0 pl-1.5 grid place-items-center'>
           <MagnifyingGlassIcon />
         </div>
         <input
           ref={ref}
-          type="search"
+          type='search'
           {...(name && { name })}
           className={cls(
-            "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8",
+            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8',
             inputClassName,
-            disabled && "bg-gray-300"
+            disabled && 'bg-gray-300',
           )}
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          value={value ?? ""}
+          value={value ?? ''}
           onInput={onInput}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -773,7 +780,7 @@ export function SearchInput({
       </div>
       {children}
     </LabeledInput>
-  );
+  )
 }
 
 export function YesNoQuestion({
@@ -782,66 +789,66 @@ export function YesNoQuestion({
   value,
   onChange,
 }: {
-  name?: string;
-  label: string;
-  value?: Maybe<boolean>;
-  onChange?(value: boolean | null): void;
+  name?: string
+  label: string
+  value?: Maybe<boolean>
+  onChange?(value: boolean | null): void
 }) {
   return (
     <>
-      <div className="grid place-items-center">
+      <div className='grid place-items-center'>
         <input
           name={name}
-          type="radio"
+          type='radio'
           checked={value === true}
-          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          value="on"
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          value='on'
           onChange={() => onChange?.(true)}
         />
       </div>
-      <div className="grid place-items-center">
+      <div className='grid place-items-center'>
         <input
           name={name}
-          type="radio"
+          type='radio'
           checked={value === false}
-          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          value="off"
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          value='off'
           onChange={() => onChange?.(false)}
         />
       </div>
-      <div className="grid place-items-center">
+      <div className='grid place-items-center'>
         <input
           name={name}
-          type="radio"
+          type='radio'
           checked={value == null}
-          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          value=""
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          value=''
           onChange={() => onChange?.(null)}
         />
       </div>
       <label>{label}</label>
       <div />
     </>
-  );
+  )
 }
 
 export function YesNoGrid({ children }: { children: ComponentChildren }) {
   return (
-    <div className="w-full grid grid-cols-[60px_60px_60px_max-content_1fr] gap-2">
-      <div className="grid place-items-center">
-        <div className="w-min">Yes</div>
+    <div className='w-full grid grid-cols-[60px_60px_60px_max-content_1fr] gap-2'>
+      <div className='grid place-items-center'>
+        <div className='w-min'>Yes</div>
       </div>
-      <div className="grid place-items-center">
-        <div className="w-min">No</div>
+      <div className='grid place-items-center'>
+        <div className='w-min'>No</div>
       </div>
-      <div className="grid place-items-center">
-        <div className="w-min">Declined</div>
+      <div className='grid place-items-center'>
+        <div className='w-min'>Declined</div>
       </div>
       <div />
       <div />
       {children}
     </div>
-  );
+  )
 }
 
 export function CheckboxGridItem({
@@ -853,31 +860,31 @@ export function CheckboxGridItem({
   onChange,
   children,
 }: {
-  name?: string;
-  label: string;
-  required?: boolean;
-  disabled?: boolean;
-  checked?: boolean;
-  onChange?(value: boolean): void;
-  children?: ComponentChildren;
+  name?: string
+  label: string
+  required?: boolean
+  disabled?: boolean
+  checked?: boolean
+  onChange?(value: boolean): void
+  children?: ComponentChildren
 }) {
   return (
-    <div className="w-full flex justify-start gap-2 break-before-avoid relative">
-      <div className="grid items-center">
+    <div className='w-full flex justify-start gap-2 break-before-avoid relative'>
+      <div className='grid items-center'>
         <input
           name={name}
-          type="checkbox"
+          type='checkbox'
           checked={checked}
           required={required}
           disabled={disabled}
-          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
           onInput={(e) => onChange?.(e.currentTarget.checked)}
         />
       </div>
       <Label label={label} />
       {children}
     </div>
-  );
+  )
 }
 
 export function RadioGroup({
@@ -888,214 +895,215 @@ export function RadioGroup({
   options,
   onChange,
 }: {
-  name: string;
-  label?: Maybe<string>;
-  description?: Maybe<string>;
-  value?: Maybe<string>;
-  options: { value: string; label?: string; description?: string }[];
-  onChange?(value: string): void;
+  name: string
+  label?: Maybe<string>
+  description?: Maybe<string>
+  value?: Maybe<string>
+  options: { value: string; label?: string; description?: string }[]
+  onChange?(value: string): void
 }) {
   return (
     <div>
-      <label className="text-base font-semibold text-gray-900">{label}</label>
-      {description && <p className="text-sm text-gray-500">{description}</p>}
-      <fieldset className="mt-4">
-        <div className="space-y-4">
+      <label className='text-base font-semibold text-gray-900'>{label}</label>
+      {description && <p className='text-sm text-gray-500'>{description}</p>}
+      <fieldset className='mt-4'>
+        <div className='space-y-4'>
           {options.map((option) => (
-            <div key={option.value} className="flex items-center">
+            <div key={option.value} className='flex items-center'>
               <input
                 id={`radio-${name}-${option.value}`}
                 name={name}
-                type="radio"
+                type='radio'
                 checked={value === option.value}
                 value={option.value}
-                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                onChange={(event) => onChange?.(event.currentTarget.value)}
+                className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                onChange={(event) =>
+                  onChange?.(event.currentTarget.value)}
               />
               <label
                 htmlFor={`radio-${name}-${option.value}`}
-                className="ml-3 block text-sm font-medium leading-6 text-gray-900 capitalize"
+                className='ml-3 block text-sm font-medium leading-6 text-gray-900 capitalize'
               >
                 {option.label || option.value}
               </label>
               {option.description && (
-                <p className="text-gray-500">{option.description}</p>
+                <p className='text-gray-500'>{option.description}</p>
               )}
             </div>
           ))}
         </div>
       </fieldset>
     </div>
-  );
+  )
 }
 
 export function GenderSelect({ value }: { value?: Maybe<Gender> }) {
   return (
-    <Select required name="gender" label="Sex/Gender">
-      <option value="">Select</option>
-      <option value="female" label="Female" selected={value === "female"} />
-      <option value="male" label="Male" selected={value === "male"} />
+    <Select required name='gender' label='Sex/Gender'>
+      <option value=''>Select</option>
+      <option value='female' label='Female' selected={value === 'female'} />
+      <option value='male' label='Male' selected={value === 'male'} />
       <option
-        value="non-binary"
-        label="Non-binary"
-        selected={value === "non-binary"}
+        value='non-binary'
+        label='Non-binary'
+        selected={value === 'non-binary'}
       />
     </Select>
-  );
+  )
 }
 
 export function EthnicitySelect({ value }: { value?: Maybe<string> }) {
   return (
-    <Select required name="ethnicity" label="Ethnicity">
-      <option value="">Select</option>
-      <option value="african" label="African" selected={value === "african"} />
+    <Select required name='ethnicity' label='Ethnicity'>
+      <option value=''>Select</option>
+      <option value='african' label='African' selected={value === 'african'} />
       <option
-        value="african american"
-        label="African American"
-        selected={value === "african american"}
+        value='african american'
+        label='African American'
+        selected={value === 'african american'}
       />
-      <option value="asian" label="Asian" selected={value === "asian"} />
+      <option value='asian' label='Asian' selected={value === 'asian'} />
       <option
-        value="caribbean"
-        label="Caribbean"
-        selected={value === "caribbean"}
-      />
-      <option
-        value="caucasian"
-        label="Caucasian"
-        selected={value === "caucasian"}
+        value='caribbean'
+        label='Caribbean'
+        selected={value === 'caribbean'}
       />
       <option
-        value="hispanic"
-        label="Hispanic"
-        selected={value === "hispanic"}
+        value='caucasian'
+        label='Caucasian'
+        selected={value === 'caucasian'}
       />
       <option
-        value="middle eastern"
-        label="Middle Eastern"
-        selected={value === "middle eastern"}
+        value='hispanic'
+        label='Hispanic'
+        selected={value === 'hispanic'}
       />
       <option
-        value="native american"
-        label="Native American"
-        selected={value === "native american"}
+        value='middle eastern'
+        label='Middle Eastern'
+        selected={value === 'middle eastern'}
       />
       <option
-        value="pacific islander"
-        label="Pacific Islander"
-        selected={value === "pacific islander"}
+        value='native american'
+        label='Native American'
+        selected={value === 'native american'}
       />
-      <option value="other" label="Other" selected={value === "other"} />
+      <option
+        value='pacific islander'
+        label='Pacific Islander'
+        selected={value === 'pacific islander'}
+      />
+      <option value='other' label='Other' selected={value === 'other'} />
     </Select>
-  );
+  )
 }
 
 export function NurseSpecialtySelect({
   value,
   onChange,
 }: {
-  value?: Maybe<string>;
-  onChange?: SelectProps["onChange"];
+  value?: Maybe<string>
+  onChange?: SelectProps['onChange']
 }) {
   const prettierSpecialtyName = (specialtyName: string): string => {
-    const name = specialtyName.replaceAll("_", " ");
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
+    const name = specialtyName.replaceAll('_', ' ')
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
 
   return (
-    <Select name="specialty" label="Specialty" required onChange={onChange}>
+    <Select name='specialty' label='Specialty' required onChange={onChange}>
       {NURSE_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
           label={prettierSpecialtyName(specialty)}
           selected={value === specialty}
-          className="capitalize"
+          className='capitalize'
         />
       ))}
     </Select>
-  );
+  )
 }
 
 export function DoctorSpecialtySelect({
   value,
   onChange,
 }: {
-  value?: Maybe<string>;
-  onChange?: SelectProps["onChange"];
+  value?: Maybe<string>
+  onChange?: SelectProps['onChange']
 }) {
   const prettierSpecialtyName = (specialtyName: string): string => {
-    const name = specialtyName.replaceAll("_", " ");
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
+    const name = specialtyName.replaceAll('_', ' ')
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
 
   return (
-    <Select name="specialty" label="Specialty" required onChange={onChange}>
+    <Select name='specialty' label='Specialty' required onChange={onChange}>
       {DOCTOR_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
           label={prettierSpecialtyName(specialty)}
           selected={value === specialty}
-          className="capitalize"
+          className='capitalize'
         />
       ))}
     </Select>
-  );
+  )
 }
 
 export function PrefixSelect({ value }: { value?: Maybe<Prefix> }) {
   return (
-    <Select name="prefix" label="Prefix" required>
+    <Select name='prefix' label='Prefix' required>
       {PREFIXES.map((prefix) => (
         <option value={prefix} label={prefix} selected={value === prefix} />
       ))}
     </Select>
-  );
+  )
 }
 
 export function PharmacistTypeSelect({
   value,
 }: {
-  value?: Maybe<PharmacistType>;
+  value?: Maybe<PharmacistType>
 }) {
   return (
-    <Select name="pharmacist_type" label="Specialty" required>
+    <Select name='pharmacist_type' label='Specialty' required>
       {PHARMACIST_TYPES.map((type) => (
         <option value={type} label={type} selected={value === type} />
       ))}
     </Select>
-  );
+  )
 }
 
 export function PharmacyTypeSelect({ value }: { value?: Maybe<PharmacyType> }) {
   return (
-    <Select name="pharmacies_types" label="Specialty" required>
+    <Select name='pharmacies_types' label='Specialty' required>
       {PHARMACY_TYPES.map((type) => (
         <option value={type} label={type} selected={value === type} />
       ))}
     </Select>
-  );
+  )
 }
 
 export function IsSupervisorSelect({
   value,
   isRequired,
-  prefix = "",
+  prefix = '',
 }: {
-  value: Maybe<string>;
-  isRequired: boolean;
-  prefix?: string;
+  value: Maybe<string>
+  isRequired: boolean
+  prefix?: string
 }) {
   return (
     <Select
       required={isRequired}
       name={`${prefix}.is_supervisor`}
-      label="Is Supervisor"
+      label='Is Supervisor'
     >
-      <option value="">Select</option>
-      <option value="true" label="Yes" selected={value === "true"} />
-      <option value="false" label="No" selected={value === "false"} />
+      <option value=''>Select</option>
+      <option value='true' label='Yes' selected={value === 'true'} />
+      <option value='false' label='No' selected={value === 'false'} />
     </Select>
-  );
+  )
 }
 
 export function AgreeDisagreeQuestion({
@@ -1103,40 +1111,40 @@ export function AgreeDisagreeQuestion({
   value,
   onChange,
 }: {
-  name?: string;
-  value?: Maybe<"agree" | "disagree">;
-  onChange?(value: "agree" | "disagree"): void;
+  name?: string
+  value?: Maybe<'agree' | 'disagree'>
+  onChange?(value: 'agree' | 'disagree'): void
 }) {
   return (
-    <fieldset className="flex text-indigo-600">
-      <label for={`${name}-agree`} className="cursor-pointer">
+    <fieldset className='flex text-indigo-600'>
+      <label for={`${name}-agree`} className='cursor-pointer'>
         <OutlineCheckCircleIcon
-          className={cls("w-5 h-5", value === "agree" && "stroke-3")}
+          className={cls('w-5 h-5', value === 'agree' && 'stroke-3')}
         />
         <input
           name={name}
-          type="radio"
-          checked={value === "agree"}
-          className="hidden"
-          value="agree"
+          type='radio'
+          checked={value === 'agree'}
+          className='hidden'
+          value='agree'
           id={`${name}-agree`}
-          onChange={() => onChange?.("agree")}
+          onChange={() => onChange?.('agree')}
         />
       </label>
-      <label for={`${name}-disagree`} className="cursor-pointer">
+      <label for={`${name}-disagree`} className='cursor-pointer'>
         <OutlineXCircleIcon
-          className={cls("w-5 h-5", value === "disagree" && "stroke-3")}
+          className={cls('w-5 h-5', value === 'disagree' && 'stroke-3')}
         />
         <input
           name={name}
-          type="radio"
-          checked={value === "disagree"}
-          className="hidden"
-          value="disagree"
+          type='radio'
+          checked={value === 'disagree'}
+          className='hidden'
+          value='disagree'
           id={`${name}-disagree`}
-          onChange={() => onChange?.("disagree")}
+          onChange={() => onChange?.('disagree')}
         />
       </label>
     </fieldset>
-  );
+  )
 }
