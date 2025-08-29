@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
-import cls from '../../util/cls.ts'
 import { assert } from 'std/assert/assert.ts'
+import cls from '../../util/cls.ts'
 
 const baseStyles = {
   solid: 'shadow-sm py-1 px-4',
@@ -48,19 +48,24 @@ type ButtonProps =
     method?: 'GET' | 'POST'
     size?: 'sm' | 'md'
   }
-  & ({
-    variant: 'solid'
-    color?: keyof typeof variantStyles.solid
-  } | {
-    variant: 'outline'
-    color?: keyof typeof variantStyles.outline
-  } | {
-    variant: 'ghost'
-    color?: undefined
-  } | {
-    variant?: undefined
-    color?: keyof typeof variantStyles.solid
-  })
+  & (
+    | {
+      variant: 'solid'
+      color?: keyof typeof variantStyles.solid
+    }
+    | {
+      variant: 'outline'
+      color?: keyof typeof variantStyles.outline
+    }
+    | {
+      variant: 'ghost'
+      color?: undefined
+    }
+    | {
+      variant?: undefined
+      color?: keyof typeof variantStyles.solid
+    }
+  )
 
 export function Button({
   variant = 'solid',

@@ -50,7 +50,8 @@
     "indentWidth": 2,
     "semiColons": false,
     "singleQuote": true,
-    "proseWrap": "preserve"
+    "proseWrap": "preserve",
+    "include": ["**/*.ts", "**/*.tsx"]
   },
   "lint": {
     "rules": {

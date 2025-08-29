@@ -1,12 +1,13 @@
+import { Signal } from '@preact/signals'
 import { ComponentChildren, JSX, Ref } from 'preact'
 import { forwardRef, HTMLAttributes } from 'preact/compat'
+import { assert } from 'std/assert/assert.ts'
 import {
   CheckCircleIcon as OutlineCheckCircleIcon,
   MagnifyingGlassIcon,
   XCircleIcon as OutlineXCircleIcon,
 } from '../../components/library/icons/heroicons/outline.tsx'
-import capitalize from '../../util/capitalize.ts'
-import cls from '../../util/cls.ts'
+import { Label } from '../../components/library/Label.tsx'
 import {
   DOCTOR_SPECIALTIES,
   Gender,
@@ -19,10 +20,10 @@ import {
   Prefix,
   PREFIXES,
 } from '../../types.ts'
-import last from '../../util/last.ts'
+import capitalize from '../../util/capitalize.ts'
+import cls from '../../util/cls.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { Signal } from '@preact/signals'
-import { Label } from '../../components/library/Label.tsx'
+import last from '../../util/last.ts'
 
 export const NoLabelButSpaceAsPlaceholder = Symbol(
   'NoLabelButSpaceAsPlaceholder',
@@ -42,16 +43,19 @@ type LabeledInputProps<El extends HTMLElement> = {
   onBlur?: HTMLAttributes<El>['onBlur']
 }
 
-type WrapperInputProps<El extends HTMLElement, Value> =
-  & LabeledInputProps<El>
-  & {
-    inputClassName?: string
-    value?: Maybe<Value>
-    signal?: Signal<Value>
-  }
+type WrapperInputProps<
+  El extends HTMLElement,
+  Value,
+> = LabeledInputProps<El> & {
+  inputClassName?: string
+  value?: Maybe<Value>
+  signal?: Signal<Value>
+}
 
 type SearchInputProps =
-  & Partial<Omit<WrapperInputProps<HTMLInputElement, string>, 'signal'>>
+  & Partial<
+    Omit<WrapperInputProps<HTMLInputElement, string>, 'signal'>
+  >
   & {
     placeholder?: string
     children?: ComponentChildren
@@ -63,37 +67,55 @@ type DateInputProps = Partial<WrapperInputProps<HTMLInputElement, string>> & {
   max?: Maybe<string>
 }
 
-export type TextInputProps = WrapperInputProps<HTMLInputElement, string> & {
-  type?: 'text' | 'email' | 'tel'
-  placeholder?: string
-  pattern?: string
-  onKeyDown?: (event: KeyboardEvent) => void
-}
+export type TextInputProps =
+  & WrapperInputProps<HTMLInputElement, string>
+  & {
+    type?: 'text' | 'email' | 'tel'
+    placeholder?: string
+    pattern?: string
+    onKeyDown?: (event: KeyboardEvent) => void
+    characterCountLimit?: number
+    leftIcon?: ComponentChildren
+    rightIcon?: ComponentChildren
+    suffix?: string
+    guidanceText?: string
+    errorText?: string
+    size?: InputSize
+  }
+  & (
+    | {
+      inputmode?: undefined
+      min?: undefined
+      max?: undefined
+    }
+    | {
+      inputmode: 'numeric'
+      min?: number
+      max?: number
+    }
+  )
 
 export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {
   placeholder?: string
   rows?: number
 }
 
-export function LabeledInput(
-  {
-    name,
-    label = name && capitalize(last(name.split('.'))!),
-    required,
-    children,
-    className,
-  }:
-    & LabeledInputProps<HTMLInputElement>
-    & {
-      children: ComponentChildren
-    },
-) {
+export function LabeledInput({
+  name,
+  label = name && capitalize(last(name.split('.'))!),
+  required,
+  children,
+  className,
+}: LabeledInputProps<HTMLInputElement> & {
+  children: ComponentChildren
+}) {
   return (
     <Label
       className={label === NoLabelButSpaceAsPlaceholder
         ? cls(className, 'pt-6')
         : className}
-      label={label && (label !== NoLabelButSpaceAsPlaceholder) && (
+      label={label &&
+        label !== NoLabelButSpaceAsPlaceholder && (
         <span className='mb-1 ml-0.5'>
           {label}
           {label && required && <sup>*</sup>}
@@ -105,82 +127,135 @@ export function LabeledInput(
   )
 }
 
-export function TextInput(
-  {
-    name,
-    type,
-    label,
-    placeholder,
-    required,
-    signal,
-    value,
-    onInput,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    disabled,
-    readonly,
-    pattern,
-    className,
-    inputClassName,
-  }: TextInputProps,
-) {
+type InputSize = 'normal' | 'large' | 'small'
+
+export function TextInput({
+  name,
+  type,
+  label,
+  placeholder,
+  required,
+  signal,
+  value,
+  onInput,
+  onFocus,
+  onBlur,
+  onKeyDown,
+  disabled,
+  readonly,
+  pattern,
+  className,
+  inputClassName,
+  characterCountLimit,
+  leftIcon,
+  rightIcon,
+  suffix,
+  guidanceText,
+  errorText,
+  // TODO: implement size variants
+  // size = "normal",
+  inputmode,
+  min,
+  max,
+}: TextInputProps) {
+  assert(!characterCountLimit)
+  assert(!rightIcon || !suffix)
+
   return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={cls('w-full flex-1', className)}
-    >
-      <input
-        type={type}
-        {...(name && { name })}
-        className={cls(
-          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
-          inputClassName,
-          disabled && 'bg-gray-300',
-        )}
-        placeholder={placeholder}
+    <>
+      <LabeledInput
+        name={name}
+        label={label}
         required={required}
-        disabled={disabled}
-        readonly={readonly}
-        value={signal?.value || value || undefined}
-        onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value
-          onInput?.(event)
-          event.currentTarget.setCustomValidity('')
-        }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-        pattern={pattern}
-        autoComplete='off'
-      />
-    </LabeledInput>
+        className={cls('w-full flex-1', className)}
+      >
+        <div className='mt-2 grid grid-cols-1'>
+          {leftIcon && (
+            <div
+              aria-hidden='true'
+              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
+            >
+              {leftIcon}
+            </div>
+          )}
+          <input
+            type={type}
+            {...(name && { name })}
+            className={cls(
+              'col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
+              inputClassName,
+              disabled && 'bg-gray-300',
+              !!leftIcon && 'pl-3',
+              !!rightIcon && 'pr-3',
+              errorText
+                ? 'text-red-900 outline-red-300 focus:outline-red-600  dark:outline-red-500/50 dark:text-red-400 dark:placeholder:text-red-400/70 dark:focus:outline-red-400'
+                : 'text-black-900 dark:focus:text-black-900', // TODO
+            )}
+            inputmode={inputmode}
+            placeholder={placeholder}
+            required={required}
+            disabled={disabled}
+            readonly={readonly}
+            value={signal?.value || value || undefined}
+            onInput={(event) => {
+              if (signal) signal.value = event.currentTarget.value
+              onInput?.(event)
+              event.currentTarget.setCustomValidity('')
+            }}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onKeyDown={onKeyDown}
+            pattern={pattern}
+            autoComplete='off'
+            min={min}
+            max={max}
+          />
+          {suffix && (
+            <div
+              id='price-currency'
+              className='pointer-events-none  select-none self-center col-start-1 row-start-1 mr-3 text-base justify-self-end text-gray-500 sm:text-sm/6 dark:text-gray-400'
+            >
+              {suffix}
+            </div>
+          )}
+          {rightIcon && (
+            <div
+              aria-hidden='true'
+              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
+            >
+              {rightIcon}
+            </div>
+          )}
+        </div>
+      </LabeledInput>
+      {errorText
+        ? <span className='text-red-400'>{errorText}</span>
+        : guidanceText
+        ? <span className='text-gray-400'>{guidanceText}</span>
+        : null}
+    </>
   )
 }
 
-export function NumberInput(
-  {
-    name,
-    label,
-    required,
-    signal,
-    value,
-    onInput,
-    onFocus,
-    onBlur,
-    disabled,
-    readonly,
-    className,
-    inputClassName,
-    min,
-    max,
-  }: WrapperInputProps<HTMLInputElement, number> & {
-    min?: number
-    max?: number
-  },
-) {
+export function NumberInput({
+  name,
+  label,
+  required,
+  signal,
+  value,
+  onInput,
+  onFocus,
+  onBlur,
+  disabled,
+  readonly,
+  className,
+  inputClassName,
+  min,
+  max,
+}: WrapperInputProps<HTMLInputElement, number> & {
+  min?: number
+  max?: number
+}) {
   return (
     <LabeledInput
       name={name}
@@ -215,29 +290,27 @@ export function NumberInput(
   )
 }
 
-export function UnitInput(
-  {
-    name,
-    label,
-    required,
-    signal,
-    value,
-    onInput,
-    onFocus,
-    onBlur,
-    disabled,
-    readonly,
-    className,
-    inputClassName,
-    min,
-    max,
-    units,
-  }: WrapperInputProps<HTMLInputElement, number> & {
-    min?: number
-    max?: number
-    units: string
-  },
-) {
+export function UnitInput({
+  name,
+  label,
+  required,
+  signal,
+  value,
+  onInput,
+  onFocus,
+  onBlur,
+  disabled,
+  readonly,
+  className,
+  inputClassName,
+  min,
+  max,
+  units,
+}: WrapperInputProps<HTMLInputElement, number> & {
+  min?: number
+  max?: number
+  units: string
+}) {
   return (
     <LabeledInput
       name={name}
@@ -275,26 +348,24 @@ export function UnitInput(
   )
 }
 
-export function CheckboxInput(
-  {
-    name,
-    label,
-    required,
-    onInput,
-    onFocus,
-    onBlur,
-    checked,
-    disabled,
-    readonly,
-    className,
-    inputClassName,
-    value,
-  }: Omit<WrapperInputProps<HTMLInputElement, boolean>, 'signal' | 'value'> & {
-    checked?: boolean
-    onInput?: JSX.GenericEventHandler<HTMLInputElement>
-    value?: string
-  },
-) {
+export function CheckboxInput({
+  name,
+  label,
+  required,
+  onInput,
+  onFocus,
+  onBlur,
+  checked,
+  disabled,
+  readonly,
+  className,
+  inputClassName,
+  value,
+}: Omit<WrapperInputProps<HTMLInputElement, boolean>, 'signal' | 'value'> & {
+  checked?: boolean
+  onInput?: JSX.GenericEventHandler<HTMLInputElement>
+  value?: string
+}) {
   return (
     <LabeledInput
       name={name}
@@ -325,24 +396,22 @@ export function CheckboxInput(
   )
 }
 
-export function TextArea(
-  {
-    name,
-    label,
-    placeholder,
-    required,
-    signal,
-    value,
-    onInput,
-    onFocus,
-    onBlur,
-    disabled,
-    readonly,
-    className,
-    inputClassName,
-    rows = 3,
-  }: TextAreaProps,
-) {
+export function TextArea({
+  name,
+  label,
+  placeholder,
+  required,
+  signal,
+  value,
+  onInput,
+  onFocus,
+  onBlur,
+  disabled,
+  readonly,
+  className,
+  inputClassName,
+  rows = 3,
+}: TextAreaProps) {
   return (
     <LabeledInput
       name={name}
@@ -376,7 +445,10 @@ export function TextArea(
 }
 
 export type SelectProps =
-  & Omit<LabeledInputProps<HTMLSelectElement>, 'onInput'>
+  & Omit<
+    LabeledInputProps<HTMLSelectElement>,
+    'onInput'
+  >
   & {
     onChange?: HTMLAttributes<HTMLSelectElement>['onChange']
     selectClassName?: string
@@ -424,78 +496,72 @@ export const Select = forwardRef(
   },
 )
 
-export const SelectWithOptions = forwardRef(
-  function SelectWithOptions<
-    V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
-  >(
-    {
-      options,
-      blank_option,
-      value,
-      ...rest
-    }: Omit<SelectProps, 'children'> & {
-      blank_option?: string | true
-      value?: V
-      options: { value: V; label?: string }[] | V[] | { id: V; name: string }[]
-    },
-    ref: Ref<HTMLSelectElement>,
-  ) {
-    return (
-      <Select {...rest} ref={ref}>
-        {blank_option && (
-          <option value=''>
-            {typeof blank_option === 'string' ? blank_option : 'Select'}
-          </option>
-        )}
-        {options.map((option) => (
-          (isObjectLike(option) && 'value' in option)
-            ? (
-              <option
-                value={option.value}
-                label={'label' in option ? option.label : String(option.value)}
-                selected={value === option.value}
-              />
-            )
-            : (
-                isObjectLike(option) && 'id' in option
-              )
-            ? (
-              <option
-                value={option.id}
-                label={option.name}
-                selected={value === option.id}
-              />
-            )
-            : (
-              <option
-                value={option}
-                label={String(option)}
-                selected={value === option}
-              />
-            )
-        ))}
-      </Select>
-    )
-  },
-)
-
-export function DateInput(
+export const SelectWithOptions = forwardRef(function SelectWithOptions<
+  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
+>(
   {
-    name = 'date',
-    signal,
+    options,
+    blank_option,
     value,
-    label,
-    required,
-    className,
-    inputClassName,
-    disabled,
-    onInput,
-    onFocus,
-    onBlur,
-    min,
-    max,
-  }: DateInputProps,
+    ...rest
+  }: Omit<SelectProps, 'children'> & {
+    blank_option?: string | true
+    value?: V
+    options: { value: V; label?: string }[] | V[] | { id: V; name: string }[]
+  },
+  ref: Ref<HTMLSelectElement>,
 ) {
+  return (
+    <Select {...rest} ref={ref}>
+      {blank_option && (
+        <option value=''>
+          {typeof blank_option === 'string' ? blank_option : 'Select'}
+        </option>
+      )}
+      {options.map((option) =>
+        isObjectLike(option) && 'value' in option
+          ? (
+            <option
+              value={option.value}
+              label={'label' in option ? option.label : String(option.value)}
+              selected={value === option.value}
+            />
+          )
+          : isObjectLike(option) && 'id' in option
+          ? (
+            <option
+              value={option.id}
+              label={option.name}
+              selected={value === option.id}
+            />
+          )
+          : (
+            <option
+              value={option}
+              label={String(option)}
+              selected={value === option}
+            />
+          )
+      )}
+    </Select>
+  )
+})
+
+export function DateInput({
+  name = 'date',
+  signal,
+  value,
+  label,
+  required,
+  className,
+  inputClassName,
+  disabled,
+  onInput,
+  onFocus,
+  onBlur,
+  min,
+  max,
+}: DateInputProps) {
   return (
     <LabeledInput
       name={name}
@@ -529,21 +595,19 @@ export function DateInput(
 }
 
 // Make this pretty with an icon and/or flag + area code helper
-export function PhoneNumberInput(
-  {
-    name,
-    label,
-    required,
-    disabled,
-    className,
-    inputClassName,
-    onInput,
-    onFocus,
-    onBlur,
-    signal,
-    value,
-  }: TextInputProps,
-) {
+export function PhoneNumberInput({
+  name,
+  label,
+  required,
+  disabled,
+  className,
+  inputClassName,
+  onInput,
+  onFocus,
+  onBlur,
+  signal,
+  value,
+}: TextInputProps) {
   return (
     <LabeledInput
       name={name}
@@ -575,20 +639,18 @@ export function PhoneNumberInput(
   )
 }
 
-export function ImageInput(
-  {
-    name,
-    label,
-    placeholder,
-    required,
-    disabled,
-    className,
-    inputClassName,
-    onInput,
-    onFocus,
-    onBlur,
-  }: Omit<TextInputProps, 'signal'>,
-) {
+export function ImageInput({
+  name,
+  label,
+  placeholder,
+  required,
+  disabled,
+  className,
+  inputClassName,
+  onInput,
+  onFocus,
+  onBlur,
+}: Omit<TextInputProps, 'signal'>) {
   return (
     <LabeledInput
       name={name}
@@ -622,25 +684,23 @@ export function ImageInput(
   )
 }
 
-export function ImageOrVideoInput(
-  {
-    name,
-    label,
-    placeholder,
-    required,
-    disabled,
-    className,
-    inputClassName,
-    onInput,
-    onFocus,
-    onBlur,
-  }: Omit<TextInputProps, 'value' | 'signal'> & {
-    value?: Maybe<{
-      mime_type: string
-      url: string
-    }>
-  },
-) {
+export function ImageOrVideoInput({
+  name,
+  label,
+  placeholder,
+  required,
+  disabled,
+  className,
+  inputClassName,
+  onInput,
+  onFocus,
+  onBlur,
+}: Omit<TextInputProps, 'value' | 'signal'> & {
+  value?: Maybe<{
+    mime_type: string
+    url: string
+  }>
+}) {
   return (
     <LabeledInput
       name={name}
@@ -674,23 +734,21 @@ export function ImageOrVideoInput(
   )
 }
 
-export function SearchInput(
-  {
-    name = 'search',
-    label,
-    value,
-    placeholder,
-    required,
-    disabled,
-    className,
-    inputClassName,
-    onInput,
-    onFocus,
-    onBlur,
-    children,
-    ref,
-  }: SearchInputProps,
-) {
+export function SearchInput({
+  name = 'search',
+  label,
+  value,
+  placeholder,
+  required,
+  disabled,
+  className,
+  inputClassName,
+  onInput,
+  onFocus,
+  onBlur,
+  children,
+  ref,
+}: SearchInputProps) {
   return (
     <LabeledInput
       name={name}
@@ -725,14 +783,17 @@ export function SearchInput(
   )
 }
 
-export function YesNoQuestion(
-  { name, label, value, onChange }: {
-    name?: string
-    label: string
-    value?: Maybe<boolean>
-    onChange?(value: boolean | null): void
-  },
-) {
+export function YesNoQuestion({
+  name,
+  label,
+  value,
+  onChange,
+}: {
+  name?: string
+  label: string
+  value?: Maybe<boolean>
+  onChange?(value: boolean | null): void
+}) {
   return (
     <>
       <div className='grid place-items-center'>
@@ -771,9 +832,7 @@ export function YesNoQuestion(
   )
 }
 
-export function YesNoGrid(
-  { children }: { children: ComponentChildren },
-) {
+export function YesNoGrid({ children }: { children: ComponentChildren }) {
   return (
     <div className='w-full grid grid-cols-[60px_60px_60px_max-content_1fr] gap-2'>
       <div className='grid place-items-center'>
@@ -792,17 +851,23 @@ export function YesNoGrid(
   )
 }
 
-export function CheckboxGridItem(
-  { name, label, required, disabled, checked, onChange, children }: {
-    name?: string
-    label: string
-    required?: boolean
-    disabled?: boolean
-    checked?: boolean
-    onChange?(value: boolean): void
-    children?: ComponentChildren
-  },
-) {
+export function CheckboxGridItem({
+  name,
+  label,
+  required,
+  disabled,
+  checked,
+  onChange,
+  children,
+}: {
+  name?: string
+  label: string
+  required?: boolean
+  disabled?: boolean
+  checked?: boolean
+  onChange?(value: boolean): void
+  children?: ComponentChildren
+}) {
   return (
     <div className='w-full flex justify-start gap-2 break-before-avoid relative'>
       <div className='grid items-center'>
@@ -822,33 +887,25 @@ export function CheckboxGridItem(
   )
 }
 
-export function RadioGroup(
-  {
-    name,
-    label,
-    description,
-    value,
-    options,
-    onChange,
-  }: {
-    name: string
-    label?: Maybe<string>
-    description?: Maybe<string>
-    value?: Maybe<string>
-    options: { value: string; label?: string; description?: string }[]
-    onChange?(value: string): void
-  },
-) {
+export function RadioGroup({
+  name,
+  label,
+  description,
+  value,
+  options,
+  onChange,
+}: {
+  name: string
+  label?: Maybe<string>
+  description?: Maybe<string>
+  value?: Maybe<string>
+  options: { value: string; label?: string; description?: string }[]
+  onChange?(value: string): void
+}) {
   return (
     <div>
-      <label className='text-base font-semibold text-gray-900'>
-        {label}
-      </label>
-      {description && (
-        <p className='text-sm text-gray-500'>
-          {description}
-        </p>
-      )}
+      <label className='text-base font-semibold text-gray-900'>{label}</label>
+      {description && <p className='text-sm text-gray-500'>{description}</p>}
       <fieldset className='mt-4'>
         <div className='space-y-4'>
           {options.map((option) => (
@@ -870,9 +927,7 @@ export function RadioGroup(
                 {option.label || option.value}
               </label>
               {option.description && (
-                <p className='text-gray-500'>
-                  {option.description}
-                </p>
+                <p className='text-gray-500'>{option.description}</p>
               )}
             </div>
           ))}
@@ -882,15 +937,9 @@ export function RadioGroup(
   )
 }
 
-export function GenderSelect(
-  { value }: { value?: Maybe<Gender> },
-) {
+export function GenderSelect({ value }: { value?: Maybe<Gender> }) {
   return (
-    <Select
-      required
-      name='gender'
-      label='Sex/Gender'
-    >
+    <Select required name='gender' label='Sex/Gender'>
       <option value=''>Select</option>
       <option value='female' label='Female' selected={value === 'female'} />
       <option value='male' label='Male' selected={value === 'male'} />
@@ -903,15 +952,9 @@ export function GenderSelect(
   )
 }
 
-export function EthnicitySelect(
-  { value }: { value?: Maybe<string> },
-) {
+export function EthnicitySelect({ value }: { value?: Maybe<string> }) {
   return (
-    <Select
-      required
-      name='ethnicity'
-      label='Ethnicity'
-    >
+    <Select required name='ethnicity' label='Ethnicity'>
       <option value=''>Select</option>
       <option value='african' label='African' selected={value === 'african'} />
       <option
@@ -955,24 +998,20 @@ export function EthnicitySelect(
   )
 }
 
-export function NurseSpecialtySelect(
-  { value, onChange }: {
-    value?: Maybe<string>
-    onChange?: SelectProps['onChange']
-  },
-) {
+export function NurseSpecialtySelect({
+  value,
+  onChange,
+}: {
+  value?: Maybe<string>
+  onChange?: SelectProps['onChange']
+}) {
   const prettierSpecialtyName = (specialtyName: string): string => {
-    const name = specialtyName.replaceAll('\_', ' ')
+    const name = specialtyName.replaceAll('_', ' ')
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
 
   return (
-    <Select
-      name='specialty'
-      label='Specialty'
-      required
-      onChange={onChange}
-    >
+    <Select name='specialty' label='Specialty' required onChange={onChange}>
       {NURSE_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
@@ -985,24 +1024,20 @@ export function NurseSpecialtySelect(
   )
 }
 
-export function DoctorSpecialtySelect(
-  { value, onChange }: {
-    value?: Maybe<string>
-    onChange?: SelectProps['onChange']
-  },
-) {
+export function DoctorSpecialtySelect({
+  value,
+  onChange,
+}: {
+  value?: Maybe<string>
+  onChange?: SelectProps['onChange']
+}) {
   const prettierSpecialtyName = (specialtyName: string): string => {
-    const name = specialtyName.replaceAll('\_', ' ')
+    const name = specialtyName.replaceAll('_', ' ')
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
 
   return (
-    <Select
-      name='specialty'
-      label='Specialty'
-      required
-      onChange={onChange}
-    >
+    <Select name='specialty' label='Specialty' required onChange={onChange}>
       {DOCTOR_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
@@ -1015,73 +1050,49 @@ export function DoctorSpecialtySelect(
   )
 }
 
-export function PrefixSelect(
-  { value }: { value?: Maybe<Prefix> },
-) {
+export function PrefixSelect({ value }: { value?: Maybe<Prefix> }) {
   return (
-    <Select
-      name='prefix'
-      label='Prefix'
-      required
-    >
+    <Select name='prefix' label='Prefix' required>
       {PREFIXES.map((prefix) => (
-        <option
-          value={prefix}
-          label={prefix}
-          selected={value === prefix}
-        />
+        <option value={prefix} label={prefix} selected={value === prefix} />
       ))}
     </Select>
   )
 }
 
-export function PharmacistTypeSelect(
-  { value }: { value?: Maybe<PharmacistType> },
-) {
+export function PharmacistTypeSelect({
+  value,
+}: {
+  value?: Maybe<PharmacistType>
+}) {
   return (
-    <Select
-      name='pharmacist_type'
-      label='Specialty'
-      required
-    >
+    <Select name='pharmacist_type' label='Specialty' required>
       {PHARMACIST_TYPES.map((type) => (
-        <option
-          value={type}
-          label={type}
-          selected={value === type}
-        />
+        <option value={type} label={type} selected={value === type} />
       ))}
     </Select>
   )
 }
 
-export function PharmacyTypeSelect(
-  { value }: { value?: Maybe<PharmacyType> },
-) {
+export function PharmacyTypeSelect({ value }: { value?: Maybe<PharmacyType> }) {
   return (
-    <Select
-      name='pharmacies_types'
-      label='Specialty'
-      required
-    >
+    <Select name='pharmacies_types' label='Specialty' required>
       {PHARMACY_TYPES.map((type) => (
-        <option
-          value={type}
-          label={type}
-          selected={value === type}
-        />
+        <option value={type} label={type} selected={value === type} />
       ))}
     </Select>
   )
 }
 
-export function IsSupervisorSelect(
-  { value, isRequired, prefix = '' }: {
-    value: Maybe<string>
-    isRequired: boolean
-    prefix?: string
-  },
-) {
+export function IsSupervisorSelect({
+  value,
+  isRequired,
+  prefix = '',
+}: {
+  value: Maybe<string>
+  isRequired: boolean
+  prefix?: string
+}) {
   return (
     <Select
       required={isRequired}
@@ -1090,22 +1101,20 @@ export function IsSupervisorSelect(
     >
       <option value=''>Select</option>
       <option value='true' label='Yes' selected={value === 'true'} />
-      <option
-        value='false'
-        label='No'
-        selected={value === 'false'}
-      />
+      <option value='false' label='No' selected={value === 'false'} />
     </Select>
   )
 }
 
-export function AgreeDisagreeQuestion(
-  { name, value, onChange }: {
-    name?: string
-    value?: Maybe<'agree' | 'disagree'>
-    onChange?(value: 'agree' | 'disagree'): void
-  },
-) {
+export function AgreeDisagreeQuestion({
+  name,
+  value,
+  onChange,
+}: {
+  name?: string
+  value?: Maybe<'agree' | 'disagree'>
+  onChange?(value: 'agree' | 'disagree'): void
+}) {
   return (
     <fieldset className='flex text-indigo-600'>
       <label for={`${name}-agree`} className='cursor-pointer'>

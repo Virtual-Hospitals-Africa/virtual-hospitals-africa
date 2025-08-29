@@ -1,6 +1,6 @@
-import { type Config } from 'tailwindcss'
-import formsPlugin from '@tailwindcss/forms'
 import headlessuiPlugin from '@headlessui/tailwindcss'
+import formsPlugin from '@tailwindcss/forms'
+import { type Config } from 'tailwindcss'
 
 export default {
   content: ['{routes,islands,components}/**/*.{ts,tsx}'],

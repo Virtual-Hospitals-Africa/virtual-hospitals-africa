@@ -172,6 +172,7 @@ import * as $Filter from './islands/Filter.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
+import * as $LocalTime from './islands/LocalTime.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalId from './islands/NationalId.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
@@ -552,6 +553,7 @@ const manifest = {
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
+    './islands/LocalTime.tsx': $LocalTime,
     './islands/Menu.tsx': $Menu,
     './islands/NationalId.tsx': $NationalId,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
