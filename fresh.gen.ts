@@ -127,6 +127,7 @@ import * as $contact_request_investor_deck from './routes/contact/request_invest
 import * as $fade_in_heart_indigo_on_transparent from './routes/fade-in-heart/indigo-on-transparent.tsx'
 import * as $fade_in_heart_white_on_indigo from './routes/fade-in-heart/white-on-indigo.tsx'
 import * as $index from './routes/index.tsx'
+import * as $inputs_test from './routes/inputs-test.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
@@ -494,6 +495,7 @@ const manifest = {
     './routes/fade-in-heart/white-on-indigo.tsx':
       $fade_in_heart_white_on_indigo,
     './routes/index.tsx': $index,
+    './routes/inputs-test.tsx': $inputs_test,
     './routes/interest.tsx': $interest,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
