@@ -151,7 +151,8 @@ export function TextInput({
   suffix,
   guidanceText,
   errorText,
-  size = "normal",
+  // TODO: implement size variants
+  // size = "normal",
   inputmode,
   min,
   max,

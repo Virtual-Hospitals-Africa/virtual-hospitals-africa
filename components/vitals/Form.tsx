@@ -1,11 +1,13 @@
 import { HiddenInput } from "../../components/library/HiddenInput.tsx";
 import { TextInput } from "../../islands/form/Inputs.tsx";
+import { LocalTime } from "../../islands/LocalTime.tsx";
 import {
   Maybe,
   MostRecentVitalMeasurement,
   VitalMeasurementFormInputDefition,
 } from "../../types.ts";
 import capitalize from "../../util/capitalize.ts";
+import { Label } from "../library/Label.tsx";
 
 function VitalInput({
   vital,
@@ -15,31 +17,20 @@ function VitalInput({
   most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>;
 }) {
   const name = `findings.${vital.finding_id}`;
-  console.log(most_recent_patient_finding);
-  // const on = useSignal(vitals.is_flagged || false)
-  // const [vitalsValue, setVitalsValue] = useState(vitals.value)
-
-  // const vital_description = computed(() => {
-  //   return measurement
-  // })
-
-  // TODO use this
-  // most_recent_patient_finding?.value_display
 
   return (
-    <div className="flex justify-between w-full">
-      <div className="flex flex-row gap-2">
-        {/* <VitalsFlag
-          on={on.value}
-          toggle={toggle}
-          description={vital_description.value}
-        /> */}
-        {/* <div className='align-middle'>
-        </div> */}
-        <span class="flex items-center">
-          {capitalize(vital.label)}
-          {vital.required && <sup>*</sup>}
-        </span>
+    <div className="flex justify-between w-full mb-1">
+      <div>
+        <Label label={capitalize(vital.label)} />
+        {most_recent_patient_finding && (
+          <div className="flex text-gray-500">
+            <a href="#" className="text-blue-500">
+              {most_recent_patient_finding.value_display}
+            </a>
+            &nbsp;
+            <LocalTime timestamp={most_recent_patient_finding.created_at} />
+          </div>
+        )}
       </div>
       <div className="min-w-30 max-w-30">
         <TextInput
