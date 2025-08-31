@@ -1,4 +1,5 @@
 import * as patient_findings from './patient_findings.ts'
+import * as patient_evaluations from './patient_evaluations.ts'
 import {
   Measurement,
   TrxOrDb,
@@ -11,11 +12,6 @@ type PatientRecord = unknown
 
 const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
 
-/*
-  If nurse didn't flag and didn't add a note -> do not save an evaluation
-  If nurse didn't flag and added a note -> save an evaluation with priority: normal & with the note
-  If nurse flagged -> save an evaluation with the flag's priority and with the optional note
-*/
 export async function insertMeasurements(
   trx: TrxOrDb,
   { patient_id, encounter_id, encounter_provider_id, input_measurements }: {
@@ -44,6 +40,13 @@ export async function insertMeasurements(
       encounter_provider_id,
       input_measurements,
       procedure_id,
+    }),
+    patient_evaluations.insertEvaluations(trx, {
+      patient_id,
+      encounter_id,
+      encounter_provider_id,
+      procedure_id,
+      input_measurements,
     }),
   ])
 }
