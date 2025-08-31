@@ -28,7 +28,7 @@ export default function VitalInputWithNote(
     <div className='flex flex-col w-full'>
       <div className='flex justify-between w-full'>
         <div className='flex flex-col'>
-           <Label label={capitalize(vital.label)} />
+          <Label label={capitalize(vital.label)} />
           {most_recent_patient_finding && (
             <div className='flex text-gray-500'>
               <a href='#' className='text-blue-500'>
@@ -70,14 +70,14 @@ export default function VitalInputWithNote(
           >
             <PencilIcon className='h-4 w-4' />
           </HeroIconButton>
-           {
-          /* <CheckboxInput
+          {
+            /* <CheckboxInput
           name={`${name}.is_flagged`}
           label={null}
           checked={on.value}
           className='hidden'
         /> */
-        }
+          }
           <HiddenInput
             name={`${name}.snomed_concept_id`}
             value={vital.snomed_concept_id}
@@ -88,11 +88,11 @@ export default function VitalInputWithNote(
           />
         </div>
         {
-        /* <HiddenInput
+          /* <HiddenInput
         name={`${name}.is_flagged`}
         value={on.value ? true : false}
       /> */
-      }
+        }
       </div>
       {showNote.value && (
         <div className='flex justify-end mt-2'>
