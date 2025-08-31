@@ -1,4 +1,5 @@
 import * as patient_findings from './patient_findings.ts'
+import * as patient_evaluations from './patient_evaluations.ts'
 import {
   Measurement,
   TrxOrDb,
@@ -20,23 +21,34 @@ export async function insertMeasurements(
     input_measurements: Measurement[]
   },
 ) {
-  const procedure = await trx.insertInto('patient_procedures')
-    .values({
+  const procedure_id = generateUUID()
+
+  await Promise.all([
+    trx.insertInto('patient_procedures')
+      .values({
+        id: procedure_id,
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
+      })
+      .returning('id')
+      .executeTakeFirstOrThrow(),
+    patient_findings.insertMeasurements(trx, {
       patient_id,
       encounter_id,
       encounter_provider_id,
-      snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
-  return patient_findings.insertMeasurements(trx, {
-    patient_id,
-    encounter_id,
-    encounter_provider_id,
-    input_measurements,
-    procedure_id: procedure.id,
-  })
+      input_measurements,
+      procedure_id,
+    }),
+    patient_evaluations.insertEvaluations(trx, {
+      patient_id,
+      encounter_id,
+      encounter_provider_id,
+      procedure_id,
+      input_measurements,
+    }),
+  ])
 }
 
 // deno-lint-ignore require-await

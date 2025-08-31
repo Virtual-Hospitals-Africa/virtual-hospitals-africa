@@ -3172,9 +3172,16 @@ export type MostRecentVitalMeasurement = {
   }
 }
 
+export type Priority = 'normal' | string
+
+export type Evaluation = {
+  priority: Priority
+  note?: string | undefined
+}
 export type Measurement = {
   finding_id?: string
   snomed_concept_id: string
   value: number
   units: string
+  evaluation: Evaluation | null
 }
