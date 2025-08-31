@@ -279,6 +279,7 @@ import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
 import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
+import * as $vitals_VitalInputWithNote from './islands/vitals/VitalInputWithNote.tsx'
 import * as $vitals_VitalsFlag from './islands/vitals/VitalsFlag.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
@@ -675,6 +676,7 @@ const manifest = {
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/timer.tsx': $timer,
     './islands/useAsyncSearch.tsx': $useAsyncSearch,
+    './islands/vitals/VitalInputWithNote.tsx': $vitals_VitalInputWithNote,
     './islands/vitals/VitalsFlag.tsx': $vitals_VitalsFlag,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':
