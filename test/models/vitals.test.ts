@@ -45,17 +45,16 @@ describe(
                 value: 123,
                 evaluation: null,
               },
-              // TODO @ettore add these back after we update the DB with the latest from SNOMED
-              // {
-              //   finding_id: generateUUID(),
-              //   snomed_concept_id: VITALS_SNOMED_CODE.weight,
-              //   units: VITALS_UNITS.weight,
-              //   value: 223,
-              //   evaluation: {
-              //     priority: 'Non-urgent',
-              //     note: 'Quite heavy',
-              //   },
-              // },
+              {
+                finding_id: generateUUID(),
+                snomed_concept_id: VITALS_SNOMED_CODE.weight,
+                units: VITALS_UNITS.weight,
+                value: 223,
+                evaluation: {
+                  priority: 'Non-urgent',
+                  note: 'Quite heavy',
+                },
+              },
               {
                 finding_id: generateUUID(),
                 snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_systolic,
@@ -66,17 +65,16 @@ describe(
                   note: 'Very high pressure',
                 },
               },
-              // TODO @ettore add these back after we update the DB with the latest from SNOMED
-              // {
-              //   finding_id: generateUUID(),
-              //   snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
-              //   units: VITALS_UNITS.blood_pressure_diastolic,
-              //   value: 223,
-              //   evaluation: {
-              //     priority: 'Very urgent',
-              //     note: 'Extremely high pressure',
-              //   },
-              // },
+              {
+                finding_id: generateUUID(),
+                snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
+                units: VITALS_UNITS.blood_pressure_diastolic,
+                value: 223,
+                evaluation: {
+                  priority: 'Very urgent',
+                  note: 'Extremely high pressure',
+                },
+              },
               {
                 finding_id: generateUUID(),
                 snomed_concept_id: VITALS_SNOMED_CODE.blood_oxygen_saturation,
@@ -99,13 +97,17 @@ describe(
           assertEquals(most_recent_measurement_height.value_display, '123 cm')
           assertEquals(most_recent_measurement_height.evaluations, [])
 
-          // const [most_recent_measurement_weight] = await patient_findings.getMostRecentMeasurements(
-          //   trx,
-          //   { patient_id, snomed_concept_ids: [ VITALS_SNOMED_CODE.weight ] },
-          // )
+          const [most_recent_measurement_weight] = await patient_findings
+            .getMostRecentMeasurements(
+              trx,
+              { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.weight] },
+            )
 
-          // assertEquals(most_recent_measurement_weight.value_display, '123 cm')
-          // assertEquals(most_recent_measurement_weight.evaluations, [])
+          assertEquals(most_recent_measurement_weight.value_display, '223 kg')
+          assertEquals(most_recent_measurement_weight.evaluations, [{
+            note: 'Quite heavy',
+            snomed_concept_id: PRIORITY_SNOMED_CODES['Non-urgent'],
+          }])
 
           const [most_recent_measurement_blood_pressure_systolic] =
             await patient_findings.getMostRecentMeasurements(
@@ -130,25 +132,28 @@ describe(
             }],
           )
 
-          // const [most_recent_measurement_blood_pressure_diastolic] =
-          //   await patient_findings.getMostRecentMeasurements(
-          //     trx,
-          //     {
-          //       patient_id,
-          //       snomed_concept_ids: [
-          //         VITALS_SNOMED_CODE.blood_pressure_diastolic,
-          //       ],
-          //     },
-          //   )
+          const [most_recent_measurement_blood_pressure_diastolic] =
+            await patient_findings.getMostRecentMeasurements(
+              trx,
+              {
+                patient_id,
+                snomed_concept_ids: [
+                  VITALS_SNOMED_CODE.blood_pressure_diastolic,
+                ],
+              },
+            )
 
-          // assertEquals(
-          //   most_recent_measurement_blood_pressure_diastolic.value_display,
-          //   '123 cm',
-          // )
-          // assertEquals(
-          //   most_recent_measurement_blood_pressure_diastolic.evaluations,
-          //   [],
-          // )
+          assertEquals(
+            most_recent_measurement_blood_pressure_diastolic.value_display,
+            '223 mmHg',
+          )
+          assertEquals(
+            most_recent_measurement_blood_pressure_diastolic.evaluations,
+            [{
+              note: 'Extremely high pressure',
+              snomed_concept_id: PRIORITY_SNOMED_CODES['Very urgent'],
+            }],
+          )
 
           const [most_recent_measurement_blood_oxygen_saturation] =
             await patient_findings.getMostRecentMeasurements(
