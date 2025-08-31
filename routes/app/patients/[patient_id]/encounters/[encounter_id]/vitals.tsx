@@ -25,7 +25,9 @@ const VitalsSchema = z.object({
     Object.entries(findings || {}).map(([finding_id, finding]) => ({
       finding_id,
       ...finding,
-      evaluation: finding.note ? { note: finding.note, priority: 'normal' } : null,
+      evaluation: finding.note
+        ? { note: finding.note, priority: 'normal' }
+        : null,
     }))
   ),
 })
