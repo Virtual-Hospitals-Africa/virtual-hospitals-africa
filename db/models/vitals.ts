@@ -1,5 +1,4 @@
 import * as patient_findings from './patient_findings.ts'
-import * as patient_evaluations from './patient_evaluations.ts'
 import {
   Measurement,
   TrxOrDb,
@@ -40,13 +39,6 @@ export async function insertMeasurements(
       encounter_provider_id,
       input_measurements,
       procedure_id,
-    }),
-    patient_evaluations.insertEvaluations(trx, {
-      patient_id,
-      encounter_id,
-      encounter_provider_id,
-      procedure_id,
-      input_measurements,
     }),
   ])
 }

@@ -8,6 +8,7 @@ import { postHandler } from '../../../../../../util/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../util/validators.ts'
 import { filterOfType } from '../../../../../../util/assertAll.ts'
 import { VitalsForm } from '../../../../../../components/vitals/Form.tsx'
+import { PRIORITIES } from '../../../../../../types.ts'
 
 const VitalsSchema = z.object({
   findings: z.record(
@@ -16,18 +17,17 @@ const VitalsSchema = z.object({
       snomed_concept_id,
       value: z.number().positive().optional(),
       units: z.string(),
-      severity: z.enum([
-        'routine',
-      ]).optional(),
+      priority: z.enum(PRIORITIES).optional().default('Normal'),
       note: z.string().optional(),
     }),
   ).optional().transform((findings) =>
-    Object.entries(findings || {}).map(([finding_id, finding]) => ({
+    Object.entries(findings || {}).map((
+      [finding_id, { note, priority, ...finding }],
+    ) => ({
       finding_id,
       ...finding,
-      evaluation: finding.note
-        ? { note: finding.note, priority: 'normal' }
-        : null,
+      // Treat a Normal evaluation with no note as no evaluation
+      evaluation: note || priority !== 'Normal' ? { note, priority } : null,
     }))
   ),
 })

@@ -169,6 +169,7 @@ describe(
             name: healthWorker.name,
             profession: 'nurse',
           },
+          evaluations: [],
         },
       ])
 
