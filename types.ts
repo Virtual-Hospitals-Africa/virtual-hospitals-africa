@@ -14,6 +14,8 @@ import {
   PatientCohabitation,
 } from './db.d.ts'
 import { DietFrequency } from './shared/diet.ts'
+import { type Priority } from './shared/priorities.ts'
+export * from './shared/priorities.ts'
 import { ExtendedActionData } from './components/library/Table.tsx'
 
 export type Maybe<T> = T | null | undefined
@@ -3170,16 +3172,19 @@ export type MostRecentVitalMeasurement = {
     name: string
     profession: string
   }
+  // TODO include who made the evaluation
+  evaluations: {
+    snomed_concept_id: string
+    note: string | null
+  }[]
 }
-
-export type Priority = 'normal' | string
 
 export type Evaluation = {
   priority: Priority
   note?: string | undefined
 }
 export type Measurement = {
-  finding_id?: string
+  finding_id: string
   snomed_concept_id: string
   value: number
   units: string

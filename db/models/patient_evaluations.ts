@@ -1,5 +1,4 @@
-import { Measurement, TrxOrDb } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
 
 /*
   Patient evaluations are clinical assessments made by healthcare providers
@@ -13,43 +12,51 @@ import generateUUID from '../../util/uuid.ts'
   Currently implemented: note-based evaluations only (flagging/priority system to be added later)
 */
 
-export async function insertEvaluations(
+export type EvaluationInsert =
+  & {
+    snomed_concept_id: string
+    note?: Maybe<string>
+  }
+  & (
+    | {
+      finding_id: string
+      procedure_id?: undefined
+      evaluation_id?: undefined
+    }
+    | {
+      finding_id: undefined
+      procedure_id?: string
+      evaluation_id?: undefined
+    }
+    | {
+      finding_id: undefined
+      procedure_id?: undefined
+      evaluation_id?: string
+    }
+  )
+
+export async function insertFromProvider(
   trx: TrxOrDb,
   {
     patient_id,
     encounter_id,
     encounter_provider_id,
-    procedure_id: _procedure_id,
-    input_measurements,
+    evaluations,
   }: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
-    procedure_id: string
-    input_measurements: Measurement[]
+    evaluations: EvaluationInsert[]
   },
 ) {
-  const evaluationsToInsert = input_measurements
-    .filter((measurement) => {
-      if (!measurement.evaluation) return false
+  if (!evaluations.length) return
 
-      const { note } = measurement.evaluation
-
-      return note !== undefined && note !== null && note.trim() !== ''
-    })
-    .map((measurement) => ({
-      id: generateUUID(),
+  await trx.insertInto('patient_evaluations')
+    .values(evaluations.map((evaluation) => ({
       patient_id,
       encounter_id,
       encounter_provider_id,
-      finding_id: measurement.finding_id!,
-      snomed_concept_id: measurement.snomed_concept_id,
-      note: measurement.evaluation!.note!,
-    }))
-
-  if (evaluationsToInsert.length > 0) {
-    await trx.insertInto('patient_evaluations')
-      .values(evaluationsToInsert)
-      .execute()
-  }
+      ...evaluation,
+    })))
+    .execute()
 }
