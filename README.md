@@ -19,8 +19,11 @@ git lfs pull
 docker compose up
 
 # In main terminal window
-deno task docker:setup
+deno task docker db:reset
 
 # Once done,
 deno task start
+
+# To run tests
+deno task test
 ```

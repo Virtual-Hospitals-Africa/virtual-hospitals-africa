@@ -1,8 +1,21 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
-if [ -f .env.local ]; then
-  deno task switch:local &>/dev/null
+
+fail() {
+  >&2 echo "$@"
+  exit 1
+}
+
+# On non-CI builds ensure the .env matches either .env.local or .env.docker
+if [[ "${CI:-}" == "true" ]]; then
+  :
+elif [ -f .env.local ] && [ -f .env.docker ]; then
+  cmp --silent .env .env.local || cmp --silent .env .env.docker || fail ".env differs from .env.local and .env.docker\nrun deno task switch:local before running tests"
+elif [ -f .env.local ]; then 
+  cmp --silent .env .env.local || fail ".env differs from .env.local\nrun deno task switch:local before running tests"
+elif [ -f .env.docker ]; then 
+  cmp --silent .env .env.docker || fail ".env differs from .env.docker\nrun deno task switch:docker before running tests"
 fi
 
 VHA_SERVER_PORT=8005
@@ -21,7 +34,6 @@ migrate_check=true
 
 # Set up a temporary file for the test server output so we can check if it's ready
 test_vha_server_output=$(mktemp)
-echo "xyz $test_vha_server_output"
 
 kill_test_server() {
   ./scripts/kill_process_on_port.sh $VHA_SERVER_PORT
@@ -64,13 +76,13 @@ run_tests() {
 # Ensure there is no prior test servers, that the database is up to date, and that the log file is empty
 kill_test_server
 if $migrate_check; then
-  deno task db:migrate check
+  IS_TEST=true deno task db:migrate check
 fi
 rm -f test_server.log
 
 
 # Start the test servers
-IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 start_vha_test_server >> "$test_vha_server_output" 2>&1 &
+IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 FAKE_GOOGLE_AUTH=false start_vha_test_server >> "$test_vha_server_output" 2>&1 &
 trap "kill_test_server" EXIT
 
 wait_until_vha_test_server_ready

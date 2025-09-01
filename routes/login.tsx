@@ -14,7 +14,7 @@ import { TrxOrDb } from '../types.ts'
 import { randomZimbabweanDemographics } from '../util/zimbabweanDemographics.ts'
 import { randomAvatar } from '../util/randomAvatar.ts'
 
-const FAKE_GOOGLE_AUTH = !!Deno.env.get('FAKE_GOOGLE_AUTH')
+const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
 if (FAKE_GOOGLE_AUTH) {
   assert(!onProduction(), 'Cannot fake google authentication on production')
 }
