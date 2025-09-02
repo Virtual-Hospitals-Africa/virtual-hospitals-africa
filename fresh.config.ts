@@ -3,6 +3,7 @@ import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
 import { promiseProps } from './util/promiseProps.ts'
 import { onProduction } from './util/onProduction.ts'
+import { opts as db_opts } from './db/db.ts'
 
 const { SELF_URL, PORT } = Deno.env.toObject()
 
@@ -32,9 +33,7 @@ export default defineConfig({
   },
   onListen(params) {
     const protocol = serveHttps ? 'https:' : 'http:'
-    const address = colors.cyan(
-      `${protocol}//localhost:${params.port}`,
-    )
+    const address = `${protocol}//localhost:${params.port}`
 
     console.log()
     console.log(
@@ -51,6 +50,23 @@ export default defineConfig({
       console.log()
     }
 
-    console.log(`    ${colors.bold('URL:')} ${address}\n`)
+    console.log(`    ${colors.bold('URL:')} ${colors.cyan(address)}\n`)
+
+    if (Deno.env.get('USE_DOCKER_FOR_POSTGRES')) {
+      console.log(
+        ' 💽 ' +
+          colors.bgRgb8(
+            colors.rgb8('Adminer (Postgres client) ready', 255),
+            38,
+          ),
+      )
+      const { database, user, password } = db_opts!
+
+      const adminer_url =
+        `http://localhost:8888?pgsql=postgres&server=postgres&username=${user}&db=${database}`
+      console.log(`    ${colors.bold('URL:')} ${colors.cyan(adminer_url)}`)
+      console.log(`    ${colors.bold('Password:')} ${password}\n`)
+      console.log()
+    }
   },
 })

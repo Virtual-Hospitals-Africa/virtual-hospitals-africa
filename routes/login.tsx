@@ -19,8 +19,6 @@ if (FAKE_GOOGLE_AUTH) {
   assert(!onProduction(), 'Cannot fake google authentication on production')
 }
 
-console.log({ FAKE_GOOGLE_AUTH })
-
 export const login_href =
   `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
 

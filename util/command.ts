@@ -14,8 +14,8 @@ export const Command: (
     )
   : (cmd, options) => new Deno.Command(cmd, options)
 
-const USE_DOCKER_FOR_POSTGRES_COMMANDS = !!Deno.env.get(
-  'USE_DOCKER_FOR_POSTGRES_COMMANDS',
+const USE_DOCKER_FOR_POSTGRES = !!Deno.env.get(
+  'USE_DOCKER_FOR_POSTGRES',
 )
 
 const POSTGRES_COMMANDS = new Set([
@@ -53,7 +53,7 @@ export function runCommand(
     )
     args = args_in_command
   }
-  if (USE_DOCKER_FOR_POSTGRES_COMMANDS && POSTGRES_COMMANDS.has(program)) {
+  if (USE_DOCKER_FOR_POSTGRES && POSTGRES_COMMANDS.has(program)) {
     args = args || []
     if (program.endsWith('.sh')) {
       args = ['exec', 'vha_postgres', 'bash', program].concat(args)
