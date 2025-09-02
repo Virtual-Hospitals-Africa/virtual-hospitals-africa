@@ -11,36 +11,21 @@ type PatientRecord = unknown
 
 const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
 
-export async function insertMeasurements(
+export function insertMeasurements(
   trx: TrxOrDb,
-  { patient_id, encounter_id, encounter_provider_id, input_measurements }: {
+  opts: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
     input_measurements: Measurement[]
   },
-) {
-  const procedure_id = generateUUID()
-
-  await Promise.all([
-    trx.insertInto('patient_procedures')
-      .values({
-        id: procedure_id,
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-      })
-      .returning('id')
-      .executeTakeFirstOrThrow(),
-    patient_findings.insertMeasurements(trx, {
-      patient_id,
-      encounter_id,
-      encounter_provider_id,
-      input_measurements,
-      procedure_id,
-    }),
-  ])
+): Promise<{ success: true }> {
+  return patient_findings.insertMeasurements(trx, {
+    ...opts,
+    procedure: {
+      create_from_snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
+    },
+  })
 }
 
 // deno-lint-ignore require-await

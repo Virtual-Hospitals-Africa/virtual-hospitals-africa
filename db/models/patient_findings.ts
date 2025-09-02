@@ -1,3 +1,8 @@
+/*
+  Treat patient_records and all its related tables as append only logs
+  Deletions would be handled by making a `referrant_finding` with snomed_concept_id: 723510000 | Entered in error
+  Edits would be a deletion and a new entry
+*/
 import { sql } from 'kysely'
 import {
   Measurement,
@@ -5,74 +10,139 @@ import {
   PRIORITY_SNOMED_CODES,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import {
+  blankSelection,
+  jsonArrayFrom,
+  jsonBuildObject,
+  success_true,
+} from '../helpers.ts'
 import z from 'zod'
 import { decimal } from '../../util/validators.ts'
-
-import * as patient_evaluations from './patient_evaluations.ts'
 import compact from '../../util/compact.ts'
+import generateUUID from '../../util/uuid.ts'
 
-/*
-  Treat patient_findings as an append only log
-  Deletions would be handled by making a `referrant_finding` with snomed_concept_id: 723510000 | Entered in error
-  Edits would be a deletion and a new entry
-*/
-export async function insertMeasurements(
+type ExtantProcedureOrCreationIntent = {
+  id: string
+  create_from_snomed_concept_id?: never
+} | {
+  id?: never
+  create_from_snomed_concept_id: string
+}
+
+export function insertMeasurements(
   trx: TrxOrDb,
   {
     input_measurements,
     patient_id,
     encounter_id,
-    procedure_id,
+    procedure,
     encounter_provider_id,
   }: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
-    procedure_id: string
+    procedure: ExtantProcedureOrCreationIntent
     input_measurements: Measurement[]
   },
 ) {
-  if (!input_measurements.length) return
+  if (!input_measurements.length) {
+    return Promise.resolve({ success: true as const })
+  }
 
-  const inserting_findings = trx.insertInto('patient_findings')
-    .values(input_measurements.map(
-      (input_measurement) => ({
-        id: input_measurement.finding_id,
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        procedure_id,
-        finding_type: 'measurement',
-        snomed_concept_id: input_measurement.snomed_concept_id,
-        value: input_measurement.value,
-        units: input_measurement.units,
-      }),
-    ))
-    .execute()
+  const procedure_id = procedure.id || generateUUID()
 
-  const evaluations: patient_evaluations.EvaluationInsert[] = compact(
+  const evaluations = compact(
     input_measurements.map(({ finding_id, evaluation }) => (
       evaluation && ({
-        finding_id,
+        id: generateUUID(),
+        evaluates_record_id: finding_id,
         snomed_concept_id: PRIORITY_SNOMED_CODES[evaluation.priority],
         note: evaluation.note,
       })
     )),
   )
 
-  const inserting_evaluations = patient_evaluations.insertFromProvider(trx, {
-    patient_id,
-    encounter_id,
-    encounter_provider_id,
-    evaluations,
-  })
-
-  await Promise.all([inserting_findings, inserting_evaluations])
+  return trx.with(
+    'inserting_procedure_record',
+    (qb) =>
+      procedure.create_from_snomed_concept_id
+        ? qb.insertInto('patient_records')
+          .values({
+            id: procedure_id,
+            patient_id,
+            encounter_id,
+            snomed_concept_id: procedure.create_from_snomed_concept_id,
+          })
+        : blankSelection(qb),
+  ).with(
+    'inserting_procedure',
+    (qb) =>
+      procedure.create_from_snomed_concept_id
+        ? qb.insertInto('patient_procedures')
+          .values({
+            id: procedure_id,
+            encounter_provider_id,
+          })
+        : blankSelection(qb),
+  ).with('inserting_finding_records', (qb) =>
+    qb.insertInto('patient_records')
+      .values(input_measurements.map(
+        (input_measurement) => ({
+          id: input_measurement.finding_id,
+          patient_id,
+          encounter_id,
+          snomed_concept_id: input_measurement.snomed_concept_id,
+        }),
+      ))).with('inserting_findings', (qb) =>
+      qb.insertInto('patient_findings')
+        .values(input_measurements.map(
+          (input_measurement) => ({
+            id: input_measurement.finding_id,
+            procedure_id,
+            encounter_provider_id,
+          }),
+        ))).with(
+      'inserting_measurements',
+      (qb) =>
+        qb.insertInto('patient_measurements')
+          .values(input_measurements.map(
+            (input_measurement) => ({
+              id: input_measurement.finding_id,
+              value: input_measurement.value,
+              units: input_measurement.units,
+            }),
+          )),
+    ).with(
+      'inserting_priority_evaluation_records',
+      (qb) =>
+        evaluations.length
+          ? qb.insertInto('patient_records')
+            .values(evaluations.map((evaluation) => ({
+              id: evaluation.id,
+              snomed_concept_id: evaluation.snomed_concept_id,
+              patient_id,
+              encounter_id,
+            })))
+          : blankSelection(qb),
+    ).with(
+      'inserting_priority_evaluations',
+      (qb) =>
+        evaluations.length
+          ? qb.insertInto('patient_evaluations')
+            .values(evaluations.map((evaluation) => ({
+              encounter_provider_id,
+              id: evaluation.id,
+              evaluates_record_id: evaluation.evaluates_record_id,
+              note: evaluation.note,
+            })))
+          : blankSelection(qb),
+    ).selectNoFrom([
+      success_true,
+    ])
+    .executeTakeFirstOrThrow()
 }
 
 const MeasurementSchema = z.object({
-  finding_type: z.enum(['measurement']),
   value: decimal,
   units: z.enum([
     'cm',
@@ -107,12 +177,30 @@ export async function getMostRecentMeasurements(
   const findings = await trx.with(
     'ranked_findings',
     (qb) =>
-      qb.selectFrom('patient_findings')
-        .where('patient_id', '=', patient_id)
-        .where('snomed_concept_id', 'in', snomed_concept_ids)
-        .where('finding_type', '=', 'measurement')
-        .orderBy('created_at', 'desc')
-        .selectAll()
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_measurements',
+          'patient_findings.id',
+          'patient_measurements.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where('patient_records.snomed_concept_id', 'in', snomed_concept_ids)
+        .orderBy('patient_records.created_at', 'desc')
+        .selectAll('patient_records')
+        .select([
+          'patient_findings.encounter_provider_id',
+          'patient_findings.procedure_id',
+          'patient_findings.referent_finding_id',
+        ])
+        .select([
+          'patient_measurements.value',
+          'patient_measurements.units',
+        ])
         .select(
           sql`ROW_NUMBER() OVER (PARTITION BY snomed_concept_id ORDER BY created_at DESC)`
             .as('rank'),
@@ -142,7 +230,6 @@ export async function getMostRecentMeasurements(
     .select([
       'ranked_findings.id as finding_id',
       'ranked_findings.snomed_concept_id',
-      'ranked_findings.finding_type',
       'ranked_findings.value',
       'ranked_findings.units',
       'ranked_findings.created_at',
@@ -164,26 +251,34 @@ export async function getMostRecentMeasurements(
         health_worker_id: eb.ref('health_workers.id'),
       }).as('provider'),
       jsonArrayFrom(
-        eb.selectFrom('patient_evaluations')
+        eb
+          .selectFrom('patient_evaluations')
+          .innerJoin(
+            'patient_records as evaluation_records',
+            'evaluation_records.id',
+            'patient_evaluations.id',
+          )
           .select([
             // json_agg casts bigint to number, but when selected as a column by itself
             // kysely reads as a string so we replicate kysely's behavior here
-            sql<string>`snomed_concept_id::text`.as('snomed_concept_id'),
+            sql<string>`evaluation_records.snomed_concept_id::text`.as(
+              'snomed_concept_id',
+            ),
             'note',
           ])
           .whereRef(
             'ranked_findings.id',
             '=',
-            'patient_evaluations.finding_id',
+            'patient_evaluations.evaluates_record_id',
           ),
       ).as('evaluations'),
     ])
     .execute()
 
-  return findings.map(({ value, units, finding_type, ...finding }) => ({
+  return findings.map(({ value, units, ...finding }) => ({
     ...finding,
     value_display: measurementValueDisplay(
-      MeasurementSchema.parse({ value, units, finding_type }),
+      MeasurementSchema.parse({ value, units }),
     ),
   }))
 }

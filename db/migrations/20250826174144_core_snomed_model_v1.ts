@@ -1,10 +1,10 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createTable.ts'
+import { createPointerTable, createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(
     db,
-    'patient_procedures',
+    'patient_records',
     (qb) =>
       qb.addColumn(
         'patient_id',
@@ -16,14 +16,6 @@ export async function up(db: Kysely<unknown>) {
           'uuid',
           (col) =>
             col.notNull().references('patient_encounters.id').onDelete(
-              'cascade',
-            ),
-        )
-        .addColumn(
-          'encounter_provider_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('patient_encounter_providers.id').onDelete(
               'cascade',
             ),
         )
@@ -34,68 +26,60 @@ export async function up(db: Kysely<unknown>) {
         ),
   )
 
-  await createStandardTable(db, 'patient_findings', (qb) =>
+  await createPointerTable(
+    db,
+    'patient_procedures',
+    {
+      references: 'patient_records',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
+        .addColumn(
+          'encounter_provider_id',
+          'uuid',
+          (col) =>
+            col.notNull().references('patient_encounter_providers.id').onDelete(
+              'cascade',
+            ),
+        ),
+  )
+
+  await createPointerTable(db, 'patient_findings', {
+    references: 'patient_records',
+    primary_key_type: 'uuid',
+  }, (qb) =>
     qb.addColumn(
-      'patient_id',
+      'encounter_provider_id',
       'uuid',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      (col) =>
+        col.notNull().references('patient_encounter_providers.id').onDelete(
+          'cascade',
+        ),
     )
-      .addColumn(
-        'encounter_id',
-        'uuid',
-        (col) =>
-          col.notNull().references('patient_encounters.id').onDelete('cascade'),
-      )
-      .addColumn(
-        'encounter_provider_id',
-        'uuid',
-        (col) =>
-          col.notNull().references('patient_encounter_providers.id').onDelete(
-            'cascade',
-          ),
-      )
       .addColumn('procedure_id', 'uuid', (col) =>
         col.notNull().references('patient_procedures.id').onDelete(
           'cascade',
         ))
-      .addColumn(
-        'snomed_concept_id',
-        'bigint',
-        (col) =>
-          col.notNull().references('snomed_concept.id'),
-      )
       .addColumn('referent_finding_id', 'uuid', (col) =>
-        col.references('patient_findings.id').onDelete('cascade'))
-      .addColumn('finding_type', 'varchar(255)', (col) =>
-        col.notNull().check(
-          sql`(finding_type = 'measurement' OR finding_type = 'observation')`,
-        ))
-      .addColumn('value', 'decimal')
-      .addColumn('units', 'varchar(255)')
-      .addCheckConstraint(
-        'measurements_have_values_and_units',
-        sql`
-          ((finding_type != 'measurement') OR (value IS NOT NULL AND units IS NOT NULL))
-        `,
-      ))
+        col.references('patient_findings.id').onDelete('cascade')))
 
-  await createStandardTable(
+  await createPointerTable(db, 'patient_measurements', {
+    references: 'patient_findings',
+    primary_key_type: 'uuid',
+  }, (qb) =>
+    qb.addColumn('value', 'decimal', (col) => col.notNull())
+      .addColumn('units', 'varchar(255)', (col) => col.notNull()))
+
+  await createPointerTable(
     db,
     'patient_evaluations',
+    {
+      references: 'patient_records',
+      primary_key_type: 'uuid',
+    },
     (qb) =>
-      qb.addColumn(
-        'patient_id',
-        'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
-      )
-        .addColumn(
-          'encounter_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('patient_encounters.id').onDelete(
-              'cascade',
-            ),
-        )
+      qb
         .addColumn(
           'encounter_provider_id',
           'uuid',
@@ -113,33 +97,12 @@ export async function up(db: Kysely<unknown>) {
             ),
         )
         .addColumn(
-          'finding_id',
+          'evaluates_record_id',
           'uuid',
           (col) =>
-            col.references('patient_findings.id').onDelete(
+            col.notNull().references('patient_records.id').onDelete(
               'cascade',
             ),
-        )
-        .addColumn(
-          'procedure_id',
-          'uuid',
-          (col) =>
-            col.references('patient_procedures.id').onDelete(
-              'cascade',
-            ),
-        )
-        .addColumn(
-          'evaluation_id',
-          'uuid',
-          (col) =>
-            col.references('patient_evaluations.id').onDelete(
-              'cascade',
-            ),
-        )
-        .addColumn(
-          'snomed_concept_id',
-          'bigint',
-          (col) => col.notNull().references('snomed_concept.id'),
         )
         .addColumn('note', 'text')
         .addCheckConstraint(
@@ -147,17 +110,14 @@ export async function up(db: Kysely<unknown>) {
           sql`
             ((encounter_provider_id is not null) or (review_id is not null))
           `,
-        ).addCheckConstraint(
-          'evaluating_one_thing',
-          sql`
-            (((finding_id is not null)::int + (procedure_id is not null)::int + (evaluation_id is not null)::int) = 1)
-          `,
         ),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_evaluations').execute()
+  await db.schema.dropTable('patient_measurements').execute()
   await db.schema.dropTable('patient_findings').execute()
   await db.schema.dropTable('patient_procedures').execute()
+  await db.schema.dropTable('patient_records').execute()
 }
