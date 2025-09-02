@@ -44,7 +44,7 @@ export async function measurementsNeededForEncounter(
     },
     {
       finding_id: generateUUID(),
-      snomed_concept_id: '726527001',
+      snomed_concept_id: '363808001',
       required: true,
       label: 'weight',
       units: 'kg',
