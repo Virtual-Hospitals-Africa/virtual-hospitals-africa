@@ -6,9 +6,11 @@ import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { completeStep } from './_middleware.tsx'
 import { postHandler } from '../../../../../../util/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../util/validators.ts'
-import { filterOfType } from '../../../../../../util/assertAll.ts'
+import filterOfType from '../../../../../../util/filterOfType.ts'
 import { VitalsForm } from '../../../../../../components/vitals/Form.tsx'
 import { PRIORITIES } from '../../../../../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import { promiseProps } from '../../../../../../util/promiseProps.ts'
 
 const VitalsSchema = z.object({
   findings: z.record(
@@ -41,19 +43,22 @@ function hasValue(
 export const handler = postHandler(
   VitalsSchema,
   async (_req, ctx: EncounterContext, form_values) => {
-    const completing_step = completeStep(ctx)
-
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-    await vitals.insertMeasurements(ctx.state.trx, {
-      patient_id,
-      encounter_id: ctx.state.encounter.encounter_id,
-      encounter_provider_id:
-        ctx.state.encounter_provider.patient_encounter_provider_id,
-      input_measurements: filterOfType(form_values.findings, hasValue),
+    const { response, insert } = await promiseProps({
+      response: completeStep(ctx),
+      insert: vitals.insertMeasurements(ctx.state.trx, {
+        patient_id,
+        encounter_id: ctx.state.encounter.encounter_id,
+        encounter_provider_id:
+          ctx.state.encounter_provider.patient_encounter_provider_id,
+        input_measurements: filterOfType(form_values.findings, hasValue),
+      }),
     })
 
-    return completing_step
+    assert(insert.success)
+
+    return response
   },
 )
 

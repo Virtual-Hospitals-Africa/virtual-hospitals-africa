@@ -845,18 +845,11 @@ export interface PatientEncounterSteps {
 }
 
 export interface PatientEvaluations {
-  created_at: Generated<Timestamp>
-  encounter_id: string
   encounter_provider_id: string | null
-  evaluation_id: string | null
-  finding_id: string | null
-  id: Generated<string>
+  evaluates_record_id: string
+  id: string
   note: string | null
-  patient_id: string
-  procedure_id: string | null
   review_id: string | null
-  snomed_concept_id: Int8
-  updated_at: Generated<Timestamp>
 }
 
 export interface PatientExaminationFindingBodySites {
@@ -901,18 +894,10 @@ export interface PatientFamily {
 }
 
 export interface PatientFindings {
-  created_at: Generated<Timestamp>
-  encounter_id: string
   encounter_provider_id: string
-  finding_type: string
-  id: Generated<string>
-  patient_id: string
+  id: string
   procedure_id: string
   referent_finding_id: string | null
-  snomed_concept_id: Int8
-  units: string | null
-  updated_at: Generated<Timestamp>
-  value: Numeric | null
 }
 
 export interface PatientGuardians {
@@ -966,6 +951,12 @@ export interface PatientLifestyle {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientMeasurements {
+  id: string
+  units: string
+  value: Numeric
+}
+
 export interface PatientNearestFacilities {
   nearest_facilities: Json | null
   patient_id: string | null
@@ -980,9 +971,13 @@ export interface PatientOccupations {
 }
 
 export interface PatientProcedures {
+  encounter_provider_id: string
+  id: string
+}
+
+export interface PatientRecords {
   created_at: Generated<Timestamp>
   encounter_id: string
-  encounter_provider_id: string
   id: Generated<string>
   patient_id: string
   snomed_concept_id: Int8
@@ -1539,9 +1534,11 @@ export interface DB {
   patient_intake_visit_reason: PatientIntakeVisitReason
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
+  patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
   patient_procedures: PatientProcedures
+  patient_records: PatientRecords
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients

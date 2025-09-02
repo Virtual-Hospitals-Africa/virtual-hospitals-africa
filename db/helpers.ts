@@ -407,3 +407,12 @@ export function blankSelection(
 ) {
   return qb.selectNoFrom(sql<0>`0`.as('blank'))
 }
+
+export const success_true = sql<true>`true`.as('success')
+
+export function successSelection(
+  // deno-lint-ignore no-explicit-any
+  qb: QueryCreator<any>,
+) {
+  return qb.selectNoFrom(success_true)
+}
