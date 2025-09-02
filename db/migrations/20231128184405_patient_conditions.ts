@@ -1,6 +1,6 @@
 //deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export function up(db: Kysely<any>) {
   return createStandardTable(

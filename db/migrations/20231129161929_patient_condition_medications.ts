@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { IntakeFrequencies } from '../../shared/medication.ts'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema

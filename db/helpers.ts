@@ -19,7 +19,7 @@ import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
 import { Location, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import type { InsertObject } from 'kysely'
+import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
 
 /**
@@ -399,4 +399,11 @@ export function upsertOne<Table extends keyof DB>(
     .onConflict((oc) => oc.column('id' as any).doUpdateSet(values as any))
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+export function blankSelection(
+  // deno-lint-ignore no-explicit-any
+  qb: QueryCreator<any>,
+) {
+  return qb.selectNoFrom(sql<0>`0`.as('blank'))
 }

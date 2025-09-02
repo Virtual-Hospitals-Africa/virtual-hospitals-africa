@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {

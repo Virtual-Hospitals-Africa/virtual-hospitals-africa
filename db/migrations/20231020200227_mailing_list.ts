@@ -1,5 +1,5 @@
 import { Kysely } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export function up(db: Kysely<unknown>) {
   return createStandardTable(

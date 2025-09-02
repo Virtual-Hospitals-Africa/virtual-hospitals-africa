@@ -16,7 +16,6 @@ import {
   now,
 } from '../helpers.ts'
 import { EncounterStep } from '../../db.d.ts'
-import { ensureProviderId } from './providers.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import uniq from '../../util/uniq.ts'
@@ -109,7 +108,7 @@ export async function insert(
         .insertInto('patient_encounter_providers')
         .values(provider_ids.map((provider_id) => ({
           patient_encounter_id: inserted.id,
-          provider_id: ensureProviderId(trx, provider_id),
+          provider_id,
         })))
         .returning([
           'id as encounter_provider_id',

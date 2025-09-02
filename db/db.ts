@@ -54,6 +54,8 @@ export const uri = DATABASE_URL
 
 export const opts = uri ? parseConnectionString(uri) : null
 
+const LOG_ALL_QUERIES = Deno.env.has('LOG_ALL_QUERIES')
+
 const db = new Kysely<DB>({
   dialect: {
     createAdapter() {
@@ -72,7 +74,15 @@ const db = new Kysely<DB>({
     },
   },
   log(event) {
-    if (event.level !== 'error') return
+    if (event.level !== 'error') {
+      if (LOG_ALL_QUERIES && event.query) {
+        console.log(debugReplaceAll(
+          event.query.sql,
+          event.query.parameters,
+        ))
+      }
+      return
+    }
 
     // deno-lint-ignore no-explicit-any
     const error_due_to_lock = (event.error as any).message.startsWith(

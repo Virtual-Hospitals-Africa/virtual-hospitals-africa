@@ -17,7 +17,7 @@ diff .env .env.docker >/dev/null || {
 # shellcheck disable=SC2086
 deno task db:$script "$@"
 
-if [ "$script" = "reset" ] || [ "$script" = "rebuild" ]; then
+if [ "$script" = "reset" ]; then
   mkdir -p ./db/dumps
   deno task db:dump > ./db/dumps/latest
   IS_TEST=true deno task db:recreate

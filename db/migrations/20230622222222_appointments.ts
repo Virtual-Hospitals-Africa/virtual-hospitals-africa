@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'appointments', (qb) =>
@@ -26,7 +26,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn(
         'provider_id',
         'uuid',
-        (col) => col.notNull().references('employment.id').onDelete('cascade'),
+        (col) => col.notNull().references('providers.id').onDelete('cascade'),
       )
       .addColumn(
         'confirmed',
@@ -61,8 +61,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn(
           'provider_id',
           'uuid',
-          (col) =>
-            col.notNull().references('employment.id').onDelete('cascade'),
+          (col) => col.notNull().references('providers.id').onDelete('cascade'),
         )
         .addColumn('start', 'timestamptz', (col) => col.notNull())
         .addColumn('end', 'timestamptz', (col) => col.notNull())
