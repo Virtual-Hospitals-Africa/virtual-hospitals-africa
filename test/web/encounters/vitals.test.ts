@@ -89,7 +89,7 @@ describe(
         value: null,
       }])
       assertArrayIncludes(findings, [{
-        snomed_concept_id: 726527001,
+        snomed_concept_id: 363808001,
         units: 'kg',
         value: null,
       }])
@@ -228,7 +228,7 @@ describe(
           value: null,
         }])
         assertArrayIncludes(findings, [{
-          snomed_concept_id: 726527001,
+          snomed_concept_id: 363808001,
           units: 'kg',
           value: null,
         }])

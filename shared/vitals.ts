@@ -1,6 +1,6 @@
 export const VITALS_SNOMED_CODE = {
   height: '1153637007',
-  weight: '726527001',
+  weight: '363808001',
   temperature: '722490005',
   blood_pressure_systolic: '271649006',
   blood_pressure_diastolic: '271650006',
