@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 import type { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {

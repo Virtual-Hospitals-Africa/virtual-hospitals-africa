@@ -4,7 +4,7 @@ import {
   MARITAL_STATUS,
   PATIENT_COHABITATIONS,
 } from '../../shared/family.ts'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema.createType('marital_status').asEnum(MARITAL_STATUS).execute()

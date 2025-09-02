@@ -325,6 +325,10 @@ export interface DoctorReviewSteps {
   updated_at: Generated<Timestamp>
 }
 
+export interface Doctors {
+  id: string
+}
+
 export interface Drugs {
   created_at: Generated<Timestamp>
   generic_name: string
@@ -424,6 +428,17 @@ export interface HealthWorkerInvitees {
   id: Generated<string>
   organization_id: string
   profession: Profession
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerOrganizationCalendars {
+  availability_set: Generated<boolean>
+  created_at: Generated<Timestamp>
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  health_worker_id: string
+  id: Generated<string>
+  organization_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -656,6 +671,14 @@ export interface NurseRegistrationDetailsInProgress {
   health_worker_id: string
   id: Generated<string>
   updated_at: Generated<Timestamp>
+}
+
+export interface Nurses {
+  id: string
+}
+
+export interface OrganizationAdmins {
+  id: string
 }
 
 export interface OrganizationConsumables {
@@ -1125,15 +1148,8 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
-export interface ProviderCalendars {
-  availability_set: Generated<boolean>
-  created_at: Generated<Timestamp>
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  health_worker_id: string
-  id: Generated<string>
-  organization_id: string
-  updated_at: Generated<Timestamp>
+export interface Providers {
+  id: string
 }
 
 export interface Regulators {
@@ -1455,6 +1471,7 @@ export interface DB {
   doctor_review_requests: DoctorReviewRequests
   doctor_review_steps: DoctorReviewSteps
   doctor_reviews: DoctorReviews
+  doctors: Doctors
   drugs: Drugs
   employment: Employment
   encounter: Encounter
@@ -1466,6 +1483,7 @@ export interface DB {
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
   health_worker_invitees: HealthWorkerInvitees
+  health_worker_organization_calendars: HealthWorkerOrganizationCalendars
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
@@ -1491,6 +1509,8 @@ export interface DB {
   messages: Messages
   nurse_registration_details: NurseRegistrationDetails
   nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
+  nurses: Nurses
+  organization_admins: OrganizationAdmins
   organization_consumables: OrganizationConsumables
   organization_departments: OrganizationDepartments
   organization_devices: OrganizationDevices
@@ -1537,7 +1557,7 @@ export interface DB {
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
-  provider_calendars: ProviderCalendars
+  providers: Providers
   regulators: Regulators
   sessions: Sessions
   snomed_c_refset_association: SnomedCRefsetAssociation

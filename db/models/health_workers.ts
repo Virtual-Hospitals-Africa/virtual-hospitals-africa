@@ -225,26 +225,26 @@ export async function get(
             'organization_address.id',
           )
           .leftJoin(
-            'provider_calendars',
+            'health_worker_organization_calendars',
             (join) =>
               join
                 .onRef(
                   'employment.organization_id',
                   '=',
-                  'provider_calendars.organization_id',
+                  'health_worker_organization_calendars.organization_id',
                 )
                 .onRef(
                   'employment.health_worker_id',
                   '=',
-                  'provider_calendars.health_worker_id',
+                  'health_worker_organization_calendars.health_worker_id',
                 ),
           )
           .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
-            'provider_calendars.gcal_appointments_calendar_id',
-            'provider_calendars.gcal_availability_calendar_id',
-            'provider_calendars.availability_set',
+            'health_worker_organization_calendars.gcal_appointments_calendar_id',
+            'health_worker_organization_calendars.gcal_availability_calendar_id',
+            'health_worker_organization_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.organization_id'),
               name: eb_employment.ref('organizations.name'),

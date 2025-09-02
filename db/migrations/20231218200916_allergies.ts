@@ -1,5 +1,5 @@
 import { Kysely } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'patient_allergies', (qb) =>

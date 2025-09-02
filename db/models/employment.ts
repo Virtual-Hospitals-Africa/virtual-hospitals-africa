@@ -7,7 +7,9 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { SqlBool } from 'kysely'
-import { now } from '../helpers.ts'
+import generateUUID from '../../util/uuid.ts'
+import { pMap } from '../../util/inParallel.ts'
+import { blankSelection } from '../helpers.ts'
 
 type Employee = {
   health_worker_id: string
@@ -32,57 +34,80 @@ export type OrganizationAdmin = {
   organization_name: string
 } & Employee
 
-export async function addOne(
+export function addOne(
   trx: TrxOrDb,
-  { department_id, ...rest }: Employee & {
-    department_id: string
+  { department_id, profession, ...rest }: Employee & {
+    department_id?: string
   },
 ) {
-  const employee = await trx
-    .insertInto('employment')
-    .values(rest)
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  const id = generateUUID()
 
-  const department = await trx.insertInto('department_employment')
-    .values({
-      department_id,
-      employment_id: employee.id,
-    })
+  return trx.with(
+    'employment_insert',
+    (qb) =>
+      qb.insertInto('employment')
+        .values({ id, profession, ...rest })
+        .returningAll(),
+  ).with(
+    'department_insert',
+    (qb) =>
+      department_id
+        ? qb.insertInto('department_employment')
+          .values({
+            department_id,
+            employment_id: id,
+          })
+        : blankSelection(qb),
+  ).with(
+    'organization_admin_insert',
+    (qb) =>
+      (profession === 'admin')
+        ? qb.insertInto('organization_admins').values({ id })
+        : blankSelection(qb),
+  ).with(
+    'provider_insert',
+    (qb) =>
+      (profession === 'doctor' || profession === 'nurse')
+        ? qb.insertInto('providers').values({ id })
+        : blankSelection(qb),
+  ).with(
+    'doctor_insert',
+    (qb) =>
+      (profession === 'doctor')
+        ? qb.insertInto('doctors').values({ id })
+        : blankSelection(qb),
+  ).with(
+    'nurse_insert',
+    (qb) =>
+      (profession === 'nurse')
+        ? qb.insertInto('nurses').values({ id })
+        : blankSelection(qb),
+  )
+    .selectFrom('employment_insert')
+    .selectAll('employment_insert')
     .executeTakeFirstOrThrow()
-
-  return {
-    ...employee,
-    departments: [department],
-  }
 }
 
 export function add(
   trx: TrxOrDb,
   employees: Employee[],
 ): Promise<HasStringId<Employee>[]> {
-  assert(employees.length > 0)
-  return trx
-    .insertInto('employment')
-    .values(employees)
-    .returningAll()
-    .execute()
+  assert(employees.length)
+  return pMap(employees, (employee) => addOne(trx, employee))
 }
 
-export function addIgnoreDuplicate(
+export async function addIgnoreDuplicate(
   trx: TrxOrDb,
-  employees: Employee,
+  employee: Employee,
 ): Promise<HasStringId<Employee>> {
-  return trx
-    .insertInto('employment')
-    .values(employees)
-    .onConflict((oc) =>
-      oc.constraint('only_employed_once_per_profession').doUpdateSet({
-        updated_at: now,
-      })
-    )
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  const existing_employee = await trx.selectFrom('employment')
+    .where('health_worker_id', '=', employee.health_worker_id)
+    .where('organization_id', '=', employee.organization_id)
+    .where('profession', '=', employee.profession)
+    .selectAll()
+    .executeTakeFirst()
+
+  return existing_employee || await addOne(trx, employee)
 }
 
 export function getEmployee(

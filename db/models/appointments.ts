@@ -14,7 +14,6 @@ import * as organizations from './organizations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
 import { jsonArrayFrom, now } from '../helpers.ts'
-import { ensureProviderId } from './providers.ts'
 
 export function addOfferedTime(
   trx: TrxOrDb,
@@ -25,7 +24,7 @@ export function addOfferedTime(
     (qb) =>
       qb.insertInto('patient_appointment_offered_times')
         .values({
-          provider_id: ensureProviderId(trx, provider_id),
+          provider_id,
           ...offered,
         })
         .returningAll(),
@@ -133,8 +132,7 @@ export function addAttendees(
     .values(provider_ids.map((provider_id) => ({
       appointment_id,
       confirmed: false,
-      // Only add the provider if they are a doctor or nurse
-      provider_id: ensureProviderId(trx, provider_id),
+      provider_id,
     })))
     .returningAll()
     .execute()
@@ -378,17 +376,18 @@ export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
             'health_workers.id',
           )
           .innerJoin(
-            'provider_calendars',
+            'health_worker_organization_calendars',
             (join) =>
-              join.onRef(
-                'provider_calendars.health_worker_id',
-                '=',
-                'employment.health_worker_id',
-              )
+              join
                 .onRef(
-                  'provider_calendars.organization_id',
-                  '=',
                   'employment.organization_id',
+                  '=',
+                  'health_worker_organization_calendars.organization_id',
+                )
+                .onRef(
+                  'employment.health_worker_id',
+                  '=',
+                  'health_worker_organization_calendars.health_worker_id',
                 ),
           ).select((eb) => [
             'employment.health_worker_id',
@@ -400,9 +399,9 @@ export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
             'health_workers.name',
             'health_workers.email',
             'health_workers.avatar_url',
-            'provider_calendars.gcal_availability_calendar_id',
-            'provider_calendars.gcal_appointments_calendar_id',
-            'provider_calendars.availability_set',
+            'health_worker_organization_calendars.gcal_availability_calendar_id',
+            'health_worker_organization_calendars.gcal_appointments_calendar_id',
+            'health_worker_organization_calendars.availability_set',
             'google_tokens.expires_at',
             'google_tokens.access_token',
             'google_tokens.refresh_token',

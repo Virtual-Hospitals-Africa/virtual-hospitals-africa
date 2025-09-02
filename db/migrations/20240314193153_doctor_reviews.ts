@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createTable.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 
 export async function up(db: Kysely<any>) {
@@ -40,7 +40,7 @@ export async function up(db: Kysely<any>) {
           .onDelete('cascade'))
       .addColumn('doctor_id', 'uuid', (col) =>
         col
-          .references('employment.id')
+          .references('doctors.id')
           .onDelete('cascade'))
       .addColumn('requester_notes', 'text')
       .addUniqueConstraint('once_per_patient_organization', [

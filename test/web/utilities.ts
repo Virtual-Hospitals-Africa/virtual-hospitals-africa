@@ -46,6 +46,16 @@ type TestHealthWorkerOpts = {
 
 export const route = `https://localhost:8005`
 
+export function insertHealthWorker(
+  trx: TrxOrDb,
+  opts?: TestHealthWorkerOpts['health_worker_attrs'],
+) {
+  return upsertWithGoogleCredentials(trx, {
+    ...testHealthWorker(),
+    ...opts,
+  })
+}
+
 export async function addTestHealthWorker(
   trx: TrxOrDb,
   {
@@ -62,10 +72,7 @@ export async function addTestHealthWorker(
       gcal_appointments_calendar_id: string
       gcal_availability_calendar_id: string
     }
-  } = await upsertWithGoogleCredentials(trx, {
-    ...testHealthWorker(),
-    ...health_worker_attrs,
-  })
+  } = await insertHealthWorker(trx, health_worker_attrs)
 
   const department = await trx.selectFrom('organization_departments')
     .where('organization_id', '=', organization_id)

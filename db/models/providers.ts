@@ -7,11 +7,18 @@ import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
 
 // Ensures that the provider_id represents a row in the employment table for a doctor or nurse
-export const ensureProviderId = (trx: TrxOrDb, provider_id: string) =>
+export const providerId = (
+  trx: TrxOrDb,
+  { organization_id, health_worker_id }: {
+    organization_id: string
+    health_worker_id: string
+  },
+) =>
   trx.selectFrom('employment')
-    .select('id')
-    .where('id', '=', provider_id)
-    .where('profession', 'in', ['doctor', 'nurse'])
+    .innerJoin('providers', 'employment.id', 'providers.id')
+    .where('employment.organization_id', '=', organization_id)
+    .where('employment.health_worker_id', '=', health_worker_id)
+    .select('providers.id')
 
 // This isn't confirming registration_status
 const baseQuery = (trx: TrxOrDb) =>
@@ -22,27 +29,32 @@ const baseQuery = (trx: TrxOrDb) =>
       'employment.health_worker_id',
     )
     .innerJoin(
-      'provider_calendars',
+      'providers',
+      'providers.id',
+      'employment.id',
+    )
+    .innerJoin(
+      'health_worker_organization_calendars',
       (join) =>
         join
           .onRef(
             'employment.organization_id',
             '=',
-            'provider_calendars.organization_id',
+            'health_worker_organization_calendars.organization_id',
           )
           .onRef(
             'employment.health_worker_id',
             '=',
-            'provider_calendars.health_worker_id',
+            'health_worker_organization_calendars.health_worker_id',
           ),
     )
     .select([
       'health_workers.id as health_worker_id',
       'employment.id as provider_id',
       'employment.profession',
-      'provider_calendars.gcal_appointments_calendar_id',
-      'provider_calendars.gcal_availability_calendar_id',
-      'provider_calendars.availability_set',
+      'health_worker_organization_calendars.gcal_appointments_calendar_id',
+      'health_worker_organization_calendars.gcal_availability_calendar_id',
+      'health_worker_organization_calendars.availability_set',
     ])
     .where('employment.profession', 'in', ['doctor' as const, 'nurse' as const])
 
@@ -85,8 +97,13 @@ export function addCalendars(
   }[],
 ) {
   return trx
-    .insertInto('provider_calendars')
-    .values(cals.map((cal) => ({ health_worker_id, ...cal })))
+    .insertInto('health_worker_organization_calendars')
+    .values(
+      cals.map((cal) => ({
+        ...cal,
+        health_worker_id,
+      })),
+    )
     .onConflict((oc) =>
       oc.constraint('only_one_calendar_set_per_health_worker_organization')
         .doNothing()
@@ -201,7 +218,7 @@ export function markAvailabilitySet(
     health_worker_id: string
   },
 ) {
-  return trx.updateTable('provider_calendars')
+  return trx.updateTable('health_worker_organization_calendars')
     .set({ availability_set: true })
     .where('health_worker_id', '=', opts.health_worker_id)
     .where('organization_id', '=', opts.organization_id)

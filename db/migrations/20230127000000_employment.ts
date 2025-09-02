@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createStandardTable.ts'
+import { createPointerTable, createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -36,6 +36,42 @@ export async function up(db: Kysely<unknown>) {
         ]),
   )
 
+  await createPointerTable(
+    db,
+    'organization_admins',
+    {
+      references: 'employment',
+      primary_key_type: 'uuid',
+    },
+  )
+
+  await createPointerTable(
+    db,
+    'providers',
+    {
+      references: 'employment',
+      primary_key_type: 'uuid',
+    },
+  )
+
+  await createPointerTable(
+    db,
+    'doctors',
+    {
+      references: 'providers',
+      primary_key_type: 'uuid',
+    },
+  )
+
+  await createPointerTable(
+    db,
+    'nurses',
+    {
+      references: 'providers',
+      primary_key_type: 'uuid',
+    },
+  )
+
   await createStandardTable(
     db,
     'department_employment',
@@ -56,7 +92,7 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'provider_calendars',
+    'health_worker_organization_calendars',
     (qb) =>
       qb.addColumn(
         'health_worker_id',
@@ -96,8 +132,12 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('provider_calendars').execute()
+  await db.schema.dropTable('health_worker_organization_calendars').execute()
   await db.schema.dropTable('department_employment').execute()
+  await db.schema.dropTable('nurses').execute()
+  await db.schema.dropTable('doctors').execute()
+  await db.schema.dropTable('providers').execute()
+  await db.schema.dropTable('organization_admins').execute()
   await db.schema.dropTable('employment').execute()
   await db.schema.dropType('profession').execute()
 }

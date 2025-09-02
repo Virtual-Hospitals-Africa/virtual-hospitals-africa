@@ -60,8 +60,6 @@ export const handler = postHandler(
         `/regulator/${form_values.country}/pharmacies`,
       )
 
-      console.log('response', response)
-
       return response
     }
 
