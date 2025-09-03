@@ -1,7 +1,7 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as patient_findings from '../../db/models/patient_findings.ts'
+import * as patient_findings from '../../db/models/patient_measurements.ts'
 import * as vitals from '../../db/models/vitals.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import db from '../../db/db.ts'
@@ -89,7 +89,7 @@ describe(
           })
 
           const [most_recent_measurement_height] = await patient_findings
-            .getMostRecentMeasurements(
+            .getMostRecent(
               trx,
               { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
             )
@@ -110,7 +110,7 @@ describe(
           }])
 
           const [most_recent_measurement_blood_pressure_systolic] =
-            await patient_findings.getMostRecentMeasurements(
+            await patient_findings.getMostRecent(
               trx,
               {
                 patient_id,
@@ -156,7 +156,7 @@ describe(
           )
 
           const [most_recent_measurement_blood_oxygen_saturation] =
-            await patient_findings.getMostRecentMeasurements(
+            await patient_findings.getMostRecent(
               trx,
               {
                 patient_id,
@@ -230,7 +230,7 @@ describe(
           })
 
           const [most_recent_measurement_height] = await patient_findings
-            .getMostRecentMeasurements(
+            .getMostRecent(
               trx,
               { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
             )
@@ -239,7 +239,7 @@ describe(
           assertEquals(most_recent_measurement_height.evaluations, [])
 
           const [most_recent_measurement_blood_pressure_systolic] =
-            await patient_findings.getMostRecentMeasurements(
+            await patient_findings.getMostRecent(
               trx,
               {
                 patient_id,
@@ -259,7 +259,7 @@ describe(
           )
 
           const [most_recent_measurement_blood_oxygen_saturation] =
-            await patient_findings.getMostRecentMeasurements(
+            await patient_findings.getMostRecent(
               trx,
               {
                 patient_id,

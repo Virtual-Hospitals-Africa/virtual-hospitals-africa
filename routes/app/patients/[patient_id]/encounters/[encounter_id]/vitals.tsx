@@ -1,7 +1,7 @@
 import { EncounterContext, EncounterPage } from './_middleware.tsx'
 import { z } from 'zod'
 import * as vitals from '../../../../../../db/models/vitals.ts'
-import * as patient_findings from '../../../../../../db/models/patient_findings.ts'
+import * as patient_findings from '../../../../../../db/models/patient_measurements.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { completeStep } from './_middleware.tsx'
 import { postHandler } from '../../../../../../util/postHandler.ts'
@@ -70,7 +70,7 @@ export async function VitalsPage(ctx: EncounterContext) {
     )
 
   const most_recent_patient_vitals = await patient_findings
-    .getMostRecentMeasurements(
+    .getMostRecent(
       ctx.state.trx,
       {
         patient_id: ctx.state.patient.id,

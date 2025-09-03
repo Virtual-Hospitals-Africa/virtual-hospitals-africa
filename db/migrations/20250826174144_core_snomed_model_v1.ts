@@ -71,6 +71,51 @@ export async function up(db: Kysely<unknown>) {
     qb.addColumn('value', 'decimal', (col) => col.notNull())
       .addColumn('units', 'varchar(255)', (col) => col.notNull()))
 
+  await createPointerTable(db, 'patient_symptoms', {
+    references: 'patient_findings',
+    primary_key_type: 'uuid',
+  }, (qb) =>
+    qb
+      .addColumn(
+        'severity',
+        'int4',
+        (col) => col.notNull().check(sql`severity > 0 AND severity <= 10`),
+      )
+      .addColumn('start_date', 'date', (col) => col.notNull())
+      .addColumn('end_date', 'date')
+      .addColumn('notes', 'text')
+      .addCheckConstraint(
+        'symptom_starts_before_today',
+        sql`
+      start_date <= TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'Africa/Johannesburg', 'YYYY-MM-DD')::date
+    `,
+      )
+      .addCheckConstraint(
+        'symptom_date_range',
+        sql`
+        end_date IS NULL OR (
+          end_date >= start_date AND
+          end_date <= TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'Africa/Johannesburg', 'YYYY-MM-DD')::date
+        )
+      `,
+      ))
+
+  await createPointerTable(db, 'patient_finding_media', {
+    references: 'patient_records',
+    primary_key_type: 'uuid',
+  }, (qb) =>
+    qb.addColumn(
+      'finding_id',
+      'uuid',
+      (col) =>
+        col.notNull().references('patient_findings.id').onDelete('cascade'),
+    )
+      .addColumn(
+        'media_id',
+        'uuid',
+        (col) => col.notNull().references('media.id').onDelete('cascade'),
+      ))
+
   await createPointerTable(
     db,
     'patient_evaluations',
@@ -116,6 +161,8 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_evaluations').execute()
+  await db.schema.dropTable('patient_finding_media').execute()
+  await db.schema.dropTable('patient_symptoms').execute()
   await db.schema.dropTable('patient_measurements').execute()
   await db.schema.dropTable('patient_findings').execute()
   await db.schema.dropTable('patient_procedures').execute()

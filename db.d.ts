@@ -893,6 +893,12 @@ export interface PatientFamily {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientFindingMedia {
+  finding_id: string
+  id: string
+  media_id: string
+}
+
 export interface PatientFindings {
   encounter_provider_id: string
   id: string
@@ -1004,26 +1010,12 @@ export interface Patients {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientSymptomMedia {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  media_id: string
-  patient_symptom_id: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientSymptoms {
-  code: string
-  created_at: Generated<Timestamp>
-  encounter_id: string
-  encounter_provider_id: string
   end_date: Timestamp | null
-  id: Generated<string>
+  id: string
   notes: string | null
-  patient_id: string
   severity: number
   start_date: Timestamp
-  updated_at: Generated<Timestamp>
 }
 
 export interface Pharmacies {
@@ -1528,6 +1520,7 @@ export interface DB {
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
+  patient_finding_media: PatientFindingMedia
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
@@ -1539,7 +1532,6 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_procedures: PatientProcedures
   patient_records: PatientRecords
-  patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
   pharmacies: Pharmacies

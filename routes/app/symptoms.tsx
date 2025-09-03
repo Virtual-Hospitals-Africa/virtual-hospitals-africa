@@ -2,6 +2,9 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../types.ts'
 import { searchSymptoms } from '../../db/models/icd10.ts'
 import { json } from '../../util/responses.ts'
+import { jsonSearchHandler } from '../../util/jsonSearchHandler.ts'
+
+jsonSearchHandler()
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   async GET(req, ctx) {

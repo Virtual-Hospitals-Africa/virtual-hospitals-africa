@@ -22,7 +22,7 @@ import { RenderedPatientSymptom } from '../../types.ts'
 import { ICD10SearchSpecific } from '../icd10/SearchSpecific.tsx'
 import cls from '../../util/cls.ts'
 
-export default function SymptomInput({
+export function SymptomForm({
   name,
   value,
   today,

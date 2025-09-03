@@ -2368,8 +2368,7 @@ export type PatientMedicationUpsert = {
 }
 
 export type PatientSymptomInsertShared = {
-  patient_symptom_id?: string
-  code: string
+  snomed_concept_id: string
   severity: number
   start_date: string
   end_date?: Maybe<string>
@@ -2378,6 +2377,7 @@ export type PatientSymptomInsertShared = {
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
+  altered_patient_symptom_id?: string
   media?: {
     id: string
     mime_type?: string
@@ -2387,7 +2387,7 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
-  & RenderedICD10DiagnosisTree
+  & { patient_symptom_id: string }
   & {
     media: {
       mime_type: string
@@ -3189,4 +3189,12 @@ export type Measurement = {
   value: number
   units: string
   evaluation: Evaluation | null
+}
+
+export type ExtantProcedureOrCreationIntent = {
+  id: string
+  create_from_snomed_concept_id?: never
+} | {
+  id?: never
+  create_from_snomed_concept_id: string
 }

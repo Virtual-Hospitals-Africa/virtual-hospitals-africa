@@ -4,66 +4,54 @@ import {
   EncounterContext,
   EncounterPage,
 } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../islands/symptoms/Section.tsx'
-import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { todayISOInHarare } from '../../../../../../util/date.ts'
+import { postHandler } from '../../../../../../util/postHandler.ts'
+import { assert } from 'std/assert/assert.ts'
+import redirect from '../../../../../../util/redirect.ts'
 
 const MediaSchema = z.object({
   id: z.string(),
 })
 
-const PatientSymptomUpsertSchema = z.object({
-  patient_symptom_id: z.string().uuid().optional(),
-  code: z.string(),
+const PatientSymptomSchema = z.object({
+  done: z.boolean(),
+}).or(z.object({
+  altered_patient_symptom_id: z.string().uuid().optional(),
+  snomed_concept_id: z.string(),
   severity: z.number().min(1).max(10),
   start_date: z.string().date(),
   end_date: z.string().date().optional(),
   notes: z.string().optional(),
   media: z.array(MediaSchema).optional(),
   media_edited: z.boolean(),
-})
+}))
 
-const SymptomsSchema = z.object({
-  symptoms: z.array(PatientSymptomUpsertSchema).optional(),
-}).refine(
-  (data) =>
-    new Set(data.symptoms?.map((s) => s.code)).size ==
-      (data.symptoms?.length ?? 0),
-  {
-    message:
-      'Symptom codes must be unique, pleas consider removing duplicates.',
-    path: ['Symptom'],
-  },
-)
-
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  EncounterContext['state']
-> = {
-  async POST(req, ctx: EncounterContext) {
-    const completing_step = completeStep(ctx)
-
-    const { symptoms = [] } = await parseRequest(
-      ctx.state.trx,
-      req,
-      SymptomsSchema.parse,
-    )
+export const handler = postHandler(
+  PatientSymptomSchema,
+  async (_req, ctx: EncounterContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-    await patient_symptoms.upsert(ctx.state.trx, {
+    if ('done' in form_values) {
+      assert(form_values.done)
+      return completeStep(ctx)
+    }
+
+    const symptom = form_values
+
+    await patient_symptoms.upsertOne(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
       encounter_provider_id:
         ctx.state.encounter_provider.patient_encounter_provider_id,
-      symptoms,
+      symptom,
     })
 
-    return completing_step
+    return redirect(ctx.url)
   },
-}
+)
 
 export async function SymptomsPage(
   ctx: EncounterContext,
