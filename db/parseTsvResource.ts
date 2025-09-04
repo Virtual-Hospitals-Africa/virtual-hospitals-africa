@@ -5,13 +5,14 @@ import { parseTsv, ParseTsvOptions } from '../util/parseCsv.ts'
 export async function* mapTsvResource<T extends z.ZodRawShape>(
   file_name: string,
   schema: z.ZodObject<T>,
-  options?: ParseTsvOptions,
+  options: ParseTsvOptions = {},
 ) {
+  const relative_file_path = `./db/resources/${file_name}.tsv`
+    .replace('.txt.tsv', '.txt')
+    .replace('.tsv.tsv', '.tsv')
+
   for await (
-    const row of parseTsv(
-      `./db/resources/${file_name}.tsv`.replace('.txt.tsv', '.txt'),
-      options || {},
-    )
+    const row of parseTsv(relative_file_path, options)
   ) {
     try {
       const parsed = schema.parse(row)

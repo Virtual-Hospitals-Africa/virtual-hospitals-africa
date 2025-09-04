@@ -8,8 +8,12 @@ import {
 import { chunkTsvResource } from '../../parseTsvResource.ts'
 import { create } from '../create.ts'
 import z from 'zod'
+import { spinner } from '../../../util/spinner.ts'
 
-async function ensureSnomed2024ExtractedAndFilesLayFlatInDirectory() {
+const latest_snomed = 'SnomedCT_InternationalRF2_PRODUCTION_20250801T120000Z'
+const snomed_file_suffix = '_INT_20250801.txt'
+
+async function ensureLatestSnomedExtractedAndFilesLayFlatInDirectory() {
   const already_extracted = await directoryExists(
     './db/resources/extracted/snomed',
   )
@@ -21,7 +25,7 @@ async function ensureSnomed2024ExtractedAndFilesLayFlatInDirectory() {
 
   await runCommandAssertExitCodeZero('unzip', {
     args: [
-      './db/resources/SnomedCT_ManagedServiceUS_PRODUCTION_US1000124_20240301T120000Z.zip',
+      `./db/resources/${latest_snomed}.zip`,
       '-d',
       './db/resources/extracted/snomed',
     ],
@@ -29,10 +33,10 @@ async function ensureSnomed2024ExtractedAndFilesLayFlatInDirectory() {
 
   await rmrf('./db/resources/extracted/snomed/__MACOSX')
   await rmrf(
-    './db/resources/extracted/snomed/SnomedCT_ManagedServiceUS_PRODUCTION_US1000124_20240301T120000Z/Full',
+    `./db/resources/extracted/snomed/${latest_snomed}/Full`,
   )
   await rmrf(
-    './db/resources/extracted/snomed/SnomedCT_ManagedServiceUS_PRODUCTION_US1000124_20240301T120000Z/Readme_en_20240301.txt',
+    `./db/resources/extracted/snomed/${latest_snomed}/Readme_en_20240301.txt`,
   )
 
   await runCommandAssertExitCodeZero(
@@ -42,7 +46,7 @@ async function ensureSnomed2024ExtractedAndFilesLayFlatInDirectory() {
     },
   )
   await rmrf(
-    './db/resources/extracted/snomed/SnomedCT_ManagedServiceUS_PRODUCTION_US1000124_20240301T120000Z',
+    `./db/resources/extracted/snomed/${latest_snomed}`,
   )
 }
 
@@ -67,7 +71,7 @@ const snomed_tables: {
 }[] = [
   {
     table: 'snomed_concept',
-    text_file: 'sct2_Concept_Snapshot_US1000124_20240301.txt',
+    text_file: `sct2_Concept_Snapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -78,7 +82,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_description',
-    text_file: 'sct2_Description_Snapshot-en_US1000124_20240301.txt',
+    text_file: `sct2_Description_Snapshot-en${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -93,7 +97,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_cci_refset_refset_descriptor',
-    text_file: 'der2_cciRefset_RefsetDescriptorSnapshot_US1000124_20240301.txt',
+    text_file: `der2_cciRefset_RefsetDescriptorSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -108,7 +112,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_ci_refset_description_type',
-    text_file: 'der2_ciRefset_DescriptionTypeSnapshot_US1000124_20240301.txt',
+    text_file: `der2_ciRefset_DescriptionTypeSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -123,7 +127,7 @@ const snomed_tables: {
   {
     table: 'snomed_cisscc_refset_mrcm_attribute_domain',
     text_file:
-      'der2_cissccRefset_MRCMAttributeDomainSnapshot_US1000124_20240301.txt',
+      `der2_cissccRefset_MRCMAttributeDomainSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -141,7 +145,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_c_refset_association',
-    text_file: 'der2_cRefset_AssociationSnapshot_US1000124_20240301.txt',
+    text_file: `der2_cRefset_AssociationSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -154,7 +158,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_c_refset_attribute_value',
-    text_file: 'der2_cRefset_AttributeValueSnapshot_US1000124_20240301.txt',
+    text_file: `der2_cRefset_AttributeValueSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -167,7 +171,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_c_refset_language',
-    text_file: 'der2_cRefset_LanguageSnapshot-en_US1000124_20240301.txt',
+    text_file: `der2_cRefset_LanguageSnapshot-en${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -180,7 +184,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_c_refset_mrcm_module_scope',
-    text_file: 'der2_cRefset_MRCMModuleScopeSnapshot_US1000124_20240301.txt',
+    text_file: `der2_cRefset_MRCMModuleScopeSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -193,7 +197,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_iissscc_refset_extended_map',
-    text_file: 'der2_iisssccRefset_ExtendedMapSnapshot_US1000124_20240301.txt',
+    text_file: `der2_iisssccRefset_ExtendedMapSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -212,7 +216,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_refset_simple',
-    text_file: 'der2_Refset_SimpleSnapshot_US1000124_20240301.txt',
+    text_file: `der2_Refset_SimpleSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -225,7 +229,7 @@ const snomed_tables: {
   // {
   //   table: 'snomed_scs_refset_component_annotation_string_value',
   //   text_file:
-  //     'der2_scsRefset_ComponentAnnotationStringValueSnapshot_US1000124_20240301.txt',
+  //     'der2_scsRefset_ComponentAnnotationStringValueSnapshot${snomed_file_suffix}.txt',
   //   schema: z.object({
   //     id: z.string(),
   //     effective_time,
@@ -240,7 +244,7 @@ const snomed_tables: {
   // },
   {
     table: 'snomed_s_refset_simple_map',
-    text_file: 'der2_sRefset_SimpleMapSnapshot_US1000124_20240301.txt',
+    text_file: `der2_sRefset_SimpleMapSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -254,7 +258,7 @@ const snomed_tables: {
   {
     table: 'snomed_sscc_refset_mrcm_attribute_range',
     text_file:
-      'der2_ssccRefset_MRCMAttributeRangeSnapshot_US1000124_20240301.txt',
+      `der2_ssccRefset_MRCMAttributeRangeSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -271,7 +275,7 @@ const snomed_tables: {
   // {
   //   table: 'snomed_sscs_refset_member_annotation_string_value',
   //   text_file:
-  //     'der2_sscsRefset_MemberAnnotationStringValueSnapshot_US1000124_20240301.txt',
+  //     `der2_sscsRefset_MemberAnnotationStringValueSnapshot${snomed_file_suffix}`,
   //   schema: z.object({
   //     id: z.string(),
   //     effective_time,
@@ -287,7 +291,7 @@ const snomed_tables: {
   // },
   {
     table: 'snomed_ss_refset_module_dependency',
-    text_file: 'der2_ssRefset_ModuleDependencySnapshot_US1000124_20240301.txt',
+    text_file: `der2_ssRefset_ModuleDependencySnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -301,7 +305,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_sssssss_refset_mrcm_domain',
-    text_file: 'der2_sssssssRefset_MRCMDomainSnapshot_US1000124_20240301.txt',
+    text_file: `der2_sssssssRefset_MRCMDomainSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -321,7 +325,7 @@ const snomed_tables: {
   // This txt file is blank
   // {
   //   table: 'snomed_identifier',
-  //   text_file: 'sct2_Identifier_Snapshot_US1000124_20240301.txt',
+  //   text_file: `sct2_Identifier_Snapshot${snomed_file_suffix}`,
   //   schema: z.object({
   //     alternate_identifier: z.string(),
   //     effective_time,
@@ -333,7 +337,7 @@ const snomed_tables: {
   // },
   {
     table: 'snomed_relationship',
-    text_file: 'sct2_Relationship_Snapshot_US1000124_20240301.txt',
+    text_file: `sct2_Relationship_Snapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -349,8 +353,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_relationship_concrete_values',
-    text_file:
-      'sct2_RelationshipConcreteValues_Snapshot_US1000124_20240301.txt',
+    text_file: `sct2_RelationshipConcreteValues_Snapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -366,7 +369,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_s_refset_owl_expression',
-    text_file: 'sct2_sRefset_OWLExpressionSnapshot_US1000124_20240301.txt',
+    text_file: `sct2_sRefset_OWLExpressionSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -379,7 +382,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_stated_relationship',
-    text_file: 'sct2_StatedRelationship_Snapshot_US1000124_20240301.txt',
+    text_file: `sct2_StatedRelationship_Snapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -395,7 +398,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_text_definition',
-    text_file: 'sct2_TextDefinition_Snapshot-en_US1000124_20240301.txt',
+    text_file: `sct2_TextDefinition_Snapshot-en${snomed_file_suffix}`,
     schema: z.object({
       id: z.number().int(),
       effective_time,
@@ -435,7 +438,7 @@ export default create([
   'snomed_stated_relationship',
   'snomed_text_definition',
 ], async (trx) => {
-  await ensureSnomed2024ExtractedAndFilesLayFlatInDirectory()
+  await ensureLatestSnomedExtractedAndFilesLayFlatInDirectory()
 
   const TEST_AGAINST_FILE_HEADS = false
   const snomed_directory = TEST_AGAINST_FILE_HEADS
@@ -454,7 +457,10 @@ export default create([
         },
       )
     ) {
-      await trx.insertInto(table).values(chunk).execute()
+      await spinner(
+        `Loading ${table}`,
+        trx.insertInto(table).values(chunk).execute(),
+      )
     }
   }
 }, { never_dump: true })
