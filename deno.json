@@ -80,6 +80,7 @@
     "kysely": "npm:kysely@0.27.6",
     "natural": "npm:natural@6.10.4",
     "pg": "npm:pg@8.16.0",
+    "pg-cursor": "npm:pg-cursor@2.15.3",
     "preact": "https://esm.sh/preact@10.25.4",
     "preact/": "https://esm.sh/preact@10.25.4/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.5.13",

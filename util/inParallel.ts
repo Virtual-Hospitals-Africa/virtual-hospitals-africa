@@ -121,15 +121,13 @@ export async function collect<T>(
   return results
 }
 
-export async function map<T, U>(
+export async function* map<T, U>(
   generator: Iterable<T> | AsyncIterable<T>,
   callback: (t: T) => U,
-): Promise<U[]> {
-  const results: U[] = []
+): AsyncGenerator<U> {
   for await (const item of generator) {
-    results.push(callback(item))
+    yield await callback(item)
   }
-  return results
 }
 
 // Does not respect the order of the input iterable
@@ -145,4 +143,21 @@ export async function filter<T>(
     }
   }, { concurrency })
   return results
+}
+
+export async function* chunks<T>(
+  generator: Iterable<T> | AsyncIterable<T>,
+  size: number = 1000,
+) {
+  let chunk: T[] = []
+  for await (const item of generator) {
+    chunk.push(item)
+    if (chunk.length === size) {
+      yield chunk
+      chunk = []
+    }
+  }
+  if (chunk.length) {
+    yield chunk
+  }
 }

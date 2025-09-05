@@ -127,6 +127,66 @@ export type PharmacistType =
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
+export type SnomedCategory =
+  | 'administration method'
+  | 'assessment scale'
+  | 'attribute'
+  | 'basic dose form'
+  | 'body structure'
+  | 'calculation'
+  | 'cell'
+  | 'cell structure'
+  | 'clinical drug'
+  | 'core metadata concept'
+  | 'disorder'
+  | 'disposition'
+  | 'dose form'
+  | 'environment'
+  | 'environment / location'
+  | 'ethnic group'
+  | 'event'
+  | 'finding'
+  | 'foundation metadata concept'
+  | 'geographic location'
+  | 'intended site'
+  | 'link assertion'
+  | 'linkage concept'
+  | 'medicinal product'
+  | 'medicinal product form'
+  | 'metadata'
+  | 'morphologic abnormality'
+  | 'namespace concept'
+  | 'navigational concept'
+  | 'observable entity'
+  | 'occupation'
+  | 'organism'
+  | 'OWL metadata concept'
+  | 'person'
+  | 'physical force'
+  | 'physical object'
+  | 'procedure'
+  | 'product'
+  | 'product name'
+  | 'qualifier value'
+  | 'racial group'
+  | 'record artifact'
+  | 'regime/therapy'
+  | 'release characteristic'
+  | 'religion/philosophy'
+  | 'role'
+  | 'situation'
+  | 'SNOMED RT+CTV3'
+  | 'social concept'
+  | 'special concept'
+  | 'specimen'
+  | 'staging scale'
+  | 'state of matter'
+  | 'substance'
+  | 'supplier'
+  | 'transformation'
+  | 'tumor staging'
+  | 'unit of presentation'
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export interface Addresses {
@@ -1271,6 +1331,14 @@ export interface SnomedIisssccRefsetExtendedMap {
   refset_id: Int8
 }
 
+export interface SnomedInferredCanonicalNameAndCategory {
+  category: SnomedCategory
+  description_id: Int8
+  id: Int8
+  language_code: string
+  name: string
+}
+
 export interface SnomedRefsetSimple {
   active: boolean
   effective_time: Timestamp
@@ -1560,6 +1628,8 @@ export interface DB {
   snomed_concept: SnomedConcept
   snomed_description: SnomedDescription
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
+  snomed_inferred_canonical_name_and_category:
+    SnomedInferredCanonicalNameAndCategory
   snomed_refset_simple: SnomedRefsetSimple
   snomed_relationship: SnomedRelationship
   snomed_relationship_concrete_values: SnomedRelationshipConcreteValues

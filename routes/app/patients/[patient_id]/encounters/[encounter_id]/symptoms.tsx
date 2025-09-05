@@ -11,6 +11,7 @@ import { todayISOInHarare } from '../../../../../../util/date.ts'
 import { postHandler } from '../../../../../../util/postHandler.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../../util/redirect.ts'
+import { snomed_concept_id } from '../../../../../../util/validators.ts'
 
 const MediaSchema = z.object({
   id: z.string(),
@@ -20,13 +21,12 @@ const PatientSymptomSchema = z.object({
   done: z.boolean(),
 }).or(z.object({
   altered_patient_symptom_id: z.string().uuid().optional(),
-  snomed_concept_id: z.string(),
+  snomed_concept_id,
   severity: z.number().min(1).max(10),
   start_date: z.string().date(),
   end_date: z.string().date().optional(),
   notes: z.string().optional(),
   media: z.array(MediaSchema).optional(),
-  media_edited: z.boolean(),
 }))
 
 export const handler = postHandler(
@@ -63,7 +63,12 @@ export async function SymptomsPage(
 
   const today = todayISOInHarare()
 
-  return <SymptomSection patient_symptoms={symptoms} today={today} />
+  return (
+    <SymptomSection
+      patient_symptoms={symptoms}
+      today={today}
+    />
+  )
 }
 
 export default EncounterPage(SymptomsPage)

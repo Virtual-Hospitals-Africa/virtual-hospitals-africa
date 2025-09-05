@@ -79,3 +79,24 @@ export function markEnteredInError(
     snomed_concept_id: ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,
   })
 }
+
+export function nowInvalidRecords(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+) {
+  return trx.selectFrom(
+    'patient_records as now_invalid_patient_records',
+  )
+    .innerJoin(
+      'patient_evaluations as now_invalid_patient_evaluations',
+      'now_invalid_patient_evaluations.id',
+      'now_invalid_patient_evaluations.id',
+    )
+    .where('now_invalid_patient_records.patient_id', '=', patient_id)
+    .where(
+      'now_invalid_patient_records.snomed_concept_id',
+      'in',
+      RECORD_NOW_INVALID_CONCEPT_ID,
+    )
+    .select('now_invalid_patient_evaluations.evaluates_record_id')
+}

@@ -1,4 +1,4 @@
-import * as patient_findings from './patient_measurements.ts'
+import * as patient_measurements from './patient_measurements.ts'
 import {
   Measurement,
   TrxOrDb,
@@ -20,7 +20,7 @@ export function insertMeasurements(
     input_measurements: Measurement[]
   },
 ): Promise<{ success: true }> {
-  return patient_findings.insertMany(trx, {
+  return patient_measurements.insertMany(trx, {
     ...opts,
     procedure: {
       create_from_snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,

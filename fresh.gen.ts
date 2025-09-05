@@ -18,6 +18,7 @@ import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
+import * as $app_family_history from './routes/app/family_history.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
@@ -112,6 +113,7 @@ import * as $app_providers from './routes/app/providers.tsx'
 import * as $app_snomed_allergies from './routes/app/snomed/allergies.ts'
 import * as $app_snomed_concepts from './routes/app/snomed/concepts.ts'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
+import * as $app_symptoms_icd10 from './routes/app/symptoms-icd10.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
@@ -187,6 +189,7 @@ import * as $OrganizationsSelect from './islands/OrganizationsSelect.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
+import * as $RightPanel from './islands/RightPanel.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
 import * as $SendTo_Button from './islands/SendTo/Button.tsx'
@@ -277,7 +280,8 @@ import * as $request_review_OrganizationsTable from './islands/request-review/Or
 import * as $request_review_ViewIconWithBackground from './islands/request-review/ViewIconWithBackground.tsx'
 import * as $summary_DescriptionRow from './islands/summary/DescriptionRow.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
-import * as $symptoms_Input from './islands/symptoms/Input.tsx'
+import * as $symptoms_Form from './islands/symptoms/Form.tsx'
+import * as $symptoms_FormPanel from './islands/symptoms/FormPanel.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
 import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
@@ -308,6 +312,7 @@ const manifest = {
     './routes/app/devices.tsx': $app_devices,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
+    './routes/app/family_history.tsx': $app_family_history,
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
@@ -480,6 +485,7 @@ const manifest = {
     './routes/app/snomed/allergies.ts': $app_snomed_allergies,
     './routes/app/snomed/concepts.ts': $app_snomed_concepts,
     './routes/app/surgeries.tsx': $app_surgeries,
+    './routes/app/symptoms-icd10.tsx': $app_symptoms_icd10,
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
@@ -571,6 +577,7 @@ const manifest = {
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,
+    './islands/RightPanel.tsx': $RightPanel,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
     './islands/SendTo/Button.tsx': $SendTo_Button,
@@ -676,7 +683,8 @@ const manifest = {
       $request_review_ViewIconWithBackground,
     './islands/summary/DescriptionRow.tsx': $summary_DescriptionRow,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
-    './islands/symptoms/Input.tsx': $symptoms_Input,
+    './islands/symptoms/Form.tsx': $symptoms_Form,
+    './islands/symptoms/FormPanel.tsx': $symptoms_FormPanel,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/timer.tsx': $timer,
     './islands/useAsyncSearch.tsx': $useAsyncSearch,

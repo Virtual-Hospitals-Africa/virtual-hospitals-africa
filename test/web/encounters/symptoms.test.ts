@@ -33,7 +33,10 @@ describe(
 
       const formValues = getFormValues($)
 
-      assertEquals(formValues, {})
+      assertEquals(formValues, {
+        done: true,
+        chief_complaint: null,
+      })
     })
   },
 )

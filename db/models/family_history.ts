@@ -2,7 +2,7 @@ import { DB } from '../../db.d.ts'
 import { TrxOrDb } from '../../types.ts'
 import { base } from './_base.ts'
 
-// TODO actually get more refined results
+// TODO actually get more refined results for family history
 // Also, not sure why I'm having to feed all these types into base
 export default base<
   { search?: string },
@@ -24,7 +24,7 @@ export default base<
       .where(
         'snomed_inferred_canonical_name_and_category.category',
         '=',
-        'finding',
+        'disorder',
       )
   },
   formatResult(

@@ -1,7 +1,7 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as patient_findings from '../../db/models/patient_measurements.ts'
+import * as patient_measurements from '../../db/models/patient_measurements.ts'
 import * as vitals from '../../db/models/vitals.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import db from '../../db/db.ts'
@@ -14,7 +14,7 @@ describe(
   'db/models/vitals.ts',
   () => {
     afterAll(() => db.destroy())
-    describe('insertMeasurements', () => {
+    describe('insertMany', () => {
       itUsesTrxAnd(
         'can save vital measurements with evaluations of varying priorities',
         async (trx) => {
@@ -88,7 +88,7 @@ describe(
             ],
           })
 
-          const [most_recent_measurement_height] = await patient_findings
+          const [most_recent_measurement_height] = await patient_measurements
             .getMostRecent(
               trx,
               { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
@@ -97,8 +97,8 @@ describe(
           assertEquals(most_recent_measurement_height.value_display, '123 cm')
           assertEquals(most_recent_measurement_height.evaluations, [])
 
-          const [most_recent_measurement_weight] = await patient_findings
-            .getMostRecentMeasurements(
+          const [most_recent_measurement_weight] = await patient_measurements
+            .getMostRecent(
               trx,
               { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.weight] },
             )
@@ -110,7 +110,7 @@ describe(
           }])
 
           const [most_recent_measurement_blood_pressure_systolic] =
-            await patient_findings.getMostRecent(
+            await patient_measurements.getMostRecent(
               trx,
               {
                 patient_id,
@@ -133,7 +133,7 @@ describe(
           )
 
           const [most_recent_measurement_blood_pressure_diastolic] =
-            await patient_findings.getMostRecentMeasurements(
+            await patient_measurements.getMostRecent(
               trx,
               {
                 patient_id,
@@ -156,7 +156,7 @@ describe(
           )
 
           const [most_recent_measurement_blood_oxygen_saturation] =
-            await patient_findings.getMostRecent(
+            await patient_measurements.getMostRecent(
               trx,
               {
                 patient_id,
@@ -229,7 +229,7 @@ describe(
             ],
           })
 
-          const [most_recent_measurement_height] = await patient_findings
+          const [most_recent_measurement_height] = await patient_measurements
             .getMostRecent(
               trx,
               { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
@@ -239,7 +239,7 @@ describe(
           assertEquals(most_recent_measurement_height.evaluations, [])
 
           const [most_recent_measurement_blood_pressure_systolic] =
-            await patient_findings.getMostRecent(
+            await patient_measurements.getMostRecent(
               trx,
               {
                 patient_id,
@@ -259,7 +259,7 @@ describe(
           )
 
           const [most_recent_measurement_blood_oxygen_saturation] =
-            await patient_findings.getMostRecent(
+            await patient_measurements.getMostRecent(
               trx,
               {
                 patient_id,

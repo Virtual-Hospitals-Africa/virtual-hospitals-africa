@@ -2373,7 +2373,6 @@ export type PatientSymptomInsertShared = {
   start_date: string
   end_date?: Maybe<string>
   notes?: Maybe<string>
-  media_edited?: boolean
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
@@ -2387,7 +2386,7 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
-  & { patient_symptom_id: string }
+  & { id: string; name: string }
   & {
     media: {
       mime_type: string
@@ -3197,4 +3196,18 @@ export type ExtantProcedureOrCreationIntent = {
 } | {
   id?: never
   create_from_snomed_concept_id: string
+}
+
+export type PatientFamilyHistoryShared = {
+  snomed_concept_id: string
+  relation_gendered: string
+}
+
+export type PatientFamilyHistoryUpsert = PatientFamilyHistoryShared & {
+  altered_patient_family_history_id?: string
+}
+
+export type RenderedPatientFamilyHistory = PatientFamilyHistoryShared & {
+  id: string
+  name: string
 }
