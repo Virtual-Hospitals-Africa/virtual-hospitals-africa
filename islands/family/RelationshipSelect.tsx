@@ -1,58 +1,56 @@
-import { Signal, useSignal } from "@preact/signals";
-import { JSX } from "preact";
-import { GUARDIAN_RELATIONS } from "../../shared/family.ts";
-import { Gender, GuardianRelationName, Maybe } from "../../types.ts";
-import capitalize from "../../util/capitalize.ts";
-import { Select } from "../form/Inputs.tsx";
+import { Signal, useSignal } from '@preact/signals'
+import { JSX } from 'preact'
+import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
+import { Gender, GuardianRelationName, Maybe } from '../../types.ts'
+import capitalize from '../../util/capitalize.ts'
+import { Select } from '../form/Inputs.tsx'
 
 type OptionsProps = {
-  gender?: Maybe<Gender>;
-  selected_family_relation_gendered: Signal<string | undefined>;
+  gender?: Maybe<Gender>
+  selected_family_relation_gendered: Signal<string | undefined>
   relation: {
-    guardian: GuardianRelationName;
-    dependent: string;
-    female_guardian: string | null;
-    male_guardian: string | null;
-    female_dependent: string | null;
-    male_dependent: string | null;
-  };
-};
+    guardian: GuardianRelationName
+    dependent: string
+    female_guardian: string | null
+    male_guardian: string | null
+    female_dependent: string | null
+    male_dependent: string | null
+  }
+}
 
 function AllOptions({
   gender,
   selected_family_relation_gendered,
   relation,
 }: OptionsProps) {
-  const options: JSX.Element[] = [];
-  if ((!gender || gender === "male") && relation.male_guardian) {
+  const options: JSX.Element[] = []
+  if ((!gender || gender === 'male') && relation.male_guardian) {
     options.push(
       <option
         value={relation.male_guardian}
-        selected={
-          selected_family_relation_gendered.value === relation.male_guardian
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.male_guardian}
       >
         {capitalize(relation.male_guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
-  if ((!gender || gender === "female") && relation.female_guardian) {
+  if ((!gender || gender === 'female') && relation.female_guardian) {
     options.push(
       <option
         value={relation.female_guardian}
-        selected={
-          selected_family_relation_gendered.value === relation.female_guardian
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.female_guardian}
       >
         {capitalize(relation.female_guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
   if (
     !gender ||
-    gender === "non-binary" ||
-    (gender === "female" && !relation.female_guardian) ||
-    (gender === "male" && !relation.male_guardian)
+    gender === 'non-binary' ||
+    (gender === 'female' && !relation.female_guardian) ||
+    (gender === 'male' && !relation.male_guardian)
   ) {
     options.push(
       <option
@@ -60,89 +58,83 @@ function AllOptions({
         selected={selected_family_relation_gendered.value === relation.guardian}
       >
         {capitalize(relation.guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
-  if ((!gender || gender === "male") && relation.male_dependent) {
+  if ((!gender || gender === 'male') && relation.male_dependent) {
     options.push(
       <option
         value={relation.male_dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.male_dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.male_dependent}
       >
         {capitalize(relation.male_dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
-  if ((!gender || gender === "female") && relation.female_dependent) {
+  if ((!gender || gender === 'female') && relation.female_dependent) {
     options.push(
       <option
         value={relation.female_dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.female_dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.female_dependent}
       >
         {capitalize(relation.female_dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
   if (
     !gender ||
-    gender === "non-binary" ||
-    (gender === "female" && !relation.female_dependent) ||
-    (gender === "male" && !relation.male_dependent)
+    gender === 'non-binary' ||
+    (gender === 'female' && !relation.female_dependent) ||
+    (gender === 'male' && !relation.male_dependent)
   ) {
     options.push(
       <option
         value={relation.dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.dependent}
       >
         {capitalize(relation.dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
-  return options;
+  return options
 }
-
 
 function GuardianOptions({
   gender,
   selected_family_relation_gendered,
   relation,
 }: OptionsProps) {
-  const options: JSX.Element[] = [];
-  if ((!gender || gender === "male") && relation.male_guardian) {
+  const options: JSX.Element[] = []
+  if ((!gender || gender === 'male') && relation.male_guardian) {
     options.push(
       <option
         value={relation.male_guardian}
-        selected={
-          selected_family_relation_gendered.value === relation.male_guardian
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.male_guardian}
       >
         {capitalize(relation.male_guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
-  if ((!gender || gender === "female") && relation.female_guardian) {
+  if ((!gender || gender === 'female') && relation.female_guardian) {
     options.push(
       <option
         value={relation.female_guardian}
-        selected={
-          selected_family_relation_gendered.value === relation.female_guardian
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.female_guardian}
       >
         {capitalize(relation.female_guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
   if (
     !gender ||
-    gender === "non-binary" ||
-    (gender === "female" && !relation.female_guardian) ||
-    (gender === "male" && !relation.male_guardian)
+    gender === 'non-binary' ||
+    (gender === 'female' && !relation.female_guardian) ||
+    (gender === 'male' && !relation.male_guardian)
   ) {
     options.push(
       <option
@@ -150,10 +142,10 @@ function GuardianOptions({
         selected={selected_family_relation_gendered.value === relation.guardian}
       >
         {capitalize(relation.guardian)}
-      </option>
-    );
+      </option>,
+    )
   }
-  return options;
+  return options
 }
 
 function DependentOptions({
@@ -161,49 +153,46 @@ function DependentOptions({
   selected_family_relation_gendered,
   relation,
 }: OptionsProps) {
-  const options: JSX.Element[] = [];
-  if ((!gender || gender === "male") && relation.male_dependent) {
+  const options: JSX.Element[] = []
+  if ((!gender || gender === 'male') && relation.male_dependent) {
     options.push(
       <option
         value={relation.male_dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.male_dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.male_dependent}
       >
         {capitalize(relation.male_dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
-  if ((!gender || gender === "female") && relation.female_dependent) {
+  if ((!gender || gender === 'female') && relation.female_dependent) {
     options.push(
       <option
         value={relation.female_dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.female_dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.female_dependent}
       >
         {capitalize(relation.female_dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
   if (
     !gender ||
-    gender === "non-binary" ||
-    (gender === "female" && !relation.female_dependent) ||
-    (gender === "male" && !relation.male_dependent)
+    gender === 'non-binary' ||
+    (gender === 'female' && !relation.female_dependent) ||
+    (gender === 'male' && !relation.male_dependent)
   ) {
     options.push(
       <option
         value={relation.dependent}
-        selected={
-          selected_family_relation_gendered.value === relation.dependent
-        }
+        selected={selected_family_relation_gendered.value ===
+          relation.dependent}
       >
         {capitalize(relation.dependent)}
-      </option>
-    );
+      </option>,
+    )
   }
-  return options;
+  return options
 }
 
 export default function RelationshipSelect({
@@ -214,23 +203,22 @@ export default function RelationshipSelect({
   gender,
   additionalRelations,
 }: {
-  name: string;
-  required?: boolean;
-  family_relation_gendered?: string;
-  type: "guardian" | "dependent" | "all";
-  gender?: Maybe<Gender>;
-  additionalRelations?: Map<string, string>;
+  name: string
+  required?: boolean
+  family_relation_gendered?: string
+  type: 'guardian' | 'dependent' | 'all'
+  gender?: Maybe<Gender>
+  additionalRelations?: Map<string, string>
 }) {
-  const selected_family_relation_gendered = useSignal(family_relation_gendered);
-  const Options =
-    type === "guardian"
-      ? GuardianOptions
-      : type === "dependent"
-      ? DependentOptions
-      : AllOptions;
+  const selected_family_relation_gendered = useSignal(family_relation_gendered)
+  const Options = type === 'guardian'
+    ? GuardianOptions
+    : type === 'dependent'
+    ? DependentOptions
+    : AllOptions
   return (
-    <Select name={name} label="Relationship" required={required}>
-      <option value="" selected={!selected_family_relation_gendered.value}>
+    <Select name={name} label='Relationship' required={required}>
+      <option value='' selected={!selected_family_relation_gendered.value}>
         Select a relationship
       </option>
       {GUARDIAN_RELATIONS.flatMap((relation) =>
@@ -252,5 +240,5 @@ export default function RelationshipSelect({
           </option>
         ))}
     </Select>
-  );
+  )
 }
