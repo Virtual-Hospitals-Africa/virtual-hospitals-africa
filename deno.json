@@ -22,6 +22,7 @@
     "db:create": "deno task run:trusted db/create.ts",
     "db:demo": "deno task db:local reset && deno task run:trusted ./scripts/add_dummy_data.ts",
     "db:stage:snomed": "deno task db:drop && deno task db:create && deno task db:migrate to _icd10.ts && deno task db:seed load 01_snomed && deno task db:seed load 02_icd10 && rm -f ./db/dumps/snomed && deno task db:dump > ./db/dumps/snomed",
+    "db:dummy": "deno task run:trusted ./scripts/add_dummy_data.ts",
     "events:processor": "deno task run:trusted events/processor.ts",
     "heroku": "deno task run:trusted ./scripts/heroku.ts",
     "docker": "./scripts/docker.sh",

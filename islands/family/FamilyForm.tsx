@@ -1,70 +1,65 @@
-import { JSX } from 'preact'
-import { Signal, useSignal } from '@preact/signals'
+import { Signal, useSignal } from "@preact/signals";
+import { JSX } from "preact";
+import FormSection from "../../components/library/FormSection.tsx";
 import {
   FamilyRelation,
   GuardianFamilyRelation,
   NextOfKin,
   PatientFamily,
-} from '../../types.ts'
-import { AddRow } from '../AddRemove.tsx'
-import Guardian from './Guardian.tsx'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import Dependent from './Dependent.tsx'
-import NextOfKinInput from './NextOfKin.tsx'
-import FormSection from '../../components/library/FormSection.tsx'
+} from "../../types.ts";
+import NextOfKinInput from "./NextOfKin.tsx";
 
-type GuardianFamilyRelationState =
-  & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
-  & {
-    removed?: boolean
-  }
-type DependentFamilyRelationState =
-  & Partial<Omit<FamilyRelation, 'relation_id'>>
-  & {
-    removed?: boolean
-  }
+type GuardianFamilyRelationState = Partial<
+  Omit<GuardianFamilyRelation, "relation_id">
+> & {
+  removed?: boolean;
+};
+type DependentFamilyRelationState = Partial<
+  Omit<FamilyRelation, "relation_id">
+> & {
+  removed?: boolean;
+};
 
-export function NextOfKinFormSection(
-  { next_of_kin }: { next_of_kin?: Partial<NextOfKin> },
-) {
+export function NextOfKinFormSection({
+  next_of_kin,
+}: {
+  next_of_kin?: Partial<NextOfKin>;
+}) {
   return (
-    <FormSection header='Next Of Kin'>
-      <NextOfKinInput
-        name='family.next_of_kin'
-        value={next_of_kin}
-      />
+    <FormSection header="Next Of Kin">
+      <NextOfKinInput name="family.next_of_kin" value={next_of_kin} />
     </FormSection>
-  )
+  );
 }
 
 export default function PatientFamilyForm({
   family,
   age_years,
 }: {
-  family: PatientFamily
-  age_years: number
+  family: PatientFamily;
+  age_years: number;
 }): JSX.Element {
   const guardians: Signal<GuardianFamilyRelationState[]> = useSignal(
-    family.guardians,
-  )
+    family.guardians
+  );
   const dependents: Signal<DependentFamilyRelationState[]> = useSignal(
-    family.dependents,
-  )
+    family.dependents
+  );
 
-  const addGuardian = () => guardians.value = guardians.value.concat([{}])
-  const addDependent = () => dependents.value = dependents.value.concat([{}])
+  const addGuardian = () => (guardians.value = guardians.value.concat([{}]));
+  const addDependent = () => (dependents.value = dependents.value.concat([{}]));
 
-  const showGuardians = age_years <= 18
-  const showDependents = age_years >= 10
-  const showNextOfKin = age_years >= 19
+  const showGuardians = age_years <= 18;
+  const showDependents = age_years >= 10;
+  const showNextOfKin = age_years >= 19;
   // const showPatientCohabitation = age_years <= 18
 
   //Default values
-  family.marital_status ??= age_years <= 18 ? 'Never Married' : null
+  family.marital_status ??= age_years <= 18 ? "Never Married" : null;
 
   return (
     <>
-      {showGuardians && (
+      {/* {showGuardians && (
         <input type='hidden' name='family.under_18' value='on' />
       )}
       {showNextOfKin && (
@@ -120,7 +115,7 @@ export default function PatientFamilyForm({
               onClick={addDependent}
             />
           </div>
-        )}
+        )} */}
     </>
-  )
+  );
 }

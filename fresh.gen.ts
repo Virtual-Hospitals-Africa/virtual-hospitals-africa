@@ -168,6 +168,8 @@ import * as $DemoVideo from './islands/DemoVideo.tsx'
 import * as $Dropdown from './islands/Dropdown.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
+import * as $FamilyHistoryFormPanel from './islands/FamilyHistoryFormPanel.tsx'
+import * as $FamilyHistoryPage from './islands/FamilyHistoryPage.tsx'
 import * as $Filter from './islands/Filter.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
@@ -550,6 +552,8 @@ const manifest = {
     './islands/Dropdown.tsx': $Dropdown,
     './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,
+    './islands/FamilyHistoryFormPanel.tsx': $FamilyHistoryFormPanel,
+    './islands/FamilyHistoryPage.tsx': $FamilyHistoryPage,
     './islands/Filter.tsx': $Filter,
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
