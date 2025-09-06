@@ -1,46 +1,38 @@
 import { sql } from 'kysely'
 import {
-  PatientSymptomUpsert,
-  RenderedPatientSymptom,
+  PatientFamilyHistoryUpsert,
+  RenderedPatientFamilyHistory,
   TrxOrDb,
 } from '../../types.ts'
-import {
-  blankSelection,
-  isoDate,
-  jsonArrayFrom,
-  success_true,
-} from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
+import { blankSelection, success_true } from '../helpers.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
 
-export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
-  '409060008'
+export const PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID = '410551005'
 
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
-  { patient_id, encounter_id, encounter_provider_id, symptom }: {
+  { patient_id, encounter_id, encounter_provider_id, family_history }: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
-    symptom: PatientSymptomUpsert
+    family_history: PatientFamilyHistoryUpsert
   },
 ) {
   const {
-    altered_patient_symptom_id,
+    altered_patient_family_history_id,
     snomed_concept_id,
-    severity,
-    start_date,
-    end_date,
-    notes,
-  } = symptom
+    // TODO use this and other fields related
+    // relation_gendered,
+  } = family_history
 
-  if (altered_patient_symptom_id) {
+  if (altered_patient_family_history_id) {
     await markAltered(trx, {
       patient_id,
       encounter_id,
       encounter_provider_id,
-      altered_record_id: altered_patient_symptom_id,
+      altered_record_id: altered_patient_family_history_id,
     })
   }
 
@@ -68,14 +60,14 @@ export async function upsertOne(
     .where(
       'patient_records.snomed_concept_id',
       '=',
-      EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+      PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID,
     )
     .select(['patient_procedures.id'])
     .executeTakeFirst()
 
   const procedure_id = existing_procedure?.id || generateUUID()
 
-  const symptom_id = generateUUID()
+  const family_history_id = generateUUID()
 
   return trx.with(
     'inserting_procedure_record',
@@ -86,8 +78,7 @@ export async function upsertOne(
             id: procedure_id,
             patient_id,
             encounter_id,
-            snomed_concept_id:
-              EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+            snomed_concept_id: PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID,
           })
         : blankSelection(qb),
   ).with(
@@ -103,28 +94,29 @@ export async function upsertOne(
   ).with('inserting_finding_records', (qb) =>
     qb.insertInto('patient_records')
       .values({
-        id: symptom_id,
+        id: family_history_id,
         patient_id,
         encounter_id,
         snomed_concept_id,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
-          id: symptom_id,
+          id: family_history_id,
           procedure_id,
           encounter_provider_id,
-        })).with(
-      'inserting_symptoms',
-      (qb) =>
-        qb.insertInto('patient_symptoms')
-          .values({
-            id: symptom_id,
-            severity,
-            start_date,
-            end_date,
-            notes,
-          }),
-    )
+        }))
+    // .with(
+    //   'inserting_family_historys',
+    //   (qb) =>
+    //     qb.insertInto('patient_family_historys')
+    //       .values({
+    //         id: family_history_id,
+    //         severity,
+    //         start_date,
+    //         end_date,
+    //         notes,
+    //       }),
+    // )
     .selectNoFrom([
       success_true,
     ])
@@ -137,12 +129,12 @@ export function getEncounter(
     patient_id: string
     encounter_id: string
   },
-): Promise<RenderedPatientSymptom[]> {
+): Promise<RenderedPatientFamilyHistory[]> {
   return trx
     .selectFrom('patient_records')
     .innerJoin(
-      'patient_symptoms',
-      'patient_symptoms.id',
+      'patient_findings',
+      'patient_findings.id',
       'patient_records.id',
     )
     .innerJoin(
@@ -158,26 +150,11 @@ export function getEncounter(
       nowInvalidRecords(trx, { patient_id }),
     )
     .selectAll('patient_records')
-    .select((eb) => [
-      'patient_symptoms.id',
-      'severity',
-      'notes',
+    .select([
+      'patient_findings.id',
+      'patient_records.snomed_concept_id',
       'snomed_inferred_canonical_name_and_category.name',
-      isoDate(eb.ref('start_date')).as('start_date'),
-      isoDate(eb.ref('end_date')).as('end_date'),
-      jsonArrayFrom(
-        eb
-          .selectFrom('patient_finding_media')
-          .innerJoin('media', 'media.id', 'patient_finding_media.media_id')
-          .select([
-            'media.mime_type',
-            sql<string>`concat('/app/media/', media.uuid)`.as('url'),
-          ])
-          .whereRef(
-            'patient_finding_media.finding_id',
-            '=',
-            'patient_symptoms.id',
-          ),
-      ).as('media'),
+      // TODO actually map this
+      sql<string>`'daughter'`.as('relation_gendered'),
     ]).execute()
 }

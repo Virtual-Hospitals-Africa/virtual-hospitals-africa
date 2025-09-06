@@ -127,6 +127,66 @@ export type PharmacistType =
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
+export type SnomedCategory =
+  | 'administration method'
+  | 'assessment scale'
+  | 'attribute'
+  | 'basic dose form'
+  | 'body structure'
+  | 'calculation'
+  | 'cell'
+  | 'cell structure'
+  | 'clinical drug'
+  | 'core metadata concept'
+  | 'disorder'
+  | 'disposition'
+  | 'dose form'
+  | 'environment'
+  | 'environment / location'
+  | 'ethnic group'
+  | 'event'
+  | 'finding'
+  | 'foundation metadata concept'
+  | 'geographic location'
+  | 'intended site'
+  | 'link assertion'
+  | 'linkage concept'
+  | 'medicinal product'
+  | 'medicinal product form'
+  | 'metadata'
+  | 'morphologic abnormality'
+  | 'namespace concept'
+  | 'navigational concept'
+  | 'observable entity'
+  | 'occupation'
+  | 'organism'
+  | 'OWL metadata concept'
+  | 'person'
+  | 'physical force'
+  | 'physical object'
+  | 'procedure'
+  | 'product'
+  | 'product name'
+  | 'qualifier value'
+  | 'racial group'
+  | 'record artifact'
+  | 'regime/therapy'
+  | 'release characteristic'
+  | 'religion/philosophy'
+  | 'role'
+  | 'situation'
+  | 'SNOMED RT+CTV3'
+  | 'social concept'
+  | 'special concept'
+  | 'specimen'
+  | 'staging scale'
+  | 'state of matter'
+  | 'substance'
+  | 'supplier'
+  | 'transformation'
+  | 'tumor staging'
+  | 'unit of presentation'
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export interface Addresses {
@@ -893,6 +953,12 @@ export interface PatientFamily {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientFindingMedia {
+  finding_id: string
+  id: string
+  media_id: string
+}
+
 export interface PatientFindings {
   encounter_provider_id: string
   id: string
@@ -1004,26 +1070,12 @@ export interface Patients {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientSymptomMedia {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  media_id: string
-  patient_symptom_id: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientSymptoms {
-  code: string
-  created_at: Generated<Timestamp>
-  encounter_id: string
-  encounter_provider_id: string
   end_date: Timestamp | null
-  id: Generated<string>
+  id: string
   notes: string | null
-  patient_id: string
   severity: number
   start_date: Timestamp
-  updated_at: Generated<Timestamp>
 }
 
 export interface Pharmacies {
@@ -1279,6 +1331,14 @@ export interface SnomedIisssccRefsetExtendedMap {
   refset_id: Int8
 }
 
+export interface SnomedInferredCanonicalNameAndCategory {
+  category: SnomedCategory
+  description_id: Int8
+  id: Int8
+  language_code: string
+  name: string
+}
+
 export interface SnomedRefsetSimple {
   active: boolean
   effective_time: Timestamp
@@ -1528,6 +1588,7 @@ export interface DB {
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
+  patient_finding_media: PatientFindingMedia
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
@@ -1539,7 +1600,6 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_procedures: PatientProcedures
   patient_records: PatientRecords
-  patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
   pharmacies: Pharmacies
@@ -1568,6 +1628,8 @@ export interface DB {
   snomed_concept: SnomedConcept
   snomed_description: SnomedDescription
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
+  snomed_inferred_canonical_name_and_category:
+    SnomedInferredCanonicalNameAndCategory
   snomed_refset_simple: SnomedRefsetSimple
   snomed_relationship: SnomedRelationship
   snomed_relationship_concrete_values: SnomedRelationshipConcreteValues

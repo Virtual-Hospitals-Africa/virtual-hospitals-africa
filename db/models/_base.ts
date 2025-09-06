@@ -2,7 +2,7 @@ import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
 import type { TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
-import type { DB } from '../../db.d.ts'
+import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
 import { debugLog } from '../helpers.ts'
 
@@ -14,7 +14,7 @@ export type SearchResults<SearchTerms, RenderedResult> = {
   search_terms: SearchTerms
 }
 
-type BaseModelInput<
+export type BaseModelInput<
   SearchTerms extends Partial<Record<string, unknown>>,
   Tables,
   SelectingFrom extends keyof Tables,
@@ -52,8 +52,8 @@ type BaseModel<
 }
 
 type StandardTables = {
-  [Table in keyof DB]: DB[Table] extends { id: Generated<string> | string }
-    ? Table
+  [Table in keyof DB]: DB[Table] extends
+    { id: Generated<string> | string | Int8 } ? Table
     : never
 }[keyof DB]
 
@@ -151,6 +151,7 @@ export function base<
           '=',
           id,
         )
+        .limit(1)
         .executeTakeFirst()
       assertOr404(result)
       return formatResult(result)

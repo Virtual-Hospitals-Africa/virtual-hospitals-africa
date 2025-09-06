@@ -115,6 +115,7 @@ export async function handler(
   const encounter_id = getEncounterId(ctx)
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
+  // TODO: Do this as part of an earlier POST request
   const promised_encounter = removeFromWaitingRoomAndAddSelfAsProvider(
     ctx.state.trx,
     {

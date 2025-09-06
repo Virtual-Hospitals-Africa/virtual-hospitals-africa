@@ -5,6 +5,7 @@
 */
 import { sql } from 'kysely'
 import {
+  ExtantProcedureOrCreationIntent,
   Measurement,
   MostRecentVitalMeasurement,
   PRIORITY_SNOMED_CODES,
@@ -21,15 +22,7 @@ import { decimal } from '../../util/validators.ts'
 import compact from '../../util/compact.ts'
 import generateUUID from '../../util/uuid.ts'
 
-type ExtantProcedureOrCreationIntent = {
-  id: string
-  create_from_snomed_concept_id?: never
-} | {
-  id?: never
-  create_from_snomed_concept_id: string
-}
-
-export function insertMeasurements(
+export function insertMany(
   trx: TrxOrDb,
   {
     input_measurements,
@@ -155,7 +148,7 @@ const MeasurementSchema = z.object({
   ]),
 })
 
-function measurementValueDisplay(
+function valueDisplay(
   { value, units }: z.infer<typeof MeasurementSchema>,
 ): string {
   switch (units) {
@@ -167,7 +160,7 @@ function measurementValueDisplay(
   }
 }
 
-export async function getMostRecentMeasurements(
+export async function getMostRecent(
   trx: TrxOrDb,
   { patient_id, snomed_concept_ids }: {
     patient_id: string
@@ -277,7 +270,7 @@ export async function getMostRecentMeasurements(
 
   return findings.map(({ value, units, ...finding }) => ({
     ...finding,
-    value_display: measurementValueDisplay(
+    value_display: valueDisplay(
       MeasurementSchema.parse({ value, units }),
     ),
   }))

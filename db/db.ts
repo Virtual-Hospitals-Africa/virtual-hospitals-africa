@@ -1,5 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { Pool } from 'pg'
+import Cursor from 'pg-cursor'
 import {
   Kysely,
   PostgresAdapter,
@@ -64,6 +65,7 @@ const db = new Kysely<DB>({
     createDriver() {
       return new PostgresDriver({
         pool: new Pool(opts || {}),
+        cursor: Cursor,
       })
     },
     createIntrospector(db: Kysely<unknown>) {

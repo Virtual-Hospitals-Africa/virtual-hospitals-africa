@@ -20,6 +20,7 @@
     "npm:jsdom@22.1.0": "22.1.0",
     "npm:kysely@0.27.6": "0.27.6",
     "npm:natural@6.10.4": "6.10.4",
+    "npm:pg-cursor@2.15.3": "2.15.3_pg@8.16.0",
     "npm:pg@8.16.0": "8.16.0",
     "npm:postcss@8.4.35": "8.4.35",
     "npm:react-sparklines@1.7.0": "1.7.0_react@19.1.0_react-dom@19.1.0__react@19.1.0",
@@ -985,6 +986,12 @@
     },
     "pg-connection-string@2.9.1": {
       "integrity": "sha512-nkc6NpDcvPVpZXxrreI/FOtX3XemeLl8E0qFr6F2Lrm/I8WOnaWNhIPK2Z7OHpw7gh5XJThi6j6ppgNoaT1w4w=="
+    },
+    "pg-cursor@2.15.3_pg@8.16.0": {
+      "integrity": "sha512-eHw63TsiGtFEfAd7tOTZ+TLy+i/2ePKS20H84qCQ+aQ60pve05Okon9tKMC+YN3j6XyeFoHnaim7Lt9WVafQsA==",
+      "dependencies": [
+        "pg"
+      ]
     },
     "pg-int8@1.0.1": {
       "integrity": "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="
@@ -2436,6 +2443,7 @@
       "npm:fast-xml-parser@4.3.4",
       "npm:kysely@0.27.6",
       "npm:natural@6.10.4",
+      "npm:pg-cursor@2.15.3",
       "npm:pg@8.16.0",
       "npm:react-sparklines@1.7.0",
       "npm:tailwind-merge@^2.6.0",

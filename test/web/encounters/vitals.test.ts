@@ -8,7 +8,7 @@ import {
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
-import * as patient_findings from '../../../db/models/patient_findings.ts'
+import * as patient_measurements from '../../../db/models/patient_measurements.ts'
 import db from '../../../db/db.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../../shared/vitals.ts'
 import generateUUID from '../../../util/uuid.ts'
@@ -145,7 +145,7 @@ describe(
         (code) => code !== '---',
       )
 
-      const vitals = await patient_findings.getMostRecentMeasurements(db, {
+      const vitals = await patient_measurements.getMostRecent(db, {
         patient_id: encounter.patient_id,
         snomed_concept_ids: all_vitals_snomed_codes,
       })
