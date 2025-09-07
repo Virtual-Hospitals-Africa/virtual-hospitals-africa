@@ -211,6 +211,7 @@ import * as $WarningMessage from './islands/WarningMessage.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $chief_complaint_Section from './islands/chief-complaint/Section.tsx'
 import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
 import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $diagnostic_tests_Orders from './islands/diagnostic_tests/Orders.tsx'
@@ -606,6 +607,7 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/chief-complaint/Section.tsx': $chief_complaint_Section,
     './islands/diagnoses/Form.tsx': $diagnoses_Form,
     './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/diagnostic_tests/Orders.tsx': $diagnostic_tests_Orders,
