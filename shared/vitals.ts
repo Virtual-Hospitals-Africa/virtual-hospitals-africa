@@ -1,3 +1,5 @@
+export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
+
 export const VITALS_SNOMED_CODE = {
   height: '1153637007',
   weight: '363808001',
@@ -8,8 +10,11 @@ export const VITALS_SNOMED_CODE = {
   blood_glucose: '405176005',
   pulse: '8499008',
   respiratory_rate: '86290005',
-  midarm_circumference: '---',
-  triceps_skinfold: '---',
+  midarm_circumference: '---', //284473002 | Mid upper arm circumference , left arm: 1162540006, right arm: 1162545001
+  triceps_skinfold: '---', //301851003 | Triceps skin fold thickness
+  // Computed vitals
+  bmi: '698094009',
+  mean_arterial_pressure: '6797001',
 }
 
 export const VITALS_UNITS = {
@@ -24,4 +29,7 @@ export const VITALS_UNITS = {
   respiratory_rate: 'bpm',
   midarm_circumference: 'cm',
   triceps_skinfold: 'cm',
+  // Computed vitals
+  bmi: 'kg/m²',
+  mean_arterial_pressure: 'mmHg',
 }
