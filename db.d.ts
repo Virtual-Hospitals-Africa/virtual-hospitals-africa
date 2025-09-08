@@ -849,6 +849,23 @@ export interface PatientChatbotUserWhatsappMessagesReceived {
   whatsapp_message_received_id: string
 }
 
+export interface PatientComputedFindings {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientComputedFindingsInputs {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientConditionMedications {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1578,6 +1595,8 @@ export interface DB {
   patient_chatbot_user_whatsapp_messages_received:
     PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers
+  patient_computed_findings: PatientComputedFindings
+  patient_computed_findings_inputs: PatientComputedFindingsInputs
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
   patient_encounter_providers: PatientEncounterProviders

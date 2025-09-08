@@ -87,6 +87,8 @@ import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from 
 import * as $app_patients_patient_id_encounters_encounter_id_request_review from './routes/app/patients/[patient_id]/encounters/[encounter_id]/request_review.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_vitals_evaluations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals/evaluations.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_vitals_measurements from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals/measurements.tsx'
 import * as $app_patients_patient_id_profile_middleware from './routes/app/patients/[patient_id]/profile/_middleware.tsx'
 import * as $app_patients_patient_id_profile_appointments from './routes/app/patients/[patient_id]/profile/appointments.tsx'
 import * as $app_patients_patient_id_profile_history from './routes/app/patients/[patient_id]/profile/history.tsx'
@@ -285,6 +287,7 @@ import * as $symptoms_FormPanel from './islands/symptoms/FormPanel.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
 import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
+import * as $vitals_PriorityDropdown from './islands/vitals/PriorityDropdown.tsx'
 import * as $vitals_VitalInputWithNote from './islands/vitals/VitalInputWithNote.tsx'
 import * as $vitals_VitalsFlag from './islands/vitals/VitalsFlag.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
@@ -439,6 +442,10 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals/evaluations.tsx':
+      $app_patients_patient_id_encounters_encounter_id_vitals_evaluations,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals/measurements.tsx':
+      $app_patients_patient_id_encounters_encounter_id_vitals_measurements,
     './routes/app/patients/[patient_id]/profile/_middleware.tsx':
       $app_patients_patient_id_profile_middleware,
     './routes/app/patients/[patient_id]/profile/appointments.tsx':
@@ -688,6 +695,7 @@ const manifest = {
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/timer.tsx': $timer,
     './islands/useAsyncSearch.tsx': $useAsyncSearch,
+    './islands/vitals/PriorityDropdown.tsx': $vitals_PriorityDropdown,
     './islands/vitals/VitalInputWithNote.tsx': $vitals_VitalInputWithNote,
     './islands/vitals/VitalsFlag.tsx': $vitals_VitalsFlag,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,

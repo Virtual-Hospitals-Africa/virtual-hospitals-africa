@@ -169,7 +169,7 @@ export function TextInput({
         required={required}
         className={cls('w-full flex-1', className)}
       >
-        <div className='mt-2 grid grid-cols-1'>
+        <div className='grid grid-cols-1'>
           {leftIcon && (
             <div
               aria-hidden='true'
@@ -182,7 +182,7 @@ export function TextInput({
             type={type}
             {...(name && { name })}
             className={cls(
-              'col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
+              'col-start-1 row-start-1 h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
               inputClassName,
               disabled && 'bg-gray-300',
               !!leftIcon && 'pl-3',

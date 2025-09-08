@@ -39,7 +39,7 @@ export function insertMany(
   },
 ) {
   if (!input_measurements.length) {
-    return Promise.resolve({ success: true as const })
+    return Promise.resolve({ success: true as const, procedure_id: '' })
   }
 
   const procedure_id = procedure.id || generateUUID()
@@ -131,6 +131,7 @@ export function insertMany(
           : blankSelection(qb),
     ).selectNoFrom([
       success_true,
+      sql<string>`${procedure_id}`.as('procedure_id'),
     ])
     .executeTakeFirstOrThrow()
 }
@@ -145,6 +146,7 @@ const MeasurementSchema = z.object({
     '%',
     'mg/dL',
     'bpm',
+    'kg/m²', // BMI units
   ]),
 })
 
