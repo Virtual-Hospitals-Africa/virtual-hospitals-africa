@@ -15,7 +15,7 @@ export const VITALS_SNOMED_CODE = {
   // Computed vitals
   bmi: '698094009',
   mean_arterial_pressure: '6797001',
-  blood_pressure: '75367002'
+  blood_pressure: '75367002',
 }
 
 export const VITALS_UNITS = {

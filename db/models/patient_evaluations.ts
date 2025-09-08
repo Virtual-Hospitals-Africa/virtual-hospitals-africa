@@ -298,10 +298,13 @@ export async function getMostRecentVitalsWithEvaluations(
     ])
     .execute()
 
-  return findings.map(({ value, units, value_display, finding_type, ...finding }) => ({
+  return findings.map((
+    { value, units, value_display, finding_type, ...finding },
+  ) => ({
     ...finding,
     finding_type: finding_type as 'manual' | 'computed',
-    value_display: value_display || valueDisplay({ value: Number(value), units }),
+    value_display: value_display ||
+      valueDisplay({ value: Number(value), units }),
     // Ensure required fields are not null
     provider: {
       ...finding.provider,

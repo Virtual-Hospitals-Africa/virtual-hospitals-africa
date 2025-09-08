@@ -22,7 +22,11 @@ export type NewPatientComputedFindingInput = Insertable<
 >
 
 function valueDisplay(
-  { value, units, value_display }: { value: number | null; units: string | null; value_display: string | null },
+  { value, units, value_display }: {
+    value: number | null
+    units: string | null
+    value_display: string | null
+  },
 ): string {
   if (value_display) {
     return value_display
@@ -37,7 +41,7 @@ function valueDisplay(
         return `${value} ${units}`
     }
   }
-  
+
   return 'N/A'
 }
 
@@ -70,17 +74,18 @@ export function insertComputedFinding(
   },
 ) {
   // Validate that we have either structured (value + units) OR display format
-  const hasStructured = value !== undefined && units !== undefined && value_display === undefined
+  const hasStructured = value !== undefined && units !== undefined &&
+    value_display === undefined
   const hasDisplay = !hasStructured
-  
+
   if (!hasStructured && !hasDisplay) {
     throw new Error('Must provide either value + units OR value_display')
   }
-  
+
   if (hasStructured && hasDisplay) {
     throw new Error('Cannot provide both structured values and value_display')
   }
-  
+
   if (hasStructured && (typeof value !== 'number' || isNaN(value))) {
     throw new Error(`Invalid computed value: ${value}`)
   }
