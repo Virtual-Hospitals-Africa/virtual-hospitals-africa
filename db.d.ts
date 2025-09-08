@@ -854,8 +854,9 @@ export interface PatientComputedFindings {
   computation_metadata: Generated<Json>
   created_at: Generated<Timestamp>
   id: string
-  units: string
-  value: Numeric
+  units: string | null
+  value: Numeric | null
+  value_display: string | null
 }
 
 export interface PatientComputedFindingsInputs {

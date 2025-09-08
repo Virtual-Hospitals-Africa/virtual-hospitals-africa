@@ -89,6 +89,7 @@ const VITAL_SNOMED_CONCEPT_IDS = [
   VITALS_SNOMED_CODE.respiratory_rate,
   VITALS_SNOMED_CODE.bmi,
   VITALS_SNOMED_CODE.mean_arterial_pressure,
+  VITALS_SNOMED_CODE.blood_pressure,
 ]
 
 export async function getMostRecentVitalsWithEvaluations(
@@ -131,6 +132,7 @@ export async function getMostRecentVitalsWithEvaluations(
         .select([
           'patient_measurements.value',
           'patient_measurements.units',
+          sql<string | null>`NULL`.as('value_display'),
         ])
         .select(sql`'manual'`.as('finding_type'))
         .select(
@@ -169,6 +171,7 @@ export async function getMostRecentVitalsWithEvaluations(
         .select([
           'patient_computed_findings.value',
           'patient_computed_findings.units',
+          'patient_computed_findings.value_display',
         ])
         .select(sql`'computed'`.as('finding_type'))
         .select(
@@ -191,6 +194,7 @@ export async function getMostRecentVitalsWithEvaluations(
           'referent_finding_id',
           'value',
           'units',
+          'value_display',
           'finding_type',
           'rank',
         ])
@@ -208,6 +212,7 @@ export async function getMostRecentVitalsWithEvaluations(
               'referent_finding_id',
               'value',
               'units',
+              'value_display',
               'finding_type',
               'rank',
             ]),
@@ -248,6 +253,7 @@ export async function getMostRecentVitalsWithEvaluations(
       'latest_findings.snomed_concept_id',
       'latest_findings.value',
       'latest_findings.units',
+      'latest_findings.value_display',
       'latest_findings.created_at',
       'latest_findings.encounter_id',
       'latest_findings.finding_type',
@@ -292,10 +298,10 @@ export async function getMostRecentVitalsWithEvaluations(
     ])
     .execute()
 
-  return findings.map(({ value, units, finding_type, ...finding }) => ({
+  return findings.map(({ value, units, value_display, finding_type, ...finding }) => ({
     ...finding,
     finding_type: finding_type as 'manual' | 'computed',
-    value_display: valueDisplay({ value: Number(value), units }),
+    value_display: value_display || valueDisplay({ value: Number(value), units }),
     // Ensure required fields are not null
     provider: {
       ...finding.provider,

@@ -39,7 +39,7 @@ export function insertMany(
   },
 ) {
   if (!input_measurements.length) {
-    return Promise.resolve({ success: true as const, procedure_id: '' })
+    return Promise.resolve({ success: true as const, procedure_id: null })
   }
 
   const procedure_id = procedure.id || generateUUID()

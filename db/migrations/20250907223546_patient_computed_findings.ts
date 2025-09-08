@@ -22,8 +22,13 @@ export async function up(db: Kysely<unknown>) {
           'jsonb',
           (col) => col.notNull().defaultTo(sql`'{}'::jsonb`),
         )
-        .addColumn('value', 'decimal', (col) => col.notNull())
-        .addColumn('units', 'varchar(255)', (col) => col.notNull()),
+        .addColumn('value', 'decimal')
+        .addColumn('units', 'varchar(255)')
+        .addColumn('value_display', 'varchar(255)')
+        .addCheckConstraint(
+          'valid_value_format',
+          sql`(value_display IS NOT NULL AND value IS NULL AND units IS NULL) OR (value_display IS NULL AND value IS NOT NULL AND units IS NOT NULL)`,
+        ),
   )
 
   await createStandardTable(
