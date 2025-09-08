@@ -43,6 +43,15 @@ export function assertOr404(
   }
 }
 
+export function assertOr405(
+  condition: unknown,
+  message = 'Method Not Allowed',
+): asserts condition {
+  if (!condition) {
+    throw new StatusError(message, 405)
+  }
+}
+
 export function assertOrRedirect(
   condition: unknown,
   location: string,

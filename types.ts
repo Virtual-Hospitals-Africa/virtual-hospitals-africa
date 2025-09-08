@@ -3153,30 +3153,37 @@ export type VitalMeasurementFormInputDefition = {
   units: string
 }
 
-export type MostRecentVitalMeasurement = {
-  finding_id: string
-  snomed_concept_id: string
-  value_display: string
-  encounter_id: string
-  created_at: Date
-  provider: {
-    patient_encounter_provider_id: string
-    employee_id: string
-    organization: {
-      id: string
-      name: string
-    }
-    health_worker_id: string
-    avatar_url: string | null
-    name: string
-    profession: string
-  }
-  // TODO include who made the evaluation
-  evaluations: {
+export type MostRecentVitalMeasurement =
+  & {
+    finding_id: string
     snomed_concept_id: string
-    note: string | null
-  }[]
-}
+    value_display: string
+    encounter_id: string
+    created_at: Date
+    // TODO include who made the evaluation
+    evaluations: {
+      snomed_concept_id: string
+      note: string | null
+    }[]
+  }
+  & ({
+    finding_type: 'manual'
+    provider: {
+      patient_encounter_provider_id: string
+      employee_id: string
+      organization: {
+        id: string
+        name: string
+      }
+      health_worker_id: string
+      avatar_url: string | null
+      name: string
+      profession: string
+    }
+  } | {
+    finding_type: 'computed'
+    provider: null
+  })
 
 export type Evaluation = {
   priority: Priority

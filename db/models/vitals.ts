@@ -23,7 +23,7 @@ export function insertMeasurements(
     encounter_provider_id: string
     input_measurements: Measurement[]
   },
-): Promise<{ success: true; procedure_id: string | null }> {
+): Promise<{ success: true; procedure_id: string }> {
   return patient_measurements.insertMany(trx, {
     ...opts,
     procedure: {
@@ -146,31 +146,32 @@ export async function computeAndInsertDerivedMeasurements(
   ) {
     const height_m = height_measurement.value / 100 // Convert cm to m
 
-    const bmi = weight_measurement.value / (height_m * height_m)
+    const body_mass_index = weight_measurement.value / (height_m * height_m)
 
-    const bmi_result = await patient_computed_findings.insertComputedFinding(
-      trx,
-      {
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.bmi,
-        value: Math.round(bmi * 10) / 10, // Round to 1 decimal place
-        units: VITALS_UNITS.bmi,
-        algorithm_version: 'BMI_v1.0',
-        computation_metadata: {
-          formula: 'weight_kg / (height_m^2)',
-          height_m,
-          weight_kg: weight_measurement.value,
+    const body_mass_index_result = await patient_computed_findings
+      .insertComputedFinding(
+        trx,
+        {
+          patient_id,
+          encounter_id,
+          encounter_provider_id,
+          procedure_id: source_procedure_id,
+          snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
+          value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
+          units: VITALS_UNITS.body_mass_index,
+          algorithm_version: 'BMI_v1.0',
+          computation_metadata: {
+            formula: 'weight_kg / (height_m^2)',
+            height_m,
+            weight_kg: weight_measurement.value,
+          },
+          input_measurements: [
+            { record_id: height_measurement.finding_id },
+            { record_id: weight_measurement.finding_id },
+          ],
         },
-        input_measurements: [
-          { record_id: height_measurement.finding_id },
-          { record_id: weight_measurement.finding_id },
-        ],
-      },
-    )
-    computed_findings.push(bmi_result.computed_finding_id)
+      )
+    computed_findings.push(body_mass_index_result.computed_finding_id)
   }
 
   // Mean Arterial Pressure (MAP) calculation

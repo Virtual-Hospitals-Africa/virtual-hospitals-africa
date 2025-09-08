@@ -15,12 +15,14 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
+  literalString,
   success_true,
 } from '../helpers.ts'
 import z from 'zod'
 import { decimal } from '../../util/validators.ts'
 import compact from '../../util/compact.ts'
 import generateUUID from '../../util/uuid.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function insertMany(
   trx: TrxOrDb,
@@ -37,10 +39,11 @@ export function insertMany(
     procedure: ExtantProcedureOrCreationIntent
     input_measurements: Measurement[]
   },
-) {
-  if (!input_measurements.length) {
-    return Promise.resolve({ success: true as const, procedure_id: null })
-  }
+): Promise<{ success: true; procedure_id: string }> {
+  assert(
+    input_measurements.length,
+    'Input measurements are required. Check upstream',
+  )
 
   const procedure_id = procedure.id || generateUUID()
 
@@ -131,7 +134,7 @@ export function insertMany(
           : blankSelection(qb),
     ).selectNoFrom([
       success_true,
-      sql<string>`${procedure_id}`.as('procedure_id'),
+      literalString(procedure_id).as('procedure_id'),
     ])
     .executeTakeFirstOrThrow()
 }
@@ -230,6 +233,7 @@ export async function getMostRecent(
       'ranked_findings.created_at',
       'ranked_findings.encounter_id',
     ])
+    .select(sql<'manual'>`'manual'`.as('finding_type'))
     .select((eb) => [
       jsonBuildObject({
         name: eb.ref('health_workers.name'),

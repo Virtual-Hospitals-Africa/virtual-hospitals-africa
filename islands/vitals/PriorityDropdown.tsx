@@ -1,6 +1,6 @@
 import { Fragment } from 'preact'
 import { Menu } from '@headlessui/react'
-import { useSignal, useSignalEffect } from '@preact/signals'
+import { useSignal } from '@preact/signals'
 import { useRef } from 'preact/hooks'
 import { FlagIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
@@ -57,7 +57,7 @@ export default function PriorityDropdown({
     if (!buttonRef.current) return
 
     const buttonRect = buttonRef.current.getBoundingClientRect()
-    const viewportHeight = window.innerHeight
+    const viewportHeight = globalThis.innerHeight
     const dropdownHeight = 240 // Approximate height of dropdown
     const spaceBelow = viewportHeight - buttonRect.bottom
     const spaceAbove = buttonRect.top
@@ -113,7 +113,7 @@ export default function PriorityDropdown({
               const colors = PRIORITY_COLORS[priority]
               return (
                 <Menu.Item key={priority}>
-                  {({ focus }) => (
+                  {({ focus }: { focus: boolean }) => (
                     <button
                       type='button'
                       onClick={() => (selectedPriority.value = priority)}
