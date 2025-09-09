@@ -7,10 +7,10 @@ const WHISPER_MODELS_DIRECTORY_PATH = Deno.env.get(
   'WHISPER_MODELS_DIRECTORY_PATH',
 )
 
-const models = WHISPER_MODELS_DIRECTORY_PATH
+const available_transcription_models = WHISPER_MODELS_DIRECTORY_PATH
   ? compact(
     Deno.readDirSync(WHISPER_MODELS_DIRECTORY_PATH).map((value) =>
-      value.isFile && value.name
+      value.isDirectory && value.name.startsWith('whisper') && value.name
     ).toArray(),
   )
   : []
@@ -30,7 +30,7 @@ const LANGUAGE_CODES_TO_MODELS = Object.fromEntries(
 )
 
 export const supported_language_codes = compact(
-  models.map((model) =>
+  available_transcription_models.map((model) =>
     MODELS_TO_LANGUAGE_CODES[model as keyof typeof MODELS_TO_LANGUAGE_CODES]
   ),
 )
@@ -43,7 +43,7 @@ export function transcriptionProcess(
     'Must set WHISPER_MODELS_DIRECTORY_PATH to transcribe audio',
   )
   assert(
-    models.length,
+    available_transcription_models.length,
     `No models found in WHISPER_MODELS_DIRECTORY_PATH ${WHISPER_MODELS_DIRECTORY_PATH}`,
   )
   assert(
