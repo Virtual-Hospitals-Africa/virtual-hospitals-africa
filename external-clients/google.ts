@@ -409,7 +409,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   ) {
     return new HealthWorkerGoogleClient(
       ctx.state.trx,
-      ctx.state.healthWorker,
+      ctx.state.health_worker,
     )
   }
 

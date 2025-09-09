@@ -12,7 +12,7 @@ export default HealthWorkerHomePageLayout(
   ) {
     const threads = await messages.getThreadsWithMostRecentMessages(
       ctx.state.trx,
-      messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
+      messages.participantsQueryForHealthWorker(ctx.state.health_worker),
     )
     return <ThreadList threads={threads} />
   },

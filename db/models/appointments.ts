@@ -193,7 +193,7 @@ export async function schedule(
     provider_ids: [provider_id],
   })
 
-  const healthWorker = await trx
+  const health_worker = await trx
     .selectFrom('employment')
     .innerJoin(
       'health_workers',
@@ -224,7 +224,7 @@ export async function schedule(
     id: appointment.id,
     reason: appointment.reason,
     provider_id,
-    health_worker_name: healthWorker.name,
+    health_worker_name: health_worker.name,
     gcal_event_id: appointment.gcal_event_id,
     start,
   }

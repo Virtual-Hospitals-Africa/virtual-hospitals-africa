@@ -13,7 +13,7 @@ import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
 type PendingApprovalPageProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
   organizationAdmin: OrganizationAdmin
 }
 
@@ -21,16 +21,16 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   PendingApprovalPageProps
 > = {
   async GET(_req, ctx) {
-    const { healthWorker } = ctx.state
+    const { health_worker } = ctx.state
 
     const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
-      organization_id: healthWorker.default_organization_id,
+      organization_id: health_worker.default_organization_id,
     })
 
     assert(organizationAdmin)
 
     return ctx.render({
-      healthWorker,
+      health_worker,
       organizationAdmin,
     })
   },

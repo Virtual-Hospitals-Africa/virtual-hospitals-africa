@@ -34,8 +34,8 @@ describe(
 
       const $ = cheerio.load(pageContents)
 
-      const formValues = getFormValues($)
-      assertEquals(formValues, {
+      const form_values = getFormValues($)
+      assertEquals(form_values, {
         notes: null,
         patient_id: testPatient.id,
         patient_name: testPatient.name,

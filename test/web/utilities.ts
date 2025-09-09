@@ -66,7 +66,7 @@ export async function addTestHealthWorker(
     scenario: 'base',
   },
 ) {
-  const healthWorker: HealthWorkerWithGoogleTokens & {
+  const health_worker: HealthWorkerWithGoogleTokens & {
     employee_id?: string
     calendars?: {
       gcal_appointments_calendar_id: string
@@ -92,21 +92,21 @@ export async function addTestHealthWorker(
     case 'awaiting-approval-nurse': {
       const created_employee = await employment.addOne(trx, {
         organization_id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'nurse',
         department_id: department.id,
       })
-      healthWorker.employee_id = created_employee.id
-      healthWorker.calendars = testCalendars()
-      await addCalendars(trx, healthWorker.id, [{
+      health_worker.employee_id = created_employee.id
+      health_worker.calendars = testCalendars()
+      await addCalendars(trx, health_worker.id, [{
         organization_id,
-        ...healthWorker.calendars,
+        ...health_worker.calendars,
         availability_set: true,
       }])
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
         }),
       )
       break
@@ -124,7 +124,7 @@ export async function addTestHealthWorker(
         .executeTakeFirstOrThrow()
       const created_employee = await employment.addOne(trx, {
         organization_id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'nurse',
         department_id: department.id,
       })
@@ -134,37 +134,37 @@ export async function addTestHealthWorker(
         profession: 'admin',
         department_id: admin_department.id,
       })
-      healthWorker.employee_id = created_employee.id
-      healthWorker.calendars = testCalendars()
-      await addCalendars(trx, healthWorker.id, [{
+      health_worker.employee_id = created_employee.id
+      health_worker.calendars = testCalendars()
+      await addCalendars(trx, health_worker.id, [{
         organization_id,
-        ...healthWorker.calendars,
+        ...health_worker.calendars,
         availability_set: true,
       }])
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
         }),
       )
       await details.approve(trx, {
         approved_by: admin.id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
       })
       break
     }
     case 'admin': {
       const created_employee = await employment.addOne(trx, {
         organization_id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'admin',
         department_id: department.id,
       })
-      healthWorker.employee_id = created_employee.id
-      healthWorker.calendars = testCalendars()
-      await addCalendars(trx, healthWorker.id, [{
+      health_worker.employee_id = created_employee.id
+      health_worker.calendars = testCalendars()
+      await addCalendars(trx, health_worker.id, [{
         organization_id,
-        ...healthWorker.calendars,
+        ...health_worker.calendars,
         availability_set: true,
       }])
       break
@@ -172,15 +172,15 @@ export async function addTestHealthWorker(
     case 'doctor': {
       const created_employee = await employment.addOne(trx, {
         organization_id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'doctor',
         department_id: department.id,
       })
-      healthWorker.employee_id = created_employee.id
-      healthWorker.calendars = testCalendars()
-      await addCalendars(trx, healthWorker.id, [{
+      health_worker.employee_id = created_employee.id
+      health_worker.calendars = testCalendars()
+      await addCalendars(trx, health_worker.id, [{
         organization_id,
-        ...healthWorker.calendars,
+        ...health_worker.calendars,
         availability_set: true,
       }])
       break
@@ -188,31 +188,31 @@ export async function addTestHealthWorker(
     case 'nurse': {
       const created_employee = await employment.addOne(trx, {
         organization_id,
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'nurse',
         department_id: department.id,
       })
-      healthWorker.employee_id = created_employee.id
-      healthWorker.calendars = testCalendars()
-      await addCalendars(trx, healthWorker.id, [{
+      health_worker.employee_id = created_employee.id
+      health_worker.calendars = testCalendars()
+      await addCalendars(trx, health_worker.id, [{
         organization_id,
-        ...healthWorker.calendars,
+        ...health_worker.calendars,
         availability_set: true,
       }])
       break
     }
   }
 
-  return { ...healthWorker, organization_id }
+  return { ...health_worker, organization_id }
 }
 
 export async function addTestHealthWorkerWithSession(
   trx: TrxOrDb,
   opts: TestHealthWorkerOpts = { scenario: 'base' },
 ) {
-  const healthWorker = await addTestHealthWorker(trx, opts)
+  const health_worker = await addTestHealthWorker(trx, opts)
   const session = await sessions.create(trx, 'health_worker', {
-    entity_id: healthWorker.id,
+    entity_id: health_worker.id,
   })
 
   const fetchWithSession: typeof fetch = (
@@ -243,7 +243,7 @@ export async function addTestHealthWorkerWithSession(
 
   return {
     session_id: session.id,
-    healthWorker,
+    health_worker,
     fetch: fetchWithSession,
     fetchCheerio,
   }
@@ -331,12 +331,12 @@ export function removeTestPharmacist(
 }
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {
-  const formValues = {}
+  const form_values = {}
   $('form input,textarea').each((_i, el) => {
     if (!el.attribs.name) return
     if (el.attribs.type === 'checkbox') {
       return set(
-        formValues,
+        form_values,
         el.attribs.name,
         'checked' in el.attribs,
       )
@@ -344,7 +344,7 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
       const key = el.attribs.name && last(el.attribs.name.split('.'))
       set(
-        formValues,
+        form_values,
         el.attribs.name,
         el.attribs.value ? parseParam(key, el.attribs.value) : null,
       )
@@ -358,13 +358,13 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
     })
     if (el.attribs.name) {
       set(
-        formValues,
+        form_values,
         el.attribs.name,
         value,
       )
     }
   })
-  return formValues
+  return form_values
 }
 
 export function getFormDisplay($: cheerio.CheerioAPI): unknown {

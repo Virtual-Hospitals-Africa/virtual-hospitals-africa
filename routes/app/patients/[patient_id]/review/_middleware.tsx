@@ -33,11 +33,11 @@ export async function handler(
     ctx.state.trx,
     {
       patient_id: getRequiredUUIDParam(ctx, 'patient_id'),
-      health_worker: ctx.state.healthWorker,
+      health_worker: ctx.state.health_worker,
     },
   )
 
-  const { employment } = ctx.state.healthWorker
+  const { employment } = ctx.state.health_worker
   const { employment_id } = doctor_review
   const reviewing_via_employment = employment.find((e) =>
     e.roles.doctor?.employment_id === employment_id

@@ -121,7 +121,7 @@ export async function handler(
     {
       encounter_id,
       patient_id,
-      health_worker: ctx.state.healthWorker,
+      health_worker: ctx.state.health_worker,
     },
   )
 
@@ -147,7 +147,7 @@ export async function handler(
       }),
       patient: patients.getWithOpenEncounter(ctx.state.trx, {
         ids: [patient_id],
-        health_worker_id: ctx.state.healthWorker.id,
+        health_worker_id: ctx.state.health_worker.id,
       }).then((patients) => patients[0]),
     })
 

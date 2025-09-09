@@ -17,7 +17,7 @@
 //   () => {
 //     describe('Head-to-Toe Assessment', () => {
 //       it('saves on POST', async () => {
-//         const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+//         const { health_worker, fetch } = await addTestHealthWorkerWithSession(
 //           db,
 //           {
 //             scenario: 'approved-nurse',
@@ -29,7 +29,7 @@
 //           {
 //             patient_name: 'Test Patient',
 //             reason: 'seeking treatment',
-//             provider_ids: [healthWorker.employee_id!],
+//             provider_ids: [health_worker.employee_id!],
 //           },
 //         )
 //         await patients.update(db, {
@@ -83,7 +83,7 @@
 //       })
 
 //       it('removes existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
-//         const { healthWorker, fetch, fetchCheerio } =
+//         const { health_worker, fetch, fetchCheerio } =
 //           await addTestHealthWorkerWithSession(db, {
 //             scenario: 'approved-nurse',
 //           })
@@ -93,7 +93,7 @@
 //           {
 //             patient_name: 'Test Patient',
 //             reason: 'seeking treatment',
-//             provider_ids: [healthWorker.employee_id!],
+//             provider_ids: [health_worker.employee_id!],
 //           },
 //         )
 //         await patients.update(db, {
@@ -174,7 +174,7 @@
 //       })
 
 //       it('updates existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
-//         const { healthWorker, fetch, fetchCheerio } =
+//         const { health_worker, fetch, fetchCheerio } =
 //           await addTestHealthWorkerWithSession(db, {
 //             scenario: 'approved-nurse',
 //           })
@@ -184,7 +184,7 @@
 //           {
 //             patient_name: 'Test Patient',
 //             reason: 'seeking treatment',
-//             provider_ids: [healthWorker.employee_id!],
+//             provider_ids: [health_worker.employee_id!],
 //           },
 //         )
 //         await patients.update(db, {
@@ -289,7 +289,7 @@
 //       })
 
 //       it('renders a blank form on initial GET, including "all normal"', async () => {
-//         const { healthWorker, fetchCheerio } =
+//         const { health_worker, fetchCheerio } =
 //           await addTestHealthWorkerWithSession(db, {
 //             scenario: 'approved-nurse',
 //           })
@@ -299,7 +299,7 @@
 //           {
 //             patient_name: 'Test Patient',
 //             reason: 'seeking treatment',
-//             provider_ids: [healthWorker.employee_id!],
+//             provider_ids: [health_worker.employee_id!],
 //           },
 //         )
 //         await patients.update(db, {
@@ -337,7 +337,7 @@
 //     describe('?add=examinations', () => {
 //       describe('GET', () => {
 //         it('shows a form allowing orders to be placed for a doctor', async () => {
-//           const { healthWorker, fetchCheerio } =
+//           const { health_worker, fetchCheerio } =
 //             await addTestHealthWorkerWithSession(db, {
 //               scenario: 'doctor',
 //             })
@@ -347,7 +347,7 @@
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [healthWorker.employee_id!],
+//               provider_ids: [health_worker.employee_id!],
 //             },
 //           )
 //           await patients.update(db, {
@@ -362,7 +362,7 @@
 //         })
 
 //         it('shows a form without a an orders field for a nurse', async () => {
-//           const { healthWorker, fetchCheerio } =
+//           const { health_worker, fetchCheerio } =
 //             await addTestHealthWorkerWithSession(db, {
 //               scenario: 'approved-nurse',
 //             })
@@ -372,7 +372,7 @@
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [healthWorker.employee_id!],
+//               provider_ids: [health_worker.employee_id!],
 //             },
 //           )
 //           await patients.update(db, {
@@ -389,7 +389,7 @@
 
 //       describe('POST', () => {
 //         it('allows orders to be placed for a doctor', async () => {
-//           const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+//           const { health_worker, fetch } = await addTestHealthWorkerWithSession(
 //             db,
 //             {
 //               scenario: 'doctor',
@@ -401,7 +401,7 @@
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [healthWorker.employee_id!],
+//               provider_ids: [health_worker.employee_id!],
 //             },
 //           )
 //           await patients.update(db, {
@@ -462,7 +462,7 @@
 //         })
 
 //         it('does not allow orders to be placed for a nurse', async () => {
-//           const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+//           const { health_worker, fetch } = await addTestHealthWorkerWithSession(
 //             db,
 //             {
 //               scenario: 'approved-nurse',
@@ -474,7 +474,7 @@
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [healthWorker.employee_id!],
+//               provider_ids: [health_worker.employee_id!],
 //             },
 //           )
 //           await patients.update(db, {

@@ -21,7 +21,7 @@ export async function handler(
 
   const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
     ids: [patient_id],
-    health_worker_id: ctx.state.healthWorker.id,
+    health_worker_id: ctx.state.health_worker.id,
   })
 
   assertOr404(patient, 'Patient not found')

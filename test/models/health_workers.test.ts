@@ -62,18 +62,18 @@ describe('db/models/health_workers.ts', () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, {
+        const health_worker = await addTestHealthWorker(trx, {
           scenario: 'nurse',
         })
 
         const result = await health_workers.get(trx, {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
         })
         assert(result)
 
         assertEquals(omit(result, ['expires_at']), {
-          avatar_url: healthWorker.avatar_url,
-          email: healthWorker.email,
+          avatar_url: health_worker.avatar_url,
+          email: health_worker.email,
           employment: [
             {
               organization: {
@@ -88,22 +88,22 @@ describe('db/models/health_workers.ts', () => {
                   registration_completed: false,
                   registration_needed: true,
                   registration_pending_approval: true,
-                  employment_id: healthWorker.employee_id!,
+                  employment_id: health_worker.employee_id!,
                 },
               },
-              provider_id: healthWorker.employee_id!,
+              provider_id: health_worker.employee_id!,
               gcal_appointments_calendar_id:
-                healthWorker.calendars!.gcal_appointments_calendar_id,
+                health_worker.calendars!.gcal_appointments_calendar_id,
               gcal_availability_calendar_id:
-                healthWorker.calendars!.gcal_availability_calendar_id,
+                health_worker.calendars!.gcal_availability_calendar_id,
               availability_set: true,
             },
           ],
           default_organization_id: '00000000-0000-0000-0000-000000000001',
-          id: healthWorker.id,
-          name: healthWorker.name,
-          access_token: healthWorker.access_token,
-          refresh_token: healthWorker.refresh_token,
+          id: health_worker.id,
+          name: health_worker.name,
+          access_token: health_worker.access_token,
+          refresh_token: health_worker.refresh_token,
           open_encounters: [],
           reviews: {
             in_progress: [],
@@ -173,12 +173,12 @@ describe('db/models/health_workers.ts', () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information if that matches a given organization id',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, {
+        const health_worker = await addTestHealthWorker(trx, {
           scenario: 'nurse',
         })
 
         await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
           profession: 'doctor',
           organization_id: '00000000-0000-0000-0000-000000000002',
         }])
@@ -186,20 +186,20 @@ describe('db/models/health_workers.ts', () => {
         const result = await health_workers.getEmployeeInfo(
           trx,
           {
-            health_worker_id: healthWorker.id,
+            health_worker_id: health_worker.id,
             organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
         assert(result)
-        assertEquals(result.health_worker_id, healthWorker.id)
+        assertEquals(result.health_worker_id, health_worker.id)
         assertEquals(result.gender, null)
-        assertEquals(result.name, healthWorker.name)
+        assertEquals(result.name, health_worker.name)
         assertEquals(result.date_of_birth, null)
         assertEquals(result.mobile_number, null)
-        assertEquals(result.avatar_url, healthWorker.avatar_url)
+        assertEquals(result.avatar_url, health_worker.avatar_url)
         assertEquals(result.date_of_first_practice, null)
-        assertEquals(result.email, healthWorker.email)
+        assertEquals(result.email, health_worker.email)
         assertEquals(result.national_id_number, null)
         assertEquals(result.ncz_registration_number, null)
         assertEquals(result.specialty, null)
@@ -222,18 +222,18 @@ describe('db/models/health_workers.ts', () => {
     itUsesTrxAnd(
       'returns the nurse registration details & specialty where applicable',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, {
+        const health_worker = await addTestHealthWorker(trx, {
           scenario: 'nurse',
         })
 
         const [secondEmployment] = await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
           profession: 'nurse',
           organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
         await employment.updateSpecialty(trx, {
-          employee_id: healthWorker.employee_id!,
+          employee_id: health_worker.employee_id!,
           specialty: 'midwife',
         })
 
@@ -246,27 +246,27 @@ describe('db/models/health_workers.ts', () => {
         assert(nurse_address)
 
         const details = await testRegistrationDetails(trx, {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
         })
         await nurse_registration_details.add(trx, details)
 
         const result = await health_workers.getEmployeeInfo(
           trx,
           {
-            health_worker_id: healthWorker.id,
+            health_worker_id: health_worker.id,
             organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
         assert(result)
-        assertEquals(result.health_worker_id, healthWorker.id)
+        assertEquals(result.health_worker_id, health_worker.id)
         assertEquals(result.gender, 'male')
-        assertEquals(result.name, healthWorker.name)
+        assertEquals(result.name, health_worker.name)
         assertEquals(result.date_of_birth, '12 December 1979')
         assertEquals(result.mobile_number, details.mobile_number)
-        assertEquals(result.avatar_url, healthWorker.avatar_url)
+        assertEquals(result.avatar_url, health_worker.avatar_url)
         assertEquals(result.date_of_first_practice, '11 November 1999')
-        assertEquals(result.email, healthWorker.email)
+        assertEquals(result.email, health_worker.email)
         assert(
           /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(
             result.national_id_number!,
@@ -295,16 +295,18 @@ describe('db/models/health_workers.ts', () => {
     )
 
     itUsesTrxAnd('returns documents where applicable', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
+      const health_worker = await addTestHealthWorker(trx, {
+        scenario: 'nurse',
+      })
 
       await employment.add(trx, [{
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'nurse',
         organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
       await employment.updateSpecialty(trx, {
-        employee_id: healthWorker.employee_id!,
+        employee_id: health_worker.employee_id!,
         specialty: 'midwife',
       })
 
@@ -329,7 +331,7 @@ describe('db/models/health_workers.ts', () => {
       })
 
       const details = await testRegistrationDetails(trx, {
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
       })
       details.national_id_media_id = nationalIdMedia.id
       details.face_picture_media_id = facePictureMedia.id
@@ -341,20 +343,20 @@ describe('db/models/health_workers.ts', () => {
       const result = await health_workers.getEmployeeInfo(
         trx,
         {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
           organization_id: '00000000-0000-0000-0000-000000000001',
         },
       )
 
       assert(result)
-      assertEquals(result.health_worker_id, healthWorker.id)
+      assertEquals(result.health_worker_id, health_worker.id)
       assertEquals(result.gender, 'male')
       assertEquals(result.date_of_birth, '12 December 1979')
-      assertEquals(result.name, healthWorker.name)
+      assertEquals(result.name, health_worker.name)
       assertEquals(result.mobile_number, details.mobile_number)
-      assertEquals(result.avatar_url, healthWorker.avatar_url)
+      assertEquals(result.avatar_url, health_worker.avatar_url)
       assertEquals(result.date_of_first_practice, '11 November 1999')
-      assertEquals(result.email, healthWorker.email)
+      assertEquals(result.email, health_worker.email)
       assert(
         /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
       )
@@ -370,22 +372,22 @@ describe('db/models/health_workers.ts', () => {
         {
           name: 'Face Picture',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${facePictureMedia.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nationalIdMedia.id}`,
         },
         {
           name: 'Nurse Practicing Certificate',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nursePracticingCertMedia.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${registrationCardMedia.id}`,
         },
       ])
       assertEquals(

@@ -24,17 +24,17 @@ const OnboardingSchema = z.object({
 export const handler = postHandler(
   OnboardingSchema,
   async (_req, ctx: OnboardingContext, form_values) => {
-    const { trx, healthWorker } = ctx.state
+    const { trx, health_worker } = ctx.state
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead
     // Very hacky, but we move the google tokens and session to the regulator
     if (form_values.profession === 'regulator') {
       await promiseProps({
-        health_worker: health_workers.removeById(trx, healthWorker.id),
+        health_worker: health_workers.removeById(trx, health_worker.id),
         session: trx.updateTable('sessions').where(
           'entity_id',
           '=',
-          healthWorker.id,
+          health_worker.id,
         ).where('entity_type', '=', 'health_worker').set({
           entity_type: 'regulator',
         })
@@ -43,15 +43,15 @@ export const handler = postHandler(
         google_token: trx.updateTable('google_tokens').where(
           'entity_id',
           '=',
-          healthWorker.id,
+          health_worker.id,
         ).where('entity_type', '=', 'health_worker').set({
           entity_type: 'regulator',
         }).executeTakeFirstOrThrow(),
         regulator: regulators.upsert(trx, {
-          id: healthWorker.id,
-          name: healthWorker.name,
-          email: healthWorker.email,
-          avatar_url: healthWorker.avatar_url,
+          id: health_worker.id,
+          name: health_worker.name,
+          email: health_worker.email,
+          avatar_url: health_worker.avatar_url,
           country: form_values.country,
         }),
       })
@@ -64,7 +64,7 @@ export const handler = postHandler(
     }
 
     await employment.addOne(ctx.state.trx, {
-      health_worker_id: ctx.state.healthWorker.id,
+      health_worker_id: ctx.state.health_worker.id,
       ...form_values,
     })
 
@@ -87,7 +87,7 @@ export default async function OnboardingPage(
       variant='just logo'
     >
       <Onboarding
-        health_worker={ctx.state.healthWorker}
+        health_worker={ctx.state.health_worker}
         organizations={test_organizations.results}
       />
     </Layout>

@@ -13,7 +13,7 @@ describe(
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a page on GET for an open encounter', async () => {
-      const { healthWorker, fetchCheerio } =
+      const { health_worker, fetchCheerio } =
         await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
         })
@@ -23,7 +23,7 @@ describe(
         {
           patient_name: 'Test Patient',
           reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
+          provider_ids: [health_worker.employee_id!],
         },
       )
 
@@ -31,9 +31,9 @@ describe(
         `${route}/app/patients/${patient_id}/encounters/open/symptoms`,
       )
 
-      const formValues = getFormValues($)
+      const form_values = getFormValues($)
 
-      assertEquals(formValues, {
+      assertEquals(form_values, {
         done: true,
         chief_complaint: null,
       })

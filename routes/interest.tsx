@@ -11,8 +11,8 @@ import {
 } from '../components/library/ContactForm.tsx'
 
 function assertIsMailingListRecipient(
-  formValues: unknown,
-): asserts formValues is {
+  form_values: unknown,
+): asserts form_values is {
   name: string
   email: string
   reason: ContactReason
@@ -20,17 +20,17 @@ function assertIsMailingListRecipient(
   message?: string
   support?: string
 } {
-  assertOr400(isObjectLike(formValues))
-  assertOr400('name' in formValues && typeof formValues['name'] == 'string')
+  assertOr400(isObjectLike(form_values))
+  assertOr400('name' in form_values && typeof form_values['name'] == 'string')
   assertOr400(
-    'reason' in formValues &&
-      typeof formValues['reason'] == 'string' &&
+    'reason' in form_values &&
+      typeof form_values['reason'] == 'string' &&
       CONTACT_REASON_OPTIONS.some(
-        (option) => option.value === formValues['reason'],
+        (option) => option.value === form_values['reason'],
       ),
   )
-  assertOr400('email' in formValues && typeof formValues['email'] == 'string')
-  assertOr400(formValues['email'].includes('@'))
+  assertOr400('email' in form_values && typeof form_values['email'] == 'string')
+  assertOr400(form_values['email'].includes('@'))
 }
 
 const successMessages = {

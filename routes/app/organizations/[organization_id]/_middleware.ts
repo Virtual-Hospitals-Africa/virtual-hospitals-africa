@@ -23,10 +23,10 @@ export async function handler(
   _req: Request,
   ctx: OrganizationContext,
 ) {
-  const { healthWorker } = ctx.state
+  const { health_worker } = ctx.state
   const { organization_id } = ctx.params
 
-  const organization_employment = healthWorker.employment.find((e) =>
+  const organization_employment = health_worker.employment.find((e) =>
     e.organization.id === organization_id
   )
 

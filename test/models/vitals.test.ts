@@ -20,7 +20,7 @@ describe(
         async (trx) => {
           const patient = await patients.insert(trx, { name: 'Test Patient' })
           const patient_id = patient.id
-          const healthWorker = await addTestHealthWorker(trx, {
+          const health_worker = await addTestHealthWorker(trx, {
             scenario: 'approved-nurse',
           })
           const encounter = await patient_encounters.insert(
@@ -29,7 +29,7 @@ describe(
             {
               patient_id,
               reason: 'seeking treatment',
-              provider_ids: [healthWorker.employee_id!],
+              provider_ids: [health_worker.employee_id!],
             },
           )
 
@@ -187,7 +187,7 @@ describe(
         async (trx) => {
           const patient = await patients.insert(trx, { name: 'Test Patient' })
           const patient_id = patient.id
-          const healthWorker = await addTestHealthWorker(trx, {
+          const health_worker = await addTestHealthWorker(trx, {
             scenario: 'approved-nurse',
           })
           const encounter = await patient_encounters.insert(
@@ -196,7 +196,7 @@ describe(
             {
               patient_id,
               reason: 'seeking treatment',
-              provider_ids: [healthWorker.employee_id!],
+              provider_ids: [health_worker.employee_id!],
             },
           )
 

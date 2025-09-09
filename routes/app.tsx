@@ -12,7 +12,7 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: FreshContext<LoggedInHealthWorker>,
   ) {
-    const { healthWorker, trx } = ctx.state
+    const { health_worker, trx } = ctx.state
     const { searchParams } = ctx.url
     // We may revisit this, but for now there's only one tab
     // that actually displays on this page, the waiting room
@@ -20,41 +20,41 @@ export default HealthWorkerHomePageLayout(
     let organization_id = searchParams.get('organization_id')
     if (
       organization_id &&
-      !healthWorker.employment.some((e) =>
+      !health_worker.employment.some((e) =>
         e.organization.id === organization_id
       )
     ) {
       searchParams.set(
         'organization_id',
-        healthWorker.default_organization_id.toString(),
+        health_worker.default_organization_id.toString(),
       )
       return redirect(`/app?${searchParams.toString()}`)
     }
     if (!organization_id) {
-      if (healthWorker.employment.length > 1) {
+      if (health_worker.employment.length > 1) {
         console.warn('TODO: select organization?')
         searchParams.set(
           'organization_id',
-          healthWorker.default_organization_id.toString(),
+          health_worker.default_organization_id.toString(),
         )
         return redirect(`/app?${searchParams.toString()}`)
       }
-      organization_id = healthWorker.default_organization_id
+      organization_id = health_worker.default_organization_id
     }
     assert(organization_id)
 
     const getting_waiting_room = waiting_room.get(trx, {
       organization_id,
-      health_worker: healthWorker,
+      health_worker: health_worker,
     })
 
-    const { organization } = ctx.state.healthWorker.employment.find((e) =>
+    const { organization } = ctx.state.health_worker.employment.find((e) =>
       e.organization.id === organization_id
     )!
     const can_add_patients = !!organization.address
 
     return {
-      title: `Good day, ${firstName(healthWorker.name)}!`,
+      title: `Good day, ${firstName(health_worker.name)}!`,
       children: (
         <WaitingRoomView
           organization_id={organization_id}

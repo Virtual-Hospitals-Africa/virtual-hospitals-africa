@@ -1766,7 +1766,7 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
 }
 
 export type LoggedInRegulator = {

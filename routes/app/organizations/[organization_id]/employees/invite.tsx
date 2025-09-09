@@ -15,7 +15,7 @@ import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 
 type InvitePageProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
 }
 
 type Invite = { email: string; profession: Profession }

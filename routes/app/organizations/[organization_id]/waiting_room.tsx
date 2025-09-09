@@ -13,7 +13,7 @@ export default HealthWorkerHomePageLayout(
   ) {
     const { organization_id } = ctx.params
     assertOr404(organization_id)
-    const { organization } = ctx.state.healthWorker.employment.find((e) =>
+    const { organization } = ctx.state.health_worker.employment.find((e) =>
       e.organization.id === organization_id
     )!
     const can_add_patients = !!organization.address
@@ -23,7 +23,7 @@ export default HealthWorkerHomePageLayout(
         organization_id={organization_id}
         waiting_room={await waiting_room.get(ctx.state.trx, {
           organization_id,
-          health_worker: ctx.state.healthWorker,
+          health_worker: ctx.state.health_worker,
         })}
         can_add_patients={can_add_patients}
       />

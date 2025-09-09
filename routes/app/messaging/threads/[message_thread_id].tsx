@@ -12,7 +12,7 @@ import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
 
 type MessagingProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
 }
 
 const MessageSchema = z.object({
@@ -34,7 +34,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const message = await messages.send(ctx.state.trx, {
       thread_id: message_thread_id,
       body: form_values.message,
-      sender: messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
+      sender: messages.participantsQueryForHealthWorker(
+        ctx.state.health_worker,
+      ),
     })
 
     console.log('message', message)
@@ -53,7 +55,7 @@ export default HealthWorkerHomePageLayout(
     const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
     const thread = await messages.getThread(
       ctx.state.trx,
-      messages.participantsQueryForHealthWorker(ctx.state.healthWorker),
+      messages.participantsQueryForHealthWorker(ctx.state.health_worker),
       thread_id,
     )
 

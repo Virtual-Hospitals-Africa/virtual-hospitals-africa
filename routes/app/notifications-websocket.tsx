@@ -15,7 +15,7 @@ export default upgradeWebsocket((
   async function loop() {
     const new_notifs = await notifications.ofHealthWorker(
       ctx.state.trx,
-      ctx.state.healthWorker.id,
+      ctx.state.health_worker.id,
     )
     for (const new_notif of new_notifs) {
       if (!past_ts || (new_notif.created_at > past_ts)) {
@@ -29,7 +29,7 @@ export default upgradeWebsocket((
   socket.onopen = async () => {
     // const notifs = await notifications.ofHealthWorker(
     //   ctx.state.trx,
-    //   ctx.state.healthWorker.id,
+    //   ctx.state.health_worker.id,
     // )
     // past_ts = last(notifs)?.created_at
     // await loop()
