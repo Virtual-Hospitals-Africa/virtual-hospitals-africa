@@ -11,7 +11,7 @@ export default async function readAllToString(
       const { done, value } = await stream_reader.read()
       if (done) break
       chunks.push(value)
-      total_length += chunks.length
+      total_length += value.length
     }
   } finally {
     stream_reader.releaseLock()
