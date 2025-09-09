@@ -3,6 +3,7 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../../../types.ts'
 import { file } from '../../../util/responses.ts'
 import { assertOr404 } from '../../../util/assertOr.ts'
 
+// TODO: consider whether your having a media's UUID is sufficient guarantee that you have authorization to see it
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
   async GET(_, { state, params }) {
     const requested_media = await media.getByUUID(state.trx, params.uuid)

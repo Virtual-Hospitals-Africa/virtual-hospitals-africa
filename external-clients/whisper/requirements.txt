@@ -1,0 +1,7 @@
+huggingface_hub[cli]
+soundfile
+librosa
+transformers
+torch
+torchaudio
+datasets

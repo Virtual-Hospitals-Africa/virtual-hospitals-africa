@@ -71,6 +71,16 @@ export async function up(db: Kysely<unknown>) {
     qb.addColumn('value', 'decimal', (col) => col.notNull())
       .addColumn('units', 'varchar(255)', (col) => col.notNull()))
 
+  await createPointerTable(db, 'patient_chief_complaints', {
+    references: 'patient_findings',
+    primary_key_type: 'uuid',
+  }, (qb) =>
+    qb
+      .addColumn('language_code', 'varchar(3)', (col) =>
+        col.notNull().references('iso_639_2_b_languages.iso_639_2_b'))
+      .addColumn('note', 'text', (col) =>
+        col.notNull()))
+
   await createPointerTable(db, 'patient_symptoms', {
     references: 'patient_findings',
     primary_key_type: 'uuid',
@@ -100,7 +110,7 @@ export async function up(db: Kysely<unknown>) {
       `,
       ))
 
-  await createPointerTable(db, 'patient_finding_media', {
+  await createPointerTable(db, 'patient_finding_media_images', {
     references: 'patient_records',
     primary_key_type: 'uuid',
   }, (qb) =>
@@ -111,9 +121,28 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('patient_findings.id').onDelete('cascade'),
     )
       .addColumn(
-        'media_id',
+        'media_image_id',
         'uuid',
-        (col) => col.notNull().references('media.id').onDelete('cascade'),
+        (col) =>
+          col.notNull().references('media_images.id').onDelete('cascade'),
+      ))
+
+  await createPointerTable(db, 'patient_finding_media_speeches', {
+    references: 'patient_findings',
+    primary_key_type: 'uuid',
+  }, (qb) =>
+    qb
+      .addColumn(
+        'finding_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_findings.id').onDelete('cascade'),
+      )
+      .addColumn(
+        'media_speech_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('media_speeches.id').onDelete('cascade'),
       ))
 
   await createPointerTable(
@@ -142,6 +171,11 @@ export async function up(db: Kysely<unknown>) {
             ),
         )
         .addColumn(
+          'by_system',
+          'boolean',
+          (col) => col.notNull(),
+        )
+        .addColumn(
           'evaluates_record_id',
           'uuid',
           (col) =>
@@ -151,19 +185,23 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn('note', 'text')
         .addCheckConstraint(
-          'evaluation_is_either_by_encounter_provider_or_during_review',
-          sql`
-            ((encounter_provider_id is not null) or (review_id is not null))
-          `,
+          'evaluation_is_either_by_system_or_encounter_provider_or_during_review',
+          sql`(
+            (by_system = true and (encounter_provider_id is null) and (review_id is null)) or
+            (by_system = false and (encounter_provider_id is not null) and (review_id is null)) or
+            (by_system = false and (encounter_provider_id is null) and (review_id is not null))
+          )`,
         ),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_evaluations').execute()
-  await db.schema.dropTable('patient_finding_media').execute()
+  await db.schema.dropTable('patient_finding_media_speeches').execute()
+  await db.schema.dropTable('patient_finding_media_images').execute()
   await db.schema.dropTable('patient_symptoms').execute()
   await db.schema.dropTable('patient_measurements').execute()
+  await db.schema.dropTable('patient_chief_complaints').execute()
   await db.schema.dropTable('patient_findings').execute()
   await db.schema.dropTable('patient_procedures').execute()
   await db.schema.dropTable('patient_records').execute()

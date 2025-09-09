@@ -23,6 +23,7 @@ export type EncounterReason =
   | 'seeking treatment'
 
 export type EncounterStep =
+  | 'chief_complaint'
   | 'clinical_notes'
   | 'close_visit'
   | 'diagnoses'
@@ -591,6 +592,26 @@ export interface Icd10Sections {
   section: string
 }
 
+export interface Iso6391Languages {
+  endonym: string | null
+  english_name: string
+  iso_639_1: string
+}
+
+export interface Iso6392BLanguages {
+  endonym: string | null
+  english_name: string
+  iso_639_1: string
+  iso_639_2_b: string
+}
+
+export interface Iso6393Languages {
+  endonym: string | null
+  english_name: string
+  iso_639_2_b: string
+  iso_639_3: string
+}
+
 export interface MailingList {
   created_at: Generated<Timestamp>
   email: string
@@ -647,6 +668,27 @@ export interface Media {
   mime_type: string
   updated_at: Generated<Timestamp>
   uuid: Generated<string>
+}
+
+export interface MediaAudios {
+  id: string
+}
+
+export interface MediaImages {
+  id: string
+}
+
+export interface MediaImagesOrVideos {
+  id: string
+}
+
+export interface MediaSpeeches {
+  id: string
+  language_code: string
+}
+
+export interface MediaVideos {
+  id: string
 }
 
 export interface Medications {
@@ -849,6 +891,12 @@ export interface PatientChatbotUserWhatsappMessagesReceived {
   whatsapp_message_received_id: string
 }
 
+export interface PatientChiefComplaints {
+  id: string
+  language_code: string
+  note: string
+}
+
 export interface PatientComputedFindings {
   computation_algorithm_version: string
   computation_metadata: Generated<Json>
@@ -923,6 +971,7 @@ export interface PatientEncounterSteps {
 }
 
 export interface PatientEvaluations {
+  by_system: boolean
   encounter_provider_id: string | null
   evaluates_record_id: string
   id: string
@@ -971,10 +1020,16 @@ export interface PatientFamily {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientFindingMedia {
+export interface PatientFindingMediaImages {
   finding_id: string
   id: string
-  media_id: string
+  media_image_id: string
+}
+
+export interface PatientFindingMediaSpeeches {
+  finding_id: string
+  id: string
+  media_speech_id: string
 }
 
 export interface PatientFindings {
@@ -1083,6 +1138,7 @@ export interface Patients {
   national_id_number: string | null
   nearest_organization_id: string | null
   phone_number: string | null
+  preferred_language_code_iso_639_2_b: string | null
   primary_doctor_id: string | null
   unregistered_primary_doctor_name: string | null
   updated_at: Generated<Timestamp>
@@ -1485,6 +1541,16 @@ export interface SpatialRefSys {
   srtext: string | null
 }
 
+export interface SpeechTranscriptions {
+  created_at: Generated<Timestamp>
+  finished: boolean
+  id: Generated<string>
+  media_speech_id: string
+  model: string
+  transcription: string | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1568,12 +1634,20 @@ export interface DB {
   icd10_diagnoses_excludes_codes: Icd10DiagnosesExcludesCodes
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
+  iso_639_1_languages: Iso6391Languages
+  iso_639_2_b_languages: Iso6392BLanguages
+  iso_639_3_languages: Iso6393Languages
   mailing_list: MailingList
   manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
   media: Media
+  media_audios: MediaAudios
+  media_images: MediaImages
+  media_images_or_videos: MediaImagesOrVideos
+  media_speeches: MediaSpeeches
+  media_videos: MediaVideos
   medications: Medications
   message_reads: MessageReads
   message_thread_participants: MessageThreadParticipants
@@ -1596,6 +1670,7 @@ export interface DB {
   patient_chatbot_user_whatsapp_messages_received:
     PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers
+  patient_chief_complaints: PatientChiefComplaints
   patient_computed_findings: PatientComputedFindings
   patient_computed_findings_inputs: PatientComputedFindingsInputs
   patient_condition_medications: PatientConditionMedications
@@ -1608,7 +1683,8 @@ export interface DB {
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
-  patient_finding_media: PatientFindingMedia
+  patient_finding_media_images: PatientFindingMediaImages
+  patient_finding_media_speeches: PatientFindingMediaSpeeches
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
@@ -1661,6 +1737,7 @@ export interface DB {
   snomed_stated_relationship: SnomedStatedRelationship
   snomed_text_definition: SnomedTextDefinition
   spatial_ref_sys: SpatialRefSys
+  speech_transcriptions: SpeechTranscriptions
   waiting_room: WaitingRoom
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent

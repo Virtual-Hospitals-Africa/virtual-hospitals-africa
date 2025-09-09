@@ -251,7 +251,7 @@ jobs:
         run: deno task db:migrate all
 
       - name: Migrate back down
-        run: deno task db:migrate to _icd10.ts
+        run: deno task db:migrate to snomed_inferred
 
       - name: Migrate back up
         run: deno task db:migrate latest

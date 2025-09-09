@@ -74,6 +74,7 @@ export function insertMany(
         encounter_provider_id,
         evaluates_record_id: evaluation.evaluates_record_id,
         note: evaluation.note,
+        by_system: false,
       })))).selectNoFrom([
       success_true,
     ])

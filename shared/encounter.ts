@@ -2,6 +2,7 @@ import { EncounterReason, EncounterStep } from '../db.d.ts'
 
 export const ENCOUNTER_STEPS: EncounterStep[] = [
   'vitals',
+  'chief_complaint',
   'symptoms',
   'history',
   'general_assessments',

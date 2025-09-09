@@ -8,7 +8,6 @@ import {
 import { chunkTsvResource } from '../../parseTsvResource.ts'
 import { create } from '../create.ts'
 import z from 'zod'
-import { spinner } from '../../../util/spinner.ts'
 
 const latest_snomed = 'SnomedCT_InternationalRF2_PRODUCTION_20250801T120000Z'
 const snomed_file_suffix = '_INT_20250801.txt'
@@ -446,6 +445,7 @@ export default create([
     : 'extracted/snomed'
 
   for (const { table, text_file, schema } of snomed_tables) {
+    console.log(`Loading ${table}`)
     for await (
       const chunk of chunkTsvResource(
         `${snomed_directory}/${text_file}`,
@@ -457,10 +457,8 @@ export default create([
         },
       )
     ) {
-      await spinner(
-        `Loading ${table}`,
-        trx.insertInto(table).values(chunk).execute(),
-      )
+      await trx.insertInto(table).values(chunk).execute()
     }
+    console.log(`Loaded ${table}`)
   }
 }, { never_dump: true })

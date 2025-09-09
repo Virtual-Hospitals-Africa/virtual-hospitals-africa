@@ -1,46 +1,44 @@
-import { sql } from 'kysely'
-import {
-  PatientSymptomUpsert,
-  RenderedPatientSymptom,
-  TrxOrDb,
-} from '../../types.ts'
-import {
-  blankSelection,
-  isoDate,
-  jsonArrayFrom,
-  success_true,
-} from '../helpers.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
+import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
 
-// TODO: get this into a single round trip with the DB
+export const CHIEF_COMPLAINT_SNOMED_CONCEPT_ID = '1269489004'
+
+export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID =
+  '431315003'
+
+// // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
-  { patient_id, encounter_id, encounter_provider_id, symptom }: {
+  { patient_id, encounter_id, encounter_provider_id, chief_complaint }: {
     patient_id: string
     encounter_id: string
     encounter_provider_id: string
-    symptom: PatientSymptomUpsert
+    chief_complaint: {
+      altered_patient_chief_complaint_id?: Maybe<string>
+      language_code: string
+      note: string
+      media_speech_id?: string | undefined
+    }
   },
 ) {
   const {
-    altered_patient_symptom_id,
-    snomed_concept_id,
-    severity,
-    start_date,
-    end_date,
-    notes,
-  } = symptom
+    altered_patient_chief_complaint_id,
+    language_code,
+    note,
+    media_speech_id,
+  } = chief_complaint
 
-  if (altered_patient_symptom_id) {
+  if (altered_patient_chief_complaint_id) {
     await markAltered(trx, {
       patient_id,
       encounter_id,
       encounter_provider_id,
-      altered_record_id: altered_patient_symptom_id,
+      altered_record_id: altered_patient_chief_complaint_id,
     })
   }
 
@@ -74,8 +72,9 @@ export async function upsertOne(
     .executeTakeFirst()
 
   const procedure_id = existing_procedure?.id || generateUUID()
+  const speech_record_id = media_speech_id && generateUUID()
 
-  const symptom_id = generateUUID()
+  const chief_complaint_id = generateUUID()
 
   return trx.with(
     'inserting_procedure_record',
@@ -103,27 +102,64 @@ export async function upsertOne(
   ).with('inserting_finding_records', (qb) =>
     qb.insertInto('patient_records')
       .values({
-        id: symptom_id,
+        id: chief_complaint_id,
         patient_id,
         encounter_id,
-        snomed_concept_id,
+        snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
-          id: symptom_id,
+          id: chief_complaint_id,
           procedure_id,
           encounter_provider_id,
-        })).with(
-      'inserting_symptoms',
+        }))
+    .with(
+      'inserting_chief_complaint',
       (qb) =>
-        qb.insertInto('patient_symptoms')
+        qb.insertInto('patient_chief_complaints')
           .values({
-            id: symptom_id,
-            severity,
-            start_date,
-            end_date,
-            notes,
+            id: chief_complaint_id,
+            note,
+            language_code,
           }),
+    )
+    .with(
+      'inserting_speech_record',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_records')
+            .values({
+              id: speech_record_id,
+              patient_id,
+              encounter_id,
+              snomed_concept_id:
+                AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_speech_finding',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_findings')
+            .values({
+              id: speech_record_id,
+              encounter_provider_id,
+              procedure_id,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_speech_finding_media_speech',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_finding_media_speeches')
+            .values({
+              id: speech_record_id,
+              finding_id: chief_complaint_id,
+              media_speech_id,
+            })
+          : blankSelection(qb),
     )
     .selectNoFrom([
       success_true,
@@ -137,13 +173,18 @@ export function getEncounter(
     patient_id: string
     encounter_id: string
   },
-): Promise<RenderedPatientSymptom[]> {
+) {
   return trx
     .selectFrom('patient_records')
     .innerJoin(
-      'patient_symptoms',
-      'patient_symptoms.id',
+      'patient_findings',
+      'patient_findings.id',
       'patient_records.id',
+    )
+    .innerJoin(
+      'patient_chief_complaints',
+      'patient_chief_complaints.id',
+      'patient_findings.id',
     )
     .innerJoin(
       'snomed_inferred_canonical_name_and_category',
@@ -157,31 +198,18 @@ export function getEncounter(
       'not in',
       nowInvalidRecords(trx, { patient_id }),
     )
+    .leftJoin(
+      'patient_finding_media_speeches',
+      'patient_finding_media_speeches.finding_id',
+      'patient_chief_complaints.id',
+    )
     .selectAll('patient_records')
-    .select((eb) => [
-      'patient_symptoms.id',
-      'severity',
-      'notes',
+    .select([
+      'patient_chief_complaints.id',
       'snomed_inferred_canonical_name_and_category.name',
-      isoDate(eb.ref('start_date')).as('start_date'),
-      isoDate(eb.ref('end_date')).as('end_date'),
-      jsonArrayFrom(
-        eb
-          .selectFrom('patient_finding_media_images')
-          .innerJoin(
-            'media',
-            'media.id',
-            'patient_finding_media_images.media_image_id',
-          )
-          .select([
-            'media.mime_type',
-            sql<string>`concat('/app/media/', media.uuid)`.as('url'),
-          ])
-          .whereRef(
-            'patient_finding_media_images.finding_id',
-            '=',
-            'patient_symptoms.id',
-          ),
-      ).as('media'),
-    ]).execute()
+      // 'patient_finding_media_speeches.id as media_speech_id',
+      // 'patient_finding_media_speeches.media_speech_id',
+      // 'patient_finding_media_speeches.language_code',
+      // 'patient_finding_media_speeches.note',
+    ]).executeTakeFirst()
 }

@@ -78,6 +78,7 @@ describe('scheduling/makeAppointment.ts', () => {
             age_display: null,
             age_years: null,
             description: null,
+            preferred_language_code_iso_639_2_b: null,
             primary_provider_name: null,
             nearest_organization_id: null,
             primary_provider_health_worker_id: null,
