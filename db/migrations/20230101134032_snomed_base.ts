@@ -25,7 +25,7 @@ export async function up(
       'language_code',
       'varchar(2)',
       (col) =>
-        col.notNull().references('iso_639_1_languages.iso_639_1').check(
+        col.notNull().check(
           sql`language_code = 'en'`,
         ),
     )
@@ -365,7 +365,7 @@ export async function up(
       'language_code',
       'varchar(2)',
       (col) =>
-        col.notNull().references('iso_639_1_languages.iso_639_1').check(
+        col.notNull().check(
           sql`language_code = 'en'`,
         ),
     )
@@ -389,27 +389,27 @@ export async function up(
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('snomed_text_definitionsnomed_stated_relationship')
-  await db.schema.dropTable('snomed_s_refset_owl_expression')
-  await db.schema.dropTable('snomed_relationship_concrete_values')
-  // await db.schema.dropTable('snomed_identifier')
-  await db.schema.dropTable('snomed_sssssss_refset_mrcm_domain')
-  await db.schema.dropTable('snomed_ss_refset_module_dependency')
-  // await db.schema.dropTable('snomed_sscs_refset_member_annotation_string_value')
-  await db.schema.dropTable('snomed_sscc_refset_mrcm_attribute_range')
-  await db.schema.dropTable('snomed_s_refset_simple_map')
-  // await db.schema.dropTable(
-  //   'snomed_scs_refset_component_annotation_string_value',
-  // )
-  await db.schema.dropTable('snomed_refset_simple')
-  await db.schema.dropTable('snomed_iissscc_refset_extended_map')
-  await db.schema.dropTable('snomed_c_refset_mrcm_module_scope')
-  await db.schema.dropTable('snomed_c_refset_language')
-  await db.schema.dropTable('snomed_c_refset_attribute_value')
-  await db.schema.dropTable('snomed_c_refset_association')
+    .execute()
+  await db.schema.dropTable('snomed_s_refset_owl_expression').execute()
+  await db.schema.dropTable('snomed_relationship_concrete_values').execute()
+  // await db.schema.dropTable('snomed_identifier').execute()
+  await db.schema.dropTable('snomed_sssssss_refset_mrcm_domain').execute()
+  await db.schema.dropTable('snomed_ss_refset_module_dependency').execute()
+  // await db.schema.dropTable('snomed_sscs_refset_member_annotation_string_value').execute()
+  await db.schema.dropTable('snomed_sscc_refset_mrcm_attribute_range').execute()
+  await db.schema.dropTable('snomed_s_refset_simple_map').execute()
+  // await db.schema.dropTable('snomed_scs_refset_component_annotation_string_value').execute()
+  await db.schema.dropTable('snomed_refset_simple').execute()
+  await db.schema.dropTable('snomed_iissscc_refset_extended_map').execute()
+  await db.schema.dropTable('snomed_c_refset_mrcm_module_scope').execute()
+  await db.schema.dropTable('snomed_c_refset_language').execute()
+  await db.schema.dropTable('snomed_c_refset_attribute_value').execute()
+  await db.schema.dropTable('snomed_c_refset_association').execute()
   await db.schema.dropTable('snomed_cisscc_refset_mrcm_attribute_domain')
-  await db.schema.dropTable('snomed_ci_refset_description_type')
-  await db.schema.dropTable('snomed_cci_refset_refset_descriptor')
-  await db.schema.dropTable('snomed_relationship')
-  await db.schema.dropTable('snomed_description')
-  await db.schema.dropTable('snomed_concept')
+    .execute()
+  await db.schema.dropTable('snomed_ci_refset_description_type').execute()
+  await db.schema.dropTable('snomed_cci_refset_refset_descriptor').execute()
+  await db.schema.dropTable('snomed_relationship').execute()
+  await db.schema.dropTable('snomed_description').execute()
+  await db.schema.dropTable('snomed_concept').execute()
 }

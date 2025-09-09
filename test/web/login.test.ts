@@ -34,8 +34,14 @@ describe('/login', () => {
   describe('when logged in', () => {
     it("doesn't allow unemployed access to /app", async () => {
       const mock = await addTestHealthWorkerWithSession(db)
-      const response = await mock.fetch(`/app`)
-      assert(response.ok)
+      const response = await mock.fetch(`/app`, {
+        headers: {
+          accept: 'text/html',
+        },
+      })
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
       assert(
         response.url ===
           `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,

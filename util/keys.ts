@@ -6,3 +6,10 @@ export function keys<T extends Record<string, any>>(
   // deno-lint-ignore no-explicit-any
   return keys as any // Type assertion needed here due to complexity
 }
+
+export function isKeyOf<T extends Record<string, unknown>>(
+  key: unknown,
+  obj: T,
+): key is keyof T {
+  return (key as string) in obj
+}

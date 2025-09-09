@@ -1,22 +1,14 @@
 import { FreshContext } from '$fresh/server.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as notifications from '../../db/models/notifications.ts'
 import { LoggedInHealthWorker } from '../../types.ts'
+import upgradeWebsocket from '../../util/websocket.ts'
 // import last from '../../util/last.ts'
 
-// deno-lint-ignore require-await
-export default async function NotificationsWebsocket(
-  req: Request,
+export default upgradeWebsocket((
+  _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
-) {
-  assertEquals(
-    req.headers.get('upgrade'),
-    'websocket',
-    'Only websocket connections supported',
-  )
-
-  const { socket, response } = Deno.upgradeWebSocket(req)
-
+  socket: WebSocket,
+) => {
   let timeout: number
   let past_ts: Date | undefined
 
@@ -47,6 +39,4 @@ export default async function NotificationsWebsocket(
     console.error('SOCKET ERROR:', error)
     clearTimeout(timeout)
   }
-
-  return response
-}
+})

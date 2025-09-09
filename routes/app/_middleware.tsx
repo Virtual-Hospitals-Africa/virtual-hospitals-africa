@@ -3,23 +3,25 @@ import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as notifications from '../../db/models/notifications.ts'
 import redirect from '../../util/redirect.ts'
-import { assert } from 'std/assert/assert.ts'
 import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
-import { startTrx, TrxContext } from '../../shared/startTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import { login_href } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import Layout from '../../components/library/Layout.tsx'
+import db from '../../db/db.ts'
+import { assertOr401 } from '../../util/assertOr.ts'
+import { attachTrx } from '../../shared/attachTrx.ts'
+import { assert } from 'std/assert/assert.ts'
 
 const SKIP_NURSE_REGISTRATION = true
 
 export const handler = [
   ensureCookiePresent,
-  startTrx,
-  getLoggedInHealthWorker,
+  getLoggedInHealthWorker({ require_employment: true }),
   redirectIfRegistrationNeeded,
+  attachTrx,
 ]
 
 export const could_not_locate_account_href = warning(
@@ -36,31 +38,41 @@ export function ensureCookiePresent(req: Request, ctx: FreshContext) {
 
 export function getLoggedInHealthWorkerFromCookie(
   req: Request,
-  ctx: TrxContext,
+  _ctx: FreshContext,
 ) {
   const session_id = cookie.get(req)
   assert(session_id)
-
-  return health_workers.getBySession(ctx.state.trx, {
-    session_id,
-  })
+  return health_workers.getBySession(db, { session_id })
 }
 
-async function getLoggedInHealthWorker(
-  req: Request,
-  ctx: LoggedInHealthWorkerContext,
+export function getLoggedInHealthWorker(
+  { require_employment }: { require_employment: boolean },
 ) {
-  const healthWorker = await getLoggedInHealthWorkerFromCookie(req, ctx)
+  return async function (
+    req: Request,
+    ctx: FreshContext,
+  ) {
+    const healthWorker = await getLoggedInHealthWorkerFromCookie(req, ctx)
 
-  if (!healthWorker || !health_workers.isEmployed(healthWorker)) {
+    if (
+      healthWorker && (
+        !require_employment || health_workers.isEmployed(healthWorker)
+      )
+    ) {
+      ctx.state.healthWorker = healthWorker
+      return ctx.next()
+    }
+
+    assertOr401(
+      req.method === 'GET' &&
+        req.headers.get('accept') === 'text/html',
+    )
+
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()
     deleteCookie(response.headers, cookie.session_key)
     return response
   }
-
-  ctx.state.healthWorker = healthWorker
-  return ctx.next()
 }
 
 function redirectIfRegistrationNeeded(

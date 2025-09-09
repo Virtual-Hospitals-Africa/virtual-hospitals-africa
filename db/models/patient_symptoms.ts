@@ -171,7 +171,7 @@ export function getEncounter(
           .innerJoin(
             'media',
             'media.id',
-            'patient_finding_media_images.media_id',
+            'patient_finding_media_images.media_image_id',
           )
           .select([
             'media.mime_type',

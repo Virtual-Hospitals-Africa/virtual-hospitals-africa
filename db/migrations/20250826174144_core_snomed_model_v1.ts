@@ -121,14 +121,14 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('patient_findings.id').onDelete('cascade'),
     )
       .addColumn(
-        'media_id',
+        'media_image_id',
         'uuid',
         (col) =>
           col.notNull().references('media_images.id').onDelete('cascade'),
       ))
 
   await createPointerTable(db, 'patient_finding_media_speeches', {
-    references: 'patient_records',
+    references: 'patient_findings',
     primary_key_type: 'uuid',
   }, (qb) =>
     qb

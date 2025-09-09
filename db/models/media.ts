@@ -1,5 +1,55 @@
 import { sql } from 'kysely'
 import { HasStringId, Maybe, Media, TrxOrDb } from './../../types.ts'
+import generateUUID from '../../util/uuid.ts'
+import { success_true } from '../helpers.ts'
+import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
+
+export function insertSpeech(
+  trx: TrxOrDb,
+  { media_speech_id, binary_data, mime_type, language_code }: {
+    media_speech_id?: string
+    binary_data: Uint8Array
+    mime_type: string
+    language_code: string
+  },
+) {
+  assertArrayIncludes(['audio/webm', 'audio/wav'], [mime_type])
+  const id = media_speech_id || generateUUID()
+  return trx.with('inserting_media', (qb) =>
+    qb.insertInto('media')
+      .values({ id, binary_data, mime_type })).with(
+      'inserting_audio',
+      (qb) =>
+        qb.insertInto('media_audios')
+          .values({ id }),
+    )
+    .with(
+      'inserting_speech',
+      (qb) =>
+        qb.insertInto('media_speeches')
+          .values({ id, language_code }),
+    )
+    .selectNoFrom(success_true)
+    .executeTakeFirstOrThrow()
+}
+
+export function insertSpeechTranscription(
+  trx: TrxOrDb,
+  { media_speech_id, transcription, model }: {
+    media_speech_id: string
+    transcription: string
+    model: string
+  },
+) {
+  return trx.insertInto('speech_transcriptions')
+    .values({
+      media_speech_id,
+      transcription,
+      model,
+      finished: true,
+    })
+    .executeTakeFirstOrThrow()
+}
 
 export function insert(
   trx: TrxOrDb,
@@ -10,8 +60,7 @@ export function insert(
   url: string
 }> {
   return trx.insertInto('media')
-    // deno-lint-ignore no-explicit-any
-    .values(opts as any)
+    .values(opts)
     .returning([
       'id',
       'mime_type',

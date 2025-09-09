@@ -115,6 +115,7 @@ import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
 import * as $app_snomed_allergies from './routes/app/snomed/allergies.ts'
 import * as $app_snomed_concepts from './routes/app/snomed/concepts.ts'
+import * as $app_speech_websocket from './routes/app/speech-websocket.tsx'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms_icd10 from './routes/app/symptoms-icd10.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
@@ -211,7 +212,10 @@ import * as $WarningMessage from './islands/WarningMessage.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $chief_complaint_RecordDialog from './islands/chief-complaint/RecordDialog.tsx'
 import * as $chief_complaint_Section from './islands/chief-complaint/Section.tsx'
+import * as $chief_complaint_startSpeechWebsocket from './islands/chief-complaint/startSpeechWebsocket.ts'
+import * as $chief_complaint_startStreamAndMediaRecorder from './islands/chief-complaint/startStreamAndMediaRecorder.ts'
 import * as $diagnoses_Form from './islands/diagnoses/Form.tsx'
 import * as $diagnoses_FormRow from './islands/diagnoses/FormRow.tsx'
 import * as $diagnostic_tests_Orders from './islands/diagnostic_tests/Orders.tsx'
@@ -495,6 +499,7 @@ const manifest = {
     './routes/app/providers.tsx': $app_providers,
     './routes/app/snomed/allergies.ts': $app_snomed_allergies,
     './routes/app/snomed/concepts.ts': $app_snomed_concepts,
+    './routes/app/speech-websocket.tsx': $app_speech_websocket,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/symptoms-icd10.tsx': $app_symptoms_icd10,
     './routes/app/symptoms.tsx': $app_symptoms,
@@ -607,7 +612,12 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/chief-complaint/RecordDialog.tsx': $chief_complaint_RecordDialog,
     './islands/chief-complaint/Section.tsx': $chief_complaint_Section,
+    './islands/chief-complaint/startSpeechWebsocket.ts':
+      $chief_complaint_startSpeechWebsocket,
+    './islands/chief-complaint/startStreamAndMediaRecorder.ts':
+      $chief_complaint_startStreamAndMediaRecorder,
     './islands/diagnoses/Form.tsx': $diagnoses_Form,
     './islands/diagnoses/FormRow.tsx': $diagnoses_FormRow,
     './islands/diagnostic_tests/Orders.tsx': $diagnostic_tests_Orders,

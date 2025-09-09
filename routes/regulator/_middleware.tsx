@@ -5,17 +5,18 @@ import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
 import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
-import { startTrx } from '../../shared/startTrx.ts'
-import { warning } from '../../util/alerts.ts'
 import { login_href } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import Layout from '../../components/library/Layout.tsx'
+import { attachTrx } from '../../shared/attachTrx.ts'
+import { warning } from '../../util/alerts.ts'
+import db from '../../db/db.ts'
 
 export const handler = [
   ensureCookiePresent,
-  startTrx,
   getLoggedInRegulator,
+  attachTrx,
   redirectIfAtRoot,
 ]
 
@@ -43,7 +44,7 @@ async function getLoggedInRegulator(
   const session_id = cookie.get(req)
   assert(session_id)
 
-  const regulator = await regulators.getBySession(ctx.state.trx, {
+  const regulator = await regulators.getBySession(db, {
     session_id,
   })
 

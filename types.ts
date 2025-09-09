@@ -196,7 +196,7 @@ export type RenderedPatient =
     name: string
     description: string | null
     age_display: Maybe<string>
-    age_years: Maybe<string>
+    age_years: Maybe<number>
     avatar_url: string | null
     nearest_organization: string | null
     last_visited: null // TODO: implement
@@ -210,6 +210,7 @@ export type RenderedPatient =
     actions: {
       view: string
     }
+    preferred_language_code_iso_639_2_b: string | null
     primary_provider_profession: Maybe<string>
     primary_provider_organization_name: Maybe<string>
     primary_provider_avatar_url: Maybe<string>

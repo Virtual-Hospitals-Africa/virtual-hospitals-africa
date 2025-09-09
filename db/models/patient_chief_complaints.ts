@@ -1,136 +1,171 @@
-import { sql } from 'kysely'
-import {
-  PatientSymptomUpsert,
-  RenderedPatientSymptom,
-  TrxOrDb,
-} from '../../types.ts'
-import {
-  blankSelection,
-  isoDate,
-  jsonArrayFrom,
-  jsonObjectFrom,
-  success_true,
-} from '../helpers.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
+import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
 
+export const CHIEF_COMPLAINT_SNOMED_CONCEPT_ID = '1269489004'
+
+export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID =
+  '431315003'
+
 // // TODO: get this into a single round trip with the DB
-// export async function upsertOne(
-//   trx: TrxOrDb,
-//   { patient_id, encounter_id, encounter_provider_id, symptom }: {
-//     patient_id: string
-//     encounter_id: string
-//     encounter_provider_id: string
-//     symptom: PatientSymptomUpsert
-//   },
-// ) {
-//   const {
-//     altered_patient_symptom_id,
-//     snomed_concept_id,
-//     severity,
-//     start_date,
-//     end_date,
-//     notes,
-//   } = symptom
+export async function upsertOne(
+  trx: TrxOrDb,
+  { patient_id, encounter_id, encounter_provider_id, chief_complaint }: {
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
+    chief_complaint: {
+      altered_patient_chief_complaint_id?: Maybe<string>
+      language_code: string
+      note: string
+      media_speech_id?: string | undefined
+    }
+  },
+) {
+  const {
+    altered_patient_chief_complaint_id,
+    language_code,
+    note,
+    media_speech_id,
+  } = chief_complaint
 
-//   if (altered_patient_symptom_id) {
-//     await markAltered(trx, {
-//       patient_id,
-//       encounter_id,
-//       encounter_provider_id,
-//       altered_record_id: altered_patient_symptom_id,
-//     })
-//   }
+  if (altered_patient_chief_complaint_id) {
+    await markAltered(trx, {
+      patient_id,
+      encounter_id,
+      encounter_provider_id,
+      altered_record_id: altered_patient_chief_complaint_id,
+    })
+  }
 
-//   const existing_procedure = await trx.selectFrom('patient_records')
-//     .innerJoin(
-//       'patient_procedures',
-//       'patient_records.id',
-//       'patient_procedures.id',
-//     )
-//     .where(
-//       'patient_records.patient_id',
-//       '=',
-//       patient_id,
-//     )
-//     .where(
-//       'patient_records.encounter_id',
-//       '=',
-//       encounter_id,
-//     )
-//     .where(
-//       'patient_procedures.encounter_provider_id',
-//       '=',
-//       encounter_provider_id,
-//     )
-//     .where(
-//       'patient_records.snomed_concept_id',
-//       '=',
-//       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
-//     )
-//     .select(['patient_procedures.id'])
-//     .executeTakeFirst()
+  const existing_procedure = await trx.selectFrom('patient_records')
+    .innerJoin(
+      'patient_procedures',
+      'patient_records.id',
+      'patient_procedures.id',
+    )
+    .where(
+      'patient_records.patient_id',
+      '=',
+      patient_id,
+    )
+    .where(
+      'patient_records.encounter_id',
+      '=',
+      encounter_id,
+    )
+    .where(
+      'patient_procedures.encounter_provider_id',
+      '=',
+      encounter_provider_id,
+    )
+    .where(
+      'patient_records.snomed_concept_id',
+      '=',
+      EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+    )
+    .select(['patient_procedures.id'])
+    .executeTakeFirst()
 
-//   const procedure_id = existing_procedure?.id || generateUUID()
+  const procedure_id = existing_procedure?.id || generateUUID()
+  const speech_record_id = media_speech_id && generateUUID()
 
-//   const symptom_id = generateUUID()
+  const chief_complaint_id = generateUUID()
 
-//   return trx.with(
-//     'inserting_procedure_record',
-//     (qb) =>
-//       !existing_procedure
-//         ? qb.insertInto('patient_records')
-//           .values({
-//             id: procedure_id,
-//             patient_id,
-//             encounter_id,
-//             snomed_concept_id:
-//               EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
-//           })
-//         : blankSelection(qb),
-//   ).with(
-//     'inserting_procedure',
-//     (qb) =>
-//       !existing_procedure
-//         ? qb.insertInto('patient_procedures')
-//           .values({
-//             id: procedure_id,
-//             encounter_provider_id,
-//           })
-//         : blankSelection(qb),
-//   ).with('inserting_finding_records', (qb) =>
-//     qb.insertInto('patient_records')
-//       .values({
-//         id: symptom_id,
-//         patient_id,
-//         encounter_id,
-//         snomed_concept_id,
-//       })).with('inserting_findings', (qb) =>
-//       qb.insertInto('patient_findings')
-//         .values({
-//           id: symptom_id,
-//           procedure_id,
-//           encounter_provider_id,
-//         })).with(
-//       'inserting_symptoms',
-//       (qb) =>
-//         qb.insertInto('patient_chief_complaints')
-//           .values({
-//             id: symptom_id,
-//             severity,
-//             start_date,
-//             end_date,
-//             notes,
-//           }),
-//     )
-//     .selectNoFrom([
-//       success_true,
-//     ])
-//     .executeTakeFirstOrThrow()
-// }
+  return trx.with(
+    'inserting_procedure_record',
+    (qb) =>
+      !existing_procedure
+        ? qb.insertInto('patient_records')
+          .values({
+            id: procedure_id,
+            patient_id,
+            encounter_id,
+            snomed_concept_id:
+              EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+          })
+        : blankSelection(qb),
+  ).with(
+    'inserting_procedure',
+    (qb) =>
+      !existing_procedure
+        ? qb.insertInto('patient_procedures')
+          .values({
+            id: procedure_id,
+            encounter_provider_id,
+          })
+        : blankSelection(qb),
+  ).with('inserting_finding_records', (qb) =>
+    qb.insertInto('patient_records')
+      .values({
+        id: chief_complaint_id,
+        patient_id,
+        encounter_id,
+        snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+      })).with('inserting_findings', (qb) =>
+      qb.insertInto('patient_findings')
+        .values({
+          id: chief_complaint_id,
+          procedure_id,
+          encounter_provider_id,
+        }))
+    .with(
+      'inserting_chief_complaint',
+      (qb) =>
+        qb.insertInto('patient_chief_complaints')
+          .values({
+            id: chief_complaint_id,
+            note,
+            language_code,
+          }),
+    )
+    .with(
+      'inserting_speech_record',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_records')
+            .values({
+              id: speech_record_id,
+              patient_id,
+              encounter_id,
+              snomed_concept_id:
+                AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_speech_finding',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_findings')
+            .values({
+              id: speech_record_id,
+              encounter_provider_id,
+              procedure_id,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_speech_finding_media_speech',
+      (qb) =>
+        speech_record_id
+          ? qb.insertInto('patient_finding_media_speeches')
+            .values({
+              id: speech_record_id,
+              finding_id: chief_complaint_id,
+              media_speech_id,
+            })
+          : blankSelection(qb),
+    )
+    .selectNoFrom([
+      success_true,
+    ])
+    .executeTakeFirstOrThrow()
+}
 
 export function getEncounter(
   trx: TrxOrDb,
