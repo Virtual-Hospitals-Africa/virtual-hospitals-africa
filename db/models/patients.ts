@@ -59,6 +59,8 @@ const baseQuery = (trx: TrxOrDb) =>
       'addresses.formatted as address',
       dob_formatted,
       'patient_age.age_display',
+      'patient_age.age_number',
+      'patient_age.age_unit',
       'patients.preferred_language_code_iso_639_2_b',
       sql<number | null>`patient_age.age_years::integer`.as('age_years'),
       sql<

@@ -197,6 +197,8 @@ export type RenderedPatient =
     description: string | null
     age_display: Maybe<string>
     age_years: Maybe<number>
+    age_number: Maybe<number>
+    age_unit: Maybe<AgeUnit>
     avatar_url: string | null
     last_visited: null // TODO: implement
     location: null | {

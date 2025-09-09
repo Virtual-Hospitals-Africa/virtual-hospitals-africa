@@ -81,20 +81,9 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-const VITAL_SNOMED_CONCEPT_IDS = [
-  VITALS_SNOMED_CODE.height,
-  VITALS_SNOMED_CODE.weight,
-  VITALS_SNOMED_CODE.temperature,
-  VITALS_SNOMED_CODE.blood_pressure_diastolic,
-  VITALS_SNOMED_CODE.blood_pressure_systolic,
-  VITALS_SNOMED_CODE.blood_oxygen_saturation,
-  VITALS_SNOMED_CODE.blood_glucose,
-  VITALS_SNOMED_CODE.pulse,
-  VITALS_SNOMED_CODE.respiratory_rate,
-  VITALS_SNOMED_CODE.body_mass_index,
-  VITALS_SNOMED_CODE.mean_arterial_pressure,
-  VITALS_SNOMED_CODE.blood_pressure,
-]
+// Dynamically generate the list of vital SNOMED codes from the shared configuration
+// This ensures we don't have to maintain duplicate lists when adding new measurements
+const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
 
 export async function getMostRecentManualVitalsWithEvaluations(
   trx: TrxOrDb,

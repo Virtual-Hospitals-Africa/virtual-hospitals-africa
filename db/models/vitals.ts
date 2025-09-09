@@ -13,7 +13,9 @@ import {
 } from '../../shared/vitals.ts'
 
 type PatientRecord = {
-  age_years?: string | null
+  age_years?: number | null
+  age_number?: number | null
+  age_unit?: string | null
   gender?: string | null
 }
 
@@ -39,12 +41,19 @@ export async function measurementsNeededForEncounter(
   _trx: TrxOrDb,
   patient_record: PatientRecord,
 ): Promise<VitalMeasurementFormInputDefition[]> {
-  const age = patient_record.age_years
-    ? parseInt(patient_record.age_years, 10)
-    : null
+  console.log(
+    'patient record in measurementsNeededForEncounter',
+    patient_record,
+  )
+  console.log(_trx)
 
-  if (age !== null && age < 19) {
-    return getChildrenVitalMeasurements(age)
+  const age_years = patient_record.age_years ?? null
+  const age_number = patient_record.age_number ?? null
+  const age_unit = patient_record.age_unit ?? null
+
+  // Use granular age data for pediatric patients
+  if (age_years !== null && age_years < 19) {
+    return getChildrenVitalMeasurements(age_years, age_number, age_unit)
   }
 
   // Return adult measurements for ages 19 and above
@@ -52,7 +61,9 @@ export async function measurementsNeededForEncounter(
 }
 
 function getChildrenVitalMeasurements(
-  age: number,
+  age_years: number,
+  age_number?: number | null,
+  age_unit?: string | null,
 ): VitalMeasurementFormInputDefition[] {
   const measurements: VitalMeasurementFormInputDefition[] = [
     {
@@ -93,7 +104,7 @@ function getChildrenVitalMeasurements(
   ]
 
   // Blood pressure for ages 3 and older
-  if (age >= 3) {
+  if (age_years >= 3) {
     measurements.push(
       {
         finding_id: generateUUID(),
@@ -113,7 +124,7 @@ function getChildrenVitalMeasurements(
   }
 
   // Head circumference up to 3 years
-  if (age <= 3) {
+  if (age_years <= 3) {
     measurements.push({
       finding_id: generateUUID(),
       snomed_concept_id: VITALS_SNOMED_CODE.head_circumference,
@@ -124,8 +135,13 @@ function getChildrenVitalMeasurements(
   }
 
   // Midarm circumference and triceps skinfold for ages 3 months to 5 years
-  // For simplicity, we'll include these for ages 1-5 years (since we're working with years)
-  if (age >= 1 && age <= 5) {
+  // Now we can use granular age data for more precise requirements
+  const isAtLeast3Months = (age_years >= 1) ||
+    (age_years === 0 && age_unit === 'month' &&
+      typeof age_number === 'number' && age_number >= 3)
+  const isUnder5Years = age_years < 5
+
+  if (isAtLeast3Months && isUnder5Years) {
     measurements.push(
       {
         finding_id: generateUUID(),
@@ -144,11 +160,7 @@ function getChildrenVitalMeasurements(
     )
   }
 
-  // BMI for ages 5-19 years
-  if (age >= 5) {
-    // BMI is computed, so we don't add it as a direct measurement
-    // It will be calculated in computeAndInsertDerivedMeasurements
-  }
+  // BMI for ages 5-19 years is computed automatically in computeAndInsertDerivedMeasurements
 
   return measurements
 }
@@ -265,28 +277,25 @@ export async function computeAndInsertDerivedMeasurements(
     const body_mass_index = weight_measurement.value / (height_m * height_m)
 
     const body_mass_index_result = await patient_computed_findings
-      .insertComputedFinding(
-        trx,
-        {
-          patient_id,
-          encounter_id,
-          encounter_provider_id,
-          procedure_id: source_procedure_id,
-          snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
-          value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
-          units: VITALS_UNITS.body_mass_index,
-          algorithm_version: 'BMI_v1.0',
-          computation_metadata: {
-            formula: 'weight_kg / (height_m^2)',
-            height_m,
-            weight_kg: weight_measurement.value,
-          },
-          input_measurements: [
-            { record_id: height_measurement.finding_id },
-            { record_id: weight_measurement.finding_id },
-          ],
+      .insertComputedFinding(trx, {
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        procedure_id: source_procedure_id,
+        snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
+        value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
+        units: VITALS_UNITS.body_mass_index,
+        algorithm_version: 'BMI_v1.0',
+        computation_metadata: {
+          formula: 'weight_kg / (height_m^2)',
+          height_m,
+          weight_kg: weight_measurement.value,
         },
-      )
+        input_measurements: [
+          { record_id: height_measurement.finding_id },
+          { record_id: weight_measurement.finding_id },
+        ],
+      })
     computed_findings.push(body_mass_index_result.computed_finding_id)
   }
 
