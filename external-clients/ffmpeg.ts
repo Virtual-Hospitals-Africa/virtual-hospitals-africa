@@ -1,5 +1,5 @@
 import { deferred } from 'https://deno.land/std@0.136.0/async/deferred.ts'
-import { readAll } from '../util/readAll.ts'
+import readAllToString from '../util/readAllToString.ts'
 
 export function convertToWavPipeThrough(
   pipe_to: WritableStreamDefaultWriter<Uint8Array<ArrayBufferLike>>,
@@ -59,11 +59,7 @@ export function convertToWavPipeThrough(
 
     if (status.success) return finished.resolve()
 
-    // Read stderr for error details
-    const stderr = new TextDecoder().decode(
-      await readAll(process.stderr),
-    )
-    return finished.reject(stderr)
+    return finished.reject(readAllToString(process.stderr))
   }
 
   return {
@@ -106,16 +102,11 @@ export function convertToWavWriteToFile(
   async function finish() {
     await writer.close()
 
-    // Wait for ffmpeg to finish processing
     const status = await process.status
 
     if (status.success) return finished.resolve()
 
-    // Read stderr for error details
-    const stderr = new TextDecoder().decode(
-      await readAll(process.stderr),
-    )
-    return finished.reject(stderr)
+    return finished.reject(readAllToString(process.stderr))
   }
 
   return {
