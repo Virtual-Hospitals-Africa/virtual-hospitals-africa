@@ -12,7 +12,7 @@ import { TextInput } from '../islands/form/Inputs.tsx'
 import FormRow from '../components/library/FormRow.tsx'
 
 type PendingApprovalPageProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
   organizationAdmin: OrganizationAdmin
 }
 

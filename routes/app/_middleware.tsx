@@ -52,14 +52,14 @@ export function getLoggedInHealthWorker(
     req: Request,
     ctx: FreshContext,
   ) {
-    const healthWorker = await getLoggedInHealthWorkerFromCookie(req, ctx)
+    const health_worker = await getLoggedInHealthWorkerFromCookie(req, ctx)
 
     if (
-      healthWorker && (
-        !require_employment || health_workers.isEmployed(healthWorker)
+      health_worker && (
+        !require_employment || health_workers.isEmployed(health_worker)
       )
     ) {
-      ctx.state.healthWorker = healthWorker
+      ctx.state.health_worker = health_worker
       return ctx.next()
     }
 
@@ -79,8 +79,8 @@ function redirectIfRegistrationNeeded(
   _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
-  const { healthWorker } = ctx.state
-  const role_needing_registration = healthWorker.employment.find((e) =>
+  const { health_worker } = ctx.state
+  const role_needing_registration = health_worker.employment.find((e) =>
     e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
     e.roles.admin?.registration_needed
   )
@@ -88,7 +88,7 @@ function redirectIfRegistrationNeeded(
   // This is not quite right as this will mean that you can't log in if you're pending approval at one organization, even if you're not
   // pending approval at another but not at another.
   // TODO deal with this as part of doctor registration
-  const role_pending_approval = healthWorker.employment.find((e) =>
+  const role_pending_approval = health_worker.employment.find((e) =>
     e.roles.nurse?.registration_pending_approval ||
     e.roles.doctor?.registration_pending_approval ||
     e.roles.admin?.registration_pending_approval
@@ -156,7 +156,7 @@ export function HealthWorkerHomePageLayout<
     req: Request,
     ctx: Context,
   ) {
-    const { healthWorker, trx } = ctx.state
+    const { health_worker, trx } = ctx.state
     if (typeof title === 'function') {
       // deno-lint-ignore no-explicit-any
       render = title as any
@@ -170,7 +170,7 @@ export function HealthWorkerHomePageLayout<
       ),
       health_worker_notifications: notifications.ofHealthWorker(
         trx,
-        healthWorker.id,
+        health_worker.id,
       ),
     })
 
@@ -194,7 +194,7 @@ export function HealthWorkerHomePageLayout<
         title={title as string}
         route={ctx.route}
         url={ctx.url}
-        health_worker={healthWorker}
+        health_worker={health_worker}
         notifications={health_worker_notifications}
         drawer={drawer}
       >

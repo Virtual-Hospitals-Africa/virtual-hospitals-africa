@@ -133,7 +133,7 @@ async function writeCalendarsToGoogle(
         googleClient,
         [ctx.state.organization.id],
       )
-    await addCalendars(ctx.state.trx, ctx.state.healthWorker.id, [calendars])
+    await addCalendars(ctx.state.trx, ctx.state.health_worker.id, [calendars])
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }
 
@@ -160,14 +160,14 @@ async function writeCalendarsToGoogle(
 export const handler = postHandler(
   AvailabilitySchema,
   async (_req, ctx: OrganizationContext, form_values) => {
-    const { healthWorker, trx, organization } = ctx.state
+    const { health_worker, trx, organization } = ctx.state
     const from_url = !!ctx.url.searchParams.get('from_url')
 
     await promiseProps({
       marking_availability_set: markAvailabilitySet(
         trx,
         {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
           organization_id: organization.id,
         },
       ),
@@ -191,7 +191,7 @@ export default HealthWorkerHomePageLayout(
     _req: Request,
     ctx: OrganizationContext,
   ) {
-    const { healthWorker, organization, organization_employment } = ctx.state
+    const { health_worker, organization, organization_employment } = ctx.state
     const from_url = ctx.url.searchParams.get('from_url')
 
     const { gcal_availability_calendar_id } = organization_employment
@@ -218,7 +218,7 @@ export default HealthWorkerHomePageLayout(
       await markAvailabilitySet(
         ctx.state.trx,
         {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
           organization_id: organization.id,
         },
       )

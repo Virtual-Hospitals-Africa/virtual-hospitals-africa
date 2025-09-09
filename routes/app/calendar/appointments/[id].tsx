@@ -9,13 +9,13 @@ export default HealthWorkerHomePageLayout(
     _req,
     ctx,
   ) {
-    const { healthWorker } = ctx.state
+    const { health_worker } = ctx.state
 
     const { id } = ctx.params
 
     const [appointment] = await appointments.getWithPatientInfo(ctx.state.trx, {
       id,
-      health_worker_id: healthWorker.id,
+      health_worker_id: health_worker.id,
     })
 
     assert(appointment, 'Appointment not found')

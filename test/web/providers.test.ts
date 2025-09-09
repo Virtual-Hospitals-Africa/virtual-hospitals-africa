@@ -9,11 +9,14 @@ describe(
   () => {
     afterAll(() => db.destroy())
     it('can return a provider', async () => {
-      const { fetch, healthWorker } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
-      })
+      const { fetch, health_worker } = await addTestHealthWorkerWithSession(
+        db,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const response = await fetch(
-        `${route}/app/providers?profession=nurse&search=${healthWorker.name}`,
+        `${route}/app/providers?profession=nurse&search=${health_worker.name}`,
         {
           headers: {
             Accept: 'application/json',
@@ -24,9 +27,9 @@ describe(
       const json = await response.json()
       assert(Array.isArray(json))
 
-      const found = json.find((hw) => hw.health_worker_id === healthWorker.id)
+      const found = json.find((hw) => hw.health_worker_id === health_worker.id)
       assert(found)
-      assertEquals(found.name, healthWorker.name)
+      assertEquals(found.name, health_worker.name)
     })
   },
 )

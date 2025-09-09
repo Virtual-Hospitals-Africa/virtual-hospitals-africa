@@ -16,43 +16,45 @@ describe('db/models/providers.ts', () => {
     itUsesTrxAnd(
       'returns providers matching a search with their employment information',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, {
+        const health_worker = await addTestHealthWorker(trx, {
           scenario: 'nurse',
         })
 
         const result = await providers.search(trx, {
-          search: healthWorker.name,
+          search: health_worker.name,
         })
         assertEquals(result.length, 1)
         assertEquals(
           result[0],
           {
-            avatar_url: healthWorker.avatar_url,
-            email: healthWorker.email,
+            avatar_url: health_worker.avatar_url,
+            email: health_worker.email,
             organization_id: '00000000-0000-0000-0000-000000000001',
             organization_name: 'VHA Test Clinic',
             profession: 'nurse',
-            name: healthWorker.name,
-            health_worker_id: healthWorker.id,
+            name: health_worker.name,
+            health_worker_id: health_worker.id,
             description: 'nurse @ VHA Test Clinic',
-            id: healthWorker.employee_id!,
+            id: health_worker.employee_id!,
           },
         )
       },
     )
 
     itUsesTrxAnd('searches by profession', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
+      const health_worker = await addTestHealthWorker(trx, {
+        scenario: 'nurse',
+      })
 
       const doctor_result = await providers.search(trx, {
-        search: healthWorker.name,
+        search: health_worker.name,
         professions: ['doctor'],
       })
       assert(doctor_result)
       assertEquals(doctor_result.length, 0)
 
       const nurse_result = await providers.search(trx, {
-        search: healthWorker.name,
+        search: health_worker.name,
         professions: ['nurse'],
       })
       assert(nurse_result)
@@ -61,15 +63,15 @@ describe('db/models/providers.ts', () => {
       assertEquals(
         nurse_result[0],
         {
-          avatar_url: healthWorker.avatar_url,
-          email: healthWorker.email,
+          avatar_url: health_worker.avatar_url,
+          email: health_worker.email,
           organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic',
           profession: 'nurse',
-          health_worker_id: healthWorker.id,
-          name: healthWorker.name,
+          health_worker_id: health_worker.id,
+          name: health_worker.name,
           description: 'nurse @ VHA Test Clinic',
-          id: healthWorker.employee_id!,
+          id: health_worker.employee_id!,
         },
       )
     })
@@ -114,36 +116,38 @@ describe('db/models/providers.ts', () => {
     )
 
     itUsesTrxAnd('can filter by organization_id', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
+      const health_worker = await addTestHealthWorker(trx, {
+        scenario: 'nurse',
+      })
 
       await employment.add(trx, [{
-        health_worker_id: healthWorker.id,
+        health_worker_id: health_worker.id,
         profession: 'nurse',
         organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
       const same_organization_result = await providers.search(trx, {
-        search: healthWorker.name,
+        search: health_worker.name,
         organization_id: '00000000-0000-0000-0000-000000000001',
       })
       assertEquals(same_organization_result.length, 1)
       assertEquals(
         same_organization_result[0],
         {
-          id: healthWorker.employee_id!,
-          avatar_url: healthWorker.avatar_url,
-          email: healthWorker.email,
+          id: health_worker.employee_id!,
+          avatar_url: health_worker.avatar_url,
+          email: health_worker.email,
           organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic',
-          name: healthWorker.name,
-          health_worker_id: healthWorker.id,
+          name: health_worker.name,
+          health_worker_id: health_worker.id,
           description: 'nurse @ VHA Test Clinic',
           profession: 'nurse',
         },
       )
 
       const other_organization_result = await providers.search(trx, {
-        search: healthWorker.name,
+        search: health_worker.name,
         organization_id: '00000000-0000-0000-0000-000000000010',
       })
       assertEquals(other_organization_result.length, 0)

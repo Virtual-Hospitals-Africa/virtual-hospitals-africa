@@ -325,10 +325,10 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
+//     const form_values = getFormValues($)
 //     const formDisplay = getFormDisplay($)
 //     assertEquals(
-//       formValues,
+//       form_values,
 //       deepOmit({ pre_existing_conditions }, [
 //         'patient_condition_id',
 //         'patient_condition_medication_id',
@@ -421,9 +421,9 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
+//     const form_values = getFormValues($)
 //     assertEquals(
-//       formValues,
+//       form_values,
 //       { allergies: allergies_of_patient },
 //       'The form should be 1:1 with the conditions in the DB',
 //     )
@@ -438,13 +438,13 @@
 //         reason: 'seeking treatment',
 //       },
 //     )
-//     const { fetch, healthWorker } = await addTestHealthWorkerWithSession(db, {
+//     const { fetch, health_worker } = await addTestHealthWorkerWithSession(db, {
 //       scenario: 'approved-nurse',
 //     })
 
 //     await patient_conditions.upsertPreExisting(db, {
 //       patient_id: patient_id,
-//       employment_id: healthWorker.employee_id!,
+//       employment_id: health_worker.employee_id!,
 //       patient_conditions: [
 //         {
 //           id: 'c_4373',
@@ -640,8 +640,8 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
-//     assertEquals(formValues, {
+//     const form_values = getFormValues($)
+//     assertEquals(form_values, {
 //       family: {
 //         guardians: [
 //           {
@@ -755,9 +755,9 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
+//     const form_values = getFormValues($)
 //     assertEquals(
-//       formValues,
+//       form_values,
 //       {
 //         occupation: {
 //           school: {
@@ -854,9 +854,9 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
+//     const form_values = getFormValues($)
 //     assertEquals(
-//       formValues,
+//       form_values,
 //       {
 //         occupation: {
 //           school: {
@@ -1055,9 +1055,9 @@
 
 //     const pageContents = await getResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     const formValues = getFormValues($)
+//     const form_values = getFormValues($)
 //     assertEquals(
-//       formValues,
+//       form_values,
 //       {
 //         lifestyle: {
 //           sexual_activity: {

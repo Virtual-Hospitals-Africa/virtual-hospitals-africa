@@ -8,7 +8,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
     _req,
     ctx,
   ) {
-    const { healthWorker, organization, isAdminAtOrganization } = ctx.state
+    const { health_worker, organization, isAdminAtOrganization } = ctx.state
 
     const getEmployees = isAdminAtOrganization
       ? organizations.getEmployeesAndInvitees
@@ -27,7 +27,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
           employees={employees}
           pathname={ctx.url.pathname}
           organization_id={organization.id}
-          health_worker_id={healthWorker.id}
+          health_worker_id={health_worker.id}
         />
       ),
     }

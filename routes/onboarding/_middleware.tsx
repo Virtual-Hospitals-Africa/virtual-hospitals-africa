@@ -9,7 +9,7 @@ import redirect from '../../util/redirect.ts'
 
 export type OnboardingContext = TrxContext & {
   state: {
-    healthWorker: PossiblyEmployedHealthWorker
+    health_worker: PossiblyEmployedHealthWorker
   }
 }
 
@@ -24,5 +24,5 @@ function redirectToAppIfEmployedAlready(
   _req: Request,
   ctx: OnboardingContext,
 ) {
-  return isEmployed(ctx.state.healthWorker) ? redirect('/app') : ctx.next()
+  return isEmployed(ctx.state.health_worker) ? redirect('/app') : ctx.next()
 }

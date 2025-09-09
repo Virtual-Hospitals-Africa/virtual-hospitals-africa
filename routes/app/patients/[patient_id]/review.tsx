@@ -11,7 +11,7 @@ export default async function PatientPage(
 ) {
   const { doctor_review } = await addSelfAsReviewer(ctx.state.trx, {
     patient_id: getRequiredUUIDParam(ctx, 'patient_id'),
-    health_worker: ctx.state.healthWorker,
+    health_worker: ctx.state.health_worker,
   })
 
   if (!doctor_review.completed) {

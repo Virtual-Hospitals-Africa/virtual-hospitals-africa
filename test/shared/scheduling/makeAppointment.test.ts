@@ -20,7 +20,7 @@ describe('scheduling/makeAppointment.ts', () => {
             id: 'inserted google event id',
           } as GCalEvent)
         )
-        const healthWorker = await addTestHealthWorker(trx, {
+        const health_worker = await addTestHealthWorker(trx, {
           scenario: 'doctor',
         })
 
@@ -34,22 +34,22 @@ describe('scheduling/makeAppointment.ts', () => {
           reason: 'back pain',
           duration_minutes: 30,
           patient_id: patient.id,
-          provider_ids: [healthWorker.employee_id!],
+          provider_ids: [health_worker.employee_id!],
         }, insertEvent)
 
         assertEquals(insertEvent.calls.length, 1)
         assertEquals(insertEvent.calls[0].args.length, 3)
         assertEquals(
           insertEvent.calls[0].args[0]!.access_token,
-          healthWorker.access_token,
+          health_worker.access_token,
         )
         assertEquals(
           insertEvent.calls[0].args[0].refresh_token,
-          healthWorker.refresh_token,
+          health_worker.refresh_token,
         )
         assertEquals(
           insertEvent.calls[0].args[1],
-          healthWorker.calendars!.gcal_appointments_calendar_id,
+          health_worker.calendars!.gcal_appointments_calendar_id,
         )
         assertEquals(insertEvent.calls[0].args[2], {
           start: {
@@ -62,7 +62,7 @@ describe('scheduling/makeAppointment.ts', () => {
         })
 
         const result = await appointments.getWithPatientInfo(trx, {
-          health_worker_id: healthWorker.id,
+          health_worker_id: health_worker.id,
         })
 
         assertEquals(result, [{

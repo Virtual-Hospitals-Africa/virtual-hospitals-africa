@@ -11,7 +11,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   OrganizationContext['state']
 > = {
   async POST(_, ctx) {
-    const { trx, organization, isAdminAtOrganization, healthWorker } = ctx.state
+    const { trx, organization, isAdminAtOrganization, health_worker } =
+      ctx.state
 
     assertOr403(isAdminAtOrganization)
 
@@ -28,7 +29,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     await approveInvitee(
       trx,
       {
-        admin_id: healthWorker.id,
+        admin_id: health_worker.id,
         approving_id: health_worker_id,
       },
     )

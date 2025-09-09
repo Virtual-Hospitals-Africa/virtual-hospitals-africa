@@ -22,16 +22,19 @@ describe(
   () => {
     it('renders a page on GET for an open encounter', async () => {
       const patient = await patients.insert(db, { name: 'Test Patient' })
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
-      })
+      const { health_worker, fetch } = await addTestHealthWorkerWithSession(
+        db,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
           patient_id: patient.id,
           reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
+          provider_ids: [health_worker.employee_id!],
         },
       )
 
@@ -44,9 +47,9 @@ describe(
 
       const $ = cheerio.load(pageContents)
 
-      const formValues = getFormValues($)
-      assert(isObjectLike(formValues))
-      const findings = Object.values(formValues.findings || {})
+      const form_values = getFormValues($)
+      assert(isObjectLike(form_values))
+      const findings = Object.values(form_values.findings || {})
 
       assertArrayIncludes(findings, [{
         snomed_concept_id: 103228002,
@@ -110,16 +113,19 @@ describe(
     })
 
     it('can save vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
-      })
+      const { health_worker, fetch } = await addTestHealthWorkerWithSession(
+        db,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const encounter = await patient_encounters.insert(
         db,
         '00000000-0000-0000-0000-000000000001',
         {
           patient_name: 'Test Patient',
           reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
+          provider_ids: [health_worker.employee_id!],
         },
       )
 
@@ -160,14 +166,14 @@ describe(
           provider: {
             patient_encounter_provider_id:
               encounter.providers[0].encounter_provider_id,
-            employee_id: healthWorker.employee_id!,
+            employee_id: health_worker.employee_id!,
             organization: {
               id: '00000000-0000-0000-0000-000000000001',
               name: 'VHA Test Clinic',
             },
-            health_worker_id: healthWorker.id,
-            avatar_url: healthWorker.avatar_url,
-            name: healthWorker.name,
+            health_worker_id: health_worker.id,
+            avatar_url: health_worker.avatar_url,
+            name: health_worker.name,
             profession: 'nurse',
           },
           evaluations: [],
@@ -184,9 +190,9 @@ describe(
 
         const $ = cheerio.load(pageContents)
 
-        const formValues = getFormValues($)
-        assert(isObjectLike(formValues))
-        const findings = Object.values(formValues.findings || {})
+        const form_values = getFormValues($)
+        assert(isObjectLike(form_values))
+        const findings = Object.values(form_values.findings || {})
 
         assertArrayIncludes(findings, [{
           snomed_concept_id: 103228002,

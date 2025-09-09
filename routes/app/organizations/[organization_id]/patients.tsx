@@ -10,7 +10,7 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import sortBy from '../../../../util/sortBy.ts'
 
 type PatientsProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
   patients: RenderedPatient[]
 }
 
@@ -24,7 +24,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
     const { organization_id } = ctx.params
     const getting_room = waiting_room.get(ctx.state.trx, {
       organization_id,
-      health_worker: ctx.state.healthWorker,
+      health_worker: ctx.state.health_worker,
     })
     const patients = await getAllWithNames(ctx.state.trx, { search })
     const room = await getting_room

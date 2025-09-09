@@ -24,7 +24,7 @@ export default HealthWorkerHomePageLayout(
     // if there's no day in the query, use today in Harare
     const day = ctx.url.searchParams.get('day') || today
 
-    const appointment_calendars = ctx.state.healthWorker.employment.map(
+    const appointment_calendars = ctx.state.health_worker.employment.map(
       ({ organization, gcal_appointments_calendar_id }) => {
         assertOrRedirect(
           gcal_appointments_calendar_id,
@@ -39,7 +39,7 @@ export default HealthWorkerHomePageLayout(
 
     const { appointmentsOfHealthWorker, calendar_events } = await promiseProps({
       appointmentsOfHealthWorker: getAppointments(ctx.state.trx, {
-        health_worker_id: ctx.state.healthWorker.id,
+        health_worker_id: ctx.state.health_worker.id,
       }),
       calendar_events: Promise.all(
         appointment_calendars.map((calendar_id) =>

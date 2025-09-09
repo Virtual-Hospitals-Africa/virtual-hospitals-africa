@@ -55,7 +55,7 @@ describe(
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
       await addTestHealthWorker(db, { scenario: 'admin' })
-      const { fetch, healthWorker: nurse } =
+      const { fetch, health_worker: nurse } =
         await addTestHealthWorkerWithSession(db, {
           scenario: 'nurse',
         })

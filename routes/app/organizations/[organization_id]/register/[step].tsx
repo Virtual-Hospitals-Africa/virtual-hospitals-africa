@@ -42,7 +42,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
   async POST(req, ctx) {
     const employee = await employment.getEmployee(ctx.state.trx, {
       organization_id: ctx.state.organization.id,
-      health_worker_id: ctx.state.healthWorker.id,
+      health_worker_id: ctx.state.health_worker.id,
     })
     assert(employee)
 
@@ -52,7 +52,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       .getInProgress(
         ctx.state.trx,
         {
-          health_worker_id: ctx.state.healthWorker.id,
+          health_worker_id: ctx.state.health_worker.id,
         },
       )
 
@@ -75,7 +75,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       await nurse_registration_details.setInProgress(
         ctx.state.trx,
         {
-          health_worker_id: ctx.state.healthWorker.id,
+          health_worker_id: ctx.state.health_worker.id,
           data: formState,
         },
       )
@@ -93,7 +93,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     })
 
     const registrationDetails = getRegistrationDetails(
-      ctx.state.healthWorker,
+      ctx.state.health_worker,
       omit(formState, [
         'first_name',
         'middle_names',
@@ -107,10 +107,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       formState.middle_names,
       formState.last_name,
     ]).join(' ')
-    if (fullNameInForm !== ctx.state.healthWorker.name) {
+    if (fullNameInForm !== ctx.state.health_worker.name) {
       await health_workers.updateName(
         ctx.state.trx,
-        ctx.state.healthWorker.id,
+        ctx.state.health_worker.id,
         fullNameInForm,
       )
     }
@@ -118,7 +118,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     await nurse_registration_details.add(ctx.state.trx, registrationDetails)
 
     await nurse_registration_details.removeInProgress(ctx.state.trx, {
-      health_worker_id: ctx.state.healthWorker.id,
+      health_worker_id: ctx.state.health_worker.id,
     })
 
     return redirect('/app')
@@ -126,7 +126,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
 }
 
 function getRegistrationDetails(
-  healthWorker: HealthWorkerWithGoogleTokens,
+  health_worker: HealthWorkerWithGoogleTokens,
   {
     face_picture,
     ncz_registration_card,
@@ -136,7 +136,7 @@ function getRegistrationDetails(
   }: FormState,
 ): nurse_registration_details.UpsertableNurseRegistrationDetails {
   return {
-    health_worker_id: healthWorker.id,
+    health_worker_id: health_worker.id,
     face_picture_media_id: face_picture?.id,
     ncz_registration_card_media_id: ncz_registration_card?.id,
     national_id_media_id: national_id_picture?.id,
@@ -150,7 +150,7 @@ export default async function RegisterPage(
   _req: Request,
   ctx: OrganizationContext,
 ) {
-  const { healthWorker, organization } = ctx.state
+  const { health_worker, organization } = ctx.state
   const { step } = ctx.params
 
   // TODO: Further make this handling of multistep forms generic
@@ -166,11 +166,11 @@ export default async function RegisterPage(
     .getInProgress(
       ctx.state.trx,
       {
-        health_worker_id: ctx.state.healthWorker.id,
+        health_worker_id: ctx.state.health_worker.id,
       },
     )
 
-  formState.email = healthWorker.email
+  formState.email = health_worker.email
 
   const stepState = getNurseRegistrationSteps(ctx)
 

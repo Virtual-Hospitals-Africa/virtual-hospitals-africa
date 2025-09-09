@@ -40,7 +40,7 @@ export type ScheduleFormValues = {
 }
 
 type SchedulePageProps = {
-  healthWorker: EmployedHealthWorker
+  health_worker: EmployedHealthWorker
   slots?: ProviderAppointmentSlot[]
   patient_info?: { id: string; name: string }
 }
@@ -88,7 +88,7 @@ export default HealthWorkerHomePageLayout(
     req,
     ctx,
   ) {
-    const { healthWorker } = ctx.state
+    const { health_worker } = ctx.state
 
     const search = await parseRequestAsserts<SearchFormValues>(
       ctx.state.trx,
@@ -98,7 +98,7 @@ export default HealthWorkerHomePageLayout(
 
     let patient_info
     if (!search.patient_id) {
-      return ctx.render({ healthWorker })
+      return ctx.render({ health_worker })
     } else {
       const patient = await patients.getByID(ctx.state.trx, {
         id: search.patient_id,
@@ -109,7 +109,7 @@ export default HealthWorkerHomePageLayout(
 
     const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
       ids: [search.patient_id],
-      health_worker_id: healthWorker.id,
+      health_worker_id: health_worker.id,
     })
 
     const availability = await availableSlots(ctx.state.trx, {

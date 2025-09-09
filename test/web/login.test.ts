@@ -189,7 +189,7 @@ describe('/login', () => {
       const pageContents = await response.text()
       assert(
         pageContents.includes(
-          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.healthWorker.id}"`,
+          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.health_worker.id}"`,
         ),
       )
       assert(
