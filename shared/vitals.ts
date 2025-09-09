@@ -13,7 +13,7 @@ export const VITALS_SNOMED_CODE = {
   midarm_circumference: '---', //284473002 | Mid upper arm circumference , left arm: 1162540006, right arm: 1162545001
   triceps_skinfold: '---', //301851003 | Triceps skin fold thickness
   // Computed vitals
-  bmi: '698094009',
+  body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
   blood_pressure: '75367002',
 }
@@ -31,6 +31,6 @@ export const VITALS_UNITS = {
   midarm_circumference: 'cm',
   triceps_skinfold: 'cm',
   // Computed vitals
-  bmi: 'kg/m²',
+  body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
 }

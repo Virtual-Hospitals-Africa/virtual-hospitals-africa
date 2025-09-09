@@ -133,7 +133,7 @@ describe(
       body.append(`findings.${finding_id}.value`, '123')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals/measurements`,
         {
           method: 'POST',
           body,
@@ -151,6 +151,7 @@ describe(
       })
       assertEquals(vitals, [
         {
+          finding_type: 'manual',
           snomed_concept_id: VITALS_SNOMED_CODE.height,
           value_display: '123 cm',
           encounter_id: encounter.id,
@@ -175,7 +176,7 @@ describe(
 
       {
         const response = await fetch(
-          `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals`,
+          `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals/measurements`,
         )
 
         if (!response.ok) throw new Error(await response.text())

@@ -7,6 +7,9 @@ import {
 import { jsonArrayFrom, jsonBuildObject, success_true } from '../helpers.ts'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
+import z from 'zod'
+import flatten from '../../util/flatten.ts'
+import { decimal } from '../../util/validators.ts'
 
 export interface VitalsEvaluation {
   finding_id: string
@@ -87,16 +90,16 @@ const VITAL_SNOMED_CONCEPT_IDS = [
   VITALS_SNOMED_CODE.blood_glucose,
   VITALS_SNOMED_CODE.pulse,
   VITALS_SNOMED_CODE.respiratory_rate,
-  VITALS_SNOMED_CODE.bmi,
+  VITALS_SNOMED_CODE.body_mass_index,
   VITALS_SNOMED_CODE.mean_arterial_pressure,
   VITALS_SNOMED_CODE.blood_pressure,
 ]
 
-export async function getMostRecentVitalsWithEvaluations(
+export async function getMostRecentManualVitalsWithEvaluations(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
 ): Promise<
-  (MostRecentVitalMeasurement & { finding_type: 'manual' | 'computed' })[]
+  (MostRecentVitalMeasurement & { finding_type: 'manual' })[]
 > {
   const findings = await trx.with(
     'ranked_manual_findings',
@@ -121,142 +124,47 @@ export async function getMostRecentVitalsWithEvaluations(
         .orderBy('patient_records.created_at', 'desc')
         .selectAll('patient_records')
         .select([
-          sql<string | null>`patient_findings.encounter_provider_id`.as(
-            'encounter_provider_id',
-          ),
-          sql<string | null>`patient_findings.procedure_id`.as('procedure_id'),
-          sql<string | null>`patient_findings.referent_finding_id`.as(
-            'referent_finding_id',
-          ),
-        ])
-        .select([
-          'patient_measurements.value',
-          'patient_measurements.units',
-          sql<string | null>`NULL`.as('value_display'),
-        ])
-        .select(sql`'manual'`.as('finding_type'))
-        .select(
-          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
-            .as('rank'),
-        ),
-  ).with(
-    'ranked_computed_findings',
-    (qb) =>
-      qb.selectFrom('patient_records')
-        .innerJoin(
-          'patient_findings',
-          'patient_records.id',
-          'patient_findings.id',
-        )
-        .innerJoin(
-          'patient_computed_findings',
-          'patient_findings.id',
-          'patient_computed_findings.id',
-        )
-        .where('patient_records.patient_id', '=', patient_id)
-        .where(
-          'patient_records.snomed_concept_id',
-          'in',
-          VITAL_SNOMED_CONCEPT_IDS,
-        )
-        .orderBy('patient_records.created_at', 'desc')
-        .selectAll('patient_records')
-        .select([
           'patient_findings.encounter_provider_id',
           'patient_findings.procedure_id',
-          sql<string | null>`patient_findings.referent_finding_id`.as(
-            'referent_finding_id',
-          ),
+          'patient_findings.referent_finding_id',
+          'patient_measurements.value',
+          'patient_measurements.units',
         ])
-        .select([
-          'patient_computed_findings.value',
-          'patient_computed_findings.units',
-          'patient_computed_findings.value_display',
-        ])
-        .select(sql`'computed'`.as('finding_type'))
+        .select(sql<'manual'>`'manual'`.as('finding_type'))
         .select(
           sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
             .as('rank'),
         ),
-  ).with(
-    'all_ranked_findings',
-    (qb) =>
-      qb.selectFrom('ranked_manual_findings')
-        .select([
-          'id',
-          'patient_id',
-          'encounter_id',
-          'snomed_concept_id',
-          'created_at',
-          'updated_at',
-          'encounter_provider_id',
-          'procedure_id',
-          'referent_finding_id',
-          'value',
-          'units',
-          'value_display',
-          'finding_type',
-          'rank',
-        ])
-        .unionAll(
-          qb.selectFrom('ranked_computed_findings')
-            .select([
-              'id',
-              'patient_id',
-              'encounter_id',
-              'snomed_concept_id',
-              'created_at',
-              'updated_at',
-              'encounter_provider_id',
-              'procedure_id',
-              'referent_finding_id',
-              'value',
-              'units',
-              'value_display',
-              'finding_type',
-              'rank',
-            ]),
-        ),
-  ).with(
-    'latest_findings',
-    (qb) =>
-      qb.selectFrom('all_ranked_findings')
-        .selectAll()
-        .select(
-          sql`ROW_NUMBER() OVER (PARTITION BY snomed_concept_id ORDER BY created_at DESC)`
-            .as('final_rank'),
-        ),
-  ).selectFrom('latest_findings')
-    .leftJoin(
+  ).selectFrom('ranked_manual_findings')
+    .innerJoin(
       'patient_encounter_providers',
       'patient_encounter_providers.id',
-      'latest_findings.encounter_provider_id',
+      'ranked_manual_findings.encounter_provider_id',
     )
-    .leftJoin(
+    .innerJoin(
       'employment',
       'employment.id',
       'patient_encounter_providers.provider_id',
     )
-    .leftJoin(
+    .innerJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .leftJoin(
+    .innerJoin(
       'organizations',
       'organizations.id',
       'employment.organization_id',
     )
-    .where('latest_findings.final_rank', '=', 1)
+    .where('ranked_manual_findings.rank', '=', 1)
     .select([
-      'latest_findings.id as finding_id',
-      'latest_findings.snomed_concept_id',
-      'latest_findings.value',
-      'latest_findings.units',
-      'latest_findings.value_display',
-      'latest_findings.created_at',
-      'latest_findings.encounter_id',
-      'latest_findings.finding_type',
+      'ranked_manual_findings.id as finding_id',
+      'ranked_manual_findings.snomed_concept_id',
+      'ranked_manual_findings.value',
+      'ranked_manual_findings.units',
+      'ranked_manual_findings.created_at',
+      'ranked_manual_findings.encounter_id',
+      'ranked_manual_findings.finding_type',
     ])
     .select((eb) => [
       jsonBuildObject({
@@ -290,7 +198,7 @@ export async function getMostRecentVitalsWithEvaluations(
             'note',
           ])
           .whereRef(
-            'latest_findings.id',
+            'ranked_manual_findings.id',
             '=',
             'patient_evaluations.evaluates_record_id',
           ),
@@ -299,33 +207,125 @@ export async function getMostRecentVitalsWithEvaluations(
     .execute()
 
   return findings.map((
-    { value, units, value_display, finding_type, ...finding },
+    { value, units, ...finding },
   ) => ({
     ...finding,
-    finding_type: finding_type as 'manual' | 'computed',
-    value_display: value_display ||
-      valueDisplay({ value: Number(value), units }),
-    // Ensure required fields are not null
-    provider: {
-      ...finding.provider,
-      patient_encounter_provider_id:
-        finding.provider.patient_encounter_provider_id || '',
-      employee_id: finding.provider.employee_id || '',
-      health_worker_id: finding.provider.health_worker_id || '',
-      name: finding.provider.name || '',
-      avatar_url: finding.provider.avatar_url || '',
-      profession: finding.provider.profession || 'nurse' as const,
-      organization: {
-        id: finding.provider.organization.id || '',
-        name: finding.provider.organization.name || '',
-      },
-    },
+    value_display: valueDisplay({ value, units }),
   }))
 }
 
+export async function getMostRecentComputedVitalsWithEvaluations(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<
+  (MostRecentVitalMeasurement & { finding_type: 'computed' })[]
+> {
+  const findings = await trx.with(
+    'ranked_computed_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_computed_findings',
+          'patient_findings.id',
+          'patient_computed_findings.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_records.snomed_concept_id',
+          'in',
+          VITAL_SNOMED_CONCEPT_IDS,
+        )
+        .orderBy('patient_records.created_at', 'desc')
+        .selectAll('patient_records')
+        .select([
+          'patient_findings.encounter_provider_id',
+          'patient_findings.procedure_id',
+          sql<string | null>`patient_findings.referent_finding_id`.as(
+            'referent_finding_id',
+          ),
+        ])
+        .select([
+          'patient_computed_findings.value',
+          'patient_computed_findings.units',
+          'patient_computed_findings.value_display',
+        ])
+        .select(sql<'computed'>`'computed'`.as('finding_type'))
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_computed_findings')
+    .where('ranked_computed_findings.rank', '=', 1)
+    .select([
+      'ranked_computed_findings.id as finding_id',
+      'ranked_computed_findings.snomed_concept_id',
+      'ranked_computed_findings.value',
+      'ranked_computed_findings.units',
+      'ranked_computed_findings.value_display',
+      'ranked_computed_findings.created_at',
+      'ranked_computed_findings.encounter_id',
+      'ranked_computed_findings.finding_type',
+    ])
+    .select((eb) => [
+      jsonArrayFrom(
+        eb
+          .selectFrom('patient_evaluations')
+          .innerJoin(
+            'patient_records as evaluation_records',
+            'evaluation_records.id',
+            'patient_evaluations.id',
+          )
+          .select([
+            // json_agg casts bigint to number, but when selected as a column by itself
+            // kysely reads as a string so we replicate kysely's behavior here
+            sql<string>`evaluation_records.snomed_concept_id::text`.as(
+              'snomed_concept_id',
+            ),
+            'note',
+          ])
+          .whereRef(
+            'ranked_computed_findings.id',
+            '=',
+            'patient_evaluations.evaluates_record_id',
+          ),
+      ).as('evaluations'),
+    ])
+    .execute()
+
+  return findings.map((
+    { value, units, value_display, ...finding },
+  ) => ({
+    ...finding,
+    value_display: valueDisplay(
+      ComputedFindingSchema.parse({ value, units, value_display }),
+    ),
+    provider: null,
+  }))
+}
+
+// Identical to the check constraint
+const ComputedFindingSchema = z.object({
+  value: decimal,
+  units: z.string(),
+  value_display: z.null().optional(),
+}).or(z.object({
+  value: z.null().optional(),
+  units: z.null().optional(),
+  value_display: z.string(),
+}))
+
 function valueDisplay(
-  { value, units }: { value: number; units: string },
+  { value, units, value_display }: z.infer<typeof ComputedFindingSchema>,
 ): string {
+  if (value_display) {
+    return value_display
+  }
+
   switch (units) {
     case '°C':
     case '%':
@@ -333,4 +333,16 @@ function valueDisplay(
     default:
       return `${value} ${units}`
   }
+}
+
+export async function getMostRecentVitalsWithEvaluations(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<MostRecentVitalMeasurement[]> {
+  return flatten(
+    await Promise.all([
+      getMostRecentManualVitalsWithEvaluations(trx, { patient_id }),
+      getMostRecentComputedVitalsWithEvaluations(trx, { patient_id }),
+    ]),
+  )
 }

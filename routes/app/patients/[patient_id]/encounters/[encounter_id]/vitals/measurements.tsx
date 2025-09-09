@@ -40,28 +40,30 @@ export const handler = postHandler(
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
 
-    const manual_insertion_result = await vitals.insertMeasurements(
-      ctx.state.trx,
-      {
-        patient_id,
-        encounter_id: ctx.state.encounter.encounter_id,
-        encounter_provider_id:
-          ctx.state.encounter_provider.patient_encounter_provider_id,
-        input_measurements,
-      },
-    )
+    if (input_measurements.length) {
+      const manual_insertion_result = await vitals.insertMeasurements(
+        ctx.state.trx,
+        {
+          patient_id,
+          encounter_id: ctx.state.encounter.encounter_id,
+          encounter_provider_id:
+            ctx.state.encounter_provider.patient_encounter_provider_id,
+          input_measurements,
+        },
+      )
 
-    await vitals.computeAndInsertDerivedMeasurements(
-      ctx.state.trx,
-      {
-        patient_id,
-        encounter_id: ctx.state.encounter.encounter_id,
-        encounter_provider_id:
-          ctx.state.encounter_provider.patient_encounter_provider_id,
-        source_measurements: input_measurements,
-        source_procedure_id: manual_insertion_result.procedure_id,
-      },
-    )
+      await vitals.computeAndInsertDerivedMeasurements(
+        ctx.state.trx,
+        {
+          patient_id,
+          encounter_id: ctx.state.encounter.encounter_id,
+          encounter_provider_id:
+            ctx.state.encounter_provider.patient_encounter_provider_id,
+          source_measurements: input_measurements,
+          source_procedure_id: manual_insertion_result.procedure_id,
+        },
+      )
+    }
 
     const url = new URL(ctx.url)
     url.pathname = url.pathname.replace('/measurements', '/evaluations')
