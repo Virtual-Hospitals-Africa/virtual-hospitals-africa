@@ -7,51 +7,22 @@ import io
 import tempfile
 
 # Check for command line arguments
-if len(sys.argv) != 3:
-    print("Usage: python transcribe.py <path/to/model> <audio_file_or_dash>")
+if len(sys.argv) != 2:
+    print("Usage: python transcribe.py <path/to/model>")
     sys.exit(1)
 
 model_name = sys.argv[1]
-audio_input = sys.argv[2]
 
 # Load model and processor
 processor = WhisperProcessor.from_pretrained(model_name)
 model = WhisperForConditionalGeneration.from_pretrained(model_name)
 
-# Handle audio input - either from file or stdin
-if audio_input == '-':
-    # Read from stdin
-    try:
-        # Read binary data from stdin
-        audio_data = sys.stdin.buffer.read()
-        
-        if not audio_data:
-            print("No audio data received from stdin", file=sys.stderr)
-            sys.exit(1)
-        
-        # Create a temporary file to write the audio data
-        # This is needed because torchaudio.load expects a file path or file-like object
-        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
-            temp_file.write(audio_data)
-            temp_audio_path = temp_file.name
-        
-        try:
-            # Load audio from temporary file
-            waveform, sample_rate = torchaudio.load(temp_audio_path)
-        finally:
-            # Clean up temporary file
-            os.unlink(temp_audio_path)
-            
-    except Exception as e:
-        print(f"Error reading audio from stdin: {e}", file=sys.stderr)
-        sys.exit(1)
-else:
-    # Read from file
-    try:
-        waveform, sample_rate = torchaudio.load(audio_input)
-    except Exception as e:
-        print(f"Error loading audio file {audio_input}: {e}", file=sys.stderr)
-        sys.exit(1)
+# audio_path = sys.stdin.buffer.read().strip()
+audio_path="/Users/willweiss/Downloads/st_za/za/sso/wavs/sso_1367_7971611424.wav"
+
+print(audio_path)
+
+waveform, sample_rate = torchaudio.load(audio_path)
 
 # Ensure we have audio data
 if waveform.size(0) == 0:

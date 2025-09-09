@@ -33,21 +33,25 @@ export function transcriptionProcess(
 
   const writer = process.stdin.getWriter()
 
+  async function finish() {
+    const transcription_status = await process.status
+    if (!transcription_status.success) {
+      const stderr = new TextDecoder().decode(
+        await readAll(process.stderr),
+      )
+      throw new Error(`Transcription failed: ${stderr}`)
+    }
+
+    return new TextDecoder().decode(
+      await readAll(process.stdout),
+    ).trim()
+  }
+
   return {
     model,
-    writer,
-    async finish() {
-      const transcription_status = await process.status
-      if (!transcription_status.success) {
-        const stderr = new TextDecoder().decode(
-          await readAll(process.stderr),
-        )
-        throw new Error(`Transcription failed: ${stderr}`)
-      }
-
-      return new TextDecoder().decode(
-        await readAll(process.stdout),
-      ).trim()
+    async transcribe(file_path: string) {
+      await writer.write(new TextEncoder().encode(file_path))
+      return finish()
     },
   }
 }

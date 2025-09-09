@@ -20,7 +20,8 @@ function createPipeline(language_code: TranscriptionSupportedLanguageCode) {
   const startTime = new Date()
 
   const transcription = transcriptionProcess(language_code)
-  const ffmpeg_process = ffmpeg.pipe(transcription.writer)
+  const file_path = `temp_files/${media_speech_id}.wav`
+  const ffmpeg_process = ffmpeg.convertToWavWriteToFile(file_path)
 
   const audio_chunks: Uint8Array[] = []
   let total_bytes = 0
@@ -65,7 +66,7 @@ function createPipeline(language_code: TranscriptionSupportedLanguageCode) {
     })
 
     await ffmpeg_process.finish()
-    const transcribed_text = await transcription.finish()
+    const transcribed_text = await transcription.transcribe(file_path)
     deferred_transcription.resolve(transcribed_text)
   }
 

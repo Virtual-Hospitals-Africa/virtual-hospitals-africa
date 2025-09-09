@@ -15,7 +15,6 @@ export type RecordingState = {
 export function RecordDialog(
   { recording, stop /*, cancel*/ }: RecordingState,
 ) {
-  console.log(arguments)
   return (
     <Transition.Root show={recording} as={Fragment}>
       <Dialog
