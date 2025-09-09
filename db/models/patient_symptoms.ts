@@ -167,14 +167,18 @@ export function getEncounter(
       isoDate(eb.ref('end_date')).as('end_date'),
       jsonArrayFrom(
         eb
-          .selectFrom('patient_finding_media')
-          .innerJoin('media', 'media.id', 'patient_finding_media.media_id')
+          .selectFrom('patient_finding_media_images')
+          .innerJoin(
+            'media',
+            'media.id',
+            'patient_finding_media_images.media_id',
+          )
           .select([
             'media.mime_type',
             sql<string>`concat('/app/media/', media.uuid)`.as('url'),
           ])
           .whereRef(
-            'patient_finding_media.finding_id',
+            'patient_finding_media_images.finding_id',
             '=',
             'patient_symptoms.id',
           ),

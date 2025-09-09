@@ -3218,3 +3218,12 @@ export type RenderedPatientFamilyHistory = PatientFamilyHistoryShared & {
   id: string
   name: string
 }
+
+export type RenderedChiefComplaint = {
+  id: string
+  note: string
+  media_speech: {
+    id: string
+    language_code: string
+  }
+}

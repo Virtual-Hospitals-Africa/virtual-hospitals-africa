@@ -37,16 +37,20 @@ export async function up(db: Kysely<unknown>) {
           'uuid',
           (col) => col.references('organizations.id'),
         )
+        .addColumn('preferred_language_code_iso_639_2_b', 'varchar(3)', (col) =>
+          col.references('iso_639_2_b_languages.iso_639_2_b'))
         .addColumn('ethnicity', 'varchar(50)')
         .addColumn(
           'completed_intake',
           'boolean',
-          (col) => col.notNull().defaultTo(false),
+          (col) =>
+            col.notNull().defaultTo(false),
         )
         .addColumn(
           'primary_doctor_id',
           'uuid',
-          (col) => col.references('employment.id'),
+          (col) =>
+            col.references('employment.id'),
         )
         .addColumn('unregistered_primary_doctor_name', 'varchar(255)')
         .addUniqueConstraint('patient_national_id_number', [

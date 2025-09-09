@@ -70,7 +70,8 @@ const baseSelect = (trx: TrxOrDb) =>
       'addresses.formatted as address',
       dob_formatted,
       'patient_age.age_display',
-      'patient_age.age_years',
+      'patients.preferred_language_code',
+      sql<number>`patient_age.age_years::integer`.as('age_years'),
       sql<
         string | null
       >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(

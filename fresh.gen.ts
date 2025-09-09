@@ -63,6 +63,7 @@ import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient
 import * as $app_patients_patient_id_encounters from './routes/app/patients/[patient_id]/encounters.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_ from './routes/app/patients/[patient_id]/encounters/[encounter_id].tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_chief_complaint from './routes/app/patients/[patient_id]/encounters/[encounter_id]/chief_complaint.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_clinical_notes from './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_close_visit from './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnoses from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnoses.tsx'
@@ -394,6 +395,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx':
       $app_patients_patient_id_encounters_encounter_id_middleware,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/chief_complaint.tsx':
+      $app_patients_patient_id_encounters_encounter_id_chief_complaint,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx':
       $app_patients_patient_id_encounters_encounter_id_clinical_notes,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx':

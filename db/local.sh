@@ -14,15 +14,16 @@ diff .env .env.local >/dev/null || {
   exit 1
 }
 
+test_output=$(mktemp)
+
+# shellcheck disable=SC2086
+IS_TEST=true deno task db:$script "$@" >$test_output &
+running_against_test_pid="$!"
+
 # shellcheck disable=SC2086
 deno task db:$script "$@"
 
-if [ "$script" = "reset" ]; then
-  mkdir -p ./db/dumps
-  deno task db:dump > ./db/dumps/latest
-  IS_TEST=true deno task db:recreate
-  IS_TEST=true deno task db:restore latest
-else 
-  # shellcheck disable=SC2086
-  IS_TEST=true deno task db:$script "$@"
-fi
+wait $running_against_test_pid || {
+  cat "$test_output" >&2
+  exit 1
+}

@@ -103,3 +103,15 @@ export async function* parseTsvTyped<Schema extends z.ZodTypeAny>(
     yield schema.parse(row)
   }
 }
+
+export async function* parseCsvTyped<Schema extends z.ZodTypeAny>(
+  filePath: string,
+  schema: Schema,
+  opts: ParseTsvOptions = {},
+): AsyncGenerator<z.infer<Schema>> {
+  for await (
+    const row of parseCsv(filePath, opts)
+  ) {
+    yield schema.parse(row)
+  }
+}

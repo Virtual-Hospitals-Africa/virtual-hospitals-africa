@@ -130,6 +130,7 @@ export function insertMany(
               id: evaluation.id,
               evaluates_record_id: evaluation.evaluates_record_id,
               note: evaluation.note,
+              by_system: false,
             })))
           : blankSelection(qb),
     ).selectNoFrom([

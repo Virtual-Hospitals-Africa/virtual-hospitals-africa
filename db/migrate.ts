@@ -43,6 +43,16 @@ function findTarget(target: string, cmd: string) {
   if (matching_targets.length === 1) {
     return matching_targets[0]
   }
+  if (matching_targets.length > 1) {
+    console.error(
+      `Multiple migrations found matching ${target}. Please be more specific. Found targets:\n${
+        matching_targets.join(
+          '\n',
+        )
+      }`,
+    )
+    return Deno.exit(1)
+  }
   return targetError(cmd)
 }
 
