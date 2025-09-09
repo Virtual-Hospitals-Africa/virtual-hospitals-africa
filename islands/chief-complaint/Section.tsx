@@ -42,7 +42,6 @@ export function ChiefComplaintSection({
   effect(() => {
     if (speech_websocket_signal.value.type !== 'transcription_finished') return
     const { transcription } = speech_websocket_signal.value
-    console.log('zzz', { transcription })
     chief_complaint_note.value = transcription
     speech_websocket_signal.value = { type: 'none' }
   })
@@ -124,10 +123,15 @@ export function ChiefComplaintSection({
         </HeroIconButton>
       )}
 
-      <HiddenInput />
+      {'media_speech_id' in speech_websocket_signal.value && (
+        <HiddenInput
+          name='media_speech_id'
+          value={speech_websocket_signal.value.media_speech_id}
+        />
+      )}
 
       <TextArea
-        name='chief_complaint'
+        name='note'
         label='Chief Complaint'
         disabled={transcribing_audio.value}
         value={chief_complaint_note.value}

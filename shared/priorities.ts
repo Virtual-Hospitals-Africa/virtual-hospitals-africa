@@ -1,4 +1,4 @@
-import { keys } from '../util/keys.ts'
+import keys from '../util/keys.ts'
 
 export const PRIORITY_SNOMED_CODES = {
   'Normal': '394848005',

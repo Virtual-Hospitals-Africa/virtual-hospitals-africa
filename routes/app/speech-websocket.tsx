@@ -6,21 +6,20 @@ import {
 } from '../../db/models/media.ts'
 import upgradeWebsocket from '../../util/websocket.ts'
 import {
-  language_models,
+  supported_language_codes,
   transcriptionProcess,
-  TranscriptionSupportedLanguageCode,
 } from '../../external-clients/whisper/transcription.ts'
 import * as ffmpeg from '../../external-clients/ffmpeg.ts'
-import { isKeyOf } from '../../util/keys.ts'
 import { deferred } from 'https://deno.land/std@0.136.0/async/deferred.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 
-function createPipeline(language_code: TranscriptionSupportedLanguageCode) {
+function createPipeline(language_code: string) {
   const media_speech_id = generateUUID()
   const startTime = new Date()
 
   const transcription = transcriptionProcess(language_code)
-  const ffmpeg_process = ffmpeg.pipe(transcription.writer)
+  const file_path = `temp_files/${media_speech_id}.wav`
+  const ffmpeg_process = ffmpeg.convertToWavWriteToFile(file_path)
 
   const audio_chunks: Uint8Array[] = []
   let total_bytes = 0
@@ -53,6 +52,8 @@ function createPipeline(language_code: TranscriptionSupportedLanguageCode) {
     if (is_stream_closed) return
     is_stream_closed = true
 
+    const now = Date.now()
+
     Promise.resolve().then(() => {
       const binary_data = new Uint8Array(total_bytes)
       let offset = 0
@@ -65,7 +66,10 @@ function createPipeline(language_code: TranscriptionSupportedLanguageCode) {
     })
 
     await ffmpeg_process.finish()
-    const transcribed_text = await transcription.finish()
+    console.log(
+      `Ffmpeg finished after an additional ${Date.now() - now} milliseconds`,
+    )
+    const transcribed_text = await transcription.transcribe(file_path)
     deferred_transcription.resolve(transcribed_text)
   }
 
@@ -117,7 +121,7 @@ export default upgradeWebsocket((
   const language_code = ctx.url.searchParams.get('language_code')
   assertOr400(language_code, 'Needs language code')
   assertOr400(
-    isKeyOf(language_code, language_models),
+    supported_language_codes.includes(language_code),
     `Transcription not supported for ${language_code}`,
   )
 

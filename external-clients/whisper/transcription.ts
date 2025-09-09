@@ -1,30 +1,63 @@
-import { keys } from '../../util/keys.ts'
-import { readAll } from '../../util/readAll.ts'
+import readAllToString from '../../util/readAllToString.ts'
+import { readLines } from '../../util/readLines.ts'
+import { assert } from 'node:console'
+import compact from '../../util/compact.ts'
 
-export const language_models = {
-  'eng':
-    '/Users/willweiss/dev/morehumaninternet/whisper-small-english-finetuned',
-  'sna': '/Users/willweiss/dev/morehumaninternet/whisper-large-shona',
-  'sot': '/Users/willweiss/dev/morehumaninternet/whisper-small-sesotho',
-  'spa': '/Users/willweiss/dev/morehumaninternet/whisper-large-v2-spanish',
-  'xho': '/Users/willweiss/dev/morehumaninternet/whisper-small-xhosa',
+const WHISPER_MODELS_DIRECTORY_PATH = Deno.env.get(
+  'WHISPER_MODELS_DIRECTORY_PATH',
+)
+
+const models = WHISPER_MODELS_DIRECTORY_PATH
+  ? compact(
+    Deno.readDirSync(WHISPER_MODELS_DIRECTORY_PATH).map((value) =>
+      value.isFile && value.name
+    ).toArray(),
+  )
+  : []
+
+export const MODELS_TO_LANGUAGE_CODES = {
+  'whisper-small-english-finetuned': 'eng',
+  'whisper-large-shona': 'sna',
+  'whisper-small-sesotho': 'sot',
+  'whisper-large-v2-spanish': 'spa',
+  'whisper-small-xhosa': 'xho',
 }
 
-export const supported_languages = keys(language_models)
+const LANGUAGE_CODES_TO_MODELS = Object.fromEntries(
+  Object.entries(MODELS_TO_LANGUAGE_CODES).map((
+    [model, language_code],
+  ) => [language_code, model]),
+)
 
-export type TranscriptionSupportedLanguageCode =
-  (typeof supported_languages)[number]
+export const supported_language_codes = compact(
+  models.map((model) =>
+    MODELS_TO_LANGUAGE_CODES[model as keyof typeof MODELS_TO_LANGUAGE_CODES]
+  ),
+)
 
 export function transcriptionProcess(
-  language_code: TranscriptionSupportedLanguageCode,
+  language_code: string,
 ) {
-  const model = language_models[language_code]
+  assert(
+    WHISPER_MODELS_DIRECTORY_PATH,
+    'Must set WHISPER_MODELS_DIRECTORY_PATH to transcribe audio',
+  )
+  assert(
+    models.length,
+    `No models found in WHISPER_MODELS_DIRECTORY_PATH ${WHISPER_MODELS_DIRECTORY_PATH}`,
+  )
+  assert(
+    supported_language_codes.includes(language_code),
+    `${language_code} is not yet supported`,
+  )
+  const model = `${WHISPER_MODELS_DIRECTORY_PATH}/${
+    LANGUAGE_CODES_TO_MODELS[language_code]
+  }`
 
   const process = new Deno.Command('python', {
     args: [
       './external-clients/whisper/transcribe.py',
       model,
-      '-',
     ],
     stdin: 'piped',
     stdout: 'piped',
@@ -33,21 +66,30 @@ export function transcriptionProcess(
 
   const writer = process.stdin.getWriter()
 
+  const logStdErr = async () => {
+    for await (const line of readLines(process.stderr)) {
+      console.log(line)
+    }
+  }
+
+  logStdErr()
+
+  async function finish() {
+    const transcription_status = await process.status
+    assert(
+      transcription_status.success,
+      `Transcription failed with exit code: ${transcription_status.code}`,
+    )
+
+    return readAllToString(process.stdout)
+  }
+
   return {
     model,
-    writer,
-    async finish() {
-      const transcription_status = await process.status
-      if (!transcription_status.success) {
-        const stderr = new TextDecoder().decode(
-          await readAll(process.stderr),
-        )
-        throw new Error(`Transcription failed: ${stderr}`)
-      }
-
-      return new TextDecoder().decode(
-        await readAll(process.stdout),
-      ).trim()
+    async transcribe(file_path: string) {
+      await writer.write(new TextEncoder().encode(file_path))
+      await writer.close()
+      return finish()
     },
   }
 }

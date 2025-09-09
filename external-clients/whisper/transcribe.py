@@ -1,4 +1,5 @@
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
+import time
 import torch
 import torchaudio
 import sys
@@ -6,69 +7,26 @@ import os
 import io
 import tempfile
 
-# Check for command line arguments
-if len(sys.argv) != 3:
-    print("Usage: python transcribe.py <path/to/model> <audio_file_or_dash>")
-    sys.exit(1)
+def debug(line):
+    print(line, file=sys.stderr)
 
-model_name = sys.argv[1]
-audio_input = sys.argv[2]
+def transcribe(processor, model, audio_path):
+    waveform, sample_rate = torchaudio.load(audio_path)
 
-# Load model and processor
-processor = WhisperProcessor.from_pretrained(model_name)
-model = WhisperForConditionalGeneration.from_pretrained(model_name)
+    # Ensure we have audio data
+    if waveform.size(0) == 0:
+        raise Exception("No audio data found")
 
-# Handle audio input - either from file or stdin
-if audio_input == '-':
-    # Read from stdin
-    try:
-        # Read binary data from stdin
-        audio_data = sys.stdin.buffer.read()
-        
-        if not audio_data:
-            print("No audio data received from stdin", file=sys.stderr)
-            sys.exit(1)
-        
-        # Create a temporary file to write the audio data
-        # This is needed because torchaudio.load expects a file path or file-like object
-        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
-            temp_file.write(audio_data)
-            temp_audio_path = temp_file.name
-        
-        try:
-            # Load audio from temporary file
-            waveform, sample_rate = torchaudio.load(temp_audio_path)
-        finally:
-            # Clean up temporary file
-            os.unlink(temp_audio_path)
-            
-    except Exception as e:
-        print(f"Error reading audio from stdin: {e}", file=sys.stderr)
-        sys.exit(1)
-else:
-    # Read from file
-    try:
-        waveform, sample_rate = torchaudio.load(audio_input)
-    except Exception as e:
-        print(f"Error loading audio file {audio_input}: {e}", file=sys.stderr)
-        sys.exit(1)
+    # Resample to 16kHz if needed (Whisper expects 16kHz)
+    if sample_rate != 16000:
+        resampler = torchaudio.transforms.Resample(sample_rate, 16000)
+        waveform = resampler(waveform)
 
-# Ensure we have audio data
-if waveform.size(0) == 0:
-    print("No audio data found", file=sys.stderr)
-    sys.exit(1)
+    # Convert to mono if stereo
+    if waveform.size(0) > 1:
+        waveform = waveform.mean(dim=0, keepdim=True)
 
-# Resample to 16kHz if needed (Whisper expects 16kHz)
-if sample_rate != 16000:
-    resampler = torchaudio.transforms.Resample(sample_rate, 16000)
-    waveform = resampler(waveform)
-
-# Convert to mono if stereo
-if waveform.size(0) > 1:
-    waveform = waveform.mean(dim=0, keepdim=True)
-
-# Process audio
-try:
+    # Process audio
     input_features = processor(
         waveform.squeeze().numpy(), 
         sampling_rate=16000, 
@@ -83,8 +41,32 @@ try:
     transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)
 
     # Output the transcription
-    print(transcription[0])
+    return transcription[0]
 
-except Exception as e:
-    print(f"Error during transcription: {e}", file=sys.stderr)
-    sys.exit(1)
+def main():
+    if len(sys.argv) != 2:
+        raise Exception("Usage: python transcribe.py <path/to/model>")
+
+    model_name = sys.argv[1]
+    debug(f"Process starting with model {model_name}")
+
+    # # Load model and processor
+    processor = WhisperProcessor.from_pretrained(model_name)
+    debug(f"Processor loaded")
+
+    model = WhisperForConditionalGeneration.from_pretrained(model_name)
+    debug(f"Model loaded")
+
+    debug("Awaiting audio path")
+    audio_path = sys.stdin.buffer.read().strip()
+    
+    debug("Got audio path")
+    start = time.process_time()
+
+    transcription = transcribe(processor, model, audio_path)
+    print(transcription)
+    debug(time.process_time() - start)
+
+
+if __name__ == "__main__":
+    main()
