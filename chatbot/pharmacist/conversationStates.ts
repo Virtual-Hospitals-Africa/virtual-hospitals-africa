@@ -10,7 +10,7 @@ import * as pharmacists from '../../db/models/pharmacists.ts'
 import * as pharmacies from '../../db/models/pharmacies.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
-import { generatePDF } from '../../util/pdfUtils.ts'
+import { generate } from '../../util/pdf.ts'
 import {
   handleLicenceInput,
   handlePharmacyLicenceInput,
@@ -315,7 +315,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       assert(typeof prescription_id === 'string')
       assert(typeof prescription_code === 'string')
 
-      const file_path = await generatePDF(
+      const file_path = await generate(
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 

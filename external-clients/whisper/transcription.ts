@@ -1,6 +1,6 @@
 import readAllToString from '../../util/readAllToString.ts'
-import { readLines } from '../../util/readLines.ts'
-import { assert } from 'node:console'
+import readLines from '../../util/readLines.ts'
+import { assert } from 'std/assert/assert.ts'
 import compact from '../../util/compact.ts'
 
 const WHISPER_MODELS_DIRECTORY_PATH = Deno.env.get(
