@@ -1,19 +1,12 @@
 import { runCommandAssertExitCodeZero } from '../util/command.ts'
 import { spinner } from '../util/spinner.ts'
-import { onLocalhost } from './onLocalhost.ts'
+import { argsAndEnvForPostgresScript } from './argsAndEnvForPostgresScript.ts'
 
 export function create() {
-  const { host, database, user, password } = onLocalhost()
-  const args = ['-h', host, '-U', user, '-w', database]
-  if (password) {
-    args.push('-W')
-    args.push(password)
-  }
-  return spinner('Creating database', async () => {
-    await runCommandAssertExitCodeZero('createdb', {
-      args,
-    })
-  })
+  return spinner(
+    'Creating database',
+    runCommandAssertExitCodeZero('createdb', argsAndEnvForPostgresScript()),
+  )
 }
 
 if (import.meta.main) {

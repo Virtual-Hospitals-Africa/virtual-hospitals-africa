@@ -1,21 +1,17 @@
 import * as cache from '../external-clients/cache.ts'
 import { spinner } from '../util/spinner.ts'
 import { runCommandAssertExitCodeZero } from '../util/command.ts'
-import { onLocalhost } from './onLocalhost.ts'
+import { argsAndEnvForPostgresScript } from './argsAndEnvForPostgresScript.ts'
 
 export async function drop() {
-  const db_opts = onLocalhost()
-
   await spinner('Flushing cache', async () => {
     await cache.flushdb()
   })
 
   await spinner(
     'Dropping database',
-    () =>
-      runCommandAssertExitCodeZero('dropdb', {
-        args: [db_opts.database, '-U', db_opts.user],
-      }).catch((e) => {
+    runCommandAssertExitCodeZero('dropdb', argsAndEnvForPostgresScript()).catch(
+      (e) => {
         if (e.message.includes('other session')) {
           throw new Error('Database is in use, cannot drop.')
         }
@@ -23,7 +19,8 @@ export async function drop() {
           return 'Database does not exist, skipping drop.'
         }
         throw e
-      }),
+      },
+    ),
   )
 }
 
