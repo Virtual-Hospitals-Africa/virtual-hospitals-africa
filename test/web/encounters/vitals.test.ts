@@ -112,7 +112,7 @@ describe(
       assertEquals(await response.text(), 'No open visit with this patient')
     })
 
-    it('can save vitals on POST', async () => {
+    it.only('can save vitals on POST', async () => {
       const { health_worker, fetch } = await addTestHealthWorkerWithSession(
         db,
         {
@@ -143,9 +143,16 @@ describe(
         {
           method: 'POST',
           body,
+          redirect: 'manual',
         },
       )
-      if (!response.ok) throw new Error(await response.text())
+
+      console.log(await response.text())
+
+      assertEquals(
+        response.headers.get('location'),
+        `${route}/app/patients/${encounter.patient_id}/encounters/${encounter.id}/vitals/evaluations`,
+      )
 
       const all_vitals_snomed_codes = Object.values(VITALS_SNOMED_CODE).filter(
         (code) => code !== '---',

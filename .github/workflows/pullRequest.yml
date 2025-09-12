@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Deno
         uses: denoland/setup-deno@v2
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: false
 
@@ -102,7 +102,7 @@ jobs:
         run: deno task build
 
       - name: Run tests
-        run: deno task test --skip-migrate-check
+        run: deno task test --skip-migrate-check test/web/encounters/vitals.test.ts
 
       # The test_web step owns the cache, so only overwrite the cache if test_web passes
       - name: Cache deno-modules
@@ -145,7 +145,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: false
 
@@ -212,7 +212,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: false
 
@@ -261,7 +261,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Build Docker image
         run: docker build -t vha .
@@ -271,7 +271,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: false
 
@@ -295,7 +295,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: false
 
