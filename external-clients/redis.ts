@@ -41,10 +41,8 @@ export const redis =
   (Deno.env.get('NO_EXTERNAL_CONNECT')
     ? undefined
     : await connect(opts).catch((err) => {
-      // Redis isn't needed to run locally
-      if (onProduction()) {
-        throw err
-      }
+      // Redis isn't needed to run locally or on prod
+      console.error(err)
     }))!
 
 // export const lock = redis && new Redlock([redis])
