@@ -8,7 +8,7 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { basename } from 'node:path'
-import { deletePDF, generatePDF } from '../util/pdfUtils.ts'
+import * as pdf from '../util/pdf.ts'
 import { delay } from '../util/delay.ts'
 
 export const phoneNumbers = {
@@ -98,7 +98,7 @@ export function sendMessage(opts: {
         phone_number,
         chatbot_name,
         message: message.messageBody,
-        pdfPath: message.file_path,
+        pdf_path: message.file_path,
       })
     }
   }
@@ -275,15 +275,15 @@ export async function sendMessagePDF(opts: {
   phone_number: string
   chatbot_name: ChatbotName
   message: string
-  pdfPath: string
+  pdf_path: string
 }): Promise<{
   messaging_product: 'whatsapp'
   contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  const filename = basename(opts.pdfPath)
-  const mediaId = await postMedia(
-    opts.pdfPath,
+  const filename = basename(opts.pdf_path)
+  const media_id = await postMedia(
+    opts.pdf_path,
     'application/pdf',
     opts.chatbot_name,
   )
@@ -293,7 +293,7 @@ export async function sendMessagePDF(opts: {
     to: opts.phone_number,
     type: 'document',
     document: {
-      id: mediaId,
+      id: media_id,
       caption: opts.message,
       filename: filename,
     },
@@ -310,19 +310,24 @@ export async function sendMessagePDFFromWebPage(opts: {
   contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  const pdfPath = await generatePDF(opts.url)
-  const filename = basename(pdfPath)
-  const mediaId = await postMedia(pdfPath, 'application/pdf', opts.chatbot_name)
-  deletePDF(pdfPath)
+  const pdf_path = await pdf.generate(opts.url)
+  const filename = basename(pdf_path)
+  const media_id = await postMedia(
+    pdf_path,
+    'application/pdf',
+    opts.chatbot_name,
+  )
 
-  return await postMessage(opts.chatbot_name, {
+  Deno.remove(pdf_path).catch(console.error)
+
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     type: 'document',
     document: {
-      id: mediaId,
+      id: media_id,
       caption: opts.message,
-      filename: filename,
+      filename,
     },
   })
 }

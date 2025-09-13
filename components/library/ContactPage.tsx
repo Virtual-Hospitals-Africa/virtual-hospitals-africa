@@ -5,7 +5,6 @@ import FormRow from './FormRow.tsx'
 import Form from './Form.tsx'
 import { ComponentChild } from 'preact/src/index.d.ts'
 import { HiddenInput } from './HiddenInput.tsx'
-import { url } from 'node:inspector'
 import last from '../../util/last.ts'
 import PageHeader from './typography/PageHeader.tsx'
 
@@ -18,7 +17,7 @@ type ContactPageProps = {
 export default function ContactPage(
   props: ContactPageProps,
 ) {
-  const entrypoint = last(url.toString().split('/'))!
+  const entrypoint = last(props.url.toString().split('/'))!
 
   return (
     <Layout

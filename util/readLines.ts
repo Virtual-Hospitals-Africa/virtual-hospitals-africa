@@ -1,5 +1,5 @@
 // Helper function to read all data from a ReadableStream
-export async function* readLines(
+export default async function* readLines(
   reader: ReadableStream<Uint8Array>,
 ) {
   const streamReader = reader.getReader()
