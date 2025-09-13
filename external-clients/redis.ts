@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { connect } from 'redis'
-import { onProduction } from '../util/onProduction.ts'
+// import { onProduction } from '../util/onProduction.ts'
 // import Redlock from 'redlock'
 
 interface RedisConnectionOptions {
