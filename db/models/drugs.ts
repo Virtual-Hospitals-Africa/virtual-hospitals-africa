@@ -1,5 +1,5 @@
 import { type SelectQueryBuilder, sql } from 'kysely'
-import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
+import { DrugSearchResult, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
 import {
@@ -8,84 +8,87 @@ import {
 } from '../../util/collectSorted.ts'
 import { base } from './_base.ts'
 
-function baseQuery(trx: TrxOrDb, opts: { include_recalled?: Maybe<boolean> }) {
-  return trx.selectFrom('drugs').select((eb_drugs) => [
-    'drugs.id',
-    'drugs.generic_name as name',
-    jsonArrayFrom(
-      eb_drugs
-        .selectFrom('medications')
-        .select((eb_medications) => [
-          'medications.id as medication_id',
-          'medications.form',
-          'medications.form_route',
-          'medications.routes',
-          'medications.strength_numerator_unit',
-          'medications.strength_denominator',
-          'medications.strength_denominator_unit',
-          'medications.strength_denominator_is_units',
-          jsonArrayFrom(
-            eb_medications
-              .selectFrom('manufactured_medications')
-              .leftJoin(
-                'manufactured_medication_recalls',
-                'manufactured_medication_recalls.manufactured_medication_id',
-                'manufactured_medications.id',
-              )
-              .select([
-                'manufactured_medications.id as manufactured_medication_id',
-                'manufactured_medications.strength_numerators',
-                'manufactured_medications.trade_name',
-                'manufactured_medications.applicant_name',
-                'manufactured_medication_recalls.recalled_at',
-              ])
-              .whereRef(
-                'manufactured_medications.medication_id',
-                '=',
-                'medications.id',
-              )
-              .$if(
-                !opts.include_recalled,
-                (qb) =>
-                  qb.where(
-                    'manufactured_medication_recalls.recalled_at',
-                    'is',
-                    null,
-                  ),
-              )
-              .orderBy([
-                'manufactured_medications.trade_name asc',
-                'manufactured_medications.strength_numerators asc',
-              ]),
-          ).as('manufacturers'),
-        ])
-        .whereRef('medications.drug_id', '=', 'drugs.id')
-        .orderBy('medications.form_route', 'asc'),
-    ).as('medications'),
-  ])
-    .$if(!opts.include_recalled, (qb) => {
-      const non_recalled_medications = trx.selectFrom(
-        'manufactured_medications',
-      )
-        .select('medication_id')
-        .distinct()
-        .leftJoin(
-          'manufactured_medication_recalls',
-          'manufactured_medication_recalls.manufactured_medication_id',
-          'manufactured_medications.id',
+// TODO: revisit this in light of _country_ recalling certain drugs
+function baseQuery(opts: { include_recalled: boolean }) {
+  return function (trx: TrxOrDb) {
+    return trx.selectFrom('drugs').select((eb_drugs) => [
+      'drugs.id',
+      'drugs.generic_name as name',
+      jsonArrayFrom(
+        eb_drugs
+          .selectFrom('medications')
+          .select((eb_medications) => [
+            'medications.id as medication_id',
+            'medications.form',
+            'medications.form_route',
+            'medications.routes',
+            'medications.strength_numerator_unit',
+            'medications.strength_denominator',
+            'medications.strength_denominator_unit',
+            'medications.strength_denominator_is_units',
+            jsonArrayFrom(
+              eb_medications
+                .selectFrom('manufactured_medications')
+                .leftJoin(
+                  'manufactured_medication_recalls',
+                  'manufactured_medication_recalls.manufactured_medication_id',
+                  'manufactured_medications.id',
+                )
+                .select([
+                  'manufactured_medications.id as manufactured_medication_id',
+                  'manufactured_medications.strength_numerators',
+                  'manufactured_medications.trade_name',
+                  'manufactured_medications.applicant_name',
+                  'manufactured_medication_recalls.recalled_at',
+                ])
+                .whereRef(
+                  'manufactured_medications.medication_id',
+                  '=',
+                  'medications.id',
+                )
+                .$if(
+                  !opts.include_recalled,
+                  (qb) =>
+                    qb.where(
+                      'manufactured_medication_recalls.recalled_at',
+                      'is',
+                      null,
+                    ),
+                )
+                .orderBy([
+                  'manufactured_medications.trade_name asc',
+                  'manufactured_medications.strength_numerators asc',
+                ]),
+            ).as('manufacturers'),
+          ])
+          .whereRef('medications.drug_id', '=', 'drugs.id')
+          .orderBy('medications.form_route', 'asc'),
+      ).as('medications'),
+    ])
+      .$if(!opts.include_recalled, (qb) => {
+        const non_recalled_medications = trx.selectFrom(
+          'manufactured_medications',
         )
-        .where('recalled_at', 'is', null)
+          .select('medication_id')
+          .distinct()
+          .leftJoin(
+            'manufactured_medication_recalls',
+            'manufactured_medication_recalls.manufactured_medication_id',
+            'manufactured_medications.id',
+          )
+          .where('recalled_at', 'is', null)
 
-      const non_recalled_drugs = trx.selectFrom('medications')
-        .select('drug_id')
-        .distinct()
-        .where('id', 'in', non_recalled_medications)
+        const non_recalled_drugs = trx.selectFrom('medications')
+          .select('drug_id')
+          .distinct()
+          .where('id', 'in', non_recalled_medications)
 
-      return qb.where('drugs.id', 'in', non_recalled_drugs)
-    })
+        return qb.where('drugs.id', 'in', non_recalled_drugs)
+      })
+  }
 }
 
-type BaseQueryReturn = ReturnType<typeof baseQuery> extends
+type BaseQueryReturn = ReturnType<ReturnType<typeof baseQuery>> extends
   SelectQueryBuilder<DB, 'drugs', infer T> ? T : never
 
 function* distinctTradeNames(medications: BaseQueryReturn['medications']) {
@@ -126,7 +129,7 @@ export function formStrengthDisplay(
 
 const model = base({
   top_level_table: 'drugs',
-  baseQuery,
+  baseQuery: baseQuery({ include_recalled: false }),
   formatResult({ medications, ...rest }): DrugSearchResult {
     return {
       all_recalled: medications.every((m) =>
@@ -157,7 +160,7 @@ const model = base({
   },
   handleSearch: (
     qb,
-    terms: { search: string | null; include_recalled?: Maybe<boolean> },
+    terms: { search: string | null },
     trx,
   ) => {
     if (!terms.search) return qb
