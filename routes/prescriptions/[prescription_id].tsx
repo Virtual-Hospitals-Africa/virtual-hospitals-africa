@@ -22,13 +22,13 @@ function Divider() {
 
 // deno-lint-ignore require-await
 export default async function PrescriptionPage(
-  req: Request,
+  _req: Request,
   ctx: FreshContext,
 ) {
   assert(!ctx.state.trx, "Assuming transaction wasn't already started")
 
   return db.transaction().execute(async (trx) => {
-    const { searchParams } = new URL(req.url)
+    const { searchParams } = ctx.url
     const code = searchParams.get('code')
     assertOr400(code, 'code is required')
     const prescription = await prescriptions.getById(

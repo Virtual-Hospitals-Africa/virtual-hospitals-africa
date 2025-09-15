@@ -23,6 +23,7 @@
     "npm:pg@8.16.0": "8.16.0",
     "npm:postcss@8.4.35": "8.4.35",
     "npm:react-sparklines@1.7.0": "1.7.0_react@19.1.1_react-dom@19.1.1__react@19.1.1",
+    "npm:sql-formatter@*": "15.6.9",
     "npm:sql-formatter@15.6.9": "15.6.9",
     "npm:tailwind-merge@^2.6.0": "2.6.0",
     "npm:tailwindcss@3.4.17": "3.4.17_postcss@8.5.6",

@@ -32,7 +32,7 @@ export function jsonSearchHandler<
     GET(req, ctx) {
       if (opts?.verbose) {
         console.log('Searching', {
-          url: req.url,
+          url: ctx.url,
           state: ctx.state,
         })
       }

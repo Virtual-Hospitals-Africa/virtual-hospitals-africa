@@ -31,8 +31,8 @@ function ensureCookiePresent(req: Request, ctx: FreshContext) {
   return cookie.get(req) ? ctx.next() : noSession()
 }
 
-function redirectIfAtRoot(req: Request, ctx: LoggedInRegulatorContext) {
-  return req.url === '/regulator'
+function redirectIfAtRoot(_req: Request, ctx: LoggedInRegulatorContext) {
+  return ctx.url.pathname === '/regulator'
     ? redirect(`/regulator/${ctx.state.regulator.country}/pharmacists`)
     : ctx.next()
 }

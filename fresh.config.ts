@@ -4,6 +4,7 @@ import { colors } from '$fresh/src/dev/deps.ts'
 import { promiseProps } from './util/promiseProps.ts'
 import { onProduction } from './util/onProduction.ts'
 import { opts as db_opts } from './db/db.ts'
+import httpsUrlPlugin from './plugins/httpsUrl.ts'
 
 const { SERVE_PLAIN_HTTP, PORT } = Deno.env.toObject()
 
@@ -16,7 +17,7 @@ const httpsOpts: {
 })
 
 export default defineConfig({
-  plugins: [tailwind()],
+  plugins: [tailwind(), httpsUrlPlugin()],
   server: {
     port: PORT ? parseInt(PORT, 10) : 8000,
     ...httpsOpts,
