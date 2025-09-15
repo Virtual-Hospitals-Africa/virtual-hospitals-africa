@@ -5,25 +5,15 @@ import { promiseProps } from './util/promiseProps.ts'
 import { onProduction } from './util/onProduction.ts'
 import { opts as db_opts } from './db/db.ts'
 
-const { SELF_URL, PORT } = Deno.env.toObject()
+const { SERVE_PLAIN_HTTP, PORT } = Deno.env.toObject()
 
-if (SELF_URL === 'https://localhost:8000') {
-  console.error(
-    'Your .env is out of date.\nWe no longer rely on SELF_URL for local development.\nPlease remove it from .env.local and .env',
-  )
-  Deno.exit(1)
-}
-
-const serveHttps = !SELF_URL
 const httpsOpts: {
   key?: string
   cert?: string
-} = serveHttps
-  ? await promiseProps({
-    key: Deno.readTextFile('./local-certs/localhost.key'),
-    cert: Deno.readTextFile('./local-certs/localhost.crt'),
-  })
-  : {}
+} = SERVE_PLAIN_HTTP ? {} : await promiseProps({
+  key: Deno.readTextFile('./local-certs/localhost.key'),
+  cert: Deno.readTextFile('./local-certs/localhost.crt'),
+})
 
 export default defineConfig({
   plugins: [tailwind()],
@@ -32,7 +22,7 @@ export default defineConfig({
     ...httpsOpts,
   },
   onListen(params) {
-    const protocol = serveHttps ? 'https:' : 'http:'
+    const protocol = SERVE_PLAIN_HTTP ? 'http:' : 'https:'
     const address = `${protocol}//localhost:${params.port}`
 
     console.log()
