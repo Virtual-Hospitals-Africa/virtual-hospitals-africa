@@ -65,8 +65,10 @@ export const handler = postHandler(
       )
     }
 
+    console.log('ctx.url', ctx.url)
     const url = new URL(ctx.url)
     url.pathname = url.pathname.replace('/measurements', '/evaluations')
+    console.log('redirect', url)
     return redirect(url)
   },
 )
