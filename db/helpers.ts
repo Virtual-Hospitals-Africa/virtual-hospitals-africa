@@ -15,7 +15,7 @@ import {
   StringReference,
   UpdateQueryBuilder,
 } from 'kysely'
-import * as formatter from 'npm:sql-formatter'
+import * as formatter from 'sql-formatter'
 import { DB } from '../db.d.ts'
 import { Location, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'

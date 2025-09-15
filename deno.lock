@@ -23,7 +23,7 @@
     "npm:pg@8.16.0": "8.16.0",
     "npm:postcss@8.4.35": "8.4.35",
     "npm:react-sparklines@1.7.0": "1.7.0_react@19.1.1_react-dom@19.1.1__react@19.1.1",
-    "npm:sql-formatter@*": "15.6.8",
+    "npm:sql-formatter@15.6.9": "15.6.9",
     "npm:tailwind-merge@^2.6.0": "2.6.0",
     "npm:tailwindcss@3.4.17": "3.4.17_postcss@8.5.6",
     "npm:zod@*": "3.23.8",
@@ -1135,8 +1135,8 @@
     "split2@4.2.0": {
       "integrity": "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg=="
     },
-    "sql-formatter@15.6.8": {
-      "integrity": "sha512-iTEz5fbBdhXK1xeCk9zgXCapAq8NL4nokdk4027QaUqOADOcZgSHqELhI7zhKG1MI8La1srF3PuqfeKmDRnDJQ==",
+    "sql-formatter@15.6.9": {
+      "integrity": "sha512-r9VKnkRfKW7jbhTgytwbM+JqmFclQYN9L58Z3UTktuy9V1f1Y+rGK3t70Truh2wIOJzvZkzobAQ2PwGjjXsr6Q==",
       "dependencies": [
         "argparse",
         "nearley"
@@ -1830,6 +1830,7 @@
       "npm:pg-cursor@2.15.3",
       "npm:pg@8.16.0",
       "npm:react-sparklines@1.7.0",
+      "npm:sql-formatter@15.6.9",
       "npm:tailwind-merge@^2.6.0",
       "npm:tailwindcss@3.4.17",
       "npm:zod@3.23.8"

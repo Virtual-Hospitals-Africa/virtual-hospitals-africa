@@ -90,6 +90,7 @@
     "react-sparklines": "npm:react-sparklines@1.7.0",
     "spinners": "https://raw.githubusercontent.com/will-weiss/spinners/refs/heads/master/mod.ts",
     "std/": "https://deno.land/std@0.214.0/",
+    "sql-formatter": "npm:sql-formatter@15.6.9",
     "tailwind-merge": "npm:tailwind-merge@^2.6.0",
     "tailwindcss": "npm:tailwindcss@3.4.17",
     "tailwindcss/": "npm:/tailwindcss@3.4.17/",

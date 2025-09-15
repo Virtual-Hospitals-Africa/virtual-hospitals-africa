@@ -1,14 +1,9 @@
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
+import { ZodError } from 'zod'
 import redirect from '../util/redirect.ts'
-import { ZodError } from 'npm:zod'
 
 export function grokPostgresError(err: Error) {
-  console.log(Object.getOwnPropertyNames(err))
-  console.log(err.stack)
-  console.log(err.message)
-  console.log(err.cause)
-  console.log(err.name)
   // deno-lint-ignore no-explicit-any
   const cause: any = err.cause || err
   if (!('fields' in cause)) return
