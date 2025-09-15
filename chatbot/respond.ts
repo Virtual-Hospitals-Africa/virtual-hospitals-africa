@@ -15,8 +15,6 @@ import { forEach } from '../util/inParallel.ts'
 import sortBy from '../util/sortBy.ts'
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
-console.log('error_family', error_family)
-console.log('HEROKU_SLUG_COMMIT', Deno.env.get('HEROKU_SLUG_COMMIT'))
 const on_production = Deno.env.get('ON_PRODUCTION')
 
 async function respondToMessage(

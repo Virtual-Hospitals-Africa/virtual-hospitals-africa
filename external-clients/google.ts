@@ -471,8 +471,6 @@ export async function getInitialTokensFromAuthCode(
 
   const tokens = await result.json()
 
-  console.log('tokens', tokens)
-
   assert(tokens)
   assertEquals(typeof tokens.access_token, 'string')
   assertEquals(typeof tokens.refresh_token, 'string')

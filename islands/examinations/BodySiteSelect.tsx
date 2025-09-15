@@ -14,7 +14,6 @@ export function BodySiteSelect({ checklist_item, value, onSelect }: {
     },
   ): void
 }) {
-  console.log('BodySiteSelect value', value)
   return (
     <AsyncSearch
       label='Body site'
