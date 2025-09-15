@@ -112,7 +112,7 @@ describe(
       assertEquals(await response.text(), 'No open visit with this patient')
     })
 
-    it.only('can save vitals on POST', async () => {
+    it('can save vitals on POST', async () => {
       const { health_worker, fetch } = await addTestHealthWorkerWithSession(
         db,
         {

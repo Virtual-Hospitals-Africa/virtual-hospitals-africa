@@ -78,11 +78,9 @@ kill_test_server
 if $migrate_check; then
   IS_TEST=true deno task db:migrate check
 fi
-rm -f test_server.log
-
 
 # Start the test servers
-IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 FAKE_GOOGLE_AUTH=false start_vha_test_server >> "$test_vha_server_output" 2>&1 &
+IS_TEST=true IS_TEST_SERVER=true PORT=8005 FAKE_GOOGLE_AUTH=false start_vha_test_server >> "$test_vha_server_output" 2>&1 &
 trap "kill_test_server" EXIT
 
 wait_until_vha_test_server_ready
