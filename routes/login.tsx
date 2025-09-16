@@ -62,8 +62,10 @@ export const handler: Handlers = {
 
     const session = await sessions.getBySessionId(db, session_id)
 
-    const response = redirect(login_href)
+    console.log({ session })
+
     if (!session) {
+      const response = redirect(login_href)
       deleteCookie(response.headers, cookie.session_key)
       return response
     }

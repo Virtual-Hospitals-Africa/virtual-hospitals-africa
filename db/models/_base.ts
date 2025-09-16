@@ -50,7 +50,6 @@ type BaseModel<
   getById(trx: TrxOrDb, id: string): Promise<RenderedResult>
   getByIds(trx: TrxOrDb, ids: string[]): Promise<RenderedResult[]>
 }
-
 type StandardTables = {
   [Table in keyof DB]: DB[Table] extends
     { id: Generated<string> | string | Int8 } ? Table
@@ -98,6 +97,19 @@ export function base<
   >
   & Extra {
   const { top_level_table, baseQuery, handleSearch, formatResult } = input
+
+  const base_query_consumes_search = baseQuery.length === 2
+  if (base_query_consumes_search) {
+    assert(
+      !handleSearch,
+      'handleSearch must not be provided if baseQuery consumes search terms',
+    )
+  } else {
+    assert(
+      handleSearch,
+      'handleSearch must be provided if baseQuery does not consumes search terms',
+    )
+  }
 
   return bindAll({
     ...input,

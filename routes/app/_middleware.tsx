@@ -45,6 +45,14 @@ export function getLoggedInHealthWorkerFromCookie(
   return health_workers.getBySession(db, { session_id })
 }
 
+function isGettingHtml(req: Request) {
+  if (req.method !== 'GET') return false
+  const accept = req.headers.get('accept')
+  if (!accept) return false
+  const accepts = accept.split(',')
+  return accepts.includes('text/html')
+}
+
 export function getLoggedInHealthWorker(
   { require_employment }: { require_employment: boolean },
 ) {
@@ -63,10 +71,7 @@ export function getLoggedInHealthWorker(
       return ctx.next()
     }
 
-    assertOr401(
-      req.method === 'GET' &&
-        req.headers.get('accept') === 'text/html',
-    )
+    assertOr401(isGettingHtml(req))
 
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()

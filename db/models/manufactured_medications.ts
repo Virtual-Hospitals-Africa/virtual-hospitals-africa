@@ -35,16 +35,9 @@ function strengthSummary(base_table: string) {
   ).as('strength_summary')
 }
 
-export default base({
-  top_level_table: 'manufactured_medications',
-  baseQuery: (
-    trx: TrxOrDb,
-    opts: {
-      include_recalled?: Maybe<boolean>
-      search: string | null
-    },
-  ) =>
-    trx
+function baseQuery(opts: { include_recalled: boolean }) {
+  return function (trx: TrxOrDb) {
+    return trx
       .selectFrom('manufactured_medications')
       .innerJoin(
         'medications',
@@ -80,7 +73,13 @@ export default base({
       .orderBy([
         'drugs.generic_name asc',
         'manufactured_medications.trade_name asc',
-      ]),
+      ])
+  }
+}
+
+export default base({
+  top_level_table: 'manufactured_medications',
+  baseQuery: baseQuery({ include_recalled: false }),
   formatResult(result): RenderedManufacturedMedication {
     return {
       ...result,
@@ -100,7 +99,6 @@ export default base({
     opts: {
       search: string | null
       country?: Maybe<string>
-      include_recalled?: Maybe<boolean>
     },
     trx,
   ) {

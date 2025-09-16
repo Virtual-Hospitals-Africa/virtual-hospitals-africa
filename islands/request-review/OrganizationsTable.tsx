@@ -100,7 +100,6 @@ const columns: TableColumn<NearestOrganizationSearchResult>[] = [
     label: 'Actions',
     type: 'actions',
     data(row): ExtendedActionData {
-      console.log('ewlkekwllkew')
       return {
         text: 'request review',
         href: `#request_review_from_organization_id=${row.id}`,
