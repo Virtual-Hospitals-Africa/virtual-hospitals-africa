@@ -31,7 +31,7 @@ describe(
         address: '123 Main St, Gweru, Zimbabwe, 23456',
         category: 'Clinic',
         description: '123 Main St, Gweru, Zimbabwe, 23456',
-        name: 'VHA Test Clinic',
+        name: 'VHA Test Clinic Zimbabwe',
         location: {
           latitude: -19.4554096,
           longitude: 29.7739353,
@@ -42,7 +42,7 @@ describe(
         address: '12356 Main St, Gweru, Zimbabwe, 23456',
         category: 'Regional Medical Center',
         description: '12356 Main St, Gweru, Zimbabwe, 23456',
-        name: 'VHA Test Regional Medical Center',
+        name: 'VHA Test Regional Medical Center Zimbabwe',
         location: {
           latitude: -19.4555096,
           longitude: 29.7738353,

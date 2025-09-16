@@ -496,6 +496,7 @@ export async function withTestOrganizations(
     const to_create: OrganizationInsert = {
       name,
       category,
+      country: 'US',
       departments_accepting_patients: ['immunizations', 'maternity'],
       administrative_departments: ['administration'],
     }

@@ -5,6 +5,7 @@ import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { countries } from '../seed/defs/05_countries.ts'
 
 export type AddressInsert = {
+  id?: string
   street_number?: string
   route?: string
   unit?: string
@@ -23,21 +24,22 @@ const isApartmentOrUnit = (word: string) => {
 }
 
 // South Africa => ZA
-const TO_COUNTRY_ISO_3601 = new Map<string, string>()
+export const TO_COUNTRY_ISO_3601_2 = new Map<string, string>()
 
 // ZA => South Africa
-const TO_COUNTRY_FULL_NAME = new Map<string, string>()
+export const TO_COUNTRY_OFFICIAL_NAME = new Map<string, string>()
 
-countries.forEach(({ full_name, iso_3166 }) => {
-  TO_COUNTRY_ISO_3601.set(full_name, iso_3166)
-  TO_COUNTRY_FULL_NAME.set(iso_3166, full_name)
+countries.forEach((country) => {
+  TO_COUNTRY_OFFICIAL_NAME.set(country.iso_3166_2, country.official_name)
+  TO_COUNTRY_ISO_3601_2.set(country.official_name, country.iso_3166_2)
+  for (const alternate_name of country.alternate_names) {
+    TO_COUNTRY_ISO_3601_2.set(alternate_name, country.iso_3166_2)
+  }
 })
 
-export function insert(
-  trx: TrxOrDb,
-  address: AddressInsert,
-) {
+export function insertValues(address: AddressInsert) {
   let {
+    id,
     street_number,
     route,
     unit,
@@ -50,10 +52,10 @@ export function insert(
 
   let country_full_name = country
   let country_iso_3601 = country
-  if (TO_COUNTRY_ISO_3601.has(country)) {
-    country_iso_3601 = TO_COUNTRY_ISO_3601.get(country)!
-  } else if (TO_COUNTRY_FULL_NAME.has(country)) {
-    country_full_name = TO_COUNTRY_FULL_NAME.get(country)!
+  if (TO_COUNTRY_ISO_3601_2.has(country)) {
+    country_iso_3601 = TO_COUNTRY_ISO_3601_2.get(country)!
+  } else if (TO_COUNTRY_OFFICIAL_NAME.has(country)) {
+    country_full_name = TO_COUNTRY_OFFICIAL_NAME.get(country)!
   } else {
     throw new StatusError(`Unrecognized country ${country}`, 400)
   }
@@ -103,16 +105,25 @@ export function insert(
     country_full_name,
     address.postal_code,
   ]).join(', ')
+
+  return {
+    ...address,
+    id,
+    street,
+    formatted,
+    street_number,
+    route,
+    unit,
+    country: country_iso_3601,
+  }
+}
+
+export function insert(
+  trx: TrxOrDb,
+  address: AddressInsert,
+) {
   return trx.insertInto('addresses')
-    .values({
-      ...address,
-      street,
-      formatted,
-      street_number,
-      route,
-      unit,
-      country: country_iso_3601,
-    })
+    .values(insertValues(address))
     .returningAll()
     .executeTakeFirstOrThrow()
 }

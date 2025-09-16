@@ -8,6 +8,7 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique())
         .addColumn('category', 'varchar(255)')
+        .addColumn('ownership', 'varchar(255)')
         .addColumn('inactive_reason', 'varchar(255)')
         .addColumn(
           'is_test',
@@ -15,17 +16,22 @@ export async function up(db: Kysely<unknown>) {
           (col) => col.notNull().defaultTo(false),
         )
         .addColumn(
+          'country',
+          'varchar(2)',
+          (col) => col.notNull().references('countries.iso_3166_2'),
+        )
+        .addColumn(
           'address_id',
           'uuid',
           (col) => col.references('addresses.id').onDelete('cascade'),
         )
-        .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
-        .addCheckConstraint(
-          'organization_with_address_has_location',
-          sql`
-          (address_id IS NULL) = (location IS NULL)
-        `,
-        ),
+        .addColumn('location', sql`GEOGRAPHY(POINT,4326)`),
+    // .addCheckConstraint(
+    //   'organization_with_address_has_location',
+    //   sql`
+    //   (address_id IS NULL) = (location IS NULL)
+    // `,
+    // ),
   )
 
   await createStandardTable(

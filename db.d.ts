@@ -273,8 +273,10 @@ export interface Consumption {
 }
 
 export interface Countries {
-  full_name: string
-  iso_3166: string
+  alternate_names: string[] | null
+  iso_3166_2: string
+  iso_3166_3: string
+  official_name: string
 }
 
 export interface DepartmentEmployment {
@@ -818,12 +820,14 @@ export interface OrganizationDevices {
 export interface Organizations {
   address_id: string | null
   category: string | null
+  country: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   inactive_reason: string | null
   is_test: Generated<boolean>
   location: string | null
   name: string
+  ownership: string | null
   updated_at: Generated<Timestamp>
 }
 

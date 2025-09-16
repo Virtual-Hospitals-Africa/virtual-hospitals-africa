@@ -17,15 +17,18 @@ import * as employment from './employment.ts'
 import * as addresses from './addresses.ts'
 import partition from '../../util/partition.ts'
 import {
+  blankSelection,
   jsonAgg,
   jsonArrayFrom,
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
+  success_true,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base, SearchResult } from './_base.ts'
+import generateUUID from '../../util/uuid.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -553,6 +556,8 @@ export async function invite(
 export type OrganizationInsert = {
   id?: string
   name: string
+  country: string
+  ownership?: Maybe<string>
   category?: Maybe<string>
   inactive_reason?: string
   address?: addresses.AddressInsert
@@ -562,9 +567,10 @@ export type OrganizationInsert = {
   administrative_departments?: string[]
 }
 
-export async function add(
+export function add(
   trx: TrxOrDb,
   {
+    id,
     address,
     location,
     departments_accepting_patients,
@@ -572,42 +578,56 @@ export async function add(
     ...rest
   }: OrganizationInsert,
 ) {
-  let address_id: string | undefined
-  if (address) {
-    const inserted_address = await addresses.insert(trx, address)
-    address_id = inserted_address.id
-  }
-  const organization = await trx
-    .insertInto('organizations')
-    .values({
-      ...rest,
-      address_id,
-      location: location && literalLocation(location),
-    })
-    .returningAll()
+  const organization_id = id || generateUUID()
+  const address_id: string | undefined = address &&
+    (address.id || generateUUID())
+
+  return trx.with(
+    'inserting_address',
+    (qb) =>
+      address
+        ? qb.insertInto('addresses')
+          .values(addresses.insertValues({
+            ...address,
+            id: address_id,
+          }))
+        : blankSelection(qb),
+  ).with('inserting_organization', (qb) =>
+    qb.insertInto('organizations')
+      .values({
+        ...rest,
+        id: organization_id,
+        address_id,
+        location: location && literalLocation(location),
+      }))
+    .with(
+      'inserting_departments_accepting_patients',
+      (qb) =>
+        departments_accepting_patients.length
+          ? qb.insertInto('organization_departments')
+            .values(departments_accepting_patients.map((name) => ({
+              organization_id,
+              name,
+              accepts_patients: true,
+            })))
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_administrative_departments',
+      (qb) =>
+        administrative_departments?.length
+          ? qb.insertInto('organization_departments')
+            .values(administrative_departments.map((name) => ({
+              organization_id,
+              name,
+              accepts_patients: false,
+            })))
+          : blankSelection(qb),
+    )
+    .selectFrom('organizations')
+    .where('organizations.id', '=', organization_id)
+    .selectAll()
     .executeTakeFirstOrThrow()
-
-  departments_accepting_patients.length && await trx
-    .insertInto('organization_departments')
-    .values(departments_accepting_patients.map((name) => ({
-      organization_id: organization.id,
-      name,
-      accepts_patients: true,
-    })))
-    .returningAll()
-    .execute()
-
-  administrative_departments?.length && await trx
-    .insertInto('organization_departments')
-    .values(administrative_departments.map((name) => ({
-      organization_id: organization.id,
-      name,
-      accepts_patients: false,
-    })))
-    .returningAll()
-    .execute()
-
-  return organization
 }
 
 export function remove(
