@@ -1815,13 +1815,20 @@ export type OrganizationWithAddress =
     address: string
   }
 
-export type PatientNearestOrganization = Location & {
-  organization_id: string
-  organization_name: string
+export type PatientNearestOrganization = {
+  id: string
+  name: string
   address: string
-  walking_distance: null | number
-  distance: number
-  vha: boolean
+  locality: string | null
+  location: Location
+  walking_distance: null | string
+  distance_meters: number
+  admins: {
+    employment_id: string
+    health_worker_id: string
+    email: string
+    name: string
+  }[]
 }
 
 export type GoogleAddressComponent = {

@@ -1,4 +1,3 @@
-import * as google from '../../../external-clients/google.ts'
 import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
 import { create } from '../create.ts'
@@ -9,6 +8,7 @@ import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { decimal } from '../../../util/validators.ts'
 import { TO_COUNTRY_ISO_3601_2 } from '../../models/addresses.ts'
+import { getLocationAddress } from '../../../external-clients/google-maps.ts'
 
 export default create(
   ['addresses', 'organizations', 'organization_departments'],
@@ -21,60 +21,6 @@ export default create(
 export async function addTestOrganizations(trx: TrxOrDb) {
   await organizations.add(trx, {
     id: '00000000-0000-0000-0000-000000000001',
-    name: 'VHA Test Clinic Zimbabwe',
-    category: 'Clinic',
-    is_test: true,
-    ownership: 'Govt.',
-    country: 'ZW',
-    address: {
-      street_number: '123',
-      route: 'Main St',
-      locality: 'Gweru',
-      country: 'Zimbabwe',
-      postal_code: '23456',
-    },
-    location: {
-      latitude: -19.4554096,
-      longitude: 29.7739353,
-    },
-    departments_accepting_patients: [
-      'maternity',
-      'immunizations',
-      'pharmacy',
-      'acute care',
-      'chronic diseases',
-    ],
-    administrative_departments: [
-      'administration',
-    ],
-  })
-
-  await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000002',
-    name: 'VHA Test Regional Medical Center Zimbabwe',
-    category: 'Regional Medical Center',
-    is_test: true,
-    ownership: 'Govt.',
-    country: 'ZW',
-    address: {
-      street_number: '12356',
-      route: 'Main St',
-      locality: 'Gweru',
-      country: 'Zimbabwe',
-      postal_code: '23456',
-    },
-    location: {
-      latitude: -19.4555096,
-      longitude: 29.7738353,
-    },
-    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
-    administrative_departments: [
-      'administration',
-    ],
-  })
-
-  await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000003',
     name: 'VHA Test Clinic South Africa',
     category: 'Clinic',
     is_test: true,
@@ -104,7 +50,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
   })
 
   await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000004',
+    id: '00000000-0000-0000-0000-000000000002',
     name: 'VHA Test Regional Medical Center South Africa',
     category: 'Regional Medical Center',
     is_test: true,
@@ -126,11 +72,62 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       'administration',
     ],
   })
+  await organizations.add(trx, {
+    id: '00000000-0000-0000-0000-000000000003',
+    name: 'VHA Test Clinic Zimbabwe',
+    category: 'Clinic',
+    is_test: true,
+    ownership: 'Govt.',
+    country: 'ZW',
+    address: {
+      street_number: '123',
+      route: 'Main St',
+      locality: 'Gweru',
+      country: 'Zimbabwe',
+      postal_code: '23456',
+    },
+    location: {
+      latitude: -19.4554096,
+      longitude: 29.7739353,
+    },
+    departments_accepting_patients: [
+      'maternity',
+      'immunizations',
+      'pharmacy',
+      'acute care',
+      'chronic diseases',
+    ],
+    administrative_departments: [
+      'administration',
+    ],
+  })
+
+  await organizations.add(trx, {
+    id: '00000000-0000-0000-0000-000000000004',
+    name: 'VHA Test Regional Medical Center Zimbabwe',
+    category: 'Regional Medical Center',
+    is_test: true,
+    ownership: 'Govt.',
+    country: 'ZW',
+    address: {
+      street_number: '12356',
+      route: 'Main St',
+      locality: 'Gweru',
+      country: 'Zimbabwe',
+      postal_code: '23456',
+    },
+    location: {
+      latitude: -19.4555096,
+      longitude: 29.7738353,
+    },
+    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
+    administrative_departments: [
+      'administration',
+    ],
+  })
 }
 
-const GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES = new Set<string>(
-  'ZA',
-)
+const GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES = new Set<string>(['ZA'])
 
 const duplicates_file = Deno.cwd() + '/db/resources/organization_duplicates.tsv'
 
@@ -180,24 +177,23 @@ async function importDataFromCSV(trx: TrxOrDb) {
 
       assert(country, `No country found for ${row.Country}`)
 
+      const location = {
+        latitude: Number(row.Lat),
+        longitude: Number(row.Long),
+      }
+
       const get_google_maps_address =
         GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES.has(country)
+
+      console.log({ country, get_google_maps_address })
       const address = get_google_maps_address
-        ? await google.getLocationAddress({
-          longitude: Number(row.Long),
-          latitude: Number(row.Lat),
-        })
+        ? await getLocationAddress(location)
         : undefined
 
       const category_capitalized = category && capitalize(category)
       let name = row.Facility_n!.trim()
       if (category && !name.toLowerCase().endsWith(category.toLowerCase())) {
         name += ` ${category_capitalized}`
-      }
-
-      const location = {
-        latitude: Number(row.Lat),
-        longitude: Number(row.Long),
       }
 
       let suffix: undefined | number = undefined

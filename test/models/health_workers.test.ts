@@ -78,8 +78,8 @@ describe('db/models/health_workers.ts', () => {
             {
               organization: {
                 id: '00000000-0000-0000-0000-000000000001',
-                name: 'VHA Test Clinic Zimbabwe',
-                address: '123 Main St, Gweru, Zimbabwe, 23456',
+                name: 'VHA Test Clinic South Africa',
+                address: '123 Main St, Polokwane, South Africa, 23456',
               },
               roles: {
                 admin: null,
@@ -210,10 +210,10 @@ describe('db/models/health_workers.ts', () => {
           result.organization_id,
           '00000000-0000-0000-0000-000000000001',
         )
-        assertEquals(result.organization_name, 'VHA Test Clinic Zimbabwe')
+        assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
         assertEquals(
           result.organization_address,
-          '123 Main St, Gweru, Zimbabwe, 23456',
+          '123 Main St, Polokwane, South Africa, 23456',
         )
         assertEquals(result.professions, ['nurse'])
       },
@@ -285,10 +285,10 @@ describe('db/models/health_workers.ts', () => {
           result.organization_id,
           '00000000-0000-0000-0000-000000000001',
         )
-        assertEquals(result.organization_name, 'VHA Test Clinic Zimbabwe')
+        assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
         assertEquals(
           result.organization_address,
-          '123 Main St, Gweru, Zimbabwe, 23456',
+          '123 Main St, Polokwane, South Africa, 23456',
         )
         assertEquals(result.professions, ['nurse'])
       },
@@ -394,10 +394,10 @@ describe('db/models/health_workers.ts', () => {
         result.organization_id,
         '00000000-0000-0000-0000-000000000001',
       )
-      assertEquals(result.organization_name, 'VHA Test Clinic Zimbabwe')
+      assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
       assertEquals(
         result.organization_address,
-        '123 Main St, Gweru, Zimbabwe, 23456',
+        '123 Main St, Polokwane, South Africa, 23456',
       )
       assertEquals(result.professions, ['nurse'])
     })

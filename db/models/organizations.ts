@@ -30,6 +30,9 @@ import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 
+const SERVER_COUNTRY = Deno.env.get('SERVER_COUNTRY') || 'ZA'
+assert(addresses.TO_COUNTRY_OFFICIAL_NAME.has(SERVER_COUNTRY))
+
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')
@@ -78,6 +81,7 @@ const model = base({
       search?: string | null
       kind?: 'physical' | 'virtual' | null
       is_test?: boolean
+      include_all_countries?: boolean
     },
   ) {
     if (opts.search) {
@@ -92,6 +96,9 @@ const model = base({
     }
     if (opts.is_test) {
       qb = qb.where('organizations.is_test', '=', true)
+    }
+    if (!opts.include_all_countries) {
+      qb = qb.where('organizations.country', '=', SERVER_COUNTRY)
     }
     return qb
   },
@@ -240,11 +247,11 @@ export function getEmployeesQuery(
             ELSE 'approved'
           END
         `.as('registration_status'),
+          // deno-fmt-ignore-start
           jsonBuildObject({
-            view: sql<
-              string
-            >`concat('/app/organizations/', ${organization_id}::text, '/employees/', health_workers.id::text)`,
+            view: sql<string>`concat('/app/organizations/', ${organization_id}::text, '/employees/', health_workers.id::text)`,
           }).as('actions'),
+          // deno-fmt-ignore-end
         ])
 
       if (opts.emails) {
@@ -560,14 +567,14 @@ export type OrganizationInsert = {
   ownership?: Maybe<string>
   category?: Maybe<string>
   inactive_reason?: string
-  address?: addresses.AddressInsert
+  address?: Maybe<addresses.AddressInsert>
   location?: Location
   is_test?: boolean
   departments_accepting_patients: string[]
   administrative_departments?: string[]
 }
 
-export function add(
+export async function add(
   trx: TrxOrDb,
   {
     id,
@@ -579,10 +586,11 @@ export function add(
   }: OrganizationInsert,
 ) {
   const organization_id = id || generateUUID()
-  const address_id: string | undefined = address &&
-    (address.id || generateUUID())
+  const address_id: string | undefined = address
+    ? (address.id || generateUUID())
+    : undefined
 
-  return trx.with(
+  await trx.with(
     'inserting_address',
     (qb) =>
       address
@@ -624,10 +632,10 @@ export function add(
             })))
           : blankSelection(qb),
     )
-    .selectFrom('organizations')
-    .where('organizations.id', '=', organization_id)
-    .selectAll()
+    .selectNoFrom(success_true)
     .executeTakeFirstOrThrow()
+
+  return { id: organization_id, address_id }
 }
 
 export function remove(

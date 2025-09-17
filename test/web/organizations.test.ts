@@ -28,10 +28,10 @@ describe(
       const [test_clinic, test_virtual_hospital] = json.results
       assertEquals(omit(test_clinic, ['departments']), {
         id: '00000000-0000-0000-0000-000000000001',
-        address: '123 Main St, Gweru, Zimbabwe, 23456',
+        address: '123 Main St, Polokwane, South Africa, 23456',
         category: 'Clinic',
-        description: '123 Main St, Gweru, Zimbabwe, 23456',
-        name: 'VHA Test Clinic Zimbabwe',
+        description: '123 Main St, Polokwane, South Africa, 23456',
+        name: 'VHA Test Clinic South Africa',
         location: {
           latitude: -19.4554096,
           longitude: 29.7739353,
@@ -39,10 +39,10 @@ describe(
       })
       assertEquals(omit(test_virtual_hospital, ['departments']), {
         id: '00000000-0000-0000-0000-000000000002',
-        address: '12356 Main St, Gweru, Zimbabwe, 23456',
+        address: '12356 Main St, Polokwane, South Africa, 23456',
         category: 'Regional Medical Center',
-        description: '12356 Main St, Gweru, Zimbabwe, 23456',
-        name: 'VHA Test Regional Medical Center Zimbabwe',
+        description: '12356 Main St, Polokwane, South Africa, 23456',
+        name: 'VHA Test Regional Medical Center South Africa',
         location: {
           latitude: -19.4555096,
           longitude: 29.7738353,

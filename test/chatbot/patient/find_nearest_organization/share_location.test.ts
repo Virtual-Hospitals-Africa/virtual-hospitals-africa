@@ -16,7 +16,7 @@ describe('patient chatbot', () => {
 
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.insert(db, {
+    const p = await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
       name: 'test',
@@ -24,16 +24,16 @@ describe('patient chatbot', () => {
       date_of_birth: '2023-01-01',
       national_id_number: randomNationalId(),
     })
+    console.log(p)
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      // Somewhere in Harare
       body: JSON.stringify({
-        latitude: -17.832132339478,
-        longitude: 31.047979354858,
+        latitude: -33.3946,
+        longitude: 25.5463,
       }),
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
@@ -57,31 +57,31 @@ describe('patient chatbot', () => {
 
     assertEquals(message.action.button, 'Nearest Facilities')
 
-    assertEquals(message.action.sections[0].title, 'Town Name Here')
+    assertEquals(message.action.sections[0].title, 'Nqweba')
 
-    const arcadia = organizations.value.find((o) =>
-      o.name === 'Arcadia Clinic'
+    const addo = organizations.value.find((o) =>
+      o.name === 'Addo Enon Satellite Clinic'
     )!
-    const braeside = organizations.value.find((o) =>
-      o.name === 'Braeside Clinic'
+    const moses = organizations.value.find((o) =>
+      o.name === 'Moses Mabida Clinic'
     )!
 
     assertEquals(
       message.action.sections[0].rows[0].id,
-      arcadia.id,
+      addo.id,
     )
     assertEquals(
       message.action.sections[0].rows[0].title,
-      'Arcadia Clinic',
+      'Addo Enon Satellite C...',
     )
 
     assertEquals(
       message.action.sections[0].rows[1].id,
-      braeside.id,
+      moses.id,
     )
     assertEquals(
       message.action.sections[0].rows[1].title,
-      'Braeside Clinic',
+      'Moses Mabida Clinic',
     )
 
     assertEquals(firstCallArgs.phone_number, phone_number)

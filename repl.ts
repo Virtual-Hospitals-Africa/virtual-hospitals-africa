@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
 import db from './db/db.ts'
 
+const ignore_file_extensions = new Set(['txt', 'py'])
 async function loadAllModules(dir: string) {
   const modules: any = {}
   const importing: Promise<any>[] = []
@@ -13,7 +14,8 @@ async function loadAllModules(dir: string) {
       continue
     }
     const file = inDir
-    const [fileName, fileExt] = file.name.split('.')
+    const [file_name, extension] = file.name.split('.')
+    if (ignore_file_extensions.has(extension)) continue
     const importing_module = import(`${dir}/${file.name}`).then((module) => {
       let just_default_export = true
       if (!module.default) {
@@ -26,7 +28,7 @@ async function loadAllModules(dir: string) {
           }
         }
       }
-      return modules[fileName] = just_default_export ? module.default : module
+      return modules[file_name] = just_default_export ? module.default : module
     })
     importing.push(importing_module)
   }

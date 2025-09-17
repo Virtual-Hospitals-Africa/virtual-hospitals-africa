@@ -29,6 +29,7 @@ import { take } from '../../util/take.ts'
 import generateUUID from '../../util/uuid.ts'
 import { OrganizationInsert } from '../../db/models/organizations.ts'
 import last from '../../util/last.ts'
+import compact from '../../util/compact.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -519,8 +520,8 @@ export async function withTestOrganizations(
   const organization_ids = organizations_added.map((organization) =>
     organization.id
   )
-  const address_ids = organizations_added.map((organization) =>
-    organization.address_id
+  const address_ids = compact(
+    organizations_added.map((organization) => organization.address_id),
   )
   try {
     await callback(organization_ids)
@@ -528,9 +529,11 @@ export async function withTestOrganizations(
     await trx.deleteFrom('organizations')
       .where('id', 'in', organization_ids)
       .execute()
-    await trx.deleteFrom('addresses')
-      .where('id', 'in', address_ids)
-      .execute()
+    if (address_ids.length) {
+      await trx.deleteFrom('addresses')
+        .where('id', 'in', address_ids)
+        .execute()
+    }
   }
 }
 

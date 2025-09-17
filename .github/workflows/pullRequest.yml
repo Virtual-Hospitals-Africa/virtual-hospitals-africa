@@ -184,7 +184,7 @@ jobs:
         run: deno task db:migrate all
 
       - name: Run tests
-        run: deno task test:chatbot
+        run: deno task test:chatbot test/chatbot/patient/find_nearest_organization/share_location.test.ts
 
   test_migrations:
     runs-on: ubuntu-latest

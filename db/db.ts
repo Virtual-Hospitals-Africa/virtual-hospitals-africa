@@ -10,6 +10,9 @@ import {
 } from 'kysely'
 import { DB } from '../db.d.ts'
 import { debugReplaceAll } from './helpers.ts'
+import { monkeyPatchConsole } from '../util/monkey-patch-console.ts'
+
+monkeyPatchConsole()
 
 let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
 

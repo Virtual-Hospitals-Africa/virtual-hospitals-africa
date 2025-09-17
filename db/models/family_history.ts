@@ -27,7 +27,7 @@ export default base({
         'snomed_inferred_canonical_name_and_category.name',
         'ilike',
         `%${opts.search}%`,
-      )
+      ).orderBy('snomed_inferred_canonical_name_and_category.name', 'asc')
     }
 
     return qb

@@ -32,6 +32,7 @@ export function baseQuery(
       'organizations.name',
       'organizations.category',
       'addresses.formatted as address',
+      'addresses.locality',
       jsonBuildObject({
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
@@ -39,6 +40,22 @@ export function baseQuery(
       distance_sql.as('distance_meters'),
       sql<string>`'https://maps.google.com'`.as('google_maps_link'),
       sql<string>`'Open'`.as('status'),
+      jsonArrayFrom(
+        eb.selectFrom('employment')
+          .innerJoin(
+            'health_workers',
+            'health_workers.id',
+            'employment.health_worker_id',
+          )
+          .select([
+            'employment.id as employment_id',
+            'employment.health_worker_id',
+            'health_workers.email',
+            'health_workers.name',
+          ])
+          .where('employment.profession', '=', 'admin')
+          .whereRef('employment.organization_id', '=', 'organizations.id'),
+      ).as('admins'),
       jsonArrayFrom(
         eb.selectFrom('employment')
           .innerJoin(
