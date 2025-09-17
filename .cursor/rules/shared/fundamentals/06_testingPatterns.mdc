@@ -14,8 +14,8 @@ Follow a **database-first testing approach**, which means:
 - Modify real data in tests and verify the changes were applied correctly
 - Create test fixtures in the database and verify they're retrieved as expected
 - You can assume that data in seeds is present in the database. This includes 2 test organizations:
-  - VHA Test Clinic with id: 00000000-0000-0000-0000-000000000001
-  - VHA Test Regional Medical Center with id: 00000000-0000-0000-0000-000000000002
+  - VHA Test Clinic Zimbabwe with id: 00000000-0000-0000-0000-000000000001
+  - VHA Test Regional Medical Center Zimbabwe with id: 00000000-0000-0000-0000-000000000002
 - No need to cleanup the database at the end of the test. 
   - As a result of this, don't make assertions about counts in the database unless the query is precisely looking for entities related to rows you inserted during the test
 

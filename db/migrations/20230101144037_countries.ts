@@ -1,14 +1,24 @@
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('countries')
     .addColumn(
-      'iso_3166',
+      'iso_3166_2',
       'varchar(2)',
       (col) => col.notNull().primaryKey(),
     )
-    .addColumn('full_name', 'varchar(255)', (col) => col.notNull().unique())
+    .addColumn(
+      'iso_3166_3',
+      'varchar(3)',
+      (col) => col.notNull().unique(),
+    )
+    .addColumn(
+      'official_name',
+      'varchar(255)',
+      (col) => col.notNull().unique(),
+    )
+    .addColumn('alternate_names', sql`varchar(255)[]`)
     .execute()
 }
 

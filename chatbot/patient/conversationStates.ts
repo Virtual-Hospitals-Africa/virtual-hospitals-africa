@@ -187,7 +187,6 @@ const conversationStates: ConversationStates<
       const nearest_facilities = await patients.nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
-        patient.location as Location,
       )
       if (!nearest_facilities?.length) {
         return {
@@ -208,20 +207,21 @@ const conversationStates: ConversationStates<
         }
       }
 
+      console.log(nearest_facilities)
       const organizations = nearest_facilities.map((organization) => {
         const distanceInKM = organization.walking_distance ||
-          (organization.distance / 1000).toFixed(1) + ' km'
+          (organization.distance_meters / 1000).toFixed(1) + ' km'
         const description = distanceInKM
           ? `${organization.address} (${distanceInKM})`
           : organization.address
 
-        const organizationName = organization.vha
-          ? `${organization.organization_name} (VHA)`
-          : organization.organization_name
+        const organizationName = organization.admins.length
+          ? `${organization.name} (VHA)`
+          : organization.name
         return {
-          section: 'Town Name Here',
+          section: organization.locality || '[Unknown Location]',
           row: {
-            id: organization.organization_id,
+            id: organization.id,
             title: capLengthAtWhatsAppTitle(organizationName),
             description: capLengthAtWhatsAppDescription(description),
             onExit:
@@ -266,13 +266,12 @@ const conversationStates: ConversationStates<
       const nearest_facilities = await patients.nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
-        patient.location as Location,
       )
 
       const selected_organization = nearest_facilities
         ?.find(
           (organization) =>
-            organization.organization_id ===
+            organization.id ===
               patientState.unhandled_message.trimmed_body,
         )
 
@@ -283,11 +282,11 @@ const conversationStates: ConversationStates<
 
       const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
-        messageBody: selected_organization.organization_name,
+        messageBody: selected_organization.name,
         location: {
-          longitude: selected_organization.longitude,
-          latitude: selected_organization.latitude,
-          name: selected_organization.organization_name,
+          longitude: selected_organization.location.longitude,
+          latitude: selected_organization.location.latitude,
+          name: selected_organization.name,
           address: selected_organization.address,
         },
       }

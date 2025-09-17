@@ -176,7 +176,7 @@ describe(
             employee_id: health_worker.employee_id!,
             organization: {
               id: '00000000-0000-0000-0000-000000000001',
-              name: 'VHA Test Clinic',
+              name: 'VHA Test Clinic South Africa',
             },
             health_worker_id: health_worker.id,
             avatar_url: health_worker.avatar_url,

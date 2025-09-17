@@ -1,11 +1,14 @@
-import * as google from '../../../external-clients/google.ts'
-import parseCsv from '../../../util/parseCsv.ts'
+import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
 import { create } from '../create.ts'
 import * as organizations from '../../models/organizations.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { TrxOrDb } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import z from 'zod'
+import { decimal } from '../../../util/validators.ts'
+import { TO_COUNTRY_ISO_3601_2 } from '../../models/addresses.ts'
+import { getLocationAddress } from '../../../external-clients/google-maps.ts'
 
 export default create(
   ['addresses', 'organizations', 'organization_departments'],
@@ -18,9 +21,64 @@ export default create(
 export async function addTestOrganizations(trx: TrxOrDb) {
   await organizations.add(trx, {
     id: '00000000-0000-0000-0000-000000000001',
-    name: 'VHA Test Clinic',
+    name: 'VHA Test Clinic South Africa',
     category: 'Clinic',
     is_test: true,
+    ownership: 'Govt.',
+    country: 'ZA',
+    address: {
+      street_number: '123',
+      route: 'Main St',
+      locality: 'Polokwane',
+      country: 'South Africa',
+      postal_code: '23456',
+    },
+    location: {
+      latitude: -19.4554096,
+      longitude: 29.7739353,
+    },
+    departments_accepting_patients: [
+      'maternity',
+      'immunizations',
+      'pharmacy',
+      'acute care',
+      'chronic diseases',
+    ],
+    administrative_departments: [
+      'administration',
+    ],
+  })
+
+  await organizations.add(trx, {
+    id: '00000000-0000-0000-0000-000000000002',
+    name: 'VHA Test Regional Medical Center South Africa',
+    category: 'Regional Medical Center',
+    is_test: true,
+    ownership: 'Govt.',
+    country: 'ZA',
+    address: {
+      street_number: '12356',
+      route: 'Main St',
+      locality: 'Polokwane',
+      country: 'South Africa',
+      postal_code: '23456',
+    },
+    location: {
+      latitude: -19.4555096,
+      longitude: 29.7738353,
+    },
+    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
+    administrative_departments: [
+      'administration',
+    ],
+  })
+  await organizations.add(trx, {
+    id: '00000000-0000-0000-0000-000000000003',
+    name: 'VHA Test Clinic Zimbabwe',
+    category: 'Clinic',
+    is_test: true,
+    ownership: 'Govt.',
+    country: 'ZW',
     address: {
       street_number: '123',
       route: 'Main St',
@@ -45,10 +103,12 @@ export async function addTestOrganizations(trx: TrxOrDb) {
   })
 
   await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000002',
-    name: 'VHA Test Regional Medical Center',
+    id: '00000000-0000-0000-0000-000000000004',
+    name: 'VHA Test Regional Medical Center Zimbabwe',
     category: 'Regional Medical Center',
     is_test: true,
+    ownership: 'Govt.',
+    country: 'ZW',
     address: {
       street_number: '12356',
       route: 'Main St',
@@ -67,12 +127,12 @@ export async function addTestOrganizations(trx: TrxOrDb) {
   })
 }
 
+const GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES = new Set<string>(['ZA'])
+
 const duplicates_file = Deno.cwd() + '/db/resources/organization_duplicates.tsv'
 
 const names = new Map()
 
-// TODO: Can't get last column properly, maybe because new line character
-// So need a extra column in csv file
 async function importDataFromCSV(trx: TrxOrDb) {
   const file = await Deno.open(duplicates_file, {
     write: true,
@@ -83,11 +143,21 @@ async function importDataFromCSV(trx: TrxOrDb) {
   await file.write(new TextEncoder().encode('name,lat1,lon1,lat2,lon2\n'))
 
   await forEach(
-    parseCsv('./db/resources/zimbabwe-health-organizations.tsv', {
-      columnSeparator: '\t',
-    }),
+    parseTsvTyped(
+      './db/resources/sub-saharan_health_facilities.tsv',
+      z.object({
+        Country: z.string(),
+        Admin1: z.string(),
+        Facility_n: z.string(),
+        Facility_t: z.string(),
+        Ownership: z.string().nullable(),
+        Lat: decimal,
+        Long: decimal,
+        LL_source: z.string().nullable(),
+      }),
+    ),
     async (row) => {
-      let category = row.category?.trim()
+      let category = row.Facility_t?.trim()
       let inactive_reason: undefined | string = undefined
 
       if (category) {
@@ -99,26 +169,31 @@ async function importDataFromCSV(trx: TrxOrDb) {
         }
       }
 
-      const address = await google.getLocationAddress({
-        longitude: Number(row.longitude),
-        latitude: Number(row.latitude),
-      })
+      // Map Zanzibar to Tanzania as it's a semi-autonomous region, not a country
+      const lookup_country = row.Country === 'Zanzibar'
+        ? 'Tanzania'
+        : row.Country
+      const country = TO_COUNTRY_ISO_3601_2.get(lookup_country)
 
-      const category_capitalized = category && capitalize(category)
-      let name = row.name!.trim()
-      if (category && !name.toLowerCase().endsWith(category.toLowerCase())) {
-        name += ` ${category_capitalized}`
-      }
-
-      if (name === 'ZRP') {
-        const city = address.locality || address.administrative_area_level_2
-        assert(city, `City not found for ZRP: ${JSON.stringify(address)}`)
-        name = `ZRP ${city}`
-      }
+      assert(country, `No country found for ${row.Country}`)
 
       const location = {
-        latitude: Number(row.latitude),
-        longitude: Number(row.longitude),
+        latitude: Number(row.Lat),
+        longitude: Number(row.Long),
+      }
+
+      const get_google_maps_address =
+        GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES.has(country)
+
+      console.log({ country, get_google_maps_address })
+      const address = get_google_maps_address
+        ? await getLocationAddress(location)
+        : undefined
+
+      const category_capitalized = category && capitalize(category)
+      let name = row.Facility_n!.trim()
+      if (category && !name.toLowerCase().endsWith(category.toLowerCase())) {
+        name += ` ${category_capitalized}`
       }
 
       let suffix: undefined | number = undefined
@@ -126,7 +201,7 @@ async function importDataFromCSV(trx: TrxOrDb) {
         const other = names.get(name)!
         const encoder = new TextEncoder()
         const data = encoder.encode(
-          `${name}\t${row.latitude}\t${row.longitude}\t${other.location.latitude}\t${other.location.longitude}\n`,
+          `${name}\t${row.Lat}\t${row.Long}\t${other.location.latitude}\t${other.location.longitude}\n`,
         )
         await file.write(data)
         other.count++
@@ -140,6 +215,8 @@ async function importDataFromCSV(trx: TrxOrDb) {
         address,
         inactive_reason,
         category: category_capitalized,
+        country,
+        ownership: row.Ownership,
         location,
         departments_accepting_patients: [],
       })

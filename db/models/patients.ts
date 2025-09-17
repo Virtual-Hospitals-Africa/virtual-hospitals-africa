@@ -2,7 +2,6 @@ import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   HasStringId,
-  Location,
   Maybe,
   Patient,
   PatientNearestOrganization,
@@ -12,19 +11,19 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
-import { getWalkingDistance } from '../../external-clients/google.ts'
+import { getWalkingDistance } from '../../external-clients/google-maps.ts'
 import * as conversations from './conversations.ts'
 import * as patient_encounters from './patient_encounters.ts'
+import * as nearest_organizations from './nearest_organizations.ts'
 import {
   jsonBuildObject,
   literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
-import isNumber from '../../util/isNumber.ts'
 import { DB } from '../../db.d.ts'
 import { ensureDoctorId } from './doctor.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
+import { pMap } from '../../util/inParallel.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -341,36 +340,43 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
 export async function nearestFacilities(
   trx: TrxOrDb,
   patient_id: string,
-  currentLocation: Location,
 ) {
-  const patient = await trx
-    .selectFrom('patient_nearest_facilities')
-    .selectAll()
-    .where('patient_id', '=', patient_id)
+  const { location } = await trx.selectFrom('patients')
+    .where('id', '=', patient_id)
+    .where('location', 'is not', null)
+    .select([
+      jsonBuildObject({
+        longitude: sql<number>`ST_X(location::geometry)`,
+        latitude: sql<number>`ST_Y(location::geometry)`,
+      }).as('location'),
+    ])
     .executeTakeFirstOrThrow()
 
-  assert(Array.isArray(patient.nearest_facilities))
-  assert(patient.nearest_facilities.length > 0)
+  const { results: nearest_facilities } = await nearest_organizations.search(
+    trx,
+    {
+      location,
+    },
+    {
+      rows_per_page: 20,
+    },
+  )
 
-  return Promise.all(
-    patient.nearest_facilities.map(async (organization) => (
-      assert(isObjectLike(organization)),
-        assert(isNumber(organization.longitude)),
-        assert(isNumber(organization.latitude)),
-        {
-          ...organization,
-          walking_distance: await getWalkingDistance({
-            origin: {
-              longitude: currentLocation.longitude,
-              latitude: currentLocation.latitude,
-            },
-            destination: {
-              longitude: organization.longitude,
-              latitude: organization.latitude,
-            },
-          }),
-        } as HasStringId<PatientNearestOrganization>
-    )),
+  return pMap(
+    nearest_facilities,
+    async (organization): Promise<HasStringId<PatientNearestOrganization>> => {
+      const walking_distance = await getWalkingDistance({
+        origin: {
+          longitude: location.longitude,
+          latitude: location.latitude,
+        },
+        destination: {
+          longitude: organization.location.longitude,
+          latitude: organization.location.latitude,
+        },
+      })
+      return { ...organization, walking_distance }
+    },
   )
 }
 

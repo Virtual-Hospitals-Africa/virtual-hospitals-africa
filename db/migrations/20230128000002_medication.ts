@@ -122,7 +122,9 @@ export async function up(db: Kysely<unknown>) {
           'country',
           'varchar(2)',
           (col) =>
-            col.notNull().references('countries.iso_3166').onDelete('cascade'),
+            col.notNull().references('countries.iso_3166_2').onDelete(
+              'cascade',
+            ),
         ),
   )
 }

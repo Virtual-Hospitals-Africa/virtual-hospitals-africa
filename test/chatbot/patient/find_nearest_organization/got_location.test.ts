@@ -32,8 +32,8 @@ describe('patient chatbot', () => {
       sent_by_phone_number: phone_number,
       has_media: false,
       body: JSON.stringify({
-        latitude: -17.832132339478,
-        longitude: 31.047979354858,
+        latitude: -33.3946,
+        longitude: 25.5463,
       }),
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
@@ -42,11 +42,11 @@ describe('patient chatbot', () => {
     const whatsappOne = mockWhatsApp()
 
     await respond(whatsappOne, 'patient')
-    const arcadia = organizations.value.find((o) =>
-      o.name === 'Arcadia Clinic'
+    const addo = organizations.value.find((o) =>
+      o.name === 'Addo Enon Satellite Clinic'
     )!
-    const braeside = organizations.value.find((o) =>
-      o.name === 'Braeside Clinic'
+    const moses = organizations.value.find((o) =>
+      o.name === 'Moses Mabida Clinic'
     )!
 
     const message = whatsappOne.sendMessages.calls[0].args[0].messages
@@ -54,7 +54,7 @@ describe('patient chatbot', () => {
     assert(message.type === 'list')
     assertEquals(
       message.action.sections[0].rows[0].id,
-      arcadia.id,
+      addo.id,
     )
 
     // Step 2: select organization id
@@ -63,7 +63,7 @@ describe('patient chatbot', () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: braeside.id,
+      body: moses.id,
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -77,12 +77,13 @@ describe('patient chatbot', () => {
         messages: [
           {
             type: 'location',
-            messageBody: 'Braeside Clinic',
+            messageBody: 'Moses Mabida Clinic',
             location: {
-              longitude: 31.0657,
-              latitude: -17.8399,
-              name: 'Braeside Clinic',
-              address: 'Malta Road, Harare, Harare Province, Zimbabwe',
+              address:
+                'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
+              latitude: -33.3973,
+              longitude: 25.4808,
+              name: 'Moses Mabida Clinic',
             },
           },
           {
