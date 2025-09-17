@@ -10,8 +10,9 @@ export const VITALS_SNOMED_CODE = {
   blood_glucose: '405176005',
   pulse: '8499008',
   respiratory_rate: '86290005',
-  midarm_circumference: '---', //284473002 | Mid upper arm circumference , left arm: 1162540006, right arm: 1162545001
-  triceps_skinfold: '---', //301851003 | Triceps skin fold thickness
+  head_circumference: '363811004',
+  midarm_circumference: '284473002',
+  triceps_skinfold: '301851003',
   // Computed vitals
   body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
@@ -28,6 +29,7 @@ export const VITALS_UNITS = {
   blood_glucose: 'mg/dL',
   pulse: 'bpm',
   respiratory_rate: 'bpm',
+  head_circumference: 'cm',
   midarm_circumference: 'cm',
   triceps_skinfold: 'cm',
   // Computed vitals

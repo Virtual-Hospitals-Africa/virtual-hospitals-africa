@@ -12,8 +12,10 @@ import {
   VITALS_UNITS,
 } from '../../shared/vitals.ts'
 
-// TODO
-type PatientRecord = unknown
+type PatientRecord = {
+  age_years?: string | null
+  gender?: string | null
+}
 
 export function insertMeasurements(
   trx: TrxOrDb,
@@ -35,9 +37,123 @@ export function insertMeasurements(
 // deno-lint-ignore require-await
 export async function measurementsNeededForEncounter(
   _trx: TrxOrDb,
-  _patient_record: PatientRecord,
+  patient_record: PatientRecord,
 ): Promise<VitalMeasurementFormInputDefition[]> {
-  // Returning just adult values for now
+  const age = patient_record.age_years
+    ? parseInt(patient_record.age_years, 10)
+    : null
+
+  if (age !== null && age < 19) {
+    return getChildrenVitalMeasurements(age)
+  }
+
+  // Return adult measurements for ages 19 and above
+  return getAdultVitalMeasurements()
+}
+
+function getChildrenVitalMeasurements(
+  age: number,
+): VitalMeasurementFormInputDefition[] {
+  const measurements: VitalMeasurementFormInputDefition[] = [
+    {
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.temperature,
+      required: true,
+      label: 'temperature',
+      units: VITALS_UNITS.temperature,
+    },
+    {
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.pulse,
+      required: true,
+      label: 'pulse',
+      units: VITALS_UNITS.pulse,
+    },
+    {
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.respiratory_rate,
+      required: true,
+      label: 'respiratory_rate',
+      units: VITALS_UNITS.respiratory_rate,
+    },
+    {
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.height,
+      required: true,
+      label: 'height',
+      units: VITALS_UNITS.height,
+    },
+    {
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.weight,
+      required: true,
+      label: 'weight',
+      units: VITALS_UNITS.weight,
+    },
+  ]
+
+  // Blood pressure for ages 3 and older
+  if (age >= 3) {
+    measurements.push(
+      {
+        finding_id: generateUUID(),
+        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_systolic,
+        required: true,
+        label: 'blood_pressure_systolic',
+        units: VITALS_UNITS.blood_pressure_systolic,
+      },
+      {
+        finding_id: generateUUID(),
+        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
+        required: true,
+        label: 'blood_pressure_diastolic',
+        units: VITALS_UNITS.blood_pressure_diastolic,
+      },
+    )
+  }
+
+  // Head circumference up to 3 years
+  if (age <= 3) {
+    measurements.push({
+      finding_id: generateUUID(),
+      snomed_concept_id: VITALS_SNOMED_CODE.head_circumference,
+      required: true,
+      label: 'head_circumference',
+      units: VITALS_UNITS.head_circumference,
+    })
+  }
+
+  // Midarm circumference and triceps skinfold for ages 3 months to 5 years
+  // For simplicity, we'll include these for ages 1-5 years (since we're working with years)
+  if (age >= 1 && age <= 5) {
+    measurements.push(
+      {
+        finding_id: generateUUID(),
+        snomed_concept_id: VITALS_SNOMED_CODE.midarm_circumference,
+        required: true,
+        label: 'midarm_circumference',
+        units: VITALS_UNITS.midarm_circumference,
+      },
+      {
+        finding_id: generateUUID(),
+        snomed_concept_id: VITALS_SNOMED_CODE.triceps_skinfold,
+        required: true,
+        label: 'triceps_skinfold',
+        units: VITALS_UNITS.triceps_skinfold,
+      },
+    )
+  }
+
+  // BMI for ages 5-19 years
+  if (age >= 5) {
+    // BMI is computed, so we don't add it as a direct measurement
+    // It will be calculated in computeAndInsertDerivedMeasurements
+  }
+
+  return measurements
+}
+
+function getAdultVitalMeasurements(): VitalMeasurementFormInputDefition[] {
   return [
     {
       finding_id: generateUUID(),
