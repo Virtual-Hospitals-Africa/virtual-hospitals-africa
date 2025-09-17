@@ -1,13 +1,28 @@
 import * as db from './db.ts'
-import { runCommandAssertExitCodeZero } from '../util/command.ts'
+import { Command } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
+import readLines from '../util/readLines.ts'
 
-export function restore(name: string) {
+export async function restore(name: string) {
   const dump_file = `./db/dumps/${name}`
   console.log(`Restoring database from ${dump_file}...`)
-  return runCommandAssertExitCodeZero('pg_restore', {
-    args: ['--no-owner', '-d', db.uri, dump_file],
-  })
+
+  const process = Command('pg_restore', {
+    args: ['--no-owner', '-v', '-d', db.uri, dump_file],
+    stdout: 'piped',
+    stderr: 'piped',
+    verbose: true,
+  }).spawn()
+
+  const logStdErr = async () => {
+    for await (const line of readLines(process.stderr)) {
+      console.log(line)
+    }
+  }
+
+  logStdErr()
+  const status = await process.status
+  assert(!status.code)
 }
 
 if (import.meta.main) {

@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 
-export const Command: (
+const createCommand: (
   command: string,
   options?: Deno.CommandOptions,
 ) => Deno.Command = (Deno.build.os === 'windows')
@@ -31,7 +31,7 @@ type Opts = Deno.CommandOptions & {
   verbose?: boolean
 }
 
-export function runCommand(
+export function Command(
   command: string,
   { args, verbose, ...opts }: Opts = {},
 ) {
@@ -54,26 +54,22 @@ export function runCommand(
     args = args_in_command
   }
   if (USE_DOCKER_FOR_POSTGRES && POSTGRES_COMMANDS.has(program)) {
-    args = args || []
-    if (program.endsWith('.sh')) {
-      args = ['exec', 'vha_postgres', 'bash', program].concat(args)
-      program = 'docker'
-    } else {
-      args = ['exec', 'vha_postgres', program].concat(args)
-      program = 'docker'
-    }
+    args = program.endsWith('.sh')
+      ? ['exec', 'vha_postgres', 'bash', program].concat(args || [])
+      : ['exec', 'vha_postgres', program].concat(args || [])
+    program = 'docker'
   }
   if (verbose) {
     console.log([program].concat(args || []).join(' '))
   }
-  return Command(program, { args, ...opts }).output()
+  return createCommand(program, { args, ...opts })
 }
 
 export async function runCommandAssertExitCodeZero(
   command: string,
   opts: Opts = {},
 ) {
-  const result = await runCommand(command, opts)
+  const result = await Command(command, opts).output()
   if (result.code) {
     const error = new TextDecoder().decode(result.stderr)
     console.error(command, opts)
@@ -88,14 +84,14 @@ export async function runCommandAssertExitCodeZero(
 export async function directoryExists(
   path: string,
 ): Promise<boolean> {
-  const { code } = await runCommand('test', {
+  const { code } = await Command('test', {
     args: ['-d', path],
-  })
+  }).output()
   return code === 0
 }
 
 export async function rmrf(path: string) {
-  await runCommand('rm', {
+  await Command('rm', {
     args: ['-rf', path],
   })
 }

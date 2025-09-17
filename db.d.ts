@@ -1096,11 +1096,6 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
-export interface PatientNearestFacilities {
-  nearest_facilities: Json | null
-  patient_id: string | null
-}
-
 export interface PatientOccupations {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1696,7 +1691,6 @@ export interface DB {
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
-  patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
   patient_procedures: PatientProcedures
   patient_records: PatientRecords
