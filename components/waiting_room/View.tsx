@@ -13,8 +13,7 @@ export default function WaitingRoomView(
 ) {
   const intake_patient_href =
     `/app/organizations/${organization_id}/patients/new/intake`
-  const old_intake_patient_href =
-    `/app/organizations/${organization_id}/patients/xintake`
+
   return (
     <>
       <FormRow className='mb-4'>
@@ -34,7 +33,7 @@ export default function WaitingRoomView(
       </FormRow>
       <WaitingRoomTable
         waiting_room={waiting_room}
-        add_href={old_intake_patient_href}
+        add_href={intake_patient_href}
         can_add_patients={can_add_patients}
       />
     </>
