@@ -67,9 +67,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default GeneralAssessmentsPage((ctx) => (
+export default GeneralAssessmentsPage(async (ctx) => (
   <PatientExaminationForm
     patient_examination={ctx.state.current_assessment}
-    findings={ctx.state.findings}
+    findings={await findings.forPatientEncounter(ctx.state.trx, {
+      patient_id: ctx.state.patient.id,
+      encounter_id: ctx.state.encounter.encounter_id,
+    })}
   />
 ))

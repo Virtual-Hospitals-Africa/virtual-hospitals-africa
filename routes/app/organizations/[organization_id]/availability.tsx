@@ -17,10 +17,6 @@ import {
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
-import {
-  addCalendars,
-  markAvailabilitySet,
-} from '../../../../db/models/providers.ts'
 import { ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs } from '../../../logged-in.tsx'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { forEach } from '../../../../util/inParallel.ts'
@@ -28,6 +24,7 @@ import { postHandler } from '../../../../util/postHandler.ts'
 import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { OrganizationContext } from './_middleware.ts'
+import * as health_worker_organization_calenders from '../../../../db/models/health_worker_organization_calenders.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -133,7 +130,11 @@ async function writeCalendarsToGoogle(
         googleClient,
         [ctx.state.organization.id],
       )
-    await addCalendars(ctx.state.trx, ctx.state.health_worker.id, [calendars])
+    await health_worker_organization_calenders.add(
+      ctx.state.trx,
+      ctx.state.health_worker.id,
+      [calendars],
+    )
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }
 
@@ -164,13 +165,14 @@ export const handler = postHandler(
     const from_url = !!ctx.url.searchParams.get('from_url')
 
     await promiseProps({
-      marking_availability_set: markAvailabilitySet(
-        trx,
-        {
-          health_worker_id: health_worker.id,
-          organization_id: organization.id,
-        },
-      ),
+      marking_availability_set: health_worker_organization_calenders
+        .markAvailabilitySet(
+          trx,
+          {
+            health_worker_id: health_worker.id,
+            organization_id: organization.id,
+          },
+        ),
       write_calendars_to_google: writeCalendarsToGoogle(
         ctx,
         form_values,
@@ -215,7 +217,7 @@ export default HealthWorkerHomePageLayout(
 
     // If initially directed here by _middleware, but you already have availability in google calendar, mark that the availability is set
     if (events.items.length && !!from_url) {
-      await markAvailabilitySet(
+      await health_worker_organization_calenders.markAvailabilitySet(
         ctx.state.trx,
         {
           health_worker_id: health_worker.id,

@@ -51,7 +51,6 @@ export const PatientPage = (
       ]
 
       const drawer = undefined
-
       const rendered = await render(req, ctx)
 
       return {
@@ -71,37 +70,24 @@ export const PatientPage = (
                         </>
                       )}
 
-                      {(ctx.state.patient.nearest_organization ||
-                        ctx.state.patient.primary_provider_health_worker_id) &&
-                        (
-                          <>
-                            {ctx.state.patient
-                              .primary_provider_health_worker_id &&
-                              (
-                                <a
-                                  href={`/app/organizations/${ctx.state.patient.nearest_organization_id}/employees/${ctx.state.patient.primary_provider_health_worker_id}`}
-                                  title={`View details of Dr. ${ctx.state.patient.primary_provider_name}`}
-                                  className='hover:underline text-blue-600'
-                                >
-                                  Dr. {ctx.state.patient.primary_provider_name}
-                                </a>
-                              )}
-                            {ctx.state.patient.nearest_organization &&
-                              ctx.state.patient
-                                .primary_provider_health_worker_id &&
-                              ', '}
-                            {ctx.state.patient.nearest_organization && (
-                              <a
-                                href={`/app/organizations/${ctx.state.patient.nearest_organization_id}`}
-                                title={`View details of ${ctx.state.patient.nearest_organization}`}
-                                className='hover:underline text-blue-600'
-                              >
-                                {ctx.state.patient.nearest_organization}
-                              </a>
-                            )}
-                            <br />
-                          </>
-                        )}
+                      {ctx.state.patient.primary_doctor && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.primary_doctor.organization.id}/employees/${ctx.state.patient.primary_doctor.health_worker_id}`}
+                          title={`View details of Dr. ${ctx.state.patient.primary_doctor.name}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          Dr. {ctx.state.patient.primary_doctor.name}
+                        </a>
+                      )}
+                      {ctx.state.patient.nearest_organization && (
+                        <a
+                          href={`/app/organizations/${ctx.state.patient.nearest_organization.id}`}
+                          title={`View details of ${ctx.state.patient.nearest_organization}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          {ctx.state.patient.nearest_organization.name}
+                        </a>
+                      )}
                     </>
                   ),
                 }}

@@ -9,11 +9,13 @@ import {
   PatientWithOpenEncounter,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
-  type RenderedPatientExaminationFinding,
+  RenderedPatientHistory,
+  ThisVisitRecords,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
-import * as examination_findings from '../../../../../../db/models/examination_findings.ts'
-import * as organizations from '../../../../../../db/models/organizations.ts'
+import { get as getThisVisitRecords } from '../../../../../../db/models/this_visit_records.ts'
+import { get as getPatientHistory } from '../../../../../../db/models/patient_history.ts'
+
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
@@ -33,8 +35,9 @@ import { EncounterStep } from '../../../../../../db.d.ts'
 import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
-import { PatientDrawerV2 } from '../../../../../../islands/patient-drawer/DrawerV2.tsx'
+
 import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
+import PatientDrawerV3 from '../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -48,7 +51,8 @@ type EncounterPageProps = {
   encounter: RenderedPatientEncounter
   current_encounter_step: EncounterStep
   encounter_provider: RenderedPatientEncounterProvider
-  findings: RenderedPatientExaminationFinding[]
+  this_visit_records: ThisVisitRecords
+  patient_history: RenderedPatientHistory
   previously_completed?: boolean
 }
 
@@ -114,14 +118,15 @@ export async function handler(
 ) {
   const encounter_id = getEncounterId(ctx)
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+  const { trx, health_worker } = ctx.state
 
   // TODO: Do this as part of an earlier POST request
   const promised_encounter = removeFromWaitingRoomAndAddSelfAsProvider(
-    ctx.state.trx,
+    trx,
     {
       encounter_id,
       patient_id,
-      health_worker: ctx.state.health_worker,
+      health_worker,
     },
   )
 
@@ -138,18 +143,27 @@ export async function handler(
     )
   }
 
-  const { patient, encounter: { encounter, encounter_provider }, findings } =
-    await promiseProps({
-      encounter: promised_encounter,
-      findings: examination_findings.forPatientEncounter(ctx.state.trx, {
-        patient_id,
-        encounter_id,
-      }),
-      patient: patients.getWithOpenEncounter(ctx.state.trx, {
-        ids: [patient_id],
-        health_worker_id: ctx.state.health_worker.id,
-      }).then((patients) => patients[0]),
-    })
+  // TODO once removeFromWaitingRoomAndAddSelfAsProvider is converted to a POST,
+  // we can get the encounter_provider from the open_encounters without this intermittent await
+  const { encounter, encounter_provider } = await promised_encounter
+  const {
+    patient,
+    this_visit_records,
+    patient_history,
+  } = await promiseProps({
+    patient: patients.getWithOpenEncounter(trx, {
+      ids: [patient_id],
+      health_worker_id: health_worker.id,
+    }).then((patients) => patients[0]),
+    this_visit_records: getThisVisitRecords(trx, {
+      encounter_id,
+      encounter_provider_id: encounter_provider.patient_encounter_provider_id,
+    }),
+    patient_history: getPatientHistory(trx, {
+      encounter_id,
+      encounter_provider_id: encounter_provider.patient_encounter_provider_id,
+    }),
+  })
 
   const step = stepFromUrl(ctx)
   const getting_json = req.method === 'GET' &&
@@ -170,29 +184,30 @@ export async function handler(
   const previously_completed = encounter.steps_completed.includes(
     step as unknown as EncounterStep,
   )
-  ctx.state.patient = patient
-  ctx.state.encounter = encounter
-  ctx.state.encounter_provider = encounter_provider
-  ctx.state.current_encounter_step = step as EncounterStep
-  ctx.state.findings = findings
-  ctx.state.previously_completed = previously_completed
+
+  const encounter_props: EncounterPageProps = {
+    patient,
+    encounter,
+    encounter_provider,
+    previously_completed,
+    this_visit_records,
+    patient_history,
+    current_encounter_step: step as EncounterStep,
+  }
+
+  Object.assign(ctx.state, encounter_props)
+
   return ctx.next()
 }
 
 export function EncounterLayout({
   ctx,
-  key_findings,
   next_step_text,
   children,
-  care_team,
 }: {
   ctx: EncounterContext
-  key_findings: RenderedPatientExaminationFinding[]
   next_step_text?: string
   children: ComponentChildren
-  measurements: unknown
-  // deno-lint-ignore no-explicit-any
-  care_team: any[]
 }): JSX.Element {
   return (
     <Layout
@@ -205,12 +220,15 @@ export function EncounterLayout({
         />
       }
       drawer={
-        <PatientDrawerV2
+        <PatientDrawerV3
           patient={ctx.state.patient}
           encounter={ctx.state.encounter}
-          findings={key_findings}
-          // measurements={measurements}
-          care_team={care_team}
+          current_encounter_step={ctx.state.current_encounter_step}
+          this_visit_records={ctx.state.this_visit_records}
+          patient_history={ctx.state.patient_history}
+          care_team={ctx.state.patient.primary_doctor
+            ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
+            : []}
         />
       }
       url={ctx.url}
@@ -253,22 +271,7 @@ export function EncounterPage<
     _req: Request,
     ctx: EncounterContext,
   ) {
-    const { patient, encounter_provider, trx } = ctx.state
-
-    const { organization_id } = encounter_provider
-    const { location } = await organizations.getById(
-      trx,
-      organization_id,
-    )
-
-    assert(location, 'Location not found')
-
-    const { rendered, measurements } = await promiseProps({
-      rendered: Promise.resolve(
-        render(ctx as Context),
-      ),
-      measurements: [],
-    })
+    const rendered = await render(ctx as Context)
 
     if (rendered instanceof Response) {
       return rendered
@@ -285,19 +288,6 @@ export function EncounterPage<
       <EncounterLayout
         ctx={ctx}
         next_step_text={next_step_text}
-        key_findings={ctx.state.findings}
-        measurements={measurements}
-        care_team={[
-          {
-            name: patient.primary_provider_name,
-            health_worker_id: patient.primary_provider_health_worker_id,
-            specialty: 'Primary Care Provider',
-            avatar_url: patient.primary_provider_avatar_url,
-            professions: [patient.primary_provider_profession],
-            organization_name: patient.primary_provider_organization_name,
-            last_visit: 'Last visit 2 months ago',
-          },
-        ]}
       >
         {children}
       </EncounterLayout>

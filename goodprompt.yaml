@@ -1,0 +1,41 @@
+Implement a PatientDrawerV3 function, a preact component based on the patient drawer I have selected in Figma (use the mcp context).
+
+This function will accept as an argument 
+
+
+
+{
+  patient: RenderedPatient
+  encounter: RenderedPatientEncounter
+  current_encounter_step: 'chief_complaint' | 'vitals' | 'symptoms' | 'history' | 'general_assessments' | 'examinations' | 'diagnostic_tests' | 'diagnoses' | 'prescriptions' | 'orders' // Used to determine which step has the "in progress" marker
+  records_of_this_encounter: {
+    chief_complaint: PatientDrawerRecordDisplay[]
+    vitals: PatientDrawerRecordDisplay[]
+    symptoms: PatientDrawerRecordDisplay[]
+    history: PatientDrawerRecordDisplay[]
+    general_assessments: PatientDrawerRecordDisplay[]
+    examinations: PatientDrawerRecordDisplay[]
+    diagnostic_tests: PatientDrawerRecordDisplay[]
+    diagnoses: PatientDrawerRecordDisplay[]
+    prescriptions: PatientDrawerRecordDisplay[]
+    orders: PatientDrawerRecordDisplay[]
+  }
+  history: {
+    pre_existing_conditions: PatientDrawerRecordDisplay[]
+    allergies: PatientDrawerRecordDisplay[]
+    family_history: PatientDrawerRecordDisplay[]
+    major_surgeries: PatientDrawerRecordDisplay[]
+    medications: PatientDrawerRecordDisplay[]
+    lifestyle: PatientDrawerRecordDisplay[]
+  }
+  care_team: Provider[]
+}
+
+You can do all your work all in the DrawerV3.tsx file. I'll break components into their own separate files later, but still let's make dedicated functions = preact components for each of the named Figma components that are part of the design system. This includes:
+
+- Drawer Card Base / Patient's Drawer Card -> <PatientDrawerCard />
+  - Name and DOB -> 
+  - Triage
+- <ThisVisit />
+- <History />
+- <CareTeam />

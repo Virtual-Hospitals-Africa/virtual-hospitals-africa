@@ -12,9 +12,10 @@ import db from '../../db/db.ts'
 
 describe('db/models/patients.ts', () => {
   afterAll(() => db.destroy())
+
   describe('getAllWithNames', () => {
     itUsesTrxAnd('finds patients by their name', async (trx) => {
-      const insertedMedia = await media.insert(trx, {
+      const inserted_media = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/jpeg',
       })
@@ -27,7 +28,7 @@ describe('db/models/patients.ts', () => {
 
       const test_patient2 = await patients.insert(trx, {
         name: baseUUID + generateUUID(),
-        avatar_media_id: insertedMedia.id,
+        avatar_media_id: inserted_media.id,
       })
 
       await patients.insert(trx, {
@@ -48,15 +49,10 @@ describe('db/models/patients.ts', () => {
             age_years: null,
             description: null,
             gender: null,
-            nearest_organization_id: null,
             preferred_language_code_iso_639_2_b: null,
-            primary_provider_name: null,
-            primary_provider_health_worker_id: null,
-            primary_provider_profession: null,
-            primary_provider_organization_name: null,
-            primary_provider_avatar_url: null,
+            primary_doctor: null,
             ethnicity: null,
-            location: { longitude: null, latitude: null },
+            location: null,
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,
@@ -76,15 +72,10 @@ describe('db/models/patients.ts', () => {
             age_years: null,
             description: null,
             gender: null,
-            nearest_organization_id: null,
             preferred_language_code_iso_639_2_b: null,
-            primary_provider_name: null,
-            primary_provider_health_worker_id: null,
-            primary_provider_profession: null,
-            primary_provider_organization_name: null,
-            primary_provider_avatar_url: null,
+            primary_doctor: null,
             ethnicity: null,
-            location: { longitude: null, latitude: null },
+            location: null,
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,
@@ -140,14 +131,9 @@ describe('db/models/patients.ts', () => {
           description: null,
           gender: null,
           ethnicity: null,
-          location: { longitude: null, latitude: null },
-          nearest_organization_id: null,
+          location: null,
           preferred_language_code_iso_639_2_b: null,
-          primary_provider_name: null,
-          primary_provider_health_worker_id: null,
-          primary_provider_profession: null,
-          primary_provider_organization_name: null,
-          primary_provider_avatar_url: null,
+          primary_doctor: null,
           national_id_number: null,
           nearest_organization: null,
           phone_number: null,
@@ -191,14 +177,9 @@ describe('db/models/patients.ts', () => {
           description: null,
           gender: null,
           ethnicity: null,
-          nearest_organization_id: null,
           preferred_language_code_iso_639_2_b: null,
-          primary_provider_name: null,
-          primary_provider_health_worker_id: null,
-          primary_provider_profession: null,
-          primary_provider_organization_name: null,
-          primary_provider_avatar_url: null,
-          location: { longitude: null, latitude: null },
+          primary_doctor: null,
+          location: null,
           national_id_number: null,
           nearest_organization: null,
           phone_number: null,
@@ -264,14 +245,9 @@ describe('db/models/patients.ts', () => {
             description: 'male, 03/01/1989',
             gender: 'male',
             ethnicity: null,
-            nearest_organization_id: null,
             preferred_language_code_iso_639_2_b: null,
-            primary_provider_name: null,
-            primary_provider_health_worker_id: null,
-            primary_provider_profession: null,
-            primary_provider_organization_name: null,
-            primary_provider_avatar_url: null,
-            location: { longitude: null, latitude: null },
+            primary_doctor: null,
+            location: null,
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,
@@ -305,14 +281,14 @@ describe('db/models/patients.ts', () => {
     itUsesTrxAnd(
       'gets the binary data and mime_type of the avatar',
       async (trx) => {
-        const insertedMedia = await media.insert(trx, {
+        const inserted_media = await media.insert(trx, {
           binary_data: new Uint8Array([1, 2, 3]),
           mime_type: 'image/jpeg',
         })
 
         const test_patient = await patients.insert(trx, {
           name: 'Test Patient 1',
-          avatar_media_id: insertedMedia.id,
+          avatar_media_id: inserted_media.id,
         })
 
         const avatar = await patients.getAvatar(trx, {

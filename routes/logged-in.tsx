@@ -20,12 +20,12 @@ import {
 } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
-import { addCalendars } from '../db/models/providers.ts'
 import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
 import { could_not_locate_account_href } from './app/_middleware.tsx'
 import * as cookie from '../shared/cookie.ts'
 import { promiseProps } from '../util/promiseProps.ts'
+import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
@@ -80,7 +80,11 @@ export async function initializeHealthWorkerWithInvites(
 
   const health_worker_id = health_worker.id
 
-  await addCalendars(trx, health_worker_id, calendars)
+  await health_worker_organization_calenders.add(
+    trx,
+    health_worker_id,
+    calendars,
+  )
 
   await Promise.all(
     invitees.map(({ organization_id, profession }) =>
