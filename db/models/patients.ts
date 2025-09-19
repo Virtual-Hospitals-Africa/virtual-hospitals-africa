@@ -16,7 +16,9 @@ import * as conversations from './conversations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as nearest_organizations from './nearest_organizations.ts'
 import {
+  jsonBuildNullableObject,
   jsonBuildObject,
+  jsonObjectFrom,
   literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
@@ -40,25 +42,13 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-const baseSelect = (trx: TrxOrDb) =>
-  trx
-    .selectFrom('patients')
-    .leftJoin(
-      'organizations',
-      'organizations.id',
-      'patients.nearest_organization_id',
-    )
+const baseQuery = (trx: TrxOrDb) =>
+  trx.selectFrom('patients')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .leftJoin(
       'addresses',
       'addresses.id',
       'patients.address_id',
-    )
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .leftJoin('employment', 'employment.id', 'patients.primary_doctor_id')
-    .leftJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
     )
     .select((eb) => [
       'patients.id',
@@ -79,29 +69,61 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.national_id_number',
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
-      'organizations.name as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
-      jsonBuildObject({
-        longitude: sql<number | null>`ST_X(patients.location::geometry)`,
-        latitude: sql<number | null>`ST_Y(patients.location::geometry)`,
+      jsonBuildNullableObject(eb.ref('patients.location'), {
+        longitude: sql<number>`ST_X(patients.location::geometry)`,
+        latitude: sql<number>`ST_Y(patients.location::geometry)`,
       }).as('location'),
       jsonBuildObject({
         view: view_href_sql,
       }).as('actions'),
-      'patients.nearest_organization_id',
-      'health_workers.name as primary_provider_name',
-      'employment.health_worker_id as primary_provider_health_worker_id',
-      eb.ref('employment.profession').as('primary_provider_profession'),
-      trx.selectFrom('organizations').where(
-        'organizations.id',
-        '=',
-        eb.ref('employment.organization_id'),
-      ).select('organizations.name').as('primary_provider_organization_name'),
-      eb.ref('health_workers.avatar_url').as('primary_provider_avatar_url'),
+      jsonObjectFrom(
+        eb.selectFrom('organizations as nearest_organizations')
+          .whereRef(
+            'nearest_organizations.id',
+            '=',
+            'patients.nearest_organization_id',
+          )
+          .select([
+            'nearest_organizations.id',
+            'nearest_organizations.name',
+          ]),
+      ).as('nearest_organization'),
+      jsonObjectFrom(
+        eb.selectFrom('employment')
+          .innerJoin(
+            'health_workers',
+            'employment.health_worker_id',
+            'health_workers.id',
+          )
+          .innerJoin(
+            'organizations as primary_doctor_organizations',
+            'employment.organization_id',
+            'primary_doctor_organizations.id',
+          )
+          .whereRef(
+            'employment.id',
+            '=',
+            'patients.primary_doctor_id',
+          )
+          .select((eb2) => [
+            'employment.id as employment_id',
+            'employment.health_worker_id',
+            'health_workers.name',
+            'health_workers.avatar_url',
+            'employment.specialty',
+            // TODO implement last_visit_relative_to_now
+            sql<string>`'2 months ago'`.as('last_visit_relative_to_now'),
+            jsonBuildObject({
+              id: eb2.ref('primary_doctor_organizations.id'),
+              name: eb2.ref('primary_doctor_organizations.name'),
+            }).as('organization'),
+          ]),
+      ).as('primary_doctor'),
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
-  baseSelect(trx).where('patients.name', 'is not', null)
+  baseQuery(trx).where('patients.name', 'is not', null)
 
 export async function getLastConversationState(
   trx: TrxOrDb,
@@ -218,7 +240,7 @@ export function getByID(
   trx: TrxOrDb,
   opts: { id: string },
 ): Promise<HasStringId<RenderedPatient>> {
-  return baseSelect(trx)
+  return baseQuery(trx)
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()
 }
@@ -312,7 +334,7 @@ export async function getAllWithNames(
     completed_intake?: boolean
   },
 ): Promise<RenderedPatient[]> {
-  let query = baseSelect(trx).where('patients.name', 'is not', null).orderBy(
+  let query = baseQuery(trx).where('patients.name', 'is not', null).orderBy(
     'name asc',
   )
 

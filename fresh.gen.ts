@@ -263,6 +263,7 @@ import * as $nurse_registration_form from './islands/nurse-registration-form.tsx
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
 import * as $patient_cards from './islands/patient-cards.tsx'
+import * as $patient_drawer_v3_DrawerV3 from './islands/patient-drawer-v3/DrawerV3.tsx'
 import * as $patient_drawer_Accordion from './islands/patient-drawer/Accordion.tsx'
 import * as $patient_drawer_CareTeamSection from './islands/patient-drawer/CareTeamSection.tsx'
 import * as $patient_drawer_Drawer from './islands/patient-drawer/Drawer.tsx'
@@ -669,6 +670,7 @@ const manifest = {
       $past_medical_conditions_Condition,
     './islands/past-medical-conditions/Form.tsx': $past_medical_conditions_Form,
     './islands/patient-cards.tsx': $patient_cards,
+    './islands/patient-drawer-v3/DrawerV3.tsx': $patient_drawer_v3_DrawerV3,
     './islands/patient-drawer/Accordion.tsx': $patient_drawer_Accordion,
     './islands/patient-drawer/CareTeamSection.tsx':
       $patient_drawer_CareTeamSection,

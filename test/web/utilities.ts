@@ -19,7 +19,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { testCalendars, testPharmacist, testRegulator } from '../mocks.ts'
-import { addCalendars } from '../../db/models/providers.ts'
+import * as health_worker_organization_calenders from '../../db/models/health_worker_organization_calenders.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { assert } from 'std/assert/assert.ts'
 import range from '../../util/range.ts'
@@ -99,11 +99,15 @@ export async function addTestHealthWorker(
       })
       health_worker.employee_id = created_employee.id
       health_worker.calendars = testCalendars()
-      await addCalendars(trx, health_worker.id, [{
-        organization_id,
-        ...health_worker.calendars,
-        availability_set: true,
-      }])
+      await health_worker_organization_calenders.add(
+        trx,
+        health_worker.id,
+        [{
+          organization_id,
+          ...health_worker.calendars,
+          availability_set: true,
+        }],
+      )
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
@@ -137,11 +141,15 @@ export async function addTestHealthWorker(
       })
       health_worker.employee_id = created_employee.id
       health_worker.calendars = testCalendars()
-      await addCalendars(trx, health_worker.id, [{
-        organization_id,
-        ...health_worker.calendars,
-        availability_set: true,
-      }])
+      await health_worker_organization_calenders.add(
+        trx,
+        health_worker.id,
+        [{
+          organization_id,
+          ...health_worker.calendars,
+          availability_set: true,
+        }],
+      )
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
@@ -163,11 +171,15 @@ export async function addTestHealthWorker(
       })
       health_worker.employee_id = created_employee.id
       health_worker.calendars = testCalendars()
-      await addCalendars(trx, health_worker.id, [{
-        organization_id,
-        ...health_worker.calendars,
-        availability_set: true,
-      }])
+      await health_worker_organization_calenders.add(
+        trx,
+        health_worker.id,
+        [{
+          organization_id,
+          ...health_worker.calendars,
+          availability_set: true,
+        }],
+      )
       break
     }
     case 'doctor': {
@@ -179,11 +191,15 @@ export async function addTestHealthWorker(
       })
       health_worker.employee_id = created_employee.id
       health_worker.calendars = testCalendars()
-      await addCalendars(trx, health_worker.id, [{
-        organization_id,
-        ...health_worker.calendars,
-        availability_set: true,
-      }])
+      await health_worker_organization_calenders.add(
+        trx,
+        health_worker.id,
+        [{
+          organization_id,
+          ...health_worker.calendars,
+          availability_set: true,
+        }],
+      )
       break
     }
     case 'nurse': {
@@ -195,11 +211,15 @@ export async function addTestHealthWorker(
       })
       health_worker.employee_id = created_employee.id
       health_worker.calendars = testCalendars()
-      await addCalendars(trx, health_worker.id, [{
-        organization_id,
-        ...health_worker.calendars,
-        availability_set: true,
-      }])
+      await health_worker_organization_calenders.add(
+        trx,
+        health_worker.id,
+        [{
+          organization_id,
+          ...health_worker.calendars,
+          availability_set: true,
+        }],
+      )
       break
     }
   }

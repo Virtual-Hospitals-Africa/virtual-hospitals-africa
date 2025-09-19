@@ -198,22 +198,20 @@ export type RenderedPatient =
     age_display: Maybe<string>
     age_years: Maybe<number>
     avatar_url: string | null
-    nearest_organization: string | null
     last_visited: null // TODO: implement
-    primary_provider_name: string | null
-    nearest_organization_id: string | null
-    primary_provider_health_worker_id: string | null
-    location: {
-      longitude: number | null
-      latitude: number | null
+    location: null | {
+      longitude: number
+      latitude: number
     }
     actions: {
       view: string
     }
+    nearest_organization: null | {
+      id: string
+      name: string
+    }
     preferred_language_code_iso_639_2_b: string | null
-    primary_provider_profession: Maybe<string>
-    primary_provider_organization_name: Maybe<string>
-    primary_provider_avatar_url: Maybe<string>
+    primary_doctor: null | Omit<RenderedCareTeamHealthWorker, 'profession'>
   }
 export type Condition = {
   id: string
@@ -3233,5 +3231,58 @@ export type RenderedChiefComplaint = {
   media_speech: {
     id: string
     language_code: string
+  }
+}
+
+export type PatientDrawerRecordDisplay = {
+  record_id: string
+  priority: Priority
+  display: string
+}
+
+// Type definition based on user requirements
+
+export type ThisVisitRecords = {
+  chief_complaint: PatientDrawerRecordDisplay[]
+  vitals: PatientDrawerRecordDisplay[]
+  symptoms: PatientDrawerRecordDisplay[]
+  history: PatientDrawerRecordDisplay[]
+  general_assessments: PatientDrawerRecordDisplay[]
+  examinations: PatientDrawerRecordDisplay[]
+  diagnostic_tests: PatientDrawerRecordDisplay[]
+  diagnoses: PatientDrawerRecordDisplay[]
+  prescriptions: PatientDrawerRecordDisplay[]
+  orders: PatientDrawerRecordDisplay[]
+}
+
+export type RenderedPatientHistory = {
+  pre_existing_conditions: PatientDrawerRecordDisplay[]
+  allergies: PatientDrawerRecordDisplay[]
+  family_history: PatientDrawerRecordDisplay[]
+  major_surgeries: PatientDrawerRecordDisplay[]
+  medications: PatientDrawerRecordDisplay[]
+  lifestyle: PatientDrawerRecordDisplay[]
+}
+
+export type PatientDrawerV3Props = {
+  patient: RenderedPatient
+  encounter: RenderedPatientEncounter
+  current_encounter_step: EncounterStep
+  this_visit_records: ThisVisitRecords
+  patient_history: RenderedPatientHistory
+  care_team: RenderedCareTeamHealthWorker[]
+}
+
+export type RenderedCareTeamHealthWorker = {
+  employment_id: string
+  health_worker_id: string
+  name: string
+  profession: 'doctor' | 'nurse'
+  specialty: string | null
+  avatar_url: string | null
+  last_visit_relative_to_now: string | null
+  organization: {
+    id: string
+    name: string
   }
 }

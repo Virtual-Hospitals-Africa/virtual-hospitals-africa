@@ -2,12 +2,12 @@ import Avatar from '../../components/library/Avatar.tsx'
 import { DoctorIcon } from '../../components/library/icons/Doctor.tsx'
 
 // {
-//   name: patient.primary_provider_name,
-//   health_worker_id: patient.primary_provider_health_worker_id,
+//   name: patient.primary_doctor.name,
+//   health_worker_id: patient.primary_doctor.health_worker_id,
 //   specialty: 'Primary Care Provider',
-//   avatar_url: patient.primary_provider_avatar_url,
-//   professions: [patient.primary_provider_profession],
-//   organization_name: patient.primary_provider_organization_name,
+//   avatar_url: patient.primary_doctor.avatar_url,
+//   professions: [patient.primary_doctor.profession],
+//   organization_name: patient.primary_doctor.organization_name,
 //   documents: [],
 // },
 
