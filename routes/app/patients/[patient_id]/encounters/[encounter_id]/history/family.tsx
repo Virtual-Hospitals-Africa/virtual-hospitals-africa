@@ -1,14 +1,14 @@
 import { z } from 'zod'
+import * as patient_family_history from '../../../../../../../db/models/patient_family_history.ts'
 import { FamilyHistoryPage } from '../../../../../../../islands/FamilyHistoryPage.tsx'
 import { postHandler } from '../../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
-import * as patient_family_history from '../../../../../../../db/models/patient_family_history.ts'
+import { snomed_concept_id } from '../../../../../../../util/validators.ts'
 import {
   completeAssessment,
   HistoryContext,
   HistoryPage,
 } from './_middleware.tsx'
-import { snomed_concept_id } from '../../../../../../../util/validators.ts'
 
 const FamilyMemberSchema = z.object({
   relation_gendered: z.string(),
@@ -22,7 +22,20 @@ export const FamilyHistorySchema = z
     z.object({
       family_history: z.object({
         snomed_concept_id, // TODO, change this to the actual validator when we've wired up snomed
-        family_members: z.array(FamilyMemberSchema),
+        family_members: z
+          .array(FamilyMemberSchema)
+          .refine(
+            (members) =>
+              members.filter((m) => m.relation_gendered === 'biological mother')
+                .length <= 1,
+            { message: 'Cannot have more than one bilogical mother.' },
+          )
+          .refine(
+            (members) =>
+              members.filter((m) => m.relation_gendered === 'biological father')
+                .length <= 1,
+            { message: 'Cannot have more than one bilogical father.' },
+          ),
       }),
     }),
   )

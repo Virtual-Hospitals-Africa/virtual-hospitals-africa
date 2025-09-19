@@ -20,6 +20,7 @@ docker compose up
 
 # In main terminal window
 deno task docker db:reset
+deno task docker db:dummy
 
 # Once done,
 deno task start

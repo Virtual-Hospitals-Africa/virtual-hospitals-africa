@@ -7,14 +7,17 @@ import cls from '../util/cls.ts'
 import words from '../util/words.ts'
 
 // TODO: Make an AddRemoveRow that smoothly animates from one to the other
-export function AddRow(
-  { text, onClick }: {
-    text: string
-    onClick(): void
-    labelled?: boolean
-  },
-): JSX.Element {
-  const id = words(text).map((word) => word.toLowerCase()).join('_')
+export function AddRow({
+  text,
+  onClick,
+}: {
+  text: string
+  onClick(): void
+  labelled?: boolean
+}): JSX.Element {
+  const id = words(text)
+    .map((word) => word.toLowerCase())
+    .join('_')
 
   return (
     <a
@@ -24,7 +27,6 @@ export function AddRow(
         onClick()
         event.currentTarget.blur()
       }}
-      href='#'
     >
       <PlusCircleIcon className='h-6 w-6' />
       {text}
@@ -32,14 +34,17 @@ export function AddRow(
   )
 }
 
-export function RemoveRow(
-  { children, onClick, labelled, centered }: {
-    children: ComponentChildren
-    onClick(): void
-    labelled?: boolean
-    centered?: boolean
-  },
-): JSX.Element {
+export function RemoveRow({
+  children,
+  onClick,
+  labelled,
+  centered,
+}: {
+  children: ComponentChildren
+  onClick(): void
+  labelled?: boolean
+  centered?: boolean
+}): JSX.Element {
   return (
     <div className='flex gap-2'>
       <a
