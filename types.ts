@@ -2349,6 +2349,7 @@ export type RenderedPatientEncounter = {
   reason: EncounterReason
   notes: null | string
   patient_id: string
+  organization_id: string
   appointment_id: string | null
   waiting_room_id: string | null
   waiting_room_organization_id: null | string

@@ -131,6 +131,7 @@ describe(
             const seeking_treatment = await trx.insertInto('patient_encounters')
               .values({
                 patient_id: patient2.id,
+                organization_id,
                 reason: 'seeking treatment',
                 created_at: sql`NOW() - INTERVAL '1 hour'`,
                 location: literalLocation({ latitude: 5, longitude: 6 }),

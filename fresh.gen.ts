@@ -51,6 +51,9 @@ import * as $app_organizations_organization_id_patients_patient_id_intake_contac
 import * as $app_organizations_organization_id_patients_patient_id_intake_personal from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/personal.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_intake_primary_care from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/primary_care.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_intake_this_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/this_visit.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_start_triage from './routes/app/organizations/[organization_id]/patients/[patient_id]/start-triage.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_triage_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/triage/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_triage_chief_complaint from './routes/app/organizations/[organization_id]/patients/[patient_id]/triage/chief_complaint.tsx'
 import * as $app_organizations_organization_id_patients_xintake from './routes/app/organizations/[organization_id]/patients/xintake.tsx'
 import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
 import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
@@ -379,6 +382,12 @@ const manifest = {
       $app_organizations_organization_id_patients_patient_id_intake_primary_care,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/intake/this_visit.tsx':
       $app_organizations_organization_id_patients_patient_id_intake_this_visit,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/start-triage.tsx':
+      $app_organizations_organization_id_patients_patient_id_start_triage,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/triage/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_triage_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/triage/chief_complaint.tsx':
+      $app_organizations_organization_id_patients_patient_id_triage_chief_complaint,
     './routes/app/organizations/[organization_id]/patients/xintake.tsx':
       $app_organizations_organization_id_patients_xintake,
     './routes/app/organizations/[organization_id]/register.tsx':

@@ -103,7 +103,7 @@ export const handler = {
         `You have submitted a case review request for ${patient.name}. Please have them wait to be seen.`,
       )
       return redirect(
-        `/app/organizations/${encounter_provider.organization_id}/waiting_room?just_encountered_id=${encounter.encounter_id}&success=${success}`,
+        `/app/organizations/${encounter_provider.organization_id}/waiting_room?just_encountered_patient_id=${encounter.encounter_id}&success=${success}`,
       )
     }
 

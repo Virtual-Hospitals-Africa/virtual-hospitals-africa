@@ -52,7 +52,7 @@ export const handler = {
     )
 
     return redirect(
-      `/app/organizations/${organization.id}/waiting_room?just_encountered_id=${inserted.id}`,
+      `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${inserted.id}`,
     )
   },
 }
