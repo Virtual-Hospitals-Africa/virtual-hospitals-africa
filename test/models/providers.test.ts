@@ -4,10 +4,11 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import * as providers from '../../db/models/providers.ts'
 import * as employment from '../../db/models/employment.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import last from '../../util/last.ts'
 import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
 
 describe('db/models/providers.ts', () => {
   afterAll(() => db.destroy())
@@ -16,8 +17,9 @@ describe('db/models/providers.ts', () => {
     itUsesTrxAnd(
       'returns providers matching a search with their employment information',
       async (trx) => {
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'nurse',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'nurse',
+          registration_status: 'not started',
         })
 
         const result = await providers.search(trx, {
@@ -35,15 +37,16 @@ describe('db/models/providers.ts', () => {
             name: health_worker.name,
             health_worker_id: health_worker.id,
             description: 'nurse @ VHA Test Clinic South Africa',
-            id: health_worker.employee_id!,
+            id: health_worker.employee_id,
           },
         )
       },
     )
 
     itUsesTrxAnd('searches by profession', async (trx) => {
-      const health_worker = await addTestHealthWorker(trx, {
-        scenario: 'nurse',
+      const health_worker = await addTestEmployee(trx, {
+        profession: 'nurse',
+        registration_status: 'not started',
       })
 
       const doctor_result = await providers.search(trx, {
@@ -71,7 +74,7 @@ describe('db/models/providers.ts', () => {
           health_worker_id: health_worker.id,
           name: health_worker.name,
           description: 'nurse @ VHA Test Clinic South Africa',
-          id: health_worker.employee_id!,
+          id: health_worker.employee_id,
         },
       )
     })
@@ -81,15 +84,15 @@ describe('db/models/providers.ts', () => {
       async (trx) => {
         const name_base = generateUUID()
         await Promise.all([
-          addTestHealthWorker(trx, {
-            scenario: 'doctor',
+          addTestEmployee(trx, {
+            profession: 'doctor',
             organization_id: '00000000-0000-0000-0000-000000000001',
             health_worker_attrs: {
               name: name_base + generateUUID(),
             },
           }),
-          addTestHealthWorker(trx, {
-            scenario: 'doctor',
+          addTestEmployee(trx, {
+            profession: 'doctor',
             organization_id: '00000000-0000-0000-0000-000000000002',
             health_worker_attrs: {
               name: name_base + generateUUID(),
@@ -116,8 +119,9 @@ describe('db/models/providers.ts', () => {
     )
 
     itUsesTrxAnd('can filter by organization_id', async (trx) => {
-      const health_worker = await addTestHealthWorker(trx, {
-        scenario: 'nurse',
+      const health_worker = await addTestEmployee(trx, {
+        profession: 'nurse',
+        registration_status: 'not started',
       })
 
       await employment.add(trx, [{
@@ -134,7 +138,7 @@ describe('db/models/providers.ts', () => {
       assertEquals(
         same_organization_result[0],
         {
-          id: health_worker.employee_id!,
+          id: health_worker.employee_id,
           avatar_url: health_worker.avatar_url,
           email: health_worker.email,
           organization_id: '00000000-0000-0000-0000-000000000001',

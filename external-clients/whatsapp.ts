@@ -151,16 +151,16 @@ export async function postMedia(
 ): Promise<string> {
   const fileContent = await Deno.readFile(filePath)
   const fileBlob = new Blob([fileContent], { type: fileType })
-  const formData = new FormData()
+  const form_data = new FormData()
 
-  formData.append('file', fileBlob, basename(filePath))
-  formData.append('type', fileType)
-  formData.append('messaging_product', 'whatsapp')
+  form_data.append('file', fileBlob, basename(filePath))
+  form_data.append('type', fileType)
+  form_data.append('messaging_product', 'whatsapp')
 
   const toPost = {
     method: 'post',
     headers: { 'Authorization': `${Authorization}` },
-    body: formData,
+    body: form_data,
   }
   const postMessageRoute = `https://graph.facebook.com/v20.0/${
     phoneNumbers[chatbot_name]

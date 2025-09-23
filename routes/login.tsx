@@ -11,8 +11,8 @@ import { assert } from 'std/assert/assert.ts'
 import { onProduction } from '../util/onProduction.ts'
 import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
-import { randomZimbabweanDemographics } from '../util/zimbabweanDemographics.ts'
-import { randomAvatar } from '../util/randomAvatar.ts'
+import randomAvatar from '../mocks/randomAvatar.ts'
+import { randomNamesAndGender } from '../mocks/randomDemographics.ts'
 
 const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
 if (FAKE_GOOGLE_AUTH) {
@@ -23,7 +23,7 @@ export const login_href =
   `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
 
 async function fakeGoogleLogin(trx: TrxOrDb) {
-  const { name, gender } = randomZimbabweanDemographics()
+  const { name, gender } = randomNamesAndGender()
   const email = generateUUID() + '@example.com'
   const avatar_url = randomAvatar(gender)
   const access_token = generateUUID()
@@ -61,8 +61,6 @@ export const handler: Handlers = {
     }
 
     const session = await sessions.getBySessionId(db, session_id)
-
-    console.log({ session })
 
     if (!session) {
       const response = redirect(login_href)

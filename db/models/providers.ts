@@ -59,10 +59,12 @@ const baseQuery = (trx: TrxOrDb) =>
     .where('employment.profession', 'in', ['doctor' as const, 'nurse' as const])
 
 function assertProvider(
-  provider: Omit<Provider, 'profession'> & {
-    profession: Profession
+  provider: {
+    profession: unknown
   },
-): asserts provider is Provider {
+): asserts provider is {
+  profession: 'doctor' | 'nurse'
+} {
   assertOr400(
     provider.profession === 'doctor' || provider.profession === 'nurse',
     'Invalid profession',

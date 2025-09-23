@@ -18,7 +18,7 @@ export function getById(
         'date_of_birth',
       ),
       'national_id_number',
-      'completed_intake',
+      'completed_registration',
       'first_language',
       sql<
         string | null

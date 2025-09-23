@@ -214,6 +214,7 @@ export default function AlcoholSection(
       {alcohol.value.has_ever_drank === true &&
         alcohol.value.currently_drinks === true && (
         <LabelledListboxMulti
+          variant='starts_closed'
           label='Which alcoholic drinks does the patient take?'
           name='lifestyle.alcohol.alcohol_products_used'
           options={alcohol_products}

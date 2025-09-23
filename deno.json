@@ -3,7 +3,7 @@
     "chatbot:patient": "deno task run:trusted chatbot/chatbot.ts patient",
     "chatbot:pharmacist": "mkdir -p temp_files && deno task run:trusted chatbot/chatbot.ts pharmacist",
     "build": "NO_EXTERNAL_CONNECT=1 deno task run:trusted dev.ts build",
-    "start": "deno task run:trusted --watch=chatbot/,db/,islands/,util/,components/,external-clients/,routes/,static/,shared/,plugins/ dev.ts",
+    "start": "deno task run:trusted --watch=chatbot/,db/,islands/,util/,mocks/,components/,external-clients/,routes/,static/,shared/,plugins/ dev.ts",
     "start:docker": "docker compose up -d",
     "start:beep": "./scripts/watch_and_beep.sh '(Error|error)' deno start",
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
@@ -44,6 +44,7 @@
     "tmux": "./scripts/tmux.sh",
     "preview": "deno run -A main.ts",
     "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
+    "check:ignoretest": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '.test.ts' | xargs deno check",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)"
   },

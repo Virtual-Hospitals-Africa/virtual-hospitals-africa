@@ -12,7 +12,7 @@ export default create(
 async function seedDataFromJSON(trx: TrxOrDb) {
   const tests = await trx
     .selectFrom('examinations')
-    .where('encounter_step', '=', 'diagnostic_tests')
+    .where('seeking_treatment_step', '=', 'diagnostic_tests')
     .select('identifier')
     .execute()
 

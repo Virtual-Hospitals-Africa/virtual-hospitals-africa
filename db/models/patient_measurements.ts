@@ -29,13 +29,13 @@ export function insertMany(
   {
     input_measurements,
     patient_id,
-    encounter_id,
+    patient_encounter_id,
     procedure,
-    encounter_provider_id,
+    patient_encounter_employee_id,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     procedure: ExtantProcedureOrCreationIntent
     input_measurements: Measurement[]
   },
@@ -66,7 +66,7 @@ export function insertMany(
           .values({
             id: procedure_id,
             patient_id,
-            encounter_id,
+            patient_encounter_id,
             snomed_concept_id: procedure.create_from_snomed_concept_id,
           })
         : blankSelection(qb),
@@ -77,7 +77,7 @@ export function insertMany(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            encounter_provider_id,
+            patient_encounter_employee_id,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>
@@ -86,7 +86,7 @@ export function insertMany(
         (input_measurement) => ({
           id: input_measurement.finding_id,
           patient_id,
-          encounter_id,
+          patient_encounter_id,
           snomed_concept_id: input_measurement.snomed_concept_id,
         }),
       ))).with('inserting_findings', (qb) =>
@@ -95,7 +95,7 @@ export function insertMany(
           (input_measurement) => ({
             id: input_measurement.finding_id,
             procedure_id,
-            encounter_provider_id,
+            patient_encounter_employee_id,
           }),
         ))).with(
       'inserting_measurements',
@@ -117,7 +117,7 @@ export function insertMany(
               id: evaluation.id,
               snomed_concept_id: evaluation.snomed_concept_id,
               patient_id,
-              encounter_id,
+              patient_encounter_id,
             })))
           : blankSelection(qb),
     ).with(
@@ -126,7 +126,7 @@ export function insertMany(
         evaluations.length
           ? qb.insertInto('patient_evaluations')
             .values(evaluations.map((evaluation) => ({
-              encounter_provider_id,
+              patient_encounter_employee_id,
               id: evaluation.id,
               evaluates_record_id: evaluation.evaluates_record_id,
               note: evaluation.note,
@@ -192,7 +192,7 @@ export async function getMostRecent(
         .orderBy('patient_records.created_at', 'desc')
         .selectAll('patient_records')
         .select([
-          'patient_findings.encounter_provider_id',
+          'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
           'patient_findings.referent_finding_id',
         ])
@@ -206,14 +206,14 @@ export async function getMostRecent(
         ),
   ).selectFrom('ranked_findings')
     .innerJoin(
-      'patient_encounter_providers',
-      'patient_encounter_providers.id',
-      'ranked_findings.encounter_provider_id',
+      'patient_encounter_employees',
+      'patient_encounter_employees.id',
+      'ranked_findings.patient_encounter_employee_id',
     )
     .innerJoin(
       'employment',
       'employment.id',
-      'patient_encounter_providers.provider_id',
+      'patient_encounter_employees.employment_id',
     )
     .innerJoin(
       'health_workers',
@@ -232,7 +232,7 @@ export async function getMostRecent(
       'ranked_findings.value',
       'ranked_findings.units',
       'ranked_findings.created_at',
-      'ranked_findings.encounter_id',
+      'ranked_findings.patient_encounter_id',
     ])
     .select(sql<'manual'>`'manual'`.as('finding_type'))
     .select((eb) => [
@@ -242,7 +242,7 @@ export async function getMostRecent(
         profession: eb.ref('employment.profession').$castTo<
           'doctor' | 'nurse'
         >(),
-        patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
+        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
         organization: jsonBuildObject({
           id: eb.ref('organizations.id'),
           name: eb.ref('organizations.name'),

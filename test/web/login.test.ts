@@ -5,14 +5,13 @@ import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import {
-  addTestHealthWorkerWithSession,
-  addTestRegulatorWithSession,
-  route,
-  withTestOrganization,
-} from './utilities.ts'
+import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
+import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
+import { withTestOrganization } from '../_helpers/organizations.ts'
+import { testHealthWorker } from '../_helpers/health_workers.ts'
+import { testNurseRegistrationDetails as testRegistrationDetails } from '../_helpers/nurse_registration_details.ts'
 import sample from '../../util/sample.ts'
-import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
+import { route } from '../route.ts'
 
 describe('/login', () => {
   afterAll(() => db.destroy())
@@ -33,7 +32,7 @@ describe('/login', () => {
 
   describe('when logged in', () => {
     it("doesn't allow unemployed access to /app", async () => {
-      const mock = await addTestHealthWorkerWithSession(db)
+      const mock = await addTestEmployeeWithSession(db, { profession: 'none' })
       const response = await mock.fetch(`/app`, {
         headers: {
           accept: 'text/html',
@@ -42,32 +41,35 @@ describe('/login', () => {
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      assert(
-        response.url ===
-          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
+      assertEquals(
+        response.url,
+        `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
       )
       await response.body?.cancel()
     })
 
     it('allows admin access to /app', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'admin',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'admin',
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
-      assert($.html().includes('My Patients'))
+      assert($.html().includes('Open Encounters'))
     })
 
     it('allows doctor access /app', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'doctor',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'doctor',
       })
 
       const response = await mock.fetch(`/app`)
 
       if (!response.ok) throw new Error(await response.text())
-      assertEquals(response.url, `${route}/app`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
+      )
       const pageContents = await response.text()
-      assert(pageContents.includes('My Patients'))
+      assert(pageContents.includes('Open Encounters'))
     })
 
     it('allows regulator to access /regulator/[country]/pharmacies', async () => {
@@ -77,8 +79,8 @@ describe('/login', () => {
     })
 
     it('redirects from /login to /app', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: sample(['admin', 'doctor', 'nurse']),
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: sample(['admin', 'doctor', 'nurse']),
       })
 
       const response = await mock.fetch(`/login`, {
@@ -91,8 +93,9 @@ describe('/login', () => {
 
     // TODO turn off SKIP_NURSE_REGISTRATION
     it.skip('redirects unregistered nurse to registration', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'nurse',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'nurse',
+        registration_status: 'not started',
       })
       const response = await mock.fetch(`/app`)
       assertEquals(
@@ -105,8 +108,10 @@ describe('/login', () => {
 
     // TODO turn off SKIP_NURSE_REGISTRATION
     it.skip('redirects unapproved nurse to /app/pending_approval', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'awaiting-approval-nurse',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'nurse',
+        specialty: 'primary care',
+        registration_status: 'awaiting approval',
       })
       const response = await mock.fetch(`/app`)
       assertEquals(response.url, `${route}/app/pending_approval`)
@@ -114,31 +119,37 @@ describe('/login', () => {
     })
 
     it('allows approved nurse access to /app', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'approved-nurse',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'nurse',
+        specialty: 'primary care',
+        registration_status: 'approved',
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
-      assert($.html().includes('My Patients'))
+      assert($.html().includes('Open Encounters'))
     })
 
     it('starts in an empty waiting room with sidebar links', () =>
       withTestOrganization(db, async (organization_id) => {
-        const mock = await addTestHealthWorkerWithSession(db, {
-          scenario: 'approved-nurse',
+        const mock = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          specialty: 'primary care',
+          registration_status: 'approved',
           organization_id,
         })
 
         const $ = await mock.fetchCheerio(`${route}/app`)
         const waiting_room_add_link = $(
-          `a[href="/app/organizations/${organization_id}/patients/new/intake"]`,
+          `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
         )
         assertEquals(
           waiting_room_add_link.first().text(),
-          'Intake patient',
+          'Register patient',
         )
 
-        const patients_link = $('a[href="/app/patients"]')
-        assert(patients_link.first().text().includes('My Patients'))
+        const patients_link = $(
+          `a[href="/app/organizations/${organization_id}/waiting_room"]`,
+        )
+        assert(patients_link.first().text().includes('Open Encounters'))
 
         const employees_link = $('a[href="/app/employees"]')
         assert(employees_link.first().text().includes('Employees'))
@@ -156,8 +167,8 @@ describe('/login', () => {
       }))
 
     it('allows a health worker employed at a organization to view/approve its employees', async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'admin',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'admin',
       })
       const nurse = await upsertWithGoogleCredentials(db, testHealthWorker())
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
@@ -200,8 +211,8 @@ describe('/login', () => {
     })
 
     it(`allows admin access to invite`, async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'admin',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'admin',
       })
       let response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
@@ -236,8 +247,8 @@ describe('/login', () => {
     })
 
     it("doesn't allow access to employees if you are employed at a different organization", async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'doctor',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'doctor',
       })
       const response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees?expectedTestError=1`,
@@ -247,8 +258,8 @@ describe('/login', () => {
     })
 
     it("doesn't allow non-admin to invite page", async () => {
-      const mock = await addTestHealthWorkerWithSession(db, {
-        scenario: 'doctor',
+      const mock = await addTestEmployeeWithSession(db, {
+        profession: 'doctor',
       })
 
       const employeesResponse = await mock.fetch(

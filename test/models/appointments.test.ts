@@ -1,9 +1,11 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
+
 import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe('db/models/appointments.ts', () => {
   afterAll(() => db.destroy())
@@ -12,8 +14,8 @@ describe('db/models/appointments.ts', () => {
       'does not add an offered time if provider_id is an admin',
       async (trx) => {
         const patient = await patients.insert(trx, { name: generateUUID() })
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'admin',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'admin',
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,
@@ -27,7 +29,7 @@ describe('db/models/appointments.ts', () => {
 
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
-          provider_id: health_worker.employee_id!,
+          provider_id: health_worker.employee_id,
           start,
           end,
           duration_minutes,
@@ -39,8 +41,8 @@ describe('db/models/appointments.ts', () => {
       'adds an offered time if provider_id is a doctor',
       async (trx) => {
         const patient = await patients.insert(trx, { name: generateUUID() })
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'doctor',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'doctor',
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,
@@ -54,7 +56,7 @@ describe('db/models/appointments.ts', () => {
 
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
-          provider_id: health_worker.employee_id!,
+          provider_id: health_worker.employee_id,
           start,
           end,
           duration_minutes,

@@ -1,14 +1,12 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as inventory from '../../db/models/inventory.ts'
-import {
-  addTestHealthWorker,
-  itUsesTrxAnd,
-  withTestOrganization,
-} from '../web/utilities.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { withTestOrganization } from '../_helpers/organizations.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe('db/models/inventory.ts', () => {
   afterAll(() => db.destroy())
@@ -17,8 +15,8 @@ describe('db/models/inventory.ts', () => {
       'resolves with the available diagnostic tests in a organization',
       (trx) =>
         withTestOrganization(trx, async (organization_id) => {
-          const admin = await addTestHealthWorker(trx, {
-            scenario: 'admin',
+          const admin = await addTestEmployee(trx, {
+            profession: 'admin',
           })
 
           const contec_bc401 = await trx
@@ -77,8 +75,8 @@ describe('db/models/inventory.ts', () => {
       'Add consumable and check quantity',
       (trx) =>
         withTestOrganization(trx, async (organization_id) => {
-          const admin = await addTestHealthWorker(trx, {
-            scenario: 'admin',
+          const admin = await addTestEmployee(trx, {
+            profession: 'admin',
             organization_id,
           })
 
@@ -152,8 +150,8 @@ describe('db/models/inventory.ts', () => {
 
     it('rejects when consuming more than the amount previously procured', async () => {
       await withTestOrganization(db, async (organization_id) => {
-        const admin = await addTestHealthWorker(db, {
-          scenario: 'admin',
+        const admin = await addTestEmployee(db, {
+          profession: 'admin',
           organization_id,
         })
 

@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import {
+  Coordinates,
   DoctorsWithoutAction,
-  Location,
   OrganizationDoctorOrNurse,
-  RenderedPatientEncounterProvider,
+  RenderedPatientEncounterEmployee,
   Sendable,
   TrxOrDb,
 } from '../../types.ts'
@@ -25,7 +25,7 @@ import { getEmploymentLocationName } from './employment.ts'
 async function processEmployee(
   trx: TrxOrDb,
   employees: OrganizationDoctorOrNurse[] | DoctorsWithoutAction[],
-  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  patient_encounter_employees: RenderedPatientEncounterEmployee[],
   patient_name: string,
   primary_doctor_id?: string,
 ) {
@@ -38,20 +38,20 @@ async function processEmployee(
     4. Health workers my clinic has recently sent patients to
    */
 
-  const patient_encounter_providers_id = patient_encounter_providers.map((
+  const patient_encounter_employees_id = patient_encounter_employees.map((
     provider,
   ) => provider.employment_id)
 
   const sorted_employees = employees.sort((a, b) => {
     if (
-      patient_encounter_providers_id.includes(a.employee_id) &&
-      !(patient_encounter_providers_id.includes(b.employee_id))
+      patient_encounter_employees_id.includes(a.employee_id) &&
+      !(patient_encounter_employees_id.includes(b.employee_id))
     ) {
       return -1
     }
     if (
-      patient_encounter_providers_id.includes(b.employee_id) &&
-      !(patient_encounter_providers_id.includes(a.employee_id))
+      patient_encounter_employees_id.includes(b.employee_id) &&
+      !(patient_encounter_employees_id.includes(a.employee_id))
     ) {
       return 1
     }
@@ -68,7 +68,7 @@ async function processEmployee(
     sorted_employees.slice(0, 3).map(async (employee) => {
       let additional_info = ''
       if (
-        patient_encounter_providers.map((provider) => provider.employment_id)
+        patient_encounter_employees.map((provider) => provider.employment_id)
           .includes(employee.employee_id)
       ) {
         additional_info = `Encounter provider for ${patient_name} `
@@ -96,12 +96,12 @@ async function processEmployee(
   return processed_employees
 }
 
-export async function forPatientIntake(
+export async function forPatientRegistration(
   trx: TrxOrDb,
   patient_id: string,
-  location: Location,
+  location: Coordinates,
   organization_id: string,
-  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  patient_encounter_employees: RenderedPatientEncounterEmployee[],
   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, organization, patient } =
@@ -115,7 +115,7 @@ export async function forPatientIntake(
         },
       ),
       organization: organizations.getById(trx, organization_id),
-      patient: patients.getByID(trx, { id: patient_id }),
+      patient: patients.getById(trx, patient_id),
     })
   const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
     (facility) => ({
@@ -143,7 +143,7 @@ export async function forPatientIntake(
   const processed_employees = await processEmployee(
     trx,
     employees,
-    patient_encounter_providers,
+    patient_encounter_employees,
     patient.name,
     opts.primary_doctor_id,
   )
@@ -255,8 +255,8 @@ export async function forPatientIntake(
 export async function forPatientEncounter(
   trx: TrxOrDb,
   patient_id: string,
-  location: Location,
-  patient_encounter_providers: RenderedPatientEncounterProvider[],
+  location: Coordinates,
+  patient_encounter_employees: RenderedPatientEncounterEmployee[],
   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 ): Promise<Sendable[]> {
   const { nearestFacilities, employees, patient } = await promiseProps({
@@ -267,7 +267,7 @@ export async function forPatientEncounter(
         exclude_health_worker_id: opts.exclude_health_worker_id ?? '',
       },
     ),
-    patient: patients.getByID(trx, { id: patient_id }),
+    patient: patients.getById(trx, patient_id),
   })
 
   const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
@@ -294,7 +294,7 @@ export async function forPatientEncounter(
   const processed_doctors = await processEmployee(
     trx,
     employees,
-    patient_encounter_providers,
+    patient_encounter_employees,
     patient.name,
     opts.primary_doctor_id,
   )

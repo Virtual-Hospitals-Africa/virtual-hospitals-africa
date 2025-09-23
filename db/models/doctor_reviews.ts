@@ -26,26 +26,27 @@ import { assert } from 'std/assert/assert.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
+import { HealthWorkerIdSelection } from './health_worker_id.ts'
 
 export function ofHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string,
+  health_worker_id: string | HealthWorkerIdSelection,
 ) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
     .innerJoin(
-      'patient_encounter_providers',
+      'patient_encounter_employees',
       'doctor_reviews.requested_by',
-      'patient_encounter_providers.id',
+      'patient_encounter_employees.id',
     )
     .innerJoin(
       'patient_encounters',
-      'doctor_reviews.encounter_id',
+      'doctor_reviews.patient_encounter_id',
       'patient_encounters.id',
     )
     .innerJoin(
       'employment as requested_by_employee',
-      'patient_encounter_providers.provider_id',
+      'patient_encounter_employees.employment_id',
       'requested_by_employee.id',
     )
     .innerJoin(
@@ -65,7 +66,7 @@ export function ofHealthWorker(
       eb('completed_at', 'is not', null).as('completed'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
-        reason: eb.ref('patient_encounters.reason'),
+        reason: eb.ref('patient_encounters.reason').$notNull(),
       }).as('encounter'),
       jsonObjectFrom(
         getCardQuery(trx).where(
@@ -80,7 +81,7 @@ export function ofHealthWorker(
         profession: eb.ref('requested_by_employee.profession').$castTo<
           'doctor' | 'nurse'
         >(),
-        patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
+        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
         organization: jsonBuildObject({
           id: eb.ref('organizations.id'),
           name: eb.ref('organizations.name'),
@@ -111,7 +112,7 @@ export function requests(
     requested_by_health_worker: HealthWorkers
   },
   | 'doctor_review_requests'
-  | 'patient_encounter_providers'
+  | 'patient_encounter_employees'
   | 'patient_encounters'
   | 'requested_by_employee'
   | 'requested_by_organization'
@@ -120,18 +121,18 @@ export function requests(
 > {
   return trx.selectFrom('doctor_review_requests')
     .innerJoin(
-      'patient_encounter_providers',
+      'patient_encounter_employees',
       'doctor_review_requests.requested_by',
-      'patient_encounter_providers.id',
+      'patient_encounter_employees.id',
     )
     .innerJoin(
       'patient_encounters',
-      'doctor_review_requests.encounter_id',
+      'doctor_review_requests.patient_encounter_id',
       'patient_encounters.id',
     )
     .innerJoin(
       'employment as requested_by_employee',
-      'patient_encounter_providers.provider_id',
+      'patient_encounter_employees.employment_id',
       'requested_by_employee.id',
     )
     .innerJoin(
@@ -144,6 +145,7 @@ export function requests(
       'requested_by_employee.health_worker_id',
       'requested_by_health_worker.id',
     )
+    .where('patient_encounters.reason', 'is not', null)
     .select((eb) => [
       'doctor_review_requests.id as review_request_id',
       jsonBuildObject({
@@ -152,7 +154,7 @@ export function requests(
       }).as('requesting'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
-        reason: eb.ref('patient_encounters.reason'),
+        reason: eb.ref('patient_encounters.reason').$notNull(),
       }).as('encounter'),
       jsonObjectFrom(
         getCardQuery(trx).where(
@@ -167,7 +169,7 @@ export function requests(
         profession: eb.ref('requested_by_employee.profession').$castTo<
           'doctor' | 'nurse'
         >(),
-        patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
+        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
         organization: jsonBuildObject({
           id: eb.ref('requested_by_organization.id'),
           name: eb.ref('requested_by_organization.name'),
@@ -188,7 +190,7 @@ export function requestById(
 
 export function requestsOfHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string,
+  health_worker_id: string | HealthWorkerIdSelection,
 ) {
   return requests(trx)
     .innerJoin(
@@ -234,33 +236,32 @@ export async function requestMatchingEmployment(
   }
 }
 
-export async function start(
+export function start(
   trx: TrxOrDb,
   { review_request_id, employment_id }: {
     review_request_id: string
     employment_id: string
   },
 ) {
-  const starting_review = trx.insertInto('doctor_reviews')
-    .columns(['patient_id', 'encounter_id', 'requested_by', 'reviewer_id'])
+  return trx.insertInto('doctor_reviews')
+    .columns([
+      'patient_id',
+      'patient_encounter_id',
+      'requested_by',
+      'reviewer_id',
+    ])
     .expression((eb) =>
       eb.selectFrom('doctor_review_requests')
         .where('id', '=', review_request_id)
         .select([
           'patient_id',
-          'encounter_id',
+          'patient_encounter_id',
           'requested_by',
           literalString(employment_id).as('reviewer_id'),
         ])
     )
     .returning('id')
     .executeTakeFirstOrThrow()
-
-  await trx.deleteFrom('doctor_review_requests')
-    .where('id', '=', review_request_id)
-    .execute()
-
-  return starting_review
 }
 
 export async function addSelfAsReviewer(
@@ -343,7 +344,7 @@ export async function upsertRequest(
   { id, doctor_id, ...values }: {
     id?: Maybe<string>
     patient_id: string
-    encounter_id: string
+    patient_encounter_id: string
     requested_by: string
     organization_id?: string | null
     doctor_id?: string | null

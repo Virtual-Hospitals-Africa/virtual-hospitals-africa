@@ -8,11 +8,11 @@ export async function getFromReview(
   trx: TrxOrDb,
   {
     review_id,
-    encounter_id,
+    patient_encounter_id,
     employment_id,
   }: {
     employment_id: string
-    encounter_id: string
+    patient_encounter_id: string
     review_id?: string
   },
 ): Promise<DiagnosisGroup> {
@@ -36,16 +36,16 @@ export async function getFromReview(
       'diagnoses_collaboration.diagnosis_id',
     )
 
-  if (review_id && encounter_id) {
+  if (review_id && patient_encounter_id) {
     sql = sql.where((eb) =>
       eb.or([
         eb('diagnoses.doctor_review_id', '=', review_id),
-        eb('diagnoses.patient_encounter_id', '=', encounter_id),
+        eb('diagnoses.patient_encounter_id', '=', patient_encounter_id),
       ])
     )
   }
-  if (encounter_id && !review_id) {
-    sql = sql.where('diagnoses.patient_encounter_id', '=', encounter_id)
+  if (patient_encounter_id && !review_id) {
+    sql = sql.where('diagnoses.patient_encounter_id', '=', patient_encounter_id)
   }
 
   const diagnoses = await sql
@@ -85,7 +85,7 @@ export async function upsertForReview(
   trx: TrxOrDb,
   {
     review_id,
-    encounter_id,
+    patient_encounter_id,
     patient_id,
     employment_id,
     diagnoses,
@@ -102,14 +102,14 @@ export async function upsertForReview(
       is_approved: boolean
       disagree_reason: null | string
     }[]
-    encounter_id: string
+    patient_encounter_id: string
     review_id?: string
   },
 ): Promise<void> {
   const existing_diagnoses = await getFromReview(trx, {
     review_id,
     employment_id,
-    encounter_id,
+    patient_encounter_id,
   })
 
   const [to_update_diagnoses, to_insert_diagnoses] = partition(
@@ -185,7 +185,8 @@ export async function upsertForReview(
             patient_condition_id,
             provider_id: employment_id,
             ...(isInDoctorReview && { doctor_review_id: review_id }),
-            ...(!isInDoctorReview && { patient_encounter_id: encounter_id }),
+            ...(!isInDoctorReview &&
+              { patient_encounter_id: patient_encounter_id }),
           })
           .execute()
       }),

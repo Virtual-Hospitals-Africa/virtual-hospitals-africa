@@ -1,11 +1,11 @@
 import { Kysely, sql } from 'kysely'
-import { IntakeFrequencies } from '../../shared/medication.ts'
+import { RegistrationFrequencies } from '../../shared/medication.ts'
 import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType('intake_frequency')
-    .asEnum(Object.keys(IntakeFrequencies))
+    .createType('registration_frequency')
+    .asEnum(Object.keys(RegistrationFrequencies))
     .execute()
 
   await db.schema
@@ -22,7 +22,7 @@ export async function up(db: Kysely<unknown>) {
   await sql`
     CREATE TYPE medication_schedule AS (
       dosage numeric,
-      frequency intake_frequency,
+      frequency registration_frequency,
       duration integer,
       duration_unit duration_units
     )
@@ -75,5 +75,5 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_condition_medications').execute()
   await db.schema.dropType('medication_schedule').execute()
   await db.schema.dropType('duration_units').execute()
-  await db.schema.dropType('intake_frequency').execute()
+  await db.schema.dropType('registration_frequency').execute()
 }

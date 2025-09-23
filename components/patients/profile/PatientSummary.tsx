@@ -1,20 +1,20 @@
-import { getSummaryById } from '../../../db/models/patient_intake.ts'
+import { getSummaryById } from '../../../db/models/patient_registration.ts'
 import {
   DescriptionList,
   DescriptionListCellAction,
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
-import { intakeFrequencyText } from '../../../shared/medication.ts'
-import { nonEmptyRows } from '../intake/Summary.tsx'
+import { registrationFrequencyText } from '../../../shared/medication.ts'
+import { nonEmptyRows } from '../registration/Summary.tsx'
 
-type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
+type RegistrationPatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
 export default function PatientSummary(
   { patient }: {
-    patient: IntakePatientSummary
+    patient: RegistrationPatientSummary
   },
 ) {
-  const intake_href = `/app/patients/${patient.id}/intake`
+  const registration_href = `/app/patients/${patient.id}/registration`
 
   const {
     pre_existing_conditions,
@@ -29,7 +29,7 @@ export default function PatientSummary(
               value: condition.name,
               name: 'Pre-existing Condition',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.name`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.name`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -38,7 +38,7 @@ export default function PatientSummary(
               value: condition.start_date,
               name: 'start_date',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.start_date`,
               action: DescriptionListCellAction.View,
             },
             {
@@ -58,7 +58,7 @@ export default function PatientSummary(
               value: `${medication.name} (for ${condition.name})`,
               name: 'medication',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.name`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -67,7 +67,7 @@ export default function PatientSummary(
               value: medication.form,
               name: 'form',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.form`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -76,22 +76,24 @@ export default function PatientSummary(
               value: medication.schedules[0].dosage.toString(),
               name: 'dosage',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.dosage`,
               action: DescriptionListCellAction.View,
             },
             {
               value: medication.strength_numerator_unit,
               name: 'strength',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.strength_numerator`,
               action: DescriptionListCellAction.View,
               leading_separator: ' ',
             },
             {
-              value: intakeFrequencyText(medication.schedules[0].frequency),
+              value: registrationFrequencyText(
+                medication.schedules[0].frequency,
+              ),
               name: 'frequency',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.intake_frequency`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.registration_frequency`,
               action: DescriptionListCellAction.View,
               leading_separator: ' ',
             },
@@ -101,7 +103,7 @@ export default function PatientSummary(
               value: medication.start_date,
               name: 'start_date',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.start_date`,
               action: DescriptionListCellAction.View,
             },
             {
@@ -109,7 +111,7 @@ export default function PatientSummary(
               value: 'End Date',
               name: 'end_date',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.end_date`,
               action: DescriptionListCellAction.View,
               leading_separator: ' — ',
             },
@@ -119,7 +121,7 @@ export default function PatientSummary(
               value: medication.special_instructions,
               name: 'special_instructions',
               href:
-                `${intake_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
+                `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.special_instructions`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -130,7 +132,7 @@ export default function PatientSummary(
   const pages = [
     {
       title: 'Pre-existing Conditions',
-      link: `${intake_href}/conditions`,
+      link: `${registration_href}/conditions`,
       action: DescriptionListCellAction.View,
       items: pre_existing_conditions_items,
       sections: [

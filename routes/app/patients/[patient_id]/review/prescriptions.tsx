@@ -141,7 +141,7 @@ export default async function PrescriptionsPage(
     patient_diagnoses: diagnoses.getFromReview(trx, {
       review_id,
       employment_id: ctx.state.doctor_review.employment_id,
-      encounter_id: ctx.state.doctor_review.encounter.id,
+      patient_encounter_id: ctx.state.doctor_review.encounter.id,
     }),
     patient_prescription: prescriptions.getFromReview(trx, { review_id }),
   })

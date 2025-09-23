@@ -17,7 +17,8 @@ export function OrganizationCard({ organization, selected, className }: {
     ? `https://www.google.com/maps/search/?api=1&query=${organization.location.latitude},${organization.location.longitude}`
     : ''
 
-  let description = organization.address || organization.description || ''
+  let description = organization.formatted_address ||
+    organization.description || ''
 
   if (description.length > 30) {
     description = description.substring(0, 30) + '...'

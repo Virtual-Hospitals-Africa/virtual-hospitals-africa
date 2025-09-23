@@ -9,7 +9,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
-import { getWithOpenEncounter } from './patients.ts'
+import * as patients from './patients.ts'
 import * as organizations from './organizations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
@@ -328,15 +328,12 @@ export async function getWithPatientInfo(
 
   const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
-  // TODO: this argument is not being used, so there's likely a bug here. Perhaps
-  // we're only meant to return those patients the health worker has access to?
-  const patients = await getWithOpenEncounter(trx, {
-    ids: patient_ids,
-    health_worker_id: opts.health_worker_id,
-  })
+  const patients_of_appointments = await patients.getByIds(trx, patient_ids)
 
   return appointments.map((appointment) => {
-    const patient = patients.find((p) => p.id === appointment.patient_id)
+    const patient = patients_of_appointments.find((p) =>
+      p.id === appointment.patient_id
+    )
     assert(patient, `Could not find patient ${appointment.patient_id}`)
     return { ...appointment, patient }
   })

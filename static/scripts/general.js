@@ -211,10 +211,10 @@ addEventListener('submit', function (event) {
   if (form.method !== 'post') return
 
   event.preventDefault()
-  var formData = new FormData(form)
+  var form_data = new FormData(form)
 
   if (event.submitter) {
-    formData.append(event.submitter.name, event.submitter.value)
+    form_data.append(event.submitter.name, event.submitter.value)
   }
 
   submitButton = form.querySelector('button[type="submit"]')
@@ -253,7 +253,7 @@ addEventListener('submit', function (event) {
   // TODO: Add a loading indicator
   fetch(form.action, {
     method: 'POST',
-    body: formData,
+    body: form_data,
   }).then(function (response) {
     submitButton.disabled = false
     switch (response.status) {

@@ -12,6 +12,7 @@ export function AddExaminationsForm({
   return (
     <div className='flex flex-col gap-2'>
       <LabelledListboxMulti
+        variant='starts_closed'
         label='Select Examinations to Perform'
         name='examinations'
         selected={selected_examinations}

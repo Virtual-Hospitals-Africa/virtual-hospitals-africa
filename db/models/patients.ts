@@ -6,14 +6,12 @@ import {
   Patient,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
-  PatientWithOpenEncounter,
   RenderedPatient,
   TrxOrDb,
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google-maps.ts'
 import * as conversations from './conversations.ts'
-import * as patient_encounters from './patient_encounters.ts'
 import * as nearest_organizations from './nearest_organizations.ts'
 import {
   jsonBuildNullableObject,
@@ -26,6 +24,7 @@ import { DB } from '../../db.d.ts'
 import { ensureDoctorId } from './doctor.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { pMap } from '../../util/inParallel.ts'
+import { base } from './_base.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -57,6 +56,9 @@ const baseQuery = (trx: TrxOrDb) =>
       'patients.gender',
       'patients.ethnicity',
       'addresses.formatted as address',
+      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
+        'date_of_birth',
+      ),
       dob_formatted,
       'patient_age.age_display',
       'patients.preferred_language_code_iso_639_2_b',
@@ -67,7 +69,7 @@ const baseQuery = (trx: TrxOrDb) =>
         'description',
       ),
       'patients.national_id_number',
-      'patients.completed_intake',
+      'patients.completed_registration',
       avatar_url_sql.as('avatar_url'),
       sql<null>`NULL`.as('last_visited'),
       jsonBuildNullableObject(eb.ref('patients.location'), {
@@ -121,9 +123,9 @@ const baseQuery = (trx: TrxOrDb) =>
           ]),
       ).as('primary_doctor'),
     ])
-
-const selectWithName = (trx: TrxOrDb) =>
-  baseQuery(trx).where('patients.name', 'is not', null)
+    .orderBy(
+      'name asc',
+    )
 
 export async function getLastConversationState(
   trx: TrxOrDb,
@@ -236,59 +238,38 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .executeTakeFirst()
 }
 
-export function getByID(
-  trx: TrxOrDb,
-  opts: { id: string },
-): Promise<HasStringId<RenderedPatient>> {
-  return baseQuery(trx)
-    .where('patients.id', '=', opts.id)
-    .executeTakeFirstOrThrow()
-}
-
-// TODO: only show medical record if health worker has permission
-export async function getWithOpenEncounter(
-  trx: TrxOrDb,
-  opts: {
-    ids: string[]
-    health_worker_id: string
+const model = base({
+  top_level_table: 'patients',
+  baseQuery,
+  formatResult: (x: RenderedPatient): RenderedPatient => x,
+  handleSearch(
+    qb,
+    { search, has_name, include_incomplete_registration }: {
+      search?: Maybe<string>
+      has_name?: boolean
+      include_incomplete_registration?: boolean
+    },
+  ) {
+    if (has_name) {
+      qb = qb.where('patients.name', 'is not', null)
+    }
+    if (search) {
+      qb = qb.where('patients.name', 'ilike', `%${search}%`)
+    }
+    if (!include_incomplete_registration) {
+      qb = qb.where(
+        'patients.completed_registration',
+        '=',
+        true,
+      )
+    }
+    return qb
   },
-): Promise<HasStringId<PatientWithOpenEncounter>[]> {
-  assert(opts.ids.length, 'Must select nonzero patients')
+})
 
-  const open_encounters = patient_encounters.openQuery(trx)
-    .where('patient_encounters.patient_id', 'in', opts.ids)
-    .as('open_encounters')
-
-  const patients = await selectWithName(trx)
-    .where('patients.id', 'in', opts.ids)
-    .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
-    .select((eb) => [
-      eb.case().when(eb('open_encounters.encounter_id', 'is', null)).then(null)
-        .else(jsonBuildObject({
-          encounter_id: eb.ref('open_encounters.encounter_id').$notNull(),
-          organization_id: eb.ref('open_encounters.organization_id').$notNull(),
-          created_at: eb.ref('open_encounters.created_at').$notNull(),
-          closed_at: eb.ref('open_encounters.closed_at'),
-          reason: eb.ref('open_encounters.reason').$notNull(),
-          notes: eb.ref('open_encounters.notes'),
-          patient_id: eb.ref('open_encounters.patient_id').$notNull(),
-          appointment_id: eb.ref('open_encounters.appointment_id'),
-          waiting_room_id: eb.ref('open_encounters.waiting_room_id'),
-          waiting_room_organization_id: eb.ref(
-            'open_encounters.waiting_room_organization_id',
-          ),
-          location: eb.ref('open_encounters.location').$notNull(),
-          providers: eb.ref('open_encounters.providers').$notNull(),
-          steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
-        })).end().as('open_encounter'),
-    ])
-    .execute()
-
-  assert(haveNames(patients))
-
-  return patients
-}
-
+export const getById = model.getById
+export const getByIds = model.getByIds
+export const search = model.search
 export type PatientCard = {
   id: string
   name: string
@@ -319,35 +300,18 @@ export function getCardQuery(
     ])
 }
 
-export function getCard(
+export async function findAllWithNames(
   trx: TrxOrDb,
-  { id }: { id: string },
-): Promise<PatientCard | undefined> {
-  return getCardQuery(trx)
-    .where('patients.id', '=', id)
-    .executeTakeFirst()
-}
-
-export async function getAllWithNames(
-  trx: TrxOrDb,
-  { search, completed_intake }: {
+  search_terms: {
     search?: Maybe<string>
-    completed_intake?: boolean
+    include_incomplete_registration?: boolean
   },
 ): Promise<RenderedPatient[]> {
-  let query = baseQuery(trx).where('patients.name', 'is not', null).orderBy(
-    'name asc',
-  )
-
-  if (search) query = query.where('patients.name', 'ilike', `%${search}%`)
-  if (typeof completed_intake === 'boolean') {
-    query = query.where('patients.completed_intake', '=', completed_intake)
-  }
-
-  const patients = await query.execute()
-
+  const patients = await model.findAll(trx, {
+    ...search_terms,
+    has_name: true,
+  })
   assert(haveNames(patients))
-
   return patients
 }
 

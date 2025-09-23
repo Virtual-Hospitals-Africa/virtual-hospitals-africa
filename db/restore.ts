@@ -7,19 +7,27 @@ export async function restore(name: string) {
   const dump_file = `./db/dumps/${name}`
   console.log(`Restoring database from ${dump_file}...`)
 
+  const args = ['--no-owner', '-v', '-d', db.uri, dump_file]
+
   const process = Command('pg_restore', {
-    args: ['--no-owner', '-v', '-d', db.uri, dump_file],
+    args,
     stdout: 'piped',
     stderr: 'piped',
     verbose: true,
   }).spawn()
 
+  const logStdOut = async () => {
+    for await (const line of readLines(process.stdout)) {
+      console.log(line)
+    }
+  }
   const logStdErr = async () => {
     for await (const line of readLines(process.stderr)) {
       console.log(line)
     }
   }
 
+  logStdOut()
   logStdErr()
   const status = await process.status
   assert(!status.code)

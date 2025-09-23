@@ -7,8 +7,8 @@ import { replaceParams } from '../../util/replaceParams.ts'
 describe('replaceParams', () => {
   it('replaces params in the route', () => {
     const route =
-      '/app/patients/:patient_id/encounters/:encounter_id/examinations'
-    const params = { patient_id: '1029', encounter_id: 'open' }
+      '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
+    const params = { patient_id: '1029', patient_encounter_id: 'open' }
     const replaced = replaceParams(route, params)
     assertEquals(
       replaced,
@@ -18,13 +18,13 @@ describe('replaceParams', () => {
 
   it('throws if insufficient params are supplied', () => {
     const route =
-      '/app/patients/:patient_id/encounters/:encounter_id/examinations'
-    const params = { encounter_id: 'open' }
+      '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
+    const params = { patient_encounter_id: 'open' }
     const error = assertThrows(() => replaceParams(route, params))
     assert(error instanceof Error)
     assertEquals(
       error.message,
-      `replaceParams failed to replace all params\nreplaceParams("/app/patients/:patient_id/encounters/:encounter_id/examinations", {"encounter_id":"open"}) => "/app/patients/:patient_id/encounters/open/examinations"`,
+      `replaceParams failed to replace all params\nreplaceParams("/app/patients/:patient_id/encounters/:patient_encounter_id/examinations", {"patient_encounter_id":"open"}) => "/app/patients/:patient_id/encounters/open/examinations"`,
     )
   })
 })

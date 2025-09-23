@@ -1,7 +1,8 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as employment from '../../db/models/employment.ts'
-import { insertHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import db from '../../db/db.ts'
+import { insertHealthWorker } from '../_helpers/health_workers.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe(
   'db/models/employment.ts',

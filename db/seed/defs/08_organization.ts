@@ -37,16 +37,6 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4554096,
       longitude: 29.7739353,
     },
-    departments_accepting_patients: [
-      'maternity',
-      'immunizations',
-      'pharmacy',
-      'acute care',
-      'chronic diseases',
-    ],
-    administrative_departments: [
-      'administration',
-    ],
   })
 
   await organizations.add(trx, {
@@ -67,10 +57,6 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4555096,
       longitude: 29.7738353,
     },
-    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
-    administrative_departments: [
-      'administration',
-    ],
   })
   await organizations.add(trx, {
     id: '00000000-0000-0000-0000-000000000003',
@@ -90,17 +76,6 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4554096,
       longitude: 29.7739353,
     },
-    departments_accepting_patients: [
-      'triage',
-      'maternity',
-      'immunizations',
-      'pharmacy',
-      'primary care',
-      'chronic diseases',
-    ],
-    administrative_departments: [
-      'administration',
-    ],
   })
 
   await organizations.add(trx, {
@@ -121,16 +96,6 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4555096,
       longitude: 29.7738353,
     },
-    departments_accepting_patients: [
-      'triage',
-      'primary care',
-      'pharmacy',
-      'oncology',
-      'burns',
-    ],
-    administrative_departments: [
-      'administration',
-    ],
   })
 }
 
@@ -225,7 +190,6 @@ async function importDataFromCSV(trx: TrxOrDb) {
         country,
         ownership: row.Ownership,
         location,
-        departments_accepting_patients: [],
       })
     },
   )

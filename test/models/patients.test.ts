@@ -2,279 +2,111 @@ import { sql } from 'kysely'
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
 import pick from '../../util/pick.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
+
 import generateUUID from '../../util/uuid.ts'
 import sortBy from '../../util/sortBy.ts'
 import db from '../../db/db.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe('db/models/patients.ts', () => {
   afterAll(() => db.destroy())
 
-  describe('getAllWithNames', () => {
-    itUsesTrxAnd('finds patients by their name', async (trx) => {
-      const inserted_media = await media.insert(trx, {
-        binary_data: new Uint8Array(),
-        mime_type: 'image/jpeg',
-      })
-
-      const baseUUID = generateUUID()
-
-      const test_patient1 = await patients.insert(trx, {
-        name: baseUUID + generateUUID(),
-      })
-
-      const test_patient2 = await patients.insert(trx, {
-        name: baseUUID + generateUUID(),
-        avatar_media_id: inserted_media.id,
-      })
-
-      await patients.insert(trx, {
-        name: 'Other Foo',
-      })
-
-      const results = await patients.getAllWithNames(trx, { search: baseUUID })
-      assertEquals(
-        results,
-        sortBy([
-          {
-            id: test_patient1.id,
-            avatar_url: null,
-            name: test_patient1.name!,
-            dob_formatted: null,
-            address: null,
-            age_display: null,
-            age_years: null,
-            description: null,
-            gender: null,
-            preferred_language_code_iso_639_2_b: null,
-            primary_doctor: null,
-            ethnicity: null,
-            location: null,
-            national_id_number: null,
-            nearest_organization: null,
-            phone_number: null,
-            last_visited: null,
-            completed_intake: false,
-            actions: {
-              view: `/app/patients/${test_patient1.id}`,
-            },
-          },
-          {
-            id: test_patient2.id,
-            avatar_url: `/app/patients/${test_patient2.id}/avatar`,
-            name: test_patient2.name!,
-            dob_formatted: null,
-            address: null,
-            age_display: null,
-            age_years: null,
-            description: null,
-            gender: null,
-            preferred_language_code_iso_639_2_b: null,
-            primary_doctor: null,
-            ethnicity: null,
-            location: null,
-            national_id_number: null,
-            nearest_organization: null,
-            phone_number: null,
-            last_visited: null,
-            completed_intake: false,
-            actions: {
-              view: `/app/patients/${test_patient2.id}`,
-            },
-          },
-        ], 'name'),
-      )
-    })
-
+  describe('findAllWithNames', () => {
     itUsesTrxAnd(
-      "gives a description formed by the patient's gender and date of birth",
+      "finds patients by their name, omitting those who haven't completed registration by default",
       async (trx) => {
-        const name = generateUUID()
-        await patients.insert(trx, {
-          name,
-          date_of_birth: '2021-03-01',
+        const inserted_media = await media.insert(trx, {
+          binary_data: new Uint8Array(),
+          mime_type: 'image/jpeg',
+        })
+
+        const baseUUID = generateUUID()
+
+        const test_patient1 = await patients.insert(trx, {
+          name: baseUUID + generateUUID(),
           gender: 'female',
+          date_of_birth: '1980-01-01',
+          completed_registration: true,
         })
 
-        const results = await patients.getAllWithNames(trx, { search: name })
-        assertEquals(results.length, 1)
-        assertEquals(results[0].description, 'female, 01/03/2021')
-      },
-    )
-  })
-
-  describe('getWithOpenEncounter', () => {
-    itUsesTrxAnd('finds patients without an open encounter', async (trx) => {
-      const health_worker = await addTestHealthWorker(trx, {
-        scenario: 'approved-nurse',
-      })
-      const test_patient = await patients.insert(trx, {
-        name: 'Test Patient',
-      })
-
-      const results = await patients.getWithOpenEncounter(trx, {
-        ids: [test_patient.id],
-        health_worker_id: health_worker.id,
-      })
-      assertEquals(results, [
-        {
-          id: test_patient.id,
-          avatar_url: null,
-          name: 'Test Patient',
-          dob_formatted: null,
-          address: null,
-          age_display: null,
-          age_years: null,
-          description: null,
-          gender: null,
-          ethnicity: null,
-          location: null,
-          preferred_language_code_iso_639_2_b: null,
-          primary_doctor: null,
-          national_id_number: null,
-          nearest_organization: null,
-          phone_number: null,
-          last_visited: null,
-          completed_intake: false,
-          actions: {
-            view: `/app/patients/${test_patient.id}`,
-          },
-          open_encounter: null,
-        },
-      ])
-    })
-
-    itUsesTrxAnd('finds patients with an open encounter', async (trx) => {
-      const health_worker = await addTestHealthWorker(trx, {
-        scenario: 'approved-nurse',
-      })
-      const encounter = await patient_encounters.insert(
-        trx,
-        '00000000-0000-0000-0000-000000000001',
-        {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-        },
-      )
-      const { patient_id } = encounter
-
-      const results = await patients.getWithOpenEncounter(trx, {
-        ids: [patient_id],
-        health_worker_id: health_worker.id,
-      })
-      assertEquals(results, [
-        {
-          id: patient_id,
-          avatar_url: null,
-          name: 'Test Patient',
-          dob_formatted: null,
-          address: null,
-          age_display: null,
-          age_years: null,
-          description: null,
-          gender: null,
-          ethnicity: null,
-          preferred_language_code_iso_639_2_b: null,
-          primary_doctor: null,
-          location: null,
-          national_id_number: null,
-          nearest_organization: null,
-          phone_number: null,
-          last_visited: null,
-          completed_intake: false,
-          actions: {
-            view: `/app/patients/${patient_id}`,
-          },
-          open_encounter: {
-            encounter_id: encounter.id,
-            organization_id: '00000000-0000-0000-0000-000000000001',
-            patient_id,
-            reason: 'seeking treatment',
-            providers: [],
-            created_at: results[0].open_encounter!.created_at,
-            closed_at: null,
-            notes: null,
-            appointment_id: null,
-            waiting_room_id: encounter.waiting_room_id,
-            waiting_room_organization_id:
-              '00000000-0000-0000-0000-000000000001',
-            steps_completed: [],
-            location: { latitude: -19.4554096, longitude: 29.7739353 },
-          },
-        },
-      ])
-    })
-
-    itUsesTrxAnd(
-      'returns recommended examinations once date of birth is filled in',
-      async (trx) => {
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'approved-nurse',
+        const test_patient2 = await patients.insert(trx, {
+          name: baseUUID + generateUUID(),
+          gender: 'female',
+          date_of_birth: '1980-01-01',
+          completed_registration: true,
+          avatar_media_id: inserted_media.id,
         })
-        const patient = await patients.insert(trx, {
-          name: 'Test Patient',
-          date_of_birth: '1989-01-03',
-          gender: 'male',
+
+        await patients.insert(trx, {
+          name: 'Other With non-matching name',
+          gender: 'female',
+          date_of_birth: '1980-01-01',
+          completed_registration: true,
         })
-        const encounter = await patient_encounters.insert(
-          trx,
-          '00000000-0000-0000-0000-000000000001',
-          {
-            patient_id: patient.id,
-            reason: 'seeking treatment',
-          },
+
+        await patients.insert(trx, {
+          name: 'Other with incomplete registration',
+        })
+
+        const results = await patients.findAllWithNames(trx, {
+          search: baseUUID,
+        })
+
+        assertEquals(
+          results,
+          sortBy([
+            {
+              id: test_patient1.id,
+              avatar_url: null,
+              name: test_patient1.name!,
+              dob_formatted: '1 January 1980',
+              date_of_birth: '1980-01-01',
+              address: null,
+              age_display: '45 years',
+              age_years: 45,
+              description: 'female, 01/01/1980',
+              gender: 'female' as const,
+              preferred_language_code_iso_639_2_b: null,
+              primary_doctor: null,
+              ethnicity: null,
+              location: null,
+              national_id_number: null,
+              nearest_organization: null,
+              phone_number: null,
+              last_visited: null,
+              completed_registration: true,
+              actions: {
+                view: `/app/patients/${test_patient1.id}`,
+              },
+            },
+            {
+              id: test_patient2.id,
+              avatar_url: `/app/patients/${test_patient2.id}/avatar`,
+              name: test_patient2.name!,
+              dob_formatted: '1 January 1980',
+              date_of_birth: '1980-01-01',
+              address: null,
+              age_display: '45 years',
+              age_years: 45,
+              description: 'female, 01/01/1980',
+              gender: 'female' as const,
+              preferred_language_code_iso_639_2_b: null,
+              primary_doctor: null,
+              ethnicity: null,
+              location: null,
+              national_id_number: null,
+              nearest_organization: null,
+              phone_number: null,
+              last_visited: null,
+              completed_registration: true,
+              actions: {
+                view: `/app/patients/${test_patient2.id}`,
+              },
+            },
+          ], 'name'),
         )
-        const { patient_id } = encounter
-
-        const results = await patients.getWithOpenEncounter(trx, {
-          ids: [patient_id],
-          health_worker_id: health_worker.id,
-        })
-
-        assertEquals(results, [
-          {
-            id: patient_id,
-            avatar_url: null,
-            name: 'Test Patient',
-            dob_formatted: '3 January 1989',
-            address: null,
-            age_display: '36 years',
-            age_years: 36,
-            description: 'male, 03/01/1989',
-            gender: 'male',
-            ethnicity: null,
-            preferred_language_code_iso_639_2_b: null,
-            primary_doctor: null,
-            location: null,
-            national_id_number: null,
-            nearest_organization: null,
-            phone_number: null,
-            last_visited: null,
-            completed_intake: false,
-            actions: {
-              view: `/app/patients/${patient_id}`,
-            },
-            open_encounter: {
-              encounter_id: encounter.id,
-              patient_id,
-              reason: 'seeking treatment',
-              providers: [],
-              created_at: results[0].open_encounter!.created_at,
-              closed_at: null,
-              notes: null,
-              appointment_id: null,
-              organization_id: '00000000-0000-0000-0000-000000000001',
-              waiting_room_id: encounter.waiting_room_id,
-              waiting_room_organization_id:
-                '00000000-0000-0000-0000-000000000001',
-              steps_completed: [],
-              location: { latitude: -19.4554096, longitude: 29.7739353 },
-            },
-          },
-        ])
       },
     )
   })

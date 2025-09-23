@@ -1,7 +1,6 @@
 import Layout from '../../components/library/Layout.tsx'
 import * as organizations from '../../db/models/organizations.ts'
 import * as regulators from '../../db/models/regulators.ts'
-
 import * as employment from '../../db/models/employment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import { OnboardingContext } from './_middleware.tsx'
@@ -10,13 +9,16 @@ import { z } from 'zod'
 import { postHandler } from '../../util/postHandler.ts'
 import redirect from '../../util/redirect.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
-  department_id: z.string().uuid(),
   profession: z.enum(['nurse', 'doctor']),
   specialty: z.string(),
 }).or(z.object({
+  organization_id: z.string().uuid(),
+  profession: z.enum(['receptionist']),
+})).or(z.object({
   profession: z.enum(['regulator']),
   country: z.string(),
 }))
@@ -63,9 +65,22 @@ export const handler = postHandler(
       return response
     }
 
-    await employment.addOne(ctx.state.trx, {
-      health_worker_id: ctx.state.health_worker.id,
-      ...form_values,
+    const { organization_id, profession } = form_values
+    const specialty = 'specialty' in form_values ? form_values.specialty : null
+    const organization = await organizations.getById(trx, organization_id)
+
+    const department_ids = organizationDepartmentIdsOfProfession(
+      organization,
+      profession,
+      specialty,
+    )
+
+    await employment.addOne(trx, {
+      department_ids,
+      organization_id,
+      profession,
+      specialty,
+      health_worker_id: health_worker.id,
     })
 
     return redirect('/app')

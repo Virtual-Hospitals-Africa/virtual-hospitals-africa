@@ -1,19 +1,19 @@
-import { getSummaryById } from '../../../db/models/patient_intake.ts'
+import { getSummaryById } from '../../../db/models/patient_registration.ts'
 import {
   DescriptionList,
   DescriptionListCellAction,
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
-import { nonEmptyRows } from '../intake/Summary.tsx'
+import { nonEmptyRows } from '../registration/Summary.tsx'
 
-type IntakePatientSummary = Awaited<ReturnType<typeof getSummaryById>>
+type RegistrationPatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
 export default function PatientHistory(
   { patient }: {
-    patient: IntakePatientSummary
+    patient: RegistrationPatientSummary
   },
 ) {
-  const intake_href = `/app/patients/${patient.id}/intake`
+  const registration_href = `/app/patients/${patient.id}/registration`
 
   const {
     past_medical_conditions,
@@ -29,7 +29,7 @@ export default function PatientHistory(
               value: condition.name,
               name: 'condition',
               href:
-                `${intake_href}/history#focus=past_medical_conditions.${index}.name`,
+                `${registration_href}/history#focus=past_medical_conditions.${index}.name`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -38,14 +38,14 @@ export default function PatientHistory(
               value: condition.start_date,
               name: 'start_date',
               href:
-                `${intake_href}/history#focus=past_medical_conditions.${index}.start_date`,
+                `${registration_href}/history#focus=past_medical_conditions.${index}.start_date`,
               action: DescriptionListCellAction.View,
             },
             {
               value: condition.end_date,
               name: 'end_date',
               href:
-                `${intake_href}/history#focus=past_medical_conditions.${index}.end_date`,
+                `${registration_href}/history#focus=past_medical_conditions.${index}.end_date`,
               action: DescriptionListCellAction.View,
               leading_separator: ' — ',
             },
@@ -60,7 +60,8 @@ export default function PatientHistory(
           {
             value: surgery.name,
             name: 'surgery',
-            href: `${intake_href}/history#focus=major_surgeries.${index}.name`,
+            href:
+              `${registration_href}/history#focus=major_surgeries.${index}.name`,
             action: DescriptionListCellAction.View,
           },
         ],
@@ -69,7 +70,7 @@ export default function PatientHistory(
             value: surgery.start_date,
             name: 'start_date',
             href:
-              `${intake_href}/history#focus=major_surgeries.${index}.start_date`,
+              `${registration_href}/history#focus=major_surgeries.${index}.start_date`,
             action: DescriptionListCellAction.View,
           },
         ],
@@ -79,7 +80,7 @@ export default function PatientHistory(
   const pages = [
     {
       title: 'Past Conditions',
-      link: `${intake_href}/history`,
+      link: `${registration_href}/history`,
       action: DescriptionListCellAction.View,
       items: past_conditions_items,
       sections: [

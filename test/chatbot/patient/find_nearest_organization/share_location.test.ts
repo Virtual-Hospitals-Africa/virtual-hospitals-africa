@@ -5,10 +5,12 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
-import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
 import generateUUID from '../../../../util/uuid.ts'
-import { readSeedDump } from '../../../web/utilities.ts'
-import { mockWhatsApp } from '../../mocks.ts'
+
+import randomNationalId from '../../../../mocks/randomNationalId.ts'
+import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
+import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
+import { mockWhatsApp } from '../../../chatbot/mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())

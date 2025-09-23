@@ -36,8 +36,8 @@ export type OrganizationAdmin = {
 
 export function addOne(
   trx: TrxOrDb,
-  { department_id, profession, ...rest }: Employee & {
-    department_id?: string
+  { department_ids, profession, ...rest }: Employee & {
+    department_ids?: string[]
   },
 ) {
   const id = generateUUID()
@@ -51,38 +51,45 @@ export function addOne(
   ).with(
     'department_insert',
     (qb) =>
-      department_id
+      department_ids?.length
         ? qb.insertInto('department_employment')
-          .values({
+          .values(department_ids.map((department_id) => ({
             department_id,
             employment_id: id,
-          })
+          })))
         : blankSelection(qb),
   ).with(
-    'organization_admin_insert',
+    'receptionist_insert',
     (qb) =>
-      (profession === 'admin')
-        ? qb.insertInto('organization_admins').values({ id })
-        : blankSelection(qb),
-  ).with(
-    'provider_insert',
-    (qb) =>
-      (profession === 'doctor' || profession === 'nurse')
-        ? qb.insertInto('providers').values({ id })
-        : blankSelection(qb),
-  ).with(
-    'doctor_insert',
-    (qb) =>
-      (profession === 'doctor')
-        ? qb.insertInto('doctors').values({ id })
-        : blankSelection(qb),
-  ).with(
-    'nurse_insert',
-    (qb) =>
-      (profession === 'nurse')
-        ? qb.insertInto('nurses').values({ id })
+      (profession === 'receptionist')
+        ? qb.insertInto('receptionists').values({ id })
         : blankSelection(qb),
   )
+    .with(
+      'organization_admin_insert',
+      (qb) =>
+        (profession === 'admin')
+          ? qb.insertInto('organization_admins').values({ id })
+          : blankSelection(qb),
+    ).with(
+      'provider_insert',
+      (qb) =>
+        (profession === 'doctor' || profession === 'nurse')
+          ? qb.insertInto('providers').values({ id })
+          : blankSelection(qb),
+    ).with(
+      'doctor_insert',
+      (qb) =>
+        (profession === 'doctor')
+          ? qb.insertInto('doctors').values({ id })
+          : blankSelection(qb),
+    ).with(
+      'nurse_insert',
+      (qb) =>
+        (profession === 'nurse')
+          ? qb.insertInto('nurses').values({ id })
+          : blankSelection(qb),
+    )
     .selectFrom('employment_insert')
     .selectAll('employment_insert')
     .executeTakeFirstOrThrow()

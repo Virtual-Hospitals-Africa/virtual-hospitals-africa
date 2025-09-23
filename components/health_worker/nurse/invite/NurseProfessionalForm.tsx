@@ -8,7 +8,7 @@ import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 
 export default function NurseProfessionalForm(
-  { formData }: { formData: Partial<FormState> },
+  { form_data }: { form_data: Partial<FormState> },
 ) {
   return (
     <>
@@ -17,7 +17,7 @@ export default function NurseProfessionalForm(
           name='date_of_first_practice'
           required
           label='Date of First Practice'
-          value={formData.date_of_first_practice}
+          value={form_data.date_of_first_practice}
         />
         <TextInput
           name='ncz_registration_number'
@@ -25,11 +25,11 @@ export default function NurseProfessionalForm(
           placeholder='GN123456'
           pattern='^[a-zA-Z]{2}[0-9]{6}$'
           label='Nurses Council of Zimbabwe Registration Number'
-          value={formData.ncz_registration_number}
+          value={form_data.ncz_registration_number}
         />
       </FormRow>
       <FormRow>
-        <NurseSpecialtySelect value={formData.specialty} />
+        <NurseSpecialtySelect value={form_data.specialty} />
       </FormRow>
       <hr className='my-2' />
       <Buttons submitText='Next' />

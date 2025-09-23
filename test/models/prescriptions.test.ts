@@ -1,15 +1,14 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
-import * as patient_intake from '../../db/models/patient_intake.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as patients from '../../db/models/patients.ts'
 import * as diagnoses from '../../db/models/diagnoses.ts'
 import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import { sql } from 'kysely'
 import db from '../../db/db.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
 
 describe('db/models/prescriptions.ts', () => {
   afterAll(() => db.destroy())
@@ -17,33 +16,29 @@ describe('db/models/prescriptions.ts', () => {
     itUsesTrxAnd(
       'makes a prescription for a given prescriber and patient with 1 or more medications',
       async (trx) => {
-        const nurse = await addTestHealthWorker(trx, {
-          scenario: 'nurse',
+        const nurse = await addTestEmployee(trx, {
+          profession: 'nurse',
+          registration_status: 'not started',
         })
-        const doctor = await addTestHealthWorker(trx, {
-          scenario: 'doctor',
+        const doctor = await addTestEmployee(trx, {
+          profession: 'doctor',
           organization_id: '00000000-0000-0000-0000-000000000002',
         })
 
-        const patient = await patients.insert(trx, { name: 'Billy Bob' })
-        const encounter = await patient_encounters.insert(
-          trx,
-          '00000000-0000-0000-0000-000000000001',
-          {
-            patient_id: patient.id,
-            reason: 'seeking treatment',
-            provider_ids: [nurse.employee_id!],
-          },
-        )
-        await patient_intake.completed(trx, {
-          patient_id: patient.id,
-        })
+        const { patient, ...encounter } =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            trx,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
 
         await doctor_reviews.upsertRequest(trx, {
           patient_id: patient.id,
           doctor_id: doctor.employee_id!,
-          encounter_id: encounter.id,
-          requested_by: encounter.providers[0].encounter_provider_id,
+          patient_encounter_id: encounter.patient_encounter_id,
+          requested_by: encounter.employee.patient_encounter_employee_id,
         })
 
         const employed_doctor = await health_workers.getEmployed(trx, {
@@ -59,7 +54,7 @@ describe('db/models/prescriptions.ts', () => {
           review_id: doctor_review.review_id,
           employment_id: doctor.employee_id!,
           patient_id: patient.id,
-          encounter_id: encounter.id,
+          patient_encounter_id: encounter.patient_encounter_id,
           diagnoses: [{
             condition_id: 'c_22401',
             start_date: '2020-01-01',
@@ -70,7 +65,7 @@ describe('db/models/prescriptions.ts', () => {
         const patient_diagnoses = await diagnoses.getFromReview(trx, {
           review_id: doctor_review.review_id,
           employment_id: doctor.employee_id!,
-          encounter_id: encounter.id,
+          patient_encounter_id: encounter.patient_encounter_id,
         })
 
         const tablet = await trx

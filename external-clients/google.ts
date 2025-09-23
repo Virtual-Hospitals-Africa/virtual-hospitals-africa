@@ -442,7 +442,7 @@ export const oauthParams = new URLSearchParams({
 export async function getInitialTokensFromAuthCode(
   google_auth_code: string,
 ): Promise<GoogleTokens> {
-  const formData = new URLSearchParams({
+  const form_data = new URLSearchParams({
     redirect_uri,
     code: google_auth_code,
     client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
@@ -454,7 +454,7 @@ export async function getInitialTokensFromAuthCode(
   const result = await fetch('https://oauth2.googleapis.com/token', {
     method: 'post',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    body: formData.toString(),
+    body: form_data.toString(),
   })
 
   const tokens = await result.json()

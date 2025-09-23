@@ -16,14 +16,14 @@ function markInvalid(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     altered_record_id,
     snomed_concept_id,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     altered_record_id: string
     snomed_concept_id: RecordNowInvalidConceptId
   },
@@ -35,7 +35,7 @@ function markInvalid(
       .values({
         id,
         patient_id,
-        encounter_id,
+        patient_encounter_id,
         snomed_concept_id,
       })).with(
       'inserting_evaluation',
@@ -43,7 +43,7 @@ function markInvalid(
         qb.insertInto('patient_evaluations')
           .values({
             id,
-            encounter_provider_id,
+            patient_encounter_employee_id,
             evaluates_record_id: altered_record_id,
             by_system: false,
           }),
@@ -55,8 +55,8 @@ export function markAltered(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     altered_record_id: string
   },
 ) {
@@ -70,8 +70,8 @@ export function markEnteredInError(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     altered_record_id: string
   },
 ) {

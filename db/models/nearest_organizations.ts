@@ -1,11 +1,11 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Location, Maybe, TrxOrDb } from '../../types.ts'
+import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
 
 export type SearchOpts = {
-  location: Location
+  location: Coordinates
   excluding_id?: string
   search?: Maybe<string>
   kind?: 'hospital'
@@ -76,10 +76,15 @@ export function baseQuery(
       ).as('doctors'),
       jsonArrayFrom(
         eb.selectFrom('organization_departments')
+          .innerJoin(
+            'departments',
+            'departments.name',
+            'organization_departments.name',
+          )
           .select([
             'organization_departments.id',
             'organization_departments.name',
-            'organization_departments.accepts_patients',
+            'departments.requires_triage',
           ])
           .whereRef(
             'organization_departments.organization_id',

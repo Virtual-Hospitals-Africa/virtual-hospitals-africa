@@ -1,0 +1,25 @@
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../../../types.ts'
+
+export const handler: LoggedInHealthWorkerHandlerWithProps<
+  unknown,
+  OpenEncounterWorkflowContext['state']
+> = {
+  // deno-lint-ignore require-await
+  async POST(_req, ctx: OpenEncounterWorkflowContext) {
+    const completing_step = completeAndProceedToNextStep(ctx)
+    return completing_step
+  },
+}
+
+export default OpenEncounterWorkflowPage(
+  function PrescriptionsPage(
+    _ctx: OpenEncounterWorkflowContext,
+  ) {
+    return <p>TODO</p>
+  },
+)

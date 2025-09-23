@@ -30,13 +30,13 @@ export function insertMany(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     evaluations,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     evaluations: VitalsEvaluation[]
   },
 ) {
@@ -64,14 +64,14 @@ export function insertMany(
         .values(validEvaluations.map((evaluation) => ({
           id: evaluation.id,
           patient_id,
-          encounter_id,
+          patient_encounter_id,
           snomed_concept_id: evaluation.snomed_concept_id,
         }))),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')
       .values(validEvaluations.map((evaluation) => ({
         id: evaluation.id,
-        encounter_provider_id,
+        patient_encounter_employee_id,
         evaluates_record_id: evaluation.evaluates_record_id,
         note: evaluation.note,
         by_system: false,
@@ -125,7 +125,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
         .orderBy('patient_records.created_at', 'desc')
         .selectAll('patient_records')
         .select([
-          'patient_findings.encounter_provider_id',
+          'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
           'patient_findings.referent_finding_id',
           'patient_measurements.value',
@@ -138,14 +138,14 @@ export async function getMostRecentManualVitalsWithEvaluations(
         ),
   ).selectFrom('ranked_manual_findings')
     .innerJoin(
-      'patient_encounter_providers',
-      'patient_encounter_providers.id',
-      'ranked_manual_findings.encounter_provider_id',
+      'patient_encounter_employees',
+      'patient_encounter_employees.id',
+      'ranked_manual_findings.patient_encounter_employee_id',
     )
     .innerJoin(
       'employment',
       'employment.id',
-      'patient_encounter_providers.provider_id',
+      'patient_encounter_employees.employment_id',
     )
     .innerJoin(
       'health_workers',
@@ -164,7 +164,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
       'ranked_manual_findings.value',
       'ranked_manual_findings.units',
       'ranked_manual_findings.created_at',
-      'ranked_manual_findings.encounter_id',
+      'ranked_manual_findings.patient_encounter_id',
       'ranked_manual_findings.finding_type',
     ])
     .select((eb) => [
@@ -174,7 +174,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
         profession: eb.ref('employment.profession').$castTo<
           'doctor' | 'nurse'
         >(),
-        patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
+        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
         organization: jsonBuildObject({
           id: eb.ref('organizations.id'),
           name: eb.ref('organizations.name'),
@@ -244,7 +244,7 @@ export async function getMostRecentComputedVitalsWithEvaluations(
         .orderBy('patient_records.created_at', 'desc')
         .selectAll('patient_records')
         .select([
-          'patient_findings.encounter_provider_id',
+          'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
           sql<string | null>`patient_findings.referent_finding_id`.as(
             'referent_finding_id',
@@ -269,7 +269,7 @@ export async function getMostRecentComputedVitalsWithEvaluations(
       'ranked_computed_findings.units',
       'ranked_computed_findings.value_display',
       'ranked_computed_findings.created_at',
-      'ranked_computed_findings.encounter_id',
+      'ranked_computed_findings.patient_encounter_id',
       'ranked_computed_findings.finding_type',
     ])
     .select((eb) => [

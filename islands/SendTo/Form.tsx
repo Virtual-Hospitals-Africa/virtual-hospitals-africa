@@ -4,7 +4,7 @@ import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
 
 export function SendToForm(
   { form, textarea, requestTypeOptions }: {
-    form: 'intake' | 'encounter'
+    form: 'registration' | 'encounter'
     textarea?: string
     requestTypeOptions?: string[]
   },

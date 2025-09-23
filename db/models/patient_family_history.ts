@@ -13,10 +13,15 @@ export const PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID = '410551005'
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
-  { patient_id, encounter_id, encounter_provider_id, family_history }: {
+  {
+    patient_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
+    family_history,
+  }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     family_history: PatientFamilyHistoryUpsert
   },
 ) {
@@ -30,8 +35,8 @@ export async function upsertOne(
   if (altered_patient_family_history_id) {
     await markAltered(trx, {
       patient_id,
-      encounter_id,
-      encounter_provider_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
       altered_record_id: altered_patient_family_history_id,
     })
   }
@@ -48,14 +53,14 @@ export async function upsertOne(
       patient_id,
     )
     .where(
-      'patient_records.encounter_id',
+      'patient_records.patient_encounter_id',
       '=',
-      encounter_id,
+      patient_encounter_id,
     )
     .where(
-      'patient_procedures.encounter_provider_id',
+      'patient_procedures.patient_encounter_employee_id',
       '=',
-      encounter_provider_id,
+      patient_encounter_employee_id,
     )
     .where(
       'patient_records.snomed_concept_id',
@@ -77,7 +82,7 @@ export async function upsertOne(
           .values({
             id: procedure_id,
             patient_id,
-            encounter_id,
+            patient_encounter_id,
             snomed_concept_id: PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID,
           })
         : blankSelection(qb),
@@ -88,7 +93,7 @@ export async function upsertOne(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            encounter_provider_id,
+            patient_encounter_employee_id,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>
@@ -96,14 +101,14 @@ export async function upsertOne(
       .values({
         id: family_history_id,
         patient_id,
-        encounter_id,
+        patient_encounter_id,
         snomed_concept_id,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: family_history_id,
           procedure_id,
-          encounter_provider_id,
+          patient_encounter_employee_id,
         }))
     // .with(
     //   'inserting_family_historys',
@@ -125,9 +130,9 @@ export async function upsertOne(
 
 export function getEncounter(
   trx: TrxOrDb,
-  { patient_id, encounter_id }: {
+  { patient_id, patient_encounter_id }: {
     patient_id: string
-    encounter_id: string
+    patient_encounter_id: string
   },
 ): Promise<RenderedPatientFamilyHistory[]> {
   return trx
@@ -143,7 +148,7 @@ export function getEncounter(
       'snomed_inferred_canonical_name_and_category.id',
     )
     .where('patient_records.patient_id', '=', patient_id)
-    .where('patient_records.encounter_id', '=', encounter_id)
+    .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
     .where(
       'patient_records.id',
       'not in',

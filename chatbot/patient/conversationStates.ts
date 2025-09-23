@@ -3,7 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   ConversationStateHandlerListActionSection,
   ConversationStates,
-  Location,
+  Coordinates,
   PatientChatbotUserState,
   PatientConversationState,
   SchedulingAppointmentOfferedTime,
@@ -152,10 +152,10 @@ const conversationStates: ConversationStates<
     async onExit(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
       assert(patientState.unhandled_message.trimmed_body)
-      const locationMessage: Location = JSON.parse(
+      const locationMessage: Coordinates = JSON.parse(
         patientState.unhandled_message.trimmed_body,
       )
-      const currentLocation: Location = {
+      const currentLocation: Coordinates = {
         longitude: locationMessage.longitude,
         latitude: locationMessage.latitude,
       }
@@ -177,9 +177,10 @@ const conversationStates: ConversationStates<
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const patient = await patients.getByID(trx, {
-        id: patientState.chatbot_user.entity_id,
-      })
+      const patient = await patients.getById(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(patient.location)
       assert(patient.location.latitude)
       assert(patient.location.longitude)
@@ -256,9 +257,10 @@ const conversationStates: ConversationStates<
     prompt: 'I will send you organization location',
     async getMessages(trx, patientState): Promise<WhatsAppSendable> {
       assert(patientState.chatbot_user.entity_id)
-      const patient = await patients.getByID(trx, {
-        id: patientState.chatbot_user.entity_id,
-      })
+      const patient = await patients.getById(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(patient.location)
       assert(patient.location.latitude)
       assert(patient.location.longitude)
@@ -358,9 +360,10 @@ const conversationStates: ConversationStates<
     type: 'select',
     async prompt(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      const patient = await patients.getByID(trx, {
-        id: patientState.chatbot_user.entity_id,
-      })
+      const patient = await patients.getById(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       const scheduling_appointment_request = await patients
         .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
       assert(scheduling_appointment_request)

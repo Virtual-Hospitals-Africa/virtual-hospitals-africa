@@ -3,9 +3,9 @@ import { RenderedPatientHistory, TrxOrDb } from '../../types.ts'
 
 export function get(
   trx: TrxOrDb,
-  { encounter_id, encounter_provider_id }: {
-    encounter_id: string
-    encounter_provider_id: string
+  { patient_encounter_id, patient_encounter_employee_id }: {
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
   },
 ): Promise<RenderedPatientHistory> {
   return Promise.resolve({

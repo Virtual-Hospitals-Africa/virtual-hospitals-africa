@@ -29,6 +29,7 @@ function isPanelState(state: Record<string, string>): state is PanelState {
   }
   return false
 }
+
 export function FamilyHistoryPage(_props: FamilyHistoryPageProps) {
   const panel_state = useLocationHash(isPanelState)
 

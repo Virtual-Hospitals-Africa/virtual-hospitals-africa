@@ -4,7 +4,8 @@ import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
-import { debugLog } from '../helpers.ts'
+import { asCompiledSql, debugLog } from '../helpers.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export type SearchResults<SearchTerms, RenderedResult> = {
   page: number
@@ -13,6 +14,12 @@ export type SearchResults<SearchTerms, RenderedResult> = {
   has_next_page: boolean
   search_terms: SearchTerms
 }
+
+// deno-lint-ignore no-explicit-any
+export type QueryResult<Func extends (...args: any[]) => any> =
+  // deno-lint-ignore no-explicit-any
+  ReturnType<Func> extends SelectQueryBuilder<any, any, infer Result> ? Result
+    : never
 
 export type BaseModelInput<
   SearchTerms extends Partial<Record<string, unknown>>,
@@ -36,6 +43,9 @@ export type BaseModelInput<
 }
 
 type BaseModel<
+  Tables,
+  SelectingFrom extends keyof Tables,
+  IntermediateResult,
   SearchTerms extends Partial<Record<string, unknown>>,
   RenderedResult,
 > = {
@@ -47,6 +57,19 @@ type BaseModel<
       rows_per_page?: number
     },
   ): Promise<SearchResults<SearchTerms, RenderedResult>>
+  searchQuery(
+    trx: TrxOrDb,
+    search_terms: SearchTerms,
+  ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
+  findOneOptional(
+    trx: TrxOrDb,
+    terms: SearchTerms,
+  ): Promise<RenderedResult | null>
+  findAll(
+    trx: TrxOrDb,
+    search_terms: SearchTerms,
+  ): Promise<RenderedResult[]>
   getById(trx: TrxOrDb, id: string): Promise<RenderedResult>
   getByIds(trx: TrxOrDb, ids: string[]): Promise<RenderedResult[]>
 }
@@ -58,6 +81,11 @@ type StandardTables = {
 
 export type SearchResult<
   BM extends BaseModel<
+    // deno-lint-ignore no-explicit-any
+    any,
+    // deno-lint-ignore no-explicit-any
+    any,
+    unknown,
     Partial<Record<string, unknown>>,
     // deno-lint-ignore no-explicit-any
     Record<string, any>
@@ -86,7 +114,13 @@ export function base<
     >
     & Extra,
 ):
-  & BaseModel<SearchTerms, RenderedResult>
+  & BaseModel<
+    Tables,
+    SelectingFrom,
+    IntermediateResult,
+    SearchTerms,
+    RenderedResult
+  >
   & BaseModelInput<
     SearchTerms,
     Tables,
@@ -113,6 +147,22 @@ export function base<
 
   return bindAll({
     ...input,
+    searchQuery(
+      trx: TrxOrDb,
+      search_terms: SearchTerms,
+    ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> {
+      const query = baseQuery(trx, search_terms as SearchTerms)
+      return handleSearch ? handleSearch(query, search_terms, trx) : query
+    },
+    async findAll(
+      trx: TrxOrDb,
+      search_terms: SearchTerms,
+    ): Promise<RenderedResult[]> {
+      const { results } = await this.search(trx, search_terms, {
+        rows_per_page: Infinity,
+      })
+      return results
+    },
     async search(
       trx: TrxOrDb,
       search_terms: SearchTerms,
@@ -124,14 +174,13 @@ export function base<
     ): Promise<SearchResults<SearchTerms, RenderedResult>> {
       const page = opts?.page ?? 1
       const rows_per_page = opts?.rows_per_page ?? 10
-      const offset = (page - 1) * rows_per_page
 
-      let query = baseQuery(trx, search_terms as SearchTerms)
-        .limit(rows_per_page + 1)
-        .offset(offset)
-
-      if (handleSearch) {
-        query = handleSearch(query, search_terms, trx)
+      let query = this.searchQuery(trx, search_terms as SearchTerms)
+      if (rows_per_page === Infinity) {
+        assertEquals(page, 1)
+      } else {
+        const offset = (page - 1) * rows_per_page
+        query = query.limit(rows_per_page + 1).offset(offset)
       }
 
       if (opts?.verbose) {
@@ -155,6 +204,32 @@ export function base<
         has_next_page,
         search_terms,
       }
+    },
+    async findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
+      const query = this.searchQuery(trx, terms).limit(2)
+      const results = await query.execute()
+      if (results.length === 2) {
+        console.error(asCompiledSql(query))
+        throw new Error('More than one result returned')
+      }
+      if (results.length === 0) {
+        console.error(asCompiledSql(query))
+        throw new Error('No results returned')
+      }
+      return formatResult(results[0])
+    },
+    async findOneOptional(
+      trx: TrxOrDb,
+      terms: SearchTerms,
+    ): Promise<RenderedResult | null> {
+      const query = this.searchQuery(trx, terms).limit(2)
+      const results = await query.execute()
+      if (results.length === 0) return null
+      if (results.length === 2) {
+        console.error(asCompiledSql(query))
+        throw new Error('More than one result returned')
+      }
+      return formatResult(results[0])
     },
     async getById(trx: TrxOrDb, id: string): Promise<RenderedResult> {
       const result = await baseQuery(trx, {} as SearchTerms)

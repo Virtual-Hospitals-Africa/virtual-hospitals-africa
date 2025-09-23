@@ -4,7 +4,7 @@ import { SendableListItem } from './ListItem.tsx'
 
 export function SendableList(
   { form, sendables, selected }: {
-    form?: 'intake' | 'encounter'
+    form?: 'registration' | 'encounter'
     sendables: Sendable[]
     selected: Signal<Sendable | null>
   },

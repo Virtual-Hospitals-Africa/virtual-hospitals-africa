@@ -17,7 +17,7 @@ export async function up(
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
         .addColumn(
-          'encounter_id',
+          'patient_encounter_id',
           'uuid',
           (col) =>
             col.notNull().references('patient_encounters.id').onDelete(
@@ -25,10 +25,10 @@ export async function up(
             ),
         )
         .addColumn(
-          'encounter_provider_id',
+          'patient_encounter_employee_id',
           'uuid',
           (col) =>
-            col.notNull().references('patient_encounter_providers.id').onDelete(
+            col.notNull().references('patient_encounter_employees.id').onDelete(
               'cascade',
             ),
         )
@@ -56,7 +56,7 @@ export async function up(
           (col) => col.notNull().defaultTo(false),
         )
         .addUniqueConstraint('patient_examination_unique', [
-          'encounter_id',
+          'patient_encounter_id',
           'examination_identifier',
         ]),
   )

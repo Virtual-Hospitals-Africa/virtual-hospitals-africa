@@ -17,13 +17,16 @@ import {
   convertToTimeString,
   formatHarare,
 } from '../../../../../../../../util/date.ts'
-import { randomPhoneNumber } from '../../../../../../../mocks.ts'
+
 import generateUUID from '../../../../../../../../util/uuid.ts'
-import { addTestHealthWorker } from '../../../../../../../web/utilities.ts'
+
 import { resetInTest } from '../../../../../../../../db/meta.ts'
 import { Stub, stub } from 'std/testing/mock.ts'
-import { mockWhatsApp } from '../../../../../../mocks.ts'
+
 import { GCalEvent } from '../../../../../../../../types.ts'
+import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
+import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
+import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -58,7 +61,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    const health_worker = await addTestHealthWorker(db, { scenario: 'doctor' })
+    const health_worker = await addTestEmployee(db, { profession: 'doctor' })
     assert(health_worker)
 
     //  Insert google calender
@@ -126,7 +129,7 @@ describe('patient chatbot', () => {
     const duration_minutes = 60
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
-      provider_id: health_worker.employee_id!,
+      provider_id: health_worker.employee_id,
       start,
       end,
       duration_minutes,

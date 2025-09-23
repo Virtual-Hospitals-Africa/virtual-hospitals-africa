@@ -22,7 +22,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
-import { IntakeFrequencies } from '../../shared/medication.ts'
+import { RegistrationFrequencies } from '../../shared/medication.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -79,14 +79,14 @@ function assertPreExistingConditions(
       )
       assertOr400(medication.dosage, 'Medication dosage must be present')
       assertOr400(
-        medication.intake_frequency,
-        'Medication intake frequency must be present',
+        medication.registration_frequency,
+        'Medication registration frequency must be present',
       )
       assertOr400(
-        medication.intake_frequency in IntakeFrequencies,
-        `Medication intake frequency must be one of ${
+        medication.registration_frequency in RegistrationFrequencies,
+        `Medication registration frequency must be one of ${
           Object.keys(
-            IntakeFrequencies,
+            RegistrationFrequencies,
           ).join(', ')
         }`,
       )
@@ -157,7 +157,7 @@ async function upsertPreExistingCondition(
       route: medication.route,
       schedules: sql<string[]>`
           ARRAY[
-          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
+          ROW(${medication.dosage}, ${medication.registration_frequency}, ${duration}, ${duration_unit})
           ]::medication_schedule[]
       `,
       start_date,
@@ -447,7 +447,7 @@ export async function getPreExistingConditions(
           return {
             ...omit(medication, ['patient_condition_id']),
             start_date: medication.start_date,
-            intake_frequency: schedule.frequency,
+            registration_frequency: schedule.frequency,
             end_date: durationEndDate(medication.start_date, schedule),
             dosage: schedule.dosage,
             strength: Number(medication.strength),

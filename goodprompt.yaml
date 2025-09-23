@@ -7,7 +7,7 @@ This function will accept as an argument
 {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
-  current_encounter_step: 'chief_complaint' | 'vitals' | 'symptoms' | 'history' | 'general_assessments' | 'examinations' | 'diagnostic_tests' | 'diagnoses' | 'prescriptions' | 'orders' // Used to determine which step has the "in progress" marker
+  current_seeking_treatment_step: 'chief_complaint' | 'vitals' | 'symptoms' | 'history' | 'general_assessments' | 'examinations' | 'diagnostic_tests' | 'diagnoses' | 'prescriptions' | 'orders' // Used to determine which step has the "in progress" marker
   records_of_this_encounter: {
     chief_complaint: PatientDrawerRecordDisplay[]
     vitals: PatientDrawerRecordDisplay[]

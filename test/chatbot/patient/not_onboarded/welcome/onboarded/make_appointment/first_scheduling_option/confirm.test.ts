@@ -8,12 +8,15 @@ import * as conversations from '../../../../../../../../db/models/conversations.
 import * as patients from '../../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../../db/models/appointments.ts'
 import { prettyAppointmentTime } from '../../../../../../../../util/date.ts'
-import { randomPhoneNumber } from '../../../../../../../mocks.ts'
+
 import generateUUID from '../../../../../../../../util/uuid.ts'
-import { addTestHealthWorker } from '../../../../../../../web/utilities.ts'
+
 import { Stub, stub } from 'std/testing/mock.ts'
-import { mockWhatsApp } from '../../../../../../mocks.ts'
+
 import { GCalEvent } from '../../../../../../../../types.ts'
+import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
+import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
+import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -45,7 +48,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    const health_worker = await addTestHealthWorker(db, { scenario: 'doctor' })
+    const health_worker = await addTestEmployee(db, { profession: 'doctor' })
 
     assert(health_worker)
 
@@ -58,7 +61,7 @@ describe('patient chatbot', () => {
     const duration_minutes = 30
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
-      provider_id: health_worker.employee_id!,
+      provider_id: health_worker.employee_id,
       start,
       end,
       duration_minutes,

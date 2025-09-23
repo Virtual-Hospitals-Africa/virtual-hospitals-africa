@@ -1,23 +1,18 @@
 import {
-  HasStringId,
+  HealthWorkerEmployment,
   LoggedInHealthWorkerContext,
-  Organization,
+  RenderedOrganization,
 } from '../../../../types.ts'
 import * as organizations from '../../../../db/models/organizations.ts'
 import { assertOr403 } from '../../../../util/assertOr.ts'
-import { HealthWorkerEmployment } from '../../../../types.ts'
 
-export type OrganizationContext = LoggedInHealthWorkerContext<{
-  organization: HasStringId<Organization> & {
-    departments: {
-      id: string
-      name: string
-      accepts_patients: boolean
-    }[]
-  }
+export type OrganizationState = {
+  organization: RenderedOrganization
   organization_employment: HealthWorkerEmployment
   isAdminAtOrganization: boolean
-}>
+}
+
+export type OrganizationContext = LoggedInHealthWorkerContext<OrganizationState>
 
 export async function handler(
   _req: Request,

@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 if [ $# -eq 0 ]; then
   echo "Please provide a script to run against the vha_dev & vha_test databases"
@@ -17,13 +17,19 @@ diff .env .env.local >/dev/null || {
 test_output=$(mktemp)
 
 # shellcheck disable=SC2086
-IS_TEST=true deno task db:$script "$@" >$test_output &
-running_against_test_pid="$!"
+deno task db:$script "$@" &
+pid_dev="$!"
 
 # shellcheck disable=SC2086
-deno task db:$script "$@"
+IS_TEST=true deno task db:$script "$@" >$test_output &
+pid_test="$!"
 
-wait $running_against_test_pid || {
+wait $pid_dev || {
+  kill $pid_test
+  exit 1
+}
+
+wait $pid_test || {
   cat "$test_output" >&2
   exit 1
 }

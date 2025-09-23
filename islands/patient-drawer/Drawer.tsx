@@ -13,7 +13,7 @@
 
 // export function PatientDrawer(
 //   { patient, encounter, findings, measurements, flaggedVitals = new Map() }: {
-//     form?: 'intake' | 'encounter'
+//     form?: 'registration' | 'encounter'
 //     patient: {
 //       id: string
 //       name: string

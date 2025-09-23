@@ -1,4 +1,8 @@
-import { Location, PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
+import {
+  Coordinates,
+  PharmacistChatbotUserState,
+  TrxOrDb,
+} from '../../types.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -13,10 +17,10 @@ export async function handleShareLocation(
   assert(typeof licence_number === 'string')
   assert(typeof pharmacy_licence_number === 'string')
 
-  let location: Location
+  let location: Coordinates
   try {
     assert(pharmacistState.unhandled_message.trimmed_body)
-    const locationMessage: Location = JSON.parse(
+    const locationMessage: Coordinates = JSON.parse(
       pharmacistState.unhandled_message.trimmed_body,
     )
     location = {

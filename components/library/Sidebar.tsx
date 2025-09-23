@@ -16,7 +16,6 @@ import { IdentificationIcon } from './icons/heroicons/outline.tsx'
 import { AcademicCapIcon } from './icons/heroicons/outline.tsx'
 import { ArrowRightOnRectangleIcon } from './icons/heroicons/outline.tsx'
 import { ClockIcon } from './icons/heroicons/outline.tsx'
-import { UserGroupIcon } from './icons/heroicons/outline.tsx'
 import { replaceParams } from '../../util/replaceParams.ts'
 import { MedicineIcon } from './icons/Medicines.tsx'
 import { PharmaciesIcon } from './icons/Pharmacies.tsx'
@@ -59,10 +58,9 @@ function NavItem({
 const practitioner_home_page_nav_links: LinkDef[] = [
   {
     route: '/app/organizations/:organization_id/waiting_room',
-    title: 'Waiting Room',
+    title: 'Open Encounters',
     Icon: ClockIcon,
   },
-  { route: '/app/patients', title: 'My Patients', Icon: UserGroupIcon },
   { route: '/app/employees', title: 'Employees', Icon: IdentificationIcon },
   { route: '/app/calendar', title: 'Calendar', Icon: CalendarDaysIcon },
   {

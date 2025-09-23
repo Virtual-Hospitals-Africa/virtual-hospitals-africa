@@ -5,7 +5,7 @@ import { SendToSidebar } from './Sidebar.tsx'
 
 export function SendToButton(
   { form, patient, sendables }: {
-    form: 'intake' | 'encounter'
+    form: 'registration' | 'encounter'
     patient: SelectedPatient
     sendables: Sendable[]
   },

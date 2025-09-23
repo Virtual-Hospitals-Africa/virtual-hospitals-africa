@@ -1,14 +1,14 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as patients from '../../db/models/patients.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patient_measurements from '../../db/models/patient_measurements.ts'
 import * as vitals from '../../db/models/vitals.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import db from '../../db/db.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 
 describe(
   'db/models/vitals.ts',
@@ -18,25 +18,25 @@ describe(
       itUsesTrxAnd(
         'can save vital measurements with evaluations of varying priorities',
         async (trx) => {
-          const patient = await patients.insert(trx, { name: 'Test Patient' })
-          const patient_id = patient.id
-          const health_worker = await addTestHealthWorker(trx, {
-            scenario: 'approved-nurse',
+          const health_worker = await addTestEmployee(trx, {
+            profession: 'nurse',
+            specialty: 'primary care',
+            registration_status: 'approved',
           })
-          const encounter = await patient_encounters.insert(
-            trx,
-            '00000000-0000-0000-0000-000000000001',
-            {
-              patient_id,
-              reason: 'seeking treatment',
-              provider_ids: [health_worker.employee_id!],
-            },
-          )
+          const encounter =
+            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+              trx,
+              '00000000-0000-0000-0000-000000000001',
+              {
+                employment_id: health_worker.employee_id,
+              },
+            )
 
           await vitals.insertMeasurements(trx, {
-            patient_id,
-            encounter_id: encounter.id,
-            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            patient_id: encounter.patient.id,
+            patient_encounter_id: encounter.patient_encounter_id,
+            patient_encounter_employee_id:
+              encounter.employee.patient_encounter_employee_id,
             input_measurements: [
               {
                 finding_id: generateUUID(),
@@ -91,7 +91,10 @@ describe(
           const [most_recent_measurement_height] = await patient_measurements
             .getMostRecent(
               trx,
-              { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
+              {
+                patient_id: encounter.patient.id,
+                snomed_concept_ids: [VITALS_SNOMED_CODE.height],
+              },
             )
 
           assertEquals(most_recent_measurement_height.value_display, '123 cm')
@@ -100,7 +103,10 @@ describe(
           const [most_recent_measurement_weight] = await patient_measurements
             .getMostRecent(
               trx,
-              { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.weight] },
+              {
+                patient_id: encounter.patient.id,
+                snomed_concept_ids: [VITALS_SNOMED_CODE.weight],
+              },
             )
 
           assertEquals(most_recent_measurement_weight.value_display, '223 kg')
@@ -113,7 +119,7 @@ describe(
             await patient_measurements.getMostRecent(
               trx,
               {
-                patient_id,
+                patient_id: encounter.patient.id,
                 snomed_concept_ids: [
                   VITALS_SNOMED_CODE.blood_pressure_systolic,
                 ],
@@ -136,7 +142,7 @@ describe(
             await patient_measurements.getMostRecent(
               trx,
               {
-                patient_id,
+                patient_id: encounter.patient.id,
                 snomed_concept_ids: [
                   VITALS_SNOMED_CODE.blood_pressure_diastolic,
                 ],
@@ -159,7 +165,7 @@ describe(
             await patient_measurements.getMostRecent(
               trx,
               {
-                patient_id,
+                patient_id: encounter.patient.id,
                 snomed_concept_ids: [
                   VITALS_SNOMED_CODE.blood_oxygen_saturation,
                 ],
@@ -185,25 +191,25 @@ describe(
       itUsesTrxAnd(
         'can save vital measurements with no evaluations',
         async (trx) => {
-          const patient = await patients.insert(trx, { name: 'Test Patient' })
-          const patient_id = patient.id
-          const health_worker = await addTestHealthWorker(trx, {
-            scenario: 'approved-nurse',
+          const health_worker = await addTestEmployee(trx, {
+            profession: 'nurse',
+            specialty: 'primary care',
+            registration_status: 'approved',
           })
-          const encounter = await patient_encounters.insert(
-            trx,
-            '00000000-0000-0000-0000-000000000001',
-            {
-              patient_id,
-              reason: 'seeking treatment',
-              provider_ids: [health_worker.employee_id!],
-            },
-          )
+          const encounter =
+            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+              trx,
+              '00000000-0000-0000-0000-000000000001',
+              {
+                employment_id: health_worker.employee_id,
+              },
+            )
 
           await vitals.insertMeasurements(trx, {
-            patient_id,
-            encounter_id: encounter.id,
-            encounter_provider_id: encounter.providers[0].encounter_provider_id,
+            patient_id: encounter.patient.id,
+            patient_encounter_id: encounter.patient_encounter_id,
+            patient_encounter_employee_id:
+              encounter.employee.patient_encounter_employee_id,
             input_measurements: [
               {
                 finding_id: generateUUID(),
@@ -232,7 +238,10 @@ describe(
           const [most_recent_measurement_height] = await patient_measurements
             .getMostRecent(
               trx,
-              { patient_id, snomed_concept_ids: [VITALS_SNOMED_CODE.height] },
+              {
+                patient_id: encounter.patient.id,
+                snomed_concept_ids: [VITALS_SNOMED_CODE.height],
+              },
             )
 
           assertEquals(most_recent_measurement_height.value_display, '123 cm')
@@ -242,7 +251,7 @@ describe(
             await patient_measurements.getMostRecent(
               trx,
               {
-                patient_id,
+                patient_id: encounter.patient.id,
                 snomed_concept_ids: [
                   VITALS_SNOMED_CODE.blood_pressure_systolic,
                 ],
@@ -262,7 +271,7 @@ describe(
             await patient_measurements.getMostRecent(
               trx,
               {
-                patient_id,
+                patient_id: encounter.patient.id,
                 snomed_concept_ids: [
                   VITALS_SNOMED_CODE.blood_oxygen_saturation,
                 ],

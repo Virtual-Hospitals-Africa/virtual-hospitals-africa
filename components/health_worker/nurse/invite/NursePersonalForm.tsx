@@ -8,11 +8,11 @@ import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 import { NationalIdInput } from '../../../../islands/NationalId.tsx'
-import AddressSection from '../../../patient-intake/AddressSection.tsx'
+import AddressSection from '../../../patient-registration/AddressSection.tsx'
 
 export default function NursePersonalForm(
-  { formData }: {
-    formData: Partial<FormState>
+  { form_data }: {
+    form_data: Partial<FormState>
   },
 ) {
   return (
@@ -22,18 +22,18 @@ export default function NursePersonalForm(
           name='first_name'
           required
           label='First Name'
-          value={formData.first_name}
+          value={form_data.first_name}
         />
         <TextInput
           name='middle_names'
           label='Middle Names'
-          value={formData.middle_names}
+          value={form_data.middle_names}
         />
         <TextInput
           name='last_name'
           required
           label='Last Name'
-          value={formData.last_name}
+          value={form_data.last_name}
         />
       </FormRow>
       <FormRow>
@@ -41,12 +41,12 @@ export default function NursePersonalForm(
           name='date_of_birth'
           required
           label='Date of Birth'
-          value={formData.date_of_birth}
+          value={form_data.date_of_birth}
         />
-        <GenderSelect value={formData.gender} />
+        <GenderSelect value={form_data.gender} />
       </FormRow>
       <FormRow>
-        <NationalIdInput value={formData.national_id_number} />
+        <NationalIdInput value={form_data.national_id_number} />
       </FormRow>
       <FormRow>
         <TextInput
@@ -54,19 +54,19 @@ export default function NursePersonalForm(
           type='email'
           required
           label='Email'
-          value={formData.email}
+          value={form_data.email}
           disabled
         />
         <PhoneNumberInput
           name='mobile_number'
           required
           label='Mobile Phone Number'
-          value={formData.mobile_number}
+          value={form_data.mobile_number}
         />
       </FormRow>
       <hr className='my-2' />
       <AddressSection
-        address={formData.address || {}}
+        address={form_data.address || {}}
       />
       <hr className='my-2' />
       <Buttons submitText='Next' />

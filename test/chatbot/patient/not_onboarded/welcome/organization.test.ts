@@ -5,9 +5,10 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../db/models/patients.ts'
-import { mockWhatsApp } from '../../../mocks.ts'
-import { randomNationalId, randomPhoneNumber } from '../../../../mocks.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import randomNationalId from '../../../../../mocks/randomNationalId.ts'
+import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
+import { mockWhatsApp } from '../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())

@@ -12,6 +12,10 @@ export const PRIORITIES = keys(PRIORITY_SNOMED_CODES)
 
 export type Priority = (typeof PRIORITIES)[number]
 
+export function isPriority(priority: string): priority is Priority {
+  return priority in PRIORITY_SNOMED_CODES
+}
+
 export type TriageLevel =
   | 'Non-urgent'
   | 'Urgent'
@@ -23,4 +27,8 @@ export const TARGET_TIME_TO_TREATMENT_MINUTES = {
   'Urgent': 60,
   'Very urgent': 10,
   'Emergency': 0,
+}
+
+export function isTriageLevel(priority: string): priority is TriageLevel {
+  return priority in TARGET_TIME_TO_TREATMENT_MINUTES
 }

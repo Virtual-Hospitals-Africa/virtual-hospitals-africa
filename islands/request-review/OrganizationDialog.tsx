@@ -8,12 +8,12 @@ import { Person } from '../../components/library/Person.tsx'
 import { TextArea } from '../form/Inputs.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
+import { RenderedPatient } from '../../types.ts'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {
     requesting_organization?: NearestOrganizationSearchResult
-    concerning_patient: EncounterContext['state']['patient']
+    concerning_patient: RenderedPatient
   },
 ) {
   return (
@@ -65,7 +65,7 @@ function DialogContents({
   concerning_patient,
   requesting_organization,
 }: {
-  concerning_patient: EncounterContext['state']['patient']
+  concerning_patient: RenderedPatient
   requesting_organization: NearestOrganizationSearchResult
 }) {
   return (

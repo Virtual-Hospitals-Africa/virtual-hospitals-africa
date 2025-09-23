@@ -1,6 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 
-import { GoogleAddressComponent, Location, LocationDistance } from '../types.ts'
+import {
+  Coordinates,
+  GoogleAddressComponent,
+  LocationDistance,
+} from '../types.ts'
 import { cacheable } from './cache.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
 import { getEnvVariableRequiredOutsideDockerQuickstart } from '../util/getEnvVariableRequiredOutsideDockerQuickstart.ts'
@@ -10,7 +14,7 @@ const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
 )
 
 export const getLocationAddress = cacheable(async function getLocationAddress(
-  { longitude, latitude }: Location,
+  { longitude, latitude }: Coordinates,
 ): Promise<AddressInsert | null> {
   console.log({ longitude, latitude })
   const results = await getGeocodeData(latitude, longitude)

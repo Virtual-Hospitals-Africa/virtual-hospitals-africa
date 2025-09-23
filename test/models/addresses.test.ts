@@ -1,10 +1,12 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as addresses from '../../db/models/addresses.ts'
-import { createTestAddress } from '../mocks.ts'
+
 import omit from '../../util/omit.ts'
-import { itUsesTrxAnd } from '../web/utilities.ts'
+
 import db from '../../db/db.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { createTestAddress } from '../_helpers/addresses.ts'
 
 describe('db/models/address.ts', () => {
   afterAll(() => db.destroy())

@@ -127,6 +127,7 @@ export default function DietSection(
       </Select>
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.reasons_for_eating_other_than_hunger'
         label='Does the patient ever eat for reasons other than hunger?'
         options={EATING_REASONS}
@@ -134,6 +135,7 @@ export default function DietSection(
       />
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.staple_foods'
         label='Which foods does the patient eat almost on a daily basis or as staple foods?'
         options={STAPLE_FOODS}
@@ -142,6 +144,7 @@ export default function DietSection(
       />
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.drinks'
         label='How often does the patient have any of the following drinks?'
         options={DRINKS}
@@ -168,6 +171,7 @@ export default function DietSection(
       ))}
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.non_meats'
         label='How often does the patient eat any of the following foods?'
         options={NON_MEATS}
@@ -194,6 +198,7 @@ export default function DietSection(
       ))}
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.meats'
         label='How often does the patient eat the following meats?'
         options={MEATS}
@@ -218,6 +223,7 @@ export default function DietSection(
       ))}
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.junk_foods'
         label='How often does the patient eat any of the following foods?'
         options={JUNK_FOOD}
@@ -244,6 +250,7 @@ export default function DietSection(
       ))}
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.fats_used_in_cooking'
         label='Which fats does the patient usually add during cooking?'
         options={FATS}
@@ -251,6 +258,7 @@ export default function DietSection(
       />
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.past_special_diets'
         label='Has the patient been on any special diets?'
         options={SPECIAL_DIETS}
@@ -258,6 +266,7 @@ export default function DietSection(
       />
 
       <LabelledListboxMulti
+        variant='starts_closed'
         name='lifestyle.diet.supplements_taken'
         label='Does the patient take any supplements?'
         options={SUPPLEMENTS}

@@ -56,6 +56,7 @@ export default function SubstanceUseSection(
 
       {substance_use.value.has_ever_used_substance === true && (
         <LabelledListboxMulti
+          variant='starts_closed'
           label='Which substances does the patient use?'
           name='lifestyle.substance_use.substances_used_names'
           options={substances}

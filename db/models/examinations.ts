@@ -1,14 +1,13 @@
 import { sql } from 'kysely'
 import { upsertOne } from '../helpers.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
-import { EncounterStep } from '../../db.d.ts'
 
 export function forPatientEncounter(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    encounter_id: string
-    encounter_step?: EncounterStep
+    patient_encounter_id: string
+    seeking_treatment_step?: string
   },
 ): Promise<RenderedPatientExamination[]> {
   return trx
@@ -18,14 +17,14 @@ export function forPatientEncounter(
       'patient_encounters',
       (join) =>
         join.onRef('patient_encounters.patient_id', '=', 'patients.id')
-          .on('patient_encounters.id', '=', opts.encounter_id),
+          .on('patient_encounters.id', '=', opts.patient_encounter_id),
     )
     .innerJoin('examinations', (join) => join.onTrue())
     .leftJoin(
       'patient_examinations',
       (join) =>
         join.onRef(
-          'patient_examinations.encounter_id',
+          'patient_examinations.patient_encounter_id',
           '=',
           'patient_encounters.id',
         )
@@ -42,12 +41,12 @@ export function forPatientEncounter(
       'patient_examinations.ordered',
       'examinations.identifier as examination_identifier',
       'examinations.path',
-      'examinations.encounter_step',
+      'examinations.seeking_treatment_step',
       'examinations.slug',
       'examinations.display_name',
       sql<
         string
-      >`'/app/patients/' || ${opts.patient_id} || '/encounters/' || ${opts.encounter_id} || examinations.path`
+      >`'/app/patients/' || ${opts.patient_id} || '/encounters/' || ${opts.patient_encounter_id} || examinations.path`
         .as('href'),
     ])
     .where('patients.id', '=', opts.patient_id)
@@ -100,16 +99,20 @@ export function forPatientEncounter(
           eb('examinations.identifier', '=', 'maternity_assessment'),
         ]),
         eb(
-          'examinations.encounter_step',
+          'examinations.seeking_treatment_step',
           '=',
           'history',
         ),
       ])
     )
     .$if(
-      !!opts.encounter_step,
+      !!opts.seeking_treatment_step,
       (qb) =>
-        qb.where('examinations.encounter_step', '=', opts.encounter_step!),
+        qb.where(
+          'examinations.seeking_treatment_step',
+          '=',
+          opts.seeking_treatment_step!,
+        ),
     )
     .orderBy('examinations.order', 'asc')
     .execute()
@@ -118,23 +121,23 @@ export function forPatientEncounter(
 export function allForStep(
   trx: TrxOrDb,
   opts: {
-    encounter_step: EncounterStep
+    seeking_treatment_step: string
   },
 ) {
   return trx
     .selectFrom('examinations')
     .selectAll('examinations')
-    .where('encounter_step', '=', opts.encounter_step)
+    .where('seeking_treatment_step', '=', opts.seeking_treatment_step)
     .orderBy('examinations.order', 'asc')
     .execute()
 }
 
 // export async function add(
 //   trx: TrxOrDb,
-//   { examinations, encounter_id, patient_id, encounter_provider_id }: {
+//   { examinations, patient_encounter_id, patient_id, patient_encounter_employee_id }: {
 //     patient_id: string
-//     encounter_id: string
-//     encounter_provider_id: string
+//     patient_encounter_id: string
+//     patient_encounter_employee_id: string
 //     examinations: {
 //       during_this_encounter: string[]
 //       orders: string[]
@@ -148,7 +151,7 @@ export function allForStep(
 
 //   let delete_query = trx
 //     .deleteFrom('patient_examinations')
-//     .where('encounter_id', '=', encounter_id)
+//     .where('patient_encounter_id', '=', patient_encounter_id)
 //     .where('patient_id', '=', patient_id)
 
 //   if (all_examinations.length > 0) {
@@ -166,8 +169,8 @@ export function allForStep(
 //     .columns([
 //       'examination_identifier',
 //       'patient_id',
-//       'encounter_id',
-//       'encounter_provider_id',
+//       'patient_encounter_id',
+//       'patient_encounter_employee_id',
 //       'ordered',
 //     ])
 //     .expression((eb) => {
@@ -179,14 +182,14 @@ export function allForStep(
 //             '=',
 //             'examinations.identifier',
 //           )
-//             .on('patient_examinations.encounter_id', '=', encounter_id)
+//             .on('patient_examinations.patient_encounter_id', '=', patient_encounter_id)
 //             .on('patient_examinations.patient_id', '=', patient_id))
 //         .where('patient_examinations.id', 'is', null)
 //         .select([
 //           'examinations.identifier as examination_identifier',
 //           literalString(patient_id).as('patient_id'),
-//           literalString(encounter_id).as('encounter_id'),
-//           literalString(encounter_provider_id).as('encounter_provider_id'),
+//           literalString(patient_encounter_id).as('patient_encounter_id'),
+//           literalString(patient_encounter_employee_id).as('patient_encounter_employee_id'),
 //         ])
 
 //       const during_this_encounter = base_insert
@@ -214,8 +217,8 @@ export function allForStep(
 // export function skip(trx: TrxOrDb, values: {
 //   examination_identifier: string
 //   patient_id: string
-//   encounter_id: string
-//   encounter_provider_id: string
+//   patient_encounter_id: string
+//   patient_encounter_employee_id: string
 // }) {
 //   return trx
 //     .insertInto('patient_examinations')
@@ -229,8 +232,8 @@ export function allForStep(
 export function upsert(trx: TrxOrDb, upsert: {
   id?: string
   patient_id: string
-  encounter_id: string
-  encounter_provider_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
   examination_identifier: string
   completed?: boolean
 }) {
@@ -239,15 +242,19 @@ export function upsert(trx: TrxOrDb, upsert: {
 
 export async function createCompletedIfNoneExists(trx: TrxOrDb, exam_details: {
   patient_id: string
-  encounter_id: string
-  encounter_provider_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
   examination_identifier: string
 }) {
   const exam = await trx.updateTable('patient_examinations')
     .set({ completed: true })
     .where('patient_id', '=', exam_details.patient_id)
-    .where('encounter_id', '=', exam_details.encounter_id)
-    .where('encounter_provider_id', '=', exam_details.encounter_provider_id)
+    .where('patient_encounter_id', '=', exam_details.patient_encounter_id)
+    .where(
+      'patient_encounter_employee_id',
+      '=',
+      exam_details.patient_encounter_employee_id,
+    )
     .where('examination_identifier', '=', exam_details.examination_identifier)
     .returning('id')
     .executeTakeFirst()
@@ -259,8 +266,8 @@ export async function createIncompleteIfNoneExists(
   trx: TrxOrDb,
   { examination_identifiers, ...rest }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     examination_identifiers: string[]
   },
 ) {

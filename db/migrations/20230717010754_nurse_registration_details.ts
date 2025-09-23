@@ -71,11 +71,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('approved_by', 'uuid', (column) =>
           column
             .references('health_workers.id')
-            .onDelete('cascade'))
-        .addCheckConstraint(
-          'nurse_registration_details_national_id_number_check',
-          sql`national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
-        ),
+            .onDelete('cascade')),
   )
 }
 

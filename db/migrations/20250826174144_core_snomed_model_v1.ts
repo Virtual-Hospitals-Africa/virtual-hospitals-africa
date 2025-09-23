@@ -12,7 +12,7 @@ export async function up(db: Kysely<unknown>) {
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
         .addColumn(
-          'encounter_id',
+          'patient_encounter_id',
           'uuid',
           (col) =>
             col.notNull().references('patient_encounters.id').onDelete(
@@ -36,10 +36,10 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb
         .addColumn(
-          'encounter_provider_id',
+          'patient_encounter_employee_id',
           'uuid',
           (col) =>
-            col.notNull().references('patient_encounter_providers.id').onDelete(
+            col.notNull().references('patient_encounter_employees.id').onDelete(
               'cascade',
             ),
         ),
@@ -50,10 +50,10 @@ export async function up(db: Kysely<unknown>) {
     primary_key_type: 'uuid',
   }, (qb) =>
     qb.addColumn(
-      'encounter_provider_id',
+      'patient_encounter_employee_id',
       'uuid',
       (col) =>
-        col.notNull().references('patient_encounter_providers.id').onDelete(
+        col.notNull().references('patient_encounter_employees.id').onDelete(
           'cascade',
         ),
     )
@@ -155,10 +155,10 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb
         .addColumn(
-          'encounter_provider_id',
+          'patient_encounter_employee_id',
           'uuid',
           (col) =>
-            col.references('patient_encounter_providers.id').onDelete(
+            col.references('patient_encounter_employees.id').onDelete(
               'cascade',
             ),
         )
@@ -187,9 +187,9 @@ export async function up(db: Kysely<unknown>) {
         .addCheckConstraint(
           'evaluation_is_either_by_system_or_encounter_provider_or_during_review',
           sql`(
-            (by_system = true and (encounter_provider_id is null) and (review_id is null)) or
-            (by_system = false and (encounter_provider_id is not null) and (review_id is null)) or
-            (by_system = false and (encounter_provider_id is null) and (review_id is not null))
+            (by_system = true and (patient_encounter_employee_id is null) and (review_id is null)) or
+            (by_system = false and (patient_encounter_employee_id is not null) and (review_id is null)) or
+            (by_system = false and (patient_encounter_employee_id is null) and (review_id is not null))
           )`,
         ),
   )

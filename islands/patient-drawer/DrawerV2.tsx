@@ -33,7 +33,7 @@ export function PatientDrawerV2(
     // flaggedVitals = new Map(),
     care_team,
   }: {
-    form?: 'intake' | 'encounter'
+    form?: 'registration' | 'encounter'
     patient: {
       id: string
       name: string

@@ -3,12 +3,12 @@ import {
   DOCTOR_SPECIALTIES,
   DoctorSpecialty,
   OrganizationSortOptions,
+  RenderedPatient,
 } from '../../types.ts'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
 import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
-import { EncounterContext } from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import Dropdown, { DropdownItem } from '../../islands/Dropdown.tsx'
 import Filter, { Option } from '../../islands/Filter.tsx'
@@ -17,7 +17,7 @@ import { OrganizationsTable } from './OrganizationsTable.tsx'
 export function OrganizationView(props: {
   current_url: string
   search_url: string
-  concerning_patient: EncounterContext['state']['patient']
+  concerning_patient: RenderedPatient
   organizations: NearestOrganizationSearchResult[]
 }) {
   const organizations = useSignal(props.organizations)
