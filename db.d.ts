@@ -961,6 +961,7 @@ export interface PatientEncounters {
   id: Generated<string>
   location: string
   notes: string | null
+  organization_id: string
   patient_id: string
   reason: EncounterReason
   updated_at: Generated<Timestamp>
@@ -1149,6 +1150,12 @@ export interface PatientSymptoms {
   notes: string | null
   severity: number
   start_date: Timestamp
+}
+
+export interface PatientTriageLevel {
+  created_at: Generated<Timestamp>
+  id: string
+  target_treatment_time: Timestamp | null
 }
 
 export interface Pharmacies {
@@ -1699,6 +1706,7 @@ export interface DB {
   patient_procedures: PatientProcedures
   patient_records: PatientRecords
   patient_symptoms: PatientSymptoms
+  patient_triage_level: PatientTriageLevel
   patients: Patients
   pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:

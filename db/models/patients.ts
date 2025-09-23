@@ -266,6 +266,7 @@ export async function getWithOpenEncounter(
       eb.case().when(eb('open_encounters.encounter_id', 'is', null)).then(null)
         .else(jsonBuildObject({
           encounter_id: eb.ref('open_encounters.encounter_id').$notNull(),
+          organization_id: eb.ref('open_encounters.organization_id').$notNull(),
           created_at: eb.ref('open_encounters.created_at').$notNull(),
           closed_at: eb.ref('open_encounters.closed_at'),
           reason: eb.ref('open_encounters.reason').$notNull(),
@@ -467,4 +468,18 @@ export function scheduledAppointments(
     ])
     .where('patient_id', '=', patient_id)
     .execute()
+}
+
+export async function getPreferredLanguage(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  const patient = await trx.selectFrom('patients')
+    .where('id', '=', patient_id)
+    .select([
+      'preferred_language_code_iso_639_2_b',
+    ])
+    .executeTakeFirst()
+
+  return patient?.preferred_language_code_iso_639_2_b || null
 }
