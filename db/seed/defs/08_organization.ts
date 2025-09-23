@@ -91,10 +91,11 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       longitude: 29.7739353,
     },
     departments_accepting_patients: [
+      'triage',
       'maternity',
       'immunizations',
       'pharmacy',
-      'acute care',
+      'primary care',
       'chronic diseases',
     ],
     administrative_departments: [
@@ -120,7 +121,13 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4555096,
       longitude: 29.7738353,
     },
-    departments_accepting_patients: ['pharmacy', 'oncology', 'burns'],
+    departments_accepting_patients: [
+      'triage',
+      'primary care',
+      'pharmacy',
+      'oncology',
+      'burns',
+    ],
     administrative_departments: [
       'administration',
     ],
