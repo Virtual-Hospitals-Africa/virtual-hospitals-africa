@@ -1,39 +1,98 @@
 import headlessuiPlugin from '@headlessui/tailwindcss'
+import colors from 'tailwindcss/colors.js'
 import formsPlugin from '@tailwindcss/forms'
 import { type Config } from 'tailwindcss'
 
 export default {
   content: ['{routes,islands,components}/**/*.{ts,tsx}'],
   theme: {
-    fontFamily: {
-      sans: ['Inter', 'sans-serif'],
-      ubuntu: ['Ubuntu', 'sans-serif'],
-      display: ['Cabinet Grotesk', 'sans-serif'],
-    },
     extend: {
-      borderRadius: {
-        '4xl': '2rem',
-        '5xl': '3rem',
-        '6xl': '5rem',
+      colors: {
+        primary: {
+          DEFAULT: colors.indigo[900],
+          secondary: colors.indigo[700],
+          tertiary: colors.indigo[200],
+        },
+
+        neutral: {
+          primary: colors.gray[800],
+          secondary: colors.gray[600],
+          tertiary: colors.gray[400],
+          disabled: colors.gray[300],
+        },
+
+        background: {
+          primary: colors.white,
+          base: colors.neutral[50],
+          secondary: colors.neutral[100],
+          border: colors.neutral[200],
+        },
+
+        success: {
+          bg: colors.green[100],
+          text: colors.green[600],
+          status: colors.green[600],
+        },
+
+        error: {
+          bg: colors.red[100],
+          text: colors.red[800],
+          status: colors.red[600],
+        },
+
+        warning: {
+          bg: colors.yellow[100],
+          text: colors.yellow[800],
+          status: colors.yellow[500],
+        },
+
+        disabled: {
+          bg: colors.neutral[100],
+          text: colors.neutral[600],
+          status: colors.neutral[200],
+        },
+
+        accent: {
+          blue: {
+            bg: colors.blue[100],
+            text: colors.blue[800],
+          },
+          teal: {
+            bg: colors.teal[100],
+            text: colors.teal[800],
+          },
+          pink: {
+            bg: colors.pink[100],
+            text: colors.pink[800],
+          },
+          purple: {
+            bg: colors.purple[200],
+            text: colors.purple[800],
+          },
+          orange: {
+            bg: colors.orange[100],
+            text: colors.orange[700],
+            status: colors.orange[500],
+          },
+        },
       },
-      strokeWidth: {
-        '3': '3px',
+
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
-    },
-    fontSize: {
-      xs: ['0.75rem', { lineHeight: '1rem' }],
-      sm: ['0.875rem', { lineHeight: '1.5rem' }],
-      base: ['1rem', { lineHeight: '2rem' }],
-      lg: ['1.125rem', { lineHeight: '2rem' }],
-      xl: ['1.25rem', { lineHeight: '2rem' }],
-      '2xl': ['1.375rem', { lineHeight: '2rem' }],
-      '3xl': ['1.5rem', { lineHeight: '2rem' }],
-      '4xl': ['2rem', { lineHeight: '2.5rem' }],
-      '5xl': ['3.5rem', { lineHeight: '1' }],
-      '6xl': ['4rem', { lineHeight: '1' }],
-      '7xl': ['4.5rem', { lineHeight: '1' }],
-      '8xl': ['6rem', { lineHeight: '1' }],
-      '9xl': ['8rem', { lineHeight: '1' }],
+
+      fontSize: {
+        'heading-1': ['24px', '32px'],
+        'heading-2': ['20px', '28px'],
+        'heading-3': ['18px', '26px'],
+        'heading-4': ['16px', '24px'],
+        'heading-5': ['14px', '20px'],
+        '20': ['20px', '28px'],
+        '18': ['18px', '26px'],
+        '16': ['16px', '24px'],
+        '14': ['14px', '20px'],
+        '12': ['12px', '20px'],
+      },
     },
   },
   plugins: [formsPlugin, headlessuiPlugin],
