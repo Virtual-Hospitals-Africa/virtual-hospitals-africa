@@ -109,7 +109,7 @@ const next_links_by_step = groupByMapped(
     }
     return {
       route: next_link?.route ||
-        `/app/organizations/:organization_id/waiting_room?just_encountered_id=:patient_id`,
+        `/app/organizations/:organization_id/waiting_room?just_encountered_patient_id=:patient_id`,
       button_text: next_link ? `Next` : 'End and Save Intake',
     }
   },

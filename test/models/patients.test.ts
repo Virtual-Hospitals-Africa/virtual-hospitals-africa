@@ -190,6 +190,7 @@ describe('db/models/patients.ts', () => {
           },
           open_encounter: {
             encounter_id: encounter.id,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             patient_id,
             reason: 'seeking treatment',
             providers: [],
@@ -265,6 +266,7 @@ describe('db/models/patients.ts', () => {
               closed_at: null,
               notes: null,
               appointment_id: null,
+              organization_id: '00000000-0000-0000-0000-000000000001',
               waiting_room_id: encounter.waiting_room_id,
               waiting_room_organization_id:
                 '00000000-0000-0000-0000-000000000001',

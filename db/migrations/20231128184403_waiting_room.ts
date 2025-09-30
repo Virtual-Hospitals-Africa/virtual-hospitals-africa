@@ -10,6 +10,14 @@ export async function up(db: Kysely<unknown>) {
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
       .addColumn('reason', sql`encounter_reason`, (col) => col.notNull())
+      // In the future we will support encounters with patients that aren't physical,
+      // but in the meanwhile this is the main use case
+      .addColumn(
+        'organization_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('organizations.id').onDelete('cascade'),
+      )
       .addColumn(
         'appointment_id',
         'uuid',

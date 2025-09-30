@@ -11,3 +11,16 @@ export const PRIORITY_SNOMED_CODES = {
 export const PRIORITIES = keys(PRIORITY_SNOMED_CODES)
 
 export type Priority = (typeof PRIORITIES)[number]
+
+export type TriageLevel =
+  | 'Non-urgent'
+  | 'Urgent'
+  | 'Very urgent'
+  | 'Emergency'
+
+export const TARGET_TIME_TO_TREATMENT_MINUTES = {
+  'Non-urgent': 240,
+  'Urgent': 60,
+  'Very urgent': 10,
+  'Emergency': 0,
+}

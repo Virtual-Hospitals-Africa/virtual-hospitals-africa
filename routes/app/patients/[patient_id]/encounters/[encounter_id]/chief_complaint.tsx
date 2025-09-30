@@ -11,7 +11,7 @@ import { postHandler } from '../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import { ChiefComplaintSection } from '../../../../../../islands/chief-complaint/Section.tsx'
 
-const PatientSymptomSchema = z.object({
+const PatientChiefComplaintSchema = z.object({
   altered_patient_chief_complaint_id: z.string().uuid().optional(),
   language_code: z.string().length(3),
   media_speech_id: z.string().optional(),
@@ -19,7 +19,7 @@ const PatientSymptomSchema = z.object({
 })
 
 export const handler = postHandler(
-  PatientSymptomSchema,
+  PatientChiefComplaintSchema,
   async (_req, ctx: EncounterContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 

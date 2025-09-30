@@ -92,6 +92,7 @@ export async function insert(
     patient_id,
     reason,
     notes,
+    organization_id,
     appointment_id: appointment_id || null,
     location: literalLocation(location),
   }
@@ -190,6 +191,7 @@ export function baseQuery(trx: TrxOrDb) {
       'patient_encounters.notes',
       'patient_encounters.appointment_id',
       'patient_encounters.patient_id',
+      'patient_encounters.organization_id',
       jsonBuildObject({
         longitude: sql<number>`ST_X(patient_encounters.location::geometry)`,
         latitude: sql<number>`ST_Y(patient_encounters.location::geometry)`,
