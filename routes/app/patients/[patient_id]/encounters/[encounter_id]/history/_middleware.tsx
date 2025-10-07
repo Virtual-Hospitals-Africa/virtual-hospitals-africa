@@ -1,17 +1,17 @@
 import { JSX } from 'preact'
-import * as examinations from '../../../../../../../db/models/examinations.ts'
-import {
-  completeStep,
-  EncounterContext,
-  EncounterPage,
-} from '../_middleware.tsx'
-import { RenderedPatientExamination } from '../../../../../../../types.ts'
 import {
   TabProps,
   Tabs,
 } from '../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../components/library/icons/progress.tsx'
+import * as examinations from '../../../../../../../db/models/examinations.ts'
+import { RenderedPatientExamination } from '../../../../../../../types.ts'
 import redirect from '../../../../../../../util/redirect.ts'
+import {
+  completeStep,
+  EncounterContext,
+  EncounterPage,
+} from '../_middleware.tsx'
 
 type HistoryState = {
   history_assessments: RenderedPatientExamination[]
@@ -23,10 +23,7 @@ export type HistoryContext = EncounterContext & {
   state: HistoryState
 }
 
-export async function handler(
-  _req: Request,
-  ctx: HistoryContext,
-) {
+export async function handler(_req: Request, ctx: HistoryContext) {
   const history_assessments = await examinations.forPatientEncounter(
     ctx.state.trx,
     {
@@ -36,8 +33,8 @@ export async function handler(
     },
   )
 
-  const next_incomplete_assessment = history_assessments.find((a) =>
-    !a.completed
+  const next_incomplete_assessment = history_assessments.find(
+    (a) => !a.completed,
   )
 
   const current_assessment_slug = ctx.url.pathname.match(/\/history\/(.*)$/)
@@ -62,10 +59,11 @@ export type HistoryPageChildProps = {
 }
 
 export function completeAssessment(ctx: HistoryContext) {
-  const next_incomplete_assessment = ctx.state.history_assessments.find((a) =>
-    !a.completed &&
-    a.examination_identifier !==
-      ctx.state.current_assessment.examination_identifier
+  const next_incomplete_assessment = ctx.state.history_assessments.find(
+    (a) =>
+      !a.completed &&
+      a.examination_identifier !==
+        ctx.state.current_assessment.examination_identifier,
   )
   if (!next_incomplete_assessment) {
     return completeStep(ctx)
@@ -88,17 +86,16 @@ export function HistoryPage(
       return rendered
     }
 
-    const tabs: TabProps[] = ctx.state.history_assessments
-      .map((assessment) => {
-        const active = assessment.examination_identifier ===
-          ctx.state.current_assessment.examination_identifier
-        return {
-          tab: assessment.display_name,
-          href: assessment.href,
-          active,
-          leftIcon: <Progress {...assessment} active={active} />,
-        }
-      })
+    const tabs: TabProps[] = ctx.state.history_assessments.map((assessment) => {
+      const active = assessment.examination_identifier ===
+        ctx.state.current_assessment.examination_identifier
+      return {
+        tab: assessment.display_name,
+        href: assessment.href,
+        active,
+        leftIcon: <Progress {...assessment} active={active} />,
+      }
+    })
 
     return (
       <>

@@ -1,8 +1,11 @@
-import { ComponentChildren, JSX } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
+import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
-import Layout from '../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../components/library/Form.tsx'
+import Layout from '../../../../../../components/library/Layout.tsx'
+import { get as getPatientHistory } from '../../../../../../db/models/patient_history.ts'
+import * as patients from '../../../../../../db/models/patients.ts'
+import { get as getThisVisitRecords } from '../../../../../../db/models/this_visit_records.ts'
 import {
   HasStringId,
   LoggedInHealthWorkerContext,
@@ -12,32 +15,29 @@ import {
   RenderedPatientHistory,
   ThisVisitRecords,
 } from '../../../../../../types.ts'
-import * as patients from '../../../../../../db/models/patients.ts'
-import { get as getThisVisitRecords } from '../../../../../../db/models/this_visit_records.ts'
-import { get as getPatientHistory } from '../../../../../../db/models/patient_history.ts'
 
-import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { Button } from '../../../../../../components/library/Button.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
-import capitalize from '../../../../../../util/capitalize.ts'
-import {
-  ENCOUNTER_STEPS,
-  isEncounterStep,
-} from '../../../../../../shared/encounter.ts'
+import { EncounterStep } from '../../../../../../db.d.ts'
 import {
   completedStep,
   removeFromWaitingRoomAndAddSelfAsProvider,
 } from '../../../../../../db/models/patient_encounters.ts'
+import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
+import {
+  ENCOUNTER_STEPS,
+  isEncounterStep,
+} from '../../../../../../shared/encounter.ts'
+import capitalize from '../../../../../../util/capitalize.ts'
+import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
+import { groupByMapped } from '../../../../../../util/groupBy.ts'
+import { promiseProps } from '../../../../../../util/promiseProps.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
-import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
-import { Button } from '../../../../../../components/library/Button.tsx'
-import { EncounterStep } from '../../../../../../db.d.ts'
-import { groupByMapped } from '../../../../../../util/groupBy.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { promiseProps } from '../../../../../../util/promiseProps.ts'
 
-import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
 import PatientDrawerV3 from '../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
+import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -56,9 +56,7 @@ type EncounterPageProps = {
   previously_completed?: boolean
 }
 
-export type EncounterContext = LoggedInHealthWorkerContext<
-  EncounterPageProps
->
+export type EncounterContext = LoggedInHealthWorkerContext<EncounterPageProps>
 
 const nav_links = ENCOUNTER_STEPS.map((step) => ({
   step,
@@ -112,49 +110,38 @@ function stepFromUrl(ctx: EncounterContext) {
   return step
 }
 
-export async function handler(
-  req: Request,
-  ctx: EncounterContext,
-) {
+export async function handler(req: Request, ctx: EncounterContext) {
   const encounter_id = getEncounterId(ctx)
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
   const { trx, health_worker } = ctx.state
 
   // TODO: Do this as part of an earlier POST request
-  const promised_encounter = removeFromWaitingRoomAndAddSelfAsProvider(
-    trx,
-    {
-      encounter_id,
-      patient_id,
-      health_worker,
-    },
-  )
+  const promised_encounter = removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+    encounter_id,
+    patient_id,
+    health_worker,
+  })
 
   if (encounter_id === 'open' && req.method === 'GET') {
     const { encounter } = await promised_encounter
     return redirect(
-      replaceParams(
-        ctx.route,
-        {
-          ...ctx.params,
-          encounter_id: encounter.encounter_id,
-        },
-      ),
+      replaceParams(ctx.route, {
+        ...ctx.params,
+        encounter_id: encounter.encounter_id,
+      }),
     )
   }
 
   // TODO once removeFromWaitingRoomAndAddSelfAsProvider is converted to a POST,
   // we can get the encounter_provider from the open_encounters without this intermittent await
   const { encounter, encounter_provider } = await promised_encounter
-  const {
-    patient,
-    this_visit_records,
-    patient_history,
-  } = await promiseProps({
-    patient: patients.getWithOpenEncounter(trx, {
-      ids: [patient_id],
-      health_worker_id: health_worker.id,
-    }).then((patients) => patients[0]),
+  const { patient, this_visit_records, patient_history } = await promiseProps({
+    patient: patients
+      .getWithOpenEncounter(trx, {
+        ids: [patient_id],
+        health_worker_id: health_worker.id,
+      })
+      .then((patients) => patients[0]),
     this_visit_records: getThisVisitRecords(trx, {
       encounter_id,
       encounter_provider_id: encounter_provider.patient_encounter_provider_id,
@@ -170,8 +157,8 @@ export async function handler(
     req.headers.get('accept') === 'application/json'
 
   if (!getting_json) {
-    const next_incomplete_step = ENCOUNTER_STEPS.find((step) =>
-      !encounter.steps_completed.includes(step)
+    const next_incomplete_step = ENCOUNTER_STEPS.find(
+      (step) => !encounter.steps_completed.includes(step),
     )
     assertOrRedirect(
       isEncounterStep(step),
@@ -234,15 +221,14 @@ export function EncounterLayout({
       url={ctx.url}
       variant='form'
     >
-      <Form method='POST' id='encounter'>
+      <Form method='POST' id='encounter' className='flex-1'>
         {children}
-        <hr />
+        <div className='flex-1' />
+        <hr className='flex-1' />
         <ButtonsContainer>
-          <Button
-            type='submit'
-            className='flex-1 max-w-xl'
-          >
+          <Button type='submit' className='flex-1 max-w-xl'>
             {next_step_text || nextStep(ctx).button_text}
+            {/* Continue button here */}
           </Button>
         </ButtonsContainer>
       </Form>
@@ -267,10 +253,7 @@ export function EncounterPage<
     | Promise<Response>
     | Promise<Response | JSX.Element>,
 ) {
-  return async function (
-    _req: Request,
-    ctx: EncounterContext,
-  ) {
+  return async function (_req: Request, ctx: EncounterContext) {
     const rendered = await render(ctx as Context)
 
     if (rendered instanceof Response) {
@@ -285,10 +268,7 @@ export function EncounterPage<
     }
 
     return (
-      <EncounterLayout
-        ctx={ctx}
-        next_step_text={next_step_text}
-      >
+      <EncounterLayout ctx={ctx} next_step_text={next_step_text}>
         {children}
       </EncounterLayout>
     )
