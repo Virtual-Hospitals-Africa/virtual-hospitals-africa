@@ -20,6 +20,7 @@ import isObjectLike from '../../../../util/isObjectLike.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
 import { EmployedHealthWorker } from '../../../../types.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { promiseProps } from '../../../../util/promiseProps.ts'
 
 type SearchFormValues = {
   provider_id?: string
@@ -100,25 +101,20 @@ export default HealthWorkerHomePageLayout(
     if (!search.patient_id) {
       return ctx.render({ health_worker })
     } else {
-      const patient = await patients.getByID(ctx.state.trx, {
-        id: search.patient_id,
-      })
+      const patient = await patients.getById(ctx.state.trx, search.patient_id)
 
       patient_info = { id: patient.id, name: patient.name }
     }
 
-    const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
-      ids: [search.patient_id],
-      health_worker_id: health_worker.id,
+    const { patient, availability } = await promiseProps({
+      patient: patients.getById(ctx.state.trx, search.patient_id),
+      availability: availableSlots(ctx.state.trx, {
+        count: 10,
+        dates: search.date ? [search.date] : undefined,
+        employment_ids: search.provider_id ? [search.provider_id] : undefined,
+      }),
     })
 
-    const availability = await availableSlots(ctx.state.trx, {
-      count: 10,
-      dates: search.date ? [search.date] : undefined,
-      employment_ids: search.provider_id ? [search.provider_id] : undefined,
-    })
-
-    const [patient] = await gettingPatient
     assert(hasName(patient))
 
     const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({

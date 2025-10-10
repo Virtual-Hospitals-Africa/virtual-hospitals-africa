@@ -220,6 +220,7 @@ export default function ExerciseSection(
       {currently_exercises.value && (
         <>
           <LabelledListboxMulti
+            variant='starts_closed'
             label='Which physical activities does the patient engage in?'
             name='lifestyle.exercise.physical_activities'
             options={PHYSICAL_ACTIVITIES}
@@ -246,6 +247,7 @@ export default function ExerciseSection(
             />
           ))}
           <LabelledListboxMulti
+            variant='starts_closed'
             label='Which sports do the patient engage in?'
             name='lifestyle.exercise.sports'
             options={SPORTS}
@@ -271,6 +273,7 @@ export default function ExerciseSection(
             />
           ))}
           <LabelledListboxMulti
+            variant='starts_closed'
             label='Does the patient engage in any of these exercise types? Select all that apply'
             name='lifestyle.exercise.types_of_exercises'
             options={TYPES_OF_EXERCISES_OPTIONS}
@@ -280,6 +283,7 @@ export default function ExerciseSection(
             }}
           />
           <LabelledListboxMulti
+            variant='starts_closed'
             label='Does the patient have physical injuries or disability that may limit their physical activity?'
             name='lifestyle.exercise.physical_injuries_or_disability.disabilities'
             options={INJURIES_DISABILITIES_LIST}
@@ -288,6 +292,7 @@ export default function ExerciseSection(
           />
           {disabilities.value.includes('Musculoskeletal injuries') && (
             <LabelledListboxMulti
+              variant='starts_closed'
               key='musculoskeletal_injuries'
               label='Which musculoskeletal injuries afflict the patient? Select all that apply'
               name='lifestyle.exercise.physical_injuries_or_disability.musculoskeletal_injuries'
@@ -297,6 +302,7 @@ export default function ExerciseSection(
             />
           )}
           <LabelledListboxMulti
+            variant='starts_closed'
             label='Does the patient have any exercise limitations? Select all that apply'
             name='lifestyle.exercise.limitations.limits'
             options={LIMITATIONS_LIST}
@@ -308,6 +314,7 @@ export default function ExerciseSection(
 
           {limitations.value.includes('Structural conditions') && (
             <LabelledListboxMulti
+              variant='starts_closed'
               key='structural_conditions'
               label='Which structural conditions afflict the patient? Select all that apply'
               name='lifestyle.exercise.limitations.structural_conditions'
@@ -320,6 +327,7 @@ export default function ExerciseSection(
           )}
           {limitations.value.includes('Medical conditions') && (
             <LabelledListboxMulti
+              variant='starts_closed'
               key='medical_conditions'
               label='Which medical conditions afflict the patient? Select all that apply'
               name='lifestyle.exercise.limitations.medical_conditions'

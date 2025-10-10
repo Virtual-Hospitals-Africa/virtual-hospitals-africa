@@ -8,7 +8,7 @@ import MedicationSearch from './Search.tsx'
 import {
   dosageDisplay,
   Dosages,
-  IntakeFrequencies,
+  RegistrationFrequencies,
   strengthDisplay,
 } from '../../shared/medication.ts'
 import { computed, effect, useSignal } from '@preact/signals'
@@ -30,9 +30,9 @@ export default function DrugInput({
     number | null
   >(value?.strength ?? null)
 
-  const intake_frequency = useSignal<
+  const registration_frequency = useSignal<
     string | null
-  >(value?.intake_frequency ?? null)
+  >(value?.registration_frequency ?? null)
 
   const dosage = useSignal<number | null>(
     value?.dosage ?? null,
@@ -90,7 +90,7 @@ export default function DrugInput({
             medication_id.value = null
             strength_numerator.value = null
             dosage.value = null
-            intake_frequency.value = null
+            registration_frequency.value = null
           }}
         />
       </FormRow>
@@ -201,17 +201,17 @@ export default function DrugInput({
             ))}
         </Select>
         <Select
-          name={`${name}.intake_frequency`}
+          name={`${name}.registration_frequency`}
           required
           label='Frequency'
           disabled={!drug}
         >
           <option value=''>Select Frequency</option>
           {drug &&
-            Object.entries(IntakeFrequencies).map(([code, label]) => (
+            Object.entries(RegistrationFrequencies).map(([code, label]) => (
               <option
                 value={code}
-                selected={intake_frequency.value === code}
+                selected={registration_frequency.value === code}
               >
                 {label}
               </option>

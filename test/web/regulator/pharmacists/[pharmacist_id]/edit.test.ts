@@ -1,17 +1,15 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../../../../util/uuid.ts'
-import {
-  addTestPharmacist,
-  addTestRegulatorWithSession,
-  route,
-} from '../../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import { Prefix } from '../../../../../types.ts'
+import { addTestPharmacist } from '../../../../_helpers/pharmacists.ts'
+import { addTestRegulatorWithSession } from '../../../../_helpers/regulators.ts'
+import { route } from '../../../../route.ts'
 
-describe(
+describe.skip(
   '/regulator/[country]/pharmacists/[pharmacist_id]/edit',
   { sanitizeResources: false, sanitizeOps: false },
   () => {

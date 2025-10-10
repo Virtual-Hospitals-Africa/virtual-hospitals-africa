@@ -9,7 +9,7 @@ import FormRow from '../../components/library/FormRow.tsx'
 import {
   dosageDisplay,
   Dosages,
-  IntakeFrequencies,
+  RegistrationFrequencies,
 } from '../../shared/medication.ts'
 import { useSignal } from '@preact/signals'
 
@@ -62,7 +62,7 @@ export function ScheduleInput({
       >
         <option value=''>Select Frequency</option>
         {strength_numerator && medication &&
-          Object.entries(IntakeFrequencies).map(([code, label]) => (
+          Object.entries(RegistrationFrequencies).map(([code, label]) => (
             <option
               value={code}
               selected={frequency.value === code}

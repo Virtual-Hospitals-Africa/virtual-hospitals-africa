@@ -3,8 +3,9 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import manufactured_medications from '../../db/models/manufactured_medications.ts'
 import deepOmit from '../../util/deepOmit.ts'
-import { itUsesTrxAnd, withTestRegulator } from '../web/utilities.ts'
 import db from '../../db/db.ts'
+import { withTestRegulator } from '../_helpers/regulators.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe('db/models/drugs.ts', () => {
   afterAll(() => db.destroy())

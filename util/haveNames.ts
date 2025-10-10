@@ -9,3 +9,23 @@ export function haveNames<T extends Record<string, unknown>>(
 ): rows is Array<T & { name: string }> {
   return rows.every(hasName)
 }
+
+export function hasStringField<
+  T extends Record<string, unknown>,
+  K extends keyof T,
+>(
+  row: T,
+  key: K,
+): row is T & { [k in K]: string } {
+  return key in row && !!row[key] && typeof row[key] === 'string'
+}
+
+export function allHaveStringField<
+  T extends Record<string, unknown>,
+  K extends keyof T,
+>(
+  rows: T[],
+  key: K,
+): rows is Array<T & { [k in K]: string }> {
+  return rows.every((row) => hasStringField(row, key))
+}

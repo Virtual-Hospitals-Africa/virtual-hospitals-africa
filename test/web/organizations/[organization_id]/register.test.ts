@@ -1,23 +1,24 @@
 import { describe, it } from 'std/testing/bdd.ts'
+import { createTestAddress } from '../../../_helpers/addresses.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  addTestHealthWorker,
-  addTestHealthWorkerWithSession,
-  route,
-} from '../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { createTestAddress } from '../../../mocks.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import db from '../../../../db/db.ts'
+import {
+  addTestEmployee,
+  addTestEmployeeWithSession,
+} from '../../../_helpers/employees.ts'
+import { route } from '../../../route.ts'
 
 describe(
   '/app/organizations/[organization_id]/register',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a registration page on GET', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession(db, {
-        scenario: 'nurse',
+      const { fetch } = await addTestEmployeeWithSession(db, {
+        profession: 'nurse',
+        registration_status: 'not started',
       })
 
       const response = await fetch(
@@ -54,11 +55,14 @@ describe(
     })
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
-      await addTestHealthWorker(db, { scenario: 'admin' })
-      const { fetch, health_worker: nurse } =
-        await addTestHealthWorkerWithSession(db, {
-          scenario: 'nurse',
-        })
+      await addTestEmployee(db, { profession: 'admin' })
+      const { fetch, health_worker: nurse } = await addTestEmployeeWithSession(
+        db,
+        {
+          profession: 'nurse',
+          registration_status: 'not started',
+        },
+      )
       const address = createTestAddress()
 
       {
@@ -264,7 +268,7 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/app`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
         )
         // TODO turn off SKIP_NURSE_REGISTRATION
         // assertEquals(

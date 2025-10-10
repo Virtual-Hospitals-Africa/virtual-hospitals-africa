@@ -142,9 +142,9 @@ export class HttpClient<SecurityDataType = unknown> {
       ? JSON.stringify(input)
       : input),
     [ContentType.FormData]: (input: any) =>
-      Object.keys(input || {}).reduce((formData, key) => {
+      Object.keys(input || {}).reduce((form_data, key) => {
         const property = input[key]
-        formData.append(
+        form_data.append(
           key,
           property instanceof Blob
             ? property
@@ -152,7 +152,7 @@ export class HttpClient<SecurityDataType = unknown> {
             ? JSON.stringify(property)
             : `${property}`,
         )
-        return formData
+        return form_data
       }, new FormData()),
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   }

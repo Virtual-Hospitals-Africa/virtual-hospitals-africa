@@ -1,6 +1,6 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
-import { route } from './utilities.ts'
+import { route } from '../route.ts'
 import * as cheerio from 'cheerio'
 import db from '../../db/db.ts'
 

@@ -168,6 +168,7 @@ export default function SmokingSection(
       {smoking.value.has_ever_smoked === true &&
         smoking.value.currently_smokes === true && (
         <LabelledListboxMulti
+          variant='starts_closed'
           label='Which tobacco products does the patient use?'
           name='lifestyle.smoking.tobacco_products_used'
           options={tobacco_products}

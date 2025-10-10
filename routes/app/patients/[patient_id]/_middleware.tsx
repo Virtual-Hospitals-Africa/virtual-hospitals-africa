@@ -1,15 +1,13 @@
 import * as patients from '../../../../db/models/patients.ts'
 import type {
-  HasStringId,
   LoggedInHealthWorkerContext,
-  PatientWithOpenEncounter,
+  RenderedPatient,
 } from '../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
-import { assertOr404 } from '../../../../util/assertOr.ts'
 
 export type PatientContext = LoggedInHealthWorkerContext<
   {
-    patient: HasStringId<PatientWithOpenEncounter>
+    patient: RenderedPatient
   }
 >
 
@@ -18,14 +16,7 @@ export async function handler(
   ctx: PatientContext,
 ) {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-
-  const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
-    ids: [patient_id],
-    health_worker_id: ctx.state.health_worker.id,
-  })
-
-  assertOr404(patient, 'Patient not found')
-
+  const patient = await patients.getById(ctx.state.trx, patient_id)
   ctx.state.patient = patient
   return ctx.next()
 }

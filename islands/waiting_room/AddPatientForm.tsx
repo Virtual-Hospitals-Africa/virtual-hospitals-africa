@@ -5,7 +5,7 @@ import { RadioGroup, TextArea } from '../form/Inputs.tsx'
 import ProvidersSelect from '../ProvidersSelect.tsx'
 import Form from '../../components/library/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
+import { ENCOUNTER_REASONS } from '../../shared/reasons.ts'
 
 const radio_group_options = ENCOUNTER_REASONS.map((
   value,

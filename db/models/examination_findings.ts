@@ -11,7 +11,7 @@ export function baseQuery(trx: TrxOrDb) {
     )
     .innerJoin(
       'patient_encounters',
-      'patient_examinations.encounter_id',
+      'patient_examinations.patient_encounter_id',
       'patient_encounters.id',
     )
     .innerJoin(
@@ -39,8 +39,8 @@ export function baseQuery(trx: TrxOrDb) {
       'patient_examination_findings.id as patient_examination_finding_id',
       'patient_examination_findings.patient_examination_id',
       'patient_examinations.patient_id',
-      'patient_examinations.encounter_id',
-      'patient_examinations.encounter_provider_id',
+      'patient_examinations.patient_encounter_id',
+      'patient_examinations.patient_encounter_employee_id',
       eb('patient_encounters.closed_at', 'is', null).as('encounter_open'),
       jsonArrayFrom(
         eb.selectFrom('patient_examination_finding_body_sites')
@@ -78,7 +78,7 @@ function render(
 ): RenderedPatientExaminationFinding[] {
   return examinations.map(({ path, ...ex }) => {
     const examination_href =
-      `/app/patients/${ex.patient_id}/encounters/${ex.encounter_id}${path}`
+      `/app/patients/${ex.patient_id}/encounters/${ex.patient_encounter_id}${path}`
 
     const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
@@ -91,10 +91,14 @@ function render(
 
 export async function forPatientEncounter(trx: TrxOrDb, opts: {
   patient_id: string
-  encounter_id: string
+  patient_encounter_id: string
 }): Promise<RenderedPatientExaminationFinding[]> {
   const examinations = await baseQuery(trx)
-    .where('patient_examinations.encounter_id', '=', opts.encounter_id)
+    .where(
+      'patient_examinations.patient_encounter_id',
+      '=',
+      opts.patient_encounter_id,
+    )
     .where('patient_examinations.patient_id', '=', opts.patient_id)
     .execute()
 
@@ -105,15 +109,15 @@ export async function upsertForPatientExamination(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     examination_identifier,
     findings,
     patient_examination_id,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     examination_identifier: string
     patient_examination_id: string
     findings: {
@@ -144,8 +148,8 @@ export async function upsertForPatientExamination(
       .execute(),
     examination: upsertOne(trx, 'patient_examinations', {
       patient_id,
-      encounter_id,
-      encounter_provider_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
       examination_identifier,
       id: patient_examination_id,
       completed: true,

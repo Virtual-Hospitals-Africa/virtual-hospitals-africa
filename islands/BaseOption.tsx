@@ -12,6 +12,7 @@ export function BaseOption<
   selected,
 }: {
   option: T
+  active: boolean
   selected: boolean
 }) {
   return (

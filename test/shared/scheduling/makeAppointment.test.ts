@@ -1,10 +1,11 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
+import { itUsesTrxAnd } from '../../_helpers/transaction.ts'
+import { addTestEmployee } from '../../_helpers/employees.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
 import * as patients from '../../../db/models/patients.ts'
-import { addTestHealthWorker } from '../../web/utilities.ts'
-import { itUsesTrxAnd } from '../../web/utilities.ts'
+
 import { spy } from 'std/testing/mock.ts'
 import { GCalEvent, GoogleTokens } from '../../../types.ts'
 import db from '../../../db/db.ts'
@@ -20,8 +21,8 @@ describe('scheduling/makeAppointment.ts', () => {
             id: 'inserted google event id',
           } as GCalEvent)
         )
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'doctor',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'doctor',
         })
 
         const patient = await patients.insert(trx, {
@@ -34,7 +35,7 @@ describe('scheduling/makeAppointment.ts', () => {
           reason: 'back pain',
           duration_minutes: 30,
           patient_id: patient.id,
-          provider_ids: [health_worker.employee_id!],
+          provider_ids: [health_worker.employee_id],
         }, insertEvent)
 
         assertEquals(insertEvent.calls.length, 1)
@@ -74,6 +75,7 @@ describe('scheduling/makeAppointment.ts', () => {
           patient: {
             avatar_url: null,
             dob_formatted: null,
+            date_of_birth: null,
             address: null,
             age_display: null,
             age_years: null,
@@ -89,11 +91,10 @@ describe('scheduling/makeAppointment.ts', () => {
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,
-            completed_intake: false,
+            completed_registration: false,
             actions: {
               view: `/app/patients/${patient.id}`,
             },
-            open_encounter: null,
           },
           patient_id: patient.id,
           reason: 'back pain',

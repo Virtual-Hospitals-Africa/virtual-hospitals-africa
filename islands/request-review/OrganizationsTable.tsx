@@ -1,12 +1,10 @@
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
-import Table, {
-  ExtendedActionData,
-  TableColumn,
-} from '../../components/library/Table.tsx'
+import Table, { TableColumn } from '../../components/library/Table.tsx'
 import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import cls from '../../util/cls.ts'
 import Badge, { BadgeColor } from '../../components/library/Badge.tsx'
+import { ExtendedActionData } from '../../types.ts'
 
 const StatusBadge = (row: NearestOrganizationSearchResult) => {
   let theme: BadgeColor

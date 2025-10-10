@@ -5,9 +5,9 @@ import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDo
 import Form from '../components/library/Form.tsx'
 
 export default function NurseRegistrationForm(
-  { currentStep, formData }: {
+  { currentStep, form_data }: {
     currentStep: string
-    formData: Partial<FormState>
+    form_data: Partial<FormState>
   },
 ) {
   return (
@@ -18,15 +18,15 @@ export default function NurseRegistrationForm(
     >
       {currentStep === 'personal' && (
         <NursePersonalForm
-          formData={formData}
+          form_data={form_data}
         />
       )}
       {currentStep === 'professional' && (
-        <NurseProfessionalForm formData={formData} />
+        <NurseProfessionalForm form_data={form_data} />
       )}
       {currentStep === 'documents' && (
         <NurseDocumentsForm
-          formData={formData}
+          form_data={form_data}
         />
       )}
     </Form>

@@ -5,13 +5,15 @@ import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
-import { itUsesTrxAnd, withTestOrganizations } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { withTestOrganizations } from '../_helpers/organizations.ts'
+import { insertTestAddress } from '../_helpers/addresses.ts'
+import randomNationalId from '../../mocks/randomNationalId.ts'
 
 describe('db/models/organizations.ts', () => {
   afterAll(() => db.destroy())

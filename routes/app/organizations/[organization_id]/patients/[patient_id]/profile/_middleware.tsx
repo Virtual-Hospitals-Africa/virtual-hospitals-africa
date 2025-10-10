@@ -1,0 +1,158 @@
+import { JSX } from 'preact'
+import * as appointments from '../../../../../../../db/models/appointments.ts'
+import * as patients from '../../../../../../../db/models/patients.ts'
+import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
+import { Person } from '../../../../../../../components/library/Person.tsx'
+import { Tabs } from '../../../../../../../components/library/Tabs.tsx'
+import { replaceParams } from '../../../../../../../util/replaceParams.ts'
+import { assertOr405 } from '../../../../../../../util/assertOr.ts'
+import { HealthWorkerHomePageLayout } from '../../../../../_middleware.tsx'
+import { promiseProps } from '../../../../../../../util/promiseProps.ts'
+import { OrganizationContext } from '../../../_middleware.ts'
+import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
+import first from '../../../../../../../util/first.ts'
+import { asWaitingRoom } from '../../../../../../../db/models/waiting_room.ts'
+import { RenderedPatient } from '../../../../../../../types.ts'
+import { ActionButton } from '../../../../../../../components/library/ActionButton.tsx'
+
+export type PatientProfileState = {
+  patient: RenderedPatient & {
+    completed_registration: true
+  }
+}
+
+export type PatientProfileContext = OrganizationContext & {
+  state: PatientProfileState
+}
+
+export function handler(
+  _req: Request,
+  ctx: OrganizationContext,
+) {
+  return ctx.next()
+}
+
+export const PatientProfilePage = (
+  title: string,
+  render: (
+    req: Request,
+    ctx: PatientProfileContext,
+  ) => JSX.Element | Promise<JSX.Element>,
+) =>
+  HealthWorkerHomePageLayout<PatientProfileContext>(
+    title,
+    async function PatientContents(req, ctx) {
+      const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+      const { trx, organization_employment } = ctx.state
+
+      const { patient, upcoming_appointments, open_encounter } =
+        await promiseProps({
+          patient: patients.getById(trx, patient_id),
+          upcoming_appointments: appointments.getForPatient(
+            trx,
+            {
+              patient_id,
+              time_range: 'future',
+            },
+          ),
+          open_encounter: patient_encounters.getOpen(trx, {
+            patient_id,
+          }).then(first),
+        })
+
+      assertOr405(
+        patient.completed_registration,
+        `Patient hasn't completed registration yet`,
+      )
+
+      const as_waiting_room = open_encounter &&
+        asWaitingRoom(open_encounter, organization_employment)
+
+      const action = as_waiting_room?.actions[0]
+
+      const tabs = [
+        'summary',
+        'profile',
+        'visits',
+        'history',
+        'appointments',
+        'review',
+        'orders',
+        'patient_information',
+      ]
+
+      const drawer = undefined
+      const rendered = await render(req, ctx)
+
+      return {
+        drawer,
+        children: (
+          <>
+            <div className='container my-4 mx-6'>
+              <Person
+                person={{
+                  ...patient,
+                  description: (
+                    <>
+                      {patient.description && (
+                        <>
+                          {patient.description}
+                          <br />
+                        </>
+                      )}
+
+                      {patient.primary_doctor && (
+                        <a
+                          href={`/app/organizations/${patient.primary_doctor.organization.id}/employees/${patient.primary_doctor.health_worker_id}`}
+                          title={`View details of Dr. ${patient.primary_doctor.name}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          Dr. {patient.primary_doctor.name}
+                        </a>
+                      )}
+                      {patient.nearest_organization && (
+                        <a
+                          href={`/app/organizations/${patient.nearest_organization.id}`}
+                          title={`View details of ${patient.nearest_organization}`}
+                          className='hover:underline text-blue-600'
+                        >
+                          {patient.nearest_organization.name}
+                        </a>
+                      )}
+                    </>
+                  ),
+                }}
+              />
+              <Tabs
+                tabs={tabs.map((tab) => ({
+                  tab,
+                  href: replaceParams(
+                    '/app/organizations/:organization_id/patients/:patient_id/profile/:tab',
+                    {
+                      ...ctx.params,
+                      tab,
+                    },
+                  ),
+                  active: ctx.url.pathname.includes('/' + tab),
+                  rightIcon: tab === 'appointments' &&
+                    upcoming_appointments.length > 0 && (
+                    <span className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-md'>
+                      {upcoming_appointments.length}
+                    </span>
+                  ),
+                }))}
+              />
+              {rendered}
+            </div>
+
+            {action && (
+              <ActionButton
+                action={action}
+                variant='solid'
+              />
+            )}
+          </>
+        ),
+      }
+    },
+  )

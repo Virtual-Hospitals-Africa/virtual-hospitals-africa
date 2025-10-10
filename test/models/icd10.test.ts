@@ -4,7 +4,7 @@
 //   searchSymptoms,
 //   searchTree,
 // } from '../../db/models/icd10.ts'
-// import { itUsesTrxAnd } from '../web/utilities.ts'
+//
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 // import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 // import { assert } from 'std/assert/assert.ts'

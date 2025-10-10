@@ -25,6 +25,11 @@ import * as doctor_reviews from './doctor_reviews.ts'
 import * as google_tokens from './google_tokens.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { combine } from '../../util/combine.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
+import first from '../../util/first.ts'
+import { assertDepartmentName } from '../../shared/departments.ts'
+import { assertAll } from '../../util/assertAll.ts'
+import { HealthWorkerIdSelection } from './health_worker_id.ts'
 
 export function upsert(
   trx: TrxOrDb,
@@ -175,11 +180,8 @@ export async function getBySession(trx: TrxOrDb, { session_id }: {
   })
 }
 
-export async function get(
-  trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: string },
-): Promise<Maybe<PossiblyEmployedHealthWorker>> {
-  const result = await trx
+function baseQuery(trx: TrxOrDb) {
+  return trx
     .selectFrom('health_workers')
     .leftJoin(
       'nurse_registration_details',
@@ -250,6 +252,23 @@ export async function get(
               name: eb_employment.ref('organizations.name'),
               address: eb_employment.ref('organization_address.formatted'),
             }).as('organization'),
+            jsonArrayFrom(
+              eb_employment.selectFrom('department_employment')
+                .innerJoin(
+                  'organization_departments',
+                  'organization_departments.id',
+                  'department_employment.department_id',
+                )
+                .whereRef(
+                  'department_employment.employment_id',
+                  '=',
+                  'employment.id',
+                )
+                .select([
+                  'organization_departments.id',
+                  'organization_departments.name',
+                ]),
+            ).as('departments'),
           ])
           .whereRef(
             'employment.health_worker_id',
@@ -257,30 +276,40 @@ export async function get(
             'health_workers.id',
           ),
       ).as('employment'),
-      jsonArrayFrom(
-        patient_encounters.baseQuery(trx)
-          .where('patient_encounters.closed_at', 'is', null)
-          .where(
-            'patient_encounters.id',
-            'in',
-            patient_encounters.ofHealthWorker(trx, health_worker_id),
-          ),
-      ).as('open_encounters'),
-      jsonBuildObject({
-        requested: jsonArrayFrom(
-          doctor_reviews.requestsOfHealthWorker(trx, health_worker_id),
-        ),
-        in_progress: jsonArrayFrom(
-          doctor_reviews.ofHealthWorker(trx, health_worker_id),
-        ),
-      }).as('reviews'),
-    ]).where(
+    ])
+}
+
+export async function get(
+  trx: TrxOrDb,
+  { health_worker_id }: {
+    health_worker_id: string | HealthWorkerIdSelection
+  },
+): Promise<Maybe<PossiblyEmployedHealthWorker>> {
+  const {
+    health_worker_with_tokens,
+    present_encounter = null,
+    doctor_reviews_in_progress,
+    doctor_reviews_requested,
+  } = await promiseProps({
+    health_worker_with_tokens: baseQuery(trx).where(
       'health_workers.id',
       '=',
       health_worker_id,
-    ).executeTakeFirst()
+    ).executeTakeFirst(),
+    present_encounter: patient_encounters.getOpen(trx, {
+      presence_health_worker_id: health_worker_id,
+    }).then(first),
+    doctor_reviews_in_progress: doctor_reviews.ofHealthWorker(
+      trx,
+      health_worker_id,
+    ).execute(),
+    doctor_reviews_requested: doctor_reviews.requestsOfHealthWorker(
+      trx,
+      health_worker_id,
+    ).execute(),
+  })
 
-  if (!result) return null
+  if (!health_worker_with_tokens) return null
 
   const {
     access_token,
@@ -289,13 +318,13 @@ export async function get(
     registration_needed,
     approved_by,
     ...health_worker
-  } = result
+  } = health_worker_with_tokens
   assertOr401(access_token)
   assertOr401(refresh_token)
   assertOr401(expires_at)
 
   const employment_by_organization = groupBy(
-    result.employment,
+    health_worker.employment,
     (e) => e.organization.id,
   )
   const employment = [...employment_by_organization.values()].map(
@@ -303,22 +332,47 @@ export async function get(
       const nurse_role = roles.find((r) => r.profession === 'nurse') || null
       const doctor_role = roles.find((r) => r.profession === 'doctor') || null
       const admin_role = roles.find((r) => r.profession === 'admin') || null
-      assert(nurse_role || doctor_role || admin_role)
-      if (nurse_role) assert(!doctor_role)
-      if (doctor_role) assert(!nurse_role)
+      const receptionist_role =
+        roles.find((r) => r.profession === 'receptionist') || null
+      assert(nurse_role || doctor_role || admin_role || receptionist_role)
+      if (nurse_role) {
+        assert(!doctor_role)
+        assert(!receptionist_role)
+      }
+      if (doctor_role) {
+        assert(!nurse_role)
+        assert(!receptionist_role)
+      }
+      if (receptionist_role) {
+        assert(!doctor_role)
+        assert(!nurse_role)
+      }
+
+      const provider_id = nurse_role?.employment_id ||
+        doctor_role?.employment_id || null
+
+      const {
+        organization,
+        gcal_appointments_calendar_id,
+        gcal_availability_calendar_id,
+        availability_set,
+        departments,
+      } = roles[0]
+      assertAll(departments, assertDepartmentName)
 
       return {
-        organization: roles[0].organization,
-        gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
-        gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
-        availability_set: roles[0].availability_set,
-        provider_id: nurse_role?.employment_id || doctor_role?.employment_id ||
-          null,
+        organization,
+        gcal_appointments_calendar_id,
+        gcal_availability_calendar_id,
+        availability_set,
+        departments,
+        provider_id,
+        non_admin_id: provider_id || receptionist_role?.employment_id || null,
         roles: {
           nurse: nurse_role && {
             registration_needed: !!registration_needed,
             registration_completed: !!approved_by,
-            registration_pending_approval: !result.approved_by,
+            registration_pending_approval: !approved_by,
             employment_id: nurse_role.employment_id,
           },
           doctor: doctor_role && {
@@ -333,6 +387,12 @@ export async function get(
             registration_pending_approval: false,
             employment_id: admin_role.employment_id,
           },
+          receptionist: receptionist_role && {
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+            employment_id: receptionist_role.employment_id,
+          },
         },
       }
     },
@@ -340,17 +400,22 @@ export async function get(
 
   return {
     ...health_worker,
+    present_encounter,
     access_token,
     refresh_token,
     expires_at,
     employment,
     default_organization_id: employment[0]?.organization.id ?? null,
+    reviews: {
+      in_progress: doctor_reviews_in_progress,
+      requested: doctor_reviews_requested,
+    },
   }
 }
 
 export async function getEmployed(
   trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: string },
+  { health_worker_id }: { health_worker_id: string | HealthWorkerIdSelection },
 ): Promise<EmployedHealthWorker> {
   const health_worker = await get(trx, { health_worker_id })
   assert(health_worker)

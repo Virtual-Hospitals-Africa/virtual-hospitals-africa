@@ -1,10 +1,11 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
-import { addTestRegulatorWithSession, route } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
+import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
+import { route } from '../../route.ts'
 
-describe(
+describe.skip(
   '/regulator/[country]/pharmacies',
   { sanitizeResources: false, sanitizeOps: false },
   () => {

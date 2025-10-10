@@ -59,6 +59,8 @@ export function jsonSearchHandler<
           search_terms[key] = value
         }
       })
+
+      console.log('xyz', search_terms)
       return model
         .search(ctx.state.trx, search_terms, { ...opts, page })
         .then(json)

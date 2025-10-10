@@ -28,7 +28,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 
 type RegisterPageProps = {
-  formState: FormState
+  form_state: FormState
 }
 
 export type FormState =
@@ -48,23 +48,24 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
 
     const { step } = ctx.params
 
-    const priorFormState: Partial<FormState> = await nurse_registration_details
-      .getInProgress(
-        ctx.state.trx,
-        {
-          health_worker_id: ctx.state.health_worker.id,
-        },
-      )
+    const prior_form_state: Partial<FormState> =
+      await nurse_registration_details
+        .getInProgress(
+          ctx.state.trx,
+          {
+            health_worker_id: ctx.state.health_worker.id,
+          },
+        )
 
-    const newFormState = await getStepFormData(
+    const new_form_state = await getStepFormData(
       step,
       ctx.state.trx,
       req,
     )
 
-    const formState = {
-      ...priorFormState,
-      ...newFormState,
+    const form_state = {
+      ...prior_form_state,
+      ...new_form_state,
     }
 
     const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
@@ -76,15 +77,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
         ctx.state.trx,
         {
           health_worker_id: ctx.state.health_worker.id,
-          data: formState,
+          data: form_state,
         },
       )
-      const nextStep = NurseRegistrationStepNames[stepIndex + 1]
-      const nextUrl = ctx.url.pathname.replace(`/${step}`, `/${nextStep}`)
-      return redirect(nextUrl)
+      const next_step = NurseRegistrationStepNames[stepIndex + 1]
+      const next_url = ctx.url.pathname.replace(`/${step}`, `/${next_step}`)
+      return redirect(next_url)
     }
 
-    const { specialty } = formState
+    const { specialty } = form_state
     assert(specialty)
 
     await employment.updateSpecialty(ctx.state.trx, {
@@ -92,9 +93,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       specialty,
     })
 
-    const registrationDetails = getRegistrationDetails(
+    const registration_details = getRegistrationDetails(
       ctx.state.health_worker,
-      omit(formState, [
+      omit(form_state, [
         'first_name',
         'middle_names',
         'last_name',
@@ -102,20 +103,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       ]) as FormState,
     )
 
-    const fullNameInForm = compact([
-      formState.first_name,
-      formState.middle_names,
-      formState.last_name,
+    const full_name_in_form = compact([
+      form_state.first_name,
+      form_state.middle_names,
+      form_state.last_name,
     ]).join(' ')
-    if (fullNameInForm !== ctx.state.health_worker.name) {
+    if (full_name_in_form !== ctx.state.health_worker.name) {
       await health_workers.updateName(
         ctx.state.trx,
         ctx.state.health_worker.id,
-        fullNameInForm,
+        full_name_in_form,
       )
     }
 
-    await nurse_registration_details.add(ctx.state.trx, registrationDetails)
+    await nurse_registration_details.add(ctx.state.trx, registration_details)
 
     await nurse_registration_details.removeInProgress(ctx.state.trx, {
       health_worker_id: ctx.state.health_worker.id,
@@ -186,7 +187,7 @@ export default async function RegisterPage(
       {stepState.stepsTopBar}
       <NurseRegistrationForm
         currentStep={stepState.currentStep}
-        formData={formState}
+        form_data={formState}
       />
     </Layout>
   )

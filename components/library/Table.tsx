@@ -1,12 +1,13 @@
 import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
-import { Maybe } from '../../types.ts'
+import { ExtendedActionData, Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertPersonLike, Person, PersonData } from './Person.tsx'
 import Pagination from './Pagination.tsx'
-import { Button } from './Button.tsx'
+import entries from '../../util/entries.ts'
+import { ActionButton } from './ActionButton.tsx'
 
 type Showable =
   | string
@@ -18,13 +19,6 @@ type Showable =
 
 type Row = Record<string, unknown> & {
   id?: string
-}
-
-export type ExtendedActionData = string | {
-  text: string
-  href?: string
-  method?: 'GET' | 'POST'
-  disabled?: boolean
 }
 
 export type TableColumn<T extends Row> =
@@ -40,7 +34,7 @@ export type TableColumn<T extends Row> =
       type: 'person'
       data: keyof T | ((row: T) => Maybe<PersonData> | PersonData[])
     }
-    | (T extends { actions: Record<string, string | null> } ? {
+    | (T extends { actions: Record<string, null | ExtendedActionData> } ? {
         label: 'Actions'
         type: 'actions'
       }
@@ -66,32 +60,6 @@ type TableProps<T extends Row> = {
     has_next_page: boolean
   }
   EmptyState(): JSX.Element
-}
-
-function ActionButton(
-  { name, action }: { name: string; action?: Maybe<ExtendedActionData> },
-) {
-  if (!action) return null
-
-  const href = typeof action === 'string' ? action : action.href
-
-  const disabled = isObjectLike(action) && action.disabled
-
-  const text = (isObjectLike(action) && action.text) || name
-
-  const is_post = isObjectLike(action) && action.method === 'POST'
-
-  return (
-    <Button
-      href={!is_post ? href : undefined}
-      action={is_post ? href : undefined}
-      disabled={disabled}
-      variant='ghost'
-      className='text-indigo-600 hover:text-indigo-900 capitalize justify-start'
-    >
-      {text}
-    </Button>
-  )
 }
 
 function TableCellInnerContents<T extends Row>(
@@ -134,41 +102,56 @@ function TableCellInnerContents<T extends Row>(
   }
 
   if (mapped_column.column.type === 'actions') {
-    let actionContent
+    let action_data
 
     if (
       'data' in mapped_column.column &&
       typeof mapped_column.column.data === 'function'
     ) {
-      const actionData = mapped_column.column.data(row)
-      const actions = Array.isArray(actionData) ? actionData : [actionData]
-      actionContent = (
-        <div className='flex flex-col gap-1'>
-          {actions.map((action, index) => (
-            <ActionButton
-              key={index}
-              name={typeof action === 'string' ? action : action.text}
-              action={action}
-            />
-          ))}
-        </div>
-      )
-    } else if ('actions' in row && row.actions != null) {
-      assert(isObjectLike(row.actions))
-      actionContent = (
-        <div className='flex flex-col gap-1'>
-          {Object.entries(row.actions).map(([name, action]) => (
-            <ActionButton
-              key={name}
-              name={name}
-              action={action as Maybe<ExtendedActionData>}
-            />
-          ))}
-        </div>
-      )
+      action_data = mapped_column.column.data(row)
+    } else if (
+      'actions' in row && row.actions != null
+    ) {
+      action_data = row.actions
+    }
+    if (!action_data) {
+      return null
     }
 
-    return actionContent || null
+    let actions: ExtendedActionData[]
+    if (Array.isArray(action_data)) {
+      actions = action_data
+    } else {
+      assert(isObjectLike(action_data))
+      actions = []
+      for (const [text, action] of entries(action_data)) {
+        if (action == null) continue
+        if (typeof action === 'string') {
+          actions.push({
+            text,
+            href: action,
+          })
+        } else {
+          assert(isObjectLike(action))
+          actions.push(action as ExtendedActionData)
+        }
+      }
+    }
+
+    if (!actions.length) {
+      return null
+    }
+
+    return (
+      <div className='flex flex-col gap-1'>
+        {actions.map((action) => (
+          <ActionButton
+            key={action.text}
+            action={action}
+          />
+        ))}
+      </div>
+    )
   }
 
   throw new Error('Unreachable ' + mapped_column.column.type)

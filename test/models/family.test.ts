@@ -2,9 +2,9 @@ import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as family from '../../db/models/family.ts'
-import { itUsesTrxAnd } from '../web/utilities.ts'
-import { randomPhoneNumber } from '../mocks.ts'
 import db from '../../db/db.ts'
+import randomPhoneNumber from '../../mocks/randomPhoneNumber.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
 describe(
   'db/models/family.ts',
@@ -249,7 +249,7 @@ describe(
             patient_cohabitation: null,
           })
           assertEquals(
-            (await patients.getByID(trx, { id: guardian.id })).name,
+            (await patients.getById(trx, guardian.id)).name,
             'Janey Jane',
           )
         },

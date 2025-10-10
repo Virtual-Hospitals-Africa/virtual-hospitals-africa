@@ -1,31 +1,22 @@
-import { FreshContext } from '$fresh/server.ts'
 import * as waiting_room from '../../../../db/models/waiting_room.ts'
-import { LoggedInHealthWorker } from '../../../../types.ts'
 import WaitingRoomView from '../../../../components/waiting_room/View.tsx'
-import { assertOr404 } from '../../../../util/assertOr.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { OrganizationContext } from './_middleware.ts'
 
 export default HealthWorkerHomePageLayout(
   'Waiting Room',
   async function WaitingRoomPage(
     _req: Request,
-    ctx: FreshContext<LoggedInHealthWorker>,
+    ctx: OrganizationContext,
   ) {
-    const { organization_id } = ctx.params
-    assertOr404(organization_id)
-    const { organization } = ctx.state.health_worker.employment.find((e) =>
-      e.organization.id === organization_id
-    )!
-    const can_add_patients = !!organization.address
+    const { trx, organization, organization_employment } = ctx.state
+    const can_register_patients = !!organization.location
 
     return (
       <WaitingRoomView
-        organization_id={organization_id}
-        waiting_room={await waiting_room.get(ctx.state.trx, {
-          organization_id,
-          health_worker: ctx.state.health_worker,
-        })}
-        can_add_patients={can_add_patients}
+        organization_id={organization.id}
+        waiting_room={await waiting_room.get(trx, organization_employment)}
+        can_register_patients={can_register_patients}
       />
     )
   },

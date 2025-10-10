@@ -14,12 +14,12 @@ import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
 import CountrySelect from './CountrySelect.tsx'
+import capitalize from '../util/capitalize.ts'
 
 type OnboardingProgress =
   | { type: 'welcome' }
   | { type: 'enter profession' }
   | { type: 'select organization' }
-  | { type: 'select department'; organization: OrganizationLike }
 
 function Welcome({ show, getStarted }: { show: boolean; getStarted(): void }) {
   return (
@@ -48,6 +48,7 @@ function Welcome({ show, getStarted }: { show: boolean; getStarted(): void }) {
 function EnterProfession(
   { show, health_worker, onProfession }: {
     show: boolean
+
     health_worker: PossiblyEmployedHealthWorker
     onProfession(opts: {
       profession: string
@@ -55,8 +56,9 @@ function EnterProfession(
     }): void
   },
 ) {
-  const name = useSignal(health_worker.name)
   const profession = useSignal('nurse')
+  const name = useSignal(health_worker.name)
+
   const specialty = useSignal<string>('Primary care')
 
   const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
@@ -68,7 +70,7 @@ function EnterProfession(
     if (profession.value === 'nurse') {
       return specialty.value + ' Nurse'
     }
-    return 'Regulator'
+    return capitalize(profession.value)
   })()
 
   return (
@@ -98,6 +100,7 @@ function EnterProfession(
           options={[
             { value: 'nurse', label: 'Nurse' },
             { value: 'doctor', label: 'Doctor' },
+            { value: 'receptionist', label: 'Receptionist' },
             { value: 'regulator', label: 'Regulator' },
           ]}
           onChange={(event) => profession.value = event.currentTarget.value}
@@ -162,10 +165,9 @@ function EnterProfession(
 }
 
 function SelectOrganization(
-  { show, organizations, onOrganization }: {
+  { show, organizations }: {
     show: boolean
     organizations: OrganizationLike[]
-    onOrganization(organization: OrganizationLike): void
   },
 ) {
   const organziation = useSignal(organizations[0])
@@ -187,47 +189,13 @@ function SelectOrganization(
         />
       </FormRow>
       <div className='mt-10 flex'>
-        <Button
-          type='button'
-          onClick={() => onOrganization(organziation.value)}
-        >
-          Continue<span aria-hidden='true'>
-            &nbsp;&nbsp;&rarr;
-          </span>
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-function SelectDepartment(
-  { organization }: {
-    organization: OrganizationLike
-  },
-) {
-  return (
-    <div
-      className={cls(
-        'lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8',
-        // !show && 'hidden',
-      )}
-    >
-      <PageHeader className='h1'>Select your department</PageHeader>
-      <FormRow className='mt-2'>
-        <SelectWithOptions
-          name='department_id'
-          options={organization.departments.map((dept) => ({
-            value: dept.id,
-            label: dept.name,
-          }))}
-        />
-      </FormRow>
-      <div className='mt-10 flex'>
-        <Button type='submit'>
-          Let's go<span aria-hidden='true'>
-            &nbsp;&nbsp;&rarr;
-          </span>
-        </Button>
+        <div className='mt-10 flex'>
+          <Button type='submit'>
+            Let's go<span aria-hidden='true'>
+              &nbsp;&nbsp;&rarr;
+            </span>
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -242,8 +210,6 @@ export function Onboarding(
   const progress = useSignal<OnboardingProgress>({ type: 'welcome' })
   const getStarted = () => progress.value = { type: 'enter profession' }
   const onProfession = () => progress.value = { type: 'select organization' }
-  const onOrganization = (organization: OrganizationLike) =>
-    progress.value = { type: 'select department', organization }
 
   return (
     <Form method='POST'>
@@ -262,13 +228,7 @@ export function Onboarding(
             <SelectOrganization
               show={progress.value.type === 'select organization'}
               organizations={organizations}
-              onOrganization={onOrganization}
             />
-            {progress.value.type === 'select department' && (
-              <SelectDepartment
-                organization={progress.value.organization}
-              />
-            )}
             <div className='flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents'>
               <div className='w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end'>
                 <img

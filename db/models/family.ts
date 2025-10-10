@@ -18,6 +18,8 @@ import partition from '../../util/partition.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 import memoize from '../../util/memoize.ts'
+import { allHaveStringField } from '../../util/haveNames.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export function addGuardian(
   trx: TrxOrDb,
@@ -30,11 +32,11 @@ export function addGuardian(
     .executeTakeFirstOrThrow()
 }
 
-export async function get(
+async function getGuardiansOfPatient(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: string },
-): Promise<PatientFamily> {
-  const gettingGuardians = trx
+  patient_id: string,
+) {
+  const guardians = await trx
     .selectFrom('patient_guardians')
     .innerJoin(
       'guardian_relations',
@@ -56,6 +58,7 @@ export async function get(
         .on('kin.patient_id', '=', patient_id)
         .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id'))
     .where('dependent.id', '=', patient_id)
+    .where('guardian.name', 'is not', null)
     .select(({ eb, and }) => [
       'patient_guardians.id as relation_id',
       'guardian_relations.guardian as family_relation',
@@ -88,7 +91,15 @@ export async function get(
     .orderBy('family_relation_gendered desc')
     .execute()
 
-  const gettingDependents = trx
+  assert(allHaveStringField(guardians, 'patient_name'))
+  return guardians
+}
+
+export async function getDependentsOfPatient(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  const dependents = await trx
     .selectFrom('patient_guardians')
     .innerJoin(
       'guardian_relations',
@@ -106,6 +117,7 @@ export async function get(
       'dependent.id',
     )
     .where('guardian.id', '=', patient_id)
+    .where('dependent.name', 'is not', null)
     .select(({ eb, and }) => [
       'patient_guardians.id as relation_id',
       'dependent.id as patient_id',
@@ -136,7 +148,15 @@ export async function get(
     ])
     .execute()
 
-  const gettingOtherNextOfKin = trx
+  assert(allHaveStringField(dependents, 'patient_name'))
+  return dependents
+}
+
+function getOtherNextOfKinOfPatient(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  return trx
     .selectFrom('patient_kin')
     .innerJoin(
       'patients as kin',
@@ -166,21 +186,39 @@ export async function get(
       'kin.gender as patient_gender',
     ])
     .executeTakeFirst()
+}
 
-  const patient_family = await trx
+function getPatientFamily(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  return trx
     .selectFrom('patient_family')
     .selectAll()
     .where('patient_id', '=', patient_id)
     .executeTakeFirst()
+}
+
+export async function get(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<PatientFamily> {
+  const { patient_family, guardians, dependents, next_of_kin } =
+    await promiseProps({
+      patient_family: getPatientFamily(trx, patient_id),
+      guardians: getGuardiansOfPatient(trx, patient_id),
+      dependents: getDependentsOfPatient(trx, patient_id),
+      next_of_kin: getOtherNextOfKinOfPatient(trx, patient_id),
+    })
 
   return {
     marital_status: patient_family?.marital_status,
     religion: patient_family?.religion,
     family_type: patient_family?.family_type,
     patient_cohabitation: patient_family?.patient_cohabitation,
-    guardians: await gettingGuardians,
-    dependents: await gettingDependents,
-    next_of_kin: await gettingOtherNextOfKin,
+    guardians,
+    dependents,
+    next_of_kin,
   }
 }
 

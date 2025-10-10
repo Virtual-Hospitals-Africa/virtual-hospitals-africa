@@ -1,16 +1,15 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
+  Coordinates,
   DoctorsWithoutAction,
-  HasStringId,
-  Location,
   Maybe,
-  Organization,
   OrganizationDoctorOrNurse,
   OrganizationEmployee,
   OrganizationEmployeeOrInvitee,
   OrganizationEmployeeWithActions,
   Profession,
+  RenderedOrganization,
   TrxOrDb,
 } from '../../types.ts'
 import * as employment from './employment.ts'
@@ -29,6 +28,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
+import { Department } from '../../shared/departments.ts'
 
 const SERVER_COUNTRY = Deno.env.get('SERVER_COUNTRY') || 'ZA'
 assert(addresses.TO_COUNTRY_OFFICIAL_NAME.has(SERVER_COUNTRY))
@@ -41,18 +41,29 @@ export function baseQuery(trx: TrxOrDb) {
       'organizations.id',
       'organizations.name',
       'organizations.category',
-      'addresses.formatted as address',
+      'organizations.is_test',
+      'organizations.country',
+      'organizations.ownership',
+      'organizations.inactive_reason',
+      'addresses.formatted as formatted_address',
       'addresses.formatted as description',
+
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
       jsonArrayFrom(
         eb.selectFrom('organization_departments')
+          .innerJoin(
+            'departments',
+            'departments.name',
+            'organization_departments.name',
+          )
           .select([
             'organization_departments.id',
             'organization_departments.name',
-            'organization_departments.accepts_patients',
+            'departments.requires_triage',
+            'departments.workflows',
           ])
           .whereRef(
             'organization_departments.organization_id',
@@ -66,15 +77,7 @@ export function baseQuery(trx: TrxOrDb) {
 const model = base({
   top_level_table: 'organizations',
   baseQuery,
-  formatResult: (x): HasStringId<
-    Organization & {
-      departments: {
-        id: string
-        name: string
-        accepts_patients: boolean
-      }[]
-    }
-  > => x,
+  formatResult: (x): RenderedOrganization => x,
   handleSearch(
     qb,
     opts: {
@@ -568,10 +571,29 @@ export type OrganizationInsert = {
   category?: Maybe<string>
   inactive_reason?: string
   address?: Maybe<addresses.AddressInsert>
-  location?: Location
+  location?: Coordinates
   is_test?: boolean
-  departments_accepting_patients: string[]
-  administrative_departments?: string[]
+  departments?: Department[]
+}
+
+export function addDepartments(
+  trx: TrxOrDb,
+  organization_id: string,
+  departments: Department[],
+) {
+  return trx.with(
+    'inserting_departments',
+    (qb) =>
+      departments.length
+        ? qb.insertInto('organization_departments')
+          .values(departments.map((name) => ({
+            organization_id,
+            name,
+          })))
+        : blankSelection(qb),
+  )
+    .selectNoFrom(success_true)
+    .executeTakeFirstOrThrow()
 }
 
 export async function add(
@@ -580,8 +602,7 @@ export async function add(
     id,
     address,
     location,
-    departments_accepting_patients,
-    administrative_departments,
+    departments,
     ...rest
   }: OrganizationInsert,
 ) {
@@ -607,29 +628,17 @@ export async function add(
         id: organization_id,
         address_id,
         location: location && literalLocation(location),
-      }))
-    .with(
-      'inserting_departments_accepting_patients',
+      })).with(
+      'inserting_departments',
       (qb) =>
-        departments_accepting_patients.length
+        departments?.length
           ? qb.insertInto('organization_departments')
-            .values(departments_accepting_patients.map((name) => ({
-              organization_id,
-              name,
-              accepts_patients: true,
-            })))
-          : blankSelection(qb),
-    )
-    .with(
-      'inserting_administrative_departments',
-      (qb) =>
-        administrative_departments?.length
-          ? qb.insertInto('organization_departments')
-            .values(administrative_departments.map((name) => ({
-              organization_id,
-              name,
-              accepts_patients: false,
-            })))
+            .values(
+              departments.map((name) => ({
+                organization_id,
+                name,
+              })),
+            )
           : blankSelection(qb),
     )
     .selectNoFrom(success_true)

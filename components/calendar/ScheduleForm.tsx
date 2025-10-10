@@ -16,7 +16,7 @@ export default function ScheduleForm(
         <PersonSearch
           name='patient'
           value={patient_info}
-          search_route='/app/patients?completed_intake=true'
+          search_route='/app/patients?completed_registration=true'
           required
         />
       </FormRow>

@@ -1,8 +1,8 @@
-import { PatientWithOpenEncounter } from '../../types.ts'
+import { RenderedPatient } from '../../types.ts'
 import { PaperClipIcon } from '../library/icons/heroicons/outline.tsx'
 
 type PatientDetailedCardProps = {
-  patient: PatientWithOpenEncounter
+  patient: RenderedPatient
 }
 
 export default function PatientDetailedCard(
@@ -12,7 +12,7 @@ export default function PatientDetailedCard(
     <div className='py-6 px-4 rounded-md border-2 border-gray-300 bg-gray-300'>
       <div className='px-4 sm:px-0'>
         <h3 className='text-base font-semibold leading-7 text-gray-900'>
-          Patient Intake
+          Patient Registration
         </h3>
         <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-500'>
           Personal details and application.

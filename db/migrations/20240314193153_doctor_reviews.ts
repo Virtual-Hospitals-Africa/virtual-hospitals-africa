@@ -24,7 +24,7 @@ export async function up(db: Kysely<any>) {
           .notNull()
           .references('patients.id')
           .onDelete('cascade'))
-      .addColumn('encounter_id', 'uuid', (col) =>
+      .addColumn('patient_encounter_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounters.id')
@@ -32,7 +32,7 @@ export async function up(db: Kysely<any>) {
       .addColumn('requested_by', 'uuid', (col) =>
         col
           .notNull()
-          .references('patient_encounter_providers.id')
+          .references('patient_encounter_employees.id')
           .onDelete('cascade'))
       .addColumn('organization_id', 'uuid', (col) =>
         col
@@ -71,7 +71,7 @@ export async function up(db: Kysely<any>) {
           .notNull()
           .references('patients.id')
           .onDelete('cascade'))
-      .addColumn('encounter_id', 'uuid', (col) =>
+      .addColumn('patient_encounter_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounters.id')
@@ -79,13 +79,13 @@ export async function up(db: Kysely<any>) {
       .addColumn('requested_by', 'uuid', (col) =>
         col
           .notNull()
-          .references('patient_encounter_providers.id')
+          .references('patient_encounter_employees.id')
           .onDelete('cascade'))
       .addColumn('requester_notes', 'text')
       .addColumn('reviewer_notes', 'text')
       .addColumn('completed_at', 'timestamptz')
       .addUniqueConstraint('reviewed_once', [
-        'encounter_id',
+        'patient_encounter_id',
         'reviewer_id',
       ])
       .addUniqueConstraint('once_per_patient', [

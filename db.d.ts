@@ -2,6 +2,13 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
+  : ArrayTypeImpl<T>
+
+export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S[], I[], U[]>
+  : T[]
+
 export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep =
@@ -13,29 +20,12 @@ export type DoctorReviewStep =
   | 'revert'
 
 export type EncounterReason =
-  | 'appointment'
+  | 'administration'
   | 'checkup'
-  | 'emergency'
   | 'follow up'
   | 'maternity'
-  | 'other'
   | 'referral'
   | 'seeking treatment'
-
-export type EncounterStep =
-  | 'chief_complaint'
-  | 'clinical_notes'
-  | 'close_visit'
-  | 'diagnoses'
-  | 'diagnostic_tests'
-  | 'examinations'
-  | 'general_assessments'
-  | 'history'
-  | 'orders'
-  | 'prescriptions'
-  | 'request_review'
-  | 'symptoms'
-  | 'vitals'
 
 export type EntityType = 'health_worker' | 'regulator'
 
@@ -126,7 +116,7 @@ export type PharmacistType =
   | 'Pharmacist'
   | 'Pharmacy Technician'
 
-export type Profession = 'admin' | 'doctor' | 'nurse'
+export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
 
 export type SnomedCategory =
   | 'administration method'
@@ -189,6 +179,15 @@ export type SnomedCategory =
   | 'unit of presentation'
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
+
+export type Workflow =
+  | 'doctor_review'
+  | 'maternity'
+  | 'prescription_refill'
+  | 'registration'
+  | 'resuscitation'
+  | 'seeking_treatment'
+  | 'triage'
 
 export interface Addresses {
   administrative_area_level_1: string | null
@@ -287,6 +286,12 @@ export interface DepartmentEmployment {
   updated_at: Generated<Timestamp>
 }
 
+export interface Departments {
+  name: string
+  requires_triage: Generated<boolean>
+  workflows: ArrayType<Workflow>
+}
+
 export interface DeviceCapabilities {
   created_at: Generated<Timestamp>
   device_id: string
@@ -358,9 +363,9 @@ export interface DoctorReview {
 export interface DoctorReviewRequests {
   created_at: Generated<Timestamp>
   doctor_id: string | null
-  encounter_id: string
   id: Generated<string>
   organization_id: string | null
+  patient_encounter_id: string
   patient_id: string
   requested_by: string
   requester_notes: string | null
@@ -370,8 +375,8 @@ export interface DoctorReviewRequests {
 export interface DoctorReviews {
   completed_at: Timestamp | null
   created_at: Generated<Timestamp>
-  encounter_id: string
   id: Generated<string>
+  patient_encounter_id: string
   patient_id: string
   requested_by: string
   requester_notes: string | null
@@ -409,9 +414,12 @@ export interface Employment {
   updated_at: Generated<Timestamp>
 }
 
-export interface Encounter {
-  order: Int8
-  step: EncounterStep
+export interface EmploymentPresence {
+  at_work: Generated<boolean>
+  created_at: Generated<Timestamp>
+  id: string
+  updated_at: Generated<Timestamp>
+  with_patient_id: string | null
 }
 
 export interface EventListeners {
@@ -438,10 +446,10 @@ export interface Events {
 
 export interface Examinations {
   display_name: string
-  encounter_step: EncounterStep
   identifier: string
   order: number
   path: string
+  seeking_treatment_step: string
   slug: string
 }
 
@@ -795,7 +803,6 @@ export interface OrganizationConsumables {
 }
 
 export interface OrganizationDepartments {
-  accepts_patients: Generated<boolean>
   address_id: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -945,12 +952,12 @@ export interface PatientConditions {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientEncounterProviders {
+export interface PatientEncounterEmployees {
   created_at: Generated<Timestamp>
+  employment_id: string
   id: Generated<string>
   patient_encounter_id: string
-  provider_id: string
-  seen_at: Timestamp | null
+  seen_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
 }
 
@@ -963,24 +970,16 @@ export interface PatientEncounters {
   notes: string | null
   organization_id: string
   patient_id: string
-  reason: EncounterReason
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientEncounterSteps {
-  created_at: Generated<Timestamp>
-  encounter_step: EncounterStep
-  id: Generated<string>
-  patient_encounter_id: string
+  reason: EncounterReason | null
   updated_at: Generated<Timestamp>
 }
 
 export interface PatientEvaluations {
   by_system: boolean
-  encounter_provider_id: string | null
   evaluates_record_id: string
   id: string
   note: string | null
+  patient_encounter_employee_id: string | null
   review_id: string | null
 }
 
@@ -1004,11 +1003,11 @@ export interface PatientExaminationFindings {
 export interface PatientExaminations {
   completed: Generated<boolean>
   created_at: Generated<Timestamp>
-  encounter_id: string
-  encounter_provider_id: string
   examination_identifier: string
   id: Generated<string>
   ordered: Generated<boolean>
+  patient_encounter_employee_id: string
+  patient_encounter_id: string
   patient_id: string
   skipped: Generated<boolean>
   updated_at: Generated<Timestamp>
@@ -1038,8 +1037,8 @@ export interface PatientFindingMediaSpeeches {
 }
 
 export interface PatientFindings {
-  encounter_provider_id: string
   id: string
+  patient_encounter_employee_id: string
   procedure_id: string
   referent_finding_id: string | null
 }
@@ -1050,26 +1049,6 @@ export interface PatientGuardians {
   guardian_patient_id: string
   guardian_relation: GuardianRelation
   id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientIntake {
-  being_taken_by: string
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  organization_id: string
-  patient_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientIntakeVisitReason {
-  created_at: Generated<Timestamp>
-  department_id: string
-  emergency: Generated<boolean>
-  id: Generated<string>
-  notes: string | null
-  patient_intake_id: string
-  reason: EncounterReason
   updated_at: Generated<Timestamp>
 }
 
@@ -1109,24 +1088,44 @@ export interface PatientOccupations {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientProcedures {
-  encounter_provider_id: string
+export interface PatientPresence {
+  created_at: Generated<Timestamp>
+  current_workflow: Workflow | null
+  department_name: string
   id: string
+  next_workflow: Workflow | null
+  organization_id: string
+  patient_encounter_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientProcedures {
+  id: string
+  patient_encounter_employee_id: string
 }
 
 export interface PatientRecords {
   created_at: Generated<Timestamp>
-  encounter_id: string
   id: Generated<string>
+  patient_encounter_id: string
   patient_id: string
   snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientRegistration {
+  being_taken_by: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  organization_id: string
+  patient_id: string
   updated_at: Generated<Timestamp>
 }
 
 export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
-  completed_intake: Generated<boolean>
+  completed_registration: Generated<boolean>
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
@@ -1134,7 +1133,7 @@ export interface Patients {
   gender: Gender | null
   id: Generated<string>
   location: string | null
-  name: string
+  name: string | null
   national_id_number: string | null
   nearest_organization_id: string | null
   phone_number: string | null
@@ -1156,6 +1155,35 @@ export interface PatientTriageLevel {
   created_at: Generated<Timestamp>
   id: string
   target_treatment_time: Timestamp | null
+}
+
+export interface PatientWorkflows {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  updated_at: Generated<Timestamp>
+  workflow: Workflow
+}
+
+export interface PatientWorkflowsCompleted {
+  created_at: Generated<Timestamp>
+  id: string
+}
+
+export interface PatientWorkflowsStarted {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_employee_id: string
+  patient_workflow_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientWorkflowStepsCompleted {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_workflow_id: string
+  updated_at: Generated<Timestamp>
+  workflow_step: string
 }
 
 export interface Pharmacies {
@@ -1276,6 +1304,10 @@ export interface Procurers {
 }
 
 export interface Providers {
+  id: string
+}
+
+export interface Receptionists {
   id: string
 }
 
@@ -1561,14 +1593,6 @@ export interface SpeechTranscriptions {
   updated_at: Generated<Timestamp>
 }
 
-export interface WaitingRoom {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  organization_id: string
-  patient_encounter_id: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface WhatsappMessagesReceived {
   body: string | null
   chatbot_name: ChatbotName
@@ -1599,6 +1623,19 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
+export interface Workflows {
+  order: Int8
+  snomed_concept_id: Int8
+  workflow: Workflow
+}
+
+export interface WorkflowSteps {
+  order: Int8
+  step: string
+  workflow: Workflow
+  workflow_step: string
+}
+
 export interface DB {
   addresses: Addresses
   appointment_media: AppointmentMedia
@@ -1610,6 +1647,7 @@ export interface DB {
   consumption: Consumption
   countries: Countries
   department_employment: DepartmentEmployment
+  departments: Departments
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnoses: Diagnoses
@@ -1623,7 +1661,7 @@ export interface DB {
   doctors: Doctors
   drugs: Drugs
   employment: Employment
-  encounter: Encounter
+  employment_presence: EmploymentPresence
   event_listeners: EventListeners
   events: Events
   examinations: Examinations
@@ -1685,8 +1723,7 @@ export interface DB {
   patient_computed_findings_inputs: PatientComputedFindingsInputs
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
-  patient_encounter_providers: PatientEncounterProviders
-  patient_encounter_steps: PatientEncounterSteps
+  patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
   patient_evaluations: PatientEvaluations
   patient_examination_finding_body_sites: PatientExaminationFindingBodySites
@@ -1697,16 +1734,20 @@ export interface DB {
   patient_finding_media_speeches: PatientFindingMediaSpeeches
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
-  patient_intake: PatientIntake
-  patient_intake_visit_reason: PatientIntakeVisitReason
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
   patient_occupations: PatientOccupations
+  patient_presence: PatientPresence
   patient_procedures: PatientProcedures
   patient_records: PatientRecords
+  patient_registration: PatientRegistration
   patient_symptoms: PatientSymptoms
   patient_triage_level: PatientTriageLevel
+  patient_workflow_steps_completed: PatientWorkflowStepsCompleted
+  patient_workflows: PatientWorkflows
+  patient_workflows_completed: PatientWorkflowsCompleted
+  patient_workflows_started: PatientWorkflowsStarted
   patients: Patients
   pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:
@@ -1721,6 +1762,7 @@ export interface DB {
   procurement: Procurement
   procurers: Procurers
   providers: Providers
+  receptionists: Receptionists
   regulators: Regulators
   sessions: Sessions
   snomed_c_refset_association: SnomedCRefsetAssociation
@@ -1749,8 +1791,9 @@ export interface DB {
   snomed_text_definition: SnomedTextDefinition
   spatial_ref_sys: SpatialRefSys
   speech_transcriptions: SpeechTranscriptions
-  waiting_room: WaitingRoom
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
+  workflow_steps: WorkflowSteps
+  workflows: Workflows
 }
 type Buffer = Uint8Array

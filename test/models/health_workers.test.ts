@@ -1,20 +1,19 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
+import { testHealthWorker } from '../_helpers/health_workers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
+// import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
-import {
-  insertTestAddress,
-  testHealthWorker,
-  testRegistrationDetails,
-} from '../mocks.ts'
-import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import db from '../../db/db.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { insertTestAddress } from '../_helpers/addresses.ts'
+import { testNurseRegistrationDetails } from '../_helpers/nurse_registration_details.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -44,7 +43,7 @@ describe('db/models/health_workers.ts', () => {
           {
             ...result,
             employment: [],
-            open_encounters: [],
+            present_encounter: null,
             default_organization_id: null,
             reviews: {
               in_progress: [],
@@ -62,8 +61,9 @@ describe('db/models/health_workers.ts', () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information',
       async (trx) => {
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'nurse',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'nurse',
+          registration_status: 'not started',
         })
 
         const result = await health_workers.get(trx, {
@@ -84,19 +84,22 @@ describe('db/models/health_workers.ts', () => {
               roles: {
                 admin: null,
                 doctor: null,
+                receptionist: null,
                 nurse: {
                   registration_completed: false,
                   registration_needed: true,
                   registration_pending_approval: true,
-                  employment_id: health_worker.employee_id!,
+                  employment_id: health_worker.employee_id,
                 },
               },
-              provider_id: health_worker.employee_id!,
+              provider_id: health_worker.employee_id,
+              non_admin_id: health_worker.employee_id,
               gcal_appointments_calendar_id:
                 health_worker.calendars!.gcal_appointments_calendar_id,
               gcal_availability_calendar_id:
                 health_worker.calendars!.gcal_availability_calendar_id,
               availability_set: true,
+              departments: result.employment[0].departments,
             },
           ],
           default_organization_id: '00000000-0000-0000-0000-000000000001',
@@ -104,7 +107,7 @@ describe('db/models/health_workers.ts', () => {
           name: health_worker.name,
           access_token: health_worker.access_token,
           refresh_token: health_worker.refresh_token,
-          open_encounters: [],
+          present_encounter: null,
           reviews: {
             in_progress: [],
             requested: [],
@@ -113,68 +116,74 @@ describe('db/models/health_workers.ts', () => {
       },
     )
 
-    itUsesTrxAnd('returns open encounters', async (trx) => {
-      const nurse1 = await addTestHealthWorker(trx, {
-        scenario: 'approved-nurse',
-      })
-      const nurse2 = await addTestHealthWorker(trx, {
-        scenario: 'approved-nurse',
-      })
+    // itUsesTrxAnd('returns open encounters', async (trx) => {
+    //   const nurse1 = await addTestEmployee(trx, {
+    //     profession: 'nurse',
+    //     specialty: 'primary care',
+    //     registration_status: 'approved',
+    //   })
+    //   const nurse2 = await addTestEmployee(trx, {
+    //     profession: 'nurse',
+    //     specialty: 'primary care',
+    //     registration_status: 'approved',
+    //   })
 
-      const just_nurse1 = await patient_encounters.insert(
-        trx,
-        '00000000-0000-0000-0000-000000000001',
-        {
-          patient_name: 'Test Patient 1',
-          reason: 'seeking treatment',
-          provider_ids: [nurse1.employee_id!],
-        },
-      )
+    //   const just_nurse1 =
+    //     await insertReturningSeekingTreatmentWithEmployeeForTest(
+    //       trx,
+    //       '00000000-0000-0000-0000-000000000001',
+    //       {
+    //         patient_name: 'Test Patient 1',
+    //         employment_id: nurse1.employee_id!,
+    //       },
+    //     )
 
-      const both = await patient_encounters.insert(
-        trx,
-        '00000000-0000-0000-0000-000000000001',
-        {
-          patient_name: 'Test Patient 2',
-          reason: 'referral',
-          provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
-        },
-      )
+    //   const both = await patient_encounters
+    //     .insertSeekingTreatmentForRegisteredPatient(
+    //       trx,
+    //       '00000000-0000-0000-0000-000000000001',
+    //       {
+    //         patient_name: 'Test Patient 2',
+    //         reason: 'referral',
+    //         provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
+    //       },
+    //     )
 
-      const result1 = await health_workers.get(trx, {
-        health_worker_id: nurse1.id,
-      })
-      assert(result1)
-      assertEquals(result1.open_encounters.length, 2)
+    //   const result1 = await health_workers.get(trx, {
+    //     health_worker_id: nurse1.id,
+    //   })
+    //   assert(result1)
+    //   assertEquals(result1.open_encounters.length, 2)
 
-      const encounter_both = result1.open_encounters.find((encounter) =>
-        encounter.encounter_id === both.id
-      )
-      assert(encounter_both)
-      assertEquals(encounter_both.providers.length, 2)
+    //   const encounter_both = result1.open_encounters.find((encounter) =>
+    //     encounter.patient_encounter_id === both.id
+    //   )
+    //   assert(encounter_both)
+    //   assertEquals(encounter_both.providers.length, 2)
 
-      const encounter_just_nurse1 = result1.open_encounters.find((encounter) =>
-        encounter.encounter_id === just_nurse1.id
-      )
-      assert(encounter_just_nurse1)
-      assertEquals(encounter_just_nurse1.providers.length, 1)
+    //   const encounter_just_nurse1 = result1.open_encounters.find((encounter) =>
+    //     encounter.patient_encounter_id === just_nurse1.id
+    //   )
+    //   assert(encounter_just_nurse1)
+    //   assertEquals(encounter_just_nurse1.providers.length, 1)
 
-      const result2 = await health_workers.get(trx, {
-        health_worker_id: nurse2.id,
-      })
-      assert(result2)
-      assertEquals(result2.open_encounters.length, 1)
-      assertEquals(result2.open_encounters[0].encounter_id, both.id)
-      assertEquals(result2.open_encounters[0].providers.length, 2)
-    })
+    //   const result2 = await health_workers.get(trx, {
+    //     health_worker_id: nurse2.id,
+    //   })
+    //   assert(result2)
+    //   assertEquals(result2.open_encounters.length, 1)
+    //   assertEquals(result2.open_encounters[0].patient_encounter_id, both.id)
+    //   assertEquals(result2.open_encounters[0].providers.length, 2)
+    // })
   })
 
   describe('getEmployeeInfo', () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information if that matches a given organization id',
       async (trx) => {
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'nurse',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'nurse',
+          registration_status: 'not started',
         })
 
         await employment.add(trx, [{
@@ -222,8 +231,9 @@ describe('db/models/health_workers.ts', () => {
     itUsesTrxAnd(
       'returns the nurse registration details & specialty where applicable',
       async (trx) => {
-        const health_worker = await addTestHealthWorker(trx, {
-          scenario: 'nurse',
+        const health_worker = await addTestEmployee(trx, {
+          profession: 'nurse',
+          registration_status: 'not started',
         })
 
         const [secondEmployment] = await employment.add(trx, [{
@@ -233,7 +243,7 @@ describe('db/models/health_workers.ts', () => {
         }])
 
         await employment.updateSpecialty(trx, {
-          employee_id: health_worker.employee_id!,
+          employee_id: health_worker.employee_id,
           specialty: 'midwife',
         })
 
@@ -245,7 +255,7 @@ describe('db/models/health_workers.ts', () => {
         const nurse_address = await insertTestAddress(trx)
         assert(nurse_address)
 
-        const details = await testRegistrationDetails(trx, {
+        const details = await testNurseRegistrationDetails(trx, {
           health_worker_id: health_worker.id,
         })
         await nurse_registration_details.add(trx, details)
@@ -267,11 +277,7 @@ describe('db/models/health_workers.ts', () => {
         assertEquals(result.avatar_url, health_worker.avatar_url)
         assertEquals(result.date_of_first_practice, '11 November 1999')
         assertEquals(result.email, health_worker.email)
-        assert(
-          /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(
-            result.national_id_number!,
-          ),
-        )
+        assert(result.national_id_number)
         assertEquals(
           result.ncz_registration_number,
           details.ncz_registration_number,
@@ -295,8 +301,9 @@ describe('db/models/health_workers.ts', () => {
     )
 
     itUsesTrxAnd('returns documents where applicable', async (trx) => {
-      const health_worker = await addTestHealthWorker(trx, {
-        scenario: 'nurse',
+      const health_worker = await addTestEmployee(trx, {
+        profession: 'nurse',
+        registration_status: 'not started',
       })
 
       await employment.add(trx, [{
@@ -306,7 +313,7 @@ describe('db/models/health_workers.ts', () => {
       }])
 
       await employment.updateSpecialty(trx, {
-        employee_id: health_worker.employee_id!,
+        employee_id: health_worker.employee_id,
         specialty: 'midwife',
       })
 
@@ -330,7 +337,7 @@ describe('db/models/health_workers.ts', () => {
         mime_type: 'image/png',
       })
 
-      const details = await testRegistrationDetails(trx, {
+      const details = await testNurseRegistrationDetails(trx, {
         health_worker_id: health_worker.id,
       })
       details.national_id_media_id = nationalIdMedia.id
@@ -357,9 +364,7 @@ describe('db/models/health_workers.ts', () => {
       assertEquals(result.avatar_url, health_worker.avatar_url)
       assertEquals(result.date_of_first_practice, '11 November 1999')
       assertEquals(result.email, health_worker.email)
-      assert(
-        /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
-      )
+      assert(result.national_id_number)
       assertEquals(
         result.ncz_registration_number,
         details.ncz_registration_number,

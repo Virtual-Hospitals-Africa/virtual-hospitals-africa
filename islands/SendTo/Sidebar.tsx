@@ -9,7 +9,7 @@ import { SendToForm } from './Form.tsx'
 
 export function SendToSidebar(
   { form, open, close, sendables, patient }: {
-    form: 'intake' | 'encounter'
+    form: 'registration' | 'encounter'
     open: boolean
     close: () => void
     sendables: Sendable[]

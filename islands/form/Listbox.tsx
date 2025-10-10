@@ -22,7 +22,7 @@ interface ListboxMultiProps<O extends Option> {
   name?: string
   options: O[]
   selected: OptionId<O>[]
-  variant?: 'always_open' | 'default'
+  variant: 'always_open' | 'starts_closed'
   onChange?(selected: OptionId<O>[]): void
 }
 
@@ -30,7 +30,7 @@ export function ListboxMulti<O extends Option>({
   name,
   options,
   selected,
-  variant = 'default',
+  variant,
   onChange,
 }: ListboxMultiProps<O>) {
   const selected_ids = useSignal(
@@ -54,7 +54,7 @@ export function ListboxMulti<O extends Option>({
       multiple
       name={name}
     >
-      {variant === 'default' && (
+      {variant === 'starts_closed' && (
         <Listbox.Button className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
           <span className='block py-3 px-1.5'>
             {selected_ids.value.map((id) => {
@@ -75,7 +75,7 @@ export function ListboxMulti<O extends Option>({
         static={variant === 'always_open'}
         className={cls(
           'relative w-full mt-2 bg-white flex flex-col gap-2 p-1',
-          variant === 'default' &&
+          variant === 'starts_closed' &&
             'border-2 rounded-md border-gray-300 shadow-lg',
         )}
       >
@@ -109,7 +109,7 @@ export function ListboxMulti<O extends Option>({
                   className={cls(
                     'flex items-center',
                     selected ? 'opacity-100' : 'opacity-0',
-                    variant === 'default' && 'pr-4',
+                    variant === 'starts_closed' && 'pr-4',
                   )}
                 >
                   <CheckIcon

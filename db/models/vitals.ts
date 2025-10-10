@@ -19,8 +19,8 @@ export function insertMeasurements(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     input_measurements: Measurement[]
   },
 ): Promise<{ success: true; procedure_id: string }> {
@@ -109,14 +109,14 @@ export async function computeAndInsertDerivedMeasurements(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     source_measurements,
     source_procedure_id,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     source_measurements: Measurement[]
     source_procedure_id: string
   },
@@ -153,8 +153,8 @@ export async function computeAndInsertDerivedMeasurements(
         trx,
         {
           patient_id,
-          encounter_id,
-          encounter_provider_id,
+          patient_encounter_id,
+          patient_encounter_employee_id,
           procedure_id: source_procedure_id,
           snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
           value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
@@ -197,8 +197,8 @@ export async function computeAndInsertDerivedMeasurements(
       trx,
       {
         patient_id,
-        encounter_id,
-        encounter_provider_id,
+        patient_encounter_id,
+        patient_encounter_employee_id,
         procedure_id: source_procedure_id,
         snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
         value: Math.round(map),
@@ -238,8 +238,8 @@ export async function computeAndInsertDerivedMeasurements(
       trx,
       {
         patient_id,
-        encounter_id,
-        encounter_provider_id,
+        patient_encounter_id,
+        patient_encounter_employee_id,
         procedure_id: source_procedure_id,
         snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure,
         value_display: bp_display,

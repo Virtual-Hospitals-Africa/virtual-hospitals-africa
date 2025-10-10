@@ -39,13 +39,23 @@ const variantStyles = {
   ghost: {},
 }
 
-type ButtonProps =
+export type ButtonLinkProps =
+  | {
+    href?: never
+    action: string
+    method: 'POST'
+    type: 'submit'
+  }
+  | {
+    href?: string
+    action?: never
+    method?: never
+  }
+
+export type ButtonProps =
   & JSX.ButtonHTMLAttributes<HTMLButtonElement>
   & {
     className?: string
-    href?: string
-    action?: string
-    method?: 'GET' | 'POST'
     size?: 'sm' | 'md'
   }
   & (
@@ -66,6 +76,9 @@ type ButtonProps =
       color?: keyof typeof variantStyles.solid
     }
   )
+  & ButtonLinkProps
+
+export type ButtonVariant = NonNullable<ButtonProps['variant']>
 
 export function Button({
   variant = 'solid',
@@ -92,7 +105,7 @@ export function Button({
     assert(action, 'inline form submit button must have action')
     assert(
       type === 'submit',
-      'inline form submit button must be of type sybmit',
+      'inline form submit button must be of type submit',
     )
 
     return (

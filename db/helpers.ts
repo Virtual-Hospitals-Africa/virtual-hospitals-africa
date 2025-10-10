@@ -17,7 +17,7 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import { DB } from '../db.d.ts'
-import { Location, type TrxOrDb } from '../types.ts'
+import { Coordinates, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
@@ -287,6 +287,21 @@ export function debugReplaceAll(
   })
 }
 
+export function asCompiledSql(
+  qb:
+    // deno-lint-ignore no-explicit-any
+    | SelectQueryBuilder<any, any, any>
+    // deno-lint-ignore no-explicit-any
+    | UpdateQueryBuilder<any, any, any, any>
+    // deno-lint-ignore no-explicit-any
+    | DeleteQueryBuilder<any, any, any>
+    // deno-lint-ignore no-explicit-any
+    | InsertQueryBuilder<any, any, any>,
+) {
+  const { sql, parameters } = qb.compile()
+  return debugReplaceAll(sql, parameters)
+}
+
 // Logs the pretty-printed SQL to the console with parameters interpolated.
 export function debugLog(
   qb:
@@ -299,9 +314,8 @@ export function debugLog(
     // deno-lint-ignore no-explicit-any
     | InsertQueryBuilder<any, any, any>,
 ) {
-  const { sql, parameters } = qb.compile()
   console.log(
-    debugReplaceAll(sql, parameters),
+    asCompiledSql(qb),
   )
 }
 
@@ -346,7 +360,7 @@ export function longFormattedDateTime(ref: string) {
   }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
 }
 
-export function literalLocation(loc: Location) {
+export function literalLocation(loc: Coordinates) {
   return sql<
     string
   >`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`

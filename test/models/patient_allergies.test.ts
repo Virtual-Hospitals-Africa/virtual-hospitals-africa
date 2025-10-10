@@ -2,7 +2,7 @@
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 // import * as patients from '../../db/models/patients.ts'
 // import * as patient_allergies from '../../db/models/patient_allergies.ts'
-// import { itUsesTrxAnd } from '../web/utilities.ts'
+//
 // import generateUUID from '../../util/uuid.ts'
 // import db from '../../db/db.ts'
 

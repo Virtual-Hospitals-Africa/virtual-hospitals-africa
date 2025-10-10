@@ -1,6 +1,6 @@
 // import { describe, it } from 'std/testing/bdd.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
-// import { addTestHealthWorkerWithSession, route } from '../utilities.ts'
+// import { addTestEmployeeWithSession, route } from '../utilities.ts'
 // import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 // import * as patients from '../../../db/models/patients.ts'
 // import {
@@ -17,23 +17,22 @@
 //   () => {
 //     describe('Head-to-Toe Assessment', () => {
 //       it('saves on POST', async () => {
-//         const { health_worker, fetch } = await addTestHealthWorkerWithSession(
+//         const { health_worker, fetch } = await addTestEmployeeWithSession(
 //           db,
 //           {
-//             scenario: 'approved-nurse',
+//             profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //           },
 //         )
-//         const encounter = await patient_encounters.insert(
+//         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
 //           '00000000-0000-0000-0000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
-//             reason: 'seeking treatment',
-//             provider_ids: [health_worker.employee_id!],
+//             provider_id: health_worker.employee_id,
 //           },
 //         )
 //         await patients.update(db, {
-//           id: encounter.patient_id,
+//           id: encounter.patient.id,
 //           gender: 'female',
 //           date_of_birth: '1980-01-01',
 //         })
@@ -42,7 +41,7 @@
 //         body.append('Character.cold', 'on')
 
 //         const response = await fetch(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations`,
 //           {
 //             method: 'POST',
 //             body,
@@ -52,8 +51,8 @@
 //         const patient_examination = await getPatientExamination(
 //           db,
 //           {
-//             patient_id: encounter.patient_id,
-//             encounter_id: encounter.id,
+//             patient_id: encounter.patient.id,
+//             patient_encounter_id: encounter.patient_encounter_id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
@@ -84,28 +83,27 @@
 
 //       it('removes existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
-//           await addTestHealthWorkerWithSession(db, {
-//             scenario: 'approved-nurse',
+//           await addTestEmployeeWithSession(db, {
+//             profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //           })
-//         const encounter = await patient_encounters.insert(
+//         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
 //           '00000000-0000-0000-0000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
-//             reason: 'seeking treatment',
-//             provider_ids: [health_worker.employee_id!],
+//             provider_id: health_worker.employee_id,
 //           },
 //         )
 //         await patients.update(db, {
-//           id: encounter.patient_id,
+//           id: encounter.patient.id,
 //           gender: 'female',
 //           date_of_birth: '1980-01-01',
 //         })
 
 //         await upsertFindings(db, {
-//           patient_id: encounter.patient_id,
-//           encounter_id: encounter.id,
-//           encounter_provider_id: encounter.providers[0].encounter_provider_id,
+//           patient_id: encounter.patient.id,
+//           patient_encounter_id: encounter.patient_encounter_id,
+//           patient_encounter_employee_id: encounter.employee.id,
 //           examination_identifier: 'Head-to-toe Assessment',
 //           values: {
 //             'Character': {
@@ -117,7 +115,7 @@
 //         const body = new FormData()
 
 //         const response = await fetch(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
 //           {
 //             method: 'POST',
 //             body,
@@ -127,8 +125,8 @@
 //         const patient_examination = await getPatientExamination(
 //           db,
 //           {
-//             patient_id: encounter.patient_id,
-//             encounter_id: encounter.id,
+//             patient_id: encounter.patient.id,
+//             patient_encounter_id: encounter.patient_encounter_id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
@@ -145,7 +143,7 @@
 //         assertEquals(on_values, [])
 
 //         const $ = await fetchCheerio(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
 //         )
 
 //         const categories = await db
@@ -175,28 +173,27 @@
 
 //       it('updates existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
-//           await addTestHealthWorkerWithSession(db, {
-//             scenario: 'approved-nurse',
+//           await addTestEmployeeWithSession(db, {
+//             profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //           })
-//         const encounter = await patient_encounters.insert(
+//         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
 //           '00000000-0000-0000-0000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
-//             reason: 'seeking treatment',
-//             provider_ids: [health_worker.employee_id!],
+//             provider_id: health_worker.employee_id,
 //           },
 //         )
 //         await patients.update(db, {
-//           id: encounter.patient_id,
+//           id: encounter.patient.id,
 //           gender: 'female',
 //           date_of_birth: '1980-01-01',
 //         })
 
 //         await upsertFindings(db, {
-//           patient_id: encounter.patient_id,
-//           encounter_id: encounter.id,
-//           encounter_provider_id: encounter.providers[0].encounter_provider_id,
+//           patient_id: encounter.patient.id,
+//           patient_encounter_id: encounter.patient_encounter_id,
+//           patient_encounter_employee_id: encounter.employee.id,
 //           examination_identifier: 'Head-to-toe Assessment',
 //           values: {
 //             'Character': {
@@ -209,7 +206,7 @@
 //         body.append('Surface.scaly', 'on')
 
 //         const response = await fetch(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
 //           {
 //             method: 'POST',
 //             body,
@@ -219,8 +216,8 @@
 //         const patient_examination = await getPatientExamination(
 //           db,
 //           {
-//             patient_id: encounter.patient_id,
-//             encounter_id: encounter.id,
+//             patient_id: encounter.patient.id,
+//             patient_encounter_id: encounter.patient_encounter_id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //           },
 //         )
@@ -249,7 +246,7 @@
 //         ])
 
 //         const $ = await fetchCheerio(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?examination=Head-to-toe+Assessment`,
 //         )
 
 //         const categories = await db
@@ -290,26 +287,25 @@
 
 //       it('renders a blank form on initial GET, including "all normal"', async () => {
 //         const { health_worker, fetchCheerio } =
-//           await addTestHealthWorkerWithSession(db, {
-//             scenario: 'approved-nurse',
+//           await addTestEmployeeWithSession(db, {
+//             profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //           })
-//         const encounter = await patient_encounters.insert(
+//         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
 //           '00000000-0000-0000-0000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
-//             reason: 'seeking treatment',
-//             provider_ids: [health_worker.employee_id!],
+//             provider_id: health_worker.employee_id,
 //           },
 //         )
 //         await patients.update(db, {
-//           id: encounter.patient_id,
+//           id: encounter.patient.id,
 //           gender: 'female',
 //           date_of_birth: '1980-01-01',
 //         })
 
 //         const $ = await fetchCheerio(
-//           `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
+//           `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations`,
 //         )
 
 //         const categories = await db
@@ -338,50 +334,50 @@
 //       describe('GET', () => {
 //         it('shows a form allowing orders to be placed for a doctor', async () => {
 //           const { health_worker, fetchCheerio } =
-//             await addTestHealthWorkerWithSession(db, {
-//               scenario: 'doctor',
+//             await addTestEmployeeWithSession(db, {
+//               profession: 'doctor',
 //             })
-//           const encounter = await patient_encounters.insert(
+//           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
 //             '00000000-0000-0000-0000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [health_worker.employee_id!],
+//               provider_ids: [health_worker.employee_id],
 //             },
 //           )
 //           await patients.update(db, {
-//             id: encounter.patient_id,
+//             id: encounter.patient.id,
 //             gender: 'female',
 //             date_of_birth: '1980-01-01',
 //           })
 //           const $ = await fetchCheerio(
-//             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
+//             `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?add=examinations`,
 //           )
 //           assertEquals($('p:contains("Diagnostic Tests to Order")').length, 1)
 //         })
 
 //         it('shows a form without a an orders field for a nurse', async () => {
 //           const { health_worker, fetchCheerio } =
-//             await addTestHealthWorkerWithSession(db, {
-//               scenario: 'approved-nurse',
+//             await addTestEmployeeWithSession(db, {
+//               profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //             })
-//           const encounter = await patient_encounters.insert(
+//           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
 //             '00000000-0000-0000-0000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [health_worker.employee_id!],
+//               provider_ids: [health_worker.employee_id],
 //             },
 //           )
 //           await patients.update(db, {
-//             id: encounter.patient_id,
+//             id: encounter.patient.id,
 //             gender: 'female',
 //             date_of_birth: '1980-01-01',
 //           })
 //           const $ = await fetchCheerio(
-//             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
+//             `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?add=examinations`,
 //           )
 //           assertEquals($('p:contains("Diagnostic Tests to Order")').length, 0)
 //         })
@@ -389,23 +385,23 @@
 
 //       describe('POST', () => {
 //         it('allows orders to be placed for a doctor', async () => {
-//           const { health_worker, fetch } = await addTestHealthWorkerWithSession(
+//           const { health_worker, fetch } = await addTestEmployeeWithSession(
 //             db,
 //             {
-//               scenario: 'doctor',
+//               profession: 'doctor',
 //             },
 //           )
-//           const encounter = await patient_encounters.insert(
+//           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
 //             '00000000-0000-0000-0000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [health_worker.employee_id!],
+//               provider_ids: [health_worker.employee_id],
 //             },
 //           )
 //           await patients.update(db, {
-//             id: encounter.patient_id,
+//             id: encounter.patient.id,
 //             gender: 'female',
 //             date_of_birth: '1980-01-01',
 //           })
@@ -414,7 +410,7 @@
 //           body.append('diagnostic_test_orders[0]', 'Diabetes')
 
 //           const response = await fetch(
-//             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations`,
+//             `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?add=examinations`,
 //             {
 //               method: 'POST',
 //               body,
@@ -427,13 +423,13 @@
 //             db,
 //           ).selectFrom('patient_examinations_with_recommendations')
 //             .selectAll()
-//             .where('encounter_id', '=', encounter.id)
+//             .where('patient_encounter_id', '=', encounter.id)
 //             .execute()
 
 //           assertEquals(patient_examinations, [
 //             {
-//               patient_id: encounter.patient_id,
-//               encounter_id: encounter.id,
+//               patient_id: encounter.patient.id,
+//               patient_encounter_id: encounter.patient_encounter_id,
 //               examination_identifier: 'Head-to-toe Assessment',
 //               completed: false,
 //               skipped: false,
@@ -441,8 +437,8 @@
 //               recommended: true,
 //             },
 //             {
-//               patient_id: encounter.patient_id,
-//               encounter_id: encounter.id,
+//               patient_id: encounter.patient.id,
+//               patient_encounter_id: encounter.patient_encounter_id,
 //               examination_identifier: "Women's Health Assessment",
 //               completed: false,
 //               skipped: false,
@@ -450,8 +446,8 @@
 //               recommended: true,
 //             },
 //             {
-//               patient_id: encounter.patient_id,
-//               encounter_id: encounter.id,
+//               patient_id: encounter.patient.id,
+//               patient_encounter_id: encounter.patient_encounter_id,
 //               examination_identifier: 'Diabetes',
 //               completed: false,
 //               skipped: false,
@@ -462,23 +458,23 @@
 //         })
 
 //         it('does not allow orders to be placed for a nurse', async () => {
-//           const { health_worker, fetch } = await addTestHealthWorkerWithSession(
+//           const { health_worker, fetch } = await addTestEmployeeWithSession(
 //             db,
 //             {
-//               scenario: 'approved-nurse',
+//               profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //             },
 //           )
-//           const encounter = await patient_encounters.insert(
+//           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
 //             '00000000-0000-0000-0000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
-//               provider_ids: [health_worker.employee_id!],
+//               provider_ids: [health_worker.employee_id],
 //             },
 //           )
 //           await patients.update(db, {
-//             id: encounter.patient_id,
+//             id: encounter.patient.id,
 //             gender: 'female',
 //             date_of_birth: '1980-01-01',
 //           })
@@ -487,7 +483,7 @@
 //           body.append('diagnostic_test_orders[0]', 'Diabetes')
 
 //           const response = await fetch(
-//             `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations?add=examinations&expectedTestError=1`,
+//             `${route}/app/patients/${encounter.patient.id}/encounters/open/examinations?add=examinations&expectedTestError=1`,
 //             {
 //               method: 'POST',
 //               body,

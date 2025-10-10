@@ -13,12 +13,12 @@ export function insertProcedure(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
   },
 ) {
   const triage_procedure_id = generateUUID()
@@ -30,14 +30,14 @@ export function insertProcedure(
         .values({
           id: triage_procedure_id,
           patient_id,
-          encounter_id,
+          patient_encounter_id,
           snomed_concept_id: TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID,
         }),
   ).with('inserting_procedure', (qb) =>
     qb.insertInto('patient_procedures')
       .values({
         id: triage_procedure_id,
-        encounter_provider_id,
+        patient_encounter_employee_id,
       })
       .returning('id'))
     .selectFrom('inserting_procedure')
@@ -52,14 +52,14 @@ export function insertLevel(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     triage_procedure_id,
     triage_level,
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     triage_procedure_id: string
     triage_level: TriageLevel
   },
@@ -76,14 +76,14 @@ export function insertLevel(
         .values({
           id: triage_level_evaluation_id,
           patient_id,
-          encounter_id,
+          patient_encounter_id,
           snomed_concept_id,
         }),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')
       .values({
         id: triage_level_evaluation_id,
-        encounter_provider_id,
+        patient_encounter_employee_id,
         evaluates_record_id: triage_procedure_id,
         by_system: false,
       })

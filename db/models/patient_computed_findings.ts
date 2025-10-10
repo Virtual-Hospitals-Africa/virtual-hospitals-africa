@@ -49,8 +49,8 @@ export function insertComputedFinding(
   trx: TrxOrDb,
   {
     patient_id,
-    encounter_id,
-    encounter_provider_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
     procedure_id,
     snomed_concept_id,
     value,
@@ -61,8 +61,8 @@ export function insertComputedFinding(
     input_measurements = [],
   }: {
     patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
     procedure_id: string
     snomed_concept_id: string
     value?: number
@@ -99,7 +99,7 @@ export function insertComputedFinding(
         .values({
           id: computed_finding_id,
           patient_id,
-          encounter_id,
+          patient_encounter_id,
           snomed_concept_id,
         }),
   ).with(
@@ -108,7 +108,7 @@ export function insertComputedFinding(
       qb.insertInto('patient_findings')
         .values({
           id: computed_finding_id,
-          encounter_provider_id,
+          patient_encounter_employee_id,
           procedure_id,
         }),
   ).with(
@@ -144,7 +144,7 @@ export function insertComputedFinding(
 
 export async function getComputedFindingsByEncounter(
   trx: TrxOrDb,
-  encounter_id: string,
+  patient_encounter_id: string,
 ) {
   const results = await trx.selectFrom('patient_computed_findings as pcf')
     .innerJoin('patient_findings as pf', 'pcf.id', 'pf.id')
@@ -159,7 +159,7 @@ export async function getComputedFindingsByEncounter(
       'pcf.value_display',
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
     ])
-    .where('pr.encounter_id', '=', encounter_id)
+    .where('pr.patient_encounter_id', '=', patient_encounter_id)
     .orderBy('pcf.created_at', 'desc')
     .execute()
 
@@ -257,11 +257,11 @@ export async function getComputedFindingWithProvider(
     .innerJoin('patient_findings as pf', 'pcf.id', 'pf.id')
     .innerJoin('patient_records as pr', 'pf.id', 'pr.id')
     .innerJoin(
-      'patient_encounter_providers as pep',
-      'pf.encounter_provider_id',
+      'patient_encounter_employees as pep',
+      'pf.patient_encounter_employee_id',
       'pep.id',
     )
-    .innerJoin('employment as e', 'pep.provider_id', 'e.id')
+    .innerJoin('employment as e', 'pep.employment_id', 'e.id')
     .innerJoin('health_workers as hw', 'e.health_worker_id', 'hw.id')
     .innerJoin('organizations as org', 'e.organization_id', 'org.id')
     .select([
@@ -274,7 +274,7 @@ export async function getComputedFindingWithProvider(
       'pcf.value_display',
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
       'pr.patient_id',
-      'pr.encounter_id',
+      'pr.patient_encounter_id',
     ])
     .select((eb) => [
       jsonBuildObject({

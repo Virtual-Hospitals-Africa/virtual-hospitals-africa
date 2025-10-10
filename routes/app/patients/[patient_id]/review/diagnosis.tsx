@@ -85,7 +85,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       {
         review_id: ctx.state.doctor_review.review_id,
         patient_id: ctx.state.doctor_review.patient.id,
-        encounter_id: ctx.state.doctor_review.encounter.id,
+        patient_encounter_id: ctx.state.doctor_review.encounter.id,
         employment_id: ctx.state.doctor_review.employment_id,
         diagnoses: patient_diagnoses,
         diagnoses_collaborations,
@@ -105,11 +105,11 @@ export default async function DiagnosisPage(
   const patient_diagnoses = await diagnoses.getFromReview(trx, {
     review_id,
     employment_id: ctx.state.doctor_review.employment_id,
-    encounter_id: ctx.state.doctor_review.encounter.id,
+    patient_encounter_id: ctx.state.doctor_review.encounter.id,
   })
 
   const symptoms = await patient_symptoms.getEncounter(trx, {
-    encounter_id: ctx.state.doctor_review.encounter.id,
+    patient_encounter_id: ctx.state.doctor_review.encounter.id,
     patient_id: ctx.state.doctor_review.patient.id,
   })
   const earliest_date = min(symptoms.map((s) => s.start_date))

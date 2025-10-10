@@ -8,15 +8,15 @@ import {
   DB,
   DoctorReviewStep,
   EncounterReason,
-  EncounterStep,
   FamilyType,
   MaritalStatus,
   PatientCohabitation,
+  Workflow,
 } from './db.d.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
+import { Department } from './shared/departments.ts'
 export * from './shared/priorities.ts'
-import { ExtendedActionData } from './components/library/Table.tsx'
 
 export type Maybe<T> = T | null | undefined
 
@@ -29,11 +29,38 @@ export type DeepPartial<T> = T extends Record<string, unknown> ? {
   }
   : T
 
+export type NonEmptyArray<T> = [T, ...T[]]
+
+export type OptionalUndefinedFields<T> =
+  & {
+    [K in keyof T as undefined extends T[K] ? never : K]: T[K]
+  }
+  & {
+    [K in keyof T as undefined extends T[K] ? K : never]?: T[K]
+  }
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>
   updated_at: ColumnType<Date, undefined, never>
 } & T
+
+export type SelectShape<T> = {
+  [K in keyof T]: T[K] extends ColumnType<infer S, any, any> ? S
+    : T[K]
+}
+
+export type InsertShape<T> = OptionalUndefinedFields<
+  {
+    [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? I
+      : T[K]
+  }
+>
+
+export type UpdateShape<T> = {
+  [K in keyof T]: T[K] extends ColumnType<any, any, infer U> ? U
+    : T[K]
+}
 
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -43,7 +70,7 @@ export type HasStringId<
     id: string
   }
 
-export type Location = {
+export type Coordinates = {
   longitude: number
   latitude: number
 }
@@ -160,14 +187,14 @@ export type PatientConversationState =
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<string>
   nearest_organization_id: Maybe<string>
-  completed_intake: boolean
+  completed_registration: boolean
   address_id: Maybe<string>
   unregistered_primary_doctor_name: Maybe<string>
 }
 
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
-  name: string
+  name: Maybe<string>
   gender: Maybe<Gender>
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
@@ -177,7 +204,7 @@ export type PatientDemographicInfo = {
 export type PatientPersonal = {
   conversation_state: PatientConversationState
   avatar_media_id: Maybe<string>
-  location: Maybe<Location>
+  location: Maybe<Coordinates>
 } & PatientDemographicInfo
 
 export type RenderedPatient =
@@ -187,11 +214,12 @@ export type RenderedPatient =
     | 'ethnicity'
     | 'national_id_number'
     | 'phone_number'
-    | 'completed_intake'
+    | 'completed_registration'
   >
   & {
     id: string
     address: string | null
+    date_of_birth: string | null
     dob_formatted: string | null
     name: string
     description: string | null
@@ -256,7 +284,7 @@ export type PreExistingCondition = MedicalConditionBase & {
     dosage: number
     route: string
     special_instructions?: Maybe<string>
-    intake_frequency: string
+    registration_frequency: string
     name: string
     start_date: string
     end_date?: Maybe<string>
@@ -271,7 +299,7 @@ export type PatientConditionMedication = {
   strength: number
   route: string
   dosage: number
-  intake_frequency: string
+  registration_frequency: string
   name: string
   start_date: string
   end_date?: Maybe<string>
@@ -338,34 +366,6 @@ export type Address = {
   postal_code: Maybe<string>
 }
 
-export type PatientIntake =
-  & {
-    id: string
-    avatar_url: Maybe<string>
-    description: Maybe<string>
-    nearest_organization_name: Maybe<string>
-    nearest_organization_address: Maybe<string>
-    primary_doctor_name: Maybe<string>
-    age?: RenderedPatientAge
-    address?: Maybe<Address>
-    actions: {
-      view: string
-    }
-  }
-  & Pick<
-    Patient,
-    | 'name'
-    | 'phone_number'
-    | 'gender'
-    | 'ethnicity'
-    | 'date_of_birth'
-    | 'national_id_number'
-    | 'nearest_organization_id'
-    | 'completed_intake'
-    | 'primary_doctor_id'
-    | 'unregistered_primary_doctor_name'
-  >
-
 export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
@@ -426,10 +426,6 @@ export type LifestyleUpsert = {
   substance_use: any
   exercise: any
   diet: any
-}
-
-export type PatientWithOpenEncounter = RenderedPatient & {
-  open_encounter: Maybe<RenderedPatientEncounter>
 }
 
 export type PatientAppointmentOfferedTime = {
@@ -617,7 +613,7 @@ export type Appointment = {
 }
 
 export type AppointmentWithAllPatientInfo = HasStringId<Appointment> & {
-  patient: PatientWithOpenEncounter
+  patient: RenderedPatient
   media: {
     media_id: string
     mime_type: string
@@ -1286,10 +1282,11 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession = 'admin' | 'doctor' | 'nurse'
+export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
 
 export type NurseSpecialty =
   | 'primary care'
+  | 'triage'
   | 'registered general'
   | 'midwife'
   | 'intensive and coronary care'
@@ -1309,6 +1306,7 @@ export type NurseSpecialty =
 
 export const NURSE_SPECIALTIES: NurseSpecialty[] = [
   'primary care',
+  'triage',
   'registered general',
   'midwife',
   'intensive and coronary care',
@@ -1435,7 +1433,7 @@ export type RenderedDoctorReviewBase = {
       id: string
       name: string
     }
-    patient_encounter_provider_id: string
+    patient_encounter_employee_id: string
     health_worker_id: string
   }
 }
@@ -1485,8 +1483,19 @@ export type HealthWorkerEmployment = {
       registration_pending_approval: boolean
       employment_id: string
     }
+    receptionist: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: string
+    }
   }
+  departments: {
+    id: string
+    name: Department
+  }[]
   provider_id: string | null
+  non_admin_id: string | null
   gcal_appointments_calendar_id: string | null
   gcal_availability_calendar_id: string | null
   availability_set: SqlBool | null
@@ -1499,7 +1508,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
   expires_at: Date | string
   employment: HealthWorkerEmployment[]
   default_organization_id: string | null
-  open_encounters: RenderedPatientEncounter[]
+  present_encounter: RenderedPatientOpenEncounter | null
   reviews: {
     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
     in_progress: RenderedDoctorReview[]
@@ -1737,7 +1746,7 @@ export type WhatsAppSendableDocument = {
   file_path: string
 }
 
-export type WhatsAppLocation = Location & {
+export type WhatsAppLocation = Coordinates & {
   name: string
   address?: string
   url?: string
@@ -1802,12 +1811,17 @@ export type LoggedInRegulatorHandler<Context = Record<string, never>> =
 export type Organization = {
   name: string
   category: string | null
-  address: string | null
-  location: Location | null
+  is_test: boolean
+  country: string
+  description: string | null
+  formatted_address: string | null
+  ownership: string | null
+  inactive_reason: string | null
+  location: Coordinates | null
 }
 
 export type OrganizationWithAddress =
-  & Location
+  & Coordinates
   & Organization
   & {
     address: string
@@ -1818,7 +1832,7 @@ export type PatientNearestOrganization = {
   name: string
   address: string
   locality: string | null
-  location: Location
+  location: Coordinates
   walking_distance: null | string
   distance_meters: number
   admins: {
@@ -1869,8 +1883,8 @@ export type LinkDef = {
 }
 
 export type LocationDistance = {
-  origin: Location
-  destination: Location
+  origin: Coordinates
+  destination: Coordinates
 }
 
 export type Media = {
@@ -2284,55 +2298,187 @@ export type WaitingRoom = {
   patient_encounter_id: string
 }
 
-export type RenderedProvider = {
-  health_worker_id: string
-  employee_id: string
-  name: string
-  profession: string
-  avatar_url: string | null
-  href: string
-  seen: SqlBool
-  organization_id?: string
+export type RenderedOrganization = HasStringId<
+  Organization & {
+    departments: {
+      id: string
+      name: string
+      requires_triage: boolean
+      workflows: Workflow[]
+    }[]
+  }
+>
+
+export type RenderedPatientPresenceWaitingRoom = {
+  department_name: 'waiting room'
+  current_workflow: null
+  next_workflow: Workflow
+  employees: []
 }
-export type RenderedWaitingRoom = {
+
+export type RenderedPatientPresenceActiveDepartment = {
+  department_name: Exclude<Department, 'waiting room'>
+  current_workflow: Workflow
+  next_workflow: null | Workflow
+  employees: RenderedPatientEncounterEmployee[]
+}
+
+export type RenderedPatientPresence =
+  | RenderedPatientPresenceWaitingRoom
+  | RenderedPatientPresenceActiveDepartment
+
+export type RenderedPatientEncounterStatusOpen = {
+  open: true
+  closed_at?: never
+  patient_presence: RenderedPatientPresence
+}
+
+export type RenderedPatientEncounterStatusClosed = {
+  open: false
+  closed_at: Date
+  patient_presence?: never
+}
+
+export type RenderedPatientEncounterStatus =
+  | RenderedPatientEncounterStatusOpen
+  | RenderedPatientEncounterStatusClosed
+
+export type RenderedPatientEncounterEmployee = {
+  patient_encounter_employee_id: string
+  employment_id: string
+  organization_id: string
+  profession: Profession
+  health_worker_id: string
+  health_worker_name: string
+  avatar_url: string | null
+  specialty: string | null
+  seen_at: Date
+}
+
+export type RenderedPatientEncounter = {
+  patient_encounter_id: string
+  reason: EncounterReason | null
+  notes: null | string
   patient: {
     id: string
     name: string
     avatar_url: string | null
     description: string | null
   }
-  actions: {
-    view: ExtendedActionData | null
-    intake: ExtendedActionData | null
-    review: ExtendedActionData | null
-    awaiting_review: ExtendedActionData | null
-  }
-  reason: EncounterReason
-  is_emergency: SqlBool
-  in_waiting_room: SqlBool
-  status: string
-  arrived_ago_display: string
-  appointment: null | {
+  organization: RenderedOrganization
+  appointment: {
     id: string
     start: Date
     providers: {
+      employment_id: string
       health_worker_id: string
-      provider_id: string
       name: string
+      organization_id: string
+      avatar_url: string | null
+      specialty: string | null
+      profession: Profession
     }[]
+  } | null
+  workflows: Partial<
+    {
+      [w in Workflow]: WorkflowStatus
+    }
+  >
+  priority: null | {
+    snomed_concept_id: string
+    name: Priority
+    target_treatment_time: Date | null
   }
-  providers: RenderedProvider[]
-  reviewers: RenderedProvider[]
+  arrived_timestamp: Date
+  wait_time: PostgresInterval
+  status: RenderedPatientEncounterStatus
+  all_employees_seen: {
+    patient_encounter_employee_id: string
+    employment_id: string
+    seen_at: Date
+  }[]
 }
 
-export type RenderedPatientEncounterProvider = {
-  patient_encounter_provider_id: string
-  employment_id: string
-  organization_id: string
-  profession: Profession
-  health_worker_id: string
-  health_worker_name: string
-  seen: SqlBool
+export type RenderedPatientOpenEncounter = RenderedPatientEncounter & {
+  status: RenderedPatientEncounterStatusOpen
+}
+
+export type WorkflowStatusNotStarted = {
+  patient_workflow_id: string
+  workflow: Workflow
+  status: 'not started'
+  steps_completed: []
+  employees: []
+  completed_at?: never
+}
+
+export type WorkflowStatusIncomplete = {
+  patient_workflow_id: string
+  workflow: Workflow
+  status: 'incomplete'
+  steps_completed: string[]
+  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  completed_at?: never
+}
+
+export type WorkflowStatusInProgress = {
+  patient_workflow_id: string
+  workflow: Workflow
+  status: 'in progress'
+  steps_completed: string[]
+  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  completed_at?: never
+}
+
+export type WorkflowStatusCompleted = {
+  patient_workflow_id: string
+  workflow: Workflow
+  status: 'completed'
+  steps_completed: string[]
+  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  completed_at: Date
+}
+
+export type WorkflowStatus =
+  | WorkflowStatusNotStarted
+  | WorkflowStatusIncomplete
+  | WorkflowStatusInProgress
+  | WorkflowStatusCompleted
+
+export type ExtendedActionData = {
+  text: string
+  href?: string
+  method?: 'GET' | 'POST'
+  disabled?: boolean
+}
+
+export type RenderedWaitingRoom = {
+  patient_encounter_id: string
+  patient: {
+    id: string
+    name: string
+    avatar_url: string | null
+    description: string | null
+  }
+  actions: [ExtendedActionData]
+  reason: EncounterReason | null
+  workflow_status_display: string
+  arrived_timestamp: Date
+  arrived_ago_display: string
+  target_treatment_time: Date | null
+  department_name: Department
+  priority_level: Priority | null
+  present_employees: RenderedPatientEncounterEmployee[]
+  // appointment: null | {
+  //   id: string
+  //   start: Date
+  //   providers: {
+  //     health_worker_id: string
+  //     provider_id: string
+  //     name: string
+  //   }[]
+  // }
+  // reviewers: RenderedProvider[]
 }
 
 export type RenderedPatientEncounterExamination = {
@@ -2342,30 +2488,11 @@ export type RenderedPatientEncounterExamination = {
   ordered: SqlBool | null
 }
 
-export type RenderedPatientEncounter = {
-  encounter_id: string
-  created_at: Date
-  closed_at: null | Date
-  reason: EncounterReason
-  notes: null | string
-  patient_id: string
-  organization_id: string
-  appointment_id: string | null
-  waiting_room_id: string | null
-  waiting_room_organization_id: null | string
-  providers: RenderedPatientEncounterProvider[]
-  steps_completed: EncounterStep[]
-  location: {
-    latitude: number
-    longitude: number
-  }
-}
-
 export type PatientMedicationUpsert = {
   id?: Maybe<string>
   dosage: number
   strength: number
-  intake_frequency: string
+  registration_frequency: string
   route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
@@ -2465,7 +2592,7 @@ export type Provider = {
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
-  encounter_step: EncounterStep
+  seeking_treatment_step: string
   slug: string
   display_name: string
   completed: SqlBool | null
@@ -3025,8 +3152,8 @@ export type RenderedPrescriptionWithMedications = RenderedPrescription & {
 export type RenderedPatientExaminationFinding = {
   patient_examination_id: string
   patient_id: string
-  encounter_id: string
-  encounter_provider_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
   examination_identifier: string
   encounter_open: SqlBool
   edit_href: string
@@ -3129,7 +3256,7 @@ export enum OrganizationSortOptions {
 export type OrganizationLike = {
   id: string
   name: string
-  address?: Maybe<string>
+  formatted_address?: Maybe<string>
   description?: Maybe<string>
   distance_meters?: Maybe<number>
   google_maps_link?: Maybe<string>
@@ -3165,7 +3292,7 @@ export type MostRecentVitalMeasurement =
     finding_id: string
     snomed_concept_id: string
     value_display: string
-    encounter_id: string
+    patient_encounter_id: string
     created_at: Date
     // TODO include who made the evaluation
     evaluations: {
@@ -3176,7 +3303,7 @@ export type MostRecentVitalMeasurement =
   & ({
     finding_type: 'manual'
     provider: {
-      patient_encounter_provider_id: string
+      patient_encounter_employee_id: string
       employee_id: string
       organization: {
         id: string
@@ -3268,7 +3395,7 @@ export type RenderedPatientHistory = {
 export type PatientDrawerV3Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
-  current_encounter_step: EncounterStep
+  current_seeking_treatment_step: string
   this_visit_records: ThisVisitRecords
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]

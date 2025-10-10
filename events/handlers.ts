@@ -31,7 +31,7 @@ export const EVENTS = {
       },
     },
   ),
-  PatientIntake: defineEvent(
+  PatientRegistration: defineEvent(
     z.object({
       patient_id: z.string().uuid(),
     }),
@@ -215,7 +215,7 @@ export const EVENTS = {
           name: z.string(),
           id: z.string().uuid(),
         }),
-        patient_encounter_provider_id: z.string().uuid(),
+        patient_encounter_employee_id: z.string().uuid(),
       }),
     }),
     {

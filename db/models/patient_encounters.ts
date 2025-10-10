@@ -1,410 +1,755 @@
 import { sql } from 'kysely'
 import {
+  HealthWorkerEmployment,
+  InsertShape,
+  isPriority,
+  Maybe,
+  PostgresInterval,
+  RenderedOrganization,
   RenderedPatientEncounter,
-  RenderedPatientEncounterProvider,
+  RenderedPatientEncounterStatus,
+  RenderedPatientOpenEncounter,
+  RenderedPatientPresence,
+  SelectShape,
   TrxOrDb,
+  WorkflowStatus,
 } from '../../types.ts'
-import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
 import * as organizations from './organizations.ts'
-import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
 import {
+  blankSelection,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
+  jsonObjectFrom,
   literalLocation,
   now,
 } from '../helpers.ts'
-import { EncounterStep } from '../../db.d.ts'
-import { EmployedHealthWorker } from '../../types.ts'
+import {
+  EmploymentPresence,
+  EncounterReason,
+  PatientPresence,
+  Workflow,
+} from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
-import uniq from '../../util/uniq.ts'
-import { inBackground } from '../../util/inBackground.ts'
-import { promiseProps } from '../../util/promiseProps.ts'
-import { isUUID } from '../../util/uuid.ts'
-import z from 'zod'
+import generateUUID, { isUUID } from '../../util/uuid.ts'
+import { base, QueryResult } from './_base.ts'
+import {
+  assertDepartment,
+  WORKFLOW_DEPARTMENTS,
+} from '../../shared/departments.ts'
+import {
+  arrayIsEmpty,
+  assertArrayEmpty,
+  assertArrayNonEmpty,
+} from '../../util/arraySize.ts'
+import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { assertAll } from '../../util/assertAll.ts'
+import { HealthWorkerIdSelection } from './health_worker_id.ts'
 
-export const UpsertSchema = z.object({
-  patient_id: z.string().uuid().optional(),
-  patient_name: z.string().optional(),
-  location: z.object({
-    latitude: z.number(),
-    longitude: z.number(),
-  }).optional(),
-  reason: z.enum([
-    'appointment',
-    'checkup',
-    'emergency',
-    'follow up',
-    'maternity',
-    'other',
-    'referral',
-    'seeking treatment',
-  ]),
-  provider_ids: z.string().uuid().array().optional(),
-  appointment_id: z.string().uuid().optional(),
-  notes: z.string().optional(),
-})
+type EncounterExistingOrToCreate = {
+  create: false
+  patient_encounter_id: string
+  existing: RenderedPatientEncounter
+} | {
+  create: true
+  patient_encounter_id: string
+  to_create: {
+    reason: EncounterReason
+    notes?: Maybe<string>
+    appointment_id?: Maybe<string>
+  }
+}
 
-export type Upsert = z.infer<typeof UpsertSchema>
+export function seenPatientEncounterEmployeeId(
+  encounter: RenderedPatientEncounter,
+  organization_employment: HealthWorkerEmployment,
+) {
+  const employee = encounter.all_employees_seen.find((employee) =>
+    employee.employment_id === organization_employment.non_admin_id
+  )
+  assert(
+    employee,
+    'If the encounter exists and the health worker is manipulating it, the health worker must have seen the patient at least once',
+  )
+  return employee.patient_encounter_employee_id
+}
 
-export async function insert(
+export async function insertSeekingTreatmentForRegisteredPatient(
   trx: TrxOrDb,
-  organization_id: string,
-  to_upsert: Upsert,
-): Promise<{
-  id: string
-  patient_id: string
-  waiting_room_id: string
-  created_at: Date
-  providers: {
-    encounter_provider_id: string
-    provider_id: string
-  }[]
-}> {
-  const data = UpsertSchema.parse(to_upsert)
-
-  let {
+  organization: RenderedOrganization,
+  organization_employment: HealthWorkerEmployment,
+  {
     patient_id,
-    patient_name,
+    encounter,
+  }: {
+    patient_id: string
+    encounter: EncounterExistingOrToCreate
+  },
+): Promise<SelectShape<PatientPresence>> {
+  const { patient_encounter_id } = encounter
+  assert(isUUID(patient_encounter_id), 'Caller must supply uuid upon creation')
+
+  const { location } = organization
+  assert(
     location,
-    reason,
-    appointment_id,
-    notes,
-    provider_ids,
-  } = data
+    'Can only add encounters for organizations with a location',
+  )
 
-  if (!patient_id) {
-    assertOr400(patient_name)
-    patient_id = (await patients.insert(trx, { name: patient_name })).id
-  }
-
-  if (!location) {
-    const organization = await organizations.getById(trx, organization_id)
-    assert(
-      organization.location,
-      "If no location is provided, the encounter's ",
+  const patient_encounter_employee_id = encounter.create
+    ? generateUUID()
+    : seenPatientEncounterEmployeeId(
+      encounter.existing,
+      organization_employment,
     )
-    location = organization.location
-  }
 
-  const values = {
-    patient_id,
+  assert(
+    patient_encounter_employee_id,
+    'Caller must supply patient_encounter_employee_id upon creation',
+  )
+
+  const { reason } = encounter.create ? encounter.to_create : encounter.existing
+  assertEquals(
     reason,
-    notes,
-    organization_id,
-    appointment_id: appointment_id || null,
-    location: literalLocation(location),
+    'seeking treatment',
+    'Only seeking treatment supported for now!',
+  )
+
+  const { non_admin_id } = organization_employment
+  assert(non_admin_id)
+  const workflows: Workflow[] = ['triage', 'seeking_treatment']
+  const patient_workflows = workflows.map((workflow) => ({
+    id: generateUUID(),
+    patient_encounter_id,
+    workflow,
+  }))
+
+  const patient_presence: InsertShape<PatientPresence> = {
+    id: patient_id,
+    patient_encounter_id,
+    organization_id: organization.id,
+    current_workflow: workflows[0],
+    next_workflow: workflows[1],
+    department_name: WORKFLOW_DEPARTMENTS[workflows[0]],
+  }
+  const employed_in_workflow_department = organization_employment.departments
+    .some((
+      department,
+    ) => department.name === patient_presence.department_name)
+  if (!employed_in_workflow_department) {
+    patient_presence.next_workflow = patient_presence.current_workflow
+    patient_presence.current_workflow = null
+    patient_presence.department_name = 'waiting room'
   }
 
-  const inserted = await trx
-    .insertInto('patient_encounters')
-    .values(values)
-    .returning(['id', 'patient_id', 'created_at'])
-    .executeTakeFirstOrThrow()
-
-  const others = await promiseProps({
-    providers: provider_ids?.length
-      ? trx
-        .insertInto('patient_encounter_providers')
-        .values(provider_ids.map((provider_id) => ({
-          patient_encounter_id: inserted.id,
-          provider_id,
-        })))
-        .returning([
-          'id as encounter_provider_id',
-          'provider_id',
-        ])
-        .execute()
-      : Promise.resolve([]),
-    waiting_room_id: await waiting_room.add(trx, {
-      patient_encounter_id: inserted.id,
-      organization_id,
-    }).then((w) => w.id),
-  })
-
-  return {
-    ...inserted,
-    ...others,
+  const employment_presence: InsertShape<EmploymentPresence> = {
+    id: non_admin_id,
+    at_work: true,
+    with_patient_id: employed_in_workflow_department ? patient_id : null,
   }
-}
 
-export function addProvider(
-  trx: TrxOrDb,
-  { encounter_id, provider_id, seen_now }: {
-    encounter_id: string
-    provider_id: string
-    seen_now?: boolean
-  },
-) {
-  return trx
-    .insertInto('patient_encounter_providers')
-    .values({
-      patient_encounter_id: encounter_id,
-      provider_id,
-      seen_at: seen_now ? sql<Date>`now()` : null,
-    })
-    .onConflict((oc) => oc.doNothing())
-    .returning(['id', 'seen_at'])
+  const { completed_registration, ...inserted_patient_presence } = await trx
+    .with(
+      'inserting_patient_encounter',
+      (qb) =>
+        encounter.create
+          ? qb.insertInto('patient_encounters')
+            .values({
+              patient_id,
+              reason,
+              id: patient_encounter_id,
+              notes: encounter.to_create.notes,
+              appointment_id: encounter.to_create.appointment_id,
+              organization_id: organization.id,
+              location: literalLocation(location),
+            })
+          : blankSelection(qb),
+    ).with(
+      'inserting_patient_encounter_employee',
+      (qb) =>
+        encounter.create
+          ? qb.insertInto('patient_encounter_employees')
+            .values({
+              patient_encounter_id,
+              id: patient_encounter_employee_id,
+              employment_id: non_admin_id,
+            })
+          : blankSelection(qb),
+    ).with(
+      'inserting_patient_workflows',
+      (qb) =>
+        qb.insertInto('patient_workflows')
+          .values(patient_workflows),
+    )
+    .with(
+      'inserting_patient_workflows_started',
+      (qb) =>
+        employed_in_workflow_department
+          ? qb.insertInto('patient_workflows_started')
+            .values({
+              patient_workflow_id: patient_workflows[0].id,
+              patient_encounter_employee_id,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_patient_presence',
+      (qb) =>
+        qb.insertInto('patient_presence')
+          .values(patient_presence).onConflict((oc) =>
+            oc.column('id').doUpdateSet(patient_presence)
+          ).returningAll(),
+    )
+    .with(
+      'employment_presence',
+      (qb) =>
+        qb.insertInto('employment_presence')
+          .values(employment_presence).onConflict((oc) =>
+            oc.column('id').doUpdateSet(employment_presence)
+          ),
+    )
+    .selectFrom('inserting_patient_presence')
+    .selectAll('inserting_patient_presence')
+    .innerJoin('patients', 'inserting_patient_presence.id', 'patients.id')
+    .select(['patients.completed_registration'])
     .executeTakeFirstOrThrow()
+
+  assert(
+    completed_registration,
+    "Supplied patient_id for patient that hasn't completed registration",
+  )
+  return inserted_patient_presence
 }
 
-export function markProviderSeen(
-  trx: TrxOrDb,
-  { patient_encounter_provider_id }: {
-    patient_encounter_provider_id: string
-  },
-) {
+// export async function insertNewSeekingTreatmentCompletedRegistrationWithEmployeeForTest(
+//   trx: TrxOrDb,
+//   organization_id: string,
+//   { patient_name, employment_id }: {
+//     patient_name: string
+//     employment_id: string
+//   },
+// ) {
+//   assert(Deno.env.get('IS_TEST'))
+
+//   const encounter = await patient_registration.(
+//     trx,
+//     await organizations.getById(trx, organization_id),
+//     {
+//       patient_id,
+//       reason: 'seeking treatment',
+//     },
+//   )
+
+//   const employee = await trx.insertInto(
+//     'patient_encounter_employees',
+//   ).values({
+//     patient_encounter_id: encounter.patient_encounter_id,
+//     employment_id,
+//   })
+//     .returningAll()
+//     .executeTakeFirstOrThrow()
+
+//   return {
+//     ...await getById(trx, encounter.id),
+//     employee,
+//   }
+// }
+
+export function baseEncounterProviderQuery(trx: TrxOrDb) {
   return trx
-    .updateTable('patient_encounter_providers')
-    .set({ seen_at: sql<Date>`now()` })
-    .where('patient_encounter_providers.id', '=', patient_encounter_provider_id)
-    .returning(['id', 'seen_at'])
-    .executeTakeFirstOrThrow()
-}
-
-export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: string) =>
-  trx
-    .selectFrom('patient_encounter_providers')
+    .selectFrom('patient_encounter_employees')
     .innerJoin(
       'employment',
-      'patient_encounter_providers.provider_id',
       'employment.id',
+      'patient_encounter_employees.employment_id',
     )
-    .where('employment.health_worker_id', '=', health_worker_id)
-    .select('patient_encounter_providers.patient_encounter_id')
-    .distinct()
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .select([
+      'patient_encounter_employees.id as patient_encounter_employee_id',
+      'employment.id as employment_id',
+      'employment.organization_id',
+      'employment.profession',
+      'employment.health_worker_id',
+      'health_workers.name as health_worker_name',
+      'health_workers.avatar_url',
+      'employment.specialty',
+      'patient_encounter_employees.seen_at',
+    ])
+}
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounters')
-    .leftJoin(
-      'waiting_room',
-      'waiting_room.patient_encounter_id',
-      'patient_encounters.id',
-    )
-    .select((eb) => [
-      'patient_encounters.id as encounter_id',
-      'patient_encounters.created_at',
+    .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
+    .select((eb_encounters) => [
+      'patient_encounters.id as patient_encounter_id',
+      'patient_encounters.created_at as arrived_timestamp',
       'patient_encounters.closed_at',
       'patient_encounters.reason',
       'patient_encounters.notes',
-      'patient_encounters.appointment_id',
-      'patient_encounters.patient_id',
-      'patient_encounters.organization_id',
       jsonBuildObject({
-        longitude: sql<number>`ST_X(patient_encounters.location::geometry)`,
-        latitude: sql<number>`ST_Y(patient_encounters.location::geometry)`,
-      }).as('location'),
-      'waiting_room.id as waiting_room_id',
-      'waiting_room.organization_id as waiting_room_organization_id',
-      jsonArrayFromColumn(
-        'encounter_step',
-        eb.selectFrom('patient_encounter_steps')
+        id: eb_encounters.ref('patients.id'),
+        name: eb_encounters.ref('patients.name'),
+        avatar_url: patients.avatar_url_sql,
+        description: sql<
+          string | null
+        >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
+      }).as('patient'),
+      jsonObjectFrom(
+        organizations.baseQuery(trx)
+          .where(
+            'organizations.id',
+            '=',
+            eb_encounters.ref('patient_encounters.organization_id'),
+          ),
+      ).as('organization'),
+      jsonObjectFrom(
+        eb_encounters.selectFrom('appointments')
+          .whereRef('appointments.id', '=', 'patient_encounters.appointment_id')
+          .select((eb_appointments) => [
+            'appointments.id',
+            'appointments.start',
+            jsonArrayFrom(
+              eb_appointments.selectFrom('appointment_providers')
+                .innerJoin(
+                  'employment',
+                  'employment.id',
+                  'appointment_providers.provider_id',
+                )
+                .innerJoin(
+                  'health_workers',
+                  'health_workers.id',
+                  'employment.health_worker_id',
+                )
+                .whereRef(
+                  'appointment_providers.appointment_id',
+                  '=',
+                  'appointments.id',
+                )
+                .select([
+                  'health_workers.id as health_worker_id',
+                  'employment.id as employment_id',
+                  'health_workers.name',
+                  'employment.organization_id',
+                  'health_workers.avatar_url',
+                  'employment.specialty',
+                  'employment.profession',
+                ]),
+            ).as('providers'),
+          ]),
+      ).as('appointment'),
+      sql<
+        PostgresInterval
+      >`(current_timestamp - patient_encounters.created_at)::interval`
+        .as('wait_time'),
+
+      jsonObjectFrom(
+        eb_encounters.selectFrom('patient_triage_level')
           .innerJoin(
-            'encounter',
-            'encounter.step',
-            'patient_encounter_steps.encounter_step',
-          )
-          .whereRef('patient_encounter_id', '=', 'patient_encounters.id')
-          .orderBy('encounter.order desc')
-          .select('encounter_step'),
-      ).as('steps_completed'),
-      jsonArrayFrom(
-        eb.selectFrom('patient_encounter_providers')
-          .innerJoin(
-            'employment',
-            'employment.id',
-            'patient_encounter_providers.provider_id',
+            'patient_records',
+            'patient_triage_level.id',
+            'patient_records.id',
           )
           .innerJoin(
-            'health_workers',
-            'health_workers.id',
-            'employment.health_worker_id',
+            'snomed_inferred_canonical_name_and_category',
+            'patient_records.snomed_concept_id',
+            'snomed_inferred_canonical_name_and_category.id',
           )
-          .select((eb_providers) => [
-            'patient_encounter_providers.id as patient_encounter_provider_id',
-            'employment.id as employment_id',
-            'employment.organization_id',
-            'employment.profession',
-            'health_workers.id as health_worker_id',
-            'health_workers.name as health_worker_name',
-            eb_providers('patient_encounter_providers.seen_at', 'is not', null)
-              .as('seen'),
-          ])
           .whereRef(
-            'patient_encounter_providers.patient_encounter_id',
+            'patient_records.patient_encounter_id',
             '=',
             'patient_encounters.id',
-          ),
-      ).as('providers'),
+          )
+          .orderBy('patient_records.created_at', 'desc')
+          .select([
+            'patient_records.snomed_concept_id',
+            'snomed_inferred_canonical_name_and_category.name',
+            'patient_triage_level.target_treatment_time',
+          ])
+          .limit(1),
+      ).as('priority'),
+      jsonObjectFrom(
+        eb_encounters.selectFrom('patient_presence')
+          .whereRef('patient_encounters.patient_id', '=', 'patient_presence.id')
+          .select((eb_patient_presence) => [
+            'patient_presence.organization_id',
+            'patient_presence.department_name',
+            'patient_presence.current_workflow',
+            'patient_presence.next_workflow',
+            jsonArrayFrom(
+              baseEncounterProviderQuery(trx)
+                .where(
+                  'patient_encounter_employees.employment_id',
+                  'in',
+                  eb_patient_presence.selectFrom('employment_presence')
+                    .whereRef(
+                      'employment_presence.with_patient_id',
+                      '=',
+                      'patient_presence.id',
+                    ).select('employment_presence.id'),
+                  // (join) =>
+                  //   join.on(
+                  //     'employment_presence.with_patient_id',
+                  //     '=',
+                  //     eb_patient_presence.ref('patient_presence.id'),
+                  //   ),
+                ),
+            ).as('employees'),
+          ])
+          .limit(1),
+      ).as('patient_presence'),
+      jsonArrayFrom(
+        eb_encounters.selectFrom('patient_workflows')
+          .whereRef(
+            'patient_workflows.patient_encounter_id',
+            '=',
+            'patient_encounters.id',
+          )
+          .leftJoin(
+            'patient_workflows_completed',
+            'patient_workflows.id',
+            'patient_workflows_completed.id',
+          )
+          .select((eb_patient_workflows) => [
+            'patient_workflows.id as patient_workflow_id',
+            'patient_workflows.workflow',
+            'patient_workflows_completed.created_at as completed_at',
+            jsonArrayFromColumn(
+              'step',
+              eb_patient_workflows.selectFrom(
+                'patient_workflow_steps_completed',
+              )
+                .innerJoin(
+                  'workflow_steps',
+                  'workflow_steps.workflow_step',
+                  'patient_workflow_steps_completed.workflow_step',
+                )
+                .whereRef(
+                  'patient_workflow_steps_completed.patient_workflow_id',
+                  '=',
+                  'patient_workflows.id',
+                ).orderBy('order asc')
+                .select('step'),
+            ).as('steps_completed'),
+            jsonArrayFrom(
+              baseEncounterProviderQuery(trx)
+                .where(
+                  'patient_encounter_employees.id',
+                  'in',
+                  eb_patient_workflows.selectFrom(
+                    'patient_workflows_started',
+                  )
+                    .whereRef(
+                      'patient_workflows_started.patient_workflow_id',
+                      '=',
+                      'patient_workflows.id',
+                    )
+                    .select('patient_encounter_employee_id').distinct(),
+                ),
+            ).as('employees'),
+          ]),
+      ).as('workflows'),
+      jsonArrayFrom(
+        eb_encounters.selectFrom(
+          'patient_encounter_employees as employees_seen',
+        )
+          .whereRef(
+            'patient_encounters.id',
+            '=',
+            'employees_seen.patient_encounter_id',
+          )
+          .select([
+            'employees_seen.id as patient_encounter_employee_id',
+            'employees_seen.employment_id',
+            'employees_seen.seen_at',
+          ]),
+      ).as('all_employees_seen'),
     ])
-    .orderBy('patient_encounters.created_at', 'desc')
 }
-export const openQuery = (trx: TrxOrDb) =>
-  baseQuery(trx).where('patient_encounters.closed_at', 'is', null)
 
-export const ensureEncounterId = (
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
-    encounter_id: string | 'open'
-  },
-) => {
-  if (opts.encounter_id !== 'open') {
-    assertOr400(
-      isUUID(opts.encounter_id),
-      'Invalid encounter_id, must be a UUID or "open"',
-    )
+type IntermediatePatientEncounterResult = QueryResult<typeof baseQuery>
+
+function asPriority(
+  priority: IntermediatePatientEncounterResult['priority'],
+): RenderedPatientEncounter['priority'] {
+  if (!priority) return priority
+  const { name, ...rest } = priority
+  assert(isPriority(name))
+  return { name, ...rest }
+}
+
+function asWorkflowStatus(
+  { patient_workflow_id, workflow, completed_at, steps_completed, employees }:
+    IntermediatePatientEncounterResult['workflows'][0],
+  status: RenderedPatientEncounterStatus,
+): WorkflowStatus {
+  assert(isWorkflow(workflow))
+  const workflow_steps = WORKFLOW_STEPS[workflow]
+  if (completed_at) {
+    assertArrayNonEmpty(employees)
+    assertEquals(workflow_steps, steps_completed)
+    return {
+      patient_workflow_id,
+      workflow,
+      status: 'completed',
+      steps_completed,
+      employees,
+      completed_at,
+    }
   }
 
-  const query = trx.selectFrom('patient_encounters')
-    .select('patient_encounters.id')
-    .where('patient_encounters.patient_id', '=', opts.patient_id)
+  assertNotEquals(workflow_steps, steps_completed)
 
-  return opts.encounter_id === 'open'
-    ? query.where('patient_encounters.closed_at', 'is', null)
-    : query.where('patient_encounters.id', '=', opts.encounter_id)
+  if (!status.open) {
+    if (arrayIsEmpty(employees)) {
+      assertArrayEmpty(steps_completed)
+      return {
+        patient_workflow_id,
+        workflow,
+        status: 'not started',
+        steps_completed,
+        employees,
+      }
+    }
+    assertArrayNonEmpty(employees)
+    return {
+      patient_workflow_id,
+      workflow,
+      status: 'incomplete',
+      steps_completed,
+      employees,
+    }
+  }
+
+  if (status.patient_presence.current_workflow === workflow) {
+    assertArrayNonEmpty(employees)
+    return {
+      patient_workflow_id,
+      workflow,
+      status: 'in progress',
+      steps_completed,
+      employees,
+    }
+  }
+
+  if (arrayIsEmpty(employees)) {
+    assertArrayEmpty(steps_completed)
+    return {
+      patient_workflow_id,
+      workflow,
+      status: 'not started',
+      steps_completed,
+      employees,
+    }
+  }
+
+  assertArrayNonEmpty(employees)
+  return {
+    patient_workflow_id,
+    workflow,
+    status: 'incomplete',
+    steps_completed,
+    employees,
+  }
 }
 
-export function get(
-  trx: TrxOrDb,
-  { patient_id, encounter_id }: {
-    patient_id: string
-    encounter_id: string | 'open'
+function asWorkflows(
+  workflows_array: IntermediatePatientEncounterResult['workflows'],
+  status: RenderedPatientEncounterStatus,
+): RenderedPatientEncounter['workflows'] {
+  const workflows: RenderedPatientEncounter['workflows'] = {}
+  for (const workflow_item of workflows_array) {
+    workflows[workflow_item.workflow] = asWorkflowStatus(workflow_item, status)
+  }
+  return workflows
+}
+
+function asPatientPresence(
+  { department_name, current_workflow, next_workflow, employees }: NonNullable<
+    IntermediatePatientEncounterResult['patient_presence']
+  >,
+): RenderedPatientPresence {
+  assertDepartment(department_name)
+
+  if (department_name === 'waiting room') {
+    assert(!current_workflow)
+    assert(next_workflow)
+    assertArrayEmpty(employees)
+    return {
+      department_name,
+      current_workflow,
+      next_workflow,
+      employees,
+    }
+  }
+
+  assert(current_workflow)
+  return {
+    department_name,
+    current_workflow,
+    next_workflow,
+    employees,
+  }
+}
+
+function asStatus(
+  patient_presence: IntermediatePatientEncounterResult['patient_presence'],
+  closed_at: IntermediatePatientEncounterResult['closed_at'],
+): RenderedPatientEncounterStatus {
+  if (closed_at) {
+    assert(!patient_presence)
+    return { open: false, closed_at }
+  }
+  assert(patient_presence)
+  return { open: true, patient_presence: asPatientPresence(patient_presence) }
+}
+
+type EncounterSearch = {
+  is_open?: boolean
+  is_closed?: boolean
+  organization_id?: string
+  patient_id?: string
+  // ever_seen_health_worker_id?: string
+  presence_health_worker_id?: string | HealthWorkerIdSelection
+}
+
+const model = base({
+  top_level_table: 'patient_encounters',
+  baseQuery,
+  formatResult: (
+    {
+      workflows,
+      organization,
+      priority,
+      patient_presence,
+      closed_at,
+      patient,
+      reason,
+      ...patient_encounter
+    },
+  ): RenderedPatientEncounter => {
+    assert(organization)
+    const status = asStatus(patient_presence, closed_at)
+    return {
+      organization,
+      workflows: asWorkflows(workflows, status),
+      priority: asPriority(priority),
+      status,
+      patient: {
+        ...patient,
+        name: patient.name || '[Unregistered patient]',
+      },
+      reason,
+      ...patient_encounter,
+    }
   },
-): Promise<RenderedPatientEncounter | undefined> {
-  let query = baseQuery(trx)
-    .where('patient_encounters.patient_id', '=', patient_id)
-
-  query = encounter_id === 'open'
-    ? query.where('patient_encounters.closed_at', 'is', null)
-    : query.where('patient_encounters.id', '=', encounter_id)
-
-  return query.executeTakeFirst()
-}
-
-export function getOpen(trx: TrxOrDb, patient_id: string) {
-  return get(trx, { patient_id, encounter_id: 'open' })
-}
-
-export function completedStep(
-  trx: TrxOrDb,
-  { encounter_id, step }: {
-    encounter_id: string
-    step: EncounterStep
+  handleSearch(
+    qb,
+    opts: EncounterSearch,
+  ) {
+    if (opts.is_open) {
+      assert(!opts.is_closed)
+      qb = qb.where('patient_encounters.closed_at', 'is', null)
+    }
+    if (opts.is_closed) {
+      assert(!opts.is_open)
+      qb = qb.where('patient_encounters.closed_at', 'is not', null)
+    }
+    if (opts.organization_id) {
+      qb = qb.where(
+        'patient_encounters.organization_id',
+        '=',
+        opts.organization_id,
+      )
+    }
+    if (opts.patient_id) {
+      qb = qb.where(
+        'patient_encounters.patient_id',
+        '=',
+        opts.patient_id,
+      )
+    }
+    if (opts.presence_health_worker_id) {
+      assert(opts.is_open)
+      qb = qb.innerJoin(
+        'employment_presence',
+        'employment_presence.with_patient_id',
+        'patient_encounters.patient_id',
+      ).innerJoin(
+        'employment',
+        'employment.id',
+        'employment_presence.id',
+      ).where(
+        'employment.health_worker_id',
+        '=',
+        opts.presence_health_worker_id,
+      )
+    }
+    return qb
   },
-) {
-  return trx.insertInto('patient_encounter_steps')
-    .values({ patient_encounter_id: encounter_id, encounter_step: step })
-    .onConflict((oc) => oc.doNothing())
-    .execute()
-}
+})
+
+export const getById = model.getById
+export const search = model.search
+export const findOne = model.findOne
+export const findOneOptional = model.findOneOptional
+export const searchQuery = model.searchQuery
+export const formatResult = model.formatResult
 
 export function close(
   trx: TrxOrDb,
-  { encounter_id }: {
-    encounter_id: string
+  { patient_encounter_id }: {
+    patient_encounter_id: string
   },
 ) {
   return trx.updateTable('patient_encounters')
     .set({
       closed_at: now,
     })
-    .where('id', '=', encounter_id)
+    .where('id', '=', patient_encounter_id)
     .executeTakeFirstOrThrow()
 }
-/*
-  Note: this modifies health_worker.open_encounters in place
-*/
-export async function removeFromWaitingRoomAndAddSelfAsProvider(
+
+export function isOpen(
+  encounter: RenderedPatientEncounter,
+): encounter is RenderedPatientOpenEncounter {
+  return encounter.status.open
+}
+
+export function assertIsOpen(
+  encounter: RenderedPatientEncounter,
+): asserts encounter is RenderedPatientOpenEncounter {
+  assert(encounter.status.open)
+}
+
+export async function getOpen(
   trx: TrxOrDb,
-  { health_worker, patient_id, encounter_id }: {
-    health_worker: EmployedHealthWorker
-    patient_id: string
-    encounter_id: string | 'open'
+  search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
+): Promise<RenderedPatientOpenEncounter[]> {
+  const { results } = await search(trx, {
+    ...search_terms,
+    is_open: true,
+  }, { rows_per_page: Infinity })
+  assertAll(results, assertIsOpen)
+  return results
+}
+
+export function updateOne(
+  trx: TrxOrDb,
+  patient_encounter_id: string,
+  updates: {
+    reason: EncounterReason
+    notes?: Maybe<string>
   },
-): Promise<{
-  encounter: RenderedPatientEncounter
-  encounter_provider: RenderedPatientEncounterProvider
-}> {
-  const encounter = health_worker.open_encounters.find(
-    (e) => encounter_id === 'open' && (e.patient_id === patient_id),
-  ) || await get(trx, {
-    encounter_id,
-    patient_id,
-  })
-
-  // TODO: start an encounter if it doesn't exist?
-  assertOr404(encounter, 'No open visit with this patient')
-
-  const removing_from_waiting_room = encounter.waiting_room_id
-    ? (
-      waiting_room.remove(trx, {
-        id: encounter.waiting_room_id,
-      })
-    )
-    : Promise.resolve()
-
-  return inBackground(removing_from_waiting_room, async () => {
-    let matching_provider = encounter.providers.find(
-      (provider) => provider.health_worker_id === health_worker.id,
-    )
-    if (!matching_provider) {
-      const being_seen_at_organizations = encounter.waiting_room_organization_id
-        ? [encounter.waiting_room_organization_id]
-        : uniq(
-          encounter.providers.map((p) => p.organization_id),
-        )
-
-      const employment = health_worker.employment.find(
-        (e) => being_seen_at_organizations.includes(e.organization.id),
-      )
-      assertOr403(
-        employment,
-        'You do not have access to this patient at this time. The patient is being seen at a organization you do not work at. Please contact the organization to get access to the patient.',
-      )
-
-      const provider = employment.roles.doctor || employment.roles.nurse
-
-      if (!provider) {
-        assert(employment.roles.admin)
-        assertOr403(
-          false,
-          'You must be a nurse or doctor to edit patient information as part of an encounter',
-        )
-      }
-
-      const added_provider = await addProvider(trx, {
-        encounter_id: encounter.encounter_id,
-        provider_id: provider.employment_id,
-        seen_now: true,
-      })
-
-      assert(added_provider.seen_at)
-
-      matching_provider = {
-        patient_encounter_provider_id: added_provider.id,
-        employment_id: provider.employment_id,
-        organization_id: employment.organization.id,
-        profession: employment.roles.doctor ? 'doctor' : 'nurse',
-        health_worker_id: health_worker.id,
-        health_worker_name: health_worker.name,
-        seen: true,
-      }
-      encounter.providers.push(matching_provider)
-    } else if (!matching_provider.seen) {
-      const { seen_at } = await markProviderSeen(trx, {
-        patient_encounter_provider_id:
-          matching_provider.patient_encounter_provider_id,
-      })
-      assert(seen_at)
-      matching_provider.seen = true
-    }
-
-    return {
-      encounter,
-      encounter_provider: matching_provider,
-    }
-  })
+) {
+  return trx.updateTable('patient_encounters')
+    .where('id', '=', patient_encounter_id)
+    .set(updates)
+    .execute()
 }

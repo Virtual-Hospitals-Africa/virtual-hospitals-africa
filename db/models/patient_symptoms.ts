@@ -19,12 +19,13 @@ export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOME
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
-  { patient_id, encounter_id, encounter_provider_id, symptom }: {
-    patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
-    symptom: PatientSymptomUpsert
-  },
+  { patient_id, patient_encounter_id, patient_encounter_employee_id, symptom }:
+    {
+      patient_id: string
+      patient_encounter_id: string
+      patient_encounter_employee_id: string
+      symptom: PatientSymptomUpsert
+    },
 ) {
   const {
     altered_patient_symptom_id,
@@ -38,8 +39,8 @@ export async function upsertOne(
   if (altered_patient_symptom_id) {
     await markAltered(trx, {
       patient_id,
-      encounter_id,
-      encounter_provider_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
       altered_record_id: altered_patient_symptom_id,
     })
   }
@@ -56,14 +57,14 @@ export async function upsertOne(
       patient_id,
     )
     .where(
-      'patient_records.encounter_id',
+      'patient_records.patient_encounter_id',
       '=',
-      encounter_id,
+      patient_encounter_id,
     )
     .where(
-      'patient_procedures.encounter_provider_id',
+      'patient_procedures.patient_encounter_employee_id',
       '=',
-      encounter_provider_id,
+      patient_encounter_employee_id,
     )
     .where(
       'patient_records.snomed_concept_id',
@@ -85,7 +86,7 @@ export async function upsertOne(
           .values({
             id: procedure_id,
             patient_id,
-            encounter_id,
+            patient_encounter_id,
             snomed_concept_id:
               EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
           })
@@ -97,7 +98,7 @@ export async function upsertOne(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            encounter_provider_id,
+            patient_encounter_employee_id,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>
@@ -105,14 +106,14 @@ export async function upsertOne(
       .values({
         id: symptom_id,
         patient_id,
-        encounter_id,
+        patient_encounter_id,
         snomed_concept_id,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: symptom_id,
           procedure_id,
-          encounter_provider_id,
+          patient_encounter_employee_id,
         })).with(
       'inserting_symptoms',
       (qb) =>
@@ -133,9 +134,9 @@ export async function upsertOne(
 
 export function getEncounter(
   trx: TrxOrDb,
-  { patient_id, encounter_id }: {
+  { patient_id, patient_encounter_id }: {
     patient_id: string
-    encounter_id: string
+    patient_encounter_id: string
   },
 ): Promise<RenderedPatientSymptom[]> {
   return trx
@@ -151,7 +152,7 @@ export function getEncounter(
       'snomed_inferred_canonical_name_and_category.id',
     )
     .where('patient_records.patient_id', '=', patient_id)
-    .where('patient_records.encounter_id', '=', encounter_id)
+    .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
     .where(
       'patient_records.id',
       'not in',

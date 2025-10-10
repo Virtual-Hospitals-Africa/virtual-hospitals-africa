@@ -1,133 +1,310 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
-import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  addTestHealthWorker,
-  itUsesTrxAnd,
-  withTestOrganization,
-} from '../web/utilities.ts'
 import db from '../../db/db.ts'
+import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { assert } from 'node:console'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { withTestOrganization } from '../_helpers/organizations.ts'
+import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import {
+  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
+  insertRegistrationWithEmployeeForTest,
+} from '../_helpers/workflows.ts'
 
 describe(
   'db/models/patient_encounters.ts',
   () => {
     afterAll(() => db.destroy())
-    describe('create', () => {
+    describe('during registration', () => {
       itUsesTrxAnd(
-        'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',
+        'shows registration in progress',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.insert(trx, { name: 'Test Patient' })
-            await patient_encounters.insert(trx, organization_id, {
-              patient_id: patient.id,
-              reason: 'seeking treatment',
+            const receptionist = await addTestEmployee(trx, {
+              organization_id,
+              profession: 'receptionist',
             })
 
-            const nurse = await addTestHealthWorker(trx, {
-              scenario: 'approved-nurse',
-            })
-
-            const health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id: nurse.id,
-            })
-
-            assertEquals(
-              await waiting_room.get(trx, {
-                organization_id,
-                health_worker,
-              }),
-              [
-                {
-                  appointment: null,
-                  patient: {
-                    avatar_url: null,
-                    id: patient.id,
-                    name: 'Test Patient',
-                    description: null,
-                  },
-                  in_waiting_room: true,
-                  arrived_ago_display: 'Just now',
-                  status: 'Awaiting Intake',
-                  actions: {
-                    view: null,
-                    review: null,
-                    intake:
-                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
-                    awaiting_review: null,
-                  },
-                  providers: [],
-                  reviewers: [],
-                  reason: 'seeking treatment',
-                  is_emergency: false,
-                },
-              ],
+            const {
+              organization,
+              organization_employment,
+              patient_encounter_id,
+              patient_id,
+              patient_encounter_employee_id,
+            } = await insertRegistrationWithEmployeeForTest(
+              trx,
+              organization_id,
+              {
+                employment_id: receptionist.employee_id,
+              },
             )
-          }),
-      )
 
-      itUsesTrxAnd(
-        'creates a new patient encounter for a patient seeking treatment with a specific provider, adding the patient to the waiting room',
-        (trx) =>
-          withTestOrganization(trx, async (organization_id) => {
-            const nurse = await addTestHealthWorker(trx, {
-              scenario: 'approved-nurse',
-            })
-            const patient = await patients.insert(trx, { name: 'Test Patient' })
-            await patient_encounters.insert(trx, organization_id, {
-              patient_id: patient.id,
-              reason: 'seeking treatment',
-              provider_ids: [nurse.employee_id!],
-            })
+            const open_encounter = await patient_encounters.getById(
+              trx,
+              patient_encounter_id,
+            )
 
-            const health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id: nurse.id,
-            })
+            const patient = {
+              id: patient_id,
+              name: '[Unregistered patient]',
+              description: null,
+              avatar_url: null,
+            }
 
+            assertArrayNonEmpty(
+              open_encounter.workflows.registration!.employees,
+            )
+            assertArrayNonEmpty(
+              open_encounter.all_employees_seen,
+            )
+            assert(open_encounter.workflows.registration!.completed_at)
+            assert(open_encounter.arrived_timestamp instanceof Date)
             assertEquals(
-              await waiting_room.get(trx, {
-                organization_id,
-                health_worker,
-              }),
-              [
-                {
-                  appointment: null,
-                  patient: {
-                    avatar_url: null,
-                    id: patient.id,
-                    name: 'Test Patient',
-                    description: null,
-                  },
-                  in_waiting_room: true,
-                  arrived_ago_display: 'Just now',
-                  status: 'Awaiting Intake',
-                  actions: {
-                    view: null,
-                    review: null,
-                    intake:
-                      `/app/organizations/${organization_id}/patients/${patient.id}/intake`,
-                    awaiting_review: null,
-                  },
-                  providers: [
+              open_encounter.status.patient_presence!.employees.length,
+              1,
+            )
+            assertEquals(open_encounter, {
+              organization,
+              workflows: {
+                registration: {
+                  patient_workflow_id:
+                    open_encounter.workflows.registration!.patient_workflow_id,
+                  workflow: 'registration',
+                  status: 'in progress',
+                  steps_completed: [],
+                  employees: [
                     {
-                      health_worker_id: nurse.id,
-                      employee_id: nurse.employee_id!,
-                      name: nurse.name,
-                      profession: 'nurse',
-                      seen: false,
-                      href:
-                        `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
-                      avatar_url: nurse.avatar_url,
+                      patient_encounter_employee_id,
+                      employment_id: organization_employment.non_admin_id!,
+                      organization_id: organization_employment.organization.id,
+                      profession: 'receptionist',
+                      health_worker_id: receptionist.id,
+                      health_worker_name: receptionist.name,
+                      avatar_url:
+                        open_encounter.workflows.registration!.employees[0]
+                          .avatar_url,
+                      specialty: null,
+                      seen_at:
+                        open_encounter.workflows.registration!.employees[0]
+                          .seen_at,
                     },
                   ],
-                  reviewers: [],
-                  reason: 'seeking treatment',
-                  is_emergency: false,
+                },
+              },
+              priority: null,
+              status: {
+                open: true,
+                patient_presence: {
+                  department_name: 'reception',
+                  current_workflow: 'registration',
+                  next_workflow: null,
+                  employees: [
+                    {
+                      patient_encounter_employee_id,
+                      health_worker_id: receptionist.id,
+                      employment_id: receptionist.employee_id,
+                      health_worker_name: receptionist.name,
+                      profession: 'receptionist',
+                      specialty: null,
+                      seen_at: open_encounter.all_employees_seen[0].seen_at,
+                      avatar_url: receptionist.avatar_url,
+                      organization_id: organization.id,
+                    },
+                  ],
+                },
+              },
+              patient,
+              reason: null,
+              patient_encounter_id,
+              arrived_timestamp: open_encounter.arrived_timestamp,
+              notes: null,
+              appointment: null,
+              wait_time: open_encounter.wait_time,
+              all_employees_seen: [
+                {
+                  patient_encounter_employee_id,
+                  employment_id: organization_employment.non_admin_id!,
+                  seen_at: open_encounter.all_employees_seen[0].seen_at,
                 },
               ],
+            })
+
+            const [in_waiting_room] = await waiting_room.get(
+              trx,
+              organization_employment,
             )
+
+            assertEquals(in_waiting_room, {
+              patient_encounter_id,
+              patient,
+              arrived_ago_display: 'Just now',
+              workflow_status_display: 'Registration In Progress',
+              actions: [{
+                disabled: false,
+                text: 'registration',
+                method: 'POST',
+                href:
+                  `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=registration`,
+              }],
+              present_employees: [
+                open_encounter.workflows.registration!.employees[0],
+              ],
+              reason: null,
+              priority_level: null,
+              target_treatment_time: null,
+              department_name: 'reception',
+              arrived_timestamp: open_encounter.arrived_timestamp,
+            })
+          }),
+      )
+    })
+
+    describe('after registration completed', () => {
+      itUsesTrxAnd(
+        'is awaiting triage',
+        (trx) =>
+          withTestOrganization(trx, async (organization_id) => {
+            const receptionist = await addTestEmployee(trx, {
+              organization_id,
+              profession: 'receptionist',
+            })
+
+            const {
+              organization,
+              organization_employment,
+              patient_encounter_id,
+              employee,
+              patient,
+            } =
+              await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+                trx,
+                organization_id,
+                {
+                  employment_id: receptionist.employee_id,
+                },
+              )
+
+            const open_encounter = await patient_encounters.getById(
+              trx,
+              patient_encounter_id,
+            )
+
+            assertArrayNonEmpty(
+              open_encounter.workflows.registration!.employees,
+            )
+            assertArrayNonEmpty(
+              open_encounter.all_employees_seen,
+            )
+            assert(open_encounter.workflows.registration!.completed_at)
+            assert(open_encounter.arrived_timestamp instanceof Date)
+            assertEquals(open_encounter, {
+              organization,
+              workflows: {
+                registration: {
+                  patient_workflow_id:
+                    open_encounter.workflows.registration!.patient_workflow_id,
+                  workflow: 'registration',
+                  status: 'completed',
+                  steps_completed: [
+                    'personal',
+                    'this_visit',
+                    'primary_care',
+                    'contacts',
+                    'biometrics',
+                    'confirm',
+                  ],
+                  employees: [
+                    {
+                      patient_encounter_employee_id:
+                        employee.patient_encounter_employee_id,
+                      employment_id: organization_employment.non_admin_id!,
+                      organization_id: organization_employment.organization.id,
+                      profession: 'receptionist',
+                      health_worker_id: receptionist.id,
+                      health_worker_name: receptionist.name,
+                      avatar_url:
+                        open_encounter.workflows.registration!.employees[0]
+                          .avatar_url,
+                      specialty: null,
+                      seen_at:
+                        open_encounter.workflows.registration!.employees[0]
+                          .seen_at,
+                    },
+                  ],
+                  completed_at: open_encounter.workflows.registration!
+                    .completed_at!,
+                },
+                triage: {
+                  patient_workflow_id:
+                    open_encounter.workflows.triage!.patient_workflow_id,
+                  workflow: 'triage',
+                  status: 'not started',
+                  steps_completed: [],
+                  employees: [],
+                },
+                seeking_treatment: {
+                  patient_workflow_id:
+                    open_encounter.workflows.seeking_treatment!
+                      .patient_workflow_id,
+                  workflow: 'seeking_treatment',
+                  status: 'not started',
+                  steps_completed: [],
+                  employees: [],
+                },
+              },
+              priority: null,
+              status: {
+                open: true,
+                patient_presence: {
+                  department_name: 'waiting room',
+                  current_workflow: null,
+                  next_workflow: 'triage',
+                  employees: [],
+                },
+              },
+              patient,
+              reason: 'seeking treatment',
+              patient_encounter_id,
+              arrived_timestamp: open_encounter.arrived_timestamp,
+              notes: null,
+              appointment: null,
+              wait_time: open_encounter.wait_time,
+              all_employees_seen: [
+                {
+                  patient_encounter_employee_id:
+                    employee.patient_encounter_employee_id,
+                  employment_id: organization_employment.non_admin_id!,
+                  seen_at: open_encounter.all_employees_seen[0].seen_at,
+                },
+              ],
+            })
+
+            const [in_waiting_room] = await waiting_room.get(
+              trx,
+              organization_employment,
+            )
+
+            assertEquals(in_waiting_room, {
+              patient_encounter_id,
+              patient,
+              arrived_ago_display: 'Just now',
+              workflow_status_display: 'Awaiting Triage',
+              actions: [{
+                disabled: true,
+                text: 'triage',
+                method: 'POST',
+                href:
+                  `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=triage`,
+              }],
+              present_employees: [],
+              reason: 'seeking treatment',
+              priority_level: null,
+              target_treatment_time: null,
+              department_name: 'waiting room',
+              arrived_timestamp: open_encounter.arrived_timestamp,
+            })
           }),
       )
     })

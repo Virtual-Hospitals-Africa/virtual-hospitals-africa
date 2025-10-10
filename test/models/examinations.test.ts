@@ -1,13 +1,12 @@
-// import { describe } from 'std/testing/bdd.ts'
+// import { afterAll, describe } from 'std/testing/bdd.ts'
 // import * as patient_encounters from '../../db/models/patient_encounters.ts'
 // import * as examinations from '../../db/models/examinations.ts'
 // import * as patients from '../../db/models/patients.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
-// import {
-//   addTestHealthWorker,
-//   itUsesTrxAnd,
-//   withTestOrganization,
-// } from '../web/utilities.ts'
+// import db from '../../db/db.ts'
+// import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+// import { withTestOrganization } from '../_helpers/organizations.ts'
+// import { addTestEmployee } from '../_helpers/employees.ts'
 
 // describe(
 //   'db/models/examinations.ts',
@@ -23,20 +22,20 @@
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.insert(
-//               trx,
-//               organization_id,
-//               {
-//                 patient_id: patient.id,
-//                 reason: 'seeking treatment',
-//               },
-//             )
+//             const patient_encounter = await patient_encounters
+//               .insertSeekingTreatmentWithEmployeeForTest(
+//                 trx,
+//                 organization_id,
+//                 {
+//                   patient_id: patient.id,
+//                 },
+//               )
 
 //             const recommended = await examinations.recommended(trx)
 //               .selectFrom('recommended_examinations')
 //               .select('examination_identifier')
 //               .where('patient_id', '=', patient.id)
-//               .where('encounter_id', '=', patient_encounter.id)
+//               .where('patient_encounter_id', '=', patient_encounter.id)
 //               .execute()
 
 //             assertEquals(recommended, [
@@ -55,20 +54,21 @@
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.insert(
-//               trx,
-//               organization_id,
-//               {
-//                 patient_id: patient.id,
-//                 reason: 'maternity',
-//               },
-//             )
+//             const patient_encounter = await patient_encounters
+//               .insertSeekingTreatmentWithEmployeeForTest(
+//                 trx,
+//                 organization_id,
+//                 {
+//                   patient_id: patient.id,
+//                   reason: 'maternity',
+//                 },
+//               )
 
 //             const recommended = await examinations.recommended(trx)
 //               .selectFrom('recommended_examinations')
 //               .select('examination_identifier')
 //               .where('patient_id', '=', patient.id)
-//               .where('encounter_id', '=', patient_encounter.id)
+//               .where('patient_encounter_id', '=', patient_encounter.id)
 //               .execute()
 
 //             assertEquals(recommended, [
@@ -85,31 +85,32 @@
 //         'returns the completed, skipped, and recommended examinations for a patient encounter',
 //         (trx) =>
 //           withTestOrganization(trx, async (organization_id) => {
-//             const health_worker = await addTestHealthWorker(trx, {
-//               scenario: 'approved-nurse',
+//             const health_worker = await addTestEmployee(trx, {
+//               profession: 'nurse',
+//               specialty: 'primary care',
+//               registration_status: 'approved',
 //             })
 //             const patient = await patients.insert(trx, {
 //               name: 'Test Woman',
 //               gender: 'female',
 //               date_of_birth: '1990-01-01',
 //             })
-//             const patient_encounter = await patient_encounters.insert(
-//               trx,
-//               organization_id,
-//               {
-//                 patient_id: patient.id,
-//                 reason: 'seeking treatment',
-//                 provider_ids: [
-//                   health_worker.employee_id!,
-//                 ],
-//               },
-//             )
+//             const patient_encounter = await patient_encounters
+//               .insertSeekingTreatmentWithEmployeeForTest(
+//                 trx,
+//                 organization_id,
+//                 {
+//                   patient_id: patient.id,
+//                   provider_ids: [
+//                     health_worker.employee_id,
+//                   ],
+//                 },
+//               )
 
 //             await examinations.upsertFindings(trx, {
 //               patient_id: patient.id,
-//               encounter_id: patient_encounter.id,
-//               encounter_provider_id:
-//                 patient_encounter.providers[0].encounter_provider_id,
+//               patient_encounter_id: patient_encounter.id,
+//               patient_encounter_employee_id: patient_encounter.employee.id,
 //               examination_identifier: 'Dental',
 //               values: {},
 //             })
@@ -124,7 +125,7 @@
 //                 'recommended',
 //               ])
 //               .where('patient_id', '=', patient.id)
-//               .where('encounter_id', '=', patient_encounter.id)
+//               .where('patient_encounter_id', '=', patient_encounter.id)
 //               .execute()
 
 //             assertEquals(for_patient_encounter, [
@@ -155,24 +156,27 @@
 //       itUsesTrxAnd(
 //         'upserts findings when no previous findings exist',
 //         async (trx) => {
-//           const nurse = await addTestHealthWorker(trx, {
-//             scenario: 'approved-nurse',
+//           const nurse = await addTestEmployee(trx, {
+//             profession: 'nurse',
+//             specialty: 'primary care',
+//             registration_status: 'approved',
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
-//           const encounter = await patient_encounters.insert(
-//             trx,
-//             '00000000-0000-0000-0000-000000000001',
-//             {
-//               patient_id: patient.id,
-//               reason: 'seeking treatment',
-//               provider_ids: [nurse.employee_id!],
-//             },
-//           )
+//           const encounter = await patient_encounters
+//             .insertSeekingTreatmentWithEmployeeForTest(
+//               trx,
+//               '00000000-0000-0000-0000-000000000001',
+//               {
+//                 patient_id: patient.id,
+//                 reason: 'seeking treatment',
+//                 provider_ids: [nurse.employee_id],
+//               },
+//             )
 
 //           await examinations.upsertFindings(trx, {
 //             patient_id: patient.id,
-//             encounter_id: encounter.id,
-//             encounter_provider_id: encounter.providers[0].encounter_provider_id,
+//             patient_encounter_id: encounter.patient_encounter_id,
+//             patient_encounter_employee_id: encounter.employee.id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
@@ -185,7 +189,7 @@
 //             trx,
 //             {
 //               patient_id: patient.id,
-//               encounter_id: encounter.id,
+//               patient_encounter_id: encounter.patient_encounter_id,
 //               examination_identifier: 'Head-to-toe Assessment',
 //             },
 //           )
@@ -1012,24 +1016,27 @@
 //       itUsesTrxAnd(
 //         'handles updates and removing patient findings',
 //         async (trx) => {
-//           const nurse = await addTestHealthWorker(trx, {
-//             scenario: 'approved-nurse',
+//           const nurse = await addTestEmployee(trx, {
+//             profession: 'nurse',
+//             specialty: 'primary care',
+//             registration_status: 'approved',
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
-//           const encounter = await patient_encounters.insert(
-//             trx,
-//             '00000000-0000-0000-0000-000000000001',
-//             {
-//               patient_id: patient.id,
-//               reason: 'seeking treatment',
-//               provider_ids: [nurse.employee_id!],
-//             },
-//           )
+//           const encounter = await patient_encounters
+//             .insertSeekingTreatmentWithEmployeeForTest(
+//               trx,
+//               '00000000-0000-0000-0000-000000000001',
+//               {
+//                 patient_id: patient.id,
+//                 reason: 'seeking treatment',
+//                 provider_ids: [nurse.employee_id],
+//               },
+//             )
 
 //           await examinations.upsertFindings(trx, {
 //             patient_id: patient.id,
-//             encounter_id: encounter.id,
-//             encounter_provider_id: encounter.providers[0].encounter_provider_id,
+//             patient_encounter_id: encounter.patient_encounter_id,
+//             patient_encounter_employee_id: encounter.employee.id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
@@ -1043,8 +1050,8 @@
 
 //           await examinations.upsertFindings(trx, {
 //             patient_id: patient.id,
-//             encounter_id: encounter.id,
-//             encounter_provider_id: encounter.providers[0].encounter_provider_id,
+//             patient_encounter_id: encounter.patient_encounter_id,
+//             patient_encounter_employee_id: encounter.employee.id,
 //             examination_identifier: 'Head-to-toe Assessment',
 //             values: {
 //               'Patient state': {
@@ -1060,7 +1067,7 @@
 //             trx,
 //             {
 //               patient_id: patient.id,
-//               encounter_id: encounter.id,
+//               patient_encounter_id: encounter.patient_encounter_id,
 //               examination_identifier: 'Head-to-toe Assessment',
 //             },
 //           )

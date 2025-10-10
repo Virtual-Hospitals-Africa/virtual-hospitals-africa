@@ -25,7 +25,7 @@ function dosageText(dosage: number): string {
   return matching[0]
 }
 
-export const IntakeFrequencies = {
+export const RegistrationFrequencies = {
   ac: 'before meals',
   am: 'morning',
   bd: '2 times daily',
@@ -63,26 +63,26 @@ export const IntakeFrequencies = {
   prn: 'when necessary',
 }
 
-export function intakeFrequencyText(frequency: string): string {
-  assertIntakeFrequency(frequency)
-  return IntakeFrequencies[frequency]
+export function registrationFrequencyText(frequency: string): string {
+  assertRegistrationFrequency(frequency)
+  return RegistrationFrequencies[frequency]
 }
 
-type IntakeFrequency = keyof typeof IntakeFrequencies
+type RegistrationFrequency = keyof typeof RegistrationFrequencies
 
-export function isIntakeFrequency(
+export function isRegistrationFrequency(
   frequency: string,
-): frequency is IntakeFrequency {
-  return frequency in IntakeFrequencies
+): frequency is RegistrationFrequency {
+  return frequency in RegistrationFrequencies
 }
 
-export function assertIntakeFrequency(
+export function assertRegistrationFrequency(
   frequency: string,
-): asserts frequency is IntakeFrequency {
-  assert(isIntakeFrequency(frequency))
+): asserts frequency is RegistrationFrequency {
+  assert(isRegistrationFrequency(frequency))
 }
 
-export const IntakeDosesPerDay = {
+export const RegistrationDosesPerDay = {
   ac: 3,
   am: 1,
   bd: 2,
@@ -119,7 +119,7 @@ export const IntakeDosesPerDay = {
   tm: 3 / 30,
   prn: 1,
 } satisfies {
-  [frequency in IntakeFrequency]: number
+  [frequency in RegistrationFrequency]: number
 }
 
 type DosageDisplayParams = {
@@ -233,8 +233,8 @@ export function scheduleDisplay(
 ): string {
   const { frequency, dosage, duration, duration_unit } = schedule
 
-  assertIntakeFrequency(frequency)
-  const frequency_display = IntakeFrequencies[frequency]
+  assertRegistrationFrequency(frequency)
+  const frequency_display = RegistrationFrequencies[frequency]
 
   const dosage_display = dosageDisplay({
     dosage,
@@ -250,10 +250,10 @@ export function scheduleDisplay(
 // export function describe(
 //   medication: PrescriptionMedication,
 // ): string {
-//   assert(typeof medication.intake_frequency === 'string')
-//   assertIntakeFrequency(medication.intake_frequency)
+//   assert(typeof medication.registration_frequency === 'string')
+//   assertRegistrationFrequency(medication.registration_frequency)
 
-//   const dosesPerDay = IntakeDosesPerDay[medication.intake_frequency]
+//   const dosesPerDay = RegistrationDosesPerDay[medication.registration_frequency]
 
 //   const singleDosage = dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,

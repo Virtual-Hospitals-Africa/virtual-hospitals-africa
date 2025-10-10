@@ -1,57 +1,67 @@
 import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
+import { EmptyState } from '../library/EmptyState.tsx'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
-import WaitingRoomEmptyState from './EmptyState.tsx'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Patient',
-    headerClassName: 'pl-12',
+    // headerClassName: 'pl-12',
     data(row) {
-      return <Person person={row.patient} />
+      return <Person person={row.patient} no_avatar />
     },
     cellClassName: 'mb-1 font-medium',
   },
   {
     label: 'Reason for visit',
     data(row) {
-      return capitalize(row.reason)
+      return row.reason ? capitalize(row.reason) : 'Reason not yet determined'
     },
   },
   {
-    label: 'Status',
-    data: 'status',
+    label: 'Department',
+    data: 'department_name',
   },
   {
-    label: 'Providers',
+    label: 'Status',
+    data: 'workflow_status_display',
+  },
+  {
+    label: 'Employees',
     data(row) {
-      if (!row.providers.length) return 'Next Available'
+      if (!row.present_employees.length) return 'Next Available'
       return (
         <div className='flex flex-col'>
-          {row.providers.map((p) => (
+          {row.present_employees.map((employee) => (
             <Person
-              key={p.health_worker_id}
-              person={p}
+              key={employee.health_worker_id}
+              person={{
+                name: employee.health_worker_name,
+                avatar_url: employee.avatar_url,
+                description: employee.specialty,
+                href:
+                  `/app/organizations/${employee.organization_id}/employees/${employee.health_worker_id}`,
+              }}
             />
           ))}
         </div>
       )
     },
   },
-  {
-    label: 'Reviewers',
-    data(row) {
-      if (!row.reviewers.length) return null
-      return (
-        <div className='flex flex-col'>
-          {row.reviewers.map((p) => (
-            <a key={p.health_worker_id} href={p.href}>{p.name}</a>
-          ))}
-        </div>
-      )
-    },
-  },
+  // {
+  //   label: 'Reviewers',
+  //   data(row) {
+  //     if (!row.reviewers.length) return null
+  //     return (
+  //       <div className='flex flex-col'>
+  //         {row.reviewers.map((p) => (
+  //           <a key={p.health_worker_id} href={p.href}>{p.name}</a>
+  //         ))}
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     label: 'Arrived',
     data: 'arrived_ago_display',
@@ -63,10 +73,9 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
 ]
 
 export default function WaitingRoomTable(
-  { waiting_room, add_href, can_add_patients }: {
+  { waiting_room, can_register_patients }: {
     waiting_room: RenderedWaitingRoom[]
-    add_href: string
-    can_add_patients: boolean
+    can_register_patients: boolean
   },
 ) {
   return (
@@ -74,9 +83,17 @@ export default function WaitingRoomTable(
       columns={columns}
       rows={waiting_room}
       EmptyState={() => (
-        can_add_patients
-          ? <WaitingRoomEmptyState add_href={add_href} />
-          : <p>Use the search bar to search for patients.</p>
+        <EmptyState
+          header='No patients present at the facility'
+          explanation={can_register_patients
+            ? [
+              'Use the search bar above to intake returning patients',
+              'or the button to the right to register new patients.',
+            ]
+            : [
+              'When patients go through intake, they will appear here',
+            ]}
+        />
       )}
     />
   )
