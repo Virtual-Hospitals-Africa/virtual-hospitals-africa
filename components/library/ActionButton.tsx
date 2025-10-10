@@ -46,7 +46,7 @@ export function ActionButton(
     <Button
       {...props}
       variant={variant}
-      className='text-indigo-600 hover:text-indigo-900 capitalize justify-start'
+      className='text-indigo-700 hover:text-indigo-900 capitalize justify-start'
     >
       {children}
     </Button>

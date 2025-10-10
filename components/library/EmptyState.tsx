@@ -31,7 +31,7 @@ export function EmptyState({
       className={cls('text-center p-2 flex flex-col items-center', className)}
     >
       {icon || (Icon ? <Plussable Icon={Icon} /> : null)}
-      <h3 className='mt-2 text-sm font-semibold text-gray-900'>{header}</h3>
+      <h3 className='mt-2 text-sm font-semibold text-gray-800'>{header}</h3>
       {explanations.map((e, i) => (
         <p key={i} className='mt-1 text-sm text-gray-500'>
           {e}

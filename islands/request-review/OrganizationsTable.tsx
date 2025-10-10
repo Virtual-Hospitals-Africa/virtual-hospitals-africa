@@ -13,7 +13,7 @@ const StatusBadge = (row: NearestOrganizationSearchResult) => {
 
   switch (row.wait.status) {
     case 'open (short wait)': {
-      theme = 'green'
+      theme = 'purple'
       iconColor = 'fill-green-500'
       message = `${row.wait.display} wait time`
       break
