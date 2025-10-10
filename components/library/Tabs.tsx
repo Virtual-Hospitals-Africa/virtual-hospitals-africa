@@ -21,7 +21,7 @@ export function Tab(
       className={cls(
         'flex items-center gap-2 whitespace-nowrap border-b-2 px-1 pb-2 text-sm font-medium uppercase',
         active
-          ? 'border-indigo-500 text-indigo-600'
+          ? 'border-indigo-600 text-indigo-700'
           : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
       )}
       aria-current={active ? 'page' : undefined}

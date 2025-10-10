@@ -7,7 +7,7 @@ export default function SectionHeader(
   return (
     <h2
       className={cls(
-        'text-base font-semibold leading-6 text-gray-900',
+        'text-base font-semibold leading-6 text-gray-800',
         className,
       )}
     >

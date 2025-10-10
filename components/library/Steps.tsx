@@ -49,7 +49,7 @@ function Step(
                 )}
               >
                 <span className='flex-shrink-0'>
-                  <span className='flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600'>
+                  <span className='flex h-10 w-10 items-center justify-center rounded-full bg-indigo-700'>
                     <CheckIcon
                       className='h-6 w-6 text-white'
                       aria-hidden='true'

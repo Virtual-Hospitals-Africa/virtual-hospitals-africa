@@ -148,6 +148,7 @@ import * as $login from './routes/login.tsx'
 import * as $onboarding_middleware from './routes/onboarding/_middleware.tsx'
 import * as $onboarding_welcome from './routes/onboarding/welcome.tsx'
 import * as $partner from './routes/partner.tsx'
+import * as $playground from './routes/playground.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_country_middleware from './routes/regulator/[country]/_middleware.ts'
@@ -554,6 +555,7 @@ const manifest = {
     './routes/onboarding/_middleware.tsx': $onboarding_middleware,
     './routes/onboarding/welcome.tsx': $onboarding_welcome,
     './routes/partner.tsx': $partner,
+    './routes/playground.tsx': $playground,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,

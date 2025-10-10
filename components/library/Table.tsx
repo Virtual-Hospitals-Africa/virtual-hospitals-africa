@@ -76,7 +76,7 @@ function TableCellInnerContents<T extends Row>(
     return (
       <div
         className={cls(
-          'text-gray-900 text-sm whitespace-nowrap',
+          'text-gray-600 text-sm whitespace-nowrap',
           mapped_column.column.cellClassName,
         )}
       >
@@ -204,13 +204,13 @@ function TableHeader<T extends Row>(
   { mapped_columns }: { mapped_columns: MappedColumn<T>[] },
 ) {
   return (
-    <thead className='bg-gray-50'>
+    <thead className='bg-indigo-50'>
       <tr>
         {mapped_columns.map(({ column }) => (
           <th
             scope='col'
             className={cls(
-              'text-left text-sm font-semibold text-gray-500',
+              'text-left text-sm font-semibold text-indigo-900',
               column.label && 'p-3',
               // Shift the header to the right to make space for the avatar
               column.type === 'person' && 'pl-12',

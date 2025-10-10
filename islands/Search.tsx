@@ -209,7 +209,7 @@ export default function Search<
                   className={({ active }) =>
                     cls(
                       'relative cursor-default select-none py-2 pl-3 pr-9',
-                      active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                      active ? 'bg-indigo-50 text-white' : 'text-gray-900',
                     )}
                 >
                   {({ active, selected }) => {

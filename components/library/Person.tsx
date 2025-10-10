@@ -44,18 +44,23 @@ export function Person(
           src={person.avatar_url}
           className={cls(
             'flex-shrink-0 rounded-full',
-            size === 'lg' ? 'h-10 w-10' : 'h-6 w-6',
+            size === 'lg' ? 'h-10 w-10' : 'h-10 w-10',
           )}
         />
       )}
-      <span className={cls('ml-3 truncate text-md', bold && 'font-bold')}>
-        <div>{person.display_name || person.name}</div>
-        {person.description && (
-          <div className='font-normal capitalize text-sm'>
-            {person.description}
-          </div>
+      <span
+        className={cls(
+          'ml-3 truncate font-medium text-md text-gray-600',
+          bold && 'font-bold',
         )}
+      >
       </span>
+      <div>{person.display_name || person.name}</div>
+      {person.description && (
+        <div className='font-normal capitalize text-sm text-gray-500'>
+          {person.description}
+        </div>
+      )}
     </Component>
   )
 }
