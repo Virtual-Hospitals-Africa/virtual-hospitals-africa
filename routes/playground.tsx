@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import Badge from '../components/library/Badge.tsx'
 
-export default function ThankYouPage(props: PageProps) {
+export default function ThankYouPage(_props: PageProps) {
   return (
     <div className='flex flex-col gap-2'>
       WOAH
