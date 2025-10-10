@@ -31,6 +31,7 @@ export async function handler(
     ctx.state.trx,
     {
       patient_id: ctx.state.encounter.patient.id,
+      organization_id: ctx.state.organization.id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
       seeking_treatment_step: 'general_assessments',
     },

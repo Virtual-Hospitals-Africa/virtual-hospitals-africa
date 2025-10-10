@@ -6,6 +6,7 @@ export function forPatientEncounter(
   trx: TrxOrDb,
   opts: {
     patient_id: string
+    organization_id: string
     patient_encounter_id: string
     seeking_treatment_step?: string
   },
@@ -46,7 +47,7 @@ export function forPatientEncounter(
       'examinations.display_name',
       sql<
         string
-      >`'/app/patients/' || ${opts.patient_id} || '/encounters/' || ${opts.patient_encounter_id} || examinations.path`
+      >`'/app/organizations/' || ${opts.organization_id} || '/patients/' || ${opts.patient_id} || '/open_encounter/seeking_treatment/' || examinations.path`
         .as('href'),
     ])
     .where('patients.id', '=', opts.patient_id)
