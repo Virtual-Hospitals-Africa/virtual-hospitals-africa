@@ -39,25 +39,28 @@ export function Person(
       )}
       href={person.href ?? undefined}
     >
-      {!no_avatar && <Avatar
-        src={person.avatar_url}
-        className={cls(
-          'flex-shrink-0 rounded-full',
-          size === 'lg' ? 'h-10 w-10' : 'h-10 w-10',
-        )}
-      />}
+      {!no_avatar && (
+        <Avatar
+          src={person.avatar_url}
+          className={cls(
+            'flex-shrink-0 rounded-full',
+            size === 'lg' ? 'h-10 w-10' : 'h-10 w-10',
+          )}
+        />
+      )}
       <span
         className={cls(
           'ml-3 truncate font-medium text-md text-gray-600',
           bold && 'font-bold',
         )}
-      ></span>
-        <div>{person.display_name || person.name}</div>
-        {person.description && (
-          <div className='font-normal capitalize text-sm text-gray-500'>
-            {person.description}
-          </div>
-        )}
+      >
+      </span>
+      <div>{person.display_name || person.name}</div>
+      {person.description && (
+        <div className='font-normal capitalize text-sm text-gray-500'>
+          {person.description}
+        </div>
+      )}
     </Component>
   )
 }

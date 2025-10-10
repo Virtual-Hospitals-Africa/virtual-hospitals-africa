@@ -1,6 +1,6 @@
 import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
-import { Maybe, ExtendedActionData } from '../../types.ts'
+import { ExtendedActionData, Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
