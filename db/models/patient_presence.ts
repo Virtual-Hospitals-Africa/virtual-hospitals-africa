@@ -6,6 +6,7 @@ import {
 } from '../../types.ts'
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
+import { blankSelection } from '../helpers.ts'
 
 /**
  * Move the patient to the waiting room if the health worker doesn't do the next workflow
@@ -45,18 +46,37 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
       next_workflow,
     }
 
+  const existing_patient_encounter_employee_id = encounter.all_employees_seen
+    .find(
+      (employee) => employee.employment_id === non_admin_id,
+    )?.patient_encounter_employee_id
+
   return trx.with(
-    'updating_employement_presence',
+    'insert_patient_workflows_started',
     (qb) =>
-      qb.updateTable('employment_presence')
-        .set({
-          at_work: true,
-          with_patient_id: employed_in_next_workflow_department
-            ? patient_id
-            : null,
-        })
-        .where('employment_presence.id', '=', non_admin_id),
+      next_patient_presence.current_workflow
+        ? qb.insertInto('patient_workflows_started')
+          .values({
+            patient_workflow_id:
+              encounter.workflows[next_patient_presence.current_workflow]!
+                .patient_workflow_id,
+            patient_encounter_employee_id:
+              existing_patient_encounter_employee_id!,
+          })
+        : blankSelection(qb),
   )
+    .with(
+      'updating_employement_presence',
+      (qb) =>
+        qb.updateTable('employment_presence')
+          .set({
+            at_work: true,
+            with_patient_id: employed_in_next_workflow_department
+              ? patient_id
+              : null,
+          })
+          .where('employment_presence.id', '=', non_admin_id),
+    )
     .updateTable('patient_presence')
     .set(next_patient_presence)
     .where('patient_presence.id', '=', patient_id)

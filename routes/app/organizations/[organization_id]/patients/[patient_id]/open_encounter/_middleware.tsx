@@ -282,7 +282,12 @@ export async function handler(
 
   Object.assign(ctx.state, encounter_props)
 
-  return ctx.next()
+  const response = await ctx.next()
+
+  // Turn off in prod
+  await patient_encounters.getById(trx, encounter.patient_encounter_id)
+
+  return response
 }
 
 export function assertAllPriorStepsCompleted(
