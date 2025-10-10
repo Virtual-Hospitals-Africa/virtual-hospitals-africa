@@ -240,7 +240,7 @@ export async function workflowHandler(
 }
 
 export async function handler(
-  _req: Request,
+  req: Request,
   ctx: OrganizationContext,
 ) {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
@@ -284,8 +284,10 @@ export async function handler(
 
   const response = await ctx.next()
 
-  // Turn off in prod
-  await patient_encounters.getById(trx, encounter.patient_encounter_id)
+  // Run assertions to ensure any modifications to encounters
+  if (req.method === 'POST') {
+    await patient_encounters.getById(trx, encounter.patient_encounter_id)
+  }
 
   return response
 }
