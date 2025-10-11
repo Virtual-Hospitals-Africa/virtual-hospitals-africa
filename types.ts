@@ -3289,3 +3289,42 @@ export type RenderedCareTeamHealthWorker = {
     name: string
   }
 }
+
+// Enhanced Clinical Decision Support Types
+export interface PatientClinicalContext {
+  readonly patient_id: string
+  readonly age_days: number
+  readonly gender?: 'male' | 'female'
+  readonly active_condition_snomed_codes: readonly string[]
+  readonly pregnancy_status?: boolean
+}
+
+export interface MeasurementRequirement {
+  readonly snomed_concept_id: string
+  readonly is_required: boolean
+  readonly clinical_rationale: string
+  readonly medical_standard: string
+  readonly frequency_recommendation?: string
+}
+
+export interface ReferenceRange {
+  readonly measurement_snomed_concept_id: string
+  readonly condition_codes?: readonly string[]
+  readonly normal_min: number
+  readonly normal_max: number
+  readonly critical_min?: number
+  readonly critical_max?: number
+  readonly units: string
+  readonly reference_source: string
+  readonly evidence_level?: string
+  readonly clinical_context: string
+}
+
+export interface EvaluationResult {
+  readonly measurement: Measurement
+  readonly status: 'normal' | 'abnormal' | 'critical'
+  readonly priority: Priority
+  readonly clinical_note: string
+  readonly applied_range: ReferenceRange | null
+  readonly confidence: number
+}

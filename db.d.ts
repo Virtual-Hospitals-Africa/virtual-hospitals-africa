@@ -2,6 +2,13 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
+  : ArrayTypeImpl<T>
+
+export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S[], I[], U[]>
+  : T[]
+
 export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep =
@@ -206,6 +213,21 @@ export interface Addresses {
   updated_at: Generated<Timestamp>
 }
 
+export interface AgeMeasurementRequirements {
+  active: Generated<boolean>
+  age_max_days: number | null
+  age_min_days: number | null
+  clinical_rationale: string
+  created_at: Generated<Timestamp>
+  effective_date: Generated<Timestamp>
+  expiration_date: Timestamp | null
+  id: Generated<string>
+  is_required: Generated<boolean>
+  medical_standard: string
+  required_measurement_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+}
+
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
@@ -239,6 +261,21 @@ export interface Appointments {
 export interface ConditionIcd10Codes {
   condition_id: string
   icd10_code: string
+}
+
+export interface ConditionMeasurementRequirements {
+  active: Generated<boolean>
+  clinical_rationale: string
+  condition_snomed_concept_id: Int8
+  created_at: Generated<Timestamp>
+  effective_date: Generated<Timestamp>
+  expiration_date: Timestamp | null
+  frequency_recommendation: string | null
+  id: Generated<string>
+  is_required: Generated<boolean>
+  medical_standard: string
+  required_measurement_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
 }
 
 export interface Conditions {
@@ -660,6 +697,28 @@ export interface ManufacturedMedicationStrengths {
   id: Generated<string>
   manufactured_medication_id: string
   strength_numerator: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface MeasurementReferenceRanges {
+  active: Generated<boolean>
+  age_max_days: number | null
+  age_min_days: number | null
+  clinical_context: string | null
+  condition_codes: ArrayType<Int8> | null
+  created_at: Generated<Timestamp>
+  critical_max: Numeric | null
+  critical_min: Numeric | null
+  effective_date: Generated<Timestamp>
+  evidence_level: string | null
+  expiration_date: Timestamp | null
+  gender: string | null
+  id: Generated<string>
+  measurement_snomed_concept_id: Int8
+  normal_max: Numeric
+  normal_min: Numeric
+  reference_source: string
+  units: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1601,10 +1660,12 @@ export interface WhatsappMessagesSent {
 
 export interface DB {
   addresses: Addresses
+  age_measurement_requirements: AgeMeasurementRequirements
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
+  condition_measurement_requirements: ConditionMeasurementRequirements
   conditions: Conditions
   consumables: Consumables
   consumption: Consumption
@@ -1652,6 +1713,7 @@ export interface DB {
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
+  measurement_reference_ranges: MeasurementReferenceRanges
   media: Media
   media_audios: MediaAudios
   media_images: MediaImages

@@ -8,7 +8,16 @@ import type { DB } from '../../db.d.ts'
 import type { Insertable, Selectable } from 'kysely'
 import { blankSelection, jsonBuildObject, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { TrxOrDb } from '../../types.ts'
+import { Measurement, TrxOrDb } from '../../types.ts'
+import {
+  BMI_DECIMAL_PLACES,
+  CM_TO_METERS,
+  computeBMI,
+  computeMeanArterialPressure,
+  formatBloodPressureDisplay,
+  VITALS_SNOMED_CODE,
+  VITALS_UNITS,
+} from '../../shared/vitals.ts'
 
 export type PatientComputedFinding = Selectable<DB['patient_computed_findings']>
 export type NewPatientComputedFinding = Insertable<
@@ -73,7 +82,6 @@ export function insertComputedFinding(
     input_measurements?: Array<{ record_id: string }>
   },
 ) {
-  // Validate that we have either structured (value + units) OR display format
   const hasStructured = value !== undefined && units !== undefined &&
     value_display === undefined
   const hasDisplay = !hasStructured
@@ -300,4 +308,160 @@ export async function getComputedFindingWithProvider(
     }),
     inputs,
   }
+}
+
+export async function computeAndInsertDerivedMeasurements(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    encounter_id,
+    encounter_provider_id,
+    source_measurements,
+    source_procedure_id,
+  }: {
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
+    source_measurements: Measurement[]
+    source_procedure_id: string
+  },
+): Promise<{ success: true; computed_findings: string[] }> {
+  const measurements = new Map(
+    source_measurements.map((m) => [m.snomed_concept_id, m]),
+  )
+
+  const computed_findings: string[] = []
+
+  if (source_measurements.length === 0) {
+    return { success: true as const, computed_findings }
+  }
+
+  const height_measurement = measurements.get(VITALS_SNOMED_CODE.height)
+  const weight_measurement = measurements.get(VITALS_SNOMED_CODE.weight)
+
+  if (
+    height_measurement &&
+    weight_measurement &&
+    height_measurement.value &&
+    weight_measurement.value &&
+    height_measurement.value > 0 &&
+    weight_measurement.value > 0
+  ) {
+    const bmi = computeBMI(height_measurement.value, weight_measurement.value)
+    const height_m = height_measurement.value / CM_TO_METERS
+
+    const body_mass_index_result = await insertComputedFinding(trx, {
+      patient_id,
+      encounter_id,
+      encounter_provider_id,
+      procedure_id: source_procedure_id,
+      snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
+      value: Math.round(bmi * 10 ** BMI_DECIMAL_PLACES) /
+        10 ** BMI_DECIMAL_PLACES,
+      units: VITALS_UNITS.body_mass_index,
+      algorithm_version: 'BMI_v1.0',
+      computation_metadata: {
+        formula: 'weight_kg / (height_m^2)',
+        height_m,
+        weight_kg: weight_measurement.value,
+      },
+      input_measurements: [
+        { record_id: height_measurement.finding_id },
+        { record_id: weight_measurement.finding_id },
+      ],
+    })
+    computed_findings.push(body_mass_index_result.computed_finding_id)
+  }
+
+  const systolic_measurement = measurements.get(
+    VITALS_SNOMED_CODE.blood_pressure_systolic,
+  )
+  const diastolic_measurement = measurements.get(
+    VITALS_SNOMED_CODE.blood_pressure_diastolic,
+  )
+
+  if (
+    systolic_measurement &&
+    diastolic_measurement &&
+    systolic_measurement.value &&
+    diastolic_measurement.value &&
+    systolic_measurement.value > 0 &&
+    diastolic_measurement.value > 0
+  ) {
+    const map = computeMeanArterialPressure(
+      systolic_measurement.value,
+      diastolic_measurement.value,
+    )
+
+    const map_result = await insertComputedFinding(
+      trx,
+      {
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        procedure_id: source_procedure_id,
+        snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
+        value: Math.round(map),
+        units: VITALS_UNITS.mean_arterial_pressure,
+        algorithm_version: 'MAP_v1.0',
+        computation_metadata: {
+          formula: 'diastolic + (systolic - diastolic) / 3',
+          systolic_mmhg: systolic_measurement.value,
+          diastolic_mmhg: diastolic_measurement.value,
+        },
+        input_measurements: [
+          {
+            record_id: systolic_measurement.finding_id,
+          },
+          {
+            record_id: diastolic_measurement.finding_id,
+          },
+        ],
+      },
+    )
+    computed_findings.push(map_result.computed_finding_id)
+  }
+
+  if (
+    systolic_measurement &&
+    diastolic_measurement &&
+    systolic_measurement.value &&
+    diastolic_measurement.value &&
+    systolic_measurement.value > 0 &&
+    diastolic_measurement.value > 0
+  ) {
+    const bp_display = formatBloodPressureDisplay(
+      systolic_measurement.value,
+      diastolic_measurement.value,
+    )
+
+    const bp_result = await insertComputedFinding(
+      trx,
+      {
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
+        procedure_id: source_procedure_id,
+        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure,
+        value_display: bp_display,
+        algorithm_version: 'BP_v1.0',
+        computation_metadata: {
+          format: 'systolic/diastolic mmHg',
+          systolic_mmhg: systolic_measurement.value,
+          diastolic_mmhg: diastolic_measurement.value,
+        },
+        input_measurements: [
+          {
+            record_id: systolic_measurement.finding_id,
+          },
+          {
+            record_id: diastolic_measurement.finding_id,
+          },
+        ],
+      },
+    )
+    computed_findings.push(bp_result.computed_finding_id)
+  }
+
+  return { success: true as const, computed_findings }
 }

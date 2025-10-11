@@ -36,3 +36,31 @@ export const VITALS_UNITS = {
   body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
 }
+
+export const CM_TO_METERS = 100
+export const BMI_DECIMAL_PLACES = 1
+
+export function computeBMI(height_cm: number, weight_kg: number): number {
+  if (height_cm <= 0 || weight_kg <= 0) {
+    throw new Error('Height and weight must be positive')
+  }
+  const height_m = height_cm / CM_TO_METERS
+  return weight_kg / (height_m * height_m)
+}
+
+export function computeMeanArterialPressure(
+  systolic: number,
+  diastolic: number,
+): number {
+  if (systolic <= 0 || diastolic <= 0) {
+    throw new Error('Blood pressure values must be positive')
+  }
+  return diastolic + (systolic - diastolic) / 3
+}
+
+export function formatBloodPressureDisplay(
+  systolic: number,
+  diastolic: number,
+): string {
+  return `${systolic}/${diastolic} mmHg`
+}

@@ -81,8 +81,86 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-// Dynamically generate the list of vital SNOMED codes from the shared configuration
-// This ensures we don't have to maintain duplicate lists when adding new measurements
+// TODO: I need to refactor this to make it more enterprisey and reliable
+export interface SystemEvaluation {
+  finding_id: string
+  priority: keyof typeof PRIORITY_SNOMED_CODES
+  clinical_note: string
+  reference_range_source?: string
+  confidence?: number
+}
+
+export async function insertSystemEvaluations(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    encounter_id,
+    evaluations,
+  }: {
+    patient_id: string
+    encounter_id: string
+    evaluations: SystemEvaluation[]
+  },
+): Promise<{ success: true; evaluation_ids: string[] }> {
+  if (!evaluations.length) {
+    return { success: true as const, evaluation_ids: [] }
+  }
+
+  const validEvaluations = evaluations.map((evaluation) => {
+    const evaluation_id = generateUUID()
+    const timestamp = new Date().toISOString()
+
+    const audit_components = [
+      `[AUTOMATED EVALUATION ${timestamp}]`,
+      evaluation.clinical_note,
+      evaluation.reference_range_source
+        ? `Reference: ${evaluation.reference_range_source}`
+        : null,
+      evaluation.confidence !== undefined
+        ? `Confidence: ${(evaluation.confidence * 100).toFixed(0)}%`
+        : null,
+    ].filter(Boolean)
+
+    return {
+      id: evaluation_id,
+      evaluates_record_id: evaluation.finding_id,
+      snomed_concept_id: PRIORITY_SNOMED_CODES[evaluation.priority],
+      note: audit_components.join(' | '),
+    }
+  })
+
+  await trx.with(
+    'inserting_system_evaluation_records',
+    (qb) =>
+      qb.insertInto('patient_records')
+        .values(validEvaluations.map((evaluation) => ({
+          id: evaluation.id,
+          patient_id,
+          encounter_id,
+          snomed_concept_id: evaluation.snomed_concept_id,
+        }))),
+  ).with(
+    'inserting_system_evaluations',
+    (qb) =>
+      qb.insertInto('patient_evaluations')
+        .values(validEvaluations.map((evaluation) => ({
+          id: evaluation.id,
+          encounter_provider_id: null, // System evaluations have no provider (TODO: ask Will how to deal with this)
+          evaluates_record_id: evaluation.evaluates_record_id,
+          note: evaluation.note,
+          by_system: true, 
+        }))),
+  ).selectNoFrom([
+    success_true,
+  ])
+    .executeTakeFirstOrThrow()
+
+  return {
+    success: true as const,
+    evaluation_ids: validEvaluations.map((e) => e.id),
+  }
+}
+
 const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
 
 export async function getMostRecentManualVitalsWithEvaluations(
@@ -335,4 +413,104 @@ export async function getMostRecentVitalsWithEvaluations(
       getMostRecentComputedVitalsWithEvaluations(trx, { patient_id }),
     ]),
   )
+}
+
+
+export async function getPreviousVitalMeasurements(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<Map<string, string>> {
+  // Get second most recent manual measurements
+  const manualMeasurements = await trx.with(
+    'ranked_manual_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_measurements',
+          'patient_findings.id',
+          'patient_measurements.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_records.snomed_concept_id',
+          'in',
+          VITAL_SNOMED_CONCEPT_IDS,
+        )
+        .select([
+          'patient_records.snomed_concept_id',
+          'patient_measurements.value',
+          'patient_measurements.units',
+        ])
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_manual_findings')
+    .where('ranked_manual_findings.rank', '=', 2)
+    .select(['snomed_concept_id', 'value', 'units'])
+    .execute()
+
+  const computedMeasurements = await trx.with(
+    'ranked_computed_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_computed_findings',
+          'patient_findings.id',
+          'patient_computed_findings.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_records.snomed_concept_id',
+          'in',
+          VITAL_SNOMED_CONCEPT_IDS,
+        )
+        .select([
+          'patient_records.snomed_concept_id',
+          'patient_computed_findings.value',
+          'patient_computed_findings.units',
+          'patient_computed_findings.value_display',
+        ])
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_computed_findings')
+    .where('ranked_computed_findings.rank', '=', 2)
+    .select(['snomed_concept_id', 'value', 'units', 'value_display'])
+    .execute()
+
+  const previousMeasurements = new Map<string, string>()
+
+  for (const measurement of manualMeasurements) {
+    if (measurement.value !== null) {
+      previousMeasurements.set(
+        measurement.snomed_concept_id,
+        valueDisplay({ value: measurement.value, units: measurement.units }),
+      )
+    }
+  }
+
+  for (const measurement of computedMeasurements) {
+    const display = valueDisplay(
+      ComputedFindingSchema.parse({
+        value: measurement.value,
+        units: measurement.units,
+        value_display: measurement.value_display,
+      }),
+    )
+    previousMeasurements.set(measurement.snomed_concept_id, display)
+  }
+
+  return previousMeasurements
 }

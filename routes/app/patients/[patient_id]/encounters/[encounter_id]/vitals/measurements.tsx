@@ -41,7 +41,7 @@ export const handler = postHandler(
     const input_measurements = filterOfType(form_values.findings, hasValue)
 
     if (input_measurements.length) {
-      const manual_insertion_result = await vitals.insertMeasurements(
+      await vitals.insertMeasurements(
         ctx.state.trx,
         {
           patient_id,
@@ -49,18 +49,6 @@ export const handler = postHandler(
           encounter_provider_id:
             ctx.state.encounter_provider.patient_encounter_provider_id,
           input_measurements,
-        },
-      )
-
-      await vitals.computeAndInsertDerivedMeasurements(
-        ctx.state.trx,
-        {
-          patient_id,
-          encounter_id: ctx.state.encounter.encounter_id,
-          encounter_provider_id:
-            ctx.state.encounter_provider.patient_encounter_provider_id,
-          source_measurements: input_measurements,
-          source_procedure_id: manual_insertion_result.procedure_id,
         },
       )
     }

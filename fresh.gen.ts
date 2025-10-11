@@ -300,6 +300,7 @@ import * as $useAsyncSearch from './islands/useAsyncSearch.tsx'
 import * as $vitals_PriorityDropdown from './islands/vitals/PriorityDropdown.tsx'
 import * as $vitals_VitalInputWithNote from './islands/vitals/VitalInputWithNote.tsx'
 import * as $vitals_VitalsFlag from './islands/vitals/VitalsFlag.tsx'
+import * as $vitals_VitalsTableRow from './islands/vitals/VitalsTableRow.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
 import type { Manifest } from '$fresh/server.ts'
@@ -724,6 +725,7 @@ const manifest = {
     './islands/vitals/PriorityDropdown.tsx': $vitals_PriorityDropdown,
     './islands/vitals/VitalInputWithNote.tsx': $vitals_VitalInputWithNote,
     './islands/vitals/VitalsFlag.tsx': $vitals_VitalsFlag,
+    './islands/vitals/VitalsTableRow.tsx': $vitals_VitalsTableRow,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':
       $waiting_room_AddPatientSearch,

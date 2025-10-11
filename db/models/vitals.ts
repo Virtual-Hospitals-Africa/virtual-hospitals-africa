@@ -1,25 +1,24 @@
 import * as patient_measurements from './patient_measurements.ts'
 import * as patient_computed_findings from './patient_computed_findings.ts'
+import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
+import * as patient_clinical_context from './patient_clinical_context.ts'
+import * as automated_evaluation from './automated_evaluation.ts'
 import {
   Measurement,
   TrxOrDb,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import {
-  TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-  VITALS_SNOMED_CODE,
-  VITALS_UNITS,
-} from '../../shared/vitals.ts'
+import { TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE } from '../../shared/vitals.ts'
 
 type PatientRecord = {
+  id: string
   age_years?: number | null
   age_number?: number | null
   age_unit?: string | null
   gender?: string | null
 }
 
-export function insertMeasurements(
+export async function insertMeasurements(
   trx: TrxOrDb,
   opts: {
     patient_id: string
@@ -27,365 +26,89 @@ export function insertMeasurements(
     encounter_provider_id: string
     input_measurements: Measurement[]
   },
-): Promise<{ success: true; procedure_id: string }> {
-  return patient_measurements.insertMany(trx, {
+): Promise<{
+  success: true
+  procedure_id: string
+  auto_evaluations?: string[]
+  performance_metrics?: {
+    evaluation_time_ms: number
+    database_queries: number
+    abnormal_measurements: number
+  }
+}> {
+  const start_time = Date.now()
+
+  const insertion_result = await patient_measurements.insertMany(trx, {
     ...opts,
     procedure: {
       create_from_snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
     },
   })
+
+  let auto_evaluations: string[] = []
+  let performance_metrics: {
+    evaluation_time_ms: number
+    database_queries: number
+    abnormal_measurements: number
+  } | undefined = undefined
+
+  if (opts.input_measurements.length) {
+    const clinical_context = await patient_clinical_context
+      .buildPatientClinicalContext(
+        trx,
+        opts.patient_id,
+      )
+
+    const evaluation_result = await automated_evaluation
+      .evaluateAndCreateSystemEvaluations(
+        trx,
+        {
+          patient_id: opts.patient_id,
+          _encounter_id: opts.encounter_id,
+          measurements: opts.input_measurements,
+          patient_context: clinical_context,
+        },
+      )
+
+    auto_evaluations = [...evaluation_result.created_evaluation_ids]
+    performance_metrics = {
+      evaluation_time_ms: Date.now() - start_time,
+      database_queries: evaluation_result.performance_metrics.database_queries,
+      abnormal_measurements:
+        evaluation_result.performance_metrics.abnormal_count,
+    }
+  }
+
+  await patient_computed_findings.computeAndInsertDerivedMeasurements(trx, {
+    patient_id: opts.patient_id,
+    encounter_id: opts.encounter_id,
+    encounter_provider_id: opts.encounter_provider_id,
+    source_measurements: opts.input_measurements,
+    source_procedure_id: insertion_result.procedure_id,
+  })
+
+  return {
+    success: true,
+    procedure_id: insertion_result.procedure_id,
+    auto_evaluations: auto_evaluations.length > 0
+      ? auto_evaluations
+      : undefined,
+    performance_metrics,
+  }
 }
 
-// deno-lint-ignore require-await
 export async function measurementsNeededForEncounter(
-  _trx: TrxOrDb,
+  trx: TrxOrDb,
   patient_record: PatientRecord,
 ): Promise<VitalMeasurementFormInputDefition[]> {
-  console.log(
-    'patient record in measurementsNeededForEncounter',
-    patient_record,
-  )
-  console.log(_trx)
-
-  const age_years = patient_record.age_years ?? null
-  const age_number = patient_record.age_number ?? null
-  const age_unit = patient_record.age_unit ?? null
-
-  // Use granular age data for pediatric patients
-  if (age_years !== null && age_years < 19) {
-    return getChildrenVitalMeasurements(age_years, age_number, age_unit)
-  }
-
-  // Return adult measurements for ages 19 and above
-  return getAdultVitalMeasurements()
-}
-
-function getChildrenVitalMeasurements(
-  age_years: number,
-  age_number?: number | null,
-  age_unit?: string | null,
-): VitalMeasurementFormInputDefition[] {
-  const measurements: VitalMeasurementFormInputDefition[] = [
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.temperature,
-      required: true,
-      label: 'temperature',
-      units: VITALS_UNITS.temperature,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.pulse,
-      required: true,
-      label: 'pulse',
-      units: VITALS_UNITS.pulse,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.respiratory_rate,
-      required: true,
-      label: 'respiratory_rate',
-      units: VITALS_UNITS.respiratory_rate,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.height,
-      required: true,
-      label: 'height',
-      units: VITALS_UNITS.height,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.weight,
-      required: true,
-      label: 'weight',
-      units: VITALS_UNITS.weight,
-    },
-  ]
-
-  // Blood pressure for ages 3 and older
-  if (age_years >= 3) {
-    measurements.push(
-      {
-        finding_id: generateUUID(),
-        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_systolic,
-        required: true,
-        label: 'blood_pressure_systolic',
-        units: VITALS_UNITS.blood_pressure_systolic,
-      },
-      {
-        finding_id: generateUUID(),
-        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
-        required: true,
-        label: 'blood_pressure_diastolic',
-        units: VITALS_UNITS.blood_pressure_diastolic,
-      },
-    )
-  }
-
-  // Head circumference up to 3 years
-  if (age_years <= 3) {
-    measurements.push({
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.head_circumference,
-      required: true,
-      label: 'head_circumference',
-      units: VITALS_UNITS.head_circumference,
-    })
-  }
-
-  // Midarm circumference and triceps skinfold for ages 3 months to 5 years
-  // Now we can use granular age data for more precise requirements
-  const isAtLeast3Months = (age_years >= 1) ||
-    (age_years === 0 && age_unit === 'month' &&
-      typeof age_number === 'number' && age_number >= 3)
-  const isUnder5Years = age_years < 5
-
-  if (isAtLeast3Months && isUnder5Years) {
-    measurements.push(
-      {
-        finding_id: generateUUID(),
-        snomed_concept_id: VITALS_SNOMED_CODE.midarm_circumference,
-        required: true,
-        label: 'midarm_circumference',
-        units: VITALS_UNITS.midarm_circumference,
-      },
-      {
-        finding_id: generateUUID(),
-        snomed_concept_id: VITALS_SNOMED_CODE.triceps_skinfold,
-        required: true,
-        label: 'triceps_skinfold',
-        units: VITALS_UNITS.triceps_skinfold,
-      },
-    )
-  }
-
-  // BMI for ages 5-19 years is computed automatically in computeAndInsertDerivedMeasurements
-
-  return measurements
-}
-
-function getAdultVitalMeasurements(): VitalMeasurementFormInputDefition[] {
-  return [
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.height,
-      required: true,
-      label: 'height',
-      units: VITALS_UNITS.height,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.weight,
-      required: true,
-      label: 'weight',
-      units: VITALS_UNITS.weight,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.temperature,
-      required: true,
-      label: 'temperature',
-      units: VITALS_UNITS.temperature,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
-      required: true,
-      label: 'blood_pressure_diastolic',
-      units: VITALS_UNITS.blood_pressure_diastolic,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_systolic,
-      required: true,
-      label: 'blood_pressure_systolic',
-      units: VITALS_UNITS.blood_pressure_systolic,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_oxygen_saturation,
-      required: true,
-      label: 'blood_oxygen_saturation',
-      units: VITALS_UNITS.blood_oxygen_saturation,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_glucose,
-      required: true,
-      label: 'blood_glucose',
-      units: VITALS_UNITS.blood_glucose,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.pulse,
-      required: true,
-      label: 'pulse',
-      units: VITALS_UNITS.pulse,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.respiratory_rate,
-      required: true,
-      label: 'respiratory_rate',
-      units: VITALS_UNITS.respiratory_rate,
-    },
-  ]
-}
-
-export async function computeAndInsertDerivedMeasurements(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    encounter_id,
-    encounter_provider_id,
-    source_measurements,
-    source_procedure_id,
-  }: {
-    patient_id: string
-    encounter_id: string
-    encounter_provider_id: string
-    source_measurements: Measurement[]
-    source_procedure_id: string
-  },
-): Promise<{ success: true; computed_findings: string[] }> {
-  const measurements = new Map(
-    source_measurements.map((m) => [m.snomed_concept_id, m]),
-  )
-
-  const computed_findings: string[] = []
-
-  // Validate required input measurements exist
-  if (source_measurements.length === 0) {
-    return { success: true as const, computed_findings }
-  }
-
-  // BMI Calculation
-  const height_measurement = measurements.get(VITALS_SNOMED_CODE.height)
-  const weight_measurement = measurements.get(VITALS_SNOMED_CODE.weight)
-
-  if (
-    height_measurement &&
-    weight_measurement &&
-    height_measurement.value &&
-    weight_measurement.value &&
-    height_measurement.value > 0 &&
-    weight_measurement.value > 0
-  ) {
-    const height_m = height_measurement.value / 100 // Convert cm to m
-
-    const body_mass_index = weight_measurement.value / (height_m * height_m)
-
-    const body_mass_index_result = await patient_computed_findings
-      .insertComputedFinding(trx, {
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
-        value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
-        units: VITALS_UNITS.body_mass_index,
-        algorithm_version: 'BMI_v1.0',
-        computation_metadata: {
-          formula: 'weight_kg / (height_m^2)',
-          height_m,
-          weight_kg: weight_measurement.value,
-        },
-        input_measurements: [
-          { record_id: height_measurement.finding_id },
-          { record_id: weight_measurement.finding_id },
-        ],
-      })
-    computed_findings.push(body_mass_index_result.computed_finding_id)
-  }
-
-  // Mean Arterial Pressure (MAP) calculation
-  const systolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_systolic,
-  )
-  const diastolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_diastolic,
-  )
-
-  if (
-    systolic_measurement &&
-    diastolic_measurement &&
-    systolic_measurement.value &&
-    diastolic_measurement.value &&
-    systolic_measurement.value > 0 &&
-    diastolic_measurement.value > 0
-  ) {
-    const map = diastolic_measurement.value +
-      (systolic_measurement.value - diastolic_measurement.value) / 3
-
-    const map_result = await patient_computed_findings.insertComputedFinding(
+  const clinical_context = await patient_clinical_context
+    .buildPatientClinicalContext(
       trx,
-      {
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
-        value: Math.round(map),
-        units: VITALS_UNITS.mean_arterial_pressure,
-        algorithm_version: 'MAP_v1.0',
-        computation_metadata: {
-          formula: 'diastolic + (systolic - diastolic) / 3',
-          systolic_mmhg: systolic_measurement.value,
-          diastolic_mmhg: diastolic_measurement.value,
-        },
-        input_measurements: [
-          {
-            record_id: systolic_measurement.finding_id,
-          },
-          {
-            record_id: diastolic_measurement.finding_id,
-          },
-        ],
-      },
+      patient_record.id,
     )
-    computed_findings.push(map_result.computed_finding_id)
-  }
 
-  // Blood Pressure composite display (systolic/diastolic format)
-  if (
-    systolic_measurement &&
-    diastolic_measurement &&
-    systolic_measurement.value &&
-    diastolic_measurement.value &&
-    systolic_measurement.value > 0 &&
-    diastolic_measurement.value > 0
-  ) {
-    const bp_display =
-      `${systolic_measurement.value}/${diastolic_measurement.value} mmHg`
+  const requirements_result = await clinical_measurement_requirements
+    .determineMeasurementsForPatient(trx, clinical_context)
 
-    const bp_result = await patient_computed_findings.insertComputedFinding(
-      trx,
-      {
-        patient_id,
-        encounter_id,
-        encounter_provider_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure,
-        value_display: bp_display,
-        algorithm_version: 'BP_v1.0',
-        computation_metadata: {
-          format: 'systolic/diastolic mmHg',
-          systolic_mmhg: systolic_measurement.value,
-          diastolic_mmhg: diastolic_measurement.value,
-        },
-        input_measurements: [
-          {
-            record_id: systolic_measurement.finding_id,
-          },
-          {
-            record_id: diastolic_measurement.finding_id,
-          },
-        ],
-      },
-    )
-    computed_findings.push(bp_result.computed_finding_id)
-  }
-
-  return { success: true as const, computed_findings }
+  return requirements_result.measurements
 }
