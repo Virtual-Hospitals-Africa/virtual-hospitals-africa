@@ -55,7 +55,8 @@ export async function up(db: Kysely<unknown>) {
       age_years,
       (age).number AS age_number,
       (age).unit AS age_unit,
-      (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display
+      (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display,
+      TODO AS age_days
     FROM a2
     WHERE age IS NOT NULL
   `.execute(db)

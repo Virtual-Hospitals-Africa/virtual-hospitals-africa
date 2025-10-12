@@ -3414,3 +3414,54 @@ export type RenderedCareTeamHealthWorker = {
     name: string
   }
 }
+
+export type RenderedTriageVitalRow = {
+  type: 'triage_vital'
+  snomed_concept_id: string
+  patient_record_id: string
+  finding_computation_group_id: string
+  display_name: string
+  measurement_display: string
+  // previous_measurement: {
+  //   display: string
+  //   created_at: Date
+  // } | null
+  reference_range: ReferenceRange
+  system_evaluation: string | null
+  notes: string | null
+  score: number
+}
+
+type ReferenceRange = {
+  normal_min: number
+  normal_max: number
+  abnormal_level_1_high_min?: number
+  abnormal_level_1_high_max?: number
+  abnormal_level_2_high_min?: number
+  abnormal_level_2_high_max?: number
+  abnormal_level_3_high_min?: number
+  abnormal_level_1_low_min?: number
+  abnormal_level_1_low_max?: number
+  abnormal_level_2_low_min?: number
+  abnormal_level_2_low_max?: number
+  abnormal_level_3_low_max?: number
+}
+
+// const systolic_blood_pressure_reference_range: ReferenceRange = {
+//   normal_min: 101,
+//   normal_max: 199,
+//   abnormal_level_2_high_min: 199,
+//   abnormal_level_1_low_max: 101,
+//   abnormal_level_1_low_min: 81,
+//   abnormal_level_2_low_max: 80,
+//   abnormal_level_2_low_min: 71,
+//   abnormal_level_3_low_max: 71
+// }
+
+export type RenderedWarningSignRow = {
+  type: 'warning_sign'
+  patient_record_id: string
+  display_name: string
+  notes: string | null
+  score: number
+}

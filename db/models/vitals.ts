@@ -2,6 +2,7 @@ import * as patient_measurements from './patient_measurements.ts'
 import * as patient_computed_findings from './patient_computed_findings.ts'
 import {
   Measurement,
+  RenderedTriageVitalRow,
   TrxOrDb,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
@@ -11,9 +12,49 @@ import {
   VITALS_SNOMED_CODE,
   VITALS_UNITS,
 } from '../../shared/vitals.ts'
+import { literalString } from '../../_helpers.ts'
+import { sql } from 'kysely'
 
 // TODO
 type PatientRecord = unknown
+
+export function readRows(
+  trx: TrxOrDb,
+  procedure_id: string,
+): Promise<RenderedTriageVitalRow> {
+  return trx.selectFrom('patient_findings')
+    .innerJoin(
+      'patient_records',
+      'patient_findings.id',
+      'patient_records.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category.id',
+      'patient_findings.id',
+    )
+    .leftJoin(
+      'patient_computed_findings as self_patient_computed_findings',
+      'patient_findings.id',
+      'self_patient_computed_findings.id',
+    )
+    .leftJoin(
+      'patient_computed_findings_inputs',
+      'patient_findings.id',
+      'patient_computed_findings_inputs.input_measurement_id',
+    )
+    .leftJoin(
+      'patient_computed_findings as computation_based_on_self',
+      'computation_based_on_self.id',
+      'patient_computed_findings_inputs.computed_finding_id',
+    )
+    .where('procedure_id', '=', procedure_id)
+    .select([
+      literalString('triage_vital').as('type'),
+      'patient_records.snomed_concept_id',
+      sql`coalesce(computation_based_on_self.id, patient_findings.id)`,
+    ])
+}
 
 export function insertMeasurements(
   trx: TrxOrDb,
