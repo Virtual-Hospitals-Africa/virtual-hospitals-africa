@@ -23,7 +23,6 @@ export function HealthInsuranceSection({
   const has_no_insurance_signal = useSignal(has_no_insurance || false)
   const is_dependent_signal = useSignal(is_dependent || false)
 
-  // Convert Date to string format for date inputs (YYYY-MM-DD)
   const validFromString = valid_from instanceof Date 
     ? valid_from.toISOString().split('T')[0] 
     : valid_from || undefined
@@ -67,8 +66,7 @@ export function HealthInsuranceSection({
             <TextInput
               name='membership_number'
               label='Membership Number'
-              placeholder='0000-000-0000'
-              pattern='[0-9]{4}-[0-9]{3}-[0-9]{4}'
+              placeholder='0123456789'
               value={membership_number ?? undefined}
             />
           </FormRow>
