@@ -1,5 +1,5 @@
+import { define } from '../define.ts'
 import { collectTsvResource } from '../../parseTsvResource.ts'
-import { create } from '../create.ts'
 import z from 'zod'
 
 export const countries = await collectTsvResource(
@@ -14,7 +14,7 @@ export const countries = await collectTsvResource(
   }),
 )
 
-export default create(['countries'], (trx) =>
+export default define(['countries'], (trx) =>
   trx.insertInto('countries')
     .values(countries)
     .execute())

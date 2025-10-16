@@ -1,6 +1,6 @@
 import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import * as organizations from '../../models/organizations.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { TrxOrDb } from '../../../types.ts'
@@ -10,7 +10,7 @@ import { decimal } from '../../../util/validators.ts'
 import { TO_COUNTRY_ISO_3601_2 } from '../../models/addresses.ts'
 import { getLocationAddress } from '../../../external-clients/google-maps.ts'
 
-export default create(
+export default define(
   ['addresses', 'organizations', 'organization_departments'],
   async (trx) => {
     await addTestOrganizations(trx)

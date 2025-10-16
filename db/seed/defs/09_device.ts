@@ -1,10 +1,10 @@
 import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { assert } from 'std/assert/assert.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import * as inParallel from '../../../util/inParallel.ts'
 
-export default create(
+export default define(
   ['devices', 'device_capabilities'],
   seedDataFromJSON,
 )

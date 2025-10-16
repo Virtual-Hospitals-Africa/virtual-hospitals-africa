@@ -1,8 +1,8 @@
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import * as organizations from '../../models/organizations.ts'
 import { testOrganizationDepartments } from '../../../test/_helpers/organizations.ts'
 
-export default create(
+export default define(
   ['organization_departments'],
   async (trx) => {
     const test_organizations = await trx.selectFrom('organizations').where(

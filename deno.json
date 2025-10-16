@@ -85,6 +85,7 @@
     "preact": "https://esm.sh/preact@10.25.4",
     "preact/": "https://esm.sh/preact@10.25.4/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.5.13",
+    "prompt": "jsr:@cliffy/prompt@1.0.0-rc.7",
     "react": "https://esm.sh/preact@10.25.4/compat",
     "redis": "https://deno.land/x/redis@v0.25.5/mod.ts",
     "redlock": "https://deno.land/x/redlock@v1.0/mod.ts",

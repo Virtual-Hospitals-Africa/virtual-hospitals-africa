@@ -2,7 +2,7 @@ import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
-import createMigration from './create-migration.ts'
+import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
 
 const migrations: Record<

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as organizations from '../db/models/organizations.ts'
@@ -51,7 +52,7 @@ const wm_scenarios: WaitingRoomScenario[] = [
   ['female', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 48],
   ['male', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 42],
   ['female', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 30],
-  ['female', 'seeking treatment', 'resus', 'resuscitation', 'in progress', 'Emergency', 28],
+  ['female', 'seeking treatment', 'resus', 'stabilization', 'in progress', 'Emergency', 28],
   ['female', 'seeking treatment', 'reception', 'registration', 'in progress', 'Undetermined', 4],
   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 39],
   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 7],

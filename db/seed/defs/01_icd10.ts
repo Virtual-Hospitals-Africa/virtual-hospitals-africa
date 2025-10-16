@@ -12,9 +12,9 @@ import { assert } from 'std/assert/assert.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { byCodeWithSimilarity } from '../../models/icd10.ts'
 import { searchFlat } from '../../models/icd10.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 
-export default create([
+export default define([
   'icd10_sections',
   'icd10_categories',
   'icd10_diagnoses',

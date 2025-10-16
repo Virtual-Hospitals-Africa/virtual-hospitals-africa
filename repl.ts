@@ -1,19 +1,45 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
 import db from './db/db.ts'
 
-const ignore_file_extensions = new Set(['txt', 'py'])
+const ignore_file_extensions = new Set([
+  'txt',
+  'py',
+  'tsv',
+  'csv',
+  'json',
+  'sh',
+  'DS_Store',
+])
+
+const skip_directories = new Set([
+  'dumps',
+  'resources',
+  'node_modules',
+])
+
 async function loadAllModules(dir: string) {
+  console.log(dir)
   const modules: any = {}
   const importing: Promise<any>[] = []
-  for await (const inDir of Deno.readDir(dir)) {
-    if (inDir.isSymlink) {
-      throw new Error('Symlinks are not supported: ' + inDir.name)
-    }
-    if (inDir.isDirectory) {
-      modules[inDir.name] = await loadAllModules(`${dir}/${inDir.name}`)
+  for await (const in_directory of Deno.readDir(dir)) {
+    if (
+      in_directory.isDirectory && skip_directories.has(in_directory.name)
+    ) {
       continue
     }
-    const file = inDir
+    if (in_directory.isSymlink) {
+      // throw new Error('Symlinks are not supported: ' + in_directory.name)
+      continue
+    }
+    if (in_directory.isDirectory) {
+      loadAllModules(
+        `${dir}/${in_directory.name}`,
+      ).then((module) => {
+        modules[in_directory.name] = module
+      })
+      continue
+    }
+    const file = in_directory
     const [file_name, extension] = file.name.split('.')
     if (ignore_file_extensions.has(extension)) continue
     const importing_module = import(`${dir}/${file.name}`).then((module) => {
@@ -69,3 +95,8 @@ const [
   './components',
   './islands',
 ])
+
+await loadAllModules('./db').then((x) => {
+  delete x['db']
+  Object.assign(db, x)
+})

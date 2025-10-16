@@ -6,10 +6,10 @@ import { assert } from 'std/assert/assert.ts'
 import compact from '../../../util/compact.ts'
 import arraysEqual from '../../../util/arraysEqual.ts'
 import sortBy from '../../../util/sortBy.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import * as inParallel from '../../../util/inParallel.ts'
 
-export default create([
+export default define([
   'drugs',
   'medications',
   'consumables',

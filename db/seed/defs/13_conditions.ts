@@ -1,8 +1,8 @@
 import { TrxOrDb } from '../../../types.ts'
 import parseJSON from '../../../util/parseJSON.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 
-export default create([
+export default define([
   'conditions',
   'icd10_codes',
   'condition_icd10_codes',
