@@ -1,6 +1,6 @@
 import { parseDateTime } from '../util/date.ts'
 
-export default function createMigration(migrationName: string) {
+export default async function createMigration(migrationName: string) {
   if (!migrationName) {
     console.error(
       'Please provide a migration name as in\ndeno task migrate:create name',
@@ -16,7 +16,7 @@ export default function createMigration(migrationName: string) {
   const migrationFileName =
     `${year}${month}${day}${hour}${minute}${second}_${migrationName}.ts`
 
-  const initialContents = `import { Kysely } from "kysely";
+  const initial_contents = `import { Kysely } from "kysely";
 
 export function up(db: Kysely<unknown>) {
 
@@ -29,7 +29,7 @@ export function down(db: Kysely<unknown>) {
 
   const filePath = `db/migrations/${migrationFileName}`
 
-  Deno.writeTextFile(filePath, initialContents)
+  await Deno.writeTextFile(filePath, initial_contents)
 
   console.log('Created migration file: ', filePath)
 }

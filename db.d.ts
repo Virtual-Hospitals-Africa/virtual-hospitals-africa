@@ -185,8 +185,8 @@ export type Workflow =
   | 'maternity'
   | 'prescription_refill'
   | 'registration'
-  | 'resuscitation'
   | 'seeking_treatment'
+  | 'stabilization'
   | 'triage'
 
 export interface Addresses {

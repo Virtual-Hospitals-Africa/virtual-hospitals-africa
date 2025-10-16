@@ -1,8 +1,8 @@
 import z from 'zod'
 import { parseCsvTyped } from '../../../util/parseCsv.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 
-export default create([
+export default define([
   'iso_639_1_languages',
   'iso_639_2_b_languages',
 ], async (trx) => {

@@ -6,10 +6,10 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 
-const TriageAdditionalInvestigationsSchema = z.object({})
+const TriageAdditionalInvestigationsAndTasksSchema = z.object({})
 
 export const handler = postHandler(
-  TriageAdditionalInvestigationsSchema,
+  TriageAdditionalInvestigationsAndTasksSchema,
   // deno-lint-ignore require-await
   async (_req, ctx: OpenEncounterWorkflowContext, _form_values) => {
     // const { trx, encounter } = ctx.state
@@ -19,10 +19,12 @@ export const handler = postHandler(
 )
 
 // deno-lint-ignore require-await
-export async function TriageAdditionalInvestigationsPage(
+export async function TriageAdditionalInvestigationsAndTasksPage(
   _ctx: OpenEncounterWorkflowContext,
 ) {
   return <>TODO</>
 }
 
-export default OpenEncounterWorkflowPage(TriageAdditionalInvestigationsPage)
+export default OpenEncounterWorkflowPage(
+  TriageAdditionalInvestigationsAndTasksPage,
+)

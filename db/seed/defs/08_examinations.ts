@@ -1,9 +1,9 @@
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import { TrxOrDb } from '../../../types.ts'
 import { collect } from '../../../util/inParallel.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 
-export default create(['examinations'], addSeedData, { never_dump: true })
+export default define(['examinations'], addSeedData, { never_dump: true })
 
 async function addSeedData(trx: TrxOrDb) {
   let order = 0

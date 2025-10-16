@@ -489,13 +489,6 @@ function asWorkflowStatus(
     IntermediatePatientEncounterResult['workflows'][0],
   status: RenderedPatientEncounterStatus,
 ): WorkflowStatus {
-  console.log({
-    patient_workflow_id,
-    workflow,
-    completed_at,
-    steps_completed,
-    employees,
-  })
   assert(isWorkflow(workflow))
   const workflow_steps = WORKFLOW_STEPS[workflow]
   if (completed_at) {

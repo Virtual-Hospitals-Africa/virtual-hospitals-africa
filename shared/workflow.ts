@@ -6,11 +6,12 @@ import first from '../util/first.ts'
 export const WORKFLOWS = [
   'registration' as const,
   'triage' as const,
+  'stabilization' as const,
   'seeking_treatment' as const,
   'maternity' as const,
   'prescription_refill' as const,
   'doctor_review' as const,
-  'resuscitation' as const,
+  // 'resuscitation' as const,
 ]
 
 export type Workflow = (typeof WORKFLOWS)[number]
@@ -18,11 +19,14 @@ export type Workflow = (typeof WORKFLOWS)[number]
 export const WORKFLOW_SNOMED_CONCEPT_IDS = {
   registration: '184047000', // Patient registration
   triage: '225390008',
+  stabilization: '115979005', // |Stabilization (procedure)|
   seeking_treatment: '185347001', // Encounter for problem
   maternity: '18114009', //  |Prenatal examination and care of mother (procedure)|
   prescription_refill: '373784005', //  |Dispensing medication (procedure)|
   doctor_review: '712744002', //  |Evaluation of care plan (procedure)|
-  resuscitation: '439569004',
+  // resuscitation: '439569004',
+} satisfies {
+  [w in Workflow]: string
 }
 
 export const WORKFLOW_STEPS = {
@@ -37,8 +41,12 @@ export const WORKFLOW_STEPS = {
   triage: [
     'warning_signs', // chief complaint + emergency signs + urgent signs
     'measure_vitals',
-    'additional_investigations',
+    'additional_investigations_and_tasks',
     'assign_priority',
+    'route_patient',
+  ],
+  stabilization: [
+    'monitor_patient',
   ],
   seeking_treatment: [
     'chief_complaint',
@@ -69,9 +77,11 @@ export const WORKFLOW_STEPS = {
     'referral',
     'revert',
   ],
-  resuscitation: [
-    'stabilize',
-  ],
+  // resuscitation: [
+  //   'stabilize',
+  // ],
+} satisfies {
+  [w in Workflow]: string[]
 }
 
 export function isWorkflow(workflow: string): workflow is Workflow {

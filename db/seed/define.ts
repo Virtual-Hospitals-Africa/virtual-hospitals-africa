@@ -14,7 +14,7 @@ const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) =>
 
 type TableName = keyof DB
 
-export function create(
+export function define(
   table_names: TableName[],
   generate: (trx: TrxOrDb) => Promise<unknown>,
   opts?: { never_dump?: boolean },
@@ -54,9 +54,7 @@ export function create(
     })
 
     if (!all_seeds_present) {
-      return db.transaction().setIsolationLevel('read committed').execute(
-        generate,
-      )
+      return generate(db)
     }
 
     await runCommandAssertExitCodeZero('./db/seed/tsv_load.sh', {

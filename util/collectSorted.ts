@@ -1,17 +1,25 @@
+export function collect<T>(generator: Generator<T, void, unknown>): T[] {
+  const array: T[] = []
+  for (const item of generator) {
+    array.push(item)
+  }
+  return array
+}
+
 export function collectSorted<T>(
   generator: Generator<T, void, unknown>,
   compareFn: (a: T, b: T) => number,
 ): T[] {
-  const sortedArray: T[] = []
+  const sorted_array: T[] = []
 
   for (const item of generator) {
     // Find the correct index to insert the item using binary search
     let left = 0
-    let right = sortedArray.length
+    let right = sorted_array.length
 
     while (left < right) {
       const mid = Math.floor((left + right) / 2)
-      if (compareFn(item, sortedArray[mid]) < 0) {
+      if (compareFn(item, sorted_array[mid]) < 0) {
         right = mid
       } else {
         left = mid + 1
@@ -19,10 +27,10 @@ export function collectSorted<T>(
     }
 
     // Insert the item at the found index
-    sortedArray.splice(left, 0, item)
+    sorted_array.splice(left, 0, item)
   }
 
-  return sortedArray
+  return sorted_array
 }
 
 export function collectSortedNumbers(
@@ -41,16 +49,16 @@ export function collectSortedUniq<T>(
   generator: Generator<T, void, unknown>,
   compareFn: (a: T, b: T) => number,
 ): T[] {
-  const sortedArray: T[] = []
+  const sorted_array: T[] = []
 
   for (const item of generator) {
     // Find the correct index to insert the item using binary search
     let left = 0
-    let right = sortedArray.length
+    let right = sorted_array.length
 
     while (left < right) {
       const mid = Math.floor((left + right) / 2)
-      const comparison = compareFn(item, sortedArray[mid])
+      const comparison = compareFn(item, sorted_array[mid])
 
       if (comparison < 0) {
         right = mid
@@ -65,11 +73,11 @@ export function collectSortedUniq<T>(
 
     // If the item is unique, insert it at the found index
     if (left !== -1) {
-      sortedArray.splice(left, 0, item)
+      sorted_array.splice(left, 0, item)
     }
   }
 
-  return sortedArray
+  return sorted_array
 }
 
 export function collectSortedUniqNumbers(

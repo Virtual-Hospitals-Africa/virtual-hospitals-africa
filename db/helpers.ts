@@ -430,3 +430,16 @@ export function successSelection(
 ) {
   return qb.selectNoFrom(success_true)
 }
+
+export async function ensureAllEnumValuesExist(
+  trx: TrxOrDb,
+  enum_name: string,
+  values: string[],
+) {
+  // Build multiple ALTER TYPE statements and execute them together
+  const statements = values.map((value) =>
+    `ALTER TYPE ${enum_name} ADD VALUE IF NOT EXISTS '${value}'`
+  ).join('; ')
+
+  await sql.raw(statements).execute(trx)
+}

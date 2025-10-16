@@ -6,7 +6,7 @@ import {
   runCommandAssertExitCodeZero,
 } from '../../../util/command.ts'
 import { chunkTsvResource } from '../../parseTsvResource.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import z from 'zod'
 
 const latest_snomed = 'SnomedCT_InternationalRF2_PRODUCTION_20250801T120000Z'
@@ -412,7 +412,7 @@ const snomed_tables: {
   },
 ]
 
-export default create([
+export default define([
   'snomed_concept',
   'snomed_description',
   'snomed_cci_refset_refset_descriptor',

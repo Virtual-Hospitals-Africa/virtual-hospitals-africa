@@ -1,7 +1,7 @@
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import { sql } from 'kysely'
 
-export default create(['snomed_family_history'], (trx) =>
+export default define(['snomed_family_history'], (trx) =>
   sql`
     insert into snomed_family_history(id)
     select distinct descendant_id 

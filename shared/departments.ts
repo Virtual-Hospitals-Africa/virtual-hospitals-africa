@@ -35,16 +35,16 @@ export function assertDepartmentName(
   assertDepartment(department.name)
 }
 
-export const WORKFLOW_DEPARTMENTS: {
-  [w in Workflow]: Department
-} = {
+export const WORKFLOW_DEPARTMENTS = {
   seeking_treatment: 'primary care',
   maternity: 'maternity',
   registration: 'reception',
   triage: 'triage',
   prescription_refill: 'pharmacy',
   doctor_review: 'remote care',
-  resuscitation: 'resus',
+  stabilization: 'resus',
+} satisfies {
+  [w in Workflow]: Department
 }
 
 function workflowsOfDepartment(department: Department): Workflow[] {

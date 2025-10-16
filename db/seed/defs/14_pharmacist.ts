@@ -1,8 +1,8 @@
 import { TrxOrDb } from '../../../types.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import { parseTsv } from '../../../util/parseCsv.ts'
 
-export default create(['pharmacists'], importFromCsv)
+export default define(['pharmacists'], importFromCsv)
 
 async function importFromCsv(trx: TrxOrDb) {
   for await (

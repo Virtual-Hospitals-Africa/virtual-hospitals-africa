@@ -1,9 +1,9 @@
 import { SnomedCategory } from '../../../db.d.ts'
 import { FULLY_SPECIFIED_NAME_TYPE_ID } from '../../../shared/snomed.ts'
-import { create } from '../create.ts'
+import { define } from '../define.ts'
 import { sql } from 'kysely'
 
-export default create(
+export default define(
   ['snomed_inferred_canonical_name_and_category'],
   (trx) =>
     trx.insertInto('snomed_inferred_canonical_name_and_category')
