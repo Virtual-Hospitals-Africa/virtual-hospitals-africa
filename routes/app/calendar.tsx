@@ -5,7 +5,7 @@ import type {
   ProviderAppointment,
 } from '../../types.ts'
 import { getWithPatientInfo as getAppointments } from '../../db/models/appointments.ts'
-import { parseDateTime, todayISOInHarare } from '../../util/date.ts'
+import { parseDateTime, todayISOInJohannesburg } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from './_middleware.tsx'
@@ -20,8 +20,8 @@ export default HealthWorkerHomePageLayout(
   ) {
     const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
 
-    const today = todayISOInHarare()
-    // if there's no day in the query, use today in Harare
+    const today = todayISOInJohannesburg()
+    // if there's no day in the query, use today in Johannesburg
     const day = ctx.url.searchParams.get('day') || today
 
     const appointment_calendars = ctx.state.health_worker.employment.map(

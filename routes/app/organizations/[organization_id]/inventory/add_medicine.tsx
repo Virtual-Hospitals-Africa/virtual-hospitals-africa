@@ -8,7 +8,7 @@ import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import isString from '../../../../../util/isString.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
-import { todayISOInHarare } from '../../../../../util/date.ts'
+import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
@@ -107,7 +107,7 @@ export default HealthWorkerHomePageLayout(
 
     return (
       <InventoryMedicineForm
-        today={todayISOInHarare()}
+        today={todayISOInJohannesburg()}
         manufactured_medication={manufactured_medication}
         last_procurement={last_procurement}
       />

@@ -84,9 +84,10 @@ import * as $app_organizations_organization_id_patients_patient_id_open_encounte
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_start_workflow from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/start-workflow.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_additional_investigations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_investigations_and_tasks.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_additional_investigations_and_tasks from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_investigations_and_tasks.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_assign_priority from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/assign_priority.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_measure_vitals from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_route_patient from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/route_patient.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_warning_signs from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_profile_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/profile/_middleware.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_profile_appointments from './routes/app/organizations/[organization_id]/patients/[patient_id]/profile/appointments.tsx'
@@ -188,6 +189,7 @@ import * as $FamilyHistoryFormPanel from './islands/FamilyHistoryFormPanel.tsx'
 import * as $FamilyHistoryPage from './islands/FamilyHistoryPage.tsx'
 import * as $Filter from './islands/Filter.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
+import * as $HealthInsurance from './islands/HealthInsurance.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $LocalTime from './islands/LocalTime.tsx'
@@ -455,12 +457,14 @@ const manifest = {
       $app_organizations_organization_id_patients_patient_id_open_encounter_triage,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/_middleware.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_triage_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_investigations.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_triage_additional_investigations,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_investigations_and_tasks.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_triage_additional_investigations_and_tasks,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/assign_priority.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_triage_assign_priority,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_triage_measure_vitals,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/route_patient.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_triage_route_patient,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_triage_warning_signs,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/profile/_middleware.tsx':
@@ -608,6 +612,7 @@ const manifest = {
     './islands/FamilyHistoryPage.tsx': $FamilyHistoryPage,
     './islands/Filter.tsx': $Filter,
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
+    './islands/HealthInsurance.tsx': $HealthInsurance,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/LocalTime.tsx': $LocalTime,

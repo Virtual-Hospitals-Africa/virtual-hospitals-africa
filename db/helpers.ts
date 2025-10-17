@@ -242,6 +242,10 @@ export function toJSON<
 
 export const now = sql<Date>`now()`
 
+export const today_in_johannesburg = sql<
+  Date
+>`(now() AT TIME ZONE 'Africa/Johannesburg')::date`
+
 export function isoDate(
   // deno-lint-ignore no-explicit-any
   ref: ExpressionWrapper<DB, any, Date>,

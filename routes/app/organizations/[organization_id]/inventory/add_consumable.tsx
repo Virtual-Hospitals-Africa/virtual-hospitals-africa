@@ -11,7 +11,7 @@ import * as inventory from '../../../../../db/models/inventory.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { todayISOInHarare } from '../../../../../util/date.ts'
+import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import consumables from '../../../../../db/models/consumables.ts'
 import isNumber from '../../../../../util/isNumber.ts'
 import isString from '../../../../../util/isString.ts'
@@ -91,7 +91,7 @@ export default HealthWorkerHomePageLayout(
 
     return (
       <OrganizationConsumableForm
-        today={todayISOInHarare()}
+        today={todayISOInJohannesburg()}
         consumable={consumable}
       />
     )

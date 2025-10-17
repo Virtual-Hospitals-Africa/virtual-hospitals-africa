@@ -13,7 +13,7 @@ import {
 } from '../../types.ts'
 import {
   convertToTimeString,
-  formatHarare,
+  formatJohannesburg,
   prettyAppointmentTime,
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
@@ -468,12 +468,14 @@ const conversationStates: ConversationStates<
           const filteredAvailableTimes = await availableSlots(
             trx,
             {
-              declinedTimes: declinedTimes.map((time) => formatHarare(time)),
+              declinedTimes: declinedTimes.map((time) =>
+                formatJohannesburg(time)
+              ),
               count: 9,
               dates: [
-                formatHarare(today).substring(0, 10),
-                formatHarare(tomorrow).substring(0, 10),
-                formatHarare(afterTomorrow).substring(0, 10),
+                formatJohannesburg(today).substring(0, 10),
+                formatJohannesburg(tomorrow).substring(0, 10),
+                formatJohannesburg(afterTomorrow).substring(0, 10),
               ],
             },
           )
@@ -523,7 +525,7 @@ const conversationStates: ConversationStates<
       const appointmentsByDate: {
         [date: string]: SchedulingAppointmentOfferedTime[]
       } = nonDeclinedTimes.reduce((acc, appointment) => {
-        const date = formatHarare(appointment.start).substring(0, 10)
+        const date = formatJohannesburg(appointment.start).substring(0, 10)
         if (!acc[date]) {
           acc[date] = []
         }
@@ -541,7 +543,7 @@ const conversationStates: ConversationStates<
           rows: appointmentsByDate[date].map((offeredTime) => {
             return {
               id: String(offeredTime.id),
-              title: convertToTimeString(formatHarare(offeredTime.start)),
+              title: convertToTimeString(formatJohannesburg(offeredTime.start)),
               description: `With Dr. ${offeredTime.health_worker_name}`,
               async onExit(trx) {
                 const toDecline = scheduling_appointment_request

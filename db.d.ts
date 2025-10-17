@@ -1052,6 +1052,19 @@ export interface PatientGuardians {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientInsurance {
+  created_at: Generated<Timestamp>
+  expire_date: Timestamp
+  id: Generated<string>
+  insurance_provider: string
+  is_dependent: boolean
+  membership_number: string
+  patient_id: string
+  plan_name: string | null
+  updated_at: Generated<Timestamp>
+  valid_from: Timestamp
+}
+
 export interface PatientKin {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1734,6 +1747,7 @@ export interface DB {
   patient_finding_media_speeches: PatientFindingMediaSpeeches
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
+  patient_insurance: PatientInsurance
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements

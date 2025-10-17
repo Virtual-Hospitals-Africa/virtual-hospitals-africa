@@ -3414,3 +3414,13 @@ export type RenderedCareTeamHealthWorker = {
     name: string
   }
 }
+
+export type RenderedPatientInsurance = {
+  id: string
+  insurance_provider: string
+  plan_name: string | null
+  membership_number: string
+  valid_from: string
+  expire_date: string
+  is_dependent: boolean
+}

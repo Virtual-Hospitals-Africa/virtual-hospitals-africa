@@ -17,7 +17,7 @@ import {
 import { FreshContext } from '$fresh/src/server/mod.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
-import { formatHarare } from '../util/date.ts'
+import { formatJohannesburg } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 
@@ -319,8 +319,8 @@ export class GoogleClient {
     const freeBusy: GCalFreeBusy = await this.makeCalendarRequest('/freeBusy', {
       method: 'post',
       data: {
-        timeMin: formatHarare(timeMin),
-        timeMax: formatHarare(timeMax),
+        timeMin: formatJohannesburg(timeMin),
+        timeMax: formatJohannesburg(timeMax),
         timeZone: 'Africa/Johannesburg',
         items: calendarIds.map((id) => ({ id })),
       },

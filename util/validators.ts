@@ -50,3 +50,7 @@ export const snomed_concept_id = z.string().regex(/^\d+$/).or(z.number())
   .transform((concept_id) => String(concept_id))
 
 export const decimal = z.string().regex(/^-?\d+(\.\d+)?$/)
+
+export const string_or_number_as_string = z.string().or(z.number()).transform(
+  (value) => String(value),
+)

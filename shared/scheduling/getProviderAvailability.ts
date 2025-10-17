@@ -7,7 +7,7 @@ import {
   TimeRange,
   TrxOrDb,
 } from '../../types.ts'
-import { assertAllHarare, formatHarare } from '../../util/date.ts'
+import { assertAllJohannesburg, formatJohannesburg } from '../../util/date.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import flatten from '../../util/flatten.ts'
@@ -140,7 +140,7 @@ export async function availableSlots(
   duration_minutes: number
 }[]> {
   assert(count > 0, 'count must be greater than 0')
-  assertAllHarare(declinedTimes)
+  assertAllJohannesburg(declinedTimes)
 
   const providers = await getMany(trx, { employment_ids })
   const provider_availability = await getAllProviderAvailability(trx, providers)
@@ -198,7 +198,7 @@ export async function availableSlots(
 
   return flatten(dates.map((date) =>
     slotsWithDates.filter(
-      (time) => formatHarare(time.start).startsWith(date),
+      (time) => formatJohannesburg(time.start).startsWith(date),
     ).slice(0, count / dates.length)
   ))
 }
@@ -222,9 +222,9 @@ function generateSlots(
 
   const slots: { start: string; end: string; duration_minutes: number }[] = []
   while (current.getTime() + durationMillis <= endTime) {
-    const startDate = formatHarare(current)
+    const startDate = formatJohannesburg(current)
     current.setTime(current.getTime() + durationMillis)
-    const endDate = formatHarare(current)
+    const endDate = formatJohannesburg(current)
     slots.push({ start: startDate, end: endDate, duration_minutes })
   }
   return slots
