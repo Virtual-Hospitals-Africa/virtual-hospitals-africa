@@ -188,6 +188,7 @@ import * as $FamilyHistoryFormPanel from './islands/FamilyHistoryFormPanel.tsx'
 import * as $FamilyHistoryPage from './islands/FamilyHistoryPage.tsx'
 import * as $Filter from './islands/Filter.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
+import * as $HealthInsurance from './islands/HealthInsurance.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $LocalTime from './islands/LocalTime.tsx'
@@ -608,6 +609,7 @@ const manifest = {
     './islands/FamilyHistoryPage.tsx': $FamilyHistoryPage,
     './islands/Filter.tsx': $Filter,
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
+    './islands/HealthInsurance.tsx': $HealthInsurance,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/LocalTime.tsx': $LocalTime,
