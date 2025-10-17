@@ -41,7 +41,7 @@ export const handler = postHandler(
     valid_from,
     expire_date,
     is_dependent,
-    has_no_insurance
+    has_no_insurance,
   }) => {
     const { trx, patient } = ctx.state
     const patient_id = patient.id
@@ -61,7 +61,7 @@ export const handler = postHandler(
         nearest_organization_id,
       }),
     ])
-    if (!has_no_insurance){
+    if (!has_no_insurance) {
       setCurrentInsurance(trx, {
         patient_id,
         insurance_provider,

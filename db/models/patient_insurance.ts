@@ -2,7 +2,6 @@ import { TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { isoDate } from '../helpers.ts'
 
-
 export type PatientInsurance = {
   id: string
   insurance_provider: string

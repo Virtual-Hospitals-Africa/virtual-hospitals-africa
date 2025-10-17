@@ -11,7 +11,7 @@ export function HealthInsuranceSection({
   expire_date,
   is_dependent,
 }: {
-  insurance_provider?: string 
+  insurance_provider?: string
   plan_name?: string | null
   membership_number?: string
   valid_from?: string
@@ -58,7 +58,7 @@ export function HealthInsuranceSection({
         <TextInput
           name='membership_number'
           label='Membership Number'
-          placeholder= '1234567890'
+          placeholder='1234567890'
           disabled={has_no_insurance_signal.value}
           value={membership_number ?? undefined}
         />
@@ -90,8 +90,7 @@ export function HealthInsuranceSection({
           label='Patient is a dependent of Plan'
           disabled={has_no_insurance_signal.value}
           checked={is_dependent_signal.value}
-          onInput={(e) =>
-            is_dependent_signal.value = e.currentTarget.checked}
+          onInput={(e) => is_dependent_signal.value = e.currentTarget.checked}
         />
       </FormRow>
     </FormSection>

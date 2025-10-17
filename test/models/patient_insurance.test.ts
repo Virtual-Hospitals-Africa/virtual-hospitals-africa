@@ -16,7 +16,7 @@ describe('patient_insurance', () => {
       })
       .returningAll()
       .executeTakeFirstOrThrow()
-    
+
     patient_id = patient.id
   })
 
@@ -112,7 +112,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, { patient_id })
+      const insurance = await patient_insurance.getCurrentInsurance(db, {
+        patient_id,
+      })
 
       assertExists(insurance)
       assertEquals(insurance!.insurance_provider, 'Current Provider')
@@ -136,7 +138,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, { patient_id })
+      const insurance = await patient_insurance.getCurrentInsurance(db, {
+        patient_id,
+      })
       assertEquals(insurance, undefined)
     })
 
@@ -157,7 +161,9 @@ describe('patient_insurance', () => {
         is_dependent: true,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, { patient_id })
+      const insurance = await patient_insurance.getCurrentInsurance(db, {
+        patient_id,
+      })
       assertEquals(insurance, undefined)
     })
 
@@ -177,7 +183,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, { patient_id })
+      const insurance = await patient_insurance.getCurrentInsurance(db, {
+        patient_id,
+      })
       assertExists(insurance)
       assertEquals(insurance!.insurance_provider, 'Today Provider')
     })
@@ -198,7 +206,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, { patient_id })
+      const insurance = await patient_insurance.getCurrentInsurance(db, {
+        patient_id,
+      })
       assertExists(insurance)
       assertEquals(insurance!.insurance_provider, 'Expires Today Provider')
     })
@@ -448,7 +458,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setDate(now.getDate() + 365)
       const longString = 'A'.repeat(255)
-      
+
       await patient_insurance.setCurrentInsurance(db, {
         patient_id,
         insurance_provider: longString,
