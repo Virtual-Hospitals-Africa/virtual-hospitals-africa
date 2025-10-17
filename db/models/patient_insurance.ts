@@ -1,17 +1,7 @@
-import { Maybe, TrxOrDb } from '../../types.ts'
+import { Maybe, RenderedPatientInsurance, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../util/date.ts'
 import { isoDate, today_in_johannesburg } from '../helpers.ts'
-
-export type PatientInsurance = {
-  id: string
-  insurance_provider: string
-  plan_name: string | null
-  membership_number: string
-  valid_from: string
-  expire_date: string
-  is_dependent: boolean
-}
 
 function baseQuery(
   trx: TrxOrDb,
@@ -32,16 +22,17 @@ function baseQuery(
 export function getById(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-): Promise<PatientInsurance[]> {
+): Promise<RenderedPatientInsurance[]> {
   return baseQuery(trx)
     .where('patient_insurance.patient_id', '=', patient_id)
+    .orderBy('expire_date desc')
     .execute()
 }
 
 export function getCurrent(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-): Promise<PatientInsurance | undefined> {
+): Promise<RenderedPatientInsurance | undefined> {
   return baseQuery(trx)
     .where('patient_insurance.patient_id', '=', patient_id)
     .where('valid_from', '<=', today_in_johannesburg)

@@ -15,20 +15,23 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import * as patient_primary_care from '../../../../../../../../db/models/patient_primary_care.ts'
 import * as patient_insurance from '../../../../../../../../db/models/patient_insurance.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import { string_or_number_as_string } from '../../../../../../../../util/validators.ts'
 
 const PatientRegistrationPrimaryCareSchema = z.object({
   primary_doctor_id: z.string().uuid().optional(),
   primary_doctor_name: z.string(),
   nearest_organization_id: z.string(),
   insurance: z.object({
+    has_no_insurance: z.literal(true),
+  }).or(z.object({
+    has_no_insurance: z.boolean().optional(),
     insurance_provider: z.string(),
     plan_name: z.string().optional(),
-    membership_number: z.string(),
-    valid_from: z.string(),
-    expire_date: z.string(),
+    membership_number: string_or_number_as_string,
+    valid_from: z.string().date(),
+    expire_date: z.string().date(),
     is_dependent: z.boolean().optional().default(false),
-    has_no_insurance: z.boolean().optional(),
-  }),
+  })),
 })
 
 export const handler = postHandler(
@@ -37,7 +40,7 @@ export const handler = postHandler(
     primary_doctor_id,
     primary_doctor_name,
     nearest_organization_id,
-    insurance: { has_no_insurance, ...current_insurance },
+    insurance,
   }) => {
     const { trx, patient } = ctx.state
     const patient_id = patient.id
@@ -56,11 +59,11 @@ export const handler = postHandler(
         patient_id,
         nearest_organization_id,
       }),
-      updating_insurance: has_no_insurance
+      updating_insurance: insurance.has_no_insurance
         ? patient_insurance.clearCurrent(trx, { patient_id })
         : patient_insurance.setCurrent(trx, {
           patient_id,
-          ...current_insurance,
+          ...insurance,
         }),
       response: completeAndProceedToNextStep(ctx),
     })
@@ -70,18 +73,25 @@ export const handler = postHandler(
 )
 
 export async function PatientRegistrationPrimaryCarePage(
-  ctx: OpenEncounterWorkflowContext,
+  { state: { trx, patient, previously_completed_step } }:
+    OpenEncounterWorkflowContext,
 ) {
-  const primary_care = await patient_primary_care.getById(ctx.state.trx, {
-    patient_id: ctx.state.patient.id,
+  const { primary_care, current_insurance } = await promiseProps({
+    primary_care: patient_primary_care.getById(trx, {
+      patient_id: patient.id,
+    }),
+    current_insurance: patient_insurance.getCurrent(trx, {
+      patient_id: patient.id,
+    }),
   })
-  const insurance = await patient_insurance.getCurrent(ctx.state.trx, {
-    patient_id: ctx.state.patient.id,
-  })
+
   return (
     <>
       <NearestHealthCareSection {...primary_care} />
-      <HealthInsuranceSection {...insurance} />
+      <HealthInsuranceSection
+        current_insurance={current_insurance}
+        previously_completed_form={previously_completed_step}
+      />
     </>
   )
 }

@@ -67,6 +67,7 @@ type WorkflowState = {
   workflow: Workflow
   workflow_status: WorkflowStatus
   step: string
+  previously_completed_step: boolean
   encounter_employee_presence: RenderedPatientEncounterEmployee
   this_visit_records: ThisVisitRecords
   patient_history: RenderedPatientHistory
@@ -225,6 +226,10 @@ export async function workflowHandler(
     }),
   })
 
+  const previously_completed_step = workflow_status.steps_completed.includes(
+    step,
+  )
+
   const workflow_props: WorkflowState = {
     workflow,
     step,
@@ -232,6 +237,7 @@ export async function workflowHandler(
     this_visit_records,
     patient_history,
     encounter_employee_presence,
+    previously_completed_step,
   }
 
   Object.assign(ctx.state, workflow_props)
