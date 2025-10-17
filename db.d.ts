@@ -1054,16 +1054,15 @@ export interface PatientGuardians {
 
 export interface PatientInsurance {
   created_at: Generated<Timestamp>
-  expire_date: Timestamp | null
-  has_no_insurance: boolean | null
+  expire_date: Timestamp
   id: Generated<string>
-  insurance_provider: string | null
-  is_dependent: boolean | null
-  membership_number: string | null
+  insurance_provider: string
+  is_dependent: boolean
+  membership_number: string
   patient_id: string
   plan_name: string | null
   updated_at: Generated<Timestamp>
-  valid_from: Timestamp | null
+  valid_from: Timestamp
 }
 
 export interface PatientKin {

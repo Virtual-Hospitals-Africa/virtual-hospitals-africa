@@ -6,7 +6,7 @@ import {
 import { z } from 'zod'
 import { NearestHealthCareSection } from '../../../../../../../../islands/NearestHealthCare.tsx'
 import { HealthInsuranceSection } from '../../../../../../../../islands/HealthInsurance.tsx'
-import { setInsurance } from '../../../../../../../../db/models/patient_insurance.ts'
+import { setCurrentInsurance } from '../../../../../../../../db/models/patient_insurance.ts'
 import {
   setNearestHealthFacility,
   setPrimaryDoctor,
@@ -20,13 +20,13 @@ const PatientRegistrationPrimaryCareSchema = z.object({
   primary_doctor_id: z.string().uuid().optional(),
   primary_doctor_name: z.string(),
   nearest_organization_id: z.string(),
-  has_no_insurance: z.boolean().optional(),
-  insurance_provider: z.string().optional(),
+  insurance_provider: z.string(),
   plan_name: z.string().optional(),
-  membership_number: z.string().optional(),
-  valid_from: z.string().optional(),
-  expire_date: z.string().optional(),
-  is_dependent: z.boolean().optional(),
+  membership_number: z.string(),
+  valid_from: z.string(),
+  expire_date: z.string(),
+  is_dependent: z.boolean(),
+  has_no_insurance: z.boolean().optional(),
 })
 
 export const handler = postHandler(
@@ -35,13 +35,13 @@ export const handler = postHandler(
     primary_doctor_id,
     primary_doctor_name,
     nearest_organization_id,
-    has_no_insurance,
     insurance_provider,
     plan_name,
     membership_number,
     valid_from,
     expire_date,
     is_dependent,
+    has_no_insurance
   }) => {
     const { trx, patient } = ctx.state
     const patient_id = patient.id
@@ -60,17 +60,18 @@ export const handler = postHandler(
         patient_id,
         nearest_organization_id,
       }),
-      setInsurance(trx, {
+    ])
+    if (!has_no_insurance){
+      setCurrentInsurance(trx, {
         patient_id,
-        has_no_insurance,
         insurance_provider,
         plan_name,
         membership_number,
         valid_from,
         expire_date,
         is_dependent,
-      }),
-    ])
+      })
+    }
     return completeAndProceedToNextStep(ctx)
   },
 )

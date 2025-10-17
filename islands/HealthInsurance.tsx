@@ -10,25 +10,17 @@ export function HealthInsuranceSection({
   valid_from,
   expire_date,
   is_dependent,
-  has_no_insurance,
 }: {
-  insurance_provider?: string | null
+  insurance_provider?: string 
   plan_name?: string | null
-  membership_number?: string | null
-  valid_from?: Date | null
-  expire_date?: Date | null
-  is_dependent?: boolean | null
-  has_no_insurance?: boolean | null
+  membership_number?: string
+  valid_from?: string
+  expire_date?: string
+  is_dependent?: boolean
 }) {
-  const has_no_insurance_signal = useSignal(has_no_insurance || false)
+  const hasInsurance = !!(insurance_provider || plan_name || membership_number)
+  const has_no_insurance_signal = useSignal(!hasInsurance)
   const is_dependent_signal = useSignal(is_dependent || false)
-
-  const validFromString = valid_from instanceof Date 
-    ? valid_from.toISOString().split('T')[0] 
-    : valid_from || undefined
-  const expireDateString = expire_date instanceof Date
-    ? expire_date.toISOString().split('T')[0]
-    : expire_date || undefined
 
   return (
     <FormSection header='Health Insurance'>
@@ -42,64 +34,66 @@ export function HealthInsuranceSection({
         />
       </FormRow>
 
-      {!has_no_insurance_signal.value && (
-        <>
-          <FormRow>
-            <TextInput
-              name='insurance_provider'
-              label='Health Insurance Provider'
-              required
-              value={insurance_provider ?? undefined}
-            />
-          </FormRow>
+      <FormRow>
+        <TextInput
+          name='insurance_provider'
+          label='Health Insurance Provider'
+          required
+          disabled={has_no_insurance_signal.value}
+          value={insurance_provider ?? undefined}
+        />
+      </FormRow>
 
-          <FormRow>
-            <TextInput
-              name='plan_name'
-              label='Plan Name'
-              required
-              value={plan_name ?? undefined}
-            />
-          </FormRow>
+      <FormRow>
+        <TextInput
+          name='plan_name'
+          label='Plan Name'
+          required
+          disabled={has_no_insurance_signal.value}
+          value={plan_name ?? undefined}
+        />
+      </FormRow>
 
-          <FormRow>
-            <TextInput
-              name='membership_number'
-              label='Membership Number'
-              placeholder='0123456789'
-              value={membership_number ?? undefined}
-            />
-          </FormRow>
+      <FormRow>
+        <TextInput
+          name='membership_number'
+          label='Membership Number'
+          placeholder= '1234567890'
+          disabled={has_no_insurance_signal.value}
+          value={membership_number ?? undefined}
+        />
+      </FormRow>
 
-          <FormRow>
-            <DateInput
-              name='valid_from'
-              label='Valid From'
-              required
-              value={validFromString}
-            />
-          </FormRow>
+      <FormRow>
+        <DateInput
+          name='valid_from'
+          label='Valid From'
+          required
+          disabled={has_no_insurance_signal.value}
+          value={valid_from ?? undefined}
+        />
+      </FormRow>
 
-          <FormRow>
-            <DateInput
-              name='expire_date'
-              label='Expire Date'
-              required
-              value={expireDateString}
-            />
-          </FormRow>
+      <FormRow>
+        <DateInput
+          name='expire_date'
+          label='Expire Date'
+          required
+          disabled={has_no_insurance_signal.value}
+          value={expire_date ?? undefined}
+        />
+      </FormRow>
 
-          <FormRow>
-            <CheckboxInput
-              name='is_dependent'
-              label='Patient is a dependent of Plan'
-              checked={is_dependent_signal.value}
-              onInput={(e) =>
-                is_dependent_signal.value = e.currentTarget.checked}
-            />
-          </FormRow>
-        </>
-      )}
+      <FormRow>
+        <CheckboxInput
+          name='is_dependent'
+          label='Patient is a dependent of Plan'
+          disabled={has_no_insurance_signal.value}
+          checked={is_dependent_signal.value}
+          onInput={(e) =>
+            is_dependent_signal.value = e.currentTarget.checked}
+        />
+      </FormRow>
     </FormSection>
   )
 }
