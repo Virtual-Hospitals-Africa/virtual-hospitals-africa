@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<DB>) {
   return sql`
 create or replace function active_descendant_snomed_concepts (parent_concept_id bigint)
 returns table (descendant_id bigint, ancestor_ids bigint[])
@@ -33,7 +34,7 @@ end $$
   `.execute(db)
 }
 
-export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>) {
   return sql`
     DROP FUNCTION active_descendant_snomed_concepts(parent_concept_id bigint)
   `.execute(db)

@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<DB>) {
   return sql`
     CREATE OR REPLACE FUNCTION update_updated_at()
     RETURNS TRIGGER AS $$
@@ -12,6 +13,6 @@ export function up(db: Kysely<unknown>) {
   `.execute(db)
 }
 
-export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>) {
   return sql`DROP FUNCTION update_updated_at;`.execute(db)
 }

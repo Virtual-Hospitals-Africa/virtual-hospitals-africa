@@ -1,9 +1,9 @@
 import { Kysely, sql } from 'kysely'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 import { createStandardTable } from '../createTable.ts'
+import { DB } from '../../db.d.ts'
 
-// deno-lint-ignore no-explicit-any
-export async function up(db: Kysely<any>) {
+export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('guardian_relation')
     .asEnum(GUARDIAN_RELATIONS.map(({ guardian }) => guardian))
@@ -52,7 +52,7 @@ export async function up(db: Kysely<any>) {
       ))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_guardians').execute()
   await db.schema.dropTable('guardian_relations').execute()
   await db.schema.dropType('guardian_relation').execute()

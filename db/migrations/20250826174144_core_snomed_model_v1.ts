@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createPointerTable, createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await createStandardTable(
     db,
     'patient_records',
@@ -195,7 +196,7 @@ export async function up(db: Kysely<unknown>) {
   )
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_evaluations').execute()
   await db.schema.dropTable('patient_finding_media_speeches').execute()
   await db.schema.dropTable('patient_finding_media_images').execute()

@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema
     .createTable('iso_639_1_languages')
     .addColumn(
@@ -45,7 +46,7 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('iso_639_3_languages').execute()
   await db.schema.dropTable('iso_639_2_b_languages').execute()
   await db.schema.dropTable('iso_639_1_languages').execute()

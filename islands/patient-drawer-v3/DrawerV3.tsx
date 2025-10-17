@@ -14,6 +14,7 @@ function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
     'Urgent': 'bg-yellow-100 text-yellow-800',
     'Non-urgent': 'bg-green-100 text-green-800',
     'Normal': 'bg-gray-100 text-gray-600',
+    'Deceased': 'bg-blue-100 text-blue-800',
   }
 
   const styleClass = priorityStyles[record.priority] ||
@@ -86,7 +87,7 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
             </div>
           </div>
         </div>
-        <div className='h-0 relative shrink-0 w-full'>
+        <div className='relative w-full h-0 shrink-0'>
           <div className='absolute bottom-[-0.5px] left-0 right-0 top-[-0.5px]'>
             <svg
               className='block max-w-none size-full'
@@ -97,8 +98,8 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
             </svg>
           </div>
         </div>
-        <div className='content-stretch flex items-center justify-between relative shrink-0 w-full'>
-          <div className='content-stretch flex flex-col items-start justify-start relative shrink-0'>
+        <div className='relative flex items-center justify-between w-full content-stretch shrink-0'>
+          <div className='relative flex flex-col items-start justify-start content-stretch shrink-0'>
             <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-red-800 whitespace-pre">
               Emergency
             </p>
@@ -168,7 +169,7 @@ function ThisVisit({ records, current_seeking_treatment_step }: {
                 {step.label}
               </p>
               {current_seeking_treatment_step === step.key && (
-                <div className='content-stretch flex items-start justify-start relative shrink-0'>
+                <div className='relative flex items-start justify-start content-stretch shrink-0'>
                   <div className='box-border content-stretch flex gap-[8px] items-center justify-start px-0 py-[2px] relative rounded-[60px] shrink-0 w-[93px]'>
                     <p className="font-['Inter:Medium_Italic',_sans-serif] font-medium italic leading-[16px] relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
                       In Progress
@@ -242,7 +243,7 @@ function History({ history }: { history: RenderedPatientHistory }) {
         </div>
       </div>
 
-      <div className='content-stretch flex flex-col items-start justify-start relative shrink-0'>
+      <div className='relative flex flex-col items-start justify-start content-stretch shrink-0'>
         {historyItems.map((item) => (
           <div
             key={item.key}
@@ -284,7 +285,7 @@ function CareTeam(
 ) {
   return (
     <div className='content-stretch flex flex-col gap-[8px] items-center justify-start relative shrink-0 w-full'>
-      <div className='content-stretch flex flex-col items-start justify-start relative shrink-0 w-full'>
+      <div className='relative flex flex-col items-start justify-start w-full content-stretch shrink-0'>
         <div className='box-border content-stretch flex gap-[4px] isolate items-center justify-start px-[16px] py-0 relative shrink-0 w-full'>
           <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[22px] not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[3]">
             Care Team
@@ -328,7 +329,7 @@ function CareTeam(
                     </svg>
                   </div>
                 </div>
-                <div className='content-stretch flex flex-col items-start justify-start relative shrink-0 w-full'>
+                <div className='relative flex flex-col items-start justify-start w-full content-stretch shrink-0'>
                   <div className='box-border content-stretch flex gap-[4px] h-[20px] items-center justify-start px-[2px] py-0 relative rounded-[4px] shrink-0 w-full'>
                     <div className='overflow-clip relative shrink-0 size-[16px]'>
                       <svg
@@ -390,7 +391,7 @@ function CareTeam(
                 </div>
               </div>
             </div>
-            <div className='content-stretch flex items-center justify-between relative shrink-0 w-full'>
+            <div className='relative flex items-center justify-between w-full content-stretch shrink-0'>
               <div className='bg-indigo-700 box-border content-stretch flex gap-[8px] h-[32px] items-center justify-start px-[16px] py-[8px] relative rounded-[6px] shrink-0'>
                 <div className='overflow-clip relative shrink-0 size-[16px]'>
                   <svg

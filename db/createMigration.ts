@@ -18,11 +18,11 @@ export default async function createMigration(migrationName: string) {
 
   const initial_contents = `import { Kysely } from "kysely";
 
-export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<DB>) {
 
 }
 
-export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>){
 
 }
 `

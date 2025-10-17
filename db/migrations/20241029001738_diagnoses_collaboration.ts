@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'diagnoses_collaboration', (qb) =>
     qb
       .addColumn('diagnosis_id', 'uuid', (col) =>
@@ -13,6 +14,6 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('disagree_reason', 'varchar(255)'))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('diagnoses_collaboration').execute()
 }

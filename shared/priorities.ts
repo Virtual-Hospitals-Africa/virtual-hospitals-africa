@@ -6,6 +6,7 @@ export const PRIORITY_SNOMED_CODES = {
   'Urgent': '103391001',
   'Very urgent': '1356878002',
   'Emergency': '25876001',
+  'Deceased': '419620001', // Death (event)
 }
 
 export const PRIORITIES = keys(PRIORITY_SNOMED_CODES)
@@ -21,13 +22,17 @@ export type TriageLevel =
   | 'Urgent'
   | 'Very urgent'
   | 'Emergency'
+  | 'Deceased'
 
 export const TARGET_TIME_TO_TREATMENT_MINUTES = {
   'Non-urgent': 240,
   'Urgent': 60,
   'Very urgent': 10,
   'Emergency': 0,
+  'Deceased': 120,
 }
+
+export const TRIAGE_LEVELS = keys(TARGET_TIME_TO_TREATMENT_MINUTES)
 
 export function isTriageLevel(priority: string): priority is TriageLevel {
   return priority in TARGET_TIME_TO_TREATMENT_MINUTES
