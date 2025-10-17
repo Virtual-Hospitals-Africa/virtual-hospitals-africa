@@ -1,11 +1,21 @@
-import { assertEquals, assertExists } from 'std/assert/mod.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  it,
+} from 'std/testing/bdd.ts'
 import * as patient_insurance from '../../db/models/patient_insurance.ts'
 import db from '../../db/db.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from 'std/assert/assert.ts'
+import { todayISOInJohannesburg } from '../../util/date.ts'
 
 describe('patient_insurance', () => {
   let patient_id: string
+
+  afterAll(() => db.destroy())
 
   beforeEach(async () => {
     const patient = await db.insertInto('patients')
@@ -43,19 +53,19 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
 
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Blue Cross')
-      assertEquals(insurance!.plan_name, 'Premium Plan')
-      assertEquals(insurance!.membership_number, '123456789')
-      assertEquals(insurance!.valid_from, '2025-01-01')
-      assertEquals(insurance!.expire_date, '2026-01-01')
-      assertEquals(insurance!.is_dependent, false)
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Blue Cross')
+      assertEquals(insurance.plan_name, 'Premium Plan')
+      assertEquals(insurance.membership_number, '123456789')
+      assertEquals(insurance.valid_from, '2025-01-01')
+      assertEquals(insurance.expire_date, '2026-01-01')
+      assertEquals(insurance.is_dependent, false)
     })
 
     it('returns undefined for patient without insurance', async () => {
-      const insurance = await patient_insurance.getById(db, { patient_id })
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
       assertEquals(insurance, undefined)
     })
 
@@ -70,11 +80,11 @@ describe('patient_insurance', () => {
         is_dependent: true,
       }).execute()
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
 
-      assertExists(insurance)
-      assertEquals(insurance!.valid_from, '2025-06-15')
-      assertEquals(insurance!.expire_date, '2026-12-31')
+      assert(insurance)
+      assertEquals(insurance.valid_from, '2025-06-15')
+      assertEquals(insurance.expire_date, '2026-12-31')
     })
 
     it('handles null plan_name', async () => {
@@ -87,10 +97,10 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
 
-      assertExists(insurance)
-      assertEquals(insurance!.plan_name, null)
+      assert(insurance)
+      assertEquals(insurance.plan_name, null)
     })
   })
 
@@ -112,13 +122,13 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, {
+      const insurance = await patient_insurance.getCurrent(db, {
         patient_id,
       })
 
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Current Provider')
-      assertEquals(insurance!.plan_name, 'Current Plan')
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Current Provider')
+      assertEquals(insurance.plan_name, 'Current Plan')
     })
 
     it('returns undefined for expired insurance', async () => {
@@ -138,7 +148,7 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, {
+      const insurance = await patient_insurance.getCurrent(db, {
         patient_id,
       })
       assertEquals(insurance, undefined)
@@ -161,7 +171,7 @@ describe('patient_insurance', () => {
         is_dependent: true,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, {
+      const insurance = await patient_insurance.getCurrent(db, {
         patient_id,
       })
       assertEquals(insurance, undefined)
@@ -183,11 +193,11 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, {
+      const insurance = await patient_insurance.getCurrent(db, {
         patient_id,
       })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Today Provider')
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Today Provider')
     })
 
     it('returns insurance expiring today', async () => {
@@ -206,11 +216,11 @@ describe('patient_insurance', () => {
         is_dependent: false,
       }).execute()
 
-      const insurance = await patient_insurance.getCurrentInsurance(db, {
+      const insurance = await patient_insurance.getCurrent(db, {
         patient_id,
       })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Expires Today Provider')
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Expires Today Provider')
     })
   })
 
@@ -222,7 +232,7 @@ describe('patient_insurance', () => {
       expireDate.setDate(now.getDate() + 365)
       const expireDateStr = expireDate.toISOString().split('T')[0]
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Test Provider',
         plan_name: 'Test Plan',
@@ -232,13 +242,13 @@ describe('patient_insurance', () => {
         is_dependent: true,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
 
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Test Provider')
-      assertEquals(insurance!.plan_name, 'Test Plan')
-      assertEquals(insurance!.membership_number, '987654321')
-      assertEquals(insurance!.is_dependent, true)
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Test Provider')
+      assertEquals(insurance.plan_name, 'Test Plan')
+      assertEquals(insurance.membership_number, '987654321')
+      assertEquals(insurance.is_dependent, true)
     })
 
     it('rejects insurance with future valid_from date', async () => {
@@ -250,7 +260,7 @@ describe('patient_insurance', () => {
 
       await assertRejects(
         async () => {
-          await patient_insurance.setCurrentInsurance(db, {
+          await patient_insurance.setCurrent(db, {
             patient_id,
             insurance_provider: 'Provider',
             plan_name: 'Plan',
@@ -266,11 +276,11 @@ describe('patient_insurance', () => {
     })
 
     it('accepts insurance with today as valid_from', async () => {
-      const today = new Date().toISOString().split('T')[0]
+      const today = todayISOInJohannesburg()
       const expireDate = new Date()
       expireDate.setDate(expireDate.getDate() + 365)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Provider',
         plan_name: 'Plan',
@@ -280,9 +290,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.valid_from, today)
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.valid_from, today)
     })
 
     it('rejects insurance with past expire_date', async () => {
@@ -294,7 +304,7 @@ describe('patient_insurance', () => {
 
       await assertRejects(
         async () => {
-          await patient_insurance.setCurrentInsurance(db, {
+          await patient_insurance.setCurrent(db, {
             patient_id,
             insurance_provider: 'Provider',
             plan_name: 'Plan',
@@ -310,11 +320,11 @@ describe('patient_insurance', () => {
     })
 
     it('accepts insurance with today as expire_date', async () => {
-      const today = new Date().toISOString().split('T')[0]
+      const today = todayISOInJohannesburg()
       const validFrom = new Date()
       validFrom.setDate(validFrom.getDate() - 365)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Provider',
         plan_name: 'Plan',
@@ -324,33 +334,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.expire_date, today)
-    })
-
-    it('rejects insurance where valid_from is after expire_date', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() - 30)
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() - 60)
-
-      await assertRejects(
-        async () => {
-          await patient_insurance.setCurrentInsurance(db, {
-            patient_id,
-            insurance_provider: 'Provider',
-            plan_name: 'Plan',
-            membership_number: '123',
-            valid_from: validFrom.toISOString().split('T')[0],
-            expire_date: expireDate.toISOString().split('T')[0],
-            is_dependent: false,
-          })
-        },
-        Error,
-        'Insurance valid_from must be before expire_date',
-      )
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.expire_date, today)
     })
 
     it('accepts valid date range', async () => {
@@ -360,7 +346,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setDate(now.getDate() + 335)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Valid Provider',
         plan_name: 'Valid Plan',
@@ -370,9 +356,9 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Valid Provider')
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Valid Provider')
     })
 
     it('handles is_dependent field correctly', async () => {
@@ -381,7 +367,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setDate(now.getDate() + 365)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Dependent Provider',
         plan_name: 'Dependent Plan',
@@ -391,9 +377,9 @@ describe('patient_insurance', () => {
         is_dependent: true,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.is_dependent, true)
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.is_dependent, true)
     })
 
     it('handles optional plan_name field', async () => {
@@ -402,7 +388,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setDate(now.getDate() + 365)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Minimal Provider',
         membership_number: '777',
@@ -411,43 +397,10 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'Minimal Provider')
-      assertEquals(insurance!.plan_name, null)
-    })
-
-    it('enforces unique patient_id constraint', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
-
-      // Insert first insurance
-      await patient_insurance.setCurrentInsurance(db, {
-        patient_id,
-        insurance_provider: 'First Provider',
-        plan_name: 'First Plan',
-        membership_number: '111',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
-        is_dependent: false,
-      })
-
-      // Try to insert second insurance for same patient should fail
-      await assertRejects(
-        async () => {
-          await patient_insurance.setCurrentInsurance(db, {
-            patient_id,
-            insurance_provider: 'Second Provider',
-            plan_name: 'Second Plan',
-            membership_number: '222',
-            valid_from: validFrom,
-            expire_date: expireDate.toISOString().split('T')[0],
-            is_dependent: false,
-          })
-        },
-      )
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'Minimal Provider')
+      assertEquals(insurance.plan_name, null)
     })
   })
 
@@ -459,7 +412,7 @@ describe('patient_insurance', () => {
       expireDate.setDate(now.getDate() + 365)
       const longString = 'A'.repeat(255)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: longString,
         plan_name: longString,
@@ -469,10 +422,10 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, longString)
-      assertEquals(insurance!.membership_number, longString)
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, longString)
+      assertEquals(insurance.membership_number, longString)
     })
 
     it('handles special characters in insurance fields', async () => {
@@ -481,7 +434,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setDate(now.getDate() + 365)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: "O'Brien's Insurance & Co.",
         plan_name: 'Premium-Plus (Family)',
@@ -491,11 +444,11 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, "O'Brien's Insurance & Co.")
-      assertEquals(insurance!.plan_name, 'Premium-Plus (Family)')
-      assertEquals(insurance!.membership_number, 'ABC-123-XYZ')
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, "O'Brien's Insurance & Co.")
+      assertEquals(insurance.plan_name, 'Premium-Plus (Family)')
+      assertEquals(insurance.membership_number, 'ABC-123-XYZ')
     })
 
     it('validates date range spanning exactly one year', async () => {
@@ -504,7 +457,7 @@ describe('patient_insurance', () => {
       const expireDate = new Date(now)
       expireDate.setFullYear(now.getFullYear() + 1)
 
-      await patient_insurance.setCurrentInsurance(db, {
+      await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'One Year Provider',
         plan_name: 'Annual Plan',
@@ -514,9 +467,67 @@ describe('patient_insurance', () => {
         is_dependent: false,
       })
 
-      const insurance = await patient_insurance.getById(db, { patient_id })
-      assertExists(insurance)
-      assertEquals(insurance!.insurance_provider, 'One Year Provider')
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'One Year Provider')
+    })
+
+    it('validates date range spanning exactly one year', async () => {
+      const now = new Date()
+      const validFrom = now.toISOString().split('T')[0]
+      const expireDate = new Date(now)
+      expireDate.setFullYear(now.getFullYear() + 1)
+
+      await patient_insurance.setCurrent(db, {
+        patient_id,
+        insurance_provider: 'One Year Provider',
+        plan_name: 'Annual Plan',
+        membership_number: '888',
+        valid_from: validFrom,
+        expire_date: expireDate.toISOString().split('T')[0],
+        is_dependent: false,
+      })
+
+      const [insurance] = await patient_insurance.getById(db, { patient_id })
+      assert(insurance)
+      assertEquals(insurance.insurance_provider, 'One Year Provider')
+    })
+
+    it('overwrites the existing current insurance if present', async () => {
+      const now = new Date()
+      const validFrom = now.toISOString().split('T')[0]
+      const expireDate = new Date(now)
+      expireDate.setFullYear(now.getFullYear() + 1)
+
+      await patient_insurance.setCurrent(db, {
+        patient_id,
+        insurance_provider: 'One Year Provider',
+        plan_name: 'Annual Plan',
+        membership_number: '888',
+        valid_from: validFrom,
+        expire_date: expireDate.toISOString().split('T')[0],
+        is_dependent: false,
+      })
+
+      const insurances = await patient_insurance.getById(db, { patient_id })
+      assertEquals(insurances.length, 1)
+      assertEquals(insurances[0].insurance_provider, 'One Year Provider')
+
+      await patient_insurance.setCurrent(db, {
+        patient_id,
+        insurance_provider: 'My new provider',
+        plan_name: 'Annual Plan',
+        membership_number: '888',
+        valid_from: validFrom,
+        expire_date: expireDate.toISOString().split('T')[0],
+        is_dependent: false,
+      })
+
+      const next_insurances = await patient_insurance.getById(db, {
+        patient_id,
+      })
+      assertEquals(next_insurances.length, 1)
+      assertEquals(next_insurances[0].insurance_provider, 'My new provider')
     })
   })
 })

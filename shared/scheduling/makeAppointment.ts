@@ -2,8 +2,8 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   differenceInMinutes,
-  formatHarare,
-  isIsoHarare,
+  formatJohannesburg,
+  isIsoJohannesburg,
 } from '../../util/date.ts'
 import { get as getProvider } from '../../db/models/providers.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -54,8 +54,8 @@ export function gcalAppointmentDetails(
   return {
     acceptedTime,
     gcal: gcal({
-      start: formatHarare(acceptedTime.start),
-      end: formatHarare(end),
+      start: formatJohannesburg(acceptedTime.start),
+      end: formatJohannesburg(end),
     }),
   }
 }
@@ -117,9 +117,9 @@ export function assertIsScheduleFormValues(
 ): asserts values is ScheduleFormValues {
   assertOr400(isObjectLike(values))
   assertOr400(typeof values.start === 'string')
-  assertOr400(isIsoHarare(values.start))
+  assertOr400(isIsoJohannesburg(values.start))
   assertOr400(typeof values.end === 'string')
-  assertOr400(isIsoHarare(values.end))
+  assertOr400(isIsoJohannesburg(values.end))
   assertOr400(typeof values.duration_minutes === 'number')
   assertOr400(typeof values.reason === 'string')
   assertOr400(typeof values.patient_id === 'string')
@@ -137,8 +137,8 @@ export async function makeAppointmentWeb(
     1,
     'TODO support multiple health workers',
   )
-  assert(isIsoHarare(values.start))
-  assert(isIsoHarare(values.end))
+  assert(isIsoJohannesburg(values.start))
+  assert(isIsoJohannesburg(values.end))
   const start = new Date(values.start)
   const end = new Date(values.end)
   assertEquals(

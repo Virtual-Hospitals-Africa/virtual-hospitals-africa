@@ -7,7 +7,7 @@ import {
 import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../../../islands/symptoms/Section.tsx'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
-import { todayISOInHarare } from '../../../../../../../../util/date.ts'
+import { todayISOInJohannesburg } from '../../../../../../../../util/date.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
@@ -61,7 +61,7 @@ export async function SymptomsPage(
     patient_id: ctx.state.patient.id,
   })
 
-  const today = todayISOInHarare()
+  const today = todayISOInJohannesburg()
 
   return (
     <SymptomSection

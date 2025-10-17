@@ -98,19 +98,17 @@ export function stringifyJustDate(
   return `${year}-${month}-${day}`
 }
 
-export function todayISOInHarare() {
-  const { day, month, year } = parseDateTime(new Date(), 'twoDigit')
-  return `${year}-${month}-${day}`
+export function todayISOInJohannesburg() {
+  return stringifyJustDate(parseDateTime(new Date(), 'twoDigit'))
 }
 
-export function tomorrowISOInHarare() {
+export function tomorrowISOInJohannesburg() {
   const date = new Date()
   date.setDate(date.getDate() + 1)
-  const { day, month, year } = parseDateTime(date, 'twoDigit')
-  return `${year}-${month}-${day}`
+  return stringifyJustDate(parseDateTime(date, 'twoDigit'))
 }
 
-export function formatHarare(
+export function formatJohannesburg(
   date: Date | string = new Date(),
 ): string {
   const { day, month, year, hour, minute, second } = parseDateTime(
@@ -165,7 +163,7 @@ export function prettyAppointmentTime(startTime: string | Date): string {
     )
     // assert(
     //   startTime.endsWith('+02:00'),
-    //   `Expected ${startTime} to be in Harare time`,
+    //   `Expected ${startTime} to be in Johannesburg time`,
     // )
   } else {
     assert(isDate(startTime))
@@ -173,8 +171,8 @@ export function prettyAppointmentTime(startTime: string | Date): string {
 
   const start = isString(startTime) ? new Date(startTime) : startTime
 
-  const now = formatHarare()
-  const diff = differenceInDays(formatHarare(start), now)
+  const now = formatJohannesburg()
+  const diff = differenceInDays(formatJohannesburg(start), now)
 
   assert(diff >= 0, 'First available appointment is in the past')
 
@@ -218,15 +216,15 @@ export function isRfc3339(date: string): boolean {
   return rfc3339Regex.test(date)
 }
 
-export function isIsoHarare(date: string): boolean {
+export function isIsoJohannesburg(date: string): boolean {
   return isRfc3339(date) && date.endsWith('+02:00')
 }
 
-export function assertAllHarare(dates: string[]) {
+export function assertAllJohannesburg(dates: string[]) {
   for (const date of dates) {
     assert(
-      isIsoHarare(date),
-      `Expected ${date} to be in Harare time`,
+      isIsoJohannesburg(date),
+      `Expected ${date} to be in Johannesburg time`,
     )
   }
 }
@@ -332,7 +330,7 @@ export function isValidDate(messageBody: string): boolean {
   return date.toDateString() !== 'Invalid Date'
 }
 
-export function getISOInHarare(date: Date) {
+export function getISOInJohannesburg(date: Date) {
   const { day, month, year } = parseDateTime(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
@@ -340,9 +338,9 @@ export function getISOInHarare(date: Date) {
 export function prettyMinimal(day: string, today: string) {
   const [year, month, date] = day.split('-')
   const dayDate = new Date(`${year}-${month}-${date}T00:00:00Z`)
-  const dayInHarare = getISOInHarare(dayDate)
-  const todayInHarare = getISOInHarare(new Date(today))
-  const diff = differenceInDays(dayInHarare, todayInHarare)
+  const dayInJohannesburg = getISOInJohannesburg(dayDate)
+  const todayInJohannesburg = getISOInJohannesburg(new Date(today))
+  const diff = differenceInDays(dayInJohannesburg, todayInJohannesburg)
   if (diff === 0) return 'Today'
   if (diff === 1) return 'Tomorrow'
   const monthStr = monthName(parseInt(month) as MonthNum)

@@ -10,9 +10,9 @@ import {
 import SetAvailabilityForm from '../../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../../external-clients/google.ts'
 import {
-  assertAllHarare,
+  assertAllJohannesburg,
   convertToTime,
-  formatHarare,
+  formatJohannesburg,
 } from '../../../../util/date.ts'
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
@@ -46,7 +46,7 @@ const shortToLong = {
   SA: 'Saturday' as const,
 }
 
-const toHarare = (time: Time) => {
+const toJohannesburg = (time: Time) => {
   const baseHour = time.hour % 12
   const hour = time.amPm === 'am' ? baseHour : baseHour + 12
   const hourStr = padTime(hour)
@@ -72,11 +72,11 @@ function* availabilityBlocks(
       ),
     )
     dayDate.setDate(dayDate.getDate() + dayOffset)
-    const dayStr = formatHarare(dayDate).split('T')[0]
+    const dayStr = formatJohannesburg(dayDate).split('T')[0]
 
     for (const timeWindow of dayAvailability) {
-      const start = toHarare(timeWindow.start)
-      const end = toHarare(timeWindow.end)
+      const start = toJohannesburg(timeWindow.start)
+      const end = toJohannesburg(timeWindow.end)
 
       yield {
         summary: 'Availability Block',
@@ -228,7 +228,7 @@ export default HealthWorkerHomePageLayout(
     }
 
     events.items.forEach((item) => {
-      assertAllHarare([item.start.dateTime, item.end.dateTime])
+      assertAllJohannesburg([item.start.dateTime, item.end.dateTime])
       assert(Array.isArray(item.recurrence))
       assertEquals(item.recurrence.length, 1)
       assert(item.recurrence[0].startsWith('RRULE:FREQ=WEEKLY;BYDAY='))

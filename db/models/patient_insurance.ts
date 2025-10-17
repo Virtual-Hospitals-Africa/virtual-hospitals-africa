@@ -1,6 +1,7 @@
-import { TrxOrDb } from '../../types.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { isoDate } from '../helpers.ts'
+import { todayISOInJohannesburg } from '../../util/date.ts'
+import { isoDate, today_in_johannesburg } from '../helpers.ts'
 
 export type PatientInsurance = {
   id: string
@@ -12,102 +13,92 @@ export type PatientInsurance = {
   is_dependent: boolean
 }
 
+function baseQuery(
+  trx: TrxOrDb,
+) {
+  return trx
+    .selectFrom('patient_insurance')
+    .select((eb) => [
+      'id',
+      'insurance_provider',
+      'plan_name',
+      'membership_number',
+      isoDate(eb.ref('valid_from')).as('valid_from'),
+      isoDate(eb.ref('expire_date')).as('expire_date'),
+      'is_dependent',
+    ])
+}
+
 export function getById(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-) {
-  return trx
-    .selectFrom('patient_insurance')
-    .select((eb) => [
-      'id',
-      'insurance_provider',
-      'plan_name',
-      'membership_number',
-      isoDate(eb.ref('valid_from')).as('valid_from'),
-      isoDate(eb.ref('expire_date')).as('expire_date'),
-      'is_dependent',
-    ])
+): Promise<PatientInsurance[]> {
+  return baseQuery(trx)
     .where('patient_insurance.patient_id', '=', patient_id)
-    .executeTakeFirst()
+    .execute()
 }
 
-export function getCurrentInsurance(
+export function getCurrent(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-) {
-  const now = new Date()
-  return trx
-    .selectFrom('patient_insurance')
-    .select((eb) => [
-      'id',
-      'insurance_provider',
-      'plan_name',
-      'membership_number',
-      isoDate(eb.ref('valid_from')).as('valid_from'),
-      isoDate(eb.ref('expire_date')).as('expire_date'),
-      'is_dependent',
-    ])
+): Promise<PatientInsurance | undefined> {
+  return baseQuery(trx)
     .where('patient_insurance.patient_id', '=', patient_id)
-    .where('valid_from', '<=', now)
-    .where('expire_date', '>=', now)
+    .where('valid_from', '<=', today_in_johannesburg)
+    .where('expire_date', '>=', today_in_johannesburg)
     .executeTakeFirst()
 }
 
-export function setCurrentInsurance(
+export async function setCurrent(
   trx: TrxOrDb,
-  {
-    patient_id,
-    insurance_provider,
-    plan_name,
-    membership_number,
-    valid_from,
-    expire_date,
-    is_dependent,
-  }: {
+  insert: {
     patient_id: string
     insurance_provider: string
-    plan_name?: string
+    plan_name?: Maybe<string>
     membership_number: string
     valid_from: string
     expire_date: string
     is_dependent: boolean
   },
 ) {
-  const validFromDate = valid_from ? new Date(valid_from) : null
-  const expireDateDate = expire_date ? new Date(expire_date) : null
-  const now = new Date()
+  const today = todayISOInJohannesburg()
 
-  if (validFromDate) {
-    assertOr400(
-      validFromDate <= now,
-      'Insurance valid_from date must be in the past or today',
-    )
-  }
+  assertOr400(
+    insert.valid_from <= today,
+    'Insurance valid_from date must be in the past or today',
+  )
 
-  if (expireDateDate) {
-    assertOr400(
-      expireDateDate >= now,
-      'Insurance expire_date must be in the future or today',
-    )
-  }
+  assertOr400(
+    insert.expire_date >= today,
+    'Insurance expire_date must be in the future or today',
+  )
 
-  if (validFromDate && expireDateDate) {
-    assertOr400(
-      validFromDate < expireDateDate,
-      'Insurance valid_from must be before expire_date',
-    )
+  const current_insurance = await getCurrent(trx, {
+    patient_id: insert.patient_id,
+  })
+
+  if (current_insurance) {
+    return trx.updateTable('patient_insurance')
+      .set(insert)
+      .where('id', '=', current_insurance.id)
+      .execute()
   }
 
   return trx
     .insertInto('patient_insurance')
-    .values({
-      patient_id,
-      insurance_provider,
-      plan_name,
-      membership_number,
-      valid_from,
-      expire_date,
-      is_dependent,
-    })
+    .values(insert)
     .executeTakeFirstOrThrow()
+}
+
+export function clearCurrent(
+  trx: TrxOrDb,
+  { patient_id }: {
+    patient_id: string
+  },
+) {
+  return trx.deleteFrom('patient_insurance')
+    .where('patient_id', '=', patient_id)
+    .where('valid_from', '<=', today_in_johannesburg)
+    .where('expire_date', '>=', today_in_johannesburg)
+    .execute()
 }

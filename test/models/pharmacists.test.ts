@@ -24,9 +24,9 @@ describe('db/models/pharmacists.ts', () => {
           family_name: 'WINNIA',
           name: 'Mrs. HUHUYANA WINNIA',
           address: 'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON',
-          town: 'HARARE',
+          town: 'Johannesburg',
           address_display:
-            'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON, HARARE',
+            'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON, Johannesburg',
           href: `/regulator/ZW/pharmacists/${id}`,
           expiry_date: '2024-09-30',
           pharmacist_type: 'Ind Clinic Nurse',
@@ -34,8 +34,8 @@ describe('db/models/pharmacists.ts', () => {
           pharmacies: [{
             id: result.pharmacies[0].id,
             address: 'NO 1 MANCHESTER ROAD',
-            town: 'HARARE',
-            address_display: 'NO 1 MANCHESTER ROAD, HARARE',
+            town: 'Johannesburg',
+            address_display: 'NO 1 MANCHESTER ROAD, Johannesburg',
             expiry_date: '2024-09-30',
             licence_number: 'I03-P0082-2023',
             licensee: 'B A T ZIMBABWE LTD',

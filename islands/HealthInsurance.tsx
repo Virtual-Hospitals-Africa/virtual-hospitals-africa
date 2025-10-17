@@ -26,7 +26,7 @@ export function HealthInsuranceSection({
     <FormSection header='Health Insurance'>
       <FormRow>
         <CheckboxInput
-          name='has_no_insurance'
+          name='insurance.has_no_insurance'
           label='Patient has no Health Insurance'
           checked={has_no_insurance_signal.value}
           onInput={(e) =>
@@ -36,7 +36,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <TextInput
-          name='insurance_provider'
+          name='insurance.insurance_provider'
           label='Health Insurance Provider'
           required
           disabled={has_no_insurance_signal.value}
@@ -46,7 +46,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <TextInput
-          name='plan_name'
+          name='insurance.plan_name'
           label='Plan Name'
           required
           disabled={has_no_insurance_signal.value}
@@ -56,7 +56,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <TextInput
-          name='membership_number'
+          name='insurance.membership_number'
           label='Membership Number'
           placeholder='1234567890'
           disabled={has_no_insurance_signal.value}
@@ -66,7 +66,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <DateInput
-          name='valid_from'
+          name='insurance.valid_from'
           label='Valid From'
           required
           disabled={has_no_insurance_signal.value}
@@ -76,7 +76,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <DateInput
-          name='expire_date'
+          name='insurance.expire_date'
           label='Expire Date'
           required
           disabled={has_no_insurance_signal.value}
@@ -86,7 +86,7 @@ export function HealthInsuranceSection({
 
       <FormRow>
         <CheckboxInput
-          name='is_dependent'
+          name='insurance.is_dependent'
           label='Patient is a dependent of Plan'
           disabled={has_no_insurance_signal.value}
           checked={is_dependent_signal.value}

@@ -15,7 +15,7 @@ import * as patients from '../../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../../db/models/appointments.ts'
 import {
   convertToTimeString,
-  formatHarare,
+  formatJohannesburg,
 } from '../../../../../../../../util/date.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
@@ -68,21 +68,21 @@ describe.skip('patient chatbot', () => {
     //  Insert google calender
     const currentTime = new Date()
     currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatHarare(currentTime) // current + 2 hours
+    const timeMin = formatJohannesburg(currentTime) // current + 2 hours
 
     currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatHarare(currentTime) // current + 7 days + 2 hours
+    const timeMax = formatJohannesburg(currentTime) // current + 7 days + 2 hours
 
     currentTime.setDate(currentTime.getDate() - 6)
     currentTime.setHours(currentTime.getHours() + 1)
     currentTime.setMinutes(0)
     currentTime.setSeconds(0)
     currentTime.setMilliseconds(0)
-    const secondDayStart = formatHarare(currentTime) // current + 1 day + 3 hours
+    const secondDayStart = formatJohannesburg(currentTime) // current + 1 day + 3 hours
 
     currentTime.setHours(currentTime.getHours())
     currentTime.setMinutes(30)
-    const secondDayBusyTime = formatHarare(currentTime) // current + 1 day + 3.5 hours
+    const secondDayBusyTime = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
 
     const firstOtherTime = new Date(currentTime)
     firstOtherTime.setHours(firstOtherTime.getHours() + 1)
@@ -90,7 +90,7 @@ describe.skip('patient chatbot', () => {
 
     currentTime.setHours(currentTime.getHours() + 8)
     currentTime.setMinutes(0)
-    const secondDayEnd = formatHarare(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
+    const secondDayEnd = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
 
     getFreeBusy = stub(
       google.GoogleClient.prototype,
@@ -171,10 +171,10 @@ describe.skip('patient chatbot', () => {
     assertEquals(message.headerText, 'Other Appointment Times')
     assertEquals(message.action.button, 'More Time Slots')
 
-    const date = formatHarare(firstOtherTime).substring(0, 10)
+    const date = formatJohannesburg(firstOtherTime).substring(0, 10)
 
     assertEquals(message.action.sections[0].title, date)
-    const time = convertToTimeString(formatHarare(firstOtherTime))
+    const time = convertToTimeString(formatJohannesburg(firstOtherTime))
     assertEquals(message.action.sections[0].rows[0].title, time)
 
     assertEquals(

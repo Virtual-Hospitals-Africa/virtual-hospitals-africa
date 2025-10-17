@@ -14,7 +14,7 @@ import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../db/models/appointments.ts'
 import {
-  formatHarare,
+  formatJohannesburg,
   prettyAppointmentTime,
 } from '../../../../../../../util/date.ts'
 
@@ -62,23 +62,23 @@ describe('patient chatbot', () => {
     // Insert google calender
     const currentTime = new Date()
     currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatHarare(currentTime) // current + 2 hours
+    const timeMin = formatJohannesburg(currentTime) // current + 2 hours
 
     currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatHarare(currentTime) // current + 7 days + 2 hours
+    const timeMax = formatJohannesburg(currentTime) // current + 7 days + 2 hours
 
     currentTime.setDate(currentTime.getDate() - 6)
     currentTime.setHours(currentTime.getHours() + 1)
     currentTime.setMinutes(0)
-    const secondDayStart = formatHarare(currentTime) // current + 1 day + 3 hours
+    const secondDayStart = formatJohannesburg(currentTime) // current + 1 day + 3 hours
 
     currentTime.setHours(currentTime.getHours())
     currentTime.setMinutes(30)
-    const secondDayBusyTime = formatHarare(currentTime) // current + 1 day + 3.5 hours
+    const secondDayBusyTime = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
 
     currentTime.setHours(currentTime.getHours() + 8)
     currentTime.setMinutes(0)
-    const secondDayEnd = formatHarare(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hours
+    const secondDayEnd = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hours
 
     getFreeBusy = stub(
       google.GoogleClient.prototype,
