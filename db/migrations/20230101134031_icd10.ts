@@ -203,7 +203,7 @@ export async function up(db: Kysely<any>) {
   `.execute(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('icd10_diagnoses_excludes_codes').execute()
   await db.schema.dropTable('icd10_diagnoses_excludes_code_ranges').execute()
   await db.schema.dropTable('icd10_diagnoses_excludes_categories').execute()

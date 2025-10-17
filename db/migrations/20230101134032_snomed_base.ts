@@ -387,7 +387,7 @@ export async function up(
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('snomed_text_definitionsnomed_stated_relationship')
     .execute()
   await db.schema.dropTable('snomed_s_refset_owl_expression').execute()

@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('snomed_category')
     .asEnum([
       'administration method',
@@ -93,7 +94,7 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('snomed_inferred_canonical_name_and_category')
     .execute()
   await db.schema.dropType('snomed_category').execute()

@@ -1,3 +1,4 @@
+import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createPointerTable } from '../createTable.ts'
 import { TRIAGE_LEVELS } from '../../types.ts'
@@ -19,7 +20,7 @@ const check_priority = assertOnInsert({
     `format('The patient_triage_level.id %s points to a row in patient_records whose snomed_concept_id is not a valid SATS priority level', NEW.id)`,
 })
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('sats_priority_level')
     .asEnum(TRIAGE_LEVELS)
     .execute()
@@ -48,7 +49,7 @@ export async function up(db: Kysely<unknown>) {
   await check_priority.up(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await check_priority.down(db)
   await db.schema.dropTable('patient_triage_level').execute()
   await db.schema.dropTable('sats_priority_levels').execute()

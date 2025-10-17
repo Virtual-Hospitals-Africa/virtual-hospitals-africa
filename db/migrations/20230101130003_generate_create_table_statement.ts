@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<DB>) {
   return sql`
     CREATE OR REPLACE FUNCTION public.generate_create_table_statement(p_table_name character varying)
       RETURNS SETOF text AS
@@ -110,7 +111,7 @@ export function up(db: Kysely<unknown>) {
   `.execute(db)
 }
 
-export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>) {
   return sql`
     DROP FUNCTION public.generate_create_table_statement(p_table_name character varying)
   `.execute(db)

@@ -1,0 +1,41 @@
+id	sats_primary_name	sats_priority_snomed_concept_id	sats_secondary_text
+79688008	Obstructed airway	25876001	Not breathing
+230690007	Seizure	25876001	Current
+262582004	Burn	25876001	Facial/Inhalation
+302866003	Hypoglycaemia	25876001	Glucose less than 3mmol/l
+410429000	Cardiac arrest	25876001	
+242690004	High energy transfer	1356878002	Severe mechanism of injury
+422504002	Focal neurology — acute	1356878002	Stroke
+72704001	Fracture	1356878002	Closed (no break in the skin)
+125666000	Burn	1356878002	Circumferential
+267036007	Shortness of breath - acute	1356878002	
+248042009	Aggression	1356878002	
+426284001	Burn	1356878002	Chemical
+271594007	Level of consciousness reduced/confused	1356878002	
+397945004	Threatened limb	1356878002	
+75478009	Poising / Overdose	1356878002	
+49727002	Coughing blood	1356878002	
+125670008	Eye injury	1356878002	
+420422005	Diabetic - glucose over 11 and ketonuria	1356878002	
+29857009	Chest pain	1356878002	
+87642003	Dislocation of larger joint	1356878002	not finger or toe
+249497008	Vomiting fresh blood	1356878002	
+283545005	Stabbed neck	1356878002	
+31739005	Fractured - compound	1356878002	with a break in skin
+200144004	Pregnancy and abdominal trauma	1356878002	
+398057008	Haemorrhage uncontrolled	1356878002	arterial bleed
+125666000	Burn over 20%	1356878002	
+200144004	Pregnancy and abdominal trauma	1356878002	
+246545002	Seizure - post ictal	1356878002	
+76948002	Severe pain	1356878002	
+125666000	Burn	1356878002	Moderate pain
+131148009	Haemorrhage	103391001	Controlled
+87642003	Dislocation of finger or toe	103391001	
+72704001	Fracture	103391001	Closed (no break in the skin)
+125666000	Burn	103391001	Other
+21522001	Abdominal pain	103391001	
+44054006	Diabetic	103391001	Glucose over 17 (no ketonuria)
+422400008	Vomiting persistently	103391001	
+200144004	Pregnancy & PV trauma	103391001	
+47821001	Pregnancy & PV bleed	103391001	
+125666000	Burn	103391001	Moderate pain

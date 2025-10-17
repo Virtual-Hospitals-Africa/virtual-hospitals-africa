@@ -460,7 +460,7 @@ export function assertOnInsert({
   const trigger_name = `${function_name}_trigger`
 
   return {
-    up(db: Kysely<unknown>) {
+    up(db: Kysely<DB>) {
       return sql`
         CREATE OR REPLACE FUNCTION ${sql.raw(function_name)}()
         RETURNS TRIGGER AS $$
@@ -476,7 +476,7 @@ export function assertOnInsert({
         EXECUTE FUNCTION ${sql.raw(function_name)}();
       `.execute(db)
     },
-    down(db: Kysely<unknown>) {
+    down(db: Kysely<DB>) {
       return sql`
         DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} ON ${sql.raw(table)};
         DROP FUNCTION IF EXISTS ${sql.raw(function_name)}();

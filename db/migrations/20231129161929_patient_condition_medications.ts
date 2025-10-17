@@ -1,8 +1,9 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { RegistrationFrequencies } from '../../shared/medication.ts'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('registration_frequency')
     .asEnum(Object.keys(RegistrationFrequencies))
@@ -71,7 +72,7 @@ export async function up(db: Kysely<unknown>) {
   )
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_condition_medications').execute()
   await db.schema.dropType('medication_schedule').execute()
   await db.schema.dropType('duration_units').execute()

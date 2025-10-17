@@ -24,6 +24,6 @@ export async function up(
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('examinations').execute()
 }

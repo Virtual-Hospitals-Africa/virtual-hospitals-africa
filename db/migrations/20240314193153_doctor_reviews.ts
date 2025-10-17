@@ -113,7 +113,7 @@ export async function up(db: Kysely<any>) {
       ]))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('doctor_review_steps').execute()
   await db.schema.dropTable('doctor_reviews').execute()
   await db.schema.dropTable('doctor_review_requests').execute()

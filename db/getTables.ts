@@ -1,9 +1,10 @@
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import { collectSortedUniqStrings } from '../util/collectSorted.ts'
+import { collect } from '../util/collectSorted.ts'
 import memoize from '../util/memoize.ts'
 import { assert } from 'std/assert/assert.ts'
+import { DB } from '../db.d.ts'
 
-function* yieldTableNames() {
+function* yieldTables(): Generator<keyof DB> {
   const file = Deno.readFileSync('db.d.ts')
   const file_contents = new TextDecoder().decode(file)
   const db_lines = file_contents.split('\n')
@@ -27,17 +28,17 @@ function* yieldTableNames() {
   let preceding_line: string = ''
   for (let table_line of table_lines) {
     table_line = (preceding_line + table_line).trim()
-    const match = table_line.match(/^(.*): .*$/)
+    const match = table_line.match(/^(.*): (.*)$/)
     if (!match) {
       preceding_line = table_line
       continue
     }
-    yield match[1]
+    yield match[1] as keyof DB
     preceding_line = ''
   }
   assert(!preceding_line)
 }
 
-export const getTableNames = memoize(function () {
-  return collectSortedUniqStrings(yieldTableNames())
+export const getTables = memoize(function () {
+  return collect(yieldTables())
 })

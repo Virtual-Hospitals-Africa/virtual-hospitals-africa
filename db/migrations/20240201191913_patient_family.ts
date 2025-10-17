@@ -1,3 +1,4 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import {
   FAMILY_TYPES,
@@ -6,7 +7,7 @@ import {
 } from '../../shared/family.ts'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('marital_status').asEnum(MARITAL_STATUS).execute()
 
   await db.schema.createType('family_type').asEnum(FAMILY_TYPES).execute()
@@ -29,7 +30,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('patient_cohabitation', sql`patient_cohabitation`))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_family').execute()
   await db.schema.dropType('marital_status').execute()
   await db.schema.dropType('family_type').execute()

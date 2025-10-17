@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await sql`
     CREATE OR REPLACE FUNCTION generate_unique_code()
     RETURNS VARCHAR(6) AS $$
@@ -106,7 +107,7 @@ export async function up(db: Kysely<unknown>) {
   )
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('prescription_medications_filled').execute()
   await db.schema.dropTable('prescription_medications').execute()
   await db.schema.dropTable('prescription_codes').execute()

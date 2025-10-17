@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await createStandardTable(
     db,
     'patient_chatbot_users',
@@ -51,7 +52,7 @@ export async function up(db: Kysely<unknown>) {
   )
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_chatbot_user_whatsapp_messages_received')
     .execute()
   await db.schema.dropTable('patient_chatbot_users').execute()

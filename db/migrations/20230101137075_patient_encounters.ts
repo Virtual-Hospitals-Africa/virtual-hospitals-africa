@@ -1,8 +1,9 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 import { ENCOUNTER_REASONS } from '../../shared/reasons.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db
     .schema
     .createType('encounter_reason')
@@ -42,7 +43,7 @@ export async function up(db: Kysely<unknown>) {
       ], (constraint) => constraint.nullsNotDistinct()))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_encounters').execute()
   await db.schema.dropType('encounter_reason').execute()
 }
