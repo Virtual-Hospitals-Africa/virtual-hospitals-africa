@@ -1,5 +1,10 @@
+import { assert } from 'std/assert/assert.ts'
+import { z } from 'zod'
 import { FamilyType, MaritalStatus, PatientCohabitation } from '../db.d.ts'
 import { GuardianRelationName } from '../types.ts'
+import entries from '../util/entries.ts'
+import fromEntries from '../util/fromEntries.ts'
+import isKeyOf from '../util/isKeyOf.ts'
 
 type UngenderedRelation = [GuardianRelationName, string]
 type GenderedRelation = [
@@ -97,3 +102,63 @@ export const PATIENT_COHABITATIONS: PatientCohabitation[] = [
   'Foster Parent',
   'Orphanage',
 ]
+
+export const GENDERED_RELATION_SNOMED_CONCEPT_IDS = {
+  'aunt': '25211005',
+  'uncle': '38048003',
+  'foster mother': '38265003',
+  'grandchild': '86372007',
+  'grandmother': '113157001',
+  'grandfather': '34871008',
+  'foster son': '12241003',
+  'sister': '27733009',
+  'foster daughter': '31831004',
+  'foster child': '39062003',
+  'brother': '70924004',
+  'nephew': '83559000',
+  'foster father': '8458002',
+  'adopted daughter': '393549001',
+  'grandparent': '38312007',
+  'niece': '34581001',
+  'adopted son': '394560000',
+  'sibling': '375005',
+  'foster parent': '90921004',
+  'adopted child': '393547004',
+  'grandson': '70578009',
+  'granddaughter': '44181008',
+} as const
+
+export const SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS = fromEntries(
+  entries(
+    GENDERED_RELATION_SNOMED_CONCEPT_IDS,
+  ).map(
+    ([relation_gendered, snomed_concept_id]) => [
+      snomed_concept_id,
+      relation_gendered,
+    ],
+  ),
+)
+
+export type GenderedRelationKey =
+  keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+
+type GenderedSnomedId =
+  typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS[GenderedRelationKey]
+
+function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
+  type K = Extract<keyof O, string>
+  const keys = Object.keys(obj) as [K, ...K[]]
+  return z.enum(keys)
+}
+
+export const FamilyMemberSchema = z.object({
+  relation_gendered: enumFromObjKeys(GENDERED_RELATION_SNOMED_CONCEPT_IDS),
+})
+
+export const relation_from_snomed_id = (snomed_id: string) => {
+  assert(
+    isKeyOf(snomed_id, SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS),
+    `No gendered relation for ${snomed_id}`,
+  )
+  return SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS[snomed_id]
+}

@@ -1,11 +1,18 @@
-import { sql } from 'kysely'
+import { assert } from 'std/assert/assert.ts'
+import { PatientFindings } from '../../db.d.ts'
 import {
+  GENDERED_RELATION_SNOMED_CONCEPT_IDS,
+  relation_from_snomed_id,
+} from '../../shared/family.ts'
+import {
+  InsertShape,
   PatientFamilyHistoryUpsert,
   RenderedPatientFamilyHistory,
   TrxOrDb,
 } from '../../types.ts'
+import pick from '../../util/pick.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection, success_true } from '../helpers.ts'
+import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
 
 export const PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID = '410551005'
@@ -31,6 +38,8 @@ export async function upsertOne(
     // TODO use this and other fields related
     // relation_gendered,
   } = family_history
+
+  assert(family_history.family_members.length)
 
   if (altered_patient_family_history_id) {
     await markAltered(trx, {
@@ -73,6 +82,30 @@ export async function upsertOne(
   const procedure_id = existing_procedure?.id || generateUUID()
 
   const family_history_id = generateUUID()
+  const { family_members } = family_history
+  const family_members_insert: Array<
+    {
+      patient_id: string
+      patient_encounter_id: string
+      snomed_concept_id: string
+    } & InsertShape<PatientFindings>
+  > = family_members
+    .map((member) => {
+      const id = generateUUID()
+      assert(member.relation_gendered in GENDERED_RELATION_SNOMED_CONCEPT_IDS)
+      const snomed_concept_id =
+        GENDERED_RELATION_SNOMED_CONCEPT_IDS[member.relation_gendered]
+
+      return {
+        id,
+        patient_id,
+        patient_encounter_id,
+        snomed_concept_id,
+        procedure_id,
+        patient_encounter_employee_id,
+        referent_finding_id: family_history_id,
+      }
+    })
 
   return trx.with(
     'inserting_procedure_record',
@@ -110,32 +143,44 @@ export async function upsertOne(
           procedure_id,
           patient_encounter_employee_id,
         }))
-    // .with(
-    //   'inserting_family_historys',
-    //   (qb) =>
-    //     qb.insertInto('patient_family_historys')
-    //       .values({
-    //         id: family_history_id,
-    //         severity,
-    //         start_date,
-    //         end_date,
-    //         notes,
-    //       }),
-    // )
+    .with(
+      'inserting_family_member_records',
+      (qb) =>
+        qb.insertInto('patient_records')
+          .values(
+            family_members_insert.map(
+              pick([
+                'id',
+                'patient_id',
+                'patient_encounter_id',
+                'snomed_concept_id',
+              ]),
+            ),
+          ),
+    ).with('inserting_family_members', (qb) =>
+      qb.insertInto('patient_findings')
+        .values(family_members_insert.map(
+          pick([
+            'id',
+            'procedure_id',
+            'patient_encounter_employee_id',
+            'referent_finding_id',
+          ]),
+        )))
     .selectNoFrom([
       success_true,
     ])
     .executeTakeFirstOrThrow()
 }
 
-export function getEncounter(
+export async function getEncounter(
   trx: TrxOrDb,
   { patient_id, patient_encounter_id }: {
     patient_id: string
     patient_encounter_id: string
   },
 ): Promise<RenderedPatientFamilyHistory[]> {
-  return trx
+  const results = await trx
     .selectFrom('patient_records')
     .innerJoin(
       'patient_findings',
@@ -155,11 +200,46 @@ export function getEncounter(
       nowInvalidRecords(trx, { patient_id }),
     )
     .selectAll('patient_records')
-    .select([
+    .select((eb) => [
       'patient_findings.id',
       'patient_records.snomed_concept_id',
       'snomed_inferred_canonical_name_and_category.name',
-      // TODO actually map this
-      sql<string>`'daughter'`.as('relation_gendered'),
+      jsonArrayFrom(
+        eb.selectFrom('patient_records as family_member_patient_records')
+          .innerJoin(
+            'patient_findings as family_member_patient_findings',
+            'family_member_patient_findings.id',
+            'family_member_patient_records.id',
+          )
+          .innerJoin(
+            'snomed_inferred_canonical_name_and_category',
+            'family_member_patient_records.snomed_concept_id',
+            'snomed_inferred_canonical_name_and_category.id',
+          )
+          .select([
+            'family_member_patient_records.id',
+            'family_member_patient_records.snomed_concept_id',
+            'snomed_inferred_canonical_name_and_category.name',
+          ])
+          .where(
+            'snomed_inferred_canonical_name_and_category.category',
+            '=',
+            'person',
+          )
+          .whereRef(
+            'family_member_patient_findings.referent_finding_id',
+            '=',
+            'patient_records.id',
+          ),
+      ).as('family_members'),
     ]).execute()
+  return results.map((r) => ({
+    ...r,
+    family_members: r.family_members.map((fm) => ({
+      relation_gendered: relation_from_snomed_id(fm.snomed_concept_id),
+      condition_name: fm.name,
+      altered_family_member_id: fm.id,
+      snomed_concept_id: fm.snomed_concept_id,
+    })),
+  }))
 }

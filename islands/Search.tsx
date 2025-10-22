@@ -1,35 +1,35 @@
-import { JSX } from 'preact'
 import { Combobox } from '@headlessui/react'
-import { assert } from 'std/assert/assert.ts'
+import { JSX } from 'preact'
+import { TargetedEvent } from 'preact/compat'
 import { useRef, useState } from 'preact/hooks'
-import cls from '../util/cls.ts'
-import { Maybe } from '../types.ts'
-import isObjectLike from '../util/isObjectLike.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   CheckIcon,
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
+import { Maybe } from '../types.ts'
+import cls from '../util/cls.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
-import { TargetedEvent } from 'preact/compat'
 import { BaseOption } from './BaseOption.tsx'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
-export type SearchProps<
-  T extends { id?: unknown; name: string },
-> = {
+export type SearchProps<T extends { id?: unknown; name: string }> = {
   id?: string
   name?: string
   required?: boolean
   label?: Maybe<string>
   just_name?: boolean
   no_name_form_data?: boolean
-  addable?: boolean | {
-    href?: string
-    formatDisplay?: (query: string) => string
-  }
+  addable?:
+    | boolean
+    | {
+      href?: string
+      formatDisplay?: (query: string) => string
+    }
   disabled?: boolean
   readonly?: boolean
   value?: Maybe<T>
@@ -40,13 +40,11 @@ export type SearchProps<
   onQuery(query: string): void
   loadMoreOptions?(): void
   onSelect?(value: T | undefined): void
-  Option?(
-    props: {
-      option: T
-      selected: boolean
-      active: boolean
-    },
-  ): JSX.Element
+  Option?(props: {
+    option: T
+    selected: boolean
+    active: boolean
+  }): JSX.Element
   optionHref?(option: T): string
   ignore_option_href?: boolean
   do_not_render_built_in_options?: boolean
@@ -60,9 +58,7 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   return /^\d+$/.test(last_name_part)
 }
 
-export default function Search<
-  T extends { id?: unknown; name: string },
->({
+export default function Search<T extends { id?: unknown; name: string }>({
   id,
   name,
   required,
@@ -92,9 +88,7 @@ export default function Search<
       'onSelect must be provided for a multi search',
     )
   }
-  const [selected, setSelected] = useState<
-    T | null
-  >(
+  const [selected, setSelected] = useState<T | null>(
     hasId(value) ? value : null,
   )
 
@@ -120,12 +114,15 @@ export default function Search<
 
   const name_field = just_name
     ? name
-    : (no_name_form_data ? undefined : (name &&
-      (is_array_or_record_item ? `${name}.name` : `${name}_name`)))
-  const id_field = just_name ? undefined : (name &&
+    : no_name_form_data
+    ? undefined
+    : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
+  const id_field = just_name ? undefined : name &&
     (no_name_form_data
       ? name
-      : (is_array_or_record_item ? `${name}.id` : `${name}_id`)))
+      : is_array_or_record_item
+      ? `${name}.id`
+      : `${name}_id`)
 
   const input_ref = useRef<HTMLInputElement>(null)
 
@@ -161,9 +158,7 @@ export default function Search<
             ref={input_ref}
             name={name_field}
             className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-            onChange={(
-              event,
-            ) => {
+            onChange={(event) => {
               const query = event.currentTarget.value
               setSelected(null)
               onSelect?.(undefined)
@@ -209,7 +204,7 @@ export default function Search<
                   className={({ active }) =>
                     cls(
                       'relative cursor-default select-none py-2 pl-3 pr-9',
-                      active ? 'bg-indigo-50 text-white' : 'text-gray-900',
+                      active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                     )}
                 >
                   {({ active, selected }) => {
@@ -234,8 +229,11 @@ export default function Search<
                     )
                     if (ignore_option_href) return fragment
                     if (
-                      option.id === 'add' && query && addable &&
-                      typeof addable === 'object' && ('href' in addable)
+                      option.id === 'add' &&
+                      query &&
+                      addable &&
+                      typeof addable === 'object' &&
+                      'href' in addable
                     ) {
                       return (
                         <a href={`${addable.href}${encodeURIComponent(query)}`}>
@@ -244,50 +242,34 @@ export default function Search<
                       )
                     }
                     if ('href' in option && typeof option.href === 'string') {
-                      return (
-                        <a href={option.href}>
-                          {fragment}
-                        </a>
-                      )
+                      return <a href={option.href}>{fragment}</a>
                     }
                     if (typeof optionHref === 'function') {
-                      return (
-                        <a href={optionHref(option)}>
-                          {fragment}
-                        </a>
-                      )
+                      return <a href={optionHref(option)}>{fragment}</a>
                     }
                     return fragment
                   }}
                 </Combobox.Option>
               ))}
-              {(loading_options || loadMoreOptions)
+              {loading_options || loadMoreOptions
                 ? (
-                  <Combobox.Option
-                    key='loading'
-                    value={null}
-                    disabled
-                  >
+                  <Combobox.Option key='loading' value={null} disabled>
                     <i className={cls('ml-3', !loading_options && 'opacity-0')}>
                       {all_options.length ? 'Loading more...' : 'Loading...'}
                     </i>
                   </Combobox.Option>
                 )
-                : !all_options.length && (
-                  <Combobox.Option
-                    key='no_options'
-                    value={null}
-                    disabled
-                  >
-                    <i className='ml-3'>
-                      No options available
-                    </i>
-                  </Combobox.Option>
+                : (
+                  !all_options.length && (
+                    <Combobox.Option key='no_options' value={null} disabled>
+                      <i className='ml-3'>No options available</i>
+                    </Combobox.Option>
+                  )
                 )}
             </Combobox.Options>
           )}
         </div>
-        {(selected?.id && selected.id !== 'add') && id_field && (
+        {selected?.id && selected.id !== 'add' && id_field && (
           <input
             type='hidden'
             name={id_field}

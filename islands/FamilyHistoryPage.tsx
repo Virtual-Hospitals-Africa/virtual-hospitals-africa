@@ -1,9 +1,9 @@
 import { EmptyState } from '../components/library/EmptyState.tsx'
-import AsyncSearch from './AsyncSearch.tsx'
-import { FamilyHistoryFormPanel } from './FamilyHistoryFormPanel.tsx'
 import { RenderedPatientFamilyHistory } from '../types.ts'
 import isString from '../util/isString.ts'
 import { useLocationHash } from '../util/useLocationHash.ts'
+import AsyncSearch from './AsyncSearch.tsx'
+import { FamilyHistoryFormPanel } from './FamilyHistoryFormPanel.tsx'
 
 type FamilyHistoryPageProps = {
   patient_family_history_records: RenderedPatientFamilyHistory[]
@@ -37,9 +37,7 @@ export function FamilyHistoryPage(_props: FamilyHistoryPageProps) {
     <>
       <AsyncSearch
         search_route='/app/family_history'
-        onSelect={(
-          option?: { id: string; name: string },
-        ) => {
+        onSelect={(option?: { id: string; name: string }) => {
           panel_state.value = option
             ? {
               action: 'new',
@@ -65,7 +63,7 @@ export function FamilyHistoryPage(_props: FamilyHistoryPageProps) {
             ? panel_state.value.new_family_history_snomed_concept_id
             : undefined,
         }}
-        onClose={() => panel_state.value = { action: 'none' }}
+        onClose={() => (panel_state.value = { action: 'none' })}
       />
     </>
   )
