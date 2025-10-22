@@ -1,19 +1,15 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../db/db.ts'
 import * as patients from '../../../db/models/patients.ts'
 import { addTestEmployeeWithSession } from '../../_helpers/employees.ts'
-import { route } from '../../route.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
 import { isUUID } from '../../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import compact from '../../../util/compact.ts'
-import { snapshot } from '../../_helpers/snapshot.ts'
 
-describe('/app/organizations/[organization_id]/patients/start-registration', {
-  sanitizeResources: false,
-  sanitizeOps: false,
-}, () => {
+describe('/app/organizations/[organization_id]/patients/start-registration', () => {
+  afterAll(() => db.destroy())
   it('creates a patient, starting the registration process at the personal page', async () => {
     const { fetchOk } = await addTestEmployeeWithSession(db, {
       profession: 'nurse',
@@ -22,7 +18,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', {
     })
 
     const response = await fetchOk(
-      `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.za.clinic}/patients/start-registration`,
+      `/app/organizations/${TEST_ORGANIZATION_UUIDS.za.clinic}/patients/start-registration`,
       {
         method: 'POST',
       },
@@ -67,5 +63,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', {
       'nearest_organization': null,
       'primary_doctor': null,
     })
+
+    return response.body?.cancel()
   })
 })

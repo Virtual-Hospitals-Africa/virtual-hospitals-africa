@@ -7,7 +7,6 @@ const file_cwd_prefix = 'file://' + cwd
 //  "at functionName (file:///path/to/file.ts:line:column)"
 //  "at file:///path/to/file.ts:line:column"
 function extractLineInfo(caller_line: string) {
-  console.log(caller_line)
   const match_with_function_name = caller_line.match(
     /^at (.*) \((.*):(\d+):(\d+)\)$/,
   )
@@ -34,7 +33,6 @@ export function getCaller(up_stack_levels = 0) {
   } catch (e) {
     assert(e instanceof Error)
     const stack = e.stack!.split('\n')
-    console.log(stack)
 
     const caller_line = stack[2 + up_stack_levels].trim()
     const { file_name, function_name, line_number, column_number } =

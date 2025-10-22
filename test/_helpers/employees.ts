@@ -182,11 +182,13 @@ export async function addTestEmployeeWithSession(
   }
 
   const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
-    const response = await fetchWithSession(...args)
-    if (!response.ok) throw new Error(await response.text())
+    const response = await fetchOk(...args)
     const html = await response.text()
-    return cheerio.load(html, {
+    const $ = cheerio.load(html, {
       baseURI: response.url,
+    })
+    return Object.assign($, {
+      url: response.url,
     })
   }
 
