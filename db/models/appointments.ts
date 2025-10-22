@@ -13,7 +13,12 @@ import * as patients from './patients.ts'
 import * as organizations from './organizations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
-import { jsonArrayFrom, now } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  now,
+  today_in_johannesburg,
+  tomorrow_in_johannesburg,
+} from '../helpers.ts'
 
 export function addOfferedTime(
   trx: TrxOrDb,
@@ -260,10 +265,14 @@ export async function countUpcoming(
   return count
 }
 
-function baseQuery(trx: TrxOrDb, opts: {
-  time_range: 'all' | 'future' | 'past'
-}) {
-  const q = trx
+type AppointmentQuery = {
+  time_range: 'all' | 'future' | 'past' | 'today'
+  organization_id?: string
+  patient_id?: string
+}
+
+function baseQuery(trx: TrxOrDb, opts: AppointmentQuery) {
+  let q = trx
     .selectFrom('appointments')
     .select((eb) => [
       'appointments.id',
@@ -288,6 +297,26 @@ function baseQuery(trx: TrxOrDb, opts: {
     ])
     .orderBy('start', 'asc')
 
+  if (opts.organization_id) {
+    q = q.where(
+      'appointments.id',
+      'in',
+      trx.selectFrom('appointment_providers')
+        .innerJoin(
+          'employment',
+          'employment.id',
+          'appointment_providers.provider_id',
+        )
+        .where('employment.organization_id', '=', opts.organization_id)
+        .select('appointment_providers.appointment_id')
+        .distinct(),
+    )
+  }
+
+  if (opts.patient_id) {
+    q = q.where('appointments.patient_id', '=', 'patient_id')
+  }
+
   switch (opts.time_range) {
     case 'all':
       return q
@@ -295,6 +324,10 @@ function baseQuery(trx: TrxOrDb, opts: {
       return q.where('appointments.start', '>=', now)
     case 'past':
       return q.where('appointments.start', '<', now)
+    case 'today':
+      return q
+        .where('appointments.start', '>=', today_in_johannesburg)
+        .where('appointments.start', '<', tomorrow_in_johannesburg)
   }
 }
 
@@ -339,11 +372,11 @@ export async function getWithPatientInfo(
   })
 }
 
-export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
-  patient_id: string
-  time_range: 'all' | 'future' | 'past'
-}) {
-  return baseQuery(trx, { time_range })
+export function getForPatient(
+  trx: TrxOrDb,
+  query: AppointmentQuery & { patient_id: string },
+) {
+  return baseQuery(trx, query)
     .select((eb) => [
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
@@ -416,7 +449,6 @@ export function getForPatient(trx: TrxOrDb, { patient_id, time_range }: {
           ]),
       ).as('providers'),
     ])
-    .where('appointments.patient_id', '=', patient_id)
     .execute()
 }
 

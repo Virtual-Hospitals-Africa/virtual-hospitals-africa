@@ -246,6 +246,10 @@ export const today_in_johannesburg = sql<
   Date
 >`(now() AT TIME ZONE 'Africa/Johannesburg')::date`
 
+export const tomorrow_in_johannesburg = sql<
+  Date
+>`(now() AT TIME ZONE 'Africa/Johannesburg' + interval '1 day')::date`
+
 export function isoDate(
   // deno-lint-ignore no-explicit-any
   ref: ExpressionWrapper<DB, any, Date>,

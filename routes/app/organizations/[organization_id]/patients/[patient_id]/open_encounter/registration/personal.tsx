@@ -8,7 +8,7 @@ import * as patients from '../../../../../../../../db/models/patients.ts'
 import PersonalSection from '../../../../../../../../components/patient-registration/PersonalSection.tsx'
 import {
   gender,
-  national_id_number,
+  string_or_number_as_string,
   varchar255,
 } from '../../../../../../../../util/validators.ts'
 import compact from '../../../../../../../../util/compact.ts'
@@ -19,7 +19,7 @@ const PatientRegistrationPersonalSchema = z.object({
   first_name: varchar255,
   last_name: varchar255,
   middle_names: varchar255.optional(),
-  national_id_number: national_id_number.optional(),
+  national_id_number: string_or_number_as_string.optional(),
   no_national_id: z.boolean().optional(),
   date_of_birth: z.string().date(),
   gender,
