@@ -4,6 +4,7 @@ export const originalLog = console.log
 
 // Monkey-patch console.log to print the timestamp + file & line number
 export function monkeyPatchConsole() {
+  return
   if (console.log !== originalLog) return
   console.log = (...args: unknown[]) => {
     const line_number = getFileLineNumber(1)

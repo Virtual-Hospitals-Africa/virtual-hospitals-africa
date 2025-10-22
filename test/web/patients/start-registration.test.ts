@@ -8,6 +8,7 @@ import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
 import { isUUID } from '../../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import compact from '../../../util/compact.ts'
+import { snapshot } from '../../_helpers/snapshot.ts'
 
 describe('/app/organizations/[organization_id]/patients/start-registration', {
   sanitizeResources: false,
@@ -42,6 +43,6 @@ describe('/app/organizations/[organization_id]/patients/start-registration', {
     ])
 
     const patient = await patients.getById(db, patient_id)
-    console.log(patient)
+    snapshot(patient)
   })
 })
