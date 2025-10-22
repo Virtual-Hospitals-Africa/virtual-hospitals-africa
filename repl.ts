@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
 import db from './db/db.ts'
+import * as helpers from './db/helpers.ts'
 
 const ignore_file_extensions = new Set([
   'txt',

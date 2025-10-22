@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
+import { FreshContext, Handlers } from '$fresh/server.ts'
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
-import { FreshContext, Handlers } from '$fresh/server.ts'
-import db from './db/db.ts'
 import {
   AgeUnit,
   DB,
@@ -13,9 +12,11 @@ import {
   PatientCohabitation,
   Workflow,
 } from './db.d.ts'
-import { DietFrequency } from './shared/diet.ts'
-import { type Priority } from './shared/priorities.ts'
+import db from './db/db.ts'
 import { Department } from './shared/departments.ts'
+import { DietFrequency } from './shared/diet.ts'
+import { GENDERED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
+import { type Priority } from './shared/priorities.ts'
 export * from './shared/priorities.ts'
 
 export type Maybe<T> = T | null | undefined
@@ -3341,7 +3342,9 @@ export type ExtantProcedureOrCreationIntent = {
 
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
-  relation_gendered: string
+  family_members: Array<{
+    relation_gendered: keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+  }>
 }
 
 export type PatientFamilyHistoryUpsert = PatientFamilyHistoryShared & {
