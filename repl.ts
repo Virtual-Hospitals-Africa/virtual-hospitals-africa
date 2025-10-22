@@ -84,6 +84,7 @@ const [
   externalClients,
   components,
   islands,
+  mocks,
 ] = await loadAll([
   './db/models',
   './db/migrations',
@@ -93,6 +94,7 @@ const [
   './external-clients',
   './components',
   './islands',
+  './mocks',
 ])
 
 await loadAllModules('./db').then((x) => {
