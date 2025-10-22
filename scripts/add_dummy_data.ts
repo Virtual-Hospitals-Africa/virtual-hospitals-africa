@@ -48,19 +48,19 @@ type WaitingRoomScenario = [
 const wm_scenarios: WaitingRoomScenario[] = [
   // gender, reason for visit, department, current workflow, workflow status, triage priority
   ['female', 'seeking treatment', 'waiting room', 'triage', 'not started', 'Undetermined', 10],
-  ['male', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 55],
-  ['female', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 48],
-  ['male', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 42],
-  ['female', 'seeking treatment', 'waiting room', 'seeking_treatment', 'not started', 'Non-urgent', 30],
+  ['male', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 55],
+  ['female', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 48],
+  ['male', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 42],
+  ['female', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 30],
   ['female', 'seeking treatment', 'resus', 'stabilization', 'in progress', 'Emergency', 28],
   ['female', 'seeking treatment', 'reception', 'registration', 'in progress', 'Undetermined', 4],
   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 39],
   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 7],
-  ['female', 'seeking treatment', 'primary care', 'seeking_treatment', 'in progress', 'Very urgent', 58],
-  ['female', 'seeking treatment', 'primary care', 'seeking_treatment', 'in progress', 'Urgent', 30],
-  ['male', 'seeking treatment', 'primary care', 'seeking_treatment', 'in progress', 'Non-urgent', 93],
-  ['female', 'seeking treatment', 'primary care', 'seeking_treatment', 'in progress', 'Non-urgent', 78],
-  ['male', 'seeking treatment', 'primary care', 'seeking_treatment', 'in progress', 'Non-urgent', 28],
+  ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Very urgent', 58],
+  ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Urgent', 30],
+  ['male', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 93],
+  ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 78],
+  ['male', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 28],
 ]
 
 // deno-fmt-ignore-end
@@ -79,13 +79,13 @@ const patient_scenarios: PatientScenario[] = [
   ['female', 'seeking treatment', 'registration', 'in progress', 'Undetermined'],
   ['female', 'seeking treatment', 'triage', 'not started', 'Undetermined'],
   ['female', 'seeking treatment', 'triage', 'in progress', 'Urgent'],
-  ['female', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['female', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['male', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['male', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['male', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['male', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
-  ['male', 'seeking treatment', 'seeking_treatment', 'not started', 'Non-urgent'],
+  ['female', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['female', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['male', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['male', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['male', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['male', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
+  ['male', 'seeking treatment', 'consultation', 'not started', 'Non-urgent'],
 ]
 
 type HW = Awaited<ReturnType<typeof addTestEmployee>>
@@ -248,7 +248,7 @@ async function addPatientsToWaitingRoom(
         }),
       ])
 
-      // Create triage and seeking_treatment workflows
+      // Create triage and consultation workflows
       await patient_encounters.insertSeekingTreatmentForRegisteredPatient(
         db,
         organization,
@@ -341,8 +341,8 @@ async function addPatientsToWaitingRoom(
         return
       }
 
-      // For seeking_treatment scenarios, complete triage first
-      if (workflow === 'seeking_treatment') {
+      // For consultation scenarios, complete triage first
+      if (workflow === 'consultation') {
         const triage_workflow = encounter.workflows.triage!
         const existing_patient_encounter_employee_id =
           encounter.all_employees_seen[0]?.patient_encounter_employee_id || null
@@ -412,14 +412,14 @@ async function addPatientsToWaitingRoom(
             db,
             result.patient_encounter_id,
           )
-          const seeking_treatment_workflow = updated_encounter.workflows
-            .seeking_treatment!
+          const consultation_workflow = updated_encounter.workflows
+            .consultation!
 
           await patient_workflows.start(db, {
             encounter: updated_encounter,
             existing_patient_encounter_employee_id,
             seeing_as_employment_id: organization_employment.non_admin_id!,
-            workflow_status: seeking_treatment_workflow,
+            workflow_status: consultation_workflow,
           })
 
           // Clear employment presence so this nurse can work with another patient

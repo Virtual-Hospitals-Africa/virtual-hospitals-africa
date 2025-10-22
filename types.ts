@@ -2622,7 +2622,7 @@ export type Provider = {
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
-  seeking_treatment_step: string
+  consultation_step: string
   slug: string
   display_name: string
   completed: SqlBool | null
@@ -3427,7 +3427,7 @@ export type RenderedPatientHistory = {
 export type PatientDrawerV3Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
-  current_seeking_treatment_step: string
+  current_consultation_step: string
   this_visit_records: ThisVisitRecords
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]

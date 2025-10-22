@@ -185,7 +185,7 @@ export type Workflow =
   | 'maternity'
   | 'prescription_refill'
   | 'registration'
-  | 'seeking_treatment'
+  | 'consultation'
   | 'stabilization'
   | 'triage'
 
@@ -449,7 +449,7 @@ export interface Examinations {
   identifier: string
   order: number
   path: string
-  seeking_treatment_step: string
+  consultation_step: string
   slug: string
 }
 

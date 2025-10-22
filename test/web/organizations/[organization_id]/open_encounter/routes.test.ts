@@ -6,7 +6,7 @@ import entries from '../../../../../util/entries.ts'
 const SUPPORTED_WORKFLOWS = new Set<Workflow>([
   'registration',
   'triage',
-  'seeking_treatment',
+  'consultation',
 ])
 
 function* allSupportedWorkflowSteps() {

@@ -5,6 +5,8 @@ import * as path from 'std/path/mod.ts'
 
 const ignore_paths = [
   'db/codegen',
+  'db/seed/dumps',
+  'db/resources/',
 ]
 
 const dirs = [
@@ -18,6 +20,7 @@ const dirs = [
   'shared',
   'static',
   'test',
+  'mocks',
 ]
 
 async function* walkFiles(directory: string) {
@@ -53,7 +56,10 @@ async function rename({ files, directories, to_rename }: {
       file_path = new_file_path
     }
 
-    const original_content = await Deno.readTextFile(file_path)
+    const original_content = await Deno.readTextFile(file_path).catch((err) => {
+      console.error(file_path)
+      throw err
+    })
     const new_content = replace_all(original_content)
     if (original_content !== new_content) {
       await Deno.writeTextFile(file_path, new_content)
@@ -66,12 +72,10 @@ async function rename({ files, directories, to_rename }: {
 
 if (import.meta.main) {
   await rename({
-    files: ['types.ts'],
+    files: ['types.ts', 'db.d.ts'],
     directories: dirs,
     to_rename: [
-      ["'organizations'", "'organizations'"],
-      ['facilities', 'organizations'],
-      ['facility', 'organization'],
+      ['consultation', 'consultation'],
     ],
   })
 }

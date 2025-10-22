@@ -8,7 +8,7 @@ export function forPatientEncounter(
     patient_id: string
     organization_id: string
     patient_encounter_id: string
-    seeking_treatment_step?: string
+    consultation_step?: string
   },
 ): Promise<RenderedPatientExamination[]> {
   return trx
@@ -42,12 +42,12 @@ export function forPatientEncounter(
       'patient_examinations.ordered',
       'examinations.identifier as examination_identifier',
       'examinations.path',
-      'examinations.seeking_treatment_step',
+      'examinations.consultation_step',
       'examinations.slug',
       'examinations.display_name',
       sql<
         string
-      >`'/app/organizations/' || ${opts.organization_id} || '/patients/' || ${opts.patient_id} || '/open_encounter/seeking_treatment/' || examinations.path`
+      >`'/app/organizations/' || ${opts.organization_id} || '/patients/' || ${opts.patient_id} || '/open_encounter/consultation/' || examinations.path`
         .as('href'),
     ])
     .where('patients.id', '=', opts.patient_id)
@@ -100,19 +100,19 @@ export function forPatientEncounter(
           eb('examinations.identifier', '=', 'maternity_assessment'),
         ]),
         eb(
-          'examinations.seeking_treatment_step',
+          'examinations.consultation_step',
           '=',
           'history',
         ),
       ])
     )
     .$if(
-      !!opts.seeking_treatment_step,
+      !!opts.consultation_step,
       (qb) =>
         qb.where(
-          'examinations.seeking_treatment_step',
+          'examinations.consultation_step',
           '=',
-          opts.seeking_treatment_step!,
+          opts.consultation_step!,
         ),
     )
     .orderBy('examinations.order', 'asc')
@@ -122,13 +122,13 @@ export function forPatientEncounter(
 export function allForStep(
   trx: TrxOrDb,
   opts: {
-    seeking_treatment_step: string
+    consultation_step: string
   },
 ) {
   return trx
     .selectFrom('examinations')
     .selectAll('examinations')
-    .where('seeking_treatment_step', '=', opts.seeking_treatment_step)
+    .where('consultation_step', '=', opts.consultation_step)
     .orderBy('examinations.order', 'asc')
     .execute()
 }

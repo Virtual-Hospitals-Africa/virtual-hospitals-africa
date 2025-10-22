@@ -355,7 +355,7 @@ export function OpenEncounterWorkflowLayout({
           <PatientDrawerV3
             patient={ctx.state.patient}
             encounter={ctx.state.encounter}
-            current_seeking_treatment_step={ctx.state.step}
+            current_consultation_step={ctx.state.step}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
             care_team={ctx.state.patient.primary_doctor

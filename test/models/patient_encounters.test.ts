@@ -244,11 +244,10 @@ describe(
                   steps_completed: [],
                   employees: [],
                 },
-                seeking_treatment: {
-                  patient_workflow_id:
-                    open_encounter.workflows.seeking_treatment!
-                      .patient_workflow_id,
-                  workflow: 'seeking_treatment',
+                consultation: {
+                  patient_workflow_id: open_encounter.workflows.consultation!
+                    .patient_workflow_id,
+                  workflow: 'consultation',
                   status: 'not started',
                   steps_completed: [],
                   employees: [],

@@ -47,7 +47,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export default ExaminationPage(async function AddExaminationsPage(ctx) {
   const all_examinations = await examinations.allForStep(
     ctx.state.trx,
-    { seeking_treatment_step: 'examinations' },
+    { consultation_step: 'examinations' },
   )
 
   return (

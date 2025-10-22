@@ -35,7 +35,7 @@ export async function handler(
       patient_id: ctx.state.encounter.patient.id,
       organization_id: ctx.state.organization.id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      seeking_treatment_step: 'examinations',
+      consultation_step: 'examinations',
     },
   )
 

@@ -119,7 +119,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
 
   const { non_admin_id } = organization_employment
   assert(non_admin_id)
-  const workflows: Workflow[] = ['triage', 'seeking_treatment']
+  const workflows: Workflow[] = ['triage', 'consultation']
   const patient_workflows = workflows.map((workflow) => ({
     id: generateUUID(),
     patient_encounter_id,

@@ -1,10 +1,5 @@
 import { JSX } from 'preact'
 import * as examinations from '../../../../../../../../../db/models/examinations.ts'
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../../_middleware.tsx'
 import { RenderedPatientExamination } from '../../../../../../../../../types.ts'
 import {
   TabProps,
@@ -12,66 +7,66 @@ import {
 } from '../../../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../../../components/library/icons/progress.tsx'
 import redirect from '../../../../../../../../../util/redirect.ts'
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../../_middleware.tsx'
 
-type GeneralAssessmentsState = {
-  patient_general_assessments: RenderedPatientExamination[]
+type HistoryState = {
+  history_assessments: RenderedPatientExamination[]
   current_assessment: RenderedPatientExamination
   next_incomplete_assessment?: RenderedPatientExamination
 }
 
-export type GeneralAssessmentsContext = OpenEncounterWorkflowContext & {
-  state: GeneralAssessmentsState
+export type HistoryContext = OpenEncounterWorkflowContext & {
+  state: HistoryState
 }
 
 export async function handler(
   _req: Request,
-  ctx: GeneralAssessmentsContext,
+  ctx: HistoryContext,
 ) {
-  const patient_general_assessments = await examinations.forPatientEncounter(
+  const history_assessments = await examinations.forPatientEncounter(
     ctx.state.trx,
     {
       patient_id: ctx.state.encounter.patient.id,
       organization_id: ctx.state.organization.id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      seeking_treatment_step: 'general_assessments',
+      consultation_step: 'history',
     },
   )
 
-  const next_incomplete_assessment = patient_general_assessments.find((a) =>
+  const next_incomplete_assessment = history_assessments.find((a) =>
     !a.completed
   )
 
-  const { general_assessment_slug } = ctx.params
-
-  const current_assessment = general_assessment_slug
-    ? patient_general_assessments.find((a) =>
-      a.slug === general_assessment_slug
-    )
-    : undefined
+  const current_assessment_slug = ctx.url.pathname.match(/\/history\/(.*)$/)
+  const current_assessment = current_assessment_slug &&
+    history_assessments.find((a) => a.slug === current_assessment_slug[1])
 
   Object.assign(
     ctx.state,
     {
-      patient_general_assessments,
+      history_assessments,
       current_assessment: current_assessment!,
       next_incomplete_assessment,
-    } satisfies GeneralAssessmentsState,
+    } satisfies HistoryState,
   )
 
   return ctx.next()
 }
 
-export type GeneralAssessmentsPageChildProps = {
+export type HistoryPageChildProps = {
   ctx: OpenEncounterWorkflowContext
   previously_completed: boolean
 }
 
-export function completeAssessment(ctx: GeneralAssessmentsContext) {
-  const next_incomplete_assessment = ctx.state.patient_general_assessments.find(
-    (a) =>
-      !a.completed &&
-      a.examination_identifier !==
-        ctx.state.current_assessment.examination_identifier,
+export function completeAssessment(ctx: HistoryContext) {
+  const next_incomplete_assessment = ctx.state.history_assessments.find((a) =>
+    !a.completed &&
+    a.examination_identifier !==
+      ctx.state.current_assessment.examination_identifier
   )
   if (!next_incomplete_assessment) {
     return completeAndProceedToNextStep(ctx)
@@ -79,22 +74,22 @@ export function completeAssessment(ctx: GeneralAssessmentsContext) {
   return redirect(next_incomplete_assessment.href)
 }
 
-export function GeneralAssessmentsPage(
+export function HistoryPage(
   render: (
-    ctx: GeneralAssessmentsContext,
+    ctx: HistoryContext,
   ) =>
     | JSX.Element
     | Promise<JSX.Element>
     | Promise<Response>
     | Promise<JSX.Element | Response>,
 ) {
-  return OpenEncounterWorkflowPage<GeneralAssessmentsContext>(async (ctx) => {
+  return OpenEncounterWorkflowPage<HistoryContext>(async (ctx) => {
     const rendered = await render(ctx)
     if (rendered instanceof Response) {
       return rendered
     }
 
-    const tabs: TabProps[] = ctx.state.patient_general_assessments
+    const tabs: TabProps[] = ctx.state.history_assessments
       .map((assessment) => {
         const active = assessment.examination_identifier ===
           ctx.state.current_assessment.examination_identifier

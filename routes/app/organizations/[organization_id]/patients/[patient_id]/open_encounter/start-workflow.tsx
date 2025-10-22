@@ -14,7 +14,7 @@ const StartWorkflowSchema = z.object({
   workflow: z.enum([
     'registration' as const,
     'triage' as const,
-    'seeking_treatment' as const,
+    'consultation' as const,
     'maternity' as const,
     'prescription_refill' as const,
     'doctor_review' as const,
