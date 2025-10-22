@@ -1,6 +1,7 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('age_unit')
     .asEnum([
@@ -61,7 +62,7 @@ export async function up(db: Kysely<unknown>) {
   `.execute(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await sql`DROP VIEW patient_age`.execute(db)
   await db.schema.dropType('age').execute()
   await db.schema.dropType('age_unit').execute()

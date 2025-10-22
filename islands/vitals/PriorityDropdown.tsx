@@ -36,6 +36,11 @@ const PRIORITY_COLORS: Record<
     text: 'text-red-900',
     border: 'border-red-300',
   },
+  Deceased: {
+    bg: 'bg-blue-200',
+    text: 'text-blue-900',
+    border: 'border-blue-300',
+  },
 }
 
 interface PriorityDropdownProps {

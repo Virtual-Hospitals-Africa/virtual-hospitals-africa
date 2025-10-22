@@ -1,8 +1,7 @@
 import { Kysely, sql } from 'kysely'
+import { DB } from '../../db.d.ts'
 
-export async function up(
-  db: Kysely<unknown>,
-) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createTable('snomed_concept')
     .addColumn('id', 'bigint', (col) => col.primaryKey())
     .addColumn('effective_time', 'date', (col) => col.notNull())
@@ -387,7 +386,7 @@ export async function up(
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('snomed_text_definitionsnomed_stated_relationship')
     .execute()
   await db.schema.dropTable('snomed_s_refset_owl_expression').execute()

@@ -1,9 +1,9 @@
-// deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
+import { DB } from '../../db.d.ts'
 
-export async function up(db: Kysely<any>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('doctor_review_step')
     .asEnum(DOCTOR_REVIEW_STEPS)
     .execute()
@@ -113,7 +113,7 @@ export async function up(db: Kysely<any>) {
       ]))
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('doctor_review_steps').execute()
   await db.schema.dropTable('doctor_reviews').execute()
   await db.schema.dropTable('doctor_review_requests').execute()

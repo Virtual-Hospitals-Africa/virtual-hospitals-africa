@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
-export function up(db: Kysely<unknown>) {
+export function up(db: Kysely<DB>) {
   return createStandardTable(
     db,
     'mailing_list',
@@ -16,6 +17,6 @@ export function up(db: Kysely<unknown>) {
   )
 }
 
-export function down(db: Kysely<unknown>) {
+export function down(db: Kysely<DB>) {
   return db.schema.dropTable('mailing_list').execute()
 }

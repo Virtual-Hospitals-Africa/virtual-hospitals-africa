@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createPointerTable, createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('profession')
     .asEnum([
@@ -141,7 +142,7 @@ export async function up(db: Kysely<unknown>) {
   )
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('health_worker_organization_calendars').execute()
   await db.schema.dropTable('department_employment').execute()
   await db.schema.dropTable('nurses').execute()

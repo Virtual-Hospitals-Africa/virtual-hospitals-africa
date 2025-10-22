@@ -18,7 +18,6 @@ const skip_directories = new Set([
 ])
 
 async function loadAllModules(dir: string) {
-  console.log(dir)
   const modules: any = {}
   const importing: Promise<any>[] = []
   for await (const in_directory of Deno.readDir(dir)) {

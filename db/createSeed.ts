@@ -3,9 +3,10 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { Select } from 'prompt'
 import { seed_targets } from './seed/run.ts'
 import { padLeft } from '../util/pad.ts'
-import { getTableNames } from './getTableNames.ts'
+import { getTables } from './getTables.ts'
 import last from '../util/last.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import pascalCase from '../util/pascalCase.ts'
 
 const seed_defs_dir = `db/seed/defs`
 
@@ -46,16 +47,20 @@ function* remapSeedFiles(placement: string) {
 }
 
 function initialSeedFileContents(table_name: string) {
-  return `import { define } from '../define.ts'
+  const interface_name = pascalCase(table_name)
+  return `import z from 'zod'
+import { ${interface_name} } from '../../../db.d.ts'
+import { InsertShape } from '../../../types.ts'
+import { define } from '../define.ts'
 import { collectTsvResource } from '../../parseTsvResource.ts'
-import z from 'zod'
+
 
 export const ${table_name} = await collectTsvResource(
   '${table_name}',
   z.object({
 
   }),
-)
+) satisfies InsertShape<${interface_name}>[]
 
 export default define(['${table_name}'], (trx) =>
   trx.insertInto('${table_name}')
@@ -67,7 +72,7 @@ export default define(['${table_name}'], (trx) =>
 export default async function createSeed(seed_name?: string) {
   const table_name = await Select.prompt({
     message: 'Which database table does the seed populate?',
-    options: getTableNames(),
+    options: getTables(),
     search: true,
   })
 

@@ -1,5 +1,3 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
-
 export default function snakeCase(str: string): string {
   // Handle null/undefined
   if (str == null) return ''
@@ -76,11 +74,3 @@ export default function snakeCase(str: string): string {
 //   'français éclair café',
 //   '你好世界'
 // ];
-
-// Example usage
-assertEquals(snakeCase('camelCase'), 'camel_case')
-assertEquals(snakeCase('PascalCase'), 'pascal_case')
-assertEquals(snakeCase('kebab-case'), 'kebab_case')
-assertEquals(snakeCase('foo bar baz'), 'foo_bar_baz')
-assertEquals(snakeCase('XMLHttpRequest'), 'xml_http_request')
-assertEquals(snakeCase('IOError'), 'io_error')

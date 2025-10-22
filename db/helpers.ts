@@ -371,11 +371,11 @@ export function literalLocation(loc: Coordinates) {
 }
 
 export function upsertTrigger(
-  tableName: keyof DB,
+  table: keyof DB,
   columnName: string,
   computation: string,
 ) {
-  const fn_name = `${tableName}_set_${tableName}_${columnName}`.toLowerCase()
+  const fn_name = `${table}_set_${table}_${columnName}`.toLowerCase()
   const trigger_name = `${fn_name}_trigger`
 
   return {
@@ -390,16 +390,14 @@ export function upsertTrigger(
         $$ LANGUAGE plpgsql;
 
         CREATE OR REPLACE TRIGGER ${sql.raw(fn_name)}_trigger
-        BEFORE INSERT OR UPDATE ON "${sql.raw(tableName)}"
+        BEFORE INSERT OR UPDATE ON "${sql.raw(table)}"
         FOR EACH ROW
         EXECUTE FUNCTION ${sql.raw(fn_name)}();
       `.execute(db)
     },
     drop(db: Kysely<DB>) {
       return sql`
-        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${
-        sql.raw(tableName)
-      }"
+        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${sql.raw(table)}"
       `.execute(db)
     },
   }
@@ -446,4 +444,44 @@ export async function ensureAllEnumValuesExist(
   ).join('; ')
 
   await sql.raw(statements).execute(trx)
+}
+
+export function assertOnInsert({
+  table,
+  function_name,
+  assertion,
+  error_message,
+}: {
+  table: keyof DB
+  function_name: string
+  assertion: string
+  error_message: string
+}) {
+  const trigger_name = `${function_name}_trigger`
+
+  return {
+    async up(db: Kysely<DB>) {
+      await sql`
+        CREATE OR REPLACE FUNCTION ${sql.raw(function_name)}()
+        RETURNS TRIGGER AS $$
+        BEGIN
+          ASSERT ${sql.raw(assertion)}, ${sql.raw(error_message)};
+          RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql
+      `.execute(db)
+      await sql`
+        CREATE TRIGGER ${sql.raw(trigger_name)}
+        BEFORE INSERT OR UPDATE ON ${sql.raw(table)}
+        FOR EACH ROW
+        EXECUTE FUNCTION ${sql.raw(function_name)}();
+      `.execute(db)
+    },
+    async down(db: Kysely<DB>) {
+      await sql`DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} ON ${
+        sql.raw(table)
+      }`.execute(db)
+      await sql`DROP FUNCTION IF EXISTS ${sql.raw(function_name)}()`.execute(db)
+    },
+  }
 }

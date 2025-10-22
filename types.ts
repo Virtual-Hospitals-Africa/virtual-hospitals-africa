@@ -39,6 +39,31 @@ export type OptionalUndefinedFields<T> =
     [K in keyof T as undefined extends T[K] ? K : never]?: T[K]
   }
 
+export type OptionalMaybeFields<T> =
+  & {
+    [
+      K in keyof T as null extends T[K] ? never
+        : undefined extends T[K] ? never
+        : K
+    ]: T[K]
+  }
+  & {
+    [
+      K in keyof T as null extends T[K] ? K : undefined extends T[K] ? K : never
+    ]?: T[K]
+  }
+
+type M = OptionalUndefinedFields<{
+  foo: null | number
+  bar: undefined | boolean
+  baz: string
+}>
+type MM = OptionalMaybeFields<{
+  foo: null | number
+  bar: undefined | boolean
+  baz: string
+}>
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>
@@ -50,15 +75,19 @@ export type SelectShape<T> = {
     : T[K]
 }
 
-export type InsertShape<T> = OptionalUndefinedFields<
+export type InsertShape<T> = OptionalMaybeFields<
   {
     [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? I
+      : T[K] extends null | ColumnType<any, infer NullableI, any>
+        ? null | NullableI
       : T[K]
   }
 >
 
 export type UpdateShape<T> = {
   [K in keyof T]: T[K] extends ColumnType<any, any, infer U> ? U
+    : T[K] extends null | ColumnType<any, any, infer NullableU>
+      ? null | NullableU
     : T[K]
 }
 

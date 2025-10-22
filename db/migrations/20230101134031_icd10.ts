@@ -1,7 +1,7 @@
-// deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
+import { DB } from '../../db.d.ts'
 
-export async function up(db: Kysely<any>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createTable('icd10_sections')
     .addColumn('section', 'varchar(7)', (col) => col.primaryKey())
     .addColumn('description', 'varchar(255)', (col) => col.notNull())
@@ -203,7 +203,7 @@ export async function up(db: Kysely<any>) {
   `.execute(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('icd10_diagnoses_excludes_codes').execute()
   await db.schema.dropTable('icd10_diagnoses_excludes_code_ranges').execute()
   await db.schema.dropTable('icd10_diagnoses_excludes_categories').execute()

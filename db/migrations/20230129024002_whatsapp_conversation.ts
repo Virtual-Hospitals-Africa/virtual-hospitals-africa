@@ -1,7 +1,8 @@
+import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createType('chatbot_name')
     .asEnum([
       'patient',
@@ -135,7 +136,7 @@ export async function up(db: Kysely<unknown>) {
   `.execute(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('whatsapp_messages_sent').execute()
   await db.schema.dropTable('whatsapp_messages_received').execute()
   await db.schema.dropType('chatbot_name').execute()

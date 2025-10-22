@@ -1,11 +1,7 @@
 import { Kysely, sql } from 'kysely'
+import { DB } from '../../db.d.ts'
 
-export async function up(
-  db: Kysely<{
-    examinations: unknown
-    diagnostic_tests: unknown
-  }>,
-) {
+export async function up(db: Kysely<DB>) {
   await db.schema.createTable('examinations')
     .addColumn('identifier', 'varchar(80)', (col) => col.notNull().primaryKey())
     .addColumn('display_name', 'varchar(80)', (col) => col.notNull().unique())
@@ -24,6 +20,6 @@ export async function up(
     .execute()
 }
 
-export async function down(db: Kysely<unknown>) {
+export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('examinations').execute()
 }
