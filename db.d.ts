@@ -181,11 +181,11 @@ export type SnomedCategory =
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type Workflow =
+  | 'consultation'
   | 'doctor_review'
   | 'maternity'
   | 'prescription_refill'
   | 'registration'
-  | 'consultation'
   | 'stabilization'
   | 'triage'
 
@@ -445,11 +445,11 @@ export interface Events {
 }
 
 export interface Examinations {
+  consultation_step: string
   display_name: string
   identifier: string
   order: number
   path: string
-  consultation_step: string
   slug: string
 }
 

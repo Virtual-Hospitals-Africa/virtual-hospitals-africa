@@ -1,9 +1,13 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../db/db.ts'
+import * as patients from '../../../db/models/patients.ts'
 import { addTestEmployeeWithSession } from '../../_helpers/employees.ts'
 import { route } from '../../route.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
+import { isUUID } from '../../../util/uuid.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import compact from '../../../util/compact.ts'
 
 describe('/app/organizations/[organization_id]/patients/start-registration', {
   sanitizeResources: false,
@@ -18,8 +22,26 @@ describe('/app/organizations/[organization_id]/patients/start-registration', {
 
     const response = await fetchOk(
       `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.za.clinic}/patients/start-registration`,
+      {
+        method: 'POST',
+      },
     )
 
-    console.log(response.url)
+    const path = compact(new URL(response.url).pathname.split('/'))
+    const patient_id = path.at(-4)
+    assert(isUUID(patient_id))
+    assertEquals(path, [
+      'app',
+      'organizations',
+      TEST_ORGANIZATION_UUIDS.za.clinic,
+      'patients',
+      patient_id,
+      'open_encounter',
+      'registration',
+      'personal',
+    ])
+
+    const patient = await patients.getById(db, patient_id)
+    console.log(patient)
   })
 })
