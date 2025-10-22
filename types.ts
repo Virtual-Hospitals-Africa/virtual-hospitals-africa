@@ -251,7 +251,7 @@ export type RenderedPatient =
     address: string | null
     date_of_birth: string | null
     dob_formatted: string | null
-    name: string
+    name: string | null
     description: string | null
     age_display: Maybe<string>
     age_years: Maybe<number>

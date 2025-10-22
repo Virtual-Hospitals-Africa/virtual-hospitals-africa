@@ -43,6 +43,29 @@ describe('/app/organizations/[organization_id]/patients/start-registration', {
     ])
 
     const patient = await patients.getById(db, patient_id)
-    snapshot(patient)
+    assertEquals(patient, {
+      'id': patient.id,
+      'name': null,
+      'phone_number': null,
+      'gender': null,
+      'ethnicity': null,
+      'address': null,
+      'date_of_birth': null,
+      'dob_formatted': null,
+      'age_display': null,
+      'preferred_language_code_iso_639_2_b': null,
+      'age_years': null,
+      'description': null,
+      'national_id_number': null,
+      'completed_registration': false,
+      'avatar_url': null,
+      'last_visited': null,
+      'location': null,
+      'actions': {
+        'view': `/app/patients/${patient.id}`,
+      },
+      'nearest_organization': null,
+      'primary_doctor': null,
+    })
   })
 })

@@ -13,17 +13,20 @@ export function snapshot(object: unknown) {
     'Used to snapshot objects in tests, nothing more',
   )
   const file_contents = Deno.readTextFileSync(pretty_file_name)
-  const matches = Array.from(file_contents.matchAll(/snapshot\(/))
+  const lines = file_contents.split('\n')
+  const snapshot_line = lines[line_number - 1]
+
+  const lines_snapshotting = lines.filter((line) => line.includes('snapshot('))
+
   assertEquals(
-    matches.length,
+    lines_snapshotting.length,
     1,
     `Cannot snapshot 2 things at once as the file ${pretty_file_name} could get mangled. Run these one at a time.`,
   )
 
-  const lines = file_contents.split('\n')
-  const snapshot_line = lines[line_number]
-
   const leading_spaces = ' '.repeat(column_number - 1)
+  console.log('mm')
+  console.log(snapshot_line)
   assert(
     snapshot_line.startsWith(leading_spaces),
     `Snapshot line does not start with ${
