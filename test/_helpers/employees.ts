@@ -173,6 +173,14 @@ export async function addTestEmployeeWithSession(
       },
     )
 
+  const fetchOk = async (...args: Parameters<typeof fetch>) => {
+    const response = await fetchWithSession(...args)
+    if (!response.ok) {
+      throw new Error(`[${response.status}]: ${await response.text()}`)
+    }
+    return response
+  }
+
   const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
     const response = await fetchWithSession(...args)
     if (!response.ok) throw new Error(await response.text())
@@ -186,6 +194,7 @@ export async function addTestEmployeeWithSession(
     session_id: session.id,
     health_worker,
     fetch: fetchWithSession,
+    fetchOk,
     fetchCheerio,
   }
 }

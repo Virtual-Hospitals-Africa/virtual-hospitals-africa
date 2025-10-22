@@ -44,14 +44,6 @@ import * as $app_organizations_organization_id_inventory_add_procurer from './ro
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/_middleware.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_chief_complaint from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/chief_complaint.tsx'
@@ -81,6 +73,14 @@ import * as $app_organizations_organization_id_patients_patient_id_open_encounte
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/evaluations.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_start_workflow from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/start-workflow.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/_middleware.tsx'
@@ -377,22 +377,6 @@ const manifest = {
       $app_organizations_organization_id_inventory_history,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/_middleware.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_consultation,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/_middleware.tsx':
@@ -451,6 +435,22 @@ const manifest = {
       $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/start-workflow.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_start_workflow,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage.tsx':
