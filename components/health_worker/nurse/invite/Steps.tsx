@@ -6,7 +6,7 @@ import { Maybe } from '../../../../types.ts'
 import {
   e164_phone_number,
   gender,
-  national_id_number,
+  string_or_number_as_string,
 } from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
@@ -68,7 +68,7 @@ export const PersonalFormFields = z.object({
     },
   ),
   gender,
-  national_id_number,
+  national_id_number: string_or_number_as_string,
   mobile_number: z.optional(e164_phone_number),
   address: z.object({
     country: z.string(),
@@ -78,6 +78,7 @@ export const PersonalFormFields = z.object({
     street: z.string(),
   }),
 })
+
 export type PersonalFormFields = z.infer<typeof PersonalFormFields>
 
 const ProfessionalInformationFields = z.object({

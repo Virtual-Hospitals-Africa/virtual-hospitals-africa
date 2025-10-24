@@ -8,8 +8,12 @@ import { replaceParams } from '../../../../../../util/replaceParams.ts'
 import { WORKFLOW_STEPS } from '../../../../../../shared/workflow.ts'
 import { assert } from 'std/assert/assert.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
+import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
+import * as patients from '../../../../../../db/models/patients.ts'
+import * as appointments from '../../../../../../db/models/appointments.ts'
 import z from 'zod'
 import generateUUID from '../../../../../../util/uuid.ts'
+import { promiseProps } from '../../../../../../util/promiseProps.ts'
 
 export const InsertForRegisteredPatientSchema = z.object({
   reason: z.enum([
@@ -54,11 +58,45 @@ export const handler = postHandler(
   },
 )
 
-// deno-lint-ignore require-await
 export default async function PatientRegisteredIntakePage(
-  _ctx: OrganizationContext,
+  ctx: OrganizationContext,
 ) {
-  <div>
-    TODO
-  </div>
+  const {
+    state: {
+      trx,
+      organization,
+    },
+  } = ctx
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+
+  const {
+    patient,
+    appointments_today_at_this_organization,
+    closed_encounters_at_this_organization,
+  } = await promiseProps({
+    patient: patients.getById(trx, patient_id),
+
+    appointments_today_at_this_organization: appointments
+      .getForPatient(
+        trx,
+        {
+          patient_id,
+          organization_id: organization.id,
+          time_range: 'today',
+        },
+      ),
+
+    closed_encounters_at_this_organization: patient_encounters
+      .search(trx, {
+        patient_id,
+        organization_id: organization.id,
+        is_closed: true,
+      }),
+  })
+
+  return (
+    <div>
+      TODO
+    </div>
+  )
 }

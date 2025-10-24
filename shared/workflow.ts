@@ -35,8 +35,9 @@ export const WORKFLOW_STEPS = {
     'this_visit',
     'primary_care',
     'contacts',
-    'biometrics',
-    'confirm',
+    'confirm_details',
+    'terms_and_conditions',
+    'route_patient',
   ],
   triage: [
     'warning_signs', // chief complaint + emergency signs + urgent signs

@@ -173,7 +173,7 @@ export function TextInput({
           {leftIcon && (
             <div
               aria-hidden='true'
-              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
+              className='self-center col-start-1 row-start-1 mr-3 text-red-500 pointer-events-none size-5 justify-self-end sm:size-4 dark:text-red-400'
             >
               {leftIcon}
             </div>
@@ -213,7 +213,7 @@ export function TextInput({
           {suffix && (
             <div
               id='price-currency'
-              className='pointer-events-none  select-none self-center col-start-1 row-start-1 mr-3 text-base justify-self-end text-gray-500 sm:text-sm/6 dark:text-gray-400'
+              className='self-center col-start-1 row-start-1 mr-3 text-base text-gray-500 pointer-events-none select-none justify-self-end sm:text-sm/6 dark:text-gray-400'
             >
               {suffix}
             </div>
@@ -221,7 +221,7 @@ export function TextInput({
           {rightIcon && (
             <div
               aria-hidden='true'
-              className='pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4 dark:text-red-400'
+              className='self-center col-start-1 row-start-1 mr-3 text-red-500 pointer-events-none size-5 justify-self-end sm:size-4 dark:text-red-400'
             >
               {rightIcon}
             </div>
@@ -318,8 +318,8 @@ export function UnitInput({
       required={required}
       className={cls('flex gap-1 flex-col flex-grow-0', className)}
     >
-      <div className='flex items-center rounded-md bg-white pl-0 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600'>
-        <span className='text-gray-500 ml-2'>{units}</span>
+      <div className='flex items-center pl-0 bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600'>
+        <span className='ml-2 text-gray-500'>{units}</span>
         <input
           type='text'
           inputmode='numeric'
@@ -373,7 +373,7 @@ export function CheckboxInput({
       required={required}
       className={cls('flex flex-col flex-grow-0', className)}
     >
-      <div className='grid place-items-center h-full'>
+      <div className='grid h-full place-items-center'>
         <input
           type='checkbox'
           {...(name && { name })}
@@ -677,7 +677,7 @@ export function ImageInput({
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
+      <span className='inline-block w-full p-2 text-center text-gray-600 border-0 rounded-md shadow-sm cursor-pointer ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9'>
         Upload
       </span>
     </LabeledInput>
@@ -727,7 +727,7 @@ export function ImageOrVideoInput({
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
+      <span className='inline-block w-full p-2 text-center text-gray-600 border-0 rounded-md shadow-sm cursor-pointer ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9'>
         Upload
       </span>
     </LabeledInput>
@@ -801,7 +801,7 @@ export function YesNoQuestion({
           name={name}
           type='radio'
           checked={value === true}
-          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
           value='on'
           onChange={() => onChange?.(true)}
         />
@@ -811,7 +811,7 @@ export function YesNoQuestion({
           name={name}
           type='radio'
           checked={value === false}
-          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
           value='off'
           onChange={() => onChange?.(false)}
         />
@@ -821,7 +821,7 @@ export function YesNoQuestion({
           name={name}
           type='radio'
           checked={value == null}
-          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
           value=''
           onChange={() => onChange?.(null)}
         />
@@ -869,7 +869,7 @@ export function CheckboxGridItem({
   children?: ComponentChildren
 }) {
   return (
-    <div className='w-full flex justify-start gap-2 break-before-avoid relative'>
+    <div className='relative flex justify-start w-full gap-2 break-before-avoid'>
       <div className='grid items-center'>
         <input
           name={name}
@@ -877,7 +877,7 @@ export function CheckboxGridItem({
           checked={checked}
           required={required}
           disabled={disabled}
-          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
           onInput={(e) => onChange?.(e.currentTarget.checked)}
         />
       </div>
@@ -916,13 +916,13 @@ export function RadioGroup({
                 type='radio'
                 checked={value === option.value}
                 value={option.value}
-                className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
                 onChange={(event) =>
                   onChange?.(event.currentTarget.value)}
               />
               <label
                 htmlFor={`radio-${name}-${option.value}`}
-                className='ml-3 block text-sm font-medium leading-6 text-gray-900 capitalize'
+                className='block ml-3 text-sm font-medium leading-6 text-gray-900 capitalize'
               >
                 {option.label || option.value}
               </label>

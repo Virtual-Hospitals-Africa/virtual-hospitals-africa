@@ -7,9 +7,7 @@ import { z } from 'zod'
 import ThisVisitSection from '../../../../../../../../components/patient-registration/ThisVisitSection.tsx'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
-import * as appointments from '../../../../../../../../db/models/appointments.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { Button } from '../../../../../../../../components/library/Button.tsx'
 
 const PatientRegistrationThisVisitSchema = z.object({
   next_workflow: z.enum([
@@ -58,50 +56,12 @@ export async function PatientRegistrationThisVisitPage(
     },
   }: OpenEncounterWorkflowContext,
 ) {
-  const appointments_today_at_this_organization = await appointments
-    .getForPatient(
-      trx,
-      {
-        patient_id: patient.id,
-        organization_id: organization.id,
-        time_range: 'today',
-      },
-    )
-
-  const closed_encounters_at_this_organization = await patient_encounters
-    .search(trx, {
-      organization_id: organization.id,
-      is_closed: true,
-    })
-
-  return {
-    children: (
-      <ThisVisitSection
-        this_visit={{ reason, notes }}
-        departments={departments}
-      />
-    ),
-    buttons: (
-      <>
-        <Button
-          type='submit'
-          name='next_workflow'
-          value='start_triage'
-          className='flex-1 max-w-xl'
-        >
-          Continue with registration
-        </Button>
-        <Button
-          type='submit'
-          name='next_workflow'
-          value='continue_with_registration'
-          className='flex-1 max-w-xl'
-        >
-          Continue with registration
-        </Button>
-      </>
-    ),
-  }
+  return (
+    <ThisVisitSection
+      this_visit={{ reason, notes }}
+      departments={departments}
+    />
+  )
 }
 
 export default OpenEncounterWorkflowPage(PatientRegistrationThisVisitPage)
