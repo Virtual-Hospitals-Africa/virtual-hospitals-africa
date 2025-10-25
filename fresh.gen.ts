@@ -247,9 +247,31 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
+import * as $form_inputs_internal from './islands/form/inputs/_internal.tsx'
+import * as $form_inputs_agree_disagree from './islands/form/inputs/agree_disagree.tsx'
+import * as $form_inputs_checkbox from './islands/form/inputs/checkbox.tsx'
+import * as $form_inputs_checkbox_grid from './islands/form/inputs/checkbox_grid.tsx'
+import * as $form_inputs_date from './islands/form/inputs/date.tsx'
+import * as $form_inputs_doctor_specialty from './islands/form/inputs/doctor_specialty.tsx'
+import * as $form_inputs_ethnicity from './islands/form/inputs/ethnicity.tsx'
+import * as $form_inputs_image from './islands/form/inputs/image.tsx'
+import * as $form_inputs_image_or_video from './islands/form/inputs/image_or_video.tsx'
+import * as $form_inputs_labelled from './islands/form/inputs/labelled.tsx'
+import * as $form_inputs_number from './islands/form/inputs/number.tsx'
+import * as $form_inputs_nurse_specialty from './islands/form/inputs/nurse_specialty.tsx'
+import * as $form_inputs_pharmacist_types from './islands/form/inputs/pharmacist_types.tsx'
+import * as $form_inputs_pharmacy_type from './islands/form/inputs/pharmacy_type.tsx'
+import * as $form_inputs_phone_number from './islands/form/inputs/phone_number.tsx'
+import * as $form_inputs_prefix from './islands/form/inputs/prefix.tsx'
+import * as $form_inputs_radio_group from './islands/form/inputs/radio_group.tsx'
+import * as $form_inputs_select from './islands/form/inputs/select.tsx'
+import * as $form_inputs_select_with_options from './islands/form/inputs/select_with_options.tsx'
+import * as $form_inputs_sex from './islands/form/inputs/sex.tsx'
+import * as $form_inputs_text from './islands/form/inputs/text.tsx'
+import * as $form_inputs_textarea from './islands/form/inputs/textarea.tsx'
+import * as $form_inputs_yes_no from './islands/form/inputs/yes_no.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
@@ -676,9 +698,32 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/buttons.tsx': $form_buttons,
+    './islands/form/inputs/_internal.tsx': $form_inputs_internal,
+    './islands/form/inputs/agree_disagree.tsx': $form_inputs_agree_disagree,
+    './islands/form/inputs/checkbox.tsx': $form_inputs_checkbox,
+    './islands/form/inputs/checkbox_grid.tsx': $form_inputs_checkbox_grid,
+    './islands/form/inputs/date.tsx': $form_inputs_date,
+    './islands/form/inputs/doctor_specialty.tsx': $form_inputs_doctor_specialty,
+    './islands/form/inputs/ethnicity.tsx': $form_inputs_ethnicity,
+    './islands/form/inputs/image.tsx': $form_inputs_image,
+    './islands/form/inputs/image_or_video.tsx': $form_inputs_image_or_video,
+    './islands/form/inputs/labelled.tsx': $form_inputs_labelled,
+    './islands/form/inputs/number.tsx': $form_inputs_number,
+    './islands/form/inputs/nurse_specialty.tsx': $form_inputs_nurse_specialty,
+    './islands/form/inputs/pharmacist_types.tsx': $form_inputs_pharmacist_types,
+    './islands/form/inputs/pharmacy_type.tsx': $form_inputs_pharmacy_type,
+    './islands/form/inputs/phone_number.tsx': $form_inputs_phone_number,
+    './islands/form/inputs/prefix.tsx': $form_inputs_prefix,
+    './islands/form/inputs/radio_group.tsx': $form_inputs_radio_group,
+    './islands/form/inputs/select.tsx': $form_inputs_select,
+    './islands/form/inputs/select_with_options.tsx':
+      $form_inputs_select_with_options,
+    './islands/form/inputs/sex.tsx': $form_inputs_sex,
+    './islands/form/inputs/text.tsx': $form_inputs_text,
+    './islands/form/inputs/textarea.tsx': $form_inputs_textarea,
+    './islands/form/inputs/yes_no.tsx': $form_inputs_yes_no,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,

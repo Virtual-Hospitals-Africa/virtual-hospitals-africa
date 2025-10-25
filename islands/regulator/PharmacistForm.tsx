@@ -13,6 +13,8 @@ import { IsSupervisorSelect } from '../form/Inputs.tsx'
 import AddPharmacySearch from '../AddPharmacySearch.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import { PharmacyOption } from '../AddPharmacySearch.tsx'
+import { Select } from '../form/inputs/select.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 type PharmacistForm = {
   form_data: Partial<RenderedPharmacist>
@@ -124,6 +126,19 @@ export default function PharmacistForm(
                 value={selectedPharmacy.is_supervisor?.toString()}
                 isRequired={selectedPharmacy.name !== undefined}
                 prefix={`pharmacies.${index}`}
+              />
+              <SelectWithOptions
+                required={selectedPharmacy.name !== undefined}
+                name={`pharmacies.${index}.is_supervisor`}
+                label='Is Supervisor'
+                blank_option
+                options={[{
+                  id: 'true',
+                  name: 'Yes',
+                }, {
+                  id: 'false',
+                  name: 'No',
+                }]}
               />
             </FormRow>
           </RemoveRow>
