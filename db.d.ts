@@ -273,9 +273,11 @@ export interface Consumption {
 
 export interface Countries {
   alternate_names: string[] | null
+  emoji: string | null
   iso_3166_2: string
   iso_3166_3: string
   official_name: string
+  phone_code: string | null
 }
 
 export interface DepartmentEmployment {

@@ -20,6 +20,15 @@ export async function up(db: Kysely<DB>) {
       (col) => col.notNull().unique(),
     )
     .addColumn('alternate_names', sql`varchar(255)[]`)
+    .addColumn('emoji', 'varchar(3)')
+    .addColumn(
+      'phone_code',
+      'varchar(5)',
+      (col) =>
+        col.check(
+          sql`phone_code is null or SUBSTRING(phone_code, 1, 1) != '+'`,
+        ),
+    )
     .execute()
 }
 

@@ -399,9 +399,9 @@ export const Select = forwardRef(
         <select
           {...(name && { name })}
           className={cls(
-            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
+            'h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 text-black-900 dark:bg-white/5 dark:focus:text-black-900',
             selectClassName,
-            disabled && 'text-gray-600',
+            disabled && 'bg-gray-300',
           )}
           required={required}
           onChange={onChange}
@@ -481,47 +481,17 @@ export function DateInput({
 }
 
 // Make this pretty with an icon and/or flag + area code helper
-export function PhoneNumberInput({
-  name,
-  label,
-  required,
-  disabled,
-  className,
-  inputClassName,
-  onInput,
-  onFocus,
-  onBlur,
-  signal,
-  value,
-}: InputProps) {
+export function PhoneNumberInput(
+  props: Omit<InputProps, 'type' | 'min' | 'max'> & {
+    value?: Maybe<string>
+  },
+) {
   return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={className}
-    >
-      <input
-        type='tel'
-        {...(name && { name })}
-        className={cls(
-          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
-          inputClassName,
-          disabled && 'bg-gray-300',
-        )}
-        value={signal?.value ?? value ?? undefined}
-        placeholder='+263 777 777 777'
-        required={required}
-        disabled={disabled}
-        onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value
-          onInput?.(event)
-          event.currentTarget.setCustomValidity('')
-        }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
-    </LabeledInput>
+    <InternalInput
+      type='tel'
+      placeholder=''
+      {...props}
+    />
   )
 }
 
@@ -830,6 +800,7 @@ export function SexSelect({ value }: { value?: Maybe<Sex> }) {
       name='sex'
       label='Sex'
       value={value ?? undefined}
+      blank_option
       options={[
         'male',
         'female',
