@@ -26,7 +26,7 @@ describe('scheduling/makeAppointment.ts', () => {
         })
 
         const patient = await patients.insert(trx, {
-          name: 'Test',
+          name: 'Test Surname',
         })
 
         await makeAppointment.makeAppointmentWeb(trx, {
@@ -82,12 +82,19 @@ describe('scheduling/makeAppointment.ts', () => {
             description: null,
             preferred_language_code_iso_639_2_b: null,
             primary_doctor: null,
+            sex: null,
             gender: null,
             ethnicity: null,
             id: patient.id,
             last_visited: null,
             location: null,
-            name: 'Test',
+            name: 'Test Surname',
+            names: {
+              first: 'Test',
+              preferred: 'Test',
+              surname: 'Surname',
+              full: 'Test Surname',
+            },
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,

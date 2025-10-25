@@ -67,7 +67,7 @@ export async function up(db: Kysely<DB>) {
           'completed_registration_means_has_name_dob_and_sex',
           sql`(
           (NOT completed_registration) OR
-          (completed_registration AND name IS NOT NULL AND date_of_birth IS NOT NULL AND gender IS NOT NULL)
+          (completed_registration AND name IS NOT NULL AND date_of_birth IS NOT NULL AND sex IS NOT NULL AND gender IS NOT NULL)
         )`,
         )
         .addCheckConstraint(

@@ -8,14 +8,14 @@ import * as validators from '../../util/validators.ts'
 describe('validators', () => {
   describe('national_id_number', () => {
     it('parses a legitimate national_id_number', () => {
-      const national_id_number = validators.national_id_number.parse(
+      const national_id_number = validators.zimbabwe_national_id_number.parse(
         '63-817312 A 56',
       )
       assertEquals(national_id_number, '63-817312 A 56')
     })
 
     it('parses a legitimate national_id_number in lowercase', () => {
-      const national_id_number = validators.national_id_number.parse(
+      const national_id_number = validators.zimbabwe_national_id_number.parse(
         '63-817312 a 56',
       )
       assertEquals(national_id_number, '63-817312 A 56')
@@ -23,7 +23,7 @@ describe('validators', () => {
 
     it('throws an error on an illegitimate national_id_number', () => {
       const error = assertThrows(() =>
-        validators.national_id_number.parse('63-8312 A 56')
+        validators.zimbabwe_national_id_number.parse('63-8312 A 56')
       )
       assert(error instanceof ZodError)
       assertEquals(error.issues, [

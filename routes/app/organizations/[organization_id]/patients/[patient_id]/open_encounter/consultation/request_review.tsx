@@ -16,6 +16,10 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { parseRequest } from '../../../../../../../../util/parseForm.ts'
 import z from 'zod'
 import redirect from '../../../../../../../../util/redirect.ts'
+import {
+  completedRegistration,
+} from '../../../../../../../../shared/patient_registration.ts'
+import { assert } from 'std/assert/assert.ts'
 
 function searchByHref(
   ctx: OpenEncounterWorkflowContext,
@@ -119,6 +123,8 @@ export const handler = {
 export function RequestReviewPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
+  const { patient } = ctx.state
+  assert(completedRegistration(patient))
   const organization_search_url = ctx.url.pathname.replace(
     '/request_review',
     '/nearest_organizations',
@@ -132,7 +138,7 @@ export function RequestReviewPage(
         current_url={ctx.url.toString()}
         search_url={organization_search_url}
         organizations={[]}
-        concerning_patient={ctx.state.patient}
+        concerning_patient={patient}
       />
     </>
   )

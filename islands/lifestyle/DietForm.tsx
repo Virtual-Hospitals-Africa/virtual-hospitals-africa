@@ -1,10 +1,4 @@
 import { Lifestyle, Meal } from '../../types.ts'
-import {
-  NumberInput,
-  Select,
-  SelectWithOptions,
-  TextInput,
-} from '.././form/Inputs.tsx'
 import { useSignal } from '@preact/signals'
 import { LabelledListboxMulti } from '.././form/Listbox.tsx'
 import {
@@ -20,10 +14,15 @@ import {
   STAPLE_FOODS,
   SUPPLEMENTS,
 } from '../../shared/diet.ts'
-import { CheckboxGridItem } from '../form/Inputs.tsx'
+
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
+import { CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
+import { NumberInput } from '../form/inputs/number.tsx'
+import { Select } from '../form/inputs/select.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function DietSection(
   { lifestyle }: { lifestyle?: Lifestyle },

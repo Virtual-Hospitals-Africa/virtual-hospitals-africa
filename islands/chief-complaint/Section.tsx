@@ -2,7 +2,7 @@ import { computed, effect, useSignal } from '@preact/signals'
 import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
 import { MicrophoneIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { Iso6392BLanguages } from '../../db.d.ts'
-import { SelectWithOptions, TextArea } from '../form/Inputs.tsx'
+
 import { assert } from 'std/assert/assert.ts'
 import { RecordDialog, RecordingState } from './RecordDialog.tsx'
 import {
@@ -14,6 +14,8 @@ import {
   startStreamAndMediaRecorder,
 } from './startStreamAndMediaRecorder.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 export function ChiefComplaintSection({
   preferred_language_code_iso_639_2_b,
@@ -119,7 +121,7 @@ export function ChiefComplaintSection({
             startStreamAndMediaRecorder(media_recorder_signal)
           }}
         >
-          <MicrophoneIcon className='h-4 w-4' />
+          <MicrophoneIcon className='w-4 h-4' />
         </HeroIconButton>
       )}
 

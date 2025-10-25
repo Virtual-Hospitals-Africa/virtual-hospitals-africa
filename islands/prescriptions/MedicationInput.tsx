@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Select, SelectWithOptions, TextArea } from '../form/Inputs.tsx'
 import {
   Diagnosis,
   DrugSearchResult as DrugSearchResultData,
@@ -10,6 +9,9 @@ import DrugSearch from '../drug/Search.tsx'
 import { strengthDisplay } from '../../shared/medication.ts'
 import { AddRow } from '../AddRemove.tsx'
 import { ScheduleRow } from './ScheduleRow.tsx'
+import { Select } from '../form/inputs/select.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 export function PrescriptionMedicationInput({
   name,
@@ -203,7 +205,7 @@ export function PrescriptionMedicationInput({
         />
       </FormRow>
       <div>
-        <h3 className='text-sm py-2'>Schedules</h3>
+        <h3 className='py-2 text-sm'>Schedules</h3>
         {schedules.map((schedule, index) => (
           <ScheduleRow
             key={index}

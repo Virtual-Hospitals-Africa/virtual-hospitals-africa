@@ -7,7 +7,7 @@ import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
-import { TextInput } from '../../islands/form/Inputs.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
 
 export default function VitalsMeasurementsInput(
   { vital, most_recent_patient_finding }: {
@@ -31,7 +31,7 @@ export default function VitalsMeasurementsInput(
           </div>
         )}
       </div>
-      <div className='min-w-30 max-w-30 flex items-center'>
+      <div className='flex items-center min-w-30 max-w-30'>
         <TextInput
           inputmode='numeric'
           required={vital.required}

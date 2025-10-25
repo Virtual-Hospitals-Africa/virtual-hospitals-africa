@@ -94,6 +94,12 @@ export default async function PatientRegisteredIntakePage(
       }),
   })
 
+  console.log({
+    patient,
+    appointments_today_at_this_organization,
+    closed_encounters_at_this_organization,
+  })
+
   return (
     <div>
       TODO

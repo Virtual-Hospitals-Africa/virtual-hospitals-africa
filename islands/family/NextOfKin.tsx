@@ -1,9 +1,10 @@
 import { useState } from 'preact/hooks'
 import { NextOfKin } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
-import { TextInput } from '../form/Inputs.tsx'
+
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function NextOfKinInput({
   name,

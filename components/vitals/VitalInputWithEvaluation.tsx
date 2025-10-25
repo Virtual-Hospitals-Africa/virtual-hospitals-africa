@@ -1,11 +1,13 @@
 import { MostRecentVitalMeasurement, Priority } from '../../types.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
-import { TextArea, TextInput } from '../../islands/form/Inputs.tsx'
+
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { PencilIcon } from '../library/icons/heroicons/solid.tsx'
 import { Label } from '../library/Label.tsx'
 import PriorityDropdown from '../../islands/vitals/PriorityDropdown.tsx'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 export default function VitalInputWithEvaluation({
   measurement,
@@ -46,7 +48,7 @@ export default function VitalInputWithEvaluation({
       <input
         type='checkbox'
         id={`${name}-note-toggle`}
-        className='peer sr-only'
+        className='sr-only peer'
         defaultChecked={hasExistingNote}
       />
       <div className='flex justify-between w-full'>
@@ -56,7 +58,7 @@ export default function VitalInputWithEvaluation({
               <div className='flex items-center gap-2'>
                 {getVitalName(measurement.snomed_concept_id)}
                 {computed && (
-                  <span className='inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                  <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full'>
                     Computed
                   </span>
                 )}
@@ -67,7 +69,7 @@ export default function VitalInputWithEvaluation({
             <LocalTime timestamp={measurement.created_at} />
           </div>
         </div>
-        <div className='min-w-30 max-w-30 flex items-center gap-2'>
+        <div className='flex items-center gap-2 min-w-30 max-w-30'>
           <TextInput
             name={`${name}.display_value`}
             label={null}
@@ -83,14 +85,14 @@ export default function VitalInputWithEvaluation({
           />
           <label
             htmlFor={`${name}-note-toggle`}
-            className='inline-flex items-center justify-center size-12 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700'
+            className='inline-flex items-center justify-center border border-gray-300 rounded-md cursor-pointer size-12 hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700'
             title={`Add note for ${
               getVitalName(
                 measurement.snomed_concept_id,
               )
             }`}
           >
-            <PencilIcon className='size-5 text-gray-300' />
+            <PencilIcon className='text-gray-300 size-5' />
           </label>
           <HiddenInput
             name={`${name}.snomed_concept_id`}
@@ -103,7 +105,7 @@ export default function VitalInputWithEvaluation({
         </div>
       </div>
 
-      <div className='hidden peer-checked:block mt-2'>
+      <div className='hidden mt-2 peer-checked:block'>
         <div className='flex justify-end'>
           <div className='w-80'>
             <TextArea

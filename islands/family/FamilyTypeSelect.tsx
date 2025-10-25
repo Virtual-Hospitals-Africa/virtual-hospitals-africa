@@ -1,5 +1,5 @@
-import { SelectWithOptions } from '../form/Inputs.tsx'
 import { FAMILY_TYPES } from '../../shared/family.ts'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 export default function FamilyTypeSelect(
   { name, required, label, value, onSelect }: {

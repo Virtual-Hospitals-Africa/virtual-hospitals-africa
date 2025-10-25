@@ -1,14 +1,11 @@
-import {
-  DateInput,
-  // GenderSelect,
-  PhoneNumberInput,
-  TextInput,
-} from '../../../../islands/form/Inputs.tsx'
 import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 import { NationalIdInput } from '../../../../islands/NationalId.tsx'
 import AddressSection from '../../../patient-registration/AddressSection.tsx'
+import { DateInput } from '../../../../islands/form/inputs/date.tsx'
+import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
+import { TextInput } from '../../../../islands/form/inputs/text.tsx'
 
 export default function NursePersonalForm(
   { form_data }: {

@@ -1,9 +1,3 @@
-import {
-  NoLabelButSpaceAsPlaceholder,
-  NumberInput,
-  Select,
-  SelectWithOptions,
-} from '../form/Inputs.tsx'
 import { DrugSearchResultMedication, MedicationSchedule } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import {
@@ -12,6 +6,10 @@ import {
   RegistrationFrequencies,
 } from '../../shared/medication.ts'
 import { useSignal } from '@preact/signals'
+import { NoLabelButSpaceAsPlaceholder } from '../form/inputs/labelled.tsx'
+import { NumberInput } from '../form/inputs/number.tsx'
+import { Select } from '../form/inputs/select.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 export function ScheduleInput({
   labelled,
@@ -32,7 +30,7 @@ export function ScheduleInput({
   const duration_unit = useSignal(value.duration_unit ?? 'days')
 
   return (
-    <FormRow className='w-full justify-normal pb-2'>
+    <FormRow className='w-full pb-2 justify-normal'>
       <Select
         name={`${name}.dosage`}
         label={labelled ? 'Dosage' : null}

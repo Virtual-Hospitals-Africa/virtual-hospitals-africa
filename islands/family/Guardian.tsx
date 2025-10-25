@@ -1,10 +1,12 @@
 import { useState } from 'preact/hooks'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
-import { CheckboxInput, TextInput } from '../form/Inputs.tsx'
+
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { GuardianFamilyRelation } from '../../types.ts'
+import { CheckboxInput } from '../form/inputs/checkbox.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function Guardian({
   name,

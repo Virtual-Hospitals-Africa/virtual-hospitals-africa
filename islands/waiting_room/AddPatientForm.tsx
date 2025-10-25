@@ -1,12 +1,14 @@
 import FormRow from '../../components/library/FormRow.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { Maybe, OrganizationDoctorOrNurse } from '../../types.ts'
-import { RadioGroup, TextArea } from '../form/Inputs.tsx'
+
 import ProvidersSelect from '../ProvidersSelect.tsx'
 import Form from '../../components/library/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { ENCOUNTER_REASONS } from '../../shared/reasons.ts'
 import { hasName } from '../../util/haveNames.ts'
+import { RadioGroup } from '../form/inputs/radio_group.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 const radio_group_options = ENCOUNTER_REASONS.map((
   value,

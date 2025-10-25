@@ -266,6 +266,7 @@ import * as $form_inputs_pharmacy_type from './islands/form/inputs/pharmacy_type
 import * as $form_inputs_phone_number from './islands/form/inputs/phone_number.tsx'
 import * as $form_inputs_prefix from './islands/form/inputs/prefix.tsx'
 import * as $form_inputs_radio_group from './islands/form/inputs/radio_group.tsx'
+import * as $form_inputs_search from './islands/form/inputs/search.tsx'
 import * as $form_inputs_select from './islands/form/inputs/select.tsx'
 import * as $form_inputs_select_with_options from './islands/form/inputs/select_with_options.tsx'
 import * as $form_inputs_sex from './islands/form/inputs/sex.tsx'
@@ -717,6 +718,7 @@ const manifest = {
     './islands/form/inputs/phone_number.tsx': $form_inputs_phone_number,
     './islands/form/inputs/prefix.tsx': $form_inputs_prefix,
     './islands/form/inputs/radio_group.tsx': $form_inputs_radio_group,
+    './islands/form/inputs/search.tsx': $form_inputs_search,
     './islands/form/inputs/select.tsx': $form_inputs_select,
     './islands/form/inputs/select_with_options.tsx':
       $form_inputs_select_with_options,

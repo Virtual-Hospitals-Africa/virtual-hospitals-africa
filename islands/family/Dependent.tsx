@@ -2,9 +2,10 @@ import { useState } from 'preact/hooks'
 import { FamilyRelation } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
-import { TextInput } from '../form/Inputs.tsx'
+
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function Dependent({
   name,

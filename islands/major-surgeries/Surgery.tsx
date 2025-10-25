@@ -1,9 +1,10 @@
 import SurgerySearch from '../SurgerySearch.tsx'
-import { DateInput } from '../form/Inputs.tsx'
+
 import { MajorSurgery } from '../../types.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
 
 export type SurgeryState = {
   removed: false

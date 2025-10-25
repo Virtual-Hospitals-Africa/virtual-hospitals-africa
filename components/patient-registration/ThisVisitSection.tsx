@@ -1,10 +1,11 @@
-import { SelectWithOptions, TextArea } from '../../islands/form/Inputs.tsx'
 import FormRow from '../library/FormRow.tsx'
 import { Maybe } from '../../types.ts'
 import FormSection from '../library/FormSection.tsx'
 import { EncounterReason } from '../../db.d.ts'
 import { ENCOUNTER_REASONS } from '../../shared/reasons.ts'
 import { without } from '../../util/without.ts'
+import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 export default function ThisVisitSection(
   { this_visit }: {

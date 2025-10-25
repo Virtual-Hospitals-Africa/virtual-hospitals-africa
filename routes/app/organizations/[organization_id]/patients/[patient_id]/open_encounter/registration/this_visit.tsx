@@ -44,13 +44,14 @@ export const handler = postHandler(
   },
 )
 
+// deno-lint-ignore require-await
 export async function PatientRegistrationThisVisitPage(
   {
     state: {
-      trx,
-      organization_employment,
-      organization,
-      patient,
+      // trx,
+      // organization_employment,
+      // organization,
+      // patient,
       encounter: { reason, notes },
       organization: { departments },
     },

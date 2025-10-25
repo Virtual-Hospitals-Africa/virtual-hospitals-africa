@@ -1,4 +1,3 @@
-import { DateInput, Select, TextArea } from '../form/Inputs.tsx'
 import {
   DrugSearchResult as DrugSearchResultData,
   PreExistingConditionWithDrugs,
@@ -12,6 +11,9 @@ import {
   strengthDisplay,
 } from '../../shared/medication.ts'
 import { computed, effect, useSignal } from '@preact/signals'
+import { Select } from '../form/inputs/select.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 export default function DrugInput({
   name,

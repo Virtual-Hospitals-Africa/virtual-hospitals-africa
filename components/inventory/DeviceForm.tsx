@@ -4,7 +4,7 @@ import Form from '../library/Form.tsx'
 import FormRow from '../library/FormRow.tsx'
 import DeviceSearch from '../../islands/inventory/DeviceSearch.tsx'
 import { Button } from '../library/Button.tsx'
-import { TextInput } from '../../islands/form/Inputs.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
 
 export default function OrganizationDeviceForm({ device }: {
   device: RenderedDevice | null

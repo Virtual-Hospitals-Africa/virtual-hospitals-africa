@@ -56,6 +56,7 @@ const baseQuery = (trx: TrxOrDb) =>
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
       'patients.phone_number',
+      'patients.sex',
       'patients.gender',
       'patients.ethnicity',
       'addresses.formatted as address',

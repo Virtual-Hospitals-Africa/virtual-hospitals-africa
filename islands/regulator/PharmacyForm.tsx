@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import { DateInput, PharmacyTypeSelect, TextInput } from '../form/Inputs.tsx'
+
 import FormRow from '../../components/library/FormRow.tsx'
 import Buttons from '../form/buttons.tsx'
 import { RenderedPharmacy } from '../../types.ts'
@@ -8,6 +8,9 @@ import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import AddPharmacistSearch, {
   PharmacistOption,
 } from '../AddPharmacistSearch.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
+import { PharmacyTypeSelect } from '../form/inputs/pharmacy_type.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 type PharmacyForm = {
   form_data: Partial<RenderedPharmacy>

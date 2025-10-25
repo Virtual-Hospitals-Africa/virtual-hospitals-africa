@@ -1,3 +1,8 @@
+import {
+  RenderedPatient,
+  RenderedPatientCompletedRegistration,
+} from '../types.ts'
+
 export const PATIENT_REGISTRATION_STEPS = [
   'personal' as const,
   'this_visit' as const,
@@ -15,4 +20,10 @@ export function isPatientRegistrationStep(
   return PATIENT_REGISTRATION_STEPS.includes(
     step as unknown as PatientRegistrationStep,
   )
+}
+
+export function completedRegistration(
+  patient: RenderedPatient,
+): patient is RenderedPatientCompletedRegistration {
+  return patient.completed_registration
 }

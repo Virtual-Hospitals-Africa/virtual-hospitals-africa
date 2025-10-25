@@ -1,20 +1,16 @@
 import { useSignal } from '@preact/signals'
-import {
-  DateInput,
-  PharmacistTypeSelect,
-  PrefixSelect,
-  TextInput,
-} from '../form/Inputs.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import Buttons from '../form/buttons.tsx'
 import { RenderedPharmacist } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
-import { IsSupervisorSelect } from '../form/Inputs.tsx'
 import AddPharmacySearch from '../AddPharmacySearch.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import { PharmacyOption } from '../AddPharmacySearch.tsx'
-import { Select } from '../form/inputs/select.tsx'
 import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
+import { PharmacistTypeSelect } from '../form/inputs/pharmacist_types.tsx'
+import { PrefixSelect } from '../form/inputs/prefix.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 type PharmacistForm = {
   form_data: Partial<RenderedPharmacist>
@@ -121,11 +117,6 @@ export default function PharmacistForm(
                     ...pharmacy,
                   }
                 }}
-              />
-              <IsSupervisorSelect
-                value={selectedPharmacy.is_supervisor?.toString()}
-                isRequired={selectedPharmacy.name !== undefined}
-                prefix={`pharmacies.${index}`}
               />
               <SelectWithOptions
                 required={selectedPharmacy.name !== undefined}

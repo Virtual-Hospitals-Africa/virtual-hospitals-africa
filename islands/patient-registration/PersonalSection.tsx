@@ -1,10 +1,12 @@
-import { DateInput, SexSelect, TextInput } from '../../islands/form/Inputs.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import { RenderedPatient } from '../../types.ts'
 import { NationalIdFormGroup } from '../../islands/NationalId.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 import { effect, useSignal } from '@preact/signals'
 import SelectWithOther from '../SelectWithOther.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
+import { SexSelect } from '../form/inputs/sex.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function PatientPersonalSection(
   { patient = {} }: {

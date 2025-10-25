@@ -1,4 +1,4 @@
-import { SelectWithOptions } from './form/Inputs.tsx'
+import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 
 // Hardcoded country data from db/resources/countries.tsv
 const COUNTRIES = [

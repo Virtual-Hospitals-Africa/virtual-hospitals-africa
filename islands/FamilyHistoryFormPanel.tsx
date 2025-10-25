@@ -61,7 +61,7 @@ function FamilyMemberSection({
         name={`family_history.family_members.${index}.relation_sexed`}
         family_relation_sexed={member.relationship_sexed}
         type='all'
-        gender={undefined}
+        sex={undefined}
       />
       {
         /* <Gender

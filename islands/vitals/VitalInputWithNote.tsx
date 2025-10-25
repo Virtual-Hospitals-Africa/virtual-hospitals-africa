@@ -5,7 +5,7 @@ import {
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { TextArea, TextInput } from '../form/Inputs.tsx'
+
 import { LocalTime } from '../LocalTime.tsx'
 import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
 import {
@@ -14,6 +14,8 @@ import {
 } from '../../components/library/icons/heroicons/solid.tsx'
 import { useSignal } from '@preact/signals'
 import { Label } from '../../components/library/Label.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 export default function VitalInputWithNote(
   { vital, most_recent_patient_finding }: {
@@ -39,14 +41,14 @@ export default function VitalInputWithNote(
             </div>
           )}
         </div>
-        <div className='min-w-30 max-w-30 flex items-center gap-2'>
+        <div className='flex items-center gap-2 min-w-30 max-w-30'>
           <TextInput
             inputmode='numeric'
             required={vital.required}
             name={`${name}.value`}
             label={null}
             value={null}
-            className='col-start-6 justify-end'
+            className='justify-end col-start-6'
             min={0}
             suffix={vital.units}
           />
@@ -58,7 +60,7 @@ export default function VitalInputWithNote(
             title={`Flag ${vital.label}`}
             className='w-8 h-8 p-1'
           >
-            <FlagIcon className='h-4 w-4' />
+            <FlagIcon className='w-4 h-4' />
           </HeroIconButton>
           <HeroIconButton
             variant='outline'
@@ -68,7 +70,7 @@ export default function VitalInputWithNote(
             className='w-8 h-8 p-1'
             onClick={() => showNote.value = !showNote.value}
           >
-            <PencilIcon className='h-4 w-4' />
+            <PencilIcon className='w-4 h-4' />
           </HeroIconButton>
           {
             /* <CheckboxInput

@@ -1,7 +1,9 @@
 import { JSX } from 'preact'
-import { CheckboxInput, TextInput } from './form/Inputs.tsx'
+
 import { Maybe } from '../types.ts'
 import { useSignal } from '@preact/signals'
+import { CheckboxInput } from './form/inputs/checkbox.tsx'
+import { TextInput } from './form/inputs/text.tsx'
 
 export function NationalIdFormGroup({ national_id_number }: {
   national_id_number: Maybe<string>

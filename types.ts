@@ -54,16 +54,13 @@ export type OptionalMaybeFields<T> =
     ]?: T[K]
   }
 
-type M = OptionalUndefinedFields<{
-  foo: null | number
-  bar: undefined | boolean
-  baz: string
-}>
-type MM = OptionalMaybeFields<{
-  foo: null | number
-  bar: undefined | boolean
-  baz: string
-}>
+export type RequiredFields<T> = {
+  [
+    K in keyof T as null extends T[K] ? K
+      : undefined extends T[K] ? K
+      : never
+  ]: NonNull<T[K]>
+}
 
 export type SqlRow<T> = {
   id: Generated<number>
@@ -279,6 +276,22 @@ export type RenderedPatient =
     preferred_language_code_iso_639_2_b: string | null
     primary_doctor: null | Omit<RenderedCareTeamHealthWorker, 'profession'>
   }
+
+export type RenderedPatientCompletedPersonal =
+  & RenderedPatient
+  & RequiredFields<
+    Pick<
+      RenderedPatient,
+      'name' | 'names' | 'date_of_birth' | 'dob_formatted' | 'sex'
+    >
+  >
+
+export type RenderedPatientCompletedRegistration =
+  & RenderedPatientCompletedPersonal
+  & {
+    completed_registration: true
+  }
+
 export type Condition = {
   id: string
   name: string

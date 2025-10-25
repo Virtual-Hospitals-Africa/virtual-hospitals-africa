@@ -102,7 +102,6 @@ export default HealthWorkerHomePageLayout(
       return ctx.render({ health_worker })
     } else {
       const patient = await patients.getById(ctx.state.trx, search.patient_id)
-
       patient_info = { id: patient.id, name: patient.name }
     }
 
@@ -116,6 +115,7 @@ export default HealthWorkerHomePageLayout(
     })
 
     assert(hasName(patient))
+    assert(hasName(patient_info))
 
     const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
       type: 'provider_appointment_slot',

@@ -1,5 +1,5 @@
-import { SelectWithOptions } from '../form/Inputs.tsx'
 import { PATIENT_COHABITATIONS } from '../../shared/family.ts'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 export default function PatientCohabitationSelect(
   { name, required, label, value, type }: {

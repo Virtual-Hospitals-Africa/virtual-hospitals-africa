@@ -4,17 +4,16 @@ import Form from '../components/library/Form.tsx'
 import { useSignal } from '@preact/signals'
 import { OrganizationLike, PossiblyEmployedHealthWorker } from '../types.ts'
 import FormRow from '../components/library/FormRow.tsx'
-import {
-  DoctorSpecialtySelect,
-  NurseSpecialtySelect,
-  SelectWithOptions,
-  TextInput,
-} from './form/Inputs.tsx'
+
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
 import CountrySelect from './CountrySelect.tsx'
 import capitalize from '../util/capitalize.ts'
+import { DoctorSpecialtySelect } from './form/inputs/doctor_specialty.tsx'
+import { NurseSpecialtySelect } from './form/inputs/nurse_specialty.tsx'
+import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
+import { TextInput } from './form/inputs/text.tsx'
 
 type OnboardingProgress =
   | { type: 'welcome' }
@@ -34,7 +33,7 @@ function Welcome({ show, getStarted }: { show: boolean; getStarted(): void }) {
         This is a demonstration of the Virtual Hospital Africa platform. All
         information presented and shared is for testing purposes only.
       </p>
-      <div className='mt-10 flex'>
+      <div className='flex mt-10'>
         <Button type='button' onClick={getStarted}>
           Let's get started<span aria-hidden='true'>
             &nbsp;&nbsp;&rarr;
@@ -133,7 +132,7 @@ function EnterProfession(
       <p className='mt-4'>
         <i>How you'll appear in the platform</i>
       </p>
-      <div className='mt-2 rounded-lg border-gray-200 border-2 p-3'>
+      <div className='p-3 mt-2 border-2 border-gray-200 rounded-lg'>
         <Person
           person={{
             name: doctor_prefix + name.value,
@@ -144,7 +143,7 @@ function EnterProfession(
         />
       </div>
 
-      <div className='mt-10 flex'>
+      <div className='flex mt-10'>
         <Button
           type={profession.value === 'regulator' ? 'submit' : 'button'}
           onClick={profession.value === 'regulator'
@@ -188,8 +187,8 @@ function SelectOrganization(
           }}
         />
       </FormRow>
-      <div className='mt-10 flex'>
-        <div className='mt-10 flex'>
+      <div className='flex mt-10'>
+        <div className='flex mt-10'>
           <Button type='submit'>
             Let's go<span aria-hidden='true'>
               &nbsp;&nbsp;&rarr;
@@ -213,9 +212,9 @@ export function Onboarding(
 
   return (
     <Form method='POST'>
-      <div className='overflow-hidden bg-white py-32'>
-        <div className='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
-          <div className='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
+      <div className='py-32 overflow-hidden bg-white'>
+        <div className='px-6 mx-auto max-w-7xl lg:flex lg:px-8'>
+          <div className='grid max-w-2xl grid-cols-1 mx-auto gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
             <Welcome
               show={progress.value.type === 'welcome'}
               getStarted={getStarted}
@@ -230,7 +229,7 @@ export function Onboarding(
               organizations={organizations}
             />
             <div className='flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents'>
-              <div className='w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end'>
+              <div className='flex-auto w-0 lg:ml-auto lg:w-auto lg:flex-none lg:self-end'>
                 <img
                   src='/doctor-holding-phone.png'
                   alt='Welcome'

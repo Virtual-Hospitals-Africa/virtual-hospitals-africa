@@ -5,15 +5,15 @@ import ViewIconWithBackground from './ViewIconWithBackground.tsx'
 import { H2 } from '../../components/library/typography/H2.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import { Person } from '../../components/library/Person.tsx'
-import { TextArea } from '../form/Inputs.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { RenderedPatient } from '../../types.ts'
+import { RenderedPatientCompletedRegistration } from '../../types.ts'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {
     requesting_organization?: NearestOrganizationSearchResult
-    concerning_patient: RenderedPatient
+    concerning_patient: RenderedPatientCompletedRegistration
   },
 ) {
   return (
@@ -31,11 +31,11 @@ export function RequestingOrganizationDialog(
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+          <div className='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75' />
         </Transition.Child>
 
         <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
-          <div className='flex min-h-full justify-center p-4 items-center sm:p-0'>
+          <div className='flex items-center justify-center min-h-full p-4 sm:p-0'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'
@@ -65,7 +65,7 @@ function DialogContents({
   concerning_patient,
   requesting_organization,
 }: {
-  concerning_patient: RenderedPatient
+  concerning_patient: RenderedPatientCompletedRegistration
   requesting_organization: NearestOrganizationSearchResult
 }) {
   return (

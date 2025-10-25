@@ -1,9 +1,9 @@
-import { RenderedPatient } from '../../types.ts'
+import { RenderedPatientCompletedPersonal } from '../../types.ts'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import PatientsEmptyState from './EmptyState.tsx'
 
-const columns: TableColumn<RenderedPatient>[] = [
+const columns: TableColumn<RenderedPatientCompletedPersonal>[] = [
   {
     label: 'Patient',
     data(row) {
@@ -26,7 +26,7 @@ const columns: TableColumn<RenderedPatient>[] = [
 ]
 
 export default function PatientsTable(
-  { patients }: { patients: RenderedPatient[] },
+  { patients }: { patients: RenderedPatientCompletedPersonal[] },
 ) {
   return (
     <Table

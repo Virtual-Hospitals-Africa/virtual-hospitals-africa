@@ -3,7 +3,7 @@ import {
   DOCTOR_SPECIALTIES,
   DoctorSpecialty,
   OrganizationSortOptions,
-  RenderedPatient,
+  RenderedPatientCompletedRegistration,
 } from '../../types.ts'
 import OrganizationSearch from '../OrganizationSearch.tsx'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
@@ -17,7 +17,7 @@ import { OrganizationsTable } from './OrganizationsTable.tsx'
 export function OrganizationView(props: {
   current_url: string
   search_url: string
-  concerning_patient: RenderedPatient
+  concerning_patient: RenderedPatientCompletedRegistration
   organizations: NearestOrganizationSearchResult[]
 }) {
   const organizations = useSignal(props.organizations)
@@ -117,13 +117,13 @@ export function OrganizationView(props: {
         <Dropdown
           button={
             <Button
-              className='d-flex items-center gap-2 w-full'
+              className='items-center w-full gap-2 d-flex'
               variant='outline'
               size='sm'
               color='gray'
               type='button'
             >
-              <p className='truncate flex-1'>
+              <p className='flex-1 truncate'>
                 {sort.value}
               </p>
               <svg

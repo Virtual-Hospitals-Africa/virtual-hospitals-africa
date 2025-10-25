@@ -42,7 +42,9 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
     assertEquals(patient, {
       'id': patient.id,
       'name': null,
+      'names': null,
       'phone_number': null,
+      'sex': null,
       'gender': null,
       'ethnicity': null,
       'address': null,

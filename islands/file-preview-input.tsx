@@ -1,10 +1,12 @@
 import { useState } from 'preact/hooks'
-import { ImageOrVideoInput, InputProps } from './form/Inputs.tsx'
+
 import cls from '../util/cls.ts'
 import { Maybe } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { RemoveRow } from './AddRemove.tsx'
 import { Label } from '../components/library/Label.tsx'
+import { InputProps } from './form/inputs/_internal.tsx'
+import { ImageOrVideoInput } from './form/inputs/image_or_video.tsx'
 
 type FilePreviewInputProps = Omit<InputProps, 'value' | 'label'> & {
   label?: string
@@ -58,14 +60,14 @@ export default function Preview(
         >
           {media_type === 'image' && (
             <img
-              className='w-full h-full object-cover'
+              className='object-cover w-full h-full'
               src={url}
               alt={name ? `Uploaded ${name}` : ''}
             />
           )}
           {media_type === 'video' && (
             <video
-              className='w-full h-full object-cover'
+              className='object-cover w-full h-full'
               src={url}
               aria-label={name ? `Uploaded ${name}` : ''}
               controls

@@ -3,9 +3,11 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 import Form from '../../components/library/Form.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { DateInput, NumberInput } from '../form/Inputs.tsx'
+
 import AsyncSearch from '../AsyncSearch.tsx'
 import { RenderedConsumable } from '../../types.ts'
+import { DateInput } from '../form/inputs/date.tsx'
+import { NumberInput } from '../form/inputs/number.tsx'
 
 export default function OrganizationConsumableForm(
   { today, consumable }: {

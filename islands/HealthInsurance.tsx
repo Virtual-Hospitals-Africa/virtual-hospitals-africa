@@ -1,8 +1,11 @@
 import { useSignal } from '@preact/signals'
 import FormSection from '../components/library/FormSection.tsx'
 import FormRow from '../components/library/FormRow.tsx'
-import { CheckboxInput, DateInput, TextInput } from './form/Inputs.tsx'
+
 import { RenderedPatientInsurance } from '../types.ts'
+import { CheckboxInput } from './form/inputs/checkbox.tsx'
+import { DateInput } from './form/inputs/date.tsx'
+import { TextInput } from './form/inputs/text.tsx'
 
 export function HealthInsuranceSection(
   { current_insurance, previously_completed_form }: {

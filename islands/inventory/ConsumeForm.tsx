@@ -3,7 +3,7 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 import Form from '../../components/library/Form.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { NumberInput } from '../form/Inputs.tsx'
+import { NumberInput } from '../form/inputs/number.tsx'
 
 export default function OrganizationConsumableForm(): JSX.Element {
   return (
