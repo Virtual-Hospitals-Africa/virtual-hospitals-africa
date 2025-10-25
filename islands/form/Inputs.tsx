@@ -67,10 +67,10 @@ type DateInputProps = Partial<WrapperInputProps<HTMLInputElement, string>> & {
   max?: Maybe<string>
 }
 
-export type TextInputProps =
-  & WrapperInputProps<HTMLInputElement, string>
+export type InputProps =
+  & WrapperInputProps<HTMLInputElement, string | number>
   & {
-    type?: 'text' | 'email' | 'tel'
+    type?: 'text' | 'email' | 'tel' | 'date'
     placeholder?: string
     pattern?: string
     onKeyDown?: (event: KeyboardEvent) => void
@@ -92,6 +92,12 @@ export type TextInputProps =
       inputmode: 'numeric'
       min?: number
       max?: number
+    }
+    | {
+      type: 'date'
+      inputmode?: undefined
+      min?: Maybe<string>
+      max?: Maybe<string>
     }
   )
 
@@ -129,7 +135,7 @@ export function LabeledInput({
 
 type InputSize = 'normal' | 'large' | 'small'
 
-export function TextInput({
+function InternalInput({
   name,
   type,
   label,
@@ -157,7 +163,7 @@ export function TextInput({
   inputmode,
   min,
   max,
-}: TextInputProps) {
+}: InputProps) {
   assert(!characterCountLimit)
   assert(!rightIcon || !suffix)
 
@@ -207,8 +213,8 @@ export function TextInput({
             onKeyDown={onKeyDown}
             pattern={pattern}
             autoComplete='off'
-            min={min}
-            max={max}
+            min={min ?? undefined}
+            max={max ?? undefined}
           />
           {suffix && (
             <div
@@ -237,114 +243,27 @@ export function TextInput({
   )
 }
 
-export function NumberInput({
-  name,
-  label,
-  required,
-  signal,
-  value,
-  onInput,
-  onFocus,
-  onBlur,
-  disabled,
-  readonly,
-  className,
-  inputClassName,
-  min,
-  max,
-}: WrapperInputProps<HTMLInputElement, number> & {
-  min?: number
-  max?: number
-}) {
-  return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={cls('w-full flex-1', className)}
-    >
-      <input
-        type='text'
-        inputmode='numeric'
-        {...(name && { name })}
-        className={cls(
-          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
-          inputClassName,
-          disabled && 'bg-gray-300',
-        )}
-        required={required}
-        disabled={disabled}
-        readonly={readonly}
-        value={signal?.value ?? value ?? undefined}
-        onInput={(event) => {
-          if (signal) signal.value = parseInt(event.currentTarget.value)
-          onInput?.(event)
-          event.currentTarget.setCustomValidity('')
-        }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        min={min}
-        max={max}
-      />
-    </LabeledInput>
-  )
+export function TextInput(
+  props: InputProps & {
+    type?: 'text' | 'email' | 'tel'
+    value?: Maybe<string>
+  },
+) {
+  return <InternalInput {...props} />
 }
 
-export function UnitInput({
-  name,
-  label,
-  required,
-  signal,
-  value,
-  onInput,
-  onFocus,
-  onBlur,
-  disabled,
-  readonly,
-  className,
-  inputClassName,
-  min,
-  max,
-  units,
-}: WrapperInputProps<HTMLInputElement, number> & {
-  min?: number
-  max?: number
-  units: string
-}) {
+export function NumberInput(
+  props: WrapperInputProps<HTMLInputElement, number> & {
+    min?: number
+    max?: number
+  },
+) {
   return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={cls('flex gap-1 flex-col flex-grow-0', className)}
-    >
-      <div className='flex items-center pl-0 bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:outline-indigo-600'>
-        <span className='ml-2 text-gray-500'>{units}</span>
-        <input
-          type='text'
-          inputmode='numeric'
-          {...(name && { name })}
-          className={cls(
-            'block w-full rounded-md border-0 outline-0 focus:ring-0 focus:outline-none text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6',
-            inputClassName,
-            disabled && 'bg-gray-300',
-          )}
-          required={required}
-          disabled={disabled}
-          readonly={readonly}
-          value={signal?.value ?? value ?? undefined}
-          onInput={(event) => {
-            if (signal) signal.value = parseInt(event.currentTarget.value)
-            onInput?.(event)
-            event.currentTarget.setCustomValidity('')
-          }}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          min={min}
-          max={max}
-        />
-      </div>
-    </LabeledInput>
+    <InternalInput
+      type='text'
+      inputmode='numeric'
+      {...props}
+    />
   )
 }
 
@@ -549,48 +468,15 @@ export const SelectWithOptions = forwardRef(function SelectWithOptions<
 
 export function DateInput({
   name = 'date',
-  signal,
-  value,
-  label,
-  required,
-  className,
-  inputClassName,
-  disabled,
-  onInput,
-  onFocus,
-  onBlur,
-  min,
-  max,
+  // className,
+  ...props
 }: DateInputProps) {
   return (
-    <LabeledInput
+    <InternalInput
       name={name}
-      label={label}
-      required={required}
-      className={cls('w-40', className)}
-    >
-      <input
-        type='date'
-        {...(name && { name })}
-        className={cls(
-          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
-          inputClassName,
-          disabled && 'bg-gray-300',
-        )}
-        required={required}
-        disabled={disabled}
-        onInput={(event) => {
-          if (signal) signal.value = event.currentTarget.value
-          onInput?.(event)
-          event.currentTarget.setCustomValidity('')
-        }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        value={signal?.value ?? value ?? undefined}
-        min={min ?? undefined}
-        max={max ?? undefined}
-      />
-    </LabeledInput>
+      type='date'
+      {...props}
+    />
   )
 }
 
@@ -607,7 +493,7 @@ export function PhoneNumberInput({
   onBlur,
   signal,
   value,
-}: TextInputProps) {
+}: InputProps) {
   return (
     <LabeledInput
       name={name}
@@ -650,7 +536,7 @@ export function ImageInput({
   onInput,
   onFocus,
   onBlur,
-}: Omit<TextInputProps, 'signal'>) {
+}: Omit<InputProps, 'signal'>) {
   return (
     <LabeledInput
       name={name}
@@ -695,7 +581,7 @@ export function ImageOrVideoInput({
   onInput,
   onFocus,
   onBlur,
-}: Omit<TextInputProps, 'value' | 'signal'> & {
+}: Omit<InputProps, 'value' | 'signal'> & {
   value?: Maybe<{
     mime_type: string
     url: string
