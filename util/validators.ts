@@ -32,7 +32,7 @@ export const international_phone_number = z.string().or(z.number())
   )
   .transform((data) => data.number.international)
 
-export const gender = z.enum(['male', 'female', 'non-binary'])
+export const sex = z.enum(['male', 'female', 'other', 'prefer not to say'])
 
 export const varchar255 = z.string().min(1).max(255)
 

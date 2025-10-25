@@ -13,6 +13,7 @@ import isObjectLike from '../util/isObjectLike.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
+import { Label } from '../components/library/Label.tsx'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -148,16 +149,21 @@ export default function Search<T extends { id?: unknown; name: string }>({
     >
       <div className='grow'>
         {label && (
-          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-500 mb-0 ml-0.5 text-left'>
-            {label}
-            {required && '*'}
+          <Combobox.Label>
+            <Label>
+              {label}
+              {required && '*'}
+            </Label>
           </Combobox.Label>
         )}
         <div className='relative'>
           <Combobox.Input
             ref={input_ref}
             name={name_field}
-            className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+            className={cls(
+              'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
+              disabled && 'bg-gray-300',
+            )}
             onChange={(event) => {
               const query = event.currentTarget.value
               setSelected(null)

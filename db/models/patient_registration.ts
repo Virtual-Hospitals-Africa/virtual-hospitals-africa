@@ -32,6 +32,7 @@ export async function start(
   assertOr403(
     non_admin_id,
   )
+  // TODO make it so that this presents a button in the alert such that you can take an action
   assertOr400(
     !health_worker.present_encounter,
     'Cannot register new patients while present with another patient',

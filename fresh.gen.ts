@@ -259,6 +259,7 @@ import * as $form_inputs_ethnicity from './islands/form/inputs/ethnicity.tsx'
 import * as $form_inputs_image from './islands/form/inputs/image.tsx'
 import * as $form_inputs_image_or_video from './islands/form/inputs/image_or_video.tsx'
 import * as $form_inputs_labelled from './islands/form/inputs/labelled.tsx'
+import * as $form_inputs_language from './islands/form/inputs/language.tsx'
 import * as $form_inputs_number from './islands/form/inputs/number.tsx'
 import * as $form_inputs_nurse_specialty from './islands/form/inputs/nurse_specialty.tsx'
 import * as $form_inputs_pharmacist_types from './islands/form/inputs/pharmacist_types.tsx'
@@ -711,6 +712,7 @@ const manifest = {
     './islands/form/inputs/image.tsx': $form_inputs_image,
     './islands/form/inputs/image_or_video.tsx': $form_inputs_image_or_video,
     './islands/form/inputs/labelled.tsx': $form_inputs_labelled,
+    './islands/form/inputs/language.tsx': $form_inputs_language,
     './islands/form/inputs/number.tsx': $form_inputs_number,
     './islands/form/inputs/nurse_specialty.tsx': $form_inputs_nurse_specialty,
     './islands/form/inputs/pharmacist_types.tsx': $form_inputs_pharmacist_types,

@@ -9,7 +9,6 @@ type DateInputProps = Partial<WrapperInputProps<HTMLInputElement, string>> & {
 
 export function DateInput({
   name = 'date',
-  // className,
   ...props
 }: DateInputProps) {
   return (

@@ -6,10 +6,11 @@ import {
 import { z } from 'zod'
 import * as patients from '../../../../../../../../db/models/patients.ts'
 import {
-  gender,
+  sex,
   string_or_number_as_string,
   varchar255,
 } from '../../../../../../../../util/validators.ts'
+import { getAll as getAllLanguages } from '../../../../../../../../db/models/languages.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import PersonalSection from '../../../../../../../../islands/patient-registration/PersonalSection.tsx'
@@ -21,7 +22,8 @@ const PatientRegistrationPersonalSchema = z.object({
   national_id_number: string_or_number_as_string.optional(),
   no_national_id: z.boolean().optional(),
   date_of_birth: z.string().date(),
-  gender,
+  sex,
+  gender: varchar255,
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {
@@ -48,7 +50,15 @@ export const handler = postHandler(
 export async function PatientRegistrationPersonalPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  return <PersonalSection patient={ctx.state.patient} />
+  const languages = await getAllLanguages(ctx.state.trx)
+  return (
+    <PersonalSection
+      patient={ctx.state.patient}
+      organization_default_language_code={ctx.state.organization
+        .most_common_language_code_iso_639_2_b}
+      languages={languages}
+    />
+  )
 }
 
 export default OpenEncounterWorkflowPage(PatientRegistrationPersonalPage)

@@ -1,5 +1,5 @@
-import { forwardRef, HTMLAttributes } from 'preact/compat/src/index.d.ts'
-import { ComponentChildren, Ref } from 'preact/src/index.d.ts'
+import { forwardRef, HTMLAttributes } from 'preact/compat'
+import { ComponentChildren, Ref } from 'preact'
 import cls from '../../../util/cls.ts'
 import { LabeledInput, LabeledInputProps } from './labelled.tsx'
 

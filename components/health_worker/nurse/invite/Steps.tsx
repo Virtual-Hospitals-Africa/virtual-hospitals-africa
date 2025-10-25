@@ -5,8 +5,8 @@ import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
 import {
   e164_phone_number,
-  gender,
   string_or_number_as_string,
+  varchar255,
 } from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
@@ -67,7 +67,7 @@ export const PersonalFormFields = z.object({
       message: 'Invalid email format',
     },
   ),
-  gender,
+  gender: varchar255,
   national_id_number: string_or_number_as_string,
   mobile_number: z.optional(e164_phone_number),
   address: z.object({
