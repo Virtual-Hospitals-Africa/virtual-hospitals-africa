@@ -14,7 +14,7 @@ describe('patient chatbot', () => {
   it('asks for birthday after inquiring gender', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_gender',
+      conversation_state: 'not_onboarded:make_appointment:enter_sex',
       phone_number,
       name: 'test',
       gender: null,

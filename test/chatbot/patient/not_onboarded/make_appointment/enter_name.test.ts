@@ -63,7 +63,7 @@ describe('patient chatbot', () => {
 
     assertEquals(
       conversation_state,
-      'not_onboarded:make_appointment:enter_gender',
+      'not_onboarded:make_appointment:enter_sex',
     )
 
     const patient = await patients.getById(db, patient_id)

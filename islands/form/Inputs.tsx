@@ -10,7 +10,6 @@ import {
 import { Label } from '../../components/library/Label.tsx'
 import {
   DOCTOR_SPECIALTIES,
-  Gender,
   Maybe,
   NURSE_SPECIALTIES,
   PHARMACIST_TYPES,
@@ -19,6 +18,7 @@ import {
   PharmacyType,
   Prefix,
   PREFIXES,
+  Sex,
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
@@ -182,7 +182,7 @@ export function TextInput({
             type={type}
             {...(name && { name })}
             className={cls(
-              'col-start-1 row-start-1 h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-red-300 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
+              'col-start-1 row-start-1 h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
               inputClassName,
               disabled && 'bg-gray-300',
               !!leftIcon && 'pl-3',
@@ -937,18 +937,20 @@ export function RadioGroup({
   )
 }
 
-export function GenderSelect({ value }: { value?: Maybe<Gender> }) {
+export function SexSelect({ value }: { value?: Maybe<Sex> }) {
   return (
-    <Select required name='gender' label='Sex/Gender'>
-      <option value=''>Select</option>
-      <option value='female' label='Female' selected={value === 'female'} />
-      <option value='male' label='Male' selected={value === 'male'} />
-      <option
-        value='non-binary'
-        label='Non-binary'
-        selected={value === 'non-binary'}
-      />
-    </Select>
+    <SelectWithOptions
+      required
+      name='sex'
+      label='Sex'
+      value={value ?? undefined}
+      options={[
+        'male',
+        'female',
+        'other',
+        'prefer not to say',
+      ]}
+    />
   )
 }
 

@@ -178,9 +178,9 @@ export default function Search<T extends { id?: unknown; name: string }>({
             }}
             placeholder={placeholder}
           />
-          <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
+          <Combobox.Button className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'>
             <ChevronUpDownIcon
-              className='h-5 w-5 text-gray-400'
+              className='w-5 h-5 text-gray-400'
               aria-hidden='true'
             />
           </Combobox.Button>
@@ -195,7 +195,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
                 if (loading_options) return
                 loadMoreOptions?.()
               }}
-              className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+              className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
             >
               {all_options.map((option) => (
                 <Combobox.Option
@@ -222,7 +222,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
                               active ? 'text-white' : 'text-indigo-600',
                             )}
                           >
-                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                            <CheckIcon className='w-5 h-5' aria-hidden='true' />
                           </span>
                         )}
                       </>

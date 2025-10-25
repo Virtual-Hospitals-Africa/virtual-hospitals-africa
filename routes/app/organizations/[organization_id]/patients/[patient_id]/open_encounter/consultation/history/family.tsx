@@ -15,7 +15,7 @@ import {
 } from './_middleware.tsx'
 
 const FamilyMemberSchema = z.object({
-  relation_gendered: z.enum(keys(GENDERED_RELATION_SNOMED_CONCEPT_IDS)),
+  relation_sexed: z.enum(keys(GENDERED_RELATION_SNOMED_CONCEPT_IDS)),
 })
 
 export const FamilyHistorySchema = z
@@ -32,14 +32,14 @@ export const FamilyHistorySchema = z
           .refine(
             (members) =>
               members.filter((m) =>
-                m.relation_gendered.match(/(biological mother)/gi)
+                m.relation_sexed.match(/(biological mother)/gi)
               ).length <= 1,
             { message: 'Cannot have more than one bilogical mother.' },
           )
           .refine(
             (members) =>
               members.filter((m) =>
-                m.relation_gendered.match(/(biological father)/gi)
+                m.relation_sexed.match(/(biological father)/gi)
               ).length <= 1,
             { message: 'Cannot have more than one bilogical father.' },
           ),

@@ -9,30 +9,30 @@ function ImageDownload(props: { name: string; href: string }) {
   return (
     <li className='py-4 pl-4 pr-5 text-sm leading-6'>
       <div className='flex items-center justify-between'>
-        <div className='ml-4 flex min-w-0 flex-1 gap-2'>
-          <span className='truncate font-bold'>
+        <div className='flex flex-1 min-w-0 gap-2 ml-4'>
+          <span className='font-bold truncate'>
             {props.name}
           </span>
         </div>
 
-        <div className='ml-4 flex-shrink-0'>
+        <div className='flex-shrink-0 ml-4'>
           <a
             href={props.href}
-            className='font-bold flex text-indigo-600 hover:text-indigo-500'
+            className='flex font-bold text-indigo-600 hover:text-indigo-500'
             target='_blank'
           >
             <ArrowDownTrayIcon
-              className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
+              className='flex-shrink-0 w-5 h-5 mr-1 text-gray-400'
               aria-hidden='true'
             />Download
           </a>
         </div>
       </div>
-      <div className='flex justify-center mt-2 bg-gray-300 p-2 w-full'>
+      <div className='flex justify-center w-full p-2 mt-2 bg-gray-300'>
         <img
           src={props.href}
           alt='Download Preview'
-          className='mt-2 w-full max-w-xs mx-auto'
+          className='w-full max-w-xs mx-auto mt-2'
         />
       </div>
     </li>
@@ -177,7 +177,7 @@ export default function HealthWorkerDetailedCard(
                   <dd className='mt-2 text-sm text-gray-900'>
                     <ul
                       role='list'
-                      className='mx-auto divide-y divide-gray-100 rounded-md border border-gray-200'
+                      className='mx-auto border border-gray-200 divide-y divide-gray-100 rounded-md'
                       style={{ width: '50%' }}
                     >
                       {employee.documents.map((document) => (

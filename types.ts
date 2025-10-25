@@ -105,7 +105,7 @@ export type Coordinates = {
   latitude: number
 }
 
-export type Gender = 'male' | 'female' | 'non-binary'
+export type Sex = 'male' | 'female' | 'other' | 'prefer not to say'
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
@@ -196,7 +196,7 @@ export type PatientConversationState =
   | 'initial_message'
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
-  | 'not_onboarded:make_appointment:enter_gender'
+  | 'not_onboarded:make_appointment:enter_sex'
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
@@ -225,7 +225,8 @@ export type Patient = PatientPersonal & {
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
-  gender: Maybe<Gender>
+  sex: Maybe<Sex>
+  gender: Maybe<string>
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
@@ -240,6 +241,7 @@ export type PatientPersonal = {
 export type RenderedPatient =
   & Pick<
     Patient,
+    | 'sex'
     | 'gender'
     | 'ethnicity'
     | 'national_id_number'
@@ -252,6 +254,12 @@ export type RenderedPatient =
     date_of_birth: string | null
     dob_formatted: string | null
     name: string | null
+    names: null | {
+      full: string
+      first: string
+      surname: string
+      preferred: string
+    }
     description: string | null
     age_display: Maybe<string>
     age_years: Maybe<number>
@@ -411,7 +419,7 @@ export type NextOfKin = {
   patient_id: string
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
-  patient_gender: Maybe<Gender>
+  patient_sex: Maybe<Sex>
   relation: string
 }
 
@@ -422,8 +430,8 @@ export type FamilyRelation = {
   patient_id: string
   patient_name: string
   patient_phone_number: Maybe<string>
-  patient_gender: Maybe<Gender>
-  family_relation_gendered: Maybe<string>
+  patient_sex: Maybe<Sex>
+  family_relation_sexed: Maybe<string>
 }
 
 export type GuardianFamilyRelation = FamilyRelation & {
@@ -434,7 +442,7 @@ export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
   patient_name: string
   patient_phone_number?: Maybe<string>
-  family_relation_gendered: string
+  family_relation_sexed: string
   next_of_kin: boolean
 }
 
@@ -1388,7 +1396,7 @@ export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
 export type NurseRegistrationDetails = {
   health_worker_id: string
-  gender: Gender
+  gender: string
   date_of_birth: string
   national_id_number: string
   date_of_first_practice: string
@@ -1417,7 +1425,7 @@ export type HealthWorker = {
 export type EmployeeInfo = {
   name: string
   email: string
-  gender: Maybe<Gender>
+  gender: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
@@ -3372,7 +3380,7 @@ export type ExtantProcedureOrCreationIntent = {
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
   family_members: Array<{
-    relation_gendered: keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+    relation_sexed: keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
   }>
 }
 

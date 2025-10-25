@@ -82,12 +82,12 @@ export function forPatientEncounter(
           'head_to_toe_assessment_neuromuscular',
         ),
         eb.and([
-          eb('patients.gender', '=', 'female'),
+          eb('patients.sex', '=', 'female'),
           eb(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18),
           eb('examinations.identifier', '=', 'womens_health_assessment'),
         ]),
         eb.and([
-          eb('patients.gender', '=', 'male'),
+          eb('patients.sex', '=', 'male'),
           eb(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18),
           eb('examinations.identifier', '=', 'mens_health_assessment'),
         ]),

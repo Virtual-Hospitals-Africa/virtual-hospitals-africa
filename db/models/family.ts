@@ -65,30 +65,30 @@ async function getGuardiansOfPatient(
       'guardian_relations.guardian as guardian_relation',
       'guardian.id as patient_id',
       'guardian.name as patient_name',
-      'guardian.gender as patient_gender',
+      'guardian.sex as patient_sex',
       'guardian.phone_number as patient_phone_number',
       eb('kin.next_of_kin_patient_id', 'is not', null).as('next_of_kin'),
       eb
         .case()
         .when(
           and([
-            eb('guardian.gender', '=', 'female'),
+            eb('guardian.sex', '=', 'female'),
             eb('guardian_relations.female_guardian', 'is not', null),
           ]),
         )
         .then(eb.ref('guardian_relations.female_guardian'))
         .when(
           and([
-            eb('guardian.gender', '=', 'male'),
+            eb('guardian.sex', '=', 'male'),
             eb('guardian_relations.male_guardian', 'is not', null),
           ]),
         )
         .then(eb.ref('guardian_relations.male_guardian'))
         .else(sql<string>`guardian_relations.guardian::text`)
         .end()
-        .as('family_relation_gendered'),
+        .as('family_relation_sexed'),
     ])
-    .orderBy('family_relation_gendered desc')
+    .orderBy('family_relation_sexed desc')
     .execute()
 
   assert(allHaveStringField(guardians, 'patient_name'))
@@ -125,26 +125,26 @@ export async function getDependentsOfPatient(
       'dependent.phone_number as patient_phone_number',
       'guardian_relations.dependent as family_relation',
       'guardian_relations.guardian as guardian_relation',
-      'dependent.gender as patient_gender',
+      'dependent.sex as patient_sex',
       eb
         .case()
         .when(
           and([
-            eb('dependent.gender', '=', 'female'),
+            eb('dependent.sex', '=', 'female'),
             eb('guardian_relations.female_dependent', 'is not', null),
           ]),
         )
         .then(eb.ref('guardian_relations.female_dependent'))
         .when(
           and([
-            eb('dependent.gender', '=', 'male'),
+            eb('dependent.sex', '=', 'male'),
             eb('guardian_relations.male_dependent', 'is not', null),
           ]),
         )
         .then(eb.ref('guardian_relations.male_dependent'))
         .else(eb.ref('guardian_relations.dependent'))
         .end()
-        .as('family_relation_gendered'),
+        .as('family_relation_sexed'),
     ])
     .execute()
 
@@ -183,7 +183,7 @@ function getOtherNextOfKinOfPatient(
       'kin.id as patient_id',
       'kin.name as patient_name',
       'kin.phone_number as patient_phone_number',
-      'kin.gender as patient_gender',
+      'kin.sex as patient_sex',
     ])
     .executeTakeFirst()
 }
@@ -222,50 +222,50 @@ export async function get(
   }
 }
 
-const inverseGuardianRelation = memoize((family_relation_gendered: string) => {
+const inverseGuardianRelation = memoize((family_relation_sexed: string) => {
   for (const relation of GUARDIAN_RELATIONS) {
-    if (relation.male_guardian === family_relation_gendered) {
+    if (relation.male_guardian === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
-        gender: 'male' as const,
+        sex: 'male' as const,
       }
     }
-    if (relation.female_guardian === family_relation_gendered) {
+    if (relation.female_guardian === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
-        gender: 'female' as const,
+        sex: 'female' as const,
       }
     }
-    if (relation.guardian === family_relation_gendered) {
+    if (relation.guardian === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
       }
     }
   }
-  throw new Error(`Invalid family relation: ${family_relation_gendered}`)
+  throw new Error(`Invalid family relation: ${family_relation_sexed}`)
 })
 
-const inverseDependentRelation = memoize((family_relation_gendered: string) => {
+const inverseDependentRelation = memoize((family_relation_sexed: string) => {
   for (const relation of GUARDIAN_RELATIONS) {
-    if (relation.male_dependent === family_relation_gendered) {
+    if (relation.male_dependent === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
-        gender: 'male' as const,
+        sex: 'male' as const,
       }
     }
-    if (relation.female_dependent === family_relation_gendered) {
+    if (relation.female_dependent === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
-        gender: 'female' as const,
+        sex: 'female' as const,
       }
     }
-    if (relation.dependent === family_relation_gendered) {
+    if (relation.dependent === family_relation_sexed) {
       return {
         guardian_relation: relation.guardian,
       }
     }
   }
-  throw new Error(`Invalid family relation: ${family_relation_gendered}`)
+  throw new Error(`Invalid family relation: ${family_relation_sexed}`)
 })
 
 function hasPatientId(
@@ -340,7 +340,7 @@ export async function upsert(
         !dependent_upserts_with_patient_ids.has(guardian.patient_id),
       `Cannot have two relations to the same patient: ${guardian.patient_name}`,
     )
-    const relation = inverseGuardianRelation(guardian.family_relation_gendered)
+    const relation = inverseGuardianRelation(guardian.family_relation_sexed)
     guardian_upserts_with_patient_ids.set(
       guardian.patient_id,
       relation.guardian_relation,
@@ -350,7 +350,7 @@ export async function upsert(
         id: guardian.patient_id,
         name: guardian.patient_name,
         phone_number: guardian.patient_phone_number,
-        gender: relation.gender,
+        sex: relation.sex,
       }),
     )
   }
@@ -361,7 +361,7 @@ export async function upsert(
       `Cannot have two relations to the same patient: ${dependent.patient_name}`,
     )
     const relation = inverseDependentRelation(
-      dependent.family_relation_gendered,
+      dependent.family_relation_sexed,
     )
     dependent_upserts_with_patient_ids.set(
       dependent.patient_id,
@@ -372,7 +372,7 @@ export async function upsert(
         id: dependent.patient_id,
         name: dependent.patient_name,
         phone_number: dependent.patient_phone_number,
-        gender: relation.gender,
+        sex: relation.sex,
       }),
     )
   }
@@ -394,22 +394,22 @@ export async function upsert(
   >()
   const to_insert: Array<Partial<Patient> & { name: string }> = []
   for (const guardian of new_guardians) {
-    const relation = inverseGuardianRelation(guardian.family_relation_gendered)
+    const relation = inverseGuardianRelation(guardian.family_relation_sexed)
     const index = to_insert.push({
       name: guardian.patient_name,
       phone_number: guardian.patient_phone_number,
-      gender: relation.gender,
+      sex: relation.sex,
     }) - 1
     inserted.set(guardian, [index, relation.guardian_relation])
   }
   for (const dependent of new_dependents) {
     const relation = inverseDependentRelation(
-      dependent.family_relation_gendered,
+      dependent.family_relation_sexed,
     )
     const index = to_insert.push({
       name: dependent.patient_name,
       phone_number: dependent.patient_phone_number,
-      gender: relation.gender,
+      sex: relation.sex,
     }) - 1
     inserted.set(dependent, [index, relation.guardian_relation])
   }
@@ -419,7 +419,7 @@ export async function upsert(
       phone_number: other_kin.patient_phone_number,
     }) - 1
     // deno-lint-ignore no-explicit-any
-    inserted.set(other_kin, [index, other_kin.family_relation_gendered as any])
+    inserted.set(other_kin, [index, other_kin.family_relation_sexed as any])
   }
   const inserting_new_patients = to_insert.length
     ? insertManyPatients(trx, to_insert)
@@ -554,7 +554,7 @@ export async function upsert(
           .values({
             patient_id,
             next_of_kin_patient_id: next_of_kin_patient_id,
-            relationship: new_kin.family_relation_gendered,
+            relationship: new_kin.family_relation_sexed,
           })
           .returning('id')
           .executeTakeFirstOrThrow()
@@ -563,7 +563,7 @@ export async function upsert(
           .updateTable('patient_kin')
           .set({
             next_of_kin_patient_id: next_of_kin_patient_id,
-            relationship: new_kin.family_relation_gendered,
+            relationship: new_kin.family_relation_sexed,
           })
           .where('patient_id', '=', patient_id)
           .executeTakeFirstOrThrow()
@@ -645,7 +645,7 @@ export async function setNextOfKin(
   return trx.insertInto('patient_kin')
     .values({
       patient_id,
-      relationship: next_of_kin.family_relation_gendered,
+      relationship: next_of_kin.family_relation_sexed,
       next_of_kin_patient_id: inserted.id,
     })
     .returningAll()

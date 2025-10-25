@@ -589,7 +589,7 @@
 //     console.log('guardian_phone', guardian_phone)
 //     const body = new FormData()
 //     body.set('family.guardians.0.patient_name', 'New Guardian')
-//     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
+//     body.set('family.guardians.0.family_relation_sexed', 'biological mother')
 //     body.set('family.guardians.0.patient_phone_number', guardian_phone)
 //     body.set('family.marital_status', 'Single')
 //     body.set('family.religion', 'Non-Religious')
@@ -615,14 +615,14 @@
 //     assertEquals(patient_family.guardians.length, 1)
 //     assertEquals(patient_family.guardians[0].patient_name, 'New Guardian')
 //     assertEquals(
-//       patient_family.guardians[0].family_relation_gendered,
+//       patient_family.guardians[0].family_relation_sexed,
 //       'biological mother',
 //     )
 //     assertEquals(
 //       patient_family.guardians[0].patient_phone_number,
 //       guardian_phone,
 //     )
-//     assertEquals(patient_family.guardians[0].patient_gender, 'female')
+//     assertEquals(patient_family.guardians[0].patient_sex, 'female')
 //     assertEquals(patient_family.religion, 'Non-Religious')
 //     assertEquals(patient_family.marital_status, 'Single')
 
@@ -637,7 +637,7 @@
 //       family: {
 //         guardians: [
 //           {
-//             family_relation_gendered: 'biological mother',
+//             family_relation_sexed: 'biological mother',
 //             next_of_kin: false,
 //             patient_id: patient_family.guardians[0].patient_id,
 //             patient_name: 'New Guardian',

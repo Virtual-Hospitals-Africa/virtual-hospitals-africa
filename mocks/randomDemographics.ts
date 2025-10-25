@@ -78,17 +78,17 @@ export function randomNamesAndGender(
     return first_name_seed < entry.incidence
   })!
   const first_name = first_name_entry.name
-  const of_gender = first_name_entry.female_percentage > gender_seed
+  const of_sex = first_name_entry.female_percentage > gender_seed
     ? 'female'
     : 'male'
-  if (gender && gender !== of_gender) {
+  if (gender && gender !== of_sex) {
     // Just re-roll the dice until we get one that matches
     return randomNamesAndGender(country, gender)
   }
   return {
     first_name,
     last_name,
-    gender: of_gender,
+    gender: of_sex,
     name: `${first_name} ${last_name}`,
   }
 }

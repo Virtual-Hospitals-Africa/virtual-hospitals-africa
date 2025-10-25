@@ -155,6 +155,7 @@ export async function getSummaryById(
       jsonBuildObject({
         name: eb.ref('patients.name').$notNull(),
         phone_number: eb.ref('patients.phone_number'),
+        sex: eb.ref('patients.sex'),
         gender: eb.ref('patients.gender'),
         ethnicity: eb.ref('patients.ethnicity'),
         date_of_birth: sql<

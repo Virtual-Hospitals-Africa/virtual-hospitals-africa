@@ -40,8 +40,6 @@ export type FamilyType =
   | 'Polygamous/Compound'
   | 'Single Parent'
 
-export type Gender = 'female' | 'male' | 'non-binary'
-
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>
@@ -117,6 +115,8 @@ export type PharmacistType =
   | 'Pharmacy Technician'
 
 export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
+
+export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
 export type SnomedCategory =
   | 'administration method'
@@ -336,7 +336,7 @@ export interface DoctorRegistrationDetails {
   date_of_first_practice: Timestamp
   doctor_practicing_cert_media_id: string | null
   face_picture_media_id: string | null
-  gender: Gender
+  gender: string
   health_worker_id: string
   id: Generated<string>
   mobile_number: string
@@ -765,7 +765,7 @@ export interface NurseRegistrationDetails {
   date_of_birth: Timestamp
   date_of_first_practice: Timestamp
   face_picture_media_id: string | null
-  gender: Gender
+  gender: string
   health_worker_id: string
   id: Generated<string>
   mobile_number: string | null
@@ -1150,7 +1150,8 @@ export interface Patients {
   date_of_birth: Timestamp | null
   ethnicity: string | null
   first_language: string | null
-  gender: Gender | null
+  first_names: string | null
+  gender: string | null
   id: Generated<string>
   location: string | null
   name: string | null
@@ -1158,7 +1159,10 @@ export interface Patients {
   nearest_organization_id: string | null
   phone_number: string | null
   preferred_language_code_iso_639_2_b: string | null
+  preferred_name: string | null
   primary_doctor_id: string | null
+  sex: Sex | null
+  surname: string | null
   unregistered_primary_doctor_name: string | null
   updated_at: Generated<Timestamp>
 }

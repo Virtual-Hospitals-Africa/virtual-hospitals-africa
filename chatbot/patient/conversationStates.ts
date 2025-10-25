@@ -68,10 +68,10 @@ const conversationStates: ConversationStates<
           entity_id: patient.id,
         },
       )
-      return 'not_onboarded:make_appointment:enter_gender' as const
+      return 'not_onboarded:make_appointment:enter_sex' as const
     },
   },
-  'not_onboarded:make_appointment:enter_gender': {
+  'not_onboarded:make_appointment:enter_sex': {
     prompt: 'What is your gender?',
     type: 'select',
     options: [

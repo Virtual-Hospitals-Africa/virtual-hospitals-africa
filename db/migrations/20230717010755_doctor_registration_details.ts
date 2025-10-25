@@ -30,7 +30,7 @@ export async function up(db: Kysely<DB>) {
           .onDelete('cascade')
           .notNull()
           .unique())
-        .addColumn('gender', sql`gender`, (column) => column.notNull())
+        .addColumn('gender', 'varchar(255)', (column) => column.notNull())
         .addColumn('national_id_number', 'varchar(50)', (column) =>
           column
             .notNull())

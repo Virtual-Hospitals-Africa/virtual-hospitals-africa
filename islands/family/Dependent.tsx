@@ -38,8 +38,8 @@ export default function Dependent({
             onSelect={(person: any) =>
               setPatientDependent(
                 person && {
-                  patient_gender: person.gender ||
-                    patientDependent?.patient_gender,
+                  patient_sex: person.sex ||
+                    patientDependent?.patient_sex,
                   patient_phone_number: person.phone_number ||
                     patientDependent?.patient_phone_number,
                   patient_name: person.name || patientDependent?.patient_name,
@@ -52,11 +52,11 @@ export default function Dependent({
             value={patientDependent?.patient_phone_number}
           />
           <RelationshipSelect
-            name={`${name}.family_relation_gendered`}
-            family_relation_gendered={patientDependent
-              ?.family_relation_gendered ?? undefined}
+            name={`${name}.family_relation_sexed`}
+            family_relation_sexed={patientDependent
+              ?.family_relation_sexed ?? undefined}
             type='dependent'
-            gender={patientDependent?.patient_gender}
+            sex={patientDependent?.patient_sex}
           />
         </FormRow>
       </div>

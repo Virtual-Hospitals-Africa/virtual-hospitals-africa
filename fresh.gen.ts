@@ -285,6 +285,7 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
+import * as $patient_registration_PersonalSection from './islands/patient-registration/PersonalSection.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
@@ -719,6 +720,8 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
+    './islands/patient-registration/PersonalSection.tsx':
+      $patient_registration_PersonalSection,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':

@@ -1,6 +1,6 @@
 import {
   DateInput,
-  GenderSelect,
+  // GenderSelect,
   PhoneNumberInput,
   TextInput,
 } from '../../../../islands/form/Inputs.tsx'
@@ -43,7 +43,7 @@ export default function NursePersonalForm(
           label='Date of Birth'
           value={form_data.date_of_birth}
         />
-        <GenderSelect value={form_data.gender} />
+        {/* <GenderSelect value={form_data.gender} /> */}
       </FormRow>
       <FormRow>
         <NationalIdInput value={form_data.national_id_number} />

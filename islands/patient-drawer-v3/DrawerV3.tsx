@@ -75,7 +75,7 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
             <div className='content-stretch flex gap-[16px] items-center justify-start relative shrink-0'>
               <div className='box-border content-stretch flex gap-[4px] items-start justify-start px-0 py-[4px] relative rounded-[5px] shrink-0'>
                 <p className="font-['Inter:Regular',_sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#29313d] text-[12px] text-center text-nowrap whitespace-pre">
-                  {patient.gender || 'Unknown'}
+                  {patient.sex || 'Unknown'}
                 </p>
               </div>
               <div className='box-border content-stretch flex gap-[4px] items-start justify-start px-0 py-[4px] relative rounded-[5px] shrink-0'>

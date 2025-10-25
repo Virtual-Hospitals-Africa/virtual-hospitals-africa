@@ -38,8 +38,8 @@ export default function Guardian({
             onSelect={(person: any) =>
               setPatientGuardian(
                 person && {
-                  patient_gender: person.gender ||
-                    patientGuardian?.patient_gender,
+                  patient_sex: person.sex ||
+                    patientGuardian?.patient_sex,
                   patient_phone_number: person.phone_number ||
                     patientGuardian?.patient_phone_number,
                   patient_name: person.name || patientGuardian?.patient_name,
@@ -47,11 +47,11 @@ export default function Guardian({
               )}
           />
           <RelationshipSelect
-            name={`${name}.family_relation_gendered`}
-            family_relation_gendered={patientGuardian
-              ?.family_relation_gendered ?? undefined}
+            name={`${name}.family_relation_sexed`}
+            family_relation_sexed={patientGuardian
+              ?.family_relation_sexed ?? undefined}
             type='guardian'
-            gender={patientGuardian?.patient_gender}
+            sex={patientGuardian?.patient_sex}
           />
           <CheckboxInput
             name={`${name}.next_of_kin`}

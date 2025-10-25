@@ -25,6 +25,9 @@ import { ensureDoctorId } from './doctor.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { base } from './_base.ts'
+import last from '../../util/last.ts'
+import { exists } from '../../util/exists.ts'
+import first from '../../util/first.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -79,6 +82,12 @@ const baseQuery = (trx: TrxOrDb) =>
       jsonBuildObject({
         view: view_href_sql,
       }).as('actions'),
+      jsonBuildNullableObject(eb.ref('patients.name'), {
+        full: eb.ref('patients.name').$notNull(),
+        first: eb.ref('patients.first_names').$notNull(),
+        surname: eb.ref('patients.surname').$notNull(),
+        preferred: eb.ref('patients.preferred_name').$notNull(),
+      }).as('names'),
       jsonObjectFrom(
         eb.selectFrom('organizations as nearest_organizations')
           .whereRef(
@@ -211,13 +220,46 @@ export function update(
 
 export function upsert(
   trx: TrxOrDb,
-  { location, primary_doctor_id, ...patient }: Partial<Patient> & {
-    id?: string
-    name: string
-  },
+  {
+    location,
+    primary_doctor_id,
+    name,
+    first_names,
+    surname,
+    preferred_name,
+    ...patient
+  }:
+    & Partial<Patient>
+    & {
+      id?: string
+    }
+    & ({
+      name: string
+      first_names?: never
+      surname?: never
+      preferred_name?: never
+    } | {
+      name?: never
+      first_names: string
+      surname: string
+      preferred_name: string
+    }),
 ) {
+  if (name) {
+    const names = name.split(' ')
+    surname = exists(last(names))
+    preferred_name = exists(first(names))
+    first_names = names.slice(-1).join(' ')
+  } else {
+    name = first_names + ' ' + surname
+  }
+
   const to_upsert = {
     ...patient,
+    name,
+    first_names,
+    surname,
+    preferred_name,
     primary_doctor_id: primary_doctor_id &&
       ensureDoctorId(trx, primary_doctor_id),
     location: location && literalLocation(location),

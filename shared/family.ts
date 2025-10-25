@@ -128,13 +128,13 @@ export const GENDERED_RELATION_SNOMED_CONCEPT_IDS = {
   'granddaughter': '44181008',
 } as const
 
-export const SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS = fromEntries(
+export const SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS = fromEntries(
   entries(
     GENDERED_RELATION_SNOMED_CONCEPT_IDS,
   ).map(
-    ([relation_gendered, snomed_concept_id]) => [
+    ([relation_sexed, snomed_concept_id]) => [
       snomed_concept_id,
-      relation_gendered,
+      relation_sexed,
     ],
   ),
 )
@@ -152,13 +152,13 @@ function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
 }
 
 export const FamilyMemberSchema = z.object({
-  relation_gendered: enumFromObjKeys(GENDERED_RELATION_SNOMED_CONCEPT_IDS),
+  relation_sexed: enumFromObjKeys(GENDERED_RELATION_SNOMED_CONCEPT_IDS),
 })
 
 export const relation_from_snomed_id = (snomed_id: string) => {
   assert(
-    isKeyOf(snomed_id, SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS),
+    isKeyOf(snomed_id, SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS),
     `No gendered relation for ${snomed_id}`,
   )
-  return SNOMED_CONCEPT_IDS_TO_GENDERED_RELATIONS[snomed_id]
+  return SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS[snomed_id]
 }
