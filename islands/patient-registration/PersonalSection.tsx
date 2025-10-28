@@ -9,7 +9,7 @@ import { TextInput } from '../form/inputs/text.tsx'
 import { LanguageSelect } from '../form/inputs/language.tsx'
 import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
-function genderOptions(sex: Sex) {
+function genderOptions(sex: Maybe<Sex>) {
   switch (sex) {
     case 'female':
       return ['Woman', 'Trans man', 'Prefer not to say']
@@ -19,6 +19,12 @@ function genderOptions(sex: Sex) {
       return []
     case 'prefer not to say':
       return ['Prefer not to say']
+    default:
+      return [
+        'man',
+        'woman',
+        'non-binary',
+      ]
   }
 }
 
@@ -35,11 +41,7 @@ export default function PatientRegistrationPersonalSection(
   const sex = useSignal(patient.sex)
   const gender = useSignal(patient.gender)
   const gender_dirty = useSignal(!!patient.gender)
-  const gender_options = useSignal([
-    'man',
-    'woman',
-    'non-binary',
-  ])
+  const gender_options = useSignal(genderOptions(patient.sex))
 
   useSignalEffect(() => {
     if (!preferred_name_dirty.value) {
@@ -49,10 +51,9 @@ export default function PatientRegistrationPersonalSection(
 
   useSignalEffect(() => {
     if (!sex.value) return
-    if (gender_dirty.value) return
     gender_options.value = genderOptions(sex.value)
+    if (gender_dirty.value) return
     gender.value = gender_options.value[0]
-    console.log('here', gender_options.value, gender.value)
   })
 
   console.log({

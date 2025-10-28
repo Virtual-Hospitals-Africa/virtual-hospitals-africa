@@ -105,7 +105,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
     formatDisplay = addable.formatDisplay
   }
   const add_option = {
-    id: 'add' as const,
+    id: just_name ? query : 'add' as const,
     name: query,
     display_name: formatDisplay(query),
   } as unknown as T
@@ -131,6 +131,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
       : `${name}_id`)
 
   const input_ref = useRef<HTMLInputElement>(null)
+  const button_ref = useRef<HTMLButtonElement>(null)
 
   console.log({
     search: 'Search',
@@ -188,6 +189,10 @@ export default function Search<T extends { id?: unknown; name: string }>({
               onQuery(query)
               event.currentTarget.setCustomValidity('')
             }}
+            onClick={() => {
+              // Open the dropdown when clicking the input
+              button_ref.current?.click()
+            }}
             value={selected.value?.name}
             required={required}
             aria-disabled={disabled}
@@ -201,7 +206,10 @@ export default function Search<T extends { id?: unknown; name: string }>({
             }}
             placeholder={placeholder}
           />
-          <Combobox.Button className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'>
+          <Combobox.Button
+            ref={button_ref}
+            className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
+          >
             <ChevronUpDownIcon
               className='w-5 h-5 text-gray-400'
               aria-hidden='true'
