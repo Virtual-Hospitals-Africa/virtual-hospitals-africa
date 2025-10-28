@@ -1,4 +1,4 @@
-639-2[1]	639-3[2]	639-5[3]	639-1	Language name(s) from ISO 639-2[1]	Scope	Type	Native name(s)	Other name(s)
+iso_639_2	iso_639_3	iso_639_5	iso_639_1	language_names	scope	type	native_names	other_names
 aar	aar		aa	Afar	Individual	Living	*Qafaraf*; *’Afar Af*; *Afaraf*; *Qafar af*	
 abk	abk		ab	Abkhazian	Individual	Living	Аҧсуа бызшәа*Aƥsua bızšwa*; Аҧсшәа*Aƥsua*	Abkhaz
 ace	ace			Achinese	Individual	Living	بهسا اچيه, *Basa Acèh*	Acehnese
@@ -351,7 +351,6 @@ por	por		pt	Portuguese	Individual	Living	*Português*
 pra		pra		Prakrit languages	Collective	Genetic		
 pro	pro			Provençal, Old (to 1500); Old Occitan (to 1500)	Individual	Historical		
 pus	pus		ps	Pushto; Pashto	Macrolanguage	Living	پښتو, *Pax̌tow*	
-qaa-qtz	qaa-qtz			Reserved for local use	Local			
 que	que		qu	Quechua	Macrolanguage	Living	*Runa simi*; *kichwa simi*; *Nuna shimi*	
 raj	raj			Rajasthani	Macrolanguage	Living	राजस्थानी	
 rap	rap			Rapanui	Individual	Living	*Vananga rapa nui*	

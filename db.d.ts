@@ -71,6 +71,23 @@ export type JsonPrimitive = boolean | number | string | null
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive
 
+export type LanguageScope =
+  | 'Collective'
+  | 'Individual'
+  | 'Local'
+  | 'Macrolanguage'
+  | 'Special'
+
+export type LanguageType =
+  | 'Constructed'
+  | 'Extinct'
+  | 'Genetic'
+  | 'Genetic-like'
+  | 'Geographic'
+  | 'Historical'
+  | 'Living'
+  | 'Special'
+
 export type MaritalStatus =
   | 'Co-habiting'
   | 'Divorced'
@@ -604,24 +621,15 @@ export interface Icd10Sections {
   section: string
 }
 
-export interface Iso6391Languages {
-  endonym: string | null
-  english_name: string
-  iso_639_1: string
-}
-
-export interface Iso6392BLanguages {
-  endonym: string | null
-  english_name: string
-  iso_639_1: string
+export interface Languages {
+  iso_639_1: string | null
   iso_639_2_b: string
-}
-
-export interface Iso6393Languages {
-  endonym: string | null
-  english_name: string
-  iso_639_2_b: string
-  iso_639_3: string
+  iso_639_2_t: string
+  language_names: string[]
+  native_names: string[]
+  other_names: string[]
+  scope: LanguageScope
+  type: LanguageType
 }
 
 export interface MailingList {
@@ -1713,9 +1721,7 @@ export interface DB {
   icd10_diagnoses_excludes_codes: Icd10DiagnosesExcludesCodes
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
-  iso_639_1_languages: Iso6391Languages
-  iso_639_2_b_languages: Iso6392BLanguages
-  iso_639_3_languages: Iso6393Languages
+  languages: Languages
   mailing_list: MailingList
   manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
   manufactured_medication_recalls: ManufacturedMedicationRecalls

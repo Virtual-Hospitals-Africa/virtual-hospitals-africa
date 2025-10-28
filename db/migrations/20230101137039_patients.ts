@@ -44,7 +44,7 @@ export async function up(db: Kysely<DB>) {
           (col) => col.references('organizations.id'),
         )
         .addColumn('preferred_language_code_iso_639_2_b', 'varchar(3)', (col) =>
-          col.references('iso_639_2_b_languages.iso_639_2_b'))
+          col.references('languages.iso_639_2_b'))
         .addColumn('ethnicity', 'varchar(50)')
         .addColumn(
           'completed_registration',
