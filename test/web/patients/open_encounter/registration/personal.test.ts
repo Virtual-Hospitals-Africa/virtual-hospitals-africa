@@ -20,7 +20,7 @@ describe(
       })
 
       const $ = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.za.clinic}/patients/start-registration`,
+        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
         {
           method: 'POST',
         },

@@ -54,3 +54,5 @@ export const decimal = z.string().regex(/^-?\d+(\.\d+)?$/)
 export const string_or_number_as_string = z.string().or(z.number()).transform(
   (value) => String(value),
 )
+
+export const south_african_national_id = string_or_number_as_string

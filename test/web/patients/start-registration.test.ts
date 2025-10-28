@@ -18,7 +18,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
     })
 
     const response = await fetchOk(
-      `/app/organizations/${TEST_ORGANIZATION_UUIDS.za.clinic}/patients/start-registration`,
+      `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
       {
         method: 'POST',
       },
@@ -30,7 +30,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
     assertEquals(path, [
       'app',
       'organizations',
-      TEST_ORGANIZATION_UUIDS.za.clinic,
+      TEST_ORGANIZATION_UUIDS.ZA.clinic,
       'patients',
       patient_id,
       'open_encounter',

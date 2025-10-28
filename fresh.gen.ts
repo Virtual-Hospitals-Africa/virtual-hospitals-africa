@@ -73,6 +73,7 @@ import * as $app_organizations_organization_id_patients_patient_id_open_encounte
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/evaluations.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_move_to_waiting_room from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/move-to-waiting-room.ts'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm_details from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm_details.tsx'
@@ -195,7 +196,6 @@ import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $LocalTime from './islands/LocalTime.tsx'
 import * as $Menu from './islands/Menu.tsx'
-import * as $NationalId from './islands/NationalId.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
@@ -218,10 +218,12 @@ import * as $SendTo_ListItem from './islands/SendTo/ListItem.tsx'
 import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButtons.tsx'
 import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
 import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
+import * as $SouthAfricanNationalId from './islands/SouthAfricanNationalId.tsx'
 import * as $SparklinesExample from './islands/SparklinesExample.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
+import * as $ZimbabweanNationalId from './islands/ZimbabweanNationalId.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
@@ -308,7 +310,9 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
+import * as $patient_registration_NamesFormRow from './islands/patient-registration/NamesFormRow.tsx'
 import * as $patient_registration_PersonalSection from './islands/patient-registration/PersonalSection.tsx'
+import * as $patient_registration_SexAndGenderInputs from './islands/patient-registration/SexAndGenderInputs.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
@@ -460,6 +464,8 @@ const manifest = {
       $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/move-to-waiting-room.ts':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_move_to_waiting_room,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx':
@@ -644,7 +650,6 @@ const manifest = {
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/LocalTime.tsx': $LocalTime,
     './islands/Menu.tsx': $Menu,
-    './islands/NationalId.tsx': $NationalId,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
     './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
@@ -667,10 +672,12 @@ const manifest = {
     './islands/SendTo/RequestRadioButtons.tsx': $SendTo_RequestRadioButtons,
     './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
     './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
+    './islands/SouthAfricanNationalId.tsx': $SouthAfricanNationalId,
     './islands/SparklinesExample.tsx': $SparklinesExample,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
+    './islands/ZimbabweanNationalId.tsx': $ZimbabweanNationalId,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
@@ -767,8 +774,12 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
+    './islands/patient-registration/NamesFormRow.tsx':
+      $patient_registration_NamesFormRow,
     './islands/patient-registration/PersonalSection.tsx':
       $patient_registration_PersonalSection,
+    './islands/patient-registration/SexAndGenderInputs.tsx':
+      $patient_registration_SexAndGenderInputs,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':

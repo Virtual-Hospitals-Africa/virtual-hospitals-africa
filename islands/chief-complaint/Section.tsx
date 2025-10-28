@@ -1,7 +1,6 @@
 import { computed, effect, useSignal } from '@preact/signals'
 import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
 import { MicrophoneIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { Iso6392BLanguages } from '../../db.d.ts'
 
 import { assert } from 'std/assert/assert.ts'
 import { RecordDialog, RecordingState } from './RecordDialog.tsx'
@@ -16,15 +15,14 @@ import {
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 import { TextArea } from '../form/inputs/textarea.tsx'
+import { LIVING_LANGUAGES } from '../../shared/languages.ts'
 
 export function ChiefComplaintSection({
   preferred_language_code_iso_639_2_b,
   // patient_chief_complaint,
-  languages,
 }: {
   preferred_language_code_iso_639_2_b: string | null
   patient_chief_complaint: unknown
-  languages: Iso6392BLanguages[]
 }) {
   const chief_complaint_note = useSignal('')
   const language_code = useSignal(preferred_language_code_iso_639_2_b || 'eng')
@@ -98,9 +96,9 @@ export function ChiefComplaintSection({
       <SelectWithOptions
         name='language_code'
         value={language_code.value}
-        options={languages.map((lang) => ({
+        options={LIVING_LANGUAGES.map((lang) => ({
           value: lang.iso_639_2_b,
-          label: lang.english_name,
+          label: lang.language_names[0],
         }))}
         onChange={(e) => {
           language_code.value = e.currentTarget.value

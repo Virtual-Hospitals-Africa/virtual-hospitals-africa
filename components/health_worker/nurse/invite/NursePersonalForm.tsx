@@ -1,7 +1,7 @@
 import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
-import { NationalIdInput } from '../../../../islands/NationalId.tsx'
+import { ZimbabweanNationalIdInput } from '../../../../islands/ZimbabweanNationalId.tsx'
 import AddressSection from '../../../patient-registration/AddressSection.tsx'
 import { DateInput } from '../../../../islands/form/inputs/date.tsx'
 import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
@@ -43,7 +43,7 @@ export default function NursePersonalForm(
         {/* <GenderSelect value={form_data.gender} /> */}
       </FormRow>
       <FormRow>
-        <NationalIdInput value={form_data.national_id_number} />
+        <ZimbabweanNationalIdInput value={form_data.national_id_number} />
       </FormRow>
       <FormRow>
         <TextInput

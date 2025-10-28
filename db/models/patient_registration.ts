@@ -10,11 +10,24 @@ import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import { jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
-import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
+import {
+  assertOr403,
+  assertOr404,
+  assertOrErrorWithActions,
+} from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
+
+/* 1. Enable the URL to include buttons that get rendered into alerts
+ 2. Make it so assertOr400(
+    !health_worker.present_encounter,
+    'Cannot register new patients while present with another patient',
+  )
+    has 2 buttons: a. Continue with $existing_patient_name
+                   b. $existing_patient_name is in the waiting room
+*/
 
 export async function start(
   trx: TrxOrDb,
@@ -32,11 +45,26 @@ export async function start(
   assertOr403(
     non_admin_id,
   )
-  // TODO make it so that this presents a button in the alert such that you can take an action
-  assertOr400(
+
+  assertOrErrorWithActions(
     !health_worker.present_encounter,
     'Cannot register new patients while present with another patient',
+    [
+      {
+        text: `Continue with ${health_worker.present_encounter?.patient.name}`,
+        href:
+          `/app/organizations/${health_worker.present_encounter?.organization.id}/patients/${health_worker.present_encounter?.patient.id}/open_encounter/${health_worker.present_encounter?.status.patient_presence.current_workflow}`,
+      },
+      {
+        text:
+          `${health_worker.present_encounter?.patient.name} is in the waiting room`,
+        href:
+          `/app/organizations/${health_worker.present_encounter?.organization.id}/patients/${health_worker.present_encounter?.patient.id}/open_encounter/move-to-waiting-room`,
+        method: 'POST',
+      },
+    ],
   )
+
   const patient_id = generateUUID()
   const patient_encounter_id = generateUUID()
   const patient_encounter_employee_id = generateUUID()

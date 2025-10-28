@@ -4,7 +4,6 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import { getAll as getAllLanguages } from '../../../../../../../../db/models/languages.ts'
 import * as patients from '../../../../../../../../db/models/patients.ts'
 import * as patient_chief_complaints from '../../../../../../../../db/models/patient_chief_complaints.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
@@ -40,11 +39,9 @@ export async function TriageUrgentSignsPage(ctx: OpenEncounterWorkflowContext) {
   const patient_id = encounter.patient.id
   const { patient_encounter_id } = encounter
   const {
-    languages,
     preferred_language_code_iso_639_2_b,
     chief_complaint,
   } = await promiseProps({
-    languages: getAllLanguages(trx),
     preferred_language_code_iso_639_2_b: patients.getPreferredLanguage(
       trx,
       patient_id,
@@ -59,7 +56,6 @@ export async function TriageUrgentSignsPage(ctx: OpenEncounterWorkflowContext) {
     <ChiefComplaintSection
       preferred_language_code_iso_639_2_b={preferred_language_code_iso_639_2_b}
       patient_chief_complaint={chief_complaint}
-      languages={languages}
     />
   )
 }

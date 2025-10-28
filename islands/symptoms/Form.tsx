@@ -96,7 +96,6 @@ export function SymptomForm({
             name={null}
             label='Ongoing'
             checked={!end_date.value}
-            className='w-min'
             onInput={(e) => {
               entered_duration.value = null
               end_date.value = e.currentTarget.checked ? null : yesterday

@@ -3,10 +3,29 @@ import { JSX } from 'preact'
 import { ExclamationTriangleIcon } from '../components/library/icons/heroicons/solid.tsx'
 import { Signal } from '@preact/signals'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
+import { ActionButton } from '../components/library/ActionButton.tsx'
 
-interface ErrorMessageProps {
+export type WrappedError = {
+  message: string
+  actions?: {
+    name: string
+    href: string
+    method?: 'GET' | 'POST'
+  }[]
+}
+
+export interface ErrorMessageProps {
   className?: string
-  error: Signal<string | null>
+  error: Signal<
+    null | {
+      message: string
+      actions?: {
+        name: string
+        href: string
+        method?: 'GET' | 'POST'
+      }[]
+    }
+  >
 }
 
 export default function ErrorMessage(
@@ -19,16 +38,21 @@ export default function ErrorMessage(
           <div className='flex'>
             <div className='flex-shrink-0'>
               <ExclamationTriangleIcon
-                className='h-5 w-5 text-red-400'
+                className='w-5 h-5 text-red-400'
                 aria-hidden='true'
               />
             </div>
             <div className='ml-3'>
               <h3 className='text-sm font-medium text-red-800'>
-                {error.value}
+                {error.value.message}
               </h3>
             </div>
           </div>
+          {error.value.actions?.map((action) => (
+            <ActionButton
+              action={action}
+            />
+          ))}
           <button
             className='ml-auto'
             type='button'
@@ -36,7 +60,7 @@ export default function ErrorMessage(
           >
             <XMarkIcon
               type='button'
-              className='text-red-400 hover:text-red-600 h-5 w-5'
+              className='w-5 h-5 text-red-400 hover:text-red-600'
             />
           </button>
         </div>

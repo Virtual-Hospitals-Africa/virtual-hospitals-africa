@@ -24,6 +24,18 @@ export type LabeledInputProps<El extends HTMLElement> = {
   onBlur?: HTMLAttributes<El>['onBlur']
 }
 
+export function LabelSpan({ label, required }: {
+  label: string
+  required?: Maybe<boolean>
+}) {
+  return (
+    <span className='mb-1 ml-0.5'>
+      {label}
+      {label && required && <sup>*</sup>}
+    </span>
+  )
+}
+
 export function LabeledInput({
   name,
   label = name && capitalize(last(name.split('.'))!),
@@ -40,10 +52,7 @@ export function LabeledInput({
         : className}
       label={label &&
         label !== NoLabelButSpaceAsPlaceholder && (
-        <span className='mb-1 ml-0.5'>
-          {label}
-          {label && required && <sup>*</sup>}
-        </span>
+        <LabelSpan label={label} required={required} />
       )}
     >
       {children}

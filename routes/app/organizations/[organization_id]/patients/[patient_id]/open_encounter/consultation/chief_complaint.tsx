@@ -5,10 +5,8 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import * as patient_chief_complaints from '../../../../../../../../db/models/patient_chief_complaints.ts'
-import { getAll as getAllLanguages } from '../../../../../../../../db/models/languages.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { ChiefComplaintSection } from '../../../../../../../../islands/chief-complaint/Section.tsx'
 
 const PatientChiefComplaintSchema = z.object({
@@ -38,23 +36,19 @@ export const handler = postHandler(
 export async function ChiefComplaintPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const {
-    languages,
-    chief_complaint,
-  } = await promiseProps({
-    languages: getAllLanguages(ctx.state.trx),
-    chief_complaint: patient_chief_complaints.getEncounter(ctx.state.trx, {
+  const chief_complaint = await patient_chief_complaints.getEncounter(
+    ctx.state.trx,
+    {
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
       patient_id: ctx.state.patient.id,
-    }),
-  })
+    },
+  )
 
   return (
     <ChiefComplaintSection
       preferred_language_code_iso_639_2_b={ctx.state.patient
         .preferred_language_code_iso_639_2_b}
       patient_chief_complaint={chief_complaint}
-      languages={languages}
     />
   )
 }

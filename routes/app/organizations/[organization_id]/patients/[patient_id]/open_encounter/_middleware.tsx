@@ -175,6 +175,12 @@ function workflowStepFromUrl(
     ).split('/'),
   )
   assert(isWorkflow(workflow), `Invalid workflow: ${workflow}`)
+  assertOrRedirect(
+    step,
+    `/app/organizations/${ctx.state.encounter.organization.id}/patients/${ctx.state.encounter.patient.id}/open_encounter/${ctx.state.encounter.status.patient_presence.current_workflow}/${
+      firstIncompleteStepStatus(getWorkflowStatusInProgress(ctx, workflow))
+    }`,
+  )
   assert(WORKFLOW_STEPS[workflow].includes(step), `Invalid step: ${step}`)
   return { workflow, step }
 }

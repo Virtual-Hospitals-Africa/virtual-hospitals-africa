@@ -5,13 +5,13 @@ import { useSignal } from '@preact/signals'
 import { CheckboxInput } from './form/inputs/checkbox.tsx'
 import { TextInput } from './form/inputs/text.tsx'
 
-export function NationalIdFormGroup({ national_id_number }: {
+export function ZimbabweanNationalIdFormGroup({ national_id_number }: {
   national_id_number: Maybe<string>
 }) {
   const no_national_id = useSignal(false)
   return (
     <>
-      <NationalIdInput
+      <ZimbabweanNationalIdInput
         value={national_id_number}
         no_national_id_checked={no_national_id.value}
       />
@@ -25,7 +25,7 @@ export function NationalIdFormGroup({ national_id_number }: {
     </>
   )
 }
-export function NationalIdInput(
+export function ZimbabweanNationalIdInput(
   { value, no_national_id_checked }: {
     value?: Maybe<string>
     no_national_id_checked?: boolean

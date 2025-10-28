@@ -10,11 +10,12 @@ import {
   string_or_number_as_string,
   varchar255,
 } from '../../../../../../../../util/validators.ts'
-import { getAll as getAllLanguages } from '../../../../../../../../db/models/languages.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import PersonalSection from '../../../../../../../../islands/patient-registration/PersonalSection.tsx'
 import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
+import { nationalIdCheckResult } from '../../../../../../../../util/southAfricanNationalId.ts'
+import omit from '../../../../../../../../util/omit.ts'
 
 const PatientRegistrationPersonalSchema = z.object({
   first_names: varchar255,
@@ -31,7 +32,20 @@ const PatientRegistrationPersonalSchema = z.object({
     message: 'Must either provide national id number or check no national id',
     path: ['national_id_number'],
   },
-)
+).superRefine((patient, ctx) => {
+  if (!patient.national_id_number) return
+  const result = nationalIdCheckResult({
+    sex: patient.sex,
+    date_of_birth: patient.date_of_birth,
+    national_id_number: patient.national_id_number,
+  })
+  if (result.success) return
+  ctx.addIssue({
+    code: 'custom',
+    message: result.error.message,
+    path: ['national_id_number'],
+  })
+}).transform((patient) => omit(patient, ['no_national_id']))
 
 export const handler = postHandler(
   PatientRegistrationPersonalSchema,
@@ -57,6 +71,7 @@ export async function PatientRegistrationPersonalPage(
       organization_default_language_code={ctx.state.organization
         .most_common_language_code}
       server_country={SERVER_COUNTRY}
+      previously_completed_step={ctx.state.previously_completed_step}
     />
   )
 }
