@@ -3,19 +3,35 @@ import { JSX, Ref } from 'preact'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import { Select, SelectProps } from './select.tsx'
 
+type FlexibleOption<
+  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
+> = V | { value: V; label?: string } | { id: V; name: string }
+
 export const SelectWithOptions = forwardRef(function SelectWithOptions<
   V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
 >(
   {
     options,
+    groups,
     blank_option,
     value,
     ...rest
-  }: Omit<SelectProps, 'children'> & {
-    blank_option?: string | true
-    value?: V
-    options: { value: V; label?: string }[] | V[] | { id: V; name: string }[]
-  },
+  }:
+    & Omit<SelectProps, 'children'>
+    & {
+      blank_option?: string | true
+      value?: V
+    }
+    & (
+      | { options: FlexibleOption<V>[]; groups?: never }
+      | {
+        options?: never
+        groups: {
+          label: string
+          options: { value: V; label: string }[]
+        }[]
+      }
+    ),
   ref: Ref<HTMLSelectElement>,
 ) {
   return (
@@ -25,7 +41,7 @@ export const SelectWithOptions = forwardRef(function SelectWithOptions<
           {typeof blank_option === 'string' ? blank_option : 'Select'}
         </option>
       )}
-      {options.map((option) =>
+      {options?.map((option) =>
         isObjectLike(option) && 'value' in option
           ? (
             <option
@@ -50,6 +66,17 @@ export const SelectWithOptions = forwardRef(function SelectWithOptions<
             />
           )
       )}
+      {groups?.map((group) => (
+        <optgroup label={group.label}>
+          {group.options.map((option) => (
+            <option
+              value={option.value}
+              label={option.label}
+              selected={value === option.value}
+            />
+          ))}
+        </optgroup>
+      ))}
     </Select>
   )
 })

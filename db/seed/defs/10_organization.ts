@@ -37,6 +37,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4554096,
       longitude: 29.7739353,
     },
+    most_common_language_code: 'nso',
   })
 
   await organizations.add(trx, {
@@ -57,6 +58,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
       latitude: -19.4555096,
       longitude: 29.7738353,
     },
+    most_common_language_code: 'nso',
   })
   await organizations.add(trx, {
     id: '00000000-0000-0000-0000-000000000003',

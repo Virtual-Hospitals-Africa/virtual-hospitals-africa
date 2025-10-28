@@ -29,9 +29,7 @@ import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Department } from '../../shared/departments.ts'
-
-const SERVER_COUNTRY = Deno.env.get('SERVER_COUNTRY') || 'ZA'
-assert(addresses.TO_COUNTRY_OFFICIAL_NAME.has(SERVER_COUNTRY))
+import { SERVER_COUNTRY } from './countries.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -45,9 +43,9 @@ export function baseQuery(trx: TrxOrDb) {
       'organizations.country',
       'organizations.ownership',
       'organizations.inactive_reason',
+      'organizations.most_common_language_code',
       'addresses.formatted as formatted_address',
       'addresses.formatted as description',
-
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
@@ -574,6 +572,7 @@ export type OrganizationInsert = {
   location?: Coordinates
   is_test?: boolean
   departments?: Department[]
+  most_common_language_code?: string
 }
 
 export function addDepartments(

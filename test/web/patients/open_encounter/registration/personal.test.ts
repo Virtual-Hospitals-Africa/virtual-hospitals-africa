@@ -39,7 +39,7 @@ describe(
       const national_id_number = randomNationalId()
       const phone_number = randomPhoneNumber()
       const body = new FormData()
-      const demographics = randomNamesAndGender('za')
+      const demographics = randomNamesAndGender('ZA')
       body.set('first_name', demographics.first_name)
       body.set('last_name', demographics.last_name)
       body.set('national_id_number', national_id_number)

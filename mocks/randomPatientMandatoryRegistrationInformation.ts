@@ -2,7 +2,7 @@ import randomDateOfBirth from './randomDateOfBirth.ts'
 import { randomNamesAndGender } from './randomDemographics.ts'
 
 export default function randomPatientMandatoryRegistrationInformation(
-  country: 'za' | 'zw' = 'za',
+  country: 'ZA' | 'ZW' = 'ZA',
   gender?: 'male' | 'female',
 ) {
   const demographics = randomNamesAndGender(country, gender)

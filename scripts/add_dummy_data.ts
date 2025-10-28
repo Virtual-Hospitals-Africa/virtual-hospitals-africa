@@ -166,7 +166,7 @@ async function addPatientsToWaitingRoom(
   await forEach(
     patient_scenarios.entries(),
     async ([i, [gender, _reason, workflow, workflow_status, triage_level]]) => {
-      const demo = randomNamesAndGender('za', gender)
+      const demo = randomNamesAndGender('ZA', gender)
       const nurse = nurses[i % nurses.length]
       const arrived_ago = i === 0
         ? 0
@@ -514,7 +514,7 @@ async function addDummyData() {
 
 // function foo() {
 //   const x = wm_scenarios.map(([gender, reason, department, workflow, workflow_status, priority, arrived_at_minutes_ago]) => {
-//     const patient = randomPatientMandatoryRegistrationInformation('za', gender)
+//     const patient = randomPatientMandatoryRegistrationInformation('ZA', gender)
 //     let target_time_to_treatment: string | number | null = null
 //     if (isTriageLevel(priority)) {
 //       const target_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority] - arrived_at_minutes_ago
@@ -534,7 +534,7 @@ async function addDummyData() {
 //       if (department === 'resus') {
 //         specialty = 'primary care'
 //       }
-//       provider = `${randomPatientMandatoryRegistrationInformation('za').name} (${specialty})`
+//       provider = `${randomPatientMandatoryRegistrationInformation('ZA').name} (${specialty})`
 //     }
 
 //     const status = workflow_status === 'in progress'

@@ -8,7 +8,7 @@ import { Department } from '../../shared/departments.ts'
 import * as organizations from '../../db/models/organizations.ts'
 
 export const TEST_ORGANIZATION_UUIDS = {
-  za: {
+  ZA: {
     clinic: '00000000-0000-0000-0000-000000000001',
     hospital: '00000000-0000-0000-0000-000000000001',
   },

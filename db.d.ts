@@ -843,6 +843,7 @@ export interface Organizations {
   inactive_reason: string | null
   is_test: Generated<boolean>
   location: string | null
+  most_common_language_code: string | null
   name: string
   ownership: string | null
   updated_at: Generated<Timestamp>

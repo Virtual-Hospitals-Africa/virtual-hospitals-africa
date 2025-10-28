@@ -5,11 +5,11 @@ import { last_names as zw_last_names } from '../db/resources/demographics/last_n
 import { first_names as zw_first_names } from '../db/resources/demographics/first_names/zw.ts'
 
 const names = {
-  za: {
+  ZA: {
     last_names: za_last_names,
     first_names: za_first_names,
   },
-  zw: {
+  ZW: {
     last_names: zw_last_names,
     first_names: zw_first_names,
   },
@@ -22,7 +22,7 @@ type Demographics = {
   gender: 'female' | 'male'
 }
 
-const incidences = memoize(function (country: 'za' | 'zw') {
+const incidences = memoize(function (country: 'ZA' | 'ZW') {
   const { last_names, first_names } = names[country]
 
   // Keep track of the total incidence of each name
@@ -59,7 +59,7 @@ const incidences = memoize(function (country: 'za' | 'zw') {
 })
 
 export function randomNamesAndGender(
-  country: 'za' | 'zw' = 'za',
+  country: 'ZA' | 'ZW' = 'ZA',
   gender?: 'male' | 'female',
 ): Demographics {
   const {

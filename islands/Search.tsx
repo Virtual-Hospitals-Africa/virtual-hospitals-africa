@@ -14,6 +14,7 @@ import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
 import { Label } from '../components/library/Label.tsx'
+import { Signal, useSignal } from '@preact/signals'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -34,6 +35,7 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
   disabled?: boolean
   readonly?: boolean
   value?: Maybe<T>
+  signal?: Signal<Maybe<T>>
   multi?: boolean
   className?: string
   loading_options?: boolean
@@ -65,6 +67,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
   required,
   label,
   value,
+  signal,
   multi,
   just_name,
   no_name_form_data,
@@ -89,7 +92,9 @@ export default function Search<T extends { id?: unknown; name: string }>({
       'onSelect must be provided for a multi search',
     )
   }
-  const [selected, setSelected] = useState<T | null>(
+
+  // deno-lint-ignore react-rules-of-hooks
+  const selected = signal || useSignal<T | null>(
     hasId(value) ? value : null,
   )
 
@@ -127,14 +132,24 @@ export default function Search<T extends { id?: unknown; name: string }>({
 
   const input_ref = useRef<HTMLInputElement>(null)
 
+  console.log({
+    search: 'Search',
+    selected,
+    all_options,
+    name_field,
+    id_field,
+    value,
+    hasId: hasId(value),
+  })
+
   return (
     <Combobox
       id={id}
-      value={selected}
+      value={selected.value}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
         // Clear the selection for a multiselect so the user now has space to enter another value
-        setSelected(multi ? null : value)
+        selected.value = multi ? null : value
 
         // Gets picked up by hijack-form-submission-and-set-focus.js to focus on the next input
         if (value && input_ref.current) {
@@ -165,22 +180,24 @@ export default function Search<T extends { id?: unknown; name: string }>({
               disabled && 'bg-gray-300',
             )}
             onChange={(event) => {
+              console.log('mmmwemew', event)
               const query = event.currentTarget.value
-              setSelected(null)
+              selected.value = null
               onSelect?.(undefined)
               setQuery(query)
               onQuery(query)
               event.currentTarget.setCustomValidity('')
             }}
-            value={selected?.name}
+            value={selected.value?.name}
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
             autoComplete='off'
             onBlur={!addable ? undefined : () => {
-              if (selected) return
+              if (selected.value) return
+              if (!query) return
               onSelect?.(add_option)
-              setSelected(add_option)
+              selected.value = add_option
             }}
             placeholder={placeholder}
           />
@@ -275,12 +292,12 @@ export default function Search<T extends { id?: unknown; name: string }>({
             </Combobox.Options>
           )}
         </div>
-        {selected?.id && selected.id !== 'add' && id_field && (
+        {selected.value?.id && selected.value.id !== 'add' && id_field && (
           <input
             type='hidden'
             name={id_field}
             // deno-lint-ignore no-explicit-any
-            value={selected.id as any}
+            value={selected.value.id as any}
           />
         )}
       </div>

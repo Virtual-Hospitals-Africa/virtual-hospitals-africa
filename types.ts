@@ -1869,6 +1869,7 @@ export type Organization = {
   ownership: string | null
   inactive_reason: string | null
   location: Coordinates | null
+  most_common_language_code: string | null
 }
 
 export type OrganizationWithAddress =

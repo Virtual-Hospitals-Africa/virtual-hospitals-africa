@@ -12,7 +12,7 @@ export default async function testRegistrationDetails(
     health_worker_id,
     gender: 'male',
     date_of_birth: '1979-12-12',
-    national_id_number: randomNationalId('za'),
+    national_id_number: randomNationalId('ZA'),
     date_of_first_practice: '1999-11-11',
     ncz_registration_number: 'GN' + randomDigits(6),
     mobile_number: randomPhoneNumber(),

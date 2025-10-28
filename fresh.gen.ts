@@ -270,7 +270,6 @@ import * as $form_inputs_radio_group from './islands/form/inputs/radio_group.tsx
 import * as $form_inputs_search from './islands/form/inputs/search.tsx'
 import * as $form_inputs_select from './islands/form/inputs/select.tsx'
 import * as $form_inputs_select_with_options from './islands/form/inputs/select_with_options.tsx'
-import * as $form_inputs_sex from './islands/form/inputs/sex.tsx'
 import * as $form_inputs_text from './islands/form/inputs/text.tsx'
 import * as $form_inputs_textarea from './islands/form/inputs/textarea.tsx'
 import * as $form_inputs_yes_no from './islands/form/inputs/yes_no.tsx'
@@ -724,7 +723,6 @@ const manifest = {
     './islands/form/inputs/select.tsx': $form_inputs_select,
     './islands/form/inputs/select_with_options.tsx':
       $form_inputs_select_with_options,
-    './islands/form/inputs/sex.tsx': $form_inputs_sex,
     './islands/form/inputs/text.tsx': $form_inputs_text,
     './islands/form/inputs/textarea.tsx': $form_inputs_textarea,
     './islands/form/inputs/yes_no.tsx': $form_inputs_yes_no,

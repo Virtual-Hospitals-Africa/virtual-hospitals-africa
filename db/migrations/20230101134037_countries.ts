@@ -7,12 +7,18 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'iso_3166_2',
       'varchar(2)',
-      (col) => col.notNull().primaryKey(),
+      (col) =>
+        col.notNull().primaryKey().check(
+          sql`LENGTH(iso_3166_2) = 2 AND iso_3166_2 ~ '^[A-Z]+$'`,
+        ),
     )
     .addColumn(
       'iso_3166_3',
       'varchar(3)',
-      (col) => col.notNull().unique(),
+      (col) =>
+        col.notNull().unique().check(
+          sql`LENGTH(iso_3166_3) = 3 AND iso_3166_3 ~ '^[A-Z]+$'`,
+        ),
     )
     .addColumn(
       'official_name',

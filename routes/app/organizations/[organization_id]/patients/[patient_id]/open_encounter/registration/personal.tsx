@@ -14,6 +14,7 @@ import { getAll as getAllLanguages } from '../../../../../../../../db/models/lan
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import PersonalSection from '../../../../../../../../islands/patient-registration/PersonalSection.tsx'
+import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
 
 const PatientRegistrationPersonalSchema = z.object({
   first_names: varchar255,
@@ -50,13 +51,12 @@ export const handler = postHandler(
 export async function PatientRegistrationPersonalPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const languages = await getAllLanguages(ctx.state.trx)
   return (
     <PersonalSection
       patient={ctx.state.patient}
       organization_default_language_code={ctx.state.organization
-        .most_common_language_code_iso_639_2_b}
-      languages={languages}
+        .most_common_language_code}
+      server_country={SERVER_COUNTRY}
     />
   )
 }
