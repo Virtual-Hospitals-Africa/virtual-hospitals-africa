@@ -199,6 +199,12 @@ addEventListener('submit', function (event) {
           }
         })
         return
+      } else if (json.name === 'error_with_actions') {
+        return dispatchEvent(
+          new CustomEvent('show-error', { detail: json }),
+        )
+      } else {
+        throw new Error(`Unrecognized error: ${json.name}`)
       }
     }
 

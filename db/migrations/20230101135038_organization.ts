@@ -26,7 +26,12 @@ export async function up(db: Kysely<DB>) {
           'uuid',
           (col) => col.references('addresses.id').onDelete('cascade'),
         )
-        .addColumn('location', sql`GEOGRAPHY(POINT,4326)`),
+        .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
+        .addColumn(
+          'most_common_language_code',
+          'varchar(3)',
+          (col) => col.references('languages.iso_639_2_b'),
+        ),
     // .addCheckConstraint(
     //   'organization_with_address_has_location',
     //   sql`

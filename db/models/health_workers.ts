@@ -7,6 +7,7 @@ import {
   HasStringId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
+  InsertShape,
   Maybe,
   PossiblyEmployedHealthWorker,
   TrxOrDb,
@@ -30,27 +31,60 @@ import first from '../../util/first.ts'
 import { assertDepartmentName } from '../../shared/departments.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { HealthWorkerIdSelection } from './health_worker_id.ts'
+import { HealthWorkers } from '../../db.d.ts'
+import { asNames, NameInputs } from './asNames.ts'
+
+type HealthWorkerUpsert =
+  & {
+    id?: string
+    avatar_url: string
+    email: string
+  }
+  & NameInputs
+
+function asHealthWorkerValues(
+  health_worker: HealthWorkerUpsert,
+): InsertShape<HealthWorkers> {
+  return {
+    ...health_worker,
+    ...asNames(health_worker),
+  }
+}
 
 export function upsert(
   trx: TrxOrDb,
-  details: HealthWorker,
+  details: HealthWorkerUpsert,
 ): Promise<HasStringId<HealthWorker>> {
+  const to_upsert = asHealthWorkerValues(details)
   return trx
     .insertInto('health_workers')
-    .values(details)
+    .values(to_upsert)
     .onConflict((oc) => oc.column('email').doUpdateSet(details))
-    .returning(['id', 'name', 'email', 'avatar_url'])
+    .returning([
+      'id',
+      'name',
+      'first_names',
+      'surname',
+      'preferred_name',
+      'email',
+      'avatar_url',
+    ])
     .executeTakeFirstOrThrow()
 }
 
-export function updateName(
+export function updateNames(
   trx: TrxOrDb,
   health_worker_id: string,
-  name: string,
+  names: {
+    name: string
+    first_names: string
+    surname: string
+    preferred_name: string
+  },
 ): Promise<UpdateResult[]> {
   return trx
     .updateTable('health_workers')
-    .set({ name })
+    .set(names)
     .where('id', '=', health_worker_id)
     .execute()
 }
@@ -205,6 +239,9 @@ function baseQuery(trx: TrxOrDb) {
     .select((eb) => [
       'health_workers.id',
       'health_workers.name',
+      'health_workers.first_names',
+      'health_workers.surname',
+      'health_workers.preferred_name',
       'health_workers.email',
       'health_workers.avatar_url',
       'google_tokens.access_token',
@@ -489,6 +526,7 @@ export function getEmployeeInfo(
             Maybe<string>
           >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
             .as('date_of_first_practice'),
+          'nurse_registration_details.sex',
           'nurse_registration_details.gender',
           'nurse_registration_details.mobile_number',
           'nurse_registration_details.national_id_number',

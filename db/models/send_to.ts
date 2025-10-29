@@ -21,6 +21,8 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import * as organizations from './organizations.ts'
 import * as patients from './patients.ts'
 import { getEmploymentLocationName } from './employment.ts'
+import { assert } from 'std/assert/assert.ts'
+import { completedRegistration } from '../../shared/patient_registration.ts'
 
 async function processEmployee(
   trx: TrxOrDb,
@@ -138,6 +140,7 @@ export async function forPatientRegistration(
       textarea: 'reason_for_escalation',
     }),
   )
+  assert(completedRegistration(patient))
 
   //sort and limit number of health workers to be displayed
   const processed_employees = await processEmployee(
@@ -269,6 +272,7 @@ export async function forPatientEncounter(
     ),
     patient: patients.getById(trx, patient_id),
   })
+  assert(completedRegistration(patient))
 
   const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
     (facility) => ({

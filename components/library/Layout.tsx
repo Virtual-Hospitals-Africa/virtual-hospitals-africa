@@ -63,14 +63,14 @@ function AppLayoutContents({
     <>
       {sidebar}
       <div className='flex'>
-        <section className='md:pl-48 flex-1'>
+        <section className='flex-1 md:pl-48'>
           <Header
             title={title}
             variant={variant}
             avatarUrl={avatarUrl}
             notifications={notifications}
           />
-          <div className='p-4'>{children}</div>
+          <div className='pl-6'>{children}</div>
         </section>
         {drawer && (
           <div className='h-screen w-[400px] border-l border-gray-200'>
@@ -92,7 +92,7 @@ function JustLogoLayoutContents({
   return (
     <>
       <Header title={title} variant='just logo' />
-      <section className='min-h-full flex flex-col align-center justify-between flex-grow p-6'>
+      <section className='flex flex-col justify-between flex-grow min-h-full p-6 align-center'>
         {children}
       </section>
       <SimpleFooter />
@@ -112,12 +112,12 @@ export default function Layout(props: LayoutProps) {
     <>
       <SuccessMessage
         message={success}
-        className='fixed z-50 top-0 left-0 right-0 m-12'
+        className='fixed top-0 left-0 right-0 z-50 m-12'
         notDismissable={props.variant === 'empty'}
       />
       <WarningMessage
         message={warning}
-        className='fixed z-50 top-0 left-0 right-0 m-12'
+        className='fixed top-0 left-0 right-0 z-50 m-12'
       />
       <ErrorListener initialError={error} />
       {props.variant === 'landing page' && props.children}

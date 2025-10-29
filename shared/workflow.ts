@@ -7,7 +7,7 @@ export const WORKFLOWS = [
   'registration' as const,
   'triage' as const,
   'stabilization' as const,
-  'seeking_treatment' as const,
+  'consultation' as const,
   'maternity' as const,
   'prescription_refill' as const,
   'doctor_review' as const,
@@ -20,7 +20,7 @@ export const WORKFLOW_SNOMED_CONCEPT_IDS = {
   registration: '184047000', // Patient registration
   triage: '225390008',
   stabilization: '115979005', // |Stabilization (procedure)|
-  seeking_treatment: '185347001', // Encounter for problem
+  consultation: '185347001', // Encounter for problem
   maternity: '18114009', //  |Prenatal examination and care of mother (procedure)|
   prescription_refill: '373784005', //  |Dispensing medication (procedure)|
   doctor_review: '712744002', //  |Evaluation of care plan (procedure)|
@@ -35,8 +35,9 @@ export const WORKFLOW_STEPS = {
     'this_visit',
     'primary_care',
     'contacts',
-    'biometrics',
-    'confirm',
+    'confirm_details',
+    'terms_and_conditions',
+    'route_patient',
   ],
   triage: [
     'warning_signs', // chief complaint + emergency signs + urgent signs
@@ -48,7 +49,7 @@ export const WORKFLOW_STEPS = {
   stabilization: [
     'monitor_patient',
   ],
-  seeking_treatment: [
+  consultation: [
     'chief_complaint',
     'vitals',
     'symptoms',

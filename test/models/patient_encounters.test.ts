@@ -212,8 +212,9 @@ describe(
                     'this_visit',
                     'primary_care',
                     'contacts',
-                    'biometrics',
-                    'confirm',
+                    'confirm_details',
+                    'terms_and_conditions',
+                    'route_patient',
                   ],
                   employees: [
                     {
@@ -244,11 +245,10 @@ describe(
                   steps_completed: [],
                   employees: [],
                 },
-                seeking_treatment: {
-                  patient_workflow_id:
-                    open_encounter.workflows.seeking_treatment!
-                      .patient_workflow_id,
-                  workflow: 'seeking_treatment',
+                consultation: {
+                  patient_workflow_id: open_encounter.workflows.consultation!
+                    .patient_workflow_id,
+                  workflow: 'consultation',
                   status: 'not started',
                   steps_completed: [],
                   employees: [],

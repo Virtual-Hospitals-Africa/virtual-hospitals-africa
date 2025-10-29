@@ -15,7 +15,7 @@ async function addSeedData(trx: TrxOrDb) {
     {
       ...exam,
       order: ++order,
-      path: `/${exam.seeking_treatment_step}/${exam.slug}`,
+      path: `/${exam.consultation_step}/${exam.slug}`,
     }
   ))
   // deno-lint-ignore no-explicit-any

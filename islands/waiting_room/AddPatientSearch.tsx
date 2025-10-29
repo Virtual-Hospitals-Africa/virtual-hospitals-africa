@@ -14,17 +14,18 @@ export function AddPatientSearch({
     option,
     selected,
   }: {
-    option: RenderedPatient
+    option: { id: string; name: string }
     selected: boolean
   }) {
+    const patient = option as unknown as RenderedPatient
     const patient_in_organization = waiting_room.find((encounter) =>
       encounter.patient.id === option.id
     )
     const { text, ...action } = patient_in_organization
       ? patient_in_organization.actions[0]
       : {
-        text: 'blah',
-        href: 'foo',
+        text: 'TODO',
+        href: 'TODO',
         method: 'POST' as const,
       }
 
@@ -39,7 +40,7 @@ export function AddPatientSearch({
             <b>{option.name}</b>
           </span>
           <div className={cls('text-xs', selected && 'font-bold')}>
-            {option.description}
+            {patient.description}
           </div>
           <span
             className={cls(
@@ -60,10 +61,6 @@ export function AddPatientSearch({
       search_route='/app/patients'
       label=''
       Option={PatientOption}
-      // addable={{
-      //   href:
-      //     `/app/organizations/${organization_id}/patients/new/registration?patient_name=`,
-      // }}
     />
   )
 }

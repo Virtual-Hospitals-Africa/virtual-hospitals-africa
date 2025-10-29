@@ -26,6 +26,7 @@ import { could_not_locate_account_href } from './app/_middleware.tsx'
 import * as cookie from '../shared/cookie.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
+import { asNames } from '../db/models/asNames.ts'
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
@@ -71,10 +72,14 @@ export async function initializeHealthWorkerWithInvites(
   const health_worker = await health_workers.upsertWithGoogleCredentials(
     trx,
     {
-      name: profile.name,
       email: profile.email,
       avatar_url: profile.picture,
       ...health_workers.pickTokens(googleClient.tokens),
+      ...asNames({
+        first_names: profile.given_name,
+        surname: profile.family_name,
+        name: profile.name,
+      }),
     },
   )
 
@@ -121,10 +126,14 @@ export async function initializeHealthWorkerWithoutInvites(
     health_worker: health_workers.upsertWithGoogleCredentials(
       trx,
       {
-        name: profile.name,
         email: profile.email,
         avatar_url: profile.picture,
         ...health_workers.pickTokens(googleClient.tokens),
+        ...asNames({
+          first_names: profile.given_name,
+          surname: profile.family_name,
+          name: profile.name,
+        }),
       },
     ),
   })

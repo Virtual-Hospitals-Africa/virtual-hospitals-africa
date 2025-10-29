@@ -69,11 +69,16 @@ export default function PatientRegistrationSummary(
     nonEmptyRows([
       [{
         value: personal.name,
-        href: `${registration_href}/personal#focus=first_name`,
+        href: `${registration_href}/personal#focus=first_names`,
         action: DescriptionListCellAction.Edit,
-        name: 'first_name',
+        name: 'first_names',
       }],
       [{
+        value: personal.sex,
+        href: `${registration_href}/personal#focus=sex`,
+        action: DescriptionListCellAction.Edit,
+        name: 'sex',
+      }, {
         value: personal.gender,
         href: `${registration_href}/personal#focus=gender`,
         action: DescriptionListCellAction.Edit,
@@ -230,9 +235,9 @@ export default function PatientRegistrationSummary(
   //           `${registration_href}/family#focus=dependents.${index}.patient_name`,
   //         action: DescriptionListCellAction.Edit,
   //       }, {
-  //         value: dependent.family_relation_gendered,
+  //         value: dependent.family_relation_sexed,
   //         href:
-  //           `${registration_href}/family#focus=dependents.${index}.family_relation_gendered`,
+  //           `${registration_href}/family#focus=dependents.${index}.family_relation_sexed`,
   //         action: DescriptionListCellAction.Edit,
   //         leading_separator: ', ',
   //       }],
@@ -259,10 +264,10 @@ export default function PatientRegistrationSummary(
   //           `${registration_href}/family#focus=family.guardians.${index}.patient_name`,
   //         action: DescriptionListCellAction.Edit,
   //       }, {
-  //         value: guardian.family_relation_gendered,
+  //         value: guardian.family_relation_sexed,
   //         name: 'relationship',
   //         href:
-  //           `${registration_href}/family#focus=family.guardians.${index}.family_relation_gendered`,
+  //           `${registration_href}/family#focus=family.guardians.${index}.family_relation_sexed`,
   //         action: DescriptionListCellAction.Edit,
   //         leading_separator: ', ',
   //       }],

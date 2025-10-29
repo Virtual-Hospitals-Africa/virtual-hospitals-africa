@@ -36,7 +36,7 @@ export function assertDepartmentName(
 }
 
 export const WORKFLOW_DEPARTMENTS = {
-  seeking_treatment: 'primary care',
+  consultation: 'primary care',
   maternity: 'maternity',
   registration: 'reception',
   triage: 'triage',

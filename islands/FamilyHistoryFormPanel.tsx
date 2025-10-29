@@ -14,7 +14,7 @@ type FamilyHistoryFormPanelProps = {
 }
 
 type FamilyMember = Partial<{
-  relationship_gendered: string
+  relationship_sexed: string
 }>
 
 function FamilyHistoryForm(
@@ -58,23 +58,23 @@ function FamilyMemberSection({
     <>
       <RelationshipSelect
         required
-        name={`family_history.family_members.${index}.relation_gendered`}
-        family_relation_gendered={member.relationship_gendered}
+        name={`family_history.family_members.${index}.relation_sexed`}
+        family_relation_sexed={member.relationship_sexed}
         type='all'
-        gender={undefined}
+        sex={undefined}
       />
       {
         /* <Gender
         required
-        name={`family_members.${index}.family_relation_gendered`}
-        family_relation_gendered={undefined}
+        name={`family_members.${index}.family_relation_sexed`}
+        family_relation_sexed={undefined}
         type="all"
         gender={undefined}
       />
       <Notes
         required
-        name={`family_members.${index}.family_relation_gendered`}
-        family_relation_gendered={undefined}
+        name={`family_members.${index}.family_relation_sexed`}
+        family_relation_sexed={undefined}
         type="all"
         gender={undefined}
       /> */

@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { FreshContext, Handlers } from '$fresh/server.ts'
-import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
+import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import {
   AgeUnit,
@@ -10,12 +10,13 @@ import {
   FamilyType,
   MaritalStatus,
   PatientCohabitation,
+  Patients,
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
 import { Department } from './shared/departments.ts'
 import { DietFrequency } from './shared/diet.ts'
-import { GENDERED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
+import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
 export * from './shared/priorities.ts'
 
@@ -54,16 +55,13 @@ export type OptionalMaybeFields<T> =
     ]?: T[K]
   }
 
-type M = OptionalUndefinedFields<{
-  foo: null | number
-  bar: undefined | boolean
-  baz: string
-}>
-type MM = OptionalMaybeFields<{
-  foo: null | number
-  bar: undefined | boolean
-  baz: string
-}>
+export type RequiredFields<T> = {
+  [
+    K in keyof T as null extends T[K] ? K
+      : undefined extends T[K] ? K
+      : never
+  ]: NonNull<T[K]>
+}
 
 export type SqlRow<T> = {
   id: Generated<number>
@@ -81,16 +79,22 @@ export type InsertShape<T> = OptionalMaybeFields<
     [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? I
       : T[K] extends null | ColumnType<any, infer NullableI, any>
         ? null | NullableI
-      : T[K]
+      : T[K] | RawBuilder<T[K]>
   }
 >
 
-export type UpdateShape<T> = {
-  [K in keyof T]: T[K] extends ColumnType<any, any, infer U> ? U
-    : T[K] extends null | ColumnType<any, any, infer NullableU>
-      ? null | NullableU
-    : T[K]
-}
+export type UpdateShape<T> = OptionalMaybeFields<
+  {
+    [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
+      : T[K] extends null | ColumnType<any, any, infer NullableU>
+        ? null | NullableU
+      : T[K] | RawBuilder<T[K]>
+  }
+>
+
+type P = UpdateShape<Patients>
+
+// type OrRawBuilder =
 
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -105,7 +109,7 @@ export type Coordinates = {
   latitude: number
 }
 
-export type Gender = 'male' | 'female' | 'non-binary'
+export type Sex = 'male' | 'female' | 'other' | 'prefer not to say'
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
@@ -196,7 +200,7 @@ export type PatientConversationState =
   | 'initial_message'
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
-  | 'not_onboarded:make_appointment:enter_gender'
+  | 'not_onboarded:make_appointment:enter_sex'
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
@@ -225,11 +229,13 @@ export type Patient = PatientPersonal & {
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
-  gender: Maybe<Gender>
+  sex: Maybe<Sex>
+  gender: Maybe<string>
   ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   first_language: Maybe<string>
+  country: string
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState
@@ -240,6 +246,7 @@ export type PatientPersonal = {
 export type RenderedPatient =
   & Pick<
     Patient,
+    | 'sex'
     | 'gender'
     | 'ethnicity'
     | 'national_id_number'
@@ -251,7 +258,8 @@ export type RenderedPatient =
     address: string | null
     date_of_birth: string | null
     dob_formatted: string | null
-    name: string
+    name: string | null
+    names: null | Names
     description: string | null
     age_display: Maybe<string>
     age_years: Maybe<number>
@@ -271,6 +279,22 @@ export type RenderedPatient =
     preferred_language_code_iso_639_2_b: string | null
     primary_doctor: null | Omit<RenderedCareTeamHealthWorker, 'profession'>
   }
+
+export type RenderedPatientCompletedPersonal =
+  & RenderedPatient
+  & RequiredFields<
+    Pick<
+      RenderedPatient,
+      'name' | 'names' | 'date_of_birth' | 'dob_formatted' | 'sex'
+    >
+  >
+
+export type RenderedPatientCompletedRegistration =
+  & RenderedPatientCompletedPersonal
+  & {
+    completed_registration: true
+  }
+
 export type Condition = {
   id: string
   name: string
@@ -411,7 +435,7 @@ export type NextOfKin = {
   patient_id: string
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
-  patient_gender: Maybe<Gender>
+  patient_sex: Maybe<Sex>
   relation: string
 }
 
@@ -422,8 +446,8 @@ export type FamilyRelation = {
   patient_id: string
   patient_name: string
   patient_phone_number: Maybe<string>
-  patient_gender: Maybe<Gender>
-  family_relation_gendered: Maybe<string>
+  patient_sex: Maybe<Sex>
+  family_relation_sexed: Maybe<string>
 }
 
 export type GuardianFamilyRelation = FamilyRelation & {
@@ -434,7 +458,7 @@ export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
   patient_name: string
   patient_phone_number?: Maybe<string>
-  family_relation_gendered: string
+  family_relation_sexed: string
   next_of_kin: boolean
 }
 
@@ -740,8 +764,8 @@ export type WhatsAppContactsMessage = {
   type: 'contacts'
   contacts: {
     name: {
-      first_name: string
-      last_name: string
+      first_names: string
+      surname: string
       formatted_name: string
     }
     phones: {
@@ -1388,7 +1412,8 @@ export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
 export type NurseRegistrationDetails = {
   health_worker_id: string
-  gender: Gender
+  sex: Sex
+  gender: string
   date_of_birth: string
   national_id_number: string
   date_of_first_practice: string
@@ -1407,8 +1432,7 @@ export type Specialties = {
   specialty: NurseSpecialty
 }
 
-export type HealthWorker = {
-  name: string
+export type HealthWorker = Names & {
   email: string
   avatar_url: string
   phone_number?: Maybe<string>
@@ -1417,7 +1441,8 @@ export type HealthWorker = {
 export type EmployeeInfo = {
   name: string
   email: string
-  gender: Maybe<Gender>
+  sex: Maybe<Sex>
+  gender: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
@@ -1848,6 +1873,7 @@ export type Organization = {
   ownership: string | null
   inactive_reason: string | null
   location: Coordinates | null
+  most_common_language_code: string | null
 }
 
 export type OrganizationWithAddress =
@@ -2622,7 +2648,7 @@ export type Provider = {
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
-  seeking_treatment_step: string
+  consultation_step: string
   slug: string
   display_name: string
   completed: SqlBool | null
@@ -3372,7 +3398,7 @@ export type ExtantProcedureOrCreationIntent = {
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
   family_members: Array<{
-    relation_gendered: keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+    relation_sexed: keyof typeof SEXED_RELATION_SNOMED_CONCEPT_IDS
   }>
 }
 
@@ -3427,7 +3453,7 @@ export type RenderedPatientHistory = {
 export type PatientDrawerV3Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
-  current_seeking_treatment_step: string
+  current_consultation_step: string
   this_visit_records: ThisVisitRecords
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
@@ -3455,4 +3481,11 @@ export type RenderedPatientInsurance = {
   valid_from: string
   expire_date: string
   is_dependent: boolean
+}
+
+export type Names = {
+  name: string
+  first_names: string
+  surname: string
+  preferred_name: string
 }

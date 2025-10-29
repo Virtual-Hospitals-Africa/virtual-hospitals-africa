@@ -65,14 +65,14 @@ export default async function PrescriptionPage(
         url={ctx.url}
         variant='just logo'
       >
-        <div className='pt-20 pb-20 bg-gray-100 flex items-center justify-center font-sans'>
+        <div className='flex items-center justify-center pt-20 pb-20 font-sans bg-gray-100'>
           <div
-            className='bg-white p-5'
+            className='p-5 bg-white'
             style={{
               boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
             }}
           >
-            <div className='text-purple-900 mb-2 font-extrabold text-3xl text-center pt-5'>
+            <div className='pt-5 mb-2 text-3xl font-extrabold text-center text-purple-900'>
               <h1>PRESCRIPTION</h1>
             </div>
             <Divider />
@@ -91,7 +91,7 @@ export default async function PrescriptionPage(
             </div>
             <Divider />
             <div className='mb-2'>
-              <div className='text-purple-900 mb-2 font-bold'>
+              <div className='mb-2 font-bold text-purple-900'>
                 Patient Information
               </div>
               {/* wkhtml2pdf can't handle css grid */}
@@ -112,8 +112,8 @@ export default async function PrescriptionPage(
                   information={patient.dob_formatted}
                 />
                 <PrescriptionDetail
-                  heading='Gender'
-                  information={patient.gender}
+                  heading='Sex'
+                  information={patient.sex}
                 />
                 <PrescriptionDetail
                   heading='Address'
@@ -130,17 +130,17 @@ export default async function PrescriptionPage(
               </div>
             </div>
             <Divider />
-            <div className='text-purple-900 mb-2 font-bold'>
+            <div className='mb-2 font-bold text-purple-900'>
               List of Prescribed Medications
             </div>
             <div className='pb-4'>
               <MedicationsTable medications={unfilled_medications} />
             </div>
             <Divider />
-            <div className='text-purple-900 mb-2 font-bold'>
+            <div className='mb-2 font-bold text-purple-900'>
               Physician Information
             </div>
-            <div className='mb-3 mt-3'>
+            <div className='mt-3 mb-3'>
               {/* wkhtml2pdf can't handle css grid */}
               <div /*className='grid grid-cols-2'*/>
                 <PrescriptionDetail

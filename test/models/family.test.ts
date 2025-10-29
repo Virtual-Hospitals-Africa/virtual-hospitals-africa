@@ -16,11 +16,13 @@ describe(
         async (trx) => {
           const guardian = await patients.insert(trx, {
             name: 'Billy Bob',
-            gender: 'male',
+            sex: 'male',
+            gender: 'man',
           })
           const dependent = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
           const relation = await family.addGuardian(trx, {
             guardian_relation: 'biological parent',
@@ -43,8 +45,8 @@ describe(
                 patient_phone_number: null,
                 guardian_relation: 'biological parent',
                 family_relation: 'biological parent',
-                family_relation_gendered: 'biological father',
-                patient_gender: 'male',
+                family_relation_sexed: 'biological father',
+                patient_sex: 'male',
                 next_of_kin: false,
               },
             ],
@@ -65,8 +67,8 @@ describe(
                 patient_phone_number: null,
                 guardian_relation: 'biological parent',
                 family_relation: 'biological child',
-                family_relation_gendered: 'biological daughter',
-                patient_gender: 'female',
+                family_relation_sexed: 'biological daughter',
+                patient_sex: 'female',
               },
             ],
             next_of_kin: undefined,
@@ -88,7 +90,7 @@ describe(
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
             guardians: [{
-              family_relation_gendered: 'biological mother',
+              family_relation_sexed: 'biological mother',
               patient_id: guardian.id,
               patient_name: 'Janey Jane',
               patient_phone_number,
@@ -106,9 +108,9 @@ describe(
             dependents: [],
             guardians: [{
               family_relation: 'biological parent',
-              family_relation_gendered: 'biological mother',
+              family_relation_sexed: 'biological mother',
               guardian_relation: 'biological parent',
-              patient_gender: 'female',
+              patient_sex: 'female',
               patient_id: guardian.id,
               patient_name: 'Janey Jane',
               patient_phone_number,
@@ -130,12 +132,13 @@ describe(
           const dependent = await patients.insert(trx, { name: 'Billy Bob' })
           const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
             guardians: [{
-              family_relation_gendered: 'biological parent',
+              family_relation_sexed: 'biological parent',
               patient_id: guardian.id,
               patient_name: 'Janey Jane',
               patient_phone_number,
@@ -153,9 +156,9 @@ describe(
             dependents: [],
             guardians: [{
               family_relation: 'biological parent',
-              family_relation_gendered: 'biological mother',
+              family_relation_sexed: 'biological mother',
               guardian_relation: 'biological parent',
-              patient_gender: 'female',
+              patient_sex: 'female',
               patient_id: guardian.id,
               patient_name: 'Janey Jane',
               patient_phone_number,
@@ -179,7 +182,7 @@ describe(
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
             guardians: [{
-              family_relation_gendered: 'biological mother',
+              family_relation_sexed: 'biological mother',
               patient_name: 'Janey Jane',
               patient_phone_number,
               next_of_kin: false,
@@ -196,9 +199,9 @@ describe(
             dependents: [],
             guardians: [{
               family_relation: 'biological parent',
-              family_relation_gendered: 'biological mother',
+              family_relation_sexed: 'biological mother',
               guardian_relation: 'biological parent',
-              patient_gender: 'female',
+              patient_sex: 'female',
               patient_id: relations['guardians'][0].patient_id,
               patient_name: 'Janey Jane',
               patient_phone_number,
@@ -220,7 +223,8 @@ describe(
           const dependent = await patients.insert(trx, { name: 'Billy Bob' })
           const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
 
           await family.addGuardian(trx, {
@@ -262,12 +266,12 @@ describe(
         const father_phone_number = randomPhoneNumber()
         await family.upsert(trx, dependent.id, {
           guardians: [{
-            family_relation_gendered: 'biological mother',
+            family_relation_sexed: 'biological mother',
             patient_name: 'Janey Jane',
             patient_phone_number: mother_phone_number,
             next_of_kin: false,
           }, {
-            family_relation_gendered: 'biological father',
+            family_relation_sexed: 'biological father',
             patient_name: 'James Doe',
             patient_phone_number: father_phone_number,
             next_of_kin: true,
@@ -284,9 +288,9 @@ describe(
           dependents: [],
           guardians: [{
             family_relation: 'biological parent',
-            family_relation_gendered: 'biological mother',
+            family_relation_sexed: 'biological mother',
             guardian_relation: 'biological parent',
-            patient_gender: 'female',
+            patient_sex: 'female',
             patient_id: relations['guardians'][0].patient_id,
             patient_name: 'Janey Jane',
             patient_phone_number: mother_phone_number,
@@ -294,9 +298,9 @@ describe(
             next_of_kin: false,
           }, {
             family_relation: 'biological parent',
-            family_relation_gendered: 'biological father',
+            family_relation_sexed: 'biological father',
             guardian_relation: 'biological parent',
-            patient_gender: 'male',
+            patient_sex: 'male',
             patient_id: relations['guardians'][1].patient_id,
             patient_name: 'James Doe',
             patient_phone_number: father_phone_number,
@@ -312,13 +316,13 @@ describe(
 
         await family.upsert(trx, dependent.id, {
           guardians: [{
-            family_relation_gendered: 'biological mother',
+            family_relation_sexed: 'biological mother',
             patient_id: relations['guardians'][0].patient_id,
             patient_name: 'Janey Jane',
             patient_phone_number: mother_phone_number,
             next_of_kin: true,
           }, {
-            family_relation_gendered: 'biological father',
+            family_relation_sexed: 'biological father',
             patient_id: relations['guardians'][1].patient_id,
             patient_name: 'James Doe',
             patient_phone_number: father_phone_number,
@@ -339,9 +343,9 @@ describe(
           dependents: [],
           guardians: [{
             family_relation: 'biological parent',
-            family_relation_gendered: 'biological mother',
+            family_relation_sexed: 'biological mother',
             guardian_relation: 'biological parent',
-            patient_gender: 'female',
+            patient_sex: 'female',
             patient_id: relations['guardians'][0].patient_id,
             patient_name: 'Janey Jane',
             patient_phone_number: mother_phone_number,
@@ -349,9 +353,9 @@ describe(
             next_of_kin: true,
           }, {
             family_relation: 'biological parent',
-            family_relation_gendered: 'biological father',
+            family_relation_sexed: 'biological father',
             guardian_relation: 'biological parent',
-            patient_gender: 'male',
+            patient_sex: 'male',
             patient_id: relations['guardians'][1].patient_id,
             patient_name: 'James Doe',
             patient_phone_number: father_phone_number,
@@ -374,7 +378,7 @@ describe(
           guardians: [],
           dependents: [],
           next_of_kin: {
-            family_relation_gendered: 'biological mother',
+            family_relation_sexed: 'biological mother',
             patient_name: 'Janey Jane',
             patient_phone_number,
             next_of_kin: true,
@@ -389,7 +393,7 @@ describe(
           dependents: [],
           guardians: [],
           next_of_kin: {
-            patient_gender: null,
+            patient_sex: null,
             patient_id: relations['next_of_kin']!.patient_id,
             patient_name: 'Janey Jane',
             patient_phone_number,

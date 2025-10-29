@@ -1,8 +1,10 @@
 import { useSignal } from '@preact/signals'
-import { SelectWithOptions, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
+
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
 import { Lifestyle } from '../../types.ts'
 import FormSection from '../../components/library/FormSection.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { YesNoGrid, YesNoQuestion } from '../form/inputs/yes_no.tsx'
 
 const FREQUENCIES = [
   'Once per month or less' as const,

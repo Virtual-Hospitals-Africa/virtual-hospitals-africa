@@ -7,8 +7,8 @@ import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
-import randomNationalId from '../../../../mocks/randomNationalId.ts'
 import { mockWhatsApp } from '../../../chatbot/mockWhatsApp.ts'
+import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -17,10 +17,7 @@ describe('patient chatbot', () => {
     await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:send_organization_location',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: randomNationalId(),
+      ...randomDemographics(),
     })
 
     await conversations.insertMessageReceived(db, {

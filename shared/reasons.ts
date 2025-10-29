@@ -11,10 +11,10 @@ export const ENCOUNTER_REASONS: EncounterReason[] = [
 ]
 
 const REASON_WORKFLOW_MAP: Partial<Record<EncounterReason, Workflow>> = {
-  'seeking treatment': 'seeking_treatment',
+  'seeking treatment': 'consultation',
   'maternity': 'maternity',
 }
 
 export function reasonToWorkflow(reason: EncounterReason): Workflow {
-  return REASON_WORKFLOW_MAP[reason] || 'seeking_treatment'
+  return REASON_WORKFLOW_MAP[reason] || 'consultation'
 }

@@ -1,6 +1,7 @@
-import { NumberInput, SelectWithOptions } from '../form/Inputs.tsx'
 import { Duration } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import { NumberInput } from '../form/inputs/number.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 export function DurationInput(
   { value, onChange }: {
@@ -9,7 +10,7 @@ export function DurationInput(
   },
 ) {
   return (
-    <div className='flex flex-col md:flex-row md:items-center gap-2'>
+    <div className='flex flex-col gap-2 md:flex-row md:items-center'>
       <NumberInput
         name={null}
         label='Duration'

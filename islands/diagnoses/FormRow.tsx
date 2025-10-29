@@ -1,9 +1,10 @@
 import ConditionSearch from '../ConditionSearch.tsx'
-import { DateInput } from '../form/Inputs.tsx'
+
 import { Diagnosis } from '../../types.ts'
 import { JSX } from 'preact'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
 
 export type DiagnosisFormRowState = {
   id?: string

@@ -1,5 +1,5 @@
-import { SelectWithOptions } from '../form/Inputs.tsx'
 import { MARITAL_STATUS } from '../../shared/family.ts'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 
 export default function MaritalStatusSelect(
   { name, required, label, value }: {

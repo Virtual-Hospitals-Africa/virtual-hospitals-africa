@@ -2,12 +2,14 @@ import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   HasStringId,
+  InsertShape,
   Maybe,
   Patient,
   PatientNearestOrganization,
   PatientSchedulingAppointmentRequest,
   RenderedPatient,
   TrxOrDb,
+  UpdateShape,
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google-maps.ts'
@@ -20,11 +22,12 @@ import {
   literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
-import { ensureDoctorId } from './doctor.ts'
+import { DB, Patients } from '../../db.d.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { base } from './_base.ts'
+import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
+import { SERVER_COUNTRY } from './countries.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -34,6 +37,17 @@ export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
     THEN concat('/app/patients/', patients.id::text, '/avatar')
     ELSE NULL
+  END
+`
+
+export const description_sql = sql<string | null>`
+  CASE 
+    WHEN NOT patients.completed_registration THEN NULL
+    WHEN (
+      (patients.sex = 'female' AND patients.gender = 'woman') OR
+      (patients.sex = 'male' AND patients.gender = 'man')
+    ) THEN patients.sex || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
+    ELSE patients.sex || ' • ' || patients.gender || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
   END
 `
 
@@ -53,6 +67,7 @@ const baseQuery = (trx: TrxOrDb) =>
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
       'patients.phone_number',
+      'patients.sex',
       'patients.gender',
       'patients.ethnicity',
       'addresses.formatted as address',
@@ -63,11 +78,7 @@ const baseQuery = (trx: TrxOrDb) =>
       'patient_age.age_display',
       'patients.preferred_language_code_iso_639_2_b',
       sql<number | null>`patient_age.age_years::integer`.as('age_years'),
-      sql<
-        string | null
-      >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
-        'description',
-      ),
+      description_sql.as('description'),
       'patients.national_id_number',
       'patients.completed_registration',
       avatar_url_sql.as('avatar_url'),
@@ -79,6 +90,12 @@ const baseQuery = (trx: TrxOrDb) =>
       jsonBuildObject({
         view: view_href_sql,
       }).as('actions'),
+      jsonBuildNullableObject(eb.ref('patients.name'), {
+        name: eb.ref('patients.name').$notNull(),
+        first_names: eb.ref('patients.first_names').$notNull(),
+        surname: eb.ref('patients.surname').$notNull(),
+        preferred_name: eb.ref('patients.preferred_name').$notNull(),
+      }).as('names'),
       jsonObjectFrom(
         eb.selectFrom('organizations as nearest_organizations')
           .whereRef(
@@ -146,6 +163,25 @@ export async function getLastConversationState(
   }
 }
 
+type PatientUpsert =
+  & Partial<Patient>
+  & NameInputs
+  & { id?: string }
+
+function asPatientValues(
+  {
+    location,
+    ...patient
+  }: PatientUpsert,
+): InsertShape<Patients> {
+  return {
+    ...patient,
+    ...asNames(patient),
+    country: patient.country || SERVER_COUNTRY,
+    location: location && literalLocation(location),
+  }
+}
+
 export function insertMany(
   trx: TrxOrDb,
   patients: Array<Partial<Patient> & { name: string }>,
@@ -153,10 +189,7 @@ export function insertMany(
   assert(patients.length > 0, 'Must insert at least one patient')
   return trx
     .insertInto('patients')
-    .values(patients.map((patient) => ({
-      ...patient,
-      location: patient.location && literalLocation(patient.location),
-    })))
+    .values(patients.map(asPatientValues))
     .returningAll()
     .execute()
 }
@@ -186,42 +219,33 @@ export async function insert(
 
 export function update(
   trx: TrxOrDb,
-  { id, name, location, primary_doctor_id, ...patient }: Partial<Patient> & {
-    id: string
-  },
+  { id, name, first_names, surname, preferred_name, location, ...patient }:
+    & Partial<PatientUpsert>
+    & {
+      id: string
+    },
 ) {
-  const to_update = {
+  const names = asMaybeNames({ name, first_names, surname, preferred_name })
+  const to_update: UpdateShape<Patients> = {
     ...patient,
-    primary_doctor_id: primary_doctor_id &&
-      ensureDoctorId(trx, primary_doctor_id),
     location: location && literalLocation(location),
   }
-  const to_update_with_name: (typeof to_update) & {
-    name?: string
-  } = to_update
-  if (name) {
-    to_update_with_name.name = name
+  if (names) {
+    Object.assign(to_update, names)
   }
+
   return trx.updateTable('patients')
     .where('id', '=', id)
-    .set(to_update_with_name)
+    .set(to_update)
     .returningAll()
     .executeTakeFirstOrThrow()
 }
 
 export function upsert(
   trx: TrxOrDb,
-  { location, primary_doctor_id, ...patient }: Partial<Patient> & {
-    id?: string
-    name: string
-  },
+  patient: PatientUpsert,
 ) {
-  const to_upsert = {
-    ...patient,
-    primary_doctor_id: primary_doctor_id &&
-      ensureDoctorId(trx, primary_doctor_id),
-    location: location && literalLocation(location),
-  }
+  const to_upsert = asPatientValues(patient)
   return trx
     .insertInto('patients')
     .values(to_upsert)

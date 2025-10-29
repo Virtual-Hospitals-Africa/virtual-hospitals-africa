@@ -88,14 +88,14 @@ describe('db/models/providers.ts', () => {
             profession: 'doctor',
             organization_id: '00000000-0000-0000-0000-000000000001',
             health_worker_attrs: {
-              name: name_base + generateUUID(),
+              name: name_base + ' ' + generateUUID(),
             },
           }),
           addTestEmployee(trx, {
             profession: 'doctor',
             organization_id: '00000000-0000-0000-0000-000000000002',
             health_worker_attrs: {
-              name: name_base + generateUUID(),
+              name: name_base + ' ' + generateUUID(),
             },
           }),
         ])

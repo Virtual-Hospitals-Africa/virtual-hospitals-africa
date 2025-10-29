@@ -169,9 +169,9 @@ export function jsonObjectFrom<O>(
  *   .select((eb) => [
  *     'id',
  *     jsonBuildObject({
- *       first: eb.ref('first_name'),
- *       last: eb.ref('last_name'),
- *       full: sql<string>`first_name || ' ' || last_name`
+ *       first: eb.ref('first_names'),
+ *       last: eb.ref('surname'),
+ *       full: sql<string>`first_names || ' ' || surname`
  *     }).as('name')
  *   ])
  *   .execute()
@@ -186,9 +186,9 @@ export function jsonObjectFrom<O>(
  *
  * ```sql
  * select "id", json_build_object(
- *   'first', first_name,
- *   'last', last_name,
- *   'full', first_name || ' ' || last_name
+ *   'first', first_names,
+ *   'last', surname,
+ *   'full', first_names || ' ' || surname
  * ) as "name"
  * from "person"
  * ```
@@ -245,6 +245,10 @@ export const now = sql<Date>`now()`
 export const today_in_johannesburg = sql<
   Date
 >`(now() AT TIME ZONE 'Africa/Johannesburg')::date`
+
+export const tomorrow_in_johannesburg = sql<
+  Date
+>`(now() AT TIME ZONE 'Africa/Johannesburg' + interval '1 day')::date`
 
 export function isoDate(
   // deno-lint-ignore no-explicit-any

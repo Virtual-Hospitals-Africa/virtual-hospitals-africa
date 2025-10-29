@@ -11,7 +11,7 @@ import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('asks for gender after inquiring name', async () => {
+  it('asks for sex after inquiring name', async () => {
     const phone_number = randomPhoneNumber()
 
     const chatbot_user = await conversations.insertChatbotUser(
@@ -28,7 +28,7 @@ describe('patient chatbot', () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: 'test',
+      body: 'Test Patient',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -40,13 +40,12 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody: 'What is your gender?',
+          messageBody: 'What is your sex?',
           type: 'buttons',
           buttonText: 'Menu',
           options: [
             { id: 'male', title: 'Male' },
             { id: 'female', title: 'Female' },
-            { id: 'non-binary', title: 'Non-binary' },
           ],
         },
         phone_number,
@@ -63,10 +62,10 @@ describe('patient chatbot', () => {
 
     assertEquals(
       conversation_state,
-      'not_onboarded:make_appointment:enter_gender',
+      'not_onboarded:make_appointment:enter_sex',
     )
 
     const patient = await patients.getById(db, patient_id)
-    assertEquals(patient.name, 'test')
+    assertEquals(patient.name, 'Test Patient')
   })
 })

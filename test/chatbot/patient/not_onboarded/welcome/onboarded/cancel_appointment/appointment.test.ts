@@ -6,21 +6,19 @@ import respond from '../../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
-import randomNationalId from '../../../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
+import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for the reason the patient wants to schedule an appointment', async () => {
     const phone_number = randomPhoneNumber()
+
     await patients.insert(db, {
       conversation_state: 'onboarded:appointment_cancelled',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: randomNationalId(),
+      ...randomDemographics(),
     })
 
     await conversations.insertMessageReceived(db, {

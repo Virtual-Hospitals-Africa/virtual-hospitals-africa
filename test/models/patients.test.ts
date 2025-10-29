@@ -25,15 +25,17 @@ describe('db/models/patients.ts', () => {
         const baseUUID = generateUUID()
 
         const test_patient1 = await patients.insert(trx, {
-          name: baseUUID + generateUUID(),
-          gender: 'female',
+          name: baseUUID + ' ' + generateUUID(),
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
         })
 
         const test_patient2 = await patients.insert(trx, {
-          name: baseUUID + generateUUID(),
-          gender: 'female',
+          name: baseUUID + ' ' + generateUUID(),
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
           avatar_media_id: inserted_media.id,
@@ -41,7 +43,8 @@ describe('db/models/patients.ts', () => {
 
         await patients.insert(trx, {
           name: 'Other With non-matching name',
-          gender: 'female',
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
         })
@@ -61,13 +64,20 @@ describe('db/models/patients.ts', () => {
               id: test_patient1.id,
               avatar_url: null,
               name: test_patient1.name!,
+              names: {
+                name: test_patient1.name!,
+                first_names: test_patient1.first_names!,
+                surname: test_patient1.surname!,
+                preferred_name: test_patient1.preferred_name!,
+              },
               dob_formatted: '1 January 1980',
               date_of_birth: '1980-01-01',
               address: null,
               age_display: '45 years',
               age_years: 45,
-              description: 'female, 01/01/1980',
-              gender: 'female' as const,
+              description: 'female • 1 January 1980',
+              gender: 'woman' as const,
+              sex: 'female' as const,
               preferred_language_code_iso_639_2_b: null,
               primary_doctor: null,
               ethnicity: null,
@@ -85,13 +95,20 @@ describe('db/models/patients.ts', () => {
               id: test_patient2.id,
               avatar_url: `/app/patients/${test_patient2.id}/avatar`,
               name: test_patient2.name!,
+              names: {
+                name: test_patient2.name!,
+                first_names: test_patient2.first_names!,
+                surname: test_patient2.surname!,
+                preferred_name: test_patient2.preferred_name!,
+              },
               dob_formatted: '1 January 1980',
               date_of_birth: '1980-01-01',
               address: null,
               age_display: '45 years',
               age_years: 45,
-              description: 'female, 01/01/1980',
-              gender: 'female' as const,
+              description: 'female • 1 January 1980',
+              gender: 'woman' as const,
+              sex: 'female' as const,
               preferred_language_code_iso_639_2_b: null,
               primary_doctor: null,
               ethnicity: null,

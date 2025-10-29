@@ -3,7 +3,8 @@ import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import DiagnosisFormRow, { DiagnosisFormRowState } from './FormRow.tsx'
 import { Signal, useSignal } from '@preact/signals'
-import { AgreeDisagreeQuestion, TextInput } from '../../islands/form/Inputs.tsx'
+import { AgreeDisagreeQuestion } from '../form/inputs/agree_disagree.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 type SelfDiagnosesFormState = Array<
   DiagnosisFormRowState | { removed: true }

@@ -17,5 +17,9 @@
     "static/images/heroicons/**/*.svg": true
     // "**/*.json": true,
     // "**/*.tsv": true
-  }
+  },
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "node:*",
+    "node_modules/*"
+  ]
 }

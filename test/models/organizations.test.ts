@@ -12,8 +12,9 @@ import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { withTestOrganizations } from '../_helpers/organizations.ts'
-import { insertTestAddress } from '../_helpers/addresses.ts'
 import randomNationalId from '../../mocks/randomNationalId.ts'
+import insertTestAddress from '../../mocks/insertTestAddress.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe('db/models/organizations.ts', () => {
   afterAll(() => db.destroy())
@@ -343,8 +344,13 @@ describe('db/models/organizations.ts', () => {
 
         await nurse_registration_details.add(trx, {
           health_worker_id: hw_at_organization1.id,
-          gender: 'female',
-          national_id_number: randomNationalId(),
+          sex: 'female',
+          gender: 'woman',
+          national_id_number: randomNationalId({
+            country: 'ZA',
+            sex: 'female',
+            date_of_birth: '1980-02-01',
+          }),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -353,7 +359,7 @@ describe('db/models/organizations.ts', () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: null,
-          date_of_birth: '2020-01-01',
+          date_of_birth: '1980-02-01',
           address_id: nurse_address.id,
         })
 
@@ -389,14 +395,14 @@ describe('db/models/organizations.ts', () => {
       'assures that registration_status is approved for when registration is complete, and has been approved',
       async (trx) => {
         const nurse = await health_workers.upsert(trx, {
-          name: 'Nurse',
+          name: randomDemographics().name,
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
         assert(nurse)
 
         const admin = await health_workers.upsert(trx, {
-          name: 'Admin',
+          name: randomDemographics().name,
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
@@ -420,8 +426,13 @@ describe('db/models/organizations.ts', () => {
 
         await nurse_registration_details.add(trx, {
           health_worker_id: nurse.id,
-          gender: 'female',
-          national_id_number: randomNationalId(),
+          sex: 'female',
+          gender: 'woman',
+          national_id_number: randomNationalId({
+            country: 'ZA',
+            sex: 'female',
+            date_of_birth: '1980-02-01',
+          }),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -430,7 +441,7 @@ describe('db/models/organizations.ts', () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
-          date_of_birth: '2020-01-01',
+          date_of_birth: '1980-02-01',
           address_id: nurse_address.id,
         })
 
@@ -452,10 +463,10 @@ describe('db/models/organizations.ts', () => {
         assertEquals(omit(nurse_result, ['professions']), {
           avatar_url: 'avatar_url',
           email: nurse.email,
-          display_name: 'Nurse',
+          display_name: nurse.name,
           health_worker_id: nurse.id,
           is_invitee: false,
-          name: 'Nurse',
+          name: nurse.name,
           registration_status: 'approved',
           actions: {
             view:
@@ -468,10 +479,10 @@ describe('db/models/organizations.ts', () => {
         assertEquals(omit(admin_result, ['professions']), {
           avatar_url: 'avatar_url',
           email: admin.email,
-          display_name: 'Admin',
+          display_name: admin.name,
           health_worker_id: admin.id,
           is_invitee: false,
-          name: 'Admin',
+          name: admin.name,
           registration_status: 'approved',
           actions: {
             view:

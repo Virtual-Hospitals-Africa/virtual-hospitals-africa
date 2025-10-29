@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientFindings } from '../../db.d.ts'
 import {
-  GENDERED_RELATION_SNOMED_CONCEPT_IDS,
   relation_from_snomed_id,
+  SEXED_RELATION_SNOMED_CONCEPT_IDS,
 } from '../../shared/family.ts'
 import {
   InsertShape,
@@ -36,7 +36,7 @@ export async function upsertOne(
     altered_patient_family_history_id,
     snomed_concept_id,
     // TODO use this and other fields related
-    // relation_gendered,
+    // relation_sexed,
   } = family_history
 
   assert(family_history.family_members.length)
@@ -92,9 +92,9 @@ export async function upsertOne(
   > = family_members
     .map((member) => {
       const id = generateUUID()
-      assert(member.relation_gendered in GENDERED_RELATION_SNOMED_CONCEPT_IDS)
+      assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
       const snomed_concept_id =
-        GENDERED_RELATION_SNOMED_CONCEPT_IDS[member.relation_gendered]
+        SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
 
       return {
         id,
@@ -236,7 +236,7 @@ export async function getEncounter(
   return results.map((r) => ({
     ...r,
     family_members: r.family_members.map((fm) => ({
-      relation_gendered: relation_from_snomed_id(fm.snomed_concept_id),
+      relation_sexed: relation_from_snomed_id(fm.snomed_concept_id),
       condition_name: fm.name,
       altered_family_member_id: fm.id,
       snomed_concept_id: fm.snomed_concept_id,

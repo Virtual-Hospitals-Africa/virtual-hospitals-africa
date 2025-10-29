@@ -1,11 +1,14 @@
 import FormRow from '../../components/library/FormRow.tsx'
 import PersonSearch from '../PersonSearch.tsx'
-import { OrganizationDoctorOrNurse } from '../../types.ts'
-import { RadioGroup, TextArea } from '../form/Inputs.tsx'
+import { Maybe, OrganizationDoctorOrNurse } from '../../types.ts'
+
 import ProvidersSelect from '../ProvidersSelect.tsx'
 import Form from '../../components/library/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { ENCOUNTER_REASONS } from '../../shared/reasons.ts'
+import { hasName } from '../../util/haveNames.ts'
+import { RadioGroup } from '../form/inputs/radio_group.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 const radio_group_options = ENCOUNTER_REASONS.map((
   value,
@@ -18,7 +21,7 @@ export default function AddPatientForm({
   patient,
 }: {
   providers: OrganizationDoctorOrNurse[]
-  patient: { id: string; name: string }
+  patient: { id: string; name?: Maybe<string> }
 }) {
   return (
     <Form method='POST'>
@@ -34,7 +37,7 @@ export default function AddPatientForm({
             search_route='/app/patients'
             label=''
             required
-            value={patient}
+            value={hasName(patient) ? patient : undefined}
             readonly
           />
         </FormRow>

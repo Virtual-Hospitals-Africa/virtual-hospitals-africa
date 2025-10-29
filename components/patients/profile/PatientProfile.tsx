@@ -25,9 +25,9 @@ export default function PatientSummary(
   const personal_items: DescriptionListRows[] = [
     nonEmptyRows([[{
       value: personal.name,
-      href: `${registration_href}/personal#focus=first_name`,
+      href: `${registration_href}/personal#focus=first_names`,
       action: DescriptionListCellAction.View,
-      name: 'first_name',
+      name: 'first_names',
     }], [{
       value: international_phone_number.nullable().parse(personal.phone_number),
       href: `${registration_href}/personal#focus=phone_number`,

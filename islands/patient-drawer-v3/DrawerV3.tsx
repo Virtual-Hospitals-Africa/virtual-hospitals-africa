@@ -75,7 +75,7 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
             <div className='content-stretch flex gap-[16px] items-center justify-start relative shrink-0'>
               <div className='box-border content-stretch flex gap-[4px] items-start justify-start px-0 py-[4px] relative rounded-[5px] shrink-0'>
                 <p className="font-['Inter:Regular',_sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[#29313d] text-[12px] text-center text-nowrap whitespace-pre">
-                  {patient.gender || 'Unknown'}
+                  {patient.sex || 'Unknown'}
                 </p>
               </div>
               <div className='box-border content-stretch flex gap-[4px] items-start justify-start px-0 py-[4px] relative rounded-[5px] shrink-0'>
@@ -118,10 +118,9 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
 }
 
 // This Visit component showing encounter steps
-function ThisVisit({ records, current_seeking_treatment_step }: {
+function ThisVisit({ records, current_consultation_step }: {
   records: PatientDrawerV3Props['this_visit_records']
-  current_seeking_treatment_step:
-    PatientDrawerV3Props['current_seeking_treatment_step']
+  current_consultation_step: PatientDrawerV3Props['current_consultation_step']
 }) {
   const encounterSteps = [
     {
@@ -168,7 +167,7 @@ function ThisVisit({ records, current_seeking_treatment_step }: {
               >
                 {step.label}
               </p>
-              {current_seeking_treatment_step === step.key && (
+              {current_consultation_step === step.key && (
                 <div className='relative flex items-start justify-start content-stretch shrink-0'>
                   <div className='box-border content-stretch flex gap-[8px] items-center justify-start px-0 py-[2px] relative rounded-[60px] shrink-0 w-[93px]'>
                     <p className="font-['Inter:Medium_Italic',_sans-serif] font-medium italic leading-[16px] relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
@@ -424,7 +423,7 @@ function CareTeam(
 export default function PatientDrawerV3({
   patient,
   this_visit_records,
-  current_seeking_treatment_step,
+  current_consultation_step,
   patient_history,
   care_team,
 }: PatientDrawerV3Props) {
@@ -436,7 +435,7 @@ export default function PatientDrawerV3({
           <PatientDrawerCard patient={patient} />
           <ThisVisit
             records={this_visit_records}
-            current_seeking_treatment_step={current_seeking_treatment_step}
+            current_consultation_step={current_consultation_step}
           />
           <History history={patient_history} />
           <CareTeam care_team={care_team} />

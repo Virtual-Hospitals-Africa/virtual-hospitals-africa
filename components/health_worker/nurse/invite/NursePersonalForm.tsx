@@ -1,14 +1,13 @@
-import {
-  DateInput,
-  GenderSelect,
-  PhoneNumberInput,
-  TextInput,
-} from '../../../../islands/form/Inputs.tsx'
 import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
-import { NationalIdInput } from '../../../../islands/NationalId.tsx'
+import { ZimbabweanNationalIdInput } from '../../../../islands/ZimbabweanNationalId.tsx'
 import AddressSection from '../../../patient-registration/AddressSection.tsx'
+import { DateInput } from '../../../../islands/form/inputs/date.tsx'
+import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
+import { TextInput } from '../../../../islands/form/inputs/text.tsx'
+import { SexAndGenderInputs } from '../../../../islands/patient-registration/SexAndGenderInputs.tsx'
+import { NamesFormRow } from '../../../../islands/patient-registration/NamesFormRow.tsx'
 
 export default function NursePersonalForm(
   { form_data }: {
@@ -17,25 +16,9 @@ export default function NursePersonalForm(
 ) {
   return (
     <>
-      <FormRow>
-        <TextInput
-          name='first_name'
-          required
-          label='First Name'
-          value={form_data.first_name}
-        />
-        <TextInput
-          name='middle_names'
-          label='Middle Names'
-          value={form_data.middle_names}
-        />
-        <TextInput
-          name='last_name'
-          required
-          label='Last Name'
-          value={form_data.last_name}
-        />
-      </FormRow>
+      <NamesFormRow
+        names={form_data}
+      />
       <FormRow>
         <DateInput
           name='date_of_birth'
@@ -43,10 +26,11 @@ export default function NursePersonalForm(
           label='Date of Birth'
           value={form_data.date_of_birth}
         />
-        <GenderSelect value={form_data.gender} />
+        {/* <GenderSelect value={form_data.gender} /> */}
+        <SexAndGenderInputs sex={form_data.sex} gender={form_data.gender} />
       </FormRow>
       <FormRow>
-        <NationalIdInput value={form_data.national_id_number} />
+        <ZimbabweanNationalIdInput value={form_data.national_id_number} />
       </FormRow>
       <FormRow>
         <TextInput

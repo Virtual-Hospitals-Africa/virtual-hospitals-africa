@@ -12,7 +12,7 @@ import { onProduction } from '../util/onProduction.ts'
 import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
 import randomAvatar from '../mocks/randomAvatar.ts'
-import { randomNamesAndGender } from '../mocks/randomDemographics.ts'
+import randomNamesAndSex from '../mocks/randomDemographics.ts'
 
 const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
 if (FAKE_GOOGLE_AUTH) {
@@ -23,15 +23,15 @@ export const login_href =
   `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
 
 async function fakeGoogleLogin(trx: TrxOrDb) {
-  const { name, gender } = randomNamesAndGender()
+  const { sex, ...names } = randomNamesAndSex()
   const email = generateUUID() + '@example.com'
-  const avatar_url = randomAvatar(gender)
+  const avatar_url = randomAvatar(sex)
   const access_token = generateUUID()
   const refresh_token = generateUUID()
   const expires_at = new Date()
   expires_at.setDate(expires_at.getDate() + 60)
   const health_worker = await health_workers.upsertWithGoogleCredentials(trx, {
-    name,
+    ...names,
     email,
     avatar_url,
     access_token,

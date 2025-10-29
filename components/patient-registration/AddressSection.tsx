@@ -1,6 +1,7 @@
 import FormRow from '../library/FormRow.tsx'
-import { TextInput } from '../../islands/form/Inputs.tsx'
+
 import { Address, Maybe } from '../../types.ts'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
 
 export default function AddressSection(
   { address }: {

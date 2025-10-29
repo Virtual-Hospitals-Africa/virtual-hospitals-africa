@@ -2,7 +2,7 @@ export default function generateUUID(): string {
   return crypto.randomUUID()
 }
 
-export function isUUID(uuid: unknown): boolean {
+export function isUUID(uuid: unknown): uuid is string {
   if (typeof uuid !== 'string') {
     return false
   }

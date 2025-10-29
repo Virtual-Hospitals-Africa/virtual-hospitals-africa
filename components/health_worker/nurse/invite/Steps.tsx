@@ -5,8 +5,9 @@ import { parseRequest } from '../../../../util/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
 import {
   e164_phone_number,
-  gender,
-  national_id_number,
+  sex,
+  string_or_number_as_string,
+  varchar255,
 } from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
@@ -57,9 +58,9 @@ export type ProfessionalInformationFields = {
 }
 
 export const PersonalFormFields = z.object({
-  first_name: z.string(),
-  middle_names: z.optional(z.string()),
-  last_name: z.string(),
+  first_names: z.string(),
+  preferred_name: z.string(),
+  surname: z.string(),
   date_of_birth: z.string().date(),
   email: z.optional(z.string()).refine(
     (email) => !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
@@ -67,8 +68,9 @@ export const PersonalFormFields = z.object({
       message: 'Invalid email format',
     },
   ),
-  gender,
-  national_id_number,
+  sex,
+  gender: varchar255,
+  national_id_number: string_or_number_as_string,
   mobile_number: z.optional(e164_phone_number),
   address: z.object({
     country: z.string(),
@@ -78,6 +80,7 @@ export const PersonalFormFields = z.object({
     street: z.string(),
   }),
 })
+
 export type PersonalFormFields = z.infer<typeof PersonalFormFields>
 
 const ProfessionalInformationFields = z.object({

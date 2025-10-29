@@ -78,7 +78,7 @@ export async function up(db: Kysely<DB>) {
   }, (qb) =>
     qb
       .addColumn('language_code', 'varchar(3)', (col) =>
-        col.notNull().references('iso_639_2_b_languages.iso_639_2_b'))
+        col.notNull().references('languages.iso_639_2_b'))
       .addColumn('note', 'text', (col) =>
         col.notNull()))
 

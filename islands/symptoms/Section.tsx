@@ -1,5 +1,5 @@
 import { RenderedPatientSymptom } from '../../types.ts'
-import { TextArea } from '../form/Inputs.tsx'
+
 import AsyncSearch from '../AsyncSearch.tsx'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { SymptomFormPanel } from './FormPanel.tsx'
@@ -8,6 +8,7 @@ import isString from '../../util/isString.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { PencilIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { Button } from '../../components/library/Button.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 type PanelState =
   | { action: 'edit'; editing_id: string }

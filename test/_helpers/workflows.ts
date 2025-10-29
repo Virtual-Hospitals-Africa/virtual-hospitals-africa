@@ -14,9 +14,9 @@ import {
   WORKFLOW_STEPS,
   workflowStepKey,
 } from '../../shared/workflow.ts'
-import { PatientWorkflowStepsCompleted } from '../../db.d.ts'
+import { PatientWorkflowStepsCompleted, Sex } from '../../db.d.ts'
 import { completedWorkflow } from '../../db/models/patient_workflows.ts'
-import randomPatientMandatoryRegistrationInformation from '../../mocks/randomPatientMandatoryRegistrationInformation.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
 
 export async function insertRegistrationWithEmployeeForTest(
   trx: TrxOrDb,
@@ -77,7 +77,8 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
     patient_demographics?: {
       name?: string
       date_of_birth?: string
-      gender?: 'male' | 'female'
+      sex?: Sex
+      gender?: string
     }
   },
 ) {
@@ -95,7 +96,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
     { employment_id },
   )
   assert(success)
-  const patient_information = randomPatientMandatoryRegistrationInformation()
+  const patient_information = randomDemographics()
   if (patient_demographics) {
     Object.assign(patient_information, patient_demographics)
   }

@@ -56,6 +56,7 @@ import words from '../../../../../../../util/words.ts'
 import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
+import { ComponentChild } from 'preact/src/index.d.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -174,6 +175,12 @@ function workflowStepFromUrl(
     ).split('/'),
   )
   assert(isWorkflow(workflow), `Invalid workflow: ${workflow}`)
+  assertOrRedirect(
+    step,
+    `/app/organizations/${ctx.state.encounter.organization.id}/patients/${ctx.state.encounter.patient.id}/open_encounter/${ctx.state.encounter.status.patient_presence.current_workflow}/${
+      firstIncompleteStepStatus(getWorkflowStatusInProgress(ctx, workflow))
+    }`,
+  )
   assert(WORKFLOW_STEPS[workflow].includes(step), `Invalid step: ${step}`)
   return { workflow, step }
 }
@@ -333,10 +340,12 @@ export function assertAllPriorStepsCompleted(
 export function OpenEncounterWorkflowLayout({
   ctx,
   next_step_text,
+  buttons,
   children,
 }: {
   ctx: OpenEncounterWorkflowContext
   next_step_text?: string
+  buttons?: ComponentChild
   children: ComponentChildren
 }): JSX.Element {
   return (
@@ -355,7 +364,7 @@ export function OpenEncounterWorkflowLayout({
           <PatientDrawerV3
             patient={ctx.state.patient}
             encounter={ctx.state.encounter}
-            current_seeking_treatment_step={ctx.state.step}
+            current_consultation_step={ctx.state.step}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
             care_team={ctx.state.patient.primary_doctor
@@ -371,13 +380,14 @@ export function OpenEncounterWorkflowLayout({
         {children}
         <hr />
         <ButtonsContainer>
-          <Button
-            type='submit'
-            className='flex-1 max-w-xl'
-          >
-            {next_step_text || 'Save'}
-            {/* {next_step_text || nextStep(ctx).button_text} */}
-          </Button>
+          {buttons || (
+            <Button
+              type='submit'
+              className='flex-1 max-w-xl'
+            >
+              {next_step_text || 'Next'}
+            </Button>
+          )}
         </ButtonsContainer>
       </Form>
     </Layout>
@@ -393,6 +403,7 @@ export function OpenEncounterWorkflowPage<
     | JSX.Element
     | Promise<JSX.Element>
     | Promise<{ next_step_text: string; children: JSX.Element }>
+    | Promise<{ buttons: ComponentChild; children: JSX.Element }>
     | Promise<Response>
     | Promise<Response | JSX.Element>,
 ) {
@@ -407,9 +418,14 @@ export function OpenEncounterWorkflowPage<
     }
 
     let next_step_text: string | undefined
+    let buttons: ComponentChild | undefined
     let children = rendered
     if ('next_step_text' in rendered) {
       next_step_text = rendered.next_step_text as string
+      children = rendered.children
+    }
+    if ('buttons' in rendered) {
+      buttons = rendered.buttons as string
       children = rendered.children
     }
 
@@ -417,6 +433,7 @@ export function OpenEncounterWorkflowPage<
       <OpenEncounterWorkflowLayout
         ctx={ctx}
         next_step_text={next_step_text}
+        buttons={buttons}
       >
         {children}
       </OpenEncounterWorkflowLayout>

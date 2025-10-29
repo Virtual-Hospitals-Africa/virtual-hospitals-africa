@@ -1,9 +1,10 @@
 import { useState } from 'preact/hooks'
 import { NextOfKin } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
-import { TextInput } from '../form/Inputs.tsx'
+
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
+import { TextInput } from '../form/inputs/text.tsx'
 
 export default function NextOfKinInput({
   name,
@@ -33,8 +34,8 @@ export default function NextOfKinInput({
           // deno-lint-ignore no-explicit-any
           onSelect={(person: any) =>
             person && setPatientKin({
-              patient_gender: person.gender ||
-                patientKin?.patient_gender,
+              patient_sex: person.sex ||
+                patientKin?.patient_sex,
               patient_phone_number: person.phone_number ||
                 patientKin?.patient_phone_number,
               patient_name: person.name || patientKin?.patient_name,
@@ -47,11 +48,11 @@ export default function NextOfKinInput({
         />
         <RelationshipSelect
           required
-          name={`${name}.family_relation_gendered`}
-          family_relation_gendered={patientKin
+          name={`${name}.family_relation_sexed`}
+          family_relation_sexed={patientKin
             ?.relation ?? undefined}
           type='guardian'
-          gender={patientKin?.patient_gender}
+          sex={patientKin?.patient_sex}
           additionalRelations={new Map([
             ['friend', 'friend'],
             ['spouse', 'spouse'],

@@ -17,7 +17,9 @@
 //   () => {
 //     it('renders a page on GET', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//         profession: 'nurse',
+//         specialty: 'primary care',
+//         registration_status: 'approved',
 //       })
 
 //       const testPatient = await patients.insert(db, {
@@ -48,7 +50,9 @@
 //         name: 'Test Patient',
 //       })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//         profession: 'nurse',
+//         specialty: 'primary care',
+//         registration_status: 'approved',
 //       })
 
 //       const body = new FormData()
@@ -100,7 +104,9 @@
 
 //     it.skip('can create a patient encounter for a new patient on POST', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//         profession: 'nurse',
+//         specialty: 'primary care',
+//         registration_status: 'approved',
 //       })
 
 //       const patient_name = generateUUID()

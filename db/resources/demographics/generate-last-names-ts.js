@@ -8,12 +8,12 @@ for (const row of rows) {
   const cells = row.querySelectorAll('td')
   if (cells.length !== 4) continue
 
-  const [_rank, last_name, incidence] = row.querySelectorAll('td')
+  const [_rank, surname, incidence] = row.querySelectorAll('td')
   
   r.push({
-    last_name: last_name.textContent,
+    surname: surname.textContent,
     incidence: parseInt(incidence.textContent.replaceAll(',', '')),
   })
 }
 
-console.log("export const last_names = " + JSON.stringify(r, null, 2))
+console.log("export const surnames = " + JSON.stringify(r, null, 2))

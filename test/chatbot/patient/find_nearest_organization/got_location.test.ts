@@ -9,7 +9,7 @@ import generateUUID from '../../../../util/uuid.ts'
 import { mockWhatsApp } from '../../mockWhatsApp.ts'
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
-import randomNationalId from '../../../../mocks/randomNationalId.ts'
+import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -17,14 +17,12 @@ describe('patient chatbot', () => {
 
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
+    const demographics = randomDemographics()
     // Step 1: share location
     await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: randomNationalId(),
+      ...demographics,
     })
 
     await conversations.insertMessageReceived(db, {

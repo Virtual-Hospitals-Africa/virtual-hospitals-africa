@@ -1,9 +1,11 @@
 import { useState } from 'preact/hooks'
 import FormRow from '../components/library/FormRow.tsx'
-import { Select } from './form/Inputs.tsx'
+
 import SelectWithOther from './SelectWithOther.tsx'
-import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
+
 import { Occupation, School } from '../types.ts'
+import { Select } from './form/inputs/select.tsx'
+import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
 
 export default function Occupation0_18({
   occupation = {

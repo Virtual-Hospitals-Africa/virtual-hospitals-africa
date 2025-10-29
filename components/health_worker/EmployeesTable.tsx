@@ -4,10 +4,11 @@ import { Person } from '../library/Person.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/FormRow.tsx'
-import { SearchInput } from '../../islands/form/Inputs.tsx'
+
 import { OrganizationEmployeeOrInvitee } from '../../types.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
+import { SearchInput } from '../../islands/form/inputs/search.tsx'
 
 type EmployeesTableProps = {
   isAdmin: boolean
@@ -60,7 +61,7 @@ export default function EmployeesTable({
             <Button
               type='button'
               href={add_href}
-              className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+              className='grid self-end p-2 text-white border-0 rounded-md shadow-sm w-max ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 whitespace-nowrap place-items-center'
             >
               Invite
             </Button>

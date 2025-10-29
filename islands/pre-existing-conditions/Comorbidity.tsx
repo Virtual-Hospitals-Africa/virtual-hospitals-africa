@@ -1,9 +1,10 @@
 import { JSX } from 'preact'
 import ConditionSearch from '../ConditionSearch.tsx'
-import { DateInput } from '../form/Inputs.tsx'
+
 import { PreExistingConditionWithDrugs } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
 
 export default function Comorbidity({
   value,

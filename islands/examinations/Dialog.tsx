@@ -1,7 +1,7 @@
 import { Fragment, JSX } from 'preact'
 import { useSignal } from '@preact/signals'
 import { Dialog, Transition } from '@headlessui/react'
-import { TextArea } from '../../islands/form/Inputs.tsx'
+
 import FormRow from '../../components/library/FormRow.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { FormClassName } from '../../components/library/Form.tsx'
@@ -9,6 +9,7 @@ import cls from '../../util/cls.ts'
 import { CloseButton } from '../CloseButton.tsx'
 import { BodySiteSelect } from './BodySiteSelect.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 type FindingDialogFormValues = {
   body_sites: {
@@ -46,7 +47,7 @@ function ExaminationFindingDialogContents(
     >
       <div className='bg-white shadow sm:rounded-lg'>
         <div className='px-4 py-5 sm:p-6'>
-          <h3 className='text-base text-center font-semibold text-gray-900'>
+          <h3 className='text-base font-semibold text-center text-gray-900'>
             {action} {checklist_item.snomed_english_term} as a finding
           </h3>
           <div
@@ -119,11 +120,11 @@ export function ExaminationFindingDialog(
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+          <div className='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75' />
         </Transition.Child>
 
         <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
-          <div className='flex min-h-full justify-center p-4 items-center sm:p-0'>
+          <div className='flex items-center justify-center min-h-full p-4 sm:p-0'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'

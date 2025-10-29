@@ -2,7 +2,7 @@ import FormRow from '../components/library/FormRow.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { Job, Occupation, School } from '../types.ts'
 import { useState } from 'preact/hooks'
-import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
+import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
 
 export default function Occupation19({
   occupation = {

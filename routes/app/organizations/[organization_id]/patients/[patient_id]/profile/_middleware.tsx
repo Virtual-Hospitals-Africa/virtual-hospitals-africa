@@ -14,6 +14,8 @@ import first from '../../../../../../../util/first.ts'
 import { asWaitingRoom } from '../../../../../../../db/models/waiting_room.ts'
 import { RenderedPatient } from '../../../../../../../types.ts'
 import { ActionButton } from '../../../../../../../components/library/ActionButton.tsx'
+import { assert } from 'std/assert/assert.ts'
+import { hasName } from '../../../../../../../util/haveNames.ts'
 
 export type PatientProfileState = {
   patient: RenderedPatient & {
@@ -64,6 +66,7 @@ export const PatientProfilePage = (
         patient.completed_registration,
         `Patient hasn't completed registration yet`,
       )
+      assert(hasName(patient))
 
       const as_waiting_room = open_encounter &&
         asWaitingRoom(open_encounter, organization_employment)
@@ -88,7 +91,7 @@ export const PatientProfilePage = (
         drawer,
         children: (
           <>
-            <div className='container my-4 mx-6'>
+            <div className='container mx-6 my-4'>
               <Person
                 person={{
                   ...patient,
@@ -105,7 +108,7 @@ export const PatientProfilePage = (
                         <a
                           href={`/app/organizations/${patient.primary_doctor.organization.id}/employees/${patient.primary_doctor.health_worker_id}`}
                           title={`View details of Dr. ${patient.primary_doctor.name}`}
-                          className='hover:underline text-blue-600'
+                          className='text-blue-600 hover:underline'
                         >
                           Dr. {patient.primary_doctor.name}
                         </a>
@@ -114,7 +117,7 @@ export const PatientProfilePage = (
                         <a
                           href={`/app/organizations/${patient.nearest_organization.id}`}
                           title={`View details of ${patient.nearest_organization}`}
-                          className='hover:underline text-blue-600'
+                          className='text-blue-600 hover:underline'
                         >
                           {patient.nearest_organization.name}
                         </a>

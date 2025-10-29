@@ -1,11 +1,9 @@
 import { Button } from './Button.tsx'
-import {
-  SelectWithOptions,
-  TextArea,
-  TextInput,
-} from '../../islands/form/Inputs.tsx'
 import FormRow from './FormRow.tsx'
 import Form from './Form.tsx'
+import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 export const CONTACT_REASON_OPTIONS = [
   { value: 'general_inquiry' as const, label: 'General Inquiry' },
@@ -36,7 +34,7 @@ export default function ContactForm({ reason }: { reason: ContactReason }) {
       <FormRow className='w-full'>
         <TextArea name='message' rows={3} />
       </FormRow>
-      <FormRow className='w-full container mt-2'>
+      <FormRow className='container w-full mt-2'>
         <Button type='submit' className='w-full'>
           Submit
         </Button>

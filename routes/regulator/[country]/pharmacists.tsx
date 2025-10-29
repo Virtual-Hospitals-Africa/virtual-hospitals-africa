@@ -6,9 +6,10 @@ import Form from '../../../components/library/Form.tsx'
 import FormRow from '../../../components/library/FormRow.tsx'
 import { Button } from '../../../components/library/Button.tsx'
 import { searchPage } from '../../../util/searchPage.ts'
-import { TextInput } from '../../../islands/form/Inputs.tsx'
+
 import { json } from '../../../util/responses.ts'
 import { RegulatorHomePageLayout } from '../../regulator/_middleware.tsx'
+import { TextInput } from '../../../islands/form/inputs/text.tsx'
 
 export default RegulatorHomePageLayout(
   'Pharmacists',
@@ -40,7 +41,7 @@ export default RegulatorHomePageLayout(
           />
           <Button
             type='submit'
-            className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+            className='grid self-end p-2 text-white border-0 rounded-md shadow-sm w-max ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 whitespace-nowrap place-items-center'
           >
             Invite
           </Button>

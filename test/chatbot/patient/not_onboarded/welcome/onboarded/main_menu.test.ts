@@ -7,22 +7,19 @@ import * as conversations from '../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 
 import generateUUID from '../../../../../../util/uuid.ts'
-import randomNationalId from '../../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../mockWhatsApp.ts'
+import randomDemographics from '../../../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for reason after welcome message', async () => {
     const phone_number = randomPhoneNumber()
-    const national_id_number = randomNationalId()
+    const demographics = randomDemographics()
     await patients.insert(db, {
       conversation_state: 'onboarded:main_menu',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number,
+      ...demographics,
     })
 
     await conversations.insertMessageReceived(db, {

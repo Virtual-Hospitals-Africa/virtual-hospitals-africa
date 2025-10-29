@@ -7,6 +7,13 @@ import compact from '../../util/compact.ts'
 import { Department } from '../../shared/departments.ts'
 import * as organizations from '../../db/models/organizations.ts'
 
+export const TEST_ORGANIZATION_UUIDS = {
+  ZA: {
+    clinic: '00000000-0000-0000-0000-000000000001',
+    hospital: '00000000-0000-0000-0000-000000000001',
+  },
+}
+
 export function withTestOrganization(
   trx: TrxOrDb,
   opts: (organization_id: string) => Promise<void>,

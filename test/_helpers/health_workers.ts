@@ -5,8 +5,12 @@ import * as health_workers from '../../db/models/health_workers.ts'
 export function testHealthWorker() {
   const expires_at = new Date()
   expires_at.setHours(expires_at.getHours() + 1)
+  const surname = generateUUID()
   return {
-    name: `Test Health Worker ${generateUUID()}`,
+    name: `Test Health Worker ${surname}`,
+    surname,
+    first_names: 'Test Health Worker',
+    preferred_name: 'Test Patient',
     email: generateUUID() + '@example.com',
     avatar_url: generateUUID() + '.com',
     access_token: 'access.' + generateUUID(),

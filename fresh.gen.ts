@@ -44,43 +44,45 @@ import * as $app_organizations_organization_id_inventory_add_procurer from './ro
 import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
 import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_chief_complaint from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/chief_complaint.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_clinical_notes from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/clinical_notes.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_close_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/close_visit.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_diagnoses from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/diagnoses.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_diagnostic_tests from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/diagnostic_tests.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_examination_slug_ from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/[examination_slug].tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_add from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/add.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_none from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/none.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments_general_assessment_slug_ from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments/[general_assessment_slug].tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/_middleware.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_family from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/family.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_major_surgeries from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/major_surgeries.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_past_conditions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/past_conditions.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_pre_existing_conditions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/pre_existing_conditions.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_nearest_organizations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/nearest_organizations.ts'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_orders from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/orders.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_prescriptions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/prescriptions.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_request_review from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/request_review.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_symptoms from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/symptoms.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/evaluations.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_move_to_waiting_room from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/move-to-waiting-room.ts'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm_details from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm_details.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_route_patient from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/route_patient.tsx'
+import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_terms_and_conditions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/terms_and_conditions.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_chief_complaint from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/chief_complaint.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_clinical_notes from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/clinical_notes.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_close_visit from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/close_visit.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_diagnoses from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/diagnoses.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_diagnostic_tests from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/diagnostic_tests.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_examination_slug_ from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/[examination_slug].tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_add from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/add.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_none from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/none.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments_general_assessment_slug_ from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments/[general_assessment_slug].tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/_middleware.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_family from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/family.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_major_surgeries from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/major_surgeries.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_past_conditions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/past_conditions.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_pre_existing_conditions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/pre_existing_conditions.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_nearest_organizations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/nearest_organizations.ts'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_orders from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/orders.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_prescriptions from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/prescriptions.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_request_review from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/request_review.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_symptoms from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/symptoms.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals_evaluations from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals/evaluations.tsx'
-import * as $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals_measurements from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals/measurements.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_start_workflow from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/start-workflow.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage.tsx'
 import * as $app_organizations_organization_id_patients_patient_id_open_encounter_triage_middleware from './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/_middleware.tsx'
@@ -194,7 +196,6 @@ import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $LocalTime from './islands/LocalTime.tsx'
 import * as $Menu from './islands/Menu.tsx'
-import * as $NationalId from './islands/NationalId.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
@@ -217,10 +218,12 @@ import * as $SendTo_ListItem from './islands/SendTo/ListItem.tsx'
 import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButtons.tsx'
 import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
 import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
+import * as $SouthAfricanNationalId from './islands/SouthAfricanNationalId.tsx'
 import * as $SparklinesExample from './islands/SparklinesExample.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
+import * as $ZimbabweanNationalId from './islands/ZimbabweanNationalId.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
@@ -246,9 +249,32 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
+import * as $form_inputs_internal from './islands/form/inputs/_internal.tsx'
+import * as $form_inputs_agree_disagree from './islands/form/inputs/agree_disagree.tsx'
+import * as $form_inputs_checkbox from './islands/form/inputs/checkbox.tsx'
+import * as $form_inputs_checkbox_grid from './islands/form/inputs/checkbox_grid.tsx'
+import * as $form_inputs_date from './islands/form/inputs/date.tsx'
+import * as $form_inputs_doctor_specialty from './islands/form/inputs/doctor_specialty.tsx'
+import * as $form_inputs_ethnicity from './islands/form/inputs/ethnicity.tsx'
+import * as $form_inputs_image from './islands/form/inputs/image.tsx'
+import * as $form_inputs_image_or_video from './islands/form/inputs/image_or_video.tsx'
+import * as $form_inputs_labelled from './islands/form/inputs/labelled.tsx'
+import * as $form_inputs_language from './islands/form/inputs/language.tsx'
+import * as $form_inputs_number from './islands/form/inputs/number.tsx'
+import * as $form_inputs_nurse_specialty from './islands/form/inputs/nurse_specialty.tsx'
+import * as $form_inputs_pharmacist_types from './islands/form/inputs/pharmacist_types.tsx'
+import * as $form_inputs_pharmacy_type from './islands/form/inputs/pharmacy_type.tsx'
+import * as $form_inputs_phone_number from './islands/form/inputs/phone_number.tsx'
+import * as $form_inputs_prefix from './islands/form/inputs/prefix.tsx'
+import * as $form_inputs_radio_group from './islands/form/inputs/radio_group.tsx'
+import * as $form_inputs_search from './islands/form/inputs/search.tsx'
+import * as $form_inputs_select from './islands/form/inputs/select.tsx'
+import * as $form_inputs_select_with_options from './islands/form/inputs/select_with_options.tsx'
+import * as $form_inputs_text from './islands/form/inputs/text.tsx'
+import * as $form_inputs_textarea from './islands/form/inputs/textarea.tsx'
+import * as $form_inputs_yes_no from './islands/form/inputs/yes_no.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
@@ -284,6 +310,9 @@ import * as $patient_drawer_FindingsList from './islands/patient-drawer/Findings
 import * as $patient_drawer_FindingsListItem from './islands/patient-drawer/FindingsListItem.tsx'
 import * as $patient_drawer_FindingsListItemSchema from './islands/patient-drawer/FindingsListItemSchema.ts'
 import * as $patient_drawer_VitalsList from './islands/patient-drawer/VitalsList.tsx'
+import * as $patient_registration_NamesFormRow from './islands/patient-registration/NamesFormRow.tsx'
+import * as $patient_registration_PersonalSection from './islands/patient-registration/PersonalSection.tsx'
+import * as $patient_registration_SexAndGenderInputs from './islands/patient-registration/SexAndGenderInputs.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
@@ -377,80 +406,84 @@ const manifest = {
       $app_organizations_organization_id_inventory_history,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/_middleware.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/chief_complaint.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_chief_complaint,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/clinical_notes.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_clinical_notes,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/close_visit.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_close_visit,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/diagnoses.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_diagnoses,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/diagnostic_tests.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_diagnostic_tests,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/[examination_slug].tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_examination_slug_,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/add.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_add,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/examinations/none.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_examinations_none,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments/[general_assessment_slug].tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments_general_assessment_slug_,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/general_assessments/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_general_assessments_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/_middleware.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_middleware,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/family.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_family,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/major_surgeries.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_major_surgeries,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/past_conditions.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_past_conditions,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/history/pre_existing_conditions.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_history_pre_existing_conditions,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/nearest_organizations.ts':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_nearest_organizations,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/orders.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_orders,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/prescriptions.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_prescriptions,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/request_review.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_request_review,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/symptoms.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_symptoms,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/evaluations.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_evaluations,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/consultation/vitals/measurements.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_consultation_vitals_measurements,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/move-to-waiting-room.ts':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_move_to_waiting_room,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/_middleware.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/biometrics.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_biometrics,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/confirm_details.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_confirm_details,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/contacts.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration_contacts,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration_personal,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/primary_care.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration_primary_care,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/route_patient.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_route_patient,
+    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/terms_and_conditions.tsx':
+      $app_organizations_organization_id_patients_patient_id_open_encounter_registration_terms_and_conditions,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/this_visit.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_registration_this_visit,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/_middleware.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/chief_complaint.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_chief_complaint,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/clinical_notes.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_clinical_notes,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/close_visit.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_close_visit,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/diagnoses.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_diagnoses,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/diagnostic_tests.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_diagnostic_tests,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/[examination_slug].tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_examination_slug_,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/_middleware.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/add.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_add,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/examinations/none.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_examinations_none,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments/[general_assessment_slug].tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments_general_assessment_slug_,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/general_assessments/_middleware.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_general_assessments_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/_middleware.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_middleware,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/family.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_family,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/major_surgeries.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_major_surgeries,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/past_conditions.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_past_conditions,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/history/pre_existing_conditions.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_history_pre_existing_conditions,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/nearest_organizations.ts':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_nearest_organizations,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/orders.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_orders,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/prescriptions.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_prescriptions,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/request_review.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_request_review,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/symptoms.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_symptoms,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals/evaluations.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals_evaluations,
-    './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/seeking_treatment/vitals/measurements.tsx':
-      $app_organizations_organization_id_patients_patient_id_open_encounter_seeking_treatment_vitals_measurements,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/start-workflow.tsx':
       $app_organizations_organization_id_patients_patient_id_open_encounter_start_workflow,
     './routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage.tsx':
@@ -617,7 +650,6 @@ const manifest = {
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/LocalTime.tsx': $LocalTime,
     './islands/Menu.tsx': $Menu,
-    './islands/NationalId.tsx': $NationalId,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
     './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
@@ -640,10 +672,12 @@ const manifest = {
     './islands/SendTo/RequestRadioButtons.tsx': $SendTo_RequestRadioButtons,
     './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
     './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
+    './islands/SouthAfricanNationalId.tsx': $SouthAfricanNationalId,
     './islands/SparklinesExample.tsx': $SparklinesExample,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
+    './islands/ZimbabweanNationalId.tsx': $ZimbabweanNationalId,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
@@ -672,9 +706,33 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/buttons.tsx': $form_buttons,
+    './islands/form/inputs/_internal.tsx': $form_inputs_internal,
+    './islands/form/inputs/agree_disagree.tsx': $form_inputs_agree_disagree,
+    './islands/form/inputs/checkbox.tsx': $form_inputs_checkbox,
+    './islands/form/inputs/checkbox_grid.tsx': $form_inputs_checkbox_grid,
+    './islands/form/inputs/date.tsx': $form_inputs_date,
+    './islands/form/inputs/doctor_specialty.tsx': $form_inputs_doctor_specialty,
+    './islands/form/inputs/ethnicity.tsx': $form_inputs_ethnicity,
+    './islands/form/inputs/image.tsx': $form_inputs_image,
+    './islands/form/inputs/image_or_video.tsx': $form_inputs_image_or_video,
+    './islands/form/inputs/labelled.tsx': $form_inputs_labelled,
+    './islands/form/inputs/language.tsx': $form_inputs_language,
+    './islands/form/inputs/number.tsx': $form_inputs_number,
+    './islands/form/inputs/nurse_specialty.tsx': $form_inputs_nurse_specialty,
+    './islands/form/inputs/pharmacist_types.tsx': $form_inputs_pharmacist_types,
+    './islands/form/inputs/pharmacy_type.tsx': $form_inputs_pharmacy_type,
+    './islands/form/inputs/phone_number.tsx': $form_inputs_phone_number,
+    './islands/form/inputs/prefix.tsx': $form_inputs_prefix,
+    './islands/form/inputs/radio_group.tsx': $form_inputs_radio_group,
+    './islands/form/inputs/search.tsx': $form_inputs_search,
+    './islands/form/inputs/select.tsx': $form_inputs_select,
+    './islands/form/inputs/select_with_options.tsx':
+      $form_inputs_select_with_options,
+    './islands/form/inputs/text.tsx': $form_inputs_text,
+    './islands/form/inputs/textarea.tsx': $form_inputs_textarea,
+    './islands/form/inputs/yes_no.tsx': $form_inputs_yes_no,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,
@@ -716,6 +774,12 @@ const manifest = {
     './islands/patient-drawer/FindingsListItemSchema.ts':
       $patient_drawer_FindingsListItemSchema,
     './islands/patient-drawer/VitalsList.tsx': $patient_drawer_VitalsList,
+    './islands/patient-registration/NamesFormRow.tsx':
+      $patient_registration_NamesFormRow,
+    './islands/patient-registration/PersonalSection.tsx':
+      $patient_registration_PersonalSection,
+    './islands/patient-registration/SexAndGenderInputs.tsx':
+      $patient_registration_SexAndGenderInputs,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
     './islands/pre-existing-conditions/Condition.tsx':

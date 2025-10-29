@@ -13,6 +13,8 @@ import isObjectLike from '../util/isObjectLike.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
+import { Label } from '../components/library/Label.tsx'
+import { Signal, useSignal } from '@preact/signals'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -33,6 +35,7 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
   disabled?: boolean
   readonly?: boolean
   value?: Maybe<T>
+  signal?: Signal<Maybe<T>>
   multi?: boolean
   className?: string
   loading_options?: boolean
@@ -53,9 +56,9 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
 
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   if (!name) return false
-  const last_name_part = last(name.split('.'))!
-  if (isUUID(last_name_part)) return true
-  return /^\d+$/.test(last_name_part)
+  const surname_part = last(name.split('.'))!
+  if (isUUID(surname_part)) return true
+  return /^\d+$/.test(surname_part)
 }
 
 export default function Search<T extends { id?: unknown; name: string }>({
@@ -64,6 +67,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
   required,
   label,
   value,
+  signal,
   multi,
   just_name,
   no_name_form_data,
@@ -88,7 +92,9 @@ export default function Search<T extends { id?: unknown; name: string }>({
       'onSelect must be provided for a multi search',
     )
   }
-  const [selected, setSelected] = useState<T | null>(
+
+  // deno-lint-ignore react-rules-of-hooks
+  const selected = signal || useSignal<T | null>(
     hasId(value) ? value : null,
   )
 
@@ -99,7 +105,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
     formatDisplay = addable.formatDisplay
   }
   const add_option = {
-    id: 'add' as const,
+    id: just_name ? query : 'add' as const,
     name: query,
     display_name: formatDisplay(query),
   } as unknown as T
@@ -125,15 +131,16 @@ export default function Search<T extends { id?: unknown; name: string }>({
       : `${name}_id`)
 
   const input_ref = useRef<HTMLInputElement>(null)
+  const button_ref = useRef<HTMLButtonElement>(null)
 
   return (
     <Combobox
       id={id}
-      value={selected}
+      value={selected.value}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
         // Clear the selection for a multiselect so the user now has space to enter another value
-        setSelected(multi ? null : value)
+        selected.value = multi ? null : value
 
         // Gets picked up by hijack-form-submission-and-set-focus.js to focus on the next input
         if (value && input_ref.current) {
@@ -148,39 +155,53 @@ export default function Search<T extends { id?: unknown; name: string }>({
     >
       <div className='grow'>
         {label && (
-          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-500 mb-0 ml-0.5 text-left'>
-            {label}
-            {required && '*'}
+          <Combobox.Label>
+            <Label>
+              {label}
+              {required && '*'}
+            </Label>
           </Combobox.Label>
         )}
         <div className='relative'>
           <Combobox.Input
             ref={input_ref}
             name={name_field}
-            className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+            className={cls(
+              'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
+              disabled && 'bg-gray-300',
+            )}
             onChange={(event) => {
+              console.log('mmmwemew', event)
               const query = event.currentTarget.value
-              setSelected(null)
+              selected.value = null
               onSelect?.(undefined)
               setQuery(query)
               onQuery(query)
               event.currentTarget.setCustomValidity('')
             }}
-            value={selected?.name}
+            onClick={() => {
+              // Open the dropdown when clicking the input
+              button_ref.current?.click()
+            }}
+            value={selected.value?.name}
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
             autoComplete='off'
             onBlur={!addable ? undefined : () => {
-              if (selected) return
+              if (selected.value) return
+              if (!query) return
               onSelect?.(add_option)
-              setSelected(add_option)
+              selected.value = add_option
             }}
             placeholder={placeholder}
           />
-          <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
+          <Combobox.Button
+            ref={button_ref}
+            className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
+          >
             <ChevronUpDownIcon
-              className='h-5 w-5 text-gray-400'
+              className='w-5 h-5 text-gray-400'
               aria-hidden='true'
             />
           </Combobox.Button>
@@ -195,7 +216,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
                 if (loading_options) return
                 loadMoreOptions?.()
               }}
-              className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+              className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
             >
               {all_options.map((option) => (
                 <Combobox.Option
@@ -222,7 +243,7 @@ export default function Search<T extends { id?: unknown; name: string }>({
                               active ? 'text-white' : 'text-indigo-600',
                             )}
                           >
-                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                            <CheckIcon className='w-5 h-5' aria-hidden='true' />
                           </span>
                         )}
                       </>
@@ -269,12 +290,12 @@ export default function Search<T extends { id?: unknown; name: string }>({
             </Combobox.Options>
           )}
         </div>
-        {selected?.id && selected.id !== 'add' && id_field && (
+        {selected.value?.id && selected.value.id !== 'add' && id_field && (
           <input
             type='hidden'
             name={id_field}
             // deno-lint-ignore no-explicit-any
-            value={selected.id as any}
+            value={selected.value.id as any}
           />
         )}
       </div>

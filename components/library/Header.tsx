@@ -19,14 +19,16 @@ function HeaderLeft(
 ) {
   return (
     <div className='flex items-center gap-2'>
-      <h1 className='text-xl text-white'>{title}</h1>
+      <h1 className="text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10">
+        {title}
+      </h1>
     </div>
   )
 }
 
 function HeaderRight({ children }: { children: ComponentChildren }) {
   return (
-    <div className='absolute inset-y-0 right-0 flex gap-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+    <div className='absolute inset-y-0 right-0 flex items-center gap-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
       {children}
     </div>
   )
@@ -43,32 +45,31 @@ function HeaderRightWithAvatar(
       <NotificationsButton notifications={notifications} />
       <button
         type='button'
-        className='flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+        className='flex text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
         id='user-menu-button'
         aria-expanded='false'
         aria-haspopup='true'
       >
         <span className='sr-only'>To user profile</span>
-        <Avatar src={avatarUrl} className='h-8 w-8' />
+        <Avatar src={avatarUrl} className='w-8 h-8' />
       </button>
     </HeaderRight>
   )
 }
 
 function HeaderBase(
-  { className, children }: { className?: string; children: ComponentChildren },
+  { children }: { children: ComponentChildren },
 ) {
   return (
     <nav
-      className={className}
+      className='self-stretch inline-flex justify-start items-center gap-2.5 pl-6'
       style={{
         height: HEADER_HEIGHT_PX,
       }}
     >
-      <div className='w-full p-5'>
-        <div className='relative flex h-16 items-center justify-between'>
-          {children}
-        </div>
+      {/* <div className='relative flex items-center justify-between h-16'> */}
+      <div className="justify-start text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10">
+        {children}
       </div>
     </nav>
   )
@@ -98,7 +99,7 @@ export function Header(
     : null
 
   return (
-    <HeaderBase className='bg-indigo-900 font-ubuntu'>
+    <HeaderBase>
       <HeaderLeft title={title} />
       {right}
     </HeaderBase>

@@ -48,9 +48,9 @@
 //     const pageContents = await response.text()
 
 //     const $ = cheerio.load(pageContents)
-//     assert($('input[name="first_name"]').length === 1)
+//     assert($('input[name="first_names"]').length === 1)
 //     assert($('input[name="middle_names"]').length === 1)
-//     assert($('input[name="last_name"]').length === 1)
+//     assert($('input[name="surname"]').length === 1)
 //     assert($('input[name="nonexistant"]').length === 0)
 //   })
 
@@ -68,9 +68,9 @@
 //     const national_id_number = randomNationalId()
 //     const phone_number = randomPhoneNumber()
 //     const body = new FormData()
-//     body.set('first_name', 'Test')
+//     body.set('first_names', 'Test')
 //     body.set('middle_names', 'Zoom Zoom')
-//     body.set('last_name', 'Patient')
+//     body.set('surname', 'Patient')
 //     body.set('national_id_number', national_id_number)
 //     body.set('date_of_birth', '2020-01-01')
 //     body.set('gender', 'female')
@@ -116,9 +116,9 @@
 
 //     const pageContents = await getPersonalResponse.text()
 //     const $ = cheerio.load(pageContents)
-//     assertEquals($('input[name="first_name"]').val(), 'Test')
+//     assertEquals($('input[name="first_names"]').val(), 'Test')
 //     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
-//     assertEquals($('input[name="last_name"]').val(), 'Patient')
+//     assertEquals($('input[name="surname"]').val(), 'Patient')
 //     assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
 //     assertEquals($('select[name="gender"]').val(), 'female')
 //     assertEquals($('select[name="ethnicity"]').val(), 'african')
@@ -589,7 +589,7 @@
 //     console.log('guardian_phone', guardian_phone)
 //     const body = new FormData()
 //     body.set('family.guardians.0.patient_name', 'New Guardian')
-//     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
+//     body.set('family.guardians.0.family_relation_sexed', 'biological mother')
 //     body.set('family.guardians.0.patient_phone_number', guardian_phone)
 //     body.set('family.marital_status', 'Single')
 //     body.set('family.religion', 'Non-Religious')
@@ -615,14 +615,14 @@
 //     assertEquals(patient_family.guardians.length, 1)
 //     assertEquals(patient_family.guardians[0].patient_name, 'New Guardian')
 //     assertEquals(
-//       patient_family.guardians[0].family_relation_gendered,
+//       patient_family.guardians[0].family_relation_sexed,
 //       'biological mother',
 //     )
 //     assertEquals(
 //       patient_family.guardians[0].patient_phone_number,
 //       guardian_phone,
 //     )
-//     assertEquals(patient_family.guardians[0].patient_gender, 'female')
+//     assertEquals(patient_family.guardians[0].patient_sex, 'female')
 //     assertEquals(patient_family.religion, 'Non-Religious')
 //     assertEquals(patient_family.marital_status, 'Single')
 
@@ -637,7 +637,7 @@
 //       family: {
 //         guardians: [
 //           {
-//             family_relation_gendered: 'biological mother',
+//             family_relation_sexed: 'biological mother',
 //             next_of_kin: false,
 //             patient_id: patient_family.guardians[0].patient_id,
 //             patient_name: 'New Guardian',

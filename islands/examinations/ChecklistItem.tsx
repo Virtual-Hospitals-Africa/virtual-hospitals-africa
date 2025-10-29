@@ -1,11 +1,12 @@
 import { useEffect } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
 import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
-import { CheckboxGridItem } from '../../islands/form/Inputs.tsx'
+
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
 import { snomed_concept_id as snomed_concept_id_validator } from '../../util/validators.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
+import { CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
 
 type ExaminationChecklistProps = {
   checklist_item: ExaminationChecklistDefinition

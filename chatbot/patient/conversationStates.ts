@@ -68,11 +68,11 @@ const conversationStates: ConversationStates<
           entity_id: patient.id,
         },
       )
-      return 'not_onboarded:make_appointment:enter_gender' as const
+      return 'not_onboarded:make_appointment:enter_sex' as const
     },
   },
-  'not_onboarded:make_appointment:enter_gender': {
-    prompt: 'What is your gender?',
+  'not_onboarded:make_appointment:enter_sex': {
+    prompt: 'What is your sex?',
     type: 'select',
     options: [
       {
@@ -81,7 +81,7 @@ const conversationStates: ConversationStates<
         async onExit(trx, patientState) {
           await patients.update(trx, {
             id: patientState.chatbot_user.entity_id!,
-            gender: 'male',
+            sex: 'male',
           })
           return 'not_onboarded:make_appointment:enter_date_of_birth' as const
         },
@@ -93,19 +93,7 @@ const conversationStates: ConversationStates<
           assert(patientState.chatbot_user.entity_id)
           await patients.update(trx, {
             id: patientState.chatbot_user.entity_id,
-            gender: 'female',
-          })
-          return 'not_onboarded:make_appointment:enter_date_of_birth' as const
-        },
-      },
-      {
-        id: 'non-binary',
-        title: 'Non-binary',
-        async onExit(trx, patientState) {
-          assert(patientState.chatbot_user.entity_id)
-          await patients.update(trx, {
-            id: patientState.chatbot_user.entity_id,
-            gender: 'non-binary',
+            sex: 'female',
           })
           return 'not_onboarded:make_appointment:enter_date_of_birth' as const
         },
@@ -368,7 +356,7 @@ const conversationStates: ConversationStates<
         .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
       assert(scheduling_appointment_request)
       assert(scheduling_appointment_request.reason)
-      return `Got it, ${scheduling_appointment_request.reason}. In summary, your name is ${patient.name}, you're messaging from ${patient.phone_number}, you are a ${patient.gender} born on ${patient.dob_formatted} with national id number ${patient.national_id_number} and you want to schedule an appointment for ${scheduling_appointment_request.reason}. Is this correct?`
+      return `Got it, ${scheduling_appointment_request.reason}. In summary, your name is ${patient.name}, you're messaging from ${patient.phone_number}, you are a ${patient.sex} born on ${patient.dob_formatted} with national id number ${patient.national_id_number} and you want to schedule an appointment for ${scheduling_appointment_request.reason}. Is this correct?`
     },
     options: [
       {

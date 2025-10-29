@@ -1,4 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
+import { ExtendedActionData } from '../types.ts'
 
 export class StatusError extends Error {
   location?: string
@@ -88,3 +89,18 @@ export function assertOr500(
 //     throw error
 //   }
 // }
+
+export function assertOrErrorWithActions(
+  condition: unknown,
+  message: string,
+  actions: ExtendedActionData[],
+): asserts condition {
+  assertOr400(
+    condition,
+    JSON.stringify({
+      name: 'error_with_actions',
+      message,
+      actions,
+    }),
+  )
+}

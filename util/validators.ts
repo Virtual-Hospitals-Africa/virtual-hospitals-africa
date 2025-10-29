@@ -3,7 +3,7 @@ import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
 import generateUUID from './uuid.ts'
 
-export const national_id_number = z.string().regex(
+export const zimbabwe_national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
 )
   .transform((s) => s.toUpperCase())
@@ -32,7 +32,7 @@ export const international_phone_number = z.string().or(z.number())
   )
   .transform((data) => data.number.international)
 
-export const gender = z.enum(['male', 'female', 'non-binary'])
+export const sex = z.enum(['male', 'female', 'other', 'prefer not to say'])
 
 export const varchar255 = z.string().min(1).max(255)
 
@@ -54,3 +54,5 @@ export const decimal = z.string().regex(/^-?\d+(\.\d+)?$/)
 export const string_or_number_as_string = z.string().or(z.number()).transform(
   (value) => String(value),
 )
+
+export const south_african_national_id = string_or_number_as_string

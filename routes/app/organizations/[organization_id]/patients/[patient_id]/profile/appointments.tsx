@@ -7,7 +7,7 @@ import {
   HealthWorkerGoogleClient,
 } from '../../../../../../../external-clients/google.ts'
 import { parseDateTime } from '../../../../../../../util/date.ts'
-import { uniqBy } from '../../../../../../../util/uniq.ts'
+import { uniqBy } from '../../../../../../../util/uniqBy.ts'
 
 export default PatientProfilePage(
   'Appointments',

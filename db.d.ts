@@ -40,8 +40,6 @@ export type FamilyType =
   | 'Polygamous/Compound'
   | 'Single Parent'
 
-export type Gender = 'female' | 'male' | 'non-binary'
-
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>
@@ -72,6 +70,23 @@ export type JsonObject = {
 export type JsonPrimitive = boolean | number | string | null
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive
+
+export type LanguageScope =
+  | 'Collective'
+  | 'Individual'
+  | 'Local'
+  | 'Macrolanguage'
+  | 'Special'
+
+export type LanguageType =
+  | 'Constructed'
+  | 'Extinct'
+  | 'Genetic'
+  | 'Genetic-like'
+  | 'Geographic'
+  | 'Historical'
+  | 'Living'
+  | 'Special'
 
 export type MaritalStatus =
   | 'Co-habiting'
@@ -117,6 +132,8 @@ export type PharmacistType =
   | 'Pharmacy Technician'
 
 export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
+
+export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
 export type SnomedCategory =
   | 'administration method'
@@ -181,11 +198,11 @@ export type SnomedCategory =
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type Workflow =
+  | 'consultation'
   | 'doctor_review'
   | 'maternity'
   | 'prescription_refill'
   | 'registration'
-  | 'seeking_treatment'
   | 'stabilization'
   | 'triage'
 
@@ -273,9 +290,11 @@ export interface Consumption {
 
 export interface Countries {
   alternate_names: string[] | null
+  emoji: string | null
   iso_3166_2: string
   iso_3166_3: string
   official_name: string
+  phone_code: string | null
 }
 
 export interface DepartmentEmployment {
@@ -336,14 +355,15 @@ export interface DoctorRegistrationDetails {
   date_of_first_practice: Timestamp
   doctor_practicing_cert_media_id: string | null
   face_picture_media_id: string | null
-  gender: Gender
+  gender: string
   health_worker_id: string
   id: Generated<string>
-  mobile_number: string
+  mobile_number: string | null
   national_id_media_id: string | null
   national_id_number: string
   ncz_registration_card_media_id: string | null
   ncz_registration_number: string
+  sex: Sex
   updated_at: Generated<Timestamp>
 }
 
@@ -445,11 +465,11 @@ export interface Events {
 }
 
 export interface Examinations {
+  consultation_step: string
   display_name: string
   identifier: string
   order: number
   path: string
-  seeking_treatment_step: string
   slug: string
 }
 
@@ -517,8 +537,11 @@ export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
   email: string
+  first_names: string
   id: Generated<string>
   name: string
+  preferred_name: string
+  surname: string
   updated_at: Generated<Timestamp>
 }
 
@@ -602,24 +625,15 @@ export interface Icd10Sections {
   section: string
 }
 
-export interface Iso6391Languages {
-  endonym: string | null
-  english_name: string
-  iso_639_1: string
-}
-
-export interface Iso6392BLanguages {
-  endonym: string | null
-  english_name: string
-  iso_639_1: string
+export interface Languages {
+  iso_639_1: string | null
   iso_639_2_b: string
-}
-
-export interface Iso6393Languages {
-  endonym: string | null
-  english_name: string
-  iso_639_2_b: string
-  iso_639_3: string
+  iso_639_2_t: string
+  language_names: string[]
+  native_names: string[]
+  other_names: string[]
+  scope: LanguageScope
+  type: LanguageType
 }
 
 export interface MailingList {
@@ -761,11 +775,12 @@ export interface MessageThreadSubjects {
 export interface NurseRegistrationDetails {
   address_id: string | null
   approved_by: string | null
+  country: string | null
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp
   date_of_first_practice: Timestamp
   face_picture_media_id: string | null
-  gender: Gender
+  gender: string
   health_worker_id: string
   id: Generated<string>
   mobile_number: string | null
@@ -774,6 +789,7 @@ export interface NurseRegistrationDetails {
   ncz_registration_card_media_id: string | null
   ncz_registration_number: string
   nurse_practicing_cert_media_id: string | null
+  sex: Sex
   updated_at: Generated<Timestamp>
 }
 
@@ -833,6 +849,7 @@ export interface Organizations {
   inactive_reason: string | null
   is_test: Generated<boolean>
   location: string | null
+  most_common_language_code: string | null
   name: string
   ownership: string | null
   updated_at: Generated<Timestamp>
@@ -1146,11 +1163,13 @@ export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
   completed_registration: Generated<boolean>
+  country: string
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
   first_language: string | null
-  gender: Gender | null
+  first_names: string | null
+  gender: string | null
   id: Generated<string>
   location: string | null
   name: string | null
@@ -1158,7 +1177,10 @@ export interface Patients {
   nearest_organization_id: string | null
   phone_number: string | null
   preferred_language_code_iso_639_2_b: string | null
+  preferred_name: string | null
   primary_doctor_id: string | null
+  sex: Sex | null
+  surname: string | null
   unregistered_primary_doctor_name: string | null
   updated_at: Generated<Timestamp>
 }
@@ -1707,9 +1729,7 @@ export interface DB {
   icd10_diagnoses_excludes_codes: Icd10DiagnosesExcludesCodes
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
-  iso_639_1_languages: Iso6391Languages
-  iso_639_2_b_languages: Iso6392BLanguages
-  iso_639_3_languages: Iso6393Languages
+  languages: Languages
   mailing_list: MailingList
   manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
   manufactured_medication_recalls: ManufacturedMedicationRecalls

@@ -1,10 +1,3 @@
-import {
-  CheckboxInput,
-  DateInput,
-  // ImageOrVideoInput,
-  SelectWithOptions,
-  TextArea,
-} from '../form/Inputs.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
 import { computed, useSignal } from '@preact/signals'
 // import { RemoveRow } from '../AddRemove.tsx'
@@ -23,6 +16,10 @@ import AsyncSearch from '../AsyncSearch.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import Form from '../../components/library/Form.tsx'
+import { CheckboxInput } from '../form/inputs/checkbox.tsx'
+import { DateInput } from '../form/inputs/date.tsx'
+import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 
 function hasNameAndSnomedConceptId(
   symptom: Partial<RenderedPatientSymptom>,
@@ -78,7 +75,7 @@ export function SymptomForm({
   // )
 
   return (
-    <Form method='POST' // className='flex flex-col space-y-1 w-full'
+    <Form method='POST' // className='flex flex-col w-full space-y-1'
     >
       <FormRow className='w-full'>
         <AsyncSearch
@@ -99,7 +96,6 @@ export function SymptomForm({
             name={null}
             label='Ongoing'
             checked={!end_date.value}
-            className='w-min'
             onInput={(e) => {
               entered_duration.value = null
               end_date.value = e.currentTarget.checked ? null : yesterday
@@ -209,7 +205,7 @@ export function SymptomForm({
                   )}
                 >
                   <img
-                    className='w-full h-full object-cover'
+                    className='object-cover w-full h-full'
                     src={media.value.url}
                     alt={name ? `Uploaded ${name}` : ''}
                   />

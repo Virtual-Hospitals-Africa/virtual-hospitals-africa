@@ -10,6 +10,10 @@ import * as patient_encounters from '../../../../../../../../db/models/patient_e
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 const PatientRegistrationThisVisitSchema = z.object({
+  next_workflow: z.enum([
+    'start_triage',
+    'continue_with_registration',
+  ]),
   reason: z.enum([
     'seeking treatment',
     'maternity',
@@ -42,8 +46,16 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function PatientRegistrationThisVisitPage(
-  { state: { encounter: { reason, notes }, organization: { departments } } }:
-    OpenEncounterWorkflowContext,
+  {
+    state: {
+      // trx,
+      // organization_employment,
+      // organization,
+      // patient,
+      encounter: { reason, notes },
+      organization: { departments },
+    },
+  }: OpenEncounterWorkflowContext,
 ) {
   return (
     <ThisVisitSection

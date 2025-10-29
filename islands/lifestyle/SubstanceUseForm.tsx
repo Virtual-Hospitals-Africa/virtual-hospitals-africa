@@ -1,8 +1,9 @@
 import { useSignal } from '@preact/signals'
-import { NumberInput, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
 import { Lifestyle, SubstanceUse } from '../../types.ts'
 import FormSection from '../../components/library/FormSection.tsx'
+import { NumberInput } from '../form/inputs/number.tsx'
+import { YesNoGrid, YesNoQuestion } from '../form/inputs/yes_no.tsx'
 
 const substances = [
   'Caffeine',

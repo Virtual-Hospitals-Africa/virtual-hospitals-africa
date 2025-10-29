@@ -43,6 +43,7 @@ describe(
           latitude: -19.4554096,
           longitude: 29.7739353,
         },
+        most_common_language_code: 'nso',
       })
       assertEquals(omit(test_virtual_hospital, ['departments']), {
         id: '00000000-0000-0000-0000-000000000002',
@@ -58,6 +59,7 @@ describe(
           latitude: -19.4555096,
           longitude: 29.7738353,
         },
+        most_common_language_code: 'nso',
       })
     })
   },

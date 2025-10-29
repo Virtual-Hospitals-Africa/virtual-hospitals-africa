@@ -1,12 +1,14 @@
 import Layout from './Layout.tsx'
 import { Button } from './Button.tsx'
-import { TextArea, TextInput } from '../../islands/form/Inputs.tsx'
+
 import FormRow from './FormRow.tsx'
 import Form from './Form.tsx'
 import { ComponentChild } from 'preact/src/index.d.ts'
 import { HiddenInput } from './HiddenInput.tsx'
 import last from '../../util/last.ts'
 import PageHeader from './typography/PageHeader.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 type ContactPageProps = {
   url: URL
@@ -48,7 +50,7 @@ export default function ContactPage(
                   <FormRow className='w-full'>
                     <TextArea name='message' rows={3} />
                   </FormRow>
-                  <FormRow className='w-full container mt-2'>
+                  <FormRow className='container w-full mt-2'>
                     <Button type='submit'>
                       Submit
                     </Button>

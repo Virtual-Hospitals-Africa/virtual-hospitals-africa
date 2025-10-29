@@ -2,7 +2,7 @@ import { Button } from '../library/Button.tsx'
 import Form from '../library/Form.tsx'
 import PersonSearch from '../../islands/PersonSearch.tsx'
 import FormRow from '../library/FormRow.tsx'
-import { TextArea } from '../../islands/form/Inputs.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 export default function InvitePharmacistForm({
   country,
