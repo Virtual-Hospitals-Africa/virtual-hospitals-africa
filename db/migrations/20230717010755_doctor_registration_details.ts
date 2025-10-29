@@ -30,6 +30,7 @@ export async function up(db: Kysely<DB>) {
           .onDelete('cascade')
           .notNull()
           .unique())
+        .addColumn('sex', sql`sex`, (column) => column.notNull())
         .addColumn('gender', 'varchar(255)', (column) => column.notNull())
         .addColumn('national_id_number', 'varchar(50)', (column) =>
           column
@@ -44,7 +45,7 @@ export async function up(db: Kysely<DB>) {
           column
             .notNull()
             .check(sql`ncz_registration_number ~ '^[a-zA-Z]{2}[0-9]{6}$'`))
-        .addColumn('mobile_number', 'varchar(50)', (column) => column.notNull())
+        .addColumn('mobile_number', 'varchar(50)')
         .addColumn('national_id_media_id', 'uuid', (column) =>
           column
             .references('media.id')
@@ -72,11 +73,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn('approved_by', 'uuid', (column) =>
           column
             .references('health_workers.id')
-            .onDelete('cascade'))
-        .addCheckConstraint(
-          'doctor_registration_details_national_id_number_check',
-          sql`national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
-        ),
+            .onDelete('cascade')),
   )
 }
 

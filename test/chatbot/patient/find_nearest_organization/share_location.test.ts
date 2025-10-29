@@ -17,12 +17,11 @@ describe('patient chatbot', () => {
 
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
-    const p = await patients.insert(db, {
+    await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
       ...randomDemographics(),
     })
-    console.log(p)
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',

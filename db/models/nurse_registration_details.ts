@@ -2,24 +2,41 @@ import { HasStringId, NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as addresses from './addresses.ts'
 import { isoDate } from '../helpers.ts'
+import { asMaybeNames } from './asNames.ts'
+import { updateNames } from './health_workers.ts'
 
 export type UpsertableNurseRegistrationDetails =
-  | NurseRegistrationDetails & { address?: undefined }
-  | (
-    & Omit<
-      NurseRegistrationDetails,
-      'address_id'
-    >
-    & {
-      address_id?: undefined
-      address: addresses.AddressInsert
-    }
+  & {
+    name?: string
+    first_names?: string
+    surname?: string
+    preferred_name?: string
+  }
+  & (
+    | NurseRegistrationDetails & { address?: undefined }
+    | (
+      & Omit<
+        NurseRegistrationDetails,
+        'address_id'
+      >
+      & {
+        address_id?: undefined
+        address: addresses.AddressInsert
+      }
+    )
   )
 
 export async function add(
   trx: TrxOrDb,
-  { address, address_id, ...registration_details }:
-    UpsertableNurseRegistrationDetails,
+  {
+    address,
+    address_id,
+    name,
+    first_names,
+    surname,
+    preferred_name,
+    ...registration_details
+  }: UpsertableNurseRegistrationDetails,
 ) {
   if (address) {
     assert(
@@ -27,6 +44,10 @@ export async function add(
       'address_id must not be defined if address is specified',
     )
     address_id = (await addresses.insert(trx, address)).id
+  }
+  const names = asMaybeNames({ name, first_names, surname, preferred_name })
+  if (names) {
+    await updateNames(trx, registration_details.health_worker_id, names)
   }
   assert(address_id, 'address_id must be defined')
   return trx
@@ -96,6 +117,7 @@ export function get(
       'created_at',
       'updated_at',
       'health_worker_id',
+      'nurse_registration_details.sex',
       'gender',
       isoDate(eb.ref('date_of_birth')).as('date_of_birth'),
       isoDate(eb.ref('date_of_first_practice')).as('date_of_first_practice'),

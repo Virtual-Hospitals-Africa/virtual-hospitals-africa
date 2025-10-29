@@ -30,7 +30,7 @@ describe.skip('patient chatbot', () => {
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,
-      name: 'test',
+      name: 'Test Patient',
       gender: 'female',
       date_of_birth: '2023-01-01',
       national_id_number: null,

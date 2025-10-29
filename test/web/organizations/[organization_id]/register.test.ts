@@ -1,5 +1,4 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import { createTestAddress } from '../../../_helpers/addresses.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -11,6 +10,7 @@ import {
 } from '../../../_helpers/employees.ts'
 import { route } from '../../../route.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
+import createTestAddress from '../../../../mocks/createTestAddress.ts'
 
 describe(
   '/app/organizations/[organization_id]/register',
@@ -36,11 +36,12 @@ describe(
       const $ = cheerio.load(pageContents)
 
       assert($('input[name="first_names"]').length === 1)
-      assert($('input[name="middle_names"]').length === 1)
       assert($('input[name="surname"]').length === 1)
+      assert($('input[name="preferred_name"]').length === 1)
       assert($('input[name="date_of_birth"]').length === 1)
       assert($('input[name="email"]').length === 1)
-      assert($('select[name="gender"]').length === 1)
+      assert($('select[name="sex"]').length === 1)
+      assert($('input[name="gender"]').length === 1)
       assert($('input[name="national_id_number"]').length === 1)
       assert($('input[name="mobile_number"]').length === 1)
 
@@ -130,6 +131,7 @@ describe(
 
         const pageContents = await getPersonalResponse.text()
         const $ = cheerio.load(pageContents)
+        console.log($.html())
         assertEquals(
           $('input[name="first_names"]').val(),
           demographics.first_names,
@@ -193,13 +195,14 @@ describe(
           })
 
         assertEquals(registrationFormState, {
-          date_of_birth: '2020-01-01',
-          first_names: 'Test',
-          gender: 'female',
-          surname: 'Nurse',
-          middle_names: 'Zoom Zoom',
+          date_of_birth: demographics.date_of_birth,
+          first_names: demographics.first_names,
+          surname: demographics.surname,
+          preferred_name: demographics.preferred_name,
+          sex: demographics.sex,
+          gender: demographics.gender,
+          national_id_number: demographics.national_id_number,
           mobile_number: '+12035555555',
-          national_id_number: '08-123456 D 53',
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
           specialty: 'oncology and palliative care',
@@ -266,11 +269,17 @@ describe(
         assert(newNurse)
         assert(nurseEmployment)
 
-        assertEquals(registrationDetails.date_of_birth, '2020-01-01')
-        assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
-        assertEquals(registrationDetails.gender, 'female')
+        assertEquals(
+          registrationDetails.date_of_birth,
+          demographics.date_of_birth,
+        )
+        assertEquals(newNurse.name, demographics.name)
+        assertEquals(registrationDetails.gender, demographics.gender)
         assertEquals(registrationDetails.mobile_number, '+12035555555')
-        assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
+        assertEquals(
+          registrationDetails.national_id_number,
+          demographics.national_id_number,
+        )
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
         assertEquals(nurseEmployment.specialty, 'oncology and palliative care')

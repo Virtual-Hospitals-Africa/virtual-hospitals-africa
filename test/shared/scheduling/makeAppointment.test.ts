@@ -90,10 +90,10 @@ describe('scheduling/makeAppointment.ts', () => {
             location: null,
             name: 'Test Surname',
             names: {
-              first: 'Test',
-              preferred: 'Test',
+              first_names: 'Test',
+              preferred_name: 'Test',
               surname: 'Surname',
-              full: 'Test Surname',
+              name: 'Test Surname',
             },
             national_id_number: null,
             nearest_organization: null,

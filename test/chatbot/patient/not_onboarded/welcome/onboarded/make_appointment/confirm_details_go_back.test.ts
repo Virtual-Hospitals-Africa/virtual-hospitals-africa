@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
     await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
-      name: 'test',
+      name: 'Test Patient',
       gender: 'female',
       date_of_birth: '2023-01-01',
       national_id_number: null,

@@ -26,14 +26,14 @@ export async function up(db: Kysely<DB>) {
         .addColumn('gender', 'varchar(255)')
         .addColumn('date_of_birth', 'date')
         .addColumn('country', 'varchar(2)', (col) =>
-          col.references('countries.iso_3166_2'))
+          col.notNull().references('countries.iso_3166_2'))
         .addColumn('national_id_number', 'varchar(50)')
         .addColumn('first_language', 'varchar(50)')
         .addColumn(
           'avatar_media_id',
           'uuid',
           (col) =>
-            col.references('media.id'),
+            col.references('media.id').onDelete('cascade'),
         )
         .addColumn(
           'address_id',
@@ -87,14 +87,14 @@ export async function up(db: Kysely<DB>) {
         )`,
         )
         .addCheckConstraint(
-          'name_matches_first_names_and_surname',
+          'patient_name_matches_first_names_and_surname',
           sql`(
           (name = first_names || ' ' || surname) OR
           (name IS NULL AND first_names IS NULL AND surname IS NULL)
         )`,
         )
         .addCheckConstraint(
-          'name_and_preferred_name_nullability',
+          'patient_name_and_preferred_name_nullability',
           sql`(
           (name IS NULL) = (preferred_name IS NULL)
         )`,

@@ -16,11 +16,13 @@ describe(
         async (trx) => {
           const guardian = await patients.insert(trx, {
             name: 'Billy Bob',
-            gender: 'male',
+            sex: 'male',
+            gender: 'man',
           })
           const dependent = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
           const relation = await family.addGuardian(trx, {
             guardian_relation: 'biological parent',
@@ -130,7 +132,8 @@ describe(
           const dependent = await patients.insert(trx, { name: 'Billy Bob' })
           const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
@@ -220,7 +223,8 @@ describe(
           const dependent = await patients.insert(trx, { name: 'Billy Bob' })
           const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
-            gender: 'female',
+            sex: 'female',
+            gender: 'woman',
           })
 
           await family.addGuardian(trx, {

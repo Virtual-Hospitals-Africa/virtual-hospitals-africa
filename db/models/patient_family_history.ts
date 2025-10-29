@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientFindings } from '../../db.d.ts'
 import {
-  GENDERED_RELATION_SNOMED_CONCEPT_IDS,
   relation_from_snomed_id,
+  SEXED_RELATION_SNOMED_CONCEPT_IDS,
 } from '../../shared/family.ts'
 import {
   InsertShape,
@@ -92,9 +92,9 @@ export async function upsertOne(
   > = family_members
     .map((member) => {
       const id = generateUUID()
-      assert(member.relation_sexed in GENDERED_RELATION_SNOMED_CONCEPT_IDS)
+      assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
       const snomed_concept_id =
-        GENDERED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
+        SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
 
       return {
         id,

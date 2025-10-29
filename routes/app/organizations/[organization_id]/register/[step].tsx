@@ -13,7 +13,6 @@ import {
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import * as employment from '../../../../../db/models/employment.ts'
-import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
 import {
   DocumentFormFields,
@@ -21,7 +20,6 @@ import {
   ProfessionalInformationFields,
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import NurseRegistrationForm from '../../../../../islands/nurse-registration-form.tsx'
-import compact from '../../../../../util/compact.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
@@ -96,24 +94,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     const registration_details = getRegistrationDetails(
       ctx.state.health_worker,
       omit(form_state, [
-        'first_names',
-        'surname',
         'specialty',
       ]) as FormState,
     )
-
-    const full_name_in_form = compact([
-      form_state.first_names,
-      form_state.middle_names,
-      form_state.surname,
-    ]).join(' ')
-    if (full_name_in_form !== ctx.state.health_worker.name) {
-      await health_workers.updateName(
-        ctx.state.trx,
-        ctx.state.health_worker.id,
-        full_name_in_form,
-      )
-    }
 
     await nurse_registration_details.add(ctx.state.trx, registration_details)
 
@@ -162,7 +145,7 @@ export default async function RegisterPage(
     return redirect(`/app/organizations/${organization.id}/register/personal`)
   }
 
-  const formState: Partial<FormState> = await nurse_registration_details
+  const form_state: Partial<FormState> = await nurse_registration_details
     .getInProgress(
       ctx.state.trx,
       {
@@ -170,7 +153,7 @@ export default async function RegisterPage(
       },
     )
 
-  formState.email = health_worker.email
+  form_state.email = health_worker.email
 
   const stepState = getNurseRegistrationSteps(ctx)
 
@@ -186,7 +169,7 @@ export default async function RegisterPage(
       {stepState.stepsTopBar}
       <NurseRegistrationForm
         currentStep={stepState.currentStep}
-        form_data={formState}
+        form_data={form_state}
       />
     </Layout>
   )

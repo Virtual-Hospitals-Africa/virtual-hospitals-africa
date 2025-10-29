@@ -7,17 +7,17 @@ import * as patients from '../../../../../db/models/patients.ts'
 
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
-import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
+import { mockWhatsApp } from '../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('asks for birthday after inquiring gender', async () => {
+  it('asks for birthday after inquiring sex', async () => {
     const phone_number = randomPhoneNumber()
     await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_sex',
       phone_number,
-      name: 'test',
-      gender: null,
+      name: 'Test Patient',
+      sex: null,
       date_of_birth: null,
       national_id_number: null,
     })
@@ -27,7 +27,7 @@ describe('patient chatbot', () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: 'non-binary',
+      body: 'female',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -57,6 +57,6 @@ describe('patient chatbot', () => {
     )
 
     const patient = await patients.getById(db, patient_id)
-    assertEquals(patient.gender, 'non-binary')
+    assertEquals(patient.sex, 'female')
   })
 })

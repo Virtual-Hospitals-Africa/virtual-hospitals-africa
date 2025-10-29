@@ -9,6 +9,7 @@ import {
   PatientSchedulingAppointmentRequest,
   RenderedPatient,
   TrxOrDb,
+  UpdateShape,
 } from '../../types.ts'
 import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google-maps.ts'
@@ -25,10 +26,8 @@ import { DB, Patients } from '../../db.d.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { base } from './_base.ts'
-import last from '../../util/last.ts'
-import { exists } from '../../util/exists.ts'
-import first from '../../util/first.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
+import { SERVER_COUNTRY } from './countries.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -92,10 +91,10 @@ const baseQuery = (trx: TrxOrDb) =>
         view: view_href_sql,
       }).as('actions'),
       jsonBuildNullableObject(eb.ref('patients.name'), {
-        full: eb.ref('patients.name').$notNull(),
-        first: eb.ref('patients.first_names').$notNull(),
+        name: eb.ref('patients.name').$notNull(),
+        first_names: eb.ref('patients.first_names').$notNull(),
         surname: eb.ref('patients.surname').$notNull(),
-        preferred: eb.ref('patients.preferred_name').$notNull(),
+        preferred_name: eb.ref('patients.preferred_name').$notNull(),
       }).as('names'),
       jsonObjectFrom(
         eb.selectFrom('organizations as nearest_organizations')
@@ -166,57 +165,19 @@ export async function getLastConversationState(
 
 type PatientUpsert =
   & Partial<Patient>
-  & {
-    id?: string
-  }
-  & ({
-    name: string
-    first_names?: string
-    surname?: string
-    preferred_name?: string
-  } | {
-    name?: never
-    first_names: string
-    surname: string
-    preferred_name: string
-  })
+  & NameInputs
+  & { id?: string }
 
 function asPatientValues(
   {
     location,
-    primary_doctor_id,
-    name,
-    first_names,
-    surname,
-    preferred_name,
     ...patient
   }: PatientUpsert,
 ): InsertShape<Patients> {
-  if (first_names) {
-    assert(surname)
-    assert(preferred_name)
-    if (name) {
-      assertEquals(name, first_names + ' ' + surname)
-    } else {
-      name = first_names + ' ' + surname
-    }
-  } else {
-    assert(name)
-    assert(!surname)
-    assert(!preferred_name)
-    const names = name.split(' ')
-    surname = exists(last(names))
-    preferred_name = exists(first(names))
-    first_names = names.slice(0, -1).join(' ')
-  }
-
   return {
     ...patient,
-    name,
-    first_names,
-    surname,
-    preferred_name,
-    primary_doctor_id,
+    ...asNames(patient),
+    country: patient.country || SERVER_COUNTRY,
     location: location && literalLocation(location),
   }
 }
@@ -258,24 +219,24 @@ export async function insert(
 
 export function update(
   trx: TrxOrDb,
-  { id, name, location, primary_doctor_id, ...patient }: Partial<Patient> & {
-    id: string
-  },
+  { id, name, first_names, surname, preferred_name, location, ...patient }:
+    & Partial<PatientUpsert>
+    & {
+      id: string
+    },
 ) {
-  const to_update = {
+  const names = asMaybeNames({ name, first_names, surname, preferred_name })
+  const to_update: UpdateShape<Patients> = {
     ...patient,
-    primary_doctor_id,
     location: location && literalLocation(location),
   }
-  const to_update_with_name: (typeof to_update) & {
-    name?: string
-  } = to_update
-  if (name) {
-    to_update_with_name.name = name
+  if (names) {
+    Object.assign(to_update, names)
   }
+
   return trx.updateTable('patients')
     .where('id', '=', id)
-    .set(to_update_with_name)
+    .set(to_update)
     .returningAll()
     .executeTakeFirstOrThrow()
 }

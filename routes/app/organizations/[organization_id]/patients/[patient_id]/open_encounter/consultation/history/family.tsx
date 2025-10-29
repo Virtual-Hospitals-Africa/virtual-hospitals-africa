@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import * as patient_family_history from '../../../../../../../../../db/models/patient_family_history.ts'
 import { FamilyHistoryPage } from '../../../../../../../../../islands/FamilyHistoryPage.tsx'
-import { GENDERED_RELATION_SNOMED_CONCEPT_IDS } from '../../../../../../../../../shared/family.ts'
+import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from '../../../../../../../../../shared/family.ts'
 import keys from '../../../../../../../../../util/keys.ts'
 import { postHandler } from '../../../../../../../../../util/postHandler.ts'
 import { promiseProps } from '../../../../../../../../../util/promiseProps.ts'
@@ -15,7 +15,7 @@ import {
 } from './_middleware.tsx'
 
 const FamilyMemberSchema = z.object({
-  relation_sexed: z.enum(keys(GENDERED_RELATION_SNOMED_CONCEPT_IDS)),
+  relation_sexed: z.enum(keys(SEXED_RELATION_SNOMED_CONCEPT_IDS)),
 })
 
 export const FamilyHistorySchema = z

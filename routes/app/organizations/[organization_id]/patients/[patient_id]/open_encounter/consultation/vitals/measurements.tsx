@@ -39,7 +39,7 @@ function hasValue(
 
 export const handler = postHandler(
   VitalsMeasurementSchema,
-  async (req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
 
@@ -68,12 +68,9 @@ export const handler = postHandler(
       )
     }
 
-    console.log('x-forwarded-proto', req.headers.get('x-forwarded-proto'))
-    console.log('x-forwarded-host', req.headers.get('x-forwarded-host'))
-    console.log('ctx.url', ctx.url)
     const url = new URL(ctx.url)
     url.pathname = url.pathname.replace('/measurements', '/evaluations')
-    console.log('redirect', url)
+
     return redirect(url)
   },
 )

@@ -6,6 +6,7 @@ import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe('db/models/appointments.ts', () => {
   afterAll(() => db.destroy())
@@ -40,7 +41,7 @@ describe('db/models/appointments.ts', () => {
     itUsesTrxAnd(
       'adds an offered time if provider_id is a doctor',
       async (trx) => {
-        const patient = await patients.insert(trx, { name: generateUUID() })
+        const patient = await patients.insert(trx, randomDemographics())
         const health_worker = await addTestEmployee(trx, {
           profession: 'doctor',
         })

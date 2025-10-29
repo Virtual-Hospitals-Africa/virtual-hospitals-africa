@@ -6,6 +6,8 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import { isUUID } from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { route } from '../../../../route.ts'
 
 describe(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
@@ -29,7 +31,6 @@ describe(
       assert($('input[name="surname"]').length === 1)
       assert($('input[name="nonexistant"]').length === 0)
 
-      console.log('$.url', $.url)
       const patient_id = $.url.match(
         /patients\/(.*)\/open_encounter\/registration\/personal/,
       )![1]
@@ -51,7 +52,12 @@ describe(
         body,
       })
 
-      assert(response.url.endsWith('/'))
+      console.log('response.url', response.url)
+
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
+      )
 
       return response.body?.cancel()
     })

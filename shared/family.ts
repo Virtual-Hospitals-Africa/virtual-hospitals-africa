@@ -6,14 +6,14 @@ import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
 import isKeyOf from '../util/isKeyOf.ts'
 
-type UngenderedRelation = [GuardianRelationName, string]
-type GenderedRelation = [
+type UnsexedRelation = [GuardianRelationName, string]
+type SexedRelation = [
   GuardianRelationName,
   string,
   [string, string],
   [string, string],
 ]
-type Relation = UngenderedRelation | GenderedRelation
+type Relation = UnsexedRelation | SexedRelation
 
 const relations: Relation[] = [
   [
@@ -51,13 +51,13 @@ const relations: Relation[] = [
 ]
 
 export const GUARDIAN_RELATIONS = relations.map(
-  ([guardian, dependent, gendered_guardian, gendered_dependent]) => ({
+  ([guardian, dependent, sexed_guardian, sexed_dependent]) => ({
     guardian,
     dependent,
-    female_guardian: gendered_guardian?.[0] ?? null,
-    male_guardian: gendered_guardian?.[1] ?? null,
-    female_dependent: gendered_dependent?.[0] ?? null,
-    male_dependent: gendered_dependent?.[1] ?? null,
+    female_guardian: sexed_guardian?.[0] ?? null,
+    male_guardian: sexed_guardian?.[1] ?? null,
+    female_dependent: sexed_dependent?.[0] ?? null,
+    male_dependent: sexed_dependent?.[1] ?? null,
   }),
 )
 
@@ -103,7 +103,7 @@ export const PATIENT_COHABITATIONS: PatientCohabitation[] = [
   'Orphanage',
 ]
 
-export const GENDERED_RELATION_SNOMED_CONCEPT_IDS = {
+export const SEXED_RELATION_SNOMED_CONCEPT_IDS = {
   'aunt': '25211005',
   'uncle': '38048003',
   'foster mother': '38265003',
@@ -130,7 +130,7 @@ export const GENDERED_RELATION_SNOMED_CONCEPT_IDS = {
 
 export const SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS = fromEntries(
   entries(
-    GENDERED_RELATION_SNOMED_CONCEPT_IDS,
+    SEXED_RELATION_SNOMED_CONCEPT_IDS,
   ).map(
     ([relation_sexed, snomed_concept_id]) => [
       snomed_concept_id,
@@ -139,11 +139,9 @@ export const SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS = fromEntries(
   ),
 )
 
-export type GenderedRelationKey =
-  keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+export type SexedRelationKey = keyof typeof SEXED_RELATION_SNOMED_CONCEPT_IDS
 
-type GenderedSnomedId =
-  typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS[GenderedRelationKey]
+type SexedSnomedId = typeof SEXED_RELATION_SNOMED_CONCEPT_IDS[SexedRelationKey]
 
 function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
   type K = Extract<keyof O, string>
@@ -152,13 +150,13 @@ function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
 }
 
 export const FamilyMemberSchema = z.object({
-  relation_sexed: enumFromObjKeys(GENDERED_RELATION_SNOMED_CONCEPT_IDS),
+  relation_sexed: enumFromObjKeys(SEXED_RELATION_SNOMED_CONCEPT_IDS),
 })
 
 export const relation_from_snomed_id = (snomed_id: string) => {
   assert(
     isKeyOf(snomed_id, SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS),
-    `No gendered relation for ${snomed_id}`,
+    `No sexed relation for ${snomed_id}`,
   )
   return SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS[snomed_id]
 }

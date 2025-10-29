@@ -358,11 +358,12 @@ export interface DoctorRegistrationDetails {
   gender: string
   health_worker_id: string
   id: Generated<string>
-  mobile_number: string
+  mobile_number: string | null
   national_id_media_id: string | null
   national_id_number: string
   ncz_registration_card_media_id: string | null
   ncz_registration_number: string
+  sex: Sex
   updated_at: Generated<Timestamp>
 }
 
@@ -536,8 +537,11 @@ export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
   email: string
+  first_names: string
   id: Generated<string>
   name: string
+  preferred_name: string
+  surname: string
   updated_at: Generated<Timestamp>
 }
 
@@ -771,6 +775,7 @@ export interface MessageThreadSubjects {
 export interface NurseRegistrationDetails {
   address_id: string | null
   approved_by: string | null
+  country: string | null
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp
   date_of_first_practice: Timestamp
@@ -784,6 +789,7 @@ export interface NurseRegistrationDetails {
   ncz_registration_card_media_id: string | null
   ncz_registration_number: string
   nurse_practicing_cert_media_id: string | null
+  sex: Sex
   updated_at: Generated<Timestamp>
 }
 
@@ -1157,7 +1163,7 @@ export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
   completed_registration: Generated<boolean>
-  country: string | null
+  country: string
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null

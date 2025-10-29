@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import { HealthWorkerWithGoogleTokens, Names, TrxOrDb } from '../../types.ts'
 import * as sessions from '../../db/models/sessions.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -12,6 +12,7 @@ import testCalendars from '../../mocks/testCalendars.ts'
 import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
+import omit from '../../util/omit.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -26,14 +27,13 @@ type TestHealthWorkerOpts = {
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
 
-type TestEmployee = {
+type TestEmployee = Names & {
   organization_id: string
   employee_id: string
   calendars: {
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
   }
-  name: string
   email: string
   avatar_url: string
   phone_number?: import('../../types.ts').Maybe<string>
@@ -123,11 +123,18 @@ export async function addTestEmployee(
       organization,
       'admin',
     )
+    const details = await testNurseRegistrationDetails(trx, {
+      health_worker_id: health_worker.id,
+    })
+
     await nurse_registration_details.add(
       trx,
-      await testNurseRegistrationDetails(trx, {
-        health_worker_id: health_worker.id,
-      }),
+      omit(details, [
+        'name',
+        'first_names',
+        'surname',
+        'preferred_name',
+      ]),
     )
     await employment.addOne(trx, {
       organization_id,

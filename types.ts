@@ -10,12 +10,13 @@ import {
   FamilyType,
   MaritalStatus,
   PatientCohabitation,
+  Patients,
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
 import { Department } from './shared/departments.ts'
 import { DietFrequency } from './shared/diet.ts'
-import { GENDERED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
+import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
 export * from './shared/priorities.ts'
 
@@ -82,12 +83,18 @@ export type InsertShape<T> = OptionalMaybeFields<
   }
 >
 
-export type UpdateShape<T> = {
-  [K in keyof T]: T[K] extends ColumnType<any, any, infer U> ? U
-    : T[K] extends null | ColumnType<any, any, infer NullableU>
-      ? null | NullableU
-    : T[K]
-}
+export type UpdateShape<T> = OptionalMaybeFields<
+  {
+    [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
+      : T[K] extends null | ColumnType<any, any, infer NullableU>
+        ? null | NullableU
+      : T[K] | RawBuilder<T[K]>
+  }
+>
+
+type P = UpdateShape<Patients>
+
+// type OrRawBuilder =
 
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -228,7 +235,7 @@ export type PatientDemographicInfo = {
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   first_language: Maybe<string>
-  country: Maybe<string>
+  country: string
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState
@@ -252,12 +259,7 @@ export type RenderedPatient =
     date_of_birth: string | null
     dob_formatted: string | null
     name: string | null
-    names: null | {
-      full: string
-      first: string
-      surname: string
-      preferred: string
-    }
+    names: null | Names
     description: string | null
     age_display: Maybe<string>
     age_years: Maybe<number>
@@ -1410,6 +1412,7 @@ export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
 export type NurseRegistrationDetails = {
   health_worker_id: string
+  sex: Sex
   gender: string
   date_of_birth: string
   national_id_number: string
@@ -1429,8 +1432,7 @@ export type Specialties = {
   specialty: NurseSpecialty
 }
 
-export type HealthWorker = {
-  name: string
+export type HealthWorker = Names & {
   email: string
   avatar_url: string
   phone_number?: Maybe<string>
@@ -1439,6 +1441,7 @@ export type HealthWorker = {
 export type EmployeeInfo = {
   name: string
   email: string
+  sex: Maybe<Sex>
   gender: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
@@ -3395,7 +3398,7 @@ export type ExtantProcedureOrCreationIntent = {
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
   family_members: Array<{
-    relation_sexed: keyof typeof GENDERED_RELATION_SNOMED_CONCEPT_IDS
+    relation_sexed: keyof typeof SEXED_RELATION_SNOMED_CONCEPT_IDS
   }>
 }
 
@@ -3478,4 +3481,11 @@ export type RenderedPatientInsurance = {
   valid_from: string
   expire_date: string
   is_dependent: boolean
+}
+
+export type Names = {
+  name: string
+  first_names: string
+  surname: string
+  preferred_name: string
 }

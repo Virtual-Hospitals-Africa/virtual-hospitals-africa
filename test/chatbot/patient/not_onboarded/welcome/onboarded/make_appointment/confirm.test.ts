@@ -26,11 +26,12 @@ import { Stub, stub } from 'std/testing/mock.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
+import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  beforeEach(resetInTest)
   let getFreeBusy: Stub
+  beforeEach(resetInTest)
   afterEach(() => {
     if (getFreeBusy) getFreeBusy.restore()
   })
@@ -39,10 +40,7 @@ describe('patient chatbot', () => {
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: null,
+      ...randomDemographics(),
     })
 
     // Insert patient_appointment_requests

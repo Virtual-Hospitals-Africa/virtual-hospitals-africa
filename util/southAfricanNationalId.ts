@@ -47,7 +47,7 @@ export function validateSouthAfricanNationalIdNumber(
   const check_dob = national_id_number.substring(0, 6)
 
   assertOr400(
-    check_dob === `${dob.year.slice(0, 2)}${dob.month}${dob.day}`,
+    check_dob === `${dob.year.slice(-2)}${dob.month}${dob.day}`,
     'Date of birth must match the date of birth in the national ID number',
   )
 

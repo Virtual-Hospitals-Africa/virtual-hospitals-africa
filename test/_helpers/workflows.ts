@@ -14,7 +14,7 @@ import {
   WORKFLOW_STEPS,
   workflowStepKey,
 } from '../../shared/workflow.ts'
-import { PatientWorkflowStepsCompleted } from '../../db.d.ts'
+import { PatientWorkflowStepsCompleted, Sex } from '../../db.d.ts'
 import { completedWorkflow } from '../../db/models/patient_workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 
@@ -77,7 +77,8 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
     patient_demographics?: {
       name?: string
       date_of_birth?: string
-      gender?: 'male' | 'female'
+      sex?: Sex
+      gender?: string
     }
   },
 ) {

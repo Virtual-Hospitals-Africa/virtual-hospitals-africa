@@ -11,6 +11,7 @@ import db from '../../db/db.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { todayISOInJohannesburg } from '../../util/date.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe('patient_insurance', () => {
   let patient_id: string
@@ -20,7 +21,7 @@ describe('patient_insurance', () => {
   beforeEach(async () => {
     const patient = await db.insertInto('patients')
       .values({
-        name: 'Test Patient',
+        ...randomDemographics(),
         phone_number: `+1555${Math.random().toString().slice(2, 11)}`,
         completed_registration: false,
       })

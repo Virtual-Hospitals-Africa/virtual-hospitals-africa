@@ -19,6 +19,7 @@ import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
+import { SERVER_COUNTRY } from './countries.ts'
 
 /* 1. Enable the URL to include buttons that get rendered into alerts
  2. Make it so assertOr400(
@@ -74,7 +75,7 @@ export async function start(
     'inserting_patient',
     (qb) =>
       qb.insertInto('patients')
-        .values({ id: patient_id }),
+        .values({ id: patient_id, country: SERVER_COUNTRY }),
   ).with(
     'inserting_patient_encounter',
     (qb) =>

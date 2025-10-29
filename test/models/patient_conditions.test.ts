@@ -10,6 +10,7 @@ import db from '../../db/db.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -28,7 +29,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -158,7 +159,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -280,7 +281,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -408,7 +409,7 @@ describe(
             trx,
             nurse.organization_id,
             {
-              patient_demographics: { name: 'Billy Bob' },
+              patient_demographics: randomDemographics(),
               employment_id: nurse.employee_id,
             },
           )
@@ -467,7 +468,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -546,7 +547,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -686,7 +687,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -746,7 +747,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -795,7 +796,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -845,7 +846,7 @@ describe(
             trx,
             nurse.organization_id,
             {
-              patient_demographics: { name: 'Billy Bob' },
+              patient_demographics: randomDemographics(),
               employment_id: nurse.employee_id,
             },
           )
@@ -894,7 +895,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -943,7 +944,7 @@ describe(
             trx,
             nurse.organization_id,
             {
-              patient_demographics: { name: 'Billy Bob' },
+              patient_demographics: randomDemographics(),
               employment_id: nurse.employee_id,
             },
           )
@@ -989,7 +990,7 @@ describe(
               trx,
               nurse.organization_id,
               {
-                patient_demographics: { name: 'Billy Bob' },
+                patient_demographics: randomDemographics(),
                 employment_id: nurse.employee_id,
               },
             )
@@ -1035,7 +1036,7 @@ describe(
             trx,
             nurse.organization_id,
             {
-              patient_demographics: { name: 'Billy Bob' },
+              patient_demographics: randomDemographics(),
               employment_id: nurse.employee_id,
             },
           )
@@ -1174,7 +1175,7 @@ describe(
                 trx,
                 nurse.organization_id,
                 {
-                  patient_demographics: { name: 'Billy Bob' },
+                  patient_demographics: randomDemographics(),
                   employment_id: nurse.employee_id,
                 },
               )

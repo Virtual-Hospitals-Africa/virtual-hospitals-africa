@@ -1,14 +1,14 @@
 import FormRow from '../../components/library/FormRow.tsx'
-import { RenderedPatient } from '../../types.ts'
+import { Names } from '../../types.ts'
 import { useSignal, useSignalEffect } from '@preact/signals'
 import { TextInput } from '../form/inputs/text.tsx'
 
 export function NamesFormRow(
-  { names }: { names: Partial<RenderedPatient['names']> },
+  { names }: { names: Partial<Names> },
 ) {
-  const preferred_name_dirty = useSignal<boolean>(!!names?.preferred)
-  const preferred_name = useSignal(names?.preferred || '')
-  const first_names = useSignal(names?.first || '')
+  const preferred_name_dirty = useSignal<boolean>(!!names?.preferred_name)
+  const preferred_name = useSignal(names?.preferred_name || '')
+  const first_names = useSignal(names?.first_names || '')
 
   useSignalEffect(() => {
     if (!preferred_name_dirty.value) {

@@ -12,8 +12,9 @@ import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import db from '../../db/db.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { insertTestAddress } from '../_helpers/addresses.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
+import insertTestAddress from '../../mocks/insertTestAddress.ts'
+import { prettyPatientDateOfBirth } from '../../util/date.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -105,6 +106,9 @@ describe('db/models/health_workers.ts', () => {
           default_organization_id: '00000000-0000-0000-0000-000000000001',
           id: health_worker.id,
           name: health_worker.name,
+          first_names: health_worker.first_names,
+          surname: health_worker.surname,
+          preferred_name: health_worker.preferred_name,
           access_token: health_worker.access_token,
           refresh_token: health_worker.refresh_token,
           present_encounter: null,
@@ -270,9 +274,13 @@ describe('db/models/health_workers.ts', () => {
 
         assert(result)
         assertEquals(result.health_worker_id, health_worker.id)
-        assertEquals(result.gender, 'male')
-        assertEquals(result.name, health_worker.name)
-        assertEquals(result.date_of_birth, '12 December 1979')
+        assertEquals(result.sex, details.sex)
+        assertEquals(result.gender, details.gender)
+        assertEquals(result.name, details.name)
+        assertEquals(
+          result.date_of_birth,
+          prettyPatientDateOfBirth(details.date_of_birth),
+        )
         assertEquals(result.mobile_number, details.mobile_number)
         assertEquals(result.avatar_url, health_worker.avatar_url)
         assertEquals(result.date_of_first_practice, '11 November 1999')
@@ -357,9 +365,13 @@ describe('db/models/health_workers.ts', () => {
 
       assert(result)
       assertEquals(result.health_worker_id, health_worker.id)
-      assertEquals(result.gender, 'male')
-      assertEquals(result.date_of_birth, '12 December 1979')
-      assertEquals(result.name, health_worker.name)
+      assertEquals(result.sex, details.sex)
+      assertEquals(result.gender, details.gender)
+      assertEquals(
+        result.date_of_birth,
+        prettyPatientDateOfBirth(details.date_of_birth),
+      )
+      assertEquals(result.name, details.name)
       assertEquals(result.mobile_number, details.mobile_number)
       assertEquals(result.avatar_url, health_worker.avatar_url)
       assertEquals(result.date_of_first_practice, '11 November 1999')
