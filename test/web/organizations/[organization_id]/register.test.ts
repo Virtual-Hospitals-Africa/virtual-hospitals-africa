@@ -110,6 +110,7 @@ describe(
         assertEquals(registrationFormState, {
           date_of_birth: demographics.date_of_birth,
           first_names: demographics.first_names,
+          sex: demographics.sex,
           gender: demographics.gender,
           surname: demographics.surname,
           preferred_name: demographics.preferred_name,
@@ -129,14 +130,19 @@ describe(
 
         const pageContents = await getPersonalResponse.text()
         const $ = cheerio.load(pageContents)
-        assertEquals($('input[name="first_names"]').val(), 'Test')
-        assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
-        assertEquals($('input[name="surname"]').val(), 'Nurse')
-        assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
-        assertEquals($('select[name="sex"]').val(), 'female')
+        assertEquals(
+          $('input[name="first_names"]').val(),
+          demographics.first_names,
+        )
+        assertEquals($('input[name="surname"]').val(), demographics.surname)
+        assertEquals(
+          $('input[name="date_of_birth"]').val(),
+          demographics.date_of_birth,
+        )
+        assertEquals($('select[name="sex"]').val(), demographics.sex)
         assertEquals(
           $('input[name="national_id_number"]').val(),
-          '08-123456 D 53',
+          demographics.national_id_number,
         )
         assertEquals($('input[name="mobile_number"]').val(), '+12035555555')
 

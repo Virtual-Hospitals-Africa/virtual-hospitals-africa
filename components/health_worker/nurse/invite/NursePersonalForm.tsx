@@ -7,6 +7,7 @@ import { DateInput } from '../../../../islands/form/inputs/date.tsx'
 import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
 import { TextInput } from '../../../../islands/form/inputs/text.tsx'
 import { SexAndGenderInputs } from '../../../../islands/patient-registration/SexAndGenderInputs.tsx'
+import { NamesFormRow } from '../../../../islands/patient-registration/NamesFormRow.tsx'
 
 export default function NursePersonalForm(
   { form_data }: {
@@ -15,25 +16,9 @@ export default function NursePersonalForm(
 ) {
   return (
     <>
-      <FormRow>
-        <TextInput
-          name='first_names'
-          required
-          label='First Name'
-          value={form_data.first_names}
-        />
-        <TextInput
-          name='middle_names'
-          label='Middle Names'
-          value={form_data.middle_names}
-        />
-        <TextInput
-          name='surname'
-          required
-          label='Last Name'
-          value={form_data.surname}
-        />
-      </FormRow>
+      <NamesFormRow
+        names={form_data}
+      />
       <FormRow>
         <DateInput
           name='date_of_birth'

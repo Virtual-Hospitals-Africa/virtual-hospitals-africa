@@ -97,7 +97,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       ctx.state.health_worker,
       omit(form_state, [
         'first_names',
-        'middle_names',
         'surname',
         'specialty',
       ]) as FormState,

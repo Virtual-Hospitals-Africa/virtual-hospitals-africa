@@ -41,6 +41,17 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
+export const description_sql = sql<string | null>`
+  CASE 
+    WHEN NOT patients.completed_registration THEN NULL
+    WHEN (
+      (patients.sex = 'female' AND patients.gender = 'woman') OR
+      (patients.sex = 'male' AND patients.gender = 'man')
+    ) THEN patients.sex || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
+    ELSE patients.sex || ' • ' || patients.gender || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
+  END
+`
+
 const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
@@ -68,11 +79,7 @@ const baseQuery = (trx: TrxOrDb) =>
       'patient_age.age_display',
       'patients.preferred_language_code_iso_639_2_b',
       sql<number | null>`patient_age.age_years::integer`.as('age_years'),
-      sql<
-        string | null
-      >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
-        'description',
-      ),
+      description_sql.as('description'),
       'patients.national_id_number',
       'patients.completed_registration',
       avatar_url_sql.as('avatar_url'),

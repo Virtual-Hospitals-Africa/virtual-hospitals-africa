@@ -59,7 +59,7 @@ export type ProfessionalInformationFields = {
 
 export const PersonalFormFields = z.object({
   first_names: z.string(),
-  middle_names: z.optional(z.string()),
+  preferred_name: z.string(),
   surname: z.string(),
   date_of_birth: z.string().date(),
   email: z.optional(z.string()).refine(

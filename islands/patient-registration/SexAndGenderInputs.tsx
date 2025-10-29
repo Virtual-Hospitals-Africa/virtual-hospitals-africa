@@ -6,13 +6,13 @@ import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 function genderOptions(sex: Maybe<Sex>) {
   switch (sex) {
     case 'female':
-      return ['Woman', 'Trans man', 'Prefer not to say']
+      return ['woman', 'trans man', 'prefer not to say']
     case 'male':
-      return ['Man', 'Trans woman', 'Prefer not to say']
+      return ['man', 'trans woman', 'prefer not to say']
     case 'other':
       return []
     case 'prefer not to say':
-      return ['Prefer not to say']
+      return ['prefer not to say']
     default:
       return [
         'man',
