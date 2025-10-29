@@ -3,6 +3,7 @@ import {
   HealthWorkerEmployment,
   RenderedPatientOpenEncounter,
   TrxOrDb,
+  UpdateShape,
 } from '../../types.ts'
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
@@ -81,5 +82,15 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
     .set(next_patient_presence)
     .where('patient_presence.id', '=', patient_id)
     .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function set(
+  trx: TrxOrDb,
+  patient_id: string,
+  updates: UpdateShape<PatientPresence>,
+) {
+  return trx.updateTable('patient_presence')
+    .set(updates).where('id', '=', patient_id)
     .executeTakeFirstOrThrow()
 }

@@ -126,7 +126,7 @@ export function completeLastStep(
   })
 }
 
-export async function completeAndProceedToNextStep(
+export async function completeStep(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
@@ -156,6 +156,18 @@ export async function completeAndProceedToNextStep(
 
   const first_incomplete_step = firstIncompleteStep(workflow, steps_completed)
   assert(first_incomplete_step)
+
+  return {
+    steps_completed,
+    first_incomplete_step,
+  }
+}
+
+export async function completeAndProceedToNextStep(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const { workflow } = ctx.state
+  const { first_incomplete_step } = await completeStep(ctx)
 
   return redirect(
     replaceParams(
