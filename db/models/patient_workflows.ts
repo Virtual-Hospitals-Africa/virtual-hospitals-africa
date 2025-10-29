@@ -1,6 +1,8 @@
-import { Workflow } from '../../db.d.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { PatientWorkflows, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
 import {
+  InsertShape,
   RenderedPatientEncounter,
   TrxOrDb,
   WorkflowStatus,
@@ -60,6 +62,12 @@ export function start(
     existing_patient_encounter_employee_id ||
     generateUUID()
 
+  assertEquals(
+    workflow_status.status,
+    'not started',
+    'TODO support restarting workflows or joining those in progress?',
+  )
+
   return trx.with(
     'inserting_patient_encounter_employee',
     (qb) =>
@@ -78,4 +86,12 @@ export function start(
       patient_workflow_id: workflow_status.patient_workflow_id,
     })
     .execute()
+}
+
+export function insert(
+  trx: TrxOrDb,
+  to_insert: InsertShape<PatientWorkflows>,
+) {
+  return trx.insertInto('patient_workflows')
+    .values(to_insert).execute()
 }

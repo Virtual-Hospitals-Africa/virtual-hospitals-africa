@@ -1,40 +1,47 @@
 type Option = {
   id: string
   name: string
-  description: string
+  description: string | string[]
 }
 
-export function VerticalRadioButtons({ options }: {
+export function VerticalRadioButtons({ options, name, default_value }: {
   options: Option[]
+  name: string
+  default_value?: string
 }) {
   return (
     <fieldset aria-label='Plan'>
-      <div className='space-y-5'>
+      <div className='flex flex-col gap-[18px]'>
         {options.map((option) => (
-          <div key={option.id} className='relative flex items-start'>
-            <div className='flex items-center h-6'>
+          <div key={option.id} className='flex items-start gap-3'>
+            <div className='flex items-center pt-0.5'>
               <input
-                defaultChecked={option.id === 'small'}
+                defaultChecked={option.id === default_value}
                 id={option.id}
-                name='option'
+                name={name}
                 type='radio'
+                value={option.id}
                 aria-describedby={`${option.id}-description`}
-                className='relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 dark:border-white/10 dark:bg-white/5 dark:checked:border-indigo-500 dark:checked:bg-indigo-500 dark:focus-visible:outline-indigo-500 dark:disabled:border-white/5 dark:disabled:bg-white/10 dark:disabled:before:bg-white/20 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden'
+                className='bg-white border border-gray-300 rounded-full appearance-none size-4 checked:border-indigo-700 checked:bg-white checked:ring-4 checked:ring-indigo-700 checked:ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700'
               />
             </div>
-            <div className='ml-3 text-sm/6'>
+            <div className='flex flex-col gap-1'>
               <label
                 htmlFor={option.id}
-                className='font-medium text-gray-900 dark:text-white'
+                className='text-sm font-medium leading-5 text-gray-600'
               >
                 {option.name}
               </label>
-              <p
-                id={`${option.id}-description`}
-                className='text-gray-500 dark:text-gray-400'
-              >
-                {option.description}
-              </p>
+              {(Array.isArray(option.description)
+                ? option.description
+                : [option.description]).map((desc, i) => (
+                  <p
+                    key={i}
+                    className='text-xs leading-4 text-gray-600'
+                  >
+                    {desc}
+                  </p>
+                ))}
             </div>
           </div>
         ))}
