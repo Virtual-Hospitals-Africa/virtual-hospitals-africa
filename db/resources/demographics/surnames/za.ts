@@ -1,4002 +1,4002 @@
-export const last_names = [
+export const surnames = [
   {
-    'last_name': 'Dlamini',
+    'surname': 'Dlamini',
     'incidence': 310094,
   },
   {
-    'last_name': 'Nkosi',
+    'surname': 'Nkosi',
     'incidence': 300929,
   },
   {
-    'last_name': 'Ndlovu',
+    'surname': 'Ndlovu',
     'incidence': 281656,
   },
   {
-    'last_name': 'Khumalo',
+    'surname': 'Khumalo',
     'incidence': 273217,
   },
   {
-    'last_name': 'Sithole',
+    'surname': 'Sithole',
     'incidence': 216358,
   },
   {
-    'last_name': 'Mahlangu',
+    'surname': 'Mahlangu',
     'incidence': 215528,
   },
   {
-    'last_name': 'Mokoena',
+    'surname': 'Mokoena',
     'incidence': 209762,
   },
   {
-    'last_name': 'Mkhize',
+    'surname': 'Mkhize',
     'incidence': 173326,
   },
   {
-    'last_name': 'Mthembu',
+    'surname': 'Mthembu',
     'incidence': 171793,
   },
   {
-    'last_name': 'Zulu',
+    'surname': 'Zulu',
     'incidence': 165568,
   },
   {
-    'last_name': 'Ngcobo',
+    'surname': 'Ngcobo',
     'incidence': 163802,
   },
   {
-    'last_name': 'Gumede',
+    'surname': 'Gumede',
     'incidence': 163265,
   },
   {
-    'last_name': 'Naidoo',
+    'surname': 'Naidoo',
     'incidence': 153887,
   },
   {
-    'last_name': 'Buthelezi',
+    'surname': 'Buthelezi',
     'incidence': 149129,
   },
   {
-    'last_name': 'Khoza',
+    'surname': 'Khoza',
     'incidence': 143494,
   },
   {
-    'last_name': 'Sibiya',
+    'surname': 'Sibiya',
     'incidence': 133461,
   },
   {
-    'last_name': 'Jacobs',
+    'surname': 'Jacobs',
     'incidence': 130364,
   },
   {
-    'last_name': 'Govender',
+    'surname': 'Govender',
     'incidence': 129771,
   },
   {
-    'last_name': 'Mofokeng',
+    'surname': 'Mofokeng',
     'incidence': 129329,
   },
   {
-    'last_name': 'Botha',
+    'surname': 'Botha',
     'incidence': 128008,
   },
   {
-    'last_name': 'Mhlongo',
+    'surname': 'Mhlongo',
     'incidence': 126648,
   },
   {
-    'last_name': 'Smith',
+    'surname': 'Smith',
     'incidence': 125534,
   },
   {
-    'last_name': 'Baloyi',
+    'surname': 'Baloyi',
     'incidence': 124602,
   },
   {
-    'last_name': 'Mbatha',
+    'surname': 'Mbatha',
     'incidence': 121567,
   },
   {
-    'last_name': 'Pillay',
+    'surname': 'Pillay',
     'incidence': 121424,
   },
   {
-    'last_name': 'Radebe',
+    'surname': 'Radebe',
     'incidence': 119966,
   },
   {
-    'last_name': 'Mathebula',
+    'surname': 'Mathebula',
     'incidence': 114416,
   },
   {
-    'last_name': 'Ntuli',
+    'surname': 'Ntuli',
     'incidence': 113766,
   },
   {
-    'last_name': 'Zwane',
+    'surname': 'Zwane',
     'incidence': 112699,
   },
   {
-    'last_name': 'Mazibuko',
+    'surname': 'Mazibuko',
     'incidence': 111243,
   },
   {
-    'last_name': 'Tshabalala',
+    'surname': 'Tshabalala',
     'incidence': 110309,
   },
   {
-    'last_name': 'Nxumalo',
+    'surname': 'Nxumalo',
     'incidence': 107776,
   },
   {
-    'last_name': 'van Wyk',
+    'surname': 'van Wyk',
     'incidence': 106985,
   },
   {
-    'last_name': 'Williams',
+    'surname': 'Williams',
     'incidence': 106885,
   },
   {
-    'last_name': 'Chauke',
+    'surname': 'Chauke',
     'incidence': 103812,
   },
   {
-    'last_name': 'Ngwenya',
+    'surname': 'Ngwenya',
     'incidence': 103436,
   },
   {
-    'last_name': 'Cele',
+    'surname': 'Cele',
     'incidence': 102346,
   },
   {
-    'last_name': 'van der Merwe',
+    'surname': 'van der Merwe',
     'incidence': 100825,
   },
   {
-    'last_name': 'Mthethwa',
+    'surname': 'Mthethwa',
     'incidence': 99131,
   },
   {
-    'last_name': 'Dube',
+    'surname': 'Dube',
     'incidence': 95974,
   },
   {
-    'last_name': 'Ngobeni',
+    'surname': 'Ngobeni',
     'incidence': 93651,
   },
   {
-    'last_name': 'Pretorius',
+    'surname': 'Pretorius',
     'incidence': 89359,
   },
   {
-    'last_name': 'Ngubane',
+    'surname': 'Ngubane',
     'incidence': 89112,
   },
   {
-    'last_name': 'Maluleke',
+    'surname': 'Maluleke',
     'incidence': 89002,
   },
   {
-    'last_name': 'Maseko',
+    'surname': 'Maseko',
     'incidence': 87560,
   },
   {
-    'last_name': 'Du Plessis',
+    'surname': 'Du Plessis',
     'incidence': 86080,
   },
   {
-    'last_name': 'Molefe',
+    'surname': 'Molefe',
     'incidence': 85700,
   },
   {
-    'last_name': 'Mtshali',
+    'surname': 'Mtshali',
     'incidence': 85146,
   },
   {
-    'last_name': 'Mabaso',
+    'surname': 'Mabaso',
     'incidence': 84533,
   },
   {
-    'last_name': 'Nel',
+    'surname': 'Nel',
     'incidence': 84016,
   },
   {
-    'last_name': 'Coetzee',
+    'surname': 'Coetzee',
     'incidence': 83814,
   },
   {
-    'last_name': 'Venter',
+    'surname': 'Venter',
     'incidence': 78988,
   },
   {
-    'last_name': 'Mkhwanazi',
+    'surname': 'Mkhwanazi',
     'incidence': 77971,
   },
   {
-    'last_name': 'Fourie',
+    'surname': 'Fourie',
     'incidence': 77740,
   },
   {
-    'last_name': 'Mnisi',
+    'surname': 'Mnisi',
     'incidence': 77670,
   },
   {
-    'last_name': 'Adams',
+    'surname': 'Adams',
     'incidence': 75697,
   },
   {
-    'last_name': 'Zondi',
+    'surname': 'Zondi',
     'incidence': 73932,
   },
   {
-    'last_name': 'Moloi',
+    'surname': 'Moloi',
     'incidence': 73321,
   },
   {
-    'last_name': 'Smit',
+    'surname': 'Smit',
     'incidence': 72776,
   },
   {
-    'last_name': 'Mchunu',
+    'surname': 'Mchunu',
     'incidence': 71375,
   },
   {
-    'last_name': 'Motaung',
+    'surname': 'Motaung',
     'incidence': 71351,
   },
   {
-    'last_name': 'Louw',
+    'surname': 'Louw',
     'incidence': 70966,
   },
   {
-    'last_name': 'Hlongwane',
+    'surname': 'Hlongwane',
     'incidence': 68782,
   },
   {
-    'last_name': 'van Zyl',
+    'surname': 'van Zyl',
     'incidence': 68529,
   },
   {
-    'last_name': 'Zungu',
+    'surname': 'Zungu',
     'incidence': 68399,
   },
   {
-    'last_name': 'Mnguni',
+    'surname': 'Mnguni',
     'incidence': 68130,
   },
   {
-    'last_name': 'Nkuna',
+    'surname': 'Nkuna',
     'incidence': 67255,
   },
   {
-    'last_name': 'Hlatshwayo',
+    'surname': 'Hlatshwayo',
     'incidence': 67225,
   },
   {
-    'last_name': 'Moodley',
+    'surname': 'Moodley',
     'incidence': 66099,
   },
   {
-    'last_name': 'Kruger',
+    'surname': 'Kruger',
     'incidence': 65220,
   },
   {
-    'last_name': 'Shabangu',
+    'surname': 'Shabangu',
     'incidence': 64692,
   },
   {
-    'last_name': 'Vilakazi',
+    'surname': 'Vilakazi',
     'incidence': 64486,
   },
   {
-    'last_name': 'Xaba',
+    'surname': 'Xaba',
     'incidence': 64220,
   },
   {
-    'last_name': 'Shabalala',
+    'surname': 'Shabalala',
     'incidence': 63914,
   },
   {
-    'last_name': 'Malatji',
+    'surname': 'Malatji',
     'incidence': 63611,
   },
   {
-    'last_name': 'Dladla',
+    'surname': 'Dladla',
     'incidence': 62971,
   },
   {
-    'last_name': 'Du Toit',
+    'surname': 'Du Toit',
     'incidence': 60711,
   },
   {
-    'last_name': 'Erasmus',
+    'surname': 'Erasmus',
     'incidence': 60680,
   },
   {
-    'last_name': 'van Niekerk',
+    'surname': 'van Niekerk',
     'incidence': 60361,
   },
   {
-    'last_name': 'Meyer',
+    'surname': 'Meyer',
     'incidence': 60306,
   },
   {
-    'last_name': 'Hadebe',
+    'surname': 'Hadebe',
     'incidence': 59176,
   },
   {
-    'last_name': 'Skosana',
+    'surname': 'Skosana',
     'incidence': 58671,
   },
   {
-    'last_name': 'Abrahams',
+    'surname': 'Abrahams',
     'incidence': 57418,
   },
   {
-    'last_name': 'Singh',
+    'surname': 'Singh',
     'incidence': 57300,
   },
   {
-    'last_name': 'Majola',
+    'surname': 'Majola',
     'incidence': 55382,
   },
   {
-    'last_name': 'Mohlala',
+    'surname': 'Mohlala',
     'incidence': 53842,
   },
   {
-    'last_name': 'Davids',
+    'surname': 'Davids',
     'incidence': 53829,
   },
   {
-    'last_name': 'Kekana',
+    'surname': 'Kekana',
     'incidence': 53711,
   },
   {
-    'last_name': 'Kunene',
+    'surname': 'Kunene',
     'incidence': 53266,
   },
   {
-    'last_name': 'Xulu',
+    'surname': 'Xulu',
     'incidence': 53248,
   },
   {
-    'last_name': 'Khanyile',
+    'surname': 'Khanyile',
     'incidence': 53081,
   },
   {
-    'last_name': 'Cloete',
+    'surname': 'Cloete',
     'incidence': 52974,
   },
   {
-    'last_name': 'Zuma',
+    'surname': 'Zuma',
     'incidence': 52855,
   },
   {
-    'last_name': 'Simelane',
+    'surname': 'Simelane',
     'incidence': 52261,
   },
   {
-    'last_name': 'van Rooyen',
+    'surname': 'van Rooyen',
     'incidence': 52197,
   },
   {
-    'last_name': 'Booysen',
+    'surname': 'Booysen',
     'incidence': 52009,
   },
   {
-    'last_name': 'Mudau',
+    'surname': 'Mudau',
     'incidence': 51151,
   },
   {
-    'last_name': 'Langa',
+    'surname': 'Langa',
     'incidence': 50952,
   },
   {
-    'last_name': 'Nhlapo',
+    'surname': 'Nhlapo',
     'incidence': 50874,
   },
   {
-    'last_name': 'Modise',
+    'surname': 'Modise',
     'incidence': 50411,
   },
   {
-    'last_name': 'Chetty',
+    'surname': 'Chetty',
     'incidence': 50373,
   },
   {
-    'last_name': 'Steyn',
+    'surname': 'Steyn',
     'incidence': 50347,
   },
   {
-    'last_name': 'Joubert',
+    'surname': 'Joubert',
     'incidence': 50274,
   },
   {
-    'last_name': 'Mokwena',
+    'surname': 'Mokwena',
     'incidence': 50252,
   },
   {
-    'last_name': 'Shongwe',
+    'surname': 'Shongwe',
     'incidence': 50140,
   },
   {
-    'last_name': 'Mdluli',
+    'surname': 'Mdluli',
     'incidence': 50032,
   },
   {
-    'last_name': 'Mabuza',
+    'surname': 'Mabuza',
     'incidence': 49369,
   },
   {
-    'last_name': 'Mlambo',
+    'surname': 'Mlambo',
     'incidence': 48912,
   },
   {
-    'last_name': 'Shezi',
+    'surname': 'Shezi',
     'incidence': 48788,
   },
   {
-    'last_name': 'Le Roux',
+    'surname': 'Le Roux',
     'incidence': 48435,
   },
   {
-    'last_name': 'Engelbrecht',
+    'surname': 'Engelbrecht',
     'incidence': 47953,
   },
   {
-    'last_name': 'Mashaba',
+    'surname': 'Mashaba',
     'incidence': 47885,
   },
   {
-    'last_name': 'Sibisi',
+    'surname': 'Sibisi',
     'incidence': 47671,
   },
   {
-    'last_name': 'Hendricks',
+    'surname': 'Hendricks',
     'incidence': 47502,
   },
   {
-    'last_name': 'Ntombela',
+    'surname': 'Ntombela',
     'incidence': 47439,
   },
   {
-    'last_name': 'Dhlamini',
+    'surname': 'Dhlamini',
     'incidence': 47211,
   },
   {
-    'last_name': 'Swanepoel',
+    'surname': 'Swanepoel',
     'incidence': 47201,
   },
   {
-    'last_name': 'Ndaba',
+    'surname': 'Ndaba',
     'incidence': 47183,
   },
   {
-    'last_name': 'Ngema',
+    'surname': 'Ngema',
     'incidence': 46974,
   },
   {
-    'last_name': 'Marais',
+    'surname': 'Marais',
     'incidence': 46936,
   },
   {
-    'last_name': 'Mngomezulu',
+    'surname': 'Mngomezulu',
     'incidence': 46931,
   },
   {
-    'last_name': 'Masango',
+    'surname': 'Masango',
     'incidence': 46593,
   },
   {
-    'last_name': 'Potgieter',
+    'surname': 'Potgieter',
     'incidence': 46553,
   },
   {
-    'last_name': 'Swart',
+    'surname': 'Swart',
     'incidence': 46104,
   },
   {
-    'last_name': 'Viljoen',
+    'surname': 'Viljoen',
     'incidence': 45606,
   },
   {
-    'last_name': 'van der Westhuizen',
+    'surname': 'van der Westhuizen',
     'incidence': 45553,
   },
   {
-    'last_name': 'Ntshangase',
+    'surname': 'Ntshangase',
     'incidence': 44853,
   },
   {
-    'last_name': 'Tsotetsi',
+    'surname': 'Tsotetsi',
     'incidence': 44657,
   },
   {
-    'last_name': 'Ndhlovu',
+    'surname': 'Ndhlovu',
     'incidence': 44212,
   },
   {
-    'last_name': 'Mhlanga',
+    'surname': 'Mhlanga',
     'incidence': 43840,
   },
   {
-    'last_name': 'Petersen',
+    'surname': 'Petersen',
     'incidence': 43703,
   },
   {
-    'last_name': 'Jansen',
+    'surname': 'Jansen',
     'incidence': 43478,
   },
   {
-    'last_name': 'Masuku',
+    'surname': 'Masuku',
     'incidence': 43139,
   },
   {
-    'last_name': 'Phiri',
+    'surname': 'Phiri',
     'incidence': 42957,
   },
   {
-    'last_name': 'Mabunda',
+    'surname': 'Mabunda',
     'incidence': 42900,
   },
   {
-    'last_name': 'Muller',
+    'surname': 'Muller',
     'incidence': 42695,
   },
   {
-    'last_name': 'Oosthuizen',
+    'surname': 'Oosthuizen',
     'incidence': 42531,
   },
   {
-    'last_name': 'Strydom',
+    'surname': 'Strydom',
     'incidence': 42320,
   },
   {
-    'last_name': 'Matlala',
+    'surname': 'Matlala',
     'incidence': 42028,
   },
   {
-    'last_name': 'Msomi',
+    'surname': 'Msomi',
     'incidence': 41930,
   },
   {
-    'last_name': 'Olivier',
+    'surname': 'Olivier',
     'incidence': 41906,
   },
   {
-    'last_name': 'Magagula',
+    'surname': 'Magagula',
     'incidence': 41722,
   },
   {
-    'last_name': 'Mbele',
+    'surname': 'Mbele',
     'incidence': 41536,
   },
   {
-    'last_name': 'Nene',
+    'surname': 'Nene',
     'incidence': 41350,
   },
   {
-    'last_name': 'Masilela',
+    'surname': 'Masilela',
     'incidence': 41266,
   },
   {
-    'last_name': 'Sibanyoni',
+    'surname': 'Sibanyoni',
     'incidence': 40822,
   },
   {
-    'last_name': 'Madonsela',
+    'surname': 'Madonsela',
     'incidence': 40646,
   },
   {
-    'last_name': 'de Beer',
+    'surname': 'de Beer',
     'incidence': 40218,
   },
   {
-    'last_name': 'Mabena',
+    'surname': 'Mabena',
     'incidence': 40112,
   },
   {
-    'last_name': 'Khuzwayo',
+    'surname': 'Khuzwayo',
     'incidence': 39990,
   },
   {
-    'last_name': 'Thwala',
+    'surname': 'Thwala',
     'incidence': 39907,
   },
   {
-    'last_name': 'Du Preez',
+    'surname': 'Du Preez',
     'incidence': 39839,
   },
   {
-    'last_name': 'Kubheka',
+    'surname': 'Kubheka',
     'incidence': 39719,
   },
   {
-    'last_name': 'Mthombeni',
+    'surname': 'Mthombeni',
     'incidence': 39615,
   },
   {
-    'last_name': 'Zondo',
+    'surname': 'Zondo',
     'incidence': 39525,
   },
   {
-    'last_name': 'Khan',
+    'surname': 'Khan',
     'incidence': 39517,
   },
   {
-    'last_name': 'Bezuidenhout',
+    'surname': 'Bezuidenhout',
     'incidence': 39308,
   },
   {
-    'last_name': 'Mbhele',
+    'surname': 'Mbhele',
     'incidence': 38865,
   },
   {
-    'last_name': 'Pienaar',
+    'surname': 'Pienaar',
     'incidence': 38355,
   },
   {
-    'last_name': 'Mabasa',
+    'surname': 'Mabasa',
     'incidence': 38014,
   },
   {
-    'last_name': 'Duma',
+    'surname': 'Duma',
     'incidence': 37926,
   },
   {
-    'last_name': 'Msibi',
+    'surname': 'Msibi',
     'incidence': 37902,
   },
   {
-    'last_name': 'Daniels',
+    'surname': 'Daniels',
     'incidence': 37761,
   },
   {
-    'last_name': 'Visser',
+    'surname': 'Visser',
     'incidence': 37745,
   },
   {
-    'last_name': 'Biyela',
+    'surname': 'Biyela',
     'incidence': 37568,
   },
   {
-    'last_name': 'Johnson',
+    'surname': 'Johnson',
     'incidence': 37484,
   },
   {
-    'last_name': 'Motloung',
+    'surname': 'Motloung',
     'incidence': 37380,
   },
   {
-    'last_name': 'Mulaudzi',
+    'surname': 'Mulaudzi',
     'incidence': 37344,
   },
   {
-    'last_name': 'Barnard',
+    'surname': 'Barnard',
     'incidence': 37329,
   },
   {
-    'last_name': 'Ndou',
+    'surname': 'Ndou',
     'incidence': 37054,
   },
   {
-    'last_name': 'Pieterse',
+    'surname': 'Pieterse',
     'incidence': 37050,
   },
   {
-    'last_name': 'van Heerden',
+    'surname': 'van Heerden',
     'incidence': 37008,
   },
   {
-    'last_name': 'Myeni',
+    'surname': 'Myeni',
     'incidence': 36715,
   },
   {
-    'last_name': 'Madlala',
+    'surname': 'Madlala',
     'incidence': 36554,
   },
   {
-    'last_name': 'Mashego',
+    'surname': 'Mashego',
     'incidence': 36316,
   },
   {
-    'last_name': 'Bhengu',
+    'surname': 'Bhengu',
     'incidence': 36014,
   },
   {
-    'last_name': 'Sibeko',
+    'surname': 'Sibeko',
     'incidence': 36011,
   },
   {
-    'last_name': 'Nkabinde',
+    'surname': 'Nkabinde',
     'incidence': 35959,
   },
   {
-    'last_name': 'Jordaan',
+    'surname': 'Jordaan',
     'incidence': 35932,
   },
   {
-    'last_name': 'Ndlela',
+    'surname': 'Ndlela',
     'incidence': 35727,
   },
   {
-    'last_name': 'van der Walt',
+    'surname': 'van der Walt',
     'incidence': 35559,
   },
   {
-    'last_name': 'Mathe',
+    'surname': 'Mathe',
     'incidence': 35410,
   },
   {
-    'last_name': 'Naicker',
+    'surname': 'Naicker',
     'incidence': 35242,
   },
   {
-    'last_name': 'Mogale',
+    'surname': 'Mogale',
     'incidence': 35037,
   },
   {
-    'last_name': 'Ngobese',
+    'surname': 'Ngobese',
     'incidence': 34951,
   },
   {
-    'last_name': 'Mdletshe',
+    'surname': 'Mdletshe',
     'incidence': 34775,
   },
   {
-    'last_name': 'Janse van Rensburg',
+    'surname': 'Janse van Rensburg',
     'incidence': 34722,
   },
   {
-    'last_name': 'Prinsloo',
+    'surname': 'Prinsloo',
     'incidence': 34413,
   },
   {
-    'last_name': 'Brown',
+    'surname': 'Brown',
     'incidence': 34381,
   },
   {
-    'last_name': 'Mashele',
+    'surname': 'Mashele',
     'incidence': 34379,
   },
   {
-    'last_name': 'Reddy',
+    'surname': 'Reddy',
     'incidence': 34346,
   },
   {
-    'last_name': 'Grobler',
+    'surname': 'Grobler',
     'incidence': 34309,
   },
   {
-    'last_name': 'Shange',
+    'surname': 'Shange',
     'incidence': 33974,
   },
   {
-    'last_name': 'Mpanza',
+    'surname': 'Mpanza',
     'incidence': 33967,
   },
   {
-    'last_name': 'Malinga',
+    'surname': 'Malinga',
     'incidence': 33885,
   },
   {
-    'last_name': 'Ncube',
+    'surname': 'Ncube',
     'incidence': 33685,
   },
   {
-    'last_name': 'Luthuli',
+    'surname': 'Luthuli',
     'incidence': 33574,
   },
   {
-    'last_name': 'Mkhabela',
+    'surname': 'Mkhabela',
     'incidence': 33052,
   },
   {
-    'last_name': 'Nzimande',
+    'surname': 'Nzimande',
     'incidence': 32953,
   },
   {
-    'last_name': 'Makhubela',
+    'surname': 'Makhubela',
     'incidence': 32816,
   },
   {
-    'last_name': 'Hlophe',
+    'surname': 'Hlophe',
     'incidence': 32551,
   },
   {
-    'last_name': 'Mtsweni',
+    'surname': 'Mtsweni',
     'incidence': 32260,
   },
   {
-    'last_name': 'Thomas',
+    'surname': 'Thomas',
     'incidence': 31908,
   },
   {
-    'last_name': 'Ferreira',
+    'surname': 'Ferreira',
     'incidence': 31855,
   },
   {
-    'last_name': 'Ngomane',
+    'surname': 'Ngomane',
     'incidence': 31760,
   },
   {
-    'last_name': 'Nkomo',
+    'surname': 'Nkomo',
     'incidence': 31736,
   },
   {
-    'last_name': 'Mncube',
+    'surname': 'Mncube',
     'incidence': 31666,
   },
   {
-    'last_name': 'Letsoalo',
+    'surname': 'Letsoalo',
     'incidence': 31570,
   },
   {
-    'last_name': 'Masemola',
+    'surname': 'Masemola',
     'incidence': 31427,
   },
   {
-    'last_name': 'Beukes',
+    'surname': 'Beukes',
     'incidence': 31404,
   },
   {
-    'last_name': 'Khosa',
+    'surname': 'Khosa',
     'incidence': 31078,
   },
   {
-    'last_name': 'Sambo',
+    'surname': 'Sambo',
     'incidence': 31042,
   },
   {
-    'last_name': 'Miya',
+    'surname': 'Miya',
     'incidence': 30918,
   },
   {
-    'last_name': 'Mphahlele',
+    'surname': 'Mphahlele',
     'incidence': 30855,
   },
   {
-    'last_name': 'Maphanga',
+    'surname': 'Maphanga',
     'incidence': 30650,
   },
   {
-    'last_name': 'Tau',
+    'surname': 'Tau',
     'incidence': 30628,
   },
   {
-    'last_name': 'Booi',
+    'surname': 'Booi',
     'incidence': 30602,
   },
   {
-    'last_name': 'Mdlalose',
+    'surname': 'Mdlalose',
     'incidence': 30308,
   },
   {
-    'last_name': 'Ledwaba',
+    'surname': 'Ledwaba',
     'incidence': 30296,
   },
   {
-    'last_name': 'Mohale',
+    'surname': 'Mohale',
     'incidence': 30041,
   },
   {
-    'last_name': 'Mbambo',
+    'surname': 'Mbambo',
     'incidence': 29900,
   },
   {
-    'last_name': 'Masondo',
+    'surname': 'Masondo',
     'incidence': 29883,
   },
   {
-    'last_name': 'Ndwandwe',
+    'surname': 'Ndwandwe',
     'incidence': 29843,
   },
   {
-    'last_name': 'de Villiers',
+    'surname': 'de Villiers',
     'incidence': 29803,
   },
   {
-    'last_name': 'Magwaza',
+    'surname': 'Magwaza',
     'incidence': 29793,
   },
   {
-    'last_name': 'Fortuin',
+    'surname': 'Fortuin',
     'incidence': 29739,
   },
   {
-    'last_name': 'Thabethe',
+    'surname': 'Thabethe',
     'incidence': 29677,
   },
   {
-    'last_name': 'Snyman',
+    'surname': 'Snyman',
     'incidence': 29472,
   },
   {
-    'last_name': 'Rossouw',
+    'surname': 'Rossouw',
     'incidence': 29419,
   },
   {
-    'last_name': 'Moloto',
+    'surname': 'Moloto',
     'incidence': 29128,
   },
   {
-    'last_name': 'Burger',
+    'surname': 'Burger',
     'incidence': 29081,
   },
   {
-    'last_name': 'Ngidi',
+    'surname': 'Ngidi',
     'incidence': 29069,
   },
   {
-    'last_name': 'Isaacs',
+    'surname': 'Isaacs',
     'incidence': 28908,
   },
   {
-    'last_name': 'Bester',
+    'surname': 'Bester',
     'incidence': 28813,
   },
   {
-    'last_name': 'Maphumulo',
+    'surname': 'Maphumulo',
     'incidence': 28749,
   },
   {
-    'last_name': 'Scheepers',
+    'surname': 'Scheepers',
     'incidence': 28484,
   },
   {
-    'last_name': 'Munyai',
+    'surname': 'Munyai',
     'incidence': 28469,
   },
   {
-    'last_name': 'Makhanya',
+    'surname': 'Makhanya',
     'incidence': 28261,
   },
   {
-    'last_name': 'Twala',
+    'surname': 'Twala',
     'incidence': 28107,
   },
   {
-    'last_name': 'Mlangeni',
+    'surname': 'Mlangeni',
     'incidence': 27970,
   },
   {
-    'last_name': 'Kumalo',
+    'surname': 'Kumalo',
     'incidence': 27927,
   },
   {
-    'last_name': 'Pietersen',
+    'surname': 'Pietersen',
     'incidence': 27919,
   },
   {
-    'last_name': 'Maluleka',
+    'surname': 'Maluleka',
     'incidence': 27900,
   },
   {
-    'last_name': 'Visagie',
+    'surname': 'Visagie',
     'incidence': 27826,
   },
   {
-    'last_name': 'van Staden',
+    'surname': 'van Staden',
     'incidence': 27634,
   },
   {
-    'last_name': 'Mavuso',
+    'surname': 'Mavuso',
     'incidence': 27546,
   },
   {
-    'last_name': 'Steenkamp',
+    'surname': 'Steenkamp',
     'incidence': 27232,
   },
   {
-    'last_name': 'Maake',
+    'surname': 'Maake',
     'incidence': 27199,
   },
   {
-    'last_name': 'Schoeman',
+    'surname': 'Schoeman',
     'incidence': 27068,
   },
   {
-    'last_name': 'Zikhali',
+    'surname': 'Zikhali',
     'incidence': 27041,
   },
   {
-    'last_name': 'Mosia',
+    'surname': 'Mosia',
     'incidence': 26843,
   },
   {
-    'last_name': 'Maharaj',
+    'surname': 'Maharaj',
     'incidence': 26828,
   },
   {
-    'last_name': 'Selepe',
+    'surname': 'Selepe',
     'incidence': 26704,
   },
   {
-    'last_name': 'Swartz',
+    'surname': 'Swartz',
     'incidence': 26605,
   },
   {
-    'last_name': 'Nyathi',
+    'surname': 'Nyathi',
     'incidence': 26588,
   },
   {
-    'last_name': 'Gwala',
+    'surname': 'Gwala',
     'incidence': 26555,
   },
   {
-    'last_name': 'Gumbi',
+    'surname': 'Gumbi',
     'incidence': 26545,
   },
   {
-    'last_name': 'de Jager',
+    'surname': 'de Jager',
     'incidence': 26311,
   },
   {
-    'last_name': 'Skhosana',
+    'surname': 'Skhosana',
     'incidence': 26180,
   },
   {
-    'last_name': 'Vorster',
+    'surname': 'Vorster',
     'incidence': 26109,
   },
   {
-    'last_name': 'Maleka',
+    'surname': 'Maleka',
     'incidence': 26104,
   },
   {
-    'last_name': 'September',
+    'surname': 'September',
     'incidence': 25995,
   },
   {
-    'last_name': 'Jones',
+    'surname': 'Jones',
     'incidence': 25988,
   },
   {
-    'last_name': 'Msiza',
+    'surname': 'Msiza',
     'incidence': 25988,
   },
   {
-    'last_name': 'Mbanjwa',
+    'surname': 'Mbanjwa',
     'incidence': 25795,
   },
   {
-    'last_name': 'Basson',
+    'surname': 'Basson',
     'incidence': 25793,
   },
   {
-    'last_name': 'Martin',
+    'surname': 'Martin',
     'incidence': 25719,
   },
   {
-    'last_name': 'Nkambule',
+    'surname': 'Nkambule',
     'incidence': 25414,
   },
   {
-    'last_name': 'Kotze',
+    'surname': 'Kotze',
     'incidence': 25246,
   },
   {
-    'last_name': 'Labuschagne',
+    'surname': 'Labuschagne',
     'incidence': 25241,
   },
   {
-    'last_name': 'Msimango',
+    'surname': 'Msimango',
     'incidence': 25212,
   },
   {
-    'last_name': 'Sikhosana',
+    'surname': 'Sikhosana',
     'incidence': 25195,
   },
   {
-    'last_name': 'Plaatjies',
+    'surname': 'Plaatjies',
     'incidence': 25010,
   },
   {
-    'last_name': 'Rikhotso',
+    'surname': 'Rikhotso',
     'incidence': 25007,
   },
   {
-    'last_name': 'Groenewald',
+    'surname': 'Groenewald',
     'incidence': 24873,
   },
   {
-    'last_name': 'Qwabe',
+    'surname': 'Qwabe',
     'incidence': 24816,
   },
   {
-    'last_name': 'de Klerk',
+    'surname': 'de Klerk',
     'incidence': 24786,
   },
   {
-    'last_name': 'Phakathi',
+    'surname': 'Phakathi',
     'incidence': 24671,
   },
   {
-    'last_name': 'Jantjies',
+    'surname': 'Jantjies',
     'incidence': 24554,
   },
   {
-    'last_name': 'Arendse',
+    'surname': 'Arendse',
     'incidence': 24511,
   },
   {
-    'last_name': 'Zitha',
+    'surname': 'Zitha',
     'incidence': 24501,
   },
   {
-    'last_name': 'Theron',
+    'surname': 'Theron',
     'incidence': 24500,
   },
   {
-    'last_name': 'Shandu',
+    'surname': 'Shandu',
     'incidence': 24305,
   },
   {
-    'last_name': 'Maduna',
+    'surname': 'Maduna',
     'incidence': 24103,
   },
   {
-    'last_name': 'Nzuza',
+    'surname': 'Nzuza',
     'incidence': 24063,
   },
   {
-    'last_name': 'van den Berg',
+    'surname': 'van den Berg',
     'incidence': 23896,
   },
   {
-    'last_name': 'Magubane',
+    'surname': 'Magubane',
     'incidence': 23654,
   },
   {
-    'last_name': 'Mathenjwa',
+    'surname': 'Mathenjwa',
     'incidence': 23567,
   },
   {
-    'last_name': 'Modiba',
+    'surname': 'Modiba',
     'incidence': 23562,
   },
   {
-    'last_name': 'Witbooi',
+    'surname': 'Witbooi',
     'incidence': 23374,
   },
   {
-    'last_name': 'Mngadi',
+    'surname': 'Mngadi',
     'incidence': 23352,
   },
   {
-    'last_name': 'Mathonsi',
+    'surname': 'Mathonsi',
     'incidence': 23189,
   },
   {
-    'last_name': 'Sikhakhane',
+    'surname': 'Sikhakhane',
     'incidence': 23100,
   },
   {
-    'last_name': 'Mashigo',
+    'surname': 'Mashigo',
     'incidence': 23064,
   },
   {
-    'last_name': 'Matlou',
+    'surname': 'Matlou',
     'incidence': 22939,
   },
   {
-    'last_name': 'Thusi',
+    'surname': 'Thusi',
     'incidence': 22891,
   },
   {
-    'last_name': 'Mokone',
+    'surname': 'Mokone',
     'incidence': 22873,
   },
   {
-    'last_name': 'van Schalkwyk',
+    'surname': 'van Schalkwyk',
     'incidence': 22600,
   },
   {
-    'last_name': 'Gouws',
+    'surname': 'Gouws',
     'incidence': 22546,
   },
   {
-    'last_name': 'Masinga',
+    'surname': 'Masinga',
     'incidence': 22544,
   },
   {
-    'last_name': 'Lubisi',
+    'surname': 'Lubisi',
     'incidence': 22458,
   },
   {
-    'last_name': 'Botes',
+    'surname': 'Botes',
     'incidence': 22440,
   },
   {
-    'last_name': 'Tembe',
+    'surname': 'Tembe',
     'incidence': 22383,
   },
   {
-    'last_name': 'Nzama',
+    'surname': 'Nzama',
     'incidence': 22217,
   },
   {
-    'last_name': 'Ndebele',
+    'surname': 'Ndebele',
     'incidence': 22192,
   },
   {
-    'last_name': 'Badenhorst',
+    'surname': 'Badenhorst',
     'incidence': 22155,
   },
   {
-    'last_name': 'Makhubele',
+    'surname': 'Makhubele',
     'incidence': 22153,
   },
   {
-    'last_name': 'de Wet',
+    'surname': 'de Wet',
     'incidence': 22019,
   },
   {
-    'last_name': 'Willemse',
+    'surname': 'Willemse',
     'incidence': 21928,
   },
   {
-    'last_name': 'Mamabolo',
+    'surname': 'Mamabolo',
     'incidence': 21899,
   },
   {
-    'last_name': 'Moyo',
+    'surname': 'Moyo',
     'incidence': 21870,
   },
   {
-    'last_name': 'Mthimunye',
+    'surname': 'Mthimunye',
     'incidence': 21853,
   },
   {
-    'last_name': 'Tladi',
+    'surname': 'Tladi',
     'incidence': 21463,
   },
   {
-    'last_name': 'Wilson',
+    'surname': 'Wilson',
     'incidence': 21443,
   },
   {
-    'last_name': 'Mahlaba',
+    'surname': 'Mahlaba',
     'incidence': 21395,
   },
   {
-    'last_name': 'van Rensburg',
+    'surname': 'van Rensburg',
     'incidence': 21184,
   },
   {
-    'last_name': 'Wessels',
+    'surname': 'Wessels',
     'incidence': 21084,
   },
   {
-    'last_name': 'Mthiyane',
+    'surname': 'Mthiyane',
     'incidence': 21060,
   },
   {
-    'last_name': 'April',
+    'surname': 'April',
     'incidence': 20861,
   },
   {
-    'last_name': 'Lukhele',
+    'surname': 'Lukhele',
     'incidence': 20854,
   },
   {
-    'last_name': 'Joseph',
+    'surname': 'Joseph',
     'incidence': 20802,
   },
   {
-    'last_name': 'van Tonder',
+    'surname': 'van Tonder',
     'incidence': 20740,
   },
   {
-    'last_name': 'Ngwane',
+    'surname': 'Ngwane',
     'incidence': 20699,
   },
   {
-    'last_name': 'Msweli',
+    'surname': 'Msweli',
     'incidence': 20655,
   },
   {
-    'last_name': 'Lombard',
+    'surname': 'Lombard',
     'incidence': 20546,
   },
   {
-    'last_name': 'Aphane',
+    'surname': 'Aphane',
     'incidence': 20403,
   },
   {
-    'last_name': 'Chabalala',
+    'surname': 'Chabalala',
     'incidence': 20376,
   },
   {
-    'last_name': 'Roux',
+    'surname': 'Roux',
     'incidence': 20358,
   },
   {
-    'last_name': 'Thobejane',
+    'surname': 'Thobejane',
     'incidence': 20279,
   },
   {
-    'last_name': 'Memela',
+    'surname': 'Memela',
     'incidence': 20278,
   },
   {
-    'last_name': 'Klaas',
+    'surname': 'Klaas',
     'incidence': 20272,
   },
   {
-    'last_name': 'George',
+    'surname': 'George',
     'incidence': 20251,
   },
   {
-    'last_name': 'Hlungwani',
+    'surname': 'Hlungwani',
     'incidence': 20226,
   },
   {
-    'last_name': 'Fakude',
+    'surname': 'Fakude',
     'incidence': 20207,
   },
   {
-    'last_name': 'Ndimande',
+    'surname': 'Ndimande',
     'incidence': 20202,
   },
   {
-    'last_name': 'Jali',
+    'surname': 'Jali',
     'incidence': 20138,
   },
   {
-    'last_name': 'Lewis',
+    'surname': 'Lewis',
     'incidence': 20102,
   },
   {
-    'last_name': 'Phasha',
+    'surname': 'Phasha',
     'incidence': 20051,
   },
   {
-    'last_name': 'de Lange',
+    'surname': 'de Lange',
     'incidence': 20049,
   },
   {
-    'last_name': 'Swarts',
+    'surname': 'Swarts',
     'incidence': 20035,
   },
   {
-    'last_name': 'Roberts',
+    'surname': 'Roberts',
     'incidence': 20017,
   },
   {
-    'last_name': 'Nkwanyana',
+    'surname': 'Nkwanyana',
     'incidence': 20011,
   },
   {
-    'last_name': 'Moeng',
+    'surname': 'Moeng',
     'incidence': 19987,
   },
   {
-    'last_name': 'Alexander',
+    'surname': 'Alexander',
     'incidence': 19919,
   },
   {
-    'last_name': 'Vermeulen',
+    'surname': 'Vermeulen',
     'incidence': 19871,
   },
   {
-    'last_name': 'Manzini',
+    'surname': 'Manzini',
     'incidence': 19870,
   },
   {
-    'last_name': 'Solomons',
+    'surname': 'Solomons',
     'incidence': 19830,
   },
   {
-    'last_name': 'Mashiane',
+    'surname': 'Mashiane',
     'incidence': 19797,
   },
   {
-    'last_name': 'Mkhonza',
+    'surname': 'Mkhonza',
     'incidence': 19776,
   },
   {
-    'last_name': 'Banda',
+    'surname': 'Banda',
     'incidence': 19745,
   },
   {
-    'last_name': 'Makhoba',
+    'surname': 'Makhoba',
     'incidence': 19688,
   },
   {
-    'last_name': 'Makola',
+    'surname': 'Makola',
     'incidence': 19681,
   },
   {
-    'last_name': 'Myburgh',
+    'surname': 'Myburgh',
     'incidence': 19597,
   },
   {
-    'last_name': 'Malgas',
+    'surname': 'Malgas',
     'incidence': 19550,
   },
   {
-    'last_name': 'Boshoff',
+    'surname': 'Boshoff',
     'incidence': 19496,
   },
   {
-    'last_name': 'Bosman',
+    'surname': 'Bosman',
     'incidence': 19443,
   },
   {
-    'last_name': 'James',
+    'surname': 'James',
     'incidence': 19311,
   },
   {
-    'last_name': 'May',
+    'surname': 'May',
     'incidence': 19282,
   },
   {
-    'last_name': 'Motau',
+    'surname': 'Motau',
     'incidence': 19266,
   },
   {
-    'last_name': 'Titus',
+    'surname': 'Titus',
     'incidence': 19235,
   },
   {
-    'last_name': 'Monareng',
+    'surname': 'Monareng',
     'incidence': 19231,
   },
   {
-    'last_name': 'Coetzer',
+    'surname': 'Coetzer',
     'incidence': 19205,
   },
   {
-    'last_name': 'Masina',
+    'surname': 'Masina',
     'incidence': 19168,
   },
   {
-    'last_name': 'Mtolo',
+    'surname': 'Mtolo',
     'incidence': 19109,
   },
   {
-    'last_name': 'Makofane',
+    'surname': 'Makofane',
     'incidence': 19073,
   },
   {
-    'last_name': 'Manana',
+    'surname': 'Manana',
     'incidence': 19073,
   },
   {
-    'last_name': 'Scholtz',
+    'surname': 'Scholtz',
     'incidence': 19066,
   },
   {
-    'last_name': 'Stuurman',
+    'surname': 'Stuurman',
     'incidence': 19061,
   },
   {
-    'last_name': 'Gama',
+    'surname': 'Gama',
     'incidence': 19009,
   },
   {
-    'last_name': 'Jooste',
+    'surname': 'Jooste',
     'incidence': 18974,
   },
   {
-    'last_name': 'Mostert',
+    'surname': 'Mostert',
     'incidence': 18973,
   },
   {
-    'last_name': 'Hattingh',
+    'surname': 'Hattingh',
     'incidence': 18950,
   },
   {
-    'last_name': 'Mashinini',
+    'surname': 'Mashinini',
     'incidence': 18931,
   },
   {
-    'last_name': 'Dyantyi',
+    'surname': 'Dyantyi',
     'incidence': 18904,
   },
   {
-    'last_name': 'Nyawo',
+    'surname': 'Nyawo',
     'incidence': 18891,
   },
   {
-    'last_name': 'Liebenberg',
+    'surname': 'Liebenberg',
     'incidence': 18832,
   },
   {
-    'last_name': 'Jiyane',
+    'surname': 'Jiyane',
     'incidence': 18747,
   },
   {
-    'last_name': 'Peter',
+    'surname': 'Peter',
     'incidence': 18698,
   },
   {
-    'last_name': 'Chiloane',
+    'surname': 'Chiloane',
     'incidence': 18686,
   },
   {
-    'last_name': 'Nkadimeng',
+    'surname': 'Nkadimeng',
     'incidence': 18676,
   },
   {
-    'last_name': 'Mpungose',
+    'surname': 'Mpungose',
     'incidence': 18675,
   },
   {
-    'last_name': 'Els',
+    'surname': 'Els',
     'incidence': 18673,
   },
   {
-    'last_name': 'Makhathini',
+    'surname': 'Makhathini',
     'incidence': 18668,
   },
   {
-    'last_name': 'de Kock',
+    'surname': 'de Kock',
     'incidence': 18653,
   },
   {
-    'last_name': 'Sekgobela',
+    'surname': 'Sekgobela',
     'incidence': 18615,
   },
   {
-    'last_name': 'Shai',
+    'surname': 'Shai',
     'incidence': 18578,
   },
   {
-    'last_name': 'Jonas',
+    'surname': 'Jonas',
     'incidence': 18568,
   },
   {
-    'last_name': 'Mvelase',
+    'surname': 'Mvelase',
     'incidence': 18533,
   },
   {
-    'last_name': 'Jack',
+    'surname': 'Jack',
     'incidence': 18532,
   },
   {
-    'last_name': 'Mkhonto',
+    'surname': 'Mkhonto',
     'incidence': 18496,
   },
   {
-    'last_name': 'Mukwevho',
+    'surname': 'Mukwevho',
     'incidence': 18463,
   },
   {
-    'last_name': 'Mkize',
+    'surname': 'Mkize',
     'incidence': 18452,
   },
   {
-    'last_name': 'Komane',
+    'surname': 'Komane',
     'incidence': 18212,
   },
   {
-    'last_name': 'Mlotshwa',
+    'surname': 'Mlotshwa',
     'incidence': 18140,
   },
   {
-    'last_name': 'Moses',
+    'surname': 'Moses',
     'incidence': 18125,
   },
   {
-    'last_name': 'Phillips',
+    'surname': 'Phillips',
     'incidence': 17965,
   },
   {
-    'last_name': 'Pule',
+    'surname': 'Pule',
     'incidence': 17888,
   },
   {
-    'last_name': 'Malepe',
+    'surname': 'Malepe',
     'incidence': 17877,
   },
   {
-    'last_name': 'Shozi',
+    'surname': 'Shozi',
     'incidence': 17858,
   },
   {
-    'last_name': 'Mashabela',
+    'surname': 'Mashabela',
     'incidence': 17843,
   },
   {
-    'last_name': 'Sibanda',
+    'surname': 'Sibanda',
     'incidence': 17829,
   },
   {
-    'last_name': 'Taylor',
+    'surname': 'Taylor',
     'incidence': 17769,
   },
   {
-    'last_name': 'Human',
+    'surname': 'Human',
     'incidence': 17734,
   },
   {
-    'last_name': 'Mthimkhulu',
+    'surname': 'Mthimkhulu',
     'incidence': 17734,
   },
   {
-    'last_name': 'Madondo',
+    'surname': 'Madondo',
     'incidence': 17601,
   },
   {
-    'last_name': 'Thompson',
+    'surname': 'Thompson',
     'incidence': 17580,
   },
   {
-    'last_name': 'Maila',
+    'surname': 'Maila',
     'incidence': 17559,
   },
   {
-    'last_name': 'Naude',
+    'surname': 'Naude',
     'incidence': 17509,
   },
   {
-    'last_name': 'Mbuyazi',
+    'surname': 'Mbuyazi',
     'incidence': 17491,
   },
   {
-    'last_name': 'Mahlalela',
+    'surname': 'Mahlalela',
     'incidence': 17393,
   },
   {
-    'last_name': 'Dlomo',
+    'surname': 'Dlomo',
     'incidence': 17392,
   },
   {
-    'last_name': 'Cupido',
+    'surname': 'Cupido',
     'incidence': 17367,
   },
   {
-    'last_name': 'Brits',
+    'surname': 'Brits',
     'incidence': 17362,
   },
   {
-    'last_name': 'Mkwanazi',
+    'surname': 'Mkwanazi',
     'incidence': 17359,
   },
   {
-    'last_name': 'Maritz',
+    'surname': 'Maritz',
     'incidence': 17319,
   },
   {
-    'last_name': 'Fredericks',
+    'surname': 'Fredericks',
     'incidence': 17276,
   },
   {
-    'last_name': 'Mkhatshwa',
+    'surname': 'Mkhatshwa',
     'incidence': 17211,
   },
   {
-    'last_name': 'Manqele',
+    'surname': 'Manqele',
     'incidence': 17195,
   },
   {
-    'last_name': 'Mashilo',
+    'surname': 'Mashilo',
     'incidence': 17127,
   },
   {
-    'last_name': 'Malan',
+    'surname': 'Malan',
     'incidence': 17111,
   },
   {
-    'last_name': 'Manamela',
+    'surname': 'Manamela',
     'incidence': 17059,
   },
   {
-    'last_name': 'Cronje',
+    'surname': 'Cronje',
     'incidence': 17035,
   },
   {
-    'last_name': 'Legodi',
+    'surname': 'Legodi',
     'incidence': 16979,
   },
   {
-    'last_name': 'Mdhluli',
+    'surname': 'Mdhluli',
     'incidence': 16956,
   },
   {
-    'last_name': 'Myeza',
+    'surname': 'Myeza',
     'incidence': 16919,
   },
   {
-    'last_name': 'Mbokazi',
+    'surname': 'Mbokazi',
     'incidence': 16907,
   },
   {
-    'last_name': 'Nyembe',
+    'surname': 'Nyembe',
     'incidence': 16845,
   },
   {
-    'last_name': 'Mavundla',
+    'surname': 'Mavundla',
     'incidence': 16799,
   },
   {
-    'last_name': 'Mohapi',
+    'surname': 'Mohapi',
     'incidence': 16710,
   },
   {
-    'last_name': 'Moagi',
+    'surname': 'Moagi',
     'incidence': 16709,
   },
   {
-    'last_name': 'Lottering',
+    'surname': 'Lottering',
     'incidence': 16647,
   },
   {
-    'last_name': 'Sangweni',
+    'surname': 'Sangweni',
     'incidence': 16623,
   },
   {
-    'last_name': 'Ismail',
+    'surname': 'Ismail',
     'incidence': 16575,
   },
   {
-    'last_name': 'Geldenhuys',
+    'surname': 'Geldenhuys',
     'incidence': 16469,
   },
   {
-    'last_name': 'Moremi',
+    'surname': 'Moremi',
     'incidence': 16409,
   },
   {
-    'last_name': 'Prins',
+    'surname': 'Prins',
     'incidence': 16356,
   },
   {
-    'last_name': 'Masombuka',
+    'surname': 'Masombuka',
     'incidence': 16348,
   },
   {
-    'last_name': 'de Bruin',
+    'surname': 'de Bruin',
     'incidence': 16289,
   },
   {
-    'last_name': 'Moeketsi',
+    'surname': 'Moeketsi',
     'incidence': 16236,
   },
   {
-    'last_name': 'Oliphant',
+    'surname': 'Oliphant',
     'incidence': 16221,
   },
   {
-    'last_name': 'Mathibela',
+    'surname': 'Mathibela',
     'incidence': 16159,
   },
   {
-    'last_name': 'Koopman',
+    'surname': 'Koopman',
     'incidence': 16150,
   },
   {
-    'last_name': 'Sello',
+    'surname': 'Sello',
     'incidence': 16107,
   },
   {
-    'last_name': 'van Dyk',
+    'surname': 'van Dyk',
     'incidence': 16050,
   },
   {
-    'last_name': 'Claassen',
+    'surname': 'Claassen',
     'incidence': 15994,
   },
   {
-    'last_name': 'Terblanche',
+    'surname': 'Terblanche',
     'incidence': 15980,
   },
   {
-    'last_name': 'Vermaak',
+    'surname': 'Vermaak',
     'incidence': 15967,
   },
   {
-    'last_name': 'Malope',
+    'surname': 'Malope',
     'incidence': 15960,
   },
   {
-    'last_name': 'Shangase',
+    'surname': 'Shangase',
     'incidence': 15942,
   },
   {
-    'last_name': 'Nxele',
+    'surname': 'Nxele',
     'incidence': 15935,
   },
   {
-    'last_name': 'Mncwabe',
+    'surname': 'Mncwabe',
     'incidence': 15915,
   },
   {
-    'last_name': 'Phungula',
+    'surname': 'Phungula',
     'incidence': 15885,
   },
   {
-    'last_name': 'Esterhuizen',
+    'surname': 'Esterhuizen',
     'incidence': 15809,
   },
   {
-    'last_name': 'Kubeka',
+    'surname': 'Kubeka',
     'incidence': 15782,
   },
   {
-    'last_name': 'Jansen van Vuuren',
+    'surname': 'Jansen van Vuuren',
     'incidence': 15714,
   },
   {
-    'last_name': 'Motha',
+    'surname': 'Motha',
     'incidence': 15668,
   },
   {
-    'last_name': 'Peters',
+    'surname': 'Peters',
     'incidence': 15524,
   },
   {
-    'last_name': 'Hlongwa',
+    'surname': 'Hlongwa',
     'incidence': 15522,
   },
   {
-    'last_name': 'Cebekhulu',
+    'surname': 'Cebekhulu',
     'incidence': 15439,
   },
   {
-    'last_name': 'Goliath',
+    'surname': 'Goliath',
     'incidence': 15429,
   },
   {
-    'last_name': 'Ruiters',
+    'surname': 'Ruiters',
     'incidence': 15390,
   },
   {
-    'last_name': 'Mavimbela',
+    'surname': 'Mavimbela',
     'incidence': 15350,
   },
   {
-    'last_name': 'Kheswa',
+    'surname': 'Kheswa',
     'incidence': 15328,
   },
   {
-    'last_name': 'Manganyi',
+    'surname': 'Manganyi',
     'incidence': 15322,
   },
   {
-    'last_name': 'Madikizela',
+    'surname': 'Madikizela',
     'incidence': 15315,
   },
   {
-    'last_name': 'Pitso',
+    'surname': 'Pitso',
     'incidence': 15266,
   },
   {
-    'last_name': 'Buys',
+    'surname': 'Buys',
     'incidence': 15227,
   },
   {
-    'last_name': 'Gerber',
+    'surname': 'Gerber',
     'incidence': 15194,
   },
   {
-    'last_name': 'Du Plooy',
+    'surname': 'Du Plooy',
     'incidence': 15177,
   },
   {
-    'last_name': 'Green',
+    'surname': 'Green',
     'incidence': 15171,
   },
   {
-    'last_name': 'Harris',
+    'surname': 'Harris',
     'incidence': 15126,
   },
   {
-    'last_name': 'Masilo',
+    'surname': 'Masilo',
     'incidence': 15122,
   },
   {
-    'last_name': 'Morake',
+    'surname': 'Morake',
     'incidence': 15089,
   },
   {
-    'last_name': 'Ngubo',
+    'surname': 'Ngubo',
     'incidence': 15065,
   },
   {
-    'last_name': 'Stevens',
+    'surname': 'Stevens',
     'incidence': 14976,
   },
   {
-    'last_name': 'Bekker',
+    'surname': 'Bekker',
     'incidence': 14966,
   },
   {
-    'last_name': 'Jafta',
+    'surname': 'Jafta',
     'incidence': 14909,
   },
   {
-    'last_name': 'Malapane',
+    'surname': 'Malapane',
     'incidence': 14904,
   },
   {
-    'last_name': 'Mzobe',
+    'surname': 'Mzobe',
     'incidence': 14875,
   },
   {
-    'last_name': 'Molepo',
+    'surname': 'Molepo',
     'incidence': 14872,
   },
   {
-    'last_name': 'Ngubeni',
+    'surname': 'Ngubeni',
     'incidence': 14855,
   },
   {
-    'last_name': 'de Bruyn',
+    'surname': 'de Bruyn',
     'incidence': 14852,
   },
   {
-    'last_name': 'van Vuuren',
+    'surname': 'van Vuuren',
     'incidence': 14803,
   },
   {
-    'last_name': 'Lourens',
+    'surname': 'Lourens',
     'incidence': 14781,
   },
   {
-    'last_name': 'Britz',
+    'surname': 'Britz',
     'incidence': 14779,
   },
   {
-    'last_name': 'Dreyer',
+    'surname': 'Dreyer',
     'incidence': 14729,
   },
   {
-    'last_name': 'Scott',
+    'surname': 'Scott',
     'incidence': 14695,
   },
   {
-    'last_name': 'Olifant',
+    'surname': 'Olifant',
     'incidence': 14676,
   },
   {
-    'last_name': 'Phala',
+    'surname': 'Phala',
     'incidence': 14636,
   },
   {
-    'last_name': 'Greyling',
+    'surname': 'Greyling',
     'incidence': 14566,
   },
   {
-    'last_name': 'Mtetwa',
+    'surname': 'Mtetwa',
     'incidence': 14552,
   },
   {
-    'last_name': 'Majozi',
+    'surname': 'Majozi',
     'incidence': 14536,
   },
   {
-    'last_name': 'Mtshweni',
+    'surname': 'Mtshweni',
     'incidence': 14534,
   },
   {
-    'last_name': 'Stander',
+    'surname': 'Stander',
     'incidence': 14519,
   },
   {
-    'last_name': 'Delport',
+    'surname': 'Delport',
     'incidence': 14498,
   },
   {
-    'last_name': 'Matthews',
+    'surname': 'Matthews',
     'incidence': 14497,
   },
   {
-    'last_name': 'Mzimela',
+    'surname': 'Mzimela',
     'incidence': 14478,
   },
   {
-    'last_name': 'Kok',
+    'surname': 'Kok',
     'incidence': 14437,
   },
   {
-    'last_name': 'Roos',
+    'surname': 'Roos',
     'incidence': 14434,
   },
   {
-    'last_name': 'Molapo',
+    'surname': 'Molapo',
     'incidence': 14356,
   },
   {
-    'last_name': 'Opperman',
+    'surname': 'Opperman',
     'incidence': 14338,
   },
   {
-    'last_name': 'Ndamase',
+    'surname': 'Ndamase',
     'incidence': 14311,
   },
   {
-    'last_name': 'Nkoana',
+    'surname': 'Nkoana',
     'incidence': 14309,
   },
   {
-    'last_name': 'Maswanganyi',
+    'surname': 'Maswanganyi',
     'incidence': 14299,
   },
   {
-    'last_name': 'Jele',
+    'surname': 'Jele',
     'incidence': 14290,
   },
   {
-    'last_name': 'Conradie',
+    'surname': 'Conradie',
     'incidence': 14240,
   },
   {
-    'last_name': 'Solomon',
+    'surname': 'Solomon',
     'incidence': 14232,
   },
   {
-    'last_name': 'Samuels',
+    'surname': 'Samuels',
     'incidence': 14223,
   },
   {
-    'last_name': 'Pieters',
+    'surname': 'Pieters',
     'incidence': 14213,
   },
   {
-    'last_name': 'Koekemoer',
+    'surname': 'Koekemoer',
     'incidence': 14120,
   },
   {
-    'last_name': 'Jackson',
+    'surname': 'Jackson',
     'incidence': 14105,
   },
   {
-    'last_name': 'Patel',
+    'surname': 'Patel',
     'incidence': 14089,
   },
   {
-    'last_name': 'Mashiloane',
+    'surname': 'Mashiloane',
     'incidence': 14066,
   },
   {
-    'last_name': 'Makua',
+    'surname': 'Makua',
     'incidence': 14007,
   },
   {
-    'last_name': 'Mnyandu',
+    'surname': 'Mnyandu',
     'incidence': 13987,
   },
   {
-    'last_name': 'Kriel',
+    'surname': 'Kriel',
     'incidence': 13970,
   },
   {
-    'last_name': 'King',
+    'surname': 'King',
     'incidence': 13814,
   },
   {
-    'last_name': 'Mashile',
+    'surname': 'Mashile',
     'incidence': 13788,
   },
   {
-    'last_name': 'Diko',
+    'surname': 'Diko',
     'incidence': 13697,
   },
   {
-    'last_name': 'Gasa',
+    'surname': 'Gasa',
     'incidence': 13692,
   },
   {
-    'last_name': 'Padayachee',
+    'surname': 'Padayachee',
     'incidence': 13585,
   },
   {
-    'last_name': 'Moletsane',
+    'surname': 'Moletsane',
     'incidence': 13583,
   },
   {
-    'last_name': 'Mojela',
+    'surname': 'Mojela',
     'incidence': 13580,
   },
   {
-    'last_name': 'Anderson',
+    'surname': 'Anderson',
     'incidence': 13549,
   },
   {
-    'last_name': 'Fisher',
+    'surname': 'Fisher',
     'incidence': 13540,
   },
   {
-    'last_name': 'Nsele',
+    'surname': 'Nsele',
     'incidence': 13506,
   },
   {
-    'last_name': 'Mahomed',
+    'surname': 'Mahomed',
     'incidence': 13499,
   },
   {
-    'last_name': 'Mphuthi',
+    'surname': 'Mphuthi',
     'incidence': 13472,
   },
   {
-    'last_name': 'Goosen',
+    'surname': 'Goosen',
     'incidence': 13466,
   },
   {
-    'last_name': 'Mashishi',
+    'surname': 'Mashishi',
     'incidence': 13380,
   },
   {
-    'last_name': 'Adonis',
+    'surname': 'Adonis',
     'incidence': 13371,
   },
   {
-    'last_name': 'Bothma',
+    'surname': 'Bothma',
     'incidence': 13341,
   },
   {
-    'last_name': 'Sibuyi',
+    'surname': 'Sibuyi',
     'incidence': 13294,
   },
   {
-    'last_name': 'Mangena',
+    'surname': 'Mangena',
     'incidence': 13251,
   },
   {
-    'last_name': 'Tlou',
+    'surname': 'Tlou',
     'incidence': 13248,
   },
   {
-    'last_name': 'Sindane',
+    'surname': 'Sindane',
     'incidence': 13194,
   },
   {
-    'last_name': 'Mntambo',
+    'surname': 'Mntambo',
     'incidence': 13158,
   },
   {
-    'last_name': 'Lubbe',
+    'surname': 'Lubbe',
     'incidence': 13054,
   },
   {
-    'last_name': 'Kgomo',
+    'surname': 'Kgomo',
     'incidence': 13050,
   },
   {
-    'last_name': 'Marumo',
+    'surname': 'Marumo',
     'incidence': 12989,
   },
   {
-    'last_name': 'Strauss',
+    'surname': 'Strauss',
     'incidence': 12960,
   },
   {
-    'last_name': 'Monyela',
+    'surname': 'Monyela',
     'incidence': 12918,
   },
   {
-    'last_name': 'Motsoeneng',
+    'surname': 'Motsoeneng',
     'incidence': 12880,
   },
   {
-    'last_name': 'Mitchell',
+    'surname': 'Mitchell',
     'incidence': 12846,
   },
   {
-    'last_name': 'Madiba',
+    'surname': 'Madiba',
     'incidence': 12841,
   },
   {
-    'last_name': 'Nhleko',
+    'surname': 'Nhleko',
     'incidence': 12829,
   },
   {
-    'last_name': 'Manganye',
+    'surname': 'Manganye',
     'incidence': 12803,
   },
   {
-    'last_name': 'Mogapi',
+    'surname': 'Mogapi',
     'incidence': 12797,
   },
   {
-    'last_name': 'White',
+    'surname': 'White',
     'incidence': 12753,
   },
   {
-    'last_name': 'Naidu',
+    'surname': 'Naidu',
     'incidence': 12652,
   },
   {
-    'last_name': 'Matiwane',
+    'surname': 'Matiwane',
     'incidence': 12641,
   },
   {
-    'last_name': 'Francis',
+    'surname': 'Francis',
     'incidence': 12589,
   },
   {
-    'last_name': 'Manuel',
+    'surname': 'Manuel',
     'incidence': 12589,
   },
   {
-    'last_name': 'Mbonambi',
+    'surname': 'Mbonambi',
     'incidence': 12532,
   },
   {
-    'last_name': 'Khambule',
+    'surname': 'Khambule',
     'incidence': 12493,
   },
   {
-    'last_name': 'Morris',
+    'surname': 'Morris',
     'incidence': 12485,
   },
   {
-    'last_name': 'Jonker',
+    'surname': 'Jonker',
     'incidence': 12476,
   },
   {
-    'last_name': 'Nortje',
+    'surname': 'Nortje',
     'incidence': 12476,
   },
   {
-    'last_name': 'Ngcongo',
+    'surname': 'Ngcongo',
     'incidence': 12475,
   },
   {
-    'last_name': 'Miller',
+    'surname': 'Miller',
     'incidence': 12463,
   },
   {
-    'last_name': 'van Deventer',
+    'surname': 'van Deventer',
     'incidence': 12449,
   },
   {
-    'last_name': 'Msane',
+    'surname': 'Msane',
     'incidence': 12438,
   },
   {
-    'last_name': 'Blom',
+    'surname': 'Blom',
     'incidence': 12419,
   },
   {
-    'last_name': 'Mogotsi',
+    'surname': 'Mogotsi',
     'incidence': 12372,
   },
   {
-    'last_name': 'Mouton',
+    'surname': 'Mouton',
     'incidence': 12345,
   },
   {
-    'last_name': 'Mothapo',
+    'surname': 'Mothapo',
     'incidence': 12339,
   },
   {
-    'last_name': 'Bopape',
+    'surname': 'Bopape',
     'incidence': 12232,
   },
   {
-    'last_name': 'Jansen van Rensburg',
+    'surname': 'Jansen van Rensburg',
     'incidence': 12150,
   },
   {
-    'last_name': 'Mncwango',
+    'surname': 'Mncwango',
     'incidence': 12124,
   },
   {
-    'last_name': 'Andrews',
+    'surname': 'Andrews',
     'incidence': 12120,
   },
   {
-    'last_name': 'Mothibi',
+    'surname': 'Mothibi',
     'incidence': 12119,
   },
   {
-    'last_name': 'Kubayi',
+    'surname': 'Kubayi',
     'incidence': 12105,
   },
   {
-    'last_name': 'Zikalala',
+    'surname': 'Zikalala',
     'incidence': 12093,
   },
   {
-    'last_name': 'Khanye',
+    'surname': 'Khanye',
     'incidence': 12079,
   },
   {
-    'last_name': 'Makhubu',
+    'surname': 'Makhubu',
     'incidence': 11969,
   },
   {
-    'last_name': 'Monama',
+    'surname': 'Monama',
     'incidence': 11959,
   },
   {
-    'last_name': 'Brink',
+    'surname': 'Brink',
     'incidence': 11957,
   },
   {
-    'last_name': 'Tshabangu',
+    'surname': 'Tshabangu',
     'incidence': 11951,
   },
   {
-    'last_name': 'Chiliza',
+    'surname': 'Chiliza',
     'incidence': 11944,
   },
   {
-    'last_name': 'Thabede',
+    'surname': 'Thabede',
     'incidence': 11913,
   },
   {
-    'last_name': 'Mtembu',
+    'surname': 'Mtembu',
     'incidence': 11881,
   },
   {
-    'last_name': 'Chonco',
+    'surname': 'Chonco',
     'incidence': 11847,
   },
   {
-    'last_name': 'Mohamed',
+    'surname': 'Mohamed',
     'incidence': 11827,
   },
   {
-    'last_name': 'Gordon',
+    'surname': 'Gordon',
     'incidence': 11791,
   },
   {
-    'last_name': 'Sokhela',
+    'surname': 'Sokhela',
     'incidence': 11789,
   },
   {
-    'last_name': 'Mfeka',
+    'surname': 'Mfeka',
     'incidence': 11764,
   },
   {
-    'last_name': 'Malaza',
+    'surname': 'Malaza',
     'incidence': 11763,
   },
   {
-    'last_name': 'Mngoma',
+    'surname': 'Mngoma',
     'incidence': 11763,
   },
   {
-    'last_name': 'Uys',
+    'surname': 'Uys',
     'incidence': 11736,
   },
   {
-    'last_name': 'Brand',
+    'surname': 'Brand',
     'incidence': 11729,
   },
   {
-    'last_name': 'Minnaar',
+    'surname': 'Minnaar',
     'incidence': 11723,
   },
   {
-    'last_name': 'Harmse',
+    'surname': 'Harmse',
     'incidence': 11708,
   },
   {
-    'last_name': 'Moonsamy',
+    'surname': 'Moonsamy',
     'incidence': 11697,
   },
   {
-    'last_name': 'Maloka',
+    'surname': 'Maloka',
     'incidence': 11688,
   },
   {
-    'last_name': 'Plaatjie',
+    'surname': 'Plaatjie',
     'incidence': 11654,
   },
   {
-    'last_name': 'Ebrahim',
+    'surname': 'Ebrahim',
     'incidence': 11610,
   },
   {
-    'last_name': 'Maponya',
+    'surname': 'Maponya',
     'incidence': 11594,
   },
   {
-    'last_name': 'Mlaba',
+    'surname': 'Mlaba',
     'incidence': 11591,
   },
   {
-    'last_name': 'Motsamai',
+    'surname': 'Motsamai',
     'incidence': 11569,
   },
   {
-    'last_name': 'Odendaal',
+    'surname': 'Odendaal',
     'incidence': 11563,
   },
   {
-    'last_name': 'Ndlazi',
+    'surname': 'Ndlazi',
     'incidence': 11562,
   },
   {
-    'last_name': 'Dludla',
+    'surname': 'Dludla',
     'incidence': 11547,
   },
   {
-    'last_name': 'Maree',
+    'surname': 'Maree',
     'incidence': 11534,
   },
   {
-    'last_name': 'Ximba',
+    'surname': 'Ximba',
     'incidence': 11511,
   },
   {
-    'last_name': 'Bosch',
+    'surname': 'Bosch',
     'incidence': 11506,
   },
   {
-    'last_name': 'Sebola',
+    'surname': 'Sebola',
     'incidence': 11499,
   },
   {
-    'last_name': 'Gamede',
+    'surname': 'Gamede',
     'incidence': 11488,
   },
   {
-    'last_name': 'Makwela',
+    'surname': 'Makwela',
     'incidence': 11437,
   },
   {
-    'last_name': 'Maimela',
+    'surname': 'Maimela',
     'incidence': 11423,
   },
   {
-    'last_name': 'Diale',
+    'surname': 'Diale',
     'incidence': 11412,
   },
   {
-    'last_name': 'Msimanga',
+    'surname': 'Msimanga',
     'incidence': 11299,
   },
   {
-    'last_name': 'van der Berg',
+    'surname': 'van der Berg',
     'incidence': 11297,
   },
   {
-    'last_name': 'Bouwer',
+    'surname': 'Bouwer',
     'incidence': 11278,
   },
   {
-    'last_name': 'Mdakane',
+    'surname': 'Mdakane',
     'incidence': 11260,
   },
   {
-    'last_name': 'Shoba',
+    'surname': 'Shoba',
     'incidence': 11240,
   },
   {
-    'last_name': 'Schutte',
+    'surname': 'Schutte',
     'incidence': 11225,
   },
   {
-    'last_name': 'Greeff',
+    'surname': 'Greeff',
     'incidence': 11175,
   },
   {
-    'last_name': 'Mosala',
+    'surname': 'Mosala',
     'incidence': 11163,
   },
   {
-    'last_name': 'Grobbelaar',
+    'surname': 'Grobbelaar',
     'incidence': 11120,
   },
   {
-    'last_name': 'Tshehla',
+    'surname': 'Tshehla',
     'incidence': 11117,
   },
   {
-    'last_name': 'Julies',
+    'surname': 'Julies',
     'incidence': 11109,
   },
   {
-    'last_name': 'Madikane',
+    'surname': 'Madikane',
     'incidence': 11099,
   },
   {
-    'last_name': 'Mogorosi',
+    'surname': 'Mogorosi',
     'incidence': 11089,
   },
   {
-    'last_name': 'Molete',
+    'surname': 'Molete',
     'incidence': 11047,
   },
   {
-    'last_name': 'Mayekiso',
+    'surname': 'Mayekiso',
     'incidence': 11044,
   },
   {
-    'last_name': 'Horn',
+    'surname': 'Horn',
     'incidence': 10996,
   },
   {
-    'last_name': 'Mbonani',
+    'surname': 'Mbonani',
     'incidence': 10995,
   },
   {
-    'last_name': 'Slabbert',
+    'surname': 'Slabbert',
     'incidence': 10992,
   },
   {
-    'last_name': 'Maile',
+    'surname': 'Maile',
     'incidence': 10970,
   },
   {
-    'last_name': 'Cilliers',
+    'surname': 'Cilliers',
     'incidence': 10959,
   },
   {
-    'last_name': 'Mabusela',
+    'surname': 'Mabusela',
     'incidence': 10922,
   },
   {
-    'last_name': 'Mawela',
+    'surname': 'Mawela',
     'incidence': 10920,
   },
   {
-    'last_name': 'Mothupi',
+    'surname': 'Mothupi',
     'incidence': 10900,
   },
   {
-    'last_name': 'Masha',
+    'surname': 'Masha',
     'incidence': 10890,
   },
   {
-    'last_name': 'van den Heever',
+    'surname': 'van den Heever',
     'incidence': 10851,
   },
   {
-    'last_name': 'Mdaka',
+    'surname': 'Mdaka',
     'incidence': 10840,
   },
   {
-    'last_name': 'Tom',
+    'surname': 'Tom',
     'incidence': 10840,
   },
   {
-    'last_name': 'Mpofu',
+    'surname': 'Mpofu',
     'incidence': 10829,
   },
   {
-    'last_name': 'Kemp',
+    'surname': 'Kemp',
     'incidence': 10818,
   },
   {
-    'last_name': 'Lawrence',
+    'surname': 'Lawrence',
     'incidence': 10812,
   },
   {
-    'last_name': 'Benjamin',
+    'surname': 'Benjamin',
     'incidence': 10804,
   },
   {
-    'last_name': 'Kock',
+    'surname': 'Kock',
     'incidence': 10715,
   },
   {
-    'last_name': 'Diedericks',
+    'surname': 'Diedericks',
     'incidence': 10700,
   },
   {
-    'last_name': 'Seleke',
+    'surname': 'Seleke',
     'incidence': 10667,
   },
   {
-    'last_name': 'Mphela',
+    'surname': 'Mphela',
     'incidence': 10652,
   },
   {
-    'last_name': 'Kleynhans',
+    'surname': 'Kleynhans',
     'incidence': 10646,
   },
   {
-    'last_name': 'Mbuyisa',
+    'surname': 'Mbuyisa',
     'incidence': 10619,
   },
   {
-    'last_name': 'Koen',
+    'surname': 'Koen',
     'incidence': 10611,
   },
   {
-    'last_name': 'Mzizi',
+    'surname': 'Mzizi',
     'incidence': 10610,
   },
   {
-    'last_name': 'Sosibo',
+    'surname': 'Sosibo',
     'incidence': 10587,
   },
   {
-    'last_name': 'Nhlapho',
+    'surname': 'Nhlapho',
     'incidence': 10564,
   },
   {
-    'last_name': 'Malesa',
+    'surname': 'Malesa',
     'incidence': 10549,
   },
   {
-    'last_name': 'Lekalakala',
+    'surname': 'Lekalakala',
     'incidence': 10545,
   },
   {
-    'last_name': 'Moeti',
+    'surname': 'Moeti',
     'incidence': 10533,
   },
   {
-    'last_name': 'Shelembe',
+    'surname': 'Shelembe',
     'incidence': 10481,
   },
   {
-    'last_name': 'Malatjie',
+    'surname': 'Malatjie',
     'incidence': 10449,
   },
   {
-    'last_name': 'Mokhele',
+    'surname': 'Mokhele',
     'incidence': 10414,
   },
   {
-    'last_name': 'Molefi',
+    'surname': 'Molefi',
     'incidence': 10394,
   },
   {
-    'last_name': 'Mogashoa',
+    'surname': 'Mogashoa',
     'incidence': 10354,
   },
   {
-    'last_name': 'Mdingi',
+    'surname': 'Mdingi',
     'incidence': 10351,
   },
   {
-    'last_name': 'Moolman',
+    'surname': 'Moolman',
     'incidence': 10286,
   },
   {
-    'last_name': 'Campbell',
+    'surname': 'Campbell',
     'incidence': 10267,
   },
   {
-    'last_name': 'Bailey',
+    'surname': 'Bailey',
     'incidence': 10265,
   },
   {
-    'last_name': 'Moabi',
+    'surname': 'Moabi',
     'incidence': 10265,
   },
   {
-    'last_name': 'Phetla',
+    'surname': 'Phetla',
     'incidence': 10255,
   },
   {
-    'last_name': 'Philander',
+    'surname': 'Philander',
     'incidence': 10253,
   },
   {
-    'last_name': 'Nell',
+    'surname': 'Nell',
     'incidence': 10250,
   },
   {
-    'last_name': 'Herbst',
+    'surname': 'Herbst',
     'incidence': 10243,
   },
   {
-    'last_name': 'Hugo',
+    'surname': 'Hugo',
     'incidence': 10204,
   },
   {
-    'last_name': 'van Jaarsveld',
+    'surname': 'van Jaarsveld',
     'incidence': 10192,
   },
   {
-    'last_name': 'Mbedzi',
+    'surname': 'Mbedzi',
     'incidence': 10170,
   },
   {
-    'last_name': 'Nyandeni',
+    'surname': 'Nyandeni',
     'incidence': 10142,
   },
   {
-    'last_name': 'Malete',
+    'surname': 'Malete',
     'incidence': 10125,
   },
   {
-    'last_name': 'Madolo',
+    'surname': 'Madolo',
     'incidence': 10123,
   },
   {
-    'last_name': 'Mhlungu',
+    'surname': 'Mhlungu',
     'incidence': 10098,
   },
   {
-    'last_name': 'Marx',
+    'surname': 'Marx',
     'incidence': 10054,
   },
   {
-    'last_name': 'Taljaard',
+    'surname': 'Taljaard',
     'incidence': 10051,
   },
   {
-    'last_name': 'Perumal',
+    'surname': 'Perumal',
     'incidence': 10035,
   },
   {
-    'last_name': 'Ndala',
+    'surname': 'Ndala',
     'incidence': 10022,
   },
   {
-    'last_name': 'Kula',
+    'surname': 'Kula',
     'incidence': 10015,
   },
   {
-    'last_name': 'Singo',
+    'surname': 'Singo',
     'incidence': 10007,
   },
   {
-    'last_name': 'Makhaye',
+    'surname': 'Makhaye',
     'incidence': 9964,
   },
   {
-    'last_name': 'Chuene',
+    'surname': 'Chuene',
     'incidence': 9963,
   },
   {
-    'last_name': 'Maja',
+    'surname': 'Maja',
     'incidence': 9957,
   },
   {
-    'last_name': 'Mailula',
+    'surname': 'Mailula',
     'incidence': 9948,
   },
   {
-    'last_name': 'Zweni',
+    'surname': 'Zweni',
     'incidence': 9943,
   },
   {
-    'last_name': 'Snyders',
+    'surname': 'Snyders',
     'incidence': 9909,
   },
   {
-    'last_name': 'Ndabeni',
+    'surname': 'Ndabeni',
     'incidence': 9878,
   },
   {
-    'last_name': 'van Eeden',
+    'surname': 'van Eeden',
     'incidence': 9861,
   },
   {
-    'last_name': 'Matjila',
+    'surname': 'Matjila',
     'incidence': 9853,
   },
   {
-    'last_name': 'Wright',
+    'surname': 'Wright',
     'incidence': 9780,
   },
   {
-    'last_name': 'Hoffman',
+    'surname': 'Hoffman',
     'incidence': 9775,
   },
   {
-    'last_name': 'Dhladhla',
+    'surname': 'Dhladhla',
     'incidence': 9771,
   },
   {
-    'last_name': 'Johannes',
+    'surname': 'Johannes',
     'incidence': 9740,
   },
   {
-    'last_name': 'Molokomme',
+    'surname': 'Molokomme',
     'incidence': 9725,
   },
   {
-    'last_name': 'Mooketsi',
+    'surname': 'Mooketsi',
     'incidence': 9725,
   },
   {
-    'last_name': 'Hanekom',
+    'surname': 'Hanekom',
     'incidence': 9708,
   },
   {
-    'last_name': 'Sibande',
+    'surname': 'Sibande',
     'incidence': 9708,
   },
   {
-    'last_name': 'Motsepe',
+    'surname': 'Motsepe',
     'incidence': 9702,
   },
   {
-    'last_name': 'Mdunge',
+    'surname': 'Mdunge',
     'incidence': 9699,
   },
   {
-    'last_name': 'Mokgosi',
+    'surname': 'Mokgosi',
     'incidence': 9698,
   },
   {
-    'last_name': 'Mojapelo',
+    'surname': 'Mojapelo',
     'incidence': 9691,
   },
   {
-    'last_name': 'Lushaba',
+    'surname': 'Lushaba',
     'incidence': 9688,
   },
   {
-    'last_name': 'Otto',
+    'surname': 'Otto',
     'incidence': 9671,
   },
   {
-    'last_name': 'Afrika',
+    'surname': 'Afrika',
     'incidence': 9663,
   },
   {
-    'last_name': 'Jama',
+    'surname': 'Jama',
     'incidence': 9661,
   },
   {
-    'last_name': 'Mongwe',
+    'surname': 'Mongwe',
     'incidence': 9647,
   },
   {
-    'last_name': 'Ross',
+    'surname': 'Ross',
     'incidence': 9639,
   },
   {
-    'last_name': 'Oberholzer',
+    'surname': 'Oberholzer',
     'incidence': 9626,
   },
   {
-    'last_name': 'Young',
+    'surname': 'Young',
     'incidence': 9604,
   },
   {
-    'last_name': 'Robinson',
+    'surname': 'Robinson',
     'incidence': 9594,
   },
   {
-    'last_name': 'Makuwa',
+    'surname': 'Makuwa',
     'incidence': 9593,
   },
   {
-    'last_name': 'Themba',
+    'surname': 'Themba',
     'incidence': 9586,
   },
   {
-    'last_name': 'Leeuw',
+    'surname': 'Leeuw',
     'incidence': 9580,
   },
   {
-    'last_name': 'Madela',
+    'surname': 'Madela',
     'incidence': 9568,
   },
   {
-    'last_name': 'Moatshe',
+    'surname': 'Moatshe',
     'incidence': 9556,
   },
   {
-    'last_name': 'van Aswegen',
+    'surname': 'van Aswegen',
     'incidence': 9548,
   },
   {
-    'last_name': 'Sithebe',
+    'surname': 'Sithebe',
     'incidence': 9538,
   },
   {
-    'last_name': 'Esau',
+    'surname': 'Esau',
     'incidence': 9520,
   },
   {
-    'last_name': 'Manaka',
+    'surname': 'Manaka',
     'incidence': 9508,
   },
   {
-    'last_name': 'Makamu',
+    'surname': 'Makamu',
     'incidence': 9496,
   },
   {
-    'last_name': 'Maphosa',
+    'surname': 'Maphosa',
     'incidence': 9467,
   },
   {
-    'last_name': 'Davis',
+    'surname': 'Davis',
     'incidence': 9461,
   },
   {
-    'last_name': 'More',
+    'surname': 'More',
     'incidence': 9453,
   },
   {
-    'last_name': 'Maine',
+    'surname': 'Maine',
     'incidence': 9452,
   },
   {
-    'last_name': 'Edwards',
+    'surname': 'Edwards',
     'incidence': 9444,
   },
   {
-    'last_name': 'Pilusa',
+    'surname': 'Pilusa',
     'incidence': 9443,
   },
   {
-    'last_name': 'Maredi',
+    'surname': 'Maredi',
     'incidence': 9442,
   },
   {
-    'last_name': 'Mvubu',
+    'surname': 'Mvubu',
     'incidence': 9431,
   },
   {
-    'last_name': 'Nkwana',
+    'surname': 'Nkwana',
     'incidence': 9424,
   },
   {
-    'last_name': 'Moosa',
+    'surname': 'Moosa',
     'incidence': 9423,
   },
   {
-    'last_name': 'Lee',
+    'surname': 'Lee',
     'incidence': 9412,
   },
   {
-    'last_name': 'Mongale',
+    'surname': 'Mongale',
     'incidence': 9384,
   },
   {
-    'last_name': 'Bam',
+    'surname': 'Bam',
     'incidence': 9358,
   },
   {
-    'last_name': 'Mgwenya',
+    'surname': 'Mgwenya',
     'incidence': 9335,
   },
   {
-    'last_name': 'Ramoshaba',
+    'surname': 'Ramoshaba',
     'incidence': 9329,
   },
   {
-    'last_name': 'Blignaut',
+    'surname': 'Blignaut',
     'incidence': 9321,
   },
   {
-    'last_name': 'Mabote',
+    'surname': 'Mabote',
     'incidence': 9320,
   },
   {
-    'last_name': 'Links',
+    'surname': 'Links',
     'incidence': 9317,
   },
   {
-    'last_name': 'Magadla',
+    'surname': 'Magadla',
     'incidence': 9316,
   },
   {
-    'last_name': 'Fouche',
+    'surname': 'Fouche',
     'incidence': 9298,
   },
   {
-    'last_name': 'Modisane',
+    'surname': 'Modisane',
     'incidence': 9292,
   },
   {
-    'last_name': 'Mabelane',
+    'surname': 'Mabelane',
     'incidence': 9288,
   },
   {
-    'last_name': 'Mamba',
+    'surname': 'Mamba',
     'incidence': 9284,
   },
   {
-    'last_name': 'van der Linde',
+    'surname': 'van der Linde',
     'incidence': 9280,
   },
   {
-    'last_name': 'Makhetha',
+    'surname': 'Makhetha',
     'incidence': 9267,
   },
   {
-    'last_name': 'Ellis',
+    'surname': 'Ellis',
     'incidence': 9217,
   },
   {
-    'last_name': 'Mali',
+    'surname': 'Mali',
     'incidence': 9217,
   },
   {
-    'last_name': 'Julius',
+    'surname': 'Julius',
     'incidence': 9215,
   },
   {
-    'last_name': 'Mashau',
+    'surname': 'Mashau',
     'incidence': 9203,
   },
   {
-    'last_name': 'Robertson',
+    'surname': 'Robertson',
     'incidence': 9199,
   },
   {
-    'last_name': 'Nchabeleng',
+    'surname': 'Nchabeleng',
     'incidence': 9191,
   },
   {
-    'last_name': 'Mabizela',
+    'surname': 'Mabizela',
     'incidence': 9168,
   },
   {
-    'last_name': 'Nsibande',
+    'surname': 'Nsibande',
     'incidence': 9165,
   },
   {
-    'last_name': 'Ngoma',
+    'surname': 'Ngoma',
     'incidence': 9162,
   },
   {
-    'last_name': 'Rautenbach',
+    'surname': 'Rautenbach',
     'incidence': 9162,
   },
   {
-    'last_name': 'Molebatsi',
+    'surname': 'Molebatsi',
     'incidence': 9154,
   },
   {
-    'last_name': 'Mmola',
+    'surname': 'Mmola',
     'incidence': 9137,
   },
   {
-    'last_name': 'Parker',
+    'surname': 'Parker',
     'incidence': 9132,
   },
   {
-    'last_name': 'de Wee',
+    'surname': 'de Wee',
     'incidence': 9116,
   },
   {
-    'last_name': 'Mbuli',
+    'surname': 'Mbuli',
     'incidence': 9100,
   },
   {
-    'last_name': 'Malatsi',
+    'surname': 'Malatsi',
     'incidence': 9093,
   },
   {
-    'last_name': 'Mgidi',
+    'surname': 'Mgidi',
     'incidence': 9079,
   },
   {
-    'last_name': 'Chili',
+    'surname': 'Chili',
     'incidence': 9055,
   },
   {
-    'last_name': 'Hlungwane',
+    'surname': 'Hlungwane',
     'incidence': 9052,
   },
   {
-    'last_name': 'Alberts',
+    'surname': 'Alberts',
     'incidence': 9048,
   },
   {
-    'last_name': 'Thobela',
+    'surname': 'Thobela',
     'incidence': 9023,
   },
   {
-    'last_name': 'Maepa',
+    'surname': 'Maepa',
     'incidence': 9007,
   },
   {
-    'last_name': 'Richards',
+    'surname': 'Richards',
     'incidence': 8995,
   },
   {
-    'last_name': 'Mndebele',
+    'surname': 'Mndebele',
     'incidence': 8993,
   },
   {
-    'last_name': 'Nkala',
+    'surname': 'Nkala',
     'incidence': 8990,
   },
   {
-    'last_name': 'Henning',
+    'surname': 'Henning',
     'incidence': 8987,
   },
   {
-    'last_name': 'Nieuwoudt',
+    'surname': 'Nieuwoudt',
     'incidence': 8986,
   },
   {
-    'last_name': 'Baartman',
+    'surname': 'Baartman',
     'incidence': 8980,
   },
   {
-    'last_name': 'Vosloo',
+    'surname': 'Vosloo',
     'incidence': 8958,
   },
   {
-    'last_name': 'Mashabane',
+    'surname': 'Mashabane',
     'incidence': 8938,
   },
   {
-    'last_name': 'Nelson',
+    'surname': 'Nelson',
     'incidence': 8880,
   },
   {
-    'last_name': 'Claasen',
+    'surname': 'Claasen',
     'incidence': 8870,
   },
   {
-    'last_name': 'Saayman',
+    'surname': 'Saayman',
     'incidence': 8863,
   },
   {
-    'last_name': 'Ngoepe',
+    'surname': 'Ngoepe',
     'incidence': 8839,
   },
   {
-    'last_name': 'Mabe',
+    'surname': 'Mabe',
     'incidence': 8837,
   },
   {
-    'last_name': 'Morgan',
+    'surname': 'Morgan',
     'incidence': 8831,
   },
   {
-    'last_name': 'Watson',
+    'surname': 'Watson',
     'incidence': 8812,
   },
   {
-    'last_name': 'Faku',
+    'surname': 'Faku',
     'incidence': 8800,
   },
   {
-    'last_name': 'Hendriks',
+    'surname': 'Hendriks',
     'incidence': 8787,
   },
   {
-    'last_name': 'Mntungwa',
+    'surname': 'Mntungwa',
     'incidence': 8786,
   },
   {
-    'last_name': 'Adam',
+    'surname': 'Adam',
     'incidence': 8776,
   },
   {
-    'last_name': 'Anthony',
+    'surname': 'Anthony',
     'incidence': 8753,
   },
   {
-    'last_name': 'Mjoli',
+    'surname': 'Mjoli',
     'incidence': 8751,
   },
   {
-    'last_name': 'Carelse',
+    'surname': 'Carelse',
     'incidence': 8749,
   },
   {
-    'last_name': 'Neethling',
+    'surname': 'Neethling',
     'incidence': 8740,
   },
   {
-    'last_name': 'Ndlangamandla',
+    'surname': 'Ndlangamandla',
     'incidence': 8734,
   },
   {
-    'last_name': 'Nhlabathi',
+    'surname': 'Nhlabathi',
     'incidence': 8729,
   },
   {
-    'last_name': 'Makhubo',
+    'surname': 'Makhubo',
     'incidence': 8719,
   },
   {
-    'last_name': 'Mabitsela',
+    'surname': 'Mabitsela',
     'incidence': 8718,
   },
   {
-    'last_name': 'Mabula',
+    'surname': 'Mabula',
     'incidence': 8706,
   },
   {
-    'last_name': 'Mbali',
+    'surname': 'Mbali',
     'incidence': 8698,
   },
   {
-    'last_name': 'Kabini',
+    'surname': 'Kabini',
     'incidence': 8688,
   },
   {
-    'last_name': 'Mkansi',
+    'surname': 'Mkansi',
     'incidence': 8673,
   },
   {
-    'last_name': 'Eksteen',
+    'surname': 'Eksteen',
     'incidence': 8662,
   },
   {
-    'last_name': 'Matabane',
+    'surname': 'Matabane',
     'incidence': 8657,
   },
   {
-    'last_name': 'Murray',
+    'surname': 'Murray',
     'incidence': 8646,
   },
   {
-    'last_name': 'Malele',
+    'surname': 'Malele',
     'incidence': 8645,
   },
   {
-    'last_name': 'Damons',
+    'surname': 'Damons',
     'incidence': 8636,
   },
   {
-    'last_name': 'August',
+    'surname': 'August',
     'incidence': 8631,
   },
   {
-    'last_name': 'Arends',
+    'surname': 'Arends',
     'incidence': 8622,
   },
   {
-    'last_name': 'Magoro',
+    'surname': 'Magoro',
     'incidence': 8620,
   },
   {
-    'last_name': 'October',
+    'surname': 'October',
     'incidence': 8606,
   },
   {
-    'last_name': 'Clarke',
+    'surname': 'Clarke',
     'incidence': 8603,
   },
   {
-    'last_name': 'Nonyane',
+    'surname': 'Nonyane',
     'incidence': 8590,
   },
   {
-    'last_name': 'Swartbooi',
+    'surname': 'Swartbooi',
     'incidence': 8548,
   },
   {
-    'last_name': 'Linda',
+    'surname': 'Linda',
     'incidence': 8540,
   },
   {
-    'last_name': 'Shabane',
+    'surname': 'Shabane',
     'incidence': 8527,
   },
   {
-    'last_name': 'January',
+    'surname': 'January',
     'incidence': 8496,
   },
   {
-    'last_name': 'Mhlaba',
+    'surname': 'Mhlaba',
     'incidence': 8495,
   },
   {
-    'last_name': 'Lebepe',
+    'surname': 'Lebepe',
     'incidence': 8489,
   },
   {
-    'last_name': 'Hlabisa',
+    'surname': 'Hlabisa',
     'incidence': 8483,
   },
   {
-    'last_name': 'Mentoor',
+    'surname': 'Mentoor',
     'incidence': 8480,
   },
   {
-    'last_name': 'Mampuru',
+    'surname': 'Mampuru',
     'incidence': 8463,
   },
   {
-    'last_name': 'Mashao',
+    'surname': 'Mashao',
     'incidence': 8459,
   },
   {
-    'last_name': 'Frans',
+    'surname': 'Frans',
     'incidence': 8458,
   },
   {
-    'last_name': 'Meiring',
+    'surname': 'Meiring',
     'incidence': 8455,
   },
   {
-    'last_name': 'Mathaba',
+    'surname': 'Mathaba',
     'incidence': 8444,
   },
   {
-    'last_name': 'Ziqubu',
+    'surname': 'Ziqubu',
     'incidence': 8433,
   },
   {
-    'last_name': 'Gabela',
+    'surname': 'Gabela',
     'incidence': 8420,
   },
   {
-    'last_name': 'Theunissen',
+    'surname': 'Theunissen',
     'incidence': 8408,
   },
   {
-    'last_name': 'Moleko',
+    'surname': 'Moleko',
     'incidence': 8403,
   },
   {
-    'last_name': 'Gina',
+    'surname': 'Gina',
     'incidence': 8400,
   },
   {
-    'last_name': 'Mahlatsi',
+    'surname': 'Mahlatsi',
     'incidence': 8399,
   },
   {
-    'last_name': 'Walker',
+    'surname': 'Walker',
     'incidence': 8390,
   },
   {
-    'last_name': 'Carstens',
+    'surname': 'Carstens',
     'incidence': 8372,
   },
   {
-    'last_name': 'Ntshingila',
+    'surname': 'Ntshingila',
     'incidence': 8359,
   },
   {
-    'last_name': 'Mothiba',
+    'surname': 'Mothiba',
     'incidence': 8342,
   },
   {
-    'last_name': 'Makgoba',
+    'surname': 'Makgoba',
     'incidence': 8340,
   },
   {
-    'last_name': 'Ndawonde',
+    'surname': 'Ndawonde',
     'incidence': 8340,
   },
   {
-    'last_name': 'Grootboom',
+    'surname': 'Grootboom',
     'incidence': 8330,
   },
   {
-    'last_name': 'Mqadi',
+    'surname': 'Mqadi',
     'incidence': 8327,
   },
   {
-    'last_name': 'Moseki',
+    'surname': 'Moseki',
     'incidence': 8324,
   },
   {
-    'last_name': 'Molele',
+    'surname': 'Molele',
     'incidence': 8306,
   },
   {
-    'last_name': 'Moraba',
+    'surname': 'Moraba',
     'incidence': 8300,
   },
   {
-    'last_name': 'Mbuyane',
+    'surname': 'Mbuyane',
     'incidence': 8274,
   },
   {
-    'last_name': 'Hlengwa',
+    'surname': 'Hlengwa',
     'incidence': 8261,
   },
   {
-    'last_name': 'Cindi',
+    'surname': 'Cindi',
     'incidence': 8259,
   },
   {
-    'last_name': 'Lamola',
+    'surname': 'Lamola',
     'incidence': 8236,
   },
   {
-    'last_name': 'Masenya',
+    'surname': 'Masenya',
     'incidence': 8235,
   },
   {
-    'last_name': 'Jaftha',
+    'surname': 'Jaftha',
     'incidence': 8229,
   },
   {
-    'last_name': 'Maarman',
+    'surname': 'Maarman',
     'incidence': 8212,
   },
   {
-    'last_name': 'Mokwana',
+    'surname': 'Mokwana',
     'incidence': 8211,
   },
   {
-    'last_name': 'Barnes',
+    'surname': 'Barnes',
     'incidence': 8208,
   },
   {
-    'last_name': 'Loots',
+    'surname': 'Loots',
     'incidence': 8194,
   },
   {
-    'last_name': 'Rambau',
+    'surname': 'Rambau',
     'incidence': 8194,
   },
   {
-    'last_name': 'Mametja',
+    'surname': 'Mametja',
     'incidence': 8188,
   },
   {
-    'last_name': 'Mabika',
+    'surname': 'Mabika',
     'incidence': 8185,
   },
   {
-    'last_name': 'Khomo',
+    'surname': 'Khomo',
     'incidence': 8178,
   },
   {
-    'last_name': 'Mogane',
+    'surname': 'Mogane',
     'incidence': 8170,
   },
   {
-    'last_name': 'Tshaka',
+    'surname': 'Tshaka',
     'incidence': 8146,
   },
   {
-    'last_name': 'Saunders',
+    'surname': 'Saunders',
     'incidence': 8136,
   },
   {
-    'last_name': 'Jonkers',
+    'surname': 'Jonkers',
     'incidence': 8134,
   },
   {
-    'last_name': 'Makeleni',
+    'surname': 'Makeleni',
     'incidence': 8133,
   },
   {
-    'last_name': 'Moore',
+    'surname': 'Moore',
     'incidence': 8126,
   },
   {
-    'last_name': 'Hill',
+    'surname': 'Hill',
     'incidence': 8118,
   },
   {
-    'last_name': 'Cornelius',
+    'surname': 'Cornelius',
     'incidence': 8115,
   },
   {
-    'last_name': 'Cassim',
+    'surname': 'Cassim',
     'incidence': 8112,
   },
   {
-    'last_name': 'Matthee',
+    'surname': 'Matthee',
     'incidence': 8111,
   },
   {
-    'last_name': 'Selowa',
+    'surname': 'Selowa',
     'incidence': 8105,
   },
   {
-    'last_name': 'Sono',
+    'surname': 'Sono',
     'incidence': 8083,
   },
   {
-    'last_name': 'Ntsele',
+    'surname': 'Ntsele',
     'incidence': 8075,
   },
   {
-    'last_name': 'Wood',
+    'surname': 'Wood',
     'incidence': 8073,
   },
   {
-    'last_name': 'Mokgotho',
+    'surname': 'Mokgotho',
     'incidence': 8069,
   },
   {
-    'last_name': 'Pelser',
+    'surname': 'Pelser',
     'incidence': 8044,
   },
   {
-    'last_name': 'Wentzel',
+    'surname': 'Wentzel',
     'incidence': 8027,
   },
   {
-    'last_name': 'Sitole',
+    'surname': 'Sitole',
     'incidence': 8020,
   },
   {
-    'last_name': 'Blaauw',
+    'surname': 'Blaauw',
     'incidence': 8019,
   },
   {
-    'last_name': 'Khwela',
+    'surname': 'Khwela',
     'incidence': 7998,
   },
   {
-    'last_name': 'de Waal',
+    'surname': 'de Waal',
     'incidence': 7980,
   },
   {
-    'last_name': 'Nyawose',
+    'surname': 'Nyawose',
     'incidence': 7959,
   },
   {
-    'last_name': 'Clark',
+    'surname': 'Clark',
     'incidence': 7949,
   },
   {
-    'last_name': 'Sam',
+    'surname': 'Sam',
     'incidence': 7947,
   },
   {
-    'last_name': 'Hlela',
+    'surname': 'Hlela',
     'incidence': 7937,
   },
   {
-    'last_name': 'Mathye',
+    'surname': 'Mathye',
     'incidence': 7931,
   },
   {
-    'last_name': 'Makhado',
+    'surname': 'Makhado',
     'incidence': 7904,
   },
   {
-    'last_name': 'Mbili',
+    'surname': 'Mbili',
     'incidence': 7890,
   },
   {
-    'last_name': 'Shaik',
+    'surname': 'Shaik',
     'incidence': 7887,
   },
   {
-    'last_name': 'Maruping',
+    'surname': 'Maruping',
     'incidence': 7877,
   },
   {
-    'last_name': 'Brandt',
+    'surname': 'Brandt',
     'incidence': 7856,
   },
   {
-    'last_name': 'Laubscher',
+    'surname': 'Laubscher',
     'incidence': 7851,
   },
   {
-    'last_name': 'Simons',
+    'surname': 'Simons',
     'incidence': 7848,
   },
   {
-    'last_name': 'Ubisi',
+    'surname': 'Ubisi',
     'incidence': 7827,
   },
   {
-    'last_name': 'Mulder',
+    'surname': 'Mulder',
     'incidence': 7825,
   },
   {
-    'last_name': 'Collins',
+    'surname': 'Collins',
     'incidence': 7808,
   },
   {
-    'last_name': 'Breytenbach',
+    'surname': 'Breytenbach',
     'incidence': 7802,
   },
   {
-    'last_name': 'Motlhabane',
+    'surname': 'Motlhabane',
     'incidence': 7795,
   },
   {
-    'last_name': 'Janse van Vuuren',
+    'surname': 'Janse van Vuuren',
     'incidence': 7792,
   },
   {
-    'last_name': 'Mdladla',
+    'surname': 'Mdladla',
     'incidence': 7786,
   },
   {
-    'last_name': 'Paul',
+    'surname': 'Paul',
     'incidence': 7780,
   },
   {
-    'last_name': 'da Silva',
+    'surname': 'da Silva',
     'incidence': 7774,
   },
   {
-    'last_name': 'Paulse',
+    'surname': 'Paulse',
     'incidence': 7770,
   },
   {
-    'last_name': 'Africa',
+    'surname': 'Africa',
     'incidence': 7767,
   },
   {
-    'last_name': 'Sampson',
+    'surname': 'Sampson',
     'incidence': 7761,
   },
   {
-    'last_name': 'Bapela',
+    'surname': 'Bapela',
     'incidence': 7755,
   },
   {
-    'last_name': 'Bangani',
+    'surname': 'Bangani',
     'incidence': 7749,
   },
   {
-    'last_name': 'Martins',
+    'surname': 'Martins',
     'incidence': 7738,
   },
   {
-    'last_name': 'Motsumi',
+    'surname': 'Motsumi',
     'incidence': 7726,
   },
   {
-    'last_name': 'Wolmarans',
+    'surname': 'Wolmarans',
     'incidence': 7725,
   },
   {
-    'last_name': 'Roets',
+    'surname': 'Roets',
     'incidence': 7719,
   },
   {
-    'last_name': 'Nyalungu',
+    'surname': 'Nyalungu',
     'incidence': 7713,
   },
   {
-    'last_name': 'Mathibe',
+    'surname': 'Mathibe',
     'incidence': 7704,
   },
   {
-    'last_name': 'Olyn',
+    'surname': 'Olyn',
     'incidence': 7693,
   },
   {
-    'last_name': 'Mahlobo',
+    'surname': 'Mahlobo',
     'incidence': 7687,
   },
   {
-    'last_name': 'Truter',
+    'surname': 'Truter',
     'incidence': 7675,
   },
   {
-    'last_name': 'Lucas',
+    'surname': 'Lucas',
     'incidence': 7657,
   },
   {
-    'last_name': 'Seleka',
+    'surname': 'Seleka',
     'incidence': 7641,
   },
   {
-    'last_name': 'Davies',
+    'surname': 'Davies',
     'incidence': 7634,
   },
   {
-    'last_name': 'Motshabi',
+    'surname': 'Motshabi',
     'incidence': 7627,
   },
   {
-    'last_name': 'Siko',
+    'surname': 'Siko',
     'incidence': 7615,
   },
   {
-    'last_name': 'Madisha',
+    'surname': 'Madisha',
     'incidence': 7606,
   },
   {
-    'last_name': 'Lebese',
+    'surname': 'Lebese',
     'incidence': 7592,
   },
   {
-    'last_name': 'Loubser',
+    'surname': 'Loubser',
     'incidence': 7587,
   },
   {
-    'last_name': 'Mtimkulu',
+    'surname': 'Mtimkulu',
     'incidence': 7586,
   },
   {
-    'last_name': 'Bell',
+    'surname': 'Bell',
     'incidence': 7585,
   },
   {
-    'last_name': 'Kgatla',
+    'surname': 'Kgatla',
     'incidence': 7585,
   },
   {
-    'last_name': 'Stewart',
+    'surname': 'Stewart',
     'incidence': 7582,
   },
   {
-    'last_name': 'Gounden',
+    'surname': 'Gounden',
     'incidence': 7578,
   },
   {
-    'last_name': 'Machaba',
+    'surname': 'Machaba',
     'incidence': 7558,
   },
   {
-    'last_name': 'Moela',
+    'surname': 'Moela',
     'incidence': 7531,
   },
   {
-    'last_name': 'Ntanzi',
+    'surname': 'Ntanzi',
     'incidence': 7514,
   },
   {
-    'last_name': 'Hall',
+    'surname': 'Hall',
     'incidence': 7476,
   },
   {
-    'last_name': 'Mboweni',
+    'surname': 'Mboweni',
     'incidence': 7469,
   },
   {
-    'last_name': 'Mzolo',
+    'surname': 'Mzolo',
     'incidence': 7466,
   },
   {
-    'last_name': 'Yende',
+    'surname': 'Yende',
     'incidence': 7443,
   },
   {
-    'last_name': 'Moloko',
+    'surname': 'Moloko',
     'incidence': 7432,
   },
   {
-    'last_name': 'Salie',
+    'surname': 'Salie',
     'incidence': 7391,
   },
   {
-    'last_name': 'Maswanganye',
+    'surname': 'Maswanganye',
     'incidence': 7388,
   },
   {
-    'last_name': 'Ngalo',
+    'surname': 'Ngalo',
     'incidence': 7387,
   },
   {
-    'last_name': 'Sebothoma',
+    'surname': 'Sebothoma',
     'incidence': 7365,
   },
   {
-    'last_name': 'Mokoka',
+    'surname': 'Mokoka',
     'incidence': 7363,
   },
   {
-    'last_name': 'Mthalane',
+    'surname': 'Mthalane',
     'incidence': 7352,
   },
   {
-    'last_name': 'Khunou',
+    'surname': 'Khunou',
     'incidence': 7339,
   },
   {
-    'last_name': 'Viviers',
+    'surname': 'Viviers',
     'incidence': 7331,
   },
   {
-    'last_name': 'Zakwe',
+    'surname': 'Zakwe',
     'incidence': 7317,
   },
   {
-    'last_name': 'Ahmed',
+    'surname': 'Ahmed',
     'incidence': 7298,
   },
   {
-    'last_name': 'Masia',
+    'surname': 'Masia',
     'incidence': 7298,
   },
   {
-    'last_name': 'de Vos',
+    'surname': 'de Vos',
     'incidence': 7292,
   },
   {
-    'last_name': 'Walters',
+    'surname': 'Walters',
     'incidence': 7289,
   },
   {
-    'last_name': 'Sihlangu',
+    'surname': 'Sihlangu',
     'incidence': 7286,
   },
   {
-    'last_name': 'de Vries',
+    'surname': 'de Vries',
     'incidence': 7282,
   },
   {
-    'last_name': 'Silinda',
+    'surname': 'Silinda',
     'incidence': 7279,
   },
   {
-    'last_name': 'Mwelase',
+    'surname': 'Mwelase',
     'incidence': 7259,
   },
   {
-    'last_name': 'Ngwenyama',
+    'surname': 'Ngwenyama',
     'incidence': 7252,
   },
   {
-    'last_name': 'Kwinda',
+    'surname': 'Kwinda',
     'incidence': 7244,
   },
   {
-    'last_name': 'Malema',
+    'surname': 'Malema',
     'incidence': 7236,
   },
   {
-    'last_name': 'Mosehla',
+    'surname': 'Mosehla',
     'incidence': 7206,
   },
   {
-    'last_name': 'Duba',
+    'surname': 'Duba',
     'incidence': 7198,
   },
   {
-    'last_name': 'Kgaphola',
+    'surname': 'Kgaphola',
     'incidence': 7195,
   },
   {
-    'last_name': 'Mthabela',
+    'surname': 'Mthabela',
     'incidence': 7182,
   },
   {
-    'last_name': 'Klopper',
+    'surname': 'Klopper',
     'incidence': 7166,
   },
   {
-    'last_name': 'Xolo',
+    'surname': 'Xolo',
     'incidence': 7149,
   },
   {
-    'last_name': 'Mbata',
+    'surname': 'Mbata',
     'incidence': 7131,
   },
   {
-    'last_name': 'Hoosen',
+    'surname': 'Hoosen',
     'incidence': 7124,
   },
   {
-    'last_name': 'Masindi',
+    'surname': 'Masindi',
     'incidence': 7120,
   },
   {
-    'last_name': 'Dyasi',
+    'surname': 'Dyasi',
     'incidence': 7081,
   },
   {
-    'last_name': 'Mathabatha',
+    'surname': 'Mathabatha',
     'incidence': 7071,
   },
   {
-    'last_name': 'Minnie',
+    'surname': 'Minnie',
     'incidence': 7067,
   },
   {
-    'last_name': 'Lebelo',
+    'surname': 'Lebelo',
     'incidence': 7065,
   },
   {
-    'last_name': 'Goba',
+    'surname': 'Goba',
     'incidence': 7062,
   },
   {
-    'last_name': 'Gwebu',
+    'surname': 'Gwebu',
     'incidence': 7059,
   },
   {
-    'last_name': 'Semenya',
+    'surname': 'Semenya',
     'incidence': 7056,
   },
   {
-    'last_name': 'Mzimba',
+    'surname': 'Mzimba',
     'incidence': 7042,
   },
   {
-    'last_name': 'Makgopa',
+    'surname': 'Makgopa',
     'incidence': 7031,
   },
   {
-    'last_name': 'Heyns',
+    'surname': 'Heyns',
     'incidence': 7023,
   },
   {
-    'last_name': 'Michaels',
+    'surname': 'Michaels',
     'incidence': 7022,
   },
   {
-    'last_name': 'Makaula',
+    'surname': 'Makaula',
     'incidence': 7018,
   },
   {
-    'last_name': 'Phalane',
+    'surname': 'Phalane',
     'incidence': 7011,
   },
   {
-    'last_name': 'Baker',
+    'surname': 'Baker',
     'incidence': 7004,
   },
   {
-    'last_name': 'Arries',
+    'surname': 'Arries',
     'incidence': 7001,
   },
   {
-    'last_name': 'Oliver',
+    'surname': 'Oliver',
     'incidence': 7000,
   },
   {
-    'last_name': 'Masimula',
+    'surname': 'Masimula',
     'incidence': 6989,
   },
   {
-    'last_name': 'Leshaba',
+    'surname': 'Leshaba',
     'incidence': 6988,
   },
   {
-    'last_name': 'Nair',
+    'surname': 'Nair',
     'incidence': 6986,
   },
   {
-    'last_name': 'Teffo',
+    'surname': 'Teffo',
     'incidence': 6969,
   },
   {
-    'last_name': 'Sauls',
+    'surname': 'Sauls',
     'incidence': 6964,
   },
   {
-    'last_name': 'Vena',
+    'surname': 'Vena',
     'incidence': 6964,
   },
   {
-    'last_name': 'Rooi',
+    'surname': 'Rooi',
     'incidence': 6950,
   },
   {
-    'last_name': 'Bennett',
+    'surname': 'Bennett',
     'incidence': 6948,
   },
   {
-    'last_name': 'Ntsoane',
+    'surname': 'Ntsoane',
     'incidence': 6946,
   },
   {
-    'last_name': 'Stoltz',
+    'surname': 'Stoltz',
     'incidence': 6919,
   },
   {
-    'last_name': 'Malunga',
+    'surname': 'Malunga',
     'incidence': 6917,
   },
   {
-    'last_name': 'Matsane',
+    'surname': 'Matsane',
     'incidence': 6910,
   },
   {
-    'last_name': 'Manyoni',
+    'surname': 'Manyoni',
     'incidence': 6909,
   },
   {
-    'last_name': 'Ratau',
+    'surname': 'Ratau',
     'incidence': 6908,
   },
   {
-    'last_name': 'de Koker',
+    'surname': 'de Koker',
     'incidence': 6902,
   },
   {
-    'last_name': 'Dyani',
+    'surname': 'Dyani',
     'incidence': 6892,
   },
   {
-    'last_name': 'Le Grange',
+    'surname': 'Le Grange',
     'incidence': 6890,
   },
   {
-    'last_name': 'Mashala',
+    'surname': 'Mashala',
     'incidence': 6879,
   },
   {
-    'last_name': 'Baleni',
+    'surname': 'Baleni',
     'incidence': 6874,
   },
   {
-    'last_name': 'Malaka',
+    'surname': 'Malaka',
     'incidence': 6874,
   },
   {
-    'last_name': 'Mathole',
+    'surname': 'Mathole',
     'incidence': 6873,
   },
   {
-    'last_name': 'Mabona',
+    'surname': 'Mabona',
     'incidence': 6872,
   },
   {
-    'last_name': 'Damane',
+    'surname': 'Damane',
     'incidence': 6853,
   },
   {
-    'last_name': 'Charles',
+    'surname': 'Charles',
     'incidence': 6846,
   },
 ]

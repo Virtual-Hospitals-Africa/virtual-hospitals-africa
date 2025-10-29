@@ -28,6 +28,7 @@ import { base } from './_base.ts'
 import last from '../../util/last.ts'
 import { exists } from '../../util/exists.ts'
 import first from '../../util/first.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -236,9 +237,9 @@ export function upsert(
     }
     & ({
       name: string
-      first_names?: never
-      surname?: never
-      preferred_name?: never
+      first_names?: string
+      surname?: string
+      preferred_name?: string
     } | {
       name?: never
       first_names: string
@@ -246,13 +247,22 @@ export function upsert(
       preferred_name: string
     }),
 ) {
-  if (name) {
+  if (first_names) {
+    assert(surname)
+    assert(preferred_name)
+    if (name) {
+      assertEquals(name, first_names + ' ' + surname)
+    } else {
+      name = first_names + ' ' + surname
+    }
+  } else {
+    assert(name)
+    assert(!surname)
+    assert(!preferred_name)
     const names = name.split(' ')
     surname = exists(last(names))
     preferred_name = exists(first(names))
     first_names = names.slice(-1).join(' ')
-  } else {
-    name = first_names + ' ' + surname
   }
 
   const to_upsert = {

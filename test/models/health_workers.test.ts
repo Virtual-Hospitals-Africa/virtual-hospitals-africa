@@ -13,7 +13,7 @@ import db from '../../db/db.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertTestAddress } from '../_helpers/addresses.ts'
-import { testNurseRegistrationDetails } from '../_helpers/nurse_registration_details.ts'
+import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())

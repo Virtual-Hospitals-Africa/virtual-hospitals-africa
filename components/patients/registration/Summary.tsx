@@ -69,9 +69,9 @@ export default function PatientRegistrationSummary(
     nonEmptyRows([
       [{
         value: personal.name,
-        href: `${registration_href}/personal#focus=first_name`,
+        href: `${registration_href}/personal#focus=first_names`,
         action: DescriptionListCellAction.Edit,
-        name: 'first_name',
+        name: 'first_names',
       }],
       [{
         value: personal.sex,

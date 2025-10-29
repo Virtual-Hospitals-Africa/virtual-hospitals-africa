@@ -9,9 +9,9 @@ import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
 import { withTestOrganization } from '../_helpers/organizations.ts'
 import { testHealthWorker } from '../_helpers/health_workers.ts'
-import { testNurseRegistrationDetails as testRegistrationDetails } from '../_helpers/nurse_registration_details.ts'
 import sample from '../../util/sample.ts'
 import { route } from '../route.ts'
+import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 
 describe('/login', () => {
   afterAll(() => db.destroy())
@@ -183,7 +183,7 @@ describe('/login', () => {
         profession: 'admin',
       }])
 
-      const details = await testRegistrationDetails(db, {
+      const details = await testNurseRegistrationDetails(db, {
         health_worker_id: nurse.id,
       })
 

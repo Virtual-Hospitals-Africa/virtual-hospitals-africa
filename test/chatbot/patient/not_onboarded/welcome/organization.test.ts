@@ -9,18 +9,26 @@ import generateUUID from '../../../../../util/uuid.ts'
 import randomNationalId from '../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../mockWhatsApp.ts'
+import { Sex } from '../../../../../types.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('sends invitation to share location after welcome message', async () => {
     const phone_number = randomPhoneNumber()
+    const sex: Sex = 'female'
+    const date_of_birth = '2023-01-01'
     await patients.insert(db, {
       conversation_state: 'not_onboarded:welcome',
       phone_number,
       name: 'test',
-      gender: 'female',
+      sex,
+      gender: 'Woman',
       date_of_birth: '2023-01-01',
-      national_id_number: randomNationalId(),
+      national_id_number: randomNationalId({
+        country: 'ZA',
+        sex,
+        date_of_birth,
+      }),
     })
 
     await conversations.insertMessageReceived(db, {

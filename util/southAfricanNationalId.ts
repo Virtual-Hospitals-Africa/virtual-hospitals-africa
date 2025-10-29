@@ -7,11 +7,12 @@ import { asResult, Result } from './asResult.ts'
 // Uses the Luhn Algorithm
 // Adapted from https://github.com/tiaanduplessis/mod10-check-digit/blob/master/index.js
 export function mod10CheckDigit(number: string) {
+  console.log('number', number)
   assert(number.length === 12)
   let doubled_sum = 0
-  for (const [index, digit] of Array.from(number).entries()) {
+  for (const [index, digit] of number.split('').entries()) {
     const int = parseInt(digit, 10)
-    assert(int)
+    assert(!isNaN(int))
     if (index % 2 === 0) {
       doubled_sum += int
     } else {

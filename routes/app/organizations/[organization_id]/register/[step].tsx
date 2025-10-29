@@ -96,17 +96,17 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     const registration_details = getRegistrationDetails(
       ctx.state.health_worker,
       omit(form_state, [
-        'first_name',
+        'first_names',
         'middle_names',
-        'last_name',
+        'surname',
         'specialty',
       ]) as FormState,
     )
 
     const full_name_in_form = compact([
-      form_state.first_name,
+      form_state.first_names,
       form_state.middle_names,
-      form_state.last_name,
+      form_state.surname,
     ]).join(' ')
     if (full_name_in_form !== ctx.state.health_worker.name) {
       await health_workers.updateName(

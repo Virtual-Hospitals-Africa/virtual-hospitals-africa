@@ -57,9 +57,9 @@ export type ProfessionalInformationFields = {
 }
 
 export const PersonalFormFields = z.object({
-  first_name: z.string(),
+  first_names: z.string(),
   middle_names: z.optional(z.string()),
-  last_name: z.string(),
+  surname: z.string(),
   date_of_birth: z.string().date(),
   email: z.optional(z.string()).refine(
     (email) => !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),

@@ -16,10 +16,10 @@ export default function NursePersonalForm(
     <>
       <FormRow>
         <TextInput
-          name='first_name'
+          name='first_names'
           required
           label='First Name'
-          value={form_data.first_name}
+          value={form_data.first_names}
         />
         <TextInput
           name='middle_names'
@@ -27,10 +27,10 @@ export default function NursePersonalForm(
           value={form_data.middle_names}
         />
         <TextInput
-          name='last_name'
+          name='surname'
           required
           label='Last Name'
-          value={form_data.last_name}
+          value={form_data.surname}
         />
       </FormRow>
       <FormRow>

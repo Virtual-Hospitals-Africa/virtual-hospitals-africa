@@ -10,19 +10,18 @@ import generateUUID from '../../../../../../../util/uuid.ts'
 import randomNationalId from '../../../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
+import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for media after inquiring appointment reason', async () => {
     const phone_number = randomPhoneNumber()
+    const demographics = randomDemographics()
     await patients.insert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: null,
+      ...demographics,
     })
 
     await conversations.insertMessageReceived(db, {
@@ -30,7 +29,7 @@ describe('patient chatbot', () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: randomNationalId(),
+      body: randomNationalId(demographics),
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })

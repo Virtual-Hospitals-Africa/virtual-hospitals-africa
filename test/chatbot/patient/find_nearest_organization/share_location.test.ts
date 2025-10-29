@@ -6,11 +6,10 @@ import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import generateUUID from '../../../../util/uuid.ts'
-
-import randomNationalId from '../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
 import { mockWhatsApp } from '../../../chatbot/mockWhatsApp.ts'
+import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -21,10 +20,7 @@ describe('patient chatbot', () => {
     const p = await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: randomNationalId(),
+      ...randomDemographics(),
     })
     console.log(p)
 

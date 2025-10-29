@@ -761,8 +761,8 @@ export type WhatsAppContactsMessage = {
   type: 'contacts'
   contacts: {
     name: {
-      first_name: string
-      last_name: string
+      first_names: string
+      surname: string
       formatted_name: string
     }
     phones: {

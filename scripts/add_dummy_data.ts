@@ -7,9 +7,7 @@ import * as patient_encounters from '../db/models/patient_encounters.ts'
 import * as patient_registration from '../db/models/patient_registration.ts'
 import * as patient_workflows from '../db/models/patient_workflows.ts'
 import * as patient_triage from '../db/models/patient_triage.ts'
-
-import { randomNamesAndGender } from '../mocks/randomDemographics.ts'
-import randomPatientMandatoryRegistrationInformation from '../mocks/randomPatientMandatoryRegistrationInformation.ts'
+import randomDemographics from '../mocks/randomDemographics.ts'
 import { EncounterReason } from '../db.d.ts'
 import range from '../util/range.ts'
 import { sql } from 'kysely'
@@ -33,6 +31,7 @@ import { parseDateTime, timeInSimpleAmPm } from '../util/date.ts'
 import words from '../util/words.ts'
 import capitalize from '../util/capitalize.ts'
 import { addTestEmployee } from '../test/_helpers/employees.ts'
+import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
 
 type WaitingRoomScenario = [
   'male' | 'female',
@@ -46,7 +45,7 @@ type WaitingRoomScenario = [
 
 // deno-fmt-ignore-start
 const wm_scenarios: WaitingRoomScenario[] = [
-  // gender, reason for visit, department, current workflow, workflow status, triage priority
+  // sex, reason for visit, department, current workflow, workflow status, triage priority
   ['female', 'seeking treatment', 'waiting room', 'triage', 'not started', 'Undetermined', 10],
   ['male', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 55],
   ['female', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 48],
@@ -75,7 +74,7 @@ type PatientScenario = [
 
 // deno-fmt-ignore-start
 const patient_scenarios: PatientScenario[] = [
-  // gender, reason for visit, current workflow, workflow status, triage priority
+  // sex, reason for visit, current workflow, workflow status, triage priority
   ['female', 'seeking treatment', 'registration', 'in progress', 'Undetermined'],
   ['female', 'seeking treatment', 'triage', 'not started', 'Undetermined'],
   ['female', 'seeking treatment', 'triage', 'in progress', 'Urgent'],
@@ -97,44 +96,44 @@ async function addPatientsToWaitingRoom(
   },
 ) {
   const avatars_used = new Set<string>()
-  function randomAvatarNotYetUsed(gender: 'male' | 'female') {
-    let random_avatar = randomAvatar(gender)
+  function randomAvatarNotYetUsed(sex: 'male' | 'female') {
+    let random_avatar = randomAvatar(sex)
     while (avatars_used.has(random_avatar)) {
-      random_avatar = randomAvatar(gender)
+      random_avatar = randomAvatar(sex)
     }
     avatars_used.add(random_avatar)
     return random_avatar
   }
 
   const num_rural_clinic_medical_staff = 5
-  const admin_demo = randomNamesAndGender()
+  const admin_demo = randomNamesAndSex()
   const admin = await addTestEmployee(db, {
     profession: 'admin',
     health_worker_attrs: {
       name: admin_demo.name,
-      avatar_url: randomAvatarNotYetUsed(admin_demo.gender),
+      avatar_url: randomAvatarNotYetUsed(admin_demo.sex),
     },
   })
 
-  const receptionist_demo = randomNamesAndGender()
+  const receptionist_demo = randomNamesAndSex()
   const _receptionist = await addTestEmployee(db, {
     profession: 'receptionist',
     health_worker_attrs: {
       name: receptionist_demo.name,
-      avatar_url: randomAvatarNotYetUsed(receptionist_demo.gender),
+      avatar_url: randomAvatarNotYetUsed(receptionist_demo.sex),
     },
   })
 
   const nurses: HW[] = await Promise.all(
     range(num_rural_clinic_medical_staff).map(() => {
-      const demo = randomNamesAndGender()
+      const demo = randomNamesAndSex()
       return addTestEmployee(db, {
         profession: 'nurse',
         specialty: 'primary care',
         registration_status: 'not started',
         health_worker_attrs: {
           name: demo.name,
-          avatar_url: randomAvatarNotYetUsed(demo.gender),
+          avatar_url: randomAvatarNotYetUsed(demo.sex),
         },
       })
     }),
@@ -145,13 +144,13 @@ async function addPatientsToWaitingRoom(
 
   const _doctors: HW[] = await Promise.all(
     range(num_regional_medical_center_staff).map(() => {
-      const demo = randomNamesAndGender()
+      const demo = randomNamesAndSex()
       return addTestEmployee(db, {
         profession: 'doctor',
         organization_id: _requesting_review_of_organization_id,
         health_worker_attrs: {
           name: demo.name,
-          avatar_url: randomAvatarNotYetUsed(demo.gender),
+          avatar_url: randomAvatarNotYetUsed(demo.sex),
         },
       })
     }),
@@ -165,8 +164,8 @@ async function addPatientsToWaitingRoom(
 
   await forEach(
     patient_scenarios.entries(),
-    async ([i, [gender, _reason, workflow, workflow_status, triage_level]]) => {
-      const demo = randomNamesAndGender('ZA', gender)
+    async ([i, [sex, _reason, workflow, workflow_status, triage_level]]) => {
+      const demo = randomDemographics('ZA', sex)
       const nurse = nurses[i % nurses.length]
       const arrived_ago = i === 0
         ? 0
@@ -218,17 +217,11 @@ async function addPatientsToWaitingRoom(
         organization_employment,
       )
 
-      const patient_information =
-        randomPatientMandatoryRegistrationInformation()
-      patient_information.name = `${demo.first_name} ${demo.last_name}`
-      patient_information.gender = demo.gender
-      patient_information.date_of_birth = randomDateOfBirth()
-
       // Complete registration
       await Promise.all([
         patients.update(db, {
           id: result.patient_id,
-          ...patient_information,
+          ...demo,
           completed_registration: true,
         }),
         // Complete all registration steps
@@ -513,8 +506,8 @@ async function addDummyData() {
 }
 
 // function foo() {
-//   const x = wm_scenarios.map(([gender, reason, department, workflow, workflow_status, priority, arrived_at_minutes_ago]) => {
-//     const patient = randomPatientMandatoryRegistrationInformation('ZA', gender)
+//   const x = wm_scenarios.map(([sex, reason, department, workflow, workflow_status, priority, arrived_at_minutes_ago]) => {
+//     const patient = randomPatientMandatoryRegistrationInformation('ZA', sex)
 //     let target_time_to_treatment: string | number | null = null
 //     if (isTriageLevel(priority)) {
 //       const target_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority] - arrived_at_minutes_ago
@@ -542,7 +535,7 @@ async function addDummyData() {
 //       : `Awaiting ${capitalize(workflow)}`
 
 //     return {
-//       patient: `${patient.name} / ${patient.gender}, ${patient.date_of_birth}`,
+//       patient: `${patient.name} / ${patient.sex}, ${patient.date_of_birth}`,
 //       reason, status, priority,
 //       provider,
 //       location: department,

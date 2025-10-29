@@ -6,7 +6,7 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import { isUUID } from '../../../../../util/uuid.ts'
 import randomNationalId from '../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
-import { randomNamesAndGender } from '../../../../../mocks/randomDemographics.ts'
+import randomNamesAndSex from '../../../../../mocks/randomNamesAndSex.ts'
 
 describe(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
@@ -26,9 +26,8 @@ describe(
         },
       )
 
-      assert($('input[name="first_name"]').length === 1)
-      assert($('input[name="middle_names"]').length === 1)
-      assert($('input[name="last_name"]').length === 1)
+      assert($('input[name="first_names"]').length === 1)
+      assert($('input[name="surname"]').length === 1)
       assert($('input[name="nonexistant"]').length === 0)
 
       console.log('$.url', $.url)
@@ -36,15 +35,20 @@ describe(
         /patients\/(.*)\/open_encounter\/registration\/personal/,
       )![1]
       assert(isUUID(patient_id))
-      const national_id_number = randomNationalId()
+      const date_of_birth = '2001-04-03'
+      const demographics = randomNamesAndSex('ZA')
+      const national_id_number = randomNationalId({
+        sex: demographics.sex,
+        date_of_birth,
+      })
       const phone_number = randomPhoneNumber()
       const body = new FormData()
-      const demographics = randomNamesAndGender('ZA')
-      body.set('first_name', demographics.first_name)
-      body.set('last_name', demographics.last_name)
+      body.set('first_names', demographics.first_names)
+      body.set('surname', demographics.surname)
+      body.set('preferred_name', demographics.surname)
       body.set('national_id_number', national_id_number)
-      body.set('date_of_birth', '2001-01-01')
-      body.set('gender', demographics.gender)
+      body.set('date_of_birth', date_of_birth)
+      body.set('sex', demographics.sex)
       body.set('phone_number', phone_number)
 
       const response = await fetchOk($.url, {

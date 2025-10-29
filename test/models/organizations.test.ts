@@ -344,7 +344,11 @@ describe('db/models/organizations.ts', () => {
         await nurse_registration_details.add(trx, {
           health_worker_id: hw_at_organization1.id,
           gender: 'female',
-          national_id_number: randomNationalId(),
+          national_id_number: randomNationalId({
+            country: 'ZA',
+            sex: 'female',
+            date_of_birth: '1980-02-01',
+          }),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -353,7 +357,7 @@ describe('db/models/organizations.ts', () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: null,
-          date_of_birth: '2020-01-01',
+          date_of_birth: '1980-02-01',
           address_id: nurse_address.id,
         })
 
@@ -421,7 +425,11 @@ describe('db/models/organizations.ts', () => {
         await nurse_registration_details.add(trx, {
           health_worker_id: nurse.id,
           gender: 'female',
-          national_id_number: randomNationalId(),
+          national_id_number: randomNationalId({
+            country: 'ZA',
+            sex: 'female',
+            date_of_birth: '1980-02-01',
+          }),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -430,7 +438,7 @@ describe('db/models/organizations.ts', () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
-          date_of_birth: '2020-01-01',
+          date_of_birth: '1980-02-01',
           address_id: nurse_address.id,
         })
 

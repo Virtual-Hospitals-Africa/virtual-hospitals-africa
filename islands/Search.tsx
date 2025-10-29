@@ -56,9 +56,9 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
 
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   if (!name) return false
-  const last_name_part = last(name.split('.'))!
-  if (isUUID(last_name_part)) return true
-  return /^\d+$/.test(last_name_part)
+  const surname_part = last(name.split('.'))!
+  if (isUUID(surname_part)) return true
+  return /^\d+$/.test(surname_part)
 }
 
 export default function Search<T extends { id?: unknown; name: string }>({

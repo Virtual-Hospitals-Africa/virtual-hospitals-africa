@@ -34,9 +34,9 @@ describe(
 
       const $ = cheerio.load(pageContents)
 
-      assert($('input[name="first_name"]').length === 1)
+      assert($('input[name="first_names"]').length === 1)
       assert($('input[name="middle_names"]').length === 1)
-      assert($('input[name="last_name"]').length === 1)
+      assert($('input[name="surname"]').length === 1)
       assert($('input[name="date_of_birth"]').length === 1)
       assert($('input[name="email"]').length === 1)
       assert($('select[name="gender"]').length === 1)
@@ -67,9 +67,9 @@ describe(
 
       {
         const body = new FormData()
-        body.set('first_name', 'Test')
+        body.set('first_names', 'Test')
         body.set('middle_names', 'Zoom Zoom')
-        body.set('last_name', 'Nurse')
+        body.set('surname', 'Nurse')
         body.set('gender', 'female')
         body.set('national_id_number', '08-123456 D 53')
         body.set('date_of_birth', '2020-01-01')
@@ -106,9 +106,9 @@ describe(
 
         assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
-          first_name: 'Test',
+          first_names: 'Test',
           gender: 'female',
-          last_name: 'Nurse',
+          surname: 'Nurse',
           middle_names: 'Zoom Zoom',
           mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',
@@ -126,9 +126,9 @@ describe(
 
         const pageContents = await getPersonalResponse.text()
         const $ = cheerio.load(pageContents)
-        assertEquals($('input[name="first_name"]').val(), 'Test')
+        assertEquals($('input[name="first_names"]').val(), 'Test')
         assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
-        assertEquals($('input[name="last_name"]').val(), 'Nurse')
+        assertEquals($('input[name="surname"]').val(), 'Nurse')
         assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
         assertEquals($('select[name="gender"]').val(), 'female')
         assertEquals(
@@ -185,9 +185,9 @@ describe(
 
         assertEquals(registrationFormState, {
           date_of_birth: '2020-01-01',
-          first_name: 'Test',
+          first_names: 'Test',
           gender: 'female',
-          last_name: 'Nurse',
+          surname: 'Nurse',
           middle_names: 'Zoom Zoom',
           mobile_number: '+12035555555',
           national_id_number: '08-123456 D 53',

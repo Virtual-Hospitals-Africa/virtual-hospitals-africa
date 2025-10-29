@@ -1,4002 +1,4002 @@
-export const last_names = [
+export const surnames = [
   {
-    'last_name': 'Moyo',
+    'surname': 'Moyo',
     'incidence': 396530,
   },
   {
-    'last_name': 'Ncube',
+    'surname': 'Ncube',
     'incidence': 308011,
   },
   {
-    'last_name': 'Sibanda',
+    'surname': 'Sibanda',
     'incidence': 281495,
   },
   {
-    'last_name': 'Dube',
+    'surname': 'Dube',
     'incidence': 255802,
   },
   {
-    'last_name': 'Ndlovu',
+    'surname': 'Ndlovu',
     'incidence': 246617,
   },
   {
-    'last_name': 'Mpofu',
+    'surname': 'Mpofu',
     'incidence': 119235,
   },
   {
-    'last_name': 'Sithole',
+    'surname': 'Sithole',
     'incidence': 91742,
   },
   {
-    'last_name': 'Ngwenya',
+    'surname': 'Ngwenya',
     'incidence': 91096,
   },
   {
-    'last_name': 'Phiri',
+    'surname': 'Phiri',
     'incidence': 73411,
   },
   {
-    'last_name': 'Tshuma',
+    'surname': 'Tshuma',
     'incidence': 63818,
   },
   {
-    'last_name': 'Nyoni',
+    'surname': 'Nyoni',
     'incidence': 58992,
   },
   {
-    'last_name': 'Nkomo',
+    'surname': 'Nkomo',
     'incidence': 57570,
   },
   {
-    'last_name': 'Nyathi',
+    'surname': 'Nyathi',
     'incidence': 56343,
   },
   {
-    'last_name': 'Ndhlovu',
+    'surname': 'Ndhlovu',
     'incidence': 51966,
   },
   {
-    'last_name': 'Mhlanga',
+    'surname': 'Mhlanga',
     'incidence': 46310,
   },
   {
-    'last_name': 'Khumalo',
+    'surname': 'Khumalo',
     'incidence': 37466,
   },
   {
-    'last_name': 'Zhou',
+    'surname': 'Zhou',
     'incidence': 37247,
   },
   {
-    'last_name': 'Banda',
+    'surname': 'Banda',
     'incidence': 34613,
   },
   {
-    'last_name': 'Shumba',
+    'surname': 'Shumba',
     'incidence': 33835,
   },
   {
-    'last_name': 'Gumbo',
+    'surname': 'Gumbo',
     'incidence': 32902,
   },
   {
-    'last_name': 'Ndebele',
+    'surname': 'Ndebele',
     'incidence': 31467,
   },
   {
-    'last_name': 'Muleya',
+    'surname': 'Muleya',
     'incidence': 28722,
   },
   {
-    'last_name': 'Hove',
+    'surname': 'Hove',
     'incidence': 28657,
   },
   {
-    'last_name': 'Shoko',
+    'surname': 'Shoko',
     'incidence': 28307,
   },
   {
-    'last_name': 'Maphosa',
+    'surname': 'Maphosa',
     'incidence': 27218,
   },
   {
-    'last_name': 'Tembo',
+    'surname': 'Tembo',
     'incidence': 26451,
   },
   {
-    'last_name': 'Mapfumo',
+    'surname': 'Mapfumo',
     'incidence': 26333,
   },
   {
-    'last_name': 'Siziba',
+    'surname': 'Siziba',
     'incidence': 25844,
   },
   {
-    'last_name': 'Ndou',
+    'surname': 'Ndou',
     'incidence': 23596,
   },
   {
-    'last_name': 'Mlambo',
+    'surname': 'Mlambo',
     'incidence': 21992,
   },
   {
-    'last_name': 'Dhliwayo',
+    'surname': 'Dhliwayo',
     'incidence': 21580,
   },
   {
-    'last_name': 'Simango',
+    'surname': 'Simango',
     'incidence': 20065,
   },
   {
-    'last_name': 'Maposa',
+    'surname': 'Maposa',
     'incidence': 19154,
   },
   {
-    'last_name': 'Masuku',
+    'surname': 'Masuku',
     'incidence': 18812,
   },
   {
-    'last_name': 'Bhebhe',
+    'surname': 'Bhebhe',
     'incidence': 18208,
   },
   {
-    'last_name': 'Marufu',
+    'surname': 'Marufu',
     'incidence': 16601,
   },
   {
-    'last_name': 'Mudenda',
+    'surname': 'Mudenda',
     'incidence': 16567,
   },
   {
-    'last_name': 'Makoni',
+    'surname': 'Makoni',
     'incidence': 16461,
   },
   {
-    'last_name': 'Mlilo',
+    'surname': 'Mlilo',
     'incidence': 16316,
   },
   {
-    'last_name': 'Zulu',
+    'surname': 'Zulu',
     'incidence': 16287,
   },
   {
-    'last_name': 'Muyambo',
+    'surname': 'Muyambo',
     'incidence': 15329,
   },
   {
-    'last_name': 'Nyandoro',
+    'surname': 'Nyandoro',
     'incidence': 15099,
   },
   {
-    'last_name': 'Mathe',
+    'surname': 'Mathe',
     'incidence': 15071,
   },
   {
-    'last_name': 'Chuma',
+    'surname': 'Chuma',
     'incidence': 14788,
   },
   {
-    'last_name': 'Takawira',
+    'surname': 'Takawira',
     'incidence': 14417,
   },
   {
-    'last_name': 'Chauke',
+    'surname': 'Chauke',
     'incidence': 14066,
   },
   {
-    'last_name': 'Zuze',
+    'surname': 'Zuze',
     'incidence': 13911,
   },
   {
-    'last_name': 'Mpala',
+    'surname': 'Mpala',
     'incidence': 13853,
   },
   {
-    'last_name': 'Muchenje',
+    'surname': 'Muchenje',
     'incidence': 13500,
   },
   {
-    'last_name': 'Sigauke',
+    'surname': 'Sigauke',
     'incidence': 13371,
   },
   {
-    'last_name': 'Munemo',
+    'surname': 'Munemo',
     'incidence': 13295,
   },
   {
-    'last_name': 'Lunga',
+    'surname': 'Lunga',
     'incidence': 13260,
   },
   {
-    'last_name': 'Nkala',
+    'surname': 'Nkala',
     'incidence': 13124,
   },
   {
-    'last_name': 'Mudzingwa',
+    'surname': 'Mudzingwa',
     'incidence': 12920,
   },
   {
-    'last_name': 'Taruvinga',
+    'surname': 'Taruvinga',
     'incidence': 12871,
   },
   {
-    'last_name': 'Mutasa',
+    'surname': 'Mutasa',
     'incidence': 12687,
   },
   {
-    'last_name': 'Mahachi',
+    'surname': 'Mahachi',
     'incidence': 12594,
   },
   {
-    'last_name': 'Katsande',
+    'surname': 'Katsande',
     'incidence': 12428,
   },
   {
-    'last_name': 'Ndoro',
+    'surname': 'Ndoro',
     'incidence': 12410,
   },
   {
-    'last_name': 'Mbedzi',
+    'surname': 'Mbedzi',
     'incidence': 12376,
   },
   {
-    'last_name': 'Chari',
+    'surname': 'Chari',
     'incidence': 12234,
   },
   {
-    'last_name': 'Muza',
+    'surname': 'Muza',
     'incidence': 12114,
   },
   {
-    'last_name': 'Munsaka',
+    'surname': 'Munsaka',
     'incidence': 12003,
   },
   {
-    'last_name': 'Mapuranga',
+    'surname': 'Mapuranga',
     'incidence': 11869,
   },
   {
-    'last_name': 'Mutero',
+    'surname': 'Mutero',
     'incidence': 11850,
   },
   {
-    'last_name': 'Maseko',
+    'surname': 'Maseko',
     'incidence': 11642,
   },
   {
-    'last_name': 'Nyika',
+    'surname': 'Nyika',
     'incidence': 11616,
   },
   {
-    'last_name': 'Muchemwa',
+    'surname': 'Muchemwa',
     'incidence': 11577,
   },
   {
-    'last_name': 'Ngulube',
+    'surname': 'Ngulube',
     'incidence': 11409,
   },
   {
-    'last_name': 'Mubaiwa',
+    'surname': 'Mubaiwa',
     'incidence': 11004,
   },
   {
-    'last_name': 'Mudimba',
+    'surname': 'Mudimba',
     'incidence': 10604,
   },
   {
-    'last_name': 'Sande',
+    'surname': 'Sande',
     'incidence': 10455,
   },
   {
-    'last_name': 'Gondo',
+    'surname': 'Gondo',
     'incidence': 10443,
   },
   {
-    'last_name': 'Chiwara',
+    'surname': 'Chiwara',
     'incidence': 10392,
   },
   {
-    'last_name': 'Munetsi',
+    'surname': 'Munetsi',
     'incidence': 10369,
   },
   {
-    'last_name': 'Mushonga',
+    'surname': 'Mushonga',
     'incidence': 10316,
   },
   {
-    'last_name': 'Munkuli',
+    'surname': 'Munkuli',
     'incidence': 10247,
   },
   {
-    'last_name': 'Kaseke',
+    'surname': 'Kaseke',
     'incidence': 10230,
   },
   {
-    'last_name': 'Chifamba',
+    'surname': 'Chifamba',
     'incidence': 10050,
   },
   {
-    'last_name': 'Mumpande',
+    'surname': 'Mumpande',
     'incidence': 9983,
   },
   {
-    'last_name': 'Mabhena',
+    'surname': 'Mabhena',
     'incidence': 9954,
   },
   {
-    'last_name': 'Nyamadzawo',
+    'surname': 'Nyamadzawo',
     'incidence': 9752,
   },
   {
-    'last_name': 'Mangena',
+    'surname': 'Mangena',
     'incidence': 9641,
   },
   {
-    'last_name': 'Makaza',
+    'surname': 'Makaza',
     'incidence': 9590,
   },
   {
-    'last_name': 'Mlalazi',
+    'surname': 'Mlalazi',
     'incidence': 9489,
   },
   {
-    'last_name': 'Shava',
+    'surname': 'Shava',
     'incidence': 9413,
   },
   {
-    'last_name': 'Masango',
+    'surname': 'Masango',
     'incidence': 9344,
   },
   {
-    'last_name': 'Tigere',
+    'surname': 'Tigere',
     'incidence': 9335,
   },
   {
-    'last_name': 'Manyika',
+    'surname': 'Manyika',
     'incidence': 9276,
   },
   {
-    'last_name': 'Gatsi',
+    'surname': 'Gatsi',
     'incidence': 9194,
   },
   {
-    'last_name': 'Shereni',
+    'surname': 'Shereni',
     'incidence': 9187,
   },
   {
-    'last_name': 'Makumbe',
+    'surname': 'Makumbe',
     'incidence': 8984,
   },
   {
-    'last_name': 'Dlamini',
+    'surname': 'Dlamini',
     'incidence': 8912,
   },
   {
-    'last_name': 'Shonhiwa',
+    'surname': 'Shonhiwa',
     'incidence': 8910,
   },
   {
-    'last_name': 'Muzamba',
+    'surname': 'Muzamba',
     'incidence': 8867,
   },
   {
-    'last_name': 'Mandaza',
+    'surname': 'Mandaza',
     'incidence': 8826,
   },
   {
-    'last_name': 'Magaya',
+    'surname': 'Magaya',
     'incidence': 8814,
   },
   {
-    'last_name': 'Mangwiro',
+    'surname': 'Mangwiro',
     'incidence': 8811,
   },
   {
-    'last_name': 'Gwenzi',
+    'surname': 'Gwenzi',
     'incidence': 8786,
   },
   {
-    'last_name': 'Mahlangu',
+    'surname': 'Mahlangu',
     'incidence': 8770,
   },
   {
-    'last_name': 'Ruzvidzo',
+    'surname': 'Ruzvidzo',
     'incidence': 8696,
   },
   {
-    'last_name': 'Nyakudya',
+    'surname': 'Nyakudya',
     'incidence': 8668,
   },
   {
-    'last_name': 'Tapera',
+    'surname': 'Tapera',
     'incidence': 8614,
   },
   {
-    'last_name': 'Makombe',
+    'surname': 'Makombe',
     'incidence': 8604,
   },
   {
-    'last_name': 'Madondo',
+    'surname': 'Madondo',
     'incidence': 8587,
   },
   {
-    'last_name': 'Mguni',
+    'surname': 'Mguni',
     'incidence': 8528,
   },
   {
-    'last_name': 'Mabika',
+    'surname': 'Mabika',
     'incidence': 8516,
   },
   {
-    'last_name': 'Chibanda',
+    'surname': 'Chibanda',
     'incidence': 8440,
   },
   {
-    'last_name': 'Mandizvidza',
+    'surname': 'Mandizvidza',
     'incidence': 8281,
   },
   {
-    'last_name': 'Makore',
+    'surname': 'Makore',
     'incidence': 8093,
   },
   {
-    'last_name': 'Nkiwane',
+    'surname': 'Nkiwane',
     'incidence': 8038,
   },
   {
-    'last_name': 'Muzenda',
+    'surname': 'Muzenda',
     'incidence': 7909,
   },
   {
-    'last_name': 'Mwale',
+    'surname': 'Mwale',
     'incidence': 7886,
   },
   {
-    'last_name': 'Mugwagwa',
+    'surname': 'Mugwagwa',
     'incidence': 7859,
   },
   {
-    'last_name': 'Mlotshwa',
+    'surname': 'Mlotshwa',
     'incidence': 7818,
   },
   {
-    'last_name': 'Musekiwa',
+    'surname': 'Musekiwa',
     'incidence': 7782,
   },
   {
-    'last_name': 'Dhlamini',
+    'surname': 'Dhlamini',
     'incidence': 7672,
   },
   {
-    'last_name': 'Mugabe',
+    'surname': 'Mugabe',
     'incidence': 7671,
   },
   {
-    'last_name': 'Hungwe',
+    'surname': 'Hungwe',
     'incidence': 7616,
   },
   {
-    'last_name': 'Majoni',
+    'surname': 'Majoni',
     'incidence': 7535,
   },
   {
-    'last_name': 'Chibaya',
+    'surname': 'Chibaya',
     'incidence': 7507,
   },
   {
-    'last_name': 'Matambo',
+    'surname': 'Matambo',
     'incidence': 7429,
   },
   {
-    'last_name': 'Masawi',
+    'surname': 'Masawi',
     'incidence': 7415,
   },
   {
-    'last_name': 'Machingura',
+    'surname': 'Machingura',
     'incidence': 7406,
   },
   {
-    'last_name': 'Gomo',
+    'surname': 'Gomo',
     'incidence': 7345,
   },
   {
-    'last_name': 'Rusere',
+    'surname': 'Rusere',
     'incidence': 7332,
   },
   {
-    'last_name': 'Mtetwa',
+    'surname': 'Mtetwa',
     'incidence': 7329,
   },
   {
-    'last_name': 'Nyamande',
+    'surname': 'Nyamande',
     'incidence': 7292,
   },
   {
-    'last_name': 'Makuyana',
+    'surname': 'Makuyana',
     'incidence': 7283,
   },
   {
-    'last_name': 'Mashiri',
+    'surname': 'Mashiri',
     'incidence': 7266,
   },
   {
-    'last_name': 'Mutema',
+    'surname': 'Mutema',
     'incidence': 7230,
   },
   {
-    'last_name': 'Musonza',
+    'surname': 'Musonza',
     'incidence': 7228,
   },
   {
-    'last_name': 'Muchena',
+    'surname': 'Muchena',
     'incidence': 7186,
   },
   {
-    'last_name': 'Mkandla',
+    'surname': 'Mkandla',
     'incidence': 7181,
   },
   {
-    'last_name': 'Mutandwa',
+    'surname': 'Mutandwa',
     'incidence': 7154,
   },
   {
-    'last_name': 'Chakanyuka',
+    'surname': 'Chakanyuka',
     'incidence': 7151,
   },
   {
-    'last_name': 'Gumede',
+    'surname': 'Gumede',
     'incidence': 7101,
   },
   {
-    'last_name': 'Masunda',
+    'surname': 'Masunda',
     'incidence': 7033,
   },
   {
-    'last_name': 'Ndiweni',
+    'surname': 'Ndiweni',
     'incidence': 7030,
   },
   {
-    'last_name': 'Matsika',
+    'surname': 'Matsika',
     'incidence': 7016,
   },
   {
-    'last_name': 'Mhembere',
+    'surname': 'Mhembere',
     'incidence': 7014,
   },
   {
-    'last_name': 'Jimu',
+    'surname': 'Jimu',
     'incidence': 6998,
   },
   {
-    'last_name': 'Marange',
+    'surname': 'Marange',
     'incidence': 6993,
   },
   {
-    'last_name': 'Sibindi',
+    'surname': 'Sibindi',
     'incidence': 6808,
   },
   {
-    'last_name': 'Matare',
+    'surname': 'Matare',
     'incidence': 6753,
   },
   {
-    'last_name': 'Mwanza',
+    'surname': 'Mwanza',
     'incidence': 6731,
   },
   {
-    'last_name': 'Mkwananzi',
+    'surname': 'Mkwananzi',
     'incidence': 6727,
   },
   {
-    'last_name': 'Ngorima',
+    'surname': 'Ngorima',
     'incidence': 6715,
   },
   {
-    'last_name': 'Musarurwa',
+    'surname': 'Musarurwa',
     'incidence': 6689,
   },
   {
-    'last_name': 'Mutize',
+    'surname': 'Mutize',
     'incidence': 6685,
   },
   {
-    'last_name': 'Muzanenhamo',
+    'surname': 'Muzanenhamo',
     'incidence': 6606,
   },
   {
-    'last_name': 'John',
+    'surname': 'John',
     'incidence': 6582,
   },
   {
-    'last_name': 'Mujuru',
+    'surname': 'Mujuru',
     'incidence': 6502,
   },
   {
-    'last_name': 'Motsi',
+    'surname': 'Motsi',
     'incidence': 6490,
   },
   {
-    'last_name': 'Murwira',
+    'surname': 'Murwira',
     'incidence': 6489,
   },
   {
-    'last_name': 'Mwembe',
+    'surname': 'Mwembe',
     'incidence': 6471,
   },
   {
-    'last_name': 'Chinyama',
+    'surname': 'Chinyama',
     'incidence': 6458,
   },
   {
-    'last_name': 'Mbewe',
+    'surname': 'Mbewe',
     'incidence': 6357,
   },
   {
-    'last_name': 'Marowa',
+    'surname': 'Marowa',
     'incidence': 6331,
   },
   {
-    'last_name': 'Katiyo',
+    'surname': 'Katiyo',
     'incidence': 6310,
   },
   {
-    'last_name': 'Paradza',
+    'surname': 'Paradza',
     'incidence': 6304,
   },
   {
-    'last_name': 'Nyikadzino',
+    'surname': 'Nyikadzino',
     'incidence': 6241,
   },
   {
-    'last_name': 'Mawire',
+    'surname': 'Mawire',
     'incidence': 6233,
   },
   {
-    'last_name': 'Chiweshe',
+    'surname': 'Chiweshe',
     'incidence': 6217,
   },
   {
-    'last_name': 'Mamvura',
+    'surname': 'Mamvura',
     'incidence': 6207,
   },
   {
-    'last_name': 'Munyoro',
+    'surname': 'Munyoro',
     'incidence': 6205,
   },
   {
-    'last_name': 'Marimo',
+    'surname': 'Marimo',
     'incidence': 6130,
   },
   {
-    'last_name': 'Muzondo',
+    'surname': 'Muzondo',
     'incidence': 6113,
   },
   {
-    'last_name': 'Maponga',
+    'surname': 'Maponga',
     'incidence': 6104,
   },
   {
-    'last_name': 'Tafirenyika',
+    'surname': 'Tafirenyika',
     'incidence': 6074,
   },
   {
-    'last_name': 'James',
+    'surname': 'James',
     'incidence': 5997,
   },
   {
-    'last_name': 'Mugadza',
+    'surname': 'Mugadza',
     'incidence': 5943,
   },
   {
-    'last_name': 'Ngirazi',
+    'surname': 'Ngirazi',
     'incidence': 5908,
   },
   {
-    'last_name': 'Hadebe',
+    'surname': 'Hadebe',
     'incidence': 5888,
   },
   {
-    'last_name': 'Tsuro',
+    'surname': 'Tsuro',
     'incidence': 5887,
   },
   {
-    'last_name': 'Khupe',
+    'surname': 'Khupe',
     'incidence': 5866,
   },
   {
-    'last_name': 'Masiya',
+    'surname': 'Masiya',
     'incidence': 5846,
   },
   {
-    'last_name': 'Shoniwa',
+    'surname': 'Shoniwa',
     'incidence': 5796,
   },
   {
-    'last_name': 'Mashingaidze',
+    'surname': 'Mashingaidze',
     'incidence': 5775,
   },
   {
-    'last_name': 'Mafuta',
+    'surname': 'Mafuta',
     'incidence': 5744,
   },
   {
-    'last_name': 'Mashava',
+    'surname': 'Mashava',
     'incidence': 5737,
   },
   {
-    'last_name': 'Msipa',
+    'surname': 'Msipa',
     'incidence': 5723,
   },
   {
-    'last_name': 'Siwela',
+    'surname': 'Siwela',
     'incidence': 5695,
   },
   {
-    'last_name': 'Taderera',
+    'surname': 'Taderera',
     'incidence': 5688,
   },
   {
-    'last_name': 'Mashonganyika',
+    'surname': 'Mashonganyika',
     'incidence': 5687,
   },
   {
-    'last_name': 'Mudimu',
+    'surname': 'Mudimu',
     'incidence': 5665,
   },
   {
-    'last_name': 'Tavengwa',
+    'surname': 'Tavengwa',
     'incidence': 5629,
   },
   {
-    'last_name': 'Mhaka',
+    'surname': 'Mhaka',
     'incidence': 5618,
   },
   {
-    'last_name': 'Nhamo',
+    'surname': 'Nhamo',
     'incidence': 5573,
   },
   {
-    'last_name': 'Kunaka',
+    'surname': 'Kunaka',
     'incidence': 5540,
   },
   {
-    'last_name': 'Mafukidze',
+    'surname': 'Mafukidze',
     'incidence': 5530,
   },
   {
-    'last_name': 'Mutale',
+    'surname': 'Mutale',
     'incidence': 5502,
   },
   {
-    'last_name': 'Chirume',
+    'surname': 'Chirume',
     'incidence': 5481,
   },
   {
-    'last_name': 'Madziva',
+    'surname': 'Madziva',
     'incidence': 5474,
   },
   {
-    'last_name': 'Nkomazana',
+    'surname': 'Nkomazana',
     'incidence': 5437,
   },
   {
-    'last_name': 'Marume',
+    'surname': 'Marume',
     'incidence': 5409,
   },
   {
-    'last_name': 'Madzinga',
+    'surname': 'Madzinga',
     'incidence': 5390,
   },
   {
-    'last_name': 'Musariri',
+    'surname': 'Musariri',
     'incidence': 5374,
   },
   {
-    'last_name': 'Chikomo',
+    'surname': 'Chikomo',
     'incidence': 5368,
   },
   {
-    'last_name': 'Manjengwa',
+    'surname': 'Manjengwa',
     'incidence': 5352,
   },
   {
-    'last_name': 'Kwaramba',
+    'surname': 'Kwaramba',
     'incidence': 5325,
   },
   {
-    'last_name': 'Nyamayaro',
+    'surname': 'Nyamayaro',
     'incidence': 5314,
   },
   {
-    'last_name': 'Zenda',
+    'surname': 'Zenda',
     'incidence': 5293,
   },
   {
-    'last_name': 'Tshabalala',
+    'surname': 'Tshabalala',
     'incidence': 5276,
   },
   {
-    'last_name': 'Chikukwa',
+    'surname': 'Chikukwa',
     'incidence': 5225,
   },
   {
-    'last_name': 'Matope',
+    'surname': 'Matope',
     'incidence': 5189,
   },
   {
-    'last_name': 'Chimombe',
+    'surname': 'Chimombe',
     'incidence': 5179,
   },
   {
-    'last_name': 'Jongwe',
+    'surname': 'Jongwe',
     'incidence': 5176,
   },
   {
-    'last_name': 'Makina',
+    'surname': 'Makina',
     'incidence': 5174,
   },
   {
-    'last_name': 'Vambe',
+    'surname': 'Vambe',
     'incidence': 5145,
   },
   {
-    'last_name': 'Jack',
+    'surname': 'Jack',
     'incidence': 5127,
   },
   {
-    'last_name': 'Nxumalo',
+    'surname': 'Nxumalo',
     'incidence': 5125,
   },
   {
-    'last_name': 'Malunga',
+    'surname': 'Malunga',
     'incidence': 5118,
   },
   {
-    'last_name': 'Jonasi',
+    'surname': 'Jonasi',
     'incidence': 5105,
   },
   {
-    'last_name': 'Mugari',
+    'surname': 'Mugari',
     'incidence': 5105,
   },
   {
-    'last_name': 'Rwodzi',
+    'surname': 'Rwodzi',
     'incidence': 5095,
   },
   {
-    'last_name': 'Chiyangwa',
+    'surname': 'Chiyangwa',
     'incidence': 5085,
   },
   {
-    'last_name': 'Zondo',
+    'surname': 'Zondo',
     'incidence': 5079,
   },
   {
-    'last_name': 'Mutizwa',
+    'surname': 'Mutizwa',
     'incidence': 5035,
   },
   {
-    'last_name': 'Zimunya',
+    'surname': 'Zimunya',
     'incidence': 5033,
   },
   {
-    'last_name': 'Mutanga',
+    'surname': 'Mutanga',
     'incidence': 5025,
   },
   {
-    'last_name': 'Mwinde',
+    'surname': 'Mwinde',
     'incidence': 5016,
   },
   {
-    'last_name': 'Musiiwa',
+    'surname': 'Musiiwa',
     'incidence': 5006,
   },
   {
-    'last_name': 'Chamunorwa',
+    'surname': 'Chamunorwa',
     'incidence': 5000,
   },
   {
-    'last_name': 'Denhere',
+    'surname': 'Denhere',
     'incidence': 4991,
   },
   {
-    'last_name': 'Jani',
+    'surname': 'Jani',
     'incidence': 4978,
   },
   {
-    'last_name': 'Zindoga',
+    'surname': 'Zindoga',
     'incidence': 4971,
   },
   {
-    'last_name': 'Mavhura',
+    'surname': 'Mavhura',
     'incidence': 4969,
   },
   {
-    'last_name': 'Munkombwe',
+    'surname': 'Munkombwe',
     'incidence': 4956,
   },
   {
-    'last_name': 'Maramba',
+    'surname': 'Maramba',
     'incidence': 4954,
   },
   {
-    'last_name': 'Tom',
+    'surname': 'Tom',
     'incidence': 4947,
   },
   {
-    'last_name': 'Njanji',
+    'surname': 'Njanji',
     'incidence': 4942,
   },
   {
-    'last_name': 'Machona',
+    'surname': 'Machona',
     'incidence': 4937,
   },
   {
-    'last_name': 'Masocha',
+    'surname': 'Masocha',
     'incidence': 4934,
   },
   {
-    'last_name': 'Sakala',
+    'surname': 'Sakala',
     'incidence': 4930,
   },
   {
-    'last_name': 'Madamombe',
+    'surname': 'Madamombe',
     'incidence': 4922,
   },
   {
-    'last_name': 'Nduna',
+    'surname': 'Nduna',
     'incidence': 4919,
   },
   {
-    'last_name': 'Meki',
+    'surname': 'Meki',
     'incidence': 4917,
   },
   {
-    'last_name': 'Chirwa',
+    'surname': 'Chirwa',
     'incidence': 4909,
   },
   {
-    'last_name': 'Makiwa',
+    'surname': 'Makiwa',
     'incidence': 4886,
   },
   {
-    'last_name': 'Saidi',
+    'surname': 'Saidi',
     'incidence': 4883,
   },
   {
-    'last_name': 'Gwatidzo',
+    'surname': 'Gwatidzo',
     'incidence': 4879,
   },
   {
-    'last_name': 'Mawere',
+    'surname': 'Mawere',
     'incidence': 4875,
   },
   {
-    'last_name': 'Matongo',
+    'surname': 'Matongo',
     'incidence': 4811,
   },
   {
-    'last_name': 'Matiza',
+    'surname': 'Matiza',
     'incidence': 4809,
   },
   {
-    'last_name': 'Mlauzi',
+    'surname': 'Mlauzi',
     'incidence': 4808,
   },
   {
-    'last_name': 'Simbi',
+    'surname': 'Simbi',
     'incidence': 4797,
   },
   {
-    'last_name': 'Chinembiri',
+    'surname': 'Chinembiri',
     'incidence': 4778,
   },
   {
-    'last_name': 'Mnkandla',
+    'surname': 'Mnkandla',
     'incidence': 4769,
   },
   {
-    'last_name': 'Zimuto',
+    'surname': 'Zimuto',
     'incidence': 4731,
   },
   {
-    'last_name': 'Charamba',
+    'surname': 'Charamba',
     'incidence': 4726,
   },
   {
-    'last_name': 'Mapurisa',
+    'surname': 'Mapurisa',
     'incidence': 4692,
   },
   {
-    'last_name': 'Zhakata',
+    'surname': 'Zhakata',
     'incidence': 4683,
   },
   {
-    'last_name': 'Mazarura',
+    'surname': 'Mazarura',
     'incidence': 4642,
   },
   {
-    'last_name': 'Mhike',
+    'surname': 'Mhike',
     'incidence': 4597,
   },
   {
-    'last_name': 'Gumpo',
+    'surname': 'Gumpo',
     'incidence': 4595,
   },
   {
-    'last_name': 'Antonio',
+    'surname': 'Antonio',
     'incidence': 4583,
   },
   {
-    'last_name': 'Nyakabau',
+    'surname': 'Nyakabau',
     'incidence': 4580,
   },
   {
-    'last_name': 'Mavhunga',
+    'surname': 'Mavhunga',
     'incidence': 4579,
   },
   {
-    'last_name': 'Nyamukondiwa',
+    'surname': 'Nyamukondiwa',
     'incidence': 4574,
   },
   {
-    'last_name': 'Gono',
+    'surname': 'Gono',
     'incidence': 4572,
   },
   {
-    'last_name': 'Saungweme',
+    'surname': 'Saungweme',
     'incidence': 4567,
   },
   {
-    'last_name': 'Shamu',
+    'surname': 'Shamu',
     'incidence': 4561,
   },
   {
-    'last_name': 'Chamboko',
+    'surname': 'Chamboko',
     'incidence': 4539,
   },
   {
-    'last_name': 'Choto',
+    'surname': 'Choto',
     'incidence': 4530,
   },
   {
-    'last_name': 'Kwenda',
+    'surname': 'Kwenda',
     'incidence': 4525,
   },
   {
-    'last_name': 'Mashoko',
+    'surname': 'Mashoko',
     'incidence': 4525,
   },
   {
-    'last_name': 'Mugande',
+    'surname': 'Mugande',
     'incidence': 4509,
   },
   {
-    'last_name': 'Mukono',
+    'surname': 'Mukono',
     'incidence': 4503,
   },
   {
-    'last_name': 'Chipunza',
+    'surname': 'Chipunza',
     'incidence': 4491,
   },
   {
-    'last_name': 'Gore',
+    'surname': 'Gore',
     'incidence': 4486,
   },
   {
-    'last_name': 'Mudavanhu',
+    'surname': 'Mudavanhu',
     'incidence': 4485,
   },
   {
-    'last_name': 'Sango',
+    'surname': 'Sango',
     'incidence': 4482,
   },
   {
-    'last_name': 'Nyama',
+    'surname': 'Nyama',
     'incidence': 4476,
   },
   {
-    'last_name': 'Tinarwo',
+    'surname': 'Tinarwo',
     'incidence': 4468,
   },
   {
-    'last_name': 'Dick',
+    'surname': 'Dick',
     'incidence': 4450,
   },
   {
-    'last_name': 'Chikuni',
+    'surname': 'Chikuni',
     'incidence': 4448,
   },
   {
-    'last_name': 'Ntini',
+    'surname': 'Ntini',
     'incidence': 4440,
   },
   {
-    'last_name': 'Kanyemba',
+    'surname': 'Kanyemba',
     'incidence': 4412,
   },
   {
-    'last_name': 'Mafu',
+    'surname': 'Mafu',
     'incidence': 4411,
   },
   {
-    'last_name': 'Makosa',
+    'surname': 'Makosa',
     'incidence': 4400,
   },
   {
-    'last_name': 'Chinyanga',
+    'surname': 'Chinyanga',
     'incidence': 4399,
   },
   {
-    'last_name': 'Ngoma',
+    'surname': 'Ngoma',
     'incidence': 4395,
   },
   {
-    'last_name': 'Mtisi',
+    'surname': 'Mtisi',
     'incidence': 4393,
   },
   {
-    'last_name': 'Nsingo',
+    'surname': 'Nsingo',
     'incidence': 4366,
   },
   {
-    'last_name': 'Rusike',
+    'surname': 'Rusike',
     'incidence': 4366,
   },
   {
-    'last_name': 'Mhandu',
+    'surname': 'Mhandu',
     'incidence': 4353,
   },
   {
-    'last_name': 'Makusha',
+    'surname': 'Makusha',
     'incidence': 4350,
   },
   {
-    'last_name': 'Shiri',
+    'surname': 'Shiri',
     'incidence': 4349,
   },
   {
-    'last_name': 'Zisengwe',
+    'surname': 'Zisengwe',
     'incidence': 4330,
   },
   {
-    'last_name': 'Sikhosana',
+    'surname': 'Sikhosana',
     'incidence': 4302,
   },
   {
-    'last_name': 'Munenge',
+    'surname': 'Munenge',
     'incidence': 4299,
   },
   {
-    'last_name': 'Nyambo',
+    'surname': 'Nyambo',
     'incidence': 4273,
   },
   {
-    'last_name': 'Shambare',
+    'surname': 'Shambare',
     'incidence': 4273,
   },
   {
-    'last_name': 'Moyana',
+    'surname': 'Moyana',
     'incidence': 4268,
   },
   {
-    'last_name': 'Masuka',
+    'surname': 'Masuka',
     'incidence': 4263,
   },
   {
-    'last_name': 'Mushore',
+    'surname': 'Mushore',
     'incidence': 4263,
   },
   {
-    'last_name': 'Macheka',
+    'surname': 'Macheka',
     'incidence': 4255,
   },
   {
-    'last_name': 'Tanyanyiwa',
+    'surname': 'Tanyanyiwa',
     'incidence': 4246,
   },
   {
-    'last_name': 'Kufa',
+    'surname': 'Kufa',
     'incidence': 4227,
   },
   {
-    'last_name': 'Mangezi',
+    'surname': 'Mangezi',
     'incidence': 4217,
   },
   {
-    'last_name': 'Runesu',
+    'surname': 'Runesu',
     'incidence': 4211,
   },
   {
-    'last_name': 'Matanda',
+    'surname': 'Matanda',
     'incidence': 4210,
   },
   {
-    'last_name': 'Matema',
+    'surname': 'Matema',
     'incidence': 4189,
   },
   {
-    'last_name': 'Matutu',
+    'surname': 'Matutu',
     'incidence': 4177,
   },
   {
-    'last_name': 'Mbano',
+    'surname': 'Mbano',
     'incidence': 4148,
   },
   {
-    'last_name': 'Bere',
+    'surname': 'Bere',
     'incidence': 4144,
   },
   {
-    'last_name': 'Mhizha',
+    'surname': 'Mhizha',
     'incidence': 4143,
   },
   {
-    'last_name': 'Mafunga',
+    'surname': 'Mafunga',
     'incidence': 4130,
   },
   {
-    'last_name': 'Gurure',
+    'surname': 'Gurure',
     'incidence': 4128,
   },
   {
-    'last_name': 'Chimedza',
+    'surname': 'Chimedza',
     'incidence': 4127,
   },
   {
-    'last_name': 'Tomu',
+    'surname': 'Tomu',
     'incidence': 4122,
   },
   {
-    'last_name': 'Mataruse',
+    'surname': 'Mataruse',
     'incidence': 4106,
   },
   {
-    'last_name': 'Makwara',
+    'surname': 'Makwara',
     'incidence': 4104,
   },
   {
-    'last_name': 'Tsiga',
+    'surname': 'Tsiga',
     'incidence': 4099,
   },
   {
-    'last_name': 'Goredema',
+    'surname': 'Goredema',
     'incidence': 4094,
   },
   {
-    'last_name': 'Tapfumaneyi',
+    'surname': 'Tapfumaneyi',
     'incidence': 4084,
   },
   {
-    'last_name': 'Dlodlo',
+    'surname': 'Dlodlo',
     'incidence': 4082,
   },
   {
-    'last_name': 'Chinyoka',
+    'surname': 'Chinyoka',
     'incidence': 4073,
   },
   {
-    'last_name': 'Mangwende',
+    'surname': 'Mangwende',
     'incidence': 4060,
   },
   {
-    'last_name': 'Chivasa',
+    'surname': 'Chivasa',
     'incidence': 4053,
   },
   {
-    'last_name': 'Khanye',
+    'surname': 'Khanye',
     'incidence': 4052,
   },
   {
-    'last_name': 'Mandeya',
+    'surname': 'Mandeya',
     'incidence': 4050,
   },
   {
-    'last_name': 'Vundla',
+    'surname': 'Vundla',
     'incidence': 4040,
   },
   {
-    'last_name': 'Machaya',
+    'surname': 'Machaya',
     'incidence': 4024,
   },
   {
-    'last_name': 'Chabata',
+    'surname': 'Chabata',
     'incidence': 4023,
   },
   {
-    'last_name': 'Charuma',
+    'surname': 'Charuma',
     'incidence': 4023,
   },
   {
-    'last_name': 'Matanhire',
+    'surname': 'Matanhire',
     'incidence': 4019,
   },
   {
-    'last_name': 'Choga',
+    'surname': 'Choga',
     'incidence': 4012,
   },
   {
-    'last_name': 'Zinyemba',
+    'surname': 'Zinyemba',
     'incidence': 3981,
   },
   {
-    'last_name': 'Khumbula',
+    'surname': 'Khumbula',
     'incidence': 3967,
   },
   {
-    'last_name': 'Gambiza',
+    'surname': 'Gambiza',
     'incidence': 3964,
   },
   {
-    'last_name': 'Hlabangana',
+    'surname': 'Hlabangana',
     'incidence': 3963,
   },
   {
-    'last_name': 'Machaka',
+    'surname': 'Machaka',
     'incidence': 3951,
   },
   {
-    'last_name': 'Tapfuma',
+    'surname': 'Tapfuma',
     'incidence': 3920,
   },
   {
-    'last_name': 'Musara',
+    'surname': 'Musara',
     'incidence': 3917,
   },
   {
-    'last_name': 'Madzima',
+    'surname': 'Madzima',
     'incidence': 3904,
   },
   {
-    'last_name': 'Madziwa',
+    'surname': 'Madziwa',
     'incidence': 3903,
   },
   {
-    'last_name': 'Mbofana',
+    'surname': 'Mbofana',
     'incidence': 3900,
   },
   {
-    'last_name': 'Matenga',
+    'surname': 'Matenga',
     'incidence': 3893,
   },
   {
-    'last_name': 'Pedzisai',
+    'surname': 'Pedzisai',
     'incidence': 3893,
   },
   {
-    'last_name': 'Chikwanda',
+    'surname': 'Chikwanda',
     'incidence': 3891,
   },
   {
-    'last_name': 'Manyere',
+    'surname': 'Manyere',
     'incidence': 3890,
   },
   {
-    'last_name': 'Munyaradzi',
+    'surname': 'Munyaradzi',
     'incidence': 3879,
   },
   {
-    'last_name': 'Jeke',
+    'surname': 'Jeke',
     'incidence': 3868,
   },
   {
-    'last_name': 'Dzapasi',
+    'surname': 'Dzapasi',
     'incidence': 3850,
   },
   {
-    'last_name': 'Mhere',
+    'surname': 'Mhere',
     'incidence': 3844,
   },
   {
-    'last_name': 'Gutu',
+    'surname': 'Gutu',
     'incidence': 3842,
   },
   {
-    'last_name': 'Ngwerume',
+    'surname': 'Ngwerume',
     'incidence': 3838,
   },
   {
-    'last_name': 'Mumba',
+    'surname': 'Mumba',
     'incidence': 3819,
   },
   {
-    'last_name': 'Mdlongwa',
+    'surname': 'Mdlongwa',
     'incidence': 3816,
   },
   {
-    'last_name': 'Zaranyika',
+    'surname': 'Zaranyika',
     'incidence': 3801,
   },
   {
-    'last_name': 'Nyemba',
+    'surname': 'Nyemba',
     'incidence': 3798,
   },
   {
-    'last_name': 'Dongo',
+    'surname': 'Dongo',
     'incidence': 3796,
   },
   {
-    'last_name': 'Musiyiwa',
+    'surname': 'Musiyiwa',
     'incidence': 3790,
   },
   {
-    'last_name': 'Kazingizi',
+    'surname': 'Kazingizi',
     'incidence': 3787,
   },
   {
-    'last_name': 'Chinyani',
+    'surname': 'Chinyani',
     'incidence': 3773,
   },
   {
-    'last_name': 'Murambiwa',
+    'surname': 'Murambiwa',
     'incidence': 3770,
   },
   {
-    'last_name': 'Makonese',
+    'surname': 'Makonese',
     'incidence': 3756,
   },
   {
-    'last_name': 'Thomas',
+    'surname': 'Thomas',
     'incidence': 3751,
   },
   {
-    'last_name': 'Chisango',
+    'surname': 'Chisango',
     'incidence': 3720,
   },
   {
-    'last_name': 'Makanda',
+    'surname': 'Makanda',
     'incidence': 3720,
   },
   {
-    'last_name': 'Luphahla',
+    'surname': 'Luphahla',
     'incidence': 3705,
   },
   {
-    'last_name': 'Kativhu',
+    'surname': 'Kativhu',
     'incidence': 3699,
   },
   {
-    'last_name': 'Gweshe',
+    'surname': 'Gweshe',
     'incidence': 3691,
   },
   {
-    'last_name': 'Machingauta',
+    'surname': 'Machingauta',
     'incidence': 3686,
   },
   {
-    'last_name': 'Gomba',
+    'surname': 'Gomba',
     'incidence': 3676,
   },
   {
-    'last_name': 'Magwenzi',
+    'surname': 'Magwenzi',
     'incidence': 3662,
   },
   {
-    'last_name': 'Kashiri',
+    'surname': 'Kashiri',
     'incidence': 3660,
   },
   {
-    'last_name': 'Zinyama',
+    'surname': 'Zinyama',
     'incidence': 3656,
   },
   {
-    'last_name': 'Masendeke',
+    'surname': 'Masendeke',
     'incidence': 3655,
   },
   {
-    'last_name': 'Kondo',
+    'surname': 'Kondo',
     'incidence': 3652,
   },
   {
-    'last_name': 'Zvenyika',
+    'surname': 'Zvenyika',
     'incidence': 3644,
   },
   {
-    'last_name': 'Jonga',
+    'surname': 'Jonga',
     'incidence': 3639,
   },
   {
-    'last_name': 'Gwara',
+    'surname': 'Gwara',
     'incidence': 3635,
   },
   {
-    'last_name': 'Vheremu',
+    'surname': 'Vheremu',
     'incidence': 3629,
   },
   {
-    'last_name': 'Nyati',
+    'surname': 'Nyati',
     'incidence': 3625,
   },
   {
-    'last_name': 'Manyanga',
+    'surname': 'Manyanga',
     'incidence': 3615,
   },
   {
-    'last_name': 'Makamba',
+    'surname': 'Makamba',
     'incidence': 3612,
   },
   {
-    'last_name': 'Magwaza',
+    'surname': 'Magwaza',
     'incidence': 3611,
   },
   {
-    'last_name': 'Munyanyi',
+    'surname': 'Munyanyi',
     'incidence': 3608,
   },
   {
-    'last_name': 'Chiremba',
+    'surname': 'Chiremba',
     'incidence': 3607,
   },
   {
-    'last_name': 'Muranda',
+    'surname': 'Muranda',
     'incidence': 3606,
   },
   {
-    'last_name': 'Midzi',
+    'surname': 'Midzi',
     'incidence': 3603,
   },
   {
-    'last_name': 'Msimanga',
+    'surname': 'Msimanga',
     'incidence': 3597,
   },
   {
-    'last_name': 'Zengeya',
+    'surname': 'Zengeya',
     'incidence': 3595,
   },
   {
-    'last_name': 'Gava',
+    'surname': 'Gava',
     'incidence': 3592,
   },
   {
-    'last_name': 'Kembo',
+    'surname': 'Kembo',
     'incidence': 3587,
   },
   {
-    'last_name': 'Mhondiwa',
+    'surname': 'Mhondiwa',
     'incidence': 3584,
   },
   {
-    'last_name': 'Zengeni',
+    'surname': 'Zengeni',
     'incidence': 3579,
   },
   {
-    'last_name': 'Ushe',
+    'surname': 'Ushe',
     'incidence': 3565,
   },
   {
-    'last_name': 'Tagarira',
+    'surname': 'Tagarira',
     'incidence': 3561,
   },
   {
-    'last_name': 'Simon',
+    'surname': 'Simon',
     'incidence': 3548,
   },
   {
-    'last_name': 'Matanga',
+    'surname': 'Matanga',
     'incidence': 3539,
   },
   {
-    'last_name': 'Dziva',
+    'surname': 'Dziva',
     'incidence': 3530,
   },
   {
-    'last_name': 'Chitiyo',
+    'surname': 'Chitiyo',
     'incidence': 3525,
   },
   {
-    'last_name': 'Mutamba',
+    'surname': 'Mutamba',
     'incidence': 3520,
   },
   {
-    'last_name': 'Nleya',
+    'surname': 'Nleya',
     'incidence': 3517,
   },
   {
-    'last_name': 'William',
+    'surname': 'William',
     'incidence': 3517,
   },
   {
-    'last_name': 'Pasipanodya',
+    'surname': 'Pasipanodya',
     'incidence': 3511,
   },
   {
-    'last_name': 'Wilson',
+    'surname': 'Wilson',
     'incidence': 3499,
   },
   {
-    'last_name': 'Jena',
+    'surname': 'Jena',
     'incidence': 3498,
   },
   {
-    'last_name': 'Mtombeni',
+    'surname': 'Mtombeni',
     'incidence': 3489,
   },
   {
-    'last_name': 'Charumbira',
+    'surname': 'Charumbira',
     'incidence': 3487,
   },
   {
-    'last_name': 'Ngandu',
+    'surname': 'Ngandu',
     'incidence': 3475,
   },
   {
-    'last_name': 'Chirinda',
+    'surname': 'Chirinda',
     'incidence': 3473,
   },
   {
-    'last_name': 'Zvomuya',
+    'surname': 'Zvomuya',
     'incidence': 3467,
   },
   {
-    'last_name': 'Kanengoni',
+    'surname': 'Kanengoni',
     'incidence': 3466,
   },
   {
-    'last_name': 'Muzavazi',
+    'surname': 'Muzavazi',
     'incidence': 3452,
   },
   {
-    'last_name': 'Marisa',
+    'surname': 'Marisa',
     'incidence': 3441,
   },
   {
-    'last_name': 'Rupiya',
+    'surname': 'Rupiya',
     'incidence': 3438,
   },
   {
-    'last_name': 'Gotora',
+    'surname': 'Gotora',
     'incidence': 3429,
   },
   {
-    'last_name': 'Jasi',
+    'surname': 'Jasi',
     'incidence': 3418,
   },
   {
-    'last_name': 'Mudau',
+    'surname': 'Mudau',
     'incidence': 3418,
   },
   {
-    'last_name': 'Mashanda',
+    'surname': 'Mashanda',
     'incidence': 3410,
   },
   {
-    'last_name': 'Chikono',
+    'surname': 'Chikono',
     'incidence': 3407,
   },
   {
-    'last_name': 'Chipangura',
+    'surname': 'Chipangura',
     'incidence': 3407,
   },
   {
-    'last_name': 'Karonga',
+    'surname': 'Karonga',
     'incidence': 3404,
   },
   {
-    'last_name': 'Mudzengerere',
+    'surname': 'Mudzengerere',
     'incidence': 3403,
   },
   {
-    'last_name': 'Mukucha',
+    'surname': 'Mukucha',
     'incidence': 3402,
   },
   {
-    'last_name': 'Magura',
+    'surname': 'Magura',
     'incidence': 3398,
   },
   {
-    'last_name': 'Gudo',
+    'surname': 'Gudo',
     'incidence': 3392,
   },
   {
-    'last_name': 'Mukaro',
+    'surname': 'Mukaro',
     'incidence': 3391,
   },
   {
-    'last_name': 'Nhidza',
+    'surname': 'Nhidza',
     'incidence': 3383,
   },
   {
-    'last_name': 'Madzivire',
+    'surname': 'Madzivire',
     'incidence': 3380,
   },
   {
-    'last_name': 'Gama',
+    'surname': 'Gama',
     'incidence': 3374,
   },
   {
-    'last_name': 'Mavunga',
+    'surname': 'Mavunga',
     'incidence': 3368,
   },
   {
-    'last_name': 'Chamisa',
+    'surname': 'Chamisa',
     'incidence': 3361,
   },
   {
-    'last_name': 'Mandizha',
+    'surname': 'Mandizha',
     'incidence': 3361,
   },
   {
-    'last_name': 'Rutsito',
+    'surname': 'Rutsito',
     'incidence': 3354,
   },
   {
-    'last_name': 'Kwangwari',
+    'surname': 'Kwangwari',
     'incidence': 3351,
   },
   {
-    'last_name': 'Machokoto',
+    'surname': 'Machokoto',
     'incidence': 3347,
   },
   {
-    'last_name': 'Zhuwao',
+    'surname': 'Zhuwao',
     'incidence': 3341,
   },
   {
-    'last_name': 'Musindo',
+    'surname': 'Musindo',
     'incidence': 3334,
   },
   {
-    'last_name': 'Donga',
+    'surname': 'Donga',
     'incidence': 3329,
   },
   {
-    'last_name': 'Manyange',
+    'surname': 'Manyange',
     'incidence': 3328,
   },
   {
-    'last_name': 'Ndawana',
+    'surname': 'Ndawana',
     'incidence': 3314,
   },
   {
-    'last_name': 'Mativenga',
+    'surname': 'Mativenga',
     'incidence': 3312,
   },
   {
-    'last_name': 'Gora',
+    'surname': 'Gora',
     'incidence': 3305,
   },
   {
-    'last_name': 'Makamure',
+    'surname': 'Makamure',
     'incidence': 3302,
   },
   {
-    'last_name': 'Jiri',
+    'surname': 'Jiri',
     'incidence': 3299,
   },
   {
-    'last_name': 'Chihota',
+    'surname': 'Chihota',
     'incidence': 3291,
   },
   {
-    'last_name': 'Tandi',
+    'surname': 'Tandi',
     'incidence': 3286,
   },
   {
-    'last_name': 'Tshabangu',
+    'surname': 'Tshabangu',
     'incidence': 3284,
   },
   {
-    'last_name': 'Jackson',
+    'surname': 'Jackson',
     'incidence': 3283,
   },
   {
-    'last_name': 'Nhema',
+    'surname': 'Nhema',
     'incidence': 3273,
   },
   {
-    'last_name': 'Chikanya',
+    'surname': 'Chikanya',
     'incidence': 3272,
   },
   {
-    'last_name': 'Nyamhunga',
+    'surname': 'Nyamhunga',
     'incidence': 3271,
   },
   {
-    'last_name': 'Mazhambe',
+    'surname': 'Mazhambe',
     'incidence': 3259,
   },
   {
-    'last_name': 'Mathuthu',
+    'surname': 'Mathuthu',
     'incidence': 3255,
   },
   {
-    'last_name': 'Mushayi',
+    'surname': 'Mushayi',
     'incidence': 3255,
   },
   {
-    'last_name': 'Machipisa',
+    'surname': 'Machipisa',
     'incidence': 3253,
   },
   {
-    'last_name': 'Kambarami',
+    'surname': 'Kambarami',
     'incidence': 3245,
   },
   {
-    'last_name': 'Singo',
+    'surname': 'Singo',
     'incidence': 3244,
   },
   {
-    'last_name': 'Chikomba',
+    'surname': 'Chikomba',
     'incidence': 3238,
   },
   {
-    'last_name': 'Gundani',
+    'surname': 'Gundani',
     'incidence': 3229,
   },
   {
-    'last_name': 'Nare',
+    'surname': 'Nare',
     'incidence': 3224,
   },
   {
-    'last_name': 'Musona',
+    'surname': 'Musona',
     'incidence': 3222,
   },
   {
-    'last_name': 'Chirenje',
+    'surname': 'Chirenje',
     'incidence': 3213,
   },
   {
-    'last_name': 'Mashayamombe',
+    'surname': 'Mashayamombe',
     'incidence': 3210,
   },
   {
-    'last_name': 'Mapondera',
+    'surname': 'Mapondera',
     'incidence': 3202,
   },
   {
-    'last_name': 'Mutanda',
+    'surname': 'Mutanda',
     'incidence': 3195,
   },
   {
-    'last_name': 'Makura',
+    'surname': 'Makura',
     'incidence': 3189,
   },
   {
-    'last_name': 'Chakanetsa',
+    'surname': 'Chakanetsa',
     'incidence': 3185,
   },
   {
-    'last_name': 'Munyuki',
+    'surname': 'Munyuki',
     'incidence': 3183,
   },
   {
-    'last_name': 'Matimba',
+    'surname': 'Matimba',
     'incidence': 3174,
   },
   {
-    'last_name': 'Muguti',
+    'surname': 'Muguti',
     'incidence': 3173,
   },
   {
-    'last_name': 'Tafireyi',
+    'surname': 'Tafireyi',
     'incidence': 3168,
   },
   {
-    'last_name': 'Hlongwane',
+    'surname': 'Hlongwane',
     'incidence': 3163,
   },
   {
-    'last_name': 'Nyabadza',
+    'surname': 'Nyabadza',
     'incidence': 3157,
   },
   {
-    'last_name': 'Maruta',
+    'surname': 'Maruta',
     'incidence': 3152,
   },
   {
-    'last_name': 'Nherera',
+    'surname': 'Nherera',
     'incidence': 3150,
   },
   {
-    'last_name': 'Ngoshi',
+    'surname': 'Ngoshi',
     'incidence': 3148,
   },
   {
-    'last_name': 'Mapako',
+    'surname': 'Mapako',
     'incidence': 3146,
   },
   {
-    'last_name': 'Mususa',
+    'surname': 'Mususa',
     'incidence': 3145,
   },
   {
-    'last_name': 'Mubvumbi',
+    'surname': 'Mubvumbi',
     'incidence': 3136,
   },
   {
-    'last_name': 'Hamandishe',
+    'surname': 'Hamandishe',
     'incidence': 3134,
   },
   {
-    'last_name': 'Chiwanza',
+    'surname': 'Chiwanza',
     'incidence': 3133,
   },
   {
-    'last_name': 'Chimbwanda',
+    'surname': 'Chimbwanda',
     'incidence': 3131,
   },
   {
-    'last_name': 'Goto',
+    'surname': 'Goto',
     'incidence': 3130,
   },
   {
-    'last_name': 'Gwaze',
+    'surname': 'Gwaze',
     'incidence': 3130,
   },
   {
-    'last_name': 'Masara',
+    'surname': 'Masara',
     'incidence': 3128,
   },
   {
-    'last_name': 'Madzimure',
+    'surname': 'Madzimure',
     'incidence': 3124,
   },
   {
-    'last_name': 'Munhenga',
+    'surname': 'Munhenga',
     'incidence': 3121,
   },
   {
-    'last_name': 'Muchimba',
+    'surname': 'Muchimba',
     'incidence': 3116,
   },
   {
-    'last_name': 'Mubayiwa',
+    'surname': 'Mubayiwa',
     'incidence': 3098,
   },
   {
-    'last_name': 'Murove',
+    'surname': 'Murove',
     'incidence': 3093,
   },
   {
-    'last_name': 'Thebe',
+    'surname': 'Thebe',
     'incidence': 3089,
   },
   {
-    'last_name': 'Nyashanu',
+    'surname': 'Nyashanu',
     'incidence': 3083,
   },
   {
-    'last_name': 'Kumbula',
+    'surname': 'Kumbula',
     'incidence': 3081,
   },
   {
-    'last_name': 'Rice',
+    'surname': 'Rice',
     'incidence': 3077,
   },
   {
-    'last_name': 'Nhau',
+    'surname': 'Nhau',
     'incidence': 3074,
   },
   {
-    'last_name': 'Chitsa',
+    'surname': 'Chitsa',
     'incidence': 3070,
   },
   {
-    'last_name': 'Savanhu',
+    'surname': 'Savanhu',
     'incidence': 3063,
   },
   {
-    'last_name': 'Maravanyika',
+    'surname': 'Maravanyika',
     'incidence': 3062,
   },
   {
-    'last_name': 'Samu',
+    'surname': 'Samu',
     'incidence': 3060,
   },
   {
-    'last_name': 'Mudzamiri',
+    'surname': 'Mudzamiri',
     'incidence': 3057,
   },
   {
-    'last_name': 'Katerere',
+    'surname': 'Katerere',
     'incidence': 3055,
   },
   {
-    'last_name': 'Mbambo',
+    'surname': 'Mbambo',
     'incidence': 3055,
   },
   {
-    'last_name': 'Ngundu',
+    'surname': 'Ngundu',
     'incidence': 3054,
   },
   {
-    'last_name': 'Shangwa',
+    'surname': 'Shangwa',
     'incidence': 3051,
   },
   {
-    'last_name': 'Chizema',
+    'surname': 'Chizema',
     'incidence': 3044,
   },
   {
-    'last_name': 'Makuvaza',
+    'surname': 'Makuvaza',
     'incidence': 3040,
   },
   {
-    'last_name': 'Kahari',
+    'surname': 'Kahari',
     'incidence': 3039,
   },
   {
-    'last_name': 'Nyoka',
+    'surname': 'Nyoka',
     'incidence': 3034,
   },
   {
-    'last_name': 'Takaendesa',
+    'surname': 'Takaendesa',
     'incidence': 3029,
   },
   {
-    'last_name': 'Tauro',
+    'surname': 'Tauro',
     'incidence': 3011,
   },
   {
-    'last_name': 'Muponda',
+    'surname': 'Muponda',
     'incidence': 3010,
   },
   {
-    'last_name': 'Nhira',
+    'surname': 'Nhira',
     'incidence': 3009,
   },
   {
-    'last_name': 'Makaya',
+    'surname': 'Makaya',
     'incidence': 3005,
   },
   {
-    'last_name': 'Mazorodze',
+    'surname': 'Mazorodze',
     'incidence': 3003,
   },
   {
-    'last_name': 'Mapiye',
+    'surname': 'Mapiye',
     'incidence': 2999,
   },
   {
-    'last_name': 'Joseph',
+    'surname': 'Joseph',
     'incidence': 2997,
   },
   {
-    'last_name': 'Myambo',
+    'surname': 'Myambo',
     'incidence': 2993,
   },
   {
-    'last_name': 'Dzingai',
+    'surname': 'Dzingai',
     'incidence': 2991,
   },
   {
-    'last_name': 'Jambaya',
+    'surname': 'Jambaya',
     'incidence': 2989,
   },
   {
-    'last_name': 'Chikoto',
+    'surname': 'Chikoto',
     'incidence': 2982,
   },
   {
-    'last_name': 'Mutsago',
+    'surname': 'Mutsago',
     'incidence': 2972,
   },
   {
-    'last_name': 'Nyamukapa',
+    'surname': 'Nyamukapa',
     'incidence': 2971,
   },
   {
-    'last_name': 'Nhete',
+    'surname': 'Nhete',
     'incidence': 2967,
   },
   {
-    'last_name': 'Baloyi',
+    'surname': 'Baloyi',
     'incidence': 2965,
   },
   {
-    'last_name': 'Masenda',
+    'surname': 'Masenda',
     'incidence': 2961,
   },
   {
-    'last_name': 'Mandebvu',
+    'surname': 'Mandebvu',
     'incidence': 2960,
   },
   {
-    'last_name': 'Chikowore',
+    'surname': 'Chikowore',
     'incidence': 2959,
   },
   {
-    'last_name': 'Samson',
+    'surname': 'Samson',
     'incidence': 2945,
   },
   {
-    'last_name': 'Gonye',
+    'surname': 'Gonye',
     'incidence': 2942,
   },
   {
-    'last_name': 'Masamba',
+    'surname': 'Masamba',
     'incidence': 2936,
   },
   {
-    'last_name': 'Chikore',
+    'surname': 'Chikore',
     'incidence': 2923,
   },
   {
-    'last_name': 'Jaji',
+    'surname': 'Jaji',
     'incidence': 2913,
   },
   {
-    'last_name': 'Makondo',
+    'surname': 'Makondo',
     'incidence': 2907,
   },
   {
-    'last_name': 'Chidhakwa',
+    'surname': 'Chidhakwa',
     'incidence': 2906,
   },
   {
-    'last_name': 'Chinoda',
+    'surname': 'Chinoda',
     'incidence': 2903,
   },
   {
-    'last_name': 'Gonzo',
+    'surname': 'Gonzo',
     'incidence': 2903,
   },
   {
-    'last_name': 'Madzivanyika',
+    'surname': 'Madzivanyika',
     'incidence': 2901,
   },
   {
-    'last_name': 'Musengi',
+    'surname': 'Musengi',
     'incidence': 2900,
   },
   {
-    'last_name': 'Mudzimu',
+    'surname': 'Mudzimu',
     'incidence': 2895,
   },
   {
-    'last_name': 'Chiutsi',
+    'surname': 'Chiutsi',
     'incidence': 2894,
   },
   {
-    'last_name': 'Nyamasoka',
+    'surname': 'Nyamasoka',
     'incidence': 2885,
   },
   {
-    'last_name': 'Mushambi',
+    'surname': 'Mushambi',
     'incidence': 2884,
   },
   {
-    'last_name': 'Mazhindu',
+    'surname': 'Mazhindu',
     'incidence': 2877,
   },
   {
-    'last_name': 'Gwanzura',
+    'surname': 'Gwanzura',
     'incidence': 2869,
   },
   {
-    'last_name': 'Muchabaiwa',
+    'surname': 'Muchabaiwa',
     'incidence': 2866,
   },
   {
-    'last_name': 'Mapisa',
+    'surname': 'Mapisa',
     'incidence': 2864,
   },
   {
-    'last_name': 'Tachiona',
+    'surname': 'Tachiona',
     'incidence': 2863,
   },
   {
-    'last_name': 'Kamba',
+    'surname': 'Kamba',
     'incidence': 2862,
   },
   {
-    'last_name': 'Zikhali',
+    'surname': 'Zikhali',
     'incidence': 2859,
   },
   {
-    'last_name': 'Mugova',
+    'surname': 'Mugova',
     'incidence': 2855,
   },
   {
-    'last_name': 'Chitate',
+    'surname': 'Chitate',
     'incidence': 2850,
   },
   {
-    'last_name': 'Tlou',
+    'surname': 'Tlou',
     'incidence': 2842,
   },
   {
-    'last_name': 'Chigodora',
+    'surname': 'Chigodora',
     'incidence': 2840,
   },
   {
-    'last_name': 'Chimuka',
+    'surname': 'Chimuka',
     'incidence': 2840,
   },
   {
-    'last_name': 'Khabo',
+    'surname': 'Khabo',
     'incidence': 2835,
   },
   {
-    'last_name': 'Chatikobo',
+    'surname': 'Chatikobo',
     'incidence': 2830,
   },
   {
-    'last_name': 'Machemedze',
+    'surname': 'Machemedze',
     'incidence': 2827,
   },
   {
-    'last_name': 'Nyambuya',
+    'surname': 'Nyambuya',
     'incidence': 2827,
   },
   {
-    'last_name': 'Chipere',
+    'surname': 'Chipere',
     'incidence': 2824,
   },
   {
-    'last_name': 'Mushipe',
+    'surname': 'Mushipe',
     'incidence': 2824,
   },
   {
-    'last_name': 'Badza',
+    'surname': 'Badza',
     'incidence': 2812,
   },
   {
-    'last_name': 'Murombo',
+    'surname': 'Murombo',
     'incidence': 2812,
   },
   {
-    'last_name': 'Chimanga',
+    'surname': 'Chimanga',
     'incidence': 2811,
   },
   {
-    'last_name': 'Mandava',
+    'surname': 'Mandava',
     'incidence': 2809,
   },
   {
-    'last_name': 'Mutare',
+    'surname': 'Mutare',
     'incidence': 2803,
   },
   {
-    'last_name': 'Mberi',
+    'surname': 'Mberi',
     'incidence': 2802,
   },
   {
-    'last_name': 'Mukombwe',
+    'surname': 'Mukombwe',
     'incidence': 2801,
   },
   {
-    'last_name': 'Kaitano',
+    'surname': 'Kaitano',
     'incidence': 2795,
   },
   {
-    'last_name': 'Pasipamire',
+    'surname': 'Pasipamire',
     'incidence': 2795,
   },
   {
-    'last_name': 'Soko',
+    'surname': 'Soko',
     'incidence': 2794,
   },
   {
-    'last_name': 'Chirara',
+    'surname': 'Chirara',
     'incidence': 2793,
   },
   {
-    'last_name': 'Kazembe',
+    'surname': 'Kazembe',
     'incidence': 2793,
   },
   {
-    'last_name': 'Gutsa',
+    'surname': 'Gutsa',
     'incidence': 2790,
   },
   {
-    'last_name': 'Chikara',
+    'surname': 'Chikara',
     'incidence': 2776,
   },
   {
-    'last_name': 'Maisiri',
+    'surname': 'Maisiri',
     'incidence': 2776,
   },
   {
-    'last_name': 'Masina',
+    'surname': 'Masina',
     'incidence': 2772,
   },
   {
-    'last_name': 'Mavura',
+    'surname': 'Mavura',
     'incidence': 2767,
   },
   {
-    'last_name': 'Zambuko',
+    'surname': 'Zambuko',
     'incidence': 2767,
   },
   {
-    'last_name': 'Makuvire',
+    'surname': 'Makuvire',
     'incidence': 2762,
   },
   {
-    'last_name': 'Takundwa',
+    'surname': 'Takundwa',
     'incidence': 2762,
   },
   {
-    'last_name': 'Maturure',
+    'surname': 'Maturure',
     'incidence': 2759,
   },
   {
-    'last_name': 'Muvirimi',
+    'surname': 'Muvirimi',
     'incidence': 2756,
   },
   {
-    'last_name': 'Chigwida',
+    'surname': 'Chigwida',
     'incidence': 2755,
   },
   {
-    'last_name': 'Huni',
+    'surname': 'Huni',
     'incidence': 2737,
   },
   {
-    'last_name': 'Kadungure',
+    'surname': 'Kadungure',
     'incidence': 2737,
   },
   {
-    'last_name': 'Vengesai',
+    'surname': 'Vengesai',
     'incidence': 2734,
   },
   {
-    'last_name': 'Zvidzai',
+    'surname': 'Zvidzai',
     'incidence': 2731,
   },
   {
-    'last_name': 'Mukarati',
+    'surname': 'Mukarati',
     'incidence': 2728,
   },
   {
-    'last_name': 'Kanyama',
+    'surname': 'Kanyama',
     'incidence': 2726,
   },
   {
-    'last_name': 'Ruzive',
+    'surname': 'Ruzive',
     'incidence': 2724,
   },
   {
-    'last_name': 'Mbengo',
+    'surname': 'Mbengo',
     'incidence': 2723,
   },
   {
-    'last_name': 'Mungombe',
+    'surname': 'Mungombe',
     'incidence': 2722,
   },
   {
-    'last_name': 'White',
+    'surname': 'White',
     'incidence': 2722,
   },
   {
-    'last_name': 'Musasa',
+    'surname': 'Musasa',
     'incidence': 2711,
   },
   {
-    'last_name': 'Togara',
+    'surname': 'Togara',
     'incidence': 2711,
   },
   {
-    'last_name': 'Munjoma',
+    'surname': 'Munjoma',
     'incidence': 2710,
   },
   {
-    'last_name': 'Chidakwa',
+    'surname': 'Chidakwa',
     'incidence': 2693,
   },
   {
-    'last_name': 'Manyonga',
+    'surname': 'Manyonga',
     'incidence': 2687,
   },
   {
-    'last_name': 'Muzira',
+    'surname': 'Muzira',
     'incidence': 2684,
   },
   {
-    'last_name': 'Muradzikwa',
+    'surname': 'Muradzikwa',
     'incidence': 2683,
   },
   {
-    'last_name': 'Jojo',
+    'surname': 'Jojo',
     'incidence': 2680,
   },
   {
-    'last_name': 'Chemhere',
+    'surname': 'Chemhere',
     'incidence': 2678,
   },
   {
-    'last_name': 'Manjoro',
+    'surname': 'Manjoro',
     'incidence': 2677,
   },
   {
-    'last_name': 'Gunda',
+    'surname': 'Gunda',
     'incidence': 2676,
   },
   {
-    'last_name': 'Daka',
+    'surname': 'Daka',
     'incidence': 2674,
   },
   {
-    'last_name': 'Munatsi',
+    'surname': 'Munatsi',
     'incidence': 2672,
   },
   {
-    'last_name': 'Shamuyarira',
+    'surname': 'Shamuyarira',
     'incidence': 2669,
   },
   {
-    'last_name': 'Mhako',
+    'surname': 'Mhako',
     'incidence': 2667,
   },
   {
-    'last_name': 'Jamu',
+    'surname': 'Jamu',
     'incidence': 2659,
   },
   {
-    'last_name': 'Jera',
+    'surname': 'Jera',
     'incidence': 2653,
   },
   {
-    'last_name': 'Bobo',
+    'surname': 'Bobo',
     'incidence': 2652,
   },
   {
-    'last_name': 'Mashamba',
+    'surname': 'Mashamba',
     'incidence': 2652,
   },
   {
-    'last_name': 'Mangoma',
+    'surname': 'Mangoma',
     'incidence': 2646,
   },
   {
-    'last_name': 'Zvoushe',
+    'surname': 'Zvoushe',
     'incidence': 2645,
   },
   {
-    'last_name': 'Mleya',
+    'surname': 'Mleya',
     'incidence': 2635,
   },
   {
-    'last_name': 'Mudyiwa',
+    'surname': 'Mudyiwa',
     'incidence': 2633,
   },
   {
-    'last_name': 'Chikanda',
+    'surname': 'Chikanda',
     'incidence': 2628,
   },
   {
-    'last_name': 'Mudzviti',
+    'surname': 'Mudzviti',
     'incidence': 2625,
   },
   {
-    'last_name': 'Makota',
+    'surname': 'Makota',
     'incidence': 2623,
   },
   {
-    'last_name': 'Mutetwa',
+    'surname': 'Mutetwa',
     'incidence': 2619,
   },
   {
-    'last_name': 'Nyarugwe',
+    'surname': 'Nyarugwe',
     'incidence': 2618,
   },
   {
-    'last_name': 'Manomano',
+    'surname': 'Manomano',
     'incidence': 2617,
   },
   {
-    'last_name': 'Musa',
+    'surname': 'Musa',
     'incidence': 2616,
   },
   {
-    'last_name': 'Mutambara',
+    'surname': 'Mutambara',
     'incidence': 2616,
   },
   {
-    'last_name': 'Magaisa',
+    'surname': 'Magaisa',
     'incidence': 2615,
   },
   {
-    'last_name': 'Gandiwa',
+    'surname': 'Gandiwa',
     'incidence': 2614,
   },
   {
-    'last_name': 'Nzombe',
+    'surname': 'Nzombe',
     'incidence': 2613,
   },
   {
-    'last_name': 'Tazvivinga',
+    'surname': 'Tazvivinga',
     'incidence': 2608,
   },
   {
-    'last_name': 'Mangisi',
+    'surname': 'Mangisi',
     'incidence': 2606,
   },
   {
-    'last_name': 'Makoto',
+    'surname': 'Makoto',
     'incidence': 2599,
   },
   {
-    'last_name': 'Mafa',
+    'surname': 'Mafa',
     'incidence': 2598,
   },
   {
-    'last_name': 'Mutukwa',
+    'surname': 'Mutukwa',
     'incidence': 2595,
   },
   {
-    'last_name': 'Veremu',
+    'surname': 'Veremu',
     'incidence': 2594,
   },
   {
-    'last_name': 'Chidembo',
+    'surname': 'Chidembo',
     'incidence': 2591,
   },
   {
-    'last_name': 'Utete',
+    'surname': 'Utete',
     'incidence': 2586,
   },
   {
-    'last_name': 'Mpande',
+    'surname': 'Mpande',
     'incidence': 2581,
   },
   {
-    'last_name': 'Chakauya',
+    'surname': 'Chakauya',
     'incidence': 2578,
   },
   {
-    'last_name': 'Chiwawa',
+    'surname': 'Chiwawa',
     'incidence': 2575,
   },
   {
-    'last_name': 'Marara',
+    'surname': 'Marara',
     'incidence': 2573,
   },
   {
-    'last_name': 'Ndaba',
+    'surname': 'Ndaba',
     'incidence': 2573,
   },
   {
-    'last_name': 'Mazuru',
+    'surname': 'Mazuru',
     'incidence': 2572,
   },
   {
-    'last_name': 'Kachidza',
+    'surname': 'Kachidza',
     'incidence': 2570,
   },
   {
-    'last_name': 'Mushangwe',
+    'surname': 'Mushangwe',
     'incidence': 2565,
   },
   {
-    'last_name': 'Khoza',
+    'surname': 'Khoza',
     'incidence': 2559,
   },
   {
-    'last_name': 'Chigora',
+    'surname': 'Chigora',
     'incidence': 2549,
   },
   {
-    'last_name': 'Marumisa',
+    'surname': 'Marumisa',
     'incidence': 2549,
   },
   {
-    'last_name': 'Mazarire',
+    'surname': 'Mazarire',
     'incidence': 2547,
   },
   {
-    'last_name': 'Bhobho',
+    'surname': 'Bhobho',
     'incidence': 2546,
   },
   {
-    'last_name': 'Nhliziyo',
+    'surname': 'Nhliziyo',
     'incidence': 2545,
   },
   {
-    'last_name': 'Musoni',
+    'surname': 'Musoni',
     'incidence': 2542,
   },
   {
-    'last_name': 'Dhlakama',
+    'surname': 'Dhlakama',
     'incidence': 2539,
   },
   {
-    'last_name': 'Jakarasi',
+    'surname': 'Jakarasi',
     'incidence': 2533,
   },
   {
-    'last_name': 'Muchingami',
+    'surname': 'Muchingami',
     'incidence': 2532,
   },
   {
-    'last_name': 'Magama',
+    'surname': 'Magama',
     'incidence': 2527,
   },
   {
-    'last_name': 'Manatsa',
+    'surname': 'Manatsa',
     'incidence': 2521,
   },
   {
-    'last_name': 'Mutisi',
+    'surname': 'Mutisi',
     'incidence': 2521,
   },
   {
-    'last_name': 'Muronda',
+    'surname': 'Muronda',
     'incidence': 2519,
   },
   {
-    'last_name': 'Jokonya',
+    'surname': 'Jokonya',
     'incidence': 2516,
   },
   {
-    'last_name': 'Hamadziripi',
+    'surname': 'Hamadziripi',
     'incidence': 2515,
   },
   {
-    'last_name': 'Mutengwa',
+    'surname': 'Mutengwa',
     'incidence': 2515,
   },
   {
-    'last_name': 'Mudonhi',
+    'surname': 'Mudonhi',
     'incidence': 2512,
   },
   {
-    'last_name': 'Maketo',
+    'surname': 'Maketo',
     'incidence': 2509,
   },
   {
-    'last_name': 'Maruza',
+    'surname': 'Maruza',
     'incidence': 2508,
   },
   {
-    'last_name': 'Bonde',
+    'surname': 'Bonde',
     'incidence': 2506,
   },
   {
-    'last_name': 'Matavire',
+    'surname': 'Matavire',
     'incidence': 2503,
   },
   {
-    'last_name': 'Runganga',
+    'surname': 'Runganga',
     'incidence': 2502,
   },
   {
-    'last_name': 'Kanyongo',
+    'surname': 'Kanyongo',
     'incidence': 2498,
   },
   {
-    'last_name': 'Makawa',
+    'surname': 'Makawa',
     'incidence': 2497,
   },
   {
-    'last_name': 'Muringani',
+    'surname': 'Muringani',
     'incidence': 2497,
   },
   {
-    'last_name': 'Zivanai',
+    'surname': 'Zivanai',
     'incidence': 2493,
   },
   {
-    'last_name': 'Nyirenda',
+    'surname': 'Nyirenda',
     'incidence': 2481,
   },
   {
-    'last_name': 'Ndemera',
+    'surname': 'Ndemera',
     'incidence': 2479,
   },
   {
-    'last_name': 'Mukwena',
+    'surname': 'Mukwena',
     'incidence': 2478,
   },
   {
-    'last_name': 'Mushamba',
+    'surname': 'Mushamba',
     'incidence': 2477,
   },
   {
-    'last_name': 'Ngwarati',
+    'surname': 'Ngwarati',
     'incidence': 2476,
   },
   {
-    'last_name': 'Masukume',
+    'surname': 'Masukume',
     'incidence': 2473,
   },
   {
-    'last_name': 'Mungofa',
+    'surname': 'Mungofa',
     'incidence': 2468,
   },
   {
-    'last_name': 'Chaitezvi',
+    'surname': 'Chaitezvi',
     'incidence': 2465,
   },
   {
-    'last_name': 'Samuriwo',
+    'surname': 'Samuriwo',
     'incidence': 2459,
   },
   {
-    'last_name': 'Mukamba',
+    'surname': 'Mukamba',
     'incidence': 2457,
   },
   {
-    'last_name': 'Matambanadzo',
+    'surname': 'Matambanadzo',
     'incidence': 2443,
   },
   {
-    'last_name': 'Mazonde',
+    'surname': 'Mazonde',
     'incidence': 2441,
   },
   {
-    'last_name': 'Danda',
+    'surname': 'Danda',
     'incidence': 2440,
   },
   {
-    'last_name': 'Chigumira',
+    'surname': 'Chigumira',
     'incidence': 2437,
   },
   {
-    'last_name': 'Tagara',
+    'surname': 'Tagara',
     'incidence': 2434,
   },
   {
-    'last_name': 'Mloyi',
+    'surname': 'Mloyi',
     'incidence': 2428,
   },
   {
-    'last_name': 'Chasara',
+    'surname': 'Chasara',
     'incidence': 2426,
   },
   {
-    'last_name': 'Sixpence',
+    'surname': 'Sixpence',
     'incidence': 2426,
   },
   {
-    'last_name': 'Magadzire',
+    'surname': 'Magadzire',
     'incidence': 2423,
   },
   {
-    'last_name': 'Gwebu',
+    'surname': 'Gwebu',
     'incidence': 2417,
   },
   {
-    'last_name': 'Bhunu',
+    'surname': 'Bhunu',
     'incidence': 2414,
   },
   {
-    'last_name': 'Tinago',
+    'surname': 'Tinago',
     'incidence': 2414,
   },
   {
-    'last_name': 'Kumalo',
+    'surname': 'Kumalo',
     'incidence': 2411,
   },
   {
-    'last_name': 'Marima',
+    'surname': 'Marima',
     'incidence': 2409,
   },
   {
-    'last_name': 'Tagwireyi',
+    'surname': 'Tagwireyi',
     'incidence': 2409,
   },
   {
-    'last_name': 'Nyamandi',
+    'surname': 'Nyamandi',
     'incidence': 2408,
   },
   {
-    'last_name': 'Van',
+    'surname': 'Van',
     'incidence': 2408,
   },
   {
-    'last_name': 'Mukuze',
+    'surname': 'Mukuze',
     'incidence': 2406,
   },
   {
-    'last_name': 'Chiramba',
+    'surname': 'Chiramba',
     'incidence': 2405,
   },
   {
-    'last_name': 'Kanda',
+    'surname': 'Kanda',
     'incidence': 2399,
   },
   {
-    'last_name': 'Zivengwa',
+    'surname': 'Zivengwa',
     'incidence': 2399,
   },
   {
-    'last_name': 'Chaparadza',
+    'surname': 'Chaparadza',
     'incidence': 2397,
   },
   {
-    'last_name': 'Chitsike',
+    'surname': 'Chitsike',
     'incidence': 2395,
   },
   {
-    'last_name': 'Mukondo',
+    'surname': 'Mukondo',
     'incidence': 2392,
   },
   {
-    'last_name': 'Mukombe',
+    'surname': 'Mukombe',
     'incidence': 2391,
   },
   {
-    'last_name': 'Chitima',
+    'surname': 'Chitima',
     'incidence': 2390,
   },
   {
-    'last_name': 'Nota',
+    'surname': 'Nota',
     'incidence': 2390,
   },
   {
-    'last_name': 'Makotore',
+    'surname': 'Makotore',
     'incidence': 2387,
   },
   {
-    'last_name': 'Masikati',
+    'surname': 'Masikati',
     'incidence': 2384,
   },
   {
-    'last_name': 'Magora',
+    'surname': 'Magora',
     'incidence': 2381,
   },
   {
-    'last_name': 'Imbayago',
+    'surname': 'Imbayago',
     'incidence': 2379,
   },
   {
-    'last_name': 'Muronzi',
+    'surname': 'Muronzi',
     'incidence': 2377,
   },
   {
-    'last_name': 'Zireva',
+    'surname': 'Zireva',
     'incidence': 2371,
   },
   {
-    'last_name': 'Ganda',
+    'surname': 'Ganda',
     'incidence': 2369,
   },
   {
-    'last_name': 'Masanga',
+    'surname': 'Masanga',
     'incidence': 2366,
   },
   {
-    'last_name': 'Pamire',
+    'surname': 'Pamire',
     'incidence': 2365,
   },
   {
-    'last_name': 'Vurayayi',
+    'surname': 'Vurayayi',
     'incidence': 2362,
   },
   {
-    'last_name': 'Kanyoka',
+    'surname': 'Kanyoka',
     'incidence': 2360,
   },
   {
-    'last_name': 'Chitongo',
+    'surname': 'Chitongo',
     'incidence': 2357,
   },
   {
-    'last_name': 'Nyamunda',
+    'surname': 'Nyamunda',
     'incidence': 2351,
   },
   {
-    'last_name': 'Zambezi',
+    'surname': 'Zambezi',
     'incidence': 2350,
   },
   {
-    'last_name': 'Chiota',
+    'surname': 'Chiota',
     'incidence': 2347,
   },
   {
-    'last_name': 'Kamanga',
+    'surname': 'Kamanga',
     'incidence': 2343,
   },
   {
-    'last_name': 'Chikati',
+    'surname': 'Chikati',
     'incidence': 2342,
   },
   {
-    'last_name': 'Chikosha',
+    'surname': 'Chikosha',
     'incidence': 2340,
   },
   {
-    'last_name': 'Tsoka',
+    'surname': 'Tsoka',
     'incidence': 2339,
   },
   {
-    'last_name': 'Mafusire',
+    'surname': 'Mafusire',
     'incidence': 2335,
   },
   {
-    'last_name': 'Khosa',
+    'surname': 'Khosa',
     'incidence': 2333,
   },
   {
-    'last_name': 'Nzou',
+    'surname': 'Nzou',
     'incidence': 2332,
   },
   {
-    'last_name': 'Mabuto',
+    'surname': 'Mabuto',
     'incidence': 2328,
   },
   {
-    'last_name': 'Masimba',
+    'surname': 'Masimba',
     'incidence': 2328,
   },
   {
-    'last_name': 'Mudiwa',
+    'surname': 'Mudiwa',
     'incidence': 2327,
   },
   {
-    'last_name': 'Masunga',
+    'surname': 'Masunga',
     'incidence': 2326,
   },
   {
-    'last_name': 'Nyaude',
+    'surname': 'Nyaude',
     'incidence': 2325,
   },
   {
-    'last_name': 'Jere',
+    'surname': 'Jere',
     'incidence': 2324,
   },
   {
-    'last_name': 'Mahembe',
+    'surname': 'Mahembe',
     'incidence': 2321,
   },
   {
-    'last_name': 'Matekenya',
+    'surname': 'Matekenya',
     'incidence': 2320,
   },
   {
-    'last_name': 'Dondo',
+    'surname': 'Dondo',
     'incidence': 2319,
   },
   {
-    'last_name': 'Chisvo',
+    'surname': 'Chisvo',
     'incidence': 2314,
   },
   {
-    'last_name': 'Bhebe',
+    'surname': 'Bhebe',
     'incidence': 2310,
   },
   {
-    'last_name': 'Magara',
+    'surname': 'Magara',
     'incidence': 2308,
   },
   {
-    'last_name': 'Chikandiwa',
+    'surname': 'Chikandiwa',
     'incidence': 2301,
   },
   {
-    'last_name': 'Chareka',
+    'surname': 'Chareka',
     'incidence': 2292,
   },
   {
-    'last_name': 'Mashonga',
+    'surname': 'Mashonga',
     'incidence': 2292,
   },
   {
-    'last_name': 'Chingwaru',
+    'surname': 'Chingwaru',
     'incidence': 2289,
   },
   {
-    'last_name': 'Madzivanzira',
+    'surname': 'Madzivanzira',
     'incidence': 2289,
   },
   {
-    'last_name': 'Duri',
+    'surname': 'Duri',
     'incidence': 2286,
   },
   {
-    'last_name': 'Mapani',
+    'surname': 'Mapani',
     'incidence': 2285,
   },
   {
-    'last_name': 'Manda',
+    'surname': 'Manda',
     'incidence': 2284,
   },
   {
-    'last_name': 'Nyikayaramba',
+    'surname': 'Nyikayaramba',
     'incidence': 2284,
   },
   {
-    'last_name': 'Chapwanya',
+    'surname': 'Chapwanya',
     'incidence': 2275,
   },
   {
-    'last_name': 'Mabwe',
+    'surname': 'Mabwe',
     'incidence': 2275,
   },
   {
-    'last_name': 'Chibvongodze',
+    'surname': 'Chibvongodze',
     'incidence': 2274,
   },
   {
-    'last_name': 'Panganai',
+    'surname': 'Panganai',
     'incidence': 2272,
   },
   {
-    'last_name': 'Jim',
+    'surname': 'Jim',
     'incidence': 2271,
   },
   {
-    'last_name': 'Magombedze',
+    'surname': 'Magombedze',
     'incidence': 2271,
   },
   {
-    'last_name': 'Bvunzawabaya',
+    'surname': 'Bvunzawabaya',
     'incidence': 2268,
   },
   {
-    'last_name': 'Chipuriro',
+    'surname': 'Chipuriro',
     'incidence': 2266,
   },
   {
-    'last_name': 'Mudzinganyama',
+    'surname': 'Mudzinganyama',
     'incidence': 2266,
   },
   {
-    'last_name': 'Tarwireyi',
+    'surname': 'Tarwireyi',
     'incidence': 2265,
   },
   {
-    'last_name': 'Nhongo',
+    'surname': 'Nhongo',
     'incidence': 2264,
   },
   {
-    'last_name': 'Bwanya',
+    'surname': 'Bwanya',
     'incidence': 2256,
   },
   {
-    'last_name': 'Milanzi',
+    'surname': 'Milanzi',
     'incidence': 2255,
   },
   {
-    'last_name': 'Chihuri',
+    'surname': 'Chihuri',
     'incidence': 2253,
   },
   {
-    'last_name': 'Chaka',
+    'surname': 'Chaka',
     'incidence': 2252,
   },
   {
-    'last_name': 'Murehwa',
+    'surname': 'Murehwa',
     'incidence': 2244,
   },
   {
-    'last_name': 'Chiromo',
+    'surname': 'Chiromo',
     'incidence': 2240,
   },
   {
-    'last_name': 'Chimusoro',
+    'surname': 'Chimusoro',
     'incidence': 2238,
   },
   {
-    'last_name': 'Matika',
+    'surname': 'Matika',
     'incidence': 2238,
   },
   {
-    'last_name': 'Mhungu',
+    'surname': 'Mhungu',
     'incidence': 2237,
   },
   {
-    'last_name': 'Kufakunesu',
+    'surname': 'Kufakunesu',
     'incidence': 2232,
   },
   {
-    'last_name': 'Gonese',
+    'surname': 'Gonese',
     'incidence': 2230,
   },
   {
-    'last_name': 'Phtrt',
+    'surname': 'Phtrt',
     'incidence': 2230,
   },
   {
-    'last_name': 'Chirima',
+    'surname': 'Chirima',
     'incidence': 2229,
   },
   {
-    'last_name': 'Dumani',
+    'surname': 'Dumani',
     'incidence': 2226,
   },
   {
-    'last_name': 'Majuru',
+    'surname': 'Majuru',
     'incidence': 2221,
   },
   {
-    'last_name': 'Benhura',
+    'surname': 'Benhura',
     'incidence': 2218,
   },
   {
-    'last_name': 'Marecha',
+    'surname': 'Marecha',
     'incidence': 2217,
   },
   {
-    'last_name': 'Moses',
+    'surname': 'Moses',
     'incidence': 2217,
   },
   {
-    'last_name': 'Mashumba',
+    'surname': 'Mashumba',
     'incidence': 2214,
   },
   {
-    'last_name': 'Peter',
+    'surname': 'Peter',
     'incidence': 2213,
   },
   {
-    'last_name': 'Manyara',
+    'surname': 'Manyara',
     'incidence': 2211,
   },
   {
-    'last_name': 'Mabasa',
+    'surname': 'Mabasa',
     'incidence': 2207,
   },
   {
-    'last_name': 'Muyengwa',
+    'surname': 'Muyengwa',
     'incidence': 2207,
   },
   {
-    'last_name': 'Chidziva',
+    'surname': 'Chidziva',
     'incidence': 2204,
   },
   {
-    'last_name': 'Chanakira',
+    'surname': 'Chanakira',
     'incidence': 2203,
   },
   {
-    'last_name': 'Paradzai',
+    'surname': 'Paradzai',
     'incidence': 2200,
   },
   {
-    'last_name': 'Ngara',
+    'surname': 'Ngara',
     'incidence': 2199,
   },
   {
-    'last_name': 'Zimba',
+    'surname': 'Zimba',
     'incidence': 2199,
   },
   {
-    'last_name': 'Makuni',
+    'surname': 'Makuni',
     'incidence': 2198,
   },
   {
-    'last_name': 'Shayamano',
+    'surname': 'Shayamano',
     'incidence': 2197,
   },
   {
-    'last_name': 'Dzingirai',
+    'surname': 'Dzingirai',
     'incidence': 2196,
   },
   {
-    'last_name': 'Jeche',
+    'surname': 'Jeche',
     'incidence': 2193,
   },
   {
-    'last_name': 'Joe',
+    'surname': 'Joe',
     'incidence': 2193,
   },
   {
-    'last_name': 'Dumba',
+    'surname': 'Dumba',
     'incidence': 2180,
   },
   {
-    'last_name': 'Chishiri',
+    'surname': 'Chishiri',
     'incidence': 2178,
   },
   {
-    'last_name': 'Ziki',
+    'surname': 'Ziki',
     'incidence': 2177,
   },
   {
-    'last_name': 'Sabau',
+    'surname': 'Sabau',
     'incidence': 2176,
   },
   {
-    'last_name': 'Gororo',
+    'surname': 'Gororo',
     'incidence': 2173,
   },
   {
-    'last_name': 'Tevera',
+    'surname': 'Tevera',
     'incidence': 2173,
   },
   {
-    'last_name': 'Msipha',
+    'surname': 'Msipha',
     'incidence': 2170,
   },
   {
-    'last_name': 'Mahere',
+    'surname': 'Mahere',
     'incidence': 2168,
   },
   {
-    'last_name': 'Mahuni',
+    'surname': 'Mahuni',
     'incidence': 2167,
   },
   {
-    'last_name': 'Muzambi',
+    'surname': 'Muzambi',
     'incidence': 2166,
   },
   {
-    'last_name': 'Chiringa',
+    'surname': 'Chiringa',
     'incidence': 2164,
   },
   {
-    'last_name': 'Mapanzure',
+    'surname': 'Mapanzure',
     'incidence': 2164,
   },
   {
-    'last_name': 'Guzha',
+    'surname': 'Guzha',
     'incidence': 2155,
   },
   {
-    'last_name': 'Tirivanhu',
+    'surname': 'Tirivanhu',
     'incidence': 2155,
   },
   {
-    'last_name': 'Mapira',
+    'surname': 'Mapira',
     'incidence': 2152,
   },
   {
-    'last_name': 'Tamanikwa',
+    'surname': 'Tamanikwa',
     'incidence': 2151,
   },
   {
-    'last_name': 'Damba',
+    'surname': 'Damba',
     'incidence': 2150,
   },
   {
-    'last_name': 'Mupunga',
+    'surname': 'Mupunga',
     'incidence': 2150,
   },
   {
-    'last_name': 'Rangwani',
+    'surname': 'Rangwani',
     'incidence': 2149,
   },
   {
-    'last_name': 'Chibwe',
+    'surname': 'Chibwe',
     'incidence': 2147,
   },
   {
-    'last_name': 'Murefu',
+    'surname': 'Murefu',
     'incidence': 2146,
   },
   {
-    'last_name': 'Denga',
+    'surname': 'Denga',
     'incidence': 2145,
   },
   {
-    'last_name': 'Matsilele',
+    'surname': 'Matsilele',
     'incidence': 2145,
   },
   {
-    'last_name': 'Chivanga',
+    'surname': 'Chivanga',
     'incidence': 2144,
   },
   {
-    'last_name': 'Tayengwa',
+    'surname': 'Tayengwa',
     'incidence': 2144,
   },
   {
-    'last_name': 'Seremwe',
+    'surname': 'Seremwe',
     'incidence': 2142,
   },
   {
-    'last_name': 'Nhamburo',
+    'surname': 'Nhamburo',
     'incidence': 2139,
   },
   {
-    'last_name': 'Munyaka',
+    'surname': 'Munyaka',
     'incidence': 2133,
   },
   {
-    'last_name': 'Chawatama',
+    'surname': 'Chawatama',
     'incidence': 2121,
   },
   {
-    'last_name': 'Mataga',
+    'surname': 'Mataga',
     'incidence': 2121,
   },
   {
-    'last_name': 'Ngwaru',
+    'surname': 'Ngwaru',
     'incidence': 2119,
   },
   {
-    'last_name': 'Juru',
+    'surname': 'Juru',
     'incidence': 2111,
   },
   {
-    'last_name': 'Musemwa',
+    'surname': 'Musemwa',
     'incidence': 2109,
   },
   {
-    'last_name': 'Saizi',
+    'surname': 'Saizi',
     'incidence': 2109,
   },
   {
-    'last_name': 'Chiripanyanga',
+    'surname': 'Chiripanyanga',
     'incidence': 2106,
   },
   {
-    'last_name': 'Matashu',
+    'surname': 'Matashu',
     'incidence': 2105,
   },
   {
-    'last_name': 'Masiyiwa',
+    'surname': 'Masiyiwa',
     'incidence': 2103,
   },
   {
-    'last_name': 'Chikumba',
+    'surname': 'Chikumba',
     'incidence': 2102,
   },
   {
-    'last_name': 'Mabhiza',
+    'surname': 'Mabhiza',
     'incidence': 2097,
   },
   {
-    'last_name': 'Maunganidze',
+    'surname': 'Maunganidze',
     'incidence': 2096,
   },
   {
-    'last_name': 'Hanyani',
+    'surname': 'Hanyani',
     'incidence': 2094,
   },
   {
-    'last_name': 'Murwisi',
+    'surname': 'Murwisi',
     'incidence': 2094,
   },
   {
-    'last_name': 'Chitanda',
+    'surname': 'Chitanda',
     'incidence': 2093,
   },
   {
-    'last_name': 'Maromo',
+    'surname': 'Maromo',
     'incidence': 2091,
   },
   {
-    'last_name': 'Mandishona',
+    'surname': 'Mandishona',
     'incidence': 2090,
   },
   {
-    'last_name': 'Chingoma',
+    'surname': 'Chingoma',
     'incidence': 2089,
   },
   {
-    'last_name': 'Mufuka',
+    'surname': 'Mufuka',
     'incidence': 2087,
   },
   {
-    'last_name': 'Hodzi',
+    'surname': 'Hodzi',
     'incidence': 2085,
   },
   {
-    'last_name': 'Chiware',
+    'surname': 'Chiware',
     'incidence': 2083,
   },
   {
-    'last_name': 'Chando',
+    'surname': 'Chando',
     'incidence': 2080,
   },
   {
-    'last_name': 'Ndimande',
+    'surname': 'Ndimande',
     'incidence': 2079,
   },
   {
-    'last_name': 'Nyahuma',
+    'surname': 'Nyahuma',
     'incidence': 2078,
   },
   {
-    'last_name': 'Chitambo',
+    'surname': 'Chitambo',
     'incidence': 2072,
   },
   {
-    'last_name': 'Jele',
+    'surname': 'Jele',
     'incidence': 2072,
   },
   {
-    'last_name': 'Chagonda',
+    'surname': 'Chagonda',
     'incidence': 2071,
   },
   {
-    'last_name': 'Shoriwa',
+    'surname': 'Shoriwa',
     'incidence': 2071,
   },
   {
-    'last_name': 'Chingombe',
+    'surname': 'Chingombe',
     'incidence': 2068,
   },
   {
-    'last_name': 'Lupahla',
+    'surname': 'Lupahla',
     'incidence': 2067,
   },
   {
-    'last_name': 'Chigova',
+    'surname': 'Chigova',
     'incidence': 2066,
   },
   {
-    'last_name': 'Gurupira',
+    'surname': 'Gurupira',
     'incidence': 2065,
   },
   {
-    'last_name': 'Hwata',
+    'surname': 'Hwata',
     'incidence': 2064,
   },
   {
-    'last_name': 'Chitauro',
+    'surname': 'Chitauro',
     'incidence': 2063,
   },
   {
-    'last_name': 'Chigwada',
+    'surname': 'Chigwada',
     'incidence': 2062,
   },
   {
-    'last_name': 'Zindi',
+    'surname': 'Zindi',
     'incidence': 2062,
   },
   {
-    'last_name': 'Hama',
+    'surname': 'Hama',
     'incidence': 2060,
   },
   {
-    'last_name': 'Mpunzi',
+    'surname': 'Mpunzi',
     'incidence': 2060,
   },
   {
-    'last_name': 'Muzembe',
+    'surname': 'Muzembe',
     'incidence': 2056,
   },
   {
-    'last_name': 'Chiduku',
+    'surname': 'Chiduku',
     'incidence': 2054,
   },
   {
-    'last_name': 'Murungweni',
+    'surname': 'Murungweni',
     'incidence': 2049,
   },
   {
-    'last_name': 'Mawarire',
+    'surname': 'Mawarire',
     'incidence': 2045,
   },
   {
-    'last_name': 'Chitimbe',
+    'surname': 'Chitimbe',
     'incidence': 2043,
   },
   {
-    'last_name': 'Mutami',
+    'surname': 'Mutami',
     'incidence': 2043,
   },
   {
-    'last_name': 'Machisa',
+    'surname': 'Machisa',
     'incidence': 2040,
   },
   {
-    'last_name': 'Magomo',
+    'surname': 'Magomo',
     'incidence': 2040,
   },
   {
-    'last_name': 'Nyamazana',
+    'surname': 'Nyamazana',
     'incidence': 2040,
   },
   {
-    'last_name': 'Chizanga',
+    'surname': 'Chizanga',
     'incidence': 2039,
   },
   {
-    'last_name': 'Nyanga',
+    'surname': 'Nyanga',
     'incidence': 2037,
   },
   {
-    'last_name': 'Zishiri',
+    'surname': 'Zishiri',
     'incidence': 2037,
   },
   {
-    'last_name': 'Mangombe',
+    'surname': 'Mangombe',
     'incidence': 2036,
   },
   {
-    'last_name': 'Mabena',
+    'surname': 'Mabena',
     'incidence': 2034,
   },
   {
-    'last_name': 'Mandere',
+    'surname': 'Mandere',
     'incidence': 2032,
   },
   {
-    'last_name': 'Saunyama',
+    'surname': 'Saunyama',
     'incidence': 2032,
   },
   {
-    'last_name': 'Mukumba',
+    'surname': 'Mukumba',
     'incidence': 2025,
   },
   {
-    'last_name': 'Muroyiwa',
+    'surname': 'Muroyiwa',
     'incidence': 2023,
   },
   {
-    'last_name': 'Guta',
+    'surname': 'Guta',
     'incidence': 2018,
   },
   {
-    'last_name': 'Mhishi',
+    'surname': 'Mhishi',
     'incidence': 2016,
   },
   {
-    'last_name': 'Kamudyariwa',
+    'surname': 'Kamudyariwa',
     'incidence': 2014,
   },
   {
-    'last_name': 'Ticharwa',
+    'surname': 'Ticharwa',
     'incidence': 2009,
   },
   {
-    'last_name': 'Kapfunde',
+    'surname': 'Kapfunde',
     'incidence': 2008,
   },
   {
-    'last_name': 'Ndava',
+    'surname': 'Ndava',
     'incidence': 2008,
   },
   {
-    'last_name': 'Nyangani',
+    'surname': 'Nyangani',
     'incidence': 2005,
   },
   {
-    'last_name': 'Jubane',
+    'surname': 'Jubane',
     'incidence': 2001,
   },
   {
-    'last_name': 'Maregere',
+    'surname': 'Maregere',
     'incidence': 1998,
   },
   {
-    'last_name': 'Chitumba',
+    'surname': 'Chitumba',
     'incidence': 1996,
   },
   {
-    'last_name': 'Nyatsanga',
+    'surname': 'Nyatsanga',
     'incidence': 1996,
   },
   {
-    'last_name': 'Ndongwe',
+    'surname': 'Ndongwe',
     'incidence': 1994,
   },
   {
-    'last_name': 'Munodawafa',
+    'surname': 'Munodawafa',
     'incidence': 1993,
   },
   {
-    'last_name': 'Chigariro',
+    'surname': 'Chigariro',
     'incidence': 1986,
   },
   {
-    'last_name': 'Tumbare',
+    'surname': 'Tumbare',
     'incidence': 1983,
   },
   {
-    'last_name': 'Muchini',
+    'surname': 'Muchini',
     'incidence': 1981,
   },
   {
-    'last_name': 'Gavaza',
+    'surname': 'Gavaza',
     'incidence': 1980,
   },
   {
-    'last_name': 'Masaiti',
+    'surname': 'Masaiti',
     'incidence': 1980,
   },
   {
-    'last_name': 'Hofisi',
+    'surname': 'Hofisi',
     'incidence': 1979,
   },
   {
-    'last_name': 'Dzikiti',
+    'surname': 'Dzikiti',
     'incidence': 1978,
   },
   {
-    'last_name': 'Gwata',
+    'surname': 'Gwata',
     'incidence': 1978,
   },
   {
-    'last_name': 'Masarakufa',
+    'surname': 'Masarakufa',
     'incidence': 1976,
   },
   {
-    'last_name': 'Smith',
+    'surname': 'Smith',
     'incidence': 1976,
   },
   {
-    'last_name': 'Mombe',
+    'surname': 'Mombe',
     'incidence': 1974,
   },
   {
-    'last_name': 'Chiminya',
+    'surname': 'Chiminya',
     'incidence': 1972,
   },
   {
-    'last_name': 'David',
+    'surname': 'David',
     'incidence': 1972,
   },
   {
-    'last_name': 'Zhanda',
+    'surname': 'Zhanda',
     'incidence': 1972,
   },
   {
-    'last_name': 'Msebele',
+    'surname': 'Msebele',
     'incidence': 1971,
   },
   {
-    'last_name': 'Mkwebu',
+    'surname': 'Mkwebu',
     'incidence': 1970,
   },
   {
-    'last_name': 'Tsingano',
+    'surname': 'Tsingano',
     'incidence': 1968,
   },
   {
-    'last_name': 'Tauzeni',
+    'surname': 'Tauzeni',
     'incidence': 1965,
   },
   {
-    'last_name': 'Makovere',
+    'surname': 'Makovere',
     'incidence': 1963,
   },
   {
-    'last_name': 'Mangava',
+    'surname': 'Mangava',
     'incidence': 1963,
   },
   {
-    'last_name': 'Bande',
+    'surname': 'Bande',
     'incidence': 1961,
   },
   {
-    'last_name': 'Nhemachena',
+    'surname': 'Nhemachena',
     'incidence': 1961,
   },
   {
-    'last_name': 'Machinga',
+    'surname': 'Machinga',
     'incidence': 1958,
   },
   {
-    'last_name': 'Chiradza',
+    'surname': 'Chiradza',
     'incidence': 1954,
   },
   {
-    'last_name': 'Chipanga',
+    'surname': 'Chipanga',
     'incidence': 1952,
   },
   {
-    'last_name': 'Mudarikwa',
+    'surname': 'Mudarikwa',
     'incidence': 1952,
   },
   {
-    'last_name': 'Ndowa',
+    'surname': 'Ndowa',
     'incidence': 1951,
   },
   {
-    'last_name': 'Rwafa',
+    'surname': 'Rwafa',
     'incidence': 1951,
   },
   {
-    'last_name': 'Dewa',
+    'surname': 'Dewa',
     'incidence': 1948,
   },
   {
-    'last_name': 'Makwanya',
+    'surname': 'Makwanya',
     'incidence': 1947,
   },
   {
-    'last_name': 'Marongedza',
+    'surname': 'Marongedza',
     'incidence': 1944,
   },
   {
-    'last_name': 'Tizora',
+    'surname': 'Tizora',
     'incidence': 1944,
   },
   {
-    'last_name': 'Ali',
+    'surname': 'Ali',
     'incidence': 1943,
   },
   {
-    'last_name': 'Hondo',
+    'surname': 'Hondo',
     'incidence': 1942,
   },
   {
-    'last_name': 'Mhuru',
+    'surname': 'Mhuru',
     'incidence': 1941,
   },
   {
-    'last_name': 'Marozva',
+    'surname': 'Marozva',
     'incidence': 1940,
   },
   {
-    'last_name': 'Muzuva',
+    'surname': 'Muzuva',
     'incidence': 1940,
   },
   {
-    'last_name': 'Mugoni',
+    'surname': 'Mugoni',
     'incidence': 1939,
   },
   {
-    'last_name': 'Mashavira',
+    'surname': 'Mashavira',
     'incidence': 1936,
   },
   {
-    'last_name': 'Chingwena',
+    'surname': 'Chingwena',
     'incidence': 1935,
   },
   {
-    'last_name': 'Nziramasanga',
+    'surname': 'Nziramasanga',
     'incidence': 1935,
   },
   {
-    'last_name': 'Muringayi',
+    'surname': 'Muringayi',
     'incidence': 1932,
   },
   {
-    'last_name': 'Mazambani',
+    'surname': 'Mazambani',
     'incidence': 1929,
   },
   {
-    'last_name': 'Chikaka',
+    'surname': 'Chikaka',
     'incidence': 1926,
   },
   {
-    'last_name': 'Chipara',
+    'surname': 'Chipara',
     'incidence': 1926,
   },
   {
-    'last_name': 'Mawoyo',
+    'surname': 'Mawoyo',
     'incidence': 1926,
   },
   {
-    'last_name': 'Rwizi',
+    'surname': 'Rwizi',
     'incidence': 1925,
   },
   {
-    'last_name': 'Musakwa',
+    'surname': 'Musakwa',
     'incidence': 1922,
   },
   {
-    'last_name': 'Mbanje',
+    'surname': 'Mbanje',
     'incidence': 1919,
   },
   {
-    'last_name': 'Mudadi',
+    'surname': 'Mudadi',
     'incidence': 1917,
   },
   {
-    'last_name': 'Mutyambizi',
+    'surname': 'Mutyambizi',
     'incidence': 1916,
   },
   {
-    'last_name': 'Ranganai',
+    'surname': 'Ranganai',
     'incidence': 1914,
   },
   {
-    'last_name': 'Zvinavashe',
+    'surname': 'Zvinavashe',
     'incidence': 1912,
   },
   {
-    'last_name': 'Kwangware',
+    'surname': 'Kwangware',
     'incidence': 1910,
   },
   {
-    'last_name': 'Mufudza',
+    'surname': 'Mufudza',
     'incidence': 1906,
   },
   {
-    'last_name': 'Samuel',
+    'surname': 'Samuel',
     'incidence': 1904,
   },
   {
-    'last_name': 'Ndlela',
+    'surname': 'Ndlela',
     'incidence': 1901,
   },
   {
-    'last_name': 'Tore',
+    'surname': 'Tore',
     'incidence': 1901,
   },
   {
-    'last_name': 'Mutete',
+    'surname': 'Mutete',
     'incidence': 1900,
   },
   {
-    'last_name': 'Muzondiwa',
+    'surname': 'Muzondiwa',
     'incidence': 1900,
   },
   {
-    'last_name': 'Kambanje',
+    'surname': 'Kambanje',
     'incidence': 1897,
   },
   {
-    'last_name': 'Madziya',
+    'surname': 'Madziya',
     'incidence': 1897,
   },
   {
-    'last_name': 'Mukozho',
+    'surname': 'Mukozho',
     'incidence': 1896,
   },
   {
-    'last_name': 'Tagwirei',
+    'surname': 'Tagwirei',
     'incidence': 1895,
   },
   {
-    'last_name': 'Magumise',
+    'surname': 'Magumise',
     'incidence': 1893,
   },
   {
-    'last_name': 'Mutemeri',
+    'surname': 'Mutemeri',
     'incidence': 1891,
   },
   {
-    'last_name': 'Goremusandu',
+    'surname': 'Goremusandu',
     'incidence': 1890,
   },
   {
-    'last_name': 'Tsikira',
+    'surname': 'Tsikira',
     'incidence': 1890,
   },
   {
-    'last_name': 'Gasura',
+    'surname': 'Gasura',
     'incidence': 1889,
   },
   {
-    'last_name': 'Machiridza',
+    'surname': 'Machiridza',
     'incidence': 1888,
   },
   {
-    'last_name': 'Chigumbu',
+    'surname': 'Chigumbu',
     'incidence': 1884,
   },
   {
-    'last_name': 'Jacob',
+    'surname': 'Jacob',
     'incidence': 1884,
   },
   {
-    'last_name': 'Chikwanha',
+    'surname': 'Chikwanha',
     'incidence': 1877,
   },
   {
-    'last_name': 'Mungate',
+    'surname': 'Mungate',
     'incidence': 1877,
   },
   {
-    'last_name': 'Muchero',
+    'surname': 'Muchero',
     'incidence': 1875,
   },
   {
-    'last_name': 'Mushunje',
+    'surname': 'Mushunje',
     'incidence': 1875,
   },
   {
-    'last_name': 'Makwarimba',
+    'surname': 'Makwarimba',
     'incidence': 1874,
   },
   {
-    'last_name': 'Komboni',
+    'surname': 'Komboni',
     'incidence': 1873,
   },
   {
-    'last_name': 'Chinhema',
+    'surname': 'Chinhema',
     'incidence': 1871,
   },
   {
-    'last_name': 'Takura',
+    'surname': 'Takura',
     'incidence': 1870,
   },
   {
-    'last_name': 'Chakawa',
+    'surname': 'Chakawa',
     'incidence': 1869,
   },
   {
-    'last_name': 'Gwati',
+    'surname': 'Gwati',
     'incidence': 1868,
   },
   {
-    'last_name': 'Chirongoma',
+    'surname': 'Chirongoma',
     'incidence': 1867,
   },
   {
-    'last_name': 'Mushaninga',
+    'surname': 'Mushaninga',
     'incidence': 1865,
   },
   {
-    'last_name': 'Muchineripi',
+    'surname': 'Muchineripi',
     'incidence': 1864,
   },
   {
-    'last_name': 'Mujaji',
+    'surname': 'Mujaji',
     'incidence': 1862,
   },
   {
-    'last_name': 'Nyatsanza',
+    'surname': 'Nyatsanza',
     'incidence': 1859,
   },
   {
-    'last_name': 'Chipato',
+    'surname': 'Chipato',
     'incidence': 1857,
   },
   {
-    'last_name': 'Bumhira',
+    'surname': 'Bumhira',
     'incidence': 1854,
   },
   {
-    'last_name': 'Ganya',
+    'surname': 'Ganya',
     'incidence': 1852,
   },
   {
-    'last_name': 'Lungu',
+    'surname': 'Lungu',
     'incidence': 1852,
   },
   {
-    'last_name': 'Masaka',
+    'surname': 'Masaka',
     'incidence': 1852,
   },
   {
-    'last_name': 'Dzomba',
+    'surname': 'Dzomba',
     'incidence': 1849,
   },
   {
-    'last_name': 'Muranganwa',
+    'surname': 'Muranganwa',
     'incidence': 1849,
   },
   {
-    'last_name': 'Pawandiwa',
+    'surname': 'Pawandiwa',
     'incidence': 1849,
   },
   {
-    'last_name': 'Chigogo',
+    'surname': 'Chigogo',
     'incidence': 1845,
   },
   {
-    'last_name': 'Murandu',
+    'surname': 'Murandu',
     'incidence': 1843,
   },
   {
-    'last_name': 'Mushoriwa',
+    'surname': 'Mushoriwa',
     'incidence': 1839,
   },
   {
-    'last_name': 'Nyamupfukudza',
+    'surname': 'Nyamupfukudza',
     'incidence': 1838,
   },
   {
-    'last_name': 'Nyasha',
+    'surname': 'Nyasha',
     'incidence': 1837,
   },
   {
-    'last_name': 'Brown',
+    'surname': 'Brown',
     'incidence': 1834,
   },
   {
-    'last_name': 'Marime',
+    'surname': 'Marime',
     'incidence': 1831,
   },
   {
-    'last_name': 'Danga',
+    'surname': 'Danga',
     'incidence': 1828,
   },
   {
-    'last_name': 'Kativu',
+    'surname': 'Kativu',
     'incidence': 1827,
   },
   {
-    'last_name': 'Muzvondiwa',
+    'surname': 'Muzvondiwa',
     'incidence': 1827,
   },
   {
-    'last_name': 'Murombedzi',
+    'surname': 'Murombedzi',
     'incidence': 1824,
   },
   {
-    'last_name': 'Goronga',
+    'surname': 'Goronga',
     'incidence': 1823,
   },
   {
-    'last_name': 'Mariga',
+    'surname': 'Mariga',
     'incidence': 1823,
   },
   {
-    'last_name': 'Mzizi',
+    'surname': 'Mzizi',
     'incidence': 1822,
   },
   {
-    'last_name': 'Svosve',
+    'surname': 'Svosve',
     'incidence': 1821,
   },
   {
-    'last_name': 'Dzenga',
+    'surname': 'Dzenga',
     'incidence': 1819,
   },
   {
-    'last_name': 'Sibiya',
+    'surname': 'Sibiya',
     'incidence': 1817,
   },
 ]
