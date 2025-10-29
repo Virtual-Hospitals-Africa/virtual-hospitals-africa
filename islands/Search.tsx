@@ -133,16 +133,6 @@ export default function Search<T extends { id?: unknown; name: string }>({
   const input_ref = useRef<HTMLInputElement>(null)
   const button_ref = useRef<HTMLButtonElement>(null)
 
-  console.log({
-    search: 'Search',
-    selected,
-    all_options,
-    name_field,
-    id_field,
-    value,
-    hasId: hasId(value),
-  })
-
   return (
     <Combobox
       id={id}

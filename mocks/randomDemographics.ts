@@ -18,5 +18,6 @@ export default function randomDemographics(
     date_of_birth,
     national_id_number,
     country,
+    gender: names_and_sex.sex === 'female' ? 'woman' : 'man',
   }
 }

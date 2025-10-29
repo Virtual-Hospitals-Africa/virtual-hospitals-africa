@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { FreshContext, Handlers } from '$fresh/server.ts'
-import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
+import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import {
   AgeUnit,
@@ -78,7 +78,7 @@ export type InsertShape<T> = OptionalMaybeFields<
     [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? I
       : T[K] extends null | ColumnType<any, infer NullableI, any>
         ? null | NullableI
-      : T[K]
+      : T[K] | RawBuilder<T[K]>
   }
 >
 
@@ -228,6 +228,7 @@ export type PatientDemographicInfo = {
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   first_language: Maybe<string>
+  country: Maybe<string>
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState

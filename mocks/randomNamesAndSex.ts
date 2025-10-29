@@ -19,6 +19,7 @@ type Demographics = {
   first_names: string
   surname: string
   name: string
+  preferred_name: string
   sex: 'female' | 'male'
 }
 
@@ -88,6 +89,7 @@ export default function randomNamesAndSex(
   return {
     first_names,
     surname,
+    preferred_name: first_names,
     sex: of_sex,
     name: `${first_names} ${surname}`,
   }

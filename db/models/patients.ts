@@ -2,6 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   HasStringId,
+  InsertShape,
   Maybe,
   Patient,
   PatientNearestOrganization,
@@ -20,8 +21,7 @@ import {
   literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
-import { ensureDoctorId } from './doctor.ts'
+import { DB, Patients } from '../../db.d.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { base } from './_base.ts'
@@ -157,6 +157,63 @@ export async function getLastConversationState(
   }
 }
 
+type PatientUpsert =
+  & Partial<Patient>
+  & {
+    id?: string
+  }
+  & ({
+    name: string
+    first_names?: string
+    surname?: string
+    preferred_name?: string
+  } | {
+    name?: never
+    first_names: string
+    surname: string
+    preferred_name: string
+  })
+
+function asPatientValues(
+  {
+    location,
+    primary_doctor_id,
+    name,
+    first_names,
+    surname,
+    preferred_name,
+    ...patient
+  }: PatientUpsert,
+): InsertShape<Patients> {
+  if (first_names) {
+    assert(surname)
+    assert(preferred_name)
+    if (name) {
+      assertEquals(name, first_names + ' ' + surname)
+    } else {
+      name = first_names + ' ' + surname
+    }
+  } else {
+    assert(name)
+    assert(!surname)
+    assert(!preferred_name)
+    const names = name.split(' ')
+    surname = exists(last(names))
+    preferred_name = exists(first(names))
+    first_names = names.slice(0, -1).join(' ')
+  }
+
+  return {
+    ...patient,
+    name,
+    first_names,
+    surname,
+    preferred_name,
+    primary_doctor_id,
+    location: location && literalLocation(location),
+  }
+}
+
 export function insertMany(
   trx: TrxOrDb,
   patients: Array<Partial<Patient> & { name: string }>,
@@ -164,10 +221,7 @@ export function insertMany(
   assert(patients.length > 0, 'Must insert at least one patient')
   return trx
     .insertInto('patients')
-    .values(patients.map((patient) => ({
-      ...patient,
-      location: patient.location && literalLocation(patient.location),
-    })))
+    .values(patients.map(asPatientValues))
     .returningAll()
     .execute()
 }
@@ -203,8 +257,7 @@ export function update(
 ) {
   const to_update = {
     ...patient,
-    primary_doctor_id: primary_doctor_id &&
-      ensureDoctorId(trx, primary_doctor_id),
+    primary_doctor_id,
     location: location && literalLocation(location),
   }
   const to_update_with_name: (typeof to_update) & {
@@ -222,59 +275,9 @@ export function update(
 
 export function upsert(
   trx: TrxOrDb,
-  {
-    location,
-    primary_doctor_id,
-    name,
-    first_names,
-    surname,
-    preferred_name,
-    ...patient
-  }:
-    & Partial<Patient>
-    & {
-      id?: string
-    }
-    & ({
-      name: string
-      first_names?: string
-      surname?: string
-      preferred_name?: string
-    } | {
-      name?: never
-      first_names: string
-      surname: string
-      preferred_name: string
-    }),
+  patient: PatientUpsert,
 ) {
-  if (first_names) {
-    assert(surname)
-    assert(preferred_name)
-    if (name) {
-      assertEquals(name, first_names + ' ' + surname)
-    } else {
-      name = first_names + ' ' + surname
-    }
-  } else {
-    assert(name)
-    assert(!surname)
-    assert(!preferred_name)
-    const names = name.split(' ')
-    surname = exists(last(names))
-    preferred_name = exists(first(names))
-    first_names = names.slice(-1).join(' ')
-  }
-
-  const to_upsert = {
-    ...patient,
-    name,
-    first_names,
-    surname,
-    preferred_name,
-    primary_doctor_id: primary_doctor_id &&
-      ensureDoctorId(trx, primary_doctor_id),
-    location: location && literalLocation(location),
-  }
+  const to_upsert = asPatientValues(patient)
   return trx
     .insertInto('patients')
     .values(to_upsert)

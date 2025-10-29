@@ -25,17 +25,21 @@ export async function up(db: Kysely<DB>) {
         .addColumn('sex', sql`sex`)
         .addColumn('gender', 'varchar(255)')
         .addColumn('date_of_birth', 'date')
+        .addColumn('country', 'varchar(2)', (col) =>
+          col.references('countries.iso_3166_2'))
         .addColumn('national_id_number', 'varchar(50)')
         .addColumn('first_language', 'varchar(50)')
         .addColumn(
           'avatar_media_id',
           'uuid',
-          (col) => col.references('media.id'),
+          (col) =>
+            col.references('media.id'),
         )
         .addColumn(
           'address_id',
           'uuid',
-          (col) => col.references('addresses.id'),
+          (col) =>
+            col.references('addresses.id'),
         )
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
         .addColumn(
@@ -56,7 +60,7 @@ export async function up(db: Kysely<DB>) {
           'primary_doctor_id',
           'uuid',
           (col) =>
-            col.references('employment.id'),
+            col.references('doctors.id'),
         )
         .addColumn('unregistered_primary_doctor_name', 'varchar(255)')
         .addUniqueConstraint('patient_national_id_number', [
@@ -66,8 +70,12 @@ export async function up(db: Kysely<DB>) {
         .addCheckConstraint(
           'completed_registration_means_has_name_dob_and_sex',
           sql`(
-          (NOT completed_registration) OR
-          (completed_registration AND name IS NOT NULL AND date_of_birth IS NOT NULL AND sex IS NOT NULL AND gender IS NOT NULL)
+          (completed_registration = false) OR
+          (completed_registration = true AND 
+           name IS NOT NULL AND 
+           date_of_birth IS NOT NULL AND 
+           sex IS NOT NULL AND 
+           gender IS NOT NULL)
         )`,
         )
         .addCheckConstraint(

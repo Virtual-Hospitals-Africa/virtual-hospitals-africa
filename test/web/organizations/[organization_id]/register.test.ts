@@ -10,6 +10,7 @@ import {
   addTestEmployeeWithSession,
 } from '../../../_helpers/employees.ts'
 import { route } from '../../../route.ts'
+import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
 describe(
   '/app/organizations/[organization_id]/register',
@@ -65,14 +66,16 @@ describe(
       )
       const address = createTestAddress()
 
+      const demographics = randomDemographics('ZA')
       {
         const body = new FormData()
-        body.set('first_names', 'Test')
-        body.set('middle_names', 'Zoom Zoom')
-        body.set('surname', 'Nurse')
-        body.set('gender', 'female')
-        body.set('national_id_number', '08-123456 D 53')
-        body.set('date_of_birth', '2020-01-01')
+        body.set('first_names', demographics.first_names)
+        body.set('surname', demographics.surname)
+        body.set('preferred_name', demographics.preferred_name)
+        body.set('sex', demographics.sex)
+        body.set('gender', demographics.gender)
+        body.set('national_id_number', demographics.national_id_number)
+        body.set('date_of_birth', demographics.date_of_birth)
         body.set('mobile_number', '+1 (203) 555-5555')
 
         body.set('address.country', address.country)
@@ -105,13 +108,13 @@ describe(
           })
 
         assertEquals(registrationFormState, {
-          date_of_birth: '2020-01-01',
-          first_names: 'Test',
-          gender: 'female',
-          surname: 'Nurse',
-          middle_names: 'Zoom Zoom',
+          date_of_birth: demographics.date_of_birth,
+          first_names: demographics.first_names,
+          gender: demographics.gender,
+          surname: demographics.surname,
+          preferred_name: demographics.preferred_name,
+          national_id_number: demographics.national_id_number,
           mobile_number: '+12035555555',
-          national_id_number: '08-123456 D 53',
           address,
         })
 
@@ -130,7 +133,7 @@ describe(
         assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
         assertEquals($('input[name="surname"]').val(), 'Nurse')
         assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
-        assertEquals($('select[name="gender"]').val(), 'female')
+        assertEquals($('select[name="sex"]').val(), 'female')
         assertEquals(
           $('input[name="national_id_number"]').val(),
           '08-123456 D 53',

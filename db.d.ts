@@ -1157,6 +1157,7 @@ export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
   completed_registration: Generated<boolean>
+  country: string | null
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null

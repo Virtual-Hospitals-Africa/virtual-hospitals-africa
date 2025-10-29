@@ -9,17 +9,11 @@ type Primitive = string | number | boolean
 
 export type FormValue = Primitive | FormValue[]
 
-export function parseParam(key: string | undefined, param: string): FormValue {
+export function parseParam(_key: string | undefined, param: string): FormValue {
   if (param === 'true') return true
   if (param === 'on') return true
   if (param === 'false') return false
   if (param === 'off') return false
-  if (
-    /^[-+]?\d*\.?\d+$/g.test(param) &&
-    !(key && (key.includes('phone') || key === 'mobile_number'))
-  ) {
-    return parseFloat(param)
-  }
   if (param[0] === '[' && param.lastIndexOf(']') === (param.length - 1)) {
     return JSON.parse(param)
   }

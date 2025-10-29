@@ -25,15 +25,17 @@ describe('db/models/patients.ts', () => {
         const baseUUID = generateUUID()
 
         const test_patient1 = await patients.insert(trx, {
-          name: baseUUID + generateUUID(),
-          gender: 'female',
+          name: baseUUID + ' ' + generateUUID(),
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
         })
 
         const test_patient2 = await patients.insert(trx, {
-          name: baseUUID + generateUUID(),
-          gender: 'female',
+          name: baseUUID + ' ' + generateUUID(),
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
           avatar_media_id: inserted_media.id,
@@ -41,7 +43,8 @@ describe('db/models/patients.ts', () => {
 
         await patients.insert(trx, {
           name: 'Other With non-matching name',
-          gender: 'female',
+          sex: 'female',
+          gender: 'woman',
           date_of_birth: '1980-01-01',
           completed_registration: true,
         })

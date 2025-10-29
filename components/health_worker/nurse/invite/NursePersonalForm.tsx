@@ -6,6 +6,7 @@ import AddressSection from '../../../patient-registration/AddressSection.tsx'
 import { DateInput } from '../../../../islands/form/inputs/date.tsx'
 import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
 import { TextInput } from '../../../../islands/form/inputs/text.tsx'
+import { SexAndGenderInputs } from '../../../../islands/patient-registration/SexAndGenderInputs.tsx'
 
 export default function NursePersonalForm(
   { form_data }: {
@@ -41,6 +42,7 @@ export default function NursePersonalForm(
           value={form_data.date_of_birth}
         />
         {/* <GenderSelect value={form_data.gender} /> */}
+        <SexAndGenderInputs sex={form_data.sex} gender={form_data.gender} />
       </FormRow>
       <FormRow>
         <ZimbabweanNationalIdInput value={form_data.national_id_number} />
