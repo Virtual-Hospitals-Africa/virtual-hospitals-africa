@@ -82,6 +82,8 @@ const model = base({
       search?: string | null
       kind?: 'physical' | 'virtual' | null
       is_test?: boolean
+      category?: string
+      country?: string
       include_all_countries?: boolean
     },
   ) {
@@ -95,11 +97,17 @@ const model = base({
         null,
       )
     }
-    if (opts.is_test) {
-      qb = qb.where('organizations.is_test', '=', true)
+    if (opts.is_test != null) {
+      qb = qb.where('organizations.is_test', '=', opts.is_test)
     }
     if (!opts.include_all_countries) {
       qb = qb.where('organizations.country', '=', SERVER_COUNTRY)
+    }
+    if (opts.category) {
+      qb = qb.where('organizations.category', '=', opts.category)
+    }
+    if (opts.country) {
+      qb = qb.where('organizations.country', '=', opts.country)
     }
     return qb
   },

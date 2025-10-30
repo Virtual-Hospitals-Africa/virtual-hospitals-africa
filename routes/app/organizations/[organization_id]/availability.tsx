@@ -13,6 +13,7 @@ import {
   assertAllJohannesburg,
   convertToTime,
   formatJohannesburg,
+  todayISOInJohannesburg,
 } from '../../../../util/date.ts'
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
@@ -57,7 +58,7 @@ const toJohannesburg = (time: Time) => {
 function* availabilityBlocks(
   availability: Partial<AvailabilityJSON>,
 ): Generator<DeepPartial<GCalEvent>> {
-  const today = parseDateTime(new Date(), 'twoDigit')
+  const today = parseDateTime(todayISOInJohannesburg())
   const todayIndex = days.indexOf(today.weekday as DayOfWeek)
   for (const day of days) {
     const dayAvailability = availability[day]

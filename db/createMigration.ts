@@ -10,7 +10,6 @@ export default async function createMigration(migrationName: string) {
 
   const { year, month, day, hour, minute, second } = parseDateTime(
     new Date(),
-    'twoDigit',
   )
 
   const migrationFileName =

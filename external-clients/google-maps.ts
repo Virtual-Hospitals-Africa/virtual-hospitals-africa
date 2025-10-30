@@ -16,7 +16,6 @@ const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
 export const getLocationAddress = cacheable(async function getLocationAddress(
   { longitude, latitude }: Coordinates,
 ): Promise<AddressInsert | null> {
-  console.log({ longitude, latitude })
   const results = await getGeocodeData(latitude, longitude)
   return getAddressFromData(results)
 })
@@ -30,7 +29,9 @@ export async function getGeocodeData(
   const url =
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
-  assert(response.ok)
+  if (!response.ok) {
+    throw await response.text()
+  }
   const data = await response.json()
   if (data.status === 'OK' && Array.isArray(data.results)) {
     return data.results

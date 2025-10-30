@@ -17,6 +17,7 @@ import {
   differenceInDays,
   durationEndDate,
   isISODateString,
+  parseDate,
 } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
@@ -448,7 +449,10 @@ export async function getPreExistingConditions(
             ...omit(medication, ['patient_condition_id']),
             start_date: medication.start_date,
             registration_frequency: schedule.frequency,
-            end_date: durationEndDate(medication.start_date, schedule),
+            end_date: durationEndDate(
+              parseDate(medication.start_date),
+              schedule,
+            ),
             dosage: schedule.dosage,
             strength: Number(medication.strength),
           }

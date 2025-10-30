@@ -1,19 +1,19 @@
 import { Popover } from '@headlessui/react'
 
-export type Option<T> = {
+export type Option<T extends string> = {
   value: T
   label: string
   checked?: boolean
   onChanged?: (value: T) => void
 }
 
-export type FilterProps<T> = {
+export type FilterProps<T extends string> = {
   id: string
   name: string
   options: Option<T>[]
 }
 
-export default function Filter<T extends string | number | undefined>({
+export default function Filter<T extends string>({
   id,
   name,
   options,
@@ -32,7 +32,7 @@ export default function Filter<T extends string | number | undefined>({
       className='relative inline-block text-left'
     >
       {/* TODO: Use custom Button component */}
-      <Popover.Button className='py-1 px-4 inline-flex justify-center rounded-md font-semibold tracking-tight focus:outline-none text-base/6 border border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent items-center gap-2 w-full capitalize'>
+      <Popover.Button className='inline-flex items-center justify-center w-full gap-2 px-4 py-1 font-semibold tracking-tight text-gray-600 capitalize border border-gray-300 rounded-md focus:outline-none text-base/6 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent'>
         <svg
           width='20'
           height='18'
@@ -55,8 +55,8 @@ export default function Filter<T extends string | number | undefined>({
         <div className='space-y-4'>
           {options.map((option, optionIdx) => (
             <div key={option.value} className='flex gap-3'>
-              <div className='flex h-5 shrink-0 items-center'>
-                <div className='group grid size-4 grid-cols-1'>
+              <div className='flex items-center h-5 shrink-0'>
+                <div className='grid grid-cols-1 group size-4'>
                   <input
                     defaultValue={option.value}
                     id={`filter-${id}-${optionIdx}`}
@@ -65,7 +65,7 @@ export default function Filter<T extends string | number | undefined>({
                     checked={option.checked}
                     onInput={(e) =>
                       option.onChanged?.(e.currentTarget.value as T)}
-                    className='col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto'
+                    className='col-start-1 row-start-1 bg-white border border-gray-300 rounded appearance-none checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto'
                   />
                   <svg
                     fill='none'
@@ -91,7 +91,7 @@ export default function Filter<T extends string | number | undefined>({
               </div>
               <label
                 htmlFor={`filter-${id}-${optionIdx}`}
-                className='whitespace-nowrap pr-6 text-sm font-medium text-gray-700'
+                className='pr-6 text-sm font-medium text-gray-700 whitespace-nowrap'
               >
                 {option.label}
               </label>

@@ -53,7 +53,7 @@ export type ButtonLinkProps =
   }
 
 export type ButtonProps =
-  & JSX.ButtonHTMLAttributes<HTMLButtonElement>
+  & Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size'>
   & {
     className?: string
     size?: 'sm' | 'md'

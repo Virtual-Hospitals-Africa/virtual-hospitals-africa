@@ -32,7 +32,7 @@ const variantStyles = {
 }
 
 type ButtonProps =
-  & JSX.ButtonHTMLAttributes<HTMLButtonElement>
+  & JSX.HTMLAttributes<HTMLButtonElement>
   & {
     className?: string
     href?: string

@@ -1,67 +1,51 @@
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import manufactured_medications from '../../../../../db/models/manufactured_medications.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import isString from '../../../../../util/isString.ts'
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { postHandler } from '../../../../../util/postHandler.ts'
+import z from 'zod'
+import {
+  positive_number,
+  string_or_number_as_string,
+} from '../../../../../util/validators.ts'
 
-export function assertIsUpsertMedicine(
-  obj: unknown,
-): asserts obj is {
-  manufactured_medication_name: string
-  manufactured_medication_id: string
-  manufactured_medication: {
-    strength: number
-  }
-  procured_from_name: string
-  procured_from_id?: string
-  quantity: number
-  number_of_containers: number
-  container_size: number
-  expiry_date?: string
-  batch_number?: string
-} {
-  assertOr400(isObjectLike(obj))
-  assertOr400(isString(obj.manufactured_medication_name))
-}
+const AddMedicineSchema = z.object({
+  manufactured_medication_id: z.string(),
+  manufactured_medication: z.object({
+    strength: positive_number,
+  }),
+  quantity: positive_number,
+  container_size: positive_number,
+  number_of_containers: positive_number,
+  procured_from_id: z.string().optional(),
+  procured_from_name: z.string().optional(),
+  expiry_date: z.string().date().optional(),
+  batch_number: string_or_number_as_string.optional(),
+})
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  OrganizationContext['state']
-> = {
-  async POST(req, ctx) {
-    const { admin } = ctx.state.organization_employment.roles
+export const handler = postHandler(
+  AddMedicineSchema,
+  async (
+    _req,
+    ctx: OrganizationContext,
+    { manufactured_medication, ...form_values },
+  ): Promise<Response> => {
+    const { organization, organization_employment, trx } = ctx.state
+    const { admin } = organization_employment.roles
     assertOr403(admin)
 
-    const organization_id = ctx.state.organization.id
-
-    const to_add = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsUpsertMedicine,
-    )
-
     await inventory.addOrganizationMedicine(
-      ctx.state.trx,
-      organization_id,
+      trx,
+      organization.id,
       {
         created_by: admin.employment_id,
-        procured_from_id: to_add.procured_from_id,
-        procured_from_name: to_add.procured_from_name,
-        manufactured_medication_id: to_add.manufactured_medication_id,
-        quantity: to_add.quantity,
-        strength: to_add.manufactured_medication.strength,
-        expiry_date: to_add.expiry_date,
-        batch_number: to_add.batch_number,
-        container_size: to_add.container_size,
-        number_of_containers: to_add.number_of_containers,
+        ...form_values,
+        strength: manufactured_medication.strength,
       },
     )
 
@@ -70,10 +54,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return redirect(
-      `/app/organizations/${organization_id}/inventory?active_tab=medicines&success=${success}`,
+      `/app/organizations/${organization.id}/inventory?active_tab=medicines&success=${success}`,
     )
   },
-}
+)
 
 export default HealthWorkerHomePageLayout(
   'Add Medicine',
