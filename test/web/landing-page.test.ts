@@ -20,7 +20,8 @@ describe(
     afterAll(() => db.destroy())
     it('can be accessed', async () => {
       const response = await fetch(route)
-      assert((await response.text()).includes('Virtual Hospitals Africa'))
+      const text = await response.text()
+      assert(text.includes('Virtual Hospitals Africa'), `${text}`)
     })
 
     it('has links to various signup forms', async () => {

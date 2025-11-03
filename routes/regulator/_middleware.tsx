@@ -13,7 +13,7 @@ import { attachTrx } from '../../shared/attachTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import db from '../../db/db.ts'
 
-export const handler = [
+export default [
   ensureCookiePresent,
   getLoggedInRegulator,
   attachTrx,
@@ -38,10 +38,9 @@ function redirectIfAtRoot(ctx: LoggedInRegulatorContext) {
 }
 
 async function getLoggedInRegulator(
-  req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
-  const session_id = cookie.get(req)
+  const session_id = cookie.get(ctx.req)
   assert(session_id)
 
   const regulator = await regulators.getBySession(db, {

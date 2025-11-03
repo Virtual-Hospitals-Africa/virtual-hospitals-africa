@@ -17,7 +17,6 @@ import { assert } from 'std/assert/assert.ts'
 
 const SKIP_NURSE_REGISTRATION = true
 
-console.log('klkllkew')
 export default [
   ensureCookiePresent,
   getLoggedInHealthWorker({ require_employment: true }),

@@ -57,7 +57,7 @@ export class GoogleClient {
     | { result: 'insufficient_permission' }
   > {
     // Disallow the test server from making real requests to Google
-    if (Deno.env.get('IS_TEST_SERVER')) {
+    if (Deno.env.get('IS_TEST')) {
       return testServerMock(path, opts)
     }
     const url = `${googleApisUrl}${path}`

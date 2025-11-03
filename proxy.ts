@@ -1,6 +1,12 @@
-import { readPositiveIntegerEnvironmentVariable } from './util/env.ts'
+import {
+  readBooleanEnvironmentVariable,
+  readPositiveIntegerEnvironmentVariable,
+} from './util/env.ts'
+import { onProduction } from './util/onProduction.ts'
+import { opts as db_opts } from './db/db.ts'
+import { bgRgb8, bold, cyan, rgb8 } from 'std/fmt/colors.ts'
 
-const VERBOSE = true
+const VERBOSE = readBooleanEnvironmentVariable('VERBOSE')
 
 const HTTPS_PROXY_SERVER_PORT =
   readPositiveIntegerEnvironmentVariable('HTTPS_PROXY_SERVER_PORT') || 8000
@@ -91,5 +97,43 @@ Deno.serve({
   key,
   onListen() {
     debug(`✓ Listening on https://localhost:${HTTPS_PROXY_SERVER_PORT}`)
+
+    const { SERVE_PLAIN_HTTP } = Deno.env.toObject()
+    const protocol = SERVE_PLAIN_HTTP ? 'http:' : 'https:'
+    const address = `${protocol}//localhost:${HTTPS_PROXY_SERVER_PORT}`
+
+    console.log()
+    console.log(
+      ' 🩺 ' +
+        bgRgb8(rgb8('Virtual Hospitals Africa ready', 255), 57),
+    )
+
+    const is_prod = onProduction()
+    if (is_prod) {
+      console.log(
+        `     ` +
+          bgRgb8(rgb8('(running against production)', 255), 59),
+      )
+      console.log()
+    }
+
+    console.log(`    ${bold('URL:')} ${cyan(address)}\n`)
+
+    if (Deno.env.get('USE_DOCKER_FOR_POSTGRES')) {
+      console.log(
+        ' 💽 ' +
+          bgRgb8(
+            rgb8('Adminer (Postgres client) ready', 255),
+            38,
+          ),
+      )
+      const { database, user, password } = db_opts!
+
+      const adminer_url =
+        `http://localhost:8888?pgsql=postgres&server=postgres&username=${user}&db=${database}`
+      console.log(`    ${bold('URL:')} ${cyan(adminer_url)}`)
+      console.log(`    ${bold('Password:')} ${password}\n`)
+      console.log()
+    }
   },
 }, handleRequest)

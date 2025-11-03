@@ -4,7 +4,6 @@ import { assertOr400 } from './assertOr.ts'
 
 // deno-lint-ignore no-explicit-any
 export function isWebsocketPath(ctx: Context<any>) {
-  console.log(ctx)
   return ctx.url.pathname.endsWith('websocket')
 }
 

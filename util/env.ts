@@ -7,3 +7,23 @@ export function readPositiveIntegerEnvironmentVariable(
   const value = Deno.env.get(key)
   return positive_integer.parse(value)
 }
+
+export function readBooleanEnvironmentVariable(
+  key: string,
+): boolean {
+  if (!Deno.env.has(key)) return false
+  const value = Deno.env.get(key)
+  switch (value) {
+    case '1':
+    case 'true':
+      return true
+    case '0':
+    case 'false':
+      return false
+    default: {
+      throw new Error(
+        `Expected a value that could be interpreted as a boolean for ${key}. Got ${value}`,
+      )
+    }
+  }
+}

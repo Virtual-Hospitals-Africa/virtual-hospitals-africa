@@ -4,6 +4,7 @@
     "chatbot:pharmacist": "mkdir -p temp_files && deno task run:trusted chatbot/chatbot.ts pharmacist",
     "build": "NO_EXTERNAL_CONNECT=1 vite build",
     "vite": "vite",
+    "proxy": "NO_MONKEY_PATCH_CONSOLE=1 deno task run:trusted proxy.ts",
     "start": "./scripts/dev.sh",
     "dev": "./scripts/dev.sh",
     "start:docker": "docker compose up -d",
