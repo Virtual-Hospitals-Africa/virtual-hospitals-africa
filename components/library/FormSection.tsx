@@ -1,9 +1,10 @@
-import { ComponentChildren, JSX } from 'preact'
+import { ComponentChildren } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 
 import SectionHeader from './typography/SectionHeader.tsx'
 
 export default function Form(
-  { className, header, children, ...props }: JSX.HTMLAttributes<HTMLElement> & {
+  { className, header, children, ...props }: HTMLAttributes<HTMLElement> & {
     className?: string
     header: string
     children: ComponentChildren

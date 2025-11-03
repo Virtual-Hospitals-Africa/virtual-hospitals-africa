@@ -1,4 +1,5 @@
-import { ComponentChildren, JSX } from 'preact'
+import { ComponentChildren, type JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import cls from '../../util/cls.ts'
 import sections from './sections.tsx'
 
@@ -6,7 +7,7 @@ type SectionHeadingProps = {
   icon: JSX.Element
   children: ComponentChildren
   className?: string
-} & Omit<JSX.HTMLAttributes<HTMLHeadingElement>, 'icon'>
+} & Omit<HTMLAttributes<HTMLHeadingElement>, 'icon'>
 
 function SectionHeading(
   { icon, children, className, ...props }: SectionHeadingProps,

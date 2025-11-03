@@ -1,18 +1,14 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 import { json } from '../util/responses.ts'
-import type { LoggedInHealthWorker, TrxOrDb } from '../types.ts'
+import type { LoggedInHealthWorkerContext, TrxOrDb } from '../types.ts'
 import type { SearchResults } from '../db/models/_base.ts'
-import { Context } from 'fresh'
 
 export function jsonSearchHandler<
   SearchTerms,
   RenderedResult,
-  Ctx extends Context<
-    LoggedInHealthWorker & Record<string, never>
-  > = Context<
-    LoggedInHealthWorker & Record<string, never>
-  >,
+  // deno-lint-ignore no-explicit-any
+  Ctx extends LoggedInHealthWorkerContext<any>,
 >(
   model: {
     search(

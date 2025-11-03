@@ -56,7 +56,7 @@ import words from '../../../../../../../util/words.ts'
 import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
-import { ComponentChild } from 'preact/src/index.d.ts'
+import { ComponentChild } from 'preact'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -81,9 +81,10 @@ export type OpenEncounterContext<T = Record<never, never>> =
     OpenEncounterState & T
   >
 
-export type OpenEncounterWorkflowContext = LoggedInHealthWorkerContext<
-  OpenEncounterWorkflowState
->
+export type OpenEncounterWorkflowContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterWorkflowState & T
+  >
 
 const nav_links: {
   [w in Workflow]: {

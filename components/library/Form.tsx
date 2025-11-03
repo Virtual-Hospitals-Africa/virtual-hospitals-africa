@@ -1,10 +1,10 @@
-import { JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import cls from '../../util/cls.ts'
 
 export const FormClassName = 'flex flex-col gap-2'
 
 export default function Form(
-  { className, ...props }: JSX.HTMLAttributes<HTMLFormElement> & {
+  { className, ...props }: HTMLAttributes<HTMLFormElement> & {
     className?: string
     method?: string
     action?: string

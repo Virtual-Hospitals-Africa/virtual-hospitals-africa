@@ -191,7 +191,8 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Set Availability',
   async function SetAvailability(
-    ctx: OrganizationContext,
+    // deno-lint-ignore no-explicit-any
+    ctx: OrganizationContext<any>,
   ) {
     const { health_worker, organization, organization_employment } = ctx.state
     const from_url = ctx.url.searchParams.get('from_url')

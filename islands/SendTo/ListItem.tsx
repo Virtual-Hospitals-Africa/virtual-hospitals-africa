@@ -1,4 +1,5 @@
-import { JSX } from 'preact'
+import { type JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import { Sendable } from '../../types.ts'
 import OnlineIndicator from '../../components/library/OnlineIndicator.tsx'
 import { CircularImage } from '../../components/library/CircularImage.tsx'
@@ -70,7 +71,7 @@ export function SendableListItem(
   },
 ): JSX.Element {
   // When clicked, actions submit immediately while entities are selected and add hidden inputs to the form
-  const button_props: JSX.HTMLAttributes<HTMLButtonElement> =
+  const button_props: HTMLAttributes<HTMLButtonElement> =
     sendable.to.type === 'action'
       ? {
         form,

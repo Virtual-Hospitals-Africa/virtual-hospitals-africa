@@ -1,7 +1,7 @@
 import { ExtendedActionData } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { Button, ButtonLinkProps, ButtonVariant } from './Button.tsx'
-import { ComponentChildren } from 'preact/src/index.d.ts'
+import { ComponentChildren } from 'preact'
 
 function actionButtonProps(
   action: Omit<ExtendedActionData, 'text'>,

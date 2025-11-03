@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import { assert } from 'std/assert/assert.ts'
 import cls from '../../util/cls.ts'
 
@@ -53,10 +53,13 @@ export type ButtonLinkProps =
   }
 
 export type ButtonProps =
-  & Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size'>
+  & Omit<HTMLAttributes<HTMLButtonElement>, 'size'>
   & {
     className?: string
     size?: 'sm' | 'md'
+    type?: 'submit' | 'button' | 'reset'
+    name?: string
+    value?: string
   }
   & (
     | {
@@ -120,7 +123,7 @@ export function Button({
       <a
         href={href}
         className={className}
-        {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
+        {...(props as unknown as HTMLAttributes<HTMLAnchorElement>)}
       />
     )
     : <button className={className} type={type} {...props} />

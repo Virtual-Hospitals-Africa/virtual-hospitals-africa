@@ -27,6 +27,8 @@ export type NonNull<T> = Exclude<T, null | undefined>
 
 export type Falsy = false | 0 | '' | null | undefined
 
+export type BlankRecord = Record<string, never>
+
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
@@ -1837,7 +1839,7 @@ export type LoggedInRegulator = {
   regulator: HasStringId<Regulator>
 }
 
-export type LoggedInHealthWorkerContext<T = Record<never, never>> = Context<
+export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
   LoggedInHealthWorker & T
 >
 

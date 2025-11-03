@@ -30,7 +30,12 @@ export function SendToForm(
         </div>
       )}
       <div className='mt-6 px-4 flex justify-end'>
-        <Button form={form} type='submit' variant='solid' color='primary'>
+        <Button
+          form={form}
+          type='submit'
+          variant='solid'
+          color='primary'
+        >
           Send
         </Button>
       </div>

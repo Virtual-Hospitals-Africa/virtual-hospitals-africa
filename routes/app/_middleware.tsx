@@ -6,7 +6,7 @@ import redirect from '../../util/redirect.ts'
 import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
 import { warning } from '../../util/alerts.ts'
-import { login_href } from '../login.tsx'
+import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import Layout from '../../components/library/Layout.tsx'
@@ -77,7 +77,7 @@ export function getLoggedInHealthWorker(
     assertOr401(isGettingHtml(ctx.req))
 
     const from_login = ctx.url.searchParams.has('from_login')
-    const response = from_login ? redirect(login_href) : noSession()
+    const response = from_login ? redirect(loginHref()) : noSession()
     deleteCookie(response.headers, cookie.session_key)
     return response
   }
