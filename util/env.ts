@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { positive_integer } from './validators.ts'
 
 export function readPositiveIntegerEnvironmentVariable(
@@ -26,4 +27,11 @@ export function readBooleanEnvironmentVariable(
       )
     }
   }
+}
+
+export function readMandatoryStringEnvironmentVariable(
+  key: string,
+): string {
+  assert(Deno.env.has(key), `Expected enviornment variable to be set ${key}`)
+  return Deno.env.get(key)!
 }
