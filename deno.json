@@ -10,7 +10,7 @@
     "start:docker": "docker compose up -d",
     "start:beep": "./scripts/watch_and_beep.sh '(Error|error)' deno start",
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
-    "web": "DENO_TLS_CA_STORE=system deno serve -A --unstable-temporal --env --unsafely-ignore-certificate-errors _fresh/server.js",
+    "web": "./scripts/web.sh",
     "db:codegen": "./db/codegen.sh",
     "db:local": "./db/local.sh",
     "db:docker": "./db/docker.sh",

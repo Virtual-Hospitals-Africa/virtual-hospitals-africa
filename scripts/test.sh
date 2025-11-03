@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
-
 fail() {
   >&2 echo "$@"
   exit 1
@@ -22,25 +21,44 @@ HTTP_SERVER_PORT=8004
 HTTPS_PROXY_SERVER_PORT=8005
 
 migrate_check=true
-[[ "$1" == "--skip-migrate-check" ]] && {
-  migrate_check=false
+use_build=false
+
+while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
+  if [[ "$1" == "--skip-migrate-check" ]]; then
+    migrate_check=false
+  elif [[ "$1" == "--use-build" ]]; then
+    use_build=true
+  else
+    fail "Unknown option: $1"
+  fi
   shift
+done
+
+mktemp_with_suffix() {
+  suffix="$1"
+  filename=$(mktemp -u)
+  temp="$filename.$suffix"
+  : >"$temp"
+  echo "$temp"
 }
 
-# Set up a temporary file for the test server outputs so we can check if it's ready
-test_http_server_output=$(mktemp)
-test_https_proxy_server_output=$(mktemp)
+test_http_server_output=$(mktemp_with_suffix log)
+test_https_proxy_server_output=$(mktemp_with_suffix log)
 
 kill_test_servers() {
   ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT
   ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT
 }
 
+rm_ansi_escape_codes() {
+  sed -r 's/\x1b\[[^@-~]*[@-~]//g'
+}
+
 https_proxy_server_ready() {
   while ! grep -q "Virtual Hospitals Africa ready" "$test_https_proxy_server_output"; do
     # Deno prints "error" with color codes, so we remove them before checking
     # shellcheck disable=SC2002
-    if cat "$test_https_proxy_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
+    if cat "$test_https_proxy_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
       cat "$test_https_proxy_server_output"
       exit 1
     fi
@@ -50,10 +68,11 @@ https_proxy_server_ready() {
 }
 
 http_server_ready() {
-  while ! grep -q "http://localhost:$HTTP_SERVER_PORT/" "$test_http_server_output"; do
+  while ! cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q ":$HTTP_SERVER_PORT"; do
+    cat "$test_http_server_output"
     # Deno prints "error" with color codes, so we remove them before checking
     # shellcheck disable=SC2002
-    if cat "$test_http_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
+    if cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
       cat "$test_http_server_output"
       exit 1
     fi
@@ -68,7 +87,9 @@ wait_until_vha_test_servers_ready() {
 }
 
 run_tests() {
-  DENO_TLS_CA_STORE=system IS_TEST=true \
+  DENO_TLS_CA_STORE=system \
+  IS_TEST=true \
+  HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
   deno test \
     -A \
     --unstable-temporal \
@@ -79,12 +100,21 @@ run_tests() {
     "$@"
 }
 
+http_server_command() {
+  if $use_build; then
+    deno task web
+  else
+    deno task vite
+  fi
+}
+
 start_http_server() {
   IS_TEST=true \
   PORT=$HTTP_SERVER_PORT \
   HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
   FAKE_GOOGLE_AUTH=false \
-  deno task vite \
+  GOOGLE_CLIENT_ID=FAKE_GOOGLE_CLIENT_ID \
+  http_server_command \
   >> "$test_http_server_output" 2>&1 &
 }
 

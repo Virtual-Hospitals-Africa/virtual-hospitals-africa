@@ -26,6 +26,10 @@ import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { OrganizationContext } from './_middleware.ts'
 import * as health_worker_organization_calenders from '../../../../db/models/health_worker_organization_calenders.ts'
+import {
+  nonnegative_integer,
+  positive_integer,
+} from '../../../../util/validators.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -95,8 +99,12 @@ function* availabilityBlocks(
 }
 
 const TimeSchema = z.object({
-  hour: z.number().int().min(1).max(12),
-  minute: z.number().int().min(0).max(55).optional().default(0),
+  hour: positive_integer.refine((hour) => hour >= 1 && hour <= 12, {
+    message: 'expected an hour in the range 1-12',
+  }),
+  minute: nonnegative_integer.refine((minute) => minute >= 0 && minute <= 59, {
+    message: 'expected a minute in the range 0-59',
+  }),
   amPm: z.enum(['am', 'pm']),
 })
 

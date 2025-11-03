@@ -392,8 +392,8 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     }
   }
 
-  static fromCtx(
-    ctx: LoggedInHealthWorkerContext,
+  static fromCtx<T>(
+    ctx: LoggedInHealthWorkerContext<T>,
   ) {
     return new HealthWorkerGoogleClient(
       ctx.state.trx,

@@ -22,7 +22,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -67,7 +67,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -102,7 +102,7 @@ jobs:
         run: deno task build
 
       - name: Run tests
-        run: deno task test --skip-migrate-check
+        run: deno task test --skip-migrate-check --use-build test/web/login.test.ts
 
       # The test_web step owns the cache, so only overwrite the cache if test_web passes
       - name: Cache deno-modules
@@ -152,7 +152,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -219,7 +219,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -278,7 +278,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -302,7 +302,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules

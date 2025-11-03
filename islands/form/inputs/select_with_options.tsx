@@ -1,15 +1,14 @@
 import { forwardRef } from 'preact/compat'
-import { Ref } from 'preact'
-import type { HTMLAttributes } from 'preact/compat'
+import { OptionHTMLAttributes, Ref } from 'preact'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import { Select, SelectProps } from './select.tsx'
 
 type FlexibleOption<
-  V extends HTMLAttributes<HTMLOptionElement>['value'],
+  V extends OptionHTMLAttributes<HTMLOptionElement>['value'],
 > = V | { value: V; label?: string } | { id: V; name: string }
 
 export const SelectWithOptions = forwardRef(function SelectWithOptions<
-  V extends HTMLAttributes<HTMLOptionElement>['value'],
+  V extends OptionHTMLAttributes<HTMLOptionElement>['value'],
 >(
   {
     options,

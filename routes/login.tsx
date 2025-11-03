@@ -13,10 +13,13 @@ import randomAvatar from '../mocks/randomAvatar.ts'
 import randomNamesAndSex from '../mocks/randomDemographics.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
-import { readMandatoryStringEnvironmentVariable } from '../util/env.ts'
+import {
+  readBooleanEnvironmentVariable,
+  readMandatoryStringEnvironmentVariable,
+} from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
 
-const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
+const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {
   assert(!onProduction(), 'Cannot fake google authentication on production')
 }
