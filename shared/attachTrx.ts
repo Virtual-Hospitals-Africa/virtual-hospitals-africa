@@ -9,8 +9,6 @@ export type TrxContext = Context<
   }
 >
 export function attachTrx(
-  // deno-lint-ignore no-unused-vars
-  req: Request,
   ctx: TrxContext,
 ) {
   // Semi-hacky, just attach the db for websocket routes as we

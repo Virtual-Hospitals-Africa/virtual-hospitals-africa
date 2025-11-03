@@ -17,7 +17,8 @@ import { assert } from 'std/assert/assert.ts'
 
 const SKIP_NURSE_REGISTRATION = true
 
-export const handler = [
+console.log('klkllkew')
+export default [
   ensureCookiePresent,
   getLoggedInHealthWorker({ require_employment: true }),
   redirectIfRegistrationNeeded,
@@ -61,7 +62,9 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
+    console.log('in here')
     const health_worker = await getLoggedInHealthWorkerFromCookie(ctx)
+    console.log('welkelwkklew', health_worker)
 
     if (
       health_worker && (

@@ -2,8 +2,7 @@ import { Context } from 'fresh'
 import { LoggedInHealthWorker } from '../types.ts'
 import redirect from '../util/redirect.ts'
 
-// deno-lint-ignore require-await
-export default async function AppRedirectToWaitingRoomPage(
+export default function AppRedirectToWaitingRoomPage(
   ctx: Context<LoggedInHealthWorker>,
 ) {
   return redirect(

@@ -8,6 +8,7 @@ export default upgradeWebsocket((
   ctx: Context<LoggedInHealthWorker>,
   socket: WebSocket,
 ) => {
+  console.log('ewkwkle', ctx)
   let timeout: number
   let past_ts: Date | undefined
 
