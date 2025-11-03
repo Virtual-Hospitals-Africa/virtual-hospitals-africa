@@ -1,6 +1,6 @@
 import { Context } from 'fresh'
-import redirect from '../../../../../../../util/redirect.ts'
-import { replaceParams } from '../../../../../../../util/replaceParams.ts'
+import redirect from '../../../../../../../../util/redirect.ts'
+import { replaceParams } from '../../../../../../../../util/replaceParams.ts'
 
 export function handler(
   ctx: Context<unknown>,

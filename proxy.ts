@@ -1,14 +1,11 @@
-#!/usr/bin/env -S deno run --allow-net --allow-read
-
-/**
- * HTTPS Proxy Server for Deno 2
- * Usage: deno run --allow-net --allow-read proxy.ts [port]
- */
+import { readPositiveIntegerEnvironmentVariable } from './util/env.ts'
 
 const VERBOSE = true
 
-const HTTPS_PROXY_SERVER_PORT = 8000
-const HTTP_SERVER_PORT = 8001
+const HTTPS_PROXY_SERVER_PORT =
+  readPositiveIntegerEnvironmentVariable('HTTPS_PROXY_SERVER_PORT') || 8000
+const HTTP_SERVER_PORT =
+  readPositiveIntegerEnvironmentVariable('HTTP_SERVER_PORT') || 8001
 
 // Load local certificates
 const certFile = './local-certs/localhost.crt'
@@ -92,7 +89,7 @@ Deno.serve({
   port: HTTPS_PROXY_SERVER_PORT,
   cert,
   key,
-  onListen: ({ hostname, port }) => {
-    debug(`✓ Listening on https://${hostname}:${HTTPS_PROXY_SERVER_PORT}`)
+  onListen() {
+    debug(`✓ Listening on https://localhost:${HTTPS_PROXY_SERVER_PORT}`)
   },
 }, handleRequest)

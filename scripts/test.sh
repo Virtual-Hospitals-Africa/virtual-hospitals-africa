@@ -18,7 +18,8 @@ elif [ -f .env.docker ]; then
   cmp --silent .env .env.docker || fail ".env differs from .env.docker\nrun deno task switch:docker before running tests"
 fi
 
-VHA_SERVER_PORT=8005
+HTTP_SERVER_PORT=8004
+HTTPS_PROXY_SERVER_PORT=8005
 
 watch_mode=false
 [[ "$1" == "--watch" ]] && {
@@ -35,11 +36,12 @@ migrate_check=true
 # Set up a temporary file for the test server output so we can check if it's ready
 test_vha_server_output=$(mktemp)
 
-kill_test_server() {
-  ./scripts/kill_process_on_port.sh $VHA_SERVER_PORT
+kill_test_servers() {
+  ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT
+  ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT
 }
 
-start_vha_test_server() {
+start_vha_test_http_server() {
   if $watch_mode; then
     deno task start
   else
@@ -48,7 +50,7 @@ start_vha_test_server() {
 }
 
 # In watch mode, this may happen several times
-wait_until_vha_test_server_ready() {
+wait_until_vha_test_servers_ready() {
   while ! grep -q "Virtual Hospitals Africa ready" "$test_vha_server_output"; do
     # Deno prints "error" with color codes, so we remove them before checking
     # shellcheck disable=SC2002
@@ -74,16 +76,17 @@ run_tests() {
 }
 
 # Ensure there is no prior test servers, that the database is up to date, and that the log file is empty
-kill_test_server
+kill_test_servers
 if $migrate_check; then
   IS_TEST=true deno task db:migrate check
 fi
 
 # Start the test servers
-IS_TEST=true IS_TEST_SERVER=true PORT=8005 FAKE_GOOGLE_AUTH=false start_vha_test_server >> "$test_vha_server_output" 2>&1 &
-trap "kill_test_server" EXIT
+IS_TEST=true IS_TEST_SERVER=true PORT=$HTTP_SERVER_PORT FAKE_GOOGLE_AUTH=false start_vha_test_http_server >> "$test_vha_server_output" 2>&1 &
+HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT HTTP_SERVER_PORT=$HTTP_SERVER_PORT deno task run:trusted proxy.ts &
+trap "kill_test_servers" EXIT
 
-wait_until_vha_test_server_ready
+wait_until_vha_test_servers_ready
 
 if ! $watch_mode; then
   run_tests "$@" || {

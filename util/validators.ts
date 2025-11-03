@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
 import generateUUID from './uuid.ts'
-import { assert } from 'std/assert/assert.ts'
 
 export const zimbabwe_national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
