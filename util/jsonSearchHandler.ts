@@ -9,11 +9,9 @@ export function jsonSearchHandler<
   SearchTerms,
   RenderedResult,
   Ctx extends Context<
-    // deno-lint-ignore no-explicit-any
-    LoggedInHealthWorker & Record<string, any>
+    LoggedInHealthWorker & Record<string, never>
   > = Context<
-    // deno-lint-ignore no-explicit-any
-    LoggedInHealthWorker & Record<string, any>
+    LoggedInHealthWorker & Record<string, never>
   >,
 >(
   model: {

@@ -1,16 +1,13 @@
 import { defineConfig } from 'vite'
 import { fresh } from '@fresh/plugin-vite'
 import tailwindcss from '@tailwindcss/vite'
-import { promiseProps } from './util/promiseProps.ts'
+import { positive_integer } from './util/validators.ts'
 
-const { SERVE_PLAIN_HTTP, PORT } = Deno.env.toObject()
-const httpsOpts: {
-  key?: string
-  cert?: string
-} = SERVE_PLAIN_HTTP ? {} : await promiseProps({
-  key: Deno.readTextFile('./local-certs/localhost.key'),
-  cert: Deno.readTextFile('./local-certs/localhost.crt'),
-})
+let port = 8001
+const PORT = Deno.env.get('PORT')
+if (PORT) {
+  port = positive_integer.parse(PORT)
+}
 
 export default defineConfig({
   plugins: [
@@ -18,7 +15,7 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    port: PORT ? parseInt(PORT, 10) : 8000,
-    https: Object.keys(httpsOpts).length > 0 ? httpsOpts : undefined,
+    port,
+    // https: Object.keys(httpsOpts).length > 0 ? httpsOpts : undefined,
   },
 })

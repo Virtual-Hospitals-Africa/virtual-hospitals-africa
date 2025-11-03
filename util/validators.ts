@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
 import generateUUID from './uuid.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const zimbabwe_national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
@@ -40,6 +41,17 @@ export const positive_number = z.number().or(z.string())
   .transform((n) => isNumber(n) ? n : parseFloat(n))
   .refine((n) => isNumber(n) && n > 0, {
     message: 'Expected a positive number',
+  })
+
+export const positive_integer = z.number().or(
+  z.string()
+    .transform((s) => parseInt(s, 10))
+    .refine((n) => !!n, {
+      message: 'Expected a positive integer',
+    }),
+)
+  .refine((n) => isNumber(n) && n > 0, {
+    message: 'Expected a positive integer',
   })
 
 export const generated_uuid = z.string().uuid().optional().transform((v) =>

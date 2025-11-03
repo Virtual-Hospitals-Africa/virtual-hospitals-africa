@@ -79,8 +79,8 @@ export default function App({ Component, ...props }: PageProps) {
             />
           </>
         )}
-        {(props.route!.startsWith('/app') ||
-          props.route!.startsWith('/regulator')) && (
+        {(props.route?.startsWith('/app') ||
+          props.route?.startsWith('/regulator')) && (
           <script src='/scripts/general.js' async />
         )}
       </head>
