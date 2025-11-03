@@ -1,7 +1,7 @@
 import { PharmaciesTable } from '../../../components/regulator/PharmaciesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
 import * as pharmacies from '../../../db/models/pharmacies.ts'
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import FormRow from '../../../components/library/FormRow.tsx'
 import { Button } from '../../../components/library/Button.tsx'
 import Form from '../../../components/library/Form.tsx'
@@ -14,8 +14,7 @@ import { TextInput } from '../../../islands/form/inputs/text.tsx'
 export default RegulatorHomePageLayout(
   'Pharmacies',
   async function PharmaciesPage(
-    req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: Context<LoggedInRegulator>,
   ) {
     const { country } = ctx.params
     const page = searchPage(ctx)
@@ -29,7 +28,7 @@ export default RegulatorHomePageLayout(
       { page },
     )
 
-    if (req.headers.get('accept') === 'application/json') {
+    if (ctx.req.headers.get('accept') === 'application/json') {
       return json(search_results)
     }
 

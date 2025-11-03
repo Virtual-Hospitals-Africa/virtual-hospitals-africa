@@ -7,7 +7,7 @@ import { assert } from 'std/assert/assert.ts'
 
 export const handler = postHandler(
   z.object({}),
-  async (_req, ctx: OrganizationContext) => {
+  async (ctx: OrganizationContext) => {
     const { trx, organization, health_worker, organization_employment } =
       ctx.state
     const { success, patient_id } = await patient_registration.start(

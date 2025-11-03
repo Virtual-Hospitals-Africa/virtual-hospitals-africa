@@ -1,9 +1,9 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { ICD10SearchSpecific } from '../../islands/icd10/SearchSpecific.tsx'
 
 // deno-lint-ignore require-await
 export default async function ICD10SearchPage(
-  _ctx: FreshContext,
+  _ctx: Context<unknown>,
 ) {
   return (
     <div className='p-4'>

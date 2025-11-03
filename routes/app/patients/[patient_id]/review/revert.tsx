@@ -1,14 +1,11 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
+
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import * as events from '../../../../../db/models/events.ts'
 import { complete } from '../../../../../db/models/doctor_reviews.ts'
 import redirect from '../../../../../util/redirect.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ReviewContext['state']
-> = {
+export const handler = {
   async POST(ctx: ReviewContext) {
     const { review_id, requested_by, employment_id, patient } =
       ctx.state.doctor_review

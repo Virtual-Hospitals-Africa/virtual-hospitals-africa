@@ -1,4 +1,4 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
@@ -22,7 +22,7 @@ function Divider() {
 
 // deno-lint-ignore require-await
 export default async function PrescriptionPage(
-  ctx: FreshContext,
+  ctx: Context<Record<string, unknown>>,
 ) {
   assert(!ctx.state.trx, "Assuming transaction wasn't already started")
 

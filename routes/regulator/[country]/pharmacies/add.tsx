@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
@@ -31,7 +31,7 @@ const UpsertPharmacySchema = z.object({
 })
 
 export const handler = {
-  async POST(ctx: FreshContext<LoggedInRegulator>) {
+  async POST(ctx: Context<LoggedInRegulator>) {
     const req = ctx.req
     const { country } = ctx.params
     const { trx } = ctx.state
@@ -59,8 +59,7 @@ export const handler = {
 export default RegulatorHomePageLayout(
   'Pharmacies',
   function Add(
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: Context<LoggedInRegulator>,
   ) {
     return (
       <PharmacyForm

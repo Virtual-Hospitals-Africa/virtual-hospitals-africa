@@ -16,7 +16,7 @@ const MoveToWaitingRoomSchema = z.object({})
 
 export const handler = postHandler(
   MoveToWaitingRoomSchema,
-  async (_req, ctx: OpenEncounterContext) => {
+  async (ctx: OpenEncounterContext) => {
     const { organization, organization_employment, encounter } = ctx.state
 
     if (encounter.status.patient_presence.current_workflow) {

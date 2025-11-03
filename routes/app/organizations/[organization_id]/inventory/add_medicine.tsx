@@ -31,7 +31,6 @@ const AddMedicineSchema = z.object({
 export const handler = postHandler(
   AddMedicineSchema,
   async (
-    _req,
     ctx: OrganizationContext,
     { manufactured_medication, ...form_values },
   ): Promise<Response> => {
@@ -62,7 +61,6 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Add Medicine',
   async function MedicineAdd(
-    _req: Request,
     { url, state: { trx, organization } }: OrganizationContext,
   ) {
     const strength = parseInt(url.searchParams.get('strength')!) || undefined

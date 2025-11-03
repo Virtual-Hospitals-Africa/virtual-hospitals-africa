@@ -1,4 +1,3 @@
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
@@ -19,11 +18,8 @@ export function assertIsUpsert(obj: unknown): asserts obj is {
   assertOr400(typeof obj.consumable_id === 'string')
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  OrganizationContext['state']
-> = {
-  async POST(ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
     const req = ctx.req
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)

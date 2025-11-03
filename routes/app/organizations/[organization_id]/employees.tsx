@@ -5,7 +5,6 @@ import { OrganizationContext } from './_middleware.ts'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeeTable(
-    _req,
     ctx,
   ) {
     const { health_worker, organization, isAdminAtOrganization } = ctx.state

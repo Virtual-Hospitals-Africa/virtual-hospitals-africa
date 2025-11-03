@@ -1,5 +1,5 @@
 import { ComponentChild } from 'preact'
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
 import { matchActiveLink } from '../../util/matchActiveLink.ts'
@@ -116,8 +116,8 @@ export function GenericSidebar(
   urlSearchParams.forEach((value, key) => allParams[key] = value)
   const activeLink = matchActiveLink(nav_links, route)
   return (
-    <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
-      <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white'>
+    <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
+      <div className='flex flex-col flex-auto overflow-y-auto bg-white border-r border-gray-200 gap-y-5'>
         <div
           style={{
             height: HEADER_HEIGHT_PX,
@@ -128,12 +128,12 @@ export function GenericSidebar(
         >
           <a
             href={top.href}
-            className='flex h-20 shrink-0 items-center gap-3 max-w-full '
+            className='flex items-center h-20 max-w-full gap-3 shrink-0 '
           >
             {top.child}
           </a>
         </div>
-        <nav className='flex flex-1 flex-col px-5'>
+        <nav className='flex flex-col flex-1 px-5'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
@@ -202,7 +202,8 @@ type StepsSidebarProps = {
     href: string
     child: ComponentChild
   }
-  ctx: FreshContext
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any>
   nav_links: {
     step: string
     route: string
@@ -210,7 +211,8 @@ type StepsSidebarProps = {
   steps_completed: string[]
 }
 
-function defaultTop(ctx: FreshContext) {
+// deno-lint-ignore no-explicit-any
+function defaultTop(ctx: Context<any>) {
   if (ctx.url.pathname.startsWith('/app')) {
     return HealthWorkerDefaultTop
   }
@@ -226,7 +228,7 @@ export function StepsSidebar(
   return (
     <GenericSidebar
       top={top || defaultTop(ctx)}
-      route={ctx.route}
+      route={ctx.route!}
       params={ctx.params}
       urlSearchParams={ctx.url.searchParams}
       nav_links={nav_links.map((link) => ({

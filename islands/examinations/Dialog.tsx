@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import { Fragment, JSX } from 'preact'
 import { useSignal } from '@preact/signals'
 import { Dialog, Transition } from '@headlessui/react'
 

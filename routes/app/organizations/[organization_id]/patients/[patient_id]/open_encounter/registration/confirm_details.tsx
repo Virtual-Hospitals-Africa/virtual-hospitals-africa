@@ -12,7 +12,7 @@ const PatientRegistrationConfirmDetailsSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationConfirmDetailsSchema,
-  (_req, ctx: OpenEncounterWorkflowContext) => {
+  (ctx: OpenEncounterWorkflowContext) => {
     return completeAndProceedToNextStep(ctx)
   },
 )

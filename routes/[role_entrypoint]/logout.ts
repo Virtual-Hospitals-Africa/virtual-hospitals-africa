@@ -2,18 +2,18 @@ import { deleteCookie } from 'std/http/cookie.ts'
 import redirect from '../../util/redirect.ts'
 import * as sessions from '../../db/models/sessions.ts'
 import * as cookie from '../../shared/cookie.ts'
-import { LoggedInHealthWorkerHandler } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import db from '../../db/db.ts'
+import { LoggedInHealthWorkerContext } from '../../types.ts'
 
 const entrypoint_to_role = {
   app: 'health_worker' as const,
   regulator: 'regulator' as const,
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
-  async GET(ctx) {
+export const handler = {
+  async GET(ctx: LoggedInHealthWorkerContext) {
     const req = ctx.req
     const { role_entrypoint } = ctx.params
     assert(role_entrypoint)

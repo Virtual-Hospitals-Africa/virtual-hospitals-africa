@@ -1,5 +1,5 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
+
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
@@ -15,10 +15,7 @@ function assertIsOrders(
   assertOr400(isObjectLike(form_values))
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ReviewContext['state']
-> = {
+export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const _form_values = await parseRequestAsserts(

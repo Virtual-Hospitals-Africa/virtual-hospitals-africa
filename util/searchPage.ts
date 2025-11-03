@@ -1,7 +1,8 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { assertOr400 } from './assertOr.ts'
 
-export function searchPage({ url }: FreshContext<unknown>) {
+// deno-lint-ignore no-explicit-any
+export function searchPage({ url }: Context<any>) {
   const page_search = url.searchParams.get('page')
   if (!page_search) return 1
 

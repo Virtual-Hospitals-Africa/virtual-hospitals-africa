@@ -14,7 +14,7 @@ const TriageRoutePatientSchema = z.object({})
 
 export const handler = postHandler(
   TriageRoutePatientSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     const { trx, encounter, organization_employment } = ctx.state
 
     const { next_patient_presence } = await promiseProps({

@@ -1,34 +1,33 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from './assertOr.ts'
 
-export function isWebsocketPath(ctx: FreshContext) {
+// deno-lint-ignore no-explicit-any
+export function isWebsocketPath(ctx: Context<any>) {
   return ctx.url.pathname.endsWith('websocket')
 }
 
-export default function upgradeWebsocket<Context extends FreshContext>(
+export default function upgradeWebsocket<State>(
   callback: (
-    req: Request,
-    ctx: Context,
+    ctx: Context<State>,
     socket: WebSocket,
   ) => void,
 ) {
   // deno-lint-ignore require-await
   return async function (
-    req: Request,
-    ctx: Context,
+    ctx: Context<State>,
   ) {
     assert(
       isWebsocketPath(ctx),
       'Route must follow the convention that websocket routes end in websocket. This is used to determine whether to open a transaction or not.',
     )
     assertOr400(
-      req.headers.get('upgrade') === 'websocket',
+      ctx.req.headers.get('upgrade') === 'websocket',
       'Only websocket connections supported',
     )
 
-    const { socket, response } = Deno.upgradeWebSocket(req)
-    callback(req, ctx, socket)
+    const { socket, response } = Deno.upgradeWebSocket(ctx.req)
+    callback(ctx, socket)
     return response
   }
 }

@@ -36,13 +36,12 @@ export function handler(
 export const PatientProfilePage = (
   title: string,
   render: (
-    req: Request,
     ctx: PatientProfileContext,
   ) => JSX.Element | Promise<JSX.Element>,
 ) =>
   HealthWorkerHomePageLayout<PatientProfileContext>(
     title,
-    async function PatientContents(req, ctx) {
+    async function PatientContents(ctx) {
       const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
       const { trx, organization_employment } = ctx.state
 
@@ -84,7 +83,7 @@ export const PatientProfilePage = (
       ]
 
       const drawer = undefined
-      const rendered = await render(req, ctx)
+      const rendered = await render(ctx)
 
       return {
         drawer,

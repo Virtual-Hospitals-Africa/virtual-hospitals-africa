@@ -8,6 +8,7 @@ import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { RenderedPatientCompletedRegistration } from '../../types.ts'
 import { TextArea } from '../form/inputs/textarea.tsx'
+import { Fragment } from 'preact'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {

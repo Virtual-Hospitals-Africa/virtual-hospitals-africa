@@ -7,7 +7,6 @@ import { OrganizationContext } from './_middleware.ts'
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   'Inventory',
   async function InventoryPage(
-    _req,
     ctx,
   ) {
     const { organization, isAdminAtOrganization } = ctx.state

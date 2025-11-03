@@ -1,11 +1,8 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
+
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ReviewContext['state']
-> = {
+export const handler = {
   // deno-lint-ignore require-await
   async POST(ctx: ReviewContext) {
     const completing_step = completeStep(ctx)

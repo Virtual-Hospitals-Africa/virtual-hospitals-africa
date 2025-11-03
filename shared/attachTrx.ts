@@ -1,9 +1,9 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 import { isWebsocketPath } from '../util/websocket.ts'
 
-export type TrxContext = FreshContext<
+export type TrxContext = Context<
   {
     trx: TrxOrDb
   }

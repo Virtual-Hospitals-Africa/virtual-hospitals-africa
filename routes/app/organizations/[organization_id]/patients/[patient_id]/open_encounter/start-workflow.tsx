@@ -94,6 +94,5 @@ export async function startWorkflow(
 
 export const handler = postHandler(
   StartWorkflowSchema,
-  (_req, ctx: OpenEncounterContext, { workflow }) =>
-    startWorkflow(ctx, workflow),
+  (ctx: OpenEncounterContext, { workflow }) => startWorkflow(ctx, workflow),
 )

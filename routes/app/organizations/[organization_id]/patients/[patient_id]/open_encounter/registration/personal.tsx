@@ -49,7 +49,7 @@ const PatientRegistrationPersonalSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationPersonalSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const { response } = await promiseProps({
       upserting_patient: patients.upsert(ctx.state.trx, {
         id: ctx.state.patient.id,

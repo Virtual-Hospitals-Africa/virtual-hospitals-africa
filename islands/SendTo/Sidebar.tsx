@@ -5,6 +5,7 @@ import { SendableList } from './List.tsx'
 import { useSignal } from '@preact/signals'
 import { SendToSelectedPatient } from './SelectedPatient.tsx'
 import { SendToForm } from './Form.tsx'
+import { Fragment } from 'preact'
 
 export function SendToSidebar(
   { form, open, close, sendables, patient }: {
@@ -23,7 +24,7 @@ export function SendToSidebar(
         <div className='fixed inset-0 bg-black bg-opacity-25' />
         <div className='fixed inset-0 overflow-hidden'>
           <div className='absolute inset-0 overflow-hidden'>
-            <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16'>
+            <div className='fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none sm:pl-16'>
               <Transition.Child
                 as={Fragment}
                 enter='transform transition ease-in-out duration-500 sm:duration-700'
@@ -34,7 +35,7 @@ export function SendToSidebar(
                 leaveTo='translate-x-full'
               >
                 <Dialog.Panel className='pointer-events-auto fixed right-0 top-0 h-full w-[448px] bg-white shadow-xl'>
-                  <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
+                  <div className='flex flex-col h-full overflow-y-scroll bg-white shadow-xl'>
                     <SendToHeader close={close} />
                     <SendableList
                       form={form}

@@ -6,7 +6,6 @@ import {
 import {
   DiagnosesCollaboration,
   Diagnosis,
-  LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../../../../types.ts'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../../../../islands/diagnoses/Form.tsx'
@@ -52,10 +51,7 @@ function assertIsDiagnoses(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  OpenEncounterWorkflowContext['state']
-> = {
+export const handler = {
   async POST(ctx: OpenEncounterWorkflowContext) {
     const req = ctx.req
     const data = await parseRequestAsserts(

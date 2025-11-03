@@ -17,7 +17,7 @@ const PatientRegistrationConfirmSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationConfirmSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext) => {
+  async (ctx: OpenEncounterWorkflowContext) => {
     const {
       trx,
       patient,

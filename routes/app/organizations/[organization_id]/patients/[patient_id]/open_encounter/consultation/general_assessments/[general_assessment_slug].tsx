@@ -3,9 +3,7 @@ import {
   GeneralAssessmentsContext,
   GeneralAssessmentsPage,
 } from './_middleware.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../../../../../types.ts'
+import {} from '../../../../../../../../../types.ts'
 import * as findings from '../../../../../../../../../db/models/examination_findings.ts'
 import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
 import { PatientExaminationForm } from '../../../../../../../../../components/examinations/Form.tsx'
@@ -37,10 +35,7 @@ const ExaminationFindingsSchema = z.object({
     )).optional().transform((fs) => fs || []),
 })
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  GeneralAssessmentsContext['state']
-> = {
+export const handler = {
   async POST(ctx: GeneralAssessmentsContext) {
     const req = ctx.req
 

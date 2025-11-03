@@ -11,10 +11,9 @@ import {
   GoogleProfile,
   GoogleTokenInfo,
   GoogleTokens,
-  LoggedInHealthWorker,
+  LoggedInHealthWorkerContext,
   TrxOrDb,
 } from '../types.ts'
-import { FreshContext } from '$fresh/src/server/mod.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
 import { formatJohannesburg } from '../util/date.ts'
@@ -393,7 +392,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   }
 
   static fromCtx(
-    ctx: FreshContext<LoggedInHealthWorker>,
+    ctx: LoggedInHealthWorkerContext,
   ) {
     return new HealthWorkerGoogleClient(
       ctx.state.trx,

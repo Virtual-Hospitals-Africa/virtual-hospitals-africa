@@ -12,7 +12,8 @@ export function getParam(
 }
 
 export function getRequiredParam(
-  ctx: Context<unknown> | URLSearchParams,
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any> | URLSearchParams,
   param_name: string,
 ): string {
   const param = getParam(ctx, param_name)
@@ -24,7 +25,8 @@ const uuid_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 export function getRequiredUUIDParam(
-  ctx: Context<unknown> | URLSearchParams,
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any> | URLSearchParams,
   param_name: string,
 ): string {
   const param = getParam(ctx, param_name)

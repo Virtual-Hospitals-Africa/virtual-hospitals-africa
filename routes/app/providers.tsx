@@ -1,9 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
-  Profession,
-} from '../../types.ts'
+import { LoggedInHealthWorkerContext, Maybe, Profession } from '../../types.ts'
 import { search } from '../../db/models/providers.ts'
 import { json } from '../../util/responses.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -32,8 +28,8 @@ function assertIsMaybeOrganizationKind(
   )
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
-  async GET(ctx) {
+export const handler = {
+  async GET(ctx: LoggedInHealthWorkerContext) {
     const req = ctx.req
 
     assertEquals(req.headers.get('accept'), 'application/json')

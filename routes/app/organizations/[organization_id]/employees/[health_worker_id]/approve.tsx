@@ -1,16 +1,13 @@
 import { approveInvitee } from '../../../../../../db/models/employment.ts'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
+
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { OrganizationContext } from '../../_middleware.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<string, never>,
-  OrganizationContext['state']
-> = {
-  async POST(ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
     const { trx, organization, isAdminAtOrganization, health_worker } =
       ctx.state
 

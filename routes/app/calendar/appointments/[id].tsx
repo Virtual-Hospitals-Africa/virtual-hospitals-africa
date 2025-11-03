@@ -6,7 +6,6 @@ import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 
 export default HealthWorkerHomePageLayout(
   async function AppointmentPage(
-    _req,
     ctx,
   ) {
     const { health_worker } = ctx.state

@@ -1,4 +1,4 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { LoggedInRegulatorContext } from '../../types.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import redirect from '../../util/redirect.ts'
@@ -27,11 +27,11 @@ function noSession() {
   return redirect(could_not_locate_account_href)
 }
 
-function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  return cookie.get(req) ? ctx.next() : noSession()
+function ensureCookiePresent(ctx: Context<unknown>) {
+  return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
-function redirectIfAtRoot(_req: Request, ctx: LoggedInRegulatorContext) {
+function redirectIfAtRoot(ctx: LoggedInRegulatorContext) {
   return ctx.url.pathname === '/regulator'
     ? redirect(`/regulator/${ctx.state.regulator.country}/pharmacists`)
     : ctx.next()
@@ -75,14 +75,12 @@ export function RegulatorHomePageLayout<
   title:
     | string
     | ((
-      req: Request,
       ctx: Context,
     ) =>
       | Response
       | RenderedSeparatelyWithTitle
       | Promise<RenderedSeparatelyWithTitle | Response>),
   render?: (
-    req: Request,
     ctx: Context,
   ) =>
     | JSX.Element
@@ -93,7 +91,6 @@ export function RegulatorHomePageLayout<
     | Promise<RenderedSeparately | Response>,
 ) {
   return async function (
-    req: Request,
     ctx: Context,
   ) {
     const { regulator } = ctx.state
@@ -106,7 +103,7 @@ export function RegulatorHomePageLayout<
 
     let { rendered } = await promiseProps({
       rendered: Promise.resolve(
-        render!(req, ctx),
+        render!(ctx),
       ),
       // regulator_notifications: notifications.ofRegulator(
       //   trx,
@@ -129,7 +126,7 @@ export function RegulatorHomePageLayout<
       <Layout
         variant='regulator home page'
         title={title as string}
-        route={ctx.route}
+        route={ctx.route!}
         url={ctx.url}
         regulator={regulator}
         params={ctx.params}

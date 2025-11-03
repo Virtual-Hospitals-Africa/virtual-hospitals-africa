@@ -11,7 +11,7 @@ const TriageAdditionalInvestigationsAndTasksSchema = z.object({})
 export const handler = postHandler(
   TriageAdditionalInvestigationsAndTasksSchema,
   // deno-lint-ignore require-await
-  async (_req, ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     // const { trx, encounter } = ctx.state
 
     return completeAndProceedToNextStep(ctx)

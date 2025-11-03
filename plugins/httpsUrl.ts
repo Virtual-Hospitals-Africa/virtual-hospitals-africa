@@ -4,20 +4,20 @@
   In order to have the ctx.url be the https: address, we overwrite
   it here
 */
-import { Plugin } from 'fresh'
+import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 
-export default function httpsUrlPlugin(): Plugin {
+export default function httpsUrlPlugin() {
   return {
     name: 'https-url',
     middlewares: [
       {
         path: '/',
         middleware: {
-          handler(req, ctx) {
-            const proto = req.headers.get('x-forwarded-proto')
+          handler(ctx: Context<unknown>) {
+            const proto = ctx.req.headers.get('x-forwarded-proto')
             if (proto === 'https' && ctx.url.protocol === 'http:') {
-              assert(req.url.startsWith('http://'))
+              assert(ctx.req.url.startsWith('http://'))
               ctx.url.protocol = 'https:'
             }
             return ctx.next()

@@ -1,10 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  HasStringId,
-  HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandlerWithProps,
-  Organization,
-} from '../../../../../types.ts'
+import { HealthWorkerWithGoogleTokens } from '../../../../../types.ts'
 import {
   getNurseRegistrationSteps,
   getStepFormData,
@@ -25,19 +20,13 @@ import omit from '../../../../../util/omit.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 
-type RegisterPageProps = {
-  form_state: FormState
-}
-
 export type FormState =
   & PersonalFormFields
   & ProfessionalInformationFields
   & DocumentFormFields
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
-  organization: HasStringId<Organization>
-}> = {
-  async POST(ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
     const req = ctx.req
     const employee = await employment.getEmployee(ctx.state.trx, {
       organization_id: ctx.state.organization.id,

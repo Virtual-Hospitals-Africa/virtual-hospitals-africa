@@ -8,7 +8,7 @@ export const handler = function ensureAccessingCountryYouAreRegulatorIn(
 ) {
   const country = getRequiredParam(ctx, 'country')
   if (ctx.state.regulator.country !== country) {
-    return redirect(replaceParams(ctx.route, {
+    return redirect(replaceParams(ctx.route!, {
       country: ctx.state.regulator.country,
     }))
   }

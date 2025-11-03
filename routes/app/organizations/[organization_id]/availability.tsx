@@ -161,7 +161,7 @@ async function writeCalendarsToGoogle(
 
 export const handler = postHandler(
   AvailabilitySchema,
-  async (_req, ctx: OrganizationContext, form_values) => {
+  async (ctx: OrganizationContext, form_values) => {
     const { health_worker, trx, organization } = ctx.state
     const from_url = !!ctx.url.searchParams.get('from_url')
 
@@ -191,7 +191,6 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Set Availability',
   async function SetAvailability(
-    _req: Request,
     ctx: OrganizationContext,
   ) {
     const { health_worker, organization, organization_employment } = ctx.state

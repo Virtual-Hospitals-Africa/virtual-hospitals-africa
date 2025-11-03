@@ -6,7 +6,6 @@ import { OrganizationContext } from './_middleware.ts'
 export default HealthWorkerHomePageLayout(
   'Waiting Room',
   async function WaitingRoomPage(
-    _req: Request,
     ctx: OrganizationContext,
   ) {
     const { trx, organization, organization_employment } = ctx.state

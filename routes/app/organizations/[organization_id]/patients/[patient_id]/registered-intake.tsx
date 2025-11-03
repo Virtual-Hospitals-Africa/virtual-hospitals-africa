@@ -29,7 +29,7 @@ export const InsertForRegisteredPatientSchema = z.object({
 
 export const handler = postHandler(
   InsertForRegisteredPatientSchema,
-  async (_req, ctx: OrganizationContext, form_values) => {
+  async (ctx: OrganizationContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const { current_workflow } =
       await insertSeekingTreatmentForRegisteredPatient(

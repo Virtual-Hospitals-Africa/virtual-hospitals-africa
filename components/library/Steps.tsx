@@ -1,4 +1,4 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
@@ -39,7 +39,7 @@ function Step(
               className='group'
             >
               <span
-                className='absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
+                className='absolute top-0 left-0 w-1 h-full bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                 aria-hidden='true'
               />
               <span
@@ -49,9 +49,9 @@ function Step(
                 )}
               >
                 <span className='flex-shrink-0'>
-                  <span className='flex h-10 w-10 items-center justify-center rounded-full bg-indigo-700'>
+                  <span className='flex items-center justify-center w-10 h-10 bg-indigo-700 rounded-full'>
                     <CheckIcon
-                      className='h-6 w-6 text-white'
+                      className='w-6 h-6 text-white'
                       aria-hidden='true'
                     />
                   </span>
@@ -71,7 +71,7 @@ function Step(
               aria-current='step'
             >
               <span
-                className='absolute left-0 top-0 h-full w-1 bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
+                className='absolute top-0 left-0 w-1 h-full bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                 aria-hidden='true'
               />
               <span
@@ -81,7 +81,7 @@ function Step(
                 )}
               >
                 <span className='flex-shrink-0'>
-                  <span className='flex h-10 w-10 items-center justify-center rounded-full border-2 border-indigo-600'>
+                  <span className='flex items-center justify-center w-10 h-10 border-2 border-indigo-600 rounded-full'>
                     <span className='text-indigo-600'>
                       {index + 1}
                     </span>
@@ -101,7 +101,7 @@ function Step(
               className='group'
             >
               <span
-                className='absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
+                className='absolute top-0 left-0 w-1 h-full bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                 aria-hidden='true'
               />
               <span
@@ -111,7 +111,7 @@ function Step(
                 )}
               >
                 <span className='flex-shrink-0'>
-                  <span className='flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300'>
+                  <span className='flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-full'>
                     <span className='text-gray-500'>
                       {index + 1}
                     </span>
@@ -131,11 +131,11 @@ function Step(
             <>
               {/* Separator */}
               <div
-                className='absolute inset-0 left-0 top-0 hidden w-3 lg:block'
+                className='absolute inset-0 top-0 left-0 hidden w-3 lg:block'
                 aria-hidden='true'
               >
                 <svg
-                  className='h-full w-full text-gray-300'
+                  className='w-full h-full text-gray-300'
                   viewBox='0 0 12 82'
                   fill='none'
                   preserveAspectRatio='none'
@@ -180,9 +180,10 @@ export function Steps<S extends string>(
 export function getSteps<Step extends string>(
   stepNames: Step[],
 ) {
-  return function (ctx: FreshContext) {
+  // deno-lint-ignore no-explicit-any
+  return function (ctx: Context<any>) {
     assert(
-      ctx.route.endsWith('/:step'),
+      ctx.route!.endsWith('/:step'),
       'useSteps must be used with a route ending in :step',
     )
     const currentStep = ctx.params.step

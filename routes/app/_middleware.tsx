@@ -1,4 +1,4 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as notifications from '../../db/models/notifications.ts'
@@ -32,15 +32,16 @@ export function noSession() {
   return redirect(could_not_locate_account_href)
 }
 
-export function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  return cookie.get(req) ? ctx.next() : noSession()
+// deno-lint-ignore no-explicit-any
+export function ensureCookiePresent(ctx: Context<any>) {
+  return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
 export function getLoggedInHealthWorkerFromCookie(
-  req: Request,
-  _ctx: FreshContext,
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any>,
 ) {
-  const session_id = cookie.get(req)
+  const session_id = cookie.get(ctx.req)
   assert(session_id)
   return health_workers.getBySession(db, { session_id })
 }
@@ -57,10 +58,10 @@ export function getLoggedInHealthWorker(
   { require_employment }: { require_employment: boolean },
 ) {
   return async function (
-    req: Request,
-    ctx: FreshContext,
+    // deno-lint-ignore no-explicit-any
+    ctx: Context<any>,
   ) {
-    const health_worker = await getLoggedInHealthWorkerFromCookie(req, ctx)
+    const health_worker = await getLoggedInHealthWorkerFromCookie(ctx)
 
     if (
       health_worker && (
@@ -71,7 +72,7 @@ export function getLoggedInHealthWorker(
       return ctx.next()
     }
 
-    assertOr401(isGettingHtml(req))
+    assertOr401(isGettingHtml(ctx.req))
 
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(login_href) : noSession()
@@ -81,7 +82,6 @@ export function getLoggedInHealthWorker(
 }
 
 function redirectIfRegistrationNeeded(
-  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { health_worker } = ctx.state
@@ -135,19 +135,18 @@ type RenderedSeparatelyWithTitle = RenderedSeparately & {
 }
 
 export function HealthWorkerHomePageLayout<
-  Context extends LoggedInHealthWorkerContext,
+  // deno-lint-ignore no-explicit-any
+  Context extends LoggedInHealthWorkerContext<any>,
 >(
   title:
     | string
     | ((
-      req: Request,
       ctx: Context,
     ) =>
       | Response
       | RenderedSeparatelyWithTitle
       | Promise<RenderedSeparatelyWithTitle | Response>),
   render?: (
-    req: Request,
     ctx: Context,
   ) =>
     | JSX.Element
@@ -158,7 +157,6 @@ export function HealthWorkerHomePageLayout<
     | Promise<RenderedSeparately | Response>,
 ) {
   return async function (
-    req: Request,
     ctx: Context,
   ) {
     const { health_worker, trx } = ctx.state
@@ -171,7 +169,7 @@ export function HealthWorkerHomePageLayout<
 
     let { rendered, health_worker_notifications } = await promiseProps({
       rendered: Promise.resolve(
-        render!(req, ctx),
+        render!(ctx),
       ),
       health_worker_notifications: notifications.ofHealthWorker(
         trx,
@@ -197,7 +195,7 @@ export function HealthWorkerHomePageLayout<
       <Layout
         variant='health worker home page'
         title={title as string}
-        route={ctx.route}
+        route={ctx.route!}
         url={ctx.url}
         health_worker={health_worker}
         notifications={health_worker_notifications}

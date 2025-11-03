@@ -1,12 +1,11 @@
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import * as notifications from '../../db/models/notifications.ts'
 import { LoggedInHealthWorker } from '../../types.ts'
 import upgradeWebsocket from '../../util/websocket.ts'
 // import last from '../../util/last.ts'
 
 export default upgradeWebsocket((
-  _req: Request,
-  ctx: FreshContext<LoggedInHealthWorker>,
+  ctx: Context<LoggedInHealthWorker>,
   socket: WebSocket,
 ) => {
   let timeout: number

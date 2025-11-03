@@ -1,5 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
-import { FreshContext } from 'fresh'
+import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/Form.tsx'
@@ -62,7 +62,7 @@ const nav_links = DOCTOR_REVIEW_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/review/${step}`,
 }))
 
-export const nextLink = ({ route, params }: FreshContext) => {
+export const nextLink = ({ route, params }: Context<unknown>) => {
   const current_index = nav_links.findIndex(
     (link) => link.route === route,
   )

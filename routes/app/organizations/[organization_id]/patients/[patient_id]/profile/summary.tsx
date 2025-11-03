@@ -4,7 +4,7 @@ import PatientSummary from '../../../../../../../components/patients/profile/Pat
 
 export default PatientProfilePage(
   'Summary',
-  async function PatientSummaryTab(_req, ctx) {
+  async function PatientSummaryTab(ctx) {
     const patient_summary = await patient_registration.getSummaryById(
       ctx.state.trx,
       ctx.state.patient.id,

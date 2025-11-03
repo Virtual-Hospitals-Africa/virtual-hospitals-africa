@@ -1,7 +1,7 @@
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'
 import * as prescriptions from '../../../../../db/models/prescriptions.ts'
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../types.ts'
+
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { assertAllUniqueBy } from '../../../../../util/assertAllUniqueBy.ts'
@@ -104,10 +104,7 @@ async function addPrescription(
   )
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ReviewContext['state']
-> = {
+export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const form_values = await parseRequest(

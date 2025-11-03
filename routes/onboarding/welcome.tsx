@@ -25,7 +25,7 @@ const OnboardingSchema = z.object({
 
 export const handler = postHandler(
   OnboardingSchema,
-  async (_req, ctx: OnboardingContext, form_values) => {
+  async (ctx: OnboardingContext, form_values) => {
     const { trx, health_worker } = ctx.state
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead

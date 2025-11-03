@@ -1,7 +1,7 @@
 import { MedicinesTable } from '../../../components/regulator/MedicinesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
 import manufactured_medications from '../../../db/models/manufactured_medications.ts'
-import type { FreshContext } from 'fresh'
+import type { Context } from 'fresh'
 import { MedicinesSearch } from '../../../components/regulator/MedicinesSearch.tsx'
 import Form from '../../../components/library/Form.tsx'
 import { searchPage } from '../../../util/searchPage.ts'
@@ -10,8 +10,7 @@ import { RegulatorHomePageLayout } from '../../regulator/_middleware.tsx'
 export default RegulatorHomePageLayout(
   'Medicines',
   async function MedicinesPage(
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: Context<LoggedInRegulator>,
   ) {
     const { country } = ctx.params
     const page = searchPage(ctx)

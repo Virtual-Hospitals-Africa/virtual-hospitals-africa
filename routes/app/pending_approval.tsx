@@ -1,45 +1,20 @@
-import {
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../types.ts'
+import { LoggedInHealthWorkerContext } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { PageProps } from 'fresh'
 import Layout from '../../components/library/Layout.tsx'
-import {
-  getOrganizationAdmin,
-  OrganizationAdmin,
-} from '../../db/models/employment.ts'
+import { getOrganizationAdmin } from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
-type PendingApprovalPageProps = {
-  health_worker: EmployedHealthWorker
-  organizationAdmin: OrganizationAdmin
-}
-
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  PendingApprovalPageProps
-> = {
-  async GET(ctx) {
-    const { health_worker } = ctx.state
-
-    const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
-      organization_id: health_worker.default_organization_id,
-    })
-
-    assert(organizationAdmin)
-
-    return ctx.render({
-      health_worker,
-      organizationAdmin,
-    })
-  },
-}
-
-export default function PendingApprovalPage(
-  props: PageProps<PendingApprovalPageProps>,
+export default async function PendingApprovalPage(
+  ctx: LoggedInHealthWorkerContext,
 ) {
-  const { organizationAdmin } = props.data
+  const { health_worker } = ctx.state
+
+  const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
+    organization_id: health_worker.default_organization_id,
+  })
+
+  assert(organizationAdmin)
   const organizationDisplayName = organizationAdmin.organization_name ||
     'your organization'
   const organizationAdminName = organizationAdmin.name ||
@@ -48,7 +23,7 @@ export default function PendingApprovalPage(
   return (
     <Layout
       title='Virtual Hospitals Africa'
-      url={props.url}
+      url={ctx.url}
       variant='just logo'
     >
       <div class='overflow-hidden bg-white py-32'>

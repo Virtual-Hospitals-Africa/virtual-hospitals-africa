@@ -76,9 +76,10 @@ type WorkflowState = {
 
 type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
 
-export type OpenEncounterContext = LoggedInHealthWorkerContext<
-  OpenEncounterState
->
+export type OpenEncounterContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterState & T
+  >
 
 export type OpenEncounterWorkflowContext = LoggedInHealthWorkerContext<
   OpenEncounterWorkflowState
@@ -181,7 +182,7 @@ function workflowStepFromUrl(
   ctx: OpenEncounterContext,
 ): { workflow: Workflow; step: string } {
   const [workflow, step] = compact(
-    ctx.route.replace(
+    ctx.route!.replace(
       '/app/organizations/:organization_id/patients/:patient_id/open_encounter/',
       '',
     ).split('/'),
@@ -214,7 +215,6 @@ export function getWorkflowStatusInProgress(
 }
 
 export async function workflowHandler(
-  _req: Request,
   ctx: OpenEncounterContext,
 ) {
   const { trx, encounter, encounter_employee_presence } = ctx.state
@@ -420,7 +420,6 @@ export function OpenEncounterWorkflowPage<
     | Promise<Response | JSX.Element>,
 ) {
   return async function (
-    _req: Request,
     ctx: OpenEncounterWorkflowContext,
   ) {
     const rendered = await render(ctx as Context)
@@ -456,7 +455,7 @@ export function OpenEncounterWorkflowPage<
 export function WorkflowRedirectPage(
   ctx: OpenEncounterContext,
 ) {
-  const workflow = last(ctx.route.split('/'))
+  const workflow = last(ctx.route!.split('/'))
   assert(workflow)
   assert(isWorkflow(workflow))
   const workflow_status = getWorkflowStatusInProgress(ctx, workflow)

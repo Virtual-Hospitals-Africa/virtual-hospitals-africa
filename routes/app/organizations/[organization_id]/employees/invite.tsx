@@ -1,22 +1,12 @@
-import {
-  HasStringId,
-  LoggedInHealthWorkerHandlerWithProps,
-  Organization,
-  Profession,
-} from '../../../../../types.ts'
+import { Profession } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 import * as organizations from '../../../../../db/models/organizations.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
-import { EmployedHealthWorker } from '../../../../../types.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { OrganizationContext } from '../_middleware.ts'
-
-type InvitePageProps = {
-  health_worker: EmployedHealthWorker
-}
 
 type Invite = { email: string; profession: Profession }
 
@@ -40,11 +30,8 @@ function assertIsInvites(
   assertOr400(values.invites.slice(0, -1).every(isInvite))
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
-  organization: HasStringId<Organization>
-  isAdminAtOrganization: boolean
-}> = {
-  async POST(ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
     const req = ctx.req
 
     assertOr403(ctx.state.isAdminAtOrganization)
@@ -74,7 +61,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   'Invite Employees',
-  function InviteEmployeesPage(_req, ctx) {
+  function InviteEmployeesPage(ctx) {
     assertOr403(ctx.state.isAdminAtOrganization)
     return <InviteEmployeesForm />
   },

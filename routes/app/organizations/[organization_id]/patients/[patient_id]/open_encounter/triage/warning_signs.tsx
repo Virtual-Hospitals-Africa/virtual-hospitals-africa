@@ -19,7 +19,7 @@ const TriageUrgentSignsSchema = z.object({
 
 export const handler = postHandler(
   TriageUrgentSignsSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const { trx, encounter } = ctx.state
 
     await patient_chief_complaints.upsertOne(trx, {

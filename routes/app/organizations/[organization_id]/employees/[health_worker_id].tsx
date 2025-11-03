@@ -8,7 +8,6 @@ import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
-    _req: Request,
     ctx: OrganizationContext,
   ) {
     const { trx, organization, isAdminAtOrganization } = ctx.state

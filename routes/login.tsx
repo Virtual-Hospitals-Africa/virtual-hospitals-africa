@@ -12,7 +12,7 @@ import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
 import randomAvatar from '../mocks/randomAvatar.ts'
 import randomNamesAndSex from '../mocks/randomDemographics.ts'
-import { Handlers } from 'fresh/compat'
+import { Context } from 'fresh'
 
 const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
 if (FAKE_GOOGLE_AUTH) {
@@ -53,8 +53,9 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   return response
 }
 
-export const handler: Handlers = {
-  async GET(ctx) {
+export const handler = {
+  // deno-lint-ignore no-explicit-any
+  async GET(ctx: Context<any>) {
     const req = ctx.req
     const session_id = cookie.get(req)
     if (!session_id) {

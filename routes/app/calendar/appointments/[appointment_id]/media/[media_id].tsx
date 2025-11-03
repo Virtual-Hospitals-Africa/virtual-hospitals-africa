@@ -1,9 +1,9 @@
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import { file } from '../../../../../../util/responses.ts'
 import * as media from '../../../../../../db/models/media.ts'
+import { LoggedInHealthWorkerContext } from '../../../../../../types.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(ctx) {
+export const handler = {
+  async GET(ctx: LoggedInHealthWorkerContext) {
     const { appointment_id, media_id } = ctx.params
 
     const appointment_media = await media.get(ctx.state.trx, {

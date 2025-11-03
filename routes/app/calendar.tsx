@@ -15,7 +15,6 @@ import { warning } from '../../util/alerts.ts'
 export default HealthWorkerHomePageLayout(
   'My Calendar',
   async function Calendar(
-    _req: Request,
     ctx: LoggedInHealthWorkerContext,
   ) {
     const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)

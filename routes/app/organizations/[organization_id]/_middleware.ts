@@ -12,7 +12,8 @@ export type OrganizationState = {
   isAdminAtOrganization: boolean
 }
 
-export type OrganizationContext = LoggedInHealthWorkerContext<OrganizationState>
+export type OrganizationContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<OrganizationState & T>
 
 export async function handler(
   ctx: OrganizationContext,

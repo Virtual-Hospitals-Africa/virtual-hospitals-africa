@@ -1,9 +1,5 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import {
-  DiagnosesCollaboration,
-  Diagnosis,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../types.ts'
+import { DiagnosesCollaboration, Diagnosis } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
@@ -55,10 +51,7 @@ function assertIsDiagnoses(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ReviewContext['state']
-> = {
+export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const data = await parseRequestAsserts(

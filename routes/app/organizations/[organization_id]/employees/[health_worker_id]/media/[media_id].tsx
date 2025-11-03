@@ -1,9 +1,9 @@
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../../types.ts'
 import { file } from '../../../../../../../util/responses.ts'
 import * as media from '../../../../../../../db/models/media.ts'
+import { LoggedInHealthWorkerContext } from '../../../../../../../types.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(ctx) {
+export const handler = {
+  async GET(ctx: LoggedInHealthWorkerContext) {
     const { media_id } = ctx.params
 
     // TODO possibly add assertion here ensuring the media belongs to the nurse.
