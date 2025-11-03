@@ -1,5 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { connect } from 'redis'
+import { NO_EXTERNAL_CONNECT } from '../util/env.ts'
 // import { onProduction } from '../util/onProduction.ts'
 // import Redlock from 'redlock'
 
@@ -38,11 +39,9 @@ const connectionOpts = () => {
 export const opts = connectionOpts()
 
 export const redis =
-  (Deno.env.get('NO_EXTERNAL_CONNECT')
-    ? undefined
-    : await connect(opts).catch((err) => {
-      // Redis isn't needed to run locally or on prod
-      console.error(err)
-    }))!
+  (NO_EXTERNAL_CONNECT ? undefined : await connect(opts).catch((err) => {
+    // Redis isn't needed to run locally or on prod
+    console.error(err)
+  }))!
 
 // export const lock = redis && new Redlock([redis])
