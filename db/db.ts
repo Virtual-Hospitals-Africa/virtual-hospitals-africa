@@ -11,12 +11,12 @@ import {
 import { DB } from '../db.d.ts'
 import { debugReplaceAll } from './helpers.ts'
 import { monkeyPatchConsole } from '../util/monkey-patch-console.ts'
+import { NO_EXTERNAL_CONNECT } from '../util/env.ts'
 
 monkeyPatchConsole()
 
 let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
 
-const NO_EXTERNAL_CONNECT = Deno.env.get('NO_EXTERNAL_CONNECT')
 if (!NO_EXTERNAL_CONNECT) assert(DATABASE_URL)
 
 // Connect with vha_test database instead of vha_dev when running tests

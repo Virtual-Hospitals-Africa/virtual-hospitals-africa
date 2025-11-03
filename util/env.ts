@@ -35,3 +35,7 @@ export function readMandatoryStringEnvironmentVariable(
   assert(Deno.env.has(key), `Expected enviornment variable to be set ${key}`)
   return Deno.env.get(key)!
 }
+
+export const NO_EXTERNAL_CONNECT = readBooleanEnvironmentVariable(
+  'NO_EXTERNAL_CONNECT',
+)

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 if [ ! -f _fresh/server/server-entry.mjs ]; then 
   echo 'Run deno task build first'
