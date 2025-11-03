@@ -1,7 +1,7 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 
 export default function hrefFromCtx(
-  ctx: FreshContext,
+  ctx: Context<unknown>,
   callback: (url: URL) => void,
 ) {
   const url = new URL(ctx.url)

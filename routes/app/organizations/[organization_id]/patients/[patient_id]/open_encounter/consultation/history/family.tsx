@@ -49,7 +49,7 @@ export const FamilyHistorySchema = z
 
 export const handler = postHandler(
   FamilyHistorySchema,
-  async (_req, ctx: HistoryContext, form_values) => {
+  async (ctx: HistoryContext, form_values) => {
     const patient_id = ctx.state.patient.id
     const patient_encounter_employee_id =
       ctx.state.encounter_employee_presence.patient_encounter_employee_id

@@ -1,8 +1,8 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import { assertOr400, assertOr404 } from './assertOr.ts'
 
 export function getParam(
-  ctx: FreshContext | URLSearchParams,
+  ctx: Context<unknown> | URLSearchParams,
   param_name: string,
 ): string | null {
   const param = ctx instanceof URLSearchParams
@@ -12,7 +12,8 @@ export function getParam(
 }
 
 export function getRequiredParam(
-  ctx: FreshContext | URLSearchParams,
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any> | URLSearchParams,
   param_name: string,
 ): string {
   const param = getParam(ctx, param_name)
@@ -24,7 +25,8 @@ const uuid_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 export function getRequiredUUIDParam(
-  ctx: FreshContext | URLSearchParams,
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any> | URLSearchParams,
   param_name: string,
 ): string {
   const param = getParam(ctx, param_name)

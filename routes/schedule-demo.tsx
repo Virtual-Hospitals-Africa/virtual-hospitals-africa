@@ -1,4 +1,4 @@
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 import Layout from '../components/library/Layout.tsx'
 import { Button } from '../components/library/Button.tsx'
 

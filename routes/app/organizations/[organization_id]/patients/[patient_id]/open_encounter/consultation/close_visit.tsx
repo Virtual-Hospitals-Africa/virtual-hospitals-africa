@@ -4,16 +4,13 @@ import {
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../../../types.ts'
+
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  OpenEncounterWorkflowContext['state']
-> = {
-  async POST(_req: Request, ctx: OpenEncounterWorkflowContext) {
+export const handler = {
+  async POST(ctx: OpenEncounterWorkflowContext) {
     const { trx, encounter } = ctx.state
     await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),

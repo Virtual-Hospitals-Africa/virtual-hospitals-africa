@@ -1,4 +1,3 @@
-import { Handlers } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
@@ -14,6 +13,7 @@ import {
   WHATSAPP_PATIENT_CHATBOT_NUMBER,
   WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
 } from '../../chatbot/phone_numbers.ts'
+import { Handlers } from 'fresh/compat'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
@@ -88,7 +88,7 @@ async function getContents(
   To be handled later
 */
 export const handler: Handlers = {
-  GET(_req, ctx) {
+  GET(ctx) {
     const { searchParams } = ctx.url
     const hubMode = searchParams.get('hub.mode')
     const hubVerifyToken = searchParams.get('hub.verify_token')
@@ -99,7 +99,8 @@ export const handler: Handlers = {
     }
     return new Response('Invalid token')
   },
-  async POST(req) {
+  async POST(ctx) {
+    const req = ctx.req
     const incomingMessage: WhatsAppIncomingMessage = await req.json()
 
     console.log(JSON.stringify(incomingMessage))

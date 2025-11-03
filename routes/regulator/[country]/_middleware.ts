@@ -4,12 +4,11 @@ import redirect from '../../../util/redirect.ts'
 import { replaceParams } from '../../../util/replaceParams.ts'
 
 export const handler = function ensureAccessingCountryYouAreRegulatorIn(
-  _req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
   const country = getRequiredParam(ctx, 'country')
   if (ctx.state.regulator.country !== country) {
-    return redirect(replaceParams(ctx.route, {
+    return redirect(replaceParams(ctx.route!, {
       country: ctx.state.regulator.country,
     }))
   }

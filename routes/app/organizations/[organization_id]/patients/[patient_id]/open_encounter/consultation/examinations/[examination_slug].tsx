@@ -3,15 +3,10 @@ import {
   ExaminationContext,
   ExaminationPage,
 } from './_middleware.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../../../../../types.ts'
+import {} from '../../../../../../../../../types.ts'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ExaminationContext['state']
-> = {
-  POST(_req: Request, ctx: ExaminationContext) {
+export const handler = {
+  POST(ctx: ExaminationContext) {
     return completeExamination(ctx)
   },
 }

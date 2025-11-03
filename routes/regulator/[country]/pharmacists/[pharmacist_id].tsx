@@ -7,7 +7,6 @@ import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
 export default RegulatorHomePageLayout(
   async function PharmacistPage(
-    _req: Request,
     ctx: LoggedInRegulatorContext,
   ) {
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')

@@ -96,7 +96,7 @@ function TimeInput(
       <div className='flex items-center'>
         <button
           type='button'
-          className='sz-2 ml-2'
+          className='ml-2 sz-2'
           title='add'
           onClick={() => {
             const nextEndTime: Time = timeWindow.end.hour === 12
@@ -122,7 +122,7 @@ function TimeInput(
         {removeTimeWindow && (
           <button
             type='button'
-            className='sz-2 ml-2'
+            className='ml-2 sz-2'
             title='remove'
             onClick={removeTimeWindow}
           >
@@ -160,7 +160,7 @@ function DayInput(
           {day.slice(0, 3)}
         </label>
       </div>
-      <div className='pt-4 text-sm leading-6 text-gray-700 flex-col gap-8'>
+      <div className='flex-col gap-8 pt-4 text-sm leading-6 text-gray-700'>
         {checked
           ? (
             timeWindows.map((
@@ -183,7 +183,7 @@ function DayInput(
               />
             ))
           )
-          : <span className='text-gray-400 ml-3'>Unavailable</span>}
+          : <span className='ml-3 text-gray-400'>Unavailable</span>}
       </div>
     </>
   )
@@ -208,7 +208,7 @@ export default function AvailabilityForm(
       }}
     >
       <div
-        className='py-6 grid gap-4 px-0 divide-y divide-gray-100'
+        className='grid gap-4 px-0 py-6 divide-y divide-gray-100'
         style={{
           gridTemplateColumns: 'max-content 1fr',
         }}

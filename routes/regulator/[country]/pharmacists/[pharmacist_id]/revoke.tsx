@@ -4,14 +4,13 @@ import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import Form from '../../../../../components/library/Form.tsx'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
   POST: async function RevokePharmacist(
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: Context<LoggedInRegulator>,
   ) {
     const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
@@ -32,8 +31,7 @@ export const handler = {
 export default RegulatorHomePageLayout(
   'Pharmacist Profile',
   async function PharmacistPage(
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
+    ctx: Context<LoggedInRegulator>,
   ) {
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 

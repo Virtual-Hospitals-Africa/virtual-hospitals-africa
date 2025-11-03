@@ -12,13 +12,12 @@ describe(
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders an invite page on GET', async () => {
-      const { fetch, regulator } = await addTestRegulatorWithSession(db)
+      const { regulator, fetchOk } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(
+      const response = await fetchOk(
         `/regulator/${regulator.country}/pharmacists/invite`,
       )
 
-      assert(response.ok, 'should have returned ok')
       assert(
         response.url ===
           `${route}/regulator/${regulator.country}/pharmacists/invite`,

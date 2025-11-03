@@ -114,7 +114,6 @@ function createPipeline(language_code: string) {
 }
 
 export default upgradeWebsocket((
-  _req: Request,
   ctx: LoggedInHealthWorkerContext,
   socket: WebSocket,
 ) => {

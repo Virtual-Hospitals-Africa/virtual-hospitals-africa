@@ -1,5 +1,4 @@
 import { setCookie } from 'std/http/cookie.ts'
-import { Handlers } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
@@ -27,6 +26,7 @@ import * as cookie from '../shared/cookie.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
 import { asNames } from '../db/models/asNames.ts'
+import { Handlers } from 'fresh/compat'
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
@@ -193,7 +193,7 @@ export async function startRegulatorSession(
 }
 
 export const handler: Handlers<Record<string, never>> = {
-  GET(_req, ctx) {
+  GET(ctx) {
     const code = ctx.url.searchParams.get('code')
     assert(code, 'No code found in query params')
     const gettingTokens = getInitialTokensFromAuthCode(code)

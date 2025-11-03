@@ -29,7 +29,7 @@ const VitalsEvaluationSchema = z.object({
 
 export const handler = postHandler(
   VitalsEvaluationSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_evaluations.insertMany(ctx.state.trx, {

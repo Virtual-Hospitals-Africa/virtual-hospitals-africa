@@ -76,7 +76,8 @@ const PostSchema = z.object({
 })
 
 export const handler = {
-  async POST(req: Request, ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowContext) {
+    const req = ctx.req
     const { trx, encounter, encounter_employee_presence, patient } = ctx.state
     const { completing_step, made_request } = await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),

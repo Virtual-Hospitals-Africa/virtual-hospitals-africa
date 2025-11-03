@@ -27,7 +27,6 @@ const AddPatientFormSchema = z.object({
 export const handler = postHandler(
   AddPatientFormSchema,
   async (
-    _req: Request,
     { state: { trx, organization, organization_employment } }:
       OrganizationContext,
     { patient_id, ...to_create },
@@ -55,7 +54,6 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Add patient to waiting room',
   async function WaitingRoomAdd(
-    _req: Request,
     { url, state: { organization, trx } }: OrganizationContext,
   ) {
     const { searchParams } = url

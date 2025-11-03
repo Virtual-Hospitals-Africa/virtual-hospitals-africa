@@ -33,11 +33,7 @@ const PatientRegistrationThisVisitSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationThisVisitSchema,
-  async (
-    _req,
-    ctx: OpenEncounterWorkflowContext,
-    { next_workflow, notes },
-  ) => {
+  async (ctx: OpenEncounterWorkflowContext, { next_workflow, notes }) => {
     const { trx, patient, encounter, organization, organization_employment } =
       ctx.state
     const can_do_triage = canPerform(organization_employment, 'triage')

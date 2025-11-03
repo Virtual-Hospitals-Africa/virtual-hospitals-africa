@@ -1,8 +1,9 @@
-import { Fragment, JSX } from 'preact'
+import { Fragment, type JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import { Menu } from '@headlessui/react'
 import cls from '../util/cls.ts'
 
-export type DropdownItem = JSX.HTMLAttributes<HTMLButtonElement> & {
+export type DropdownItem = HTMLAttributes<HTMLButtonElement> & {
   href?: string
   title: string
   selected?: boolean
@@ -25,7 +26,7 @@ function DropdownItem({ href, title, selected, ...props }: DropdownItem) {
         ? (
           <a
             href={href}
-            {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
+            {...(props as unknown as HTMLAttributes<HTMLAnchorElement>)}
             className={baseStyles}
           >
             {title}

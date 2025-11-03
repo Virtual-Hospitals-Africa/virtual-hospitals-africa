@@ -1,18 +1,14 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { LoggedInHealthWorkerHandlerWithProps } from '../types.ts'
+
 import { json } from '../util/responses.ts'
-import type { LoggedInHealthWorker, TrxOrDb } from '../types.ts'
+import type { LoggedInHealthWorkerContext, TrxOrDb } from '../types.ts'
 import type { SearchResults } from '../db/models/_base.ts'
-import { FreshContext } from '$fresh/server.ts'
 
 export function jsonSearchHandler<
   SearchTerms,
   RenderedResult,
-  Context = FreshContext<
-    LoggedInHealthWorker & Record<string, never>,
-    unknown,
-    unknown
-  >,
+  // deno-lint-ignore no-explicit-any
+  Ctx extends LoggedInHealthWorkerContext<any>,
 >(
   model: {
     search(
@@ -24,19 +20,19 @@ export function jsonSearchHandler<
   default_search_terms?:
     | Partial<SearchTerms>
     | ((
-      ctx: Context,
+      ctx: Ctx,
     ) => SearchTerms),
   opts?: { verbose?: boolean | string },
-): LoggedInHealthWorkerHandlerWithProps<unknown> {
+) {
   return {
-    GET(req, ctx) {
+    GET(ctx: Ctx) {
       if (opts?.verbose) {
         console.log('Searching', {
           url: ctx.url,
           state: ctx.state,
         })
       }
-      assertEquals(req.headers.get('accept'), 'application/json')
+      assertEquals(ctx.req.headers.get('accept'), 'application/json')
       let page = 1
       // deno-lint-ignore no-explicit-any
       const search_terms: any = typeof default_search_terms === 'function'

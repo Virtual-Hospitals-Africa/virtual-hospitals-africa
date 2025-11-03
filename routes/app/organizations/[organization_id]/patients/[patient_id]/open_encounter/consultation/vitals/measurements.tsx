@@ -39,7 +39,7 @@ function hasValue(
 
 export const handler = postHandler(
   VitalsMeasurementSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
 

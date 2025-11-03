@@ -1,7 +1,5 @@
 import { ExaminationContext, ExaminationPage } from './_middleware.tsx'
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../../../../../types.ts'
+import {} from '../../../../../../../../../types.ts'
 import * as examinations from '../../../../../../../../../db/models/examinations.ts'
 import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
@@ -14,11 +12,9 @@ const AddExaminationsSchema = z.object({
   examinations: z.string().array().default([]),
 })
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  ExaminationContext['state']
-> = {
-  async POST(req: Request, ctx: ExaminationContext) {
+export const handler = {
+  async POST(ctx: ExaminationContext) {
+    const req = ctx.req
     const { trx, encounter, encounter_employee_presence } = ctx.state
 
     const form_values = await parseRequest(

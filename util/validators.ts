@@ -42,6 +42,28 @@ export const positive_number = z.number().or(z.string())
     message: 'Expected a positive number',
   })
 
+export const positive_integer = z.number().or(
+  z.string()
+    .transform((s) => parseInt(s, 10))
+    .refine((n) => !!n, {
+      message: 'Expected a positive integer',
+    }),
+)
+  .refine((n) => isNumber(n) && n > 0, {
+    message: 'Expected a positive integer',
+  })
+
+export const nonnegative_integer = z.number().or(
+  z.string()
+    .transform((s) => parseInt(s, 10))
+    .refine((n) => !isNaN(n), {
+      message: 'Expected a nonnegative integer',
+    }),
+)
+  .refine((n) => isNumber(n) && n >= 0, {
+    message: 'Expected a nonnegative integer',
+  })
+
 export const generated_uuid = z.string().uuid().optional().transform((v) =>
   v || generateUUID()
 )

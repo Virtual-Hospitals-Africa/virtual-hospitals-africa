@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import PharmacistForm from '../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
@@ -12,7 +12,8 @@ import compact from '../../../../util/compact.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
 export const handler = {
-  async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+  async POST(ctx: Context<LoggedInRegulator>) {
+    const req = ctx.req
     const { country } = ctx.params
     const to_insert = await parseRequest(
       ctx.state.trx,
@@ -38,7 +39,6 @@ export const handler = {
 export default RegulatorHomePageLayout(
   'Pharmacists',
   function InvitePage(
-    _req: Request,
     ctx: LoggedInRegulatorContext,
   ) {
     const name = ctx.url.searchParams.get('name')

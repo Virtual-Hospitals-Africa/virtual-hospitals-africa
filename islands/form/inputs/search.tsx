@@ -1,4 +1,4 @@
-import { ComponentChildren } from 'preact/src/index.d.ts'
+import { ComponentChildren } from 'preact'
 import { MagnifyingGlassIcon } from '../../../components/library/icons/heroicons/outline.tsx'
 import cls from '../../../util/cls.ts'
 import { WrapperInputProps } from './_internal.tsx'

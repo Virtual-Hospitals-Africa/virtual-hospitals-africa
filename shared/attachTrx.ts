@@ -1,16 +1,14 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 import { isWebsocketPath } from '../util/websocket.ts'
 
-export type TrxContext = FreshContext<
+export type TrxContext = Context<
   {
     trx: TrxOrDb
   }
 >
 export function attachTrx(
-  // deno-lint-ignore no-unused-vars
-  req: Request,
   ctx: TrxContext,
 ) {
   // Semi-hacky, just attach the db for websocket routes as we

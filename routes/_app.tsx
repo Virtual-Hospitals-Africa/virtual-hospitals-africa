@@ -1,8 +1,8 @@
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 
 export default function App({ Component, ...props }: PageProps) {
   return (
-    <html className='scroll-smooth bg-white antialiased' lang='en'>
+    <html className='antialiased bg-white scroll-smooth' lang='en'>
       <head>
         <meta charset='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
@@ -79,12 +79,12 @@ export default function App({ Component, ...props }: PageProps) {
             />
           </>
         )}
-        {(props.route.startsWith('/app') ||
-          props.route.startsWith('/regulator')) && (
+        {(props.route?.startsWith('/app') ||
+          props.route?.startsWith('/regulator')) && (
           <script src='/scripts/general.js' async />
         )}
       </head>
-      <body className='min-h-screen flex flex-col relative justify-between'>
+      <body className='relative flex flex-col justify-between min-h-screen'>
         <Component />
       </body>
     </html>

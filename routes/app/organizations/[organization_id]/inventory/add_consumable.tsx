@@ -1,8 +1,5 @@
-import { FreshContext } from '$fresh/server.ts'
-import {
-  LoggedInHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../../../../../types.ts'
+import { Context } from 'fresh'
+import { LoggedInHealthWorker } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -31,11 +28,9 @@ export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   assertOr400(isNumber(obj.consumable_id))
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  OrganizationContext['state']
-> = {
-  async POST(req, ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
+    const req = ctx.req
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 
@@ -76,8 +71,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export default HealthWorkerHomePageLayout(
   'Add Consumable',
   async function ConsumableAdd(
-    _req: Request,
-    { url, state }: FreshContext<LoggedInHealthWorker>,
+    { url, state }: Context<LoggedInHealthWorker>,
   ) {
     const consumable_id = url.searchParams.get(
       'consumable_id',

@@ -1,9 +1,5 @@
-import { FreshContext } from '$fresh/server.ts'
-import {
-  LoggedInHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-  RenderedDevice,
-} from '../../../../../types.ts'
+import { Context } from 'fresh'
+import { LoggedInHealthWorker, RenderedDevice } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -22,11 +18,9 @@ export function assertIsUpsertDevice(
   assertOr400(typeof obj.device_id === 'string')
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  OrganizationContext['state']
-> = {
-  async POST(req, ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
+    const req = ctx.req
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 
@@ -58,8 +52,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export default HealthWorkerHomePageLayout(
   'Add Device',
   async function DeviceAdd(
-    _req: Request,
-    { url, state }: FreshContext<LoggedInHealthWorker>,
+    { url, state }: Context<LoggedInHealthWorker>,
   ) {
     let device: RenderedDevice | null = null
     const device_id = url.searchParams.get(

@@ -21,7 +21,6 @@ export const handler = [
 ]
 
 function redirectToAppIfEmployedAlready(
-  _req: Request,
   ctx: OnboardingContext,
 ) {
   return isEmployed(ctx.state.health_worker) ? redirect('/app') : ctx.next()

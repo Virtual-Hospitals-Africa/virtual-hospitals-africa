@@ -1,7 +1,4 @@
-import {
-  LoggedInHealthWorkerHandlerWithProps,
-  Procurer,
-} from '../../../../../types.ts'
+import { Procurer } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
@@ -17,11 +14,9 @@ export function assertIsUpsertProcurer(obj: unknown): asserts obj {
   assertOr400(typeof obj.name === 'string')
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  OrganizationContext['state']
-> = {
-  async POST(req, ctx) {
+export const handler = {
+  async POST(ctx: OrganizationContext) {
+    const req = ctx.req
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 

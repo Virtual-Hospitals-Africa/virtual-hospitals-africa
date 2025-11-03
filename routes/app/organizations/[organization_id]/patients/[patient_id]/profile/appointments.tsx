@@ -11,7 +11,7 @@ import { uniqBy } from '../../../../../../../util/uniqBy.ts'
 
 export default PatientProfilePage(
   'Appointments',
-  async function AppointmentsPage(_req, ctx) {
+  async function AppointmentsPage(ctx) {
     const patient_appointments = await appointments.getForPatient(
       ctx.state.trx,
       {

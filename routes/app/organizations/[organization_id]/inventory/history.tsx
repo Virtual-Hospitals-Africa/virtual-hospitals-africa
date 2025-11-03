@@ -6,7 +6,6 @@ import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 
 export default HealthWorkerHomePageLayout(
   async function InventoryHistoryPage(
-    _req: Request,
     { url, state }: OrganizationContext,
   ) {
     const consumable_id = url.searchParams.get('consumable_id')

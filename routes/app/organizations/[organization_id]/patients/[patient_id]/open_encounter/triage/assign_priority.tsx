@@ -11,7 +11,7 @@ const TriageAssignPrioritySchema = z.object({})
 export const handler = postHandler(
   TriageAssignPrioritySchema,
   // deno-lint-ignore require-await
-  async (_req, ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     // const { trx, encounter, organization_employment } = ctx.state
     return completeAndProceedToNextStep(ctx)
   },

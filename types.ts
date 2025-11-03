@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { FreshContext, Handlers } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import {
@@ -18,6 +18,7 @@ import { Department } from './shared/departments.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
+
 export * from './shared/priorities.ts'
 
 export type Maybe<T> = T | null | undefined
@@ -25,6 +26,8 @@ export type Maybe<T> = T | null | undefined
 export type NonNull<T> = Exclude<T, null | undefined>
 
 export type Falsy = false | 0 | '' | null | undefined
+
+export type BlankRecord = Record<string, never>
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
@@ -1836,32 +1839,18 @@ export type LoggedInRegulator = {
   regulator: HasStringId<Regulator>
 }
 
-export type LoggedInHealthWorkerContext<T = Record<never, never>> =
-  FreshContext<LoggedInHealthWorker & T>
-
-export type LoggedInHealthWorkerHandlerWithProps<
-  Props = Record<string, never>,
-  Extra = Record<string, never>,
-> = Handlers<Props, LoggedInHealthWorker & Extra>
-
-export type LoggedInRegulatorHandlerWithProps<
-  Props = Record<string, never>,
-  Extra = Record<string, never>,
-> = Handlers<Props, LoggedInRegulator & Extra>
-
-export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
-  Context extends { state: infer State }
-    ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
-    : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
-
-export type LoggedInRegulatorContext<T = Record<never, never>> = FreshContext<
-  LoggedInRegulator & T
+export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
+  LoggedInHealthWorker & T
 >
 
-export type LoggedInRegulatorHandler<Context = Record<string, never>> =
-  Context extends { state: infer State }
-    ? LoggedInRegulatorHandlerWithProps<unknown, State>
-    : LoggedInRegulatorHandlerWithProps<unknown, Context>
+export class Foo<Ctx extends LoggedInHealthWorkerContext<any>> {
+  constructor(public x: Ctx) {
+  }
+}
+
+export type LoggedInRegulatorContext<T = Record<never, never>> = Context<
+  LoggedInRegulator & T
+>
 
 export type Organization = {
   name: string

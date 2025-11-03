@@ -1,4 +1,4 @@
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 import Badge from '../components/library/Badge.tsx'
 
 export default function ThankYouPage(_props: PageProps) {

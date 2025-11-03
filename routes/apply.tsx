@@ -1,8 +1,5 @@
-import {
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
-} from '../types.ts'
-import { PageProps } from '$fresh/server.ts'
+import { EmployedHealthWorker } from '../types.ts'
+import { PageProps } from 'fresh'
 import Layout from '../components/library/Layout.tsx'
 import { OrganizationAdmin } from '../db/models/employment.ts'
 import { Button } from '../components/library/Button.tsx'
@@ -11,20 +8,21 @@ import { json } from '../util/responses.ts'
 
 import FormRow from '../components/library/FormRow.tsx'
 import { TextInput } from '../islands/form/inputs/text.tsx'
+import { postHandler } from '../util/postHandler.ts'
+import z from 'zod'
 
 type PendingApprovalPageProps = {
   health_worker: EmployedHealthWorker
   organizationAdmin: OrganizationAdmin
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  PendingApprovalPageProps
-> = {
-  POST(_req) {
+export const handler = postHandler(
+  z.object({}),
+  (_ctx) => {
     // TODO
     return json({ message: 'ok' })
   },
-}
+)
 
 export default function ApplyPage(
   props: PageProps<PendingApprovalPageProps>,

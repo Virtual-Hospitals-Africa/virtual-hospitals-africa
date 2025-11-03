@@ -36,7 +36,7 @@ const PatientRegistrationPrimaryCareSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationPrimaryCareSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, {
+  async (ctx: OpenEncounterWorkflowContext, {
     primary_doctor_id,
     primary_doctor_name,
     nearest_organization_id,

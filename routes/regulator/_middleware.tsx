@@ -1,11 +1,11 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import { LoggedInRegulatorContext } from '../../types.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
 import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
-import { login_href } from '../login.tsx'
+import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import Layout from '../../components/library/Layout.tsx'
@@ -13,7 +13,7 @@ import { attachTrx } from '../../shared/attachTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import db from '../../db/db.ts'
 
-export const handler = [
+export default [
   ensureCookiePresent,
   getLoggedInRegulator,
   attachTrx,
@@ -27,21 +27,20 @@ function noSession() {
   return redirect(could_not_locate_account_href)
 }
 
-function ensureCookiePresent(req: Request, ctx: FreshContext) {
-  return cookie.get(req) ? ctx.next() : noSession()
+function ensureCookiePresent(ctx: Context<unknown>) {
+  return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
-function redirectIfAtRoot(_req: Request, ctx: LoggedInRegulatorContext) {
+function redirectIfAtRoot(ctx: LoggedInRegulatorContext) {
   return ctx.url.pathname === '/regulator'
     ? redirect(`/regulator/${ctx.state.regulator.country}/pharmacists`)
     : ctx.next()
 }
 
 async function getLoggedInRegulator(
-  req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
-  const session_id = cookie.get(req)
+  const session_id = cookie.get(ctx.req)
   assert(session_id)
 
   const regulator = await regulators.getBySession(db, {
@@ -50,7 +49,7 @@ async function getLoggedInRegulator(
 
   if (!regulator) {
     const from_login = ctx.url.searchParams.has('from_login')
-    const response = from_login ? redirect(login_href) : noSession()
+    const response = from_login ? redirect(loginHref()) : noSession()
     deleteCookie(response.headers, cookie.session_key)
     return response
   }
@@ -75,14 +74,12 @@ export function RegulatorHomePageLayout<
   title:
     | string
     | ((
-      req: Request,
       ctx: Context,
     ) =>
       | Response
       | RenderedSeparatelyWithTitle
       | Promise<RenderedSeparatelyWithTitle | Response>),
   render?: (
-    req: Request,
     ctx: Context,
   ) =>
     | JSX.Element
@@ -93,7 +90,6 @@ export function RegulatorHomePageLayout<
     | Promise<RenderedSeparately | Response>,
 ) {
   return async function (
-    req: Request,
     ctx: Context,
   ) {
     const { regulator } = ctx.state
@@ -106,7 +102,7 @@ export function RegulatorHomePageLayout<
 
     let { rendered } = await promiseProps({
       rendered: Promise.resolve(
-        render!(req, ctx),
+        render!(ctx),
       ),
       // regulator_notifications: notifications.ofRegulator(
       //   trx,
@@ -129,7 +125,7 @@ export function RegulatorHomePageLayout<
       <Layout
         variant='regulator home page'
         title={title as string}
-        route={ctx.route}
+        route={ctx.route!}
         url={ctx.url}
         regulator={regulator}
         params={ctx.params}

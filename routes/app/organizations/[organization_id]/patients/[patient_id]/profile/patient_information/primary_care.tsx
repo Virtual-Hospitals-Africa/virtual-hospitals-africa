@@ -2,7 +2,7 @@ import { PatientProfilePage } from '../_middleware.tsx'
 
 export default PatientProfilePage(
   'Patient Information > Primary Care',
-  function VisitsPage(_req, _ctx) {
+  function VisitsPage(_ctx) {
     return <h1>Hello Patient Primary Care</h1>
   },
 )

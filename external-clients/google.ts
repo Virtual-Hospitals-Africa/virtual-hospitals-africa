@@ -11,15 +11,15 @@ import {
   GoogleProfile,
   GoogleTokenInfo,
   GoogleTokens,
-  LoggedInHealthWorker,
+  LoggedInHealthWorkerContext,
   TrxOrDb,
 } from '../types.ts'
-import { FreshContext } from '$fresh/src/server/mod.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
 import { formatJohannesburg } from '../util/date.ts'
-import selfUrl from '../util/selfUrl.ts'
 import isObjectLike from '../util/isObjectLike.ts'
+import memoize from '../util/memoize.ts'
+import selfUrl from '../util/selfUrl.ts'
 
 const googleApisUrl = 'https://www.googleapis.com'
 
@@ -58,7 +58,7 @@ export class GoogleClient {
     | { result: 'insufficient_permission' }
   > {
     // Disallow the test server from making real requests to Google
-    if (Deno.env.get('IS_TEST_SERVER')) {
+    if (Deno.env.get('IS_TEST')) {
       return testServerMock(path, opts)
     }
     const url = `${googleApisUrl}${path}`
@@ -392,8 +392,8 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     }
   }
 
-  static fromCtx(
-    ctx: FreshContext<LoggedInHealthWorker>,
+  static fromCtx<T>(
+    ctx: LoggedInHealthWorkerContext<T>,
   ) {
     return new HealthWorkerGoogleClient(
       ctx.state.trx,
@@ -424,26 +424,13 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   }
 }
 
-const redirect_uri = `${selfUrl}/logged-in`
-
-export const oauthParams = new URLSearchParams({
-  redirect_uri,
-  prompt: 'consent',
-  response_type: 'code',
-  client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
-  scope:
-    'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-  access_type: 'offline',
-  service: 'lso',
-  o2v: '2',
-  flowName: 'GeneralOAuthFlow',
-})
+export const redirectUri = memoize(() => `${selfUrl()}/logged-in`)
 
 export async function getInitialTokensFromAuthCode(
   google_auth_code: string,
 ): Promise<GoogleTokens> {
   const form_data = new URLSearchParams({
-    redirect_uri,
+    redirect_uri: redirectUri(),
     code: google_auth_code,
     client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
     client_secret: Deno.env.get('GOOGLE_CLIENT_SECRET')!,

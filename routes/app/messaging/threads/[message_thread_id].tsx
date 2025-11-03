@@ -1,28 +1,22 @@
-import { FreshContext } from '$fresh/server.ts'
+import { Context } from 'fresh'
 import { z } from 'zod'
-import { LoggedInHealthWorker } from '../../../../types.ts'
-import * as messages from '../../../../db/models/messages.ts'
 import {
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandlerWithProps,
+  LoggedInHealthWorker,
+  LoggedInHealthWorkerContext,
 } from '../../../../types.ts'
+import * as messages from '../../../../db/models/messages.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
 
-type MessagingProps = {
-  health_worker: EmployedHealthWorker
-}
-
 const MessageSchema = z.object({
   message: z.string(),
 })
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  MessagingProps
-> = {
-  async POST(req, ctx) {
+export const handler = {
+  async POST(ctx: LoggedInHealthWorkerContext) {
+    const req = ctx.req
     const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     const form_values = await parseRequest(
@@ -49,8 +43,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export default HealthWorkerHomePageLayout(
   'Messaging',
   async function MessagingPage(
-    _req: Request,
-    ctx: FreshContext<LoggedInHealthWorker>,
+    ctx: Context<LoggedInHealthWorker>,
   ) {
     const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
     const thread = await messages.getThread(

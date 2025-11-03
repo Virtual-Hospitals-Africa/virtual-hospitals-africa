@@ -4,7 +4,7 @@ import PatientHistory from '../../../../../../../components/patients/profile/Pat
 
 export default PatientProfilePage(
   'History',
-  async function PatientHistoryTab(_req, ctx) {
+  async function PatientHistoryTab(ctx) {
     const patient_summary = await patient_registration.getSummaryById(
       ctx.state.trx,
       ctx.state.patient.id,

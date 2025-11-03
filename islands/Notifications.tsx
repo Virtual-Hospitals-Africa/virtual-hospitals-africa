@@ -1,4 +1,3 @@
-import { Fragment } from 'preact'
 import { Transition } from '@headlessui/react'
 import { BellIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { RenderedNotification } from '../types.ts'
@@ -6,6 +5,7 @@ import Avatar from '../components/library/Avatar.tsx'
 import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
+import { Fragment } from 'preact'
 
 /* NOTIFICATIONS SUBSCRIPTION */
 
@@ -33,9 +33,9 @@ export function Notifications(
       {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live='assertive'
-        className='pointer-events-none fixed inset-0 flex items-end px-4 pt-20 sm:items-start z-10'
+        className='fixed inset-0 z-10 flex items-end px-4 pt-20 pointer-events-none sm:items-start'
       >
-        <div className='flex w-full flex-col items-center space-y-4 sm:items-end'>
+        <div className='flex flex-col items-center w-full space-y-4 sm:items-end'>
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
             show={show}
@@ -47,7 +47,7 @@ export function Notifications(
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='w-full flex flex-col gap-2'>
+            <div className='flex flex-col w-full gap-2'>
               {notifications_signal.value.map((notification) => (
                 <Notification
                   notification={notification}
@@ -70,15 +70,15 @@ export function Notification(
   },
 ) {
   return (
-    <div className='pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 float-right z-9 self-end'>
-      <div className='w-0 flex-1 p-4'>
+    <div className='flex self-end float-right w-full max-w-md bg-white rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 z-9'>
+      <div className='flex-1 w-0 p-4'>
         <div className='flex items-start'>
           <Avatar
             className='w-6 h-6'
             src={notification.avatar_url}
             hide_when_empty
           />
-          <div className='ml-3 w-0 flex-1'>
+          <div className='flex-1 w-0 ml-3'>
             <p className='text-sm font-medium text-gray-900'>
               {notification.title}
             </p>
@@ -90,19 +90,19 @@ export function Notification(
       </div>
       <div className='flex border-l border-gray-200'>
         <div className='flex flex-col divide-y divide-gray-200'>
-          <div className='flex h-0 flex-1'>
+          <div className='flex flex-1 h-0'>
             <a
               type='button'
-              className='flex w-full items-center justify-center rounded-none rounded-tr-lg border border-transparent px-4 py-3 text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+              className='flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-indigo-600 border border-transparent rounded-none rounded-tr-lg hover:text-indigo-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500'
               href={notification.action.href}
             >
               {notification.action.title}
             </a>
           </div>
-          <div className='flex h-0 flex-1'>
+          <div className='flex flex-1 h-0'>
             <button
               type='button'
-              className='flex w-full items-center justify-center rounded-none rounded-br-lg border border-transparent px-4 py-3 text-sm font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+              className='flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-gray-700 border border-transparent rounded-none rounded-br-lg hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'
               onClick={dismiss}
             >
               Dismiss
@@ -133,12 +133,12 @@ export function NotificationsButton(
     <div className='relative'>
       <button
         type='button'
-        className='rounded-full bg-white p-1 text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-900 focus:ring-offset-2 focus:ring-offset-gray-800'
+        className='p-1 text-indigo-700 bg-white rounded-full hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-900 focus:ring-offset-2 focus:ring-offset-gray-800'
         onClick={() => show.value = !show.value}
       >
         <span className='sr-only'>View notifications</span>
         <BellIcon
-          className='h-6 w-6'
+          className='w-6 h-6'
           stroke-width='1.5'
           stroke='currentColor'
           aria-hidden='true'

@@ -1,4 +1,3 @@
-import { Fragment } from 'preact'
 import { Dialog, Transition } from '@headlessui/react'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
 import ViewIconWithBackground from './ViewIconWithBackground.tsx'
@@ -9,6 +8,7 @@ import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { RenderedPatientCompletedRegistration } from '../../types.ts'
 import { TextArea } from '../form/inputs/textarea.tsx'
+import { Fragment } from 'preact'
 
 export function RequestingOrganizationDialog(
   { requesting_organization, concerning_patient }: {

@@ -12,6 +12,7 @@ import { testHealthWorker } from '../_helpers/health_workers.ts'
 import sample from '../../util/sample.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
+import selfUrl from '../../util/selfUrl.ts'
 
 describe('/login', () => {
   afterAll(() => db.destroy())
@@ -20,7 +21,7 @@ describe('/login', () => {
       redirect: 'manual',
     })
     const redirectLocation = response.headers.get('location')
-    assert(redirectLocation)
+    assert(redirectLocation, `Is self_url the issue? ${selfUrl()}`)
     assert(
       redirectLocation.startsWith(
         'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8005%2Flogged-in',

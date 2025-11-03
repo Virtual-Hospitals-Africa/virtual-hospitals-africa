@@ -3,7 +3,7 @@ import { Button } from './Button.tsx'
 
 import FormRow from './FormRow.tsx'
 import Form from './Form.tsx'
-import { ComponentChild } from 'preact/src/index.d.ts'
+import { ComponentChild } from 'preact'
 import { HiddenInput } from './HiddenInput.tsx'
 import last from '../../util/last.ts'
 import PageHeader from './typography/PageHeader.tsx'

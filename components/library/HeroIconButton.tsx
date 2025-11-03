@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 const baseStyles = {
@@ -32,11 +32,12 @@ const variantStyles = {
 }
 
 type ButtonProps =
-  & JSX.HTMLAttributes<HTMLButtonElement>
+  & ButtonHTMLAttributes<HTMLButtonElement>
   & {
     className?: string
     href?: string
     onClick?(event: JSX.TargetedEvent<HTMLButtonElement>): void
+    type?: 'submit' | 'button' | 'reset'
   }
   & ({
     variant: 'solid'
@@ -73,7 +74,7 @@ export function HeroIconButton({
       <a
         href={href}
         className={className}
-        {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
+        {...(props as unknown as AnchorHTMLAttributes<HTMLAnchorElement>)}
       />
     )
     : <button className={className} type={type} {...props} />

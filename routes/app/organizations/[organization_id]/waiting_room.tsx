@@ -6,9 +6,9 @@ import { OrganizationContext } from './_middleware.ts'
 export default HealthWorkerHomePageLayout(
   'Waiting Room',
   async function WaitingRoomPage(
-    _req: Request,
     ctx: OrganizationContext,
   ) {
+    console.log('in here')
     const { trx, organization, organization_employment } = ctx.state
     const can_register_patients = !!organization.location
 

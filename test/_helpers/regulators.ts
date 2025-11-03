@@ -48,6 +48,14 @@ export async function addTestRegulatorWithSession(
       },
     )
 
+  const fetchOk = async (...args: Parameters<typeof fetch>) => {
+    const response = await fetchWithSession(...args)
+    if (!response.ok) {
+      throw new Error(`[${response.status}]: ${await response.text()}`)
+    }
+    return response
+  }
+
   const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
     const response = await fetchWithSession(...args)
     if (!response.ok) throw new Error(await response.text())
@@ -61,6 +69,7 @@ export async function addTestRegulatorWithSession(
     session_id: session.id,
     regulator,
     fetch: fetchWithSession,
+    fetchOk,
     fetchCheerio,
   }
 }

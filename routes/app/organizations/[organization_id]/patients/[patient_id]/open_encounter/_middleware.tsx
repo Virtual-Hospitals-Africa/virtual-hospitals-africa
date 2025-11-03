@@ -56,7 +56,7 @@ import words from '../../../../../../../util/words.ts'
 import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
-import { ComponentChild } from 'preact/src/index.d.ts'
+import { ComponentChild } from 'preact'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -76,13 +76,15 @@ type WorkflowState = {
 
 type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
 
-export type OpenEncounterContext = LoggedInHealthWorkerContext<
-  OpenEncounterState
->
+export type OpenEncounterContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterState & T
+  >
 
-export type OpenEncounterWorkflowContext = LoggedInHealthWorkerContext<
-  OpenEncounterWorkflowState
->
+export type OpenEncounterWorkflowContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterWorkflowState & T
+  >
 
 const nav_links: {
   [w in Workflow]: {
@@ -181,7 +183,7 @@ function workflowStepFromUrl(
   ctx: OpenEncounterContext,
 ): { workflow: Workflow; step: string } {
   const [workflow, step] = compact(
-    ctx.route.replace(
+    ctx.route!.replace(
       '/app/organizations/:organization_id/patients/:patient_id/open_encounter/',
       '',
     ).split('/'),
@@ -214,7 +216,6 @@ export function getWorkflowStatusInProgress(
 }
 
 export async function workflowHandler(
-  _req: Request,
   ctx: OpenEncounterContext,
 ) {
   const { trx, encounter, encounter_employee_presence } = ctx.state
@@ -265,9 +266,9 @@ export async function workflowHandler(
 }
 
 export async function handler(
-  req: Request,
   ctx: OrganizationContext,
 ) {
+  const req = ctx.req
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
   const { trx, health_worker, organization_employment } = ctx.state
 
@@ -420,7 +421,6 @@ export function OpenEncounterWorkflowPage<
     | Promise<Response | JSX.Element>,
 ) {
   return async function (
-    _req: Request,
     ctx: OpenEncounterWorkflowContext,
   ) {
     const rendered = await render(ctx as Context)
@@ -454,10 +454,9 @@ export function OpenEncounterWorkflowPage<
 }
 
 export function WorkflowRedirectPage(
-  _req: Request,
   ctx: OpenEncounterContext,
 ) {
-  const workflow = last(ctx.route.split('/'))
+  const workflow = last(ctx.route!.split('/'))
   assert(workflow)
   assert(isWorkflow(workflow))
   const workflow_status = getWorkflowStatusInProgress(ctx, workflow)

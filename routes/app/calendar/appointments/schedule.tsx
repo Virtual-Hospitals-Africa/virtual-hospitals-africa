@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { LoggedInHealthWorkerHandlerWithProps } from '../../../../types.ts'
+
 import ScheduleForm from '../../../../components/calendar/ScheduleForm.tsx'
 import * as patients from '../../../../db/models/patients.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
@@ -7,7 +7,10 @@ import {
   availableSlots,
 } from '../../../../shared/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
-import { ProviderAppointmentSlot } from '../../../../types.ts'
+import {
+  LoggedInHealthWorkerContext,
+  ProviderAppointmentSlot,
+} from '../../../../types.ts'
 import { parseDateTime } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
 import {
@@ -65,48 +68,37 @@ function assertIsSearchFormValues(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
-  {
-    async POST(req, ctx) {
-      const schedule = await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertIsScheduleFormValues,
-      )
+export const handler = {
+  async POST(ctx: LoggedInHealthWorkerContext) {
+    const req = ctx.req
+    const schedule = await parseRequestAsserts(
+      ctx.state.trx,
+      req,
+      assertIsScheduleFormValues,
+    )
 
-      await makeAppointmentWeb(
-        ctx.state.trx,
-        schedule,
-        insertEvent,
-      )
-      return redirect('/app/calendar')
-    },
-  }
+    await makeAppointmentWeb(
+      ctx.state.trx,
+      schedule,
+      insertEvent,
+    )
+    return redirect('/app/calendar')
+  },
+}
 
 export default HealthWorkerHomePageLayout(
   'Schedule Appointment',
   async function SchedulePage(
-    req,
     ctx,
   ) {
-    const { health_worker } = ctx.state
-
     const search = await parseRequestAsserts<SearchFormValues>(
       ctx.state.trx,
-      req,
+      ctx.req,
       assertIsSearchFormValues,
     )
 
-    let patient_info
-    if (!search.patient_id) {
-      return ctx.render({ health_worker })
-    } else {
-      const patient = await patients.getById(ctx.state.trx, search.patient_id)
-      patient_info = { id: patient.id, name: patient.name }
-    }
-
     const { patient, availability } = await promiseProps({
-      patient: patients.getById(ctx.state.trx, search.patient_id),
+      patient: patients.getById(ctx.state.trx, search.patient_id!),
       availability: availableSlots(ctx.state.trx, {
         count: 10,
         dates: search.date ? [search.date] : undefined,
@@ -115,7 +107,6 @@ export default HealthWorkerHomePageLayout(
     })
 
     assert(hasName(patient))
-    assert(hasName(patient_info))
 
     const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
       type: 'provider_appointment_slot',
@@ -131,12 +122,12 @@ export default HealthWorkerHomePageLayout(
       <div className='flex gap-x-4'>
         <ScheduleForm
           className='w-1/2'
-          patient_info={patient_info}
+          patient_info={patient}
         />
         {slots && (
           <Appointments
             headerText='Slots available'
-            patient_id={patient_info?.id}
+            patient_id={patient?.id}
             appointments={slots}
             url={ctx.url}
             className='w-1/2'

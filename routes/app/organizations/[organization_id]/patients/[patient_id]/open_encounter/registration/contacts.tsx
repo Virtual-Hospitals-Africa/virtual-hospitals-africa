@@ -20,7 +20,7 @@ const PatientRegistrationContactsSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationContactsSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, { address }) => {
+  async (ctx: OpenEncounterWorkflowContext, { address }) => {
     await patient_address.updateById(
       ctx.state.trx,
       { patient_id: ctx.state.patient.id, address },

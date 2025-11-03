@@ -1,5 +1,5 @@
-const vscode = require('vscode');
-const path = require('path');
+const vscode = require('vscode')
+const path = require('path')
 
 const files = [
   'components/calendar/ScheduleForm.tsx',
@@ -75,36 +75,36 @@ const files = [
   'routes/regulator/[country]/pharmacies.tsx',
   'routes/regulator/[country]/pharmacists.tsx',
   // ... rest of your files
-];
+]
 
 async function addImports() {
-  const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]
   if (!workspaceFolder) {
-    console.error('No workspace folder found');
-    return;
+    console.error('No workspace folder found')
+    return
   }
 
   for (const file of files) {
-    const filePath = path.join(workspaceFolder.uri.fsPath, file);
-    const uri = vscode.Uri.file(filePath);
-    
+    const filePath = path.join(workspaceFolder.uri.fsPath, file)
+    const uri = vscode.Uri.file(filePath)
+
     try {
-      const doc = await vscode.workspace.openTextDocument(uri);
-      await vscode.window.showTextDocument(doc, { preview: false });
-      
+      const doc = await vscode.workspace.openTextDocument(uri)
+      await vscode.window.showTextDocument(doc, { preview: false })
+
       await vscode.commands.executeCommand('editor.action.sourceAction', {
         kind: 'source.addMissingImports',
-        apply: 'first'
-      });
-      
-      await doc.save();
-      console.log(`✓ Processed: ${file}`);
+        apply: 'first',
+      })
+
+      await doc.save()
+      console.log(`✓ Processed: ${file}`)
     } catch (error) {
-      console.error(`✗ Failed: ${file}`, error.message);
+      console.error(`✗ Failed: ${file}`, error.message)
     }
   }
-  
-  console.log('Done!');
+
+  console.log('Done!')
 }
 
-addImports();
+addImports()

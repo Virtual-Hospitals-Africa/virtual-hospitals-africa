@@ -18,7 +18,7 @@ const PatientChiefComplaintSchema = z.object({
 
 export const handler = postHandler(
   PatientChiefComplaintSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_chief_complaints.upsertOne(ctx.state.trx, {

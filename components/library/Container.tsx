@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import type { HTMLAttributes } from 'preact/compat'
 import cls from '../../util/cls.ts'
 
 const styles = {
@@ -10,7 +10,7 @@ const styles = {
 }
 
 type ContainerProps =
-  & Omit<JSX.HTMLAttributes<HTMLDivElement>, 'size' | 'className'>
+  & Omit<HTMLAttributes<HTMLDivElement>, 'size' | 'className'>
   & {
     size?: keyof typeof styles
     className?: string

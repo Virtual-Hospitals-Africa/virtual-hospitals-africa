@@ -1,5 +1,5 @@
-import { forwardRef, HTMLAttributes } from 'preact/compat'
-import { ComponentChildren, Ref } from 'preact'
+import { forwardRef } from 'preact/compat'
+import { ComponentChildren, Ref, SelectHTMLAttributes } from 'preact'
 import cls from '../../../util/cls.ts'
 import { LabeledInput, LabeledInputProps } from './labelled.tsx'
 
@@ -9,7 +9,7 @@ export type SelectProps =
     'onInput'
   >
   & {
-    onChange?: HTMLAttributes<HTMLSelectElement>['onChange']
+    onChange?: SelectHTMLAttributes<HTMLSelectElement>['onChange']
     selectClassName?: string
     children: ComponentChildren
   }

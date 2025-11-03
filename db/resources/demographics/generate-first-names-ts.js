@@ -8,12 +8,16 @@ for (const row of rows) {
   const cells = row.querySelectorAll('td')
   if (cells.length !== 5) continue
 
-  const [_rank, gender_breakdown, first_name, incidence] = row.querySelectorAll('td')
-  
+  const [_rank, gender_breakdown, first_name, incidence] = row.querySelectorAll(
+    'td',
+  )
+
   const male = gender_breakdown.querySelector('.m')
   const female = gender_breakdown.querySelector('.f')
 
-  let female_percentage = female ? parseInt(female.textContent.replace('%', '')) : 0
+  let female_percentage = female
+    ? parseInt(female.textContent.replace('%', ''))
+    : 0
   let male_percentage = male ? parseInt(male.textContent.replace('%', '')) : 0
 
   if (isNaN(female_percentage)) {
@@ -31,4 +35,4 @@ for (const row of rows) {
   })
 }
 
-console.log("export const first_names = " + JSON.stringify(r, null, 2))
+console.log('export const first_names = ' + JSON.stringify(r, null, 2))
