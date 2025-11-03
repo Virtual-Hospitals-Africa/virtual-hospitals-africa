@@ -2,7 +2,7 @@ import { Fragment, JSX } from 'preact'
 import { Menu } from '@headlessui/react'
 import cls from '../util/cls.ts'
 
-export type DropdownItem = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type DropdownItem = JSX.HTMLAttributes<HTMLButtonElement> & {
   href?: string
   title: string
   selected?: boolean

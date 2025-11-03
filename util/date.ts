@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
+  DefiniteDuration,
   Duration,
   MonthNum,
   ParsedDate,
@@ -9,6 +10,9 @@ import {
 } from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
+import isObjectLike from './isObjectLike.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { exists } from './exists.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -30,10 +34,6 @@ export function prettyPatientDateOfBirth(
   })
 }
 
-export function newDate(): Date {
-  return new Date()
-}
-
 export const formats = {
   numeric: new Intl.DateTimeFormat('en-gb', {
     weekday: 'long',
@@ -45,17 +45,17 @@ export const formats = {
     second: 'numeric',
     timeZone: 'Africa/Johannesburg',
   }),
-  twoDigit: new Intl.DateTimeFormat('en-gb', {
-    weekday: 'long',
-    month: '2-digit',
-    year: 'numeric',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZone: 'Africa/Johannesburg',
-  }),
-  justDate: new Intl.DateTimeFormat('en-gb', {
+  // two_digit: new Intl.DateTimeFormat('en-gb', {
+  //   weekday: 'long',
+  //   month: '2-digit',
+  //   year: 'numeric',
+  //   day: '2-digit',
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  //   second: '2-digit',
+  //   timeZone: 'Africa/Johannesburg',
+  // }),
+  just_date: new Intl.DateTimeFormat('en-gb', {
     month: '2-digit',
     year: 'numeric',
     day: '2-digit',
@@ -65,11 +65,11 @@ export const formats = {
 
 export function parseDateTime(
   date: string | Date,
-  format: 'numeric' | 'twoDigit',
+  format: 'numeric' = 'numeric',
 ): ParsedDateTime {
   const formatter = formats[format]
-  const dateString = formatter.format(new Date(date))
-  const [weekday, dateParts, timeParts] = dateString.split(', ')
+  const date_string = formatter.format(new Date(date))
+  const [weekday, dateParts, timeParts] = date_string.split(', ')
   const [day, month, year] = dateParts.split('/')
   const [hour, minute, second] = timeParts.split(':')
   return { weekday, day, month, year, hour, minute, second, format }
@@ -78,55 +78,91 @@ export function parseDateTime(
 export function parseDate(
   date: string | Date,
 ): ParsedDate {
-  const dateString = formats.justDate.format(new Date(date))
-  const [day, month, year] = dateString.split('/')
+  if (typeof date === 'string') {
+    assert(
+      /^\d{4}-\d{2}-\d{2}$/.test(date),
+      `${date} needs to be YYYY-MM-DD format`,
+    )
+  }
+  const date_string = formats.just_date.format(new Date(date))
+  const [day, month, year] = date_string.split('/')
   return { day, month, year }
 }
 
-export function stringify(date: ParsedDateTime | Date): string {
-  if (isDate(date)) date = parseDateTime(date, 'numeric')
-  assert(date.format === 'numeric')
-  const { day, month, year, hour, minute, second } = date
+function isParsedDate(date: unknown): date is ParsedDate {
+  return isObjectLike(date) && 'day' in date && 'month' in date &&
+    'year' in date && typeof date.day === 'string' &&
+    typeof date.month === 'string' && typeof date.year === 'string' &&
+    !('hour' in date)
+}
+
+export function stringify(
+  date: ParsedDateTime | ParsedDate | Date | string,
+): string {
+  if (isParsedDate(date)) {
+    return `${date.year}-${date.month}-${date.day}T00:00:00+02:00`
+  }
+  if (isString(date)) {
+    if (date.endsWith('+02:00')) {
+      return date
+    }
+    if (date_regex.test(date)) {
+      return stringify(parseDate(date))
+    }
+    throw new Error(`Unrecognized string format for ${date}`)
+  }
+
+  const parsed_date_time = isDate(date) ? parseDateTime(date, 'numeric') : date
+  assert(
+    parsed_date_time.format === 'numeric',
+    `Received ${JSON.stringify(date)}. parsed_date_time ${
+      JSON.stringify(parsed_date_time)
+    }`,
+  )
+  const { day, month, year, hour, minute, second } = parsed_date_time
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
 export function stringifyJustDate(
   date: ParsedDateTime | ParsedDate | Date | string,
 ): string {
-  if (isDate(date) || isString(date)) date = parseDate(date)
-  const { day, month, year } = date
-  return `${year}-${month}-${day}`
+  const datetime_string = stringify(date)
+  assert(
+    datetime_string.endsWith('+02:00'),
+    `Expected something representing a precise date in Johannesburg time. Got ${
+      JSON.stringify(date)
+    }`,
+  )
+  const date_string = datetime_string.slice(0, 10)
+  assert(date_regex.test(date_string))
+  return date_string
 }
 
 export function todayISOInJohannesburg() {
-  return stringifyJustDate(parseDateTime(new Date(), 'twoDigit'))
+  return stringifyJustDate(parseDateTime(new Date(), 'numeric'))
 }
 
 export function tomorrowISOInJohannesburg() {
   const date = new Date()
   date.setDate(date.getDate() + 1)
-  return stringifyJustDate(parseDateTime(date, 'twoDigit'))
+  return stringifyJustDate(parseDateTime(date, 'numeric'))
 }
 
 export function formatJohannesburg(
-  date: Date | string = new Date(),
+  date: Date | string | ParsedDate | ParsedDateTime = new Date(),
 ): string {
-  const { day, month, year, hour, minute, second } = parseDateTime(
-    date,
-    'twoDigit',
-  )
-  return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
+  return stringify(date)
 }
 
-export const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+export const date_regex = /^\d{4}-\d{2}-\d{2}$/
 const rfc3339Regex =
   /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
 export function differenceInDays(date1: string, date2: string): number {
   date1 = date1.slice(0, 10)
   date2 = date2.slice(0, 10)
-  assert(dateRegex.test(date1), `Expected ISO format: ${date1}`)
-  assert(dateRegex.test(date2), `Expected ISO format: ${date2}`)
+  assert(date_regex.test(date1), `Expected ISO format: ${date1}`)
+  assert(date_regex.test(date2), `Expected ISO format: ${date2}`)
 
   // One day in milliseconds
   const oneDay = 1000 * 60 * 60 * 24
@@ -142,13 +178,13 @@ export function differenceInMinutes(date1: Date, date2: Date): number {
   return (date1.valueOf() - date2.valueOf()) / 60000
 }
 
-const longDayFormat = new Intl.DateTimeFormat('en-gb', {
+const long_day_format = new Intl.DateTimeFormat('en-gb', {
   month: 'long',
   day: 'numeric',
   timeZone: 'Africa/Johannesburg',
 })
 
-const timeFormat = new Intl.DateTimeFormat('en-gb', {
+const time_format = new Intl.DateTimeFormat('en-gb', {
   hour: 'numeric',
   minute: 'numeric',
   timeZone: 'Africa/Johannesburg',
@@ -182,10 +218,10 @@ export function prettyAppointmentTime(startTime: string | Date): string {
   } else if (diff === 1) {
     dateStr = 'Tomorrow'
   } else {
-    dateStr = longDayFormat.format(start)
+    dateStr = long_day_format.format(start)
   }
 
-  const prettyTime = timeFormat.format(start)
+  const prettyTime = time_format.format(start)
 
   return `${dateStr} at ${prettyTime}`
 }
@@ -319,8 +355,8 @@ export function convertToTimeString(time: string): string {
   return `${formattedTime.hour}:${minute} ${formattedTime.amPm}`
 }
 
-export function isValidDate(messageBody: string): boolean {
-  const [d, m, y] = messageBody.split('/')
+export function isValidDate(message_body: string): boolean {
+  const [d, m, y] = message_body.split('/')
   const year = `${y}`
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
@@ -331,31 +367,28 @@ export function isValidDate(messageBody: string): boolean {
 }
 
 export function getISOInJohannesburg(date: Date) {
-  const { day, month, year } = parseDateTime(date, 'twoDigit')
+  const { day, month, year } = parseDateTime(date, 'numeric')
   return `${year}-${month}-${day}`
 }
 
-export function prettyMinimal(day: string, today: string) {
-  const [year, month, date] = day.split('-')
-  const dayDate = new Date(`${year}-${month}-${date}T00:00:00Z`)
-  const dayInJohannesburg = getISOInJohannesburg(dayDate)
-  const todayInJohannesburg = getISOInJohannesburg(new Date(today))
-  const diff = differenceInDays(dayInJohannesburg, todayInJohannesburg)
+export function prettyMinimal(date_string: string, today: string) {
+  const diff = differenceInDays(date_string, today)
   if (diff === 0) return 'Today'
   if (diff === 1) return 'Tomorrow'
-  const monthStr = monthName(parseInt(month) as MonthNum)
-  const sameYearAsToday = year === today.split('-')[0]
-  return sameYearAsToday
-    ? `${parseInt(date)} ${monthStr}`
-    : `${parseInt(date)} ${monthStr} ${year}`
+  const parsed_date = parseDate(date_string)
+  const parsed_today = parseDate(today)
+  const day = parseInt(parsed_date.day)
+  const month = monthName(parseInt(parsed_date.month) as MonthNum)
+  const same_year = parsed_today.year === parsed_date.year
+  return same_year ? `${day} ${month}` : `${day} ${month} ${parsed_date.year}`
 }
 
 export function durationEndDate(
-  start_date: Date | string,
+  start_date: ParsedDate | ParsedDateTime | Date | string,
   duration: Duration,
 ): null | string {
   if (duration.duration_unit === 'indefinitely') return null
-  const start = new Date(start_date)
+  const start = new Date(stringify(start_date))
   const end = new Date(start)
   switch (duration.duration_unit) {
     case 'days':
@@ -374,6 +407,14 @@ export function durationEndDate(
       throw new Error(`Invalid duration unit: ${duration.duration_unit}`)
   }
   return stringifyJustDate(end)
+}
+
+export function existingDurationEndDate(
+  start_date: ParsedDate | ParsedDateTime | Date | string,
+  duration: DefiniteDuration,
+): string {
+  assertNotEquals(duration.duration_unit, 'indefinitely')
+  return exists(durationEndDate(start_date, duration))
 }
 
 export function approximateDuration(

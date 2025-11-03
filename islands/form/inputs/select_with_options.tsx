@@ -4,11 +4,11 @@ import isObjectLike from '../../../util/isObjectLike.ts'
 import { Select, SelectProps } from './select.tsx'
 
 type FlexibleOption<
-  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
+  V extends JSX.HTMLAttributes<HTMLOptionElement>['value'],
 > = V | { value: V; label?: string } | { id: V; name: string }
 
 export const SelectWithOptions = forwardRef(function SelectWithOptions<
-  V extends JSX.OptionHTMLAttributes<HTMLOptionElement>['value'],
+  V extends JSX.HTMLAttributes<HTMLOptionElement>['value'],
 >(
   {
     options,

@@ -1771,7 +1771,7 @@ export type ParsedDateTime = {
   hour: string
   minute: string
   second: string
-  format: 'numeric' | 'twoDigit'
+  format: 'numeric' /*| 'two_digit'*/
 }
 
 export type ISODateString = string & {
@@ -2037,6 +2037,11 @@ export type DurationUnit =
 export type Duration = {
   duration: number
   duration_unit: DurationUnit
+}
+
+export type DefiniteDuration = {
+  duration: number
+  duration_unit: Exclude<DurationUnit, 'indefinitely'>
 }
 
 export type MedicationSchedule = Duration & {

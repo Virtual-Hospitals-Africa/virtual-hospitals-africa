@@ -10,11 +10,17 @@ import * as patient_insurance from '../../db/models/patient_insurance.ts'
 import db from '../../db/db.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import { todayISOInJohannesburg } from '../../util/date.ts'
+import {
+  existingDurationEndDate,
+  todayISOInJohannesburg,
+} from '../../util/date.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe('patient_insurance', () => {
   let patient_id: string
+  let today: string
+  let thirty_days_ago: string
+  let three_hundred_and_thirty_five_days_in_future: string
 
   afterAll(() => db.destroy())
 
@@ -29,6 +35,19 @@ describe('patient_insurance', () => {
       .executeTakeFirstOrThrow()
 
     patient_id = patient.id
+    today = todayISOInJohannesburg()
+    thirty_days_ago = existingDurationEndDate(today, {
+      duration: -30,
+      duration_unit: 'days',
+    })
+
+    three_hundred_and_thirty_five_days_in_future = existingDurationEndDate(
+      today,
+      {
+        duration: 335,
+        duration_unit: 'days',
+      },
+    )
   })
 
   afterEach(async () => {
@@ -49,8 +68,8 @@ describe('patient_insurance', () => {
         insurance_provider: 'Blue Cross',
         plan_name: 'Premium Plan',
         membership_number: '123456789',
-        valid_from: '2025-01-01',
-        expire_date: '2026-01-01',
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       }).execute()
 
@@ -60,8 +79,11 @@ describe('patient_insurance', () => {
       assertEquals(insurance.insurance_provider, 'Blue Cross')
       assertEquals(insurance.plan_name, 'Premium Plan')
       assertEquals(insurance.membership_number, '123456789')
-      assertEquals(insurance.valid_from, '2025-01-01')
-      assertEquals(insurance.expire_date, '2026-01-01')
+      assertEquals(insurance.valid_from, thirty_days_ago)
+      assertEquals(
+        insurance.expire_date,
+        three_hundred_and_thirty_five_days_in_future,
+      )
       assertEquals(insurance.is_dependent, false)
     })
 
@@ -76,16 +98,19 @@ describe('patient_insurance', () => {
         insurance_provider: 'Provider',
         plan_name: 'Plan',
         membership_number: '123',
-        valid_from: '2025-06-15',
-        expire_date: '2026-12-31',
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: true,
       }).execute()
 
       const [insurance] = await patient_insurance.getById(db, { patient_id })
 
       assert(insurance)
-      assertEquals(insurance.valid_from, '2025-06-15')
-      assertEquals(insurance.expire_date, '2026-12-31')
+      assertEquals(insurance.valid_from, thirty_days_ago)
+      assertEquals(
+        insurance.expire_date,
+        three_hundred_and_thirty_five_days_in_future,
+      )
     })
 
     it('handles null plan_name', async () => {
@@ -93,8 +118,8 @@ describe('patient_insurance', () => {
         patient_id,
         insurance_provider: 'Provider',
         membership_number: '123',
-        valid_from: '2025-01-01',
-        expire_date: '2026-01-01',
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       }).execute()
 
@@ -107,19 +132,22 @@ describe('patient_insurance', () => {
 
   describe('getCurrentInsurance', () => {
     it('returns insurance that is currently valid', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() - 30)
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 30)
+      const valid_from = existingDurationEndDate(today, {
+        duration: -30,
+        duration_unit: 'days',
+      })
+      const expire_date = existingDurationEndDate(today, {
+        duration: 30,
+        duration_unit: 'days',
+      })
 
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Current Provider',
         plan_name: 'Current Plan',
         membership_number: '999',
-        valid_from: validFrom.toISOString().split('T')[0],
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from,
+        expire_date,
         is_dependent: false,
       }).execute()
 
@@ -133,19 +161,22 @@ describe('patient_insurance', () => {
     })
 
     it('returns undefined for expired insurance', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() - 60)
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() - 30)
+      const valid_from = existingDurationEndDate(today, {
+        duration: -60,
+        duration_unit: 'days',
+      })
+      const expire_date = existingDurationEndDate(today, {
+        duration: -1,
+        duration_unit: 'days',
+      })
 
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Expired Provider',
         plan_name: 'Expired Plan',
         membership_number: '111',
-        valid_from: validFrom.toISOString().split('T')[0],
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from,
+        expire_date,
         is_dependent: false,
       }).execute()
 
@@ -156,19 +187,22 @@ describe('patient_insurance', () => {
     })
 
     it('returns undefined for future insurance', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() + 30)
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
+      const valid_from = existingDurationEndDate(today, {
+        duration: 1,
+        duration_unit: 'days',
+      })
+      const expire_date = existingDurationEndDate(today, {
+        duration: 365,
+        duration_unit: 'days',
+      })
 
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Future Provider',
         plan_name: 'Future Plan',
         membership_number: '222',
-        valid_from: validFrom.toISOString().split('T')[0],
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from,
+        expire_date,
         is_dependent: true,
       }).execute()
 
@@ -179,10 +213,10 @@ describe('patient_insurance', () => {
     })
 
     it('returns insurance valid from today', async () => {
-      const now = new Date()
-      const today = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
+      const expire_date = existingDurationEndDate(today, {
+        duration: 365,
+        duration_unit: 'days',
+      })
 
       await db.insertInto('patient_insurance').values({
         patient_id,
@@ -190,7 +224,7 @@ describe('patient_insurance', () => {
         plan_name: 'Today Plan',
         membership_number: '333',
         valid_from: today,
-        expire_date: expireDate.toISOString().split('T')[0],
+        expire_date,
         is_dependent: false,
       }).execute()
 
@@ -202,17 +236,17 @@ describe('patient_insurance', () => {
     })
 
     it('returns insurance expiring today', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() - 365)
-      const today = now.toISOString().split('T')[0]
+      const valid_from = existingDurationEndDate(today, {
+        duration: -1,
+        duration_unit: 'years',
+      })
 
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Expires Today Provider',
         plan_name: 'Expires Today Plan',
         membership_number: '444',
-        valid_from: validFrom.toISOString().split('T')[0],
+        valid_from,
         expire_date: today,
         is_dependent: false,
       }).execute()
@@ -227,19 +261,13 @@ describe('patient_insurance', () => {
 
   describe('setCurrentInsurance', () => {
     it('creates new insurance record with all fields', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
-      const expireDateStr = expireDate.toISOString().split('T')[0]
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Test Provider',
         plan_name: 'Test Plan',
         membership_number: '987654321',
-        valid_from: validFrom,
-        expire_date: expireDateStr,
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: true,
       })
 
@@ -253,11 +281,15 @@ describe('patient_insurance', () => {
     })
 
     it('rejects insurance with future valid_from date', async () => {
-      const futureDate = new Date()
-      futureDate.setDate(futureDate.getDate() + 1)
-      const futureDateStr = futureDate.toISOString().split('T')[0]
-      const expireDate = new Date()
-      expireDate.setDate(expireDate.getDate() + 365)
+      const valid_from = existingDurationEndDate(today, {
+        duration: 1,
+        duration_unit: 'days',
+      })
+
+      const expire_date = existingDurationEndDate(today, {
+        duration: 365,
+        duration_unit: 'days',
+      })
 
       await assertRejects(
         async () => {
@@ -266,8 +298,8 @@ describe('patient_insurance', () => {
             insurance_provider: 'Provider',
             plan_name: 'Plan',
             membership_number: '123',
-            valid_from: futureDateStr,
-            expire_date: expireDate.toISOString().split('T')[0],
+            valid_from,
+            expire_date,
             is_dependent: false,
           })
         },
@@ -277,9 +309,10 @@ describe('patient_insurance', () => {
     })
 
     it('accepts insurance with today as valid_from', async () => {
-      const today = todayISOInJohannesburg()
-      const expireDate = new Date()
-      expireDate.setDate(expireDate.getDate() + 365)
+      const expire_date = existingDurationEndDate(today, {
+        duration: 365,
+        duration_unit: 'days',
+      })
 
       await patient_insurance.setCurrent(db, {
         patient_id,
@@ -287,7 +320,7 @@ describe('patient_insurance', () => {
         plan_name: 'Plan',
         membership_number: '123',
         valid_from: today,
-        expire_date: expireDate.toISOString().split('T')[0],
+        expire_date,
         is_dependent: false,
       })
 
@@ -297,11 +330,15 @@ describe('patient_insurance', () => {
     })
 
     it('rejects insurance with past expire_date', async () => {
-      const pastDate = new Date()
-      pastDate.setDate(pastDate.getDate() - 1)
-      const pastDateStr = pastDate.toISOString().split('T')[0]
-      const validFrom = new Date()
-      validFrom.setDate(validFrom.getDate() - 365)
+      const valid_from = existingDurationEndDate(today, {
+        duration: -365,
+        duration_unit: 'days',
+      })
+
+      const expire_date = existingDurationEndDate(today, {
+        duration: -1,
+        duration_unit: 'days',
+      })
 
       await assertRejects(
         async () => {
@@ -310,8 +347,8 @@ describe('patient_insurance', () => {
             insurance_provider: 'Provider',
             plan_name: 'Plan',
             membership_number: '123',
-            valid_from: validFrom.toISOString().split('T')[0],
-            expire_date: pastDateStr,
+            valid_from,
+            expire_date,
             is_dependent: false,
           })
         },
@@ -321,16 +358,12 @@ describe('patient_insurance', () => {
     })
 
     it('accepts insurance with today as expire_date', async () => {
-      const today = todayISOInJohannesburg()
-      const validFrom = new Date()
-      validFrom.setDate(validFrom.getDate() - 365)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Provider',
         plan_name: 'Plan',
         membership_number: '123',
-        valid_from: validFrom.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
         expire_date: today,
         is_dependent: false,
       })
@@ -341,19 +374,13 @@ describe('patient_insurance', () => {
     })
 
     it('accepts valid date range', async () => {
-      const now = new Date()
-      const validFrom = new Date(now)
-      validFrom.setDate(now.getDate() - 30)
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 335)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Valid Provider',
         plan_name: 'Valid Plan',
         membership_number: '555',
-        valid_from: validFrom.toISOString().split('T')[0],
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 
@@ -363,18 +390,13 @@ describe('patient_insurance', () => {
     })
 
     it('handles is_dependent field correctly', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Dependent Provider',
         plan_name: 'Dependent Plan',
         membership_number: '666',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: true,
       })
 
@@ -384,17 +406,12 @@ describe('patient_insurance', () => {
     })
 
     it('handles optional plan_name field', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Minimal Provider',
         membership_number: '777',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 
@@ -407,10 +424,6 @@ describe('patient_insurance', () => {
 
   describe('edge cases', () => {
     it('handles very long insurance fields', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
       const longString = 'A'.repeat(255)
 
       await patient_insurance.setCurrent(db, {
@@ -418,8 +431,8 @@ describe('patient_insurance', () => {
         insurance_provider: longString,
         plan_name: longString,
         membership_number: longString,
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 
@@ -430,18 +443,13 @@ describe('patient_insurance', () => {
     })
 
     it('handles special characters in insurance fields', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setDate(now.getDate() + 365)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: "O'Brien's Insurance & Co.",
         plan_name: 'Premium-Plus (Family)',
         membership_number: 'ABC-123-XYZ',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 
@@ -453,39 +461,18 @@ describe('patient_insurance', () => {
     })
 
     it('validates date range spanning exactly one year', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setFullYear(now.getFullYear() + 1)
-
-      await patient_insurance.setCurrent(db, {
-        patient_id,
-        insurance_provider: 'One Year Provider',
-        plan_name: 'Annual Plan',
-        membership_number: '888',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
-        is_dependent: false,
+      const expire_date = existingDurationEndDate(today, {
+        duration: 1,
+        duration_unit: 'years',
       })
 
-      const [insurance] = await patient_insurance.getById(db, { patient_id })
-      assert(insurance)
-      assertEquals(insurance.insurance_provider, 'One Year Provider')
-    })
-
-    it('validates date range spanning exactly one year', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setFullYear(now.getFullYear() + 1)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'One Year Provider',
         plan_name: 'Annual Plan',
         membership_number: '888',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: today,
+        expire_date,
         is_dependent: false,
       })
 
@@ -495,18 +482,13 @@ describe('patient_insurance', () => {
     })
 
     it('overwrites the existing current insurance if present', async () => {
-      const now = new Date()
-      const validFrom = now.toISOString().split('T')[0]
-      const expireDate = new Date(now)
-      expireDate.setFullYear(now.getFullYear() + 1)
-
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'One Year Provider',
         plan_name: 'Annual Plan',
         membership_number: '888',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 
@@ -519,8 +501,8 @@ describe('patient_insurance', () => {
         insurance_provider: 'My new provider',
         plan_name: 'Annual Plan',
         membership_number: '888',
-        valid_from: validFrom,
-        expire_date: expireDate.toISOString().split('T')[0],
+        valid_from: thirty_days_ago,
+        expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
       })
 

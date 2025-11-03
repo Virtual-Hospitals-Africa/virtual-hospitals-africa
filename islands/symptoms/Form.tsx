@@ -6,7 +6,7 @@ import { Duration } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   approximateDuration,
-  dateRegex,
+  date_regex,
   durationEndDate,
 } from '../../util/date.ts'
 import { DurationInput } from './DurationInput.tsx'
@@ -38,7 +38,7 @@ export function SymptomForm({
   symptom: Partial<RenderedPatientSymptom>
   today: string
 }) {
-  assert(dateRegex.test(today))
+  assert(date_regex.test(today))
 
   const yesterday = durationEndDate(today, {
     duration: -1,

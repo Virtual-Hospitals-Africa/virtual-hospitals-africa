@@ -327,9 +327,12 @@ export function debugLog(
   )
 }
 
-export function literalNumber(value: number) {
-  assert(Number.isFinite(value), 'Value must be a finite number')
-  return sql.lit<number>(value)
+export function literalNumber(value: number, as: string) {
+  assert(
+    Number.isFinite(value),
+    `Value for ${as} must be a finite number. Got ${value}`,
+  )
+  return sql.lit<number>(value).as(as)
 }
 
 export function literalString(value: string) {

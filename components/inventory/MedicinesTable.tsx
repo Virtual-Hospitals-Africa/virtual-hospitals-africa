@@ -75,7 +75,7 @@ export default function OrganizationMedicinesTable(
           <Button
             type='button'
             href={`/app/organizations/${organization_id}/inventory/add_medicine`}
-            className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+            className='grid self-end p-2 text-gray-900 border-0 rounded-md shadow-sm w-max ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 whitespace-nowrap place-items-center'
           >
             Add Medicine
           </Button>

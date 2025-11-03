@@ -17,14 +17,14 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
     additional_info,
   } = sendable
   return (
-    <div className='group relative flex items-center px-5 py-4'>
-      <a className='-m-1 block flex-1 p-1'>
+    <div className='relative flex items-center px-5 py-4 group'>
+      <a className='flex-1 block p-1 -m-1'>
         <div
           className='absolute inset-0 group-hover:bg-gray-50'
           aria-hidden='true'
         />
-        <div className='relative flex min-w-0 flex-1 items-center'>
-          <span className='relative inline-block flex-shrink-0'>
+        <div className='relative flex items-center flex-1 min-w-0'>
+          <span className='relative flex-shrink-0 inline-block'>
             <CircularImage image={image} />
             <OnlineIndicator
               online={to.type === 'entity' ? to.online : null}
@@ -32,7 +32,7 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
           </span>
           <div className='ml-4'>
             <p
-              className='text-sm font-sans font-medium text-gray-900 leading-normal'
+              className='font-sans text-sm font-medium leading-normal text-gray-900'
               style={{ marginBottom: '-0.25rem' }}
             >
               {name}
@@ -43,13 +43,13 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
             />
             <AdditionalInfo additional_info={additional_info} />
             {sendable.status && (
-              <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+              <p className='text-xs text-gray-500 whitespace-pre-line font-ubuntu'>
                 {sendable.status}
               </p>
             )}
             {
               /* {!online && reopenTime && (
-              <p className='text-xs font-ubuntu text-gray-500'>
+              <p className='text-xs text-gray-500 font-ubuntu'>
                 {reopenTime}
               </p>
             )} */
@@ -70,7 +70,7 @@ export function SendableListItem(
   },
 ): JSX.Element {
   // When clicked, actions submit immediately while entities are selected and add hidden inputs to the form
-  const button_props: JSX.ButtonHTMLAttributes<HTMLButtonElement> =
+  const button_props: JSX.HTMLAttributes<HTMLButtonElement> =
     sendable.to.type === 'action'
       ? {
         form,
@@ -97,7 +97,7 @@ export function SendableListItem(
         />
       )}
 
-      <button {...button_props} className='text-left w-full'>
+      <button {...button_props} className='w-full text-left'>
         <SendableListItemContents sendable={sendable} />
       </button>
     </li>
