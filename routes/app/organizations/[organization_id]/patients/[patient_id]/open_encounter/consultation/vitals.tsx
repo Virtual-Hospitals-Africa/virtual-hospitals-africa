@@ -4,9 +4,10 @@ import { OpenEncounterWorkflowContext } from '../_middleware.tsx'
 
 // deno-lint-ignore require-await
 export default async function (
-  req: Request,
   ctx: OpenEncounterWorkflowContext,
 ) {
+  const req = ctx.req
+
   assertOr405(req.method === 'GET')
   const url = new URL(ctx.url)
   url.pathname += '/measurements'

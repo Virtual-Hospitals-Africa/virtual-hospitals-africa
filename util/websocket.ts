@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from './assertOr.ts'
 

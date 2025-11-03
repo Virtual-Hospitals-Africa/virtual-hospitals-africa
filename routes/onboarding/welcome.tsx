@@ -88,7 +88,6 @@ export const handler = postHandler(
 )
 
 export default async function OnboardingPage(
-  _req: Request,
   ctx: OnboardingContext,
 ) {
   const test_organizations = await organizations.search(ctx.state.trx, {

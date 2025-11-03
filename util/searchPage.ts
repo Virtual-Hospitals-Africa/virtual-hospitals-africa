@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { assertOr400 } from './assertOr.ts'
 
 export function searchPage({ url }: FreshContext<unknown>) {

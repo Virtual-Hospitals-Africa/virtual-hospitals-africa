@@ -1,5 +1,4 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'preact'
 import { SelectedPatient, Sendable } from '../../types.ts'
 import { SendToHeader } from './Header.tsx'
 import { SendableList } from './List.tsx'

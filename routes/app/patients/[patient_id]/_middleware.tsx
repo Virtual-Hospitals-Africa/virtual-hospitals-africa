@@ -12,7 +12,6 @@ export type PatientContext = LoggedInHealthWorkerContext<
 >
 
 export async function handler(
-  _req: Request,
   ctx: PatientContext,
 ) {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')

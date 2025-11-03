@@ -3,7 +3,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 import Layout from '../../components/library/Layout.tsx'
 import {
   getOrganizationAdmin,
@@ -20,7 +20,7 @@ type PendingApprovalPageProps = {
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   PendingApprovalPageProps
 > = {
-  async GET(_req, ctx) {
+  async GET(ctx) {
     const { health_worker } = ctx.state
 
     const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {

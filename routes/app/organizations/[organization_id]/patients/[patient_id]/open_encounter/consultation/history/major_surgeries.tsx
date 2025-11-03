@@ -19,7 +19,9 @@ export const MajorSurgeriesSchema = z.object({
 })
 
 export const handler = {
-  async POST(req: Request, ctx: HistoryContext) {
+  async POST(ctx: HistoryContext) {
+    const req = ctx.req
+
     // TODO, parallelize
     const completing_assessment = await completeAssessment(ctx)
     const form_values = await parseRequest(

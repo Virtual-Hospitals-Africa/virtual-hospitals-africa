@@ -37,7 +37,8 @@ export type FormState =
 export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
   organization: HasStringId<Organization>
 }> = {
-  async POST(req, ctx) {
+  async POST(ctx) {
+    const req = ctx.req
     const employee = await employment.getEmployee(ctx.state.trx, {
       organization_id: ctx.state.organization.id,
       health_worker_id: ctx.state.health_worker.id,
@@ -130,7 +131,6 @@ function getRegistrationDetails(
 }
 
 export default async function RegisterPage(
-  _req: Request,
   ctx: OrganizationContext,
 ) {
   const { health_worker, organization } = ctx.state

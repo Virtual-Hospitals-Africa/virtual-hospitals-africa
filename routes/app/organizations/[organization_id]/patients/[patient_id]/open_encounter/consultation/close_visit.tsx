@@ -13,7 +13,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   OpenEncounterWorkflowContext['state']
 > = {
-  async POST(_req: Request, ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowContext) {
     const { trx, encounter } = ctx.state
     await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),

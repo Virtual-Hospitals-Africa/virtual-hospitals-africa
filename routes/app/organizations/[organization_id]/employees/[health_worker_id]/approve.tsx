@@ -10,7 +10,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<string, never>,
   OrganizationContext['state']
 > = {
-  async POST(_, ctx) {
+  async POST(ctx) {
     const { trx, organization, isAdminAtOrganization, health_worker } =
       ctx.state
 

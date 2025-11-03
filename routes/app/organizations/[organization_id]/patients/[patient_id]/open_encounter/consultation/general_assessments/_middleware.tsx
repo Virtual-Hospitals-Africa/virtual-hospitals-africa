@@ -24,7 +24,6 @@ export type GeneralAssessmentsContext = OpenEncounterWorkflowContext & {
 }
 
 export async function handler(
-  _req: Request,
   ctx: GeneralAssessmentsContext,
 ) {
   const patient_general_assessments = await examinations.forPatientEncounter(

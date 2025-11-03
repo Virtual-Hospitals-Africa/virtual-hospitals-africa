@@ -1,4 +1,4 @@
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 import ContactPage from '../components/library/ContactPage.tsx'
 
 export default function BookIntroCallPage(

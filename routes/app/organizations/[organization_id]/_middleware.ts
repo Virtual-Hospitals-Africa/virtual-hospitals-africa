@@ -15,7 +15,6 @@ export type OrganizationState = {
 export type OrganizationContext = LoggedInHealthWorkerContext<OrganizationState>
 
 export async function handler(
-  _req: Request,
   ctx: OrganizationContext,
 ) {
   const { health_worker } = ctx.state

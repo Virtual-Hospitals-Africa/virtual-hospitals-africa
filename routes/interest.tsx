@@ -1,4 +1,3 @@
-import { Handlers } from '$fresh/server.ts'
 import { parseRequestAsserts } from '../util/parseForm.ts'
 import * as slack from '../external-clients/slack.ts'
 import db from '../db/db.ts'
@@ -9,6 +8,7 @@ import {
   CONTACT_REASON_OPTIONS,
   ContactReason,
 } from '../components/library/ContactForm.tsx'
+import { Handlers } from 'fresh/compat'
 
 function assertIsMailingListRecipient(
   form_values: unknown,
@@ -45,7 +45,8 @@ const successMessages = {
 }
 
 export const handler: Handlers = {
-  async POST(req) {
+  async POST(ctx) {
+    const req = ctx.req
     const recipient = await parseRequestAsserts(
       db,
       req,

@@ -6,7 +6,6 @@ import { addSelfAsReviewer } from '../../../../db/models/doctor_reviews.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 export default async function PatientPage(
-  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { doctor_review } = await addSelfAsReviewer(ctx.state.trx, {

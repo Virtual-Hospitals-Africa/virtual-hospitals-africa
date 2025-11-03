@@ -1,4 +1,4 @@
-import { PageProps } from 'https://jsr.io/@fresh/core/2.1.4/src/render.ts'
+import { HttpError, PageProps } from 'fresh'
 
 export default function ErrorPage(props: PageProps) {
   const error = props.error // Contains the thrown Error or HTTPError

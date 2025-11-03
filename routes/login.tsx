@@ -1,4 +1,3 @@
-import { Handlers } from '$fresh/server.ts'
 import { oauthParams } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import * as cookie from '../shared/cookie.ts'
@@ -13,6 +12,7 @@ import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
 import randomAvatar from '../mocks/randomAvatar.ts'
 import randomNamesAndSex from '../mocks/randomDemographics.ts'
+import { Handlers } from 'fresh/compat'
 
 const FAKE_GOOGLE_AUTH = Deno.env.get('FAKE_GOOGLE_AUTH') === 'true'
 if (FAKE_GOOGLE_AUTH) {
@@ -54,7 +54,8 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
 }
 
 export const handler: Handlers = {
-  async GET(req) {
+  async GET(ctx) {
+    const req = ctx.req
     const session_id = cookie.get(req)
     if (!session_id) {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(login_href)

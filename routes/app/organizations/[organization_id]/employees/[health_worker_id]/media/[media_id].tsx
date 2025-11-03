@@ -3,7 +3,7 @@ import { file } from '../../../../../../../util/responses.ts'
 import * as media from '../../../../../../../db/models/media.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(_, ctx) {
+  async GET(ctx) {
     const { media_id } = ctx.params
 
     // TODO possibly add assertion here ensuring the media belongs to the nurse.

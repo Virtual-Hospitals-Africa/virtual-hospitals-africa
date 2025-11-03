@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 import { isWebsocketPath } from '../util/websocket.ts'

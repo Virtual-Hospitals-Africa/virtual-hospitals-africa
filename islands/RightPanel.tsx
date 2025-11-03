@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { ComponentChildren, Fragment } from 'preact'
+import { ComponentChildren } from 'preact'
 import { XMarkIcon } from '../components/library/icons/heroicons/solid.tsx'
 import cls from '../util/cls.ts'
 

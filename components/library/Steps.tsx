@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'

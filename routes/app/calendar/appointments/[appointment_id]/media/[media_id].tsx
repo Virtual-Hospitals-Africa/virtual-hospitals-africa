@@ -3,7 +3,7 @@ import { file } from '../../../../../../util/responses.ts'
 import * as media from '../../../../../../db/models/media.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(_, ctx) {
+  async GET(ctx) {
     const { appointment_id, media_id } = ctx.params
 
     const appointment_media = await media.get(ctx.state.trx, {

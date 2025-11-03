@@ -56,7 +56,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   OpenEncounterWorkflowContext['state']
 > = {
-  async POST(req, ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowContext) {
+    const req = ctx.req
     const data = await parseRequestAsserts(
       ctx.state.trx,
       req,

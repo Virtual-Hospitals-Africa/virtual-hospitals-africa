@@ -9,7 +9,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  async POST(_req, ctx: ReviewContext) {
+  async POST(ctx: ReviewContext) {
     const { review_id, requested_by, employment_id, patient } =
       ctx.state.doctor_review
     await Promise.all([
@@ -40,7 +40,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 // deno-lint-ignore require-await
 export default async function RevertPage(
-  _req: Request,
   ctx: ReviewContext,
 ) {
   return (

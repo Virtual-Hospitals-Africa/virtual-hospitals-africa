@@ -5,7 +5,7 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(_, ctx) {
+  async GET(ctx) {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     // TODO: check if the health worker has access as part of the media query below

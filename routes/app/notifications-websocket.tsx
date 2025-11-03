@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import * as notifications from '../../db/models/notifications.ts'
 import { LoggedInHealthWorker } from '../../types.ts'
 import upgradeWebsocket from '../../util/websocket.ts'

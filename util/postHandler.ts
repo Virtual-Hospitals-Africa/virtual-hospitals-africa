@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import z from 'zod'
 import { parseRequest } from './parseForm.ts'
 import { TrxOrDb } from '../types.ts'

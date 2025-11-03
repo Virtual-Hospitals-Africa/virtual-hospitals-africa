@@ -9,11 +9,11 @@ for (const row of rows) {
   if (cells.length !== 4) continue
 
   const [_rank, surname, incidence] = row.querySelectorAll('td')
-  
+
   r.push({
     surname: surname.textContent,
     incidence: parseInt(incidence.textContent.replaceAll(',', '')),
   })
 }
 
-console.log("export const surnames = " + JSON.stringify(r, null, 2))
+console.log('export const surnames = ' + JSON.stringify(r, null, 2))

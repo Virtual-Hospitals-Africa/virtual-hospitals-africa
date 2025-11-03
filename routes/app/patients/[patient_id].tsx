@@ -4,7 +4,6 @@ import { replaceParams } from '../../../util/replaceParams.ts'
 
 // deno-lint-ignore require-await
 export default async function PatientPage(
-  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   return redirect(

@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { LoggedInRegulatorContext } from '../../types.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import redirect from '../../util/redirect.ts'

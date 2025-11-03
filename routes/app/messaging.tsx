@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { LoggedInHealthWorker } from '../../types.ts'
 import * as messages from '../../db/models/messages.ts'
 import ThreadList from '../../islands/messages/ThreadList.tsx'

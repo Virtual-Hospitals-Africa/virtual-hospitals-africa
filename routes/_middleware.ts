@@ -1,7 +1,7 @@
-import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import { ZodError } from 'zod'
 import redirect from '../util/redirect.ts'
+import { Context } from 'fresh'
 
 export function grokPostgresError(err: Error) {
   // deno-lint-ignore no-explicit-any
@@ -10,7 +10,7 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-export const handler = (_req: Request, ctx: FreshContext) =>
+export const handler = (ctx: Context<unknown>) =>
   // deno-lint-ignore no-explicit-any
   ctx.next().catch(function handleError(err: any) {
     if (err.status === 302) {

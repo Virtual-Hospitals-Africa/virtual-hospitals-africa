@@ -4,7 +4,7 @@
   In order to have the ctx.url be the https: address, we overwrite
   it here
 */
-import { Plugin } from '$fresh/server.ts'
+import { Plugin } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 
 export default function httpsUrlPlugin(): Plugin {

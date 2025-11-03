@@ -24,7 +24,6 @@ export type HistoryContext = OpenEncounterWorkflowContext & {
 }
 
 export async function handler(
-  _req: Request,
   ctx: HistoryContext,
 ) {
   const history_assessments = await examinations.forPatientEncounter(

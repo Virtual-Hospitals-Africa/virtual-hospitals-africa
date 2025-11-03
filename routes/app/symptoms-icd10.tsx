@@ -4,7 +4,9 @@ import { searchSymptoms } from '../../db/models/icd10.ts'
 import { json } from '../../util/responses.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
-  async GET(req, ctx) {
+  async GET(ctx) {
+    const req = ctx.req
+
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])

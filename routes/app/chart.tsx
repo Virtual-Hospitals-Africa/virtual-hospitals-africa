@@ -1,10 +1,9 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import Layout from '../../components/library/Layout.tsx'
 import { SparklinesExample } from '../../islands/SparklinesExample.tsx'
 
 // deno-lint-ignore require-await
 export default async function ICD10SearchPage(
-  _req: Request,
   ctx: FreshContext,
 ) {
   return (

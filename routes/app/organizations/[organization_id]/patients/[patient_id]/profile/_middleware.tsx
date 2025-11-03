@@ -28,7 +28,6 @@ export type PatientProfileContext = OrganizationContext & {
 }
 
 export function handler(
-  _req: Request,
   ctx: OrganizationContext,
 ) {
   return ctx.next()

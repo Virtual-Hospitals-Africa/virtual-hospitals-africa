@@ -1,4 +1,4 @@
-import { Fragment, JSX } from 'preact'
+import { JSX } from 'preact'
 import { Menu } from '@headlessui/react'
 import cls from '../util/cls.ts'
 

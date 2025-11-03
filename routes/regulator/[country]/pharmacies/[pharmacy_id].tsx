@@ -2,7 +2,7 @@ import * as pharmacies from '../../../../db/models/pharmacies.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { LoggedInRegulator } from '../../../../types.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import PharmacyDetailedCard from '../../../../components/regulator/PharmacyDetailedCard.tsx'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 

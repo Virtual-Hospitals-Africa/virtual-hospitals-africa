@@ -41,7 +41,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   GeneralAssessmentsContext['state']
 > = {
-  async POST(req, ctx: GeneralAssessmentsContext) {
+  async POST(ctx: GeneralAssessmentsContext) {
+    const req = ctx.req
+
     // TODO: only complete the step if all have been completed
     const { completing_assessment } = await promiseProps({
       completing_assessment: completeAssessment(ctx),

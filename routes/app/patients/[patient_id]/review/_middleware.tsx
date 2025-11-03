@@ -1,5 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/Form.tsx'
@@ -26,7 +26,6 @@ export type ReviewContext = LoggedInHealthWorkerContext<
 >
 
 export async function handler(
-  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { doctor_review } = await doctor_reviews.addSelfAsReviewer(

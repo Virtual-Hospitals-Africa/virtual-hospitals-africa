@@ -26,7 +26,6 @@ export type ExaminationContext = OpenEncounterWorkflowContext & {
 }
 
 export async function handler(
-  _req: Request,
   ctx: ExaminationContext,
 ) {
   const patient_examinations = await examinations.forPatientEncounter(

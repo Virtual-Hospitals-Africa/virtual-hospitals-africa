@@ -1,4 +1,3 @@
-import { Fragment } from 'preact'
 import { Transition } from '@headlessui/react'
 import { BellIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { RenderedNotification } from '../types.ts'

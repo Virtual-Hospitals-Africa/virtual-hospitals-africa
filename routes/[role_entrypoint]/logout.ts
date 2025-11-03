@@ -13,7 +13,8 @@ const entrypoint_to_role = {
 }
 
 export const handler: LoggedInHealthWorkerHandler = {
-  async GET(req, ctx) {
+  async GET(ctx) {
+    const req = ctx.req
     const { role_entrypoint } = ctx.params
     assert(role_entrypoint)
     assertOr404(role_entrypoint in entrypoint_to_role, 'Role not found')

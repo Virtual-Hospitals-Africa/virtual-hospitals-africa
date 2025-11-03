@@ -3,7 +3,7 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../types.ts'
 import { json } from '../util/responses.ts'
 import type { LoggedInHealthWorker, TrxOrDb } from '../types.ts'
 import type { SearchResults } from '../db/models/_base.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 
 export function jsonSearchHandler<
   SearchTerms,

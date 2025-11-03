@@ -1,4 +1,3 @@
-import { Fragment } from 'preact'
 import { Dialog, Transition } from '@headlessui/react'
 import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
 import ViewIconWithBackground from './ViewIconWithBackground.tsx'

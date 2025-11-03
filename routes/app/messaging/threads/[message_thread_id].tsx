@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { z } from 'zod'
 import { LoggedInHealthWorker } from '../../../../types.ts'
 import * as messages from '../../../../db/models/messages.ts'
@@ -22,7 +22,8 @@ const MessageSchema = z.object({
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   MessagingProps
 > = {
-  async POST(req, ctx) {
+  async POST(ctx) {
+    const req = ctx.req
     const message_thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
 
     const form_values = await parseRequest(

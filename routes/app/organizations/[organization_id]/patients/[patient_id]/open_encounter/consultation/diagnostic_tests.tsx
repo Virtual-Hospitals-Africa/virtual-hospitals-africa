@@ -10,7 +10,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   OpenEncounterWorkflowContext['state']
 > = {
   // deno-lint-ignore require-await
-  async POST(_req, ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowContext) {
     const completing_step = completeAndProceedToNextStep(ctx)
     return completing_step
   },

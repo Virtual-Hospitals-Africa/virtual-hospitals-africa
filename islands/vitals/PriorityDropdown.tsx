@@ -1,4 +1,3 @@
-import { Fragment } from 'preact'
 import { Menu } from '@headlessui/react'
 import { useSignal } from '@preact/signals'
 import { useRef } from 'preact/hooks'

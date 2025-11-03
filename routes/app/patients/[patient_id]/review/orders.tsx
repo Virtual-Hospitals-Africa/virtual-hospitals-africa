@@ -19,7 +19,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  async POST(req, ctx: ReviewContext) {
+  async POST(ctx: ReviewContext) {
+    const req = ctx.req
     const _form_values = await parseRequestAsserts(
       ctx.state.trx,
       req,
@@ -32,7 +33,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 // deno-lint-ignore require-await
 export default async function OrdersPage(
-  _req: Request,
   ctx: ReviewContext,
 ) {
   return (

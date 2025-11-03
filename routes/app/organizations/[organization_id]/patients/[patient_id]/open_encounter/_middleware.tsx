@@ -265,9 +265,9 @@ export async function workflowHandler(
 }
 
 export async function handler(
-  req: Request,
   ctx: OrganizationContext,
 ) {
+  const req = ctx.req
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
   const { trx, health_worker, organization_employment } = ctx.state
 
@@ -454,7 +454,6 @@ export function OpenEncounterWorkflowPage<
 }
 
 export function WorkflowRedirectPage(
-  _req: Request,
   ctx: OpenEncounterContext,
 ) {
   const workflow = last(ctx.route.split('/'))

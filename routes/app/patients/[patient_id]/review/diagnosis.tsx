@@ -59,7 +59,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  async POST(req, ctx: ReviewContext) {
+  async POST(ctx: ReviewContext) {
+    const req = ctx.req
     const data = await parseRequestAsserts(
       ctx.state.trx,
       req,
@@ -98,7 +99,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 export default async function DiagnosisPage(
-  _req: Request,
   ctx: ReviewContext,
 ) {
   const { trx, doctor_review: { review_id } } = ctx.state

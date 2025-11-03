@@ -2,7 +2,7 @@ import redirect from '../../../../../../../../util/redirect.ts'
 import { ExaminationContext } from './examinations/_middleware.tsx'
 
 // deno-lint-ignore require-await
-export default async function (_req: Request, ctx: ExaminationContext) {
+export default async function (ctx: ExaminationContext) {
   if (ctx.state.current_examination) return ctx.next()
   const goto_assessment = ctx.state.next_incomplete_examination ||
     ctx.state.patient_examinations[0]

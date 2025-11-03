@@ -33,7 +33,9 @@ function assertIsMaybeOrganizationKind(
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
-  async GET(req, ctx) {
+  async GET(ctx) {
+    const req = ctx.req
+
     assertEquals(req.headers.get('accept'), 'application/json')
     const { searchParams } = ctx.url
     const organization_id = searchParams.get('organization_id')

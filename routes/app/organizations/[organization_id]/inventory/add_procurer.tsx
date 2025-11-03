@@ -21,7 +21,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
   OrganizationContext['state']
 > = {
-  async POST(req, ctx) {
+  async POST(ctx) {
+    const req = ctx.req
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 

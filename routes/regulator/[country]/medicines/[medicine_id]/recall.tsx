@@ -4,13 +4,12 @@ import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import Form from '../../../../../components/library/Form.tsx'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
   POST: async function RecallMedication(
-    _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
     const medicine_id = getRequiredUUIDParam(ctx, 'medicine_id')

@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { FreshContext, Handlers } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import {
@@ -18,6 +18,8 @@ import { Department } from './shared/departments.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
+import { Handlers } from 'fresh/compat'
+
 export * from './shared/priorities.ts'
 
 export type Maybe<T> = T | null | undefined

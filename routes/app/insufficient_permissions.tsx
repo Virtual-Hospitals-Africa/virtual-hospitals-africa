@@ -1,5 +1,5 @@
 import Layout from '../../components/library/Layout.tsx'
-import { PageProps } from '$fresh/server.ts'
+import { PageProps } from 'fresh'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 

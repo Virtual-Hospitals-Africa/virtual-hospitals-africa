@@ -44,7 +44,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
   organization: HasStringId<Organization>
   isAdminAtOrganization: boolean
 }> = {
-  async POST(req, ctx) {
+  async POST(ctx) {
+    const req = ctx.req
+
     assertOr403(ctx.state.isAdminAtOrganization)
 
     const { invites } = await parseRequestAsserts(

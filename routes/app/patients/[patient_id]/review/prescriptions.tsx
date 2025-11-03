@@ -108,7 +108,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  async POST(req, ctx: ReviewContext) {
+  async POST(ctx: ReviewContext) {
+    const req = ctx.req
     const form_values = await parseRequest(
       ctx.state.trx,
       req,
@@ -133,7 +134,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 export default async function PrescriptionsPage(
-  _req: Request,
   ctx: ReviewContext,
 ) {
   const { trx, doctor_review: { review_id } } = ctx.state

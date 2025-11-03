@@ -1,6 +1,6 @@
 import PharmacistsTable from '../../../components/regulator/PharmacistsTable.tsx'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { LoggedInRegulator } from '../../../types.ts'
 import Form from '../../../components/library/Form.tsx'
 import FormRow from '../../../components/library/FormRow.tsx'

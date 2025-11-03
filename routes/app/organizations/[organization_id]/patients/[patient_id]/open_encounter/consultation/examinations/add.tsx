@@ -18,7 +18,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ExaminationContext['state']
 > = {
-  async POST(req: Request, ctx: ExaminationContext) {
+  async POST(ctx: ExaminationContext) {
+    const req = ctx.req
     const { trx, encounter, encounter_employee_presence } = ctx.state
 
     const form_values = await parseRequest(

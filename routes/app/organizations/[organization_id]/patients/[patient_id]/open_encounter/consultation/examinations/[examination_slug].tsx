@@ -11,7 +11,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ExaminationContext['state']
 > = {
-  POST(_req: Request, ctx: ExaminationContext) {
+  POST(ctx: ExaminationContext) {
     return completeExamination(ctx)
   },
 }

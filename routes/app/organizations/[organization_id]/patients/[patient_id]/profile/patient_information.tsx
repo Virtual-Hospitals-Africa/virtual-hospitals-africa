@@ -1,9 +1,8 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 
 export function handler(
-  _req: Request,
   ctx: FreshContext,
 ) {
   return redirect(replaceParams(

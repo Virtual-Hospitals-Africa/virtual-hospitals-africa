@@ -1,4 +1,4 @@
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import PharmacistForm from '../../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
@@ -8,7 +8,8 @@ import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
-  async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+  async POST(ctx: FreshContext<LoggedInRegulator>) {
+    const req = ctx.req
     const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
     const to_update = await parseRequest(

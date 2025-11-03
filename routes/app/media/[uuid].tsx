@@ -5,7 +5,7 @@ import { assertOr404 } from '../../../util/assertOr.ts'
 
 // TODO: consider whether your having a media's UUID is sufficient guarantee that you have authorization to see it
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
-  async GET(_, { state, params }) {
+  async GET({ state, params }) {
     const requested_media = await media.getByUUID(state.trx, params.uuid)
     assertOr404(requested_media, 'Could not find file')
     return file(requested_media.binary_data, requested_media.mime_type)

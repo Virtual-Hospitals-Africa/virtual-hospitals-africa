@@ -1,5 +1,5 @@
 import { ComponentChild } from 'preact'
-import { FreshContext } from '$fresh/server.ts'
+import { FreshContext } from 'fresh'
 import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
 import { matchActiveLink } from '../../util/matchActiveLink.ts'

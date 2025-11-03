@@ -67,7 +67,8 @@ function assertIsSearchFormValues(
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
   {
-    async POST(req, ctx) {
+    async POST(ctx) {
+      const req = ctx.req
       const schedule = await parseRequestAsserts(
         ctx.state.trx,
         req,
