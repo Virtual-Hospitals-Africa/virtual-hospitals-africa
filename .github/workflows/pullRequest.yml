@@ -264,7 +264,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Build Docker image
-        run: docker build -t vha .
+        run: docker build --platform linux/amd64 -t vha .
 
   compile_others:
     runs-on: ubuntu-latest

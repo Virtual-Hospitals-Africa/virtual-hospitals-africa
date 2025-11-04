@@ -57,8 +57,6 @@ export type ButtonProps =
   & {
     className?: string
     size?: 'sm' | 'md'
-    name?: string
-    value?: string
   }
   & (
     | {
