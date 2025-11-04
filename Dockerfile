@@ -1,4 +1,4 @@
-FROM denoland/deno:2.5.6 AS build
+FROM denoland/deno:alpine-2.3.5 AS build
 WORKDIR /app
 
 COPY deno.json deno.lock ./
@@ -7,9 +7,6 @@ RUN deno install --frozen --allow-scripts
 
 # Copy all application files (node_modules excluded via .dockerignore)
 COPY ./ ./
-
-# TODO Try removing this in a month
-RUN rm deno.lock
 
 # # Build the application
 RUN deno task build
