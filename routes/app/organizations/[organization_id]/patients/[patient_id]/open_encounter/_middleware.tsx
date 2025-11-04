@@ -5,6 +5,7 @@ import Form from '../../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   Maybe,
+  PreviouslyCompletedProcedures,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
@@ -42,7 +43,9 @@ import {
   firstStep,
   isWorkflow,
   lastStep,
+  WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEPS,
+  workflowStepSnomedConceptId,
 } from '../../../../../../../shared/workflow.ts'
 import mapEntries from '../../../../../../../util/mapEntries.ts'
 import {
@@ -57,6 +60,9 @@ import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { ComponentChild } from 'preact'
+import {
+  previouslyCompleted,
+} from '../../../../../../../db/models/patient_procedures.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -66,9 +72,12 @@ type OpenEncounterState = OrganizationState & {
 
 type WorkflowState = {
   workflow: Workflow
-  workflow_status: WorkflowStatus
   step: string
+  workflow_snomed_concept_id: string
+  workflow_step_snomed_concept_id: string | null
+  workflow_status: WorkflowStatus
   previously_completed_step: boolean
+  previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: RenderedPatientEncounterEmployee
   this_visit_records: ThisVisitRecords
   patient_history: RenderedPatientHistory
@@ -230,9 +239,17 @@ export async function workflowHandler(
 
   const { patient_encounter_id } = encounter
 
+  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_IDS[workflow]
+
+  const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(
+    workflow,
+    step,
+  )
+
   const {
     this_visit_records,
     patient_history,
+    previously_completed_procedures,
   } = await promiseProps({
     this_visit_records: getThisVisitRecords(trx, {
       patient_encounter_id,
@@ -244,6 +261,14 @@ export async function workflowHandler(
       patient_encounter_employee_id:
         encounter_employee_presence.patient_encounter_employee_id,
     }),
+    previously_completed_procedures: previouslyCompleted(
+      trx,
+      {
+        patient_encounter_id,
+        workflow_snomed_concept_id,
+        workflow_step_snomed_concept_id,
+      },
+    ),
   })
 
   const previously_completed_step = workflow_status.steps_completed.includes(
@@ -254,10 +279,13 @@ export async function workflowHandler(
     workflow,
     step,
     workflow_status,
-    this_visit_records,
     patient_history,
-    encounter_employee_presence,
+    this_visit_records,
     previously_completed_step,
+    encounter_employee_presence,
+    workflow_step_snomed_concept_id,
+    previously_completed_procedures,
+    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
   }
 
   Object.assign(ctx.state, workflow_props)

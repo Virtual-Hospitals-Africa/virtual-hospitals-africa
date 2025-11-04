@@ -1,0 +1,121 @@
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
+import { z } from 'zod'
+import * as patient_conditions from '../../../../../../../../db/models/patient_conditions.ts'
+import * as patient_findings from '../../../../../../../../db/models/patient_findings.ts'
+import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import {
+  YesNoGrid,
+  YesNoQuestion,
+} from '../../../../../../../../islands/form/inputs/yes_no.tsx'
+import FormSection from '../../../../../../../../components/library/FormSection.tsx'
+import { yes_no_not_sure } from '../../../../../../../../util/validators.ts'
+import {
+  COMMON_CONDITIONS,
+  CommonConditionKey,
+  commonConditionSnomedConceptId,
+} from '../../../../../../../../db/models/brief_history.ts'
+import entries from '../../../../../../../../util/entries.ts'
+import { forEach } from '../../../../../../../../util/inParallel.ts'
+import { NO_QUALIFIER_SNOMED_CONCEPT_ID } from '../../../../../../../../db/models/patient_findings.ts'
+
+const ConditionSchema = z.object(
+  {
+    presence: yes_no_not_sure,
+  },
+)
+
+const TriageBriefHistorySchema = z.object(
+  {
+    diabetes: ConditionSchema,
+    pregnancy: ConditionSchema,
+    tuberculosis: ConditionSchema,
+    hiv: ConditionSchema,
+    asthma: ConditionSchema,
+    copd: ConditionSchema,
+    coronavirus: ConditionSchema,
+    heart_disease: ConditionSchema,
+    mental_disorder: ConditionSchema,
+    epilepsy: ConditionSchema,
+    arthritis: ConditionSchema,
+    cancer: ConditionSchema,
+  } satisfies {
+    [k in CommonConditionKey]: unknown
+  },
+)
+
+export const handler = postHandler(
+  TriageBriefHistorySchema,
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    await forEach(entries(form_values), async ([condition_key, condition]) => {
+      if (condition.presence === 'not_sure') {
+        return
+      }
+      const finding_snomed_concept_id = commonConditionSnomedConceptId(
+        condition_key,
+      )
+
+      const qualifiers = condition.presence === 'yes' ? [] : [
+        {
+          snomed_concept_id: NO_QUALIFIER_SNOMED_CONCEPT_ID,
+        },
+      ]
+
+      await patient_findings.insertOne(
+        ctx.state.trx,
+        {
+          patient_id: ctx.state.patient.id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id: ctx.state.encounter_employee_presence
+            .patient_encounter_employee_id,
+          workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
+          workflow_step_snomed_concept_id:
+            ctx.state.workflow_step_snomed_concept_id,
+          previously_completed_procedures:
+            ctx.state.previously_completed_procedures,
+          finding_snomed_concept_id,
+          altered_record_id: null,
+          qualifiers,
+        },
+      )
+    })
+
+    return completeAndProceedToNextStep(ctx)
+  },
+)
+
+function BriefHistorySection() {
+  return (
+    <FormSection header='Confirm Pre-existing Conditions'>
+      <YesNoGrid>
+        {COMMON_CONDITIONS.map((condition) => (
+          <YesNoQuestion
+            key={condition.id}
+            name={`${condition.id}.presence`}
+            label={condition.label}
+          />
+        ))}
+      </YesNoGrid>
+    </FormSection>
+  )
+}
+
+export async function TriageBriefHistoryPage(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const { trx, encounter } = ctx.state
+  const patient_id = encounter.patient.id
+
+  const _pre_existing_conditions = await patient_conditions
+    .getPreExistingConditions(
+      trx,
+      { patient_id },
+    )
+
+  return <BriefHistorySection />
+}
+
+export default OpenEncounterWorkflowPage(TriageBriefHistoryPage)
