@@ -8,7 +8,8 @@ RUN deno install --frozen --allow-scripts
 # Copy all application files (node_modules excluded via .dockerignore)
 COPY ./ ./
 
-RUN cat deno.lock
+# TODO Try removing this in a month
+RUN rm deno.lock
 
 # # Build the application
 RUN deno task build
