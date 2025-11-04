@@ -36,7 +36,13 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
-        run: docker buildx build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --platform linux/arm64 --push .
+        run: |
+          docker buildx build \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            --platform linux/arm64 \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            --push .
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
