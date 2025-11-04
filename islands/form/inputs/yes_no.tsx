@@ -6,19 +6,15 @@ export function YesNoQuestion({
   label,
   value,
   onChange,
-  isLast = false,
 }: {
   name?: string
   label: string
   value?: Maybe<boolean>
   onChange?(value: boolean | null): void
-  isLast?: boolean
 }) {
   return (
     <div
-      className={`bg-white ${
-        isLast ? '' : 'border-b border-gray-300'
-      } px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center`}
+      className={`bg-white px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center`}
     >
       <label className='text-sm font-medium text-gray-600'>
         {label}
@@ -59,7 +55,7 @@ export function YesNoQuestion({
 
 export function YesNoGrid({ children }: { children: ComponentChildren }) {
   return (
-    <div className='overflow-hidden border border-gray-300 rounded-lg'>
+    <div className='overflow-hidden border border-b border-gray-300 rounded-lg'>
       <div className='bg-indigo-50 border-b border-gray-300 px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center'>
         <div className='text-sm font-medium text-indigo-900'>
           Conditions

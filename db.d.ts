@@ -1678,6 +1678,7 @@ export interface Workflows {
 
 export interface WorkflowSteps {
   order: Int8
+  snomed_concept_id: Int8 | null
   step: string
   workflow: Workflow
   workflow_step: string

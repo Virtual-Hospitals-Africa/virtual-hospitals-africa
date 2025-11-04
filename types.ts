@@ -3483,3 +3483,32 @@ export type Names = {
   surname: string
   preferred_name: string
 }
+
+export type BriefHistoryKey =
+  | 'diabetes'
+  | 'hypertension'
+  | 'pregnancy'
+  | 'tuberculosis'
+  | 'hiv'
+  | 'asthma'
+  | 'copd'
+  | 'coronavirus'
+  | 'heart_disease'
+  | 'mental_disorder'
+  | 'epilepsy'
+  | 'arthritis'
+  | 'cancer'
+
+export type BriefHistory =
+  & {
+    key: BriefHistoryKey
+  }
+  & (
+    | { presence: 'no' | 'not_sure' }
+    | { presence: 'yes' }
+  )
+
+export type PreviouslyCompletedProcedures = {
+  workflow_record_id: string | null
+  workflow_step_record_id: string | null
+}

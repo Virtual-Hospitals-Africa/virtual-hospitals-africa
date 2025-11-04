@@ -17,14 +17,18 @@ type TableName = keyof DB
 export function define(
   table_names: TableName[],
   generate: (trx: TrxOrDb) => Promise<unknown>,
-  opts?: { never_dump?: boolean },
+  opts: { never_dump?: boolean; always_run?: boolean } = {},
 ) {
   async function drop(tables: TableName[] = table_names) {
     for (const table_name of tables.toReversed()) {
       await db.deleteFrom(table_name).execute()
     }
   }
+
   async function load() {
+    if (opts.always_run) {
+      return generate(db)
+    }
     const have_rows = await pMap(
       table_names,
       async (table_name) => {
@@ -36,6 +40,7 @@ export function define(
         return !!row
       },
     )
+
     const needs_loading = table_names.filter((_table_name, index) =>
       !have_rows[index]
     )
@@ -62,7 +67,7 @@ export function define(
     })
   }
   async function dump() {
-    if (opts?.never_dump) return
+    if (opts.never_dump) return
     await runCommandAssertExitCodeZero('./db/seed/tsv_dump.sh', {
       args: [uri].concat(table_names),
     })

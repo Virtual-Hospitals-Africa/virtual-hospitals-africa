@@ -41,7 +41,7 @@ export const WORKFLOW_STEPS = {
     'route_patient',
   ],
   triage: [
-    'confirm_conditions',
+    'brief_history',
     'warning_signs', // chief complaint + emergency signs + urgent signs
     'measure_vitals',
     'additional_investigations_and_tasks',
@@ -87,6 +87,17 @@ export const WORKFLOW_STEPS = {
   [w in Workflow]: string[]
 }
 
+export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
+  [w in Workflow]?: Record<string, string>
+} = {
+  triage: {
+    'brief_history': '203421005', // |History taking, limited (procedure)|'
+    'warning_signs': '', // chief complaint + emergency signs + urgent signs
+    'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
+    'assign_priority': '',
+  },
+}
+
 export function isWorkflow(workflow: string): workflow is Workflow {
   return workflow in WORKFLOW_STEPS
 }
@@ -95,6 +106,14 @@ export function workflowStepKey(workflow: Workflow, step: string) {
   const workflow_steps: string[] = WORKFLOW_STEPS[workflow]
   assert(workflow_steps.includes(step))
   return `${workflow}:${step}`
+}
+
+export function workflowStepSnomedConceptId(
+  workflow: Workflow,
+  step: string,
+): string | null {
+  const concepts = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]
+  return (concepts && concepts[step]) || null
 }
 
 export function firstIncompleteStep(
