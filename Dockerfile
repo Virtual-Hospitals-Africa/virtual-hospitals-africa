@@ -1,7 +1,9 @@
 FROM denoland/deno:debian-2.5.6 AS build
 WORKDIR /app
 
-COPY deno.json deno.lock* ./
+COPY deno.json deno.lock ./
+
+RUN cat deno.lock
 
 RUN deno install --allow-scripts
 
