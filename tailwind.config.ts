@@ -1,4 +1,3 @@
-import headlessuiPlugin from '@headlessui/tailwindcss'
 import colors from 'tailwindcss/colors.js'
 import formsPlugin from '@tailwindcss/forms'
 import { type Config } from 'tailwindcss'
@@ -95,5 +94,5 @@ export default {
       },
     },
   },
-  plugins: [formsPlugin, headlessuiPlugin],
+  plugins: [formsPlugin],
 } satisfies Config

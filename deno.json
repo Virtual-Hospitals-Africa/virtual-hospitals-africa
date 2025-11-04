@@ -65,7 +65,6 @@
     "@preact/signals": "npm:@preact/signals@^2.3.2",
     "@std/cli": "jsr:@std/cli@^0.224.7",
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
-    "@headlessui/tailwindcss": "npm:@headlessui/tailwindcss@0.2.1",
     "awesome-phonenumber": "npm:awesome-phonenumber@7.2.0",
     "cheerio": "https://esm.sh/cheerio@1.0.0",
     "client-only": "https://esm.sh/v135/client-only@0.0.1/",
