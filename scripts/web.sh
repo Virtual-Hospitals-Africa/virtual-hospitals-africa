@@ -12,6 +12,7 @@ DENO_TLS_CA_STORE=system \
   deno serve \
     -A \
     --unstable-temporal \
+    --unstable-node-globals \
     --env \
     --unsafely-ignore-certificate-errors \
     --port "$port" \
