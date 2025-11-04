@@ -41,6 +41,7 @@ export const WORKFLOW_STEPS = {
     'route_patient',
   ],
   triage: [
+    'confirm_conditions',
     'warning_signs', // chief complaint + emergency signs + urgent signs
     'measure_vitals',
     'additional_investigations_and_tasks',

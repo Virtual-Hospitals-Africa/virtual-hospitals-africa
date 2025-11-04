@@ -6,64 +6,74 @@ export function YesNoQuestion({
   label,
   value,
   onChange,
+  isLast = false,
 }: {
   name?: string
   label: string
   value?: Maybe<boolean>
   onChange?(value: boolean | null): void
+  isLast?: boolean
 }) {
   return (
-    <>
-      <div className='grid place-items-center'>
+    <div
+      className={`bg-white ${
+        isLast ? '' : 'border-b border-gray-300'
+      } px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center`}
+    >
+      <label className='text-sm font-medium text-gray-600'>
+        {label}
+      </label>
+      <div className='flex justify-center'>
         <input
           name={name}
           type='radio'
           checked={value === true}
-          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
-          value='on'
+          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
+          value='yes'
           onChange={() => onChange?.(true)}
         />
       </div>
-      <div className='grid place-items-center'>
+      <div className='flex justify-center'>
         <input
           name={name}
           type='radio'
           checked={value === false}
-          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
-          value='off'
+          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
+          value='no'
           onChange={() => onChange?.(false)}
         />
       </div>
-      <div className='grid place-items-center'>
+      <div className='flex justify-center'>
         <input
           name={name}
           type='radio'
-          checked={value == null}
-          className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
-          value=''
+          checked={value === null}
+          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
+          value='not_sure'
           onChange={() => onChange?.(null)}
         />
       </div>
-      <label>{label}</label>
-      <div />
-    </>
+    </div>
   )
 }
 
 export function YesNoGrid({ children }: { children: ComponentChildren }) {
   return (
-    <div className='w-full grid grid-cols-[60px_60px_60px_max-content_1fr] gap-2'>
-      <div className='grid place-items-center'>
-        <div className='w-min'>Yes</div>
+    <div className='overflow-hidden border border-gray-300 rounded-lg'>
+      <div className='bg-indigo-50 border-b border-gray-300 px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center'>
+        <div className='text-sm font-medium text-indigo-900'>
+          Conditions
+        </div>
+        <div className='text-sm font-medium text-center text-indigo-900'>
+          Yes
+        </div>
+        <div className='text-sm font-medium text-center text-indigo-900'>
+          No
+        </div>
+        <div className='text-sm font-medium text-center text-indigo-900'>
+          Not sure
+        </div>
       </div>
-      <div className='grid place-items-center'>
-        <div className='w-min'>No</div>
-      </div>
-      <div className='grid place-items-center'>
-        <div className='w-min'>Declined</div>
-      </div>
-      <div />
-      <div />
       {children}
     </div>
   )
