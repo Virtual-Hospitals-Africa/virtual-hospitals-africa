@@ -47,6 +47,9 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
+// finding: cancer
+// qualifier: no
+
 export const handler = postHandler(
   TriageBriefHistorySchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {

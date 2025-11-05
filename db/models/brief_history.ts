@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import memoize from '../../util/memoize.ts'
-
-export const HISTORY_TAKING_BRIEF_SNOMED_CONCEPT_ID = '203421005' // |History taking, limited (procedure)|'
+import { TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely'
 
 export const COMMON_CONDITIONS = [
   { id: 'diabetes' as const, label: 'Diabetes', snomed_concept_id: '73211009' },
@@ -62,3 +62,46 @@ export const commonConditionSnomedConceptId = memoize(
     return condition.snomed_concept_id
   },
 )
+
+type Procedure = {
+  record_id: string
+  snomed_concept_id: string
+  as_part_of_procedure: Procedure | null
+}
+type PositiveFindingRecord = {
+  record_id: string
+  snomed_concept_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  as_part_of_procedure: Procedure
+}
+
+export async function positiveFindings(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+) {
+  const [first, ...rest] = COMMON_CONDITIONS
+
+  await trx.with('common_conditions', () => {
+    let query = trx.selectNoFrom((eb) => [
+      eb.val(first.id).as('id'),
+      eb.val(first.label).as('label'),
+      eb.val(first.snomed_concept_id).as('snomed_concept_id'),
+    ])
+
+    for (const condition of rest) {
+      query = query.unionAll(
+        trx.selectNoFrom((eb) => [
+          eb.val(condition.id).as('id'),
+          eb.val(condition.label).as('label'),
+          eb.val(condition.snomed_concept_id).as('snomed_concept_id'),
+        ]),
+      )
+    }
+
+    return query
+  })
+
+  // selectFrom('patient_records')
+  //   .where('snomed_concept_id', 'in', sql``)
+}
