@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 import * as cheerio from 'cheerio'
@@ -11,8 +11,8 @@ import { route } from '../../../../route.ts'
 
 describe.skip(
   '/regulator/[country]/pharmacists/[pharmacist_id]/edit',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     it('renders the edit page with correct pharmacist data on GET', async () => {
       const newPharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)

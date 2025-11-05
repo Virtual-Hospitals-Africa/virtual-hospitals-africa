@@ -1,18 +1,28 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import range from '../../util/range.ts'
-import { debugLog } from '../../db/helpers.ts'
-import { positiveFindingsQuery } from '../../db/models/brief_history.ts'
-import generateUUID from '../../util/uuid.ts'
+import { addTestEmployee } from '../_helpers/employees.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
+import randomDemographics from '../../mocks/randomDemographics.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describe('brief_history', () => {
   afterAll(() => db.destroy())
   describe('positiveFindings', () => {
     it('works', async () => {
-      debugLog(
-        positiveFindingsQuery(db, { patient_id: generateUUID() }),
-      )
+      const nurse = await addTestEmployee(db, {
+        profession: 'nurse',
+      })
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics(),
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      console.log(encounter)
     })
   })
 })

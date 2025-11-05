@@ -8,11 +8,26 @@ import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route } from '../../../../route.ts'
+import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 
 describe(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
   () => {
     afterAll(() => db.destroy())
+
+    it('parses form data correctly', () => {
+      const demographics = {
+        first_names: 'Susara',
+        surname: 'van der Merwe',
+        preferred_name: 'Susara',
+        national_id_number: '6810023055110',
+        date_of_birth: '1968-10-02',
+        sex: 'female' as const,
+        gender: 'woman',
+      }
+      const parsed = PatientRegistrationPersonalSchema.parse(demographics)
+      assertEquals(parsed, demographics)
+    })
 
     it('is accessed immediately after the start-registration process', async () => {
       const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
@@ -51,8 +66,6 @@ describe(
         method: 'POST',
         body,
       })
-
-      console.log('response.url', response.url)
 
       assertEquals(
         response.url,

@@ -10,8 +10,8 @@ export default function randomDemographics(
   const names_and_sex = randomNamesAndSex(country, sex)
   const national_id_number = randomNationalId({
     country,
-    sex: names_and_sex.sex,
     date_of_birth,
+    sex: names_and_sex.sex,
   })
   return {
     ...names_and_sex,

@@ -39,7 +39,7 @@ export function getCaller(up_stack_levels = 0) {
         caller_line,
       )
 
-    const without_cwd = file_name.replace(cwd, '')
+    const without_cwd = file_name.replace('file://', '').replace(cwd, '')
     const pretty_file_name = without_cwd.startsWith('/')
       ? without_cwd.slice(1)
       : without_cwd

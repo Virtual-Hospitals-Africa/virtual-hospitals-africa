@@ -180,16 +180,21 @@ export async function addTestEmployeeWithSession(
       },
     )
 
-  const fetchOk = async (...args: Parameters<typeof fetch>) => {
-    const response = await fetchWithSession(...args)
+  const fetchOk = async (url: string | URL, init?: RequestInit) => {
+    const response = await fetchWithSession(url, init)
     if (!response.ok) {
+      const method = init?.method || 'GET'
+      console.error(`${method} ${url}`)
+      if (init?.body) {
+        console.error(init.body)
+      }
       throw new Error(`[${response.status}]: ${await response.text()}`)
     }
     return response
   }
 
-  const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
-    const response = await fetchOk(...args)
+  const fetchCheerio = async (url: string | URL, init?: RequestInit) => {
+    const response = await fetchOk(url, init)
     const html = await response.text()
     const $ = cheerio.load(html, {
       baseURI: response.url,

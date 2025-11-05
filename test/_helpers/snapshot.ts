@@ -10,7 +10,7 @@ export function snapshot(object: unknown) {
   const { pretty_file_name, line_number, column_number } = getCaller(1)
   assert(
     pretty_file_name.startsWith('test'),
-    'Used to snapshot objects in tests, nothing more',
+    `Can only be used in test files, but ran from ${pretty_file_name}`,
   )
   const file_contents = Deno.readTextFileSync(pretty_file_name)
   const lines = file_contents.split('\n')
@@ -25,8 +25,6 @@ export function snapshot(object: unknown) {
   )
 
   const leading_spaces = ' '.repeat(column_number - 1)
-  console.log('mm')
-  console.log(snapshot_line)
   assert(
     snapshot_line.startsWith(leading_spaces),
     `Snapshot line does not start with ${

@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
@@ -13,8 +13,8 @@ import { route } from '../../route.ts'
 
 describe.skip(
   '/regulator/[country]/pharmacists',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     it('renders a search input with GET', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 

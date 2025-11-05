@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -14,8 +14,8 @@ import createTestAddress from '../../../../mocks/createTestAddress.ts'
 
 describe(
   '/app/organizations/[organization_id]/register',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
+    afterAll(() => db.destroy())
     it('renders a registration page on GET', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
@@ -103,6 +103,13 @@ describe(
           throw new Error(await postResponse.text())
         }
 
+        assertEquals(
+          postResponse.url,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
+        )
+
+        await postResponse.body?.cancel()
+
         const registrationFormState = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
@@ -119,11 +126,6 @@ describe(
           mobile_number: '+12035555555',
           address,
         })
-
-        assertEquals(
-          postResponse.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
-        )
 
         const getPersonalResponse = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
@@ -189,6 +191,13 @@ describe(
           throw new Error(await postResponse.text())
         }
 
+        assertEquals(
+          postResponse.url,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
+        )
+
+        await postResponse.body?.cancel()
+
         const registrationFormState = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
@@ -208,11 +217,6 @@ describe(
           specialty: 'oncology and palliative care',
           address,
         })
-
-        assertEquals(
-          postResponse.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
-        )
 
         const getProfessionalResponse = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
@@ -250,6 +254,13 @@ describe(
           throw new Error(await postResponse.text())
         }
 
+        assertEquals(
+          postResponse.url,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
+        )
+
+        await postResponse.body?.cancel()
+
         const registrationDetails = await nurse_registration_details.get(db, {
           health_worker_id: nurse.id,
         })
@@ -283,11 +294,6 @@ describe(
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
         assertEquals(nurseEmployment.specialty, 'oncology and palliative care')
-
-        assertEquals(
-          postResponse.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
-        )
         // TODO turn off SKIP_NURSE_REGISTRATION
         // assertEquals(
         //   postResponse.url,
