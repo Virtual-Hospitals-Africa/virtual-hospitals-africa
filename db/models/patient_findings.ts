@@ -1,8 +1,14 @@
 import { Maybe, PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
-import { blankSelection, success_true } from '../helpers.ts'
+import {
+  asText,
+  blankSelection,
+  jsonBuildObject,
+  success_true,
+} from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered } from './patient_records.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import { sql } from 'kysely'
 
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
 
@@ -138,4 +144,151 @@ export async function insertOne(
   })
 
   return inserted_finding_result
+}
+
+export function positiveFindingsQuery(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+) {
+  return trx
+    .with(
+      'no_qualifier_findings',
+      (qb) =>
+        qb.selectFrom('patient_record_qualifiers')
+          .innerJoin(
+            'patient_records',
+            'patient_record_qualifiers.id',
+            'patient_records.id',
+          )
+          .where('patient_records.patient_id', '=', patient_id)
+          .where(
+            'patient_records.snomed_concept_id',
+            '=',
+            NO_QUALIFIER_SNOMED_CONCEPT_ID,
+          )
+          .select('qualifies_record_id'),
+    )
+    .with('patient_positive_findings', (qb) =>
+      qb.selectFrom('patient_findings')
+        .innerJoin(
+          'patient_records',
+          'patient_findings.id',
+          'patient_records.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category',
+          'patient_records.snomed_concept_id',
+          'snomed_inferred_canonical_name_and_category.id',
+        )
+        .innerJoin(
+          'patient_procedures',
+          'patient_findings.procedure_id',
+          'patient_procedures.id',
+        )
+        .innerJoin(
+          'patient_records as patient_procedure_records',
+          'patient_procedures.id',
+          'patient_procedure_records.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category as patient_procedure_snomed_inferred_canonical_name_and_category',
+          'patient_procedure_records.snomed_concept_id',
+          'patient_procedure_snomed_inferred_canonical_name_and_category.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_findings.id',
+          'not in',
+          qb.selectFrom('no_qualifier_findings').select('qualifies_record_id'),
+        )
+        .select((eb) => [
+          'patient_records.id as record_id',
+          'patient_records.snomed_concept_id',
+          'patient_records.patient_encounter_id',
+          'patient_findings.patient_encounter_employee_id',
+          'snomed_inferred_canonical_name_and_category.name',
+          jsonBuildObject({
+            record_id: eb.ref('patient_procedure_records.id'),
+            snomed_concept_id: sql<string>`${
+              eb.ref('patient_procedure_records.snomed_concept_id')
+            }::text`,
+            name: eb.ref(
+              'patient_procedure_snomed_inferred_canonical_name_and_category.name',
+            ),
+          }).as('as_part_of_procedure'),
+        ]))
+}
+
+export function negativeFindingsQuery(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+) {
+  return trx
+    .with(
+      'no_qualifier_findings',
+      (qb) =>
+        qb.selectFrom('patient_record_qualifiers')
+          .innerJoin(
+            'patient_records',
+            'patient_record_qualifiers.id',
+            'patient_records.id',
+          )
+          .where('patient_records.patient_id', '=', patient_id)
+          .where(
+            'patient_records.snomed_concept_id',
+            '=',
+            NO_QUALIFIER_SNOMED_CONCEPT_ID,
+          )
+          .select('qualifies_record_id'),
+    )
+    .with('patient_positive_findings', (qb) =>
+      qb.selectFrom('patient_findings')
+        .innerJoin(
+          'patient_records',
+          'patient_findings.id',
+          'patient_records.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category',
+          'patient_records.snomed_concept_id',
+          'snomed_inferred_canonical_name_and_category.id',
+        )
+        .innerJoin(
+          'patient_procedures',
+          'patient_findings.procedure_id',
+          'patient_procedures.id',
+        )
+        .innerJoin(
+          'patient_records as patient_procedure_records',
+          'patient_procedures.id',
+          'patient_procedure_records.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category as patient_procedure_snomed_inferred_canonical_name_and_category',
+          'patient_procedure_records.snomed_concept_id',
+          'patient_procedure_snomed_inferred_canonical_name_and_category.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_findings.id',
+          'in',
+          qb.selectFrom('no_qualifier_findings').select('qualifies_record_id'),
+        )
+        .select((eb) => [
+          'patient_records.id as record_id',
+          'patient_records.snomed_concept_id',
+          'patient_records.patient_encounter_id',
+          'patient_findings.patient_encounter_employee_id',
+          'snomed_inferred_canonical_name_and_category.name',
+          jsonBuildObject({
+            record_id: eb.ref('patient_procedure_records.id'),
+            snomed_concept_id: asText(
+              eb,
+              'patient_procedure_records.snomed_concept_id',
+            ),
+            name: eb.ref(
+              'patient_procedure_snomed_inferred_canonical_name_and_category.name',
+            ),
+          }).as('as_part_of_procedure'),
+        ]))
 }

@@ -434,7 +434,7 @@ export function baseQuery(trx: TrxOrDb) {
                   'patient_workflow_steps_completed.patient_workflow_id',
                   '=',
                   'patient_workflows.id',
-                ).orderBy('order asc')
+                ).orderBy('order', 'asc')
                 .select('step'),
             ).as('steps_completed'),
             jsonArrayFrom(

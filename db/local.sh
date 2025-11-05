@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 if [ $# -eq 0 ]; then
   echo "Please provide a script to run against the vha_dev & vha_test databases"

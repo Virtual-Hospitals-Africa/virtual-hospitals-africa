@@ -73,7 +73,7 @@ export function validateSouthAfricanNationalIdNumber(
   const last_digit = national_id_number[12]
   assert(last_digit)
   const last_int = parseInt(last_digit, 10)
-  assert(last_int)
+  assert(!isNaN(last_int))
   const check_sum = mod10CheckDigit(to_validate)
   assertOr400(
     check_sum === last_int,

@@ -102,7 +102,7 @@ jobs:
         run: deno task build
 
       - name: Run tests
-        run: deno task test --skip-migrate-check --use-build test/web/login.test.ts
+        run: deno task test --use-build
 
       # The test_web step owns the cache, so only overwrite the cache if test_web passes
       - name: Cache deno-modules

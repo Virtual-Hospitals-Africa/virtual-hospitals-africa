@@ -141,7 +141,8 @@ const baseQuery = (trx: TrxOrDb) =>
       ).as('primary_doctor'),
     ])
     .orderBy(
-      'name asc',
+      'name',
+      'asc',
     )
 
 export async function getLastConversationState(

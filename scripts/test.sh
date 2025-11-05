@@ -10,34 +10,46 @@ fail() {
 if [[ "${CI:-}" == "true" ]]; then
   :
 elif [ -f .env.local ] && [ -f .env.docker ]; then
-  cmp --silent .env .env.local || cmp --silent .env .env.docker || fail ".env differs from .env.local and .env.docker\nrun deno task switch:local before running tests"
+  cmp --silent .env .env.local || cmp --silent .env .env.docker || fail $'.env differs from .env.local and .env.docker\nrun deno task switch:local before running tests'
 elif [ -f .env.local ]; then 
-  cmp --silent .env .env.local || fail ".env differs from .env.local\nrun deno task switch:local before running tests"
+  cmp --silent .env .env.local || fail $'.env differs from .env.local\nrun deno task switch:local before running tests'
 elif [ -f .env.docker ]; then 
-  cmp --silent .env .env.docker || fail ".env differs from .env.docker\nrun deno task switch:docker before running tests"
+  cmp --silent .env .env.docker || fail $'.env differs from .env.docker\nrun deno task switch:docker before running tests'
 fi
 
 HTTP_SERVER_PORT=8004
 HTTPS_PROXY_SERVER_PORT=8005
 
-migrate_check=true
+use_test_servers=false
 use_build=false
 
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
-  if [[ "$1" == "--skip-migrate-check" ]]; then
-    migrate_check=false
-  elif [[ "$1" == "--use-build" ]]; then
+  if [[ "$1" == "--use-build" ]]; then
     use_build=true
+  elif [[ "$1" == "--verbose" ]]; then
+    set -x
   else
     fail "Unknown option: $1"
   fi
   shift
 done
 
+if [[ $# -eq 0 ]]; then
+  use_test_servers=true
+else
+  for arg in "$@"; do
+    if [[ "$arg" == "test/web" || "$arg" == test/web/* ]]; then
+      use_test_servers=true
+      break
+    fi
+  done
+fi
+
 mktemp_with_suffix() {
-  suffix="$1"
-  filename=$(mktemp -u)
-  temp="$filename.$suffix"
+  local suffix="$1"
+  # shellcheck disable=SC2155
+  local filename=$(mktemp -u)
+  local temp="$filename.$suffix"
   : >"$temp"
   echo "$temp"
 }
@@ -50,17 +62,22 @@ kill_test_servers() {
   ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT
 }
 
+cleanup() {
+  if $use_test_servers; then
+    kill_test_servers
+    echo "Server output available at $test_http_server_output"
+    echo "Proxy output available at $test_https_proxy_server_output"
+  fi
+}
+
 rm_ansi_escape_codes() {
   sed -r 's/\x1b\[[^@-~]*[@-~]//g'
 }
 
 https_proxy_server_ready() {
   while ! grep -q "Virtual Hospitals Africa ready" "$test_https_proxy_server_output"; do
-    # Deno prints "error" with color codes, so we remove them before checking
-    # shellcheck disable=SC2002
     if cat "$test_https_proxy_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
-      cat "$test_https_proxy_server_output"
-      exit 1
+      fail "https proxy server failed"
     fi
     sleep 0.1
   done
@@ -70,18 +87,15 @@ https_proxy_server_ready() {
 http_server_ready() {
   while ! cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q ":$HTTP_SERVER_PORT"; do
     cat "$test_http_server_output"
-    # Deno prints "error" with color codes, so we remove them before checking
-    # shellcheck disable=SC2002
     if cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
-      cat "$test_http_server_output"
-      exit 1
+      fail "$test_http_server_output"
     fi
     sleep 0.1
   done
   truncate -s 0 "$test_http_server_output"
 }
 
-wait_until_vha_test_servers_ready() {
+wait_until_servers_ready() {
   https_proxy_server_ready
   http_server_ready
 }
@@ -126,28 +140,17 @@ start_https_proxy_server() {
   >> "$test_https_proxy_server_output" 2>&1 &
 }
 
-# Ensure there is no prior test servers, that the database is up to date, and that the log file is empty
-kill_test_servers
-if $migrate_check; then
-  IS_TEST=true deno task db:migrate check
+start_servers() {
+  start_http_server
+  start_https_proxy_server
+}
+
+trap cleanup EXIT
+
+if $use_test_servers; then
+  kill_test_servers
+  start_servers
+  wait_until_servers_ready
 fi
 
-# Start the test servers
-start_http_server
-start_https_proxy_server
-
-trap "kill_test_servers" EXIT
-
-wait_until_vha_test_servers_ready
-
-run_tests "$@" || {
-  if [ -s "$test_http_server_output" ]; then
-    echo "Tests failed."
-    echo "Server output available at $test_http_server_output"
-    echo "Proxy output available at $test_https_proxy_server_output"
-  else
-    echo "Tests failed. Server log is empty."
-  fi
-  exit 1
-}
-exit 0
+run_tests "$@"

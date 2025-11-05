@@ -17,7 +17,7 @@ import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
 import { nationalIdCheckResult } from '../../../../../../../../util/southAfricanNationalId.ts'
 import omit from '../../../../../../../../util/omit.ts'
 
-const PatientRegistrationPersonalSchema = z.object({
+export const PatientRegistrationPersonalSchema = z.object({
   first_names: varchar255,
   surname: varchar255,
   preferred_name: varchar255,
@@ -42,7 +42,7 @@ const PatientRegistrationPersonalSchema = z.object({
   if (result.success) return
   ctx.addIssue({
     code: 'custom',
-    message: result.error.message,
+    message: result.error.message || result.error.stack,
     path: ['national_id_number'],
   })
 }).transform((patient) => omit(patient, ['no_national_id']))
