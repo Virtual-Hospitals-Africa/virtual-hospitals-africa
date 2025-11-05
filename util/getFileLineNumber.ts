@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 
 const cwd = Deno.cwd()
-const file_cwd_prefix = 'file://' + cwd
 
 // Deno stack format is either:
 //  "at functionName (file:///path/to/file.ts:line:column)"
@@ -40,13 +39,14 @@ export function getCaller(up_stack_levels = 0) {
         caller_line,
       )
 
-    let pretty_file_name = file_name.replace(file_cwd_prefix, '')
-    if (pretty_file_name.startsWith('/')) {
-      pretty_file_name = pretty_file_name.slice(1)
-    }
+    const without_cwd = file_name.replace(cwd, '')
+    const pretty_file_name = without_cwd.startsWith('/')
+      ? without_cwd.slice(1)
+      : without_cwd
+
     return {
-      pretty_file_name,
       function_name,
+      pretty_file_name,
       line_number: parseInt(line_number),
       column_number: parseInt(column_number),
     }

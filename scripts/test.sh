@@ -20,6 +20,7 @@ fi
 HTTP_SERVER_PORT=8004
 HTTPS_PROXY_SERVER_PORT=8005
 
+
 migrate_check=true
 use_build=false
 
@@ -28,6 +29,8 @@ while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
     migrate_check=false
   elif [[ "$1" == "--use-build" ]]; then
     use_build=true
+  elif [[ "$1" == "--verbose" ]]; then
+    set -x
   else
     fail "Unknown option: $1"
   fi
@@ -50,6 +53,12 @@ kill_test_servers() {
   ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT
 }
 
+cleanup() {
+  kill_test_servers
+  echo "Server output available at $test_http_server_output"
+  echo "Proxy output available at $test_https_proxy_server_output"
+}
+
 rm_ansi_escape_codes() {
   sed -r 's/\x1b\[[^@-~]*[@-~]//g'
 }
@@ -59,7 +68,6 @@ https_proxy_server_ready() {
     # Deno prints "error" with color codes, so we remove them before checking
     # shellcheck disable=SC2002
     if cat "$test_https_proxy_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
-      cat "$test_https_proxy_server_output"
       exit 1
     fi
     sleep 0.1
@@ -136,18 +144,8 @@ fi
 start_http_server
 start_https_proxy_server
 
-trap "kill_test_servers" EXIT
+trap "cleanup" EXIT
 
 wait_until_vha_test_servers_ready
 
-run_tests "$@" || {
-  if [ -s "$test_http_server_output" ]; then
-    echo "Tests failed."
-    echo "Server output available at $test_http_server_output"
-    echo "Proxy output available at $test_https_proxy_server_output"
-  else
-    echo "Tests failed. Server log is empty."
-  fi
-  exit 1
-}
-exit 0
+run_tests "$@"

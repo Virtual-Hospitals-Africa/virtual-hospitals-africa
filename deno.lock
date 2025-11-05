@@ -55,7 +55,7 @@
     "npm:esbuild@~0.25.5": "0.25.12",
     "npm:fast-levenshtein@3.0.0": "3.0.0",
     "npm:fast-xml-parser@4.3.4": "4.3.4",
-    "npm:kysely@0.27.6": "0.27.6",
+    "npm:kysely@0.28.8": "0.28.8",
     "npm:natural@6.10.4": "6.10.4",
     "npm:pg-cursor@2.15.3": "2.15.3_pg@8.16.0",
     "npm:pg@8.16.0": "8.16.0",
@@ -1214,8 +1214,8 @@
       "integrity": "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==",
       "bin": true
     },
-    "kysely@0.27.6": {
-      "integrity": "sha512-FIyV/64EkKhJmjgC0g2hygpBv5RNWVPyNCqSAD7eTCv6eFWNIi4PN1UvdSJGicN/o35bnevgis4Y0UDC0qi8jQ=="
+    "kysely@0.28.8": {
+      "integrity": "sha512-QUOgl5ZrS9IRuhq5FvOKFSsD/3+IA6MLE81/bOOTRA/YQpKDza2sFdN5g6JCB9BOpqMJDGefLCQ9F12hRS13TA=="
     },
     "lightningcss-android-arm64@1.30.2": {
       "integrity": "sha512-BH9sEdOCahSgmkVhBLeU7Hc9DWeZ1Eb6wNS6Da8igvUwAe0sqROHddIlvU06q3WyXVEOYDZ6ykBZQnjTbmo4+A==",
@@ -1929,7 +1929,7 @@
       "npm:awesome-phonenumber@7.2.0",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
-      "npm:kysely@0.27.6",
+      "npm:kysely@0.28.8",
       "npm:natural@6.10.4",
       "npm:pg-cursor@2.15.3",
       "npm:pg@8.16.0",

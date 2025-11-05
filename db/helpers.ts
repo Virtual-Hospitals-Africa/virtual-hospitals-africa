@@ -21,6 +21,7 @@ import { Coordinates, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
+import entries from '../util/entries.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -491,4 +492,19 @@ export function assertOnInsert({
       await sql`DROP FUNCTION IF EXISTS ${sql.raw(function_name)}()`.execute(db)
     },
   }
+}
+
+export function temporaryTable<T extends Record<string, unknown>>(
+  trx: TrxOrDb,
+  records: T[],
+) {
+  return records.map((record) =>
+    trx.selectNoFrom(() =>
+      entries(record).map(([key, value]) => sql.lit(value).as(key as string))
+    )
+  ).reduce((acc, curr) => acc.unionAll(curr)) as unknown as SelectQueryBuilder<
+    DB,
+    never,
+    T
+  >
 }

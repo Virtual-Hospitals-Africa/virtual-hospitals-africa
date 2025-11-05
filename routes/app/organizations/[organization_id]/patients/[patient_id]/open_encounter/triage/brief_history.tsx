@@ -17,6 +17,7 @@ import {
   COMMON_CONDITIONS,
   CommonConditionKey,
   commonConditionSnomedConceptId,
+  positiveFindings,
 } from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
@@ -46,6 +47,9 @@ const TriageBriefHistorySchema = z.object(
     [k in CommonConditionKey]: unknown
   },
 )
+
+// finding: cancer
+// qualifier: no
 
 export const handler = postHandler(
   TriageBriefHistorySchema,
@@ -93,8 +97,8 @@ function BriefHistorySection() {
       <YesNoGrid>
         {COMMON_CONDITIONS.map((condition) => (
           <YesNoQuestion
-            key={condition.id}
-            name={`${condition.id}.presence`}
+            key={condition.key}
+            name={`${condition.key}.presence`}
             label={condition.label}
           />
         ))}
@@ -109,11 +113,11 @@ export async function TriageBriefHistoryPage(
   const { trx, encounter } = ctx.state
   const patient_id = encounter.patient.id
 
-  const _pre_existing_conditions = await patient_conditions
-    .getPreExistingConditions(
-      trx,
-      { patient_id },
-    )
+  const positive_findings = await positiveFindings(
+    trx,
+    { patient_id },
+  )
+  console.log(positive_findings)
 
   return <BriefHistorySection />
 }

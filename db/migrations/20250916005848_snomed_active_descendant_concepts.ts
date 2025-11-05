@@ -28,8 +28,8 @@ begin
     )
     select descendant_tree.descendant_id
          , descendant_tree.ancestor_ids
-     from descendant_tree
-    where descendant_tree.descendant_id != parent_concept_id;
+     from descendant_tree;
+    -- where descendant_tree.descendant_id != parent_concept_id;
 end $$
   `.execute(db)
 }
