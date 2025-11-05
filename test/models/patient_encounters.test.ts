@@ -79,6 +79,8 @@ describe(
                       patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
                       organization_id: organization_employment.organization.id,
+                      organization_name:
+                        organization_employment.organization.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -111,6 +113,7 @@ describe(
                       seen_at: open_encounter.all_employees_seen[0].seen_at,
                       avatar_url: receptionist.avatar_url,
                       organization_id: organization.id,
+                      organization_name: organization.name,
                     },
                   ],
                 },
@@ -125,8 +128,15 @@ describe(
               all_employees_seen: [
                 {
                   patient_encounter_employee_id,
-                  employment_id: organization_employment.non_admin_id!,
+                  health_worker_id: receptionist.id,
+                  employment_id: receptionist.employee_id,
+                  health_worker_name: receptionist.name,
+                  profession: 'receptionist',
+                  specialty: null,
                   seen_at: open_encounter.all_employees_seen[0].seen_at,
+                  avatar_url: receptionist.avatar_url,
+                  organization_id: organization.id,
+                  organization_name: organization.name,
                 },
               ],
             })
@@ -222,6 +232,8 @@ describe(
                         employee.patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
                       organization_id: organization_employment.organization.id,
+                      organization_name:
+                        organization_employment.organization.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -276,7 +288,17 @@ describe(
                   patient_encounter_employee_id:
                     employee.patient_encounter_employee_id,
                   employment_id: organization_employment.non_admin_id!,
-                  seen_at: open_encounter.all_employees_seen[0].seen_at,
+                  organization_id: organization_employment.organization.id,
+                  organization_name: organization_employment.organization.name,
+                  profession: 'receptionist',
+                  health_worker_id: receptionist.id,
+                  health_worker_name: receptionist.name,
+                  avatar_url:
+                    open_encounter.workflows.registration!.employees[0]
+                      .avatar_url,
+                  specialty: null,
+                  seen_at: open_encounter.workflows.registration!.employees[0]
+                    .seen_at,
                 },
               ],
             })

@@ -48,20 +48,34 @@ export async function addTestRegulatorWithSession(
       },
     )
 
-  const fetchOk = async (...args: Parameters<typeof fetch>) => {
-    const response = await fetchWithSession(...args)
+  const fetchOk = async (
+    url: string | URL,
+    init?: RequestInit,
+    opts?: { cancel_response_body?: boolean },
+  ) => {
+    const response = await fetchWithSession(url, init)
     if (!response.ok) {
+      const method = init?.method || 'GET'
+      console.error(`${method} ${url}`)
+      if (init?.body) {
+        console.error(init.body)
+      }
       throw new Error(`[${response.status}]: ${await response.text()}`)
+    }
+    if (opts?.cancel_response_body) {
+      await response.body?.cancel()
     }
     return response
   }
 
-  const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
-    const response = await fetchWithSession(...args)
-    if (!response.ok) throw new Error(await response.text())
+  const fetchCheerio = async (url: string | URL, init?: RequestInit) => {
+    const response = await fetchOk(url, init)
     const html = await response.text()
-    return cheerio.load(html, {
+    const $ = cheerio.load(html, {
       baseURI: response.url,
+    })
+    return Object.assign($, {
+      url: response.url,
     })
   }
 

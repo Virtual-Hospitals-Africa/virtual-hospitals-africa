@@ -1,5 +1,9 @@
-import { ComponentChildren } from 'preact'
+import { ComponentChild, ComponentChildren } from 'preact'
 import { Maybe } from '../../../types.ts'
+
+export function YesNoLabelSpan({ label }: { label: string }) {
+  return <span className='text-sm font-medium text-gray-600'>{label}</span>
+}
 
 export function YesNoQuestion({
   name,
@@ -8,16 +12,20 @@ export function YesNoQuestion({
   onChange,
 }: {
   name?: string
-  label: string
+  label: ComponentChild
   value?: Maybe<boolean>
   onChange?(value: boolean | null): void
 }) {
+  const label_span = typeof label === 'string'
+    ? <YesNoLabelSpan label={label} />
+    : label
+
   return (
     <div
       className={`bg-white px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center`}
     >
-      <label className='text-sm font-medium text-gray-600'>
-        {label}
+      <label for={name}>
+        {label_span}
       </label>
       <div className='flex justify-center'>
         <input

@@ -44,7 +44,7 @@ export const WORKFLOW_STEPS = {
     'brief_history',
     'warning_signs', // chief complaint + emergency signs + urgent signs
     'measure_vitals',
-    'additional_investigations_and_tasks',
+    'additional_tasks_and_investigations',
     'assign_priority',
     'route_patient',
   ],

@@ -1,9 +1,18 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import memoize from '../../util/memoize.ts'
-import { TrxOrDb } from '../../types.ts'
+import {
+  AsPartOfProcedure,
+  RenderedFindingQualifierRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
+  RenderedPatientEncounter,
+  TrxOrDb,
+} from '../../types.ts'
+import * as patient_encounters from './patient_encounters.ts'
 import { temporaryTable } from '../helpers.ts'
 import { positiveFindingsQuery } from './patient_findings.ts'
+import uniq from '../../util/uniq.ts'
+import { groupByUniq } from '../../util/groupBy.ts'
 
 export const COMMON_CONDITIONS = [
   {
@@ -73,21 +82,22 @@ export const commonConditionSnomedConceptId = memoize(
   },
 )
 
-type Procedure = {
-  record_id: string
-  snomed_concept_id: string
-  name: string
-  // TODO: support recursive procedures?
-  // as_part_of_procedure: Procedure | null
-}
+type QualifierIntermediate =
+  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
+  & {
+    patient_encounter_employee_id: string
+  }
+
 type PositiveFindingRecord = {
+  created_at: Date
   record_id: string
   snomed_concept_id: string
   name: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
-  common_conditions_key: CommonConditionKey
-  as_part_of_procedure: Procedure
+  pertaining_to_key: CommonConditionKey
+  as_part_of_procedure: AsPartOfProcedure
+  qualifiers: QualifierIntermediate[]
 }
 
 export function positiveFindings(
@@ -122,7 +132,112 @@ export function positiveFindings(
     )
     .selectAll('patient_positive_findings')
     .select([
-      'common_condition_descendants.key as common_conditions_key',
+      'common_condition_descendants.key as pertaining_to_key',
     ])
     .execute()
+}
+
+export async function renderedPositiveFindings(
+  trx: TrxOrDb,
+  { patient_id, encounter, health_worker_id }: {
+    patient_id: string
+    encounter: RenderedPatientEncounter
+    health_worker_id: string
+  },
+): Promise<RenderedFindingRelativeToHealthWorker[]> {
+  const positive_findings = await positiveFindings(trx, { patient_id })
+  const encounter_ids = uniq(
+    positive_findings.flatMap((finding) => [
+      finding.patient_encounter_id,
+      ...finding.qualifiers.map((qualifier) => qualifier.patient_encounter_id),
+    ]),
+  )
+  const other_encounter_ids = encounter_ids.filter((encounter_id) =>
+    encounter_id !== encounter.patient_encounter_id
+  )
+
+  const other_encounters: RenderedPatientEncounter[] =
+    other_encounter_ids.length
+      ? await patient_encounters.findAll(trx, {
+        ids: other_encounter_ids,
+      })
+      : []
+
+  const encounters = [encounter, ...other_encounters]
+  const encounter_id_to_encounter = groupByUniq(
+    encounters,
+    'patient_encounter_id',
+  )
+
+  return positive_findings.map(
+    ({ qualifiers, patient_encounter_employee_id, ...finding }) => {
+      const matching_encounter = encounter_id_to_encounter.get(
+        finding.patient_encounter_id,
+      )
+      assert(
+        matching_encounter,
+        `Matching encounter not found ${finding.patient_encounter_id} ${finding.record_id}`,
+      )
+
+      const matching_employee = matching_encounter.all_employees_seen.find((
+        employee,
+      ) =>
+        employee.patient_encounter_employee_id ===
+          patient_encounter_employee_id
+      )
+      assert(
+        matching_employee,
+        `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
+      )
+
+      return {
+        ...finding,
+        provider: {
+          is_me: matching_employee.health_worker_id === health_worker_id,
+          is_same_person_who_made_originally_noted_finding: true,
+          ...matching_employee,
+        },
+        qualifiers: qualifiers.map(
+          (
+            {
+              patient_encounter_employee_id:
+                qualifier_patient_encounter_employee_id,
+              ...qualifier
+            },
+          ) => {
+            const qualifier_matching_encounter = encounter_id_to_encounter.get(
+              qualifier.patient_encounter_id,
+            )
+            assert(
+              qualifier_matching_encounter,
+              `Qualifier matching encounter not found ${qualifier.patient_encounter_id} ${qualifier.record_id}`,
+            )
+            const qualifier_matching_employee = qualifier_matching_encounter
+              .all_employees_seen.find((
+                employee,
+              ) =>
+                employee.patient_encounter_employee_id ===
+                  qualifier_patient_encounter_employee_id
+              )
+            assert(
+              qualifier_matching_employee,
+              `Qualifier matching employee not found ${qualifier_patient_encounter_employee_id} ${qualifier.record_id}`,
+            )
+
+            return {
+              ...qualifier,
+              provider: {
+                is_me: qualifier_matching_employee.health_worker_id ===
+                  health_worker_id,
+                is_same_person_who_made_originally_noted_finding:
+                  qualifier_matching_employee.health_worker_id ===
+                    matching_employee.health_worker_id,
+                ...qualifier_matching_employee,
+              },
+            }
+          },
+        ),
+      } satisfies RenderedFindingRelativeToHealthWorker
+    },
+  )
 }

@@ -10,7 +10,6 @@ import {
   FamilyType,
   MaritalStatus,
   PatientCohabitation,
-  Patients,
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
@@ -94,8 +93,6 @@ export type UpdateShape<T> = OptionalMaybeFields<
       : T[K] | RawBuilder<T[K]>
   }
 >
-
-type P = UpdateShape<Patients>
 
 // type OrRawBuilder =
 
@@ -2397,6 +2394,7 @@ export type RenderedPatientEncounterEmployee = {
   patient_encounter_employee_id: string
   employment_id: string
   organization_id: string
+  organization_name: string
   profession: Profession
   health_worker_id: string
   health_worker_name: string
@@ -2442,11 +2440,7 @@ export type RenderedPatientEncounter = {
   arrived_timestamp: Date
   wait_time: PostgresInterval
   status: RenderedPatientEncounterStatus
-  all_employees_seen: {
-    patient_encounter_employee_id: string
-    employment_id: string
-    seen_at: Date
-  }[]
+  all_employees_seen: RenderedPatientEncounterEmployee[]
 }
 
 export type RenderedPatientOpenEncounter = RenderedPatientEncounter & {
@@ -3511,4 +3505,47 @@ export type BriefHistory =
 export type PreviouslyCompletedProcedures = {
   workflow_record_id: string | null
   workflow_step_record_id: string | null
+}
+
+export type RenderedFindingProvider = RenderedPatientEncounterEmployee & {
+  is_me: boolean
+}
+
+export type AsPartOfProcedure = {
+  record_id: string
+  snomed_concept_id: string
+  name: string
+}
+
+export type RenderedFindingQualifierRelativeToHealthWorker = {
+  record_id: string
+  patient_encounter_id: string
+  snomed_concept_id: string
+  name: string
+  value_display: string | null
+  created_at: Date
+  provider: RenderedFindingProvider & {
+    is_same_person_who_made_originally_noted_finding: boolean
+  }
+}
+
+export type RenderedFindingRelativeToHealthWorker = {
+  record_id: string
+  patient_encounter_id: string
+  snomed_concept_id: string
+  name: string
+  pertaining_to_key: string
+  created_at: Date
+  provider: RenderedFindingProvider & {
+    is_same_person_who_made_originally_noted_finding: true
+  }
+  as_part_of_procedure: AsPartOfProcedure
+  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  notes?: {
+    note: string
+    created_at: Date
+    provider: RenderedFindingProvider & {
+      is_same_person_who_made_originally_noted_finding: boolean
+    }
+  }[]
 }

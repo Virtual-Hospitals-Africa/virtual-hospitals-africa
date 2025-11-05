@@ -7,7 +7,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import isString from '../../util/isString.ts'
 
 export type PersonData = {
-  id?: string | 'add'
+  id?: string
   name: string
   display_name?: Maybe<string>
   href?: Maybe<string>
@@ -33,6 +33,7 @@ export function Person(
   const Component = person.href ? 'a' : 'div'
   return (
     <Component
+      id={person.id}
       className={cls(
         'flex items-center',
         person.href && 'text-indigo-600 hover:text-indigo-900',
@@ -57,7 +58,7 @@ export function Person(
       </span>
       <div>{person.display_name || person.name}</div>
       {person.description && (
-        <div className='font-normal capitalize text-sm text-gray-500'>
+        <div className='text-sm font-normal text-gray-500 capitalize'>
           {person.description}
         </div>
       )}
