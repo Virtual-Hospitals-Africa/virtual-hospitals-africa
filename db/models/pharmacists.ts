@@ -160,10 +160,8 @@ function baseQuery(trx: TrxOrDb) {
         >`'/regulator/' || pharmacists.country || '/pharmacists/' || pharmacists.id || '/edit'`,
       }).as('actions'),
     ])
-    .orderBy([
-      'pharmacists.given_name asc',
-      'pharmacists.family_name asc',
-    ])
+    .orderBy('pharmacists.given_name', 'asc')
+    .orderBy('pharmacists.family_name', 'asc')
 }
 
 const isLicenceLike = (search: string) =>

@@ -155,10 +155,8 @@ export function getEmploymentQuery(
           END
         `.as('registration_status'),
       ])
-      .orderBy([
-        'employment.health_worker_id asc',
-        'employment.profession asc',
-      ])
+      .orderBy('employment.health_worker_id', 'asc')
+      .orderBy('employment.profession', 'asc')
 
     if (opts.organization_id) {
       query = query.where(

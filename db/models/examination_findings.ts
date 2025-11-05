@@ -66,7 +66,8 @@ export function baseQuery(trx: TrxOrDb) {
           ]),
       ).as('body_sites'),
     ])
-    .orderBy(['examinations.order asc', 'patient_examinations.created_at asc'])
+    .orderBy('examinations.order', 'asc')
+    .orderBy('patient_examinations.created_at', 'asc')
 }
 
 type ExaminationResults = Awaited<

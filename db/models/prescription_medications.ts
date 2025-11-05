@@ -60,7 +60,7 @@ const baseSelect = (trx: TrxOrDb) =>
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
     ])
-    .orderBy('drugs.generic_name asc')
+    .orderBy('drugs.generic_name', 'asc')
 
 export async function getByPrescriptionId(
   trx: TrxOrDb,

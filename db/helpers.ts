@@ -508,3 +508,11 @@ export function temporaryTable<T extends Record<string, unknown>>(
     T
   >
 }
+
+// deno-lint-ignore no-explicit-any
+export function asText<EB extends ExpressionBuilder<DB, any>>(
+  eb: EB,
+  ref: Parameters<EB['ref']>[0],
+) {
+  return sql<string>`${eb.ref(ref)}::text`
+}

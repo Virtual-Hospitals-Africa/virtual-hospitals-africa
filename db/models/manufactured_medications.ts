@@ -70,10 +70,8 @@ function baseQuery(opts: { include_recalled: boolean }) {
         (eb) =>
           eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
       )
-      .orderBy([
-        'drugs.generic_name asc',
-        'manufactured_medications.trade_name asc',
-      ])
+      .orderBy('drugs.generic_name', 'asc')
+      .orderBy('manufactured_medications.trade_name', 'asc')
   }
 }
 

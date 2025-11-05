@@ -1,8 +1,14 @@
 import { Maybe, PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
-import { blankSelection, jsonBuildObject, success_true } from '../helpers.ts'
+import {
+  asText,
+  blankSelection,
+  jsonBuildObject,
+  success_true,
+} from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered } from './patient_records.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import { sql } from 'kysely'
 
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
 
@@ -203,9 +209,9 @@ export function positiveFindingsQuery(
           'snomed_inferred_canonical_name_and_category.name',
           jsonBuildObject({
             record_id: eb.ref('patient_procedure_records.id'),
-            snomed_concept_id: eb.ref(
-              'patient_procedure_records.snomed_concept_id',
-            ),
+            snomed_concept_id: sql<string>`${
+              eb.ref('patient_procedure_records.snomed_concept_id')
+            }::text`,
             name: eb.ref(
               'patient_procedure_snomed_inferred_canonical_name_and_category.name',
             ),
@@ -276,7 +282,8 @@ export function negativeFindingsQuery(
           'snomed_inferred_canonical_name_and_category.name',
           jsonBuildObject({
             record_id: eb.ref('patient_procedure_records.id'),
-            snomed_concept_id: eb.ref(
+            snomed_concept_id: asText(
+              eb,
               'patient_procedure_records.snomed_concept_id',
             ),
             name: eb.ref(

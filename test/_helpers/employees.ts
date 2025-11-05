@@ -180,7 +180,11 @@ export async function addTestEmployeeWithSession(
       },
     )
 
-  const fetchOk = async (url: string | URL, init?: RequestInit) => {
+  const fetchOk = async (
+    url: string | URL,
+    init?: RequestInit,
+    opts?: { cancel_response_body?: boolean },
+  ) => {
     const response = await fetchWithSession(url, init)
     if (!response.ok) {
       const method = init?.method || 'GET'
@@ -189,6 +193,9 @@ export async function addTestEmployeeWithSession(
         console.error(init.body)
       }
       throw new Error(`[${response.status}]: ${await response.text()}`)
+    }
+    if (opts?.cancel_response_body) {
+      await response.body?.cancel()
     }
     return response
   }

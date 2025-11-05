@@ -55,10 +55,8 @@ function baseQuery(opts: { include_recalled: boolean }) {
                       null,
                     ),
                 )
-                .orderBy([
-                  'manufactured_medications.trade_name asc',
-                  'manufactured_medications.strength_numerators asc',
-                ]),
+                .orderBy('manufactured_medications.trade_name', 'asc')
+                .orderBy('manufactured_medications.strength_numerators', 'asc'),
             ).as('manufacturers'),
           ])
           .whereRef('medications.drug_id', '=', 'drugs.id')

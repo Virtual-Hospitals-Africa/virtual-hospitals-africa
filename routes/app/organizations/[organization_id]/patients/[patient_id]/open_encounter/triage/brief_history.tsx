@@ -23,7 +23,13 @@ import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { NO_QUALIFIER_SNOMED_CONCEPT_ID } from '../../../../../../../../db/models/patient_findings.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 
-const ConditionSchema = z.object(
+const ConditionSchemaOptional = z.object(
+  {
+    presence: yes_no_not_sure.optional(),
+  },
+).optional()
+
+const ConditionSchemaRequired = z.object(
   {
     presence: yes_no_not_sure,
   },
@@ -31,18 +37,18 @@ const ConditionSchema = z.object(
 
 const TriageBriefHistorySchema = z.object(
   {
-    diabetes: ConditionSchema,
-    pregnancy: ConditionSchema,
-    tuberculosis: ConditionSchema,
-    hiv: ConditionSchema,
-    asthma: ConditionSchema,
-    copd: ConditionSchema,
-    coronavirus: ConditionSchema,
-    heart_disease: ConditionSchema,
-    mental_disorder: ConditionSchema,
-    epilepsy: ConditionSchema,
-    arthritis: ConditionSchema,
-    cancer: ConditionSchema,
+    diabetes: ConditionSchemaRequired,
+    pregnancy: ConditionSchemaRequired,
+    tuberculosis: ConditionSchemaOptional,
+    hiv: ConditionSchemaOptional,
+    asthma: ConditionSchemaOptional,
+    copd: ConditionSchemaOptional,
+    coronavirus: ConditionSchemaOptional,
+    heart_disease: ConditionSchemaOptional,
+    mental_disorder: ConditionSchemaOptional,
+    epilepsy: ConditionSchemaOptional,
+    arthritis: ConditionSchemaOptional,
+    cancer: ConditionSchemaOptional,
   } satisfies {
     [k in CommonConditionKey]: unknown
   },
@@ -54,7 +60,9 @@ export const handler = postHandler(
     const inserting_findings = forEach(
       entries(form_values),
       async ([condition_key, condition]) => {
-        if (condition.presence === 'not_sure') {
+        if (
+          condition?.presence === undefined || condition.presence === 'not_sure'
+        ) {
           return
         }
         const finding_snomed_concept_id = commonConditionSnomedConceptId(
