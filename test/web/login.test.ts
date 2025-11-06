@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
@@ -13,8 +13,10 @@ import sample from '../../util/sample.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import selfUrl from '../../util/selfUrl.ts'
+import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 describe('/login', () => {
+  before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
   it('redirects to google if not already logged in', async () => {
     const response = await fetch(`${route}/login`, {

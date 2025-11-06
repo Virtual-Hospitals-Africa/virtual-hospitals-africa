@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../../../../_helpers/workflows.ts'
@@ -8,8 +8,10 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import { positiveFindings } from '../../../../../db/models/brief_history.ts'
 import { route } from '../../../../route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
+import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 
 describe('brief_history', () => {
+  before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
   describe('POST', () => {
     it('inserts positive & negative findings, redirecting to the warning signs page', async () => {

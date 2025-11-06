@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
@@ -10,10 +10,12 @@ import {
 } from '../../_helpers/pharmacists.ts'
 import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
 import { route } from '../../route.ts'
+import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
 describe.skip(
   '/regulator/[country]/pharmacists',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('renders a search input with GET', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)

@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
@@ -9,10 +9,12 @@ import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route } from '../../../../route.ts'
 import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
+import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 
 describe(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
 
     it('parses form data correctly', () => {

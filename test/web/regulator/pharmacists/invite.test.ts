@@ -1,4 +1,4 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import * as cheerio from 'cheerio'
@@ -6,11 +6,13 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../db/db.ts'
 import { addTestRegulatorWithSession } from '../../../_helpers/regulators.ts'
 import { route } from '../../../route.ts'
+import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
 describe(
   '/regulator/[country]/pharmacists/invite',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
+    before(waitUntilTestServerUp)
     it('renders an invite page on GET', async () => {
       const { regulator, fetchOk } = await addTestRegulatorWithSession(db)
 

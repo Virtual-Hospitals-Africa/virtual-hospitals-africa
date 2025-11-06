@@ -1,14 +1,16 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import omit from '../../util/omit.ts'
 import { route } from '../route.ts'
+import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 describe(
   '/app/organizations',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('can search for organizations by name', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
