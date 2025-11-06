@@ -6,14 +6,22 @@ import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isString from '../../util/isString.ts'
 
-export type PersonData = {
-  id?: string
-  name: string
-  display_name?: Maybe<string>
-  href?: Maybe<string>
-  avatar_url?: Maybe<string>
-  description?: ComponentChildren
-}
+export type PersonData =
+  & {
+    id?: string
+    href?: Maybe<string>
+    avatar_url?: Maybe<string>
+    description?: ComponentChildren
+  }
+  & (
+    {
+      name: string
+      display_name?: Maybe<string>
+    } | {
+      name?: Maybe<string>
+      display_name: string
+    }
+  )
 
 export function assertPersonLike(
   person: unknown,
@@ -30,6 +38,7 @@ export function Person(
     no_avatar?: boolean
   },
 ): JSX.Element {
+  console.log(person.avatar_url)
   const Component = person.href ? 'a' : 'div'
   return (
     <Component
@@ -56,12 +65,14 @@ export function Person(
         )}
       >
       </span>
-      <div>{person.display_name || person.name}</div>
-      {person.description && (
-        <div className='text-sm font-normal text-gray-500 capitalize'>
-          {person.description}
-        </div>
-      )}
+      <div className='flex flex-col gap-0'>
+        <div>{person.display_name || person.name}</div>
+        {person.description && (
+          <div className='text-sm font-normal text-gray-500 capitalize'>
+            {person.description}
+          </div>
+        )}
+      </div>
     </Component>
   )
 }

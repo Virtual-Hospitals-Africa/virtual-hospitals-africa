@@ -13,7 +13,7 @@ import { jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
 import {
   assertOr403,
   assertOr404,
-  assertOrErrorWithActions,
+  assertOrAlertWithActions,
 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -47,7 +47,7 @@ export async function start(
     non_admin_id,
   )
 
-  assertOrErrorWithActions(
+  assertOrAlertWithActions(
     !health_worker.present_encounter,
     'Cannot register new patients while present with another patient',
     [

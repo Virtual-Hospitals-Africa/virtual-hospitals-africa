@@ -2,15 +2,14 @@ import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from './Header.tsx'
 import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { ErrorListener } from '../../islands/ErrorListener.tsx'
+import { AlertListener } from '../../islands/AlertListener.tsx'
 import {
   HealthWorkerHomePageSidebar,
   RegulatorHomePageSidebar,
 } from './Sidebar.tsx'
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
-import SuccessMessage from '../../islands/SuccessMessage.tsx'
-import WarningMessage from '../../islands/WarningMessage.tsx'
 import { RenderedNotification } from '../../types.ts'
+import { Alert } from '../../islands/AlertMessage.tsx'
 
 export type LayoutProps =
   & {
@@ -100,26 +99,29 @@ function JustLogoLayoutContents({
   )
 }
 
-export default function Layout(props: LayoutProps) {
-  const success = props.url.searchParams.get('success')
-  const error = props.url.searchParams.get('error')
-  const warning = props.url.searchParams.get('warning')
+function initialAlert(url: URL): Alert | null {
+  const error = url.searchParams.get('error')
+  const warning = url.searchParams.get('warning')
+  const success = url.searchParams.get('success')
 
-  const flags = Number(!!success) + Number(!!error) + Number(!!warning)
+  const flags = Number(!!error) + Number(!!warning) + Number(!!success)
   assert(flags <= 1, 'Cannot have more than one of success, error, or warning')
+  if (error) {
+    return { message: error, level: 'error' }
+  }
+  if (warning) {
+    return { message: warning, level: 'warning' }
+  }
+  if (success) {
+    return { message: success, level: 'success' }
+  }
+  return null
+}
 
+export default function Layout(props: LayoutProps) {
   return (
     <>
-      <SuccessMessage
-        message={success}
-        className='fixed top-0 left-0 right-0 z-50 m-12'
-        notDismissable={props.variant === 'empty'}
-      />
-      <WarningMessage
-        message={warning}
-        className='fixed top-0 left-0 right-0 z-50 m-12'
-      />
-      <ErrorListener initialError={error} />
+      <AlertListener initial_alert={initialAlert(props.url)} />
       {props.variant === 'landing page' && props.children}
       {(props.variant === 'health worker home page' ||
         props.variant === 'regulator home page') && (

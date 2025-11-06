@@ -2,8 +2,9 @@ import FormRow from '../../../library/FormRow.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 import { DateInput } from '../../../../islands/form/inputs/date.tsx'
-import { NurseSpecialtySelect } from '../../../../islands/form/inputs/nurse_specialty.tsx'
 import { TextInput } from '../../../../islands/form/inputs/text.tsx'
+import { NURSE_SPECIALTIES } from '../../../../types.ts'
+import { SpecialtySelectWithKnownOptions } from '../../../../islands/SpecialtySelect.tsx'
 
 export default function NurseProfessionalForm(
   { form_data }: { form_data: Partial<FormState> },
@@ -27,7 +28,10 @@ export default function NurseProfessionalForm(
         />
       </FormRow>
       <FormRow>
-        <NurseSpecialtySelect value={form_data.specialty} />
+        <SpecialtySelectWithKnownOptions
+          specialty={form_data.specialty ?? null}
+          options={NURSE_SPECIALTIES}
+        />
       </FormRow>
       <hr className='my-2' />
       <Buttons submitText='Next' />

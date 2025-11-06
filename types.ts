@@ -3549,3 +3549,5 @@ export type RenderedFindingRelativeToHealthWorker = {
     }
   }[]
 }
+
+export type AppUser = Profession | 'regulator'

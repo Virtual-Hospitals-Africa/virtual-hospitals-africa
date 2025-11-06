@@ -9,7 +9,7 @@ type HealthWorkerDisplay = {
 
 export default function healthWorkerDisplay(health_worker: {
   health_worker_name: string
-  profession: Profession
+  profession: Profession | 'regulator'
   specialty: Maybe<string>
 }): HealthWorkerDisplay {
   switch (health_worker.profession) {
@@ -27,9 +27,7 @@ export default function healthWorkerDisplay(health_worker: {
         description: health_worker.specialty + ' nurse',
       }
     }
-    case 'receptionist':
-    case 'admin': {
-      assert(!health_worker.specialty)
+    default: {
       return {
         display_name: health_worker.health_worker_name,
         description: health_worker.profession,

@@ -241,7 +241,7 @@ export function positiveFindingsQuery(
                 '=',
                 'patient_records.id',
               )
-              .select((eb) => [
+              .select([
                 'qualifier_patient_records.id as record_id',
                 'qualifier_patient_records.patient_encounter_id',
                 'patient_record_qualifiers.patient_encounter_employee_id',
@@ -250,10 +250,10 @@ export function positiveFindingsQuery(
                 'qualifier_snomed_inferred_canonical_name_and_category.name',
                 'patient_record_qualifiers.concrete_value',
                 'qualifier_snomed_inferred_canonical_name_and_category_value.name as snomed_concept_value',
-                eb.fn.coalesce(
-                  'qualifier_snomed_inferred_canonical_name_and_category_value.name',
-                  'qualifier_patient_records.snomed_concept_id',
-                ).as('value_display'),
+                sql<string>`coalesce(
+                  qualifier_snomed_inferred_canonical_name_and_category_value.name,
+                  patient_record_qualifiers.concrete_value::text
+                )`.as('value_display'),
               ]),
           ).as('qualifiers'),
         ]))

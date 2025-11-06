@@ -107,7 +107,7 @@ export const handler = postHandler(
 
 function CommonConditionRow(
   { condition, positive_findings }: {
-    condition: typeof COMMON_CONDITIONS[0]
+    condition: typeof COMMON_CONDITIONS[number]
     positive_findings: RenderedFindingRelativeToHealthWorker[]
   },
 ) {
@@ -117,6 +117,7 @@ function CommonConditionRow(
   return (
     <YesNoQuestion
       name={`${condition.key}.presence`}
+      // required={condition.required}
       label={
         <div className='flex flex-col gap-2'>
           <YesNoLabelSpan label={condition.label} />

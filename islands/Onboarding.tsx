@@ -2,18 +2,20 @@ import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import Form from '../components/library/Form.tsx'
 import { useSignal } from '@preact/signals'
-import { OrganizationLike, PossiblyEmployedHealthWorker } from '../types.ts'
+import {
+  AppUser,
+  OrganizationLike,
+  PossiblyEmployedHealthWorker,
+} from '../types.ts'
 import FormRow from '../components/library/FormRow.tsx'
-
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
 import CountrySelect from './CountrySelect.tsx'
-import capitalize from '../util/capitalize.ts'
-import { DoctorSpecialtySelect } from './form/inputs/doctor_specialty.tsx'
-import { NurseSpecialtySelect } from './form/inputs/nurse_specialty.tsx'
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 import { TextInput } from './form/inputs/text.tsx'
+import healthWorkerDisplay from '../util/healthWorkerDisplay.ts'
+import { specialtyOptions, SpecialtySelect } from './SpecialtySelect.tsx'
 
 type OnboardingProgress =
   | { type: 'welcome' }
@@ -51,26 +53,13 @@ function EnterProfession(
     health_worker: PossiblyEmployedHealthWorker
     onProfession(opts: {
       profession: string
-      specialty: string
+      specialty: string | null
     }): void
   },
 ) {
-  const profession = useSignal('nurse')
   const name = useSignal(health_worker.name)
-
-  const specialty = useSignal<string>('Primary care')
-
-  const doctor_prefix = profession.value === 'doctor' ? 'Dr. ' : ''
-
-  const description = (() => {
-    if (profession.value === 'doctor') {
-      return specialty.value
-    }
-    if (profession.value === 'nurse') {
-      return specialty.value + ' Nurse'
-    }
-    return capitalize(profession.value)
-  })()
+  const profession = useSignal<AppUser>('nurse')
+  const specialty = useSignal<string | null>('Primary care')
 
   return (
     <div
@@ -80,11 +69,6 @@ function EnterProfession(
       )}
     >
       <PageHeader className='h1'>Create Your Profile</PageHeader>
-      {
-        /* <p className='mt-6 text-xl leading-8 text-gray-600'>
-         licensed health workers to
-      </p> */
-      }
       <FormRow>
         <TextInput
           name='name'
@@ -97,31 +81,19 @@ function EnterProfession(
           name='profession'
           value={profession.value}
           options={[
-            { value: 'nurse', label: 'Nurse' },
-            { value: 'doctor', label: 'Doctor' },
-            { value: 'receptionist', label: 'Receptionist' },
-            { value: 'regulator', label: 'Regulator' },
+            { value: 'nurse' as const, label: 'Nurse' },
+            { value: 'doctor' as const, label: 'Doctor' },
+            { value: 'receptionist' as const, label: 'Receptionist' },
+            { value: 'regulator' as const, label: 'Regulator' },
           ]}
-          onChange={(event) => profession.value = event.currentTarget.value}
+          onChange={(event) => {
+            profession.value = event.currentTarget.value as AppUser
+            specialty.value = specialtyOptions(profession.value)[0] || null
+          }}
           className='capitalize'
         />
       </FormRow>
-      {profession.value === 'nurse' && (
-        <FormRow>
-          <NurseSpecialtySelect
-            value={specialty.value}
-            onChange={(event) => specialty.value = event.currentTarget.value}
-          />
-        </FormRow>
-      )}
-      {profession.value === 'doctor' && (
-        <FormRow>
-          <DoctorSpecialtySelect
-            value={specialty.value}
-            onChange={(event) => specialty.value = event.currentTarget.value}
-          />
-        </FormRow>
-      )}
+      <SpecialtySelect profession={profession.value} specialty={specialty} />
 
       {profession.value === 'regulator' && (
         <FormRow>
@@ -135,9 +107,12 @@ function EnterProfession(
       <div className='p-3 mt-2 border-2 border-gray-200 rounded-lg'>
         <Person
           person={{
-            name: doctor_prefix + name.value,
             avatar_url: health_worker.avatar_url,
-            description,
+            ...healthWorkerDisplay({
+              health_worker_name: name.value,
+              profession: profession.value,
+              specialty: specialty.value,
+            }),
           }}
           size='lg'
         />

@@ -80,25 +80,17 @@ export function assertOr500(
   }
 }
 
-// export function assertOrChatbotError(
-//   condition: unknown,
-//   userState: ChatbotUserState,
-//   error: string,
-// ): asserts condition {
-//   if (!condition) {
-//     throw error
-//   }
-// }
-
-export function assertOrErrorWithActions(
+export function assertOrAlertWithActions(
   condition: unknown,
   message: string,
   actions: ExtendedActionData[],
+  level: 'warning' | 'error' = 'error',
 ): asserts condition {
   assertOr400(
     condition,
     JSON.stringify({
-      name: 'error_with_actions',
+      name: 'alert_with_actions',
+      level,
       message,
       actions,
     }),

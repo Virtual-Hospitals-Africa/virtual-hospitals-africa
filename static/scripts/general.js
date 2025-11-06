@@ -176,14 +176,32 @@ addEventListener('submit', function (event) {
       var json = JSON.parse(errorMessage)
       if (json.name === 'ZodError') {
         json.issues.forEach(function (issue, index) {
+          var is_first_issue = index === 0
           var path = issue.path.join('.')
-          var element = document.querySelector('[name="' + path + '"]') ||
-            document.querySelector('input[name^="' + path + '"]')
-          if (!element) {
+          var elements = document.querySelectorAll('[name="' + path + '"]')
+          if (!elements.length) {
+            elements = document.querySelectorAll('input[name^="' + path + '"]')
+          }
+
+          var message = issue.message === 'Required'
+            ? 'A value must be input'
+            : issue.message
+          
+          if (!elements.length) {
             return dispatchEvent(
-              new CustomEvent('show-error', { detail: issue.message }),
+              new CustomEvent('show-alert', { detail: message }),
             )
           }
+          if (elements.length > 1) {
+            var label = document.querySelector('[for="' + path + '"]') || document.querySelector('[for^="' + path + '"]')
+            var detail = label
+              ? label.textContent + ': ' + message
+              : message
+            return dispatchEvent(
+              new CustomEvent('show-alert', { detail: detail }),
+            )
+          }
+          var element = elements[0]
           if (
             getAttr(element, 'type') === 'hidden' &&
             path.endsWith('id')
@@ -192,16 +210,16 @@ addEventListener('submit', function (event) {
               '[name="' + path.replace(/id$/, 'name') + '"]',
             )
           }
-          element.setCustomValidity(issue.message)
-          if (!index) {
+          element.setCustomValidity(message)
+          if (is_first_issue) {
             element.focus()
             element.reportValidity()
           }
         })
         return
-      } else if (json.name === 'error_with_actions') {
+      } else if (json.name === 'alert_with_actions') {
         return dispatchEvent(
-          new CustomEvent('show-error', { detail: json }),
+          new CustomEvent('show-alert', { detail: json }),
         )
       } else {
         throw new Error(`Unrecognized error: ${json.name}`)
@@ -209,7 +227,7 @@ addEventListener('submit', function (event) {
     }
 
     dispatchEvent(
-      new CustomEvent('show-error', { detail: errorMessage }),
+      new CustomEvent('show-alert', { detail: errorMessage }),
     )
   }
 
