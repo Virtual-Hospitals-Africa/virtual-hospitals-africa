@@ -38,7 +38,6 @@ export function Person(
     no_avatar?: boolean
   },
 ): JSX.Element {
-  console.log(person.avatar_url)
   const Component = person.href ? 'a' : 'div'
   return (
     <Component

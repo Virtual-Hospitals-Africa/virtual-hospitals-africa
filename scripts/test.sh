@@ -74,32 +74,6 @@ rm_ansi_escape_codes() {
   sed -r 's/\x1b\[[^@-~]*[@-~]//g'
 }
 
-https_proxy_server_ready() {
-  while ! grep -q "Virtual Hospitals Africa ready" "$test_https_proxy_server_output"; do
-    if cat "$test_https_proxy_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
-      fail "https proxy server failed"
-    fi
-    sleep 0.1
-  done
-  truncate -s 0 "$test_https_proxy_server_output"
-}
-
-http_server_ready() {
-  while ! cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q ":$HTTP_SERVER_PORT"; do
-    cat "$test_http_server_output"
-    if cat "$test_http_server_output" | rm_ansi_escape_codes | grep -q "^error:"; then
-      fail "$test_http_server_output"
-    fi
-    sleep 0.1
-  done
-  truncate -s 0 "$test_http_server_output"
-}
-
-wait_until_servers_ready() {
-  https_proxy_server_ready
-  http_server_ready
-}
-
 run_tests() {
   DENO_TLS_CA_STORE=system \
   IS_TEST=true \
@@ -150,7 +124,6 @@ trap cleanup EXIT
 if $use_test_servers; then
   kill_test_servers
   start_servers
-  wait_until_servers_ready
 fi
 
 run_tests "$@"

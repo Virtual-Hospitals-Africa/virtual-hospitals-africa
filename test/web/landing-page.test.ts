@@ -1,8 +1,9 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { route } from '../route.ts'
 import * as cheerio from 'cheerio'
 import db from '../../db/db.ts'
+import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 const expectedLinks = [
   '/waitlist?entrypoint=hero',
@@ -17,6 +18,7 @@ const expectedLinks = [
 describe(
   'landing page',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('can be accessed', async () => {
       const response = await fetch(route)

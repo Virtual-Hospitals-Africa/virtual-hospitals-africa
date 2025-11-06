@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -11,10 +11,12 @@ import {
 import { route } from '../../../route.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
 import createTestAddress from '../../../../mocks/createTestAddress.ts'
+import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
 describe(
   '/app/organizations/[organization_id]/register',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('renders a registration page on GET', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {

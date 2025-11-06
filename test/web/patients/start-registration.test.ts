@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../db/db.ts'
 import * as patients from '../../../db/models/patients.ts'
@@ -7,8 +7,10 @@ import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
 import { isUUID } from '../../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import compact from '../../../util/compact.ts'
+import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
 describe('/app/organizations/[organization_id]/patients/start-registration', () => {
+  before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
   it('creates a patient, starting the registration process at the personal page', async () => {
     const { fetchOk } = await addTestEmployeeWithSession(db, {

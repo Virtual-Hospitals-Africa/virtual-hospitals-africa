@@ -1,13 +1,15 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { route } from '../route.ts'
+import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 describe(
   '/app/providers',
   () => {
+    before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('can return a provider', async () => {
       const { fetch, health_worker } = await addTestEmployeeWithSession(

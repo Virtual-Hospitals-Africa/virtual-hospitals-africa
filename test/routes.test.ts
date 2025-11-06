@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import { Workflow, WORKFLOW_STEPS } from '../../../../shared/workflow.ts'
-import entries from '../../../../util/entries.ts'
-import { forEach } from '../../../../util/inParallel.ts'
+import { Workflow, WORKFLOW_STEPS } from '../shared/workflow.ts'
+import entries from '../util/entries.ts'
+import { forEach } from '../util/inParallel.ts'
 
 const SUPPORTED_WORKFLOWS = new Set<Workflow>([
   'registration',
