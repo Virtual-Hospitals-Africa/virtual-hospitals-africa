@@ -6,7 +6,6 @@ import {
   isIsoJohannesburg,
 } from '../../util/date.ts'
 import { get as getProvider } from '../../db/models/providers.ts'
-import * as patients from '../../db/models/patients.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
@@ -19,6 +18,7 @@ import {
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
+import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
 
 function gcal({ start, end }: {
   start: string
@@ -72,8 +72,10 @@ export async function makeAppointmentChatbot(
   insertEvent: InsertEvent,
 ) {
   assert(patientState.chatbot_user.entity_id)
-  const scheduling_appointment_request = await patients
-    .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
+  const scheduling_appointment_request = await schedulingAppointmentRequest(
+    trx,
+    patientState.chatbot_user.entity_id,
+  )
   assert(scheduling_appointment_request)
   const details = gcalAppointmentDetails(scheduling_appointment_request)
 

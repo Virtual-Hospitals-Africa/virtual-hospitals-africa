@@ -4,7 +4,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
-
 import generateUUID from '../../../util/uuid.ts'
 import randomPhoneNumber from '../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../mockWhatsApp.ts'

@@ -22,6 +22,9 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
       {
         method: 'POST',
       },
+      {
+        cancel_response_body: true,
+      },
     )
 
     const path = compact(new URL(response.url).pathname.split('/'))
@@ -40,32 +43,20 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
 
     const patient = await patients.getById(db, patient_id)
     assertEquals(patient, {
-      'id': patient.id,
-      'name': null,
-      'names': null,
-      'phone_number': null,
-      'sex': null,
-      'gender': null,
-      'ethnicity': null,
-      'address': null,
-      'date_of_birth': null,
-      'dob_formatted': null,
-      'age_display': null,
-      'preferred_language_code_iso_639_2_b': null,
-      'age_years': null,
-      'description': null,
-      'national_id_number': null,
-      'completed_registration': false,
-      'avatar_url': null,
-      'last_visited': null,
-      'location': null,
-      'actions': {
-        'view': `/app/patients/${patient.id}`,
-      },
-      'nearest_organization': null,
-      'primary_doctor': null,
+      id: patient.id,
+      name: null,
+      names: null,
+      sex: null,
+      gender: null,
+      date_of_birth: null,
+      dob_formatted: null,
+      age_display: null,
+      preferred_language_code_iso_639_2_b: null,
+      age_years: null,
+      description: null,
+      national_id_number: null,
+      completed_registration: false,
+      avatar_url: null,
     })
-
-    return response.body?.cancel()
   })
 })

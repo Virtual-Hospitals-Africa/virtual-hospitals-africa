@@ -13,6 +13,7 @@ import * as google from '../../../../../../../../external-clients/google.ts'
 import * as conversations from '../../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../../db/models/appointments.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import {
   convertToTimeString,
   formatJohannesburg,
@@ -193,7 +194,7 @@ describe.skip('patient chatbot', () => {
       ],
     })
 
-    const patient = await patients.getLastConversationState(trx, {
+    const patient = await getPatientLastConversationState(trx, {
       phone_number,
     })
 

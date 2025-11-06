@@ -1,6 +1,8 @@
 import { JSX } from 'preact'
 import * as appointments from '../../../../../../../db/models/appointments.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
+import * as patient_primary_doctor from '../../../../../../../db/models/patient_primary_doctor.ts'
+import * as patient_nearest_organization from '../../../../../../../db/models/patient_nearest_organization.ts'
 import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
 import { Person } from '../../../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../../../components/library/Tabs.tsx'
@@ -45,20 +47,37 @@ export const PatientProfilePage = (
       const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
       const { trx, organization_employment } = ctx.state
 
-      const { patient, upcoming_appointments, open_encounter } =
-        await promiseProps({
-          patient: patients.getById(trx, patient_id),
-          upcoming_appointments: appointments.getForPatient(
-            trx,
-            {
-              patient_id,
-              time_range: 'future',
-            },
-          ),
-          open_encounter: patient_encounters.getOpen(trx, {
+      const {
+        patient,
+        upcoming_appointments,
+        open_encounter,
+        primary_doctor,
+        nearest_organization,
+      } = await promiseProps({
+        patient: patients.getById(trx, patient_id),
+        upcoming_appointments: appointments.getForPatient(
+          trx,
+          {
             patient_id,
-          }).then(first),
-        })
+            time_range: 'future',
+          },
+        ),
+        open_encounter: patient_encounters.getOpen(trx, {
+          patient_id,
+        }).then(first),
+        primary_doctor: patient_primary_doctor.get(
+          trx,
+          {
+            patient_id,
+          },
+        ),
+        nearest_organization: patient_nearest_organization.get(
+          trx,
+          {
+            patient_id,
+          },
+        ),
+      })
 
       assertOr405(
         patient.completed_registration,
@@ -102,22 +121,22 @@ export const PatientProfilePage = (
                         </>
                       )}
 
-                      {patient.primary_doctor && (
+                      {primary_doctor && (
                         <a
-                          href={`/app/organizations/${patient.primary_doctor.organization.id}/employees/${patient.primary_doctor.health_worker_id}`}
-                          title={`View details of Dr. ${patient.primary_doctor.name}`}
+                          href={`/app/organizations/${primary_doctor.organization.id}/employees/${primary_doctor.health_worker_id}`}
+                          title={`View details of Dr. ${primary_doctor.name}`}
                           className='text-blue-600 hover:underline'
                         >
-                          Dr. {patient.primary_doctor.name}
+                          Dr. {primary_doctor.name}
                         </a>
                       )}
-                      {patient.nearest_organization && (
+                      {nearest_organization && (
                         <a
-                          href={`/app/organizations/${patient.nearest_organization.id}`}
-                          title={`View details of ${patient.nearest_organization}`}
+                          href={`/app/organizations/${nearest_organization.id}`}
+                          title={`View details of ${nearest_organization}`}
                           className='text-blue-600 hover:underline'
                         >
-                          {patient.nearest_organization.name}
+                          {nearest_organization.name}
                         </a>
                       )}
                     </>

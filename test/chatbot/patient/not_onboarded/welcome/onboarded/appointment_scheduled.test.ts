@@ -6,6 +6,7 @@ import respond from '../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../db/models/appointments.ts'
+import { getPatientLastConversationState } from '../../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../../mocks/randomPhoneNumber.ts'
@@ -92,7 +93,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

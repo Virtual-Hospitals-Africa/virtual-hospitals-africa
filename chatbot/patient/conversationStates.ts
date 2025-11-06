@@ -63,7 +63,7 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     async onExit(trx, patientState) {
-      const patient = await patients.createFromChatbot(trx, {
+      const patient = await patients.insert(trx, {
         name: patientState.unhandled_message.trimmed_body!,
         phone_number: patientState.unhandled_message.sent_by_phone_number,
         country: SERVER_COUNTRY,

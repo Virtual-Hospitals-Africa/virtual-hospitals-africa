@@ -17,6 +17,9 @@ import { Patients } from '../../db.d.ts'
 import { base } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
+import generateUUID from '../../util/uuid.ts'
+import { assert } from 'std/assert/assert.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -69,19 +72,41 @@ const baseQuery = (trx: TrxOrDb) =>
       'asc',
     )
 
-export function createFromChatbot(
+export async function insert(
   trx: TrxOrDb,
-  to_insert: {
-    name: string
-    phone_number: string
-    country: string
-  },
+  { conversation_state, country, ...to_insert }:
+    & Omit<InsertShape<Patients>, 'id' | 'phone_number' | 'country'>
+    & {
+      conversation_state?: string
+      phone_number?: string
+      country?: string
+    },
 ) {
-  return trx
-    .insertInto('patients')
-    .values(to_insert)
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  const patient_id = generateUUID()
+  const { patient } = await promiseProps({
+    patient: trx
+      .insertInto('patients')
+      .values({
+        ...to_insert,
+        id: patient_id,
+        country: country || SERVER_COUNTRY,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow(),
+    chatbot_user: conversation_state && (
+      assert(Deno.env.get('IS_TEST')),
+        assert(to_insert.phone_number),
+        trx.insertInto('patient_chatbot_users')
+          .values({
+            entity_id: patient_id,
+            phone_number: to_insert.phone_number,
+            conversation_state,
+            data: '{}',
+          })
+          .execute()
+    ),
+  })
+  return patient
 }
 
 type PatientUpsert =
@@ -132,6 +157,15 @@ export function update(
     .set(to_update)
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
+  return trx
+    .selectFrom('media')
+    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
+    .select(['media.mime_type', 'media.binary_data'])
+    .where('patients.id', '=', opts.patient_id)
+    .executeTakeFirst()
 }
 
 const model = base({

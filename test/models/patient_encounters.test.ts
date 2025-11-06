@@ -54,6 +54,8 @@ describe(
               avatar_url: null,
               sex: null,
               date_of_birth: null,
+              names: null,
+              completed_registration: false,
             }
 
             assertArrayNonEmpty(

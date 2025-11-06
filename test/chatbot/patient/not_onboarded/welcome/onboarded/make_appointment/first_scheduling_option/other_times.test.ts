@@ -27,6 +27,7 @@ import { GCalEvent } from '../../../../../../../../types.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -190,7 +191,7 @@ describe('patient chatbot', () => {
       ],
     })
 
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 
