@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import {
   RenderedPatient,
   RenderedPatientCompletedRegistration,
@@ -25,5 +26,11 @@ export function isPatientRegistrationStep(
 export function completedRegistration(
   patient: RenderedPatient,
 ): patient is RenderedPatientCompletedRegistration {
-  return patient.completed_registration
+  if (!patient.completed_registration) {
+    return false
+  }
+  assert(patient.sex)
+  assert(patient.gender)
+  assert(patient.date_of_birth)
+  return true
 }

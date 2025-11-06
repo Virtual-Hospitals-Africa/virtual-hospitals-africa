@@ -16,15 +16,15 @@ import { groupByUniq } from '../../util/groupBy.ts'
 
 export const COMMON_CONDITIONS = [
   {
-    key: 'diabetes' as const,
-    label: 'Diabetes',
-    snomed_concept_id: '73211009',
-    required: true,
-  },
-  {
     key: 'pregnancy' as const,
     label: 'Pregnancy',
     snomed_concept_id: '77386006',
+    required: true,
+  },
+  {
+    key: 'diabetes' as const,
+    label: 'Diabetes',
+    snomed_concept_id: '73211009',
     required: true,
   },
   {

@@ -40,6 +40,7 @@ describe(
                 employment_id: receptionist.employee_id,
               },
             )
+            assert(organization_employment)
 
             const open_encounter = await patient_encounters.getById(
               trx,
@@ -51,6 +52,8 @@ describe(
               name: '[Unregistered patient]',
               description: null,
               avatar_url: null,
+              sex: null,
+              date_of_birth: null,
             }
 
             assertArrayNonEmpty(

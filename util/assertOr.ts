@@ -1,10 +1,28 @@
 import { assert } from 'std/assert/assert.ts'
-import { ExtendedActionData } from '../types.ts'
+import { ExtendedActionData, NonEmptyArray } from '../types.ts'
 
 export class StatusError extends Error {
   location?: string
   constructor(message: string, public status: number) {
     super(message)
+  }
+}
+
+export class AlertWithActionsError extends StatusError {
+  constructor(
+    message: string,
+    actions: NonEmptyArray<ExtendedActionData>,
+    level: 'error' | 'warning' | 'success' = 'error',
+  ) {
+    super(
+      JSON.stringify({
+        name: 'alert_with_actions',
+        level,
+        message,
+        actions,
+      }),
+      400,
+    )
   }
 }
 
@@ -83,16 +101,10 @@ export function assertOr500(
 export function assertOrAlertWithActions(
   condition: unknown,
   message: string,
-  actions: ExtendedActionData[],
-  level: 'warning' | 'error' = 'error',
+  actions: NonEmptyArray<ExtendedActionData>,
+  level: 'error' | 'warning' | 'success' = 'error',
 ): asserts condition {
-  assertOr400(
-    condition,
-    JSON.stringify({
-      name: 'alert_with_actions',
-      level,
-      message,
-      actions,
-    }),
-  )
+  if (!condition) {
+    throw new AlertWithActionsError(message, actions, level)
+  }
 }

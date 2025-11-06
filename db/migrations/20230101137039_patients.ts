@@ -28,7 +28,6 @@ export async function up(db: Kysely<DB>) {
         .addColumn('country', 'varchar(2)', (col) =>
           col.notNull().references('countries.iso_3166_2'))
         .addColumn('national_id_number', 'varchar(50)')
-        .addColumn('first_language', 'varchar(50)')
         .addColumn(
           'avatar_media_id',
           'uuid',

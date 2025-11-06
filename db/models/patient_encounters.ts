@@ -268,10 +268,10 @@ export function baseQuery(trx: TrxOrDb) {
       jsonBuildObject({
         id: eb_encounters.ref('patients.id'),
         name: eb_encounters.ref('patients.name'),
+        sex: eb_encounters.ref('patients.sex'),
+        date_of_birth: eb_encounters.ref('patients.date_of_birth'),
         avatar_url: patients.avatar_url_sql,
-        description: sql<
-          string | null
-        >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
+        description: patients.description_sql,
       }).as('patient'),
       jsonObjectFrom(
         organizations.baseQuery(trx)
@@ -430,7 +430,7 @@ export function baseQuery(trx: TrxOrDb) {
       jsonArrayFrom(
         baseEncounterProviderQuery(trx)
           .where(
-            'patient_encounter_employees.id',
+            'patient_encounter_employees.patient_encounter_id',
             '=',
             eb_encounters.ref('patient_encounters.id'),
           ),

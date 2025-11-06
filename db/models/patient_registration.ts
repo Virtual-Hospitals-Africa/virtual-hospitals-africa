@@ -9,17 +9,20 @@ import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_family from './family.ts'
 import * as patient_allergies from './patient_allergies.ts'
-import { jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
 import {
-  assertOr403,
-  assertOr404,
-  assertOrAlertWithActions,
-} from '../../util/assertOr.ts'
+  isoDate,
+  jsonBuildObject,
+  literalLocation,
+  success_true,
+} from '../helpers.ts'
+import { assertOr403, assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import { SERVER_COUNTRY } from './countries.ts'
+import { assertNoPresentEncounter } from './patient_workflows.ts'
+import { description_sql } from './patients.ts'
 
 /* 1. Enable the URL to include buttons that get rendered into alerts
  2. Make it so assertOr400(
@@ -46,25 +49,7 @@ export async function start(
   assertOr403(
     non_admin_id,
   )
-
-  assertOrAlertWithActions(
-    !health_worker.present_encounter,
-    'Cannot register new patients while present with another patient',
-    [
-      {
-        text: `Continue with ${health_worker.present_encounter?.patient.name}`,
-        href:
-          `/app/organizations/${health_worker.present_encounter?.organization.id}/patients/${health_worker.present_encounter?.patient.id}/open_encounter/${health_worker.present_encounter?.status.patient_presence.current_workflow}`,
-      },
-      {
-        text:
-          `${health_worker.present_encounter?.patient.name} is in the waiting room`,
-        href:
-          `/app/organizations/${health_worker.present_encounter?.organization.id}/patients/${health_worker.present_encounter?.patient.id}/open_encounter/move-to-waiting-room`,
-        method: 'POST',
-      },
-    ],
-  )
+  assertNoPresentEncounter(health_worker)
 
   const patient_id = generateUUID()
   const patient_encounter_id = generateUUID()
@@ -188,13 +173,9 @@ export async function getSummaryById(
         sex: eb.ref('patients.sex'),
         gender: eb.ref('patients.gender'),
         ethnicity: eb.ref('patients.ethnicity'),
-        date_of_birth: sql<
-          null | string
-        >`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`,
+        date_of_birth: isoDate(eb.ref('patients.date_of_birth')),
         national_id_number: eb.ref('patients.national_id_number'),
-        description: sql<
-          string | null
-        >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`,
+        description: description_sql,
       }).as('personal'),
       jsonBuildObject({
         primary_doctor_name: sql<

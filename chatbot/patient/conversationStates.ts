@@ -30,6 +30,12 @@ import {
 import uniq from '../../util/uniq.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
 import { receiveMedia } from './receiveMedia.ts'
+import { SERVER_COUNTRY } from '../../db/models/countries.ts'
+import { nearestFacilities } from '../../db/models/patient_nearest_facilities.ts'
+import {
+  scheduledAppointments,
+  schedulingAppointmentRequest,
+} from '../../db/models/patient_appointments.ts'
 
 const conversationStates: ConversationStates<
   PatientChatbotUserState
@@ -57,9 +63,10 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     async onExit(trx, patientState) {
-      const patient = await patients.insert(trx, {
+      const patient = await patients.createFromChatbot(trx, {
         name: patientState.unhandled_message.trimmed_body!,
         phone_number: patientState.unhandled_message.sent_by_phone_number,
+        country: SERVER_COUNTRY,
       })
       await conversations.updateChatbotUser(
         trx,
@@ -165,15 +172,8 @@ const conversationStates: ConversationStates<
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const patient = await patients.getById(
-        trx,
-        patientState.chatbot_user.entity_id,
-      )
-      assert(patient.location)
-      assert(patient.location.latitude)
-      assert(patient.location.longitude)
 
-      const nearest_facilities = await patients.nearestFacilities(
+      const nearest_facilities = await nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
       )
@@ -196,7 +196,6 @@ const conversationStates: ConversationStates<
         }
       }
 
-      console.log(nearest_facilities)
       const organizations = nearest_facilities.map((organization) => {
         const distanceInKM = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
@@ -245,15 +244,8 @@ const conversationStates: ConversationStates<
     prompt: 'I will send you organization location',
     async getMessages(trx, patientState): Promise<WhatsAppSendable> {
       assert(patientState.chatbot_user.entity_id)
-      const patient = await patients.getById(
-        trx,
-        patientState.chatbot_user.entity_id,
-      )
-      assert(patient.location)
-      assert(patient.location.latitude)
-      assert(patient.location.longitude)
 
-      const nearest_facilities = await patients.nearestFacilities(
+      const nearest_facilities = await nearestFacilities(
         trx,
         patientState.chatbot_user.entity_id,
       )
@@ -307,8 +299,10 @@ const conversationStates: ConversationStates<
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patients
-        .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       await appointments.upsertRequest(trx, {
         id: scheduling_appointment_request.patient_appointment_request_id,
@@ -352,11 +346,13 @@ const conversationStates: ConversationStates<
         trx,
         patientState.chatbot_user.entity_id,
       )
-      const scheduling_appointment_request = await patients
-        .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       assert(scheduling_appointment_request.reason)
-      return `Got it, ${scheduling_appointment_request.reason}. In summary, your name is ${patient.name}, you're messaging from ${patient.phone_number}, you are a ${patient.sex} born on ${patient.dob_formatted} with national id number ${patient.national_id_number} and you want to schedule an appointment for ${scheduling_appointment_request.reason}. Is this correct?`
+      return `Got it, ${scheduling_appointment_request.reason}. In summary, your name is ${patient.name}, you are a ${patient.sex} born on ${patient.dob_formatted} with national id number ${patient.national_id_number} and you want to schedule an appointment for ${scheduling_appointment_request.reason}. Is this correct?`
     },
     options: [
       {
@@ -364,8 +360,8 @@ const conversationStates: ConversationStates<
         title: 'Yes',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          const scheduling_appointment_request = await patients
-            .schedulingAppointmentRequest(
+          const scheduling_appointment_request =
+            await schedulingAppointmentRequest(
               trx,
               patientState.chatbot_user.entity_id,
             )
@@ -398,8 +394,10 @@ const conversationStates: ConversationStates<
     type: 'select',
     async prompt(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patients
-        .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       return `Great, the next available appointment is on ${
         prettyAppointmentTime(
@@ -428,8 +426,8 @@ const conversationStates: ConversationStates<
         title: 'Other times',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          const scheduling_appointment_request = await patients
-            .schedulingAppointmentRequest(
+          const scheduling_appointment_request =
+            await schedulingAppointmentRequest(
               trx,
               patientState.chatbot_user.entity_id,
             )
@@ -501,8 +499,10 @@ const conversationStates: ConversationStates<
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patients
-        .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
 
       const nonDeclinedTimes = scheduling_appointment_request
@@ -558,8 +558,8 @@ const conversationStates: ConversationStates<
           description: 'Show other time slots',
           async onExit(trx, patientState) {
             assert(patientState.chatbot_user.entity_id)
-            const scheduling_appointment_request = await patients
-              .schedulingAppointmentRequest(
+            const scheduling_appointment_request =
+              await schedulingAppointmentRequest(
                 trx,
                 patientState.chatbot_user.entity_id,
               )
@@ -585,7 +585,7 @@ const conversationStates: ConversationStates<
     type: 'select',
     async prompt(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduled_appointments = await patients.scheduledAppointments(
+      const scheduled_appointments = await scheduledAppointments(
         trx,
         patientState.chatbot_user.entity_id,
       )

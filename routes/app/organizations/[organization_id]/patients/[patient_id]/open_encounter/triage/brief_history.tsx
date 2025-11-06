@@ -8,7 +8,6 @@ import * as patient_findings from '../../../../../../../../db/models/patient_fin
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
   YesNoGrid,
-  YesNoLabelSpan,
   YesNoQuestion,
 } from '../../../../../../../../islands/form/inputs/yes_no.tsx'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
@@ -23,7 +22,10 @@ import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { NO_QUALIFIER_SNOMED_CONCEPT_ID } from '../../../../../../../../db/models/patient_findings.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
-import { RenderedFindingRelativeToHealthWorker } from '../../../../../../../../types.ts'
+import {
+  RenderedFindingRelativeToHealthWorker,
+  Sex,
+} from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
 
 const ConditionSchemaOptional = z.object(
@@ -106,31 +108,34 @@ export const handler = postHandler(
 )
 
 function CommonConditionRow(
-  { condition, positive_findings }: {
+  { condition, positive_findings, sex }: {
     condition: typeof COMMON_CONDITIONS[number]
     positive_findings: RenderedFindingRelativeToHealthWorker[]
+    sex: Sex
   },
 ) {
-  const finding = positive_findings.find((f) =>
+  const positive_finding = positive_findings.find((f) =>
     f.pertaining_to_key === condition.key
   )
   return (
     <YesNoQuestion
       name={`${condition.key}.presence`}
-      // required={condition.required}
-      label={
-        <div className='flex flex-col gap-2'>
-          <YesNoLabelSpan label={condition.label} />
-          <MostRecentFinding finding={finding} />
-        </div>
-      }
+      required={condition.required}
+      value={positive_finding
+        ? true
+        : condition.key === 'pregnancy' && sex === 'male'
+        ? false
+        : undefined}
+      label={condition.label}
+      most_recent_finding={<MostRecentFinding finding={positive_finding} />}
     />
   )
 }
 
 function BriefHistorySection(
-  { positive_findings }: {
+  { positive_findings, sex }: {
     positive_findings: RenderedFindingRelativeToHealthWorker[]
+    sex: Sex
   },
 ) {
   return (
@@ -141,6 +146,7 @@ function BriefHistorySection(
             key={condition.key}
             condition={condition}
             positive_findings={positive_findings}
+            sex={sex}
           />
         ))}
       </YesNoGrid>
@@ -159,7 +165,12 @@ export async function TriageBriefHistoryPage(
     { patient_id, encounter, health_worker_id: ctx.state.health_worker.id },
   )
 
-  return <BriefHistorySection positive_findings={positive_findings} />
+  return (
+    <BriefHistorySection
+      positive_findings={positive_findings}
+      sex={encounter.patient.sex}
+    />
+  )
 }
 
 export default OpenEncounterWorkflowPage(TriageBriefHistoryPage)

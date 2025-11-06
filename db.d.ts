@@ -1169,7 +1169,6 @@ export interface Patients {
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
-  first_language: string | null
   first_names: string | null
   gender: string | null
   id: Generated<string>

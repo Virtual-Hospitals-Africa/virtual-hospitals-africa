@@ -218,7 +218,7 @@ export type PatientConversationState =
   | 'end_of_demo'
   | 'error'
 
-export type Patient = PatientPersonal & {
+export type Patient = {
   primary_doctor_id: Maybe<string>
   nearest_organization_id: Maybe<string>
   completed_registration: boolean
@@ -226,59 +226,22 @@ export type Patient = PatientPersonal & {
   unregistered_primary_doctor_name: Maybe<string>
 }
 
-export type PatientDemographicInfo = {
-  phone_number: Maybe<string>
-  name: Maybe<string>
-  sex: Maybe<Sex>
-  gender: Maybe<string>
-  ethnicity: Maybe<string>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
-  first_language: Maybe<string>
-  country: string
+export type RenderedPatient = {
+  id: string
+  sex: string | null
+  gender: string | null
+  national_id_number: string | null
+  completed_registration: boolean
+  date_of_birth: string | null
+  dob_formatted: string | null
+  name: string | null
+  names: null | Names
+  description: string | null
+  age_display: Maybe<string>
+  age_years: Maybe<number>
+  avatar_url: string | null
+  preferred_language_code_iso_639_2_b: string | null
 }
-export type PatientPersonal = {
-  conversation_state: PatientConversationState
-  avatar_media_id: Maybe<string>
-  location: Maybe<Coordinates>
-} & PatientDemographicInfo
-
-export type RenderedPatient =
-  & Pick<
-    Patient,
-    | 'sex'
-    | 'gender'
-    | 'ethnicity'
-    | 'national_id_number'
-    | 'phone_number'
-    | 'completed_registration'
-  >
-  & {
-    id: string
-    address: string | null
-    date_of_birth: string | null
-    dob_formatted: string | null
-    name: string | null
-    names: null | Names
-    description: string | null
-    age_display: Maybe<string>
-    age_years: Maybe<number>
-    avatar_url: string | null
-    last_visited: null // TODO: implement
-    location: null | {
-      longitude: number
-      latitude: number
-    }
-    actions: {
-      view: string
-    }
-    nearest_organization: null | {
-      id: string
-      name: string
-    }
-    preferred_language_code_iso_639_2_b: string | null
-    primary_doctor: null | Omit<RenderedCareTeamHealthWorker, 'profession'>
-  }
 
 export type RenderedPatientCompletedPersonal =
   & RenderedPatient
@@ -2410,8 +2373,11 @@ export type RenderedPatientEncounter = {
   patient: {
     id: string
     name: string
+    sex: Sex | null
+    date_of_birth: string | null
     avatar_url: string | null
     description: string | null
+    completed_registration: boolean
   }
   organization: RenderedOrganization
   appointment: {
