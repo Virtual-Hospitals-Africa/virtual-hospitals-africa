@@ -1,8 +1,9 @@
-import { assert } from 'std/assert/assert.ts'
 import {
   RenderedPatient,
+  RenderedPatientCompletedPersonal,
   RenderedPatientCompletedRegistration,
 } from '../types.ts'
+import { assertPropertyNonNull } from '../util/assertPropertyNonNull.ts'
 
 export const PATIENT_REGISTRATION_STEPS = [
   'personal' as const,
@@ -29,8 +30,14 @@ export function completedRegistration(
   if (!patient.completed_registration) {
     return false
   }
-  assert(patient.sex)
-  assert(patient.gender)
-  assert(patient.date_of_birth)
+  assertPropertyNonNull(patient, 'sex')
+  assertPropertyNonNull(patient, 'gender')
+  assertPropertyNonNull(patient, 'date_of_birth')
   return true
+}
+
+export function completedPersonal(
+  patient: RenderedPatient,
+): patient is RenderedPatientCompletedPersonal {
+  return !!patient.sex && !!patient.gender && !!patient.date_of_birth
 }

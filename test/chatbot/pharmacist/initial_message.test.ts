@@ -11,7 +11,7 @@ import { mockWhatsApp } from '../mockWhatsApp.ts'
 describe('pharmacist chatbot', () => {
   afterAll(() => db.destroy())
   it('sends the main menu after the initial message', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'pharmacist',
       received_by_phone_number: '263XXXXXX',

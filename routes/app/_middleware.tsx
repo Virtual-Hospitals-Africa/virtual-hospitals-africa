@@ -61,9 +61,7 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
-    console.log('in here')
     const health_worker = await getLoggedInHealthWorkerFromCookie(ctx)
-    console.log('welkelwkklew', health_worker)
 
     if (
       health_worker && (

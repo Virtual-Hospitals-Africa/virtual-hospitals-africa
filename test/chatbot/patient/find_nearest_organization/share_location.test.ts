@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
   const organizations = readSeedDump('organizations')
 
   it('sends nearest organizations list after invitation', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,

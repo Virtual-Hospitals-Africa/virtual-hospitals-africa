@@ -8,12 +8,13 @@ export async function schedulingAppointmentRequest(
   // deno-lint-ignore no-explicit-any
   const result = await sql<any>`
       WITH aot_pre as (
-        SELECT patient_appointment_offered_times.*,
-               health_workers.name as health_worker_name,
-               employment.profession
-          FROM patient_appointment_offered_times
-          JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
-          JOIN health_workers ON employment.health_worker_id = health_workers.id
+          SELECT patient_appointment_offered_times.*,
+                 health_workers.name as health_worker_name,
+                 employment.profession
+            FROM patient_appointment_offered_times
+            JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
+            JOIN health_workers ON employment.health_worker_id = health_workers.id
+        ORDER BY patient_appointment_offered_times.start ASC
       )
 
       SELECT patient_appointment_requests.id as patient_appointment_request_id,

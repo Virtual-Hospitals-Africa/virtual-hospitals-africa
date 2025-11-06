@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
   const organizations = readSeedDump('organizations')
 
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     // Step 1: share location
     await patients.insert(db, {

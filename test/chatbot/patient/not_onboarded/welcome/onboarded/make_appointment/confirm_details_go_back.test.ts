@@ -14,7 +14,7 @@ import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('ends after not confirming details', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,

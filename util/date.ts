@@ -13,6 +13,7 @@ import isString from './isString.ts'
 import isObjectLike from './isObjectLike.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { exists } from './exists.ts'
+import { padMonth, padMonthDay } from './pad.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -113,7 +114,10 @@ export function stringify(
   date: ParsedDateTime | ParsedDate | Date | string,
 ): string {
   if (isParsedDate(date)) {
-    return `${date.year}-${date.month}-${date.day}T00:00:00+02:00`
+    assert(date.year.length === 4, 'Only support four digit year')
+    return `${date.year}-${padMonth(date.month)}-${
+      padMonthDay(date.day)
+    }T00:00:00+02:00`
   }
   if (isString(date)) {
     if (date.endsWith('+02:00')) {

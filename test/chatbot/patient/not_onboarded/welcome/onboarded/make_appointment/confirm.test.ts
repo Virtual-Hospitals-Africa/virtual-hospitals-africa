@@ -37,7 +37,7 @@ describe('patient chatbot', () => {
     if (getFreeBusy) getFreeBusy.restore()
   })
   it('provides with first_scheduling_option details after confirming details', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,

@@ -13,7 +13,7 @@ import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for sex after inquiring name', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
 
     const chatbot_user = await conversations.insertChatbotUser(
       db,

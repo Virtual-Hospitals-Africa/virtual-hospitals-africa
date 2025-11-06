@@ -13,7 +13,7 @@ import { getPatientLastConversationState } from '../../../../../db/models/patien
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for birthday after inquiring sex', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_sex',
       phone_number,

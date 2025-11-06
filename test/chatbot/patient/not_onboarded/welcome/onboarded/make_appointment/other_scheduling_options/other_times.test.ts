@@ -41,7 +41,7 @@ describe.skip('patient chatbot', () => {
   it('provides with other_appointment_times after choosing other_time_option', async () => {
     const trx = db
 
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const patientBefore = await patients.insert(trx, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,

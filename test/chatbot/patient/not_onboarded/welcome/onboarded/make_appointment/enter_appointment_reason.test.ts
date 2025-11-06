@@ -16,7 +16,7 @@ import randomDemographics from '../../../../../../../mocks/randomDemographics.ts
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for media after inquiring appointment reason', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     await patients.insert(db, {
       conversation_state:

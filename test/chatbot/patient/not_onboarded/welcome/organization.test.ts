@@ -15,7 +15,7 @@ import { Sex } from '../../../../../types.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('sends invitation to share location after welcome message', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const sex: Sex = 'female'
     const date_of_birth = '2023-01-01'
     await patients.insert(db, {

@@ -28,7 +28,7 @@ import {
 } from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { completedRegistration } from '../../../../../../../../shared/patient_registration.ts'
+import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -168,7 +168,7 @@ export async function TriageBriefHistoryPage(
     { patient_id, encounter, health_worker_id: health_worker.id },
   )
 
-  assert(completedRegistration(patient))
+  assert(completedPersonal(patient))
 
   return (
     <BriefHistorySection
