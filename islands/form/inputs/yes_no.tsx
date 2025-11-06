@@ -67,7 +67,7 @@ export function YesNoQuestion({
 
 export function YesNoGrid({ children }: { children: ComponentChildren }) {
   return (
-    <div className='overflow-hidden border border-b border-gray-300 rounded-lg'>
+    <div className='overflow-visible border border-b border-gray-300 rounded-lg'>
       <div className='bg-indigo-50 border-b border-gray-300 px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center'>
         <div className='text-sm font-medium text-indigo-900'>
           Conditions

@@ -11,8 +11,6 @@ import {
 export function FindingPanel(
   { finding }: { finding: RenderedFindingRelativeToHealthWorker },
 ) {
-  const duration_text = calculateDuration(finding.created_at)
-
   return (
     <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 w-full max-w-[296px]'>
       <div className='flex flex-col gap-2'>
@@ -32,7 +30,8 @@ export function FindingPanel(
 
         {/* Details section */}
         <div className='flex flex-col gap-2'>
-          {/* Duration */}
+          {
+            /* Duration
           {duration_text && (
             <div className='flex items-center gap-1'>
               <p className='text-sm text-gray-600'>Duration:</p>
@@ -40,9 +39,10 @@ export function FindingPanel(
                 {duration_text}
               </p>
             </div>
-          )}
+          )} */
+          }
 
-          <hr className='border-gray-200' />
+          {/* <hr className='border-gray-200' /> */}
 
           {/* Provider info */}
           <div className='flex flex-col gap-1'>
@@ -70,7 +70,7 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  During {finding.as_part_of_procedure.name}
+                  during {finding.as_part_of_procedure.name}
                 </p>
               </div>
             )}
@@ -79,7 +79,7 @@ export function FindingPanel(
             <div className='flex gap-1.5 items-center'>
               <BuildingOffice2Icon className='w-4 h-4 text-indigo-700' />
               <p className='text-sm font-medium text-gray-900'>
-                {finding.provider.organization_name}
+                at {finding.provider.organization_name}
               </p>
             </div>
 
@@ -146,27 +146,4 @@ export function FindingPanel(
       </div>
     </div>
   )
-}
-
-function calculateDuration(created_at: Date): string | null {
-  const now = new Date()
-  const created = new Date(created_at)
-  const diffMs = now.getTime() - created.getTime()
-  const diffYears = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365))
-
-  if (diffYears > 0) {
-    return `${diffYears} year${diffYears === 1 ? '' : 's'}`
-  }
-
-  const diffMonths = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 30))
-  if (diffMonths > 0) {
-    return `${diffMonths} month${diffMonths === 1 ? '' : 's'}`
-  }
-
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-  if (diffDays > 0) {
-    return `${diffDays} day${diffDays === 1 ? '' : 's'}`
-  }
-
-  return null
 }
