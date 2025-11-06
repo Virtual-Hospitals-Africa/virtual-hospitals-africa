@@ -1,10 +1,11 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as waiting_room from '../../db/models/waiting_room.ts'
+import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-import { assert } from 'node:console'
+import db from '../../db/db.ts'
+import * as waiting_room from '../../db/models/waiting_room.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
+import { completedRegistration } from '../../shared/patient_registration.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { withTestOrganization } from '../_helpers/organizations.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
@@ -12,6 +13,7 @@ import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   insertRegistrationWithEmployeeForTest,
 } from '../_helpers/workflows.ts'
+import { RenderedPatient } from '../../types.ts'
 
 describe(
   'db/models/patient_encounters.ts',
@@ -40,17 +42,28 @@ describe(
                 employment_id: receptionist.employee_id,
               },
             )
+            assert(organization_employment)
 
             const open_encounter = await patient_encounters.getById(
               trx,
               patient_encounter_id,
             )
 
-            const patient = {
+            const patient: RenderedPatient = {
               id: patient_id,
-              name: '[Unregistered patient]',
+              name: null,
               description: null,
               avatar_url: null,
+              sex: null,
+              date_of_birth: null,
+              names: null,
+              completed_registration: false,
+              gender: null,
+              national_id_number: null,
+              dob_formatted: null,
+              age_display: null,
+              age_years: null,
+              preferred_language_code_iso_639_2_b: null,
             }
 
             assertArrayNonEmpty(
@@ -59,7 +72,6 @@ describe(
             assertArrayNonEmpty(
               open_encounter.all_employees_seen,
             )
-            assert(open_encounter.workflows.registration!.completed_at)
             assert(open_encounter.arrived_timestamp instanceof Date)
             assertEquals(
               open_encounter.status.patient_presence!.employees.length,
@@ -79,6 +91,8 @@ describe(
                       patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
                       organization_id: organization_employment.organization.id,
+                      organization_name:
+                        organization_employment.organization.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -111,6 +125,7 @@ describe(
                       seen_at: open_encounter.all_employees_seen[0].seen_at,
                       avatar_url: receptionist.avatar_url,
                       organization_id: organization.id,
+                      organization_name: organization.name,
                     },
                   ],
                 },
@@ -125,8 +140,15 @@ describe(
               all_employees_seen: [
                 {
                   patient_encounter_employee_id,
-                  employment_id: organization_employment.non_admin_id!,
+                  health_worker_id: receptionist.id,
+                  employment_id: receptionist.employee_id,
+                  health_worker_name: receptionist.name,
+                  profession: 'receptionist',
+                  specialty: null,
                   seen_at: open_encounter.all_employees_seen[0].seen_at,
+                  avatar_url: receptionist.avatar_url,
+                  organization_id: organization.id,
+                  organization_name: organization.name,
                 },
               ],
             })
@@ -138,7 +160,12 @@ describe(
 
             assertEquals(in_waiting_room, {
               patient_encounter_id,
-              patient,
+              patient: {
+                id: patient.id,
+                avatar_url: patient.avatar_url,
+                description: patient.description,
+                name: '[Unregistered patient]',
+              },
               arrived_ago_display: 'Just now',
               workflow_status_display: 'Registration In Progress',
               actions: [{
@@ -222,6 +249,8 @@ describe(
                         employee.patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
                       organization_id: organization_employment.organization.id,
+                      organization_name:
+                        organization_employment.organization.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -276,7 +305,17 @@ describe(
                   patient_encounter_employee_id:
                     employee.patient_encounter_employee_id,
                   employment_id: organization_employment.non_admin_id!,
-                  seen_at: open_encounter.all_employees_seen[0].seen_at,
+                  organization_id: organization_employment.organization.id,
+                  organization_name: organization_employment.organization.name,
+                  profession: 'receptionist',
+                  health_worker_id: receptionist.id,
+                  health_worker_name: receptionist.name,
+                  avatar_url:
+                    open_encounter.workflows.registration!.employees[0]
+                      .avatar_url,
+                  specialty: null,
+                  seen_at: open_encounter.workflows.registration!.employees[0]
+                    .seen_at,
                 },
               ],
             })
@@ -286,9 +325,16 @@ describe(
               organization_employment,
             )
 
+            assert(completedRegistration(patient))
+
             assertEquals(in_waiting_room, {
               patient_encounter_id,
-              patient,
+              patient: {
+                id: patient.id,
+                name: patient.name,
+                avatar_url: patient.avatar_url,
+                description: patient.description,
+              },
               arrived_ago_display: 'Just now',
               workflow_status_display: 'Awaiting Triage',
               actions: [{

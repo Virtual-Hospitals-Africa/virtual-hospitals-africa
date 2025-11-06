@@ -4,6 +4,7 @@ import db from '../../../../../../../../db/db.ts'
 import respond from '../../../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../../db/models/patients.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
@@ -12,7 +13,7 @@ import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('ends after not confriming first scheduling option ', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
@@ -53,7 +54,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

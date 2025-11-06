@@ -68,7 +68,7 @@ function HeaderBase(
       }}
     >
       {/* <div className='relative flex items-center justify-between h-16'> */}
-      <div className="justify-start text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10">
+      <div className="justify-start text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10 flex flex-row">
         {children}
       </div>
     </nav>

@@ -347,11 +347,18 @@ export class GoogleClient {
   }
 }
 
+const requests_to_google: [string, RequestOpts | undefined][] = []
+
+export function getRequestsToGoogle() {
+  return requests_to_google
+}
+
 function testServerMock(
   path: string,
   opts?: RequestOpts,
   // deno-lint-ignore no-explicit-any
 ): { result: 'success'; data: any } {
+  requests_to_google.push([path, opts])
   if (path === '/calendar/v3/freeBusy' && opts?.method === 'post') {
     assert(isObjectLike(opts.data))
     assert(opts.data.timeMin)
@@ -371,6 +378,12 @@ function testServerMock(
         timeMax: opts.data.timeMax,
         calendars,
       },
+    }
+  }
+  if (opts?.method === 'delete') {
+    return {
+      result: 'success' as const,
+      data: {},
     }
   }
   throw new Error(`No mock for ${opts?.method || 'get'} ${path}`)

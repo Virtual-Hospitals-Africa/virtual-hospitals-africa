@@ -1,4 +1,5 @@
 type LocalTimeProps = { timestamp: string | Date }
+
 export function LocalTime({ timestamp }: LocalTimeProps) {
   return <div>{formatDateTime(timestamp)}</div>
 }

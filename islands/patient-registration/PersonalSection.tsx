@@ -30,7 +30,10 @@ export default function PatientRegistrationPersonalSection(
             value={patient.date_of_birth}
             required
           />
-          <SexAndGenderInputs sex={patient.sex} gender={patient.gender} />
+          <SexAndGenderInputs
+            sex={patient.sex ?? null}
+            gender={patient.gender ?? null}
+          />
         </FormRow>
         <FormRow>
           <LanguageSelect

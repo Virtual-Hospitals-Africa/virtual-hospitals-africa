@@ -5,14 +5,14 @@ function PersonOption({
   option,
   selected,
 }: {
-  option: PersonData
+  option: PersonData & { name: string }
   selected: boolean
 }) {
   return <Person person={option} bold={selected} />
 }
 
 export default function PersonSearch(
-  props: Omit<AsyncSearchProps<PersonData>, 'Option'>,
+  props: Omit<AsyncSearchProps<PersonData & { name: string }>, 'Option'>,
 ) {
   return <AsyncSearch {...props} Option={PersonOption} />
 }

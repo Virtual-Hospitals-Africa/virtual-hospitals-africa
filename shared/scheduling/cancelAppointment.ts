@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as google from '../../external-clients/google.ts'
-import * as patients from '../../db/models/patients.ts'
+import { scheduledAppointments } from '../../db/models/patient_appointments.ts'
 import { get } from '../../db/models/providers.ts'
 import { remove } from '../../db/models/appointments.ts'
 
@@ -14,7 +14,7 @@ export async function cancelAppointment(
     patientState.chatbot_user.entity_id,
     'No entity_id found in patientState',
   )
-  const scheduled_appointments = await patients.scheduledAppointments(
+  const scheduled_appointments = await scheduledAppointments(
     trx,
     patientState.chatbot_user.entity_id,
   )

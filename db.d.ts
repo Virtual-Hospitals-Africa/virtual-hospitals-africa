@@ -1138,6 +1138,7 @@ export interface PatientProcedures {
 export interface PatientRecordQualifiers {
   concrete_value: Json | null
   id: string
+  patient_encounter_employee_id: string
   qualifies_record_id: string
   snomed_concept_id_value: Int8 | null
 }
@@ -1168,7 +1169,6 @@ export interface Patients {
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
-  first_language: string | null
   first_names: string | null
   gender: string | null
   id: Generated<string>

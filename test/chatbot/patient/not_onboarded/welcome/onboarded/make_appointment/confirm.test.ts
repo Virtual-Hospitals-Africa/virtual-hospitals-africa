@@ -13,6 +13,7 @@ import * as google from '../../../../../../../external-clients/google.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../db/models/appointments.ts'
+import { getPatientLastConversationState } from '../../../../../../../db/models/patient_chatbot_users.ts'
 import {
   formatJohannesburg,
   prettyAppointmentTime,
@@ -36,7 +37,7 @@ describe('patient chatbot', () => {
     if (getFreeBusy) getFreeBusy.restore()
   })
   it('provides with first_scheduling_option details after confirming details', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
@@ -140,7 +141,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

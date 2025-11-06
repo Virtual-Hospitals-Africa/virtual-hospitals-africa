@@ -16,12 +16,19 @@ import {
   COMMON_CONDITIONS,
   CommonConditionKey,
   commonConditionSnomedConceptId,
-  positiveFindings,
+  renderedPositiveFindings,
 } from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { NO_QUALIFIER_SNOMED_CONCEPT_ID } from '../../../../../../../../db/models/patient_findings.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
+import {
+  RenderedFindingRelativeToHealthWorker,
+  Sex,
+} from '../../../../../../../../types.ts'
+import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
+import { assert } from 'std/assert/assert.ts'
+import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -102,15 +109,46 @@ export const handler = postHandler(
   },
 )
 
-function BriefHistorySection() {
+function CommonConditionRow(
+  { condition, positive_findings, sex }: {
+    condition: typeof COMMON_CONDITIONS[number]
+    positive_findings: RenderedFindingRelativeToHealthWorker[]
+    sex: Sex
+  },
+) {
+  const positive_finding = positive_findings.find((f) =>
+    f.pertaining_to_key === condition.key
+  )
+  return (
+    <YesNoQuestion
+      name={`${condition.key}.presence`}
+      required={condition.required}
+      value={positive_finding
+        ? true
+        : condition.key === 'pregnancy' && sex === 'male'
+        ? false
+        : undefined}
+      label={condition.label}
+      most_recent_finding={<MostRecentFinding finding={positive_finding} />}
+    />
+  )
+}
+
+function BriefHistorySection(
+  { positive_findings, sex }: {
+    positive_findings: RenderedFindingRelativeToHealthWorker[]
+    sex: Sex
+  },
+) {
   return (
     <FormSection header='Confirm Pre-existing Conditions'>
       <YesNoGrid>
         {COMMON_CONDITIONS.map((condition) => (
-          <YesNoQuestion
+          <CommonConditionRow
             key={condition.key}
-            name={`${condition.key}.presence`}
-            label={condition.label}
+            condition={condition}
+            positive_findings={positive_findings}
+            sex={sex}
           />
         ))}
       </YesNoGrid>
@@ -121,16 +159,23 @@ function BriefHistorySection() {
 export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, encounter } = ctx.state
-  const patient_id = encounter.patient.id
+  const { trx, encounter, health_worker } = ctx.state
+  const { patient } = encounter
+  const patient_id = patient.id
 
-  const positive_findings = await positiveFindings(
+  const positive_findings = await renderedPositiveFindings(
     trx,
-    { patient_id },
+    { patient_id, encounter, health_worker_id: health_worker.id },
   )
-  console.log(positive_findings)
 
-  return <BriefHistorySection />
+  assert(completedPersonal(patient))
+
+  return (
+    <BriefHistorySection
+      positive_findings={positive_findings}
+      sex={patient.sex}
+    />
+  )
 }
 
 export default OpenEncounterWorkflowPage(TriageBriefHistoryPage)

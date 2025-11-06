@@ -58,8 +58,10 @@ describe('brief_history', () => {
 
       assertEquals(positive_findings.length, 1)
       const [diabetes_finding] = positive_findings
+
       assertEquals(diabetes_finding, {
         'record_id': diabetes_finding.record_id,
+        created_at: diabetes_finding.created_at,
         'snomed_concept_id': '73211009',
         'patient_encounter_id': encounter.patient_encounter_id,
         'patient_encounter_employee_id':
@@ -70,7 +72,8 @@ describe('brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
-        'common_conditions_key': 'diabetes',
+        'qualifiers': [],
+        'pertaining_to_key': 'diabetes',
       })
     })
   })

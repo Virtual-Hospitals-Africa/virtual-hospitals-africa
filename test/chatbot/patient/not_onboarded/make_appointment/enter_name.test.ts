@@ -4,6 +4,7 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
@@ -12,7 +13,7 @@ import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for sex after inquiring name', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
 
     const chatbot_user = await conversations.insertChatbotUser(
       db,
@@ -52,8 +53,8 @@ describe('patient chatbot', () => {
       },
     ])
 
-    const { conversation_state, patient_id } = await patients
-      .getLastConversationState(
+    const { conversation_state, patient_id } =
+      await getPatientLastConversationState(
         db,
         {
           phone_number,

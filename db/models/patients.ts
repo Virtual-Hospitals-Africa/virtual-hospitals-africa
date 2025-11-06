@@ -1,37 +1,24 @@
-import { assert } from 'std/assert/assert.ts'
-import { SelectQueryBuilder, sql } from 'kysely'
+import { sql } from 'kysely'
 import {
-  HasStringId,
+  Coordinates,
   InsertShape,
+  InsertShapeLiteral,
   Maybe,
-  Patient,
-  PatientNearestOrganization,
-  PatientSchedulingAppointmentRequest,
   RenderedPatient,
   TrxOrDb,
   UpdateShape,
 } from '../../types.ts'
-import { haveNames } from '../../util/haveNames.ts'
-import { getWalkingDistance } from '../../external-clients/google-maps.ts'
-import * as conversations from './conversations.ts'
-import * as nearest_organizations from './nearest_organizations.ts'
 import {
+  isoDate,
   jsonBuildNullableObject,
-  jsonBuildObject,
-  jsonObjectFrom,
   literalLocation,
   longFormattedDate,
 } from '../helpers.ts'
-import { DB, Patients } from '../../db.d.ts'
-import { assertFoundEventually } from '../../util/assertEventually.ts'
-import { pMap } from '../../util/inParallel.ts'
+import { Patients } from '../../db.d.ts'
 import { base } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-
-export const view_href_sql = sql<string>`
-  concat('/app/patients/', patients.id::text)
-`
+import { assert } from 'std/assert/assert.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -55,167 +42,98 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-const baseQuery = (trx: TrxOrDb) =>
+export const baseQuery = (trx: TrxOrDb) =>
   trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .leftJoin(
-      'addresses',
-      'addresses.id',
-      'patients.address_id',
-    )
     .select((eb) => [
       'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      'patients.phone_number',
+      'patients.name',
       'patients.sex',
       'patients.gender',
-      'patients.ethnicity',
-      'addresses.formatted as address',
-      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
-      ),
-      dob_formatted,
-      'patient_age.age_display',
       'patients.preferred_language_code_iso_639_2_b',
-      sql<number | null>`patient_age.age_years::integer`.as('age_years'),
+      dob_formatted,
+      isoDate(eb.ref('patients.date_of_birth')).as('date_of_birth'),
       description_sql.as('description'),
+      'patient_age.age_display',
+      sql<number | null>`patient_age.age_years::integer`.as('age_years'),
       'patients.national_id_number',
       'patients.completed_registration',
       avatar_url_sql.as('avatar_url'),
-      sql<null>`NULL`.as('last_visited'),
-      jsonBuildNullableObject(eb.ref('patients.location'), {
-        longitude: sql<number>`ST_X(patients.location::geometry)`,
-        latitude: sql<number>`ST_Y(patients.location::geometry)`,
-      }).as('location'),
-      jsonBuildObject({
-        view: view_href_sql,
-      }).as('actions'),
       jsonBuildNullableObject(eb.ref('patients.name'), {
         name: eb.ref('patients.name').$notNull(),
         first_names: eb.ref('patients.first_names').$notNull(),
         surname: eb.ref('patients.surname').$notNull(),
         preferred_name: eb.ref('patients.preferred_name').$notNull(),
       }).as('names'),
-      jsonObjectFrom(
-        eb.selectFrom('organizations as nearest_organizations')
-          .whereRef(
-            'nearest_organizations.id',
-            '=',
-            'patients.nearest_organization_id',
-          )
-          .select([
-            'nearest_organizations.id',
-            'nearest_organizations.name',
-          ]),
-      ).as('nearest_organization'),
-      jsonObjectFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'health_workers',
-            'employment.health_worker_id',
-            'health_workers.id',
-          )
-          .innerJoin(
-            'organizations as primary_doctor_organizations',
-            'employment.organization_id',
-            'primary_doctor_organizations.id',
-          )
-          .whereRef(
-            'employment.id',
-            '=',
-            'patients.primary_doctor_id',
-          )
-          .select((eb2) => [
-            'employment.id as employment_id',
-            'employment.health_worker_id',
-            'health_workers.name',
-            'health_workers.avatar_url',
-            'employment.specialty',
-            // TODO implement last_visit_relative_to_now
-            sql<string>`'2 months ago'`.as('last_visit_relative_to_now'),
-            jsonBuildObject({
-              id: eb2.ref('primary_doctor_organizations.id'),
-              name: eb2.ref('primary_doctor_organizations.name'),
-            }).as('organization'),
-          ]),
-      ).as('primary_doctor'),
     ])
     .orderBy(
       'name',
       'asc',
     )
 
-export async function getLastConversationState(
-  trx: TrxOrDb,
-  query: { phone_number: string },
-) {
-  const user = await assertFoundEventually(conversations.getUser(
-    trx,
-    'patient',
-    {
-      phone_number: query.phone_number,
-    },
-  ))
-  assert(user.entity_id)
-  return {
-    patient_id: user.entity_id,
-    chatbot_user_id: user.id,
-    conversation_state: user.conversation_state,
-  }
-}
-
-type PatientUpsert =
-  & Partial<Patient>
-  & NameInputs
-  & { id?: string }
-
-function asPatientValues(
-  {
-    location,
-    ...patient
-  }: PatientUpsert,
-): InsertShape<Patients> {
-  return {
-    ...patient,
-    ...asNames(patient),
-    country: patient.country || SERVER_COUNTRY,
-    location: location && literalLocation(location),
-  }
-}
-
-export function insertMany(
-  trx: TrxOrDb,
-  patients: Array<Partial<Patient> & { name: string }>,
-) {
-  assert(patients.length > 0, 'Must insert at least one patient')
-  return trx
-    .insertInto('patients')
-    .values(patients.map(asPatientValues))
-    .returningAll()
-    .execute()
-}
-
 export async function insert(
   trx: TrxOrDb,
-  { conversation_state, ...to_insert }: Partial<Patient> & {
-    name: string
-    conversation_state?: string
-  },
+  { conversation_state, country, ...to_insert }:
+    & Omit<
+      InsertShapeLiteral<Patients>,
+      'id' | 'phone_number' | 'country' | 'location'
+    >
+    & {
+      country?: string
+      phone_number?: string
+      conversation_state?: string
+    },
 ) {
-  const inserted = await insertMany(trx, [to_insert])
-  assert(inserted.length === 1)
-  const patient = inserted[0]
+  const patient = await trx
+    .insertInto('patients')
+    .values({
+      ...to_insert,
+      ...asMaybeNames(to_insert),
+      country: country || SERVER_COUNTRY,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
   if (conversation_state) {
+    assert(Deno.env.get('IS_TEST'))
+    assert(to_insert.phone_number)
     await trx.insertInto('patient_chatbot_users')
       .values({
         entity_id: patient.id,
-        phone_number: patient.phone_number!,
+        phone_number: to_insert.phone_number,
         conversation_state,
         data: '{}',
       })
       .execute()
   }
+
   return patient
+}
+
+type PatientUpsert =
+  & Omit<Partial<InsertShape<Patients>>, 'location'>
+  & NameInputs
+  & {
+    location?: Coordinates
+  }
+
+export function upsert(
+  trx: TrxOrDb,
+  patient: PatientUpsert,
+) {
+  const to_upsert: InsertShape<Patients> = {
+    ...patient,
+    ...asNames(patient),
+    country: patient.country || SERVER_COUNTRY,
+    location: patient.location && literalLocation(patient.location),
+  }
+  return trx
+    .insertInto('patients')
+    .values(to_upsert)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
+    .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function update(
@@ -226,13 +144,10 @@ export function update(
       id: string
     },
 ) {
-  const names = asMaybeNames({ name, first_names, surname, preferred_name })
   const to_update: UpdateShape<Patients> = {
     ...patient,
+    ...asMaybeNames({ name, first_names, surname, preferred_name }),
     location: location && literalLocation(location),
-  }
-  if (names) {
-    Object.assign(to_update, names)
   }
 
   return trx.updateTable('patients')
@@ -242,25 +157,27 @@ export function update(
     .executeTakeFirstOrThrow()
 }
 
-export function upsert(
-  trx: TrxOrDb,
-  patient: PatientUpsert,
-) {
-  const to_upsert = asPatientValues(patient)
+export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
   return trx
-    .insertInto('patients')
-    .values(to_upsert)
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
-    .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
-    .returningAll()
-    .executeTakeFirstOrThrow()
+    .selectFrom('media')
+    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
+    .select(['media.mime_type', 'media.binary_data'])
+    .where('patients.id', '=', opts.patient_id)
+    .executeTakeFirst()
 }
 
-export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
-  return trx
-    .deleteFrom('patients')
-    .where('phone_number', '=', opts.phone_number)
+export async function getPreferredLanguage(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  const patient = await trx.selectFrom('patients')
+    .where('id', '=', patient_id)
+    .select([
+      'preferred_language_code_iso_639_2_b',
+    ])
     .executeTakeFirst()
+
+  return patient?.preferred_language_code_iso_639_2_b || null
 }
 
 const model = base({
@@ -295,180 +212,3 @@ const model = base({
 export const getById = model.getById
 export const getByIds = model.getByIds
 export const search = model.search
-export type PatientCard = {
-  id: string
-  name: string
-  description: string | null
-  avatar_url: string | null
-  primary_doctor_id: string | null
-  actions: {
-    view: string
-  }
-}
-
-export function getCardQuery(
-  trx: TrxOrDb,
-): SelectQueryBuilder<DB, 'patients', PatientCard> {
-  return trx.selectFrom('patients')
-    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .select((eb) => [
-      'patients.id',
-      eb.ref('patients.name').$notNull().as('name'),
-      sql<string | null>`patients.gender || ', ' || patient_age.age_display`.as(
-        'description',
-      ),
-      avatar_url_sql.as('avatar_url'),
-      'patients.primary_doctor_id',
-      jsonBuildObject({
-        view: view_href_sql,
-      }).as('actions'),
-    ])
-}
-
-export async function findAllWithNames(
-  trx: TrxOrDb,
-  search_terms: {
-    search?: Maybe<string>
-    include_incomplete_registration?: boolean
-  },
-): Promise<RenderedPatient[]> {
-  const patients = await model.findAll(trx, {
-    ...search_terms,
-    has_name: true,
-  })
-  assert(haveNames(patients))
-  return patients
-}
-
-export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
-  return trx
-    .selectFrom('media')
-    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
-    .select(['media.mime_type', 'media.binary_data'])
-    .where('patients.id', '=', opts.patient_id)
-    .executeTakeFirst()
-}
-
-export async function nearestFacilities(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const { location } = await trx.selectFrom('patients')
-    .where('id', '=', patient_id)
-    .where('location', 'is not', null)
-    .select([
-      jsonBuildObject({
-        longitude: sql<number>`ST_X(location::geometry)`,
-        latitude: sql<number>`ST_Y(location::geometry)`,
-      }).as('location'),
-    ])
-    .executeTakeFirstOrThrow()
-
-  const { results: nearest_facilities } = await nearest_organizations.search(
-    trx,
-    {
-      location,
-    },
-    {
-      rows_per_page: 20,
-    },
-  )
-
-  return pMap(
-    nearest_facilities,
-    async (organization): Promise<HasStringId<PatientNearestOrganization>> => {
-      const walking_distance = await getWalkingDistance({
-        origin: {
-          longitude: location.longitude,
-          latitude: location.latitude,
-        },
-        destination: {
-          longitude: organization.location.longitude,
-          latitude: organization.location.latitude,
-        },
-      })
-      return { ...organization, walking_distance }
-    },
-  )
-}
-
-export async function schedulingAppointmentRequest(
-  trx: TrxOrDb,
-  patient_id: string,
-): Promise<null | PatientSchedulingAppointmentRequest> {
-  // deno-lint-ignore no-explicit-any
-  const result = await sql<any>`
-      WITH aot_pre as (
-        SELECT patient_appointment_offered_times.*,
-               health_workers.name as health_worker_name,
-               employment.profession
-          FROM patient_appointment_offered_times
-          JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
-          JOIN health_workers ON employment.health_worker_id = health_workers.id
-      )
-
-      SELECT patient_appointment_requests.id as patient_appointment_request_id,
-             patient_appointment_requests.reason,
-             json_agg(aot_pre.*) as offered_times
-        FROM patient_appointment_requests
-   LEFT JOIN aot_pre ON patient_appointment_requests.id = aot_pre.patient_appointment_request_id
-       WHERE patient_appointment_requests.id is not null
-         AND patient_id = ${patient_id}
-    GROUP BY patient_appointment_requests.id, patient_appointment_requests.patient_id, patient_appointment_requests.reason
-  `.execute(trx)
-
-  return result.rows[0] || null
-}
-
-export function scheduledAppointments(
-  trx: TrxOrDb,
-  patient_id: string,
-): Promise<{
-  id: string
-  reason: string
-  provider_id: string
-  gcal_event_id: string
-  start: Date
-  health_worker_name: string
-}[]> {
-  return trx.selectFrom('appointments')
-    .innerJoin(
-      'appointment_providers',
-      'appointment_providers.appointment_id',
-      'appointments.id',
-    )
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'appointment_providers.provider_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .select([
-      'appointments.id',
-      'appointments.reason',
-      'appointment_providers.provider_id',
-      'appointments.gcal_event_id',
-      'appointments.start',
-      'health_workers.name as health_worker_name',
-    ])
-    .where('patient_id', '=', patient_id)
-    .execute()
-}
-
-export async function getPreferredLanguage(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const patient = await trx.selectFrom('patients')
-    .where('id', '=', patient_id)
-    .select([
-      'preferred_language_code_iso_639_2_b',
-    ])
-    .executeTakeFirst()
-
-  return patient?.preferred_language_code_iso_639_2_b || null
-}

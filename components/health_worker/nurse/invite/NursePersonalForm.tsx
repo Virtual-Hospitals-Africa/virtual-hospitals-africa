@@ -26,8 +26,10 @@ export default function NursePersonalForm(
           label='Date of Birth'
           value={form_data.date_of_birth}
         />
-        {/* <GenderSelect value={form_data.gender} /> */}
-        <SexAndGenderInputs sex={form_data.sex} gender={form_data.gender} />
+        <SexAndGenderInputs
+          sex={form_data.sex ?? null}
+          gender={form_data.gender ?? null}
+        />
       </FormRow>
       <FormRow>
         <ZimbabweanNationalIdInput value={form_data.national_id_number} />

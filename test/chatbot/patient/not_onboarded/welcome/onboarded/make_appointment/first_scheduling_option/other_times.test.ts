@@ -27,6 +27,7 @@ import { GCalEvent } from '../../../../../../../../types.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -39,7 +40,7 @@ describe('patient chatbot', () => {
   })
 
   it('provides with other_appointment_time after rejecting first_option', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
@@ -190,7 +191,7 @@ describe('patient chatbot', () => {
       ],
     })
 
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

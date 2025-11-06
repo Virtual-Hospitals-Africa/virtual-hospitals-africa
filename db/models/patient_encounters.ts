@@ -20,7 +20,6 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonArrayFromColumn,
-  jsonBuildObject,
   jsonObjectFrom,
   literalLocation,
   now,
@@ -223,40 +222,6 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   return inserted_patient_presence
 }
 
-// export async function insertNewSeekingTreatmentCompletedRegistrationWithEmployeeForTest(
-//   trx: TrxOrDb,
-//   organization_id: string,
-//   { patient_name, employment_id }: {
-//     patient_name: string
-//     employment_id: string
-//   },
-// ) {
-//   assert(Deno.env.get('IS_TEST'))
-
-//   const encounter = await patient_registration.(
-//     trx,
-//     await organizations.getById(trx, organization_id),
-//     {
-//       patient_id,
-//       reason: 'seeking treatment',
-//     },
-//   )
-
-//   const employee = await trx.insertInto(
-//     'patient_encounter_employees',
-//   ).values({
-//     patient_encounter_id: encounter.patient_encounter_id,
-//     employment_id,
-//   })
-//     .returningAll()
-//     .executeTakeFirstOrThrow()
-
-//   return {
-//     ...await getById(trx, encounter.id),
-//     employee,
-//   }
-// }
-
 export function baseEncounterProviderQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounter_employees')
@@ -264,6 +229,11 @@ export function baseEncounterProviderQuery(trx: TrxOrDb) {
       'employment',
       'employment.id',
       'patient_encounter_employees.employment_id',
+    )
+    .innerJoin(
+      'organizations',
+      'organizations.id',
+      'employment.organization_id',
     )
     .innerJoin(
       'health_workers',
@@ -274,6 +244,7 @@ export function baseEncounterProviderQuery(trx: TrxOrDb) {
       'patient_encounter_employees.id as patient_encounter_employee_id',
       'employment.id as employment_id',
       'employment.organization_id',
+      'organizations.name as organization_name',
       'employment.profession',
       'employment.health_worker_id',
       'health_workers.name as health_worker_name',
@@ -286,21 +257,20 @@ export function baseEncounterProviderQuery(trx: TrxOrDb) {
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounters')
-    .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
     .select((eb_encounters) => [
       'patient_encounters.id as patient_encounter_id',
       'patient_encounters.created_at as arrived_timestamp',
       'patient_encounters.closed_at',
       'patient_encounters.reason',
       'patient_encounters.notes',
-      jsonBuildObject({
-        id: eb_encounters.ref('patients.id'),
-        name: eb_encounters.ref('patients.name'),
-        avatar_url: patients.avatar_url_sql,
-        description: sql<
-          string | null
-        >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
-      }).as('patient'),
+      jsonObjectFrom(
+        patients.baseQuery(trx)
+          .where(
+            'patients.id',
+            '=',
+            eb_encounters.ref('patient_encounters.patient_id'),
+          ),
+      ).$notNull().as('patient'),
       jsonObjectFrom(
         organizations.baseQuery(trx)
           .where(
@@ -456,19 +426,12 @@ export function baseQuery(trx: TrxOrDb) {
           ]),
       ).as('workflows'),
       jsonArrayFrom(
-        eb_encounters.selectFrom(
-          'patient_encounter_employees as employees_seen',
-        )
-          .whereRef(
-            'patient_encounters.id',
+        baseEncounterProviderQuery(trx)
+          .where(
+            'patient_encounter_employees.patient_encounter_id',
             '=',
-            'employees_seen.patient_encounter_id',
-          )
-          .select([
-            'employees_seen.id as patient_encounter_employee_id',
-            'employees_seen.employment_id',
-            'employees_seen.seen_at',
-          ]),
+            eb_encounters.ref('patient_encounters.id'),
+          ),
       ).as('all_employees_seen'),
     ])
 }
@@ -617,6 +580,7 @@ type EncounterSearch = {
   patient_id?: string
   // ever_seen_health_worker_id?: string
   presence_health_worker_id?: string | HealthWorkerIdSelection
+  ids?: string[]
 }
 
 const model = base({
@@ -641,10 +605,7 @@ const model = base({
       workflows: asWorkflows(workflows, status),
       priority: asPriority(priority),
       status,
-      patient: {
-        ...patient,
-        name: patient.name || '[Unregistered patient]',
-      },
+      patient,
       reason,
       ...patient_encounter,
     }
@@ -653,6 +614,9 @@ const model = base({
     qb,
     opts: EncounterSearch,
   ) {
+    if (opts.ids) {
+      qb = qb.where('patient_encounters.id', 'in', opts.ids)
+    }
     if (opts.is_open) {
       assert(!opts.is_closed)
       qb = qb.where('patient_encounters.closed_at', 'is', null)
@@ -697,6 +661,7 @@ const model = base({
 
 export const getById = model.getById
 export const search = model.search
+export const findAll = model.findAll
 export const findOne = model.findOne
 export const findOneOptional = model.findOneOptional
 export const searchQuery = model.searchQuery

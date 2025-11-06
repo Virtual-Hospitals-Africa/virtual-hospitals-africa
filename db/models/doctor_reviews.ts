@@ -1,4 +1,4 @@
-import { SelectQueryBuilder } from 'kysely'
+import { SelectQueryBuilder, sql } from 'kysely'
 import {
   DB,
   DoctorReviewStep,
@@ -21,12 +21,44 @@ import {
   literalString,
   now,
 } from '../helpers.ts'
-import { getCardQuery } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
 import { HealthWorkerIdSelection } from './health_worker_id.ts'
+import { avatar_url_sql, description_sql } from './patients.ts'
+
+export const view_href_sql = sql<string>`
+  concat('/app/patients/', patients.id::text)
+`
+
+export type PatientCard = {
+  id: string
+  name: string
+  description: string | null
+  avatar_url: string | null
+  primary_doctor_id: string | null
+  actions: {
+    view: string
+  }
+}
+
+export function getCardQuery(
+  trx: TrxOrDb,
+): SelectQueryBuilder<DB, 'patients', PatientCard> {
+  return trx.selectFrom('patients')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .select((eb) => [
+      'patients.id',
+      eb.ref('patients.name').$notNull().as('name'),
+      description_sql.as('description'),
+      avatar_url_sql.as('avatar_url'),
+      'patients.primary_doctor_id',
+      jsonBuildObject({
+        view: view_href_sql,
+      }).as('actions'),
+    ])
+}
 
 export function ofHealthWorker(
   trx: TrxOrDb,

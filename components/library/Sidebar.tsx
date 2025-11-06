@@ -140,7 +140,10 @@ export function GenericSidebar(
                 href={replaceParams(link.route, allParams)}
                 active={link === activeLink}
                 title={link.title ||
-                  capitalize(link.route.split('/').pop()!)}
+                  capitalize(link.route.split('/').pop()!).replace(
+                    ' And ',
+                    ' & ',
+                  )}
                 Icon={link.Icon}
               />
             ))}

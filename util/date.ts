@@ -13,6 +13,7 @@ import isString from './isString.ts'
 import isObjectLike from './isObjectLike.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { exists } from './exists.ts'
+import { padMonth, padMonthDay } from './pad.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -96,11 +97,27 @@ function isParsedDate(date: unknown): date is ParsedDate {
     !('hour' in date)
 }
 
+function isTimezoneAdjustment(timezone: string): boolean {
+  const adjustment = timezone.slice(0, 1)
+  const hours = parseInt(timezone.slice(1, 3))
+  const colon = timezone.slice(3, 4)
+  const minutes = parseInt(timezone.slice(4, 6))
+  return (
+    (adjustment === '+' || adjustment === '-') &&
+    (colon === ':') &&
+    (hours >= 0 && hours <= 23) &&
+    (minutes >= 0 && minutes <= 59)
+  )
+}
+
 export function stringify(
   date: ParsedDateTime | ParsedDate | Date | string,
 ): string {
   if (isParsedDate(date)) {
-    return `${date.year}-${date.month}-${date.day}T00:00:00+02:00`
+    assert(date.year.length === 4, 'Only support four digit year')
+    return `${date.year}-${padMonth(date.month)}-${
+      padMonthDay(date.day)
+    }T00:00:00+02:00`
   }
   if (isString(date)) {
     if (date.endsWith('+02:00')) {
@@ -108,6 +125,9 @@ export function stringify(
     }
     if (date_regex.test(date)) {
       return stringify(parseDate(date))
+    }
+    if (isTimezoneAdjustment(date.slice(-6))) {
+      return stringify(parseDateTime(date, 'numeric'))
     }
     throw new Error(`Unrecognized string format for ${date}`)
   }

@@ -5,6 +5,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
+import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
@@ -16,7 +17,7 @@ describe('patient chatbot', () => {
   const organizations = readSeedDump('organizations')
 
   it('sends nearest organizations list after invitation', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',
       phone_number,
@@ -83,7 +84,7 @@ describe('patient chatbot', () => {
 
     assertEquals(firstCallArgs.phone_number, phone_number)
 
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

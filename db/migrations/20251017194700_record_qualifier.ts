@@ -12,6 +12,13 @@ export async function up(db: Kysely<DB>) {
     },
     (qb) =>
       qb.addColumn(
+        'patient_encounter_employee_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_encounter_employees.id').onDelete(
+            'cascade',
+          ),
+      ).addColumn(
         'qualifies_record_id',
         'uuid',
         (col) => col.references('patient_records.id').notNull(),

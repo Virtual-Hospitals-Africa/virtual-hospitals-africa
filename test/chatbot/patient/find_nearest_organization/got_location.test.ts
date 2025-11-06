@@ -5,6 +5,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
+import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import { mockWhatsApp } from '../../mockWhatsApp.ts'
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
@@ -16,7 +17,7 @@ describe('patient chatbot', () => {
   const organizations = readSeedDump('organizations')
 
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     // Step 1: share location
     await patients.insert(db, {
@@ -98,7 +99,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

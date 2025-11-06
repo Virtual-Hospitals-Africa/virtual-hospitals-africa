@@ -4,7 +4,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
-
 import generateUUID from '../../../util/uuid.ts'
 import randomPhoneNumber from '../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../mockWhatsApp.ts'
@@ -12,7 +11,7 @@ import { mockWhatsApp } from '../mockWhatsApp.ts'
 describe('pharmacist chatbot', () => {
   afterAll(() => db.destroy())
   it('sends the main menu after the initial message', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'pharmacist',
       received_by_phone_number: '263XXXXXX',

@@ -6,16 +6,17 @@ import respond from '../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../db/models/appointments.ts'
-
+import { getPatientLastConversationState } from '../../../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../mockWhatsApp.ts'
+import { getRequestsToGoogle } from '../../../../../../external-clients/google.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('comes back to main menu after cancelling appointment', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
       phone_number,
@@ -57,10 +58,12 @@ describe('patient chatbot', () => {
       duration_minutes,
     })
 
+    const gcal_event_id = 'insertEvent_id'
+
     // Insert scheduled appointment
     const appointment = await appointments.schedule(db, {
       appointment_offered_time_id: offeredTime.id,
-      gcal_event_id: 'insertEvent_id',
+      gcal_event_id,
     })
 
     await conversations.insertMessageReceived(db, {
@@ -92,7 +95,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 
@@ -102,10 +105,20 @@ describe('patient chatbot', () => {
       'onboarded:appointment_cancelled',
     )
 
-    const cancelledAppointmet = await appointments.getWithPatientInfo(db, {
-      id: appointment.id,
-      health_worker_id: health_worker.id,
-    })
-    assertEquals(cancelledAppointmet.length, 0)
+    const appointments_after_cancellation = await appointments
+      .getWithPatientInfo(db, {
+        id: appointment.id,
+        health_worker_id: health_worker.id,
+      })
+    assertEquals(appointments_after_cancellation.length, 0)
+    const requests_to_google = getRequestsToGoogle()
+    assertEquals(requests_to_google, [
+      [
+        `/calendar/v3/calendars/${health_worker.calendars.gcal_appointments_calendar_id}/events/${gcal_event_id}`,
+        {
+          'method': 'delete',
+        },
+      ],
+    ])
   })
 })

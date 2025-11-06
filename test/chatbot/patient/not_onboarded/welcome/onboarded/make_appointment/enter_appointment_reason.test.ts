@@ -5,6 +5,7 @@ import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
+import { getPatientLastConversationState } from '../../../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../../../util/uuid.ts'
 import randomNationalId from '../../../../../../../mocks/randomNationalId.ts'
@@ -15,7 +16,7 @@ import randomDemographics from '../../../../../../../mocks/randomDemographics.ts
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for media after inquiring appointment reason', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     await patients.insert(db, {
       conversation_state:
@@ -64,7 +65,7 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const patient = await patients.getLastConversationState(db, {
+    const patient = await getPatientLastConversationState(db, {
       phone_number,
     })
 

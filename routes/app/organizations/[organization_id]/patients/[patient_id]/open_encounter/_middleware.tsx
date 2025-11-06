@@ -51,6 +51,7 @@ import mapEntries from '../../../../../../../util/mapEntries.ts'
 import {
   completedStep,
   completedWorkflow,
+  PresentWithAnotherPatientError,
 } from '../../../../../../../db/models/patient_workflows.ts'
 import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'
@@ -94,6 +95,14 @@ export type OpenEncounterWorkflowContext<T = Record<never, never>> =
   LoggedInHealthWorkerContext<
     OpenEncounterWorkflowState & T
   >
+
+// export type OpenEncounterWorkflowCompletedRegistrationContext<
+//   T = Record<never, never>,
+// > = OpenEncounterWorkflowContext<
+//   T & {
+//     encounter:
+//   }
+// >
 
 const nav_links: {
   [w in Workflow]: {
@@ -303,10 +312,9 @@ export async function handler(
   let encounter: Maybe<RenderedPatientOpenEncounter> =
     health_worker.present_encounter
   if (encounter) {
-    assertOr400(
-      encounter.patient.id === patient_id,
-      'You are present with another patient. End that workflow first before seeing a new patient.',
-    )
+    if (encounter.patient.id !== patient_id) {
+      throw new PresentWithAnotherPatientError(encounter)
+    }
   } else {
     encounter = await patient_encounters.getOpen(trx, {
       patient_id,
@@ -408,9 +416,10 @@ export function OpenEncounterWorkflowLayout({
             current_consultation_step={ctx.state.step}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
-            care_team={ctx.state.patient.primary_doctor
-              ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
-              : []}
+            care_team={[]}
+            // care_team={ctx.state.patient.primary_doctor
+            //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
+            //   : []}
           />
         )
         : null}

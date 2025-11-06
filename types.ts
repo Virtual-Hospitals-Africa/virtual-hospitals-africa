@@ -10,7 +10,6 @@ import {
   FamilyType,
   MaritalStatus,
   PatientCohabitation,
-  Patients,
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
@@ -86,6 +85,19 @@ export type InsertShape<T> = OptionalMaybeFields<
   }
 >
 
+// Helper type to exclude RawBuilder from a union type
+type ExcludeRawBuilder<T> = T extends RawBuilder<any> ? never : T
+
+export type InsertShapeLiteral<T> = OptionalMaybeFields<
+  {
+    [K in keyof T]: T[K] extends ColumnType<any, infer I, any>
+      ? ExcludeRawBuilder<I>
+      : T[K] extends null | ColumnType<any, infer NullableI, any>
+        ? null | ExcludeRawBuilder<NullableI>
+      : ExcludeRawBuilder<T[K]>
+  }
+>
+
 export type UpdateShape<T> = OptionalMaybeFields<
   {
     [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
@@ -94,8 +106,6 @@ export type UpdateShape<T> = OptionalMaybeFields<
       : T[K] | RawBuilder<T[K]>
   }
 >
-
-type P = UpdateShape<Patients>
 
 // type OrRawBuilder =
 
@@ -221,7 +231,7 @@ export type PatientConversationState =
   | 'end_of_demo'
   | 'error'
 
-export type Patient = PatientPersonal & {
+export type Patient = {
   primary_doctor_id: Maybe<string>
   nearest_organization_id: Maybe<string>
   completed_registration: boolean
@@ -229,59 +239,22 @@ export type Patient = PatientPersonal & {
   unregistered_primary_doctor_name: Maybe<string>
 }
 
-export type PatientDemographicInfo = {
-  phone_number: Maybe<string>
-  name: Maybe<string>
-  sex: Maybe<Sex>
-  gender: Maybe<string>
-  ethnicity: Maybe<string>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
-  first_language: Maybe<string>
-  country: string
+export type RenderedPatient = {
+  id: string
+  sex: Sex | null
+  gender: string | null
+  national_id_number: string | null
+  completed_registration: boolean
+  date_of_birth: string | null
+  dob_formatted: string | null
+  name: string | null
+  names: null | Names
+  description: string | null
+  age_display: Maybe<string>
+  age_years: Maybe<number>
+  avatar_url: string | null
+  preferred_language_code_iso_639_2_b: string | null
 }
-export type PatientPersonal = {
-  conversation_state: PatientConversationState
-  avatar_media_id: Maybe<string>
-  location: Maybe<Coordinates>
-} & PatientDemographicInfo
-
-export type RenderedPatient =
-  & Pick<
-    Patient,
-    | 'sex'
-    | 'gender'
-    | 'ethnicity'
-    | 'national_id_number'
-    | 'phone_number'
-    | 'completed_registration'
-  >
-  & {
-    id: string
-    address: string | null
-    date_of_birth: string | null
-    dob_formatted: string | null
-    name: string | null
-    names: null | Names
-    description: string | null
-    age_display: Maybe<string>
-    age_years: Maybe<number>
-    avatar_url: string | null
-    last_visited: null // TODO: implement
-    location: null | {
-      longitude: number
-      latitude: number
-    }
-    actions: {
-      view: string
-    }
-    nearest_organization: null | {
-      id: string
-      name: string
-    }
-    preferred_language_code_iso_639_2_b: string | null
-    primary_doctor: null | Omit<RenderedCareTeamHealthWorker, 'profession'>
-  }
 
 export type RenderedPatientCompletedPersonal =
   & RenderedPatient
@@ -1699,12 +1672,7 @@ export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 export type ProviderAppointmentSlot = {
   type: 'provider_appointment_slot'
   id: string
-  patient?: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient?: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -1716,12 +1684,7 @@ export type ProviderAppointmentSlot = {
 export type ProviderAppointment = {
   type: 'provider_appointment'
   id: string
-  patient: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -1737,12 +1700,7 @@ export type ProviderAppointment = {
 export type PatientAppointment = {
   type: 'patient_appointment'
   id: string
-  patient: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -2343,11 +2301,6 @@ export type PatientEncounterProvider = {
   seen_at: null | Date
 }
 
-export type WaitingRoom = {
-  organization_id: string
-  patient_encounter_id: string
-}
-
 export type RenderedOrganization = HasStringId<
   Organization & {
     departments: {
@@ -2397,6 +2350,7 @@ export type RenderedPatientEncounterEmployee = {
   patient_encounter_employee_id: string
   employment_id: string
   organization_id: string
+  organization_name: string
   profession: Profession
   health_worker_id: string
   health_worker_name: string
@@ -2409,12 +2363,7 @@ export type RenderedPatientEncounter = {
   patient_encounter_id: string
   reason: EncounterReason | null
   notes: null | string
-  patient: {
-    id: string
-    name: string
-    avatar_url: string | null
-    description: string | null
-  }
+  patient: RenderedPatient
   organization: RenderedOrganization
   appointment: {
     id: string
@@ -2442,11 +2391,7 @@ export type RenderedPatientEncounter = {
   arrived_timestamp: Date
   wait_time: PostgresInterval
   status: RenderedPatientEncounterStatus
-  all_employees_seen: {
-    patient_encounter_employee_id: string
-    employment_id: string
-    seen_at: Date
-  }[]
+  all_employees_seen: RenderedPatientEncounterEmployee[]
 }
 
 export type RenderedPatientOpenEncounter = RenderedPatientEncounter & {
@@ -3512,3 +3457,48 @@ export type PreviouslyCompletedProcedures = {
   workflow_record_id: string | null
   workflow_step_record_id: string | null
 }
+
+export type RenderedFindingProvider = RenderedPatientEncounterEmployee & {
+  is_me: boolean
+}
+
+export type AsPartOfProcedure = {
+  record_id: string
+  snomed_concept_id: string
+  name: string
+}
+
+export type RenderedFindingQualifierRelativeToHealthWorker = {
+  record_id: string
+  patient_encounter_id: string
+  snomed_concept_id: string
+  name: string
+  value_display: string | null
+  created_at: Date
+  provider: RenderedFindingProvider & {
+    is_same_person_who_made_originally_noted_finding: boolean
+  }
+}
+
+export type RenderedFindingRelativeToHealthWorker = {
+  record_id: string
+  patient_encounter_id: string
+  snomed_concept_id: string
+  name: string
+  pertaining_to_key: string
+  created_at: Date
+  provider: RenderedFindingProvider & {
+    is_same_person_who_made_originally_noted_finding: true
+  }
+  as_part_of_procedure: AsPartOfProcedure
+  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  notes?: {
+    note: string
+    created_at: Date
+    provider: RenderedFindingProvider & {
+      is_same_person_who_made_originally_noted_finding: boolean
+    }
+  }[]
+}
+
+export type AppUser = Profession | 'regulator'

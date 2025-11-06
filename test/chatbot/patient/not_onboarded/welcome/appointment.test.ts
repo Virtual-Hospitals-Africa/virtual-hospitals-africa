@@ -11,7 +11,7 @@ import { mockWhatsApp } from '../../../mockWhatsApp.ts'
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('asks for name after welcome message', async () => {
-    const phone_number = randomPhoneNumber()
+    const phone_number = randomPhoneNumber('ZW')
 
     await conversations.insertChatbotUser(db, 'patient', phone_number)
 
