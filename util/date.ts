@@ -96,6 +96,19 @@ function isParsedDate(date: unknown): date is ParsedDate {
     !('hour' in date)
 }
 
+function isTimezoneAdjustment(timezone: string): boolean {
+  const adjustment = timezone.slice(0, 1)
+  const hours = parseInt(timezone.slice(1, 3))
+  const colon = timezone.slice(3, 4)
+  const minutes = parseInt(timezone.slice(4, 6))
+  return (
+    (adjustment === '+' || adjustment === '-') &&
+    (colon === ':') &&
+    (hours >= 0 && hours <= 23) &&
+    (minutes >= 0 && minutes <= 59)
+  )
+}
+
 export function stringify(
   date: ParsedDateTime | ParsedDate | Date | string,
 ): string {
@@ -108,6 +121,9 @@ export function stringify(
     }
     if (date_regex.test(date)) {
       return stringify(parseDate(date))
+    }
+    if (isTimezoneAdjustment(date.slice(-6))) {
+      return stringify(parseDateTime(date, 'numeric'))
     }
     throw new Error(`Unrecognized string format for ${date}`)
   }

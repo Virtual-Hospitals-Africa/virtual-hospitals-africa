@@ -85,6 +85,19 @@ export type InsertShape<T> = OptionalMaybeFields<
   }
 >
 
+// Helper type to exclude RawBuilder from a union type
+type ExcludeRawBuilder<T> = T extends RawBuilder<any> ? never : T
+
+export type InsertShapeLiteral<T> = OptionalMaybeFields<
+  {
+    [K in keyof T]: T[K] extends ColumnType<any, infer I, any>
+      ? ExcludeRawBuilder<I>
+      : T[K] extends null | ColumnType<any, infer NullableI, any>
+        ? null | ExcludeRawBuilder<NullableI>
+      : ExcludeRawBuilder<T[K]>
+  }
+>
+
 export type UpdateShape<T> = OptionalMaybeFields<
   {
     [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
@@ -228,7 +241,7 @@ export type Patient = {
 
 export type RenderedPatient = {
   id: string
-  sex: string | null
+  sex: Sex | null
   gender: string | null
   national_id_number: string | null
   completed_registration: boolean
@@ -1659,12 +1672,7 @@ export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 export type ProviderAppointmentSlot = {
   type: 'provider_appointment_slot'
   id: string
-  patient?: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient?: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -1676,12 +1684,7 @@ export type ProviderAppointmentSlot = {
 export type ProviderAppointment = {
   type: 'provider_appointment'
   id: string
-  patient: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -1697,12 +1700,7 @@ export type ProviderAppointment = {
 export type PatientAppointment = {
   type: 'patient_appointment'
   id: string
-  patient: {
-    id: string
-    avatar_url: Maybe<string>
-    name: Maybe<string>
-    phone_number: Maybe<string>
-  }
+  patient: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
@@ -2303,11 +2301,6 @@ export type PatientEncounterProvider = {
   seen_at: null | Date
 }
 
-export type WaitingRoom = {
-  organization_id: string
-  patient_encounter_id: string
-}
-
 export type RenderedOrganization = HasStringId<
   Organization & {
     departments: {
@@ -2370,15 +2363,7 @@ export type RenderedPatientEncounter = {
   patient_encounter_id: string
   reason: EncounterReason | null
   notes: null | string
-  patient: {
-    id: string
-    name: string
-    sex: Sex | null
-    date_of_birth: string | null
-    avatar_url: string | null
-    description: string | null
-    completed_registration: boolean
-  }
+  patient: RenderedPatient
   organization: RenderedOrganization
   appointment: {
     id: string

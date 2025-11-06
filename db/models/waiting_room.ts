@@ -7,7 +7,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import * as patient_encounters from './patient_encounters.ts'
-import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -35,8 +34,6 @@ export function asWaitingRoom(
     // notes,
     // all_employees_seen,
   } = patient_encounter
-
-  assert(hasName(patient), 'Patient must have a name')
 
   // const organizations_where_doctor = health_worker.employment.filter((e) =>
   //   e.roles.doctor?.registration_completed
@@ -101,7 +98,12 @@ export function asWaitingRoom(
 
   return {
     patient_encounter_id,
-    patient,
+    patient: {
+      id: patient.id,
+      avatar_url: patient.avatar_url,
+      description: patient.description,
+      name: patient.name || '[Unregistered patient]',
+    },
     reason,
     priority_level,
     department_name,

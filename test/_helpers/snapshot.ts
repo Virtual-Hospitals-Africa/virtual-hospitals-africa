@@ -42,7 +42,10 @@ export function snapshot(object: unknown) {
   const already_has_assert_equals = file_contents.includes(
     'std/assert/assert_equals.ts',
   )
+
+  const snapshot_import_line_regex = /import \{ snapshot \} from .*\n/
   let new_file_contents = file_contents.replace(snapshot_line, new_line)
+    .replace(snapshot_import_line_regex, '')
   if (!already_has_assert_equals) {
     new_file_contents =
       "import { assertEquals } from 'std/assert/assert_equals.ts'\n" +

@@ -4,6 +4,7 @@ import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
 import * as patients from '../../db/models/patients.ts'
+import * as patient_contacts from '../../db/models/patient_contacts.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
 import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetail.tsx'
 import * as patient_allergies from '../../db/models/patient_allergies.ts'
@@ -46,10 +47,12 @@ export default async function PrescriptionPage(
 
     const {
       patient,
+      contacts,
       allergies,
       unfilled_medications,
     } = await promiseProps({
       patient: patients.getById(trx, patient_id),
+      contacts: patient_contacts.get(trx, { patient_id }),
       allergies: patient_allergies.getWithName(trx, patient_id),
       unfilled_medications: prescription_medications.getByPrescriptionId(
         trx,
@@ -100,12 +103,10 @@ export default async function PrescriptionPage(
                   heading='Age'
                   information={patient.age_display}
                 />
-                {patient.phone_number && (
-                  <PrescriptionDetail
-                    heading='Phone Number'
-                    information={patient.phone_number}
-                  />
-                )}
+                <PrescriptionDetail
+                  heading='Phone Number'
+                  information={contacts?.phone_number}
+                />
                 <PrescriptionDetail
                   heading='Date of Birth'
                   information={patient.dob_formatted}
@@ -116,7 +117,7 @@ export default async function PrescriptionPage(
                 />
                 <PrescriptionDetail
                   heading='Address'
-                  information={patient.address}
+                  information={contacts?.formatted_address}
                 />
                 <PrescriptionDetail
                   heading='Allergies'

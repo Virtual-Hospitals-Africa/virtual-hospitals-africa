@@ -27,6 +27,8 @@ import {
   Sex,
 } from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
+import { assert } from 'std/assert/assert.ts'
+import { completedRegistration } from '../../../../../../../../shared/patient_registration.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -157,18 +159,21 @@ function BriefHistorySection(
 export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, encounter } = ctx.state
-  const patient_id = encounter.patient.id
+  const { trx, encounter, health_worker } = ctx.state
+  const { patient } = encounter
+  const patient_id = patient.id
 
   const positive_findings = await renderedPositiveFindings(
     trx,
-    { patient_id, encounter, health_worker_id: ctx.state.health_worker.id },
+    { patient_id, encounter, health_worker_id: health_worker.id },
   )
+
+  assert(completedRegistration(patient))
 
   return (
     <BriefHistorySection
       positive_findings={positive_findings}
-      sex={encounter.patient.sex}
+      sex={patient.sex}
     />
   )
 }

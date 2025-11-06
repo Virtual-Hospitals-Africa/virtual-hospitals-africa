@@ -1,10 +1,11 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import * as waiting_room from '../../db/models/waiting_room.ts'
+import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-import { assert } from 'node:console'
+import db from '../../db/db.ts'
+import * as waiting_room from '../../db/models/waiting_room.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
+import { completedRegistration } from '../../shared/patient_registration.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { withTestOrganization } from '../_helpers/organizations.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
@@ -12,6 +13,7 @@ import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   insertRegistrationWithEmployeeForTest,
 } from '../_helpers/workflows.ts'
+import { RenderedPatient } from '../../types.ts'
 
 describe(
   'db/models/patient_encounters.ts',
@@ -47,15 +49,21 @@ describe(
               patient_encounter_id,
             )
 
-            const patient = {
+            const patient: RenderedPatient = {
               id: patient_id,
-              name: '[Unregistered patient]',
+              name: null,
               description: null,
               avatar_url: null,
               sex: null,
               date_of_birth: null,
               names: null,
               completed_registration: false,
+              gender: null,
+              national_id_number: null,
+              dob_formatted: null,
+              age_display: null,
+              age_years: null,
+              preferred_language_code_iso_639_2_b: null,
             }
 
             assertArrayNonEmpty(
@@ -64,7 +72,6 @@ describe(
             assertArrayNonEmpty(
               open_encounter.all_employees_seen,
             )
-            assert(open_encounter.workflows.registration!.completed_at)
             assert(open_encounter.arrived_timestamp instanceof Date)
             assertEquals(
               open_encounter.status.patient_presence!.employees.length,
@@ -153,7 +160,12 @@ describe(
 
             assertEquals(in_waiting_room, {
               patient_encounter_id,
-              patient,
+              patient: {
+                id: patient.id,
+                avatar_url: patient.avatar_url,
+                description: patient.description,
+                name: '[Unregistered patient]',
+              },
               arrived_ago_display: 'Just now',
               workflow_status_display: 'Registration In Progress',
               actions: [{
@@ -313,9 +325,16 @@ describe(
               organization_employment,
             )
 
+            assert(completedRegistration(patient))
+
             assertEquals(in_waiting_room, {
               patient_encounter_id,
-              patient,
+              patient: {
+                id: patient.id,
+                name: patient.name,
+                avatar_url: patient.avatar_url,
+                description: patient.description,
+              },
               arrived_ago_display: 'Just now',
               workflow_status_display: 'Awaiting Triage',
               actions: [{

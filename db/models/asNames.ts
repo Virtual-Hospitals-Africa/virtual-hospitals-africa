@@ -4,7 +4,7 @@ import first from '../../util/first.ts'
 import { exists } from '../../util/exists.ts'
 import last from '../../util/last.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { Names } from '../../types.ts'
+import { Maybe, Names } from '../../types.ts'
 
 export type NameInputs = {
   name: string
@@ -31,10 +31,10 @@ export function asMaybeNames(
     surname,
     preferred_name,
   }: {
-    name?: string
-    first_names?: string
-    surname?: string
-    preferred_name?: string
+    name?: Maybe<string>
+    first_names?: Maybe<string>
+    surname?: Maybe<string>
+    preferred_name?: Maybe<string>
   },
 ): null | Names {
   if (first_names) {

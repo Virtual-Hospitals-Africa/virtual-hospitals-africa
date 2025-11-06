@@ -8,7 +8,6 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import { positiveFindings } from '../../../../../db/models/brief_history.ts'
 import { route } from '../../../../route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
-import { snapshot } from '../../../../_helpers/snapshot.ts'
 
 describe('brief_history', () => {
   afterAll(() => db.destroy())
@@ -59,21 +58,23 @@ describe('brief_history', () => {
 
       assertEquals(positive_findings.length, 1)
       const [diabetes_finding] = positive_findings
-      snapshot(diabetes_finding)
-      // assertEquals(diabetes_finding, {
-      //   'record_id': diabetes_finding.record_id,
-      //   'snomed_concept_id': '73211009',
-      //   'patient_encounter_id': encounter.patient_encounter_id,
-      //   'patient_encounter_employee_id':
-      //     encounter.employee.patient_encounter_employee_id,
-      //   'name': 'Diabetes mellitus',
-      //   'as_part_of_procedure': {
-      //     'record_id': diabetes_finding.as_part_of_procedure.record_id,
-      //     'snomed_concept_id': '203421005',
-      //     'name': 'History taking, limited',
-      //   },
-      //   'pertaining_to_key': 'diabetes',
-      // })
+
+      assertEquals(diabetes_finding, {
+        'record_id': diabetes_finding.record_id,
+        created_at: diabetes_finding.created_at,
+        'snomed_concept_id': '73211009',
+        'patient_encounter_id': encounter.patient_encounter_id,
+        'patient_encounter_employee_id':
+          encounter.employee.patient_encounter_employee_id,
+        'name': 'Diabetes mellitus',
+        'as_part_of_procedure': {
+          'record_id': diabetes_finding.as_part_of_procedure.record_id,
+          'snomed_concept_id': '203421005',
+          'name': 'History taking, limited',
+        },
+        'qualifiers': [],
+        'pertaining_to_key': 'diabetes',
+      })
     })
   })
 })

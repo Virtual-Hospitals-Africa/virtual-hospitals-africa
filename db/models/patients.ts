@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import {
   Coordinates,
   InsertShape,
+  InsertShapeLiteral,
   Maybe,
   RenderedPatient,
   TrxOrDb,
@@ -17,9 +18,7 @@ import { Patients } from '../../db.d.ts'
 import { base } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
-import { promiseProps } from '../../util/promiseProps.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -43,7 +42,7 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-const baseQuery = (trx: TrxOrDb) =>
+export const baseQuery = (trx: TrxOrDb) =>
   trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -75,37 +74,39 @@ const baseQuery = (trx: TrxOrDb) =>
 export async function insert(
   trx: TrxOrDb,
   { conversation_state, country, ...to_insert }:
-    & Omit<InsertShape<Patients>, 'id' | 'phone_number' | 'country'>
+    & Omit<
+      InsertShapeLiteral<Patients>,
+      'id' | 'phone_number' | 'country' | 'location'
+    >
     & {
-      conversation_state?: string
-      phone_number?: string
       country?: string
+      phone_number?: string
+      conversation_state?: string
     },
 ) {
-  const patient_id = generateUUID()
-  const { patient } = await promiseProps({
-    patient: trx
-      .insertInto('patients')
+  const patient = await trx
+    .insertInto('patients')
+    .values({
+      ...to_insert,
+      ...asMaybeNames(to_insert),
+      country: country || SERVER_COUNTRY,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
+  if (conversation_state) {
+    assert(Deno.env.get('IS_TEST'))
+    assert(to_insert.phone_number)
+    await trx.insertInto('patient_chatbot_users')
       .values({
-        ...to_insert,
-        id: patient_id,
-        country: country || SERVER_COUNTRY,
+        entity_id: patient.id,
+        phone_number: to_insert.phone_number,
+        conversation_state,
+        data: '{}',
       })
-      .returningAll()
-      .executeTakeFirstOrThrow(),
-    chatbot_user: conversation_state && (
-      assert(Deno.env.get('IS_TEST')),
-        assert(to_insert.phone_number),
-        trx.insertInto('patient_chatbot_users')
-          .values({
-            entity_id: patient_id,
-            phone_number: to_insert.phone_number,
-            conversation_state,
-            data: '{}',
-          })
-          .execute()
-    ),
-  })
+      .execute()
+  }
+
   return patient
 }
 
@@ -145,11 +146,8 @@ export function update(
 ) {
   const to_update: UpdateShape<Patients> = {
     ...patient,
+    ...asMaybeNames({ name, first_names, surname, preferred_name }),
     location: location && literalLocation(location),
-  }
-  const names = asMaybeNames({ name, first_names, surname, preferred_name })
-  if (names) {
-    Object.assign(to_update, names)
   }
 
   return trx.updateTable('patients')
@@ -166,6 +164,20 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
     .select(['media.mime_type', 'media.binary_data'])
     .where('patients.id', '=', opts.patient_id)
     .executeTakeFirst()
+}
+
+export async function getPreferredLanguage(
+  trx: TrxOrDb,
+  patient_id: string,
+) {
+  const patient = await trx.selectFrom('patients')
+    .where('id', '=', patient_id)
+    .select([
+      'preferred_language_code_iso_639_2_b',
+    ])
+    .executeTakeFirst()
+
+  return patient?.preferred_language_code_iso_639_2_b || null
 }
 
 const model = base({

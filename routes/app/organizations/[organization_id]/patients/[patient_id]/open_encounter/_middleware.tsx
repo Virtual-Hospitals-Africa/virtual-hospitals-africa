@@ -416,9 +416,10 @@ export function OpenEncounterWorkflowLayout({
             current_consultation_step={ctx.state.step}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
-            care_team={ctx.state.patient.primary_doctor
-              ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
-              : []}
+            care_team={[]}
+            // care_team={ctx.state.patient.primary_doctor
+            //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
+            //   : []}
           />
         )
         : null}

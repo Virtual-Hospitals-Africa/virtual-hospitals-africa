@@ -20,7 +20,6 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonArrayFromColumn,
-  jsonBuildObject,
   jsonObjectFrom,
   literalLocation,
   now,
@@ -258,21 +257,20 @@ export function baseEncounterProviderQuery(trx: TrxOrDb) {
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounters')
-    .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
     .select((eb_encounters) => [
       'patient_encounters.id as patient_encounter_id',
       'patient_encounters.created_at as arrived_timestamp',
       'patient_encounters.closed_at',
       'patient_encounters.reason',
       'patient_encounters.notes',
-      jsonBuildObject({
-        id: eb_encounters.ref('patients.id'),
-        name: eb_encounters.ref('patients.name'),
-        sex: eb_encounters.ref('patients.sex'),
-        date_of_birth: eb_encounters.ref('patients.date_of_birth'),
-        avatar_url: patients.avatar_url_sql,
-        description: patients.description_sql,
-      }).as('patient'),
+      jsonObjectFrom(
+        patients.baseQuery(trx)
+          .where(
+            'patients.id',
+            '=',
+            eb_encounters.ref('patient_encounters.patient_id'),
+          ),
+      ).$notNull().as('patient'),
       jsonObjectFrom(
         organizations.baseQuery(trx)
           .where(
@@ -607,10 +605,7 @@ const model = base({
       workflows: asWorkflows(workflows, status),
       priority: asPriority(priority),
       status,
-      patient: {
-        ...patient,
-        name: patient.name || '[Unregistered patient]',
-      },
+      patient,
       reason,
       ...patient_encounter,
     }

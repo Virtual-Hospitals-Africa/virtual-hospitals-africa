@@ -44,7 +44,7 @@ export function SexAndGenderInputs(
         name='sex'
         label='Sex'
         onChange={(event) =>
-          sex.value = event.currentTarget.value as Maybe<Sex>}
+          sex.value = (event.currentTarget.value ?? null) as Sex | null}
         blank_option
         value={sex.value ?? undefined}
         options={[
@@ -61,7 +61,7 @@ export function SexAndGenderInputs(
         name='gender'
         signal={gender}
         onSelect={(value) => {
-          gender.value = value
+          gender.value = value ?? null
           gender_dirty.value = true
         }}
         options={gender_options.value}
