@@ -45,7 +45,7 @@ export default function InviteEmployeesForm() {
                 required={index === 0 || index !== totalInvites - 1}
                 onChange={() => {
                   const is_last = index === totalInvites - 1
-                  if (isLast) {
+                  if (is_last) {
                     setTotalInvites(totalInvites + 1)
                   }
                 }}

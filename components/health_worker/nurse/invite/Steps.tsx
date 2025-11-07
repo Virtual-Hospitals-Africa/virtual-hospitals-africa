@@ -24,11 +24,11 @@ export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
 export const get_nurse_registration_steps = getSteps(NurseRegistrationStepNames)
 
 export function getStepFormData(
-  currentStep: string,
+  current_step: string,
   trx: TrxOrDb,
   req: Request,
 ) {
-  switch (currentStep) {
+  switch (current_step) {
     case NurseRegistrationStepNames[0]:
       return parseRequest(trx, req, PersonalFormFields.parse)
     case NurseRegistrationStepNames[1]:

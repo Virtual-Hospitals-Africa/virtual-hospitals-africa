@@ -20,9 +20,9 @@ export default function sortBy<T>(
       const a_value = getter(a)
       const b_value = getter(b)
 
-      if (aValue < bValue) {
+      if (a_value < b_value) {
         return -1
-      } else if (aValue > bValue) {
+      } else if (a_value > b_value) {
         return 1
       }
     }

@@ -45,7 +45,7 @@ export default function PartnerPage(
           <FormRow>
             <TextInput name='email' type='email' required />
           </FormRow>
-          {!alreadyKnowRole && (
+          {!already_know_role && (
             <FormRow>
               <SelectWithOther
                 name='interest'

@@ -108,11 +108,11 @@ describe('db/models/providers.ts', () => {
         const last_result = last(results)!
 
         assertEquals(
-          firstResult.organization_id,
+          first_result.organization_id,
           '00000000-0000-0000-0000-000000000002',
         )
         assertNotEquals(
-          lastResult.organization_id,
+          last_result.organization_id,
           '00000000-0000-0000-0000-000000000002',
         )
       },

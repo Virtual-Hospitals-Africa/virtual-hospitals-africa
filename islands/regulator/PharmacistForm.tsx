@@ -24,8 +24,8 @@ export default function PharmacistForm(
     form_data.pharmacies ?? [],
   )
   const addPharmacy = () => {
-    selectedPharmacies.value = [
-      ...selectedPharmacies.value,
+    selected_pharmacies.value = [
+      ...selected_pharmacies.value,
       {
         is_supervisor: false,
         id: '',
@@ -35,7 +35,7 @@ export default function PharmacistForm(
     ]
   }
   const remove = (selectedIndex: number) => {
-    selectedPharmacies.value = selectedPharmacies.value.map(
+    selected_pharmacies.value = selected_pharmacies.value.map(
       (pharmacy, index) => {
         if (index !== selectedIndex) return pharmacy
         return {
@@ -101,25 +101,25 @@ export default function PharmacistForm(
         />
       </FormRow>
       <hr className='my-2' />
-      {selectedPharmacies.value.map((selectedPharmacy, index) =>
-        !selectedPharmacy.removed && (
+      {selected_pharmacies.value.map((selected_pharmacy, index) =>
+        !selected_pharmacy.removed && (
           <RemoveRow onClick={() => remove(index)} key={index} labelled>
             <FormRow>
               <AddPharmacySearch
                 country={country}
                 name={`pharmacies.${index}`}
                 label='Pharmacy'
-                value={selectedPharmacy}
+                value={selected_pharmacy}
                 required
                 onSelect={(pharmacy) => {
-                  selectedPharmacies.value[index] = {
-                    ...selectedPharmacies.value[index],
+                  selected_pharmacies.value[index] = {
+                    ...selected_pharmacies.value[index],
                     ...pharmacy,
                   }
                 }}
               />
               <SelectWithOptions
-                required={selectedPharmacy.name !== undefined}
+                required={selected_pharmacy.name !== undefined}
                 name={`pharmacies.${index}.is_supervisor`}
                 label='Is Supervisor'
                 blank_option

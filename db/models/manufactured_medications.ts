@@ -29,7 +29,7 @@ export function strengthDisplay(
 
 function strengthSummary(base_table: string) {
   return strengthDisplay(
-    sql<string>`array_to_string(${
+    sql<string>`array_toString(${
       sql.ref(base_table)
     }.strength_numerators, ', ')`,
   ).as('strength_summary')

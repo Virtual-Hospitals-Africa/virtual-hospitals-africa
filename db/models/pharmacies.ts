@@ -152,6 +152,6 @@ export async function insert(
     pharmacy_id: pharmacy.id,
     is_supervisor: true,
   }))
-  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  await insertPharmacyEmployment(trx, pharmacy_employments)
   return pharmacy
 }

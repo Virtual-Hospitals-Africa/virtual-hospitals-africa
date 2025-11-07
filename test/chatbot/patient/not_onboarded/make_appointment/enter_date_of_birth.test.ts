@@ -40,7 +40,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody: 'Please enter your national ID number',
+          message_body: 'Please enter your national ID number',
           type: 'string',
         },
         phone_number,

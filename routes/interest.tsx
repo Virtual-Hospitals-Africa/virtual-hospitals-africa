@@ -65,7 +65,7 @@ export const handler: Handlers = {
 
     await slack.send(slackMessage)
 
-    const success = successMessages[recipient.reason](recipient.name)
+    const success = success_messages[recipient.reason](recipient.name)
 
     return redirect(`/thank-you?success=${encodeURIComponent(success)}`)
   },

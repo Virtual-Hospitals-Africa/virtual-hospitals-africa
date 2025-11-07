@@ -348,10 +348,10 @@ describe('db/models/health_workers.ts', () => {
       const details = await testNurseRegistrationDetails(trx, {
         health_worker_id: health_worker.id,
       })
-      details.national_id_media_id = nationalIdMedia.id
-      details.face_picture_media_id = facePictureMedia.id
-      details.ncz_registration_card_media_id = registrationCardMedia.id
-      details.nurse_practicing_cert_media_id = nursePracticingCertMedia.id
+      details.national_id_media_id = national_id_media.id
+      details.face_picture_media_id = face_picture_media.id
+      details.ncz_registration_card_media_id = registration_card_media.id
+      details.nurse_practicing_cert_media_id = nurse_practicing_cert_media.id
 
       await nurse_registration_details.add(trx, details)
 
@@ -389,22 +389,22 @@ describe('db/models/health_workers.ts', () => {
         {
           name: 'Face Picture',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${facePictureMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nationalIdMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
         },
         {
           name: 'Nurse Practicing Certificate',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nursePracticingCertMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${registrationCardMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
         },
       ])
       assertEquals(

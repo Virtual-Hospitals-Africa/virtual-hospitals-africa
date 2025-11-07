@@ -15,7 +15,7 @@ export const handler = {
     const to_update = await parseRequest(
       ctx.state.trx,
       req,
-      pharmacists.parseUpsert,
+      pharmacists.parse_upsert,
     )
 
     await pharmacists.update(ctx.state.trx, pharmacist_id, to_update)

@@ -47,7 +47,7 @@
 //     )
 //     const page_contents =await response.text()
 
-//     const $ = cheerio.load(pageContents)
+//     const $ = cheerio.load(page_contents)
 //     assert($('input[name="first_names"]').length === 1)
 //     assert($('input[name="middle_names"]').length === 1)
 //     assert($('input[name="surname"]').length === 1)
@@ -88,8 +88,8 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 
 //     const patients_after_update = await db.selectFrom('patients').where(
@@ -106,7 +106,7 @@
 //     )
 
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/encounters/${patient_encounter_id}/vitals`,
 //     )
 
@@ -114,8 +114,8 @@
 //       `${route}/app/patients/${patient_id}/registration`,
 //     )
 
-//     const page_contents =await getPersonalResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_personal_response.text()
+//     const $ = cheerio.load(page_contents)
 //     assertEquals($('input[name="first_names"]').val(), 'Test')
 //     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
 //     assertEquals($('input[name="surname"]').val(), 'Patient')
@@ -143,7 +143,7 @@
 //       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //     })
 //     const country_info =await addresses.getCountryAddressTree(db)
-//     const zimbabwe = countryInfo[0]
+//     const zimbabwe = country_info[0]
 //     assertEquals(zimbabwe.name, 'Zimbabwe')
 
 //     const province = sample(zimbabwe.provinces)
@@ -157,7 +157,7 @@
 //     body.set('address.locality', ward.name)
 //     body.set('address.street', '123 Main Street apt 3')
 //     body.set('nearest_organization_id', '00000000-0000-0000-0000-000000000001')
-//     body.set('primary_doctor_id', testDoctor.employee_id!)
+//     body.set('primary_doctor_id', test_doctor.employee_id!)
 
 //     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/address`,
@@ -167,11 +167,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //     )
 
@@ -180,29 +180,29 @@
 //       '=',
 //       patient_id,
 //     ).selectAll().execute()
-//     assertEquals(patientResult.length, 1)
-//     assertEquals(patientResult[0].name, 'Test Patient')
+//     assertEquals(patient_result.length, 1)
+//     assertEquals(patient_result[0].name, 'Test Patient')
 
 //     const patient_address =await db.selectFrom('addresses').selectAll().where(
 //       'addresses.id',
 //       '=',
-//       patientResult[0].address_id,
+//       patient_result[0].address_id,
 //     ).executeTakeFirstOrThrow()
 
-//     assertEquals(patientAddress.country, zimbabwe.name)
-//     assertEquals(patientAddress.administrative_area_level_1, province.name)
-//     assertEquals(patientAddress.administrative_area_level_2, district.name)
-//     assertEquals(patientAddress.locality, ward.name)
-//     assertEquals(patientAddress.route, 'Main Street')
-//     assertEquals(patientAddress.street_number, '123')
-//     assertEquals(patientAddress.unit, 'apt 3')
+//     assertEquals(patient_address.country, zimbabwe.name)
+//     assertEquals(patient_address.administrative_area_level_1, province.name)
+//     assertEquals(patient_address.administrative_area_level_2, district.name)
+//     assertEquals(patient_address.locality, ward.name)
+//     assertEquals(patient_address.route, 'Main Street')
+//     assertEquals(patient_address.street_number, '123')
+//     assertEquals(patient_address.unit, 'apt 3')
 
 //     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/address`,
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     assertEquals(
 //       $('input[name="address.administrative_area_level_1"]').val(),
 //       String(province.name),
@@ -273,12 +273,12 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/history`,
 //     )
 
@@ -319,8 +319,8 @@
 //       {},
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     const form_display =getFormDisplay($)
 //     assertEquals(
@@ -332,7 +332,7 @@
 //       ]),
 //       'The form should be 1:1 with the conditions in the DB',
 //     )
-//     assertEquals(formDisplay, {
+//     assertEquals(form_display, {
 //       pre_existing_conditions: [
 //         {
 //           name: 'Cigarette smoker',
@@ -386,11 +386,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/history`,
 //     )
 
@@ -414,8 +414,8 @@
 //       {},
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     assertEquals(
 //       form_values,
@@ -455,11 +455,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/history`,
 //     )
 
@@ -528,11 +528,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/history`,
 //     )
 
@@ -601,11 +601,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //     )
 
@@ -630,8 +630,8 @@
 //       `${route}/app/patients/${patient_id}/registration/family`,
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     assertEquals(form_values, {
 //       family: {
@@ -672,7 +672,7 @@
 //     )
 
 //     assertEquals(
-//       getResponse.url,
+//       get_response.url,
 //       `${route}/app/patients/${patient_id}/registration?warning=Some%20questions%20are%20age-dependent%2C%20so%20please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
 //     )
 //   })
@@ -714,11 +714,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //     )
 
@@ -743,8 +743,8 @@
 //       {},
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     assertEquals(
 //       form_values,
@@ -810,11 +810,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //     )
 
@@ -841,8 +841,8 @@
 //       {},
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     assertEquals(
 //       form_values,
@@ -979,11 +979,11 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/summary`,
 //     )
 
@@ -1041,8 +1041,8 @@
 //       {},
 //     )
 
-//     const page_contents =await getResponse.text()
-//     const $ = cheerio.load(pageContents)
+//     const page_contents =await get_response.text()
+//     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
 //     assertEquals(
 //       form_values,
@@ -1142,12 +1142,12 @@
 //       },
 //     )
 
-//     if (!postResponse.ok) {
-//       throw new Error(await postResponse.text())
+//     if (!post_response.ok) {
+//       throw new Error(await post_response.text())
 //     }
 
 //     assertEquals(
-//       postResponse.url,
+//       post_response.url,
 //       `${route}/app/patients/${patient_id}/registration/address?warning=Please%20fill%20out%20the%20address%20form%20before%20completing%20the%20registration%20process`,
 //     )
 //   })

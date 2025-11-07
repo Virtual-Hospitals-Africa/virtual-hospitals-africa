@@ -37,7 +37,7 @@ export default function Avatar(
       <img
         src={src}
         alt=''
-        className={fullClassName}
+        className={full_class_name}
       />
     )
   }
@@ -68,5 +68,5 @@ export default function Avatar(
       </div>
     )
   }
-  return <EmptyAvatar className={fullClassName} />
+  return <EmptyAvatar className={full_class_name} />
 }

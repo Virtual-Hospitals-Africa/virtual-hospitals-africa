@@ -61,11 +61,11 @@ export type ButtonProps =
   & (
     | {
       variant: 'solid'
-      color?: keyof typeof variantStyles.solid
+      color?: keyof typeof variant_styles.solid
     }
     | {
       variant: 'outline'
-      color?: keyof typeof variantStyles.outline
+      color?: keyof typeof variant_styles.outline
     }
     | {
       variant: 'ghost'
@@ -73,7 +73,7 @@ export type ButtonProps =
     }
     | {
       variant?: undefined
-      color?: keyof typeof variantStyles.solid
+      color?: keyof typeof variant_styles.solid
     }
   )
   & ButtonLinkProps
@@ -93,10 +93,10 @@ export function Button({
 }: ButtonProps) {
   className = cls(
     'inline-flex rounded-lg font-medium tracking-tight focus:outline-none',
-    baseStyles[variant],
+    base_styles[variant],
     // deno-lint-ignore no-explicit-any
-    (variantStyles as any)[variant][color],
-    sizeStyles[size],
+    (variant_styles as any)[variant][color],
+    size_styles[size],
     variant !== 'ghost' && 'justify-center', // TODO, do this more elegantly for ActionButton ?
     className,
   )

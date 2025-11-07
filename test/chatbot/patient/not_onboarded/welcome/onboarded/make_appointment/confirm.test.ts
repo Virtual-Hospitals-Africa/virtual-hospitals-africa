@@ -45,14 +45,14 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -60,24 +60,24 @@ describe('patient chatbot', () => {
 
     // Insert google calender
     const current_time = new Date()
-    currentTime.setHours(currentTime.getHours() + 2)
-    const time_min = formatJohannesburg(currentTime) // current + 2 hours
+    current_time.setHours(current_time.getHours() + 2)
+    const time_min = formatJohannesburg(current_time) // current + 2 hours
 
-    currentTime.setDate(currentTime.getDate() + 7)
-    const time_max = formatJohannesburg(currentTime) // current + 7 days + 2 hours
+    current_time.setDate(current_time.getDate() + 7)
+    const time_max = formatJohannesburg(current_time) // current + 7 days + 2 hours
 
-    currentTime.setDate(currentTime.getDate() - 6)
-    currentTime.setHours(currentTime.getHours() + 1)
-    currentTime.setMinutes(0)
-    const second_day_start = formatJohannesburg(currentTime) // current + 1 day + 3 hours
+    current_time.setDate(current_time.getDate() - 6)
+    current_time.setHours(current_time.getHours() + 1)
+    current_time.setMinutes(0)
+    const second_day_start = formatJohannesburg(current_time) // current + 1 day + 3 hours
 
-    currentTime.setHours(currentTime.getHours())
-    currentTime.setMinutes(30)
-    const second_day_busy_time = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
+    current_time.setHours(current_time.getHours())
+    current_time.setMinutes(30)
+    const second_day_busy_time = formatJohannesburg(current_time) // current + 1 day + 3.5 hours
 
-    currentTime.setHours(currentTime.getHours() + 8)
-    currentTime.setMinutes(0)
-    const second_day_end = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hours
+    current_time.setHours(current_time.getHours() + 8)
+    current_time.setMinutes(0)
+    const second_day_end = formatJohannesburg(current_time) // current + 1 day + 11 hours ==> second_day_start + 8 hours
 
     getFreeBusy = stub(
       google.GoogleClient.prototype,
@@ -85,23 +85,23 @@ describe('patient chatbot', () => {
       () =>
         Promise.resolve(
           {
-            kind: 'calendar#freeBusy' as const,
-            timeMin: timeMin,
-            timeMax: timeMax,
+            kind: 'calendar#free_busy' as const,
+            time_min: time_min,
+            time_max: time_max,
             calendars: {
               [health_worker.calendars!.gcal_appointments_calendar_id]: {
                 busy: [
                   {
-                    start: secondDayStart,
-                    end: secondDayBusyTime,
+                    start: second_day_start,
+                    end: second_day_busy_time,
                   },
                 ],
               },
               [health_worker.calendars!.gcal_availability_calendar_id]: {
                 busy: [
                   {
-                    start: secondDayStart,
-                    end: secondDayEnd,
+                    start: second_day_start,
+                    end: second_day_end,
                   },
                 ],
               },
@@ -127,8 +127,8 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody: 'Great, the next available appointment is on ' +
-            prettyAppointmentTime(secondDayBusyTime) +
+          message_body: 'Great, the next available appointment is on ' +
+            prettyAppointmentTime(second_day_busy_time) +
             '. Would you like to schedule this appointment?',
           type: 'buttons',
           buttonText: 'Menu',

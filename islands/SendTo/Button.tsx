@@ -14,11 +14,11 @@ export function SendToButton(
 
   const handleClick = () => {
     const form_element = document.getElementById(form) as HTMLFormElement
-    if (formElement) {
-      if (formElement.checkValidity()) {
+    if (form_element) {
+      if (form_element.checkValidity()) {
         open.value = true
       } else {
-        formElement.reportValidity()
+        form_element.reportValidity()
       }
     }
   }

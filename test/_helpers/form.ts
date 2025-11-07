@@ -45,7 +45,7 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
   $('form input,textarea').each((_i, el) => {
     if (el.attribs.type !== 'hidden' && el.attribs.name) {
       set(
-        formDisplay,
+        form_display,
         el.attribs.name,
         el.attribs.value ?? null,
       )
@@ -55,12 +55,12 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
     $(el).find('option[selected]').each((_i, option) => {
       if (el.attribs.name) {
         set(
-          formDisplay,
+          form_display,
           el.attribs.name,
           $(option).text(),
         )
       }
     })
   })
-  return formDisplay
+  return form_display
 }

@@ -23,12 +23,12 @@ describe('/login', () => {
       redirect: 'manual',
     })
     const redirect_location = response.headers.get('location')
-    assert(redirectLocation, `Is self_url the issue? ${selfUrl()}`)
+    assert(redirect_location, `Is self_url the issue? ${selfUrl()}`)
     assert(
-      redirectLocation.startsWith(
+      redirect_location.startsWith(
         'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8005%2Flogged-in',
       ),
-      redirectLocation,
+      redirect_location,
     )
     await response.body?.cancel()
   })
@@ -72,7 +72,7 @@ describe('/login', () => {
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
       )
       const page_contents = await response.text()
-      assert(pageContents.includes('Open Encounters'))
+      assert(page_contents.includes('Open Encounters'))
     })
 
     it('allows regulator to access /regulator/[country]/pharmacies', async () => {
@@ -90,7 +90,7 @@ describe('/login', () => {
         redirect: 'manual',
       })
       const redirect_location = response.headers.get('location')
-      assertEquals(redirectLocation, '/app?from_login=true')
+      assertEquals(redirect_location, '/app?from_login=true')
       return response.body?.cancel()
     })
 
@@ -106,7 +106,7 @@ describe('/login', () => {
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
       const page_contents = await response.text()
-      assert(pageContents.includes('First Name'))
+      assert(page_contents.includes('First Name'))
     })
 
     // TODO turn off SKIP_NURSE_REGISTRATION
@@ -202,12 +202,12 @@ describe('/login', () => {
       )
       const page_contents = await response.text()
       assert(
-        pageContents.includes(
+        page_contents.includes(
           `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.health_worker.id}"`,
         ),
       )
       assert(
-        pageContents.includes(
+        page_contents.includes(
           `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}"`,
         ),
       )
@@ -227,9 +227,9 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      let pageContents = await response.text()
+      let page_contents = await response.text()
       assert(
-        pageContents.includes(
+        page_contents.includes(
           'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
         ),
       )
@@ -243,10 +243,10 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
-      pageContents = await response.text()
-      assert(pageContents.includes('Email'))
-      assert(pageContents.includes('Profession'))
-      assert(pageContents.includes('Invite'))
+      page_contents = await response.text()
+      assert(page_contents.includes('Email'))
+      assert(page_contents.includes('Profession'))
+      assert(page_contents.includes('Invite'))
     })
 
     it("doesn't allow access to employees if you are employed at a different organization", async () => {
@@ -270,15 +270,15 @@ describe('/login', () => {
       )
 
       assert(
-        employeesResponse.ok,
+        employees_response.ok,
       )
       assert(
-        employeesResponse.url ===
+        employees_response.url ===
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      const page_contents = await employeesResponse.text()
+      const page_contents = await employees_response.text()
       assert(
-        !pageContents.includes(
+        !page_contents.includes(
           'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
         ),
       )
@@ -287,8 +287,8 @@ describe('/login', () => {
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite?expectedTestError=1`,
       )
 
-      assertEquals(invitesResponse.status, 403)
-      await invitesResponse.body?.cancel()
+      assertEquals(invites_response.status, 403)
+      await invites_response.body?.cancel()
     })
   })
 })

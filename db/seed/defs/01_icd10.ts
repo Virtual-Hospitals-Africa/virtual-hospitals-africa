@@ -604,7 +604,7 @@ type ICD10Index = {
   'ICD10CM.index': {
     letter: {
       title: string
-      mainTerm: ICD10IndexTerm[]
+      main_term: ICD10IndexTerm[]
     }[]
   }
 }
@@ -719,7 +719,7 @@ function* indexableTerms(term: TidiedTerm, prefix?: string): Generator<
 
 function* tidiedTerms(icd10_index: ICD10Index) {
   for (const letter of icd10_index['ICD10CM.index'].letter) {
-    for (const main_term of letter.mainTerm) {
+    for (const main_term of letter.main_term) {
       yield tidyTerm(main_term)
     }
   }
@@ -943,8 +943,8 @@ function tidyTerm(x: any): TidiedTerm {
 //         const candidate_word = candidate_words[i]
 //         if (!candidate_word) return false
 //         return word === candidate_word ||
-//           nounInflector.singularize(word) ===
-//             nounInflector.singularize(candidate_word) ||
+//           noun_inflector.singularize(word) ===
+//             noun_inflector.singularize(candidate_word) ||
 //           natural.PorterStemmer.stem(word) ===
 //             natural.PorterStemmer.stem(candidate_word)
 //       })

@@ -173,15 +173,15 @@ export function dosageDisplay(params: DosageDisplayParams) {
     : single_dose
 
   let display = totalDosageMultiplier
-    ? String(totalDosage)
+    ? String(total_dosage)
     : (strength_denominator === 1
       ? (dosage_text ?? dosageText(dosage))
       : String(single_dose))
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  const dose_to_compare = totalDosageMultiplier ? totalDosage : dosage
-  display += doseToCompare > 1
+  const dose_to_compare = totalDosageMultiplier ? total_dosage : dosage
+  display += dose_to_compare > 1
     ? denominatorPlural(params)
     : strength_denominator_unit
   display += ` (${numeric_strength * dosage}${strength_numerator_unit})`
@@ -262,12 +262,12 @@ export function scheduleDisplay(
 
 //   const total_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
-//     totalDosageMultiplier: duration * dosesPerDay,
+//     totalDosageMultiplier: duration * doses_per_day,
 //     ...omit(medication, ['dosage']),
 //   })
 
-//   return `*${medication.name}* : ${singleDosage} per dose * ${dosesPerDay} ${
-//     pluralize('dose', dosesPerDay)
-//   } per day * ${duration} ${pluralize('day', duration)} = ${totalDosage}`
+//   return `*${medication.name}* : ${single_dosage} per dose * ${doses_per_day} ${
+//     pluralize('dose', doses_per_day)
+//   } per day * ${duration} ${pluralize('day', duration)} = ${total_dosage}`
 //     .toLowerCase()
 // }

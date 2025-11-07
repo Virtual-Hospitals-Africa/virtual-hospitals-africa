@@ -34,7 +34,7 @@
 //         patient.id,
 //       )
 
-//       assertEquals(patientAllergies.length, 3)
+//       assertEquals(patient_allergies.length, 3)
 //     })
 
 //     itUsesTrxAnd(
@@ -64,7 +64,7 @@
 //           patient.id,
 //         )
 
-//         assertEquals(patientAllergies.length, 3)
+//         assertEquals(patient_allergies.length, 3)
 
 //         await patient_allergies.upsert(trx, patient.id, [
 //           {
@@ -82,7 +82,7 @@
 //         const patientAllergiesAfter_removing =await patient_allergies
 //           .getWithName(trx, patient.id)
 
-//         assertEquals(patientAllergiesAfterRemoving.length, 2)
+//         assertEquals(patient_allergies_after_removing.length, 2)
 //       },
 //     )
 //   })

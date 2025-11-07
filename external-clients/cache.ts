@@ -20,17 +20,17 @@ export function get(
   key: string,
 ): Promise<string | undefined> {
   const r = getRedisIfConnected()
-  return r ? redis.get(key) : inMemoryCache.get(key)
+  return r ? redis.get(key) : in_memory_cache.get(key)
 }
 
 export function set(key: string, value: string) {
   const r = getRedisIfConnected()
-  return r ? redis.set(key, value) : inMemoryCache.set(key, value)
+  return r ? redis.set(key, value) : in_memory_cache.set(key, value)
 }
 
 export function flushdb() {
   const r = getRedisIfConnected()
-  return r ? redis.flushdb() : inMemoryCache.clear()
+  return r ? redis.flushdb() : in_memory_cache.clear()
 }
 // deno-lint-ignore no-explicit-any
 export function cacheable<F extends (...args: any[]) => Promise<any>>(

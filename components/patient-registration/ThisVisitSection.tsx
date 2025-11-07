@@ -23,7 +23,7 @@ export default function ThisVisitSection(
         <FormRow>
           <VerticalRadioButtons
             name='next_workflow'
-            default_value='continue_with_registration'
+            defaultValue='continue_with_registration'
             options={[
               {
                 id: 'continue_with_registration',

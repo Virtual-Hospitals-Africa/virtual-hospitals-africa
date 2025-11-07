@@ -53,7 +53,7 @@ export default PatientProfilePage(
           appt.gcal_event_id,
         )
         assert(
-          gcalItem,
+          gcal_item,
           `Could not find event ${appt.gcal_event_id} in google calendar for provider ${first_provider.provider_id}`,
         )
 
@@ -70,9 +70,9 @@ export default PatientProfilePage(
               organization: organizations_with_addresses[0],
             }
             : undefined,
-          virtualLocation: gcalItem.hangoutLink
+          virtualLocation: gcal_item.hangoutLink
             ? {
-              href: gcalItem.hangoutLink,
+              href: gcal_item.hangoutLink,
             }
             : undefined,
         }

@@ -132,7 +132,7 @@ describe('db/models/inventory.ts', () => {
             { organization_id },
           )
 
-          assertEquals(organizationConsumables, [
+          assertEquals(organization_consumables, [
             {
               consumable_id: consumable.id,
               name: consumable_name,

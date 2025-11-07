@@ -34,9 +34,9 @@ export default function VitalInputWithEvaluation({
       ([_, code]) => code === snomedCode,
     )?.[0]
 
-    if (!vitalKey) return 'Unknown Vital'
+    if (!vital_key) return 'Unknown Vital'
 
-    return vitalKey
+    return vital_key
       .split('_')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
@@ -49,7 +49,7 @@ export default function VitalInputWithEvaluation({
         type='checkbox'
         id={`${name}-note-toggle`}
         className='sr-only peer'
-        defaultChecked={hasExistingNote}
+        defaultChecked={has_existing_note}
       />
       <div className='flex justify-between w-full'>
         <div className='flex flex-col'>

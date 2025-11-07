@@ -57,10 +57,10 @@
 //           label='Province'
 //           onChange={(e) => {
 //             const selected_province =e?.currentTarget?.value
-//             if (!selectedProvince) return
+//             if (!selected_province) return
 //             ward_id.value = undefined
 //             district_id.value = undefined
-//             province_id.value = selectedProvince
+//             province_id.value = selected_province
 //           }}
 //         >
 //           <option value=''>Select</option>
@@ -81,9 +81,9 @@
 //           label='District'
 //           onChange={(e) => {
 //             const selected_district =e?.currentTarget?.value
-//             if (!selectedDistrict) return
+//             if (!selected_district) return
 //             ward_id.value = undefined
-//             district_id.value = selectedDistrict
+//             district_id.value = selected_district
 //           }}
 //         >
 //           <option value=''>Select</option>
@@ -102,8 +102,8 @@
 //           label='City/Town/Ward'
 //           onChange={(e) => {
 //             const selected_ward =e?.currentTarget?.value
-//             if (!selectedWard) return
-//             ward_id.value = selectedWard
+//             if (!selected_ward) return
+//             ward_id.value = selected_ward
 //           }}
 //         >
 //           <option value=''>Select</option>

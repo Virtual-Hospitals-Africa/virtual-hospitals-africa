@@ -8,7 +8,7 @@ export default async function* readLines(
 
   try {
     while (true) {
-      const { done, value } = await streamReader.read()
+      const { done, value } = await stream_reader.read()
       if (done) break
       const chunk = decoder.decode(value, { stream: true })
       buffer += chunk
@@ -26,7 +26,7 @@ export default async function* readLines(
       }
     }
   } finally {
-    streamReader.releaseLock()
+    stream_reader.releaseLock()
   }
 
   if (buffer.trim()) {

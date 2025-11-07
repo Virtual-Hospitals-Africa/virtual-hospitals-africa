@@ -23,20 +23,20 @@ async function respondToMessage(
 ) {
   const { chatbot_name } = unhandled_message
   try {
-    const responseTo_send = await db
+    const response_to_send = await db
       .transaction()
       .setIsolationLevel('read committed')
       .execute((trx: TrxOrDb) => determineResponse(trx, unhandled_message))
 
     const whatsapp_responses = await whatsapp.sendMessages({
-      messages: responseToSend,
+      messages: response_to_send,
       chatbot_name,
       phone_number: unhandled_message.sent_by_phone_number,
     })
 
     for (const whatsapp_response of whatsapp_responses) {
       if ('error' in whatsapp_response) {
-        console.log('responseToSend', JSON.stringify(responseToSend))
+        console.log('response_to_send', JSON.stringify(response_to_send))
         console.log('whatsapp_response', JSON.stringify(whatsapp_response))
         throw new Error(whatsapp_response.error.details)
       }
@@ -47,8 +47,8 @@ async function respondToMessage(
         sent_to_phone_number: unhandled_message.sent_by_phone_number,
         responding_to_received_id: unhandled_message.message_received_id,
         corresponding_message_id: null,
-        whatsapp_id: whatsappResponse.messages[0].id,
-        body: JSON.stringify(responseToSend),
+        whatsapp_id: whatsapp_response.messages[0].id,
+        body: JSON.stringify(response_to_send),
       })
     }
   } catch (err) {
@@ -62,7 +62,7 @@ async function respondToMessage(
       chatbot_name,
       message: {
         type: 'string',
-        messageBody: `An unknown error occured: ${err.message}`,
+        message_body: `An unknown error occured: ${err.message}`,
       },
       phone_number: unhandled_message.sent_by_phone_number,
     })
@@ -71,7 +71,7 @@ async function respondToMessage(
       chatbot_name,
       commitHash: error_family,
       whatsapp_message_received_id: unhandled_message.message_received_id,
-      errorMessage: err.message,
+      error_message: err.message,
     })
 
     if (on_production) {
@@ -106,10 +106,10 @@ export default async function respond(
     sent_by_phone_number,
   })
 
-  if (!unhandledMessages.length) return
+  if (!unhandled_messages.length) return
 
-  console.log('unhandledMessages', unhandledMessages)
-  const by_phone_number = groupBy(unhandledMessages, 'sent_by_phone_number')
+  console.log('unhandled_messages', unhandled_messages)
+  const by_phone_number = groupBy(unhandled_messages, 'sent_by_phone_number')
 
   return forEach(by_phone_number.values(), async (messages) => {
     // If we have a backlog of messages from a user, it's probably because the chatbot was down for some time.

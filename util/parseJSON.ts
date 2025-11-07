@@ -1,3 +1,3 @@
-export default async function parseJSON(filePath: string) {
-  return JSON.parse(await Deno.readTextFile(filePath))
+export default async function parseJSON(file_path: string) {
+  return JSON.parse(await Deno.readTextFile(file_path))
 }

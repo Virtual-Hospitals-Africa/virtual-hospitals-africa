@@ -21,30 +21,30 @@ import {
 } from '../../../../../../../../shared/patient_registration.ts'
 import { assert } from 'std/assert/assert.ts'
 
-function searchByHref(
+function search_byHref(
   ctx: OpenEncounterWorkflowContext,
-  searchBy: string,
+  search_by: string,
 ) {
   return hrefFromCtx(ctx, (url) => {
-    url.searchParams.set('searchBy', searchBy)
+    url.searchParams.set('search_by', search_by)
   })
 }
 
 function getView(ctx: OpenEncounterWorkflowContext) {
-  const search_by = ctx.url.searchParams.get('searchBy')
-  const organization_href = searchByHref(ctx, 'organizations')
-  assertOrRedirect(searchBy, organization_href)
+  const search_by = ctx.url.searchParams.get('search_by')
+  const organization_href = search_byHref(ctx, 'organizations')
+  assertOrRedirect(search_by, organization_href)
 
   const tabs: TabProps[] = [
     {
       tab: 'organizations',
-      href: searchByHref(ctx, 'organizations'),
-      active: searchBy === 'organizations',
+      href: search_byHref(ctx, 'organizations'),
+      active: search_by === 'organizations',
     },
     {
       tab: 'health professionals',
-      href: searchByHref(ctx, 'professionals'),
-      active: searchBy === 'professionals',
+      href: search_byHref(ctx, 'professionals'),
+      active: search_by === 'professionals',
     },
   ]
 

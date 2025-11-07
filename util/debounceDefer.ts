@@ -33,10 +33,10 @@ export default function debounceDefer<Args extends Array<any>, Resolves>(
 
       fn(...args)
         .then((result) => {
-          resolveNow(result)
+          resolve_now(result)
         })
         .catch((error) => {
-          rejectNow(error)
+          reject_now(error)
         })
     }, waitMillis)
 

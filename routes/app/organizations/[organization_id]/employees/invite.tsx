@@ -47,16 +47,16 @@ export const handler = {
     await organizations.invite(
       ctx.state.trx,
       ctx.state.organization.id,
-      invitesWithEmails,
+      invites_with_emails,
     )
 
-    const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
+    const invited = invites_with_emails.map((invite) => invite.email).join(', ')
     const success_message = encodeURIComponent(
       `Successfully invited ${invited}`,
     )
 
     return redirect(
-      `/app/organizations/${ctx.state.organization.id}/employees?success=${successMessage}`,
+      `/app/organizations/${ctx.state.organization.id}/employees?success=${success_message}`,
     )
   },
 }

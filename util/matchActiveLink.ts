@@ -5,5 +5,5 @@ export function matchActiveLink<LinkDef extends { route: string }>(
   route: string,
 ) {
   const links_sorted = sortBy(links, (link) => -link.route.length)
-  return linksSorted.find((link: LinkDef) => route.startsWith(link.route))
+  return links_sorted.find((link: LinkDef) => route.startsWith(link.route))
 }

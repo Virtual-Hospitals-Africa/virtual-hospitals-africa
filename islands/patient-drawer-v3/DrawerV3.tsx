@@ -17,12 +17,12 @@ function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
     'Deceased': 'bg-blue-100 text-blue-800',
   }
 
-  const style_class = priorityStyles[record.priority] ||
+  const style_class = priority_styles[record.priority] ||
     'bg-gray-100 text-gray-600'
 
   return (
     <div
-      className={`box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[2px] relative rounded-[60px] shrink-0 ${styleClass}`}
+      className={`box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[2px] relative rounded-[60px] shrink-0 ${style_class}`}
     >
       <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
         {record.display}
@@ -153,7 +153,7 @@ function ThisVisit({ records, current_consultation_step }: {
         </div>
       </div>
 
-      {encounterSteps.map((step) => (
+      {encounter_steps.map((step) => (
         <div
           key={step.key}
           className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'
@@ -243,7 +243,7 @@ function History({ history }: { history: RenderedPatientHistory }) {
       </div>
 
       <div className='relative flex flex-col items-start justify-start content-stretch shrink-0'>
-        {historyItems.map((item) => (
+        {history_items.map((item) => (
           <div
             key={item.key}
             className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'

@@ -330,7 +330,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
-        messageBody:
+        message_body:
           `Here is the patient's prescription including the following medications:\n* ${
             unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
           }`,
@@ -339,7 +339,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       const buttonMessage: WhatsAppSingleSendable = {
         type: 'buttons',
-        messageBody: 'Click below to continue dispensing medications',
+        message_body: 'Click below to continue dispensing medications',
         buttonText: 'Back to main menu',
         options: [{
           id: 'dispense',

@@ -105,6 +105,6 @@ export async function resetInTest(trx: TrxOrDb = db) {
   )
 
   await Promise.all(
-    topLevelTables.map((table) => trx.deleteFrom(table).execute()),
+    top_level_tables.map((table) => trx.deleteFrom(table).execute()),
   )
 }

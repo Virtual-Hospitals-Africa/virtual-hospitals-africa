@@ -151,13 +151,13 @@ export default function ThreadList(
       <div className='h-16 px-2 flex items-center justify-between border-b'>
         <div className='flex items-center'>
           <input
-            checked={isSelectAll.value}
+            checked={is_select_all.value}
             type='checkbox'
             className='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
             onInput={() => {
-              const is_selected_all = isSelectAll.value
-              isSelectAll.value = !isSelectedAll
-              selected.value = new Set(isSelectedAll ? [] : threads)
+              const is_selected_all = is_select_all.value
+              is_select_all.value = !is_selected_all
+              selected.value = new Set(is_selected_all ? [] : threads)
             }}
           />
           <MessageControllers />
@@ -171,10 +171,10 @@ export default function ThreadList(
           toggleSelection={() => {
             const new_selected = new Set(selected.value)
             selected.value.has(thread)
-              ? newSelected.delete(thread)
-              : newSelected.add(thread)
-            selected.value = newSelected
-            isSelectAll.value = selected.value.size === threads.length
+              ? new_selected.delete(thread)
+              : new_selected.add(thread)
+            selected.value = new_selected
+            is_select_all.value = selected.value.size === threads.length
           }}
         />
       ))}

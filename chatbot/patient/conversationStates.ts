@@ -117,7 +117,7 @@ const conversationStates: ConversationStates<
         .split('/')
       const month_str = month.padStart(2, '0')
       const day_str = day.padStart(2, '0')
-      const date_of_birth = `${year}-${monthStr}-${dayStr}`
+      const date_of_birth = `${year}-${month_str}-${day_str}`
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
         date_of_birth,
@@ -197,10 +197,10 @@ const conversationStates: ConversationStates<
       }
 
       const organizations = nearest_facilities.map((organization) => {
-        const distance_in_kM = organization.walking_distance ||
+        const distance_in_km = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
-        const description = distanceInKM
-          ? `${organization.address} (${distanceInKM})`
+        const description = distance_in_km
+          ? `${organization.address} (${distance_in_km})`
           : organization.address
 
         const organization_name = organization.admins.length
@@ -210,7 +210,7 @@ const conversationStates: ConversationStates<
           section: organization.locality || '[Unknown Location]',
           row: {
             id: organization.id,
-            title: capLengthAtWhatsAppTitle(organizationName),
+            title: capLengthAtWhatsAppTitle(organization_name),
             description: capLengthAtWhatsAppDescription(description),
             onExit:
               'find_nearest_facilities:send_organization_location' as const,
@@ -224,7 +224,7 @@ const conversationStates: ConversationStates<
 
       const sections: ConversationStateHandlerListActionSection<
         PatientChatbotUserState
-      >[] = [...sectionTitles].map((title) => ({
+      >[] = [...section_titles].map((title) => ({
         title,
         rows: (
           organizations
@@ -264,7 +264,7 @@ const conversationStates: ConversationStates<
 
       const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
-        messageBody: selected_organization.name,
+        message_body: selected_organization.name,
         location: {
           longitude: selected_organization.location.longitude,
           latitude: selected_organization.location.latitude,
@@ -275,7 +275,7 @@ const conversationStates: ConversationStates<
 
       const buttonMessage: WhatsAppSingleSendable = {
         type: 'buttons',
-        messageBody: 'Click below to go back to main menu.',
+        message_body: 'Click below to go back to main menu.',
         buttonText: 'Back to main menu',
         options: [{
           id: 'back_to_menu',
@@ -370,15 +370,15 @@ const conversationStates: ConversationStates<
             count: 1,
           })
 
-          assert(firstAvailable.length > 0)
+          assert(first_available.length > 0)
 
           await appointments.addOfferedTime(trx, {
             patient_appointment_request_id:
               scheduling_appointment_request.patient_appointment_request_id,
-            provider_id: firstAvailable[0].provider.provider_id,
-            start: firstAvailable[0].start,
-            end: firstAvailable[0].end,
-            duration_minutes: firstAvailable[0].duration_minutes,
+            provider_id: first_available[0].provider.provider_id,
+            start: first_available[0].start,
+            end: first_available[0].end,
+            duration_minutes: first_available[0].duration_minutes,
           })
           return 'onboarded:make_appointment:first_scheduling_option' as const
         },
@@ -413,9 +413,14 @@ const conversationStates: ConversationStates<
           await makeAppointmentChatbot(
             trx,
             patientState,
-            function insertEvent(health_worker, calendar_id, event) {
-              const healthWorker_google_client = new GoogleClient(health_worker)
-              return healthWorkerGoogleClient.insertEvent(calendar_id, event)
+            function insert_event(health_worker, calendar_id, event) {
+              const health_worker_google_client = new GoogleClient(
+                health_worker,
+              )
+              return health_worker_google_client.insert_event(
+                calendar_id,
+                event,
+              )
             },
           )
           return 'onboarded:appointment_scheduled' as const
@@ -454,20 +459,20 @@ const conversationStates: ConversationStates<
           const filtered_available_times = await availableSlots(
             trx,
             {
-              declinedTimes: declinedTimes.map((time) =>
+              declined_times: declined_times.map((time) =>
                 formatJohannesburg(time)
               ),
               count: 9,
               dates: [
                 formatJohannesburg(today).substring(0, 10),
                 formatJohannesburg(tomorrow).substring(0, 10),
-                formatJohannesburg(afterTomorrow).substring(0, 10),
+                formatJohannesburg(after_tomorrow).substring(0, 10),
               ],
             },
           )
 
           // TODO: get this to a single DB call
-          await Promise.all(filteredAvailableTimes.map(
+          await Promise.all(filtered_available_times.map(
             (timeslot) =>
               appointments.addOfferedTime(trx, {
                 patient_appointment_request_id:
@@ -512,7 +517,7 @@ const conversationStates: ConversationStates<
 
       const appointmentsByDate: {
         [date: string]: SchedulingAppointmentOfferedTime[]
-      } = nonDeclinedTimes.reduce((acc, appointment) => {
+      } = non_declined_times.reduce((acc, appointment) => {
         const date = formatJohannesburg(appointment.start).substring(0, 10)
         if (!acc[date]) {
           acc[date] = []
@@ -528,20 +533,22 @@ const conversationStates: ConversationStates<
       for (const date in appointmentsByDate) {
         sections.push({
           title: date,
-          rows: appointmentsByDate[date].map((offeredTime) => {
+          rows: appointmentsByDate[date].map((offered_time) => {
             return {
-              id: String(offeredTime.id),
-              title: convertToTimeString(formatJohannesburg(offeredTime.start)),
-              description: `With Dr. ${offeredTime.health_worker_name}`,
+              id: String(offered_time.id),
+              title: convertToTimeString(
+                formatJohannesburg(offered_time.start),
+              ),
+              description: `With Dr. ${offered_time.health_worker_name}`,
               async onExit(trx) {
                 const to_decline = scheduling_appointment_request
                   .offered_times
                   .filter((aot) => !aot.declined)
-                  .filter((aot) => aot.id !== offeredTime.id)
+                  .filter((aot) => aot.id !== offered_time.id)
                   .map((aot) => aot.id)
 
-                if (toDecline.length > 0) {
-                  await appointments.declineOfferedTimes(trx, toDecline)
+                if (to_decline.length > 0) {
+                  await appointments.declineOfferedTimes(trx, to_decline)
                 }
 
                 return 'onboarded:appointment_scheduled' as const

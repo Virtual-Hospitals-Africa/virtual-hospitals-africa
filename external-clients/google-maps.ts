@@ -13,12 +13,14 @@ const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
   'GOOGLE_MAPS_API_KEY',
 )
 
-export const getLocation_address = cacheable(async function getLocationAddress(
-  { longitude, latitude }: Coordinates,
-): Promise<AddressInsert | null> {
-  const results = await getGeocodeData(latitude, longitude)
-  return getAddressFromData(results)
-})
+export const getLocationAddress = cacheable(
+  async function getLocationAddress(
+    { longitude, latitude }: Coordinates,
+  ): Promise<AddressInsert | null> {
+    const results = await getGeocodeData(latitude, longitude)
+    return getAddressFromData(results)
+  },
+)
 
 export async function getGeocodeData(
   latitude: number,
@@ -27,7 +29,7 @@ export async function getGeocodeData(
   const encoded_latitude = encodeURIComponent(latitude)
   const encoded_longitude = encodeURIComponent(longitude)
   const url =
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encoded_latitude},${encoded_longitude}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
   if (!response.ok) {
     throw await response.text()
@@ -76,39 +78,41 @@ function getAddressFromData(
   return address
 }
 
-export const getWalking_distance = cacheable(async function getWalkingDistance(
-  locations: LocationDistance,
-): Promise<string | null> {
-  const origin_coords =
-    `${locations.origin.latitude},${locations.origin.longitude}`
-  const dest_coords =
-    `${locations.destination.latitude},${locations.destination.longitude}`
-  const mode = `walking`
+export const getWalkingDistance = cacheable(
+  async function getWalkingDistance(
+    locations: LocationDistance,
+  ): Promise<string | null> {
+    const origin_coords =
+      `${locations.origin.latitude},${locations.origin.longitude}`
+    const dest_coords =
+      `${locations.destination.latitude},${locations.destination.longitude}`
+    const mode = `walking`
 
-  const url =
-    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin_coords}&destinations=${dest_coords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
+    const url =
+      `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin_coords}&destinations=${dest_coords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
 
-  const result = await fetch(url)
-  //assert(result.ok, 'Failed to fetch walking distance')
-  if (!result.ok) {
-    console.error('Failed to fetch walking distance')
-    return null
-  }
-  const json = await result.json()
-  //assert(json.status === 'OK', 'Invalid response from Google Maps API')
-  if (json.status !== 'OK') {
-    console.error('Invalid response from Google Maps API')
-    return null
-  }
+    const result = await fetch(url)
+    //assert(result.ok, 'Failed to fetch walking distance')
+    if (!result.ok) {
+      console.error('Failed to fetch walking distance')
+      return null
+    }
+    const json = await result.json()
+    //assert(json.status === 'OK', 'Invalid response from Google Maps API')
+    if (json.status !== 'OK') {
+      console.error('Invalid response from Google Maps API')
+      return null
+    }
 
-  if (
-    json.rows[0].elements[0].status === 'ZERO_RESULTS' ||
-    json.rows[0].elements[0].status === 'NOT_FOUND'
-  ) {
-    return null
-  }
+    if (
+      json.rows[0].elements[0].status === 'ZERO_RESULTS' ||
+      json.rows[0].elements[0].status === 'NOT_FOUND'
+    ) {
+      return null
+    }
 
-  const distance = json.rows[0].elements[0].distance.text
+    const distance = json.rows[0].elements[0].distance.text
 
-  return distance
-})
+    return distance
+  },
+)

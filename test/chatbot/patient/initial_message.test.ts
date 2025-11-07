@@ -30,7 +30,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             'Welcome to Virtual Hospitals Africa. What can I help you with today?',
           type: 'buttons',
           buttonText: 'Menu',

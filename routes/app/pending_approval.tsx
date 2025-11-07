@@ -14,10 +14,10 @@ export default async function PendingApprovalPage(
     organization_id: health_worker.default_organization_id,
   })
 
-  assert(organizationAdmin)
-  const organization_display_name = organizationAdmin.organization_name ||
+  assert(organization_admin)
+  const organization_display_name = organization_admin.organization_name ||
     'your organization'
-  const organization_admin_name = organizationAdmin.name ||
+  const organization_admin_name = organization_admin.name ||
     'your organization admin'
 
   return (
@@ -32,9 +32,9 @@ export default async function PendingApprovalPage(
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from {organizationDisplayName}{' '}
+                Your application from {organization_display_name}{' '}
                 is currently under review by{' '}
-                {organizationAdminName}. You will receive an email once your
+                {organization_admin_name}. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

@@ -519,7 +519,7 @@ export async function get(
 //       existing_family.next_of_kin
 
 //     // kins is removed
-//     if (existingKin && !new_kin) {
+//     if (existing_kin && !new_kin) {
 //       removing_kin = trx
 //         .deleteFrom('patient_kin')
 //         .where('patient_id', '=', patient_id)
@@ -536,7 +536,7 @@ export async function get(
 //         next_of_kin_patient_id = new_patient.id
 //       }
 
-//       if (new_kin && !existingKin) {
+//       if (new_kin && !existing_kin) {
 //         upsert_kin = trx
 //           .insertInto('patient_kin')
 //           .values({
@@ -604,8 +604,8 @@ export async function get(
 //   }
 //   const family_form_upsert = trx
 //     .insertInto('patient_family')
-//     .values(familyValues)
-//     .onConflict((oc) => oc.column('patient_id').doUpdateSet(familyValues))
+//     .values(family_values)
+//     .onConflict((oc) => oc.column('patient_id').doUpdateSet(family_values))
 //     .returningAll()
 //     .executeTakeFirstOrThrow()
 

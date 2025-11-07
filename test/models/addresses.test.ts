@@ -17,8 +17,8 @@ describe('db/models/address.ts', () => {
       async (trx) => {
         const random_address = await createTestAddress()
 
-        const address1 = await addresses.insert(trx, randomAddress)
-        const address2 = await addresses.insert(trx, randomAddress)
+        const address1 = await addresses.insert(trx, random_address)
+        const address2 = await addresses.insert(trx, random_address)
 
         assertNotEquals(
           omit(address1, ['created_at', 'updated_at']),

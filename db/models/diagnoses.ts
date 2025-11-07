@@ -184,8 +184,8 @@ export async function upsertForReview(
           .values({
             patient_condition_id,
             provider_id: employment_id,
-            ...(isInDoctorReview && { doctor_review_id: review_id }),
-            ...(!isInDoctorReview &&
+            ...(is_in_doctor_review && { doctor_review_id: review_id }),
+            ...(!is_in_doctor_review &&
               { patient_encounter_id: patient_encounter_id }),
           })
           .execute()

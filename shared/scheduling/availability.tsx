@@ -22,8 +22,8 @@ export function assertIsPartialAvailability(
 }
 
 export const defaultTimeWindow: TimeWindow = {
-  start: { hour: 9, minute: 0, amPm: 'am' },
-  end: { hour: 5, minute: 0, amPm: 'pm' },
+  start: { hour: 9, minute: 0, am_pm: 'am' },
+  end: { hour: 5, minute: 0, am_pm: 'pm' },
 }
 
 export const days: Array<DayOfWeek> = [
@@ -37,23 +37,25 @@ export const days: Array<DayOfWeek> = [
 ]
 
 export function overlaps(
-  timeWindow: TimeWindow,
+  time_window: TimeWindow,
   otherTimeWindow: TimeWindow,
 ): boolean {
-  const first_time_start = timeToMin(timeWindow.start)
-  const first_time_end = timeToMin(timeWindow.end)
+  const first_time_start = timeToMin(time_window.start)
+  const first_time_end = timeToMin(time_window.end)
   const second_time_start = timeToMin(otherTimeWindow.start)
   const second_time_end = timeToMin(otherTimeWindow.end)
-  if (firstTimeStart > secondTimeEnd || firstTimeEnd < secondTimeStart) {
+  if (
+    first_time_start > second_time_end || first_time_end < second_time_start
+  ) {
     return false
   }
   return true
 }
 
-export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
-  if (timeWindows.length <= 1) return false
-  const [timeWindow, ...rest] = timeWindows
-  if (rest.some((otherTimeWindow) => overlaps(timeWindow, otherTimeWindow))) {
+export function windowsOverlap(time_windows: TimeWindow[]): boolean {
+  if (time_windows.length <= 1) return false
+  const [time_window, ...rest] = time_windows
+  if (rest.some((otherTimeWindow) => overlaps(time_window, otherTimeWindow))) {
     return true
   }
   return windowsOverlap(rest)
@@ -66,6 +68,6 @@ export function findDaysWithOverlap(event: HTMLFormElement) {
   )
   return Object.keys(availability).filter((day) => {
     const time_windows = availability[day as DayOfWeek]
-    return !!timeWindows && windowsOverlap(timeWindows)
+    return !!time_windows && windowsOverlap(time_windows)
   })
 }

@@ -24,9 +24,9 @@ export async function addTestPharmacist(
     ...testPharmacist(),
     ...pharmacist,
   }
-  const { id } = await pharmacists.insert(trx, dummyPharmacist)
+  const { id } = await pharmacists.insert(trx, dummy_pharmacist)
   return {
-    ...dummyPharmacist,
+    ...dummy_pharmacist,
     id,
   }
 }

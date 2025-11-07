@@ -27,7 +27,7 @@ function DropdownItem({ href, title, selected, ...props }: DropdownItem) {
           <a
             href={href}
             {...(props as unknown as HTMLAttributes<HTMLAnchorElement>)}
-            className={baseStyles}
+            className={base_styles}
           >
             {title}
           </a>
@@ -35,7 +35,7 @@ function DropdownItem({ href, title, selected, ...props }: DropdownItem) {
         : (
           <button
             {...props}
-            className={baseStyles}
+            className={base_styles}
           >
             {title}
           </button>

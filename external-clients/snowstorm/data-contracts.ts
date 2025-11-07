@@ -1042,7 +1042,7 @@ export interface LocalFileImportCreationRequest {
   internalRelease?: boolean
   /** @default [] */
   filterModuleIds?: string[]
-  filePath?: string
+  file_path?: string
 }
 
 export interface ImportPatchCreationRequest {
@@ -1055,7 +1055,7 @@ export interface ImportPatchCreationRequest {
 export interface ExportRequestView {
   id?: string
   /** @format date-time */
-  startDate?: string
+  start_date?: string
   branchPath: string
   /** @default "DELTA" */
   type: 'DELTA' | 'SNAPSHOT' | 'FULL'
@@ -1252,11 +1252,11 @@ export interface ItemsPageRelationshipComponent {
 export interface AsyncRefsetMemberChangeBatch {
   id?: string
   /** @format date-time */
-  startTime?: string
+  start_time?: string
   status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
   memberIds?: string[]
   /** @format date-time */
-  endTime?: string
+  end_time?: string
   message?: string
   /** @format float */
   secondsDuration?: number
@@ -1363,7 +1363,7 @@ export interface Classification {
     | 'SAVING_IN_PROGRESS'
     | 'SAVED'
     | 'SAVE_FAILED'
-  errorMessage?: string
+  error_message?: string
   reasonerId?: string
   userId?: string
   /** @format date-time */
@@ -1580,10 +1580,10 @@ export interface BranchMergeJob {
   /** @format date-time */
   scheduledDate?: string
   /** @format date-time */
-  startDate?: string
+  start_date?: string
   status?: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' | 'CONFLICTS'
   /** @format date-time */
-  endDate?: string
+  end_date?: string
   message?: string
   apiError?: ApiError
 }
@@ -1614,7 +1614,7 @@ export interface MergeReviewConceptVersions {
 
 export interface ImportJob {
   status?: 'WAITING_FOR_FILE' | 'RUNNING' | 'COMPLETED' | 'FAILED'
-  errorMessage?: string
+  error_message?: string
   branchPath?: string
   createCodeSystemVersion?: boolean
   /** @format int32 */
@@ -1628,7 +1628,7 @@ export interface ImportJob {
 export interface ExportConfiguration {
   id?: string
   /** @format date-time */
-  startDate?: string
+  start_date?: string
   branchPath: string
   /** @default "DELTA" */
   type: 'DELTA' | 'SNAPSHOT' | 'FULL'
@@ -1693,7 +1693,7 @@ export interface CodeSystemUpgradeJob {
   newDependantVersion?: number
   codeSystemShortname?: string
   status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
-  errorMessage?: string
+  error_message?: string
   /** @format int64 */
   creationTimestamp?: number
 }
@@ -1760,11 +1760,11 @@ export interface ConceptHistoryItem {
 export interface AsyncConceptChangeBatch {
   id?: string
   /** @format date-time */
-  startTime?: string
+  start_time?: string
   status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
   conceptIds?: number[]
   /** @format date-time */
-  endTime?: string
+  end_time?: string
   message?: string
   /** @format float */
   secondsDuration?: number

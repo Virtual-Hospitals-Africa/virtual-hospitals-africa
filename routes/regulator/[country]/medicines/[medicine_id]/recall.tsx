@@ -19,7 +19,7 @@ export const handler = {
       medicine_id,
     )
 
-    assertOr404(manufacturedMedication, 'Medicine not found')
+    assertOr404(manufactured_medication, 'Medicine not found')
 
     const regulator_id = ctx.state.regulator.id
 
@@ -50,15 +50,15 @@ export default RegulatorHomePageLayout(
       medicine_id,
     )
 
-    assertOr404(manufacturedMedication, 'Medicine not found')
+    assertOr404(manufactured_medication, 'Medicine not found')
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Recall {manufacturedMedication.generic_name} (Trade Name:{' '}
-        {manufacturedMedication.trade_name}) by{' '}
-        {manufacturedMedication.applicant_name} ?
+        Recall {manufactured_medication.generic_name} (Trade Name:{' '}
+        {manufactured_medication.trade_name}) by{' '}
+        {manufactured_medication.applicant_name} ?
         <br />
-        Strength Summary: {manufacturedMedication.strength_summary}
+        Strength Summary: {manufactured_medication.strength_summary}
 
         <Form method='POST'>
           <Button type='submit'>Recall</Button>

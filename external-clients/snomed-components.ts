@@ -677,7 +677,7 @@ export type components = {
       createCodeSystemVersion?: boolean
       internalRelease?: boolean
       filterModuleIds?: string[]
-      filePath?: string
+      file_path?: string
     }
     ImportPatchCreationRequest: {
       type?: 'DELTA' | 'SNAPSHOT' | 'FULL'
@@ -686,7 +686,7 @@ export type components = {
     }
     ExportRequestView: {
       id?: string
-      startDate?: string
+      start_date?: string
       branchPath: string
       type: 'DELTA' | 'SNAPSHOT' | 'FULL'
       filenameEffectiveDate?: string
@@ -815,10 +815,10 @@ export type components = {
     }
     AsyncRefsetMemberChangeBatch: {
       id?: string
-      startTime?: string
+      start_time?: string
       status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
       memberIds?: string[]
-      endTime?: string
+      end_time?: string
       message?: string
       secondsDuration?: number
     }
@@ -891,7 +891,7 @@ export type components = {
         | 'SAVING_IN_PROGRESS'
         | 'SAVED'
         | 'SAVE_FAILED'
-      errorMessage?: string
+      error_message?: string
       reasonerId?: string
       userId?: string
       creationDate?: string
@@ -1038,14 +1038,14 @@ export type components = {
       source?: string
       target?: string
       scheduledDate?: string
-      startDate?: string
+      start_date?: string
       status?:
         | 'SCHEDULED'
         | 'IN_PROGRESS'
         | 'COMPLETED'
         | 'FAILED'
         | 'CONFLICTS'
-      endDate?: string
+      end_date?: string
       message?: string
       apiError?: components['schemas']['ApiError']
     }
@@ -1068,7 +1068,7 @@ export type components = {
     }
     ImportJob: {
       status?: 'WAITING_FOR_FILE' | 'RUNNING' | 'COMPLETED' | 'FAILED'
-      errorMessage?: string
+      error_message?: string
       branchPath?: string
       moduleIds?: string[]
       createCodeSystemVersion?: boolean
@@ -1078,7 +1078,7 @@ export type components = {
     }
     ExportConfiguration: {
       id?: string
-      startDate?: string
+      start_date?: string
       branchPath: string
       type: 'DELTA' | 'SNAPSHOT' | 'FULL'
       filenameEffectiveDate?: string
@@ -1122,7 +1122,7 @@ export type components = {
       newDependantVersion?: number
       codeSystemShortname?: string
       status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
-      errorMessage?: string
+      error_message?: string
       creationTimestamp?: number
     }
     PageableObject: {
@@ -1169,10 +1169,10 @@ export type components = {
     }
     AsyncConceptChangeBatch: {
       id?: string
-      startTime?: string
+      start_time?: string
       status?: 'RUNNING' | 'COMPLETED' | 'FAILED'
       conceptIds?: number[]
-      endTime?: string
+      end_time?: string
       message?: string
       secondsDuration?: number
     }

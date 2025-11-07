@@ -39,15 +39,15 @@ export function gcalAppointmentDetails(
 } {
   const accepted_times = scheduling_appointment_request
     .offered_times.filter(
-      (offeredTime) => !offeredTime.declined,
+      (offered_time) => !offered_time.declined,
     )
 
   assertEquals(
-    acceptedTimes.length,
+    accepted_times.length,
     1,
     'Patient should have accepted exactly one offered time',
   )
-  const [acceptedTime] = acceptedTimes
+  const [acceptedTime] = accepted_times
 
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
@@ -69,7 +69,7 @@ type InsertEvent = (
 export async function makeAppointmentChatbot(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
-  insertEvent: InsertEvent,
+  insert_event: InsertEvent,
 ) {
   assert(patientState.chatbot_user.entity_id)
   const scheduling_appointment_request = await schedulingAppointmentRequest(
@@ -93,15 +93,15 @@ export async function makeAppointmentChatbot(
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const inserted_event = await insertEvent(
-    matchingProvider,
-    matchingProvider.gcal_appointments_calendar_id,
+  const inserted_event = await insert_event(
+    matching_provider,
+    matching_provider.gcal_appointments_calendar_id,
     gcal,
   )
 
   await appointments.schedule(trx, {
     appointment_offered_time_id: acceptedTime.id,
-    gcal_event_id: insertedEvent.id,
+    gcal_event_id: inserted_event.id,
   })
 }
 
@@ -132,7 +132,7 @@ export function assertIsScheduleFormValues(
 export async function makeAppointmentWeb(
   trx: TrxOrDb,
   values: ScheduleFormValues,
-  insertEvent: InsertEvent,
+  insert_event: InsertEvent,
 ): Promise<void> {
   assertEquals(
     values.provider_ids.length,
@@ -153,9 +153,9 @@ export async function makeAppointmentWeb(
     values.provider_ids[0],
   )
 
-  const inserted_event = await insertEvent(
-    matchingProvider,
-    matchingProvider.gcal_appointments_calendar_id,
+  const inserted_event = await insert_event(
+    matching_provider,
+    matching_provider.gcal_appointments_calendar_id,
     gcal({
       start: values.start,
       end: values.end,
@@ -168,7 +168,7 @@ export async function makeAppointmentWeb(
     duration_minutes: values.duration_minutes,
     patient_id: values.patient_id,
     reason: values.reason,
-    gcal_event_id: insertedEvent.id,
+    gcal_event_id: inserted_event.id,
   })
 
   await appointments.addAttendees(trx, {

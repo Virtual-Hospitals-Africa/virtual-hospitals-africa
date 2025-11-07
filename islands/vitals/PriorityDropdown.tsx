@@ -59,27 +59,27 @@ export default function PriorityDropdown({
   const button_ref = useRef<HTMLButtonElement>(null)
   const should_open_upward = useSignal(false)
   const checkSpaceAndPosition = () => {
-    if (!buttonRef.current) return
+    if (!button_ref.current) return
 
-    const button_rect = buttonRef.current.getBoundingClientRect()
+    const button_rect = button_ref.current.getBoundingClientRect()
     const viewport_height = globalThis.innerHeight
     const dropdown_height = 240 // Approximate height of dropdown
-    const space_below = viewportHeight - buttonRect.bottom
-    const space_above = buttonRect.top
+    const space_below = viewport_height - button_rect.bottom
+    const space_above = button_rect.top
 
     // Open upward if there's not enough space below but enough space above
-    shouldOpenUpward.value = spaceBelow < dropdownHeight &&
-      spaceAbove > dropdownHeight
+    should_open_upward.value = space_below < dropdown_height &&
+      space_above > dropdown_height
   }
 
   const getButtonStyles = () => {
-    return selectedPriority.value === 'Emergency'
+    return selected_priority.value === 'Emergency'
       ? 'border-red-400 bg-red-200 text-red-900 hover:bg-red-300'
-      : selectedPriority.value === 'Very urgent'
+      : selected_priority.value === 'Very urgent'
       ? 'border-red-300 bg-red-100 text-red-800 hover:bg-red-200'
-      : selectedPriority.value === 'Urgent'
+      : selected_priority.value === 'Urgent'
       ? 'border-yellow-300 bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-      : selectedPriority.value === 'Non-urgent'
+      : selected_priority.value === 'Non-urgent'
       ? 'border-blue-300 bg-blue-100 text-blue-800 hover:bg-blue-200'
       : 'border-green-300 bg-green-100 text-green-800 hover:bg-green-200' // Normal
   }
@@ -90,13 +90,13 @@ export default function PriorityDropdown({
         <div>
           <Menu.Button as={Fragment}>
             <button
-              ref={buttonRef}
+              ref={button_ref}
               type='button'
               className={cls(
                 'inline-flex justify-center items-center size-12 text-sm font-medium rounded-md border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-current',
                 getButtonStyles(),
               )}
-              title={`Flag ${vitalName} - ${selectedPriority.value}`}
+              title={`Flag ${vitalName} - ${selected_priority.value}`}
               onClick={checkSpaceAndPosition}
             >
               <FlagIcon className='size-5 opacity-60' />
@@ -107,7 +107,7 @@ export default function PriorityDropdown({
         <Menu.Items
           className={cls(
             'absolute z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
-            shouldOpenUpward.value
+            should_open_upward.value
               ? 'bottom-full mb-2 right-0 origin-bottom-right'
               : 'top-full mt-2 right-0 origin-top-right',
           )}
@@ -121,11 +121,13 @@ export default function PriorityDropdown({
                   {({ focus }: { focus: boolean }) => (
                     <button
                       type='button'
-                      onClick={() => (selectedPriority.value = priority)}
+                      onClick={() => (selected_priority.value = priority)}
                       className={cls(
                         'flex items-center w-full px-4 py-2 text-sm text-left',
                         focus ? 'bg-gray-100' : '',
-                        selectedPriority.value === priority ? 'bg-gray-50' : '',
+                        selected_priority.value === priority
+                          ? 'bg-gray-50'
+                          : '',
                       )}
                     >
                       <div
@@ -147,7 +149,7 @@ export default function PriorityDropdown({
         </Menu.Items>
       </Menu>
 
-      <HiddenInput name={`${name}.priority`} value={selectedPriority.value} />
+      <HiddenInput name={`${name}.priority`} value={selected_priority.value} />
     </div>
   )
 }

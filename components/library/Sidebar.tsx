@@ -113,7 +113,7 @@ export function GenericSidebar(
   { nav_links, route, params, urlSearchParams, top }: SidebarProps,
 ) {
   const all_params = { ...params }
-  urlSearchParams.forEach((value, key) => allParams[key] = value)
+  urlSearchParams.forEach((value, key) => all_params[key] = value)
   const active_link = matchActiveLink(nav_links, route)
   return (
     <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
@@ -137,8 +137,8 @@ export function GenericSidebar(
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
-                href={replaceParams(link.route, allParams)}
-                active={link === activeLink}
+                href={replaceParams(link.route, all_params)}
+                active={link === active_link}
                 title={link.title ||
                   capitalize(link.route.split('/').pop()!).replace(
                     ' And ',

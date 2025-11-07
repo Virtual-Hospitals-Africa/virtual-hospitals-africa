@@ -20,7 +20,7 @@ import {
 import redirect from '../../../../util/redirect.ts'
 import { assertOr400 } from '../../../../util/assertOr.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
-import { insertEvent } from '../../../../external-clients/google.ts'
+import { insert_event } from '../../../../external-clients/google.ts'
 import { EmployedHealthWorker } from '../../../../types.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { promiseProps } from '../../../../util/promiseProps.ts'
@@ -80,7 +80,7 @@ export const handler = {
     await makeAppointmentWeb(
       ctx.state.trx,
       schedule,
-      insertEvent,
+      insert_event,
     )
     return redirect('/app/calendar')
   },

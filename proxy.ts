@@ -29,15 +29,15 @@ function debug(...args: any[]) {
 
 try {
   const certs = await Promise.all([
-    Deno.readTextFile(certFile),
-    Deno.readTextFile(keyFile),
+    Deno.readTextFile(cert_file),
+    Deno.readTextFile(key_file),
   ])
   cert = certs[0]
   key = certs[1]
   debug('✓ Loaded certificates from ./local-certs/')
 } catch (error) {
   console.error('Error loading certificates:', error)
-  console.error(`Make sure ${certFile} and ${keyFile} exist`)
+  console.error(`Make sure ${cert_file} and ${key_file} exist`)
   Deno.exit(1)
 }
 
@@ -50,25 +50,25 @@ async function handleRequest(request: Request): Promise<Response> {
   try {
     // Create a new request with the same properties
     const proxy_headers = new Headers(request.headers)
-    proxyHeaders.delete('proxy-connection')
-    proxyHeaders.delete('proxy-authorization')
+    proxy_headers.delete('proxy-connection')
+    proxy_headers.delete('proxy-authorization')
 
     // Add headers needed for Fresh to work behind proxy
-    proxyHeaders.set('x-forwarded-proto', 'https')
-    proxyHeaders.set('x-forwarded-host', url.hostname)
-    proxyHeaders.set('x-forwarded-port', String(HTTPS_PROXY_SERVER_PORT))
+    proxy_headers.set('x-forwarded-proto', 'https')
+    proxy_headers.set('x-forwarded-host', url.hostname)
+    proxy_headers.set('x-forwarded-port', String(HTTPS_PROXY_SERVER_PORT))
 
     const proxy_request = new Request(url, {
       method: request.method,
-      headers: proxyHeaders,
+      headers: proxy_headers,
       body: request.body,
       // @ts-ignore - duplex is needed for streaming
       duplex: request.body ? 'half' : undefined,
       redirect: 'manual', // Don't follow redirects - let the browser handle them
     })
-    debug(proxyRequest)
+    debug(proxy_request)
 
-    const response = await fetch(proxyRequest)
+    const response = await fetch(proxy_request)
 
     debug(`${request.method} ${request.url}`, response)
 

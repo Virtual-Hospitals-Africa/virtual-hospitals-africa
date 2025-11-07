@@ -11,9 +11,9 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
 
     const get_employees = isAdminAtOrganization
       ? organizations.getEmployeesAndInvitees
-      : organizations.getEmployees
+      : organizations.get_employees
 
-    const employees = await getEmployees(
+    const employees = await get_employees(
       ctx.state.trx,
       organization.id,
     )

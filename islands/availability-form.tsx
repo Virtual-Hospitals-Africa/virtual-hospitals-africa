@@ -58,10 +58,10 @@ function AmPmInput({ name, current }: { name: string; current: 'am' | 'pm' }) {
 }
 
 function TimeInput(
-  { prefix, timeWindow, addTimeWindow, removeTimeWindow }: {
+  { prefix, time_window, addTimeWindow, removeTimeWindow }: {
     prefix: string
-    timeWindow: TimeWindow
-    addTimeWindow(timeWindow: TimeWindow): void
+    time_window: TimeWindow
+    addTimeWindow(time_window: TimeWindow): void
     removeTimeWindow?(): void
   },
 ) {
@@ -70,27 +70,27 @@ function TimeInput(
       <div>
         <HourInput
           name={`${prefix}.start.hour`}
-          current={timeWindow.start.hour}
+          current={time_window.start.hour}
         />
         :
         <MinuteInput
           name={`${prefix}.start.minute`}
-          current={timeWindow.start.minute || 0}
+          current={time_window.start.minute || 0}
         />
         <AmPmInput
-          name={`${prefix}.start.amPm`}
-          current={timeWindow.start.amPm}
+          name={`${prefix}.start.am_pm`}
+          current={time_window.start.am_pm}
         />
         —
-        <HourInput name={`${prefix}.end.hour`} current={timeWindow.end.hour} />
+        <HourInput name={`${prefix}.end.hour`} current={time_window.end.hour} />
         :
         <MinuteInput
           name={`${prefix}.end.minute`}
-          current={timeWindow.end.minute || 0}
+          current={time_window.end.minute || 0}
         />
         <AmPmInput
-          name={`${prefix}.end.amPm`}
-          current={timeWindow.end.amPm}
+          name={`${prefix}.end.am_pm`}
+          current={time_window.end.am_pm}
         />
       </div>
       <div className='flex items-center'>
@@ -99,20 +99,20 @@ function TimeInput(
           className='ml-2 sz-2'
           title='add'
           onClick={() => {
-            const nextEndTime: Time = timeWindow.end.hour === 12
+            const nextEndTime: Time = time_window.end.hour === 12
               ? {
                 hour: 1,
-                minute: timeWindow.end.minute,
-                amPm: timeWindow.end.amPm === 'am' ? 'pm' : 'am',
+                minute: time_window.end.minute,
+                am_pm: time_window.end.am_pm === 'am' ? 'pm' : 'am',
               }
               : {
-                hour: (timeWindow.end.hour + 1) as Time['hour'],
-                minute: timeWindow.end.minute,
-                amPm: timeWindow.end.amPm,
+                hour: (time_window.end.hour + 1) as Time['hour'],
+                minute: time_window.end.minute,
+                am_pm: time_window.end.am_pm,
               }
 
             addTimeWindow({
-              start: timeWindow.end,
+              start: time_window.end,
               end: nextEndTime,
             })
           }}
@@ -135,18 +135,18 @@ function TimeInput(
 }
 
 function DayInput(
-  { day, timeWindows: initialTimeWindows }: {
+  { day, time_windows: initialTimeWindows }: {
     day: string
-    timeWindows: TimeWindow[]
+    time_windows: TimeWindow[]
   },
 ) {
   const [checked, setChecked] = useState(!!initialTimeWindows.length)
-  const [timeWindows, setTimeWindows] = useState(
+  const [time_windows, setTimeWindows] = useState(
     initialTimeWindows.length ? initialTimeWindows : [defaultTimeWindow],
   )
 
-  const addTimeWindow = (timeWindow: TimeWindow) =>
-    setTimeWindows([...timeWindows, timeWindow])
+  const addTimeWindow = (time_window: TimeWindow) =>
+    setTimeWindows([...time_windows, time_window])
 
   return (
     <>
@@ -163,22 +163,22 @@ function DayInput(
       <div className='flex-col gap-8 pt-4 text-sm leading-6 text-gray-700'>
         {checked
           ? (
-            timeWindows.map((
-              timeWindow,
+            time_windows.map((
+              time_window,
               i,
             ) => (
               <TimeInput
                 key={i}
                 prefix={`${day}.${i}`}
-                timeWindow={timeWindow}
+                time_window={time_window}
                 addTimeWindow={addTimeWindow}
                 removeTimeWindow={() => {
-                  if (i === 0 && timeWindows.length === 1) {
+                  if (i === 0 && time_windows.length === 1) {
                     return setChecked(false)
                   }
-                  const new_time_windows = [...timeWindows]
-                  newTimeWindows.splice(i, 1)
-                  setTimeWindows(newTimeWindows)
+                  const new_time_windows = [...time_windows]
+                  new_time_windows.splice(i, 1)
+                  setTimeWindows(new_time_windows)
                 }}
               />
             ))
@@ -214,7 +214,7 @@ export default function AvailabilityForm(
         }}
       >
         {days.map((day) => (
-          <DayInput key={day} day={day} timeWindows={availability[day]} />
+          <DayInput key={day} day={day} time_windows={availability[day]} />
         ))}
       </div>
       {overlappingDays.length

@@ -21,7 +21,7 @@ export async function addTestRegulator(
   const created_regulator = await regulators.upsert(trx, {
     ...testRegulator(),
   })
-  return createdRegulator
+  return created_regulator
 }
 
 export async function addTestRegulatorWithSession(

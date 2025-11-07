@@ -41,7 +41,7 @@ describe('patient chatbot', () => {
 
     const whatsapp_one = mockWhatsApp()
 
-    await respond(whatsappOne, 'patient')
+    await respond(whatsapp_one, 'patient')
     const addo = organizations.value.find((o) =>
       o.name === 'Addo Enon Satellite Clinic'
     )!
@@ -49,7 +49,7 @@ describe('patient chatbot', () => {
       o.name === 'Moses Mabida Clinic'
     )!
 
-    const message = whatsappOne.sendMessages.calls[0].args[0].messages
+    const message = whatsapp_one.sendMessages.calls[0].args[0].messages
     assert(!Array.isArray(message))
     assert(message.type === 'list')
     assertEquals(
@@ -70,14 +70,14 @@ describe('patient chatbot', () => {
 
     const whatsapp_two = mockWhatsApp()
 
-    await respond(whatsappTwo, 'patient')
-    assertEquals(whatsappTwo.sendMessages.calls[0].args, [
+    await respond(whatsapp_two, 'patient')
+    assertEquals(whatsapp_two.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: [
           {
             type: 'location',
-            messageBody: 'Moses Mabida Clinic',
+            message_body: 'Moses Mabida Clinic',
             location: {
               address:
                 'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
@@ -88,7 +88,7 @@ describe('patient chatbot', () => {
           },
           {
             type: 'buttons',
-            messageBody: 'Click below to go back to main menu.',
+            message_body: 'Click below to go back to main menu.',
             buttonText: 'Back to main menu',
             options: [{
               id: 'back_to_menu',

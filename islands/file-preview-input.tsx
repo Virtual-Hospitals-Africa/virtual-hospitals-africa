@@ -104,12 +104,12 @@ export function FilePreviewInput(
   const input = (
     <ImageOrVideoInput
       value={initialImageRemoved ? null : value}
-      label={isShowPreview ? '' : label}
+      label={is_show_preview ? '' : label}
       {...props}
       onInput={(e) => {
         const file = e.currentTarget.files?.[0]
         if (file == null) return setImage(null)
-        if (file.size > twentyFourMb) {
+        if (file.size > twenty_four_mb) {
           alert('File size must be less than 24MB')
           return setImage(null)
         }
@@ -124,7 +124,7 @@ export function FilePreviewInput(
     />
   )
 
-  if (isShowPreview) {
+  if (is_show_preview) {
     return (
       <Label label={label} className='relative'>
         {input}

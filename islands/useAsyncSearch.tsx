@@ -136,7 +136,7 @@ export default function useAsyncSearch<
 
   return {
     loading,
-    loadMore,
+    load_more,
     search,
     results: search.pages.flatMap((page) => page.results),
     setQuery: (query: string) =>

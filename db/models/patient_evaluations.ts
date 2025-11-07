@@ -53,7 +53,7 @@ export function insertMany(
       note: evaluation.note?.trim(),
     }))
 
-  if (validEvaluations.length === 0) {
+  if (valid_evaluations.length === 0) {
     return Promise.resolve({ success: true as const })
   }
 
@@ -61,7 +61,7 @@ export function insertMany(
     'inserting_evaluation_records',
     (qb) =>
       qb.insertInto('patient_records')
-        .values(validEvaluations.map((evaluation) => ({
+        .values(valid_evaluations.map((evaluation) => ({
           id: evaluation.id,
           patient_id,
           patient_encounter_id,
@@ -69,7 +69,7 @@ export function insertMany(
         }))),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')
-      .values(validEvaluations.map((evaluation) => ({
+      .values(valid_evaluations.map((evaluation) => ({
         id: evaluation.id,
         patient_encounter_employee_id,
         evaluates_record_id: evaluation.evaluates_record_id,

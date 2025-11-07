@@ -114,7 +114,7 @@ function tidyTerm(x: any): TidiedTerm {
 }
 
 for (const letter of icd10_index['ICD10CM.index'].letter) {
-  for (const main_term of letter.mainTerm) {
+  for (const main_term of letter.main_term) {
     to_export.push(tidyTerm(main_term))
   }
 }
@@ -164,8 +164,8 @@ const [injury, other_without_codes] = partition(
 //     const candidate_word = candidate_words[i]
 //     if (!candidate_word) return false
 //     return word === candidate_word ||
-//       nounInflector.singularize(word) ===
-//         nounInflector.singularize(candidate_word) ||
+//       noun_inflector.singularize(word) ===
+//         noun_inflector.singularize(candidate_word) ||
 //       natural.PorterStemmer.stem(word) ===
 //         natural.PorterStemmer.stem(candidate_word)
 //   })
@@ -193,8 +193,8 @@ function findMatchingTerm(
         const candidate_word = candidate_words[i]
         if (!candidate_word) return false
         return word === candidate_word ||
-          nounInflector.singularize(word) ===
-            nounInflector.singularize(candidate_word) ||
+          noun_inflector.singularize(word) ===
+            noun_inflector.singularize(candidate_word) ||
           natural.PorterStemmer.stem(word) ===
             natural.PorterStemmer.stem(candidate_word)
       })

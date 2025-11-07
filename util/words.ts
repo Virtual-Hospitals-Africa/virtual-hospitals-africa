@@ -9,7 +9,7 @@ const has_unicode_word = RegExp.prototype.test.bind(
 const re_ascii_word = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g
 
 function asciiWords(str: string) {
-  return str.match(reAsciiWord)
+  return str.match(re_ascii_word)
 }
 
 /**
@@ -30,7 +30,7 @@ function asciiWords(str: string) {
  */
 function words(str: string, pattern?: RegExp | string) {
   if (pattern === undefined) {
-    const result = hasUnicodeWord(str) ? unicodeWords(str) : asciiWords(str)
+    const result = has_unicode_word(str) ? unicodeWords(str) : asciiWords(str)
     return result || []
   }
   return str.match(pattern) || []

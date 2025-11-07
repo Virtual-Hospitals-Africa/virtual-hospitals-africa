@@ -9,7 +9,7 @@ import {
   WhatsAppMessageContents,
 } from '../../types.ts'
 import {
-  phoneToChatbotName,
+  PHONE_TO_CHATBOT_NAME,
   WHATSAPP_PATIENT_CHATBOT_NUMBER,
   WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
 } from '../../chatbot/phone_numbers.ts'
@@ -25,7 +25,7 @@ async function downloadAndInsertMedia(media_id: string) {
     binary_data,
     mime_type,
   })
-  return insertedMedia.id
+  return inserted_media.id
 }
 
 async function getContents(
@@ -94,8 +94,8 @@ export const handler: Handlers = {
     const hub_verify_token = searchParams.get('hub.verify_token')
     const hub_challenge = searchParams.get('hub.challenge')
 
-    if (hubMode === 'subscribe' && hubVerifyToken === verifyToken) {
-      return new Response(hubChallenge)
+    if (hub_mode === 'subscribe' && hub_verify_token === verify_token) {
+      return new Response(hub_challenge)
     }
     return new Response('Invalid token')
   },
@@ -127,7 +127,7 @@ export const handler: Handlers = {
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    const chatbot_name = phoneToChatbotName[display_phone_number]
+    const chatbot_name = PHONE_TO_CHATBOT_NAME[display_phone_number]
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses

@@ -66,7 +66,7 @@ export function sendMessage(opts: {
       return sendMessagePlainText({
         phone_number,
         chatbot_name,
-        message: message.messageBody,
+        message: message.message_body,
       })
     }
     case 'buttons': {
@@ -74,7 +74,7 @@ export function sendMessage(opts: {
         phone_number,
         chatbot_name,
         options: message.options,
-        messageBody: message.messageBody,
+        message_body: message.message_body,
       })
     }
     case 'list': {
@@ -82,7 +82,7 @@ export function sendMessage(opts: {
         phone_number,
         chatbot_name,
         headerText: message.headerText,
-        messageBody: message.messageBody,
+        message_body: message.message_body,
         action: message.action,
       })
     }
@@ -97,7 +97,7 @@ export function sendMessage(opts: {
       return sendMessagePDF({
         phone_number,
         chatbot_name,
-        message: message.messageBody,
+        message: message.message_body,
         pdf_path: message.file_path,
       })
     }
@@ -136,24 +136,24 @@ export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
   }
 
   const post_message_route = `https://graph.facebook.com/v17.0/${
-    phoneNumbers[chatbot_name]
+    phone_numbers[chatbot_name]
   }/messages`
-  const response = await fetch(postMessageRoute, toPost)
+  const response = await fetch(post_message_route, to_post)
 
   return response.json()
 }
 
 // Upload a file and get the id
 export async function postMedia(
-  filePath: string,
+  file_path: string,
   fileType: string,
   chatbot_name: ChatbotName,
 ): Promise<string> {
-  const file_content = await Deno.readFile(filePath)
-  const file_blob = new Blob([fileContent], { type: fileType })
+  const file_content = await Deno.readFile(file_path)
+  const file_blob = new Blob([file_content], { type: fileType })
   const form_data = new FormData()
 
-  form_data.append('file', fileBlob, basename(filePath))
+  form_data.append('file', file_blob, basename(file_path))
   form_data.append('type', fileType)
   form_data.append('messaging_product', 'whatsapp')
 
@@ -163,10 +163,10 @@ export async function postMedia(
     body: form_data,
   }
   const post_message_route = `https://graph.facebook.com/v20.0/${
-    phoneNumbers[chatbot_name]
+    phone_numbers[chatbot_name]
   }/media`
 
-  const response = await fetch(postMessageRoute, toPost)
+  const response = await fetch(post_message_route, to_post)
   if (!response.ok) {
     throw new Error(`Error uploading media: ${response.statusText}`)
   }
@@ -190,7 +190,7 @@ export function sendMessageLocation(opts: {
 export function sendMessageLocationRequest(opts: {
   phone_number: string
   chatbot_name: ChatbotName
-  messageBody: string
+  message_body: string
 }): Promise<WhatsAppJSONResponse> {
   return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
@@ -201,7 +201,7 @@ export function sendMessageLocationRequest(opts: {
       'type': 'location_request_message',
       'body': {
         'type': 'text',
-        'text': opts.messageBody,
+        'text': opts.message_body,
       },
       'action': {
         'name': 'send_location',
@@ -225,7 +225,7 @@ export function sendMessagePlainText(opts: {
 export function sendMessageWithInteractiveButtons(opts: {
   phone_number: string
   chatbot_name: ChatbotName
-  messageBody: string
+  message_body: string
   options: WhatsAppMessageOption[]
 }): Promise<WhatsAppJSONResponse> {
   return postMessage(opts.chatbot_name, {
@@ -235,7 +235,7 @@ export function sendMessageWithInteractiveButtons(opts: {
     interactive: {
       type: 'button',
       body: {
-        text: opts.messageBody,
+        text: opts.message_body,
       },
       action: {
         buttons: opts.options.map((option) => ({
@@ -251,7 +251,7 @@ export function sendMessageWithInteractiveList(opts: {
   phone_number: string
   chatbot_name: ChatbotName
   headerText: string
-  messageBody: string
+  message_body: string
   action: WhatsAppMessageAction
 }): Promise<{
   messaging_product: 'whatsapp'
@@ -265,7 +265,7 @@ export function sendMessageWithInteractiveList(opts: {
     interactive: {
       type: 'list',
       header: { type: 'text', text: opts.headerText },
-      body: { text: opts.messageBody },
+      body: { text: opts.message_body },
       action: opts.action,
     },
   })

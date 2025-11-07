@@ -40,7 +40,7 @@ export const loginHref = memoize(() => {
     flowName: 'GeneralOAuthFlow',
   })
 
-  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
+  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauth_params}`
 })
 
 async function fakeGoogleLogin(trx: TrxOrDb) {

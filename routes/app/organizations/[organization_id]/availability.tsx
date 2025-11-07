@@ -41,7 +41,7 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-const shortTo_long = {
+const short_to_long = {
   SU: 'Sunday' as const,
   MO: 'Monday' as const,
   TU: 'Tuesday' as const,
@@ -53,10 +53,10 @@ const shortTo_long = {
 
 const toJohannesburg = (time: Time) => {
   const base_hour = time.hour % 12
-  const hour = time.amPm === 'am' ? baseHour : baseHour + 12
+  const hour = time.am_pm === 'am' ? base_hour : base_hour + 12
   const hour_str = padTime(hour)
   const minute_str = padTime(time.minute)
-  return `${hourStr}:${minuteStr}:00+02:00`
+  return `${hour_str}:${minute_str}:00+02:00`
 }
 
 function* availabilityBlocks(
@@ -105,7 +105,7 @@ const TimeSchema = z.object({
   minute: nonnegative_integer.refine((minute) => minute >= 0 && minute <= 59, {
     message: 'expected a minute in the range 0-59',
   }),
-  amPm: z.enum(['am', 'pm']),
+  am_pm: z.enum(['am', 'pm']),
 })
 
 const TimeWindowSchema = z.object({
@@ -136,7 +136,7 @@ async function writeCalendarsToGoogle(
     const [calendars] =
       await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
         ctx.state.trx,
-        googleClient,
+        google_client,
         [ctx.state.organization.id],
       )
     await health_worker_organization_calenders.add(
@@ -147,23 +147,23 @@ async function writeCalendarsToGoogle(
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }
 
-  const existing_availability = await googleClient.getActiveEvents(
+  const existing_availability = await google_client.getActiveEvents(
     gcal_availability_calendar_id,
   )
 
-  const existingAvailability_events = existingAvailability.items || []
+  const existing_availability_events = existing_availability.items || []
 
   // Google rate limits you if you try to do these in parallel :(
   // TODO: revisit whether to clear all these out
   await forEach(
-    existingAvailabilityEvents,
+    existing_availability_events,
     (event) =>
-      googleClient.deleteEvent(gcal_availability_calendar_id, event.id),
+      google_client.deleteEvent(gcal_availability_calendar_id, event.id),
   )
 
   await forEach(
     availabilityBlocks(availability),
-    (event) => googleClient.insertEvent(gcal_availability_calendar_id, event),
+    (event) => google_client.insert_event(gcal_availability_calendar_id, event),
   )
 }
 
@@ -209,7 +209,7 @@ export default HealthWorkerHomePageLayout(
 
     const google_client = HealthWorkerGoogleClient.fromCtx(ctx)
     const events = gcal_availability_calendar_id
-      ? await googleClient.getActiveEvents(
+      ? await google_client.getActiveEvents(
         gcal_availability_calendar_id,
       )
       : { items: [] }
@@ -242,9 +242,9 @@ export default HealthWorkerHomePageLayout(
       assertEquals(item.recurrence.length, 1)
       assert(item.recurrence[0].startsWith('RRULE:FREQ=WEEKLY;BYDAY='))
       const day_str = item.recurrence[0].replace('RRULE:FREQ=WEEKLY;BYDAY=', '')
-      assert(dayStr in shortToLong)
+      assert(day_str in short_to_long)
 
-      const weekday = shortToLong[dayStr as keyof typeof shortToLong]
+      const weekday = short_to_long[day_str as keyof typeof short_to_long]
 
       availability[weekday].push({
         start: convertToTime(item.start.dateTime),

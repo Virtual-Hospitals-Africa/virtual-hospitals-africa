@@ -18,20 +18,20 @@ function findMatchingOption<US extends ChatbotUserState>(
   state:
     | ConversationStateHandlerSelect<US>
     | ConversationStateHandlerExpectMedia<US>,
-  messageBody: string,
+  message_body: string,
 ): Maybe<ConversationStateHandlerSelectOption<US>> {
   return state.options.find((
     option: ConversationStateHandlerSelectOption<US>,
-  ) => option.id === messageBody)
+  ) => option.id === message_body)
 }
 
 function findMatchingRow<US extends ChatbotUserState>(
   action: ConversationStateHandlerListAction<US>,
-  messageBody: string,
+  message_body: string,
 ): Maybe<ConversationStateHandlerListActionRow<US>> {
   for (const section of action.sections) {
     for (const row of section.rows) {
-      if (row.id === messageBody) return row
+      if (row.id === message_body) return row
     }
   }
 }
@@ -43,45 +43,45 @@ export default async function findMatchingState<US extends ChatbotUserState>(
   // deno-lint-ignore no-explicit-any
   const conversation_states: any =
     defs[userState.chatbot_user.chatbot_name].conversation_states
-  const currentState =
+  const current_state =
     conversation_states[userState.chatbot_user.conversation_state]
 
-  if (!currentState) return null
+  if (!current_state) return null
 
   const message_body = userState.unhandled_message.body?.trim()
 
-  switch (currentState.type) {
+  switch (current_state.type) {
     case 'select': {
-      assert(messageBody)
-      return findMatchingOption(currentState, messageBody)
+      assert(message_body)
+      return findMatchingOption(current_state, message_body)
     }
     case 'action': {
-      assert(messageBody)
-      const action = await currentState.action(trx, userState)
+      assert(message_body)
+      const action = await current_state.action(trx, userState)
       return action.type === 'list'
-        ? findMatchingRow(action, messageBody)
-        : findMatchingOption(action, messageBody)
+        ? findMatchingRow(action, message_body)
+        : findMatchingOption(action, message_body)
     }
     case 'date': {
-      assert(messageBody)
-      return isValidDate(messageBody) ? currentState : null
+      assert(message_body)
+      return isValidDate(message_body) ? current_state : null
     }
     case 'string': {
-      assert(messageBody)
-      const validation = currentState.validation || (() => true)
-      const hasBody_passing_validation = !!messageBody &&
-        validation(messageBody)
-      return hasBodyPassingValidation ? currentState : null
+      assert(message_body)
+      const validation = current_state.validation || (() => true)
+      const has_body_passing_validation = !!message_body &&
+        validation(message_body)
+      return has_body_passing_validation ? current_state : null
     }
     case 'expect_media': {
-      if (userState.unhandled_message.has_media) return currentState
-      assert(messageBody)
-      return findMatchingOption(currentState, messageBody)
+      if (userState.unhandled_message.has_media) return current_state
+      assert(message_body)
+      return findMatchingOption(current_state, message_body)
     }
     case 'get_location': {
-      return isValidLocationString(messageBody) ? currentState : null
+      return isValidLocationString(message_body) ? current_state : null
     }
     default:
-      return currentState
+      return current_state
   }
 }

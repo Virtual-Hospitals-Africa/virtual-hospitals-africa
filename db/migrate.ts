@@ -28,8 +28,8 @@ const migrator = new Migrator({
 function targetError(cmd: string) {
   console.error(
     `Please specify a valid target as in\n\n  deno task db:migrate:${cmd} ${
-      migrationTargets[0]
-    }\n\nValid targets:\n  ${migrationTargets.join('\n  ')}`,
+      migration_targets[0]
+    }\n\nValid targets:\n  ${migration_targets.join('\n  ')}`,
   )
   return Deno.exit(1)
 }
@@ -37,7 +37,7 @@ function targetError(cmd: string) {
 function findTarget(target: string, cmd: string) {
   const target_file = last(target.split('/'))
   assert(target_file)
-  const matching_targets = migrationTargets.filter((it) =>
+  const matching_targets = migration_targets.filter((it) =>
     it.includes(target_file)
   )
   if (matching_targets.length === 1) {
@@ -100,8 +100,8 @@ export const migrate = {
     if (!target) return targetError('redo:from')
     const results = await spinner('Migrating down', () => {
       const migration = findTarget(target, 'redo:from')
-      const migration_index = migrationTargets.indexOf(migration)
-      const migration_just_before = migrationTargets[migration_index - 1]
+      const migration_index = migration_targets.indexOf(migration)
+      const migration_just_before = migration_targets[migration_index - 1]
       return migrator.migrateTo(migration_just_before)
     })
     logMigrationResults(results)
@@ -135,9 +135,11 @@ export function logMigrationResults({ error, results }: any = {}) {
   // deno-lint-ignore no-explicit-any
   results?.forEach((it: any) => {
     if (it.status === 'Success') {
-      console.log(`  migration "${it.migrationName}" was executed successfully`)
+      console.log(
+        `  migration "${it.migration_name}" was executed successfully`,
+      )
     } else if (it.status === 'Error') {
-      console.error(`  failed to execute migration "${it.migrationName}"`)
+      console.error(`  failed to execute migration "${it.migration_name}"`)
     }
   })
 

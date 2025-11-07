@@ -35,7 +35,7 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** request body */
   body?: unknown
   /** base url */
-  baseUrl?: string
+  base_url?: string
   /** request cancellation token */
   cancelToken?: CancelToken
 }
@@ -46,8 +46,8 @@ export type RequestParams = Omit<
 >
 
 export interface ApiConfig<SecurityDataType = unknown> {
-  baseUrl?: string
-  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>
+  base_url?: string
+  baseApiParams?: Omit<RequestParams, 'base_url' | 'cancelToken' | 'signal'>
   securityWorker?: (
     securityData: SecurityDataType | null,
   ) => Promise<RequestParams | void> | RequestParams | void
@@ -70,7 +70,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = SNOWSTORM_URL!
+  public base_url: string = SNOWSTORM_URL!
   private securityData: SecurityDataType | null = null
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
   private abort_controllers = new Map<CancelToken, AbortController>()
@@ -97,7 +97,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encoded_key = encodeURIComponent(key)
-    return `${encodedKey}=${
+    return `${encoded_key}=${
       encodeURIComponent(typeof value === 'number' ? value : `${value}`)
     }`
   }
@@ -205,7 +205,7 @@ export class HttpClient<SecurityDataType = unknown> {
     type,
     query,
     format,
-    baseUrl,
+    base_url,
     cancelToken,
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
@@ -220,7 +220,7 @@ export class HttpClient<SecurityDataType = unknown> {
     const response_format = format || request_params.format
 
     return this.customFetch(
-      `${baseUrl || this.baseUrl || ''}${path}${
+      `${base_url || this.base_url || ''}${path}${
         query_string ? `?${query_string}` : ''
       }`,
       {

@@ -1063,9 +1063,9 @@ export type GCalCalendarList = {
 }
 
 export type GCalFreeBusy = {
-  kind: 'calendar#freeBusy'
-  timeMin: string
-  timeMax: string
+  kind: 'calendar#free_busy'
+  time_min: string
+  time_max: string
   calendars: {
     [calendarId: string]: {
       busy: { start: string; end: string }[]
@@ -1563,8 +1563,8 @@ export type Availability = {
 }[]
 
 export type TimeRange = {
-  timeMin: Date
-  timeMax: Date
+  time_min: Date
+  time_max: Date
 }
 
 export type HealthWorkerAvailability = {
@@ -1621,7 +1621,7 @@ export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 export type Time = {
   hour: number
   minute?: number
-  amPm: 'am' | 'pm'
+  am_pm: 'am' | 'pm'
 }
 
 export type TimeWindow = {
@@ -1740,25 +1740,25 @@ export type ISODateString = string & {
 }
 export type WhatsAppSendableString = {
   type: 'string'
-  messageBody: string
+  message_body: string
 }
 
 export type WhatsAppSendableList = {
   type: 'list'
   headerText: string
-  messageBody: string
+  message_body: string
   action: WhatsAppMessageAction
 }
 
 export type WhatsAppSendableLocation = {
   type: 'location'
-  messageBody: string
+  message_body: string
   location: WhatsAppLocation
 }
 
 export type WhatsAppSendableDocument = {
   type: 'document'
-  messageBody: string
+  message_body: string
   file_path: string
 }
 
@@ -1782,7 +1782,7 @@ export type WhatsAppMessageAction = {
 
 export type WhatsAppSendableButtons = {
   type: 'buttons'
-  messageBody: string
+  message_body: string
   buttonText: string
   options: WhatsAppMessageOption[]
 }

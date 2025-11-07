@@ -40,7 +40,7 @@ function createPipeline(language_code: string) {
     await ffmpeg_process.writer.write(audio_chunk)
 
     // Log progress
-    const duration = Date.now() - startTime.getTime()
+    const duration = Date.now() - start_time.getTime()
     console.log(
       `🎵 Audio chunk streamed - media_speech_id: ${media_speech_id}, Size: ${audio_chunk.length} bytes, Total: ${total_bytes} bytes, Duration: ${
         Math.round(duration / 1000)
@@ -96,7 +96,7 @@ function createPipeline(language_code: string) {
         return onAudioChunk(new Uint8Array(data))
       }
       if (data instanceof Blob) {
-        const array_buffer = await data.arrayBuffer()
+        const arrayBuffer = await data.arrayBuffer()
         return onAudioChunk(new Uint8Array(arrayBuffer))
       }
 

@@ -76,17 +76,17 @@ export function insertComputedFinding(
   // Validate that we have either structured (value + units) OR display format
   const has_structured = value !== undefined && units !== undefined &&
     value_display === undefined
-  const has_display = !hasStructured
+  const has_display = !has_structured
 
-  if (!hasStructured && !hasDisplay) {
+  if (!has_structured && !has_display) {
     throw new Error('Must provide either value + units OR value_display')
   }
 
-  if (hasStructured && hasDisplay) {
+  if (has_structured && has_display) {
     throw new Error('Cannot provide both structured values and value_display')
   }
 
-  if (hasStructured && (typeof value !== 'number' || isNaN(value))) {
+  if (has_structured && (typeof value !== 'number' || isNaN(value))) {
     throw new Error(`Invalid computed value: ${value}`)
   }
 

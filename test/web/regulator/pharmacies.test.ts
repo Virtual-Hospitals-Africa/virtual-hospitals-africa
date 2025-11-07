@@ -22,7 +22,7 @@ describe.skip(
       )
       const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert(
         $('input[name="search"]').length === 1,
@@ -41,7 +41,7 @@ describe.skip(
       )
       const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert($('table').length === 1)
     })

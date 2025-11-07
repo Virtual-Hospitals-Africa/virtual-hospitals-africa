@@ -21,7 +21,7 @@ export default function Appointments(
 
   if (!appointments.length) {
     return (
-      <div className={useClassName}>
+      <div className={use_class_name}>
         {header}
         <AppointmentsEmptyState patient_id={patient_id} />
       </div>
@@ -29,7 +29,7 @@ export default function Appointments(
   }
 
   return (
-    <ol className={useClassName}>
+    <ol className={use_class_name}>
       {header}
       {appointments.map((appointment) => (
         <Appointment

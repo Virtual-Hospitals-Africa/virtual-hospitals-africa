@@ -41,20 +41,20 @@ export default function Condition(
     const next_comorbidities = [...comorbidities, { removed: false }]
     const next_condition_state = {
       medications,
-      comorbidities: nextComorbidities,
+      comorbidities: next_comorbidities,
       removed: false as const,
     }
-    update(nextConditionState)
+    update(next_condition_state)
   }
 
   const addMedication = () => {
     const next_medications = [...medications, { removed: false }]
     const next_condition_state = {
-      medications: nextMedications,
+      medications: next_medications,
       comorbidities,
       removed: false as const,
     }
-    update(nextConditionState)
+    update(next_condition_state)
   }
 
   return (
@@ -92,7 +92,7 @@ export default function Condition(
                   medications,
                   comorbidities: next_comorbidities,
                 }
-                update(nextConditionState)
+                update(next_condition_state)
               }}
             />
           )
@@ -116,11 +116,11 @@ export default function Condition(
                   m === medication ? { removed: true as const } : m
                 )
                 const next_condition_state = {
-                  medications: nextMedications,
+                  medications: next_medications,
                   comorbidities,
                   removed: false as const,
                 }
-                update(nextConditionState)
+                update(next_condition_state)
               }}
             />
           )

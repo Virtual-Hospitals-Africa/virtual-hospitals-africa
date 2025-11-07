@@ -39,10 +39,10 @@
 //       const new_map =new Map(prevMap)
 //       measurements.forEach((measurement) => {
 //         if (measurement.is_flagged) {
-//           newMap.set(measurement.measurement_name, measurement)
+//           new_map.set(measurement.measurement_name, measurement)
 //         }
 //       })
-//       return newMap
+//       return new_map
 //     })
 //   }, [measurements])
 
@@ -55,7 +55,7 @@
 
 //     setFlaggedVitals((prevMap) => {
 //       const new_map =new Map(prevMap)
-//       newMap.set(
+//       new_map.set(
 //         vital.vital_name,
 //         {
 //           measurement_name: vital.vital_name,
@@ -64,7 +64,7 @@
 //           units: MEASUREMENTS[vital.vital_name as keyof Measurements],
 //         },
 //       )
-//       return newMap
+//       return new_map
 //     })
 //   }
 
@@ -74,8 +74,8 @@
 
 //     setFlaggedVitals((prevMap) => {
 //       const new_map =new Map(prevMap)
-//       newMap.delete(vital)
-//       return newMap
+//       new_map.delete(vital)
+//       return new_map
 //     })
 //   }
 

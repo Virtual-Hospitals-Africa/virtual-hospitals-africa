@@ -32,11 +32,11 @@ const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
 export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   organization_ids: string[],
 ) {
   const my_orgs = await organizations.getByIds(trx, organization_ids)
-  const calendars = await googleClient
+  const calendars = await google_client
     .ensureHasAppointmentsAndAvailabilityCalendars(my_orgs)
   return Array.from(zip(my_orgs, calendars)).map((
     [organization, calendars],
@@ -47,7 +47,7 @@ export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
 }
 export async function initializeHealthWorkerWithInvites(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   profile: GoogleProfile,
   invitees: { id: string; organization_id: string; profession: Profession }[],
 ): Promise<{ id: string }> {
@@ -65,7 +65,7 @@ export async function initializeHealthWorkerWithInvites(
   const calendars =
     await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
       trx,
-      googleClient,
+      google_client,
       organization_ids,
     )
 
@@ -74,7 +74,7 @@ export async function initializeHealthWorkerWithInvites(
     {
       email: profile.email,
       avatar_url: profile.picture,
-      ...health_workers.pickTokens(googleClient.tokens),
+      ...health_workers.pickTokens(google_client.tokens),
       ...asNames({
         first_names: profile.given_name,
         surname: profile.family_name,
@@ -110,7 +110,7 @@ export async function initializeHealthWorkerWithInvites(
 
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   profile: GoogleProfile,
 ): Promise<Response> {
   const { existing_employment, health_worker } = await promiseProps({
@@ -128,7 +128,7 @@ export async function initializeHealthWorkerWithoutInvites(
       {
         email: profile.email,
         avatar_url: profile.picture,
-        ...health_workers.pickTokens(googleClient.tokens),
+        ...health_workers.pickTokens(google_client.tokens),
         ...asNames({
           first_names: profile.given_name,
           surname: profile.family_name,
@@ -162,10 +162,10 @@ export async function initializeHealthWorkerWithoutInvites(
 }
 
 async function checkPermissions(
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
 ): Promise<boolean> {
-  const token_info = await googleClient.getTokenInfo()
-  return tokenInfo.scope.includes('calendar')
+  const token_info = await google_client.getTokenInfo()
+  return token_info.scope.includes('calendar')
 }
 
 const insufficient_permissions = warning(
@@ -200,13 +200,13 @@ export const handler: Handlers<Record<string, never>> = {
 
     return db.transaction().setIsolationLevel('read committed').execute(
       async (trx) => {
-        const tokens = await gettingTokens
+        const tokens = await getting_tokens
         const google_client = new google.GoogleClient(tokens)
-        const has_permissions = await checkPermissions(googleClient)
+        const has_permissions = await checkPermissions(google_client)
 
-        assertOrRedirect(hasPermissions, insufficient_permissions)
+        assertOrRedirect(has_permissions, insufficient_permissions)
 
-        const profile = await googleClient.getProfile()
+        const profile = await google_client.getProfile()
 
         const regulator = await regulators.getByEmail(trx, profile.email)
         if (regulator) {
@@ -227,7 +227,7 @@ export const handler: Handlers<Record<string, never>> = {
         if (!USE_INVITE_SYSTEM) {
           return initializeHealthWorkerWithoutInvites(
             trx,
-            googleClient,
+            google_client,
             profile,
           )
         }
@@ -240,7 +240,7 @@ export const handler: Handlers<Record<string, never>> = {
           health_worker_invitees.length
             ? initializeHealthWorkerWithInvites(
               trx,
-              googleClient,
+              google_client,
               profile,
               health_worker_invitees,
             )

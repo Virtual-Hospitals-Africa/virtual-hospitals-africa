@@ -1,6 +1,6 @@
 import * as trigram from '../util/trigram.ts'
 
-type Path = Array<number | 'term' | 'mainTerm'>
+type Path = Array<number | 'term' | 'main_term'>
 
 function* indexableTerms(
   term: ICD10IndexTerm,
@@ -37,9 +37,9 @@ export class ICD10Searchable {
   public index: trigram.TrigramIndex
   constructor(public icd10_index: ICD10Index) {
     for (const [i, letter] of icd10_index['ICD10CM.index'].letter.entries()) {
-      for (const [j, mainTerm] of letter.mainTerm.entries()) {
+      for (const [j, main_term] of letter.main_term.entries()) {
         for (
-          const [term, path] of indexableTerms(mainTerm, [i, 'mainTerm', j])
+          const [term, path] of indexableTerms(main_term, [i, 'main_term', j])
         ) {
           this.terms.push(term.toLowerCase())
           this.paths.push(path)
@@ -102,7 +102,7 @@ export type ICD10Index = {
   'ICD10CM.index': {
     letter: {
       title: string
-      mainTerm: ICD10IndexTerm[]
+      main_term: ICD10IndexTerm[]
     }[]
   }
 }

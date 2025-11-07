@@ -4,6 +4,6 @@ export function capLengthAt(length: number): (str: string) => string {
   }
 }
 
-export const capLength_at_whats_app_description = capLengthAt(72)
+export const capLengthAtWhatsAppDescription = capLengthAt(72)
 
-export const capLength_at_whats_app_title = capLengthAt(24)
+export const capLengthAtWhatsAppTitle = capLengthAt(24)

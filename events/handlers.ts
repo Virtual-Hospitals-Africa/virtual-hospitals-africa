@@ -86,7 +86,7 @@ export const EVENTS = {
         const { organization_id } = doctor_review_request.requesting
         if (!organization_id) return
 
-        const doctors_at_organization = await organizations.getEmployees(
+        const doctors_at_organization = await organizations.get_employees(
           trx,
           organization_id,
           {
@@ -148,7 +148,7 @@ export const EVENTS = {
 
           const whatsapp_to_send = {
             type: 'string' as const,
-            messageBody: message.body,
+            message_body: message.body,
           }
           const whatsapp_response = await whatsapp.sendMessage({
             chatbot_name: 'pharmacist',
@@ -163,7 +163,7 @@ export const EVENTS = {
 
           await conversations.insertMessageSent(trx, {
             chatbot_name: 'pharmacist',
-            sent_by_phone_number: whatsapp.phoneNumbers.pharmacist,
+            sent_by_phone_number: whatsapp.phone_numbers.pharmacist,
             sent_to_phone_number: pharmacist_chatbot_user.phone_number,
             responding_to_received_id: null,
             corresponding_message_id: message.id,

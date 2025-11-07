@@ -21,9 +21,9 @@ import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  let insertEvent: Stub
+  let insert_event: Stub
   afterEach(() => {
-    if (insertEvent) insertEvent.restore()
+    if (insert_event) insert_event.restore()
   })
 
   it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
@@ -38,14 +38,14 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -80,9 +80,9 @@ describe('patient chatbot', () => {
 
     const whatsapp = mockWhatsApp()
 
-    insertEvent = stub(
+    insert_event = stub(
       google.GoogleClient.prototype,
-      'insertEvent',
+      'insert_event',
       () => Promise.resolve({ id: 'insertEvent_id' } as GCalEvent),
     )
 
@@ -91,7 +91,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
             prettyAppointmentTime(start),
           type: 'buttons',

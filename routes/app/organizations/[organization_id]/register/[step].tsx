@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { HealthWorkerWithGoogleTokens } from '../../../../../types.ts'
 import {
-  getNurseRegistrationSteps,
+  get_nurse_registration_steps,
   getStepFormData,
   NurseRegistrationStep,
   NurseRegistrationStepNames,
@@ -60,7 +60,7 @@ export const handler = {
       name === step
     )
 
-    if (stepIndex < NurseRegistrationStepNames.length - 1) {
+    if (step_index < NurseRegistrationStepNames.length - 1) {
       await nurse_registration_details.setInProgress(
         ctx.state.trx,
         {
@@ -68,7 +68,7 @@ export const handler = {
           data: form_state,
         },
       )
-      const next_step = NurseRegistrationStepNames[stepIndex + 1]
+      const next_step = NurseRegistrationStepNames[step_index + 1]
       const next_url = ctx.url.pathname.replace(`/${step}`, `/${next_step}`)
       return redirect(next_url)
     }
@@ -144,7 +144,7 @@ export default async function RegisterPage(
 
   form_state.email = health_worker.email
 
-  const step_state = getNurseRegistrationSteps(ctx)
+  const step_state = get_nurse_registration_steps(ctx)
 
   return (
     <Layout
@@ -155,9 +155,9 @@ export default async function RegisterPage(
       <SectionHeader>
         Registration
       </SectionHeader>
-      {stepState.stepsTopBar}
+      {step_state.stepsTopBar}
       <NurseRegistrationForm
-        currentStep={stepState.currentStep}
+        current_step={step_state.current_step}
         form_data={form_state}
       />
     </Layout>

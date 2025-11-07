@@ -8,8 +8,8 @@ export function uniqBy<T, K extends keyof T>(
 
   for (const value of array) {
     const key = value[keyBy]
-    if (!seenValues.has(key)) {
-      seenValues.add(key)
+    if (!seen_values.has(key)) {
+      seen_values.add(key)
       uniqueArray.push(value)
     }
   }

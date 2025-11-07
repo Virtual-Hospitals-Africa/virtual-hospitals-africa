@@ -82,12 +82,12 @@ export async function getPatientDeclinedTimes(
 
   const declined_times = []
 
-  for (const { start } of readResult) {
+  for (const { start } of read_result) {
     assert(isDate(start))
-    declinedTimes.push(start)
+    declined_times.push(start)
   }
 
-  return declinedTimes
+  return declined_times
 }
 
 export function createNewRequest(
@@ -188,8 +188,8 @@ export async function schedule(
 
   const appointment = await trx
     .insertInto('appointments')
-    .values(appointmentToInsert)
-    .onConflict((oc) => oc.column('id').doUpdateSet(appointmentToInsert))
+    .values(appointment_to_insert)
+    .onConflict((oc) => oc.column('id').doUpdateSet(appointment_to_insert))
     .returningAll()
     .executeTakeFirstOrThrow()
 
@@ -469,16 +469,16 @@ export function remove(trx: TrxOrDb, id: string) {
 
 export function insertRequestMedia(
   trx: TrxOrDb,
-  toInsert: {
+  to_insert: {
     patient_appointment_request_id: string
     media_id: string
   },
 ): Promise<HasStringId<PatientAppointmentRequestMedia>> {
-  assert(toInsert.patient_appointment_request_id)
-  assert(toInsert.media_id)
+  assert(to_insert.patient_appointment_request_id)
+  assert(to_insert.media_id)
   return trx
     .insertInto('patient_appointment_request_media')
-    .values(toInsert)
+    .values(to_insert)
     .returningAll()
     .executeTakeFirstOrThrow()
 }
@@ -493,7 +493,7 @@ export async function getMediaIdByRequestId(
     .where('patient_appointment_request_id', '=', opts.request_id).select(
       'media_id',
     ).execute()
-  return queryResult.map((row) => row.media_id)
+  return query_result.map((row) => row.media_id)
 }
 
 export function insertMedia(
@@ -509,6 +509,6 @@ export function insertMedia(
     appointment_id: opts.appointment_id,
     media_id,
   }))
-  return trx.insertInto('appointment_media').values(toInsert).returningAll()
+  return trx.insertInto('appointment_media').values(to_insert).returningAll()
     .executeTakeFirstOrThrow()
 }

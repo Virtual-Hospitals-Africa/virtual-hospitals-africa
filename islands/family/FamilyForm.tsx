@@ -71,14 +71,14 @@ export default function PatientFamilyForm({
 
   return (
     <>
-      {showGuardians && (
+      {show_guardians && (
         <input type='hidden' name='family.under_18' value='on' />
       )}
-      {showNextOfKin && (
+      {show_next_of_kin && (
         <NextOfKinFormSection next_of_kin={family.next_of_kin} />
       )}
 
-      {showGuardians &&
+      {show_guardians &&
         (
           <FormSection header='Guardians'>
             {guardians.value.map((guardian, i) => (
@@ -102,7 +102,7 @@ export default function PatientFamilyForm({
           </FormSection>
         )}
 
-      {showDependents &&
+      {show_dependents &&
         (
           <div>
             <SectionHeader>

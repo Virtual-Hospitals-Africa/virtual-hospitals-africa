@@ -275,5 +275,5 @@ export function medicationDisplay(
   })
 
   // Combine everything into the final output
-  return `${medicationDescription}\n${scheduleDescriptions.join('\n')}`
+  return `${medicationDescription}\n${schedule_descriptions.join('\n')}`
 }

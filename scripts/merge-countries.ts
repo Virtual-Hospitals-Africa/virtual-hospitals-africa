@@ -67,10 +67,10 @@ if (import.meta.main) {
       const alternate_names = common_name === official_name ? [] : [common_name]
 
       // Try to match emoji and phone code
-      const emoji = findMatch(emoji_by_country, official_name, common_name) ||
+      const emoji = find_match(emoji_by_country, official_name, common_name) ||
         ''
       const phone_calling_code =
-        findMatch(phone_code_by_country, official_name, common_name) || ''
+        find_match(phone_code_by_country, official_name, common_name) || ''
 
       return {
         iso_3166_2,

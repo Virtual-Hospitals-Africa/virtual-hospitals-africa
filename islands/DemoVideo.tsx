@@ -28,7 +28,7 @@ export default function DemoVideo() {
     return new YT.Player('youtube_demo_iframe', {
       height: '390',
       width: '640',
-      videoId,
+      video_id,
       playerVars: {
         playsinline: 1,
       },
@@ -112,7 +112,7 @@ export default function DemoVideo() {
   effect(() => {
     function checkIfCanPlayThenPlay() {
       if (player.value.playVideo) {
-        player.value.playVideo(videoId, 0, videoQuality)
+        player.value.playVideo(video_id, 0, video_quality)
       } else {
         requestAnimationFrame(checkIfCanPlayThenPlay)
       }

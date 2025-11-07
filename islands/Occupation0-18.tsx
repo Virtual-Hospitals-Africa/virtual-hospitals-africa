@@ -143,7 +143,7 @@ export default function Occupation0_18({
                 ...school,
                 current: {
                   ...school.current,
-                  grades_dropping_reason: event ? gradeDropReasons[0] : null,
+                  grades_dropping_reason: event ? grade_drop_reasons[0] : null,
                 },
               })
             }}
@@ -208,7 +208,7 @@ export default function Occupation0_18({
               label='If the grades are dropping, why?'
               name='occupation.school.current.grades_dropping_reason'
               value={school.current.grades_dropping_reason}
-              options={gradeDropReasons}
+              options={grade_drop_reasons}
             />
           )}
         </FormRow>
@@ -217,7 +217,7 @@ export default function Occupation0_18({
             <SelectWithOther
               label='If the patient stopped their education, why?'
               name='occupation.school.past.stopped_reason'
-              options={stopEducationReasons}
+              options={stop_education_reasons}
               value={school.past.stopped_reason}
             />
           )}
