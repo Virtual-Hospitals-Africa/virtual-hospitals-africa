@@ -1,0 +1,8 @@
+policies:
+  No camelCase variable names:
+    baseline: 659
+    description: >-
+      Following conventions makes debugging easier for everyone! Put all
+      querybuilders in ./src/queryBuilders.
+    filePattern: "**/*.{ts,tsx}"
+    search: regex:const (?!className)[a-z]+([A-Z]).*\s

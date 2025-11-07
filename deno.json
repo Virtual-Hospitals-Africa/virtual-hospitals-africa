@@ -47,7 +47,8 @@
     "tmux": "./scripts/tmux.sh",
     "preview": "deno serve -A _fresh/server.js",
     "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
-    "check:ignoretest": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '.test.ts' | xargs deno check"
+    "check:ignoretest": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '.test.ts' | xargs deno check",
+    "diffjam": "diffjam check"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact", "sourceMap": true },
   "fmt": {
@@ -69,6 +70,7 @@
     "cheerio": "https://esm.sh/cheerio@1.0.0",
     "client-only": "https://esm.sh/v135/client-only@0.0.1/",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
+    "diffjam": "npm:diffjam@^3.2.7",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
     "kysely": "npm:kysely@0.28.8",
