@@ -96,8 +96,8 @@ function createPipeline(language_code: string) {
         return onAudioChunk(new Uint8Array(data))
       }
       if (data instanceof Blob) {
-        const arrayBuffer = await data.arrayBuffer()
-        return onAudioChunk(new Uint8Array(arrayBuffer))
+        const array_buffer = await data.arrayBuffer()
+        return onAudioChunk(new Uint8Array(array_buffer))
       }
 
       throw new Error('Unexpected data type: ' + data)

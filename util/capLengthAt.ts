@@ -1,9 +1,11 @@
-export function capLengthAt(length: number): (str: string) => string {
-  return function (str: string): string {
-    return str.length <= length ? str : str.slice(0, length - 3) + '...'
-  }
+export function capLengthAt(str: string, length: number): string {
+  return str.length <= length ? str : str.slice(0, length - 3) + '...'
 }
 
-export const capLengthAtWhatsAppDescription = capLengthAt(72)
+export function capLengthAtWhatsAppDescription(str: string): string {
+  return capLengthAt(str, 72)
+}
 
-export const capLengthAtWhatsAppTitle = capLengthAt(24)
+export function capLengthAtWhatsAppTitle(str: string): string {
+  return capLengthAt(str, 24)
+}

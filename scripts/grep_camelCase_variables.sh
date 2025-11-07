@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-pattern='const ([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! memoize)(?! \(.+\) =>)(?! model\.)(?! pick\()\s'
+pattern='const (?!onClick)(?!defaultValue)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! memoize)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s'
 count_log_file=camelCase.log
 
 count_camelCase_variables() {
