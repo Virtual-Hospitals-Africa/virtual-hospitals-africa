@@ -7,4 +7,6 @@ alwaysApply: true
 
 Migrations are defined in db/migrations
 
-All tables/types added in the up function must be dropped in reverse order in the down function
+All tables/types added in the up function must be dropped in reverse order in the down function.
+
+Generally speaking use createStandardTable 

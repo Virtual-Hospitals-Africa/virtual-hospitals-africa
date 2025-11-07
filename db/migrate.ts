@@ -1,9 +1,15 @@
-import { Migration, MigrationResult, Migrator } from 'kysely'
+import {
+  Migration,
+  MigrationResult,
+  MigrationResultSet,
+  Migrator,
+} from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
+import { Maybe } from '../types.ts'
 
 const migrations: Record<
   string,
@@ -130,16 +136,17 @@ export const migrate = {
   },
 }
 
-// deno-lint-ignore no-explicit-any
-export function logMigrationResults({ error, results }: any = {}) {
-  // deno-lint-ignore no-explicit-any
-  results?.forEach((it: any) => {
+export function logMigrationResults(
+  migration_result_set: Maybe<Partial<MigrationResultSet>> | void,
+) {
+  const { error, results } = migration_result_set || {}
+  results?.forEach((it) => {
     if (it.status === 'Success') {
       console.log(
-        `  migration "${it.migration_name}" was executed successfully`,
+        `  migration "${it.migrationName}" was executed successfully`,
       )
     } else if (it.status === 'Error') {
-      console.error(`  failed to execute migration "${it.migration_name}"`)
+      console.error(`  failed to execute migration "${it.migrationName}"`)
     }
   })
 

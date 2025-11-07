@@ -24,6 +24,9 @@ jobs:
         with:
           deno-version: v2.3.5
 
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
