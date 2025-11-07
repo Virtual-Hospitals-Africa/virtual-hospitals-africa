@@ -45,20 +45,20 @@ export function OrganizationView(props: {
       )) || null
   }
 
-  const getSortItems = (): DropdownItem[] => {
+  function getSortItems(): DropdownItem[] {
     return Object.values(OrganizationSortOptions).map((option) => ({
       title: option,
       selected: sort.value === option,
-      onClick: () => {
+      onClick() {
         sort.value = option
       },
     }))
   }
 
-  const updateFilter = (
+  function updateFilter(
     newValue: DoctorSpecialty,
     filters: Set<DoctorSpecialty>,
-  ) => {
+  ) {
     if (filters.has(newValue)) {
       filters.delete(newValue)
     } else {
@@ -67,14 +67,14 @@ export function OrganizationView(props: {
     return new Set([...filters])
   }
 
-  const getSpecialtiesFilterItems = (
+  function getSpecialtiesFilterItems(
     selectedFilters: Set<string>,
-  ): Option<DoctorSpecialty>[] => {
+  ): Option<DoctorSpecialty>[] {
     return DOCTOR_SPECIALTIES.map((specialty) => ({
       value: specialty,
       label: specialty,
       checked: selectedFilters.has(specialty),
-      onChanged: (newValue) => {
+      onChanged(newValue) {
         specialties.value = updateFilter(newValue, specialties.value)
       },
     }))

@@ -163,11 +163,11 @@ export async function addTestEmployeeWithSession(
     entity_id: health_worker.id,
   })
 
-  const fetchWithSession: typeof fetch = (
+  function fetchWithSession(
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
-  ) =>
-    fetch(
+  ): ReturnType<typeof fetch> {
+    return fetch(
       typeof input === 'string' && input.startsWith('/')
         ? `${route}${input}`
         : input,
@@ -179,6 +179,7 @@ export async function addTestEmployeeWithSession(
         ...rest,
       },
     )
+  }
 
   const fetchOk = async (
     url: string | URL,

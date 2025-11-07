@@ -68,10 +68,10 @@ type SearchTerms = {
   licence_number_search: string | null
 }
 
-export const toSearchTerms = (
+export function toSearchTerms(
   country: string,
   search: string | null,
-): SearchTerms => {
+): SearchTerms {
   if (!search) {
     return { country, name_search: null, licence_number_search: null }
   }

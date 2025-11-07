@@ -182,8 +182,12 @@ export function Onboarding(
   },
 ) {
   const progress = useSignal<OnboardingProgress>({ type: 'welcome' })
-  const getStarted = () => progress.value = { type: 'enter profession' }
-  const onProfession = () => progress.value = { type: 'select organization' }
+  function getStarted() {
+    progress.value = { type: 'enter profession' }
+  }
+  function onProfession() {
+    progress.value = { type: 'select organization' }
+  }
 
   return (
     <Form method='POST'>

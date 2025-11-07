@@ -31,11 +31,11 @@ export async function addTestRegulatorWithSession(
   const session = await sessions.create(trx, 'regulator', {
     entity_id: regulator.id,
   })
-  const fetchWithSession: typeof fetch = (
+  function fetchWithSession(
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
-  ) =>
-    fetch(
+  ): ReturnType<typeof fetch> {
+    return fetch(
       typeof input === 'string' && input.startsWith('/')
         ? `${route}${input}`
         : input,
@@ -47,6 +47,7 @@ export async function addTestRegulatorWithSession(
         ...rest,
       },
     )
+  }
 
   const fetchOk = async (
     url: string | URL,

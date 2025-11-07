@@ -285,8 +285,9 @@ export function assertAllJohannesburg(dates: string[]) {
   }
 }
 
-const isLeap = (year: number): boolean =>
-  (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
+function isLeap(year: number): boolean {
+  return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
+}
 
 export function monthName(month: MonthNum): string {
   switch (month) {
