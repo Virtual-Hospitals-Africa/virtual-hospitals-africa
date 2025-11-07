@@ -44,7 +44,7 @@ const solutions = [
     icon: ArrowPathIcon,
   },
 ]
-const callsToAction = [
+const calls_to_action = [
   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]

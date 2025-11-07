@@ -6,15 +6,15 @@ export function LocalTime({ timestamp }: LocalTimeProps) {
 
 function formatDateTime(date: string | Date) {
   const today = new Date()
-  const inputDate = new Date(date)
+  const input_date = new Date(date)
 
   // Reset time to compare just dates
-  const todayDate = new Date(
+  const today_date = new Date(
     today.getFullYear(),
     today.getMonth(),
     today.getDate(),
   )
-  const compareDate = new Date(
+  const compare_date = new Date(
     inputDate.getFullYear(),
     inputDate.getMonth(),
     inputDate.getDate(),
@@ -22,7 +22,7 @@ function formatDateTime(date: string | Date) {
 
   if (compareDate.getTime() === todayDate.getTime()) {
     // Today - show time only
-    const timeString = new Intl.DateTimeFormat('en-US', {
+    const time_string = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
@@ -30,7 +30,7 @@ function formatDateTime(date: string | Date) {
     return `at ${timeString}`
   } else {
     // Yesterday or earlier - show date only
-    const dateString = new Intl.DateTimeFormat('en-US', {
+    const date_string = new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',

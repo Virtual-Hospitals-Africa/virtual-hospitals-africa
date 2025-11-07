@@ -33,7 +33,7 @@ describe(
         response.url ===
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
@@ -93,7 +93,7 @@ describe(
         body.set('address.locality', address.locality)
         body.set('address.street', address.street)
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
           {
             method: 'POST',
@@ -112,7 +112,7 @@ describe(
 
         await postResponse.body?.cancel()
 
-        const registrationFormState = await nurse_registration_details
+        const registration_form_state = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
           })
@@ -129,11 +129,11 @@ describe(
           address,
         })
 
-        const getPersonalResponse = await fetch(
+        const get_personal_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
         )
 
-        const pageContents = await getPersonalResponse.text()
+        const page_contents = await getPersonalResponse.text()
         const $ = cheerio.load(pageContents)
         console.log($.html())
         assertEquals(
@@ -181,7 +181,7 @@ describe(
         body.set('ncz_registration_number', 'GN123456')
         body.set('specialty', 'oncology and palliative care')
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
           {
             method: 'POST',
@@ -200,7 +200,7 @@ describe(
 
         await postResponse.body?.cancel()
 
-        const registrationFormState = await nurse_registration_details
+        const registration_form_state = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
           })
@@ -220,11 +220,11 @@ describe(
           address,
         })
 
-        const getProfessionalResponse = await fetch(
+        const get_professional_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
         )
 
-        const pageContents = await getProfessionalResponse.text()
+        const page_contents = await getProfessionalResponse.text()
         const $ = cheerio.load(pageContents)
         assertEquals(
           $('input[name="date_of_first_practice"]').val(),
@@ -244,7 +244,7 @@ describe(
         // TODO: upload documents
         const body = new FormData()
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
           {
             method: 'POST',
@@ -263,16 +263,16 @@ describe(
 
         await postResponse.body?.cancel()
 
-        const registrationDetails = await nurse_registration_details.get(db, {
+        const registration_details = await nurse_registration_details.get(db, {
           health_worker_id: nurse.id,
         })
 
-        const newNurse = await db.selectFrom('health_workers').where(
+        const new_nurse = await db.selectFrom('health_workers').where(
           'id',
           '=',
           nurse.id,
         ).selectAll().executeTakeFirst()
-        const nurseEmployment = await db.selectFrom('employment').where(
+        const nurse_employment = await db.selectFrom('employment').where(
           'health_worker_id',
           '=',
           nurse.id,

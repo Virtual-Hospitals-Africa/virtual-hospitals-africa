@@ -28,7 +28,7 @@ describe('patient chatbot', () => {
 
   it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
       name: 'Test Patient',

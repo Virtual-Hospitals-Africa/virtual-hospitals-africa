@@ -43,7 +43,7 @@
 //       )
 
 //       if (!response.ok) throw new Error(await response.text())
-//       const pageContents = await response.text()
+//       const page_contents =await response.text()
 
 //       const $ = cheerio.load(pageContents)
 
@@ -192,7 +192,7 @@
 //         )
 
 //         if (!response.ok) throw new Error(await response.text())
-//         const pageContents = await response.text()
+//         const page_contents =await response.text()
 
 //         const $ = cheerio.load(pageContents)
 

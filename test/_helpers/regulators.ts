@@ -18,7 +18,7 @@ export function testRegulator() {
 export async function addTestRegulator(
   trx: TrxOrDb,
 ) {
-  const createdRegulator = await regulators.upsert(trx, {
+  const created_regulator = await regulators.upsert(trx, {
     ...testRegulator(),
   })
   return createdRegulator

@@ -15,7 +15,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 
 function createPipeline(language_code: string) {
   const media_speech_id = generateUUID()
-  const startTime = new Date()
+  const start_time = new Date()
 
   const transcription = transcriptionProcess(language_code)
   const file_path = `temp_files/${media_speech_id}.wav`
@@ -96,7 +96,7 @@ function createPipeline(language_code: string) {
         return onAudioChunk(new Uint8Array(data))
       }
       if (data instanceof Blob) {
-        const arrayBuffer = await data.arrayBuffer()
+        const array_buffer = await data.arrayBuffer()
         return onAudioChunk(new Uint8Array(arrayBuffer))
       }
 

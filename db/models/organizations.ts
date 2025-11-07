@@ -424,7 +424,7 @@ export function getEmployeesAndInvitees(
     emails?: string[]
   } = {},
 ): Promise<OrganizationEmployeeOrInvitee[]> {
-  const hwQuery = getEmployeesQuery(trx, organization_id, opts).selectFrom(
+  const hw_query = getEmployeesQuery(trx, organization_id, opts).selectFrom(
     'organization_employees',
   ).selectAll('organization_employees')
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
@@ -473,7 +473,7 @@ export async function invite(
     profession: Profession
   }[],
 ) {
-  const invitedByEmail = new Map<string, Set<Profession>>()
+  const invited_by_email = new Map<string, Set<Profession>>()
   for (const { email, profession } of invites) {
     const professions = invitedByEmail.get(email)
     if (!professions) {
@@ -492,7 +492,7 @@ export async function invite(
     professions.add(profession)
   }
 
-  const existingEmployees = await getEmployeesAndInvitees(
+  const existing_employees = await getEmployeesAndInvitees(
     trx,
     organization_id,
     {
@@ -500,7 +500,7 @@ export async function invite(
     },
   )
 
-  const exactMatchingInvites = invites.filter(
+  const exact_matching_invites = invites.filter(
     (invite) =>
       existingEmployees.some(
         (employee) =>
@@ -518,7 +518,7 @@ export async function invite(
     throw new StatusError(message, 400)
   }
 
-  const alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa = invites.filter(
+  const alreadyDoctorAndTryingToInviteAs_nurse_or_visa_versa = invites.filter(
     (invite) =>
       existingEmployees.some(
         (employee) =>

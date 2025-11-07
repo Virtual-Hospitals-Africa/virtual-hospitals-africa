@@ -16,7 +16,7 @@ describe.skip(
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     it('renders the edit page with correct pharmacist data on GET', async () => {
-      const newPharmacist = await addTestPharmacist(db)
+      const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(
@@ -28,7 +28,7 @@ describe.skip(
         response.url ===
           `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
@@ -71,7 +71,7 @@ describe.skip(
     })
 
     it('can update a pharmacist via POST', async () => {
-      const newPharmacist = await addTestPharmacist(db)
+      const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(
@@ -85,9 +85,9 @@ describe.skip(
       )
 
       {
-        const givenName = `New Given Name ${generateUUID()}`
-        const familyName = `New Family Name ${generateUUID()}`
-        const licenceNumber = 'P01-0805-2025'
+        const given_name = `New Given Name ${generateUUID()}`
+        const family_name = `New Family Name ${generateUUID()}`
+        const licence_number = 'P01-0805-2025'
         const body = new FormData()
         body.set('given_name', givenName)
         body.set('family_name', familyName)
@@ -98,7 +98,7 @@ describe.skip(
         body.set('prefix', newPharmacist.prefix as Prefix)
         body.set('pharmacist_type', newPharmacist.pharmacist_type)
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/regulator/${regulator.country}/pharmacists/${newPharmacist.id}/edit`,
           {
             method: 'POST',
@@ -119,7 +119,7 @@ describe.skip(
           }`,
         )
 
-        const updatedPharmacist = await db
+        const updated_pharmacist = await db
           .selectFrom('pharmacists')
           .where('id', '=', newPharmacist.id)
           .select(['given_name', 'family_name', 'licence_number'])

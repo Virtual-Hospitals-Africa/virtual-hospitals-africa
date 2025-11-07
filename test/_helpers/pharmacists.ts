@@ -20,7 +20,7 @@ export async function addTestPharmacist(
   trx: TrxOrDb,
   pharmacist?: pharmacists.PharmacistInsert,
 ) {
-  const dummyPharmacist = {
+  const dummy_pharmacist = {
     ...testPharmacist(),
     ...pharmacist,
   }

@@ -42,7 +42,7 @@ describe.skip('patient chatbot', () => {
     const trx = db
 
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(trx, {
+    const patient_before = await patients.insert(trx, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,
       name: 'Test Patient',
@@ -67,31 +67,31 @@ describe.skip('patient chatbot', () => {
     assert(health_worker)
 
     //  Insert google calender
-    const currentTime = new Date()
+    const current_time = new Date()
     currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatJohannesburg(currentTime) // current + 2 hours
+    const time_min = formatJohannesburg(currentTime) // current + 2 hours
 
     currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatJohannesburg(currentTime) // current + 7 days + 2 hours
+    const time_max = formatJohannesburg(currentTime) // current + 7 days + 2 hours
 
     currentTime.setDate(currentTime.getDate() - 6)
     currentTime.setHours(currentTime.getHours() + 1)
     currentTime.setMinutes(0)
     currentTime.setSeconds(0)
     currentTime.setMilliseconds(0)
-    const secondDayStart = formatJohannesburg(currentTime) // current + 1 day + 3 hours
+    const second_day_start = formatJohannesburg(currentTime) // current + 1 day + 3 hours
 
     currentTime.setHours(currentTime.getHours())
     currentTime.setMinutes(30)
-    const secondDayBusyTime = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
+    const second_day_busy_time = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
 
-    const firstOtherTime = new Date(currentTime)
+    const first_other_time = new Date(currentTime)
     firstOtherTime.setHours(firstOtherTime.getHours() + 1)
     firstOtherTime.setMinutes(0) // current + 1 day + 4.5 hours
 
     currentTime.setHours(currentTime.getHours() + 8)
     currentTime.setMinutes(0)
-    const secondDayEnd = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
+    const second_day_end = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
 
     getFreeBusy = stub(
       google.GoogleClient.prototype,

@@ -33,7 +33,7 @@ function assertIsMailingListRecipient(
   assertOr400(form_values['email'].includes('@'))
 }
 
-const successMessages = {
+const success_messages = {
   general_inquiry: (name: string) =>
     `Thanks for your interest ${name}! Our team has received your inquiry and will respond as soon as possible 🚀`,
   book_a_demo: (name: string) =>

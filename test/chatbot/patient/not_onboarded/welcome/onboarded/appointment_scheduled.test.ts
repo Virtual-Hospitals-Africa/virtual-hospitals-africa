@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('comes back to main menu after cancelling appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
       phone_number,
       name: 'Test Patient',
@@ -50,7 +50,7 @@ describe('patient chatbot', () => {
     end.setHours(end.getHours() + 1)
     const duration_minutes = 60
 
-    const offeredTime = await appointments.addOfferedTime(db, {
+    const offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
       start,

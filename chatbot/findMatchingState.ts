@@ -48,7 +48,7 @@ export default async function findMatchingState<US extends ChatbotUserState>(
 
   if (!currentState) return null
 
-  const messageBody = userState.unhandled_message.body?.trim()
+  const message_body = userState.unhandled_message.body?.trim()
 
   switch (currentState.type) {
     case 'select': {
@@ -69,7 +69,8 @@ export default async function findMatchingState<US extends ChatbotUserState>(
     case 'string': {
       assert(messageBody)
       const validation = currentState.validation || (() => true)
-      const hasBodyPassingValidation = !!messageBody && validation(messageBody)
+      const hasBody_passing_validation = !!messageBody &&
+        validation(messageBody)
       return hasBodyPassingValidation ? currentState : null
     }
     case 'expect_media': {

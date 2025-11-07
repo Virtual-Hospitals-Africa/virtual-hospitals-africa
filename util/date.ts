@@ -25,7 +25,7 @@ export function prettyPatientDateOfBirth(
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
   const date = new Date(`${year}-${month}-${day}T00:00:00Z`)
-  const dtDateOnly = new Date(
+  const dtDate_only = new Date(
     date.valueOf() + date.getTimezoneOffset() * 60 * 1000,
   )
   return dtDateOnly.toLocaleDateString('en-GB', {
@@ -175,7 +175,7 @@ export function formatJohannesburg(
 }
 
 export const date_regex = /^\d{4}-\d{2}-\d{2}$/
-const rfc3339Regex =
+const rfc3339_regex =
   /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
 export function differenceInDays(date1: string, date2: string): number {
@@ -185,10 +185,10 @@ export function differenceInDays(date1: string, date2: string): number {
   assert(date_regex.test(date2), `Expected ISO format: ${date2}`)
 
   // One day in milliseconds
-  const oneDay = 1000 * 60 * 60 * 24
+  const one_day = 1000 * 60 * 60 * 24
 
   // Calculating the time difference between two dates
-  const diffInTime = new Date(date1).getTime() - new Date(date2).getTime()
+  const diffIn_time = new Date(date1).getTime() - new Date(date2).getTime()
 
   // Calculating the no. of days between two dates
   return Math.round(diffInTime / oneDay)
@@ -214,7 +214,7 @@ const time_format = new Intl.DateTimeFormat('en-gb', {
 export function prettyAppointmentTime(startTime: string | Date): string {
   if (isString(startTime)) {
     assert(
-      rfc3339Regex.test(startTime),
+      rfc3339_regex.test(startTime),
       `Expected RFC3339 format: ${startTime}`,
     )
     // assert(
@@ -241,7 +241,7 @@ export function prettyAppointmentTime(startTime: string | Date): string {
     dateStr = long_day_format.format(start)
   }
 
-  const prettyTime = time_format.format(start)
+  const pretty_time = time_format.format(start)
 
   return `${dateStr} at ${prettyTime}`
 }
@@ -260,16 +260,16 @@ export function timeRangeInSimpleAmPm(
   start: ParsedDateTime,
   end: ParsedDateTime,
 ): string {
-  const timeStart = timeInSimpleAmPm(start)
-  const timeEnd = timeInSimpleAmPm(end)
-  const sameAmPm = timeStart.slice(-2) === timeEnd.slice(-2)
+  const time_start = timeInSimpleAmPm(start)
+  const time_end = timeInSimpleAmPm(end)
+  const sameAm_pm = timeStart.slice(-2) === timeEnd.slice(-2)
   return sameAmPm
     ? `${timeStart.slice(0, -2)}-${timeEnd}`
     : `${timeStart}-${timeEnd}`
 }
 
 export function isRfc3339(date: string): boolean {
-  return rfc3339Regex.test(date)
+  return rfc3339_regex.test(date)
 }
 
 export function isIsoJohannesburg(date: string): boolean {
@@ -359,8 +359,8 @@ export function convertToTime(date: string): Time {
   const hour = parseInt(hourStr)
   const minute = parseInt(minuteStr)
   assertEquals(minute % 5, 0)
-  const amPm = hour >= 12 ? 'pm' : 'am'
-  const hourMod = hour % 12
+  const am_pm = hour >= 12 ? 'pm' : 'am'
+  const hour_mod = hour % 12
   return {
     hour: hourMod === 0 ? 12 : hourMod as Time['hour'],
     minute: minute as Time['minute'],
@@ -369,7 +369,7 @@ export function convertToTime(date: string): Time {
 }
 
 export function convertToTimeString(time: string): string {
-  const formattedTime = convertToTime(time)
+  const formatted_time = convertToTime(time)
   const minute = formattedTime.minute
     ? formattedTime.minute.toString().padStart(2, '0')
     : '00'

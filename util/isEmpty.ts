@@ -4,7 +4,7 @@ import isArrayLike from './isArrayLike.ts'
 import isPrototype from './internal/isPrototype.ts'
 
 /** Used to check objects for own properties. */
-const hasOwnProperty = Object.prototype.hasOwnProperty
+const has_own_property = Object.prototype.hasOwnProperty
 
 // deno-lint-ignore no-explicit-any
 export default function isEmpty(value: any): boolean {

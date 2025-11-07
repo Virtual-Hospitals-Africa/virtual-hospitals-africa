@@ -24,7 +24,7 @@ export default function VitalInputWithNote(
   },
 ) {
   const name = `findings.${vital.finding_id}`
-  const showNote = useSignal(false)
+  const show_note = useSignal(false)
 
   return (
     <div className='flex flex-col w-full'>

@@ -3,7 +3,7 @@ import { useEffect } from 'preact/hooks'
 export default function useUnsavedChangesWarning() {
   useEffect(() => {
     const modified_inputs = new Set<HTMLElement>()
-    const defaultValue = ''
+    const default_value = ''
 
     // store original values
     function onBeforeInput(event: Event) {

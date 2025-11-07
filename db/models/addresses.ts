@@ -69,7 +69,7 @@ export function insertValues(address: AddressInsert) {
     assertOr400(!route, 'route is not allowed when street is present')
     assertOr400(!unit, 'unit is not allowed when street is present')
 
-    const streetParts = compact(street.split(' '))
+    const street_parts = compact(street.split(' '))
     if (streetParts.length > 1 && !isNaN(parseInt(streetParts[0]))) {
       street_number = streetParts.shift()
     }

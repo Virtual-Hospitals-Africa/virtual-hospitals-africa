@@ -3,8 +3,8 @@ function extractQuotedStrings(content: string): string[] {
 
   // Regex to match both single and double quoted strings
   // Handles escaped quotes within strings
-  const doubleQuotedRegex = /"((?:[^"\\]|\\.)*)"/g
-  const singleQuotedRegex = /'((?:[^'\\]|\\.)*)'/g
+  const double_quoted_regex = /"((?:[^"\\]|\\.)*)"/g
+  const single_quoted_regex = /'((?:[^'\\]|\\.)*)'/g
 
   // Extract double-quoted strings
   let match
@@ -35,7 +35,7 @@ async function main() {
     console.log(`Reading file: ${filepath}\n`)
 
     const content = await Deno.readTextFile(filepath)
-    const quotedStrings = extractQuotedStrings(content)
+    const quoted_strings = extractQuotedStrings(content)
 
     if (!quotedStrings.length) {
       console.log('No quoted strings found in the file.')

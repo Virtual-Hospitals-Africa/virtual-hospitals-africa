@@ -35,7 +35,7 @@ describe('patient chatbot', () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const whatsappOne = mockWhatsApp()
+    const whatsapp_one = mockWhatsApp()
 
     await respond(whatsappOne, 'patient', phone_number)
 
@@ -49,7 +49,7 @@ describe('patient chatbot', () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const whatsappTwo = mockWhatsApp()
+    const whatsapp_two = mockWhatsApp()
 
     await respond(whatsappTwo, 'patient')
     assertEquals(whatsappTwo.sendMessages.calls[0].args, [

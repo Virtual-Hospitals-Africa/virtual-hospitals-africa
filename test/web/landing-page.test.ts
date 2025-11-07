@@ -5,7 +5,7 @@ import * as cheerio from 'cheerio'
 import db from '../../db/db.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
-const expectedLinks = [
+const expected_links = [
   '/waitlist?entrypoint=hero',
   '/schedule-demo?entrypoint=health-workers',
   '/waitlist?entrypoint=patients',
@@ -30,17 +30,17 @@ describe(
       const response = await fetch(route)
       const $ = cheerio.load(await response.text())
 
-      for (const expectedLink of expectedLinks) {
+      for (const expected_link of expected_links) {
         assert(
-          $(`a[href="${expectedLink}"]`).length === 1,
-          `expected to find a link to ${expectedLink}`,
+          $(`a[href="${expected_link}"]`).length === 1,
+          `expected to find a link to ${expected_link}`,
         )
       }
     })
 
-    for (const expectedLink of expectedLinks) {
-      it(`can load ${expectedLink}`, async () => {
-        const response = await fetch(`${route}${expectedLink}`)
+    for (const expected_link of expected_links) {
+      it(`can load ${expected_link}`, async () => {
+        const response = await fetch(`${route}${expected_link}`)
         if (!response.ok) throw new Error(await response.text())
         await response.body?.cancel()
       })

@@ -27,10 +27,10 @@ export default function VitalInputWithEvaluation({
   }
 }) {
   const name = `findings.${measurement.finding_id}`
-  const hasExistingNote = !!existingEvaluation?.note
+  const has_existing_note = !!existingEvaluation?.note
 
   const getVitalName = (snomedCode: string) => {
-    const vitalKey = Object.entries(VITALS_SNOMED_CODE).find(
+    const vital_key = Object.entries(VITALS_SNOMED_CODE).find(
       ([_, code]) => code === snomedCode,
     )?.[0]
 

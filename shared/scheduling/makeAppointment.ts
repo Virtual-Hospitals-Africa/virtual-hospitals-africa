@@ -37,7 +37,7 @@ export function gcalAppointmentDetails(
   acceptedTime: SchedulingAppointmentOfferedTime
   gcal: DeepPartial<GCalEvent>
 } {
-  const acceptedTimes = scheduling_appointment_request
+  const accepted_times = scheduling_appointment_request
     .offered_times.filter(
       (offeredTime) => !offeredTime.declined,
     )
@@ -85,7 +85,7 @@ export async function makeAppointmentChatbot(
     'No provider_id found',
   )
 
-  const matchingProvider = await getProvider(
+  const matching_provider = await getProvider(
     trx,
     acceptedTime.provider_id,
   )
@@ -93,7 +93,7 @@ export async function makeAppointmentChatbot(
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const insertedEvent = await insertEvent(
+  const inserted_event = await insertEvent(
     matchingProvider,
     matchingProvider.gcal_appointments_calendar_id,
     gcal,
@@ -148,12 +148,12 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingProvider = await getProvider(
+  const matching_provider = await getProvider(
     trx,
     values.provider_ids[0],
   )
 
-  const insertedEvent = await insertEvent(
+  const inserted_event = await insertEvent(
     matchingProvider,
     matchingProvider.gcal_appointments_calendar_id,
     gcal({

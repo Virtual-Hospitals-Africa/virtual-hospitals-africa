@@ -28,7 +28,7 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacists`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
       assert(
@@ -38,7 +38,7 @@ describe.skip(
     })
 
     it('renders a pharmacist table and a pharmacist with GET', async () => {
-      const newPharmacist = await addTestPharmacist(db)
+      const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const pharmacist_name =
@@ -54,7 +54,7 @@ describe.skip(
         throw new Error(await response.text())
       }
 
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
@@ -65,7 +65,7 @@ describe.skip(
         `should have one <td> with the pharmacist name"`,
       )
 
-      const tableRow = $(`tr div:contains(${pharmacist_name})`).closest('tr')
+      const table_row = $(`tr div:contains(${pharmacist_name})`).closest('tr')
 
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.prefix})`).length ===

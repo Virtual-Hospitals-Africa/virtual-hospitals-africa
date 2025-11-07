@@ -20,7 +20,7 @@ type PharmacyForm = {
 export default function PharmacyForm(
   { form_data, country }: PharmacyForm,
 ) {
-  const selectedSupervisors = useSignal<PharmacistOption[]>(
+  const selected_supervisors = useSignal<PharmacistOption[]>(
     form_data.supervisors ?? [],
   )
   const addSupervisor = () => {

@@ -4,7 +4,7 @@ import { getFileLineNumber } from './getFileLineNumber.ts'
 const NO_MONKEY_PATCH_CONSOLE = readBooleanEnvironmentVariable(
   'NO_MONKEY_PATCH_CONSOLE',
 )
-export const originalLog = console.log
+export const original_log = console.log
 
 // Monkey-patch console.log to print the timestamp + file & line number
 export function monkeyPatchConsole() {

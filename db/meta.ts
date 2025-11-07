@@ -92,7 +92,7 @@ export async function selectEnumValues(enum_name: string) {
 }
 
 // Leave data that is seeded by migrations, namely organizations, conditions, and drugs
-const topLevelTables = [
+const top_level_tables = [
   'patients' as const,
   'health_workers' as const,
   'health_worker_invitees' as const,

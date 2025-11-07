@@ -1,6 +1,6 @@
 import { Maybe } from '../types.ts'
 
-const hasOwn = {}.hasOwnProperty
+const has_own = {}.hasOwnProperty
 
 type ClassNameable = Maybe<
   boolean | string | number | { [key: string]: boolean }
@@ -12,7 +12,7 @@ export default function classNames(...args: ClassNameable[]): string {
   for (const arg of args) {
     if (!arg) continue
 
-    const argType = typeof arg
+    const arg_type = typeof arg
 
     if (argType === 'string' || argType === 'number') {
       classes.push(arg)
@@ -32,7 +32,7 @@ export default function classNames(...args: ClassNameable[]): string {
         continue
       }
 
-      const argObj = arg as { [key: string]: boolean }
+      const arg_obj = arg as { [key: string]: boolean }
 
       for (const key in argObj) {
         if (hasOwn.call(arg, key) && argObj[key]) {

@@ -28,7 +28,7 @@ export function parseRedisConnectionString(
 }
 
 const connectionOpts = () => {
-  const redisUrl = Deno.env.get('REDISCLOUD_URL')
+  const redis_url = Deno.env.get('REDISCLOUD_URL')
   return redisUrl ? parseRedisConnectionString(redisUrl) : {
     hostname: 'localhost',
     port: parseInt(Deno.env.get('REDIS_PORT')!) || 6379,

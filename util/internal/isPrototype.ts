@@ -1,4 +1,4 @@
-const objectProto = Object.prototype
+const object_proto = Object.prototype
 
 export default function isPrototype(value: unknown) {
   const Ctor = value && value.constructor

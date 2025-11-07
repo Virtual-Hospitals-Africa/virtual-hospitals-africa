@@ -164,7 +164,7 @@ export async function upsertForReview(
 
   await deleting_diagnoses
 
-  const isInDoctorReview = review_id !== undefined
+  const is_in_doctor_review = review_id !== undefined
 
   const inserting_diagnoses = to_insert_diagnoses.length &&
     Promise.all(

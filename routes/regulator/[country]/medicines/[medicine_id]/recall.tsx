@@ -14,7 +14,7 @@ export const handler = {
   ) {
     const medicine_id = getRequiredUUIDParam(ctx, 'medicine_id')
 
-    const manufacturedMedication = await manufactured_medications.getById(
+    const manufactured_medication = await manufactured_medications.getById(
       ctx.state.trx,
       medicine_id,
     )
@@ -45,7 +45,7 @@ export default RegulatorHomePageLayout(
   ) {
     const medicine_id = getRequiredUUIDParam(ctx, 'medicine_id')
 
-    const manufacturedMedication = await manufactured_medications.getById(
+    const manufactured_medication = await manufactured_medications.getById(
       ctx.state.trx,
       medicine_id,
     )

@@ -325,22 +325,22 @@ describe('db/models/health_workers.ts', () => {
         specialty: 'midwife',
       })
 
-      const nationalIdMedia = await media.insert(trx, {
+      const national_id_media = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/png',
       })
 
-      const facePictureMedia = await media.insert(trx, {
+      const face_picture_media = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/png',
       })
 
-      const registrationCardMedia = await media.insert(trx, {
+      const registration_card_media = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/png',
       })
 
-      const nursePracticingCertMedia = await media.insert(trx, {
+      const nurse_practicing_cert_media = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/png',
       })

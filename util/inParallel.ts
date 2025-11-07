@@ -8,7 +8,7 @@ export async function forEach<T>(
   let resolveBelowConcurrencyLimit: () => void
   let resolveAllDone: () => void
   let rejectAllDone: (reason?: string | Error) => void
-  const allDone = new Promise<void>((resolve, reject) => {
+  const all_done = new Promise<void>((resolve, reject) => {
     resolveAllDone = resolve
     rejectAllDone = reject
   })
@@ -64,7 +64,7 @@ export async function pMap<T, U>(
   const results: U[] = []
   let resolveAllDone: () => void
   let rejectAllDone: (reason?: string | Error) => void
-  const allDone = new Promise<void>((resolve, reject) => {
+  const all_done = new Promise<void>((resolve, reject) => {
     resolveAllDone = resolve
     rejectAllDone = reject
   })

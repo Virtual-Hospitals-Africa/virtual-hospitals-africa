@@ -9,14 +9,14 @@ const migrations: Record<
   string,
   Migration
 > = {}
-for (const migrationFile of Deno.readDirSync('./db/migrations')) {
-  const migrationName = migrationFile.name
-  assert(!migrationName.includes('seed'), 'Seed migrations are not supported')
-  const migration = await import(`./migrations/${migrationName}`)
-  migrations[migrationName] = migration.default || migration
+for (const migration_file of Deno.readDirSync('./db/migrations')) {
+  const migration_name = migration_file.name
+  assert(!migration_name.includes('seed'), 'Seed migrations are not supported')
+  const migration = await import(`./migrations/${migration_name}`)
+  migrations[migration_name] = migration.default || migration
 }
 
-const migrationTargets = Object.keys(migrations).sort()
+const migration_targets = Object.keys(migrations).sort()
 
 const migrator = new Migrator({
   db,

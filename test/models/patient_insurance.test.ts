@@ -424,7 +424,7 @@ describe('patient_insurance', () => {
 
   describe('edge cases', () => {
     it('handles very long insurance fields', async () => {
-      const longString = 'A'.repeat(255)
+      const long_string = 'A'.repeat(255)
 
       await patient_insurance.setCurrent(db, {
         patient_id,

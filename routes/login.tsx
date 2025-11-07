@@ -27,7 +27,7 @@ if (FAKE_GOOGLE_AUTH) {
 export const loginHref = memoize(() => {
   const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')
 
-  const oauthParams = new URLSearchParams({
+  const oauth_params = new URLSearchParams({
     redirect_uri: redirectUri(),
     prompt: 'consent',
     response_type: 'code',

@@ -74,9 +74,9 @@ export function insertComputedFinding(
   },
 ) {
   // Validate that we have either structured (value + units) OR display format
-  const hasStructured = value !== undefined && units !== undefined &&
+  const has_structured = value !== undefined && units !== undefined &&
     value_display === undefined
-  const hasDisplay = !hasStructured
+  const has_display = !hasStructured
 
   if (!hasStructured && !hasDisplay) {
     throw new Error('Must provide either value + units OR value_display')

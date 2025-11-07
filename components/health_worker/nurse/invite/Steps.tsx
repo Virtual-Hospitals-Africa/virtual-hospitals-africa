@@ -21,7 +21,7 @@ export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
   'documents' as const,
 ]
 
-export const getNurseRegistrationSteps = getSteps(NurseRegistrationStepNames)
+export const get_nurse_registration_steps = getSteps(NurseRegistrationStepNames)
 
 export function getStepFormData(
   currentStep: string,

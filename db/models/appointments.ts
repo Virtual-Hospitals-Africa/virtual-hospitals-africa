@@ -69,7 +69,7 @@ export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
   opts: { patient_appointment_request_id: string },
 ): Promise<Date[]> {
-  const readResult = await trx
+  const read_result = await trx
     .selectFrom('patient_appointment_offered_times')
     .where(
       'patient_appointment_request_id',
@@ -80,7 +80,7 @@ export async function getPatientDeclinedTimes(
     .select('start')
     .execute()
 
-  const declinedTimes = []
+  const declined_times = []
 
   for (const { start } of readResult) {
     assert(isDate(start))
@@ -177,7 +177,7 @@ export async function schedule(
     offered
   assert(reason)
 
-  const appointmentToInsert = {
+  const appointment_to_insert = {
     gcal_event_id,
     start,
     end,
@@ -489,7 +489,7 @@ export async function getMediaIdByRequestId(
     request_id: string
   },
 ): Promise<string[]> {
-  const queryResult = await trx.selectFrom('patient_appointment_request_media')
+  const query_result = await trx.selectFrom('patient_appointment_request_media')
     .where('patient_appointment_request_id', '=', opts.request_id).select(
       'media_id',
     ).execute()
@@ -505,7 +505,7 @@ export function insertMedia(
 ) {
   assert(opts.appointment_id)
   assert(opts.media_ids.length)
-  const toInsert = opts.media_ids.map((media_id) => ({
+  const to_insert = opts.media_ids.map((media_id) => ({
     appointment_id: opts.appointment_id,
     media_id,
   }))

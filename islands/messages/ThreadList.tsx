@@ -141,7 +141,7 @@ function SingleThread({
 export default function ThreadList(
   { threads }: ThreadListProps,
 ): JSX.Element {
-  const isSelectAll = useSignal<boolean>(false)
+  const is_select_all = useSignal<boolean>(false)
   const selected = useSignal<Set<RenderedMessageThreadWithMostRecentMessage>>(
     new Set(),
   )
@@ -155,7 +155,7 @@ export default function ThreadList(
             type='checkbox'
             className='border-gray-300 text-indigo-600 focus:ring-indigo-600 w-4 h-4 border-1 rounded-sm'
             onInput={() => {
-              const isSelectedAll = isSelectAll.value
+              const is_selected_all = isSelectAll.value
               isSelectAll.value = !isSelectedAll
               selected.value = new Set(isSelectedAll ? [] : threads)
             }}
@@ -169,7 +169,7 @@ export default function ThreadList(
           thread={thread}
           isSelected={selected.value.has(thread)}
           toggleSelection={() => {
-            const newSelected = new Set(selected.value)
+            const new_selected = new Set(selected.value)
             selected.value.has(thread)
               ? newSelected.delete(thread)
               : newSelected.add(thread)

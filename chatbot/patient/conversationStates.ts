@@ -115,8 +115,8 @@ const conversationStates: ConversationStates<
       assert(patientState.unhandled_message.trimmed_body)
       const [day, month, year] = patientState.unhandled_message.trimmed_body
         .split('/')
-      const monthStr = month.padStart(2, '0')
-      const dayStr = day.padStart(2, '0')
+      const month_str = month.padStart(2, '0')
+      const day_str = day.padStart(2, '0')
       const date_of_birth = `${year}-${monthStr}-${dayStr}`
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
@@ -197,13 +197,13 @@ const conversationStates: ConversationStates<
       }
 
       const organizations = nearest_facilities.map((organization) => {
-        const distanceInKM = organization.walking_distance ||
+        const distance_in_kM = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
         const description = distanceInKM
           ? `${organization.address} (${distanceInKM})`
           : organization.address
 
-        const organizationName = organization.admins.length
+        const organization_name = organization.admins.length
           ? `${organization.name} (VHA)`
           : organization.name
         return {
@@ -218,7 +218,7 @@ const conversationStates: ConversationStates<
         }
       })
 
-      const sectionTitles = uniq(
+      const section_titles = uniq(
         organizations.map((organization) => organization.section),
       )
 
@@ -366,7 +366,7 @@ const conversationStates: ConversationStates<
               patientState.chatbot_user.entity_id,
             )
           assert(scheduling_appointment_request)
-          const firstAvailable = await availableSlots(trx, {
+          const first_available = await availableSlots(trx, {
             count: 1,
           })
 
@@ -414,7 +414,7 @@ const conversationStates: ConversationStates<
             trx,
             patientState,
             function insertEvent(health_worker, calendar_id, event) {
-              const healthWorkerGoogleClient = new GoogleClient(health_worker)
+              const healthWorker_google_client = new GoogleClient(health_worker)
               return healthWorkerGoogleClient.insertEvent(calendar_id, event)
             },
           )
@@ -440,18 +440,18 @@ const conversationStates: ConversationStates<
             ) => aot.id),
           )
 
-          const declinedTimes = scheduling_appointment_request
+          const declined_times = scheduling_appointment_request
             .offered_times.map(
               (aot) => aot.start,
             )
 
           const today = new Date()
           const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000))
-          const afterTomorrow = new Date(
+          const after_tomorrow = new Date(
             tomorrow.getTime() + (24 * 60 * 60 * 1000),
           )
 
-          const filteredAvailableTimes = await availableSlots(
+          const filtered_available_times = await availableSlots(
             trx,
             {
               declinedTimes: declinedTimes.map((time) =>
@@ -505,7 +505,7 @@ const conversationStates: ConversationStates<
       )
       assert(scheduling_appointment_request)
 
-      const nonDeclinedTimes = scheduling_appointment_request
+      const non_declined_times = scheduling_appointment_request
         .offered_times.filter(
           (offered_time) => !offered_time.declined,
         )
@@ -534,7 +534,7 @@ const conversationStates: ConversationStates<
               title: convertToTimeString(formatJohannesburg(offeredTime.start)),
               description: `With Dr. ${offeredTime.health_worker_name}`,
               async onExit(trx) {
-                const toDecline = scheduling_appointment_request
+                const to_decline = scheduling_appointment_request
                   .offered_times
                   .filter((aot) => !aot.declined)
                   .filter((aot) => aot.id !== offeredTime.id)

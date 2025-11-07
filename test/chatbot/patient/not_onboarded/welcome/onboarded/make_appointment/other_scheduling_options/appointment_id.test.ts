@@ -28,7 +28,7 @@ describe.skip('patient chatbot', () => {
 
   it('provides with cancel_appointment_option after confirming another appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,
       name: 'Test Patient',
@@ -54,13 +54,13 @@ describe.skip('patient chatbot', () => {
     assert(health_worker)
 
     // Insert offered time
-    const firstTime = new Date()
+    const first_time = new Date()
     firstTime.setDate(firstTime.getDate() + 1)
     firstTime.setHours(9, 30, 0, 0)
     const end = new Date(firstTime)
     end.setMinutes(end.getMinutes() + 30)
     const duration_minutes = 30
-    const firstOfferedTime = await appointments.addOfferedTime(db, {
+    const first_offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
       start: firstTime,
@@ -69,12 +69,12 @@ describe.skip('patient chatbot', () => {
     })
     await declineOfferedTimes(db, [firstOfferedTime.id])
 
-    const otherTime = new Date(firstTime)
+    const other_time = new Date(firstTime)
     otherTime.setHours(10, 0, 0, 0)
     const other_end = new Date(firstTime)
     end.setMinutes(end.getMinutes() + 30)
     const other_duration_minutes = 30
-    const secondOfferedTime = await appointments.addOfferedTime(db, {
+    const second_offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
       start: otherTime,

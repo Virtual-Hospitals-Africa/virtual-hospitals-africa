@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { redis } from './redis.ts'
 
-const inMemoryCache = new Map()
+const in_memory_cache = new Map()
 
 let loggedNoRedisWarning = false
 function getRedisIfConnected() {

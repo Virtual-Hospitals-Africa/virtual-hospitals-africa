@@ -10,14 +10,14 @@ export default async function PendingApprovalPage(
 ) {
   const { health_worker } = ctx.state
 
-  const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
+  const organization_admin = await getOrganizationAdmin(ctx.state.trx, {
     organization_id: health_worker.default_organization_id,
   })
 
   assert(organizationAdmin)
-  const organizationDisplayName = organizationAdmin.organization_name ||
+  const organization_display_name = organizationAdmin.organization_name ||
     'your organization'
-  const organizationAdminName = organizationAdmin.name ||
+  const organization_admin_name = organizationAdmin.name ||
     'your organization admin'
 
   return (

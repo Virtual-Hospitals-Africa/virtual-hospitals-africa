@@ -2,18 +2,18 @@ import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import cls from '../../util/cls.ts'
 
-const baseStyles = {
+const base_styles = {
   solid: 'shadow-sm py-1 px-4',
   outline: 'border py-1 px-4',
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
-const sizeStyles = {
+const size_styles = {
   sm: 'text-base/6',
   md: 'text-base',
 }
 
-const variantStyles = {
+const variant_styles = {
   solid: {
     primary:
       'rounded-lg bg-indigo-700 px-2 py-2 font-medium text-white shadow hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',

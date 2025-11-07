@@ -13,7 +13,7 @@ export default function Appointments(
     className?: string
   },
 ) {
-  const useClassName = cls(
+  const use_class_name = cls(
     'divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full',
     className,
   )

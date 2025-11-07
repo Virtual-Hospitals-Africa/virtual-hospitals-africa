@@ -42,7 +42,7 @@ export const handler = {
       assertIsInvites,
     )
 
-    const invitesWithEmails = invites.filter((invite) => invite.email)
+    const invites_with_emails = invites.filter((invite) => invite.email)
 
     await organizations.invite(
       ctx.state.trx,
@@ -51,7 +51,9 @@ export const handler = {
     )
 
     const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
-    const successMessage = encodeURIComponent(`Successfully invited ${invited}`)
+    const success_message = encodeURIComponent(
+      `Successfully invited ${invited}`,
+    )
 
     return redirect(
       `/app/organizations/${ctx.state.organization.id}/employees?success=${successMessage}`,

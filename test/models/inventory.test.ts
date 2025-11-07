@@ -127,7 +127,7 @@ describe('db/models/inventory.ts', () => {
             procurement_id: first_added.id,
           })
 
-          const organizationConsumables = await inventory.getConsumables(
+          const organization_consumables = await inventory.getConsumables(
             trx,
             { organization_id },
           )

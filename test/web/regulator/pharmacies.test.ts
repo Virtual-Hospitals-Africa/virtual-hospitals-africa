@@ -20,7 +20,7 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacies`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
@@ -39,7 +39,7 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacies`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 

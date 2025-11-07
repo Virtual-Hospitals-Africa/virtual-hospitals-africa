@@ -21,7 +21,7 @@ import isObjectLike from '../util/isObjectLike.ts'
 import memoize from '../util/memoize.ts'
 import selfUrl from '../util/selfUrl.ts'
 
-const googleApisUrl = 'https://www.googleapis.com'
+const google_apis_url = 'https://www.googleapis.com'
 
 type RequestOpts = {
   method?: 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -91,7 +91,7 @@ export class GoogleClient {
         if (data.error.code === 403) {
           return { result: 'insufficient_permission' }
         }
-        const errorMessage = data.error?.errors?.[0]?.message || data.error
+        const error_message = data.error?.errors?.[0]?.message || data.error
         console.error(data.error)
         throw new Error(errorMessage)
       }

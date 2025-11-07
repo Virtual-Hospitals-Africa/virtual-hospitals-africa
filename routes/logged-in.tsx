@@ -164,7 +164,7 @@ export async function initializeHealthWorkerWithoutInvites(
 async function checkPermissions(
   googleClient: google.GoogleClient,
 ): Promise<boolean> {
-  const tokenInfo = await googleClient.getTokenInfo()
+  const token_info = await googleClient.getTokenInfo()
   return tokenInfo.scope.includes('calendar')
 }
 
@@ -196,13 +196,13 @@ export const handler: Handlers<Record<string, never>> = {
   GET(ctx) {
     const code = ctx.url.searchParams.get('code')
     assert(code, 'No code found in query params')
-    const gettingTokens = getInitialTokensFromAuthCode(code)
+    const getting_tokens = getInitialTokensFromAuthCode(code)
 
     return db.transaction().setIsolationLevel('read committed').execute(
       async (trx) => {
         const tokens = await gettingTokens
-        const googleClient = new google.GoogleClient(tokens)
-        const hasPermissions = await checkPermissions(googleClient)
+        const google_client = new google.GoogleClient(tokens)
+        const has_permissions = await checkPermissions(googleClient)
 
         assertOrRedirect(hasPermissions, insufficient_permissions)
 

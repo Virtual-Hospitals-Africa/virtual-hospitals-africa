@@ -168,7 +168,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
   assert(numeric_strength_denominator)
 
   const single_dose = dosage * numeric_strength_denominator
-  const totalDosage = totalDosageMultiplier
+  const total_dosage = totalDosageMultiplier
     ? Math.ceil(totalDosageMultiplier * single_dose)
     : single_dose
 
@@ -180,7 +180,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  const doseToCompare = totalDosageMultiplier ? totalDosage : dosage
+  const dose_to_compare = totalDosageMultiplier ? totalDosage : dosage
   display += doseToCompare > 1
     ? denominatorPlural(params)
     : strength_denominator_unit
@@ -253,14 +253,14 @@ export function scheduleDisplay(
 //   assert(typeof medication.registration_frequency === 'string')
 //   assertRegistrationFrequency(medication.registration_frequency)
 
-//   const dosesPerDay = RegistrationDosesPerDay[medication.registration_frequency]
+//   const dosesPer_day =RegistrationDosesPerDay[medication.registration_frequency]
 
-//   const singleDosage = dosageDisplay({
+//   const single_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
 //     ...omit(medication, ['dosage']),
 //   })
 
-//   const totalDosage = dosageDisplay({
+//   const total_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
 //     totalDosageMultiplier: duration * dosesPerDay,
 //     ...omit(medication, ['dosage']),

@@ -41,7 +41,7 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
 }
 
 export function getFormDisplay($: cheerio.CheerioAPI): unknown {
-  const formDisplay = {}
+  const form_display = {}
   $('form input,textarea').each((_i, el) => {
     if (el.attribs.type !== 'hidden' && el.attribs.name) {
       set(

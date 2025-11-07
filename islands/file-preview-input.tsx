@@ -28,7 +28,7 @@ function mediaType(mime_type: string) {
   throw new Error(`Unknown media type: ${mime_type}`)
 }
 
-const twentyFourMb = 24 * 1024 * 1024
+const twenty_four_mb = 24 * 1024 * 1024
 
 export default function Preview(
   { mime_type, url, name, className, remove }: {
@@ -99,7 +99,7 @@ export function FilePreviewInput(
       }
       : null,
   )
-  const isShowPreview = image?.url || (value?.url && !initialImageRemoved)
+  const is_show_preview = image?.url || (value?.url && !initialImageRemoved)
 
   const input = (
     <ImageOrVideoInput

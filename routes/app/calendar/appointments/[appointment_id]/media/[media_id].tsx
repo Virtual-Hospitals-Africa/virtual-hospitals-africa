@@ -11,7 +11,7 @@ export const handler = {
       appointment_id,
     })
 
-    const mediaData = appointment_media.binary_data
+    const media_data = appointment_media.binary_data
     return file(mediaData, appointment_media.mime_type)
   },
 }

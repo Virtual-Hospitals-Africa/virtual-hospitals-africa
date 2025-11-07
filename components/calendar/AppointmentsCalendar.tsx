@@ -6,7 +6,7 @@ import { Button } from '../library/Button.tsx'
 
 export function formHeaderText({ day, today }: { day: string; today: string }) {
   if (today === day) return 'Today’s Appointments'
-  const dayStrMinimal = prettyMinimal(day, today)
+  const day_str_minimal = prettyMinimal(day, today)
   if (dayStrMinimal === 'Tomorrow') return 'Tomorrow’s Appointments'
   return `Appointments on ${dayStrMinimal}`
 }

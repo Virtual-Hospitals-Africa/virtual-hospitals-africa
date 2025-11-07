@@ -45,7 +45,7 @@
 //     assert(
 //       response.url === `${route}/app/patients/${patient_id}/registration`,
 //     )
-//     const pageContents = await response.text()
+//     const page_contents =await response.text()
 
 //     const $ = cheerio.load(pageContents)
 //     assert($('input[name="first_names"]').length === 1)
@@ -80,7 +80,7 @@
 //     body.set('address.administrative_area_level_2', 'Test Area Level 2')
 //     body.set('address.administrative_area_level_1', 'Test Area Level 1')
 //     body.set('address.country', 'Test Country')
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration`,
 //       {
 //         method: 'POST',
@@ -110,11 +110,11 @@
 //       `${route}/app/patients/${patient_id}/encounters/${patient_encounter_id}/vitals`,
 //     )
 
-//     const getPersonalResponse = await fetch(
+//     const getPersonal_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration`,
 //     )
 
-//     const pageContents = await getPersonalResponse.text()
+//     const page_contents =await getPersonalResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     assertEquals($('input[name="first_names"]').val(), 'Test')
 //     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
@@ -138,11 +138,11 @@
 //         patient_name: 'Test Patient',
 //       },
 //     )
-//     const testDoctor = await addTestEmployee(db, { profession: 'doctor' })
+//     const test_doctor =await addTestEmployee(db, { profession: 'doctor' })
 //     const { fetch } = await addTestEmployeeWithSession(db, {
 //       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //     })
-//     const countryInfo = await addresses.getCountryAddressTree(db)
+//     const country_info =await addresses.getCountryAddressTree(db)
 //     const zimbabwe = countryInfo[0]
 //     assertEquals(zimbabwe.name, 'Zimbabwe')
 
@@ -159,7 +159,7 @@
 //     body.set('nearest_organization_id', '00000000-0000-0000-0000-000000000001')
 //     body.set('primary_doctor_id', testDoctor.employee_id!)
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/address`,
 //       {
 //         method: 'POST',
@@ -175,7 +175,7 @@
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //     )
 
-//     const patientResult = await db.selectFrom('patients').where(
+//     const patient_result =await db.selectFrom('patients').where(
 //       'id',
 //       '=',
 //       patient_id,
@@ -183,7 +183,7 @@
 //     assertEquals(patientResult.length, 1)
 //     assertEquals(patientResult[0].name, 'Test Patient')
 
-//     const patientAddress = await db.selectFrom('addresses').selectAll().where(
+//     const patient_address =await db.selectFrom('addresses').selectAll().where(
 //       'addresses.id',
 //       '=',
 //       patientResult[0].address_id,
@@ -197,11 +197,11 @@
 //     assertEquals(patientAddress.street_number, '123')
 //     assertEquals(patientAddress.unit, 'apt 3')
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/address`,
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     assertEquals(
 //       $('input[name="address.administrative_area_level_1"]').val(),
@@ -265,7 +265,7 @@
 //       'qod',
 //     )
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {
 //         method: 'POST',
@@ -314,15 +314,15 @@
 //       150,
 //     )
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {},
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
-//     const formDisplay = getFormDisplay($)
+//     const form_display =getFormDisplay($)
 //     assertEquals(
 //       form_values,
 //       deepOmit({ pre_existing_conditions }, [
@@ -378,7 +378,7 @@
 //     body.set('allergies.1.snomed_concept_id', '1003755004')
 //     body.set('allergies.1.snomed_english_term', 'Allergy to latex')
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {
 //         method: 'POST',
@@ -409,12 +409,12 @@
 //       1003755004,
 //     )
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {},
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
 //     assertEquals(
@@ -447,7 +447,7 @@
 //       ],
 //     })
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {
 //         method: 'POST',
@@ -520,7 +520,7 @@
 //       'qod',
 //     )
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/conditions`,
 //       {
 //         method: 'POST',
@@ -593,7 +593,7 @@
 //     body.set('family.guardians.0.patient_phone_number', guardian_phone)
 //     body.set('family.marital_status', 'Single')
 //     body.set('family.religion', 'Non-Religious')
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/family`,
 //       {
 //         method: 'POST',
@@ -626,11 +626,11 @@
 //     assertEquals(patient_family.religion, 'Non-Religious')
 //     assertEquals(patient_family.marital_status, 'Single')
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/family`,
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
 //     assertEquals(form_values, {
@@ -666,7 +666,7 @@
 //       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
 //     })
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/occupation`,
 //       {},
 //     )
@@ -706,7 +706,7 @@
 //     body.set('occupation.school.current.grade', 'Grade 3')
 //     body.set('occupation.school.current.happy', 'on')
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/occupation`,
 //       {
 //         method: 'POST',
@@ -738,12 +738,12 @@
 //       },
 //     })
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/occupation`,
 //       {},
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
 //     assertEquals(
@@ -802,7 +802,7 @@
 //     body.set('occupation.job.work_satisfaction', 'Excellent')
 //     body.set('occupation.school.education_level', 'Elementary School')
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/occupation`,
 //       {
 //         method: 'POST',
@@ -836,12 +836,12 @@
 //       },
 //     })
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/occupation`,
 //       {},
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
 //     assertEquals(
@@ -971,7 +971,7 @@
 //       'Cigarettes',
 //     )
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //       {
 //         method: 'POST',
@@ -1036,12 +1036,12 @@
 //       // deno-lint-ignore no-explicit-any
 //     } as any)
 
-//     const getResponse = await fetch(
+//     const get_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //       {},
 //     )
 
-//     const pageContents = await getResponse.text()
+//     const page_contents =await getResponse.text()
 //     const $ = cheerio.load(pageContents)
 //     const form_values = getFormValues($)
 //     assertEquals(
@@ -1134,7 +1134,7 @@
 
 //     const body = new FormData()
 
-//     const postResponse = await fetch(
+//     const post_response =await fetch(
 //       `${route}/app/patients/${patient_id}/registration/lifestyle`,
 //       {
 //         method: 'POST',

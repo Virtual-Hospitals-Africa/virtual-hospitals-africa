@@ -14,7 +14,7 @@ export default function PartnerPage(
 ) {
   const entrypoint = props.url.searchParams.get('entrypoint') || 'general'
 
-  const alreadyKnowRole = entrypoint === 'health-workers' ||
+  const already_know_role = entrypoint === 'health-workers' ||
     entrypoint === 'research'
 
   return (

@@ -22,7 +22,7 @@
 //         registration_status: 'approved',
 //       })
 
-//       const testPatient = await patients.insert(db, {
+//       const test_patient =await patients.insert(db, {
 //         name: 'Test Patient',
 //       })
 
@@ -32,7 +32,7 @@
 //       )
 
 //       assert(response.ok, 'should have returned ok')
-//       const pageContents = await response.text()
+//       const page_contents =await response.text()
 
 //       const $ = cheerio.load(pageContents)
 
@@ -46,7 +46,7 @@
 //     })
 
 //     it('creates a patient encounter on POST', async () => {
-//       const testPatient = await patients.insert(db, {
+//       const test_patient =await patients.insert(db, {
 //         name: 'Test Patient',
 //       })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
@@ -77,7 +77,7 @@
 //       }
 
 //       // Assert that the patient encounter is created and added to the waiting room
-//       const patientEncounter = await db
+//       const patient_encounter =await db
 //         .selectFrom('patient_encounters')
 //         .where('patient_id', '=', testPatient.id)
 //         .selectAll()
@@ -130,7 +130,7 @@
 //       }
 
 //       // Assert that the patient encounter is created and added to the waiting room
-//       const patientEncounter = await db
+//       const patient_encounter =await db
 //         .selectFrom('patient_encounters')
 //         .where(
 //           'patient_id',

@@ -22,7 +22,7 @@ describe('/login', () => {
     const response = await fetch(`${route}/login`, {
       redirect: 'manual',
     })
-    const redirectLocation = response.headers.get('location')
+    const redirect_location = response.headers.get('location')
     assert(redirectLocation, `Is self_url the issue? ${selfUrl()}`)
     assert(
       redirectLocation.startsWith(
@@ -71,7 +71,7 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
       assert(pageContents.includes('Open Encounters'))
     })
 
@@ -89,7 +89,7 @@ describe('/login', () => {
       const response = await mock.fetch(`/login`, {
         redirect: 'manual',
       })
-      const redirectLocation = response.headers.get('location')
+      const redirect_location = response.headers.get('location')
       assertEquals(redirectLocation, '/app?from_login=true')
       return response.body?.cancel()
     })
@@ -105,7 +105,7 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
       assert(pageContents.includes('First Name'))
     })
 
@@ -200,7 +200,7 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
       assert(
         pageContents.includes(
           `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.health_worker.id}"`,
@@ -265,7 +265,7 @@ describe('/login', () => {
         profession: 'doctor',
       })
 
-      const employeesResponse = await mock.fetch(
+      const employees_response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
 
@@ -276,14 +276,14 @@ describe('/login', () => {
         employeesResponse.url ===
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      const pageContents = await employeesResponse.text()
+      const page_contents = await employeesResponse.text()
       assert(
         !pageContents.includes(
           'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
         ),
       )
 
-      const invitesResponse = await mock.fetch(
+      const invites_response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite?expectedTestError=1`,
       )
 

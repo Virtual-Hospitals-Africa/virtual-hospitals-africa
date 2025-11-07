@@ -147,7 +147,7 @@ export async function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
   if (!supervisors) return pharmacy
-  const pharmacyEmployments = supervisors.map((supervisor) => ({
+  const pharmacy_employments = supervisors.map((supervisor) => ({
     pharmacist_id: supervisor.id,
     pharmacy_id: pharmacy.id,
     is_supervisor: true,

@@ -28,7 +28,7 @@ export default function Occupation0_18({
     'Problems at home',
     'Loss of parent/s',
   ]
-  const gradeDropReasons = [
+  const grade_drop_reasons = [
     'Problems at Home',
     'Low self esteem',
     'Abuse',
@@ -36,7 +36,7 @@ export default function Occupation0_18({
     'Use of Harmful Substances',
     'Associating with Wrong Crowds',
   ]
-  const stopEducationReasons = [
+  const stop_education_reasons = [
     'Problems at Home',
     'Low self esteem',
     'Lack of funds',

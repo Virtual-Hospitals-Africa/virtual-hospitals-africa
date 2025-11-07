@@ -13,7 +13,7 @@ export function SendToButton(
   const open = useSignal(false)
 
   const handleClick = () => {
-    const formElement = document.getElementById(form) as HTMLFormElement
+    const form_element = document.getElementById(form) as HTMLFormElement
     if (formElement) {
       if (formElement.checkValidity()) {
         open.value = true

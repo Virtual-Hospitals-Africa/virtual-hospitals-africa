@@ -13,7 +13,7 @@ const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
   'GOOGLE_MAPS_API_KEY',
 )
 
-export const getLocationAddress = cacheable(async function getLocationAddress(
+export const getLocation_address = cacheable(async function getLocationAddress(
   { longitude, latitude }: Coordinates,
 ): Promise<AddressInsert | null> {
   const results = await getGeocodeData(latitude, longitude)
@@ -24,8 +24,8 @@ export async function getGeocodeData(
   latitude: number,
   longitude: number,
 ): Promise<GoogleAddressComponent[] | undefined> {
-  const encodedLatitude = encodeURIComponent(latitude)
-  const encodedLongitude = encodeURIComponent(longitude)
+  const encoded_latitude = encodeURIComponent(latitude)
+  const encoded_longitude = encodeURIComponent(longitude)
   const url =
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
@@ -76,17 +76,17 @@ function getAddressFromData(
   return address
 }
 
-export const getWalkingDistance = cacheable(async function getWalkingDistance(
+export const getWalking_distance = cacheable(async function getWalkingDistance(
   locations: LocationDistance,
 ): Promise<string | null> {
-  const originCoords =
+  const origin_coords =
     `${locations.origin.latitude},${locations.origin.longitude}`
-  const destCoords =
+  const dest_coords =
     `${locations.destination.latitude},${locations.destination.longitude}`
   const mode = `walking`
 
   const url =
-    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords}&destinations=${destCoords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin_coords}&destinations=${dest_coords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
 
   const result = await fetch(url)
   //assert(result.ok, 'Failed to fetch walking distance')

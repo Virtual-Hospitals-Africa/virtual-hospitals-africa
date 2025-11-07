@@ -17,7 +17,7 @@ export default HealthWorkerHomePageLayout(
   async function Calendar(
     ctx: LoggedInHealthWorkerContext,
   ) {
-    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
+    const google_client = HealthWorkerGoogleClient.fromCtx(ctx)
 
     const today = todayISOInJohannesburg()
     // if there's no day in the query, use today in Johannesburg
@@ -52,28 +52,29 @@ export default HealthWorkerHomePageLayout(
 
     const events = calendar_events.flatMap((events) => events.items)
 
-    const gcalEventIds = new Set(events.map((event) => event.id))
+    const gcal_event_ids = new Set(events.map((event) => event.id))
 
-    const appointmentsOfProviderWithGcalEventIds = appointmentsOfHealthWorker
-      .filter(
-        (appointment) => (
-          assert(appointment.gcal_event_id),
-            gcalEventIds.has(appointment.gcal_event_id)
-        ),
-      )
+    const appointmentsOfProvider_with_gcal_event_ids =
+      appointmentsOfHealthWorker
+        .filter(
+          (appointment) => (
+            assert(appointment.gcal_event_id),
+              gcalEventIds.has(appointment.gcal_event_id)
+          ),
+        )
 
     const appointments: ProviderAppointment[] =
       appointmentsOfProviderWithGcalEventIds.map(
         (appt) => {
-          const gcalItem = events.find((event) =>
+          const gcal_item = events.find((event) =>
             event.id === appt.gcal_event_id
           )
           if (!gcalItem) {
             throw new Error('Could not find gcal event for appointment')
           }
 
-          const startTime = new Date(gcalItem.start.dateTime)
-          const endTime = new Date(gcalItem.end.dateTime)
+          const start_time = new Date(gcalItem.start.dateTime)
+          const end_time = new Date(gcalItem.end.dateTime)
           const duration = endTime.getTime() - startTime.getTime()
 
           return {

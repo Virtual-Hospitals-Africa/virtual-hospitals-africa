@@ -719,8 +719,8 @@ function* indexableTerms(term: TidiedTerm, prefix?: string): Generator<
 
 function* tidiedTerms(icd10_index: ICD10Index) {
   for (const letter of icd10_index['ICD10CM.index'].letter) {
-    for (const mainTerm of letter.mainTerm) {
-      yield tidyTerm(mainTerm)
+    for (const main_term of letter.mainTerm) {
+      yield tidyTerm(main_term)
     }
   }
 }
@@ -919,7 +919,7 @@ function tidyTerm(x: any): TidiedTerm {
 //   }
 // }
 
-// const nounInflector = new natural.NounInflector()
+// const noun_inflector =new natural.NounInflector()
 
 // function findMatchingTerm(
 //   see_words: string[],

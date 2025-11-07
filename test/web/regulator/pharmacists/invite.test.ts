@@ -24,7 +24,7 @@ describe(
         response.url ===
           `${route}/regulator/${regulator.country}/pharmacists/invite`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
       const $ = cheerio.load(pageContents)
 
@@ -42,9 +42,9 @@ describe(
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       {
-        const givenName = `Test Given Name ${generateUUID()}`
-        const familyName = `Test Family Name ${generateUUID()}`
-        const licenceNumber = 'P01-0805-2024'
+        const given_name = `Test Given Name ${generateUUID()}`
+        const family_name = `Test Family Name ${generateUUID()}`
+        const licence_number = 'P01-0805-2024'
         const body = new FormData()
         body.set('given_name', givenName)
         body.set('family_name', familyName)
@@ -55,7 +55,7 @@ describe(
         body.set('prefix', 'Mrs')
         body.set('pharmacist_type', 'Pharmacist')
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/regulator/${regulator.country}/pharmacists/invite`,
           {
             method: 'POST',
@@ -74,7 +74,7 @@ describe(
           }`,
         )
 
-        const invitedPharmacist = await db
+        const invited_pharmacist = await db
           .selectFrom('pharmacists')
           .where('given_name', '=', givenName)
           .where('family_name', '=', familyName)

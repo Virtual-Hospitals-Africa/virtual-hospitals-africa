@@ -10,7 +10,7 @@ export default function PatientCohabitationSelect(
     type?: string
   },
 ) {
-  const filteredOptions = PATIENT_COHABITATIONS.filter((val) => {
+  const filtered_options = PATIENT_COHABITATIONS.filter((val) => {
     switch (type) {
       case '2 married parents':
       case 'Grandparent-led':

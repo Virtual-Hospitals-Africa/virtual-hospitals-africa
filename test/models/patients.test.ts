@@ -16,45 +16,45 @@ describe('db/models/patients.ts', () => {
     const today = new Date()
 
     itUsesTrxAnd('finds patient ages', async (trx) => {
-      const testPatient1 = await patients.insert(trx, {
+      const test_patient1 = await patients.insert(trx, {
         name: 'Test Patient 1',
         date_of_birth: today.toISOString().split('T')[0],
       })
 
       const yesterday = new Date(today.getTime() - 86400000)
-      const testPatient2 = await patients.insert(trx, {
+      const test_patient2 = await patients.insert(trx, {
         name: 'Test Patient 2',
         date_of_birth: yesterday.toISOString().split('T')[0],
       })
 
-      const twentyDays = new Date(today.getTime() - (86400000 * 20))
-      const testPatient3 = await patients.insert(trx, {
+      const twenty_days = new Date(today.getTime() - (86400000 * 20))
+      const test_patient3 = await patients.insert(trx, {
         name: 'Test Patient 3',
         date_of_birth: twentyDays.toISOString().split('T')[0],
       })
 
-      const threeWeeks = new Date(today.getTime() - (86400000 * 21))
-      const testPatient4 = await patients.insert(trx, {
+      const three_weeks = new Date(today.getTime() - (86400000 * 21))
+      const test_patient4 = await patients.insert(trx, {
         name: 'Test Patient 4',
         date_of_birth: threeWeeks.toISOString().split('T')[0],
       })
 
-      const threeMonths = new Date(today)
+      const three_months = new Date(today)
       threeMonths.setMonth(today.getMonth() - 3)
-      const testPatient5 = await patients.insert(trx, {
+      const test_patient5 = await patients.insert(trx, {
         name: 'Test Patient 5',
         date_of_birth: threeMonths.toISOString().split('T')[0],
       })
 
-      const twoYears = new Date(today)
+      const two_years = new Date(today)
       twoYears.setFullYear(today.getFullYear() - 2)
-      const oneDayBelowTwoYears = new Date(twoYears.getTime() + 86400000)
-      const testPatient6 = await patients.insert(trx, {
+      const one_day_below_two_years = new Date(twoYears.getTime() + 86400000)
+      const test_patient6 = await patients.insert(trx, {
         name: 'Test Patient 6',
         date_of_birth: oneDayBelowTwoYears.toISOString().split('T')[0],
       })
 
-      const testPatient7 = await patients.insert(trx, {
+      const test_patient7 = await patients.insert(trx, {
         name: 'Test Patient 7',
         date_of_birth: twoYears.toISOString().split('T')[0],
       })
@@ -95,8 +95,10 @@ describe('db/models/patients.ts', () => {
         },
       ])
 
-      const oneDayBelowThreeMonths = new Date(threeMonths.getTime() + 86400000)
-      const testPatient8 = await patients.insert(trx, {
+      const one_day_below_three_months = new Date(
+        threeMonths.getTime() + 86400000,
+      )
+      const test_patient8 = await patients.insert(trx, {
         name: 'Test Patient 8',
         date_of_birth: oneDayBelowThreeMonths.toISOString().split('T')[0],
       })

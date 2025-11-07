@@ -40,10 +40,10 @@ export function overlaps(
   timeWindow: TimeWindow,
   otherTimeWindow: TimeWindow,
 ): boolean {
-  const firstTimeStart = timeToMin(timeWindow.start)
-  const firstTimeEnd = timeToMin(timeWindow.end)
-  const secondTimeStart = timeToMin(otherTimeWindow.start)
-  const secondTimeEnd = timeToMin(otherTimeWindow.end)
+  const first_time_start = timeToMin(timeWindow.start)
+  const first_time_end = timeToMin(timeWindow.end)
+  const second_time_start = timeToMin(otherTimeWindow.start)
+  const second_time_end = timeToMin(otherTimeWindow.end)
   if (firstTimeStart > secondTimeEnd || firstTimeEnd < secondTimeStart) {
     return false
   }
@@ -65,7 +65,7 @@ export function findDaysWithOverlap(event: HTMLFormElement) {
     assertIsPartialAvailability,
   )
   return Object.keys(availability).filter((day) => {
-    const timeWindows = availability[day as DayOfWeek]
+    const time_windows = availability[day as DayOfWeek]
     return !!timeWindows && windowsOverlap(timeWindows)
   })
 }

@@ -80,9 +80,11 @@ type SparklinesLineProps = {
 function SparklinesLine(
   { data, points, height, margin, onMouseMove }: SparklinesLineProps,
 ) {
-  const linePoints = points.map((p) => [p.x, p.y]).reduce((a, b) => a.concat(b))
+  const line_points = points.map((p) => [p.x, p.y]).reduce((a, b) =>
+    a.concat(b)
+  )
 
-  const closePolyPoints = [
+  const close_poly_points = [
     points[points.length - 1].x,
     height - margin,
     margin,
@@ -91,9 +93,9 @@ function SparklinesLine(
     points[0].y,
   ]
 
-  const fillPoints = linePoints.concat(closePolyPoints)
+  const fill_points = linePoints.concat(closePolyPoints)
 
-  const lineStyle = {
+  const line_style = {
     stroke: 'slategray',
     strokeWidth: '1',
     strokeLinejoin: 'round',
@@ -101,7 +103,7 @@ function SparklinesLine(
     fill: 'none',
   }
 
-  const fillStyle = {
+  const fill_style = {
     stroke: 'none',
     strokeWidth: '0',
     fillOpacity: '.1',

@@ -56,7 +56,7 @@ export const handler = {
       ...new_form_state,
     }
 
-    const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
+    const step_index = NurseRegistrationStepNames.findIndex((name) =>
       name === step
     )
 
@@ -144,7 +144,7 @@ export default async function RegisterPage(
 
   form_state.email = health_worker.email
 
-  const stepState = getNurseRegistrationSteps(ctx)
+  const step_state = getNurseRegistrationSteps(ctx)
 
   return (
     <Layout

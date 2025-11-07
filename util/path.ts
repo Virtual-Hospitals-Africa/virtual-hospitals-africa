@@ -2,7 +2,7 @@ export function path(
   path: string,
   params: Record<string, unknown> = {},
 ): string {
-  const searchParams = new URLSearchParams()
+  const search_params = new URLSearchParams()
   Object.entries(params).forEach(([key, value]) => {
     if (value == null) return
     if (Array.isArray(value)) {

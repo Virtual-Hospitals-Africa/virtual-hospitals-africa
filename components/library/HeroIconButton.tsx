@@ -1,13 +1,13 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
-const baseStyles = {
+const base_styles = {
   solid: 'shadow-sm',
   outline: 'border',
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
-const variantStyles = {
+const variant_styles = {
   solid: {
     primary:
       'rounded-md bg-indigo-600 px-3 py-2 font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',

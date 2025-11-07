@@ -16,7 +16,7 @@ export type DropdownProps = {
 }
 
 function DropdownItem({ href, title, selected, ...props }: DropdownItem) {
-  const baseStyles = cls(
+  const base_styles = cls(
     'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none hover:bg-gray-50 w-full text-left',
     selected && 'bg-gray-100',
   )

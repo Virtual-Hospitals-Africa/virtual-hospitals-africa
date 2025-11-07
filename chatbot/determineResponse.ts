@@ -63,7 +63,7 @@ export async function determineResponse(
       },
     }
 
-    const currentState = await findMatchingState(trx, userState)
+    const current_state = await findMatchingState(trx, userState)
 
     if (!currentState) {
       nextConversationState = 'error'

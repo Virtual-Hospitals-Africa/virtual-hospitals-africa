@@ -1,4 +1,4 @@
-const toString = Object.prototype.toString
+const to_string = Object.prototype.toString
 
 export default function getTag(value: unknown): string {
   if (value == null) {

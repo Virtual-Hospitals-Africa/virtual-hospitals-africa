@@ -32,9 +32,9 @@ export function ZimbabweanNationalIdInput(
   },
 ) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
-    const inputElement = e.currentTarget
-    const previousValue = inputElement.getAttribute('data-prev-value') || ''
-    const isRemoving = previousValue.length > e.currentTarget.value.length
+    const input_element = e.currentTarget
+    const previous_value = inputElement.getAttribute('data-prev-value') || ''
+    const is_removing = previousValue.length > e.currentTarget.value.length
 
     let formatted = inputElement.value
     // format to match 00-000000 D 00

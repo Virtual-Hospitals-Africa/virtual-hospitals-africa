@@ -44,7 +44,7 @@ export function insertMany(
     return Promise.resolve({ success: true as const })
   }
 
-  const validEvaluations = evaluations
+  const valid_evaluations = evaluations
     .filter((evaluation) => evaluation.priority || evaluation.note?.trim())
     .map((evaluation) => ({
       id: generateUUID(),

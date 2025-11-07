@@ -27,13 +27,13 @@ function daysToShow(
 
   const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
 
-  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
-  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
+  const last_month_int = monthInt === 1 ? 12 : monthInt - 1
+  const last_month_year_int = monthInt === 1 ? yearInt - 1 : yearInt
 
-  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
-  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
+  const next_month_int = monthInt === 12 ? 1 : monthInt + 1
+  const next_month_year_int = monthInt === 12 ? yearInt + 1 : yearInt
 
-  const totalDaysInThisMonth = numberOfDaysInMonth(monthInt, yearInt)
+  const total_days_in_this_month = numberOfDaysInMonth(monthInt, yearInt)
 
   const daysOfThisMonth: CalendarDayProps[] = range(1, totalDaysInThisMonth + 1)
     .map((d) => {
@@ -44,15 +44,15 @@ function daysToShow(
       }
     })
 
-  const firstDayOfThisMonth = new Date(`${yearInt}-${padTime(monthInt)}-01`)
-  const firstWeekDaysOfLastMonth = firstDayOfThisMonth.getDay()
+  const first_day_of_this_month = new Date(`${yearInt}-${padTime(monthInt)}-01`)
+  const firstWeek_days_of_last_month = firstDayOfThisMonth.getDay()
 
-  const lastDayOfThisMonth = new Date(
+  const last_day_of_this_month = new Date(
     `${yearInt}-${padTime(monthInt)}-${totalDaysInThisMonth}`,
   )
-  const lastWeekDaysOfNextMonth = 6 - lastDayOfThisMonth.getDay()
+  const lastWeek_days_of_next_month = 6 - lastDayOfThisMonth.getDay()
 
-  const totalDaysInLastMonth = numberOfDaysInMonth(
+  const total_days_in_last_month = numberOfDaysInMonth(
     lastMonthInt,
     lastMonthYearInt,
   )
@@ -95,19 +95,21 @@ export default function Calendar(
   const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
   const days = daysToShow({ day, today })
 
-  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
-  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
-  const totalDaysInLastMonth = numberOfDaysInMonth(
+  const last_month_int = monthInt === 1 ? 12 : monthInt - 1
+  const last_month_year_int = monthInt === 1 ? yearInt - 1 : yearInt
+  const total_days_in_last_month = numberOfDaysInMonth(
     lastMonthInt,
     lastMonthYearInt,
   )
-  const lastDayOfLastMonth = `${lastMonthYearInt}-${
+  const last_day_of_last_month = `${lastMonthYearInt}-${
     padTime(lastMonthInt)
   }-${totalDaysInLastMonth}`
 
-  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
-  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
-  const firstDayOfNextMonth = `${nextMonthYearInt}-${padTime(nextMonthInt)}-01`
+  const next_month_int = monthInt === 12 ? 1 : monthInt + 1
+  const next_month_year_int = monthInt === 12 ? yearInt + 1 : yearInt
+  const first_day_of_next_month = `${nextMonthYearInt}-${
+    padTime(nextMonthInt)
+  }-01`
 
   return (
     <div className='text-center lg:col-start-8 lg:col-end-13 lg:mt-9 xl:col-start-9'>

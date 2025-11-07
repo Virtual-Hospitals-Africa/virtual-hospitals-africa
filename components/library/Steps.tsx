@@ -186,8 +186,8 @@ export function getSteps<Step extends string>(
       ctx.route!.endsWith('/:step'),
       'useSteps must be used with a route ending in :step',
     )
-    const currentStep = ctx.params.step
-    const baseUrl = ctx.url.toString().split('/').slice(0, -1).join('/')
+    const current_step = ctx.params.step
+    const base_url = ctx.url.toString().split('/').slice(0, -1).join('/')
 
     let completed = false
 

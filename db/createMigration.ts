@@ -27,7 +27,7 @@ export function down(db: Kysely<DB>){
 }
 `
 
-  const filePath = `db/migrations/${migrationFileName}`
+  const file_path = `db/migrations/${migrationFileName}`
 
   await Deno.writeTextFile(filePath, initial_contents)
 

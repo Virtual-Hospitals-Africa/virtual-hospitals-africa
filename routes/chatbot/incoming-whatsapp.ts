@@ -15,13 +15,13 @@ import {
 } from '../../chatbot/phone_numbers.ts'
 import { Handlers } from 'fresh/compat'
 
-const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
+const verify_token = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
 async function downloadAndInsertMedia(media_id: string) {
   const resp = await whatsapp.get(media_id)
   const { url, mime_type } = resp
   const binary_data = await whatsapp.getBinaryData(url)
-  const insertedMedia = await media.insert(db, {
+  const inserted_media = await media.insert(db, {
     binary_data,
     mime_type,
   })
@@ -90,9 +90,9 @@ async function getContents(
 export const handler: Handlers = {
   GET(ctx) {
     const { searchParams } = ctx.url
-    const hubMode = searchParams.get('hub.mode')
-    const hubVerifyToken = searchParams.get('hub.verify_token')
-    const hubChallenge = searchParams.get('hub.challenge')
+    const hub_mode = searchParams.get('hub.mode')
+    const hub_verify_token = searchParams.get('hub.verify_token')
+    const hub_challenge = searchParams.get('hub.challenge')
 
     if (hubMode === 'subscribe' && hubVerifyToken === verifyToken) {
       return new Response(hubChallenge)

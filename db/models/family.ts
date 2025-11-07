@@ -515,7 +515,7 @@ export async function get(
 //   if (new_kin || existing_kin || other_kin) {
 //     const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ??
 //       other_kin
-//     const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ??
+//     const existing_kin =existing_family.guardians.find((c) => c.next_of_kin) ??
 //       existing_family.next_of_kin
 
 //     // kins is removed
@@ -595,7 +595,7 @@ export async function get(
 //   const adding_relations = new_relations.length &&
 //     trx.insertInto('patient_guardians').values(new_relations).execute()
 
-//   const familyValues = {
+//   const family_values ={
 //     patient_id,
 //     religion: family_to_upsert.religion ?? null,
 //     family_type: family_to_upsert.family_type ?? null,

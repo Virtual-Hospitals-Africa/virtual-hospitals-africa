@@ -36,7 +36,7 @@ export default function DiagnosesForm(props: {
   )
 
   const addDiagnosis = () => {
-    const newDiagnosis = {
+    const new_diagnosis = {
       comorbidities: [],
       medications: [],
       start_date: props.earliestSymptomDate ||

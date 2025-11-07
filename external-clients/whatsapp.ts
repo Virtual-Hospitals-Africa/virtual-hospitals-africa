@@ -11,7 +11,7 @@ import { basename } from 'node:path'
 import * as pdf from '../util/pdf.ts'
 import { delay } from '../util/delay.ts'
 
-export const phoneNumbers = {
+export const phone_numbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
   pharmacist: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST')!,
 }
@@ -129,13 +129,13 @@ export async function sendMessages({
 }
 
 export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
-  const toPost = {
+  const to_post = {
     method: 'post',
     headers: { Authorization, 'content-type': 'application/json' },
     body: JSON.stringify(body),
   }
 
-  const postMessageRoute = `https://graph.facebook.com/v17.0/${
+  const post_message_route = `https://graph.facebook.com/v17.0/${
     phoneNumbers[chatbot_name]
   }/messages`
   const response = await fetch(postMessageRoute, toPost)
@@ -149,20 +149,20 @@ export async function postMedia(
   fileType: string,
   chatbot_name: ChatbotName,
 ): Promise<string> {
-  const fileContent = await Deno.readFile(filePath)
-  const fileBlob = new Blob([fileContent], { type: fileType })
+  const file_content = await Deno.readFile(filePath)
+  const file_blob = new Blob([fileContent], { type: fileType })
   const form_data = new FormData()
 
   form_data.append('file', fileBlob, basename(filePath))
   form_data.append('type', fileType)
   form_data.append('messaging_product', 'whatsapp')
 
-  const toPost = {
+  const to_post = {
     method: 'post',
     headers: { 'Authorization': `${Authorization}` },
     body: form_data,
   }
-  const postMessageRoute = `https://graph.facebook.com/v20.0/${
+  const post_message_route = `https://graph.facebook.com/v20.0/${
     phoneNumbers[chatbot_name]
   }/media`
 

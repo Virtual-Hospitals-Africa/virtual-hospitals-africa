@@ -53,7 +53,7 @@ if (import.meta.main) {
   )
 
   // Helper function to find matching emoji or phone code
-  const findMatch = <T>(
+  const find_match = <T>(
     map: Map<string, T>,
     official_name: string,
     common_name: string,

@@ -89,7 +89,7 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const preExisting_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
@@ -211,7 +211,7 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const preExisting_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
@@ -335,7 +335,7 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const preExisting_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
@@ -437,7 +437,7 @@ describe(
             },
           ],
         })
-        const preExistingConditions = await patient_conditions
+        const preExisting_conditions = await patient_conditions
           .getPreExistingConditions(trx, {
             patient_id: encounter.patient.id,
           })
@@ -726,7 +726,7 @@ describe(
             ],
           })
 
-          const preExistingConditions = await patient_conditions
+          const preExisting_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
@@ -1164,8 +1164,8 @@ describe(
               }),
           ]
 
-          const insertionOrders = permutations(insertions)
-          for (const insertionOrder of insertionOrders) {
+          const insertion_orders = permutations(insertions)
+          for (const insertion_order of insertion_orders) {
             const nurse = await addTestEmployee(trx, {
               profession: 'nurse',
               registration_status: 'not started',

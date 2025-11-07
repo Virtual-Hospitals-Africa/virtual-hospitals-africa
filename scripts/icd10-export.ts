@@ -35,7 +35,7 @@ type TidiedTerm = {
   aliases?: string[]
 }
 
-const nounInflector = new natural.NounInflector()
+const noun_inflector = new natural.NounInflector()
 
 function lowerWords(x: string) {
   x = x?.toLowerCase().replace(',', '').replace('(of)', '')
@@ -114,8 +114,8 @@ function tidyTerm(x: any): TidiedTerm {
 }
 
 for (const letter of icd10_index['ICD10CM.index'].letter) {
-  for (const mainTerm of letter.mainTerm) {
-    to_export.push(tidyTerm(mainTerm))
+  for (const main_term of letter.mainTerm) {
+    to_export.push(tidyTerm(main_term))
   }
 }
 

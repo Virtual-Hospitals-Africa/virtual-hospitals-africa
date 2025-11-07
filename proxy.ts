@@ -14,8 +14,8 @@ const HTTP_SERVER_PORT =
   readPositiveIntegerEnvironmentVariable('HTTP_SERVER_PORT') || 8001
 
 // Load local certificates
-const certFile = './local-certs/localhost.crt'
-const keyFile = './local-certs/localhost.key'
+const cert_file = './local-certs/localhost.crt'
+const key_file = './local-certs/localhost.key'
 
 let cert: string
 let key: string
@@ -49,7 +49,7 @@ async function handleRequest(request: Request): Promise<Response> {
 
   try {
     // Create a new request with the same properties
-    const proxyHeaders = new Headers(request.headers)
+    const proxy_headers = new Headers(request.headers)
     proxyHeaders.delete('proxy-connection')
     proxyHeaders.delete('proxy-authorization')
 
@@ -58,7 +58,7 @@ async function handleRequest(request: Request): Promise<Response> {
     proxyHeaders.set('x-forwarded-host', url.hostname)
     proxyHeaders.set('x-forwarded-port', String(HTTPS_PROXY_SERVER_PORT))
 
-    const proxyRequest = new Request(url, {
+    const proxy_request = new Request(url, {
       method: request.method,
       headers: proxyHeaders,
       body: request.body,

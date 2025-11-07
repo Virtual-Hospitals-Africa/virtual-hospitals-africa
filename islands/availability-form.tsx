@@ -176,7 +176,7 @@ function DayInput(
                   if (i === 0 && timeWindows.length === 1) {
                     return setChecked(false)
                   }
-                  const newTimeWindows = [...timeWindows]
+                  const new_time_windows = [...timeWindows]
                   newTimeWindows.splice(i, 1)
                   setTimeWindows(newTimeWindows)
                 }}

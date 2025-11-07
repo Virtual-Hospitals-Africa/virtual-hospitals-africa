@@ -56,7 +56,7 @@
 //           required
 //           label='Province'
 //           onChange={(e) => {
-//             const selectedProvince = e?.currentTarget?.value
+//             const selected_province =e?.currentTarget?.value
 //             if (!selectedProvince) return
 //             ward_id.value = undefined
 //             district_id.value = undefined
@@ -80,7 +80,7 @@
 //           required
 //           label='District'
 //           onChange={(e) => {
-//             const selectedDistrict = e?.currentTarget?.value
+//             const selected_district =e?.currentTarget?.value
 //             if (!selectedDistrict) return
 //             ward_id.value = undefined
 //             district_id.value = selectedDistrict
@@ -101,7 +101,7 @@
 //           required
 //           label='City/Town/Ward'
 //           onChange={(e) => {
-//             const selectedWard = e?.currentTarget?.value
+//             const selected_ward =e?.currentTarget?.value
 //             if (!selectedWard) return
 //             ward_id.value = selectedWard
 //           }}

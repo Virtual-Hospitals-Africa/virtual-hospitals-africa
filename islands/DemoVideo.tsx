@@ -4,8 +4,8 @@ import { effect, useSignal } from '@preact/signals'
 import { assert } from 'std/assert/assert.ts'
 import { Fragment } from 'preact'
 
-const videoId = 'nrEloCfycjk'
-const videoQuality = 'hd1440'
+const video_id = 'nrEloCfycjk'
+const video_quality = 'hd1440'
 
 // deno-lint-ignore no-explicit-any
 function getYT(window: any) {

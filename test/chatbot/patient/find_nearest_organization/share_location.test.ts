@@ -41,7 +41,7 @@ describe('patient chatbot', () => {
 
     await respond(whatsapp, 'patient', phone_number)
 
-    const firstCallArgs = whatsapp.sendMessages.calls[0].args[0]
+    const first_call_args = whatsapp.sendMessages.calls[0].args[0]
     const message = firstCallArgs.messages
     assert(!Array.isArray(message))
     assert(message.type === 'list')

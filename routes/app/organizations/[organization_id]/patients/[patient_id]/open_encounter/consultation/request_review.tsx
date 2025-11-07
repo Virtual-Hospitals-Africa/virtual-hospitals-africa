@@ -31,7 +31,7 @@ function searchByHref(
 }
 
 function getView(ctx: OpenEncounterWorkflowContext) {
-  const searchBy = ctx.url.searchParams.get('searchBy')
+  const search_by = ctx.url.searchParams.get('searchBy')
   const organization_href = searchByHref(ctx, 'organizations')
   assertOrRedirect(searchBy, organization_href)
 

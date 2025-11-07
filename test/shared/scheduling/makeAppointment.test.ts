@@ -16,7 +16,7 @@ describe('scheduling/makeAppointment.ts', () => {
     itUsesTrxAnd(
       "inserts an event on the specified health worker's google calendar, adding that event to the db",
       async (trx) => {
-        const insertEvent = spy((_1: GoogleTokens, _2, _3) =>
+        const insert_event = spy((_1: GoogleTokens, _2, _3) =>
           Promise.resolve({
             id: 'inserted google event id',
           } as GCalEvent)

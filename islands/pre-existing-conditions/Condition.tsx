@@ -38,8 +38,8 @@ export default function Condition(
   const prefix = `pre_existing_conditions.${index}`
 
   const addComorbidity = () => {
-    const nextComorbidities = [...comorbidities, { removed: false }]
-    const nextConditionState = {
+    const next_comorbidities = [...comorbidities, { removed: false }]
+    const next_condition_state = {
       medications,
       comorbidities: nextComorbidities,
       removed: false as const,
@@ -48,8 +48,8 @@ export default function Condition(
   }
 
   const addMedication = () => {
-    const nextMedications = [...medications, { removed: false }]
-    const nextConditionState = {
+    const next_medications = [...medications, { removed: false }]
+    const next_condition_state = {
       medications: nextMedications,
       comorbidities,
       removed: false as const,
@@ -88,7 +88,7 @@ export default function Condition(
                 const next_comorbidities = comorbidities.map((c) =>
                   c === comorbidity ? { removed: true as const } : c
                 )
-                const nextConditionState = {
+                const next_condition_state = {
                   medications,
                   comorbidities: next_comorbidities,
                 }
@@ -112,10 +112,10 @@ export default function Condition(
               prefix={prefix}
               index={index}
               remove={() => {
-                const nextMedications = medications.map((m) =>
+                const next_medications = medications.map((m) =>
                   m === medication ? { removed: true as const } : m
                 )
-                const nextConditionState = {
+                const next_condition_state = {
                   medications: nextMedications,
                   comorbidities,
                   removed: false as const,

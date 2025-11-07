@@ -61,10 +61,10 @@ export default function PatientFamilyForm({
     dependents.value = dependents.value.concat([{}])
   }
 
-  const showGuardians = age_years <= 18
-  const showDependents = age_years >= 10
-  const showNextOfKin = age_years >= 19
-  // const showPatientCohabitation = age_years <= 18
+  const show_guardians = age_years <= 18
+  const show_dependents = age_years >= 10
+  const show_next_of_kin = age_years >= 19
+  // const showPatient_cohabitation =age_years <= 18
 
   //Default values
   family.marital_status ??= age_years <= 18 ? 'Never Married' : null

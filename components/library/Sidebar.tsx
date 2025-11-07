@@ -112,9 +112,9 @@ const regulator_home_page_nav_links: LinkDef[] = [
 export function GenericSidebar(
   { nav_links, route, params, urlSearchParams, top }: SidebarProps,
 ) {
-  const allParams = { ...params }
+  const all_params = { ...params }
   urlSearchParams.forEach((value, key) => allParams[key] = value)
-  const activeLink = matchActiveLink(nav_links, route)
+  const active_link = matchActiveLink(nav_links, route)
   return (
     <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
       <div className='flex flex-col flex-auto overflow-y-auto bg-white border-r border-gray-200 gap-y-5'>

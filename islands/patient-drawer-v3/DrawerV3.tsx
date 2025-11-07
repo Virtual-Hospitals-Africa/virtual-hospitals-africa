@@ -8,7 +8,7 @@ import {
 
 // Individual chip component for triage levels
 function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
-  const priorityStyles = {
+  const priority_styles = {
     'Emergency': 'bg-red-100 text-red-800',
     'Very urgent': 'bg-orange-100 text-orange-700',
     'Urgent': 'bg-yellow-100 text-yellow-800',
@@ -17,7 +17,7 @@ function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
     'Deceased': 'bg-blue-100 text-blue-800',
   }
 
-  const styleClass = priorityStyles[record.priority] ||
+  const style_class = priorityStyles[record.priority] ||
     'bg-gray-100 text-gray-600'
 
   return (
@@ -122,7 +122,7 @@ function ThisVisit({ records, current_consultation_step }: {
   records: PatientDrawerV3Props['this_visit_records']
   current_consultation_step: PatientDrawerV3Props['current_consultation_step']
 }) {
-  const encounterSteps = [
+  const encounter_steps = [
     {
       key: 'chief_complaint',
       label: 'Chief Complaint',
@@ -193,7 +193,7 @@ function ThisVisit({ records, current_consultation_step }: {
 
 // History component with medical history sections
 function History({ history }: { history: RenderedPatientHistory }) {
-  const historyItems = [
+  const history_items = [
     {
       key: 'pre_existing_conditions',
       label: 'Pre-existing Conditions',

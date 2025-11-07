@@ -55,17 +55,17 @@ export default function PriorityDropdown({
   initialPriority,
 }: PriorityDropdownProps) {
   // Default to "Normal" for SNOMED CT compliance - all evaluations must have a priority
-  const selectedPriority = useSignal<Priority>(initialPriority || 'Normal')
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const shouldOpenUpward = useSignal(false)
+  const selected_priority = useSignal<Priority>(initialPriority || 'Normal')
+  const button_ref = useRef<HTMLButtonElement>(null)
+  const should_open_upward = useSignal(false)
   const checkSpaceAndPosition = () => {
     if (!buttonRef.current) return
 
-    const buttonRect = buttonRef.current.getBoundingClientRect()
-    const viewportHeight = globalThis.innerHeight
-    const dropdownHeight = 240 // Approximate height of dropdown
-    const spaceBelow = viewportHeight - buttonRect.bottom
-    const spaceAbove = buttonRect.top
+    const button_rect = buttonRef.current.getBoundingClientRect()
+    const viewport_height = globalThis.innerHeight
+    const dropdown_height = 240 // Approximate height of dropdown
+    const space_below = viewportHeight - buttonRect.bottom
+    const space_above = buttonRect.top
 
     // Open upward if there's not enough space below but enough space above
     shouldOpenUpward.value = spaceBelow < dropdownHeight &&

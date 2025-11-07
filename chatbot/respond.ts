@@ -23,22 +23,22 @@ async function respondToMessage(
 ) {
   const { chatbot_name } = unhandled_message
   try {
-    const responseToSend = await db
+    const responseTo_send = await db
       .transaction()
       .setIsolationLevel('read committed')
       .execute((trx: TrxOrDb) => determineResponse(trx, unhandled_message))
 
-    const whatsappResponses = await whatsapp.sendMessages({
+    const whatsapp_responses = await whatsapp.sendMessages({
       messages: responseToSend,
       chatbot_name,
       phone_number: unhandled_message.sent_by_phone_number,
     })
 
-    for (const whatsappResponse of whatsappResponses) {
-      if ('error' in whatsappResponse) {
+    for (const whatsapp_response of whatsapp_responses) {
+      if ('error' in whatsapp_response) {
         console.log('responseToSend', JSON.stringify(responseToSend))
-        console.log('whatsappResponse', JSON.stringify(whatsappResponse))
-        throw new Error(whatsappResponse.error.details)
+        console.log('whatsapp_response', JSON.stringify(whatsapp_response))
+        throw new Error(whatsapp_response.error.details)
       }
 
       await insertMessageSent(db, {
@@ -100,7 +100,7 @@ export default async function respond(
   chatbot_name: ChatbotName,
   sent_by_phone_number?: string,
 ) {
-  const unhandledMessages = await getUnhandledMessages(db, {
+  const unhandled_messages = await getUnhandledMessages(db, {
     chatbot_name,
     commitHash: error_family,
     sent_by_phone_number,

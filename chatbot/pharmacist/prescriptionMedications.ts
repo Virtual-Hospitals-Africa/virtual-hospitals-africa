@@ -270,7 +270,7 @@ export function medicationDisplay(
     `${medication.drug_generic_name} ${medication.form} (${strength})`
 
   // Format each schedule
-  const scheduleDescriptions = medication.schedules.map((schedule) => {
+  const schedule_descriptions = medication.schedules.map((schedule) => {
     return `- ${scheduleDisplay(schedule, medication)}`
   })
 

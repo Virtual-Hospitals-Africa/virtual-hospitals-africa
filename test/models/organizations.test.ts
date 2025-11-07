@@ -83,7 +83,7 @@ describe('db/models/organizations.ts', () => {
             ],
           )
 
-          const withInvitees = await organizations.getEmployeesAndInvitees(
+          const with_invitees = await organizations.getEmployeesAndInvitees(
             trx,
             organization_ids[0],
             {},
@@ -135,7 +135,7 @@ describe('db/models/organizations.ts', () => {
           assertEquals(hw_2.professions[0].profession, 'admin')
           assertEquals(hw_2.professions[1].profession, 'doctor')
 
-          const invitedHw = withInvitees.find((hw) =>
+          const invited_hw = withInvitees.find((hw) =>
             hw.email === invited.email
           )!
           assertEquals(omit(invitedHw, ['professions']), {
@@ -156,7 +156,7 @@ describe('db/models/organizations.ts', () => {
           assertEquals(invitedHw.professions[0].profession, 'doctor')
 
           {
-            const withoutInvitees = await organizations.getEmployees(
+            const without_invitees = await organizations.getEmployees(
               trx,
               organization_ids[0],
             )
@@ -277,7 +277,7 @@ describe('db/models/organizations.ts', () => {
             },
           ])
 
-          const withInvitees = await organizations.getEmployeesAndInvitees(
+          const with_invitees = await organizations.getEmployeesAndInvitees(
             trx,
             organization_ids[0],
             {
@@ -363,7 +363,7 @@ describe('db/models/organizations.ts', () => {
           address_id: nurse_address.id,
         })
 
-        const withInvitees = await organizations.getEmployeesAndInvitees(
+        const with_invitees = await organizations.getEmployeesAndInvitees(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {
@@ -445,7 +445,7 @@ describe('db/models/organizations.ts', () => {
           address_id: nurse_address.id,
         })
 
-        const withInvitees = await organizations.getEmployeesAndInvitees(
+        const with_invitees = await organizations.getEmployeesAndInvitees(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {
@@ -556,7 +556,7 @@ describe('db/models/organizations.ts', () => {
 
         assertEquals(invitees.length, 0)
 
-        const employmentResult = await trx.selectFrom('employment').where(
+        const employment_result = await trx.selectFrom('employment').where(
           'health_worker_id',
           '=',
           hw_at_organization1.id,

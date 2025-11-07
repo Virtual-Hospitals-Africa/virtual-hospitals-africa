@@ -2,7 +2,7 @@
 export default async function* readLines(
   reader: ReadableStream<Uint8Array>,
 ) {
-  const streamReader = reader.getReader()
+  const stream_reader = reader.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
 

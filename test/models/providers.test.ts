@@ -104,8 +104,8 @@ describe('db/models/providers.ts', () => {
           search: name_base,
           prioritize_organization_id: '00000000-0000-0000-0000-000000000002',
         })
-        const firstResult = results[0]
-        const lastResult = last(results)!
+        const first_result = results[0]
+        const last_result = last(results)!
 
         assertEquals(
           firstResult.organization_id,
