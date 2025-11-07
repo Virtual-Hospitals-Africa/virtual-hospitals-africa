@@ -49,7 +49,7 @@
     "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
     "check:ignoretest": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '.test.ts' | xargs deno check"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact", "sourceMap": true },
   "fmt": {
     "indentWidth": 2,
     "semiColons": false,
