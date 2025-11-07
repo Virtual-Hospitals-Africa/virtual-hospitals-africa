@@ -4,7 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
-import { asCompiledSql, debugLog } from '../helpers.ts'
+import { asCompiledSql } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export type SearchResults<SearchTerms, RenderedResult> = {
@@ -187,7 +187,6 @@ export function base<
         if (typeof opts.verbose === 'string') {
           console.log(opts.verbose)
         }
-        debugLog(query)
       }
 
       const intermediate_results = await query.execute()
