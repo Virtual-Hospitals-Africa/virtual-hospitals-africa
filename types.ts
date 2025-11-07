@@ -3243,6 +3243,25 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   last_message_read_by_everyone_else_id?: string
 }
 
+export type RenderedMessageDraftTarget = {
+  id: string
+  table_name: 'organizations' | 'employment' | 'profession' | 'region'
+  target_uuid?: string | null
+  target_value?: unknown | null
+  display_name?: string
+}
+
+export type RenderedMessageDraft = {
+  id: string
+  employment_id: string
+  body: string
+  priority: string | null
+  concerning: boolean
+  targets: RenderedMessageDraftTarget[]
+  created_at: Date
+  updated_at: Date
+}
+
 export enum OrganizationSortOptions {
   closest = 'Closest',
   shortest_wait = 'Shortest Wait',

@@ -3,11 +3,31 @@ import { DB } from '../../db.d.ts'
 import { createStandardTable } from '../createTable.ts'
 import { assertOnInsert } from '../helpers.ts'
 
+// Add assertion triggers for target_uuid existence
+const organization_assertion = assertOnInsert({
+  table: 'message_draft_targets',
+  function_name: 'assert_organization_exists_for_draft_target',
+  assertion: `
+      NEW.table_name != 'organizations' OR
+      EXISTS (SELECT 1 FROM organizations WHERE id = NEW.target_uuid)
+    `,
+  error_message: `'Organization with specified target_uuid does not exist'`,
+})
+
+const employment_assertion = assertOnInsert({
+  table: 'message_draft_targets',
+  function_name: 'assert_employment_exists_for_draft_target',
+  assertion: `
+      NEW.table_name != 'employment' OR
+      EXISTS (SELECT 1 FROM employment WHERE id = NEW.target_uuid)
+    `,
+  error_message: `'Employment with specified target_uuid does not exist'`,
+})
 export async function up(db: Kysely<DB>) {
   // Create enum for target_table_name
-  await sql`
-    CREATE TYPE message_draft_target_table AS ENUM ('organizations', 'employment', 'profession', 'region')
-  `.execute(db)
+  await db.schema.createType('message_draft_target_table')
+    .asEnum(['organizations', 'employment', 'profession', 'region'])
+    .execute()
 
   // Create message_drafts table
   await createStandardTable(
@@ -44,7 +64,7 @@ export async function up(db: Kysely<DB>) {
           sql`(target_uuid IS NOT NULL)::int + (target_value IS NOT NULL)::int = 1`,
         )
         .addCheckConstraint(
-          'uuid_for_org_and_employment',
+          'uuid_for_organization_and_employment',
           sql`(
             (table_name IN ('organizations', 'employment') AND target_uuid IS NOT NULL)
             OR
@@ -66,45 +86,19 @@ export async function up(db: Kysely<DB>) {
     .column('message_draft_id')
     .execute()
 
-  // Add assertion triggers for target_uuid existence
-  const org_assertion = assertOnInsert({
-    table: 'message_draft_targets',
-    function_name: 'assert_org_exists_for_draft_target',
-    assertion: `
-      NEW.table_name != 'organizations' OR
-      EXISTS (SELECT 1 FROM organizations WHERE id = NEW.target_uuid)
-    `,
-    error_message: `'Organization with specified target_uuid does not exist'`,
-  })
-  await org_assertion.up(db)
-
-  const employment_assertion = assertOnInsert({
-    table: 'message_draft_targets',
-    function_name: 'assert_employment_exists_for_draft_target',
-    assertion: `
-      NEW.table_name != 'employment' OR
-      EXISTS (SELECT 1 FROM employment WHERE id = NEW.target_uuid)
-    `,
-    error_message: `'Employment with specified target_uuid does not exist'`,
-  })
+  await organization_assertion.up(db)
   await employment_assertion.up(db)
 }
 
 export async function down(db: Kysely<DB>) {
   // Drop assertion triggers first
-  await sql`DROP TRIGGER IF EXISTS assert_employment_exists_for_draft_target_trigger ON message_draft_targets`
-    .execute(db)
-  await sql`DROP FUNCTION IF EXISTS assert_employment_exists_for_draft_target()`
-    .execute(db)
-  await sql`DROP TRIGGER IF EXISTS assert_org_exists_for_draft_target_trigger ON message_draft_targets`
-    .execute(db)
-  await sql`DROP FUNCTION IF EXISTS assert_org_exists_for_draft_target()`
-    .execute(db)
+  await employment_assertion.down(db)
+  await organization_assertion.down(db)
 
   // Drop tables in reverse order
   await db.schema.dropTable('message_draft_targets').execute()
   await db.schema.dropTable('message_drafts').execute()
 
   // Drop enum
-  await sql`DROP TYPE message_draft_target_table`.execute(db)
+  await db.schema.dropType('message_draft_target_table').execute()
 }
