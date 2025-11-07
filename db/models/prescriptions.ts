@@ -19,8 +19,8 @@ export type PrescriptionMedicationInsert = {
   schedules: MedicationSchedule[]
 }
 
-const getBase = (trx: TrxOrDb) =>
-  trx
+function getBase(trx: TrxOrDb) {
+  return trx
     .selectFrom('prescriptions')
     .leftJoin(
       'prescription_codes',
@@ -50,6 +50,7 @@ const getBase = (trx: TrxOrDb) =>
     .select(
       'doctor_registration_details.mobile_number as prescriber_mobile_number',
     )
+}
 
 export function getById(
   trx: TrxOrDb,

@@ -123,8 +123,8 @@ export async function upsertWithGoogleCredentials(
   return combine(health_worker, tokens)
 }
 
-export const getWithTokensQuery = (trx: TrxOrDb) =>
-  trx
+export function getWithTokensQuery(trx: TrxOrDb) {
+  return trx
     .selectFrom('health_workers')
     .innerJoin(
       'google_tokens',
@@ -142,6 +142,7 @@ export const getWithTokensQuery = (trx: TrxOrDb) =>
       'refresh_token',
       'expires_at',
     ])
+}
 
 export function isHealthWorkerWithGoogleTokens(
   health_worker: unknown,
