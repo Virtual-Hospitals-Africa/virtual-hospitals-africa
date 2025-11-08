@@ -1,15 +1,15 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from './Header.tsx'
 import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
-import { assert } from 'std/assert/assert.ts'
-import { AlertListener } from '../../islands/AlertListener.tsx'
 import {
   HealthWorkerHomePageSidebar,
   RegulatorHomePageSidebar,
 } from './Sidebar.tsx'
-import { EmployedHealthWorker, Maybe } from '../../types.ts'
-import { RenderedNotification } from '../../types.ts'
-import { Alert } from '../../islands/AlertMessage.tsx'
+import {
+  EmployedHealthWorker,
+  Maybe,
+  RenderedNotification,
+} from '../../types.ts'
 
 export type LayoutProps =
   & {
@@ -59,25 +59,25 @@ function AppLayoutContents({
   children: ComponentChildren
 }) {
   return (
-    <>
+    <div className='max-w-screen flex flex-col'>
       {sidebar}
-      <div className='flex'>
-        <section className='flex-1 md:pl-48'>
+      <div className='flex flex-row min-h-screen grow'>
+        <section className='flex flex-row flex-1 md:pl-48'>
           <Header
             title={title}
             variant={variant}
-            avatarUrl={avatarUrl}
+            avatar_url={avatarUrl}
             notifications={notifications}
           />
-          <div className='pl-6'>{children}</div>
+          <div className='pl-6 grow'>{children}</div>
         </section>
         {drawer && (
-          <div className='h-screen w-[400px] border-l border-gray-200'>
+          <div className='h-full w-[400px] border-l border-gray-200'>
             {drawer}
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
@@ -99,29 +99,9 @@ function JustLogoLayoutContents({
   )
 }
 
-function initialAlert(url: URL): Alert | null {
-  const error = url.searchParams.get('error')
-  const warning = url.searchParams.get('warning')
-  const success = url.searchParams.get('success')
-
-  const flags = Number(!!error) + Number(!!warning) + Number(!!success)
-  assert(flags <= 1, 'Cannot have more than one of success, error, or warning')
-  if (error) {
-    return { message: error, level: 'error' }
-  }
-  if (warning) {
-    return { message: warning, level: 'warning' }
-  }
-  if (success) {
-    return { message: success, level: 'success' }
-  }
-  return null
-}
-
 export default function Layout(props: LayoutProps) {
   return (
     <>
-      <AlertListener initial_alert={initialAlert(props.url)} />
       {props.variant === 'landing page' && props.children}
       {(props.variant === 'health worker home page' ||
         props.variant === 'regulator home page') && (

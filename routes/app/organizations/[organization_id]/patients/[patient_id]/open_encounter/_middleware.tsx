@@ -1,6 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
-import Layout from '../../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
@@ -62,6 +61,7 @@ import { ComponentChild } from 'preact'
 import {
   previouslyCompleted,
 } from '../../../../../../../db/models/patient_procedures.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -392,7 +392,8 @@ export function OpenEncounterWorkflowLayout({
   children: ComponentChildren
 }): JSX.Element {
   return (
-    <Layout
+    <HealthWorkerContentsWithSidebarAndDrawer
+      ctx={ctx}
       title={capitalize(ctx.state.workflow)}
       sidebar={
         <StepsSidebar
@@ -401,7 +402,6 @@ export function OpenEncounterWorkflowLayout({
           steps_completed={ctx.state.workflow_status.steps_completed}
         />
       }
-      // TODO revisit when we show the drawer and/or handle this differently
       drawer={ctx.state.workflow !== 'registration'
         ? (
           <PatientDrawerV3
@@ -416,14 +416,13 @@ export function OpenEncounterWorkflowLayout({
             //   : []}
           />
         )
-        : null}
-      url={ctx.url}
-      variant='form'
+        : undefined}
     >
-      <Form method='POST' id='encounter'>
-        {children}
-        <hr />
-        <ButtonsContainer>
+      <Form method='POST' className='h-full relative'>
+        <div className='pr-4'>
+          {children}
+        </div>
+        <ButtonsContainer className='absolute bottom-0 left-0 right-0'>
           {buttons || (
             <Button
               type='submit'
@@ -434,7 +433,7 @@ export function OpenEncounterWorkflowLayout({
           )}
         </ButtonsContainer>
       </Form>
-    </Layout>
+    </HealthWorkerContentsWithSidebarAndDrawer>
   )
 }
 

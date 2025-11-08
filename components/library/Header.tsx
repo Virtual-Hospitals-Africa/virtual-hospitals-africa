@@ -10,7 +10,7 @@ import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 export type HeaderProps = {
   title: string
   variant: 'home page' | 'form' | 'just logo'
-  avatarUrl?: Maybe<string>
+  avatar_url?: Maybe<string>
   notifications?: RenderedNotification[]
 }
 
@@ -35,8 +35,8 @@ function HeaderRight({ children }: { children: ComponentChildren }) {
 }
 
 function HeaderRightWithAvatar(
-  { avatarUrl, notifications }: {
-    avatarUrl?: Maybe<string>
+  { avatar_url, notifications }: {
+    avatar_url?: Maybe<string>
     notifications: RenderedNotification[]
   },
 ) {
@@ -51,7 +51,7 @@ function HeaderRightWithAvatar(
         aria-haspopup='true'
       >
         <span className='sr-only'>To user profile</span>
-        <Avatar src={avatarUrl} className='w-8 h-8' />
+        <Avatar src={avatar_url} className='w-8 h-8' />
       </button>
     </HeaderRight>
   )
@@ -86,13 +86,13 @@ function HeaderWithoutNav() {
 }
 
 export function Header(
-  { title, avatarUrl, variant, notifications }: HeaderProps,
+  { title, avatar_url, variant, notifications }: HeaderProps,
 ) {
   if (variant === 'just logo') return <HeaderWithoutNav />
   const right = variant === 'home page'
     ? (
       <HeaderRightWithAvatar
-        avatarUrl={avatarUrl}
+        avatar_url={avatar_url}
         notifications={(assert(notifications), notifications)}
       />
     )

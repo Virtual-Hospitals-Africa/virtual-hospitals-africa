@@ -1,24 +1,15 @@
-import cls from '../util/cls.ts'
 import { JSX } from 'preact'
+import { Signal } from '@preact/signals'
+import cls from '../../util/cls.ts'
 import {
   CheckIcon,
   ExclamationTriangleIcon,
-} from '../components/library/icons/heroicons/solid.tsx'
-import { Signal } from '@preact/signals'
-import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
-import { ActionButton } from '../components/library/ActionButton.tsx'
+} from '../../components/library/icons/heroicons/solid.tsx'
+import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import { ActionButton } from '../../components/library/ActionButton.tsx'
+import { Alert } from '../../types.ts'
 
-export type Alert = {
-  message: string
-  level: 'error' | 'warning' | 'success'
-  actions?: {
-    name: string
-    href: string
-    method?: 'GET' | 'POST'
-  }[]
-}
-
-export interface AlertMessageProps {
+type AlertMessageProps = {
   className?: string
   alert: Signal<null | Alert>
 }

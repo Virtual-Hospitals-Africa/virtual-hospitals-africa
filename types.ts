@@ -3555,3 +3555,13 @@ export type RenderedFindingRelativeToHealthWorker = {
 }
 
 export type AppUser = Profession | 'regulator'
+
+export type Alert = {
+  message: string
+  level: 'error' | 'warning' | 'success'
+  actions?: {
+    name: string
+    href: string
+    method?: 'GET' | 'POST'
+  }[]
+}
