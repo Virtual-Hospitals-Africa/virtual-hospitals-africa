@@ -1,11 +1,14 @@
 import { Context } from 'fresh'
 import { LoggedInHealthWorker } from '../../types.ts'
 import redirect from '../../util/redirect.ts'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 
 export const handler = function AppRedirectToWaitingRoomPage(
-  ctx: Context<LoggedInHealthWorker>,
+  { state }: Context<LoggedInHealthWorker>,
 ) {
   return redirect(
-    `/app/organizations/${ctx.state.health_worker.default_organization_id}/waiting_room`,
+    `/app/organizations/${
+      defaultOrganizationId(state.health_worker)
+    }/waiting_room`,
   )
 }

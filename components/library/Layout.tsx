@@ -10,6 +10,7 @@ import {
   Maybe,
   RenderedNotification,
 } from '../../types.ts'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 
 export type LayoutProps =
   & {
@@ -122,8 +123,7 @@ export default function Layout(props: LayoutProps) {
                   ? props.params
                   : {
                     ...props.params,
-                    organization_id: props.health_worker.default_organization_id
-                      .toString(),
+                    organization_id: defaultOrganizationId(props.health_worker),
                   }}
                 urlSearchParams={props.url.searchParams}
               />

@@ -4,6 +4,7 @@ import Layout from '../../components/library/Layout.tsx'
 import { getOrganizationAdmin } from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 
 export default async function PendingApprovalPage(
   ctx: LoggedInHealthWorkerContext,
@@ -11,7 +12,7 @@ export default async function PendingApprovalPage(
   const { health_worker } = ctx.state
 
   const organization_admin = await getOrganizationAdmin(ctx.state.trx, {
-    organization_id: health_worker.default_organization_id,
+    organization_id: defaultOrganizationId(health_worker),
   })
 
   assert(organization_admin)
