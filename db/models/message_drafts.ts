@@ -1,7 +1,5 @@
-import { assert } from 'std/assert/assert.ts'
 import { MessagePriority, MessageTargetType } from '../../db.d.ts'
 import {
-  MessageTargetEntities,
   RenderedMessageDraft,
   RenderedMessageTarget,
   TrxOrDb,
@@ -9,6 +7,7 @@ import {
 import { pMap } from '../../util/inParallel.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { QueryResult } from './_base.ts'
+import { getTarget } from './message_targets.ts'
 
 export type MessageDraftTarget = {
   target_type: MessageTargetType
@@ -67,12 +66,15 @@ export async function findById(
     .executeTakeFirst()
   if (!draft) return null
 
-  const targets = await pMap(
+  const targets: RenderedMessageTarget[] = await pMap(
     draft.targets,
-    async (t): Promise<RenderedMessageTarget> => {
-      t.target_type
-    },
+    (t) => getTarget(trx, t),
   )
+
+  return {
+    ...draft,
+    targets,
+  }
 }
 
 export async function create(

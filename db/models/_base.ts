@@ -1,10 +1,5 @@
 import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
-import type {
-  IdSelection,
-  InsertShape,
-  TrxOrDb,
-  UpdateShape,
-} from '../../types.ts'
+import type { IdSelection, InsertShape, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
@@ -287,6 +282,7 @@ export function base<
       to_insert: InsertShape<DB[TopLevelTable]>,
     ) {
       return trx.insertInto(top_level_table)
+        // deno-lint-ignore no-explicit-any
         .values(to_insert as any)
         .returning('id')
         .executeTakeFirstOrThrow()

@@ -4,7 +4,6 @@ import { JsonValue, MessageTargetType, Profession } from '../../db.d.ts'
 import {
   MessageTargetEntities,
   RenderedEmployee,
-  RenderedMessageTarget,
   RenderedMessageTargets,
   RenderedOrganization,
   TrxOrDb,
@@ -85,20 +84,73 @@ const TARGET_DISPLAYS = {
   ) => string)
 }
 
+// Don't love the code duplication, but w.e. it's easily to make new ones via copy-pasta
+const TARGET_GETTERS = {
+  async employment(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'employment'>,
+  ): Promise<RenderedMessageTargets['employment']> {
+    const employment = await TARGET_ENTITY_FETCHERS.employment(trx, target)
+    const display_name = TARGET_DISPLAYS.employment(employment)
+    return {
+      id: target.id,
+      target_type: 'employment',
+      display_name,
+      employment,
+    }
+  },
+  async organization(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'organization'>,
+  ): Promise<RenderedMessageTargets['organization']> {
+    const organization = await TARGET_ENTITY_FETCHERS.organization(trx, target)
+    const display_name = TARGET_DISPLAYS.organization(organization)
+    return {
+      id: target.id,
+      target_type: 'organization',
+      display_name,
+      organization,
+    }
+  },
+  async profession(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'profession'>,
+  ): Promise<RenderedMessageTargets['profession']> {
+    const profession = await TARGET_ENTITY_FETCHERS.profession(trx, target)
+    const display_name = TARGET_DISPLAYS.profession(profession)
+    return {
+      id: target.id,
+      target_type: 'profession',
+      display_name,
+      profession,
+    }
+  },
+  async region(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'region'>,
+  ): Promise<RenderedMessageTargets['region']> {
+    const region = await TARGET_ENTITY_FETCHERS.region(trx, target)
+    const display_name = TARGET_DISPLAYS.region(region)
+    return {
+      id: target.id,
+      target_type: 'region',
+      display_name,
+      region,
+    }
+  },
+} satisfies {
+  [T in MessageTargetType]: ((
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<T>,
+  ) => Promise<RenderedMessageTargets[T]>)
+}
+
 export async function getTarget<TargetType extends MessageTargetType>(
   trx: TrxOrDb,
   target: IntermediateTargetResult<TargetType>,
 ): Promise<RenderedMessageTargets[TargetType]> {
-  const fetcher = TARGET_ENTITY_FETCHERS[target.target_type] as (
-    trx: TrxOrDb,
-    target: IntermediateTargetResult<TargetType>,
-  ) => Promise<MessageTargetEntities[TargetType]>
-  const entity = await fetcher(trx, target)
-  const display_name: string = TARGET_DISPLAYS[target.target_type](entity)
-  return {
-    id: target.id,
-    target_type: target.target_type,
-    display_name,
-    [target.target_type]: entity,
-  }
+  // deno-lint-ignore no-explicit-any
+  return TARGET_GETTERS[target.target_type](trx, target as any) as Promise<
+    RenderedMessageTargets[TargetType]
+  >
 }
