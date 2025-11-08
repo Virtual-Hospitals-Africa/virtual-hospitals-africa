@@ -12,7 +12,10 @@ import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import capitalize from '../../util/capitalize.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import { departmentResponsibleForWorkflow } from '../../shared/departments.ts'
+import {
+  Department,
+  departmentResponsibleForWorkflow,
+} from '../../shared/departments.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
 
@@ -47,7 +50,7 @@ export function asWaitingRoom(
   //   reviewers.some((r) => r.health_worker_id === health_worker.id) || (
   //     !!requesting_organization_id &&
   //     organizations_where_doctor.some((e) =>
-  //       e.organization.id === requesting_organization_id
+  //       o.id === requesting_organization_id
   //     )
   //   )
 
@@ -83,9 +86,15 @@ export function asWaitingRoom(
     next_workflow_status?.workflow
   assert(workflow_to_start)
 
-  const can_perform_action = organization_employment.departments.some(
+  const employment_departments = organization_employment.roles.flatMap((role) =>
+    role.departments
+  )
+  const can_perform_action = employment_departments.some(
     (department) =>
-      departmentResponsibleForWorkflow(department.name, workflow_to_start),
+      departmentResponsibleForWorkflow(
+        department.name as Department,
+        workflow_to_start,
+      ),
   )
 
   const action: ExtendedActionData = {

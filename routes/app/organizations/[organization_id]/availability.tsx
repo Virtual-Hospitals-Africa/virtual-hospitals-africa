@@ -127,8 +127,16 @@ async function writeCalendarsToGoogle(
   ctx: OrganizationContext,
   availability: Partial<AvailabilityJSON>,
 ) {
-  let gcal_availability_calendar_id =
-    ctx.state.organization_employment.gcal_availability_calendar_id
+  // Get calendar ID from health_worker_organization_calendars table
+  const calendar_record = await ctx.state.trx
+    .selectFrom('health_worker_organization_calendars')
+    .where('health_worker_id', '=', ctx.state.health_worker.id)
+    .where('organization_id', '=', ctx.state.organization.id)
+    .select('gcal_availability_calendar_id')
+    .executeTakeFirst()
+
+  let gcal_availability_calendar_id = calendar_record
+    ?.gcal_availability_calendar_id
 
   const google_client = await HealthWorkerGoogleClient.fromHealthWorkerContext(
     ctx,
@@ -204,10 +212,19 @@ export default HealthWorkerHomePageLayout(
     // deno-lint-ignore no-explicit-any
     ctx: OrganizationContext<any>,
   ) {
-    const { health_worker, organization, organization_employment } = ctx.state
+    const { health_worker, organization } = ctx.state
     const from_url = ctx.url.searchParams.get('from_url')
 
-    const { gcal_availability_calendar_id } = organization_employment
+    // Get calendar ID from health_worker_organization_calendars table
+    const calendar_record = await ctx.state.trx
+      .selectFrom('health_worker_organization_calendars')
+      .where('health_worker_id', '=', health_worker.id)
+      .where('organization_id', '=', organization.id)
+      .select('gcal_availability_calendar_id')
+      .executeTakeFirst()
+
+    const gcal_availability_calendar_id = calendar_record
+      ?.gcal_availability_calendar_id
 
     const google_client = await HealthWorkerGoogleClient
       .fromHealthWorkerContext(ctx)

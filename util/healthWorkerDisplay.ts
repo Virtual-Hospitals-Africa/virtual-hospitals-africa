@@ -5,6 +5,7 @@ import {
   HealthWorkerDisplay,
   HealthWorkerOrganization,
   Maybe,
+  RenderedPatientEncounterEmployee,
 } from '../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
@@ -15,9 +16,26 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
     Independent of your profession
 */
 export default function healthWorkerDisplay(
-  health_worker_name: string,
-  organization_employment: HealthWorkerOrganization,
+  employee_or_name: RenderedPatientEncounterEmployee | string,
+  organization_employment?: HealthWorkerOrganization,
 ): HealthWorkerDisplay {
+  // Handle single argument case (RenderedPatientEncounterEmployee)
+  if (typeof employee_or_name !== 'string') {
+    const employee = employee_or_name
+    return healthWorkerDisplayInner({
+      health_worker_name: employee.health_worker_name,
+      is_doctor: employee.profession === 'doctor',
+      is_admin: employee.profession === 'admin',
+      provider_profession: employee.profession !== 'admin'
+        ? employee.profession
+        : undefined,
+      specialty: employee.specialty,
+    })
+  }
+
+  // Handle two argument case (name and organization_employment)
+  assert(organization_employment, 'organization_employment is required')
+  const health_worker_name = employee_or_name
   let is_doctor = false
   let is_admin = false
   let provider_profession: Profession | undefined

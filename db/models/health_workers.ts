@@ -208,16 +208,41 @@ export function baseQuery(trx: TrxOrDb) {
                         'organization_departments.name',
                       ]),
                   ).as('departments'),
-                ]),
+                ]).orderBy((eb_roles_order) =>
+                  eb_roles_order.case().when(
+                    'employment.profession',
+                    '=',
+                    'admin',
+                  ).then(4).when(
+                    'employment.profession',
+                    '=',
+                    'doctor',
+                  ).then(3).when(
+                    'employment.profession',
+                    '=',
+                    'nurse',
+                  ).then(2).when(
+                    'employment.profession',
+                    '=',
+                    'receptionist',
+                  ).then(1)
+                    .else(0)
+                    .end(), 'desc'),
             ).as('roles'),
           ]).orderBy(
             // TODO order by most recently interacted with?
             (eb_organization_order) =>
-              eb_organization_order(
+              eb_organization_order.case().when(
+                'organizations.category',
+                'ilike',
+                '%ent%',
+              ).then(2).when(
                 'organizations.category',
                 'ilike',
                 '%ospital%',
-              ),
+              ).then(1)
+                .else(0)
+                .end(),
             'desc',
           ),
       ).as('organizations'),

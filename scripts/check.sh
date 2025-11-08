@@ -7,7 +7,7 @@ declare -A logs
 run_in_background() { 
   # shellcheck disable=SC2155
   local log_file=$(mktemp)
-  script -q "$log_file" "$@" > /dev/null 2>&1 &
+  "$@" > "$log_file" 2>&1 &
   local pid="$!"
   logs[$pid]="$log_file"
   commands[$pid]="$*"

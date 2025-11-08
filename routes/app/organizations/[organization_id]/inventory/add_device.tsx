@@ -12,6 +12,7 @@ import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import devices from '../../../../../db/models/devices.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
@@ -23,8 +24,11 @@ export function assertIsUpsertDevice(
 export const handler = {
   async POST(ctx: OrganizationContext) {
     const req = ctx.req
-    const { admin } = ctx.state.organization_employment.roles
-    assertOr403(admin)
+    const admin_role = roleByProfession(
+      ctx.state.organization_employment,
+      'admin',
+    )
+    assertOr403(admin_role)
 
     const { organization_id } = ctx.params
 
@@ -38,7 +42,7 @@ export const handler = {
       organization_id,
       device_id: to_add.device_id,
       serial_number: to_add.serial_number,
-      created_by: admin.employment_id,
+      created_by: admin_role.employment_id,
     })
 
     const success = encodeURIComponent(

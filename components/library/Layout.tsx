@@ -1,16 +1,8 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from './Header.tsx'
 import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
-import {
-  HealthWorkerHomePageSidebar,
-  RegulatorHomePageSidebar,
-} from './Sidebar.tsx'
-import {
-  EmployedHealthWorker,
-  Maybe,
-  RenderedNotification,
-} from '../../types.ts'
-import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
+import { RegulatorHomePageSidebar } from './Sidebar.tsx'
+import { Maybe, RenderedNotification } from '../../types.ts'
 
 export type LayoutProps =
   & {
@@ -20,13 +12,6 @@ export type LayoutProps =
     drawer?: ComponentChild
   }
   & (
-    | {
-      variant: 'health worker home page'
-      route: string
-      health_worker: EmployedHealthWorker
-      notifications: RenderedNotification[]
-      params?: Record<string, string>
-    }
     | {
       variant: 'regulator home page'
       route: string
@@ -104,37 +89,19 @@ export default function Layout(props: LayoutProps) {
   return (
     <>
       {props.variant === 'landing page' && props.children}
-      {(props.variant === 'health worker home page' ||
-        props.variant === 'regulator home page') && (
+      {(
+        props.variant === 'regulator home page'
+      ) && (
         <AppLayoutContents
           {...props}
           variant='home page'
-          avatarUrl={props.variant === 'health worker home page'
-            ? props.health_worker.avatar_url
-            : ''}
-          notifications={props.variant === 'health worker home page'
-            ? props.notifications
-            : []}
-          sidebar={props.variant === 'health worker home page'
-            ? (
-              <HealthWorkerHomePageSidebar
-                route={props.route}
-                params={props.params && 'organization_id' in props.params
-                  ? props.params
-                  : {
-                    ...props.params,
-                    organization_id: defaultOrganizationId(props.health_worker),
-                  }}
-                urlSearchParams={props.url.searchParams}
-              />
-            )
-            : (
-              <RegulatorHomePageSidebar
-                route={props.route}
-                params={props.params || {}}
-                urlSearchParams={props.url.searchParams}
-              />
-            )}
+          sidebar={
+            <RegulatorHomePageSidebar
+              route={props.route}
+              params={props.params || {}}
+              urlSearchParams={props.url.searchParams}
+            />
+          }
         />
       )}
       {props.variant === 'form' && <AppLayoutContents {...props} />}

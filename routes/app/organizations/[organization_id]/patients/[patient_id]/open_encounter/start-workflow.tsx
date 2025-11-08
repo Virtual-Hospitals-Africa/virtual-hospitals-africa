@@ -12,6 +12,7 @@ import * as patient_workflows from '../../../../../../../db/models/patient_workf
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'node:console'
+import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -50,7 +51,7 @@ export async function startWorkflow(
     `${workflow} workflow already completed`,
   )
 
-  const seeing_as_employment_id = organization_employment.non_admin_id
+  const seeing_as_employment_id = nonAdminId(organization_employment)
   assertOr403(
     seeing_as_employment_id,
     'Must be seeing the patient in the context of a non-admin profession',

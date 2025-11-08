@@ -32,6 +32,7 @@ import {
   assertOr405,
   assertOrRedirect,
 } from '../../../../../../../util/assertOr.ts'
+import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
 import PatientDrawerV3 from '../../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
@@ -54,7 +55,6 @@ import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'
 import { OrganizationContext, OrganizationState } from '../../../_middleware.ts'
 import words from '../../../../../../../util/words.ts'
-import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { ComponentChild } from 'preact'
@@ -304,14 +304,14 @@ async function findPatientOpenEncounter(
     return present_encounter
   }
 
-  const patient_encounter = await patient_encounters.getOpen(trx, {
+  const patient_encounter = await patient_encounters.getFirstOpen(trx, {
     patient_id,
-  }).then(first)
+  })
   assertOr404(
     patient_encounter,
     'No open encounter for this patient at this organization',
   )
-  return patient_encounter
+  return patient_encounter as RenderedPatientOpenEncounter
 }
 
 export async function handler(
@@ -324,7 +324,7 @@ export async function handler(
   const encounter_employee_presence =
     encounter.status.patient_presence.employees.find((
       employee,
-    ) => employee.employment_id === organization_employment.non_admin_id) ??
+    ) => employee.employment_id === nonAdminId(organization_employment)) ??
       null
 
   assert(encounter_employee_presence, 'No encounter employee found')
@@ -393,7 +393,6 @@ export function OpenEncounterWorkflowLayout({
 }): JSX.Element {
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
-      ctx={ctx}
       title={capitalize(ctx.state.workflow)}
       sidebar={
         <StepsSidebar

@@ -9,7 +9,6 @@ import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { postHandler } from '../../../../../util/postHandler.ts'
-import first from '../../../../../util/first.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 const AddPatientFormSchema = z.object({
@@ -66,9 +65,9 @@ export default HealthWorkerHomePageLayout(
         trx,
         organization.id,
       ),
-      open_encounter: patient_encounters.getOpen(trx, {
+      open_encounter: patient_encounters.getFirstOpen(trx, {
         patient_id,
-      }).then(first),
+      }),
     })
 
     if (open_encounter) {

@@ -31,6 +31,8 @@ import { parseDateTime, timeInSimpleAmPm } from '../util/date.ts'
 import words from '../util/words.ts'
 import capitalize from '../util/capitalize.ts'
 import { addTestEmployee } from '../test/_helpers/employees.ts'
+import { exists } from '../util/exists.ts'
+import { nonAdminId } from '../shared/nonAdminId.ts'
 import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
 
 type WaitingRoomScenario = [
@@ -177,7 +179,7 @@ async function addPatientsToWaitingRoom(
         health_worker_id: nurse.id,
       })
       const organization_employment = health_worker.organizations.find((o) =>
-        e.organization.id === rural_clinic_organization_id
+        o.id === rural_clinic_organization_id
       )!
 
       // Scenario 1: Registration in progress
@@ -200,7 +202,7 @@ async function addPatientsToWaitingRoom(
 
         // Clear employment presence so this nurse can work with another patient
         await db.updateTable('employment_presence')
-          .where('id', '=', organization_employment.non_admin_id!)
+          .where('id', '=', exists(nonAdminId(organization_employment)))
           .set({ with_patient_id: null })
           .execute()
 
@@ -276,7 +278,7 @@ async function addPatientsToWaitingRoom(
       if (workflow === 'triage' && workflow_status === 'not started') {
         // Clear employment presence so this nurse can work with another patient
         await db.updateTable('employment_presence')
-          .where('id', '=', organization_employment.non_admin_id!)
+          .where('id', '=', exists(nonAdminId(organization_employment)))
           .set({ with_patient_id: null })
           .execute()
 
@@ -295,7 +297,9 @@ async function addPatientsToWaitingRoom(
           await patient_workflows.start(db, {
             encounter,
             existing_patient_encounter_employee_id,
-            seeing_as_employment_id: organization_employment.non_admin_id!,
+            seeing_as_employment_id: exists(
+              nonAdminId(organization_employment),
+            ),
             workflow_status: triage_workflow,
           })
         }
@@ -324,7 +328,7 @@ async function addPatientsToWaitingRoom(
 
         // Clear employment presence so this nurse can work with another patient
         await db.updateTable('employment_presence')
-          .where('id', '=', organization_employment.non_admin_id!)
+          .where('id', '=', exists(nonAdminId(organization_employment)))
           .set({ with_patient_id: null })
           .execute()
 
@@ -343,7 +347,9 @@ async function addPatientsToWaitingRoom(
           await patient_workflows.start(db, {
             encounter,
             existing_patient_encounter_employee_id,
-            seeing_as_employment_id: organization_employment.non_admin_id!,
+            seeing_as_employment_id: exists(
+              nonAdminId(organization_employment),
+            ),
             workflow_status: triage_workflow,
           })
         }
@@ -389,7 +395,7 @@ async function addPatientsToWaitingRoom(
         if (workflow_status === 'not started') {
           // Clear employment presence so this nurse can work with another patient
           await db.updateTable('employment_presence')
-            .where('id', '=', organization_employment.non_admin_id!)
+            .where('id', '=', exists(nonAdminId(organization_employment)))
             .set({ with_patient_id: null })
             .execute()
 
@@ -409,13 +415,15 @@ async function addPatientsToWaitingRoom(
           await patient_workflows.start(db, {
             encounter: updated_encounter,
             existing_patient_encounter_employee_id,
-            seeing_as_employment_id: organization_employment.non_admin_id!,
+            seeing_as_employment_id: exists(
+              nonAdminId(organization_employment),
+            ),
             workflow_status: consultation_workflow,
           })
 
           // Clear employment presence so this nurse can work with another patient
           await db.updateTable('employment_presence')
-            .where('id', '=', organization_employment.non_admin_id!)
+            .where('id', '=', exists(nonAdminId(organization_employment)))
             .set({ with_patient_id: null })
             .execute()
 
@@ -426,7 +434,7 @@ async function addPatientsToWaitingRoom(
 
       // Clear employment presence so this nurse can work with another patient
       await db.updateTable('employment_presence')
-        .where('id', '=', organization_employment.non_admin_id!)
+        .where('id', '=', exists(nonAdminId(organization_employment)))
         .set({ with_patient_id: null })
         .execute()
 

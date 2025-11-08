@@ -31,20 +31,20 @@ export async function getById(
       .executeTakeFirstOrThrow(),
   })
 
-  const employment: HealthWorkerOrganization = exists(
+  const organization_employment: HealthWorkerOrganization = exists(
     health_worker.organizations.find((o) => {
-      e.organization.id === organization.id
+      o.id === organization.id
     }),
   )
 
   const display = healthWorkerDisplay(
     health_worker.name,
-    employment,
+    organization_employment,
   )
 
   return {
     health_worker,
-    employment,
+    organization_employment,
     display,
   }
 }

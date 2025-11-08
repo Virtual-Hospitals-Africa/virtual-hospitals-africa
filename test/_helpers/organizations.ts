@@ -3,7 +3,6 @@ import { assert } from 'std/assert/assert.ts'
 import range from '../../util/range.ts'
 import generateUUID from '../../util/uuid.ts'
 import { OrganizationInsert } from '../../db/models/organizations.ts'
-import compact from '../../util/compact.ts'
 import { Department } from '../../shared/departments.ts'
 import * as organizations from '../../db/models/organizations.ts'
 
@@ -76,6 +75,27 @@ export function testOrganizationDepartments(
     ]
 }
 
+export function createTestOrganization(
+  trx: TrxOrDb,
+  { category = 'Clinic' }: { category?: 'Clinic' | 'Hospital' } = {},
+) {
+  const organization = {
+    category,
+    name: `Test ${generateUUID()} ${category}`,
+    country: 'ZA',
+    departments: testOrganizationDepartments(category),
+    address: {
+      street: '123 Test St',
+      locality: 'Test City',
+      country: 'ZA',
+      postal_code: '12345',
+    },
+    location: { latitude: 0, longitude: 0 },
+  }
+
+  return organizations.add(trx, organization)
+}
+
 export async function withTestOrganizations(
   trx: TrxOrDb,
   opts:
@@ -112,19 +132,20 @@ export async function withTestOrganizations(
   const organization_ids = organizations_added.map((organization) =>
     organization.id
   )
-  const address_ids = compact(
-    organizations_added.map((organization) => organization.address_id),
-  )
-  try {
-    await callback(organization_ids)
-  } finally {
-    await trx.deleteFrom('organizations')
-      .where('id', 'in', organization_ids)
-      .execute()
-    if (address_ids.length) {
-      await trx.deleteFrom('addresses')
-        .where('id', 'in', address_ids)
-        .execute()
-    }
-  }
+  // const address_ids = compact(
+  //   organizations_added.map((organization) => organization.address_id),
+  // )
+  await callback(organization_ids)
+  // try {
+
+  // } finally {
+  //   await trx.deleteFrom('organizations')
+  //     .where('id', 'in', organization_ids)
+  //     .execute()
+  //   if (address_ids.length) {
+  //     await trx.deleteFrom('addresses')
+  //       .where('id', 'in', address_ids)
+  //       .execute()
+  //   }
+  // }
 }

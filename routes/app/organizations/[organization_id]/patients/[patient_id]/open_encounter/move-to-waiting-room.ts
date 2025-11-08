@@ -11,6 +11,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
+import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
 
 const MoveToWaitingRoomSchema = z.object({})
 
@@ -43,14 +44,15 @@ export const handler = postHandler(
         encounter.status.patient_presence.employees[0]
       assert(employee_present_with_patient)
 
-      assert(organization_employment.non_admin_id)
+      const non_admin_employment_id = nonAdminId(organization_employment)
+      assert(non_admin_employment_id)
       assertEquals(
         employee_present_with_patient.employment_id,
-        organization_employment.non_admin_id,
+        non_admin_employment_id,
       )
 
       const employment_presence: InsertShape<EmploymentPresence> = {
-        id: organization_employment.non_admin_id,
+        id: non_admin_employment_id,
         with_patient_id: null,
         at_work: true,
       }

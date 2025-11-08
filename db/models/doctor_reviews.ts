@@ -23,10 +23,12 @@ import {
   now,
 } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
+import roleByProfession from '../../shared/roleByProfession.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
+import { exists } from '../../util/exists.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -243,28 +245,50 @@ export async function requestMatchingEmployment(
   patient_id: string,
   organizations_where_doctor: HealthWorkerOrganization[],
 ): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
+  const doctor_ids = organizations_where_doctor.map((organization) => {
+    const doctor_role = exists(roleByProfession(organization, 'doctor'))
+    return doctor_role.employment_id
+  })
+
   const request = await requests(trx)
     .select('doctor_review_requests.organization_id')
     .where('doctor_review_requests.patient_id', '=', patient_id)
-    .where(
-      'doctor_review_requests.organization_id',
-      'in',
-      organizations_where_doctor.map(
-        (employment) => employment.organization.id,
-      ),
+    .where((eb) =>
+      eb.or([
+        eb(
+          'doctor_review_requests.organization_id',
+          'in',
+          organizations_where_doctor.map(
+            (organization) => organization.id,
+          ),
+        ),
+        eb(
+          'doctor_review_requests.doctor_id',
+          'in',
+          doctor_ids,
+        ),
+      ])
     )
     .executeTakeFirst()
 
   if (!request) return null
 
+  if (request.requesting.doctor_id) {
+    return {
+      ...request,
+      employment_id: request.requesting.doctor_id,
+    }
+  }
+
   const matching_employment = organizations_where_doctor.find(
-    (employment) => employment.organization.id === request.organization_id,
+    (organization) => organization.id === request.organization_id,
   )
   assert(matching_employment)
-  assert(matching_employment.roles.doctor)
+  const doctor_role = roleByProfession(matching_employment, 'doctor')
+  assert(doctor_role)
   return {
     ...request,
-    employment_id: matching_employment.roles.doctor.employment_id,
+    employment_id: doctor_role.employment_id,
   }
 }
 
@@ -314,8 +338,9 @@ export async function addSelfAsReviewer(
   }
 
   const organizations_where_doctor = health_worker.organizations.filter(
-    (employment) => !!employment.roles.doctor,
+    (organization) => !!roleByProfession(organization, 'doctor'),
   )
+
   assertOr403(
     organizations_where_doctor.length,
     'Only doctors can review patient encounters',

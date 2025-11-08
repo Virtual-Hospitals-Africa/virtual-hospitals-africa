@@ -1,3 +1,4 @@
+import { HealthWorkerOrganization } from '../types.ts'
 import assertLength from '../util/assertLength.ts'
 
 export function nonAdminId(

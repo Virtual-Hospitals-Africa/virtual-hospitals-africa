@@ -24,8 +24,30 @@ export default HealthWorkerHomePageLayout(
     // if there's no day in the query, use today in Johannesburg
     const day = ctx.url.searchParams.get('day') || today
 
+    // Get calendar IDs from health_worker_organization_calendars table
+    const organization_calendars = await ctx.state.trx
+      .selectFrom('health_worker_organization_calendars')
+      .where(
+        'health_worker_id',
+        '=',
+        ctx.state.health_worker.id,
+      )
+      .select([
+        'organization_id',
+        'gcal_appointments_calendar_id',
+      ])
+      .execute()
+
+    const calendar_map = new Map(
+      organization_calendars.map((cal) => [
+        cal.organization_id,
+        cal.gcal_appointments_calendar_id,
+      ]),
+    )
+
     const appointment_calendars = ctx.state.health_worker.organizations.map(
-      ({ organization, gcal_appointments_calendar_id }) => {
+      (organization) => {
+        const gcal_appointments_calendar_id = calendar_map.get(organization.id)
         assertOrRedirect(
           gcal_appointments_calendar_id,
           warning(

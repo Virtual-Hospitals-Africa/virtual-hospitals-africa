@@ -41,16 +41,6 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
             name='priority'
             initial_priority={priority}
           />
-          <Dropdown
-            id='priority'
-            button={<Button variant='solid' color='indigo'>Priority</Button>}
-            items={[
-              { title: 'Emergency' },
-              { title: 'High' },
-              { title: 'Medium' },
-              { title: 'Low' },
-            ]}
-          />
         </div>
 
         <div class='px-8 py-6 space-y-6'>

@@ -8,6 +8,7 @@ import { OrganizationContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 export function assertIsUpsertProcurer(obj: unknown): asserts obj {
   assertOr400(isObjectLike(obj))
@@ -17,8 +18,11 @@ export function assertIsUpsertProcurer(obj: unknown): asserts obj {
 export const handler = {
   async POST(ctx: OrganizationContext) {
     const req = ctx.req
-    const { admin } = ctx.state.organization_employment.roles
-    assertOr403(admin)
+    const admin_role = roleByProfession(
+      ctx.state.organization_employment,
+      'admin',
+    )
+    assertOr403(admin_role)
 
     const { organization_id } = ctx.params
 

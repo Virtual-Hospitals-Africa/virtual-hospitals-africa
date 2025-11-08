@@ -34,6 +34,9 @@ jobs:
           path: ~/.cache/deno
           key: deno-modules
 
+      - name: Deno install
+        run: deno install --allow-scripts
+
       - name: Run check
         run: deno task check
 
@@ -88,6 +91,9 @@ jobs:
 
       - name: Git lfs pull
         run: git lfs pull
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Write .env file
         run: |
@@ -174,6 +180,9 @@ jobs:
       - name: Git lfs pull
         run: git lfs pull
 
+      - name: Deno install
+        run: deno install --allow-scripts
+
       - name: Write .env file
         run: |
           echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
@@ -240,6 +249,9 @@ jobs:
 
       - name: Git lfs pull
         run: git lfs pull
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Write .env file
         run: |

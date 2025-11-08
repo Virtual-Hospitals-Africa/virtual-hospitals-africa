@@ -12,13 +12,15 @@ import { warning } from '../../util/alerts.ts'
 import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
-import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { attachTrx } from '../../shared/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { SKIP_NURSE_REGISTRATION } from '../../db/models/health_worker_registration_status.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { HealthWorkerHomePageSidebar } from '../../components/library/Sidebar.tsx'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 
 export default [
   ensureCookiePresent,
@@ -175,7 +177,7 @@ export function HealthWorkerHomePageLayout<
       title = undefined as any
     }
 
-    let { rendered, health_worker_notifications } = await promiseProps({
+    let { rendered /*, health_worker_notifications*/ } = await promiseProps({
       rendered: Promise.resolve(
         render!(ctx),
       ),
@@ -200,17 +202,24 @@ export function HealthWorkerHomePageLayout<
     }
 
     return (
-      <Layout
-        variant='health worker home page'
+      <HealthWorkerContentsWithSidebarAndDrawer
         title={title as string}
-        route={ctx.route!}
-        url={ctx.url}
-        health_worker={health_worker}
-        notifications={health_worker_notifications}
+        sidebar={
+          <HealthWorkerHomePageSidebar
+            route={ctx.route!}
+            params={ctx.params && 'organization_id' in ctx.params
+              ? ctx.params
+              : {
+                ...ctx.params,
+                organization_id: defaultOrganizationId(ctx.state.health_worker),
+              }}
+            urlSearchParams={ctx.url.searchParams}
+          />
+        }
         drawer={drawer}
       >
         {rendered}
-      </Layout>
+      </HealthWorkerContentsWithSidebarAndDrawer>
     )
   }
 }

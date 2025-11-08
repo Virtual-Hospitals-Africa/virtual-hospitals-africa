@@ -12,7 +12,6 @@ import { HealthWorkerHomePageLayout } from '../../../../../_middleware.tsx'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../../../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
-import first from '../../../../../../../util/first.ts'
 import { asWaitingRoom } from '../../../../../../../db/models/waiting_room.ts'
 import { RenderedPatient } from '../../../../../../../types.ts'
 import { ActionButton } from '../../../../../../../components/library/ActionButton.tsx'
@@ -62,9 +61,9 @@ export const PatientProfilePage = (
             time_range: 'future',
           },
         ),
-        open_encounter: patient_encounters.getOpen(trx, {
+        open_encounter: patient_encounters.getFirstOpen(trx, {
           patient_id,
-        }).then(first),
+        }),
         primary_doctor: patient_primary_doctor.get(
           trx,
           {
@@ -85,8 +84,9 @@ export const PatientProfilePage = (
       )
       assert(hasName(patient))
 
-      const as_waiting_room = open_encounter &&
-        asWaitingRoom(open_encounter, organization_employment)
+      const as_waiting_room = open_encounter
+        ? asWaitingRoom(open_encounter, organization_employment)
+        : null
 
       const action = as_waiting_room?.actions[0]
 
