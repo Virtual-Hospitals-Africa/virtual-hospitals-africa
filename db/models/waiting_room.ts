@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   ExtendedActionData,
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   RenderedPatientOpenEncounter,
   RenderedWaitingRoom,
   TrxOrDb,
@@ -18,7 +18,7 @@ import { assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 export function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ): RenderedWaitingRoom {
   const {
     patient_encounter_id,
@@ -35,7 +35,7 @@ export function asWaitingRoom(
     // all_employees_seen,
   } = patient_encounter
 
-  // const organizations_where_doctor = health_worker.employment.filter((e) =>
+  // const organizations_where_doctor = health_worker.organizations.filter((e) =>
   //   e.roles.doctor?.registration_completed
   // )
 
@@ -92,7 +92,7 @@ export function asWaitingRoom(
     text: workflow_to_start,
     method: 'POST',
     href:
-      `/app/organizations/${organization_employment.organization.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
+      `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
     disabled: !can_perform_action,
   }
 
@@ -120,19 +120,19 @@ export function asWaitingRoom(
 
 export async function get(
   trx: TrxOrDb,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ): Promise<RenderedWaitingRoom[]> {
   const open_encounters = await patient_encounters.getOpen(
     trx,
     {
-      organization_id: organization_employment.organization.id,
+      organization_id: organization_employment.id,
     },
   )
 
   assertAll(open_encounters, (encounter) => {
     assertEquals(
       encounter.organization.id,
-      organization_employment.organization.id,
+      organization_employment.id,
     )
   })
 

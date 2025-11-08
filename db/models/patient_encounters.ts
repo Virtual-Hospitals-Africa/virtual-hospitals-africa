@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   IdSelection,
   InsertShape,
   isPriority,
@@ -64,7 +64,7 @@ type EncounterExistingOrToCreate = {
 
 export function seenPatientEncounterEmployeeId(
   encounter: RenderedPatientEncounter,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ) {
   const employee = encounter.all_employees_seen.find((employee) =>
     employee.employment_id === organization_employment.non_admin_id
@@ -79,7 +79,7 @@ export function seenPatientEncounterEmployeeId(
 export async function insertSeekingTreatmentForRegisteredPatient(
   trx: TrxOrDb,
   organization: RenderedOrganization,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
   {
     patient_id,
     encounter,

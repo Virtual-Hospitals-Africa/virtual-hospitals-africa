@@ -7,10 +7,10 @@ import { getEmployeeInfo } from '../../../../../../db/models/employee_info.ts'
 
 export const handler = {
   async POST(ctx: OrganizationContext) {
-    const { trx, organization, isAdminAtOrganization, health_worker } =
+    const { trx, organization, is_admin_at_organization, health_worker } =
       ctx.state
 
-    assertOr403(isAdminAtOrganization)
+    assertOr403(is_admin_at_organization)
 
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 

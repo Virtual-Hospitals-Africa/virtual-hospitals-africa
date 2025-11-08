@@ -1497,7 +1497,15 @@ export type RenderedDoctorReviewRequestOfSpecificDoctor =
     employment_id: string
   }
 
-export type HealthWorkerEmploymentRole = {
+export type HealthWorkerRegistrationStatus = {
+  organization_id: string
+  profession: Profession
+  registration_needed: boolean
+  registration_completed: boolean
+  registration_pending_approval: boolean
+}
+
+export type HealthWorkerOrganizationRole = {
   employment_id: string
   profession: Profession
   specialty: string | null
@@ -1507,23 +1515,23 @@ export type HealthWorkerEmploymentRole = {
   }[]
 }
 
-// export type HealthWorkerEmployment = {
+// export type HealthWorkerOrganization = {
 //   organization: RenderedOrganization
 //   roles:
 //     & {
-//       [p in Profession]: null | HealthWorkerEmploymentRole
+//       [p in Profession]: null | HealthWorkerOrganizationRole
 //     }
 //     & {
 //       provider:
 //         | null
-//         | (HealthWorkerEmploymentRole & {
+//         | (HealthWorkerOrganizationRole & {
 //           profession: 'doctor' | 'nurse'
 //         })
 //     }
 //     & {
 //       non_admin:
 //         | null
-//         | (HealthWorkerEmploymentRole & {
+//         | (HealthWorkerOrganizationRole & {
 //           profession: 'doctor' | 'nurse' | 'receptionist'
 //         })
 //     }
@@ -1535,12 +1543,9 @@ export type HealthWorkerEmploymentRole = {
 // }
 
 export type HealthWorkerOrganization = RenderedOrganization & {
-  roles: HealthWorkerEmploymentRole[]
+  roles: HealthWorkerOrganizationRole[]
 }
 
-// registration_needed: boolean
-// registration_completed: boolean
-// registration_pending_approval: boolean
 // gcal_appointments_calendar_id: string | null
 // gcal_availability_calendar_id: string | null
 // availability_set: SqlBool | null

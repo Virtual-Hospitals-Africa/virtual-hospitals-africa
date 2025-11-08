@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   RenderedPatientOpenEncounter,
   TrxOrDb,
   UpdateShape,
@@ -16,7 +16,7 @@ import { blankSelection } from '../helpers.ts'
 export function updateForOpenEncounterAfterCompletingWorkflow(
   trx: TrxOrDb,
   encounter: RenderedPatientOpenEncounter,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ) {
   const { next_workflow } = encounter.status.patient_presence
   assert(next_workflow)

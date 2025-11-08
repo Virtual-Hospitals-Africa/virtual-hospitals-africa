@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   RenderedOrganization,
   TrxOrDb,
 } from '../../types.ts'
@@ -21,22 +21,22 @@ import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { description_sql } from './patients.ts'
+import isEmployedInDepartment from '../../shared/isEmployedInDepartment.ts'
+import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 export async function start(
   trx: TrxOrDb,
   { id: organization_id, location }: RenderedOrganization,
-  { departments, non_admin_id }: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ) {
   assert(location)
   assertOr403(
-    departments.some(
-      (department) => department.name === 'reception',
-    ),
+    isEmployedInDepartment(organization_employment, 'reception'),
     'Must work in the reception department to register patients',
   )
-  assertOr403(
-    non_admin_id,
-  )
+
+  const non_admin_id = nonAdminId(organization_employment)
+  assertOr403(non_admin_id)
 
   const patient_id = generateUUID()
   const patient_encounter_id = generateUUID()

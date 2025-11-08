@@ -10,7 +10,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
     ctx: OrganizationContext,
   ) {
-    const { trx, organization, isAdminAtOrganization } = ctx.state
+    const { trx, organization, is_admin_at_organization } = ctx.state
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
     const employee = await getEmployeeInfo(
@@ -51,7 +51,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
             />
           </div>
           <hr style={{ margin: '20px 0' }} />
-          {isAdminAtOrganization &&
+          {is_admin_at_organization &&
             employee.registration_pending_approval && (
             <form
               style={{ maxWidth: '200px' }}

@@ -24,7 +24,7 @@ export default HealthWorkerHomePageLayout(
     // if there's no day in the query, use today in Johannesburg
     const day = ctx.url.searchParams.get('day') || today
 
-    const appointment_calendars = ctx.state.health_worker.employment.map(
+    const appointment_calendars = ctx.state.health_worker.organizations.map(
       ({ organization, gcal_appointments_calendar_id }) => {
         assertOrRedirect(
           gcal_appointments_calendar_id,

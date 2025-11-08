@@ -7,7 +7,7 @@ import {
   Organizations,
 } from '../../db.d.ts'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   IdSelection,
   Maybe,
   RenderedDoctorReview,
@@ -241,7 +241,7 @@ export function requestsOfHealthWorker(
 export async function requestMatchingEmployment(
   trx: TrxOrDb,
   patient_id: string,
-  organizations_where_doctor: HealthWorkerEmployment[],
+  organizations_where_doctor: HealthWorkerOrganization[],
 ): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
   const request = await requests(trx)
     .select('doctor_review_requests.organization_id')
@@ -313,7 +313,7 @@ export async function addSelfAsReviewer(
     return { doctor_review: in_progress }
   }
 
-  const organizations_where_doctor = health_worker.employment.filter(
+  const organizations_where_doctor = health_worker.organizations.filter(
     (employment) => !!employment.roles.doctor,
   )
   assertOr403(

@@ -416,7 +416,7 @@ export async function getThread(
 export function participantsQueryForHealthWorker(
   health_worker: EmployedHealthWorker,
 ): ParticipantsQuery {
-  const employee_ids = health_worker.employment.flatMap((e) =>
+  const employee_ids = health_worker.organizations.flatMap((e) =>
     compact([
       e.roles.admin?.employment_id,
       e.roles.doctor?.employment_id,

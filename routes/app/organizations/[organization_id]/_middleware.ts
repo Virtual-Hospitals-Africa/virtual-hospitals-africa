@@ -1,5 +1,5 @@
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   LoggedInHealthWorkerContext,
   RenderedOrganization,
 } from '../../../../types.ts'
@@ -8,8 +8,8 @@ import { assertOr403 } from '../../../../util/assertOr.ts'
 
 export type OrganizationState = {
   organization: RenderedOrganization
-  organization_employment: HealthWorkerEmployment
-  isAdminAtOrganization: boolean
+  organization_employment: HealthWorkerOrganization
+  is_admin_at_organization: boolean
 }
 
 export type OrganizationContext<T = Record<never, never>> =
@@ -21,8 +21,8 @@ export async function handler(
   const { health_worker } = ctx.state
   const { organization_id } = ctx.params
 
-  const organization_employment = health_worker.employment.find((e) =>
-    e.organization.id === organization_id
+  const organization_employment = health_worker.organizations.find((o) =>
+    o.id === organization_id
   )
 
   assertOr403(
@@ -37,6 +37,8 @@ export async function handler(
 
   ctx.state.organization = organization
   ctx.state.organization_employment = organization_employment
-  ctx.state.isAdminAtOrganization = !!organization_employment.roles.admin
+  ctx.state.is_admin_at_organization = organization_employment.roles.some(
+    (role) => role.profession === 'admin',
+  )
   return ctx.next()
 }

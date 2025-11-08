@@ -34,7 +34,7 @@ export const handler = {
   async POST(ctx: OrganizationContext) {
     const req = ctx.req
 
-    assertOr403(ctx.state.isAdminAtOrganization)
+    assertOr403(ctx.state.is_admin_at_organization)
 
     const { invites } = await parseRequestAsserts(
       ctx.state.trx,
@@ -64,7 +64,7 @@ export const handler = {
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   'Invite Employees',
   function InviteEmployeesPage(ctx) {
-    assertOr403(ctx.state.isAdminAtOrganization)
+    assertOr403(ctx.state.is_admin_at_organization)
     return <InviteEmployeesForm />
   },
 )

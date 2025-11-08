@@ -2,6 +2,7 @@ import { Context } from 'fresh'
 import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import * as health_worker_registration_status from '../../db/models/health_worker_registration_status.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as notifications from '../../db/models/notifications.ts'
 import * as sessions from '../../db/models/sessions.ts'
@@ -16,8 +17,8 @@ import db from '../../db/db.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { attachTrx } from '../../shared/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
-
-const SKIP_NURSE_REGISTRATION = true
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { SKIP_NURSE_REGISTRATION } from '../../db/models/health_worker_registration_status.ts'
 
 export default [
   ensureCookiePresent,
@@ -72,6 +73,10 @@ export function getLoggedInHealthWorker(
         is_open: true,
         presence_health_worker_id: health_worker_id_selection,
       }),
+      registration_status: health_worker_registration_status.getByIdOptional(
+        db,
+        health_worker_id_selection,
+      ),
     })
 
     if (
@@ -96,42 +101,33 @@ export function getLoggedInHealthWorker(
 function redirectIfRegistrationNeeded(
   ctx: LoggedInHealthWorkerContext,
 ) {
-  const { health_worker } = ctx.state
-  const role_needing_registration = health_worker.employment.find((e) =>
-    e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
-    e.roles.admin?.registration_needed
+  assertEquals(
+    SKIP_NURSE_REGISTRATION,
+    true,
+    'Expecting registration to be skipped for now',
   )
+  // function redirectIfNotAlreadyOnPage(
+  //   page: string,
+  //   params?: Record<string, string>,
+  // ) {
+  //   const current_url = ctx.url.pathname + ctx.url.search
+  //   const on_page = current_url.startsWith(page)
+  //   return on_page
+  //     ? ctx.next()
+  //     : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
+  // }
 
-  // This is not quite right as this will mean that you can't log in if you're pending approval at one organization, even if you're not
-  // pending approval at another but not at another.
-  // TODO deal with this as part of doctor registration
-  const role_pending_approval = health_worker.employment.find((e) =>
-    e.roles.nurse?.registration_pending_approval ||
-    e.roles.doctor?.registration_pending_approval ||
-    e.roles.admin?.registration_pending_approval
-  )
+  // const { registration_status } = ctx.state
 
-  function redirectIfNotAlreadyOnPage(
-    page: string,
-    params?: Record<string, string>,
-  ) {
-    const current_url = ctx.url.pathname + ctx.url.search
-    const on_page = current_url.startsWith(page)
-    return on_page
-      ? ctx.next()
-      : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
-  }
+  // if (role_needing_registration) {
+  //   return redirectIfNotAlreadyOnPage(
+  //     `/app/organizations/${role_needing_registration.organization.id}/register`,
+  //   )
+  // }
 
-  if (role_needing_registration && !SKIP_NURSE_REGISTRATION) {
-    return redirectIfNotAlreadyOnPage(
-      `/app/organizations/${role_needing_registration.organization.id}/register`,
-    )
-  }
-
-  // TODO make a page for this purpose
-  if (role_pending_approval && !SKIP_NURSE_REGISTRATION) {
-    return redirectIfNotAlreadyOnPage('/app/pending_approval')
-  }
+  // if (role_pending_approval) {
+  //   return redirectIfNotAlreadyOnPage('/app/pending_approval')
+  // }
 
   return ctx.next()
 }

@@ -176,7 +176,7 @@ async function addPatientsToWaitingRoom(
       const health_worker = await health_workers.getEmployed(db, {
         health_worker_id: nurse.id,
       })
-      const organization_employment = health_worker.employment.find((e) =>
+      const organization_employment = health_worker.organizations.find((o) =>
         e.organization.id === rural_clinic_organization_id
       )!
 

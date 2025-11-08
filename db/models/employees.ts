@@ -1,5 +1,5 @@
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   IdSelection,
   RenderedEmployee,
   TrxOrDb,
@@ -31,8 +31,8 @@ export async function getById(
       .executeTakeFirstOrThrow(),
   })
 
-  const employment: HealthWorkerEmployment = exists(
-    health_worker.employment.find((e) => {
+  const employment: HealthWorkerOrganization = exists(
+    health_worker.organizations.find((o) => {
       e.organization.id === organization.id
     }),
   )

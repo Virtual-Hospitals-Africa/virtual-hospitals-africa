@@ -90,9 +90,8 @@ describe(
                     {
                       patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
-                      organization_id: organization_employment.organization.id,
-                      organization_name:
-                        organization_employment.organization.name,
+                      organization_id: organization_employment.id,
+                      organization_name: organization_employment.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -248,9 +247,8 @@ describe(
                       patient_encounter_employee_id:
                         employee.patient_encounter_employee_id,
                       employment_id: organization_employment.non_admin_id!,
-                      organization_id: organization_employment.organization.id,
-                      organization_name:
-                        organization_employment.organization.name,
+                      organization_id: organization_employment.id,
+                      organization_name: organization_employment.name,
                       profession: 'receptionist',
                       health_worker_id: receptionist.id,
                       health_worker_name: receptionist.name,
@@ -305,8 +303,8 @@ describe(
                   patient_encounter_employee_id:
                     employee.patient_encounter_employee_id,
                   employment_id: organization_employment.non_admin_id!,
-                  organization_id: organization_employment.organization.id,
-                  organization_name: organization_employment.organization.name,
+                  organization_id: organization_employment.id,
+                  organization_name: organization_employment.name,
                   profession: 'receptionist',
                   health_worker_id: receptionist.id,
                   health_worker_name: receptionist.name,
