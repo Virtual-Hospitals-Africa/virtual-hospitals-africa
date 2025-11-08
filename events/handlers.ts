@@ -86,7 +86,7 @@ export const EVENTS = {
         const { organization_id } = doctor_review_request.requesting
         if (!organization_id) return
 
-        const doctors_at_organization = await organizations.get_employees(
+        const doctors_at_organization = await organizations.getEmployees(
           trx,
           organization_id,
           {

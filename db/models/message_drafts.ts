@@ -1,6 +1,14 @@
+import { assert } from 'std/assert/assert.ts'
 import { MessagePriority, MessageTargetType } from '../../db.d.ts'
-import { TrxOrDb } from '../../types.ts'
+import {
+  MessageTargetEntities,
+  RenderedMessageDraft,
+  RenderedMessageTarget,
+  TrxOrDb,
+} from '../../types.ts'
+import { pMap } from '../../util/inParallel.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import { QueryResult } from './_base.ts'
 
 export type MessageDraftTarget = {
   target_type: MessageTargetType
@@ -47,22 +55,24 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-export function findById(
+type IntermediateDraftResult = QueryResult<typeof baseQuery>
+type IntermediateTargetResult = IntermediateDraftResult['targets'][number]
+
+export async function findById(
   trx: TrxOrDb,
   { draft_id }: { draft_id: string },
-) {
-  return baseQuery(trx)
+): Promise<null | RenderedMessageDraft> {
+  const draft = await baseQuery(trx)
     .where('message_drafts.id', '=', draft_id)
     .executeTakeFirst()
-}
+  if (!draft) return null
 
-export function findByEmploymentId(
-  trx: TrxOrDb,
-  { employment_id }: { employment_id: string },
-) {
-  return baseQuery(trx)
-    .where('message_drafts.employment_id', '=', employment_id)
-    .execute()
+  const targets = await pMap(
+    draft.targets,
+    async (t): Promise<RenderedMessageTarget> => {
+      t.target_type
+    },
+  )
 }
 
 export async function create(

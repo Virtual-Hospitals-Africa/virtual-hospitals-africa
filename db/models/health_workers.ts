@@ -154,6 +154,7 @@ export function baseQuery(trx: TrxOrDb) {
           .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
+            'employment.specialty',
             'health_worker_organization_calendars.gcal_appointments_calendar_id',
             'health_worker_organization_calendars.gcal_availability_calendar_id',
             'health_worker_organization_calendars.availability_set',

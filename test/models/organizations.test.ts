@@ -18,7 +18,7 @@ import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describe('db/models/organizations.ts', () => {
   afterAll(() => db.destroy())
-  describe('get_employees', () => {
+  describe('getEmployees', () => {
     itUsesTrxAnd(
       'gets the employees of a organization, with or without invitees',
       (trx) =>
@@ -156,7 +156,7 @@ describe('db/models/organizations.ts', () => {
           assertEquals(invited_hw.professions[0].profession, 'doctor')
 
           {
-            const without_invitees = await organizations.get_employees(
+            const without_invitees = await organizations.getEmployees(
               trx,
               organization_ids[0],
             )

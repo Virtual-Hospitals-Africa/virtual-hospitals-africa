@@ -2,7 +2,7 @@ import { IdSelection, TrxOrDb } from '../../types.ts'
 
 export function healthWorkerIdOfEmploymentId(
   trx: TrxOrDb,
-  employment_id: string,
+  employment_id: string | IdSelection,
 ): IdSelection {
   return trx.selectFrom('employment as health_worker_employment')
     .where('health_worker_employment.id', '=', employment_id)

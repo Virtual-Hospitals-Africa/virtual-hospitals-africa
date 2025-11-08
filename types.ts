@@ -1509,24 +1509,28 @@ export type HealthWorkerEmployment = {
       registration_completed: boolean
       registration_pending_approval: boolean
       employment_id: string
+      specialty: string | null
     }
     doctor: null | {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
       employment_id: string
+      specialty: string | null
     }
     admin: null | {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
       employment_id: string
+      specialty: string | null
     }
     receptionist: null | {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
       employment_id: string
+      specialty: string | null
     }
   }
   departments: {
@@ -3250,10 +3254,15 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   last_message_read_by_everyone_else_id?: string
 }
 
+export type HealthWorkerDisplay = {
+  display_name: string
+  description: string
+}
+
 export type RenderedEmployee = {
   health_worker: EmployedHealthWorker
-  organization_id: string
   employment: HealthWorkerEmployment
+  display: HealthWorkerDisplay
 }
 
 export type MessageTargetEntities = {
@@ -3280,7 +3289,7 @@ export type RenderedMessageTarget =
 
 export type RenderedMessageDraftConcerning = {
   id: string
-  table_name: 'organizations' | 'employment' | 'profession' | 'region'
+  table_name: 'patient' | 'patient_record'
   target_uuid?: string | null
   target_value?: unknown | null
   display_name?: string

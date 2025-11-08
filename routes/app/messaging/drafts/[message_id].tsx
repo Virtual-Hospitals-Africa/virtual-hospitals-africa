@@ -1,15 +1,32 @@
-import { z } from 'zod'
+import { z, ZodObject, ZodTypeAny } from 'zod'
 import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import * as message_drafts from '../../../../db/models/message_drafts.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { postHandler } from '../../../../util/postHandler.ts'
 import MessageDraft from '../../../../components/messaging/Draft.tsx'
 import { HealthWorkerHomePageLayout } from '../../../app/_middleware.tsx'
+import { MessageTargetType } from '../../../../db.d.ts'
+
+const MessageTargetSchema = z.record(z.string(), z.literal(true)).optional()
 
 const MessageDraftSchema = z.object({
-  body: z.string().default(''),
-  priority: z.string().nullable().optional(),
-  concerning: z.boolean().default(false),
+  body: z.string(),
+  priority: z.enum([
+    'Non-urgent',
+    'Urgent',
+    'Very urgent',
+    'Emergency',
+  ]),
+  targets: z.object({
+    employment: MessageTargetSchema,
+    organization: MessageTargetSchema,
+    profession: MessageTargetSchema,
+    region: MessageTargetSchema,
+  }) satisfies ZodObject<
+    {
+      [t in MessageTargetType]: ZodTypeAny
+    }
+  >,
 })
 
 export const handler = postHandler(

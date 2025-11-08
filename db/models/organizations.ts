@@ -380,7 +380,7 @@ export async function getApprovedDoctorsWithoutAction(
   })
 }
 
-export function get_employees(
+export function getEmployees(
   trx: TrxOrDb,
   organization_id: string,
   opts: EmployeeQueryOpts = {},
@@ -395,7 +395,7 @@ export async function getApprovedProviders(
   organization_id: string,
   opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions'> = {},
 ): Promise<OrganizationDoctorOrNurse[]> {
-  const employees = await get_employees(trx, organization_id, {
+  const employees = await getEmployees(trx, organization_id, {
     ...opts,
     professions: ['doctor', 'nurse'],
     is_approved: true,

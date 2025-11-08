@@ -9,11 +9,11 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
   ) {
     const { health_worker, organization, isAdminAtOrganization } = ctx.state
 
-    const get_employees = isAdminAtOrganization
+    const getEmployees = isAdminAtOrganization
       ? organizations.getEmployeesAndInvitees
-      : organizations.get_employees
+      : organizations.getEmployees
 
-    const employees = await get_employees(
+    const employees = await getEmployees(
       ctx.state.trx,
       organization.id,
     )
