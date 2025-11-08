@@ -11,11 +11,8 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import * as organizations from './organizations.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 import pick from '../../util/pick.ts'
-import { groupBy } from '../../util/groupBy.ts'
-import { assertDepartmentName } from '../../shared/departments.ts'
-import { assertAll } from '../../util/assertAll.ts'
 import { HealthWorkers, Profession } from '../../db.d.ts'
 import { asNames, NameInputs } from './asNames.ts'
 import { base } from './_base.ts'

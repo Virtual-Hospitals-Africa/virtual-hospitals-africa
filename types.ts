@@ -3254,7 +3254,7 @@ export type HealthWorkerDisplay = {
 
 export type RenderedEmployee = {
   health_worker: EmployedHealthWorker
-  employment: HealthWorkerEmployment
+  organization_employment: HealthWorkerOrganization
   display: HealthWorkerDisplay
 }
 

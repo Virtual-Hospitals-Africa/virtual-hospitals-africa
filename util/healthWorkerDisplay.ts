@@ -3,10 +3,9 @@ import { Profession } from '../db.d.ts'
 import {
   AppUser,
   HealthWorkerDisplay,
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   Maybe,
 } from '../types.ts'
-import entries from './entries.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
@@ -17,35 +16,35 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 */
 export default function healthWorkerDisplay(
   health_worker_name: string,
-  employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ): HealthWorkerDisplay {
   let is_doctor = false
   let is_admin = false
   let provider_profession: Profession | undefined
   let specialty: Maybe<string>
 
-  for (const [profession, role] of entries(employment.roles)) {
+  for (const role of organization_employment.roles) {
     if (!role) continue
-    switch (profession) {
+    switch (role.profession) {
       case 'receptionist': {
         assert(!specialty)
         assert(!role.specialty)
         assert(!provider_profession)
-        provider_profession = profession
+        provider_profession = role.profession
         break
       }
       case 'doctor': {
         is_doctor = true
         assert(!specialty)
         assert(!provider_profession)
-        provider_profession = profession
+        provider_profession = role.profession
         specialty = role.specialty
         break
       }
       case 'nurse': {
         assert(!specialty)
         assert(!provider_profession)
-        provider_profession = profession
+        provider_profession = role.profession
         specialty = role.specialty
         break
       }
@@ -55,7 +54,7 @@ export default function healthWorkerDisplay(
         break
       }
       default: {
-        throw new Error(`Unrecognized profession ${profession}`)
+        throw new Error(`Unrecognized profession ${String(role.profession)}`)
       }
     }
   }
