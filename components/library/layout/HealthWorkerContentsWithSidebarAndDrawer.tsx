@@ -23,7 +23,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
     <div className='max-w-screen flex flex-col'>
       {sidebar}
       <div className='flex flex-row min-h-screen grow'>
-        <section className='flex flex-row flex-1 md:pl-48'>
+        <section className='flex flex-col flex-1 md:pl-48'>
           <Header
             title={title}
             variant='home page'

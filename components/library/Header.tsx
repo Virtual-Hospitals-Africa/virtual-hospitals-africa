@@ -18,11 +18,9 @@ function HeaderLeft(
   { title }: { title: string },
 ) {
   return (
-    <div className='flex items-center gap-2'>
-      <h1 className="text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10">
-        {title}
-      </h1>
-    </div>
+    <h1 className="text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10">
+      {title}
+    </h1>
   )
 }
 
@@ -62,15 +60,13 @@ function HeaderBase(
 ) {
   return (
     <nav
-      className='self-stretch inline-flex justify-start items-center gap-2.5 pl-6'
+      className="self-stretch justify-between items-center gap-2.5 pl-6 text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10 flex flex-row w-full grow"
       style={{
         height: HEADER_HEIGHT_PX,
+        maxHeight: HEADER_HEIGHT_PX,
       }}
     >
-      {/* <div className='relative flex items-center justify-between h-16'> */}
-      <div className="justify-start text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10 flex flex-row">
-        {children}
-      </div>
+      {children}
     </nav>
   )
 }
