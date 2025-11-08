@@ -1497,68 +1497,61 @@ export type RenderedDoctorReviewRequestOfSpecificDoctor =
     employment_id: string
   }
 
-export type HealthWorkerEmployment = {
-  organization: {
-    id: string
-    name: string
-    address: string | null
-  }
-  roles: {
-    nurse: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-      specialty: string | null
-    }
-    doctor: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-      specialty: string | null
-    }
-    admin: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-      specialty: string | null
-    }
-    receptionist: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-      specialty: string | null
-    }
-  }
+export type HealthWorkerEmploymentRole = {
+  employment_id: string
+  profession: Profession
+  specialty: string | null
   departments: {
     id: string
-    name: Department
+    name: string
   }[]
-  provider_id: string | null
-  non_admin_id: string | null
-  gcal_appointments_calendar_id: string | null
-  gcal_availability_calendar_id: string | null
-  availability_set: SqlBool | null
 }
+
+// export type HealthWorkerEmployment = {
+//   organization: RenderedOrganization
+//   roles:
+//     & {
+//       [p in Profession]: null | HealthWorkerEmploymentRole
+//     }
+//     & {
+//       provider:
+//         | null
+//         | (HealthWorkerEmploymentRole & {
+//           profession: 'doctor' | 'nurse'
+//         })
+//     }
+//     & {
+//       non_admin:
+//         | null
+//         | (HealthWorkerEmploymentRole & {
+//           profession: 'doctor' | 'nurse' | 'receptionist'
+//         })
+//     }
+
+//   departments: {
+//     id: string
+//     name: Department
+//   }[]
+// }
+
+export type HealthWorkerOrganization = RenderedOrganization & {
+  roles: HealthWorkerEmploymentRole[]
+}
+
+// registration_needed: boolean
+// registration_completed: boolean
+// registration_pending_approval: boolean
+// gcal_appointments_calendar_id: string | null
+// gcal_availability_calendar_id: string | null
+// availability_set: SqlBool | null
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
-  employment: HealthWorkerEmployment[]
   id: string
-  default_organization_id: string | null
+  organizations: HealthWorkerOrganization[]
 }
 
-// present_encounter: RenderedPatientOpenEncounter | null
-//   reviews: {
-//     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
-//     in_progress: RenderedDoctorReview[]
-//   }
-
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
-  default_organization_id: string
-  employment: NonEmptyArray<HealthWorkerEmployment>
+  organizations: NonEmptyArray<HealthWorkerOrganization>
 }
 
 export type HealthWorkerWithGoogleTokens =

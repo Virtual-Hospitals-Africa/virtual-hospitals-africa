@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { UpdateResult } from 'kysely'
 import {
   EmployedHealthWorker,
@@ -9,8 +10,8 @@ import {
   PossiblyEmployedHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
+import * as organizations from './organizations.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
-import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { assertDepartmentName } from '../../shared/departments.ts'
@@ -97,21 +98,64 @@ export function isEmployed(
   health_worker: unknown,
 ): health_worker is EmployedHealthWorker {
   return isHealthWorker(health_worker) &&
-    'employment' in health_worker &&
-    Array.isArray(health_worker.employment) &&
-    !!health_worker.employment.length &&
-    'default_organization_id' in health_worker &&
-    typeof health_worker.default_organization_id === 'string'
+    'organizations' in health_worker &&
+    Array.isArray(health_worker.organizations) &&
+    !!health_worker.organizations.length
 }
+
+// .leftJoin(
+//   'nurse_registration_details',
+//   'health_workers.id',
+//   'nurse_registration_details.health_worker_id',
+// )
+// eb('nurse_registration_details.health_worker_id', 'is', null).as(
+//   'registration_needed',
+// ),
+// .leftJoin(
+//   'health_worker_organization_calendars',
+//   (join) =>
+//     join
+//       .onRef(
+//         'employment.organization_id',
+//         '=',
+//         'health_worker_organization_calendars.organization_id',
+//       )
+//       .onRef(
+//         'employment.health_worker_id',
+//         '=',
+//         'health_worker_organization_calendars.health_worker_id',
+//       ),
+// )
+// 'health_worker_organization_calendars.gcal_appointments_calendar_id',
+// 'health_worker_organization_calendars.gcal_availability_calendar_id',
+// 'health_worker_organization_calendars.availability_set',
+// .innerJoin(
+//   'organizations',
+//   'employment.organization_id',
+//   'organizations.id',
+// )
+// .leftJoin(
+//   'addresses as organization_address',
+//   'organizations.address_id',
+//   'organization_address.id',
+// )
+// .select((eb_employment) => [
+//   'employment.id as employment_id',
+//   'employment.profession',
+//   'employment.specialty',
+//   jsonBuildObject({
+//     id: eb_employment.ref('employment.organization_id'),
+//     name: eb_employment.ref('organizations.name'),
+//     address: eb_employment.ref('organization_address.formatted'),
+//   }).as('organization'),
+
+// ])
+
+//   .selectFrom
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('health_workers')
-    .leftJoin(
-      'nurse_registration_details',
-      'health_workers.id',
-      'nurse_registration_details.health_worker_id',
-    )
     .select((eb) => [
       'health_workers.id',
       'health_workers.name',
@@ -120,73 +164,57 @@ export function baseQuery(trx: TrxOrDb) {
       'health_workers.preferred_name',
       'health_workers.email',
       'health_workers.avatar_url',
-      eb('nurse_registration_details.health_worker_id', 'is', null).as(
-        'registration_needed',
-      ),
-      'nurse_registration_details.approved_by',
       jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'organizations',
-            'employment.organization_id',
+        organizations.baseQuery(trx)
+          .where(
             'organizations.id',
-          )
-          .leftJoin(
-            'addresses as organization_address',
-            'organizations.address_id',
-            'organization_address.id',
-          )
-          .leftJoin(
-            'health_worker_organization_calendars',
-            (join) =>
-              join
-                .onRef(
-                  'employment.organization_id',
-                  '=',
-                  'health_worker_organization_calendars.organization_id',
-                )
-                .onRef(
+            'in',
+            eb.selectFrom('employment')
+              .whereRef(
+                'employment.health_worker_id',
+                '=',
+                'health_workers.id',
+              )
+              .select('employment.organization_id')
+              .distinct(),
+          ).select((eb_organization) => [
+            jsonArrayFrom(
+              eb_organization.selectFrom('employment')
+                .where(
                   'employment.health_worker_id',
                   '=',
-                  'health_worker_organization_calendars.health_worker_id',
-                ),
-          )
-          .select((eb_employment) => [
-            'employment.id as employment_id',
-            'employment.profession',
-            'employment.specialty',
-            'health_worker_organization_calendars.gcal_appointments_calendar_id',
-            'health_worker_organization_calendars.gcal_availability_calendar_id',
-            'health_worker_organization_calendars.availability_set',
-            jsonBuildObject({
-              id: eb_employment.ref('employment.organization_id'),
-              name: eb_employment.ref('organizations.name'),
-              address: eb_employment.ref('organization_address.formatted'),
-            }).as('organization'),
-            jsonArrayFrom(
-              eb_employment.selectFrom('department_employment')
-                .innerJoin(
-                  'organization_departments',
-                  'organization_departments.id',
-                  'department_employment.department_id',
+                  eb.ref('health_workers.id'),
                 )
                 .whereRef(
-                  'department_employment.employment_id',
+                  'employment.organization_id',
                   '=',
-                  'employment.id',
+                  'organizations.id',
                 )
-                .select([
-                  'organization_departments.id',
-                  'organization_departments.name',
+                .select((eb_employment) => [
+                  'employment.id as employment_id',
+                  'profession',
+                  'specialty',
+                  jsonArrayFrom(
+                    eb_employment.selectFrom('department_employment')
+                      .innerJoin(
+                        'organization_departments',
+                        'organization_departments.id',
+                        'department_employment.department_id',
+                      )
+                      .whereRef(
+                        'department_employment.employment_id',
+                        '=',
+                        'employment.id',
+                      )
+                      .select([
+                        'organization_departments.id',
+                        'organization_departments.name',
+                      ]),
+                  ).as('departments'),
                 ]),
-            ).as('departments'),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          ),
-      ).as('employment'),
+            ).as('roles'),
+          ]),
+      ).as('organizations'),
     ])
 }
 
@@ -200,95 +228,7 @@ export type HealthWorkerSearch = {
 const model = base({
   top_level_table: 'health_workers',
   baseQuery,
-  formatResult: (
-    {
-      registration_needed,
-      approved_by,
-      ...health_worker
-    },
-  ): PossiblyEmployedHealthWorker => {
-    const employment_by_organization = groupBy(
-      health_worker.employment,
-      (e) => e.organization.id,
-    )
-    const employment = [...employment_by_organization.values()].map(
-      (roles) => {
-        const nurse_role = roles.find((r) => r.profession === 'nurse') || null
-        const doctor_role = roles.find((r) => r.profession === 'doctor') || null
-        const admin_role = roles.find((r) => r.profession === 'admin') || null
-        const receptionist_role = roles.find((r) =>
-          r.profession === 'receptionist'
-        ) || null
-        assert(nurse_role || doctor_role || admin_role || receptionist_role)
-        if (nurse_role) {
-          assert(!doctor_role)
-          assert(!receptionist_role)
-        }
-        if (doctor_role) {
-          assert(!nurse_role)
-          assert(!receptionist_role)
-        }
-        if (receptionist_role) {
-          assert(!doctor_role)
-          assert(!nurse_role)
-        }
-
-        const provider_id = nurse_role?.employment_id ||
-          doctor_role?.employment_id || null
-
-        const {
-          organization,
-          gcal_appointments_calendar_id,
-          gcal_availability_calendar_id,
-          availability_set,
-          departments,
-        } = roles[0]
-        assertAll(departments, assertDepartmentName)
-
-        return {
-          organization,
-          gcal_appointments_calendar_id,
-          gcal_availability_calendar_id,
-          availability_set,
-          departments,
-          provider_id,
-          non_admin_id: provider_id || receptionist_role?.employment_id || null,
-          roles: {
-            nurse: nurse_role && {
-              registration_needed: !!registration_needed,
-              registration_completed: !!approved_by,
-              registration_pending_approval: !approved_by,
-              employment_id: nurse_role.employment_id,
-            },
-            doctor: doctor_role && {
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-              employment_id: doctor_role.employment_id,
-            },
-            admin: admin_role && {
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-              employment_id: admin_role.employment_id,
-            },
-            receptionist: receptionist_role && {
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-              employment_id: receptionist_role.employment_id,
-            },
-          },
-        }
-      },
-    )
-
-    return {
-      ...health_worker,
-      employment,
-      default_organization_id: employment[0]?.organization.id ?? null,
-    }
-  },
+  formatResult: (x): PossiblyEmployedHealthWorker => x,
   handleSearch(
     qb,
     opts: HealthWorkerSearch,
