@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import {
   HealthWorkerEmployment,
+  IdSelection,
   InsertShape,
   isPriority,
   Maybe,
@@ -46,7 +47,6 @@ import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assertAll } from '../../util/assertAll.ts'
-import { HealthWorkerIdSelection } from './health_worker_id.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -363,12 +363,6 @@ export function baseQuery(trx: TrxOrDb) {
                       '=',
                       'patient_presence.id',
                     ).select('employment_presence.id'),
-                  // (join) =>
-                  //   join.on(
-                  //     'employment_presence.with_patient_id',
-                  //     '=',
-                  //     eb_patient_presence.ref('patient_presence.id'),
-                  //   ),
                 ),
             ).as('employees'),
           ])
@@ -579,8 +573,7 @@ type EncounterSearch = {
   organization_id?: string
   patient_id?: string
   // ever_seen_health_worker_id?: string
-  presence_health_worker_id?: string | HealthWorkerIdSelection
-  ids?: string[]
+  presence_health_worker_id?: string | IdSelection
 }
 
 const model = base({
@@ -614,9 +607,6 @@ const model = base({
     qb,
     opts: EncounterSearch,
   ) {
-    if (opts.ids) {
-      qb = qb.where('patient_encounters.id', 'in', opts.ids)
-    }
     if (opts.is_open) {
       assert(!opts.is_closed)
       qb = qb.where('patient_encounters.closed_at', 'is', null)
@@ -655,11 +645,13 @@ const model = base({
         opts.presence_health_worker_id,
       )
     }
+
     return qb
   },
 })
 
 export const getById = model.getById
+export const getByIds = model.getByIds
 export const search = model.search
 export const findAll = model.findAll
 export const findOne = model.findOne

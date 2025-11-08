@@ -1,0 +1,7 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+We use preact & signals. Prefer stateless implementations where possible, but if state is truly needed, useSignal.

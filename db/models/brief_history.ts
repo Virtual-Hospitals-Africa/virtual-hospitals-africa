@@ -178,9 +178,7 @@ export async function renderedPositiveFindings(
 
   const other_encounters: RenderedPatientEncounter[] =
     other_encounter_ids.length
-      ? await patient_encounters.findAll(trx, {
-        ids: other_encounter_ids,
-      })
+      ? await patient_encounters.getByIds(trx, other_encounter_ids)
       : []
 
   const encounters = [encounter, ...other_encounters]

@@ -413,11 +413,11 @@ const conversationStates: ConversationStates<
           await makeAppointmentChatbot(
             trx,
             patientState,
-            function insert_event(health_worker, calendar_id, event) {
+            function insertEvent(health_worker, calendar_id, event) {
               const health_worker_google_client = new GoogleClient(
                 health_worker,
               )
-              return health_worker_google_client.insert_event(
+              return health_worker_google_client.insertEvent(
                 calendar_id,
                 event,
               )

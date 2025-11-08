@@ -68,11 +68,6 @@ describe('db/models/doctor_reviews.ts', () => {
             ).execute()
             assertEquals(requests.length, 1)
 
-            const employed_doctor = await health_workers.getEmployed(trx, {
-              health_worker_id: doctor.id,
-            })
-            assertEquals(employed_doctor.reviews.requested.length, 1)
-
             await doctor_reviews.addSelfAsReviewer(trx, {
               patient_id: patient.id,
               health_worker: await health_workers.getEmployed(trx, {

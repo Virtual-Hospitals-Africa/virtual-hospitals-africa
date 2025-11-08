@@ -21,9 +21,9 @@ import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  let insert_event: Stub
+  let insertEvent: Stub
   afterEach(() => {
-    if (insert_event) insert_event.restore()
+    if (insertEvent) insertEvent.restore()
   })
 
   it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
@@ -80,9 +80,9 @@ describe('patient chatbot', () => {
 
     const whatsapp = mockWhatsApp()
 
-    insert_event = stub(
+    insertEvent = stub(
       google.GoogleClient.prototype,
-      'insert_event',
+      'insertEvent',
       () => Promise.resolve({ id: 'insertEvent_id' } as GCalEvent),
     )
 

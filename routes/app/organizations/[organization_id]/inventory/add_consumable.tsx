@@ -1,5 +1,4 @@
-import { Context } from 'fresh'
-import { LoggedInHealthWorker } from '../../../../../types.ts'
+import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -71,7 +70,7 @@ export const handler = {
 export default HealthWorkerHomePageLayout(
   'Add Consumable',
   async function ConsumableAdd(
-    { url, state }: Context<LoggedInHealthWorker>,
+    { url, state }: LoggedInHealthWorkerContext,
   ) {
     const consumable_id = url.searchParams.get(
       'consumable_id',

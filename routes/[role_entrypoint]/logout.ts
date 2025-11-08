@@ -23,9 +23,7 @@ export const handler = {
 
     const session_id = cookie.get(req)
     if (session_id) {
-      await sessions.remove(db, role, {
-        session_id,
-      })
+      await sessions.remove(db, role, session_id)
     }
     const response = redirect('/')
     deleteCookie(response.headers, cookie.session_key)

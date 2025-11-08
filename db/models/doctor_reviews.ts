@@ -8,6 +8,7 @@ import {
 } from '../../db.d.ts'
 import {
   HealthWorkerEmployment,
+  IdSelection,
   Maybe,
   RenderedDoctorReview,
   RenderedDoctorReviewRequest,
@@ -25,7 +26,6 @@ import { assert } from 'std/assert/assert.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
-import { HealthWorkerIdSelection } from './health_worker_id.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
 
 export const view_href_sql = sql<string>`
@@ -62,7 +62,7 @@ export function getCardQuery(
 
 export function ofHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string | HealthWorkerIdSelection,
+  health_worker_id: string | IdSelection,
 ) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
@@ -222,7 +222,7 @@ export function requestById(
 
 export function requestsOfHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string | HealthWorkerIdSelection,
+  health_worker_id: string | IdSelection,
 ) {
   return requests(trx)
     .innerJoin(
@@ -305,9 +305,10 @@ export async function addSelfAsReviewer(
 ): Promise<{
   doctor_review: RenderedDoctorReview
 }> {
-  const in_progress = health_worker.reviews.in_progress.find((review) =>
-    review.patient.id === patient_id
-  )
+  const in_progress = await ofHealthWorker(trx, health_worker.id)
+    .where('patient_encounters.patient_id', '=', patient_id)
+    .executeTakeFirst()
+
   if (in_progress) {
     return { doctor_review: in_progress }
   }
@@ -320,15 +321,11 @@ export async function addSelfAsReviewer(
     'Only doctors can review patient encounters',
   )
 
-  const requested =
-    health_worker.reviews.requested.find((review) =>
-      review.patient.id === patient_id
-    ) ||
-    await requestMatchingEmployment(
-      trx,
-      patient_id,
-      organizations_where_doctor,
-    )
+  const requested = await requestMatchingEmployment(
+    trx,
+    patient_id,
+    organizations_where_doctor,
+  )
 
   assertOr403(
     requested,
@@ -346,10 +343,6 @@ export async function addSelfAsReviewer(
     steps_completed: [],
     completed: false,
   }
-  health_worker.reviews.in_progress.push(started_review)
-  health_worker.reviews.requested = health_worker.reviews.requested.filter(
-    (review) => review !== requested,
-  )
 
   return { doctor_review: started_review }
 }

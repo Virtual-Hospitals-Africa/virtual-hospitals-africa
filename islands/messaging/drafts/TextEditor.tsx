@@ -25,6 +25,7 @@ export default function TextEditor({ name, initial_value }: TextEditorProps) {
         ? (
           <div
             class='min-h-[200px] p-3 border border-gray-300 rounded-md bg-gray-50 prose prose-sm max-w-none'
+            // deno-lint-ignore react-no-danger
             dangerouslySetInnerHTML={{ __html: markdownToHtml(value) }}
           />
         )

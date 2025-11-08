@@ -1,5 +1,7 @@
-import { Context } from 'fresh'
-import { LoggedInHealthWorker, RenderedDevice } from '../../../../../types.ts'
+import {
+  LoggedInHealthWorkerContext,
+  RenderedDevice,
+} from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -52,7 +54,7 @@ export const handler = {
 export default HealthWorkerHomePageLayout(
   'Add Device',
   async function DeviceAdd(
-    { url, state }: Context<LoggedInHealthWorker>,
+    { url, state }: LoggedInHealthWorkerContext,
   ) {
     let device: RenderedDevice | null = null
     const device_id = url.searchParams.get(

@@ -2,7 +2,6 @@ import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
@@ -14,6 +13,7 @@ import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
+import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
 
 describe('/login', () => {
   before(waitUntilTestServerUp)

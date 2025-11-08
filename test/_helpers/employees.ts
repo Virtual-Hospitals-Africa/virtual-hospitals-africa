@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio'
 import { HealthWorkerWithGoogleTokens, Names, TrxOrDb } from '../../types.ts'
 import * as sessions from '../../db/models/sessions.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -13,6 +12,7 @@ import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
+import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -115,7 +115,7 @@ export async function addTestEmployee(
   )
 
   if (profession === 'nurse' && registration_status !== 'not started') {
-    const admin = await health_workers.upsertWithGoogleCredentials(
+    const admin = await upsertWithGoogleCredentials(
       trx,
       testHealthWorker(),
     )

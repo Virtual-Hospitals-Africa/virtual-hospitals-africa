@@ -1,10 +1,10 @@
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
-import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { getEmployeeInfo } from '../../../../../db/models/employee_info.ts'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
@@ -13,7 +13,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
     const { trx, organization, isAdminAtOrganization } = ctx.state
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const employee = await health_workers.getEmployeeInfo(
+    const employee = await getEmployeeInfo(
       trx,
       {
         health_worker_id,

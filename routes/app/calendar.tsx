@@ -17,7 +17,8 @@ export default HealthWorkerHomePageLayout(
   async function Calendar(
     ctx: LoggedInHealthWorkerContext,
   ) {
-    const google_client = HealthWorkerGoogleClient.fromCtx(ctx)
+    const google_client = await HealthWorkerGoogleClient
+      .fromHealthWorkerContext(ctx)
 
     const today = todayISOInJohannesburg()
     // if there's no day in the query, use today in Johannesburg

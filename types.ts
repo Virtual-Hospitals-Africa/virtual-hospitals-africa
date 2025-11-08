@@ -1,6 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import { Context } from 'fresh'
-import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
+import {
+  ColumnType,
+  Generated,
+  RawBuilder,
+  SelectQueryBuilder,
+  SqlBool,
+  Transaction,
+} from 'kysely'
 import { JSX } from 'preact'
 import {
   AgeUnit,
@@ -9,6 +16,7 @@ import {
   EncounterReason,
   FamilyType,
   MaritalStatus,
+  MessagePriority,
   PatientCohabitation,
   Workflow,
 } from './db.d.ts'
@@ -107,7 +115,7 @@ export type UpdateShape<T> = OptionalMaybeFields<
   }
 >
 
-// type OrRawBuilder =
+export type IdSelection = SelectQueryBuilder<DB, any, { id: string }>
 
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -1533,21 +1541,20 @@ export type HealthWorkerEmployment = {
 }
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
-  id: string
-  access_token: string
-  refresh_token: string
-  expires_at: Date | string
   employment: HealthWorkerEmployment[]
+  id: string
   default_organization_id: string | null
-  present_encounter: RenderedPatientOpenEncounter | null
-  reviews: {
-    requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
-    in_progress: RenderedDoctorReview[]
-  }
 }
+
+// present_encounter: RenderedPatientOpenEncounter | null
+//   reviews: {
+//     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
+//     in_progress: RenderedDoctorReview[]
+//   }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
   default_organization_id: string
+  employment: NonEmptyArray<HealthWorkerEmployment>
 }
 
 export type HealthWorkerWithGoogleTokens =
@@ -1788,8 +1795,8 @@ export type WhatsAppSendableButtons = {
 }
 
 export type LoggedInHealthWorker = {
-  trx: TrxOrDb
   health_worker: EmployedHealthWorker
+  present_encounter: RenderedPatientOpenEncounter | null
 }
 
 export type LoggedInRegulator = {
@@ -1798,7 +1805,7 @@ export type LoggedInRegulator = {
 }
 
 export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
-  LoggedInHealthWorker & T
+  LoggedInHealthWorker & { trx: TrxOrDb } & T
 >
 
 export class Foo<Ctx extends LoggedInHealthWorkerContext<any>> {
@@ -3243,7 +3250,35 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   last_message_read_by_everyone_else_id?: string
 }
 
-export type RenderedMessageDraftTarget = {
+export type RenderedEmployee = {
+  health_worker: EmployedHealthWorker
+  organization_id: string
+  employment: HealthWorkerEmployment
+}
+
+export type MessageTargetEntities = {
+  organization: RenderedOrganization
+  employment: RenderedEmployee
+  profession: Profession
+  region: string
+}
+
+export type RenderedMessageTargets = {
+  [TargetType in keyof MessageTargetEntities]:
+    & {
+      id: string
+      display_name: string
+      target_type: TargetType
+    }
+    & {
+      [K in TargetType]: MessageTargetEntities[K]
+    }
+}
+
+export type RenderedMessageTarget =
+  RenderedMessageTargets[keyof RenderedMessageTargets]
+
+export type RenderedMessageDraftConcerning = {
   id: string
   table_name: 'organizations' | 'employment' | 'profession' | 'region'
   target_uuid?: string | null
@@ -3255,9 +3290,8 @@ export type RenderedMessageDraft = {
   id: string
   employment_id: string
   body: string
-  priority: string | null
-  concerning: boolean
-  targets: RenderedMessageDraftTarget[]
+  priority: MessagePriority
+  targets: RenderedMessageTarget[]
   created_at: Date
   updated_at: Date
 }

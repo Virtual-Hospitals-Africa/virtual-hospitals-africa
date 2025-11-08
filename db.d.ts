@@ -97,9 +97,17 @@ export type MaritalStatus =
   | 'Single'
   | 'Widowed'
 
-export type MessageDraftTargetTable =
+export type MessageConcerningType = 'patient' | 'patient_record'
+
+export type MessagePriority =
+  | 'Emergency'
+  | 'Non-urgent'
+  | 'Urgent'
+  | 'Very urgent'
+
+export type MessageTargetType =
   | 'employment'
-  | 'organizations'
+  | 'organization'
   | 'profession'
   | 'region'
 
@@ -736,13 +744,21 @@ export interface Medications {
   updated_at: Generated<Timestamp>
 }
 
+export interface MessageDraftConcerning {
+  concerning_type: MessageConcerningType
+  concerning_uuid: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  message_draft_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface MessageDrafts {
-  body: Generated<string>
-  concerning: Generated<boolean>
+  body: string
   created_at: Generated<Timestamp>
   employment_id: string
   id: Generated<string>
-  priority: string | null
+  priority: MessagePriority
   updated_at: Generated<Timestamp>
 }
 
@@ -750,7 +766,7 @@ export interface MessageDraftTargets {
   created_at: Generated<Timestamp>
   id: Generated<string>
   message_draft_id: string
-  table_name: MessageDraftTargetTable
+  target_type: MessageTargetType
   target_uuid: string | null
   target_value: Json | null
   updated_at: Generated<Timestamp>
@@ -1195,7 +1211,6 @@ export interface Patients {
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
-  first_language: string | null
   first_names: string | null
   gender: string | null
   id: Generated<string>
@@ -1771,6 +1786,7 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medications: Medications
+  message_draft_concerning: MessageDraftConcerning
   message_draft_targets: MessageDraftTargets
   message_drafts: MessageDrafts
   message_reads: MessageReads

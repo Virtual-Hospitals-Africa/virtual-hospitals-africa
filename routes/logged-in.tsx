@@ -3,7 +3,6 @@ import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
-import * as health_workers from '../db/models/health_workers.ts'
 import * as sessions from '../db/models/sessions.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
@@ -27,6 +26,11 @@ import { promiseProps } from '../util/promiseProps.ts'
 import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
 import { asNames } from '../db/models/asNames.ts'
 import { Handlers } from 'fresh/compat'
+import {
+  pickTokens,
+  updateTokens,
+  upsertWithGoogleCredentials,
+} from '../db/models/health_worker_google_tokens.ts'
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
@@ -69,12 +73,12 @@ export async function initializeHealthWorkerWithInvites(
       organization_ids,
     )
 
-  const health_worker = await health_workers.upsertWithGoogleCredentials(
+  const health_worker = await upsertWithGoogleCredentials(
     trx,
     {
       email: profile.email,
       avatar_url: profile.picture,
-      ...health_workers.pickTokens(google_client.tokens),
+      ...pickTokens(google_client.tokens),
       ...asNames({
         first_names: profile.given_name,
         surname: profile.family_name,
@@ -123,12 +127,12 @@ export async function initializeHealthWorkerWithoutInvites(
       .where('health_workers.email', '=', profile.email)
       .select('employment.id')
       .executeTakeFirst(),
-    health_worker: health_workers.upsertWithGoogleCredentials(
+    health_worker: upsertWithGoogleCredentials(
       trx,
       {
         email: profile.email,
         avatar_url: profile.picture,
-        ...health_workers.pickTokens(google_client.tokens),
+        ...pickTokens(google_client.tokens),
         ...asNames({
           first_names: profile.given_name,
           surname: profile.family_name,
@@ -244,10 +248,10 @@ export const handler: Handlers<Record<string, never>> = {
               profile,
               health_worker_invitees,
             )
-            : health_workers.updateTokens(
+            : updateTokens(
               trx,
               profile.email,
-              health_workers.pickTokens(tokens),
+              pickTokens(tokens),
             )
         )
 
@@ -258,8 +262,6 @@ export const handler: Handlers<Record<string, never>> = {
         })
 
         const response = redirect('/app')
-
-        console.log('awkjejkawejkeaw')
 
         setCookie(response.headers, {
           name: cookie.session_key,

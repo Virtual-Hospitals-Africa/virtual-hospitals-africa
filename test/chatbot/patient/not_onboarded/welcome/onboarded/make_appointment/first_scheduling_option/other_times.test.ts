@@ -33,10 +33,10 @@ describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   beforeEach(resetInTest)
   let getFreeBusy: Stub
-  let insert_event: Stub
+  let insertEvent: Stub
   afterEach(() => {
     if (getFreeBusy) getFreeBusy.restore()
-    if (insert_event) insert_event.restore()
+    if (insertEvent) insertEvent.restore()
   })
 
   it('provides with other_appointment_time after rejecting first_option', async () => {
@@ -148,9 +148,9 @@ describe('patient chatbot', () => {
 
     const whatsapp = mockWhatsApp()
 
-    insert_event = stub(
+    insertEvent = stub(
       google.GoogleClient.prototype,
-      'insert_event',
+      'insertEvent',
       () =>
         Promise.resolve(
           { id: 'insertEvent_id' } as GCalEvent,

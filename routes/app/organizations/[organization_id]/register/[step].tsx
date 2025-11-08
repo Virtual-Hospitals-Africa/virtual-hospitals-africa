@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { HealthWorkerWithGoogleTokens } from '../../../../../types.ts'
+import { PossiblyEmployedHealthWorker } from '../../../../../types.ts'
 import {
   get_nurse_registration_steps,
   getStepFormData,
@@ -99,7 +99,7 @@ export const handler = {
 }
 
 function getRegistrationDetails(
-  health_worker: HealthWorkerWithGoogleTokens,
+  health_worker: PossiblyEmployedHealthWorker,
   {
     face_picture,
     ncz_registration_card,

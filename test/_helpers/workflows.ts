@@ -40,7 +40,6 @@ export async function insertRegistrationWithEmployeeForTest(
   const result = await patient_registration.start(
     trx,
     organization,
-    health_worker,
     organization_employment,
   )
   return {

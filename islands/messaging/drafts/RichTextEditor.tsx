@@ -17,14 +17,14 @@ export default function RichTextEditor(
     initial_value ||
       "I'm concerned because the patient is pregnant. Should they be on this medication?",
   )
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const editorRef = useRef<HTMLDivElement>(null)
+  const textarea_ref = useRef<HTMLTextAreaElement>(null)
+  const editor_ref = useRef<HTMLDivElement>(null)
 
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value)
     // Update the value state after command execution
-    if (editorRef.current) {
-      setValue(editorRef.current.innerHTML)
+    if (editor_ref.current) {
+      setValue(editor_ref.current.innerHTML)
     }
   }
 
@@ -42,7 +42,7 @@ export default function RichTextEditor(
     }
   }
 
-  const toolbarButtons = [
+  const toolbar_buttons = [
     { icon: 'B', title: 'Bold', command: 'bold', className: 'font-bold' },
     { icon: 'I', title: 'Italic', command: 'italic', className: 'italic' },
     {
@@ -66,7 +66,7 @@ export default function RichTextEditor(
     <div class='border border-gray-300 rounded-md overflow-hidden'>
       {/* Hidden textarea to store the actual value for form submission */}
       <textarea
-        ref={textareaRef}
+        ref={textarea_ref}
         name={name}
         value={value}
         class='hidden'
@@ -75,7 +75,7 @@ export default function RichTextEditor(
       {/* Toolbar */}
       <div class='flex items-center gap-1 px-3 py-2 bg-gray-50 border-b border-gray-300'>
         {/* Text formatting buttons */}
-        {toolbarButtons.map((btn, idx) => (
+        {toolbar_buttons.map((btn, idx) => (
           <button
             key={idx}
             type='button'
@@ -144,13 +144,14 @@ export default function RichTextEditor(
 
       {/* Content editable area */}
       <div
-        ref={editorRef}
+        ref={editor_ref}
         contentEditable
         onInput={(e) => {
           const content = (e.target as HTMLDivElement).innerHTML
           setValue(content)
         }}
         class='min-h-[300px] p-4 focus:outline-none prose prose-sm max-w-none'
+        // deno-lint-ignore react-no-danger
         dangerouslySetInnerHTML={{ __html: value }}
       />
     </div>

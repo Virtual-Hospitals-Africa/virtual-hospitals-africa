@@ -16,7 +16,7 @@ describe('scheduling/makeAppointment.ts', () => {
     itUsesTrxAnd(
       "inserts an event on the specified health worker's google calendar, adding that event to the db",
       async (trx) => {
-        const insert_event = spy((_1: GoogleTokens, _2, _3) =>
+        const insertEvent = spy((_1: GoogleTokens, _2, _3) =>
           Promise.resolve({
             id: 'inserted google event id',
           } as GCalEvent)
@@ -36,23 +36,23 @@ describe('scheduling/makeAppointment.ts', () => {
           duration_minutes: 30,
           patient_id: patient.id,
           provider_ids: [health_worker.employee_id],
-        }, insert_event)
+        }, insertEvent)
 
-        assertEquals(insert_event.calls.length, 1)
-        assertEquals(insert_event.calls[0].args.length, 3)
+        assertEquals(insertEvent.calls.length, 1)
+        assertEquals(insertEvent.calls[0].args.length, 3)
         assertEquals(
-          insert_event.calls[0].args[0]!.access_token,
+          insertEvent.calls[0].args[0]!.access_token,
           health_worker.access_token,
         )
         assertEquals(
-          insert_event.calls[0].args[0].refresh_token,
+          insertEvent.calls[0].args[0].refresh_token,
           health_worker.refresh_token,
         )
         assertEquals(
-          insert_event.calls[0].args[1],
+          insertEvent.calls[0].args[1],
           health_worker.calendars!.gcal_appointments_calendar_id,
         )
-        assertEquals(insert_event.calls[0].args[2], {
+        assertEquals(insertEvent.calls[0].args[2], {
           start: {
             dateTime: '2023-10-12T12:30:00+02:00',
           },

@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-
 import {
   DeepPartial,
   GCalCalendarList,
@@ -14,12 +13,13 @@ import {
   LoggedInHealthWorkerContext,
   TrxOrDb,
 } from '../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
 import { formatJohannesburg } from '../util/date.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import memoize from '../util/memoize.ts'
 import selfUrl from '../util/selfUrl.ts'
+import { assertOr401 } from '../util/assertOr.ts'
+import { isHealthWorkerWithGoogleTokens } from '../db/models/health_worker_google_tokens.ts'
 
 const google_apis_url = 'https://www.googleapis.com'
 
@@ -193,7 +193,7 @@ export class GoogleClient {
     return { ...events, items }
   }
 
-  async insert_event(
+  async insertEvent(
     calendarId: string,
     eventDetails: DeepPartial<GCalEvent>,
   ): Promise<GCalEvent> {
@@ -403,17 +403,25 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     },
   ) {
     super(health_worker)
-    if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
-      throw new Error('You must google tokens to use this client')
-    }
+    assert(
+      isHealthWorkerWithGoogleTokens(this.health_worker),
+      'You must have google tokens to use this client',
+    )
   }
 
-  static fromCtx<T>(
+  static async fromHealthWorkerContext<T>(
     ctx: LoggedInHealthWorkerContext<T>,
   ) {
+    const { id } = ctx.state.health_worker
+    const tokens = await google_tokens.getByEntityId(
+      ctx.state.trx,
+      'health_worker',
+      id,
+    )
+    assertOr401(tokens, `No google tokens found for health worker ${id}`)
     return new HealthWorkerGoogleClient(
       ctx.state.trx,
-      ctx.state.health_worker,
+      { id, ...tokens },
     )
   }
 
@@ -531,10 +539,10 @@ export async function refreshTokens(
   }
 }
 
-export function insert_event(
+export function insertEvent(
   tokens: GoogleTokens,
   calendar_id: string,
   event: DeepPartial<GCalEvent>,
 ): Promise<GCalEvent> {
-  return new GoogleClient(tokens).insert_event(calendar_id, event)
+  return new GoogleClient(tokens).insertEvent(calendar_id, event)
 }

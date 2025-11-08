@@ -1,14 +1,10 @@
-import { TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb } from '../../types.ts'
 
 export function healthWorkerIdOfEmploymentId(
   trx: TrxOrDb,
   employment_id: string,
-) {
+): IdSelection {
   return trx.selectFrom('employment as health_worker_employment')
-    .select('health_worker_id')
     .where('health_worker_employment.id', '=', employment_id)
+    .select('health_worker_id as id')
 }
-
-export type HealthWorkerIdSelection = ReturnType<
-  typeof healthWorkerIdOfEmploymentId
->

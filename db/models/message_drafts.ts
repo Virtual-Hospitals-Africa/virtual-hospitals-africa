@@ -1,30 +1,23 @@
+import { MessagePriority, MessageTargetType } from '../../db.d.ts'
 import { TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
-type MessageDraftTargetTableName =
-  | 'organizations'
-  | 'employment'
-  | 'profession'
-  | 'region'
-
 export type MessageDraftTarget = {
-  table_name: MessageDraftTargetTableName
+  target_type: MessageTargetType
   target_uuid?: string
   target_value?: unknown
 }
 
 export type MessageDraftInsert = {
   employment_id: string
-  body?: string
-  priority?: string | null
-  concerning?: boolean
+  body: string
+  priority: MessagePriority
   targets?: MessageDraftTarget[]
 }
 
 export type MessageDraftUpdate = {
   body?: string
-  priority?: string | null
-  concerning?: boolean
+  priority?: MessagePriority
 }
 
 function baseQuery(trx: TrxOrDb) {
@@ -35,7 +28,6 @@ function baseQuery(trx: TrxOrDb) {
       'message_drafts.employment_id',
       'message_drafts.body',
       'message_drafts.priority',
-      'message_drafts.concerning',
       'message_drafts.created_at',
       'message_drafts.updated_at',
       jsonArrayFrom(
@@ -47,7 +39,7 @@ function baseQuery(trx: TrxOrDb) {
           )
           .select([
             'message_draft_targets.id',
-            'message_draft_targets.table_name',
+            'message_draft_targets.target_type',
             'message_draft_targets.target_uuid',
             'message_draft_targets.target_value',
           ]),
@@ -55,7 +47,7 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-export async function findById(
+export function findById(
   trx: TrxOrDb,
   { draft_id }: { draft_id: string },
 ) {
@@ -64,7 +56,7 @@ export async function findById(
     .executeTakeFirst()
 }
 
-export async function findByEmploymentId(
+export function findByEmploymentId(
   trx: TrxOrDb,
   { employment_id }: { employment_id: string },
 ) {
@@ -91,7 +83,7 @@ export async function create(
       .values(
         targets.map((target) => ({
           message_draft_id: draft.id,
-          table_name: target.table_name,
+          target_type: target.target_type,
           target_uuid: target.target_uuid,
           target_value: target.target_value
             ? JSON.stringify(target.target_value)
@@ -134,7 +126,7 @@ export async function updateTargets(
       .values(
         targets.map((target) => ({
           message_draft_id: draft_id,
-          table_name: target.table_name,
+          target_type: target.target_type,
           target_uuid: target.target_uuid,
           target_value: target.target_value
             ? JSON.stringify(target.target_value)
@@ -147,9 +139,9 @@ export async function updateTargets(
   return findById(trx, { draft_id })
 }
 
-export async function deleteDraft(
+export function removeById(
   trx: TrxOrDb,
-  { draft_id }: { draft_id: string },
+  draft_id: string,
 ) {
   return trx
     .deleteFrom('message_drafts')

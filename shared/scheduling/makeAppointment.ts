@@ -69,7 +69,7 @@ type InsertEvent = (
 export async function makeAppointmentChatbot(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
-  insert_event: InsertEvent,
+  insertEvent: InsertEvent,
 ) {
   assert(patientState.chatbot_user.entity_id)
   const scheduling_appointment_request = await schedulingAppointmentRequest(
@@ -93,7 +93,7 @@ export async function makeAppointmentChatbot(
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const inserted_event = await insert_event(
+  const inserted_event = await insertEvent(
     matching_provider,
     matching_provider.gcal_appointments_calendar_id,
     gcal,
@@ -132,7 +132,7 @@ export function assertIsScheduleFormValues(
 export async function makeAppointmentWeb(
   trx: TrxOrDb,
   values: ScheduleFormValues,
-  insert_event: InsertEvent,
+  insertEvent: InsertEvent,
 ): Promise<void> {
   assertEquals(
     values.provider_ids.length,
@@ -153,7 +153,7 @@ export async function makeAppointmentWeb(
     values.provider_ids[0],
   )
 
-  const inserted_event = await insert_event(
+  const inserted_event = await insertEvent(
     matching_provider,
     matching_provider.gcal_appointments_calendar_id,
     gcal({

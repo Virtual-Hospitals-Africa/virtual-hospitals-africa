@@ -1,20 +1,16 @@
-import { defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import { fresh } from '@fresh/plugin-vite'
 import tailwindcss from '@tailwindcss/vite'
 
-let port = 8001
-const PORT = Deno.env.get('PORT')
-if (PORT) {
-  port = parseInt(PORT, 10)
-}
+const PORT = Deno.env.get('PORT') || '8001'
 
 export default defineConfig({
   plugins: [
-    fresh(),
+    fresh() as PluginOption,
     tailwindcss(),
   ],
   server: {
-    port,
+    port: parseInt(PORT, 10),
   },
   clearScreen: false,
 })

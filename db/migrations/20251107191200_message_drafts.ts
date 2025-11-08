@@ -8,7 +8,7 @@ const organization_assertion = assertOnInsert({
   table: 'message_draft_targets',
   function_name: 'assert_organization_exists_for_draft_target',
   assertion: `
-      NEW.table_name != 'organizations' OR
+      NEW.target_type != 'organization' OR
       EXISTS (SELECT 1 FROM organizations WHERE id = NEW.target_uuid)
     `,
   error_message: `'Organization with specified target_uuid does not exist'`,
@@ -18,15 +18,48 @@ const employment_assertion = assertOnInsert({
   table: 'message_draft_targets',
   function_name: 'assert_employment_exists_for_draft_target',
   assertion: `
-      NEW.table_name != 'employment' OR
+      NEW.target_type != 'employment' OR
       EXISTS (SELECT 1 FROM employment WHERE id = NEW.target_uuid)
     `,
   error_message: `'Employment with specified target_uuid does not exist'`,
 })
+
+const patient_assertion = assertOnInsert({
+  table: 'message_draft_targets',
+  function_name: 'assert_patient_exists_for_draft_target',
+  assertion: `
+      NEW.target_type != 'patient' OR
+      EXISTS (SELECT 1 FROM patients WHERE id = NEW.target_uuid)
+    `,
+  error_message: `'Patient with specified target_uuid does not exist'`,
+})
+
+const patient_record_assertion = assertOnInsert({
+  table: 'message_draft_targets',
+  function_name: 'assert_patient_record_exists_for_draft_target',
+  assertion: `
+      NEW.target_type != 'patient_record' OR
+      EXISTS (SELECT 1 FROM patient_records WHERE id = NEW.target_uuid)
+    `,
+  error_message: `'Patient record with specified target_uuid does not exist'`,
+})
+
 export async function up(db: Kysely<DB>) {
-  // Create enum for target_table_name
-  await db.schema.createType('message_draft_target_table')
-    .asEnum(['organizations', 'employment', 'profession', 'region'])
+  await db.schema.createType('message_target_type')
+    .asEnum(['organization', 'employment', 'profession', 'region'])
+    .execute()
+
+  await db.schema.createType('message_concerning_type')
+    .asEnum(['patient', 'patient_record'])
+    .execute()
+
+  await db.schema.createType('message_priority')
+    .asEnum([
+      'Non-urgent',
+      'Urgent',
+      'Very urgent',
+      'Emergency',
+    ])
     .execute()
 
   // Create message_drafts table
@@ -38,14 +71,11 @@ export async function up(db: Kysely<DB>) {
         .addColumn('employment_id', 'uuid', (col) =>
           col.notNull().references('employment.id').onDelete('cascade'))
         .addColumn('body', 'text', (col) =>
-          col.notNull().defaultTo(''))
-        .addColumn('priority', 'text', (col) =>
-          col)
-        .addColumn('concerning', 'boolean', (col) =>
-          col.notNull().defaultTo(false)),
+          col.notNull())
+        .addColumn('priority', sql`message_priority`, (col) =>
+          col.notNull()),
   )
 
-  // Create message_draft_targets table
   await createStandardTable(
     db,
     'message_draft_targets',
@@ -53,32 +83,31 @@ export async function up(db: Kysely<DB>) {
       qb
         .addColumn('message_draft_id', 'uuid', (col) =>
           col.notNull().references('message_drafts.id').onDelete('cascade'))
-        .addColumn('table_name', sql`message_draft_target_table`, (col) =>
+        .addColumn('target_type', sql`message_target_type`, (col) =>
           col.notNull())
-        .addColumn('target_uuid', 'uuid', (col) =>
-          col)
-        .addColumn('target_value', 'jsonb', (col) =>
-          col)
+        .addColumn('target_uuid', 'uuid')
+        .addColumn('target_value', 'json')
         .addCheckConstraint(
-          'exactly_one_target',
-          sql`(target_uuid IS NOT NULL)::int + (target_value IS NOT NULL)::int = 1`,
-        )
-        .addCheckConstraint(
-          'uuid_for_organization_and_employment',
+          'target_value_and_uuid_based_on_type',
           sql`(
-            (table_name IN ('organizations', 'employment') AND target_uuid IS NOT NULL)
+            (target_type IN ('profession', 'region') AND target_value IS NOT NULL AND target_uuid IS NULL)
             OR
-            (table_name NOT IN ('organizations', 'employment'))
-          )`,
-        )
-        .addCheckConstraint(
-          'value_for_profession_and_region',
-          sql`(
-            (table_name IN ('profession', 'region') AND target_value IS NOT NULL)
-            OR
-            (table_name NOT IN ('profession', 'region'))
+            (target_type IN ('organization', 'employment') AND target_uuid IS NOT NULL AND target_value IS NULL)
           )`,
         ),
+  )
+
+  await createStandardTable(
+    db,
+    'message_draft_concerning',
+    (qb) =>
+      qb
+        .addColumn('message_draft_id', 'uuid', (col) =>
+          col.notNull().references('message_drafts.id').onDelete('cascade'))
+        .addColumn('concerning_type', sql`message_concerning_type`, (col) =>
+          col.notNull())
+        .addColumn('concerning_uuid', 'uuid', (col) =>
+          col.notNull()),
   )
 
   await db.schema.createIndex('message_draft_targets_message_draft_id_index')
@@ -88,17 +117,21 @@ export async function up(db: Kysely<DB>) {
 
   await organization_assertion.up(db)
   await employment_assertion.up(db)
+  await patient_assertion.up(db)
+  await patient_record_assertion.up(db)
 }
 
 export async function down(db: Kysely<DB>) {
-  // Drop assertion triggers first
+  await patient_record_assertion.down(db)
+  await patient_assertion.down(db)
   await employment_assertion.down(db)
   await organization_assertion.down(db)
 
-  // Drop tables in reverse order
+  await db.schema.dropTable('message_draft_concerning').execute()
   await db.schema.dropTable('message_draft_targets').execute()
   await db.schema.dropTable('message_drafts').execute()
 
-  // Drop enum
-  await db.schema.dropType('message_draft_target_table').execute()
+  await db.schema.dropType('message_priority').execute()
+  await db.schema.dropType('message_concerning_type').execute()
+  await db.schema.dropType('message_target_type').execute()
 }

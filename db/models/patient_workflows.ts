@@ -2,7 +2,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PatientWorkflows, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
 import {
-  EmployedHealthWorker,
   InsertShape,
   RenderedPatientEncounter,
   RenderedPatientOpenEncounter,
@@ -118,11 +117,11 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
 }
 
 export function assertNoPresentEncounter(
-  health_worker: EmployedHealthWorker,
-): asserts health_worker is EmployedHealthWorker & { present_encounter: null } {
-  if (health_worker.present_encounter) {
+  maybe_encounter: RenderedPatientOpenEncounter | null,
+): asserts maybe_encounter is null {
+  if (maybe_encounter) {
     throw new PresentWithAnotherPatientError(
-      health_worker.present_encounter,
+      maybe_encounter,
     )
   }
 }

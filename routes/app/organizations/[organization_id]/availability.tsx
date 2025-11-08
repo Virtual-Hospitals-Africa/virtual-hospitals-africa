@@ -130,7 +130,9 @@ async function writeCalendarsToGoogle(
   let gcal_availability_calendar_id =
     ctx.state.organization_employment.gcal_availability_calendar_id
 
-  const google_client = HealthWorkerGoogleClient.fromCtx(ctx)
+  const google_client = await HealthWorkerGoogleClient.fromHealthWorkerContext(
+    ctx,
+  )
 
   if (!gcal_availability_calendar_id) {
     const [calendars] =
@@ -163,7 +165,7 @@ async function writeCalendarsToGoogle(
 
   await forEach(
     availabilityBlocks(availability),
-    (event) => google_client.insert_event(gcal_availability_calendar_id, event),
+    (event) => google_client.insertEvent(gcal_availability_calendar_id, event),
   )
 }
 
@@ -207,7 +209,8 @@ export default HealthWorkerHomePageLayout(
 
     const { gcal_availability_calendar_id } = organization_employment
 
-    const google_client = HealthWorkerGoogleClient.fromCtx(ctx)
+    const google_client = await HealthWorkerGoogleClient
+      .fromHealthWorkerContext(ctx)
     const events = gcal_availability_calendar_id
       ? await google_client.getActiveEvents(
         gcal_availability_calendar_id,

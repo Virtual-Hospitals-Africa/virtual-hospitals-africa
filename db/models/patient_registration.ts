@@ -1,6 +1,5 @@
 import { sql } from 'kysely'
 import {
-  EmployedHealthWorker,
   HealthWorkerEmployment,
   RenderedOrganization,
   TrxOrDb,
@@ -21,22 +20,11 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-import { assertNoPresentEncounter } from './patient_workflows.ts'
 import { description_sql } from './patients.ts'
-
-/* 1. Enable the URL to include buttons that get rendered into alerts
- 2. Make it so assertOr400(
-    !health_worker.present_encounter,
-    'Cannot register new patients while present with another patient',
-  )
-    has 2 buttons: a. Continue with $existing_patient_name
-                   b. $existing_patient_name is in the waiting room
-*/
 
 export async function start(
   trx: TrxOrDb,
   { id: organization_id, location }: RenderedOrganization,
-  health_worker: EmployedHealthWorker,
   { departments, non_admin_id }: HealthWorkerEmployment,
 ) {
   assert(location)
@@ -49,7 +37,6 @@ export async function start(
   assertOr403(
     non_admin_id,
   )
-  assertNoPresentEncounter(health_worker)
 
   const patient_id = generateUUID()
   const patient_encounter_id = generateUUID()

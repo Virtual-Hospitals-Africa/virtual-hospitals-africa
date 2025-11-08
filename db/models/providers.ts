@@ -1,6 +1,6 @@
 import { Maybe, Profession, Provider, TrxOrDb } from '../../types.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
-import { getWithTokensQuery } from './health_workers.ts'
+import { getWithTokensQuery } from './health_worker_google_tokens.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'

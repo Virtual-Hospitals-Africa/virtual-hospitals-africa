@@ -8,7 +8,6 @@ export default HealthWorkerHomePageLayout(
   async function WaitingRoomPage(
     ctx: OrganizationContext,
   ) {
-    console.log('in here')
     const { trx, organization, organization_employment } = ctx.state
     const can_register_patients = !!organization.location
 

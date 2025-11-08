@@ -1,9 +1,11 @@
 import { Context } from 'fresh'
+import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as notifications from '../../db/models/notifications.ts'
+import * as sessions from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
-import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
 import { warning } from '../../util/alerts.ts'
 import { loginHref } from '../login.tsx'
@@ -37,15 +39,6 @@ export function ensureCookiePresent(ctx: Context<any>) {
   return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
-export function getLoggedInHealthWorkerFromCookie(
-  // deno-lint-ignore no-explicit-any
-  ctx: Context<any>,
-) {
-  const session_id = cookie.get(ctx.req)
-  assert(session_id)
-  return health_workers.getBySession(db, { session_id })
-}
-
 function isGettingHtml(req: Request) {
   if (req.method !== 'GET') return false
   const accept = req.headers.get('accept')
@@ -61,7 +54,25 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
-    const health_worker = await getLoggedInHealthWorkerFromCookie(ctx)
+    const session_id = cookie.get(ctx.req)
+    assert(session_id)
+
+    const health_worker_id_selection = sessions.getHealthWorkerId(
+      db,
+      session_id,
+    )
+
+    const { health_worker, present_encounter } = await promiseProps({
+      update_session: sessions.tickUpdatedAt(db, 'health_worker', session_id),
+      health_worker: health_workers.getByIdOptional(
+        db,
+        health_worker_id_selection,
+      ),
+      present_encounter: patient_encounters.findOneOptional(db, {
+        is_open: true,
+        presence_health_worker_id: health_worker_id_selection,
+      }),
+    })
 
     if (
       health_worker && (
@@ -69,6 +80,7 @@ export function getLoggedInHealthWorker(
       )
     ) {
       ctx.state.health_worker = health_worker
+      ctx.state.present_encounter = present_encounter
       return ctx.next()
     }
 

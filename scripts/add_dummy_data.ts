@@ -185,7 +185,6 @@ async function addPatientsToWaitingRoom(
         const result = await patient_registration.start(
           db,
           organization,
-          health_worker,
           organization_employment,
         )
 
@@ -213,7 +212,6 @@ async function addPatientsToWaitingRoom(
       const result = await patient_registration.start(
         db,
         organization,
-        health_worker,
         organization_employment,
       )
 

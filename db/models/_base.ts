@@ -1,5 +1,5 @@
 import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
-import type { TrxOrDb } from '../../types.ts'
+import type { IdSelection, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
@@ -70,8 +70,12 @@ type BaseModel<
     trx: TrxOrDb,
     search_terms: SearchTerms,
   ): Promise<RenderedResult[]>
-  getById(trx: TrxOrDb, id: string): Promise<RenderedResult>
-  getByIds(trx: TrxOrDb, ids: string[]): Promise<RenderedResult[]>
+  getById(trx: TrxOrDb, id: string | IdSelection): Promise<RenderedResult>
+  getByIdOptional(
+    trx: TrxOrDb,
+    id: string | IdSelection,
+  ): Promise<RenderedResult | null>
+  getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
 }
 type StandardTables = {
   [Table in keyof DB]: DB[Table] extends
@@ -207,7 +211,7 @@ export function base<
     async findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
       const query = this.searchQuery(trx, terms).limit(2)
       const results = await query.execute()
-      if (results.length === 2) {
+      if (results.length > 1) {
         console.error(asCompiledSql(query))
         throw new Error('More than one result returned')
       }
@@ -224,26 +228,46 @@ export function base<
       const query = this.searchQuery(trx, terms).limit(2)
       const results = await query.execute()
       if (results.length === 0) return null
-      if (results.length === 2) {
+      if (results.length > 1) {
         console.error(asCompiledSql(query))
         throw new Error('More than one result returned')
       }
       return formatResult(results[0])
     },
-    async getById(trx: TrxOrDb, id: string): Promise<RenderedResult> {
-      const result = await baseQuery(trx, {} as SearchTerms)
+    async getById(
+      trx: TrxOrDb,
+      id: string | IdSelection,
+    ): Promise<RenderedResult> {
+      const result = await this.getByIdOptional(trx, id)
+      assertOr404(result)
+      return result
+    },
+    async getByIdOptional(
+      trx: TrxOrDb,
+      id: string | IdSelection,
+    ): Promise<RenderedResult | null> {
+      const query = baseQuery(trx, {} as SearchTerms)
         .where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
           '=',
           id,
         )
-        .limit(1)
-        .executeTakeFirst()
-      assertOr404(result)
-      return formatResult(result)
+        .limit(2)
+      const results = await query.execute()
+      if (results.length === 0) return null
+      if (results.length > 1) {
+        console.error(asCompiledSql(query))
+        throw new Error('Expected query to return a unique result')
+      }
+      return formatResult(results[0])
     },
-    async getByIds(trx: TrxOrDb, ids: string[]): Promise<RenderedResult[]> {
-      assert(ids.length > 0)
+    async getByIds(
+      trx: TrxOrDb,
+      ids: string[] | IdSelection,
+    ): Promise<RenderedResult[]> {
+      if (Array.isArray(ids)) {
+        assert(ids.length > 0)
+      }
       const intermediate_results = await baseQuery(trx, {} as SearchTerms)
         .where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,

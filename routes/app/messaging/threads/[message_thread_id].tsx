@@ -1,9 +1,5 @@
-import { Context } from 'fresh'
 import { z } from 'zod'
-import {
-  LoggedInHealthWorker,
-  LoggedInHealthWorkerContext,
-} from '../../../../types.ts'
+import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import * as messages from '../../../../db/models/messages.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
@@ -43,7 +39,7 @@ export const handler = {
 export default HealthWorkerHomePageLayout(
   'Messaging',
   async function MessagingPage(
-    ctx: Context<LoggedInHealthWorker>,
+    ctx: LoggedInHealthWorkerContext,
   ) {
     const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
     const thread = await messages.getThread(

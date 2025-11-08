@@ -5,6 +5,7 @@ import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.ts
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import RemovableChip from '../RemovableChip.tsx'
 import { TargetsRow } from '../../islands/messaging/drafts/RecipientsRow.tsx'
+import Dropdown from '../../islands/Dropdown.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -19,8 +20,8 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
   const facilities = ['All facilities', 'All hospitals', 'All clinics']
   const recipients = [
     {
-      target_type: 'profession' as const,
       target_value: 'doctor',
+      target_type: 'profession' as const,
       display_name: 'All doctors',
     },
   ]
@@ -39,6 +40,16 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           <PriorityDropdown
             name='priority'
             initial_priority={priority}
+          />
+          <Dropdown
+            id='priority'
+            button={<Button variant='solid' color='indigo'>Priority</Button>}
+            items={[
+              { title: 'Emergency' },
+              { title: 'High' },
+              { title: 'Medium' },
+              { title: 'Low' },
+            ]}
           />
         </div>
 

@@ -1,10 +1,9 @@
 import { approveInvitee } from '../../../../../../db/models/employment.ts'
-
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
-import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { OrganizationContext } from '../../_middleware.ts'
+import { getEmployeeInfo } from '../../../../../../db/models/employee_info.ts'
 
 export const handler = {
   async POST(ctx: OrganizationContext) {
@@ -15,7 +14,7 @@ export const handler = {
 
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const getting_employee = health_workers.getEmployeeInfo(
+    const getting_employee = getEmployeeInfo(
       trx,
       {
         health_worker_id,
