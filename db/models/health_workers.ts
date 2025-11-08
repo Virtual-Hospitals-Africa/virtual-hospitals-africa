@@ -213,7 +213,16 @@ export function baseQuery(trx: TrxOrDb) {
                   ).as('departments'),
                 ]),
             ).as('roles'),
-          ]),
+          ]).orderBy(
+            // TODO order by most recently interacted with?
+            (eb_organization_order) =>
+              eb_organization_order(
+                'organizations.category',
+                'ilike',
+                '%ospital%',
+              ),
+            'desc',
+          ),
       ).as('organizations'),
     ])
 }

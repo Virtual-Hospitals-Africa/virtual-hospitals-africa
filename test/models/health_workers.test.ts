@@ -185,7 +185,7 @@ describe('db/models/health_workers.ts', () => {
     )
 
     it(
-      'handles a health worker who is a doctor at one organization and a receptionist in another',
+      'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
       async () => {
         const getting_test_hospital = organizations.getById(
           db,
