@@ -3,7 +3,7 @@ import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import * as message_drafts from '../../../../db/models/message_drafts.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { postHandler } from '../../../../util/postHandler.ts'
-import Draft from '../../../../components/messaging/Draft.tsx'
+import MessageDraft from '../../../../components/messaging/Draft.tsx'
 import { HealthWorkerHomePageLayout } from '../../../app/_middleware.tsx'
 
 const MessageDraftSchema = z.object({
@@ -38,6 +38,6 @@ export default HealthWorkerHomePageLayout(
       draft_id: message_id,
     })
 
-    return <Draft draft={draft || undefined} />
+    return <MessageDraft draft={draft || undefined} />
   },
 )

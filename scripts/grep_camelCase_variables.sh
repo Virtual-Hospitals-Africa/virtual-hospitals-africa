@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-which rg || {
+which rg > /dev/null || {
   echo "Install ripgrep"
   echo "$ brew install ripgrep"
   exit 1

@@ -4,6 +4,7 @@ import { Button } from '../library/Button.tsx'
 import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.tsx'
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import RemovableChip from '../RemovableChip.tsx'
+import { TargetsRow } from '../../islands/messaging/drafts/RecipientsRow.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -17,10 +18,11 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
   const regions = ['Polokwane']
   const facilities = ['All facilities', 'All hospitals', 'All clinics']
   const recipients = [
-    'All administrators',
-    'All practitioners',
-    'All doctors',
-    'All nurses',
+    {
+      target_type: 'profession' as const,
+      target_value: 'doctor',
+      display_name: 'All doctors',
+    },
   ]
   const concerning = ['Patient: Andries Dlamini', 'ARIPIPRAZOLE prescription']
   const subject = 'What is the correct dosage?'
@@ -50,7 +52,7 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
               {regions.map((region) => (
                 <RemovableChip
                   key={region}
-                  name={`region_${region}`}
+                  name={`targets.regions.${region}`}
                   display={region}
                   remove={() => {}}
                 />
@@ -67,7 +69,7 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
               {facilities.map((facility) => (
                 <RemovableChip
                   key={facility}
-                  name={`facility_${facility}`}
+                  name={`targets.facilities.${facility}`}
                   display={facility}
                   remove={() => {}}
                 />
@@ -76,27 +78,16 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           </div>
 
           {/* Recipients Row */}
-          <div class='flex items-start gap-4'>
-            <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
-              Recipients
-            </label>
-            <div class='flex flex-wrap gap-2 flex-1 items-center'>
-              <div class='flex flex-wrap gap-2'>
-                {recipients.map((recipient) => (
-                  <RemovableChip
-                    key={recipient}
-                    name={`recipient_${recipient}`}
-                    display={recipient}
-                    remove={() => {}}
-                  />
-                ))}
-              </div>
-              <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
-                Total recipient count: 98
-              </span>
-            </div>
-          </div>
 
+          <TargetsRow
+            label='Recipients'
+            target_types={['employment', 'profession']}
+            targets={recipients}
+          >
+            <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
+              Total recipient count: 98
+            </span>
+          </TargetsRow>
           {/* Concerning Row */}
           <div class='flex items-start gap-4'>
             <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
@@ -106,7 +97,7 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
               {concerning.map((item) => (
                 <RemovableChip
                   key={item}
-                  name={`concerning_${item}`}
+                  name={`targets.concernings.${item}`}
                   display={item}
                   remove={() => {}}
                 />
