@@ -1,9 +1,7 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from '../Header.tsx'
-import { LoggedInHealthWorkerContext } from '../../../types.ts'
 
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
-  ctx: LoggedInHealthWorkerContext<T>
   title: string
   sidebar: ComponentChild
   drawer?: ComponentChild
@@ -12,7 +10,6 @@ export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
 
 export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
   {
-    ctx,
     title,
     sidebar,
     drawer,
@@ -27,8 +24,6 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
           <Header
             title={title}
             variant='home page'
-            avatar_url={ctx.state.health_worker.avatar_url}
-            notifications={[]}
           />
           <div className='pl-6 grow'>{children}</div>
         </section>
