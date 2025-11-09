@@ -13,6 +13,7 @@ import {
   positive_number,
   string_or_number_as_string,
 } from '../../../../../util/validators.ts'
+import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 const AddMedicineSchema = z.object({
   manufactured_medication_id: z.string(),
@@ -35,14 +36,14 @@ export const handler = postHandler(
     { manufactured_medication, ...form_values },
   ): Promise<Response> => {
     const { organization, organization_employment, trx } = ctx.state
-    const { admin } = organization_employment.roles
-    assertOr403(admin)
+    const admin_role = roleByProfession(organization_employment, 'admin')
+    assertOr403(admin_role)
 
     await inventory.addOrganizationMedicine(
       trx,
       organization.id,
       {
-        created_by: admin.employment_id,
+        created_by: admin_role.employment_id,
         ...form_values,
         strength: manufactured_medication.strength,
       },

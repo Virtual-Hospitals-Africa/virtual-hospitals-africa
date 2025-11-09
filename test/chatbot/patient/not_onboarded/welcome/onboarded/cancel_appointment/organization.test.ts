@@ -41,7 +41,7 @@ describe('patient chatbot', () => {
         chatbot_name: 'patient',
         messages: {
           type: 'string',
-          messageBody:
+          message_body:
             'Sure, we can find your nearest organization. Can you share your location?',
         },
         phone_number,

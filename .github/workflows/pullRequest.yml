@@ -24,12 +24,18 @@ jobs:
         with:
           deno-version: v2.3.5
 
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
         with:
           path: ~/.cache/deno
           key: deno-modules
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Run check
         run: deno task check
@@ -85,6 +91,9 @@ jobs:
 
       - name: Git lfs pull
         run: git lfs pull
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Write .env file
         run: |
@@ -171,6 +180,9 @@ jobs:
       - name: Git lfs pull
         run: git lfs pull
 
+      - name: Deno install
+        run: deno install --allow-scripts
+
       - name: Write .env file
         run: |
           echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
@@ -237,6 +249,9 @@ jobs:
 
       - name: Git lfs pull
         run: git lfs pull
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Write .env file
         run: |

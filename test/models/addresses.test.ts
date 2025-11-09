@@ -15,10 +15,10 @@ describe('db/models/address.ts', () => {
     itUsesTrxAnd(
       'inserts addresses, making a new id each time',
       async (trx) => {
-        const randomAddress = await createTestAddress()
+        const random_address = await createTestAddress()
 
-        const address1 = await addresses.insert(trx, randomAddress)
-        const address2 = await addresses.insert(trx, randomAddress)
+        const address1 = await addresses.insert(trx, random_address)
+        const address2 = await addresses.insert(trx, random_address)
 
         assertNotEquals(
           omit(address1, ['created_at', 'updated_at']),

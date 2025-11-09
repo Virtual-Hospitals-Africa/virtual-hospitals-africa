@@ -41,7 +41,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody: 'What is your sex?',
+          message_body: 'What is your sex?',
           type: 'buttons',
           buttonText: 'Menu',
           options: [

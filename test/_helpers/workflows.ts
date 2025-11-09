@@ -32,15 +32,14 @@ export async function insertRegistrationWithEmployeeForTest(
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
-  const organization_employment = health_worker.employment.find((e) =>
-    e.organization.id === organization_id
+  const organization_employment = health_worker.organizations.find((o) =>
+    o.id === organization_id
   )
   assert(organization_employment)
 
   const result = await patient_registration.start(
     trx,
     organization,
-    health_worker,
     organization_employment,
   )
   return {
@@ -159,8 +158,8 @@ export async function insertReturningSeekingTreatmentWithEmployeeForTest(
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
-  const organization_employment = health_worker.employment.find((e) =>
-    e.organization.id === organization_id
+  const organization_employment = health_worker.organizations.find((o) =>
+    o.id === organization_id
   )
   assert(organization_employment)
 

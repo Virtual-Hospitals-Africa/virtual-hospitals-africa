@@ -89,12 +89,12 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const pre_existing_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
-          assertEquals(preExistingConditions.length, 1)
-          const [preExistingCondition] = preExistingConditions
+          assertEquals(pre_existing_conditions.length, 1)
+          const [preExistingCondition] = pre_existing_conditions
           assertEquals(preExistingCondition.comorbidities, [])
           assertEquals(preExistingCondition.id, 'c_22401')
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
@@ -211,12 +211,12 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const pre_existing_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
-          assertEquals(preExistingConditions.length, 1)
-          const [preExistingCondition] = preExistingConditions
+          assertEquals(pre_existing_conditions.length, 1)
+          const [preExistingCondition] = pre_existing_conditions
           assertEquals(preExistingCondition.comorbidities, [])
           assertEquals(preExistingCondition.id, 'c_22401')
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
@@ -335,12 +335,12 @@ describe(
               },
             ],
           })
-          const preExistingConditions = await patient_conditions
+          const pre_existing_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
-          assertEquals(preExistingConditions.length, 1)
-          const [preExistingCondition] = preExistingConditions
+          assertEquals(pre_existing_conditions.length, 1)
+          const [preExistingCondition] = pre_existing_conditions
           assertEquals(preExistingCondition.comorbidities, [])
           assertEquals(preExistingCondition.id, 'c_22401')
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
@@ -437,12 +437,12 @@ describe(
             },
           ],
         })
-        const preExistingConditions = await patient_conditions
+        const pre_existing_conditions = await patient_conditions
           .getPreExistingConditions(trx, {
             patient_id: encounter.patient.id,
           })
-        assertEquals(preExistingConditions.length, 1)
-        const [preExistingCondition] = preExistingConditions
+        assertEquals(pre_existing_conditions.length, 1)
+        const [preExistingCondition] = pre_existing_conditions
         assertEquals(preExistingCondition.id, 'c_22401')
         assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
@@ -726,12 +726,12 @@ describe(
             ],
           })
 
-          const preExistingConditions = await patient_conditions
+          const pre_existing_conditions = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
-          assertEquals(preExistingConditions.length, 1)
-          assertEquals(preExistingConditions[0].id, 'c_8815')
+          assertEquals(pre_existing_conditions.length, 1)
+          assertEquals(pre_existing_conditions[0].id, 'c_8815')
         },
       )
 
@@ -1164,8 +1164,8 @@ describe(
               }),
           ]
 
-          const insertionOrders = permutations(insertions)
-          for (const insertionOrder of insertionOrders) {
+          const insertion_orders = permutations(insertions)
+          for (const insertion_order of insertion_orders) {
             const nurse = await addTestEmployee(trx, {
               profession: 'nurse',
               registration_status: 'not started',
@@ -1191,7 +1191,7 @@ describe(
                 completed: true,
               },
             )
-            for (const insertion of insertionOrder) {
+            for (const insertion of insertion_order) {
               await insertion({ encounter, patient_examination })
             }
             const pre_existing_conditions = await patient_conditions

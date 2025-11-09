@@ -28,7 +28,7 @@ describe.skip('patient chatbot', () => {
 
   it('provides with cancel_appointment_option after confirming another appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,
       name: 'Test Patient',
@@ -38,14 +38,14 @@ describe.skip('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -54,30 +54,30 @@ describe.skip('patient chatbot', () => {
     assert(health_worker)
 
     // Insert offered time
-    const firstTime = new Date()
-    firstTime.setDate(firstTime.getDate() + 1)
-    firstTime.setHours(9, 30, 0, 0)
-    const end = new Date(firstTime)
+    const first_time = new Date()
+    first_time.setDate(first_time.getDate() + 1)
+    first_time.setHours(9, 30, 0, 0)
+    const end = new Date(first_time)
     end.setMinutes(end.getMinutes() + 30)
     const duration_minutes = 30
-    const firstOfferedTime = await appointments.addOfferedTime(db, {
+    const first_offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
-      start: firstTime,
+      start: first_time,
       end,
       duration_minutes,
     })
-    await declineOfferedTimes(db, [firstOfferedTime.id])
+    await declineOfferedTimes(db, [first_offered_time.id])
 
-    const otherTime = new Date(firstTime)
-    otherTime.setHours(10, 0, 0, 0)
-    const other_end = new Date(firstTime)
+    const other_time = new Date(first_time)
+    other_time.setHours(10, 0, 0, 0)
+    const other_end = new Date(first_time)
     end.setMinutes(end.getMinutes() + 30)
     const other_duration_minutes = 30
-    const secondOfferedTime = await appointments.addOfferedTime(db, {
+    const second_offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
-      start: otherTime,
+      start: other_time,
       end: other_end,
       duration_minutes: other_duration_minutes,
     })
@@ -87,7 +87,7 @@ describe.skip('patient chatbot', () => {
       received_by_phone_number: '263XXXXXX',
       sent_by_phone_number: phone_number,
       has_media: false,
-      body: String(secondOfferedTime.id),
+      body: String(second_offered_time.id),
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -108,9 +108,9 @@ describe.skip('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
-            prettyAppointmentTime(otherTime),
+            prettyAppointmentTime(other_time),
           type: 'buttons',
           buttonText: 'Menu',
           options: [{ id: 'cancel', title: 'Cancel Appointment' }],

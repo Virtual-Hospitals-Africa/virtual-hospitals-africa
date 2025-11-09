@@ -1,6 +1,6 @@
+import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
 import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
 
 export function testHealthWorker() {
   const expires_at = new Date()
@@ -24,7 +24,7 @@ export function insertHealthWorker(
   trx: TrxOrDb,
   opts?: Partial<HealthWorkerWithGoogleTokens>,
 ) {
-  return health_workers.upsertWithGoogleCredentials(trx, {
+  return upsertWithGoogleCredentials(trx, {
     ...testHealthWorker(),
     ...opts,
   })

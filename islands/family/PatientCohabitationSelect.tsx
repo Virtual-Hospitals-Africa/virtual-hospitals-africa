@@ -10,7 +10,7 @@ export default function PatientCohabitationSelect(
     type?: string
   },
 ) {
-  const filteredOptions = PATIENT_COHABITATIONS.filter((val) => {
+  const filtered_options = PATIENT_COHABITATIONS.filter((val) => {
     switch (type) {
       case '2 married parents':
       case 'Grandparent-led':
@@ -31,7 +31,7 @@ export default function PatientCohabitationSelect(
   })
   return (
     <>
-      {filteredOptions.length > 0 &&
+      {filtered_options.length > 0 &&
         (
           <SelectWithOptions
             label={label}
@@ -39,7 +39,7 @@ export default function PatientCohabitationSelect(
             required={required}
             blank_option
             value={value}
-            options={filteredOptions.map((p) => (
+            options={filtered_options.map((p) => (
               { value: p }
             ))}
           />

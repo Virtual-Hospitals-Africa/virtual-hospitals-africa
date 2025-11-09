@@ -34,7 +34,7 @@ export const handler = {
   async POST(ctx: OrganizationContext) {
     const req = ctx.req
 
-    assertOr403(ctx.state.isAdminAtOrganization)
+    assertOr403(ctx.state.is_admin_at_organization)
 
     const { invites } = await parseRequestAsserts(
       ctx.state.trx,
@@ -42,19 +42,21 @@ export const handler = {
       assertIsInvites,
     )
 
-    const invitesWithEmails = invites.filter((invite) => invite.email)
+    const invites_with_emails = invites.filter((invite) => invite.email)
 
     await organizations.invite(
       ctx.state.trx,
       ctx.state.organization.id,
-      invitesWithEmails,
+      invites_with_emails,
     )
 
-    const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
-    const successMessage = encodeURIComponent(`Successfully invited ${invited}`)
+    const invited = invites_with_emails.map((invite) => invite.email).join(', ')
+    const success_message = encodeURIComponent(
+      `Successfully invited ${invited}`,
+    )
 
     return redirect(
-      `/app/organizations/${ctx.state.organization.id}/employees?success=${successMessage}`,
+      `/app/organizations/${ctx.state.organization.id}/employees?success=${success_message}`,
     )
   },
 }
@@ -62,7 +64,7 @@ export const handler = {
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   'Invite Employees',
   function InviteEmployeesPage(ctx) {
-    assertOr403(ctx.state.isAdminAtOrganization)
+    assertOr403(ctx.state.is_admin_at_organization)
     return <InviteEmployeesForm />
   },
 )

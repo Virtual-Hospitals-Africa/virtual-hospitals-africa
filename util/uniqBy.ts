@@ -4,12 +4,12 @@ export function uniqBy<T, K extends keyof T>(
 ): T[] {
   const uniqueArray: T[] = []
   // deno-lint-ignore no-explicit-any
-  const seenValues = new Set<any>()
+  const seen_values = new Set<any>()
 
   for (const value of array) {
     const key = value[keyBy]
-    if (!seenValues.has(key)) {
-      seenValues.add(key)
+    if (!seen_values.has(key)) {
+      seen_values.add(key)
       uniqueArray.push(value)
     }
   }

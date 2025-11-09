@@ -41,7 +41,7 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-const shortToLong = {
+const short_to_long = {
   SU: 'Sunday' as const,
   MO: 'Monday' as const,
   TU: 'Tuesday' as const,
@@ -52,44 +52,44 @@ const shortToLong = {
 }
 
 const toJohannesburg = (time: Time) => {
-  const baseHour = time.hour % 12
-  const hour = time.amPm === 'am' ? baseHour : baseHour + 12
-  const hourStr = padTime(hour)
-  const minuteStr = padTime(time.minute)
-  return `${hourStr}:${minuteStr}:00+02:00`
+  const base_hour = time.hour % 12
+  const hour = time.am_pm === 'am' ? base_hour : base_hour + 12
+  const hour_str = padTime(hour)
+  const minute_str = padTime(time.minute)
+  return `${hour_str}:${minute_str}:00+02:00`
 }
 
 function* availabilityBlocks(
   availability: Partial<AvailabilityJSON>,
 ): Generator<DeepPartial<GCalEvent>> {
   const today = parseDateTime(todayISOInJohannesburg())
-  const todayIndex = days.indexOf(today.weekday as DayOfWeek)
+  const today_index = days.indexOf(today.weekday as DayOfWeek)
   for (const day of days) {
-    const dayAvailability = availability[day]
-    if (!dayAvailability) continue
-    const dayIndex = days.indexOf(day)
-    const dayOffset = dayIndex - todayIndex
-    const dayDate = new Date(
+    const day_availability = availability[day]
+    if (!day_availability) continue
+    const day_index = days.indexOf(day)
+    const day_offset = day_index - today_index
+    const day_date = new Date(
       Date.UTC(
         parseInt(today.year),
         parseInt(today.month) - 1,
         parseInt(today.day),
       ),
     )
-    dayDate.setDate(dayDate.getDate() + dayOffset)
-    const dayStr = formatJohannesburg(dayDate).split('T')[0]
+    day_date.setDate(day_date.getDate() + day_offset)
+    const day_str = formatJohannesburg(day_date).split('T')[0]
 
-    for (const timeWindow of dayAvailability) {
-      const start = toJohannesburg(timeWindow.start)
-      const end = toJohannesburg(timeWindow.end)
+    for (const time_window of day_availability) {
+      const start = toJohannesburg(time_window.start)
+      const end = toJohannesburg(time_window.end)
 
       yield {
         summary: 'Availability Block',
         start: {
-          dateTime: `${dayStr}T${start}`,
+          dateTime: `${day_str}T${start}`,
           timeZone: 'Africa/Johannesburg',
         },
-        end: { dateTime: `${dayStr}T${end}`, timeZone: 'Africa/Johannesburg' },
+        end: { dateTime: `${day_str}T${end}`, timeZone: 'Africa/Johannesburg' },
         recurrence: [
           `RRULE:FREQ=WEEKLY;BYDAY=${day.slice(0, 2).toUpperCase()}`,
         ],
@@ -105,7 +105,7 @@ const TimeSchema = z.object({
   minute: nonnegative_integer.refine((minute) => minute >= 0 && minute <= 59, {
     message: 'expected a minute in the range 0-59',
   }),
-  amPm: z.enum(['am', 'pm']),
+  am_pm: z.enum(['am', 'pm']),
 })
 
 const TimeWindowSchema = z.object({
@@ -127,16 +127,26 @@ async function writeCalendarsToGoogle(
   ctx: OrganizationContext,
   availability: Partial<AvailabilityJSON>,
 ) {
-  let gcal_availability_calendar_id =
-    ctx.state.organization_employment.gcal_availability_calendar_id
+  // Get calendar ID from health_worker_organization_calendars table
+  const calendar_record = await ctx.state.trx
+    .selectFrom('health_worker_organization_calendars')
+    .where('health_worker_id', '=', ctx.state.health_worker.id)
+    .where('organization_id', '=', ctx.state.organization.id)
+    .select('gcal_availability_calendar_id')
+    .executeTakeFirst()
 
-  const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
+  let gcal_availability_calendar_id = calendar_record
+    ?.gcal_availability_calendar_id
+
+  const google_client = await HealthWorkerGoogleClient.fromHealthWorkerContext(
+    ctx,
+  )
 
   if (!gcal_availability_calendar_id) {
     const [calendars] =
       await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
         ctx.state.trx,
-        googleClient,
+        google_client,
         [ctx.state.organization.id],
       )
     await health_worker_organization_calenders.add(
@@ -147,23 +157,23 @@ async function writeCalendarsToGoogle(
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }
 
-  const existingAvailability = await googleClient.getActiveEvents(
+  const existing_availability = await google_client.getActiveEvents(
     gcal_availability_calendar_id,
   )
 
-  const existingAvailabilityEvents = existingAvailability.items || []
+  const existing_availability_events = existing_availability.items || []
 
   // Google rate limits you if you try to do these in parallel :(
   // TODO: revisit whether to clear all these out
   await forEach(
-    existingAvailabilityEvents,
+    existing_availability_events,
     (event) =>
-      googleClient.deleteEvent(gcal_availability_calendar_id, event.id),
+      google_client.deleteEvent(gcal_availability_calendar_id, event.id),
   )
 
   await forEach(
     availabilityBlocks(availability),
-    (event) => googleClient.insertEvent(gcal_availability_calendar_id, event),
+    (event) => google_client.insertEvent(gcal_availability_calendar_id, event),
   )
 }
 
@@ -202,14 +212,24 @@ export default HealthWorkerHomePageLayout(
     // deno-lint-ignore no-explicit-any
     ctx: OrganizationContext<any>,
   ) {
-    const { health_worker, organization, organization_employment } = ctx.state
+    const { health_worker, organization } = ctx.state
     const from_url = ctx.url.searchParams.get('from_url')
 
-    const { gcal_availability_calendar_id } = organization_employment
+    // Get calendar ID from health_worker_organization_calendars table
+    const calendar_record = await ctx.state.trx
+      .selectFrom('health_worker_organization_calendars')
+      .where('health_worker_id', '=', health_worker.id)
+      .where('organization_id', '=', organization.id)
+      .select('gcal_availability_calendar_id')
+      .executeTakeFirst()
 
-    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
+    const gcal_availability_calendar_id = calendar_record
+      ?.gcal_availability_calendar_id
+
+    const google_client = await HealthWorkerGoogleClient
+      .fromHealthWorkerContext(ctx)
     const events = gcal_availability_calendar_id
-      ? await googleClient.getActiveEvents(
+      ? await google_client.getActiveEvents(
         gcal_availability_calendar_id,
       )
       : { items: [] }
@@ -241,10 +261,10 @@ export default HealthWorkerHomePageLayout(
       assert(Array.isArray(item.recurrence))
       assertEquals(item.recurrence.length, 1)
       assert(item.recurrence[0].startsWith('RRULE:FREQ=WEEKLY;BYDAY='))
-      const dayStr = item.recurrence[0].replace('RRULE:FREQ=WEEKLY;BYDAY=', '')
-      assert(dayStr in shortToLong)
+      const day_str = item.recurrence[0].replace('RRULE:FREQ=WEEKLY;BYDAY=', '')
+      assert(day_str in short_to_long)
 
-      const weekday = shortToLong[dayStr as keyof typeof shortToLong]
+      const weekday = short_to_long[day_str as keyof typeof short_to_long]
 
       availability[weekday].push({
         start: convertToTime(item.start.dateTime),

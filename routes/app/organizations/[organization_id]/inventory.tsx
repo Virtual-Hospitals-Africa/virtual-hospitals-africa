@@ -9,7 +9,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function InventoryPage(
     ctx,
   ) {
-    const { organization, isAdminAtOrganization } = ctx.state
+    const { organization, is_admin_at_organization } = ctx.state
     const { organization_id } = ctx.params
     const active_tab = ctx.url.searchParams.get('active_tab') ?? 'devices'
     assertOr404(organization_id)
@@ -41,7 +41,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
         devices={organization_devices}
         consumables={organization_consumbales}
         medicines={organization_medicines}
-        isAdmin={isAdminAtOrganization}
+        isAdmin={is_admin_at_organization}
         active_tab={active_tab}
       />
     )

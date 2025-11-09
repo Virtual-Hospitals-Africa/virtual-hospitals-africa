@@ -7,9 +7,9 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeeTable(
     ctx,
   ) {
-    const { health_worker, organization, isAdminAtOrganization } = ctx.state
+    const { health_worker, organization, is_admin_at_organization } = ctx.state
 
-    const getEmployees = isAdminAtOrganization
+    const getEmployees = is_admin_at_organization
       ? organizations.getEmployeesAndInvitees
       : organizations.getEmployees
 
@@ -22,7 +22,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
       title: `${organization.name} Employees`,
       children: (
         <EmployeesTable
-          isAdmin={isAdminAtOrganization}
+          isAdmin={is_admin_at_organization}
           employees={employees}
           pathname={ctx.url.pathname}
           organization_id={organization.id}

@@ -36,13 +36,13 @@
 
 //   useEffect(() => {
 //     setFlaggedVitals((prevMap) => {
-//       const newMap = new Map(prevMap)
+//       const new_map =new Map(prevMap)
 //       measurements.forEach((measurement) => {
 //         if (measurement.is_flagged) {
-//           newMap.set(measurement.measurement_name, measurement)
+//           new_map.set(measurement.measurement_name, measurement)
 //         }
 //       })
-//       return newMap
+//       return new_map
 //     })
 //   }, [measurements])
 
@@ -54,8 +54,8 @@
 //     console.log('vital', vital)
 
 //     setFlaggedVitals((prevMap) => {
-//       const newMap = new Map(prevMap)
-//       newMap.set(
+//       const new_map =new Map(prevMap)
+//       new_map.set(
 //         vital.vital_name,
 //         {
 //           measurement_name: vital.vital_name,
@@ -64,7 +64,7 @@
 //           units: MEASUREMENTS[vital.vital_name as keyof Measurements],
 //         },
 //       )
-//       return newMap
+//       return new_map
 //     })
 //   }
 
@@ -73,9 +73,9 @@
 //     const vital = event.detail as string
 
 //     setFlaggedVitals((prevMap) => {
-//       const newMap = new Map(prevMap)
-//       newMap.delete(vital)
-//       return newMap
+//       const new_map =new Map(prevMap)
+//       new_map.delete(vital)
+//       return new_map
 //     })
 //   }
 

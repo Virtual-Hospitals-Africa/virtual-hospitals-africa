@@ -7,7 +7,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, literalBoolean } from '../helpers.ts'
-import compact from '../../util/compact.ts'
 import * as events from './events.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
@@ -416,12 +415,8 @@ export async function getThread(
 export function participantsQueryForHealthWorker(
   health_worker: EmployedHealthWorker,
 ): ParticipantsQuery {
-  const employee_ids = health_worker.employment.flatMap((e) =>
-    compact([
-      e.roles.admin?.employment_id,
-      e.roles.doctor?.employment_id,
-      e.roles.nurse?.employment_id,
-    ])
+  const employee_ids = health_worker.organizations.flatMap((e) =>
+    e.roles.map((role) => role.employment_id)
   )
 
   assert(employee_ids.length, 'Must complete onboarding first')

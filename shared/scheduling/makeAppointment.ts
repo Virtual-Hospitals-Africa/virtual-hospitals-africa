@@ -37,17 +37,17 @@ export function gcalAppointmentDetails(
   acceptedTime: SchedulingAppointmentOfferedTime
   gcal: DeepPartial<GCalEvent>
 } {
-  const acceptedTimes = scheduling_appointment_request
+  const accepted_times = scheduling_appointment_request
     .offered_times.filter(
-      (offeredTime) => !offeredTime.declined,
+      (offered_time) => !offered_time.declined,
     )
 
   assertEquals(
-    acceptedTimes.length,
+    accepted_times.length,
     1,
     'Patient should have accepted exactly one offered time',
   )
-  const [acceptedTime] = acceptedTimes
+  const [acceptedTime] = accepted_times
 
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
@@ -85,7 +85,7 @@ export async function makeAppointmentChatbot(
     'No provider_id found',
   )
 
-  const matchingProvider = await getProvider(
+  const matching_provider = await getProvider(
     trx,
     acceptedTime.provider_id,
   )
@@ -93,15 +93,15 @@ export async function makeAppointmentChatbot(
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const insertedEvent = await insertEvent(
-    matchingProvider,
-    matchingProvider.gcal_appointments_calendar_id,
+  const inserted_event = await insertEvent(
+    matching_provider,
+    matching_provider.gcal_appointments_calendar_id,
     gcal,
   )
 
   await appointments.schedule(trx, {
     appointment_offered_time_id: acceptedTime.id,
-    gcal_event_id: insertedEvent.id,
+    gcal_event_id: inserted_event.id,
   })
 }
 
@@ -148,14 +148,14 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingProvider = await getProvider(
+  const matching_provider = await getProvider(
     trx,
     values.provider_ids[0],
   )
 
-  const insertedEvent = await insertEvent(
-    matchingProvider,
-    matchingProvider.gcal_appointments_calendar_id,
+  const inserted_event = await insertEvent(
+    matching_provider,
+    matching_provider.gcal_appointments_calendar_id,
     gcal({
       start: values.start,
       end: values.end,
@@ -168,7 +168,7 @@ export async function makeAppointmentWeb(
     duration_minutes: values.duration_minutes,
     patient_id: values.patient_id,
     reason: values.reason,
-    gcal_event_id: insertedEvent.id,
+    gcal_event_id: inserted_event.id,
   })
 
   await appointments.addAttendees(trx, {

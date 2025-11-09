@@ -44,14 +44,14 @@ const files = [
 ];
 
 async function addImports() {
-  const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+  const workspace_folder =vscode.workspace.workspaceFolders?.[0];
   if (!workspaceFolder) {
     console.error('No workspace folder found');
     return;
   }
 
   for (const file of files) {
-    const filePath = path.join(workspaceFolder.uri.fsPath, file);
+    const file_path =path.join(workspaceFolder.uri.fsPath, file);
     const uri = vscode.Uri.file(filePath);
     
     try {

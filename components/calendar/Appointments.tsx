@@ -13,7 +13,7 @@ export default function Appointments(
     className?: string
   },
 ) {
-  const useClassName = cls(
+  const use_class_name = cls(
     'divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full',
     className,
   )
@@ -21,7 +21,7 @@ export default function Appointments(
 
   if (!appointments.length) {
     return (
-      <div className={useClassName}>
+      <div className={use_class_name}>
         {header}
         <AppointmentsEmptyState patient_id={patient_id} />
       </div>
@@ -29,7 +29,7 @@ export default function Appointments(
   }
 
   return (
-    <ol className={useClassName}>
+    <ol className={use_class_name}>
       {header}
       {appointments.map((appointment) => (
         <Appointment

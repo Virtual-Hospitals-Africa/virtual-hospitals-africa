@@ -102,11 +102,11 @@ export default function ProvidersSelect(
           provider={provider}
           selected={selected.value.has(provider)}
           toggleSelection={() => {
-            const newSelected = new Set(selected.value)
+            const new_selected = new Set(selected.value)
             selected.value.has(provider)
-              ? newSelected.delete(provider)
-              : newSelected.add(provider)
-            selected.value = newSelected
+              ? new_selected.delete(provider)
+              : new_selected.add(provider)
+            selected.value = new_selected
           }}
         />
       ))}

@@ -33,9 +33,9 @@ describe(
         response.url ===
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert($('input[name="first_names"]').length === 1)
       assert($('input[name="surname"]').length === 1)
@@ -93,7 +93,7 @@ describe(
         body.set('address.locality', address.locality)
         body.set('address.street', address.street)
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
           {
             method: 'POST',
@@ -101,23 +101,23 @@ describe(
           },
         )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
+        if (!post_response.ok) {
+          throw new Error(await post_response.text())
         }
 
         assertEquals(
-          postResponse.url,
+          post_response.url,
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
         )
 
-        await postResponse.body?.cancel()
+        await post_response.body?.cancel()
 
-        const registrationFormState = await nurse_registration_details
+        const registration_form_state = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
           })
 
-        assertEquals(registrationFormState, {
+        assertEquals(registration_form_state, {
           date_of_birth: demographics.date_of_birth,
           first_names: demographics.first_names,
           sex: demographics.sex,
@@ -129,12 +129,12 @@ describe(
           address,
         })
 
-        const getPersonalResponse = await fetch(
+        const get_personal_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
         )
 
-        const pageContents = await getPersonalResponse.text()
-        const $ = cheerio.load(pageContents)
+        const page_contents = await get_personal_response.text()
+        const $ = cheerio.load(page_contents)
         console.log($.html())
         assertEquals(
           $('input[name="first_names"]').val(),
@@ -181,7 +181,7 @@ describe(
         body.set('ncz_registration_number', 'GN123456')
         body.set('specialty', 'oncology and palliative care')
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
           {
             method: 'POST',
@@ -189,23 +189,23 @@ describe(
           },
         )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
+        if (!post_response.ok) {
+          throw new Error(await post_response.text())
         }
 
         assertEquals(
-          postResponse.url,
+          post_response.url,
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
         )
 
-        await postResponse.body?.cancel()
+        await post_response.body?.cancel()
 
-        const registrationFormState = await nurse_registration_details
+        const registration_form_state = await nurse_registration_details
           .getInProgress(db, {
             health_worker_id: nurse.id,
           })
 
-        assertEquals(registrationFormState, {
+        assertEquals(registration_form_state, {
           date_of_birth: demographics.date_of_birth,
           first_names: demographics.first_names,
           surname: demographics.surname,
@@ -220,12 +220,12 @@ describe(
           address,
         })
 
-        const getProfessionalResponse = await fetch(
+        const get_professional_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
         )
 
-        const pageContents = await getProfessionalResponse.text()
-        const $ = cheerio.load(pageContents)
+        const page_contents = await get_professional_response.text()
+        const $ = cheerio.load(page_contents)
         assertEquals(
           $('input[name="date_of_first_practice"]').val(),
           '2022-01-01',
@@ -244,7 +244,7 @@ describe(
         // TODO: upload documents
         const body = new FormData()
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
           {
             method: 'POST',
@@ -252,53 +252,53 @@ describe(
           },
         )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
+        if (!post_response.ok) {
+          throw new Error(await post_response.text())
         }
 
         assertEquals(
-          postResponse.url,
+          post_response.url,
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
         )
 
-        await postResponse.body?.cancel()
+        await post_response.body?.cancel()
 
-        const registrationDetails = await nurse_registration_details.get(db, {
+        const registration_details = await nurse_registration_details.get(db, {
           health_worker_id: nurse.id,
         })
 
-        const newNurse = await db.selectFrom('health_workers').where(
+        const new_nurse = await db.selectFrom('health_workers').where(
           'id',
           '=',
           nurse.id,
         ).selectAll().executeTakeFirst()
-        const nurseEmployment = await db.selectFrom('employment').where(
+        const nurse_employment = await db.selectFrom('employment').where(
           'health_worker_id',
           '=',
           nurse.id,
         ).selectAll().executeTakeFirstOrThrow()
 
-        assert(registrationDetails)
-        assert(newNurse)
-        assert(nurseEmployment)
+        assert(registration_details)
+        assert(new_nurse)
+        assert(nurse_employment)
 
         assertEquals(
-          registrationDetails.date_of_birth,
+          registration_details.date_of_birth,
           demographics.date_of_birth,
         )
-        assertEquals(newNurse.name, demographics.name)
-        assertEquals(registrationDetails.gender, demographics.gender)
-        assertEquals(registrationDetails.mobile_number, '+12035555555')
+        assertEquals(new_nurse.name, demographics.name)
+        assertEquals(registration_details.gender, demographics.gender)
+        assertEquals(registration_details.mobile_number, '+12035555555')
         assertEquals(
-          registrationDetails.national_id_number,
+          registration_details.national_id_number,
           demographics.national_id_number,
         )
-        assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
-        assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
-        assertEquals(nurseEmployment.specialty, 'oncology and palliative care')
+        assertEquals(registration_details.date_of_first_practice, '2022-01-01')
+        assertEquals(registration_details.ncz_registration_number, 'GN123456')
+        assertEquals(nurse_employment.specialty, 'oncology and palliative care')
         // TODO turn off SKIP_NURSE_REGISTRATION
         // assertEquals(
-        //   postResponse.url,
+        //   post_response.url,
         //   `${route}/app/pending_approval`,
         // )
       }

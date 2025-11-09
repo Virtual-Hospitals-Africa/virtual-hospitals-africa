@@ -30,7 +30,7 @@ export const PharmacistUpsert = z.object({
   }))),
 })
 
-export const parseUpsert = PharmacistUpsert.parse
+export const parse_upsert = PharmacistUpsert.parse
 export type PharmacistUpsert = z.infer<typeof PharmacistUpsert>
 
 export async function update(
@@ -44,40 +44,40 @@ export async function update(
     .set(pharmacistData)
     .where('id', '=', pharmacist_id)
     .execute()
-  const existingPharmacyEmployments = await trx
+  const existing_pharmacy_employments = await trx
     .selectFrom('pharmacy_employment')
     .where('pharmacist_id', '=', pharmacist_id)
     .selectAll()
     .execute()
-  for (const existingPharmacyEmployment of existingPharmacyEmployments) {
-    const selectedPharmacy = pharmacies.find((pharmacy) =>
-      pharmacy.id === existingPharmacyEmployment.pharmacy_id
+  for (const existing_pharmacy_employment of existing_pharmacy_employments) {
+    const selected_pharmacy = pharmacies.find((pharmacy) =>
+      pharmacy.id === existing_pharmacy_employment.pharmacy_id
     )
-    if (selectedPharmacy) {
+    if (selected_pharmacy) {
       await updateIsSupervisor(
         trx,
         pharmacist_id,
-        existingPharmacyEmployment.pharmacy_id,
-        selectedPharmacy.is_supervisor,
+        existing_pharmacy_employment.pharmacy_id,
+        selected_pharmacy.is_supervisor,
       )
     } else {
       await removePharmacyEmployment(
         trx,
         pharmacist_id,
-        existingPharmacyEmployment.pharmacy_id,
+        existing_pharmacy_employment.pharmacy_id,
       )
     }
     pharmacies = pharmacies.filter((pharmacy) =>
-      pharmacy.id !== existingPharmacyEmployment.pharmacy_id
+      pharmacy.id !== existing_pharmacy_employment.pharmacy_id
     )
   }
-  const pharmacyEmployments = pharmacies.map((pharmacyEmployee) => ({
+  const pharmacy_employments = pharmacies.map((pharmacy_employee) => ({
     pharmacist_id,
-    pharmacy_id: pharmacyEmployee.id,
-    is_supervisor: pharmacyEmployee.is_supervisor,
+    pharmacy_id: pharmacy_employee.id,
+    is_supervisor: pharmacy_employee.is_supervisor,
   }))
-  if (!pharmacyEmployments.length) return
-  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  if (!pharmacy_employments.length) return
+  await insertPharmacyEmployment(trx, pharmacy_employments)
 }
 
 export function nameSql(table: string) {
@@ -294,11 +294,11 @@ export async function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
   if (!pharmacies) return pharmacist
-  const pharmacyEmployments = pharmacies.map((pharmacyEmployee) => ({
+  const pharmacy_employments = pharmacies.map((pharmacyEmployee) => ({
     pharmacist_id: pharmacist.id,
     pharmacy_id: pharmacyEmployee.id,
     is_supervisor: pharmacyEmployee.is_supervisor,
   }))
-  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  await insertPharmacyEmployment(trx, pharmacy_employments)
   return pharmacist
 }

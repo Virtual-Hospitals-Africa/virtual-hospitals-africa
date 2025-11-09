@@ -138,14 +138,14 @@ export function markChatbotError(
     chatbot_name: ChatbotName
     whatsapp_message_received_id: string
     commitHash: string
-    errorMessage: string
+    error_message: string
   },
 ) {
   return trx
     .updateTable('whatsapp_messages_received')
     .set({
       error_commit_hash: opts.commitHash,
-      error_message: opts.errorMessage,
+      error_message: opts.error_message,
     })
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()

@@ -8,10 +8,10 @@ import {
 } from '../types.ts'
 import pick from '../util/pick.ts'
 
-function stringSendable(messageBody: string): WhatsAppSendableString {
+function stringSendable(message_body: string): WhatsAppSendableString {
   return {
     type: 'string',
-    messageBody,
+    message_body,
   }
 }
 
@@ -24,7 +24,7 @@ export default async function formatMessageToSend<
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
   console.log('state', state)
 
-  const messageBody = typeof state.prompt === 'string'
+  const message_body = typeof state.prompt === 'string'
     ? state.prompt
     : await state.prompt(trx, userState)
 
@@ -32,7 +32,7 @@ export default async function formatMessageToSend<
     case 'select':
     case 'expect_media': {
       return {
-        messageBody,
+        message_body,
         type: 'buttons',
         buttonText: 'Menu',
         options: state.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs
@@ -42,7 +42,7 @@ export default async function formatMessageToSend<
       const action = await state.action(trx, userState)
       return action.type === 'list'
         ? {
-          messageBody,
+          message_body,
           type: 'list',
           headerText: state.headerText,
           // Select only the fields whatsapp needs
@@ -55,7 +55,7 @@ export default async function formatMessageToSend<
           },
         }
         : {
-          messageBody,
+          message_body,
           type: 'buttons',
           buttonText: 'Menu',
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
@@ -67,14 +67,14 @@ export default async function formatMessageToSend<
     }
     case 'date': {
       return stringSendable(
-        messageBody + ' Please enter the date in the format DD/MM/YYYY',
+        message_body + ' Please enter the date in the format DD/MM/YYYY',
       ) // https://en.wikipedia.org/wiki/Date_format_by_country
     }
     case 'string': {
-      return stringSendable(messageBody)
+      return stringSendable(message_body)
     }
     case 'get_location': {
-      return stringSendable(messageBody)
+      return stringSendable(message_body)
     }
     default: {
       return stringSendable('What happened!?!?!?!?!?')

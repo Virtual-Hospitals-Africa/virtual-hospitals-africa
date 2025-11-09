@@ -37,3 +37,39 @@ export const TRIAGE_LEVELS = keys(TARGET_TIME_TO_TREATMENT_MINUTES)
 export function isTriageLevel(priority: string): priority is TriageLevel {
   return priority in TARGET_TIME_TO_TREATMENT_MINUTES
 }
+
+export const PRIORITY_COLORS: Record<
+  Priority,
+  { bg: string; text: string; border: string }
+> = {
+  Normal: {
+    bg: 'bg-green-100',
+    text: 'text-green-800',
+    border: 'border-green-200',
+  },
+  'Non-urgent': {
+    bg: 'bg-blue-100',
+    text: 'text-blue-800',
+    border: 'border-blue-200',
+  },
+  Urgent: {
+    bg: 'bg-yellow-100',
+    text: 'text-yellow-800',
+    border: 'border-yellow-200',
+  },
+  'Very urgent': {
+    bg: 'bg-red-100',
+    text: 'text-red-800',
+    border: 'border-red-200',
+  },
+  Emergency: {
+    bg: 'bg-red-200',
+    text: 'text-red-900',
+    border: 'border-red-300',
+  },
+  Deceased: {
+    bg: 'bg-blue-200',
+    text: 'text-blue-900',
+    border: 'border-blue-300',
+  },
+}

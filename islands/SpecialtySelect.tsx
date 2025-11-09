@@ -13,7 +13,7 @@ export function SpecialtySelectWithKnownOptions(
   if (!options.length) {
     return null
   }
-  const prettierSpecialtyName = (specialty_name: string): string => {
+  function prettierSpecialtyName(specialty_name: string): string {
     const name = specialty_name.replaceAll('_', ' ')
     return name.charAt(0).toUpperCase() + name.slice(1)
   }

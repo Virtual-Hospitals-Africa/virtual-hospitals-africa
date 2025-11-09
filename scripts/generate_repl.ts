@@ -8,18 +8,18 @@ async function loadAllModules(dir: string) {
   const modules: any = {}
   const qualified_dir = dir.startsWith(cwd) ? dir : `${cwd}${dir}`
   const path = qualified_dir.slice(cwd.length)
-  for await (const inDir of Deno.readDir(qualified_dir)) {
-    if (inDir.isSymlink) {
-      throw new Error('Symlinks are not supported: ' + inDir.name)
+  for await (const in_dir of Deno.readDir(qualified_dir)) {
+    if (in_dir.isSymlink) {
+      throw new Error('Symlinks are not supported: ' + in_dir.name)
     }
-    if (inDir.isDirectory) {
-      modules[inDir.name] = await loadAllModules(
-        `${qualified_dir}/${inDir.name}`,
+    if (in_dir.isDirectory) {
+      modules[in_dir.name] = await loadAllModules(
+        `${qualified_dir}/${in_dir.name}`,
       )
       continue
     }
-    const file = inDir
-    const [fileName, fileExt] = file.name.split('.')
+    const file = in_dir
+    const [file_name, file_ext] = file.name.split('.')
     const module = await import(`${qualified_dir}/${file.name}`)
     if (Object.keys(module).length === 0) {
       continue
@@ -40,14 +40,14 @@ async function loadAllModules(dir: string) {
       '/',
       '$',
     ) + '$' +
-      fileName).replaceAll('-', '_').replaceAll(
+      file_name).replaceAll('-', '_').replaceAll(
         '[',
         '',
       ).replaceAll(']', '')
     if (just_default_export) {
-      console.log(`import ${x} from '.${path}/${fileName}.${fileExt}'`)
+      console.log(`import ${x} from '.${path}/${file_name}.${file_ext}'`)
     } else {
-      console.log(`import * as ${x} from '.${path}/${fileName}.${fileExt}'`)
+      console.log(`import * as ${x} from '.${path}/${file_name}.${file_ext}'`)
     }
   }
 }

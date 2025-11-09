@@ -4,10 +4,10 @@ type Option = {
   description: string | string[]
 }
 
-export function VerticalRadioButtons({ options, name, default_value }: {
+export function VerticalRadioButtons({ options, name, defaultValue }: {
   options: Option[]
   name: string
-  default_value?: string
+  defaultValue?: string
 }) {
   return (
     <fieldset aria-label='Plan'>
@@ -16,7 +16,7 @@ export function VerticalRadioButtons({ options, name, default_value }: {
           <div key={option.id} className='flex items-start gap-3'>
             <div className='flex items-center pt-0.5'>
               <input
-                defaultChecked={option.id === default_value}
+                defaultChecked={option.id === defaultValue}
                 id={option.id}
                 name={name}
                 type='radio'

@@ -1,22 +1,28 @@
-import { Migration, MigrationResult, Migrator } from 'kysely'
+import {
+  Migration,
+  MigrationResult,
+  MigrationResultSet,
+  Migrator,
+} from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
+import { Maybe } from '../types.ts'
 
 const migrations: Record<
   string,
   Migration
 > = {}
-for (const migrationFile of Deno.readDirSync('./db/migrations')) {
-  const migrationName = migrationFile.name
-  assert(!migrationName.includes('seed'), 'Seed migrations are not supported')
-  const migration = await import(`./migrations/${migrationName}`)
-  migrations[migrationName] = migration.default || migration
+for (const migration_file of Deno.readDirSync('./db/migrations')) {
+  const migration_name = migration_file.name
+  assert(!migration_name.includes('seed'), 'Seed migrations are not supported')
+  const migration = await import(`./migrations/${migration_name}`)
+  migrations[migration_name] = migration.default || migration
 }
 
-const migrationTargets = Object.keys(migrations).sort()
+const migration_targets = Object.keys(migrations).sort()
 
 const migrator = new Migrator({
   db,
@@ -28,8 +34,8 @@ const migrator = new Migrator({
 function targetError(cmd: string) {
   console.error(
     `Please specify a valid target as in\n\n  deno task db:migrate:${cmd} ${
-      migrationTargets[0]
-    }\n\nValid targets:\n  ${migrationTargets.join('\n  ')}`,
+      migration_targets[0]
+    }\n\nValid targets:\n  ${migration_targets.join('\n  ')}`,
   )
   return Deno.exit(1)
 }
@@ -37,7 +43,7 @@ function targetError(cmd: string) {
 function findTarget(target: string, cmd: string) {
   const target_file = last(target.split('/'))
   assert(target_file)
-  const matching_targets = migrationTargets.filter((it) =>
+  const matching_targets = migration_targets.filter((it) =>
     it.includes(target_file)
   )
   if (matching_targets.length === 1) {
@@ -100,8 +106,8 @@ export const migrate = {
     if (!target) return targetError('redo:from')
     const results = await spinner('Migrating down', () => {
       const migration = findTarget(target, 'redo:from')
-      const migration_index = migrationTargets.indexOf(migration)
-      const migration_just_before = migrationTargets[migration_index - 1]
+      const migration_index = migration_targets.indexOf(migration)
+      const migration_just_before = migration_targets[migration_index - 1]
       return migrator.migrateTo(migration_just_before)
     })
     logMigrationResults(results)
@@ -130,12 +136,15 @@ export const migrate = {
   },
 }
 
-// deno-lint-ignore no-explicit-any
-export function logMigrationResults({ error, results }: any = {}) {
-  // deno-lint-ignore no-explicit-any
-  results?.forEach((it: any) => {
+export function logMigrationResults(
+  migration_result_set: Maybe<Partial<MigrationResultSet>> | void,
+) {
+  const { error, results } = migration_result_set || {}
+  results?.forEach((it) => {
     if (it.status === 'Success') {
-      console.log(`  migration "${it.migrationName}" was executed successfully`)
+      console.log(
+        `  migration "${it.migrationName}" was executed successfully`,
+      )
     } else if (it.status === 'Error') {
       console.error(`  failed to execute migration "${it.migrationName}"`)
     }

@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
+  IdSelection,
   InsertShape,
   isPriority,
   Maybe,
@@ -16,6 +17,7 @@ import {
 } from '../../types.ts'
 import * as patients from './patients.ts'
 import * as organizations from './organizations.ts'
+import { nonAdminId } from '../../shared/nonAdminId.ts'
 import {
   blankSelection,
   jsonArrayFrom,
@@ -46,7 +48,7 @@ import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assertAll } from '../../util/assertAll.ts'
-import { HealthWorkerIdSelection } from './health_worker_id.ts'
+import first from '../../util/first.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -64,10 +66,10 @@ type EncounterExistingOrToCreate = {
 
 export function seenPatientEncounterEmployeeId(
   encounter: RenderedPatientEncounter,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ) {
   const employee = encounter.all_employees_seen.find((employee) =>
-    employee.employment_id === organization_employment.non_admin_id
+    employee.employment_id === nonAdminId(organization_employment)
   )
   assert(
     employee,
@@ -79,7 +81,7 @@ export function seenPatientEncounterEmployeeId(
 export async function insertSeekingTreatmentForRegisteredPatient(
   trx: TrxOrDb,
   organization: RenderedOrganization,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
   {
     patient_id,
     encounter,
@@ -106,7 +108,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
 
   assert(
     patient_encounter_employee_id,
-    'Caller must supply patient_encounter_employee_id upon creation',
+    'Caller must supply patient_encounter_employee_id if not created',
   )
 
   const { reason } = encounter.create ? encounter.to_create : encounter.existing
@@ -116,8 +118,8 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     'Only seeking treatment supported for now!',
   )
 
-  const { non_admin_id } = organization_employment
-  assert(non_admin_id)
+  const non_admin_employment_id = nonAdminId(organization_employment)
+  assert(non_admin_employment_id)
   const workflows: Workflow[] = ['triage', 'consultation']
   const patient_workflows = workflows.map((workflow) => ({
     id: generateUUID(),
@@ -133,10 +135,13 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     next_workflow: workflows[1],
     department_name: WORKFLOW_DEPARTMENTS[workflows[0]],
   }
-  const employed_in_workflow_department = organization_employment.departments
-    .some((
-      department,
-    ) => department.name === patient_presence.department_name)
+  const employed_in_workflow_department = organization_employment.roles.some(
+    (role) =>
+      role.departments.some((department) =>
+        department.name === patient_presence.department_name
+      ),
+  )
+
   if (!employed_in_workflow_department) {
     patient_presence.next_workflow = patient_presence.current_workflow
     patient_presence.current_workflow = null
@@ -144,7 +149,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   }
 
   const employment_presence: InsertShape<EmploymentPresence> = {
-    id: non_admin_id,
+    id: non_admin_employment_id,
     at_work: true,
     with_patient_id: employed_in_workflow_department ? patient_id : null,
   }
@@ -173,7 +178,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
             .values({
               patient_encounter_id,
               id: patient_encounter_employee_id,
-              employment_id: non_admin_id,
+              employment_id: non_admin_employment_id,
             })
           : blankSelection(qb),
     ).with(
@@ -363,12 +368,6 @@ export function baseQuery(trx: TrxOrDb) {
                       '=',
                       'patient_presence.id',
                     ).select('employment_presence.id'),
-                  // (join) =>
-                  //   join.on(
-                  //     'employment_presence.with_patient_id',
-                  //     '=',
-                  //     eb_patient_presence.ref('patient_presence.id'),
-                  //   ),
                 ),
             ).as('employees'),
           ])
@@ -579,8 +578,7 @@ type EncounterSearch = {
   organization_id?: string
   patient_id?: string
   // ever_seen_health_worker_id?: string
-  presence_health_worker_id?: string | HealthWorkerIdSelection
-  ids?: string[]
+  presence_health_worker_id?: string | IdSelection
 }
 
 const model = base({
@@ -614,9 +612,6 @@ const model = base({
     qb,
     opts: EncounterSearch,
   ) {
-    if (opts.ids) {
-      qb = qb.where('patient_encounters.id', 'in', opts.ids)
-    }
     if (opts.is_open) {
       assert(!opts.is_closed)
       qb = qb.where('patient_encounters.closed_at', 'is', null)
@@ -655,11 +650,13 @@ const model = base({
         opts.presence_health_worker_id,
       )
     }
+
     return qb
   },
 })
 
 export const getById = model.getById
+export const getByIds = model.getByIds
 export const search = model.search
 export const findAll = model.findAll
 export const findOne = model.findOne
@@ -697,12 +694,20 @@ export async function getOpen(
   trx: TrxOrDb,
   search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
 ): Promise<RenderedPatientOpenEncounter[]> {
-  const { results } = await search(trx, {
+  const results = await findAll(trx, {
     ...search_terms,
     is_open: true,
-  }, { rows_per_page: Infinity })
+  })
   assertAll(results, assertIsOpen)
   return results
+}
+
+export async function getFirstOpen(
+  trx: TrxOrDb,
+  search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
+): Promise<RenderedPatientOpenEncounter | undefined> {
+  const results = await getOpen(trx, search_terms)
+  return first(results)
 }
 
 export function updateOne(

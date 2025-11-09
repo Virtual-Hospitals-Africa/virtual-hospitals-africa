@@ -10,6 +10,7 @@ alwaysApply: true
 The primary relational database follows these organizational patterns:
 
 - Normalized structure: Tables are normalized to reduce redundancy
+- In migrations prefer native kysely methods that use `db.schema` over raw sql``
 - UUIDs are used for primary keys unless the table defines an entity type with a primary key given by some other coding system
   - Use createStandardTable to create standard tables with a uuid id column as well as created_at / updated_at fields
 - Indexing strategy: Indexes on frequently queried columns and join conditions

@@ -43,9 +43,9 @@
 //       )
 
 //       if (!response.ok) throw new Error(await response.text())
-//       const pageContents = await response.text()
+//       const page_contents =await response.text()
 
-//       const $ = cheerio.load(pageContents)
+//       const $ = cheerio.load(page_contents)
 
 //       const form_values = getFormValues($)
 //       assert(isObjectLike(form_values))
@@ -192,9 +192,9 @@
 //         )
 
 //         if (!response.ok) throw new Error(await response.text())
-//         const pageContents = await response.text()
+//         const page_contents =await response.text()
 
-//         const $ = cheerio.load(pageContents)
+//         const $ = cheerio.load(page_contents)
 
 //         const form_values = getFormValues($)
 //         assert(isObjectLike(form_values))

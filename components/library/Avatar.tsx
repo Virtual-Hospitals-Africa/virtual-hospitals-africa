@@ -31,13 +31,13 @@ export default function Avatar(
     hide_when_empty?: boolean
   },
 ) {
-  const fullClassName = twMerge('flex-none rounded-full w-10 h-10', className)
+  const full_class_name = twMerge('flex-none rounded-full w-10 h-10', className)
   if (src) {
     return (
       <img
         src={src}
         alt=''
-        className={fullClassName}
+        className={full_class_name}
       />
     )
   }
@@ -68,5 +68,5 @@ export default function Avatar(
       </div>
     )
   }
-  return <EmptyAvatar className={fullClassName} />
+  return <EmptyAvatar className={full_class_name} />
 }

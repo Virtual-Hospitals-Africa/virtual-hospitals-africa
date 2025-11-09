@@ -6,9 +6,9 @@ import { Button } from '../library/Button.tsx'
 
 export function formHeaderText({ day, today }: { day: string; today: string }) {
   if (today === day) return 'Today’s Appointments'
-  const dayStrMinimal = prettyMinimal(day, today)
-  if (dayStrMinimal === 'Tomorrow') return 'Tomorrow’s Appointments'
-  return `Appointments on ${dayStrMinimal}`
+  const day_str_minimal = prettyMinimal(day, today)
+  if (day_str_minimal === 'Tomorrow') return 'Tomorrow’s Appointments'
+  return `Appointments on ${day_str_minimal}`
 }
 
 export default function AppointmentsCalendar(

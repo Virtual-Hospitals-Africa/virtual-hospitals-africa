@@ -22,31 +22,31 @@
 //         registration_status: 'approved',
 //       })
 
-//       const testPatient = await patients.insert(db, {
+//       const test_patient =await patients.insert(db, {
 //         name: 'Test Patient',
 //       })
 
 //       const response = await fetch(
-//         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add?patient_id=${testPatient.id}`,
+//         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add?patient_id=${test_patient.id}`,
 //         {},
 //       )
 
 //       assert(response.ok, 'should have returned ok')
-//       const pageContents = await response.text()
+//       const page_contents =await response.text()
 
-//       const $ = cheerio.load(pageContents)
+//       const $ = cheerio.load(page_contents)
 
 //       const form_values = getFormValues($)
 //       assertEquals(form_values, {
 //         notes: null,
-//         patient_id: testPatient.id,
-//         patient_name: testPatient.name,
+//         patient_id: test_patient.id,
+//         patient_name: test_patient.name,
 //         reason: 'seeking treatment',
 //       })
 //     })
 
 //     it('creates a patient encounter on POST', async () => {
-//       const testPatient = await patients.insert(db, {
+//       const test_patient =await patients.insert(db, {
 //         name: 'Test Patient',
 //       })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
@@ -56,7 +56,7 @@
 //       })
 
 //       const body = new FormData()
-//       body.set('patient_id', testPatient.id)
+//       body.set('patient_id', test_patient.id)
 //       body.set('reason', 'seeking treatment')
 //       body.set('notes', 'Test notes')
 //       body.set('patient_name', 'Test Patient')
@@ -77,29 +77,29 @@
 //       }
 
 //       // Assert that the patient encounter is created and added to the waiting room
-//       const patientEncounter = await db
+//       const patient_encounter =await db
 //         .selectFrom('patient_encounters')
-//         .where('patient_id', '=', testPatient.id)
+//         .where('patient_id', '=', test_patient.id)
 //         .selectAll()
 //         .executeTakeFirstOrThrow()
 
 //       const waiting_room = await db
 //         .selectFrom('waiting_room')
 //         .selectAll()
-//         .where('patient_encounter_id', '=', patientEncounter.id)
+//         .where('patient_encounter_id', '=', patient_encounter.id)
 //         .executeTakeFirstOrThrow()
 
-//       assertEquals(patientEncounter.appointment_id, null)
-//       assertEquals(patientEncounter.closed_at, null)
-//       assertEquals(patientEncounter.notes, 'Test notes')
-//       assertEquals(patientEncounter.patient_id, testPatient.id)
-//       assertEquals(patientEncounter.reason, 'seeking treatment')
+//       assertEquals(patient_encounter.appointment_id, null)
+//       assertEquals(patient_encounter.closed_at, null)
+//       assertEquals(patient_encounter.notes, 'Test notes')
+//       assertEquals(patient_encounter.patient_id, test_patient.id)
+//       assertEquals(patient_encounter.reason, 'seeking treatment')
 
 //       assertEquals(
 //         waiting_room.organization_id,
 //         '00000000-0000-0000-0000-000000000001',
 //       )
-//       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
+//       assertEquals(waiting_room.patient_encounter_id, patient_encounter.id)
 //     })
 
 //     it.skip('can create a patient encounter for a new patient on POST', async () => {
@@ -130,7 +130,7 @@
 //       }
 
 //       // Assert that the patient encounter is created and added to the waiting room
-//       const patientEncounter = await db
+//       const patient_encounter =await db
 //         .selectFrom('patient_encounters')
 //         .where(
 //           'patient_id',
@@ -146,25 +146,25 @@
 
 //       const waiting_room = await db
 //         .selectFrom('waiting_room')
-//         .where('patient_encounter_id', '=', patientEncounter.id)
+//         .where('patient_encounter_id', '=', patient_encounter.id)
 //         .selectAll()
 //         .executeTakeFirstOrThrow()
 
-//       assertEquals(patientEncounter.appointment_id, null)
-//       assertEquals(patientEncounter.closed_at, null)
-//       assertEquals(patientEncounter.notes, 'Test notes')
-//       assertEquals(patientEncounter.reason, 'seeking treatment')
+//       assertEquals(patient_encounter.appointment_id, null)
+//       assertEquals(patient_encounter.closed_at, null)
+//       assertEquals(patient_encounter.notes, 'Test notes')
+//       assertEquals(patient_encounter.reason, 'seeking treatment')
 
 //       assertEquals(
 //         waiting_room.organization_id,
 //         '00000000-0000-0000-0000-000000000001',
 //       )
-//       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
+//       assertEquals(waiting_room.patient_encounter_id, patient_encounter.id)
 
 //       const { name } = await db.selectFrom('patients').select(['name']).where(
 //         'id',
 //         '=',
-//         patientEncounter.patient_id,
+//         patient_encounter.patient_id,
 //       ).executeTakeFirstOrThrow()
 //       assertEquals(name, patient_name)
 //     })

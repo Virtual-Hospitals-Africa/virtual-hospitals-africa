@@ -55,6 +55,7 @@ You are a senior TypeScript engineer with vast experience in the stack described
 - Use snake_case for file names not in routes
 - Use kebab-case for file names not in routes. The exception is placeholders as in /[role_entrypoint]/logout.ts because role_entrypoint will be interpreted as a variable.
 - Use existing naming patterns for writing tests and creating new test files
+- Do not shorten names. Use `organization` not `org` for organization, for example.
 
 # TypeScript Usage
 

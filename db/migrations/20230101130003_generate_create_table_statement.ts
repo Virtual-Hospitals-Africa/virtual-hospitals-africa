@@ -40,7 +40,7 @@ export function up(db: Kysely<DB>) {
                                       WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef)
                     ELSE
                         ''
-                    END as column_default_value,
+                    END as column_defaultValue,
                     CASE WHEN a.attnotnull = true THEN 
                         'NOT NULL'
                     ELSE
@@ -81,7 +81,7 @@ export function up(db: Kysely<DB>) {
 
                 IF column_record.attnum <= column_record.max_attnum THEN
                     v_table_ddl:=v_table_ddl||chr(10)||
-                            '    '||column_record.column_name||' '||column_record.column_type||' '||column_record.column_default_value||' '||column_record.column_not_null;
+                            '    '||column_record.column_name||' '||column_record.column_type||' '||column_record.column_defaultValue||' '||column_record.column_not_null;
                 END IF;
             END LOOP;
 

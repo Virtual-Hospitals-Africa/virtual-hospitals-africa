@@ -8,7 +8,7 @@ import {
 
 // Individual chip component for triage levels
 function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
-  const priorityStyles = {
+  const priority_styles = {
     'Emergency': 'bg-red-100 text-red-800',
     'Very urgent': 'bg-orange-100 text-orange-700',
     'Urgent': 'bg-yellow-100 text-yellow-800',
@@ -17,12 +17,12 @@ function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
     'Deceased': 'bg-blue-100 text-blue-800',
   }
 
-  const styleClass = priorityStyles[record.priority] ||
+  const style_class = priority_styles[record.priority] ||
     'bg-gray-100 text-gray-600'
 
   return (
     <div
-      className={`box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[2px] relative rounded-[60px] shrink-0 ${styleClass}`}
+      className={`box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[2px] relative rounded-[60px] shrink-0 ${style_class}`}
     >
       <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
         {record.display}
@@ -122,7 +122,7 @@ function ThisVisit({ records, current_consultation_step }: {
   records: PatientDrawerV3Props['this_visit_records']
   current_consultation_step: PatientDrawerV3Props['current_consultation_step']
 }) {
-  const encounterSteps = [
+  const encounter_steps = [
     {
       key: 'chief_complaint',
       label: 'Chief Complaint',
@@ -153,7 +153,7 @@ function ThisVisit({ records, current_consultation_step }: {
         </div>
       </div>
 
-      {encounterSteps.map((step) => (
+      {encounter_steps.map((step) => (
         <div
           key={step.key}
           className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'
@@ -193,7 +193,7 @@ function ThisVisit({ records, current_consultation_step }: {
 
 // History component with medical history sections
 function History({ history }: { history: RenderedPatientHistory }) {
-  const historyItems = [
+  const history_items = [
     {
       key: 'pre_existing_conditions',
       label: 'Pre-existing Conditions',
@@ -243,7 +243,7 @@ function History({ history }: { history: RenderedPatientHistory }) {
       </div>
 
       <div className='relative flex flex-col items-start justify-start content-stretch shrink-0'>
-        {historyItems.map((item) => (
+        {history_items.map((item) => (
           <div
             key={item.key}
             className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'

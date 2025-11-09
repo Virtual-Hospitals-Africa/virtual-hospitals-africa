@@ -32,19 +32,19 @@ export function ZimbabweanNationalIdInput(
   },
 ) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
-    const inputElement = e.currentTarget
-    const previousValue = inputElement.getAttribute('data-prev-value') || ''
-    const isRemoving = previousValue.length > e.currentTarget.value.length
+    const input_element = e.currentTarget
+    const previous_value = input_element.getAttribute('data-prev-value') || ''
+    const is_removing = previous_value.length > e.currentTarget.value.length
 
-    let formatted = inputElement.value
+    let formatted = input_element.value
     // format to match 00-000000 D 00
-    if (formatted.length === 2 && !isRemoving) {
+    if (formatted.length === 2 && !is_removing) {
       formatted += '-'
     }
-    if (formatted.length === 9 && !isRemoving) {
+    if (formatted.length === 9 && !is_removing) {
       formatted += ' '
     }
-    if (formatted.length === 11 && !isRemoving) {
+    if (formatted.length === 11 && !is_removing) {
       formatted += ' '
     }
 
@@ -54,8 +54,8 @@ export function ZimbabweanNationalIdInput(
     if (formatted.length > 14) {
       formatted = formatted.slice(0, 14)
     }
-    inputElement.value = formatted
-    inputElement.setAttribute('data-prev-value', formatted)
+    input_element.value = formatted
+    input_element.setAttribute('data-prev-value', formatted)
   }
 
   return (

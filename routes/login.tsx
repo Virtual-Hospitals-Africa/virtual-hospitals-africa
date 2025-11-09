@@ -1,7 +1,6 @@
 import redirect from '../util/redirect.ts'
 import * as cookie from '../shared/cookie.ts'
 import * as sessions from '../db/models/sessions.ts'
-import * as health_workers from '../db/models/health_workers.ts'
 import db from '../db/db.ts'
 import { deleteCookie, setCookie } from 'std/http/cookie.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -18,6 +17,7 @@ import {
   readMandatoryStringEnvironmentVariable,
 } from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
+import { upsertWithGoogleCredentials } from '../db/models/health_worker_google_tokens.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {
@@ -27,7 +27,7 @@ if (FAKE_GOOGLE_AUTH) {
 export const loginHref = memoize(() => {
   const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')
 
-  const oauthParams = new URLSearchParams({
+  const oauth_params = new URLSearchParams({
     redirect_uri: redirectUri(),
     prompt: 'consent',
     response_type: 'code',
@@ -40,7 +40,7 @@ export const loginHref = memoize(() => {
     flowName: 'GeneralOAuthFlow',
   })
 
-  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
+  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauth_params}`
 })
 
 async function fakeGoogleLogin(trx: TrxOrDb) {
@@ -51,7 +51,7 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   const refresh_token = generateUUID()
   const expires_at = new Date()
   expires_at.setDate(expires_at.getDate() + 60)
-  const health_worker = await health_workers.upsertWithGoogleCredentials(trx, {
+  const health_worker = await upsertWithGoogleCredentials(trx, {
     ...names,
     email,
     avatar_url,

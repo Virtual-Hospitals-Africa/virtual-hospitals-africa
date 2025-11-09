@@ -5,10 +5,10 @@ import snakeCase from './snakeCase.ts'
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
 export default async function* parseCsv(
-  filePath: string,
+  file_path: string,
   opts: Partial<CommonCSVReaderOptions> = {},
 ) {
-  const file = await Deno.open(filePath)
+  const file = await Deno.open(file_path)
 
   let header: string[] = []
   let isFirstRow = true
@@ -26,7 +26,7 @@ export default async function* parseCsv(
     if (isFirstRow) {
       if (rowDataArray.some((row) => row === '')) {
         throw new Error(
-          `Error parsing ${filePath}. Check the header for extraneous trailing characters`,
+          `Error parsing ${file_path}. Check the header for extraneous trailing characters`,
         )
       }
       // Assuming the first row of the CSV contains the header
@@ -73,11 +73,11 @@ function interpretIntegers(row: Record<string, string | null>) {
 }
 
 export async function* parseTsv(
-  filePath: string,
+  file_path: string,
   opts: ParseTsvOptions = {},
 ) {
   for await (
-    let row of parseCsv(filePath, { columnSeparator: '\t', ...opts })
+    let row of parseCsv(file_path, { columnSeparator: '\t', ...opts })
   ) {
     if (opts.convert_to_snake_case) {
       row = Object.fromEntries(
@@ -93,24 +93,24 @@ export async function* parseTsv(
 }
 
 export async function* parseTsvTyped<Schema extends z.ZodTypeAny>(
-  filePath: string,
+  file_path: string,
   schema: Schema,
   opts: ParseTsvOptions = {},
 ): AsyncGenerator<z.infer<Schema>> {
   for await (
-    const row of parseTsv(filePath, opts)
+    const row of parseTsv(file_path, opts)
   ) {
     yield schema.parse(row)
   }
 }
 
 export async function* parseCsvTyped<Schema extends z.ZodTypeAny>(
-  filePath: string,
+  file_path: string,
   schema: Schema,
   opts: ParseTsvOptions = {},
 ): AsyncGenerator<z.infer<Schema>> {
   for await (
-    const row of parseCsv(filePath, opts)
+    const row of parseCsv(file_path, opts)
   ) {
     yield schema.parse(row)
   }

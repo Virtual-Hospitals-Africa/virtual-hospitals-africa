@@ -28,7 +28,7 @@ function mediaType(mime_type: string) {
   throw new Error(`Unknown media type: ${mime_type}`)
 }
 
-const twentyFourMb = 24 * 1024 * 1024
+const twenty_four_mb = 24 * 1024 * 1024
 
 export default function Preview(
   { mime_type, url, name, className, remove }: {
@@ -99,17 +99,17 @@ export function FilePreviewInput(
       }
       : null,
   )
-  const isShowPreview = image?.url || (value?.url && !initialImageRemoved)
+  const is_show_preview = image?.url || (value?.url && !initialImageRemoved)
 
   const input = (
     <ImageOrVideoInput
       value={initialImageRemoved ? null : value}
-      label={isShowPreview ? '' : label}
+      label={is_show_preview ? '' : label}
       {...props}
       onInput={(e) => {
         const file = e.currentTarget.files?.[0]
         if (file == null) return setImage(null)
-        if (file.size > twentyFourMb) {
+        if (file.size > twenty_four_mb) {
           alert('File size must be less than 24MB')
           return setImage(null)
         }
@@ -124,7 +124,7 @@ export function FilePreviewInput(
     />
   )
 
-  if (isShowPreview) {
+  if (is_show_preview) {
     return (
       <Label label={label} className='relative'>
         {input}

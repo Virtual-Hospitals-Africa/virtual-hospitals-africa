@@ -28,9 +28,9 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacists`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
       assert(
         $('input[name="search"]').length === 1,
         'should have a search input',
@@ -38,11 +38,11 @@ describe.skip(
     })
 
     it('renders a pharmacist table and a pharmacist with GET', async () => {
-      const newPharmacist = await addTestPharmacist(db)
+      const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const pharmacist_name =
-        `${newPharmacist.given_name} ${newPharmacist.family_name}`
+        `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
 
       const response = await fetch(
         path(`/regulator/${regulator.country}/pharmacists`, {
@@ -54,9 +54,9 @@ describe.skip(
         throw new Error(await response.text())
       }
 
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assertEquals($('table').length, 1)
 
@@ -65,33 +65,33 @@ describe.skip(
         `should have one <td> with the pharmacist name"`,
       )
 
-      const tableRow = $(`tr div:contains(${pharmacist_name})`).closest('tr')
+      const table_row = $(`tr div:contains(${pharmacist_name})`).closest('tr')
 
       assert(
-        tableRow.find(`td > div:contains(${newPharmacist.prefix})`).length ===
+        table_row.find(`td > div:contains(${new_pharmacist.prefix})`).length ===
           1,
         `should have one <td> with the text the pharmacist prefix"`,
       )
 
       assert(
-        tableRow.find(`td > div:contains(${newPharmacist.pharmacist_type})`)
+        table_row.find(`td > div:contains(${new_pharmacist.pharmacist_type})`)
           .length === 1,
         `should have one <td> with the text the pharmacist type"`,
       )
 
       assert(
-        tableRow.find(`td > div:contains(${newPharmacist.licence_number})`)
+        table_row.find(`td > div:contains(${new_pharmacist.licence_number})`)
           .length === 1,
         `should have one <td> with the text the pharmacist licence number`,
       )
 
       assert(
-        tableRow.find(`td > div:contains(${newPharmacist.expiry_date})`)
+        table_row.find(`td > div:contains(${new_pharmacist.expiry_date})`)
           .length === 1,
         `should have one <td> with the text the pharmacist expiry date`,
       )
 
-      await removeTestPharmacist(db, newPharmacist.id)
+      await removeTestPharmacist(db, new_pharmacist.id)
     })
   },
 )

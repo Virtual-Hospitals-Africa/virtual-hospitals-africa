@@ -27,15 +27,18 @@ function daysToShow(
 
   const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
 
-  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
-  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
+  const last_month_int = monthInt === 1 ? 12 : monthInt - 1
+  const last_month_year_int = monthInt === 1 ? yearInt - 1 : yearInt
 
-  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
-  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
+  const next_month_int = monthInt === 12 ? 1 : monthInt + 1
+  const next_month_year_int = monthInt === 12 ? yearInt + 1 : yearInt
 
-  const totalDaysInThisMonth = numberOfDaysInMonth(monthInt, yearInt)
+  const total_days_in_this_month = numberOfDaysInMonth(monthInt, yearInt)
 
-  const daysOfThisMonth: CalendarDayProps[] = range(1, totalDaysInThisMonth + 1)
+  const daysOfThisMonth: CalendarDayProps[] = range(
+    1,
+    total_days_in_this_month + 1,
+  )
     .map((d) => {
       const date = `${yearInt}-${padTime(monthInt)}-${padTime(d)}`
       return {
@@ -44,24 +47,24 @@ function daysToShow(
       }
     })
 
-  const firstDayOfThisMonth = new Date(`${yearInt}-${padTime(monthInt)}-01`)
-  const firstWeekDaysOfLastMonth = firstDayOfThisMonth.getDay()
+  const first_day_of_this_month = new Date(`${yearInt}-${padTime(monthInt)}-01`)
+  const first_week_days_of_last_month = first_day_of_this_month.getDay()
 
-  const lastDayOfThisMonth = new Date(
-    `${yearInt}-${padTime(monthInt)}-${totalDaysInThisMonth}`,
+  const last_day_of_this_month = new Date(
+    `${yearInt}-${padTime(monthInt)}-${total_days_in_this_month}`,
   )
-  const lastWeekDaysOfNextMonth = 6 - lastDayOfThisMonth.getDay()
+  const last_week_days_of_next_month = 6 - last_day_of_this_month.getDay()
 
-  const totalDaysInLastMonth = numberOfDaysInMonth(
-    lastMonthInt,
-    lastMonthYearInt,
+  const total_days_in_last_month = numberOfDaysInMonth(
+    last_month_int,
+    last_month_year_int,
   )
 
   const daysOfLastMonth: CalendarDayProps[] = range(
-    totalDaysInLastMonth - firstWeekDaysOfLastMonth + 1,
-    totalDaysInLastMonth + 1,
+    total_days_in_last_month - first_week_days_of_last_month + 1,
+    total_days_in_last_month + 1,
   ).map((dayInt) => {
-    const date = `${lastMonthYearInt}-${padTime(lastMonthInt)}-${
+    const date = `${last_month_year_int}-${padTime(last_month_int)}-${
       padTime(dayInt)
     }`
     return toShow(date)
@@ -69,9 +72,9 @@ function daysToShow(
 
   const daysOfNextMonth: CalendarDayProps[] = range(
     1,
-    lastWeekDaysOfNextMonth + 1,
+    last_week_days_of_next_month + 1,
   ).map((dayInt) => {
-    const date = `${nextMonthYearInt}-${padTime(nextMonthInt)}-${
+    const date = `${next_month_year_int}-${padTime(next_month_int)}-${
       padTime(dayInt)
     }`
     return toShow(date)
@@ -95,19 +98,21 @@ export default function Calendar(
   const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
   const days = daysToShow({ day, today })
 
-  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
-  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
-  const totalDaysInLastMonth = numberOfDaysInMonth(
-    lastMonthInt,
-    lastMonthYearInt,
+  const last_month_int = monthInt === 1 ? 12 : monthInt - 1
+  const last_month_year_int = monthInt === 1 ? yearInt - 1 : yearInt
+  const total_days_in_last_month = numberOfDaysInMonth(
+    last_month_int,
+    last_month_year_int,
   )
-  const lastDayOfLastMonth = `${lastMonthYearInt}-${
-    padTime(lastMonthInt)
-  }-${totalDaysInLastMonth}`
+  const last_day_of_last_month = `${last_month_year_int}-${
+    padTime(last_month_int)
+  }-${total_days_in_last_month}`
 
-  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
-  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
-  const firstDayOfNextMonth = `${nextMonthYearInt}-${padTime(nextMonthInt)}-01`
+  const next_month_int = monthInt === 12 ? 1 : monthInt + 1
+  const next_month_year_int = monthInt === 12 ? yearInt + 1 : yearInt
+  const first_day_of_next_month = `${next_month_year_int}-${
+    padTime(next_month_int)
+  }-01`
 
   return (
     <div className='text-center lg:col-start-8 lg:col-end-13 lg:mt-9 xl:col-start-9'>
@@ -115,7 +120,7 @@ export default function Calendar(
         <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
-          href={`${url.pathname}?day=${lastDayOfLastMonth}`}
+          href={`${url.pathname}?day=${last_day_of_last_month}`}
         >
           <span className='sr-only'>Previous month</span>
           <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
@@ -126,7 +131,7 @@ export default function Calendar(
         <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
-          href={`${url.pathname}?day=${firstDayOfNextMonth}`}
+          href={`${url.pathname}?day=${first_day_of_next_month}`}
         >
           <span className='sr-only'>Next month</span>
           <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />

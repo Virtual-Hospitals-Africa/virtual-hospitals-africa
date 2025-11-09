@@ -125,7 +125,7 @@ export default function useAsyncSearch<
 
   const loading = !!search.active_request
 
-  const loadMore = !loading && search.has_next_page
+  const load_more = !loading && search.has_next_page
     ? () => {
       setSearch((search) => ({
         ...search,
@@ -136,7 +136,7 @@ export default function useAsyncSearch<
 
   return {
     loading,
-    loadMore,
+    load_more,
     search,
     results: search.pages.flatMap((page) => page.results),
     setQuery: (query: string) =>

@@ -25,10 +25,10 @@ export function prettyPatientDateOfBirth(
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
   const date = new Date(`${year}-${month}-${day}T00:00:00Z`)
-  const dtDateOnly = new Date(
+  const dt_date_only = new Date(
     date.valueOf() + date.getTimezoneOffset() * 60 * 1000,
   )
-  return dtDateOnly.toLocaleDateString('en-GB', {
+  return dt_date_only.toLocaleDateString('en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -175,7 +175,7 @@ export function formatJohannesburg(
 }
 
 export const date_regex = /^\d{4}-\d{2}-\d{2}$/
-const rfc3339Regex =
+const rfc3339_regex =
   /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
 export function differenceInDays(date1: string, date2: string): number {
@@ -185,13 +185,13 @@ export function differenceInDays(date1: string, date2: string): number {
   assert(date_regex.test(date2), `Expected ISO format: ${date2}`)
 
   // One day in milliseconds
-  const oneDay = 1000 * 60 * 60 * 24
+  const one_day = 1000 * 60 * 60 * 24
 
   // Calculating the time difference between two dates
-  const diffInTime = new Date(date1).getTime() - new Date(date2).getTime()
+  const diff_in_time = new Date(date1).getTime() - new Date(date2).getTime()
 
   // Calculating the no. of days between two dates
-  return Math.round(diffInTime / oneDay)
+  return Math.round(diff_in_time / one_day)
 }
 
 export function differenceInMinutes(date1: Date, date2: Date): number {
@@ -211,21 +211,21 @@ const time_format = new Intl.DateTimeFormat('en-gb', {
 })
 
 // TODO: revisit this function. We should also print the day for today and tomorrow
-export function prettyAppointmentTime(startTime: string | Date): string {
-  if (isString(startTime)) {
+export function prettyAppointmentTime(start_time: string | Date): string {
+  if (isString(start_time)) {
     assert(
-      rfc3339Regex.test(startTime),
-      `Expected RFC3339 format: ${startTime}`,
+      rfc3339_regex.test(start_time),
+      `Expected RFC3339 format: ${start_time}`,
     )
     // assert(
-    //   startTime.endsWith('+02:00'),
-    //   `Expected ${startTime} to be in Johannesburg time`,
+    //   start_time.endsWith('+02:00'),
+    //   `Expected ${start_time} to be in Johannesburg time`,
     // )
   } else {
-    assert(isDate(startTime))
+    assert(isDate(start_time))
   }
 
-  const start = isString(startTime) ? new Date(startTime) : startTime
+  const start = isString(start_time) ? new Date(start_time) : start_time
 
   const now = formatJohannesburg()
   const diff = differenceInDays(formatJohannesburg(start), now)
@@ -241,9 +241,9 @@ export function prettyAppointmentTime(startTime: string | Date): string {
     dateStr = long_day_format.format(start)
   }
 
-  const prettyTime = time_format.format(start)
+  const pretty_time = time_format.format(start)
 
-  return `${dateStr} at ${prettyTime}`
+  return `${dateStr} at ${pretty_time}`
 }
 
 export function timeInSimpleAmPm(parsed: ParsedDateTime): string {
@@ -260,16 +260,16 @@ export function timeRangeInSimpleAmPm(
   start: ParsedDateTime,
   end: ParsedDateTime,
 ): string {
-  const timeStart = timeInSimpleAmPm(start)
-  const timeEnd = timeInSimpleAmPm(end)
-  const sameAmPm = timeStart.slice(-2) === timeEnd.slice(-2)
-  return sameAmPm
-    ? `${timeStart.slice(0, -2)}-${timeEnd}`
-    : `${timeStart}-${timeEnd}`
+  const time_start = timeInSimpleAmPm(start)
+  const time_end = timeInSimpleAmPm(end)
+  const same_am_pm = time_start.slice(-2) === time_end.slice(-2)
+  return same_am_pm
+    ? `${time_start.slice(0, -2)}-${time_end}`
+    : `${time_start}-${time_end}`
 }
 
 export function isRfc3339(date: string): boolean {
-  return rfc3339Regex.test(date)
+  return rfc3339_regex.test(date)
 }
 
 export function isIsoJohannesburg(date: string): boolean {
@@ -285,8 +285,9 @@ export function assertAllJohannesburg(dates: string[]) {
   }
 }
 
-const isLeap = (year: number): boolean =>
-  (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
+function isLeap(year: number): boolean {
+  return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
+}
 
 export function monthName(month: MonthNum): string {
   switch (month) {
@@ -353,26 +354,26 @@ export function numberOfDaysInMonth(month: number, year: number): number {
 export function convertToTime(date: string): Time {
   const [, timeAndZone] = date.split('T')
   const [time] = timeAndZone.split('+')
-  const [hourStr, minuteStr, second] = time.split(':')
+  const [hour_str, minute_str, second] = time.split(':')
   assertEquals(second, '00')
-  const hour = parseInt(hourStr)
-  const minute = parseInt(minuteStr)
+  const hour = parseInt(hour_str)
+  const minute = parseInt(minute_str)
   assertEquals(minute % 5, 0)
-  const amPm = hour >= 12 ? 'pm' : 'am'
-  const hourMod = hour % 12
+  const am_pm = hour >= 12 ? 'pm' : 'am'
+  const hour_mod = hour % 12
   return {
-    hour: hourMod === 0 ? 12 : hourMod as Time['hour'],
+    hour: hour_mod === 0 ? 12 : hour_mod as Time['hour'],
     minute: minute as Time['minute'],
-    amPm,
+    am_pm,
   }
 }
 
 export function convertToTimeString(time: string): string {
-  const formattedTime = convertToTime(time)
-  const minute = formattedTime.minute
-    ? formattedTime.minute.toString().padStart(2, '0')
+  const formatted_time = convertToTime(time)
+  const minute = formatted_time.minute
+    ? formatted_time.minute.toString().padStart(2, '0')
     : '00'
-  return `${formattedTime.hour}:${minute} ${formattedTime.amPm}`
+  return `${formatted_time.hour}:${minute} ${formatted_time.am_pm}`
 }
 
 export function isValidDate(message_body: string): boolean {

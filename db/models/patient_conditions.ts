@@ -464,20 +464,20 @@ export async function getPreExistingConditionsWithDrugs(
   trx: TrxOrDb,
   opts: { patient_id: string },
 ): Promise<PreExistingConditionWithDrugs[]> {
-  const preExistingConditions = await getPreExistingConditions(trx, opts)
+  const pre_existing_conditions = await getPreExistingConditions(trx, opts)
   const drug_ids = uniq(
-    preExistingConditions.flatMap((c) =>
+    pre_existing_conditions.flatMap((c) =>
       c.medications.map((medication) => medication.id)
     ),
   )
-  const matchingDrugs = drug_ids.length
+  const matching_drugs = drug_ids.length
     ? await drugs.getByIds(trx, drug_ids)
     : []
 
-  return preExistingConditions.map((c) => ({
+  return pre_existing_conditions.map((c) => ({
     ...c,
     medications: c.medications.map((m) => {
-      const drug = matchingDrugs.find((d) => d.id === m.id)
+      const drug = matching_drugs.find((d) => d.id === m.id)
       assert(drug, `Could not find drug with id ${m.id}`)
       return { ...m, drug }
     }),

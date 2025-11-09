@@ -41,7 +41,7 @@ describe('patient chatbot', () => {
 
   it('provides with other_appointment_time after rejecting first_option', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
       name: 'Test Patient',
@@ -51,14 +51,14 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -66,31 +66,31 @@ describe('patient chatbot', () => {
     assert(health_worker)
 
     //  Insert google calender
-    const currentTime = new Date()
-    currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatJohannesburg(currentTime) // current + 2 hours
+    const current_time = new Date()
+    current_time.setHours(current_time.getHours() + 2)
+    const time_min = formatJohannesburg(current_time) // current + 2 hours
 
-    currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatJohannesburg(currentTime) // current + 7 days + 2 hours
+    current_time.setDate(current_time.getDate() + 7)
+    const time_max = formatJohannesburg(current_time) // current + 7 days + 2 hours
 
-    currentTime.setDate(currentTime.getDate() - 6)
-    currentTime.setHours(currentTime.getHours() + 1)
-    currentTime.setMinutes(0)
-    currentTime.setSeconds(0)
-    currentTime.setMilliseconds(0)
-    const secondDayStart = formatJohannesburg(currentTime) // current + 1 day + 3 hours
+    current_time.setDate(current_time.getDate() - 6)
+    current_time.setHours(current_time.getHours() + 1)
+    current_time.setMinutes(0)
+    current_time.setSeconds(0)
+    current_time.setMilliseconds(0)
+    const second_day_start = formatJohannesburg(current_time) // current + 1 day + 3 hours
 
-    currentTime.setHours(currentTime.getHours())
-    currentTime.setMinutes(30)
-    const secondDayBusyTime = formatJohannesburg(currentTime) // current + 1 day + 3.5 hours
+    current_time.setHours(current_time.getHours())
+    current_time.setMinutes(30)
+    const second_day_busy_time = formatJohannesburg(current_time) // current + 1 day + 3.5 hours
 
-    const firstOtherTime = new Date(currentTime)
-    firstOtherTime.setHours(firstOtherTime.getHours() + 1)
-    firstOtherTime.setMinutes(0) // current + 1 day + 4.5 hours
+    const first_other_time = new Date(current_time)
+    first_other_time.setHours(first_other_time.getHours() + 1)
+    first_other_time.setMinutes(0) // current + 1 day + 4.5 hours
 
-    currentTime.setHours(currentTime.getHours() + 8)
-    currentTime.setMinutes(0)
-    const secondDayEnd = formatJohannesburg(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
+    current_time.setHours(current_time.getHours() + 8)
+    current_time.setMinutes(0)
+    const second_day_end = formatJohannesburg(current_time) // current + 1 day + 11 hours ==> second_day_start + 8 hour
 
     getFreeBusy = stub(
       google.GoogleClient.prototype,
@@ -98,23 +98,23 @@ describe('patient chatbot', () => {
       () =>
         Promise.resolve(
           {
-            kind: 'calendar#freeBusy' as const,
-            timeMin,
-            timeMax,
+            kind: 'calendar#free_busy' as const,
+            time_min,
+            time_max,
             calendars: {
               [health_worker.calendars!.gcal_appointments_calendar_id]: {
                 busy: [
                   {
-                    start: secondDayStart,
-                    end: secondDayBusyTime,
+                    start: second_day_start,
+                    end: second_day_busy_time,
                   },
                 ],
               },
               [health_worker.calendars!.gcal_availability_calendar_id]: {
                 busy: [
                   {
-                    start: secondDayStart,
-                    end: secondDayEnd,
+                    start: second_day_start,
+                    end: second_day_end,
                   },
                 ],
               },
@@ -124,7 +124,7 @@ describe('patient chatbot', () => {
     )
 
     // Insert first_scheduling_option
-    const start = new Date(secondDayBusyTime)
+    const start = new Date(second_day_busy_time)
     const end = new Date()
     end.setHours(start.getHours() + 1)
     const duration_minutes = 60
@@ -163,16 +163,16 @@ describe('patient chatbot', () => {
 
     assert(!Array.isArray(message))
     assertEquals(
-      message.messageBody,
+      message.message_body,
       'OK here are the other available time, please choose from the list.',
     )
     assert(message.type === 'list')
     assertEquals(message.headerText, 'Other Appointment Times')
     assertEquals(message.action.button, 'More Time Slots')
 
-    const date = formatJohannesburg(firstOtherTime).substring(0, 10)
+    const date = formatJohannesburg(first_other_time).substring(0, 10)
     assertEquals(message.action.sections[0].title, date)
-    const time = convertToTimeString(formatJohannesburg(firstOtherTime))
+    const time = convertToTimeString(formatJohannesburg(first_other_time))
     assertEquals(message.action.sections[0].rows[0].title, time)
 
     assertEquals(

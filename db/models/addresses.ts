@@ -69,24 +69,24 @@ export function insertValues(address: AddressInsert) {
     assertOr400(!route, 'route is not allowed when street is present')
     assertOr400(!unit, 'unit is not allowed when street is present')
 
-    const streetParts = compact(street.split(' '))
-    if (streetParts.length > 1 && !isNaN(parseInt(streetParts[0]))) {
-      street_number = streetParts.shift()
+    const street_parts = compact(street.split(' '))
+    if (street_parts.length > 1 && !isNaN(parseInt(street_parts[0]))) {
+      street_number = street_parts.shift()
     }
 
-    const maybe_apt = streetParts[streetParts.length - 2]
+    const maybe_apt = street_parts[street_parts.length - 2]
     if (maybe_apt && isApartmentOrUnit(maybe_apt)) {
-      const unit_number = streetParts.pop()
-      const apt_description = streetParts.pop()
+      const unit_number = street_parts.pop()
+      const apt_description = street_parts.pop()
       unit = `${apt_description} ${unit_number}`
     } else {
-      const maybe_unit = streetParts[streetParts.length - 1]
+      const maybe_unit = street_parts[street_parts.length - 1]
       if (/\d/.test(maybe_unit)) {
-        unit = streetParts.pop()
+        unit = street_parts.pop()
       }
     }
 
-    route = streetParts.join(' ')
+    route = street_parts.join(' ')
   }
 
   street = compact([

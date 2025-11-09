@@ -3,7 +3,6 @@ import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
-import * as health_workers from '../db/models/health_workers.ts'
 import * as sessions from '../db/models/sessions.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
@@ -27,16 +26,21 @@ import { promiseProps } from '../util/promiseProps.ts'
 import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
 import { asNames } from '../db/models/asNames.ts'
 import { Handlers } from 'fresh/compat'
+import {
+  pickTokens,
+  updateTokens,
+  upsertWithGoogleCredentials,
+} from '../db/models/health_worker_google_tokens.ts'
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
 export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   organization_ids: string[],
 ) {
   const my_orgs = await organizations.getByIds(trx, organization_ids)
-  const calendars = await googleClient
+  const calendars = await google_client
     .ensureHasAppointmentsAndAvailabilityCalendars(my_orgs)
   return Array.from(zip(my_orgs, calendars)).map((
     [organization, calendars],
@@ -47,7 +51,7 @@ export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
 }
 export async function initializeHealthWorkerWithInvites(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   profile: GoogleProfile,
   invitees: { id: string; organization_id: string; profession: Profession }[],
 ): Promise<{ id: string }> {
@@ -65,16 +69,16 @@ export async function initializeHealthWorkerWithInvites(
   const calendars =
     await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
       trx,
-      googleClient,
+      google_client,
       organization_ids,
     )
 
-  const health_worker = await health_workers.upsertWithGoogleCredentials(
+  const health_worker = await upsertWithGoogleCredentials(
     trx,
     {
       email: profile.email,
       avatar_url: profile.picture,
-      ...health_workers.pickTokens(googleClient.tokens),
+      ...pickTokens(google_client.tokens),
       ...asNames({
         first_names: profile.given_name,
         surname: profile.family_name,
@@ -110,7 +114,7 @@ export async function initializeHealthWorkerWithInvites(
 
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
   profile: GoogleProfile,
 ): Promise<Response> {
   const { existing_employment, health_worker } = await promiseProps({
@@ -123,12 +127,12 @@ export async function initializeHealthWorkerWithoutInvites(
       .where('health_workers.email', '=', profile.email)
       .select('employment.id')
       .executeTakeFirst(),
-    health_worker: health_workers.upsertWithGoogleCredentials(
+    health_worker: upsertWithGoogleCredentials(
       trx,
       {
         email: profile.email,
         avatar_url: profile.picture,
-        ...health_workers.pickTokens(googleClient.tokens),
+        ...pickTokens(google_client.tokens),
         ...asNames({
           first_names: profile.given_name,
           surname: profile.family_name,
@@ -162,10 +166,10 @@ export async function initializeHealthWorkerWithoutInvites(
 }
 
 async function checkPermissions(
-  googleClient: google.GoogleClient,
+  google_client: google.GoogleClient,
 ): Promise<boolean> {
-  const tokenInfo = await googleClient.getTokenInfo()
-  return tokenInfo.scope.includes('calendar')
+  const token_info = await google_client.getTokenInfo()
+  return token_info.scope.includes('calendar')
 }
 
 const insufficient_permissions = warning(
@@ -196,17 +200,17 @@ export const handler: Handlers<Record<string, never>> = {
   GET(ctx) {
     const code = ctx.url.searchParams.get('code')
     assert(code, 'No code found in query params')
-    const gettingTokens = getInitialTokensFromAuthCode(code)
+    const getting_tokens = getInitialTokensFromAuthCode(code)
 
     return db.transaction().setIsolationLevel('read committed').execute(
       async (trx) => {
-        const tokens = await gettingTokens
-        const googleClient = new google.GoogleClient(tokens)
-        const hasPermissions = await checkPermissions(googleClient)
+        const tokens = await getting_tokens
+        const google_client = new google.GoogleClient(tokens)
+        const has_permissions = await checkPermissions(google_client)
 
-        assertOrRedirect(hasPermissions, insufficient_permissions)
+        assertOrRedirect(has_permissions, insufficient_permissions)
 
-        const profile = await googleClient.getProfile()
+        const profile = await google_client.getProfile()
 
         const regulator = await regulators.getByEmail(trx, profile.email)
         if (regulator) {
@@ -227,7 +231,7 @@ export const handler: Handlers<Record<string, never>> = {
         if (!USE_INVITE_SYSTEM) {
           return initializeHealthWorkerWithoutInvites(
             trx,
-            googleClient,
+            google_client,
             profile,
           )
         }
@@ -240,14 +244,14 @@ export const handler: Handlers<Record<string, never>> = {
           health_worker_invitees.length
             ? initializeHealthWorkerWithInvites(
               trx,
-              googleClient,
+              google_client,
               profile,
               health_worker_invitees,
             )
-            : health_workers.updateTokens(
+            : updateTokens(
               trx,
               profile.email,
-              health_workers.pickTokens(tokens),
+              pickTokens(tokens),
             )
         )
 
@@ -258,8 +262,6 @@ export const handler: Handlers<Record<string, never>> = {
         })
 
         const response = redirect('/app')
-
-        console.log('awkjejkawejkeaw')
 
         setCookie(response.headers, {
           name: cookie.session_key,

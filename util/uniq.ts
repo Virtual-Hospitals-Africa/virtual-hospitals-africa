@@ -1,10 +1,10 @@
 export default function uniq<T>(array: T[]): T[] {
   const uniqueArray: T[] = []
-  const seenValues: Set<T> = new Set<T>()
+  const seen_values: Set<T> = new Set<T>()
 
   for (const value of array) {
-    if (!seenValues.has(value)) {
-      seenValues.add(value)
+    if (!seen_values.has(value)) {
+      seen_values.add(value)
       uniqueArray.push(value)
     }
   }

@@ -68,10 +68,10 @@ type SearchTerms = {
   licence_number_search: string | null
 }
 
-export const toSearchTerms = (
+export function toSearchTerms(
   country: string,
   search: string | null,
-): SearchTerms => {
+): SearchTerms {
   if (!search) {
     return { country, name_search: null, licence_number_search: null }
   }
@@ -147,11 +147,11 @@ export async function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
   if (!supervisors) return pharmacy
-  const pharmacyEmployments = supervisors.map((supervisor) => ({
+  const pharmacy_employments = supervisors.map((supervisor) => ({
     pharmacist_id: supervisor.id,
     pharmacy_id: pharmacy.id,
     is_supervisor: true,
   }))
-  await insertPharmacyEmployment(trx, pharmacyEmployments)
+  await insertPharmacyEmployment(trx, pharmacy_employments)
   return pharmacy
 }

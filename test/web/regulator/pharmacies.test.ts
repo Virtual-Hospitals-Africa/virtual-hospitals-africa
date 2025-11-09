@@ -20,9 +20,9 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacies`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert(
         $('input[name="search"]').length === 1,
@@ -39,9 +39,9 @@ describe.skip(
       assert(
         response.url === `${route}/regulator/${regulator.country}/pharmacies`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert($('table').length === 1)
     })

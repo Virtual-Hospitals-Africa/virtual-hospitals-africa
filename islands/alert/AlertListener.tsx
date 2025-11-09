@@ -1,0 +1,62 @@
+import { assert } from 'std/assert/assert.ts'
+import { useSignal } from '@preact/signals'
+import { useEffect } from 'preact/hooks'
+import AlertMessage from './AlertMessage.tsx'
+import { Alert } from '../../types.ts'
+
+type AlertInput = null | string | Alert
+
+function wrapAlert(e: AlertInput): Alert | null {
+  return typeof e === 'string' ? { level: 'error', message: e } : e
+}
+
+function initialAlert(url: URL): Alert | null {
+  const error = url.searchParams.get('error')
+  const warning = url.searchParams.get('warning')
+  const success = url.searchParams.get('success')
+
+  const flags = Number(!!error) + Number(!!warning) + Number(!!success)
+  assert(flags <= 1, 'Cannot have more than one of success, error, or warning')
+  if (error) {
+    return { message: error, level: 'error' }
+  }
+  if (warning) {
+    return { message: warning, level: 'warning' }
+  }
+  if (success) {
+    return { message: success, level: 'success' }
+  }
+  return null
+}
+
+export function showAlertMessage(detail: AlertInput) {
+  self.dispatchEvent(new CustomEvent('show-alert', { detail }))
+}
+
+export function AlertListener({
+  initial_url,
+}: {
+  initial_url: URL
+}) {
+  const alert = useSignal(
+    initialAlert(initial_url),
+  )
+
+  useEffect(() => {
+    function listener(event: Event) {
+      assert(event instanceof CustomEvent)
+      alert.value = wrapAlert(event.detail)
+    }
+    self.addEventListener('show-alert', listener)
+    return () => {
+      self.removeEventListener('show-alert', listener)
+    }
+  }, [])
+
+  return (
+    <AlertMessage
+      alert={alert}
+      className='fixed top-0 left-0 right-0 z-50 m-12'
+    />
+  )
+}

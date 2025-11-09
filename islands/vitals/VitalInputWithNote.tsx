@@ -24,7 +24,7 @@ export default function VitalInputWithNote(
   },
 ) {
   const name = `findings.${vital.finding_id}`
-  const showNote = useSignal(false)
+  const show_note = useSignal(false)
 
   return (
     <div className='flex flex-col w-full'>
@@ -68,7 +68,7 @@ export default function VitalInputWithNote(
             type='button'
             title={`Add note for ${vital.label}`}
             className='w-8 h-8 p-1'
-            onClick={() => showNote.value = !showNote.value}
+            onClick={() => show_note.value = !show_note.value}
           >
             <PencilIcon className='w-4 h-4' />
           </HeroIconButton>
@@ -96,7 +96,7 @@ export default function VitalInputWithNote(
       /> */
         }
       </div>
-      {showNote.value && (
+      {show_note.value && (
         <div className='flex justify-end mt-2'>
           <div className='w-80'>
             <TextArea

@@ -424,7 +424,7 @@ export function getEmployeesAndInvitees(
     emails?: string[]
   } = {},
 ): Promise<OrganizationEmployeeOrInvitee[]> {
-  const hwQuery = getEmployeesQuery(trx, organization_id, opts).selectFrom(
+  const hw_query = getEmployeesQuery(trx, organization_id, opts).selectFrom(
     'organization_employees',
   ).selectAll('organization_employees')
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
@@ -462,7 +462,7 @@ export function getEmployeesAndInvitees(
   }
 
   // deno-lint-ignore no-explicit-any
-  return hwQuery.unionAll(inviteeQuery as any).execute()
+  return hw_query.unionAll(inviteeQuery as any).execute()
 }
 
 export async function invite(
@@ -473,11 +473,11 @@ export async function invite(
     profession: Profession
   }[],
 ) {
-  const invitedByEmail = new Map<string, Set<Profession>>()
+  const invited_by_email = new Map<string, Set<Profession>>()
   for (const { email, profession } of invites) {
-    const professions = invitedByEmail.get(email)
+    const professions = invited_by_email.get(email)
     if (!professions) {
-      invitedByEmail.set(email, new Set([profession]))
+      invited_by_email.set(email, new Set([profession]))
       continue
     }
     assertOr400(
@@ -492,17 +492,17 @@ export async function invite(
     professions.add(profession)
   }
 
-  const existingEmployees = await getEmployeesAndInvitees(
+  const existing_employees = await getEmployeesAndInvitees(
     trx,
     organization_id,
     {
-      emails: [...invitedByEmail.keys()],
+      emails: [...invited_by_email.keys()],
     },
   )
 
-  const exactMatchingInvites = invites.filter(
+  const exact_matching_invites = invites.filter(
     (invite) =>
-      existingEmployees.some(
+      existing_employees.some(
         (employee) =>
           invite.email === employee.email &&
           employee.professions.some(({ profession }) =>
@@ -511,27 +511,28 @@ export async function invite(
       ),
   )
 
-  if (exactMatchingInvites.length) {
-    const [{ email, profession }] = exactMatchingInvites
+  if (exact_matching_invites.length) {
+    const [{ email, profession }] = exact_matching_invites
     const message =
       `${email} is already employed as a ${profession}. Please remove them from the list.`
     throw new StatusError(message, 400)
   }
 
-  const alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa = invites.filter(
-    (invite) =>
-      existingEmployees.some(
-        (employee) =>
-          invite.email === employee.email &&
-          employee.professions.some(({ profession }) => (
-            (profession === 'doctor' && invite.profession === 'nurse') ||
-            (profession === 'nurse' && invite.profession === 'doctor')
-          )),
-      ),
-  )
-  if (alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa.length) {
+  const already_doctor_and_trying_to_invite_as_nurse_or_visa_versa = invites
+    .filter(
+      (invite) =>
+        existing_employees.some(
+          (employee) =>
+            invite.email === employee.email &&
+            employee.professions.some(({ profession }) => (
+              (profession === 'doctor' && invite.profession === 'nurse') ||
+              (profession === 'nurse' && invite.profession === 'doctor')
+            )),
+        ),
+    )
+  if (already_doctor_and_trying_to_invite_as_nurse_or_visa_versa.length) {
     const [{ email, profession }] =
-      alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa
+      already_doctor_and_trying_to_invite_as_nurse_or_visa_versa
     const message = `${email} is already employed as a ${
       profession === 'nurse' ? 'doctor' : 'nurse'
     } so they can't also be employed as a ${profession}. Please remove them from the list.`
@@ -541,7 +542,7 @@ export async function invite(
   const [inEmployeeTable, notInEmployeeTable] = partition(
     invites,
     (invite) =>
-      existingEmployees.some((employee) => employee.email === invite.email),
+      existing_employees.some((employee) => employee.email === invite.email),
   )
 
   if (inEmployeeTable.length) {
@@ -551,7 +552,7 @@ export async function invite(
         organization_id,
         profession: invite.profession,
         specialty: null,
-        health_worker_id: existingEmployees.find((employee) =>
+        health_worker_id: existing_employees.find((employee) =>
           employee.email === invite.email
         )!.health_worker_id!,
       })),

@@ -41,15 +41,15 @@ describe('patient chatbot', () => {
 
     await respond(whatsapp, 'patient', phone_number)
 
-    const firstCallArgs = whatsapp.sendMessages.calls[0].args[0]
-    const message = firstCallArgs.messages
+    const first_call_args = whatsapp.sendMessages.calls[0].args[0]
+    const message = first_call_args.messages
     assert(!Array.isArray(message))
     assert(message.type === 'list')
 
     assertEquals(message.headerText, 'Nearest Facilities')
 
     assertEquals(
-      message.messageBody,
+      message.message_body,
       'Click the button below to see the health facilities closes to you',
     )
 
@@ -82,7 +82,7 @@ describe('patient chatbot', () => {
       'Moses Mabida Clinic',
     )
 
-    assertEquals(firstCallArgs.phone_number, phone_number)
+    assertEquals(first_call_args.phone_number, phone_number)
 
     const patient = await getPatientLastConversationState(db, {
       phone_number,

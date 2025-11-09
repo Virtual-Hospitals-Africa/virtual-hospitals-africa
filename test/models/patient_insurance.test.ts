@@ -424,13 +424,13 @@ describe('patient_insurance', () => {
 
   describe('edge cases', () => {
     it('handles very long insurance fields', async () => {
-      const longString = 'A'.repeat(255)
+      const long_string = 'A'.repeat(255)
 
       await patient_insurance.setCurrent(db, {
         patient_id,
-        insurance_provider: longString,
-        plan_name: longString,
-        membership_number: longString,
+        insurance_provider: long_string,
+        plan_name: long_string,
+        membership_number: long_string,
         valid_from: thirty_days_ago,
         expire_date: three_hundred_and_thirty_five_days_in_future,
         is_dependent: false,
@@ -438,8 +438,8 @@ describe('patient_insurance', () => {
 
       const [insurance] = await patient_insurance.getById(db, { patient_id })
       assert(insurance)
-      assertEquals(insurance.insurance_provider, longString)
-      assertEquals(insurance.membership_number, longString)
+      assertEquals(insurance.insurance_provider, long_string)
+      assertEquals(insurance.membership_number, long_string)
     })
 
     it('handles special characters in insurance fields', async () => {

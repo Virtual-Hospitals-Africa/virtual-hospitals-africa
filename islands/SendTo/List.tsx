@@ -9,15 +9,15 @@ export function SendableList(
     selected: Signal<Sendable | null>
   },
 ) {
-  const entitySendables = sendables.filter((sendable) =>
+  const entity_sendables = sendables.filter((sendable) =>
     sendable.to.type === 'entity'
   )
-  const actionSendables = sendables.filter((sendable) =>
+  const action_sendables = sendables.filter((sendable) =>
     sendable.to.type === 'action'
   )
 
   const show_sendables = selected.value == null
-    ? entitySendables
+    ? entity_sendables
     : sendables.filter((sendable) => sendable === selected.value)
 
   return (
@@ -43,7 +43,7 @@ export function SendableList(
       {selected.value == null && (
         <div className='sticky bottom-0 left-0 w-full bg-white'>
           <ul role='list'>
-            {actionSendables.map((sendable) => {
+            {action_sendables.map((sendable) => {
               const is_selected = selected.value === sendable
               return (
                 <SendableListItem

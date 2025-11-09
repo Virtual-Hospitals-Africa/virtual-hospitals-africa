@@ -49,7 +49,7 @@ describe('patient chatbot', () => {
               title: 'Main Menu',
             },
           ],
-          messageBody:
+          message_body:
             'This is the end of the demo. Thank you for participating!',
         },
         phone_number,

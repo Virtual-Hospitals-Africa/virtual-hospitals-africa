@@ -28,7 +28,7 @@ describe('patient chatbot', () => {
 
   it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
       name: 'Test Patient',
@@ -38,14 +38,14 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -91,7 +91,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
             prettyAppointmentTime(start),
           type: 'buttons',

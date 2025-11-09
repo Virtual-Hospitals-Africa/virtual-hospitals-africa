@@ -18,7 +18,7 @@ export const handler = {
     const to_insert = await parseRequest(
       ctx.state.trx,
       req,
-      pharmacists.parseUpsert,
+      pharmacists.parse_upsert,
     )
 
     await pharmacists.insert(ctx.state.trx, {

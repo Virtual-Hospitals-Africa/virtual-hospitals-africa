@@ -7,7 +7,8 @@ import {
   Organizations,
 } from '../../db.d.ts'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
+  IdSelection,
   Maybe,
   RenderedDoctorReview,
   RenderedDoctorReviewRequest,
@@ -22,11 +23,12 @@ import {
   now,
 } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
+import roleByProfession from '../../shared/roleByProfession.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
-import { HealthWorkerIdSelection } from './health_worker_id.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
+import { exists } from '../../util/exists.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -62,7 +64,7 @@ export function getCardQuery(
 
 export function ofHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string | HealthWorkerIdSelection,
+  health_worker_id: string | IdSelection,
 ) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
@@ -222,7 +224,7 @@ export function requestById(
 
 export function requestsOfHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: string | HealthWorkerIdSelection,
+  health_worker_id: string | IdSelection,
 ) {
   return requests(trx)
     .innerJoin(
@@ -241,30 +243,52 @@ export function requestsOfHealthWorker(
 export async function requestMatchingEmployment(
   trx: TrxOrDb,
   patient_id: string,
-  organizations_where_doctor: HealthWorkerEmployment[],
+  organizations_where_doctor: HealthWorkerOrganization[],
 ): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
+  const doctor_ids = organizations_where_doctor.map((organization) => {
+    const doctor_role = exists(roleByProfession(organization, 'doctor'))
+    return doctor_role.employment_id
+  })
+
   const request = await requests(trx)
     .select('doctor_review_requests.organization_id')
     .where('doctor_review_requests.patient_id', '=', patient_id)
-    .where(
-      'doctor_review_requests.organization_id',
-      'in',
-      organizations_where_doctor.map(
-        (employment) => employment.organization.id,
-      ),
+    .where((eb) =>
+      eb.or([
+        eb(
+          'doctor_review_requests.organization_id',
+          'in',
+          organizations_where_doctor.map(
+            (organization) => organization.id,
+          ),
+        ),
+        eb(
+          'doctor_review_requests.doctor_id',
+          'in',
+          doctor_ids,
+        ),
+      ])
     )
     .executeTakeFirst()
 
   if (!request) return null
 
+  if (request.requesting.doctor_id) {
+    return {
+      ...request,
+      employment_id: request.requesting.doctor_id,
+    }
+  }
+
   const matching_employment = organizations_where_doctor.find(
-    (employment) => employment.organization.id === request.organization_id,
+    (organization) => organization.id === request.organization_id,
   )
   assert(matching_employment)
-  assert(matching_employment.roles.doctor)
+  const doctor_role = roleByProfession(matching_employment, 'doctor')
+  assert(doctor_role)
   return {
     ...request,
-    employment_id: matching_employment.roles.doctor.employment_id,
+    employment_id: doctor_role.employment_id,
   }
 }
 
@@ -305,30 +329,28 @@ export async function addSelfAsReviewer(
 ): Promise<{
   doctor_review: RenderedDoctorReview
 }> {
-  const in_progress = health_worker.reviews.in_progress.find((review) =>
-    review.patient.id === patient_id
-  )
+  const in_progress = await ofHealthWorker(trx, health_worker.id)
+    .where('patient_encounters.patient_id', '=', patient_id)
+    .executeTakeFirst()
+
   if (in_progress) {
     return { doctor_review: in_progress }
   }
 
-  const organizations_where_doctor = health_worker.employment.filter(
-    (employment) => !!employment.roles.doctor,
+  const organizations_where_doctor = health_worker.organizations.filter(
+    (organization) => !!roleByProfession(organization, 'doctor'),
   )
+
   assertOr403(
     organizations_where_doctor.length,
     'Only doctors can review patient encounters',
   )
 
-  const requested =
-    health_worker.reviews.requested.find((review) =>
-      review.patient.id === patient_id
-    ) ||
-    await requestMatchingEmployment(
-      trx,
-      patient_id,
-      organizations_where_doctor,
-    )
+  const requested = await requestMatchingEmployment(
+    trx,
+    patient_id,
+    organizations_where_doctor,
+  )
 
   assertOr403(
     requested,
@@ -346,10 +368,6 @@ export async function addSelfAsReviewer(
     steps_completed: [],
     completed: false,
   }
-  health_worker.reviews.in_progress.push(started_review)
-  health_worker.reviews.requested = health_worker.reviews.requested.filter(
-    (review) => review !== requested,
-  )
 
   return { doctor_review: started_review }
 }

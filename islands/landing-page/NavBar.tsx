@@ -4,30 +4,30 @@ import { assert } from 'std/assert/assert.ts'
 import { ChevronUpDownIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import sections from '../../components/landing-page/sections.tsx'
 
-const sectionIds = Object.keys(
+const section_ids = Object.keys(
   sections,
 ) as unknown as Array<keyof typeof sections>
 
 export default function NavBar() {
-  const navBarRef = useRef<HTMLElement>()
+  const nav_bar_ref = useRef<HTMLElement>()
   const [activeIndex, setActiveIndex] = useState<null | number>(null)
-  const mobileActiveIndex = activeIndex ?? 0
+  const mobile_active_index = activeIndex ?? 0
 
   useEffect(() => {
     function updateActiveIndex() {
       let newActiveIndex = null
-      const elements = sectionIds.map((id) => {
+      const elements = section_ids.map((id) => {
         const element = document.getElementById(id)
         assert(element, `No element found with id "${id}"`)
         return element
       })
-      const bodyRect = document.body.getBoundingClientRect()
+      const body_rect = document.body.getBoundingClientRect()
 
-      assert(navBarRef.current)
-      const offset = bodyRect.top + navBarRef.current.offsetHeight + 1
+      assert(nav_bar_ref.current)
+      const offset = body_rect.top + nav_bar_ref.current.offsetHeight + 1
 
-      if (scrollY >= Math.floor(bodyRect.height) - innerHeight) {
-        setActiveIndex(sectionIds.length - 1)
+      if (scrollY >= Math.floor(body_rect.height) - innerHeight) {
+        setActiveIndex(section_ids.length - 1)
         return
       }
 
@@ -60,7 +60,7 @@ export default function NavBar() {
 
   return (
     // deno-lint-ignore no-explicit-any
-    <div ref={navBarRef as any} className='sticky top-0 z-50 bg-white'>
+    <div ref={nav_bar_ref as any} className='sticky top-0 z-50 bg-white'>
       <div className='sm:hidden'>
         <div
           className={cls(
@@ -75,10 +75,10 @@ export default function NavBar() {
                 aria-hidden='true'
                 className='font-mono text-sm text-blue-600'
               >
-                {sections[sectionIds[mobileActiveIndex]].icon}
+                {sections[section_ids[mobile_active_index]].icon}
               </span>
               <span className='ml-4 text-base font-medium text-slate-900'>
-                {sections[sectionIds[mobileActiveIndex]].displayName}
+                {sections[section_ids[mobile_active_index]].displayName}
               </span>
             </>
           )}

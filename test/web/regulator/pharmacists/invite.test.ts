@@ -24,9 +24,9 @@ describe(
         response.url ===
           `${route}/regulator/${regulator.country}/pharmacists/invite`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
 
-      const $ = cheerio.load(pageContents)
+      const $ = cheerio.load(page_contents)
 
       assert($('input[name="given_name"]').length === 1)
       assert($('input[name="family_name"]').length === 1)
@@ -42,20 +42,20 @@ describe(
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       {
-        const givenName = `Test Given Name ${generateUUID()}`
-        const familyName = `Test Family Name ${generateUUID()}`
-        const licenceNumber = 'P01-0805-2024'
+        const given_name = `Test Given Name ${generateUUID()}`
+        const family_name = `Test Family Name ${generateUUID()}`
+        const licence_number = 'P01-0805-2024'
         const body = new FormData()
-        body.set('given_name', givenName)
-        body.set('family_name', familyName)
-        body.set('licence_number', licenceNumber)
+        body.set('given_name', given_name)
+        body.set('family_name', family_name)
+        body.set('licence_number', licence_number)
         body.set('expiry_date', '2030-01-01')
         body.set('town', 'Test Town')
         body.set('address', 'Test Address')
         body.set('prefix', 'Mrs')
         body.set('pharmacist_type', 'Pharmacist')
 
-        const postResponse = await fetch(
+        const post_response = await fetch(
           `${route}/regulator/${regulator.country}/pharmacists/invite`,
           {
             method: 'POST',
@@ -63,27 +63,27 @@ describe(
           },
         )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
+        if (!post_response.ok) {
+          throw new Error(await post_response.text())
         }
 
         assertEquals(
-          postResponse.url,
+          post_response.url,
           `${route}/regulator/${regulator.country}/pharmacists?success=${
             encodeURIComponent('New pharmacist added')
           }`,
         )
 
-        const invitedPharmacist = await db
+        const invited_pharmacist = await db
           .selectFrom('pharmacists')
-          .where('given_name', '=', givenName)
-          .where('family_name', '=', familyName)
+          .where('given_name', '=', given_name)
+          .where('family_name', '=', family_name)
           .select(['given_name', 'family_name', 'licence_number'])
           .executeTakeFirst()
 
-        assertEquals(invitedPharmacist?.given_name, givenName)
-        assertEquals(invitedPharmacist?.family_name, familyName)
-        assertEquals(invitedPharmacist?.licence_number, licenceNumber)
+        assertEquals(invited_pharmacist?.given_name, given_name)
+        assertEquals(invited_pharmacist?.family_name, family_name)
+        assertEquals(invited_pharmacist?.licence_number, licence_number)
       }
     })
   },

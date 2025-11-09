@@ -46,8 +46,9 @@
     "test:watch": "./scripts/watch_and_beep.sh FAILED deno task test --watch",
     "tmux": "./scripts/tmux.sh",
     "preview": "deno serve -A _fresh/server.js",
-    "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
-    "check:ignoretest": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | grep -v '.test.ts' | xargs deno check"
+    "check": "./scripts/check.sh",
+    "camel": "./scripts/grep_camelCase_variables.sh",
+    "util": "deno task run:trusted ./util.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "fmt": {
@@ -89,10 +90,12 @@
     "zod": "npm:zod@3.23.8",
     "fresh": "jsr:@fresh/core@2.1.4",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.0.7",
-    "vite": "npm:vite@7.1.12",
+    "vite": "npm:vite@7.1.3",
     "tailwindcss": "npm:tailwindcss@4.1.10",
     "tailwindcss/plugin": "npm:/tailwindcss@4.1.10/plugin.js",
-    "@tailwindcss/vite": "npm:@tailwindcss/vite@4.1.12"
+    "@tailwindcss/vite": "npm:@tailwindcss/vite@4.1.12",
+    "patch-package": "npm:patch-package@latest",
+    "rollup": "npm:rollup@4.53.0"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": "auto"

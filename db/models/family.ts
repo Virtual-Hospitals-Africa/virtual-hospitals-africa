@@ -515,11 +515,11 @@ export async function get(
 //   if (new_kin || existing_kin || other_kin) {
 //     const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ??
 //       other_kin
-//     const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ??
+//     const existing_kin =existing_family.guardians.find((c) => c.next_of_kin) ??
 //       existing_family.next_of_kin
 
 //     // kins is removed
-//     if (existingKin && !new_kin) {
+//     if (existing_kin && !new_kin) {
 //       removing_kin = trx
 //         .deleteFrom('patient_kin')
 //         .where('patient_id', '=', patient_id)
@@ -536,7 +536,7 @@ export async function get(
 //         next_of_kin_patient_id = new_patient.id
 //       }
 
-//       if (new_kin && !existingKin) {
+//       if (new_kin && !existing_kin) {
 //         upsert_kin = trx
 //           .insertInto('patient_kin')
 //           .values({
@@ -595,7 +595,7 @@ export async function get(
 //   const adding_relations = new_relations.length &&
 //     trx.insertInto('patient_guardians').values(new_relations).execute()
 
-//   const familyValues = {
+//   const family_values ={
 //     patient_id,
 //     religion: family_to_upsert.religion ?? null,
 //     family_type: family_to_upsert.family_type ?? null,
@@ -604,8 +604,8 @@ export async function get(
 //   }
 //   const family_form_upsert = trx
 //     .insertInto('patient_family')
-//     .values(familyValues)
-//     .onConflict((oc) => oc.column('patient_id').doUpdateSet(familyValues))
+//     .values(family_values)
+//     .onConflict((oc) => oc.column('patient_id').doUpdateSet(family_values))
 //     .returningAll()
 //     .executeTakeFirstOrThrow()
 

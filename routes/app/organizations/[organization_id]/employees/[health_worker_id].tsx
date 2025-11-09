@@ -1,19 +1,19 @@
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
-import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { getEmployeeInfo } from '../../../../../db/models/employee_info.ts'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
     ctx: OrganizationContext,
   ) {
-    const { trx, organization, isAdminAtOrganization } = ctx.state
+    const { trx, organization, is_admin_at_organization } = ctx.state
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const employee = await health_workers.getEmployeeInfo(
+    const employee = await getEmployeeInfo(
       trx,
       {
         health_worker_id,
@@ -51,7 +51,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
             />
           </div>
           <hr style={{ margin: '20px 0' }} />
-          {isAdminAtOrganization &&
+          {is_admin_at_organization &&
             employee.registration_pending_approval && (
             <form
               style={{ maxWidth: '200px' }}

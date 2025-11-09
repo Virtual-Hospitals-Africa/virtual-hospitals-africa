@@ -3,7 +3,7 @@ import { GoogleTokens, HasStringId, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 
 // Shave a minute so that we refresh too early rather than too late
-const expiresInAnHourSql = sql<
+const expires_in_an_hour_sql = sql<
   Date
 >`(SELECT now() + (59 * interval '1 minute'))`
 
@@ -42,10 +42,10 @@ export async function updateTokensByEmail(
   email: string,
   tokens: GoogleTokens,
 ): Promise<null | { id: string }> {
-  const tableName = entity_type === 'health_worker'
+  const table_name = entity_type === 'health_worker'
     ? 'health_workers'
     : 'regulators'
-  const entity = await trx.selectFrom(tableName).where(
+  const entity = await trx.selectFrom(table_name).where(
     'email',
     '=',
     email,
@@ -106,7 +106,7 @@ export function updateAccessToken(
     .updateTable('google_tokens')
     .where('entity_type', '=', entity_type)
     .where('entity_id', '=', entity_id)
-    .set({ access_token, expires_at: expiresInAnHourSql })
+    .set({ access_token, expires_at: expires_in_an_hour_sql })
     .executeTakeFirstOrThrow()
 }
 

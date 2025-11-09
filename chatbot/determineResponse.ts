@@ -63,16 +63,16 @@ export async function determineResponse(
       },
     }
 
-    const currentState = await findMatchingState(trx, userState)
+    const current_state = await findMatchingState(trx, userState)
 
-    if (!currentState) {
+    if (!current_state) {
       nextConversationState = 'error'
       nextState =
         defs[userState.chatbot_user.chatbot_name].conversation_states.error
     } else {
-      nextConversationState = typeof currentState.onExit === 'string'
-        ? currentState.onExit
-        : await currentState.onExit(trx, userState)
+      nextConversationState = typeof current_state.onExit === 'string'
+        ? current_state.onExit
+        : await current_state.onExit(trx, userState)
 
       nextState = conversation_states[nextConversationState]
     }

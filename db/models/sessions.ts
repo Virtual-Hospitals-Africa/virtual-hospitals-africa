@@ -1,4 +1,5 @@
-import { TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb } from '../../types.ts'
+import { now } from '../helpers.ts'
 
 export type EntityType = 'health_worker' | 'regulator'
 
@@ -17,7 +18,7 @@ export function create(
 export function remove(
   trx: TrxOrDb,
   entity_type: EntityType,
-  { session_id }: { session_id: string },
+  session_id: string,
 ) {
   return trx
     .deleteFrom('sessions')
@@ -35,4 +36,40 @@ export function getBySessionId(
     .where('id', '=', session_id)
     .select(['entity_id', 'entity_type'])
     .executeTakeFirst()
+}
+
+export function getHealthWorkerId(
+  trx: TrxOrDb,
+  session_id: string,
+): IdSelection {
+  return trx
+    .selectFrom('sessions')
+    .where('entity_type', '=', 'health_worker')
+    .where('id', '=', session_id)
+    .select('entity_id as id')
+}
+
+export function getRegulatorId(
+  trx: TrxOrDb,
+  session_id: string,
+): IdSelection {
+  return trx
+    .selectFrom('sessions')
+    .where('entity_type', '=', 'regulator')
+    .where('id', '=', session_id)
+    .select('entity_id as id')
+}
+
+export function tickUpdatedAt(
+  trx: TrxOrDb,
+  entity_type: EntityType,
+  session_id: string,
+) {
+  return trx
+    .updateTable('sessions')
+    .where('entity_type', '=', entity_type)
+    .where('id', '=', session_id)
+    .set({
+      updated_at: now,
+    })
 }

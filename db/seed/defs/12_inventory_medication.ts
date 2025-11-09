@@ -259,7 +259,7 @@ async function addDrug(
   }
 }
 
-const textRegex = /[a-zA-Z]+/g
+const text_regex = /[a-zA-Z]+/g
 
 function parseSingleStrength(part: string) {
   const [numerator, denominator] = part.split('/').map((s) => s.trim())
@@ -293,8 +293,8 @@ function parseSingleStrength(part: string) {
     }
   }
 
-  const numerator_unit = numerator.match(textRegex)?.[0]
-  const denominator_unit = denominator && denominator.match(textRegex)?.[0]
+  const numerator_unit = numerator.match(text_regex)?.[0]
+  const denominator_unit = denominator && denominator.match(text_regex)?.[0]
 
   const denominator_value = denominator && parseFloat(denominator)
   return {

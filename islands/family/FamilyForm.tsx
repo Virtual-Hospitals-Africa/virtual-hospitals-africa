@@ -54,27 +54,31 @@ export default function PatientFamilyForm({
     family.dependents,
   )
 
-  const addGuardian = () => (guardians.value = guardians.value.concat([{}]))
-  const addDependent = () => (dependents.value = dependents.value.concat([{}]))
+  const addGuardian = () => {
+    guardians.value = guardians.value.concat([{}])
+  }
+  const addDependent = () => {
+    dependents.value = dependents.value.concat([{}])
+  }
 
-  const showGuardians = age_years <= 18
-  const showDependents = age_years >= 10
-  const showNextOfKin = age_years >= 19
-  // const showPatientCohabitation = age_years <= 18
+  const show_guardians = age_years <= 18
+  const show_dependents = age_years >= 10
+  const show_next_of_kin = age_years >= 19
+  // const showPatient_cohabitation =age_years <= 18
 
   //Default values
   family.marital_status ??= age_years <= 18 ? 'Never Married' : null
 
   return (
     <>
-      {showGuardians && (
+      {show_guardians && (
         <input type='hidden' name='family.under_18' value='on' />
       )}
-      {showNextOfKin && (
+      {show_next_of_kin && (
         <NextOfKinFormSection next_of_kin={family.next_of_kin} />
       )}
 
-      {showGuardians &&
+      {show_guardians &&
         (
           <FormSection header='Guardians'>
             {guardians.value.map((guardian, i) => (
@@ -98,7 +102,7 @@ export default function PatientFamilyForm({
           </FormSection>
         )}
 
-      {showDependents &&
+      {show_dependents &&
         (
           <div>
             <SectionHeader>

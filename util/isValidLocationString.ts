@@ -1,9 +1,9 @@
 export default function isValidLocationString(
   input: string | undefined,
 ): boolean {
-  const latitudeMatch = input?.match(/"latitude"\s*:\s*(-?\d+(\.\d+)?)/)
-  const longitudeMatch = input?.match(/"longitude"\s*:\s*(-?\d+(\.\d+)?)/)
-  if (!input || !latitudeMatch || !longitudeMatch) {
+  const latitude_match = input?.match(/"latitude"\s*:\s*(-?\d+(\.\d+)?)/)
+  const longitude_match = input?.match(/"longitude"\s*:\s*(-?\d+(\.\d+)?)/)
+  if (!input || !latitude_match || !longitude_match) {
     return false
   }
   return true

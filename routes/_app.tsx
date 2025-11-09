@@ -1,4 +1,5 @@
 import { PageProps } from 'fresh'
+import { AlertListener } from '../islands/alert/AlertListener.tsx'
 
 export default function App({ Component, ...props }: PageProps) {
   return (
@@ -85,6 +86,7 @@ export default function App({ Component, ...props }: PageProps) {
         )}
       </head>
       <body className='relative flex flex-col justify-between min-h-screen'>
+        <AlertListener initial_url={props.url} />
         <Component />
       </body>
     </html>

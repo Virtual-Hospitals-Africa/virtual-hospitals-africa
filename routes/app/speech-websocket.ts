@@ -15,7 +15,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 
 function createPipeline(language_code: string) {
   const media_speech_id = generateUUID()
-  const startTime = new Date()
+  const start_time = new Date()
 
   const transcription = transcriptionProcess(language_code)
   const file_path = `temp_files/${media_speech_id}.wav`
@@ -40,7 +40,7 @@ function createPipeline(language_code: string) {
     await ffmpeg_process.writer.write(audio_chunk)
 
     // Log progress
-    const duration = Date.now() - startTime.getTime()
+    const duration = Date.now() - start_time.getTime()
     console.log(
       `🎵 Audio chunk streamed - media_speech_id: ${media_speech_id}, Size: ${audio_chunk.length} bytes, Total: ${total_bytes} bytes, Duration: ${
         Math.round(duration / 1000)
@@ -96,8 +96,8 @@ function createPipeline(language_code: string) {
         return onAudioChunk(new Uint8Array(data))
       }
       if (data instanceof Blob) {
-        const arrayBuffer = await data.arrayBuffer()
-        return onAudioChunk(new Uint8Array(arrayBuffer))
+        const array_buffer = await data.arrayBuffer()
+        return onAudioChunk(new Uint8Array(array_buffer))
       }
 
       throw new Error('Unexpected data type: ' + data)

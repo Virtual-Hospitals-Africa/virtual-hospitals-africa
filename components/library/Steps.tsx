@@ -10,19 +10,19 @@ type Step<S> = {
 }
 
 export type StepsProps<S extends string> = {
-  baseUrl: string
+  base_url: string
   steps: Step<S>[]
 }
 
 function Step(
-  { index, step, steps, baseUrl }: {
+  { index, step, steps, base_url }: {
     index: number
     step: Step<string>
     steps: Step<string>[]
-    baseUrl: string
+    base_url: string
   },
 ) {
-  const href = baseUrl + '/' + step.name
+  const href = base_url + '/' + step.name
   return (
     <li key={index} className='relative overflow-hidden lg:flex-1'>
       <div
@@ -156,7 +156,7 @@ function Step(
 }
 
 export function Steps<S extends string>(
-  { baseUrl, steps }: StepsProps<S>,
+  { base_url, steps }: StepsProps<S>,
 ) {
   return (
     <div className='lg:border-b lg:border-t lg:border-gray-200'>
@@ -169,7 +169,7 @@ export function Steps<S extends string>(
           className='overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'
         >
           {steps.map((step, index) => (
-            <Step step={step} index={index} baseUrl={baseUrl} steps={steps} />
+            <Step step={step} index={index} base_url={base_url} steps={steps} />
           ))}
         </ol>
       </nav>
@@ -186,13 +186,13 @@ export function getSteps<Step extends string>(
       ctx.route!.endsWith('/:step'),
       'useSteps must be used with a route ending in :step',
     )
-    const currentStep = ctx.params.step
-    const baseUrl = ctx.url.toString().split('/').slice(0, -1).join('/')
+    const current_step = ctx.params.step
+    const base_url = ctx.url.toString().split('/').slice(0, -1).join('/')
 
     let completed = false
 
     const steps = stepNames.map((name) => {
-      if (name === currentStep) {
+      if (name === current_step) {
         completed = true
         return { name, status: 'current' as const }
       }
@@ -203,8 +203,8 @@ export function getSteps<Step extends string>(
     })
 
     return {
-      currentStep,
-      stepsTopBar: <Steps baseUrl={baseUrl} steps={steps} />,
+      current_step,
+      stepsTopBar: <Steps base_url={base_url} steps={steps} />,
       steps,
     }
   }

@@ -52,7 +52,7 @@ export default function snakeCase(str: string): string {
 // }
 
 // // Test cases to verify lodash compatibility
-// const testCases = [
+// const test_cases =[
 //   'camelCase',
 //   'PascalCase',
 //   'snake_case',

@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   it('comes back to main menu after cancelling appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
-    const patientBefore = await patients.insert(db, {
+    const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
       phone_number,
       name: 'Test Patient',
@@ -27,14 +27,14 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    assert(patientBefore)
+    assert(patient_before)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
-        patient_id: patientBefore.id,
+        patient_id: patient_before.id,
       })
     await appointments.upsertRequest(db, {
       id: scheduling_appointment_request.id,
-      patient_id: patientBefore.id,
+      patient_id: patient_before.id,
       reason: 'pain',
     })
 
@@ -50,7 +50,7 @@ describe('patient chatbot', () => {
     end.setHours(end.getHours() + 1)
     const duration_minutes = 60
 
-    const offeredTime = await appointments.addOfferedTime(db, {
+    const offered_time = await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       provider_id: health_worker.employee_id,
       start,
@@ -62,7 +62,7 @@ describe('patient chatbot', () => {
 
     // Insert scheduled appointment
     const appointment = await appointments.schedule(db, {
-      appointment_offered_time_id: offeredTime.id,
+      appointment_offered_time_id: offered_time.id,
       gcal_event_id,
     })
 
@@ -83,7 +83,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             'Your appointment has been cancelled. What can I help you with today?',
           type: 'buttons',
           buttonText: 'Menu',

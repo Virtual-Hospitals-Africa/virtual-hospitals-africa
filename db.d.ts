@@ -97,6 +97,20 @@ export type MaritalStatus =
   | 'Single'
   | 'Widowed'
 
+export type MessageConcerningType = 'patient' | 'patient_record'
+
+export type MessagePriority =
+  | 'Emergency'
+  | 'Non-urgent'
+  | 'Urgent'
+  | 'Very urgent'
+
+export type MessageTargetType =
+  | 'employment'
+  | 'organization'
+  | 'profession'
+  | 'region'
+
 export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
 
 export type Numeric = ColumnType<string, number | string, number | string>
@@ -727,6 +741,34 @@ export interface Medications {
   strength_denominator_unit: string
   strength_numerator_unit: string
   strength_numerators: number[]
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageDraftConcerning {
+  concerning_type: MessageConcerningType
+  concerning_uuid: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  message_draft_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageDrafts {
+  body: string
+  created_at: Generated<Timestamp>
+  employment_id: string
+  id: Generated<string>
+  priority: MessagePriority
+  updated_at: Generated<Timestamp>
+}
+
+export interface MessageDraftTargets {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  message_draft_id: string
+  target_type: MessageTargetType
+  target_uuid: string | null
+  target_value: Json | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1744,6 +1786,9 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medications: Medications
+  message_draft_concerning: MessageDraftConcerning
+  message_draft_targets: MessageDraftTargets
+  message_drafts: MessageDrafts
   message_reads: MessageReads
   message_thread_participants: MessageThreadParticipants
   message_thread_subjects: MessageThreadSubjects

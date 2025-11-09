@@ -14,7 +14,7 @@ import OrganizationsSelect from './OrganizationsSelect.tsx'
 import CountrySelect from './CountrySelect.tsx'
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 import { TextInput } from './form/inputs/text.tsx'
-import healthWorkerDisplay from '../util/healthWorkerDisplay.ts'
+import { appUserDisplay } from '../util/healthWorkerDisplay.ts'
 import { specialtyOptions, SpecialtySelect } from './SpecialtySelect.tsx'
 
 type OnboardingProgress =
@@ -108,9 +108,9 @@ function EnterProfession(
         <Person
           person={{
             avatar_url: health_worker.avatar_url,
-            ...healthWorkerDisplay({
+            ...appUserDisplay({
               health_worker_name: name.value,
-              profession: profession.value,
+              app_user: profession.value,
               specialty: specialty.value,
             }),
           }}
@@ -182,8 +182,12 @@ export function Onboarding(
   },
 ) {
   const progress = useSignal<OnboardingProgress>({ type: 'welcome' })
-  const getStarted = () => progress.value = { type: 'enter profession' }
-  const onProfession = () => progress.value = { type: 'select organization' }
+  function getStarted() {
+    progress.value = { type: 'enter profession' }
+  }
+  function onProfession() {
+    progress.value = { type: 'select organization' }
+  }
 
   return (
     <Form method='POST'>

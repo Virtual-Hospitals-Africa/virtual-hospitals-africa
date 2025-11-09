@@ -38,23 +38,23 @@ export default function Condition(
   const prefix = `pre_existing_conditions.${index}`
 
   const addComorbidity = () => {
-    const nextComorbidities = [...comorbidities, { removed: false }]
-    const nextConditionState = {
+    const next_comorbidities = [...comorbidities, { removed: false }]
+    const next_condition_state = {
       medications,
-      comorbidities: nextComorbidities,
+      comorbidities: next_comorbidities,
       removed: false as const,
     }
-    update(nextConditionState)
+    update(next_condition_state)
   }
 
   const addMedication = () => {
-    const nextMedications = [...medications, { removed: false }]
-    const nextConditionState = {
-      medications: nextMedications,
+    const next_medications = [...medications, { removed: false }]
+    const next_condition_state = {
+      medications: next_medications,
       comorbidities,
       removed: false as const,
     }
-    update(nextConditionState)
+    update(next_condition_state)
   }
 
   return (
@@ -88,11 +88,11 @@ export default function Condition(
                 const next_comorbidities = comorbidities.map((c) =>
                   c === comorbidity ? { removed: true as const } : c
                 )
-                const nextConditionState = {
+                const next_condition_state = {
                   medications,
                   comorbidities: next_comorbidities,
                 }
-                update(nextConditionState)
+                update(next_condition_state)
               }}
             />
           )
@@ -112,15 +112,15 @@ export default function Condition(
               prefix={prefix}
               index={index}
               remove={() => {
-                const nextMedications = medications.map((m) =>
+                const next_medications = medications.map((m) =>
                   m === medication ? { removed: true as const } : m
                 )
-                const nextConditionState = {
-                  medications: nextMedications,
+                const next_condition_state = {
+                  medications: next_medications,
                   comorbidities,
                   removed: false as const,
                 }
-                update(nextConditionState)
+                update(next_condition_state)
               }}
             />
           )

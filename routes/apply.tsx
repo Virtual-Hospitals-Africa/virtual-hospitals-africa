@@ -13,7 +13,7 @@ import z from 'zod'
 
 type PendingApprovalPageProps = {
   health_worker: EmployedHealthWorker
-  organizationAdmin: OrganizationAdmin
+  organization_admin: OrganizationAdmin
 }
 
 export const handler = postHandler(
@@ -48,9 +48,9 @@ export default function ApplyPage(
                 </FormRow>
               </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from organizationName is currently under review
-                by{' '}
-                organizationAdminName. You will receive an email once your
+                Your application from organization_name is currently under
+                review by{' '}
+                organization_admin_name. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

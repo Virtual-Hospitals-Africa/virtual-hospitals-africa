@@ -27,16 +27,16 @@ export default function VitalInputWithEvaluation({
   }
 }) {
   const name = `findings.${measurement.finding_id}`
-  const hasExistingNote = !!existingEvaluation?.note
+  const has_existing_note = !!existingEvaluation?.note
 
   const getVitalName = (snomedCode: string) => {
-    const vitalKey = Object.entries(VITALS_SNOMED_CODE).find(
+    const vital_key = Object.entries(VITALS_SNOMED_CODE).find(
       ([_, code]) => code === snomedCode,
     )?.[0]
 
-    if (!vitalKey) return 'Unknown Vital'
+    if (!vital_key) return 'Unknown Vital'
 
-    return vitalKey
+    return vital_key
       .split('_')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
@@ -49,7 +49,7 @@ export default function VitalInputWithEvaluation({
         type='checkbox'
         id={`${name}-note-toggle`}
         className='sr-only peer'
-        defaultChecked={hasExistingNote}
+        defaultChecked={has_existing_note}
       />
       <div className='flex justify-between w-full'>
         <div className='flex flex-col'>

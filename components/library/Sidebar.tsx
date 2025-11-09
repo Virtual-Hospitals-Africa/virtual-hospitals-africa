@@ -112,9 +112,9 @@ const regulator_home_page_nav_links: LinkDef[] = [
 export function GenericSidebar(
   { nav_links, route, params, urlSearchParams, top }: SidebarProps,
 ) {
-  const allParams = { ...params }
-  urlSearchParams.forEach((value, key) => allParams[key] = value)
-  const activeLink = matchActiveLink(nav_links, route)
+  const all_params = { ...params }
+  urlSearchParams.forEach((value, key) => all_params[key] = value)
+  const active_link = matchActiveLink(nav_links, route)
   return (
     <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
       <div className='flex flex-col flex-auto overflow-y-auto bg-white border-r border-gray-200 gap-y-5'>
@@ -137,8 +137,8 @@ export function GenericSidebar(
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
-                href={replaceParams(link.route, allParams)}
-                active={link === activeLink}
+                href={replaceParams(link.route, all_params)}
+                active={link === active_link}
                 title={link.title ||
                   capitalize(link.route.split('/').pop()!).replace(
                     ' And ',

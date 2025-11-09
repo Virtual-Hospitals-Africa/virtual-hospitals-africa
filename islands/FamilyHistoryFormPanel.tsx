@@ -21,10 +21,10 @@ function FamilyHistoryForm(
   { family_history }: { family_history: FamilyHistory },
 ) {
   console.log(family_history)
-  const familyMembers = useSignal<FamilyMember[]>([{}])
+  const family_members = useSignal<FamilyMember[]>([{}])
   const addFamilyMember = () => {
-    familyMembers.value = [
-      ...familyMembers.value,
+    family_members.value = [
+      ...family_members.value,
       {},
     ]
   }
@@ -35,7 +35,7 @@ function FamilyHistoryForm(
         name='family_history.snomed_concept_id'
         value={family_history.snomed_concept_id}
       />
-      {familyMembers.value.map((member, index) => (
+      {family_members.value.map((member, index) => (
         <FamilyMemberSection member={member} index={index} />
       ))}
       <AddRow

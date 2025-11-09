@@ -1,10 +1,8 @@
 import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
-import Layout from '../../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
-  Maybe,
   PreviouslyCompletedProcedures,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
@@ -14,7 +12,6 @@ import {
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
-import * as patients from '../../../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
 import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_records.ts'
 import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
@@ -35,6 +32,7 @@ import {
   assertOr405,
   assertOrRedirect,
 } from '../../../../../../../util/assertOr.ts'
+import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
 import PatientDrawerV3 from '../../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
@@ -57,13 +55,13 @@ import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'
 import { OrganizationContext, OrganizationState } from '../../../_middleware.ts'
 import words from '../../../../../../../util/words.ts'
-import first from '../../../../../../../util/first.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { ComponentChild } from 'preact'
 import {
   previouslyCompleted,
 } from '../../../../../../../db/models/patient_procedures.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -95,14 +93,6 @@ export type OpenEncounterWorkflowContext<T = Record<never, never>> =
   LoggedInHealthWorkerContext<
     OpenEncounterWorkflowState & T
   >
-
-// export type OpenEncounterWorkflowCompletedRegistrationContext<
-//   T = Record<never, never>,
-// > = OpenEncounterWorkflowContext<
-//   T & {
-//     encounter:
-//   }
-// >
 
 const nav_links: {
   [w in Workflow]: {
@@ -302,35 +292,39 @@ export async function workflowHandler(
   return ctx.next()
 }
 
+async function findPatientOpenEncounter(
+  ctx: OrganizationContext,
+): Promise<RenderedPatientOpenEncounter> {
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+  const { present_encounter, trx } = ctx.state
+  if (present_encounter) {
+    if (present_encounter.patient.id !== patient_id) {
+      throw new PresentWithAnotherPatientError(present_encounter)
+    }
+    return present_encounter
+  }
+
+  const patient_encounter = await patient_encounters.getFirstOpen(trx, {
+    patient_id,
+  })
+  assertOr404(
+    patient_encounter,
+    'No open encounter for this patient at this organization',
+  )
+  return patient_encounter as RenderedPatientOpenEncounter
+}
+
 export async function handler(
   ctx: OrganizationContext,
 ) {
-  const req = ctx.req
-  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const { trx, health_worker, organization_employment } = ctx.state
+  const { trx, organization_employment } = ctx.state
 
-  let encounter: Maybe<RenderedPatientOpenEncounter> =
-    health_worker.present_encounter
-  if (encounter) {
-    if (encounter.patient.id !== patient_id) {
-      throw new PresentWithAnotherPatientError(encounter)
-    }
-  } else {
-    encounter = await patient_encounters.getOpen(trx, {
-      patient_id,
-    }).then(first)
-  }
-
-  assertOr404(
-    encounter,
-    'No open encounter for this patient at this organization',
-  )
-  const patient = await patients.getById(trx, patient_id)
+  const encounter = await findPatientOpenEncounter(ctx)
 
   const encounter_employee_presence =
     encounter.status.patient_presence.employees.find((
       employee,
-    ) => employee.employment_id === organization_employment.non_admin_id) ??
+    ) => employee.employment_id === nonAdminId(organization_employment)) ??
       null
 
   assert(encounter_employee_presence, 'No encounter employee found')
@@ -339,7 +333,7 @@ export async function handler(
     ...ctx.state,
     encounter,
     encounter_employee_presence,
-    patient,
+    patient: encounter.patient,
   }
 
   Object.assign(ctx.state, encounter_props)
@@ -347,7 +341,7 @@ export async function handler(
   const response = await ctx.next()
 
   // Run assertions to ensure any modifications to encounters
-  if (req.method === 'POST') {
+  if (ctx.req.method === 'POST') {
     await patient_encounters.getById(trx, encounter.patient_encounter_id)
   }
 
@@ -398,7 +392,7 @@ export function OpenEncounterWorkflowLayout({
   children: ComponentChildren
 }): JSX.Element {
   return (
-    <Layout
+    <HealthWorkerContentsWithSidebarAndDrawer
       title={capitalize(ctx.state.workflow)}
       sidebar={
         <StepsSidebar
@@ -407,7 +401,6 @@ export function OpenEncounterWorkflowLayout({
           steps_completed={ctx.state.workflow_status.steps_completed}
         />
       }
-      // TODO revisit when we show the drawer and/or handle this differently
       drawer={ctx.state.workflow !== 'registration'
         ? (
           <PatientDrawerV3
@@ -422,14 +415,13 @@ export function OpenEncounterWorkflowLayout({
             //   : []}
           />
         )
-        : null}
-      url={ctx.url}
-      variant='form'
+        : undefined}
     >
-      <Form method='POST' id='encounter'>
-        {children}
-        <hr />
-        <ButtonsContainer>
+      <Form method='POST' className='h-full relative'>
+        <div className='pr-4'>
+          {children}
+        </div>
+        <ButtonsContainer className='absolute bottom-0 left-0 right-0'>
           {buttons || (
             <Button
               type='submit'
@@ -440,7 +432,7 @@ export function OpenEncounterWorkflowLayout({
           )}
         </ButtonsContainer>
       </Form>
-    </Layout>
+    </HealthWorkerContentsWithSidebarAndDrawer>
   )
 }
 

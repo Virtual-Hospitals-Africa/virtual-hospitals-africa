@@ -168,20 +168,20 @@ export function dosageDisplay(params: DosageDisplayParams) {
   assert(numeric_strength_denominator)
 
   const single_dose = dosage * numeric_strength_denominator
-  const totalDosage = totalDosageMultiplier
+  const total_dosage = totalDosageMultiplier
     ? Math.ceil(totalDosageMultiplier * single_dose)
     : single_dose
 
   let display = totalDosageMultiplier
-    ? String(totalDosage)
+    ? String(total_dosage)
     : (strength_denominator === 1
       ? (dosage_text ?? dosageText(dosage))
       : String(single_dose))
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  const doseToCompare = totalDosageMultiplier ? totalDosage : dosage
-  display += doseToCompare > 1
+  const dose_to_compare = totalDosageMultiplier ? total_dosage : dosage
+  display += dose_to_compare > 1
     ? denominatorPlural(params)
     : strength_denominator_unit
   display += ` (${numeric_strength * dosage}${strength_numerator_unit})`
@@ -253,21 +253,21 @@ export function scheduleDisplay(
 //   assert(typeof medication.registration_frequency === 'string')
 //   assertRegistrationFrequency(medication.registration_frequency)
 
-//   const dosesPerDay = RegistrationDosesPerDay[medication.registration_frequency]
+//   const dosesPer_day =RegistrationDosesPerDay[medication.registration_frequency]
 
-//   const singleDosage = dosageDisplay({
+//   const single_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
 //     ...omit(medication, ['dosage']),
 //   })
 
-//   const totalDosage = dosageDisplay({
+//   const total_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
-//     totalDosageMultiplier: duration * dosesPerDay,
+//     totalDosageMultiplier: duration * doses_per_day,
 //     ...omit(medication, ['dosage']),
 //   })
 
-//   return `*${medication.name}* : ${singleDosage} per dose * ${dosesPerDay} ${
-//     pluralize('dose', dosesPerDay)
-//   } per day * ${duration} ${pluralize('day', duration)} = ${totalDosage}`
+//   return `*${medication.name}* : ${single_dosage} per dose * ${doses_per_day} ${
+//     pluralize('dose', doses_per_day)
+//   } per day * ${duration} ${pluralize('day', duration)} = ${total_dosage}`
 //     .toLowerCase()
 // }

@@ -1,37 +1,204 @@
 import { assert } from 'std/assert/assert.ts'
 import { Profession } from '../db.d.ts'
-import { Maybe } from '../types.ts'
+import {
+  AppUser,
+  HealthWorkerDisplay,
+  HealthWorkerOrganization,
+  Maybe,
+  RenderedPatientEncounterEmployee,
+} from '../types.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
-type HealthWorkerDisplay = {
-  display_name: string
-  description: string
+/*
+  TODO multiple specialties
+  TODO in the data model have a concept of your employment at an organization
+    Independent of your profession
+*/
+export default function healthWorkerDisplay(
+  employee_or_name: RenderedPatientEncounterEmployee | string,
+  organization_employment?: HealthWorkerOrganization,
+): HealthWorkerDisplay {
+  // Handle single argument case (RenderedPatientEncounterEmployee)
+  if (typeof employee_or_name !== 'string') {
+    const employee = employee_or_name
+    return healthWorkerDisplayInner({
+      health_worker_name: employee.health_worker_name,
+      is_doctor: employee.profession === 'doctor',
+      is_admin: employee.profession === 'admin',
+      provider_profession: employee.profession !== 'admin'
+        ? employee.profession
+        : undefined,
+      specialty: employee.specialty,
+    })
+  }
+
+  // Handle two argument case (name and organization_employment)
+  assert(organization_employment, 'organization_employment is required')
+  const health_worker_name = employee_or_name
+  let is_doctor = false
+  let is_admin = false
+  let provider_profession: Profession | undefined
+  let specialty: Maybe<string>
+
+  for (const role of organization_employment.roles) {
+    if (!role) continue
+    switch (role.profession) {
+      case 'receptionist': {
+        assert(!specialty)
+        assert(!role.specialty)
+        assert(!provider_profession)
+        provider_profession = role.profession
+        break
+      }
+      case 'doctor': {
+        is_doctor = true
+        assert(!specialty)
+        assert(!provider_profession)
+        provider_profession = role.profession
+        specialty = role.specialty
+        break
+      }
+      case 'nurse': {
+        assert(!specialty)
+        assert(!provider_profession)
+        provider_profession = role.profession
+        specialty = role.specialty
+        break
+      }
+      case 'admin': {
+        assert(!role.specialty)
+        is_admin = true
+        break
+      }
+      default: {
+        throw new Error(`Unrecognized profession ${String(role.profession)}`)
+      }
+    }
+  }
+
+  return healthWorkerDisplayInner({
+    health_worker_name,
+    is_doctor,
+    is_admin,
+    provider_profession,
+    specialty,
+  })
 }
 
-export default function healthWorkerDisplay(health_worker: {
+export function healthWorkerDisplayInner({
+  health_worker_name,
+  is_doctor,
+  is_admin,
+  provider_profession,
+  specialty,
+}: {
   health_worker_name: string
-  profession: Profession | 'regulator'
+  is_doctor: boolean
+  is_admin: boolean
+  provider_profession: Profession | undefined
   specialty: Maybe<string>
-}): HealthWorkerDisplay {
-  switch (health_worker.profession) {
-    case 'doctor': {
-      assert(health_worker.specialty)
+}) {
+  // Doctors are special. They're named Dr. and the Administrator label goes after, not before
+  if (is_doctor) {
+    assert(specialty)
+    assert(provider_profession === 'doctor')
+    return {
+      display_name: 'Dr. ' + health_worker_name,
+      description: is_admin ? `${specialty}, Administrator` : specialty,
+    }
+  }
+
+  if (is_admin) {
+    if (!provider_profession) {
       return {
-        display_name: 'Dr. ' + health_worker.health_worker_name,
-        description: health_worker.specialty,
+        display_name: health_worker_name,
+        description: 'Administrator',
       }
     }
-    case 'nurse': {
-      assert(health_worker.specialty)
+
+    // Another special case. They probably just made themselves a receptionist to enable intaking patients
+    if (provider_profession === 'receptionist') {
       return {
-        display_name: health_worker.health_worker_name,
-        description: health_worker.specialty + ' nurse',
+        display_name: health_worker_name,
+        description: 'Administrator',
       }
     }
-    default: {
+    assertEquals(provider_profession, 'nurse')
+    assert(specialty)
+
+    // For nurses, administrator goes in front
+    return {
+      display_name: health_worker_name,
+      description: `Administrator, ${specialty} nurse`,
+    }
+  }
+
+  assert(provider_profession)
+  assertNotEquals(provider_profession, 'doctor')
+
+  if (provider_profession === 'receptionist') {
+    assert(!specialty)
+    return {
+      display_name: health_worker_name,
+      description: 'Receptionist',
+    }
+  }
+
+  assertEquals(provider_profession, 'nurse')
+  assert(specialty)
+
+  return {
+    display_name: health_worker_name,
+    description: `${specialty} nurse`,
+  }
+}
+
+export function appUserDisplay(
+  { health_worker_name, app_user, specialty }: {
+    health_worker_name: string
+    app_user: AppUser
+    specialty: Maybe<string>
+  },
+) {
+  switch (app_user) {
+    case 'regulator': {
       return {
-        display_name: health_worker.health_worker_name,
-        description: health_worker.profession,
+        display_name: health_worker_name,
+        description: 'Regulator',
       }
     }
+    case 'admin':
+      return healthWorkerDisplayInner({
+        health_worker_name,
+        is_doctor: false,
+        is_admin: true,
+        provider_profession: undefined,
+        specialty,
+      })
+    case 'doctor':
+      return healthWorkerDisplayInner({
+        health_worker_name,
+        is_doctor: true,
+        is_admin: false,
+        provider_profession: 'doctor',
+        specialty,
+      })
+    case 'nurse':
+      return healthWorkerDisplayInner({
+        health_worker_name,
+        is_doctor: false,
+        is_admin: false,
+        provider_profession: 'nurse',
+        specialty,
+      })
+    case 'receptionist':
+      return healthWorkerDisplayInner({
+        health_worker_name,
+        is_doctor: false,
+        is_admin: false,
+        provider_profession: 'receptionist',
+        specialty,
+      })
   }
 }

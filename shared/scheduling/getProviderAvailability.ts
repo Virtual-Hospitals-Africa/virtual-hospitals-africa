@@ -17,17 +17,17 @@ export function getAvailability(
     gcal_availability_calendar_id: string
     gcal_appointments_calendar_id: string
   },
-  freeBusy: GCalFreeBusy,
+  free_busy: GCalFreeBusy,
 ): Availability {
   const availability = [
-    ...freeBusy.calendars[provider.gcal_availability_calendar_id].busy,
+    ...free_busy.calendars[provider.gcal_availability_calendar_id].busy,
   ]
 
   const appointments =
-    freeBusy.calendars[provider.gcal_appointments_calendar_id].busy
+    free_busy.calendars[provider.gcal_appointments_calendar_id].busy
 
   appointments.forEach((appointment) => {
-    const conflictIndex = availability.findIndex((availabilityBlock) =>
+    const conflict_index = availability.findIndex((availabilityBlock) =>
       (
         appointment.start >= availabilityBlock.start &&
         appointment.start < availabilityBlock.end
@@ -37,9 +37,9 @@ export function getAvailability(
       )
     )
 
-    if (conflictIndex === -1) return
+    if (conflict_index === -1) return
 
-    const conflict = availability[conflictIndex]
+    const conflict = availability[conflict_index]
 
     let spliceWith: Availability
 
@@ -68,7 +68,7 @@ export function getAvailability(
       }]
     }
 
-    availability.splice(conflictIndex, 1, ...spliceWith)
+    availability.splice(conflict_index, 1, ...spliceWith)
   })
 
   return availability
@@ -77,11 +77,11 @@ export function getAvailability(
 // By default, leave provider 2 hours to be able to confirm the appointment
 // and look for appointments within the next week
 export function defaultTimeRange(): TimeRange {
-  const timeMin = new Date()
-  timeMin.setHours(timeMin.getHours() + 2)
-  const timeMax = new Date(timeMin)
-  timeMax.setDate(timeMin.getDate() + 7)
-  return { timeMin, timeMax }
+  const time_min = new Date()
+  time_min.setHours(time_min.getHours() + 2)
+  const time_max = new Date(time_min)
+  time_max.setDate(time_min.getDate() + 7)
+  return { time_min, time_max }
 }
 
 export async function providerAvailability(
@@ -89,15 +89,15 @@ export async function providerAvailability(
   provider: Provider,
   timeRange = defaultTimeRange(),
 ) {
-  const healthWorkerGoogleClient = new google.HealthWorkerGoogleClient(trx, {
+  const health_worker_google_client = new google.HealthWorkerGoogleClient(trx, {
     ...provider,
     id: provider.health_worker_id,
   })
   console.log(
-    'healthWorkerGoogleClient.getFreeBusy',
-    healthWorkerGoogleClient.getFreeBusy,
+    'health_worker_google_client.getFreeBusy',
+    health_worker_google_client.getFreeBusy,
   )
-  const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
+  const free_busy = await health_worker_google_client.getFreeBusy({
     ...timeRange,
     calendarIds: [
       provider.gcal_appointments_calendar_id,
@@ -106,7 +106,7 @@ export async function providerAvailability(
   })
   return {
     provider,
-    availability: getAvailability(provider, freeBusy),
+    availability: getAvailability(provider, free_busy),
   }
 }
 
@@ -126,13 +126,14 @@ export function getAllProviderAvailability(
  */
 export async function availableSlots(
   trx: TrxOrDb,
-  { dates, declinedTimes = [], count, employment_ids, duration_minutes = 30 }: {
-    count: number
-    declinedTimes?: string[]
-    dates?: string[]
-    employment_ids?: string[]
-    duration_minutes?: number
-  },
+  { dates, declined_times = [], count, employment_ids, duration_minutes = 30 }:
+    {
+      count: number
+      declined_times?: string[]
+      dates?: string[]
+      employment_ids?: string[]
+      duration_minutes?: number
+    },
 ): Promise<{
   provider: Provider
   start: Date
@@ -140,7 +141,7 @@ export async function availableSlots(
   duration_minutes: number
 }[]> {
   assert(count > 0, 'count must be greater than 0')
-  assertAllJohannesburg(declinedTimes)
+  assertAllJohannesburg(declined_times)
 
   const providers = await getMany(trx, { employment_ids })
   const provider_availability = await getAllProviderAvailability(trx, providers)
@@ -153,8 +154,8 @@ export async function availableSlots(
   }[] = []
   for (const { provider, availability } of provider_availability) {
     for (const { start, end } of availability) {
-      const moreSlots = generateSlots({ start, end, duration_minutes })
-        .filter((slot) => !declinedTimes.includes(slot.start))
+      const more_slots = generateSlots({ start, end, duration_minutes })
+        .filter((slot) => !declined_times.includes(slot.start))
         .filter((appointment) => {
           if (!dates) return true
           const appointment_date = appointment.start.substring(0, 10)
@@ -165,7 +166,7 @@ export async function availableSlots(
           ...slot,
         }))
 
-      slots.push(...moreSlots)
+      slots.push(...more_slots)
     }
   }
   slots.sort((a, b) =>
@@ -174,21 +175,21 @@ export async function availableSlots(
 
   if (!slots.length) return []
 
-  const uniqueSlots = [
+  const unique_slots = [
     ...new Map(slots.map((slot) => [slot.start, slot]))
       .values(),
   ]
 
-  assert(uniqueSlots.length > 0, 'No availability found')
+  assert(unique_slots.length > 0, 'No availability found')
 
-  const slotsWithDates = uniqueSlots.map((slot) => ({
+  const slots_with_dates = unique_slots.map((slot) => ({
     provider: slot.provider,
     start: new Date(slot.start),
     end: new Date(slot.end),
     duration_minutes: slot.duration_minutes,
   }))
 
-  if (!dates) return slotsWithDates.slice(0, count)
+  if (!dates) return slots_with_dates.slice(0, count)
 
   assertEquals(
     count / dates.length,
@@ -197,7 +198,7 @@ export async function availableSlots(
   )
 
   return flatten(dates.map((date) =>
-    slotsWithDates.filter(
+    slots_with_dates.filter(
       (time) => formatJohannesburg(time.start).startsWith(date),
     ).slice(0, count / dates.length)
   ))
@@ -210,7 +211,7 @@ function generateSlots(
     duration_minutes?: number
   },
 ): { start: string; end: string; duration_minutes: number }[] {
-  const durationMillis = duration_minutes * 60 * 1000
+  const duration_millis = duration_minutes * 60 * 1000
   const current = new Date(start)
   current.setMinutes(
     Math.ceil(current.getMinutes() / duration_minutes) * duration_minutes,
@@ -218,14 +219,14 @@ function generateSlots(
   current.setSeconds(0)
   current.setMilliseconds(0)
 
-  const endTime = new Date(end).getTime()
+  const end_time = new Date(end).getTime()
 
   const slots: { start: string; end: string; duration_minutes: number }[] = []
-  while (current.getTime() + durationMillis <= endTime) {
-    const startDate = formatJohannesburg(current)
-    current.setTime(current.getTime() + durationMillis)
-    const endDate = formatJohannesburg(current)
-    slots.push({ start: startDate, end: endDate, duration_minutes })
+  while (current.getTime() + duration_millis <= end_time) {
+    const start_date = formatJohannesburg(current)
+    current.setTime(current.getTime() + duration_millis)
+    const end_date = formatJohannesburg(current)
+    slots.push({ start: start_date, end: end_date, duration_minutes })
   }
   return slots
 }

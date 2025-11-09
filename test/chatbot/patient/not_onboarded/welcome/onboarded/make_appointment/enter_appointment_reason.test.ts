@@ -35,9 +35,9 @@ describe('patient chatbot', () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const whatsappOne = mockWhatsApp()
+    const whatsapp_one = mockWhatsApp()
 
-    await respond(whatsappOne, 'patient', phone_number)
+    await respond(whatsapp_one, 'patient', phone_number)
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',
@@ -49,14 +49,14 @@ describe('patient chatbot', () => {
       whatsapp_id: `wamid.${generateUUID()}`,
     })
 
-    const whatsappTwo = mockWhatsApp()
+    const whatsapp_two = mockWhatsApp()
 
-    await respond(whatsappTwo, 'patient')
-    assertEquals(whatsappTwo.sendMessages.calls[0].args, [
+    await respond(whatsapp_two, 'patient')
+    assertEquals(whatsapp_two.sendMessages.calls[0].args, [
       {
         chatbot_name: 'patient',
         messages: {
-          messageBody:
+          message_body:
             'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
           type: 'buttons',
           buttonText: 'Menu',

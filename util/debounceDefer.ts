@@ -23,8 +23,8 @@ export default function debounceDefer<Args extends Array<any>, Resolves>(
     }
 
     timer = setTimeout(function (): any {
-      const resolveNow = resolve
-      const rejectNow = reject
+      const resolve_now = resolve
+      const reject_now = reject
 
       timer = null
       resolving = null
@@ -33,10 +33,10 @@ export default function debounceDefer<Args extends Array<any>, Resolves>(
 
       fn(...args)
         .then((result) => {
-          resolveNow(result)
+          resolve_now(result)
         })
         .catch((error) => {
-          rejectNow(error)
+          reject_now(error)
         })
     }, waitMillis)
 

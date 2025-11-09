@@ -2,7 +2,6 @@ import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
@@ -14,6 +13,7 @@ import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
+import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
 
 describe('/login', () => {
   before(waitUntilTestServerUp)
@@ -22,13 +22,13 @@ describe('/login', () => {
     const response = await fetch(`${route}/login`, {
       redirect: 'manual',
     })
-    const redirectLocation = response.headers.get('location')
-    assert(redirectLocation, `Is self_url the issue? ${selfUrl()}`)
+    const redirect_location = response.headers.get('location')
+    assert(redirect_location, `Is self_url the issue? ${selfUrl()}`)
     assert(
-      redirectLocation.startsWith(
+      redirect_location.startsWith(
         'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8005%2Flogged-in',
       ),
-      redirectLocation,
+      redirect_location,
     )
     await response.body?.cancel()
   })
@@ -71,8 +71,8 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
       )
-      const pageContents = await response.text()
-      assert(pageContents.includes('Open Encounters'))
+      const page_contents = await response.text()
+      assert(page_contents.includes('Open Encounters'))
     })
 
     it('allows regulator to access /regulator/[country]/pharmacies', async () => {
@@ -89,8 +89,8 @@ describe('/login', () => {
       const response = await mock.fetch(`/login`, {
         redirect: 'manual',
       })
-      const redirectLocation = response.headers.get('location')
-      assertEquals(redirectLocation, '/app?from_login=true')
+      const redirect_location = response.headers.get('location')
+      assertEquals(redirect_location, '/app?from_login=true')
       return response.body?.cancel()
     })
 
@@ -105,8 +105,8 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
-      const pageContents = await response.text()
-      assert(pageContents.includes('First Name'))
+      const page_contents = await response.text()
+      assert(page_contents.includes('First Name'))
     })
 
     // TODO turn off SKIP_NURSE_REGISTRATION
@@ -200,14 +200,14 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      const pageContents = await response.text()
+      const page_contents = await response.text()
       assert(
-        pageContents.includes(
+        page_contents.includes(
           `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.health_worker.id}"`,
         ),
       )
       assert(
-        pageContents.includes(
+        page_contents.includes(
           `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}"`,
         ),
       )
@@ -227,9 +227,9 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      let pageContents = await response.text()
+      let page_contents = await response.text()
       assert(
-        pageContents.includes(
+        page_contents.includes(
           'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
         ),
       )
@@ -243,10 +243,10 @@ describe('/login', () => {
         response.url,
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
-      pageContents = await response.text()
-      assert(pageContents.includes('Email'))
-      assert(pageContents.includes('Profession'))
-      assert(pageContents.includes('Invite'))
+      page_contents = await response.text()
+      assert(page_contents.includes('Email'))
+      assert(page_contents.includes('Profession'))
+      assert(page_contents.includes('Invite'))
     })
 
     it("doesn't allow access to employees if you are employed at a different organization", async () => {
@@ -265,30 +265,30 @@ describe('/login', () => {
         profession: 'doctor',
       })
 
-      const employeesResponse = await mock.fetch(
+      const employees_response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
 
       assert(
-        employeesResponse.ok,
+        employees_response.ok,
       )
       assert(
-        employeesResponse.url ===
+        employees_response.url ===
           `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
-      const pageContents = await employeesResponse.text()
+      const page_contents = await employees_response.text()
       assert(
-        !pageContents.includes(
+        !page_contents.includes(
           'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
         ),
       )
 
-      const invitesResponse = await mock.fetch(
+      const invites_response = await mock.fetch(
         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite?expectedTestError=1`,
       )
 
-      assertEquals(invitesResponse.status, 403)
-      await invitesResponse.body?.cancel()
+      assertEquals(invites_response.status, 403)
+      await invites_response.body?.cancel()
     })
   })
 })

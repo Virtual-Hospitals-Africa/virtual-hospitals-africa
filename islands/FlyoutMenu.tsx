@@ -44,7 +44,7 @@ const solutions = [
     icon: ArrowPathIcon,
   },
 ]
-const callsToAction = [
+const calls_to_action = [
   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
@@ -90,7 +90,7 @@ export default function FlyoutMenu() {
               ))}
             </div>
             <div className='grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50'>
-              {callsToAction.map((item) => (
+              {calls_to_action.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}

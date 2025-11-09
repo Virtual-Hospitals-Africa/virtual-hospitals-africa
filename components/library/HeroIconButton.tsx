@@ -1,13 +1,13 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
-const baseStyles = {
+const base_styles = {
   solid: 'shadow-sm',
   outline: 'border',
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
-const variantStyles = {
+const variant_styles = {
   solid: {
     primary:
       'rounded-md bg-indigo-600 px-3 py-2 font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
@@ -41,16 +41,16 @@ type ButtonProps =
   }
   & ({
     variant: 'solid'
-    color?: keyof typeof variantStyles.solid
+    color?: keyof typeof variant_styles.solid
   } | {
     variant: 'outline'
-    color?: keyof typeof variantStyles.outline
+    color?: keyof typeof variant_styles.outline
   } | {
     variant: 'ghost'
     color?: undefined
   } | {
     variant?: undefined
-    color?: keyof typeof variantStyles.solid
+    color?: keyof typeof variant_styles.solid
   })
 
 export function HeroIconButton({
@@ -63,9 +63,9 @@ export function HeroIconButton({
 }: ButtonProps) {
   className = cls(
     'justify-center rounded-md py-1 px-1 text-base font-semibold tracking-tight focus:outline-none',
-    baseStyles[variant],
+    base_styles[variant],
     // deno-lint-ignore no-explicit-any
-    (variantStyles as any)[variant][color],
+    (variant_styles as any)[variant][color],
     className,
   )
 

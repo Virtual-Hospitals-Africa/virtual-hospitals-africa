@@ -36,10 +36,12 @@ export async function handler(
     },
   )
 
-  const { employment } = ctx.state.health_worker
+  const { organizations } = ctx.state.health_worker
   const { employment_id } = doctor_review
-  const reviewing_via_employment = employment.find((e) =>
-    e.roles.doctor?.employment_id === employment_id
+  const reviewing_via_employment = organizations.find((org) =>
+    org.roles.some((role) =>
+      role.profession === 'doctor' && role.employment_id === employment_id
+    )
   )
   assertOr400(reviewing_via_employment, 'Doctor employment not found')
 
@@ -49,7 +51,7 @@ export async function handler(
       doctor_review,
       reviewing_via_employment: {
         employment_id,
-        organization_id: reviewing_via_employment.organization.id,
+        organization_id: reviewing_via_employment.id,
       },
     },
   )

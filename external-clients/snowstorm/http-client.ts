@@ -35,7 +35,7 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** request body */
   body?: unknown
   /** base url */
-  baseUrl?: string
+  base_url?: string
   /** request cancellation token */
   cancelToken?: CancelToken
 }
@@ -46,8 +46,8 @@ export type RequestParams = Omit<
 >
 
 export interface ApiConfig<SecurityDataType = unknown> {
-  baseUrl?: string
-  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>
+  base_url?: string
+  baseApiParams?: Omit<RequestParams, 'base_url' | 'cancelToken' | 'signal'>
   securityWorker?: (
     securityData: SecurityDataType | null,
   ) => Promise<RequestParams | void> | RequestParams | void
@@ -70,10 +70,10 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = SNOWSTORM_URL!
+  public base_url: string = SNOWSTORM_URL!
   private securityData: SecurityDataType | null = null
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
-  private abortControllers = new Map<CancelToken, AbortController>()
+  private abort_controllers = new Map<CancelToken, AbortController>()
   private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
     fetch(...fetchParams)
 
@@ -96,8 +96,8 @@ export class HttpClient<SecurityDataType = unknown> {
   }
 
   protected encodeQueryParam(key: string, value: any) {
-    const encodedKey = encodeURIComponent(key)
-    return `${encodedKey}=${
+    const encoded_key = encodeURIComponent(key)
+    return `${encoded_key}=${
       encodeURIComponent(typeof value === 'number' ? value : `${value}`)
     }`
   }
@@ -127,8 +127,8 @@ export class HttpClient<SecurityDataType = unknown> {
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
-    const queryString = this.toQueryString(rawQuery)
-    return queryString ? `?${queryString}` : ''
+    const query_string = this.toQueryString(rawQuery)
+    return query_string ? `?${query_string}` : ''
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
@@ -176,25 +176,25 @@ export class HttpClient<SecurityDataType = unknown> {
   protected createAbortSignal = (
     cancelToken: CancelToken,
   ): AbortSignal | undefined => {
-    if (this.abortControllers.has(cancelToken)) {
-      const abortController = this.abortControllers.get(cancelToken)
-      if (abortController) {
-        return abortController.signal
+    if (this.abort_controllers.has(cancelToken)) {
+      const abort_controller = this.abort_controllers.get(cancelToken)
+      if (abort_controller) {
+        return abort_controller.signal
       }
       return void 0
     }
 
-    const abortController = new AbortController()
-    this.abortControllers.set(cancelToken, abortController)
-    return abortController.signal
+    const abort_controller = new AbortController()
+    this.abort_controllers.set(cancelToken, abort_controller)
+    return abort_controller.signal
   }
 
   public abortRequest = (cancelToken: CancelToken) => {
-    const abortController = this.abortControllers.get(cancelToken)
+    const abort_controller = this.abort_controllers.get(cancelToken)
 
-    if (abortController) {
-      abortController.abort()
-      this.abortControllers.delete(cancelToken)
+    if (abort_controller) {
+      abort_controller.abort()
+      this.abort_controllers.delete(cancelToken)
     }
   }
 
@@ -205,28 +205,28 @@ export class HttpClient<SecurityDataType = unknown> {
     type,
     query,
     format,
-    baseUrl,
+    base_url,
     cancelToken,
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
-    const secureParams =
+    const secure_params =
       ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {}
-    const requestParams = this.mergeRequestParams(params, secureParams)
-    const queryString = query && this.toQueryString(query)
-    const payloadFormatter = this.contentFormatters[type || ContentType.Json]
-    const responseFormat = format || requestParams.format
+    const request_params = this.mergeRequestParams(params, secure_params)
+    const query_string = query && this.toQueryString(query)
+    const payload_formatter = this.contentFormatters[type || ContentType.Json]
+    const response_format = format || request_params.format
 
     return this.customFetch(
-      `${baseUrl || this.baseUrl || ''}${path}${
-        queryString ? `?${queryString}` : ''
+      `${base_url || this.base_url || ''}${path}${
+        query_string ? `?${query_string}` : ''
       }`,
       {
-        ...requestParams,
+        ...request_params,
         headers: {
-          ...(requestParams.headers || {}),
+          ...(request_params.headers || {}),
           ...(type && type !== ContentType.FormData
             ? { 'Content-Type': type }
             : {}),
@@ -234,17 +234,17 @@ export class HttpClient<SecurityDataType = unknown> {
         signal:
           (cancelToken
             ? this.createAbortSignal(cancelToken)
-            : requestParams.signal) || null,
+            : request_params.signal) || null,
         body: typeof body === 'undefined' || body === null
           ? null
-          : payloadFormatter(body),
+          : payload_formatter(body),
       },
     ).then(async (response) => {
       const r = response.clone() as HttpResponse<T, E>
       r.data = null as unknown as T
       r.error = null as unknown as E
 
-      const data = !responseFormat ? r : await response[responseFormat]()
+      const data = !response_format ? r : await response[response_format]()
         .then((data) => {
           if (r.ok) {
             r.data = data
@@ -259,7 +259,7 @@ export class HttpClient<SecurityDataType = unknown> {
         })
 
       if (cancelToken) {
-        this.abortControllers.delete(cancelToken)
+        this.abort_controllers.delete(cancelToken)
       }
 
       if (!response.ok) throw data

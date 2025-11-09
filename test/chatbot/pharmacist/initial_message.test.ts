@@ -29,7 +29,7 @@ describe('pharmacist chatbot', () => {
       {
         chatbot_name: 'pharmacist',
         messages: {
-          messageBody:
+          message_body:
             'Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n' +
             '\n' + 'To start, select the items from the following menu',
           type: 'buttons',

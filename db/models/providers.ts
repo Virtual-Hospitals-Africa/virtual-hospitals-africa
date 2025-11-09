@@ -1,28 +1,14 @@
 import { Maybe, Profession, Provider, TrxOrDb } from '../../types.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
-import { getWithTokensQuery } from './health_workers.ts'
+import { getWithTokensQuery } from './health_worker_google_tokens.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
 
-// Ensures that the provider_id represents a row in the employment table for a doctor or nurse
-export const providerId = (
-  trx: TrxOrDb,
-  { organization_id, health_worker_id }: {
-    organization_id: string
-    health_worker_id: string
-  },
-) =>
-  trx.selectFrom('employment')
-    .innerJoin('providers', 'employment.id', 'providers.id')
-    .where('employment.organization_id', '=', organization_id)
-    .where('employment.health_worker_id', '=', health_worker_id)
-    .select('providers.id')
-
 // This isn't confirming registration_status
-const baseQuery = (trx: TrxOrDb) =>
-  getWithTokensQuery(trx)
+function baseQuery(trx: TrxOrDb) {
+  return getWithTokensQuery(trx)
     .innerJoin(
       'employment',
       'health_workers.id',
@@ -57,6 +43,7 @@ const baseQuery = (trx: TrxOrDb) =>
       'health_worker_organization_calendars.availability_set',
     ])
     .where('employment.profession', 'in', ['doctor' as const, 'nurse' as const])
+}
 
 function assertProvider(
   provider: {

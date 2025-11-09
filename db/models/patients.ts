@@ -42,8 +42,8 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-export const baseQuery = (trx: TrxOrDb) =>
-  trx.selectFrom('patients')
+export function baseQuery(trx: TrxOrDb) {
+  return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
       'patients.id',
@@ -70,6 +70,7 @@ export const baseQuery = (trx: TrxOrDb) =>
       'name',
       'asc',
     )
+}
 
 export async function insert(
   trx: TrxOrDb,

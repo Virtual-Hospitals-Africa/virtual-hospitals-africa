@@ -15,10 +15,10 @@ export const seeds: Record<
     recreate: () => Promise<void>
   }
 > = {}
-for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
-  const seedName = seedFile.name
-  const seed = await import(`./defs/${seedName}`)
-  seeds[seedName] = seed.default || seed
+for (const seed_file of Deno.readDirSync('./db/seed/defs')) {
+  const seed_name = seed_file.name
+  const seed = await import(`./defs/${seed_name}`)
+  seeds[seed_name] = seed.default || seed
 }
 
 type Cmd = 'load' | 'dump' | 'drop' | 'recreate' | 'reload'
@@ -118,9 +118,9 @@ export async function loadRecreating(targets: string[]) {
     return result.name
   })
 
-  for (const seedName of seed_targets) {
-    const cmd = to_recreate.includes(seedName) ? 'recreate' : 'load'
-    await run(cmd, seedName)
+  for (const seed_name of seed_targets) {
+    const cmd = to_recreate.includes(seed_name) ? 'recreate' : 'load'
+    await run(cmd, seed_name)
   }
 }
 
@@ -149,11 +149,11 @@ export async function run(cmd: Cmd, target?: string) {
     targets = [result.name]
   }
 
-  for (const seedName of targets) {
-    await spinner(`${gerund[cmd]} seed ${seedName}`, async () => {
-      const seed = seeds[seedName]
+  for (const seed_name of targets) {
+    await spinner(`${gerund[cmd]} seed ${seed_name}`, async () => {
+      const seed = seeds[seed_name]
       await seed[cmd]()
-      return `${seedName} ${past_tense[cmd]}. Tables affected: ${
+      return `${seed_name} ${past_tense[cmd]}. Tables affected: ${
         seed.table_names.join(', ')
       }.`
     })

@@ -8,7 +8,7 @@ export async function forEach<T>(
   let resolveBelowConcurrencyLimit: () => void
   let resolveAllDone: () => void
   let rejectAllDone: (reason?: string | Error) => void
-  const allDone = new Promise<void>((resolve, reject) => {
+  const all_done = new Promise<void>((resolve, reject) => {
     resolveAllDone = resolve
     rejectAllDone = reject
   })
@@ -48,7 +48,7 @@ export async function forEach<T>(
   if (inFlight === 0) {
     Promise.resolve().then(() => resolveAllDone())
   }
-  return allDone
+  return all_done
 }
 
 // Processes a generator in parallel, but returns collects the results
@@ -64,7 +64,7 @@ export async function pMap<T, U>(
   const results: U[] = []
   let resolveAllDone: () => void
   let rejectAllDone: (reason?: string | Error) => void
-  const allDone = new Promise<void>((resolve, reject) => {
+  const all_done = new Promise<void>((resolve, reject) => {
     resolveAllDone = resolve
     rejectAllDone = reject
   })
@@ -108,7 +108,7 @@ export async function pMap<T, U>(
   if (inFlight === 0) {
     Promise.resolve().then(() => resolveAllDone())
   }
-  return allDone.then(() => results)
+  return all_done.then(() => results)
 }
 
 export async function collect<T>(

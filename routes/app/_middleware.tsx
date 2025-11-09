@@ -1,21 +1,26 @@
 import { Context } from 'fresh'
+import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import * as health_worker_registration_status from '../../db/models/health_worker_registration_status.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as notifications from '../../db/models/notifications.ts'
+import * as sessions from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
-import { deleteCookie } from 'std/http/cookie.ts'
 import * as cookie from '../../shared/cookie.ts'
 import { warning } from '../../util/alerts.ts'
 import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
-import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { attachTrx } from '../../shared/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
-
-const SKIP_NURSE_REGISTRATION = true
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { SKIP_NURSE_REGISTRATION } from '../../db/models/health_worker_registration_status.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { HealthWorkerHomePageSidebar } from '../../components/library/Sidebar.tsx'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 
 export default [
   ensureCookiePresent,
@@ -37,15 +42,6 @@ export function ensureCookiePresent(ctx: Context<any>) {
   return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
-export function getLoggedInHealthWorkerFromCookie(
-  // deno-lint-ignore no-explicit-any
-  ctx: Context<any>,
-) {
-  const session_id = cookie.get(ctx.req)
-  assert(session_id)
-  return health_workers.getBySession(db, { session_id })
-}
-
 function isGettingHtml(req: Request) {
   if (req.method !== 'GET') return false
   const accept = req.headers.get('accept')
@@ -61,7 +57,29 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
-    const health_worker = await getLoggedInHealthWorkerFromCookie(ctx)
+    const session_id = cookie.get(ctx.req)
+    assert(session_id)
+
+    const health_worker_id_selection = sessions.getHealthWorkerId(
+      db,
+      session_id,
+    )
+
+    const { health_worker, present_encounter } = await promiseProps({
+      update_session: sessions.tickUpdatedAt(db, 'health_worker', session_id),
+      health_worker: health_workers.getByIdOptional(
+        db,
+        health_worker_id_selection,
+      ),
+      present_encounter: patient_encounters.findOneOptional(db, {
+        is_open: true,
+        presence_health_worker_id: health_worker_id_selection,
+      }),
+      registration_status: health_worker_registration_status.getByIdOptional(
+        db,
+        health_worker_id_selection,
+      ),
+    })
 
     if (
       health_worker && (
@@ -69,6 +87,7 @@ export function getLoggedInHealthWorker(
       )
     ) {
       ctx.state.health_worker = health_worker
+      ctx.state.present_encounter = present_encounter
       return ctx.next()
     }
 
@@ -84,42 +103,33 @@ export function getLoggedInHealthWorker(
 function redirectIfRegistrationNeeded(
   ctx: LoggedInHealthWorkerContext,
 ) {
-  const { health_worker } = ctx.state
-  const role_needing_registration = health_worker.employment.find((e) =>
-    e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
-    e.roles.admin?.registration_needed
+  assertEquals(
+    SKIP_NURSE_REGISTRATION,
+    true,
+    'Expecting registration to be skipped for now',
   )
+  // function redirectIfNotAlreadyOnPage(
+  //   page: string,
+  //   params?: Record<string, string>,
+  // ) {
+  //   const current_url = ctx.url.pathname + ctx.url.search
+  //   const on_page = current_url.startsWith(page)
+  //   return on_page
+  //     ? ctx.next()
+  //     : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
+  // }
 
-  // This is not quite right as this will mean that you can't log in if you're pending approval at one organization, even if you're not
-  // pending approval at another but not at another.
-  // TODO deal with this as part of doctor registration
-  const role_pending_approval = health_worker.employment.find((e) =>
-    e.roles.nurse?.registration_pending_approval ||
-    e.roles.doctor?.registration_pending_approval ||
-    e.roles.admin?.registration_pending_approval
-  )
+  // const { registration_status } = ctx.state
 
-  function redirectIfNotAlreadyOnPage(
-    page: string,
-    params?: Record<string, string>,
-  ) {
-    const current_url = ctx.url.pathname + ctx.url.search
-    const on_page = current_url.startsWith(page)
-    return on_page
-      ? ctx.next()
-      : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
-  }
+  // if (role_needing_registration) {
+  //   return redirectIfNotAlreadyOnPage(
+  //     `/app/organizations/${role_needing_registration.organization.id}/register`,
+  //   )
+  // }
 
-  if (role_needing_registration && !SKIP_NURSE_REGISTRATION) {
-    return redirectIfNotAlreadyOnPage(
-      `/app/organizations/${role_needing_registration.organization.id}/register`,
-    )
-  }
-
-  // TODO make a page for this purpose
-  if (role_pending_approval && !SKIP_NURSE_REGISTRATION) {
-    return redirectIfNotAlreadyOnPage('/app/pending_approval')
-  }
+  // if (role_pending_approval) {
+  //   return redirectIfNotAlreadyOnPage('/app/pending_approval')
+  // }
 
   return ctx.next()
 }
@@ -167,7 +177,7 @@ export function HealthWorkerHomePageLayout<
       title = undefined as any
     }
 
-    let { rendered, health_worker_notifications } = await promiseProps({
+    let { rendered /*, health_worker_notifications*/ } = await promiseProps({
       rendered: Promise.resolve(
         render!(ctx),
       ),
@@ -192,17 +202,24 @@ export function HealthWorkerHomePageLayout<
     }
 
     return (
-      <Layout
-        variant='health worker home page'
+      <HealthWorkerContentsWithSidebarAndDrawer
         title={title as string}
-        route={ctx.route!}
-        url={ctx.url}
-        health_worker={health_worker}
-        notifications={health_worker_notifications}
+        sidebar={
+          <HealthWorkerHomePageSidebar
+            route={ctx.route!}
+            params={ctx.params && 'organization_id' in ctx.params
+              ? ctx.params
+              : {
+                ...ctx.params,
+                organization_id: defaultOrganizationId(ctx.state.health_worker),
+              }}
+            urlSearchParams={ctx.url.searchParams}
+          />
+        }
         drawer={drawer}
       >
         {rendered}
-      </Layout>
+      </HealthWorkerContentsWithSidebarAndDrawer>
     )
   }
 }

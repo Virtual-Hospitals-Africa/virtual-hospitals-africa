@@ -83,13 +83,13 @@ describe('db/models/organizations.ts', () => {
             ],
           )
 
-          const withInvitees = await organizations.getEmployeesAndInvitees(
+          const with_invitees = await organizations.getEmployeesAndInvitees(
             trx,
             organization_ids[0],
             {},
           )
 
-          const hw_1 = withInvitees.find((hw) =>
+          const hw_1 = with_invitees.find((hw) =>
             hw.health_worker_id === hw_at_organization1.id
           )
           assert(hw_1)
@@ -112,7 +112,7 @@ describe('db/models/organizations.ts', () => {
           assertEquals(hw_1.professions[0].profession, 'admin')
           assertEquals(hw_1.professions[1].profession, 'nurse')
 
-          const hw_2 = withInvitees.find((hw) =>
+          const hw_2 = with_invitees.find((hw) =>
             hw.health_worker_id === hw_at_organization2.id
           )
           assert(hw_2)
@@ -135,10 +135,10 @@ describe('db/models/organizations.ts', () => {
           assertEquals(hw_2.professions[0].profession, 'admin')
           assertEquals(hw_2.professions[1].profession, 'doctor')
 
-          const invitedHw = withInvitees.find((hw) =>
+          const invited_hw = with_invitees.find((hw) =>
             hw.email === invited.email
           )!
-          assertEquals(omit(invitedHw, ['professions']), {
+          assertEquals(omit(invited_hw, ['professions']), {
             avatar_url: null,
             email: invited.email,
             display_name: invited.email,
@@ -152,16 +152,16 @@ describe('db/models/organizations.ts', () => {
             online: null,
           })
 
-          assertEquals(invitedHw.professions.length, 1)
-          assertEquals(invitedHw.professions[0].profession, 'doctor')
+          assertEquals(invited_hw.professions.length, 1)
+          assertEquals(invited_hw.professions[0].profession, 'doctor')
 
           {
-            const withoutInvitees = await organizations.getEmployees(
+            const without_invitees = await organizations.getEmployees(
               trx,
               organization_ids[0],
             )
 
-            const hw_1 = withoutInvitees.find((hw) =>
+            const hw_1 = without_invitees.find((hw) =>
               hw.health_worker_id === hw_at_organization1.id
             )
             assert(hw_1)
@@ -184,7 +184,7 @@ describe('db/models/organizations.ts', () => {
             assertEquals(hw_1.professions[0].profession, 'admin')
             assertEquals(hw_1.professions[1].profession, 'nurse')
 
-            const hw_2 = withoutInvitees.find((hw) =>
+            const hw_2 = without_invitees.find((hw) =>
               hw.health_worker_id === hw_at_organization2.id
             )
             assert(hw_2)
@@ -207,7 +207,7 @@ describe('db/models/organizations.ts', () => {
             assertEquals(hw_2.professions[0].profession, 'admin')
             assertEquals(hw_2.professions[1].profession, 'doctor')
 
-            assert(withoutInvitees.every((hw) => !hw.is_invitee))
+            assert(without_invitees.every((hw) => !hw.is_invitee))
           }
         }),
     )
@@ -277,7 +277,7 @@ describe('db/models/organizations.ts', () => {
             },
           ])
 
-          const withInvitees = await organizations.getEmployeesAndInvitees(
+          const with_invitees = await organizations.getEmployeesAndInvitees(
             trx,
             organization_ids[0],
             {
@@ -285,8 +285,8 @@ describe('db/models/organizations.ts', () => {
             },
           )
 
-          assertEquals(withInvitees.length, 1)
-          assertEquals(withInvitees[0], {
+          assertEquals(with_invitees.length, 1)
+          assertEquals(with_invitees[0], {
             avatar_url: 'avatar_url',
             email: hw_at_organization2.email,
             display_name: 'At Organization 2',
@@ -302,22 +302,22 @@ describe('db/models/organizations.ts', () => {
             online: null,
             professions: [
               {
-                employee_id: withInvitees[0].professions[0].employee_id!,
+                employee_id: with_invitees[0].professions[0].employee_id!,
                 profession: 'admin',
                 registration_status: 'approved',
                 specialty: null,
               },
               {
-                employee_id: withInvitees[0].professions[1].employee_id!,
+                employee_id: with_invitees[0].professions[1].employee_id!,
                 profession: 'doctor',
                 registration_status: 'approved',
                 specialty: null,
               },
             ],
           })
-          assertEquals(withInvitees[0].professions.length, 2)
-          assertEquals(withInvitees[0].professions[0].profession, 'admin')
-          assertEquals(withInvitees[0].professions[1].profession, 'doctor')
+          assertEquals(with_invitees[0].professions.length, 2)
+          assertEquals(with_invitees[0].professions[0].profession, 'admin')
+          assertEquals(with_invitees[0].professions[1].profession, 'doctor')
         }),
     )
 
@@ -363,7 +363,7 @@ describe('db/models/organizations.ts', () => {
           address_id: nurse_address.id,
         })
 
-        const withInvitees = await organizations.getEmployeesAndInvitees(
+        const with_invitees = await organizations.getEmployeesAndInvitees(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {
@@ -371,8 +371,8 @@ describe('db/models/organizations.ts', () => {
           },
         )
 
-        assertEquals(withInvitees.length, 1)
-        assertEquals(omit(withInvitees[0], ['professions']), {
+        assertEquals(with_invitees.length, 1)
+        assertEquals(omit(with_invitees[0], ['professions']), {
           avatar_url: 'avatar_url',
           email: hw_at_organization1.email,
           display_name: 'At Organization 1',
@@ -386,8 +386,8 @@ describe('db/models/organizations.ts', () => {
           },
           online: null,
         })
-        assertEquals(withInvitees[0].professions.length, 1)
-        assertEquals(withInvitees[0].professions[0].profession, 'nurse')
+        assertEquals(with_invitees[0].professions.length, 1)
+        assertEquals(with_invitees[0].professions[0].profession, 'nurse')
       },
     )
 
@@ -445,7 +445,7 @@ describe('db/models/organizations.ts', () => {
           address_id: nurse_address.id,
         })
 
-        const withInvitees = await organizations.getEmployeesAndInvitees(
+        const with_invitees = await organizations.getEmployeesAndInvitees(
           trx,
           '00000000-0000-0000-0000-000000000001',
           {
@@ -453,11 +453,11 @@ describe('db/models/organizations.ts', () => {
           },
         )
 
-        assertEquals(withInvitees.length, 2)
-        const nurse_result = withInvitees.find((e) =>
+        assertEquals(with_invitees.length, 2)
+        const nurse_result = with_invitees.find((e) =>
           e.professions[0].profession === 'nurse'
         )!
-        const admin_result = withInvitees.find((e) =>
+        const admin_result = with_invitees.find((e) =>
           e.professions[0].profession === 'admin'
         )!
         assertEquals(omit(nurse_result, ['professions']), {
@@ -556,19 +556,19 @@ describe('db/models/organizations.ts', () => {
 
         assertEquals(invitees.length, 0)
 
-        const employmentResult = await trx.selectFrom('employment').where(
+        const employment_result = await trx.selectFrom('employment').where(
           'health_worker_id',
           '=',
           hw_at_organization1.id,
         ).selectAll()
           .execute()
-        assertEquals(employmentResult.length, 2)
+        assertEquals(employment_result.length, 2)
         assertEquals(
-          employmentResult[0].health_worker_id,
-          employmentResult[1].health_worker_id,
+          employment_result[0].health_worker_id,
+          employment_result[1].health_worker_id,
         )
-        assertEquals(employmentResult[0].profession, 'admin')
-        assertEquals(employmentResult[1].profession, 'doctor')
+        assertEquals(employment_result[0].profession, 'admin')
+        assertEquals(employment_result[1].profession, 'doctor')
       },
     )
 

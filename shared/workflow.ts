@@ -1,8 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { HealthWorkerEmployment, WorkflowStatus } from '../types.ts'
+import { HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
 import last from '../util/last.ts'
 import first from '../util/first.ts'
-import { departmentResponsibleForWorkflow } from './departments.ts'
+import {
+  assertDepartmentName,
+  departmentResponsibleForWorkflow,
+} from './departments.ts'
 
 export const WORKFLOWS = [
   'registration' as const,
@@ -146,10 +149,11 @@ export function lastStep(workflow: Workflow): string {
 }
 
 export function canPerform(
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
   workflow: Workflow,
 ): boolean {
-  return organization_employment.departments.some((dept) =>
-    departmentResponsibleForWorkflow(dept.name, workflow)
-  )
+  return organization_employment.departments.some((dept) => {
+    assertDepartmentName(dept)
+    return departmentResponsibleForWorkflow(dept.name, workflow)
+  })
 }

@@ -29,12 +29,12 @@
 //           snomed_english_term: 'Allergy 3',
 //         },
 //       ])
-//       const patientAllergies = await patient_allergies.getWithName(
+//       const patient_allergies =await patient_allergies.getWithName(
 //         trx,
 //         patient.id,
 //       )
 
-//       assertEquals(patientAllergies.length, 3)
+//       assertEquals(patient_allergies.length, 3)
 //     })
 
 //     itUsesTrxAnd(
@@ -59,12 +59,12 @@
 //             snomed_english_term: 'Allergy 3',
 //           },
 //         ])
-//         const patientAllergies = await patient_allergies.getWithName(
+//         const patient_allergies =await patient_allergies.getWithName(
 //           trx,
 //           patient.id,
 //         )
 
-//         assertEquals(patientAllergies.length, 3)
+//         assertEquals(patient_allergies.length, 3)
 
 //         await patient_allergies.upsert(trx, patient.id, [
 //           {
@@ -79,10 +79,10 @@
 //           },
 //         ])
 
-//         const patientAllergiesAfterRemoving = await patient_allergies
+//         const patientAllergiesAfter_removing =await patient_allergies
 //           .getWithName(trx, patient.id)
 
-//         assertEquals(patientAllergiesAfterRemoving.length, 2)
+//         assertEquals(patient_allergies_after_removing.length, 2)
 //       },
 //     )
 //   })

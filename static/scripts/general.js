@@ -166,14 +166,14 @@ hashFocus()
 addEventListener('submit', function (event) {
   var submitButton
 
-  function onError(errorMessage) {
+  function onError(error_message) {
     submitButton.disabled = false
-    console.log('errorMessage', errorMessage)
+    console.log('error_message', error_message)
 
     // On ZodError's focus on the first invalid input
     // Mark the other inputs as invalid as well, which should get cleared before submission
-    if (errorMessage.startsWith('{')) {
-      var json = JSON.parse(errorMessage)
+    if (error_message.startsWith('{')) {
+      var json = JSON.parse(error_message)
       if (json.name === 'ZodError') {
         json.issues.forEach(function (issue, index) {
           var is_first_issue = index === 0
@@ -227,7 +227,7 @@ addEventListener('submit', function (event) {
     }
 
     dispatchEvent(
-      new CustomEvent('show-alert', { detail: errorMessage }),
+      new CustomEvent('show-alert', { detail: error_message }),
     )
   }
 

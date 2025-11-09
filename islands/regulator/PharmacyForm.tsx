@@ -20,12 +20,12 @@ type PharmacyForm = {
 export default function PharmacyForm(
   { form_data, country }: PharmacyForm,
 ) {
-  const selectedSupervisors = useSignal<PharmacistOption[]>(
+  const selected_supervisors = useSignal<PharmacistOption[]>(
     form_data.supervisors ?? [],
   )
   const addSupervisor = () => {
-    selectedSupervisors.value = [
-      ...selectedSupervisors.value,
+    selected_supervisors.value = [
+      ...selected_supervisors.value,
       {
         id: '',
         name: '',
@@ -34,7 +34,7 @@ export default function PharmacyForm(
     ]
   }
   const removeSupervisor = (selectedIndex: number) => {
-    selectedSupervisors.value = selectedSupervisors.value.map(
+    selected_supervisors.value = selected_supervisors.value.map(
       (supervisor, index) => {
         if (index !== selectedIndex) return supervisor
         return {
@@ -101,7 +101,7 @@ export default function PharmacyForm(
         />
       </FormRow>
       <hr className='my-2' />
-      {selectedSupervisors.value.map((selectedSupervisor, index) =>
+      {selected_supervisors.value.map((selectedSupervisor, index) =>
         !selectedSupervisor.removed && (
           <RemoveRow
             onClick={() => removeSupervisor(index)}
@@ -116,8 +116,8 @@ export default function PharmacyForm(
                 value={selectedSupervisor}
                 required
                 onSelect={(supervisor) => {
-                  selectedSupervisors.value[index] = {
-                    ...selectedSupervisors.value[index],
+                  selected_supervisors.value[index] = {
+                    ...selected_supervisors.value[index],
                     ...supervisor,
                   }
                 }}

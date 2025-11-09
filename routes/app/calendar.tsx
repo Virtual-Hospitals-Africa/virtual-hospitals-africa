@@ -17,14 +17,37 @@ export default HealthWorkerHomePageLayout(
   async function Calendar(
     ctx: LoggedInHealthWorkerContext,
   ) {
-    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
+    const google_client = await HealthWorkerGoogleClient
+      .fromHealthWorkerContext(ctx)
 
     const today = todayISOInJohannesburg()
     // if there's no day in the query, use today in Johannesburg
     const day = ctx.url.searchParams.get('day') || today
 
-    const appointment_calendars = ctx.state.health_worker.employment.map(
-      ({ organization, gcal_appointments_calendar_id }) => {
+    // Get calendar IDs from health_worker_organization_calendars table
+    const organization_calendars = await ctx.state.trx
+      .selectFrom('health_worker_organization_calendars')
+      .where(
+        'health_worker_id',
+        '=',
+        ctx.state.health_worker.id,
+      )
+      .select([
+        'organization_id',
+        'gcal_appointments_calendar_id',
+      ])
+      .execute()
+
+    const calendar_map = new Map(
+      organization_calendars.map((cal) => [
+        cal.organization_id,
+        cal.gcal_appointments_calendar_id,
+      ]),
+    )
+
+    const appointment_calendars = ctx.state.health_worker.organizations.map(
+      (organization) => {
+        const gcal_appointments_calendar_id = calendar_map.get(organization.id)
         assertOrRedirect(
           gcal_appointments_calendar_id,
           warning(
@@ -42,9 +65,9 @@ export default HealthWorkerHomePageLayout(
       }),
       calendar_events: Promise.all(
         appointment_calendars.map((calendar_id) =>
-          googleClient.getActiveEvents(calendar_id, {
-            timeMin: `${day}T00:00:00+02:00`,
-            timeMax: `${day}T23:59:59+02:00`,
+          google_client.getActiveEvents(calendar_id, {
+            time_min: `${day}T00:00:00+02:00`,
+            time_max: `${day}T23:59:59+02:00`,
           })
         ),
       ),
@@ -52,40 +75,41 @@ export default HealthWorkerHomePageLayout(
 
     const events = calendar_events.flatMap((events) => events.items)
 
-    const gcalEventIds = new Set(events.map((event) => event.id))
+    const gcal_event_ids = new Set(events.map((event) => event.id))
 
-    const appointmentsOfProviderWithGcalEventIds = appointmentsOfHealthWorker
-      .filter(
-        (appointment) => (
-          assert(appointment.gcal_event_id),
-            gcalEventIds.has(appointment.gcal_event_id)
-        ),
-      )
+    const appointments_of_provider_with_gcal_event_ids =
+      appointmentsOfHealthWorker
+        .filter(
+          (appointment) => (
+            assert(appointment.gcal_event_id),
+              gcal_event_ids.has(appointment.gcal_event_id)
+          ),
+        )
 
     const appointments: ProviderAppointment[] =
-      appointmentsOfProviderWithGcalEventIds.map(
+      appointments_of_provider_with_gcal_event_ids.map(
         (appt) => {
-          const gcalItem = events.find((event) =>
+          const gcal_item = events.find((event) =>
             event.id === appt.gcal_event_id
           )
-          if (!gcalItem) {
+          if (!gcal_item) {
             throw new Error('Could not find gcal event for appointment')
           }
 
-          const startTime = new Date(gcalItem.start.dateTime)
-          const endTime = new Date(gcalItem.end.dateTime)
-          const duration = endTime.getTime() - startTime.getTime()
+          const start_time = new Date(gcal_item.start.dateTime)
+          const end_time = new Date(gcal_item.end.dateTime)
+          const duration = end_time.getTime() - start_time.getTime()
 
           return {
             type: 'provider_appointment' as const,
             id: appt.id,
             patient: appt.patient,
             duration_minutes: Math.round(duration / (1000 * 60)),
-            start: parseDateTime(startTime, 'numeric'),
-            end: parseDateTime(endTime, 'numeric'),
-            virtualLocation: gcalItem.hangoutLink
+            start: parseDateTime(start_time, 'numeric'),
+            end: parseDateTime(end_time, 'numeric'),
+            virtualLocation: gcal_item.hangoutLink
               ? {
-                href: gcalItem.hangoutLink,
+                href: gcal_item.hangoutLink,
               }
               : undefined,
           }

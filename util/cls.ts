@@ -1,6 +1,6 @@
 import { Maybe } from '../types.ts'
 
-const hasOwn = {}.hasOwnProperty
+const has_own = {}.hasOwnProperty
 
 type ClassNameable = Maybe<
   boolean | string | number | { [key: string]: boolean }
@@ -12,9 +12,9 @@ export default function classNames(...args: ClassNameable[]): string {
   for (const arg of args) {
     if (!arg) continue
 
-    const argType = typeof arg
+    const arg_type = typeof arg
 
-    if (argType === 'string' || argType === 'number') {
+    if (arg_type === 'string' || arg_type === 'number') {
       classes.push(arg)
     } else if (Array.isArray(arg)) {
       if (arg.length) {
@@ -23,7 +23,7 @@ export default function classNames(...args: ClassNameable[]): string {
           classes.push(inner)
         }
       }
-    } else if (argType === 'object') {
+    } else if (arg_type === 'object') {
       if (
         arg.toString !== Object.prototype.toString &&
         !arg.toString.toString().includes('[native code]')
@@ -32,10 +32,10 @@ export default function classNames(...args: ClassNameable[]): string {
         continue
       }
 
-      const argObj = arg as { [key: string]: boolean }
+      const arg_obj = arg as { [key: string]: boolean }
 
-      for (const key in argObj) {
-        if (hasOwn.call(arg, key) && argObj[key]) {
+      for (const key in arg_obj) {
+        if (has_own.call(arg, key) && arg_obj[key]) {
           classes.push(key)
         }
       }

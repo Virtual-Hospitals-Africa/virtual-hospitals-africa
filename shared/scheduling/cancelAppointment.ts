@@ -25,14 +25,14 @@ export async function cancelAppointment(
   )
   await remove(trx, scheduled_appointment.id)
 
-  const matchingProvider = await get(
+  const matching_provider = await get(
     trx,
     scheduled_appointment.provider_id,
   )
 
-  const healthWorkerGoogleClient = new google.GoogleClient(matchingProvider)
-  await healthWorkerGoogleClient.deleteEvent(
-    matchingProvider.gcal_appointments_calendar_id,
+  const health_worker_google_client = new google.GoogleClient(matching_provider)
+  await health_worker_google_client.deleteEvent(
+    matching_provider.gcal_appointments_calendar_id,
     scheduled_appointment.gcal_event_id,
   )
 }

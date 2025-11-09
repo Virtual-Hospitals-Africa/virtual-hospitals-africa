@@ -127,12 +127,12 @@ describe('db/models/inventory.ts', () => {
             procurement_id: first_added.id,
           })
 
-          const organizationConsumables = await inventory.getConsumables(
+          const organization_consumables = await inventory.getConsumables(
             trx,
             { organization_id },
           )
 
-          assertEquals(organizationConsumables, [
+          assertEquals(organization_consumables, [
             {
               consumable_id: consumable.id,
               name: consumable_name,

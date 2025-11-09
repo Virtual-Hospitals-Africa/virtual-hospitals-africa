@@ -36,14 +36,14 @@ export default function DiagnosesForm(props: {
   )
 
   const addDiagnosis = () => {
-    const newDiagnosis = {
+    const new_diagnosis = {
       comorbidities: [],
       medications: [],
       start_date: props.earliestSymptomDate ||
         new Date().toISOString().split('T')[0], // default to earliest date or today
     }
 
-    selfDiagnoses.value = [...selfDiagnoses.value, newDiagnosis]
+    selfDiagnoses.value = [...selfDiagnoses.value, new_diagnosis]
   }
 
   const first_not_removed = selfDiagnoses.value.find(

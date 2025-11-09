@@ -1,6 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import { Context } from 'fresh'
-import { ColumnType, Generated, RawBuilder, SqlBool, Transaction } from 'kysely'
+import {
+  ColumnType,
+  Generated,
+  RawBuilder,
+  SelectQueryBuilder,
+  SqlBool,
+  Transaction,
+} from 'kysely'
 import { JSX } from 'preact'
 import {
   AgeUnit,
@@ -9,6 +16,7 @@ import {
   EncounterReason,
   FamilyType,
   MaritalStatus,
+  MessagePriority,
   PatientCohabitation,
   Workflow,
 } from './db.d.ts'
@@ -107,7 +115,7 @@ export type UpdateShape<T> = OptionalMaybeFields<
   }
 >
 
-// type OrRawBuilder =
+export type IdSelection = SelectQueryBuilder<DB, any, { id: string }>
 
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -1063,9 +1071,9 @@ export type GCalCalendarList = {
 }
 
 export type GCalFreeBusy = {
-  kind: 'calendar#freeBusy'
-  timeMin: string
-  timeMax: string
+  kind: 'calendar#free_busy'
+  time_min: string
+  time_max: string
   calendars: {
     [calendarId: string]: {
       busy: { start: string; end: string }[]
@@ -1489,65 +1497,66 @@ export type RenderedDoctorReviewRequestOfSpecificDoctor =
     employment_id: string
   }
 
-export type HealthWorkerEmployment = {
-  organization: {
-    id: string
-    name: string
-    address: string | null
-  }
-  roles: {
-    nurse: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-    }
-    doctor: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-    }
-    admin: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-    }
-    receptionist: null | {
-      registration_needed: boolean
-      registration_completed: boolean
-      registration_pending_approval: boolean
-      employment_id: string
-    }
-  }
+export type HealthWorkerRegistrationStatus = {
+  organization_id: string
+  profession: Profession
+  registration_needed: boolean
+  registration_completed: boolean
+  registration_pending_approval: boolean
+}
+
+export type HealthWorkerOrganizationRole = {
+  employment_id: string
+  profession: Profession
+  specialty: string | null
   departments: {
     id: string
-    name: Department
+    name: string
   }[]
-  provider_id: string | null
-  non_admin_id: string | null
-  gcal_appointments_calendar_id: string | null
-  gcal_availability_calendar_id: string | null
-  availability_set: SqlBool | null
 }
+
+// export type HealthWorkerOrganization = {
+//   organization: RenderedOrganization
+//   roles:
+//     & {
+//       [p in Profession]: null | HealthWorkerOrganizationRole
+//     }
+//     & {
+//       provider:
+//         | null
+//         | (HealthWorkerOrganizationRole & {
+//           profession: 'doctor' | 'nurse'
+//         })
+//     }
+//     & {
+//       non_admin:
+//         | null
+//         | (HealthWorkerOrganizationRole & {
+//           profession: 'doctor' | 'nurse' | 'receptionist'
+//         })
+//     }
+
+//   departments: {
+//     id: string
+//     name: Department
+//   }[]
+// }
+
+export type HealthWorkerOrganization = RenderedOrganization & {
+  roles: HealthWorkerOrganizationRole[]
+}
+
+// gcal_appointments_calendar_id: string | null
+// gcal_availability_calendar_id: string | null
+// availability_set: SqlBool | null
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: string
-  access_token: string
-  refresh_token: string
-  expires_at: Date | string
-  employment: HealthWorkerEmployment[]
-  default_organization_id: string | null
-  present_encounter: RenderedPatientOpenEncounter | null
-  reviews: {
-    requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
-    in_progress: RenderedDoctorReview[]
-  }
+  organizations: HealthWorkerOrganization[]
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
-  default_organization_id: string
+  organizations: NonEmptyArray<HealthWorkerOrganization>
 }
 
 export type HealthWorkerWithGoogleTokens =
@@ -1563,8 +1572,8 @@ export type Availability = {
 }[]
 
 export type TimeRange = {
-  timeMin: Date
-  timeMax: Date
+  time_min: Date
+  time_max: Date
 }
 
 export type HealthWorkerAvailability = {
@@ -1621,7 +1630,7 @@ export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 export type Time = {
   hour: number
   minute?: number
-  amPm: 'am' | 'pm'
+  am_pm: 'am' | 'pm'
 }
 
 export type TimeWindow = {
@@ -1740,25 +1749,25 @@ export type ISODateString = string & {
 }
 export type WhatsAppSendableString = {
   type: 'string'
-  messageBody: string
+  message_body: string
 }
 
 export type WhatsAppSendableList = {
   type: 'list'
   headerText: string
-  messageBody: string
+  message_body: string
   action: WhatsAppMessageAction
 }
 
 export type WhatsAppSendableLocation = {
   type: 'location'
-  messageBody: string
+  message_body: string
   location: WhatsAppLocation
 }
 
 export type WhatsAppSendableDocument = {
   type: 'document'
-  messageBody: string
+  message_body: string
   file_path: string
 }
 
@@ -1782,14 +1791,14 @@ export type WhatsAppMessageAction = {
 
 export type WhatsAppSendableButtons = {
   type: 'buttons'
-  messageBody: string
+  message_body: string
   buttonText: string
   options: WhatsAppMessageOption[]
 }
 
 export type LoggedInHealthWorker = {
-  trx: TrxOrDb
   health_worker: EmployedHealthWorker
+  present_encounter: RenderedPatientOpenEncounter | null
 }
 
 export type LoggedInRegulator = {
@@ -1798,7 +1807,7 @@ export type LoggedInRegulator = {
 }
 
 export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
-  LoggedInHealthWorker & T
+  LoggedInHealthWorker & { trx: TrxOrDb } & T
 >
 
 export class Foo<Ctx extends LoggedInHealthWorkerContext<any>> {
@@ -3243,6 +3252,57 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
   last_message_read_by_everyone_else_id?: string
 }
 
+export type HealthWorkerDisplay = {
+  display_name: string
+  description: string
+}
+
+export type RenderedEmployee = {
+  health_worker: EmployedHealthWorker
+  organization_employment: HealthWorkerOrganization
+  display: HealthWorkerDisplay
+}
+
+export type MessageTargetEntities = {
+  organization: RenderedOrganization
+  employment: RenderedEmployee
+  profession: Profession
+  region: string
+}
+
+export type RenderedMessageTargets = {
+  [TargetType in keyof MessageTargetEntities]:
+    & {
+      id: string
+      display_name: string
+      target_type: TargetType
+    }
+    & {
+      [K in TargetType]: MessageTargetEntities[K]
+    }
+}
+
+export type RenderedMessageTarget =
+  RenderedMessageTargets[keyof RenderedMessageTargets]
+
+export type RenderedMessageDraftConcerning = {
+  id: string
+  table_name: 'patient' | 'patient_record'
+  target_uuid?: string | null
+  target_value?: unknown | null
+  display_name?: string
+}
+
+export type RenderedMessageDraft = {
+  id: string
+  employment_id: string
+  body: string
+  priority: MessagePriority
+  targets: RenderedMessageTarget[]
+  created_at: Date
+  updated_at: Date
+}
+
 export enum OrganizationSortOptions {
   closest = 'Closest',
   shortest_wait = 'Shortest Wait',
@@ -3502,3 +3562,13 @@ export type RenderedFindingRelativeToHealthWorker = {
 }
 
 export type AppUser = Profession | 'regulator'
+
+export type Alert = {
+  message: string
+  level: 'error' | 'warning' | 'success'
+  actions?: {
+    name: string
+    href: string
+    method?: 'GET' | 'POST'
+  }[]
+}

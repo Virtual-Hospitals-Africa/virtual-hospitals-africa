@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import respond from './respond.ts'
-import { chatbotToPhone } from './phone_numbers.ts'
+import { CHATBOT_TO_PHONE } from './phone_numbers.ts'
 
 type Chatbot = 'patient' | 'pharmacist'
 
@@ -16,7 +16,7 @@ export function createChatbot(chatbot_name: Chatbot): Responder {
     await respond(
       {
         ...whatsapp,
-        phone_number: chatbotToPhone[chatbot_name],
+        phone_number: CHATBOT_TO_PHONE[chatbot_name],
       },
       chatbot_name,
     )

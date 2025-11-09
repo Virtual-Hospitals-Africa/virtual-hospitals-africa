@@ -42,7 +42,7 @@ describe('patient chatbot', () => {
         messages: {
           type: 'buttons',
           buttonText: 'Menu',
-          messageBody:
+          message_body:
             'This is the end of the demo. Thank you for participating!',
           options: [
             {

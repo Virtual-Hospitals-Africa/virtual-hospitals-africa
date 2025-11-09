@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  HealthWorkerEmployment,
+  HealthWorkerOrganization,
   RenderedPatientOpenEncounter,
   TrxOrDb,
   UpdateShape,
@@ -8,6 +8,7 @@ import {
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
 import { blankSelection } from '../helpers.ts'
+import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 /**
  * Move the patient to the waiting room if the health worker doesn't do the next workflow
@@ -16,14 +17,14 @@ import { blankSelection } from '../helpers.ts'
 export function updateForOpenEncounterAfterCompletingWorkflow(
   trx: TrxOrDb,
   encounter: RenderedPatientOpenEncounter,
-  organization_employment: HealthWorkerEmployment,
+  organization_employment: HealthWorkerOrganization,
 ) {
   const { next_workflow } = encounter.status.patient_presence
   assert(next_workflow)
   const next_department: Department = WORKFLOW_DEPARTMENTS[next_workflow]
   assert(next_department)
-  const { non_admin_id } = organization_employment
-  assert(non_admin_id)
+  const non_admin_employment_id = nonAdminId(organization_employment)
+  assert(non_admin_employment_id)
 
   const patient_id = encounter.patient.id
 
@@ -49,7 +50,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
 
   const existing_patient_encounter_employee_id = encounter.all_employees_seen
     .find(
-      (employee) => employee.employment_id === non_admin_id,
+      (employee) => employee.employment_id === non_admin_employment_id,
     )?.patient_encounter_employee_id
 
   return trx.with(
@@ -76,7 +77,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
               ? patient_id
               : null,
           })
-          .where('employment_presence.id', '=', non_admin_id),
+          .where('employment_presence.id', '=', non_admin_employment_id),
     )
     .updateTable('patient_presence')
     .set(next_patient_presence)

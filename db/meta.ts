@@ -92,7 +92,7 @@ export async function selectEnumValues(enum_name: string) {
 }
 
 // Leave data that is seeded by migrations, namely organizations, conditions, and drugs
-const topLevelTables = [
+const top_level_tables = [
   'patients' as const,
   'health_workers' as const,
   'health_worker_invitees' as const,
@@ -105,6 +105,6 @@ export async function resetInTest(trx: TrxOrDb = db) {
   )
 
   await Promise.all(
-    topLevelTables.map((table) => trx.deleteFrom(table).execute()),
+    top_level_tables.map((table) => trx.deleteFrom(table).execute()),
   )
 }

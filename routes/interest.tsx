@@ -33,7 +33,7 @@ function assertIsMailingListRecipient(
   assertOr400(form_values['email'].includes('@'))
 }
 
-const successMessages = {
+const success_messages = {
   general_inquiry: (name: string) =>
     `Thanks for your interest ${name}! Our team has received your inquiry and will respond as soon as possible 🚀`,
   book_a_demo: (name: string) =>
@@ -65,7 +65,7 @@ export const handler: Handlers = {
 
     await slack.send(slackMessage)
 
-    const success = successMessages[recipient.reason](recipient.name)
+    const success = success_messages[recipient.reason](recipient.name)
 
     return redirect(`/thank-you?success=${encodeURIComponent(success)}`)
   },

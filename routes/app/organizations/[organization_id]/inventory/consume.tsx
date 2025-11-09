@@ -6,6 +6,7 @@ import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 export function assertIsUpsert(obj: unknown): asserts obj is {
   quantity: number
@@ -21,8 +22,11 @@ export function assertIsUpsert(obj: unknown): asserts obj is {
 export const handler = {
   async POST(ctx: OrganizationContext) {
     const req = ctx.req
-    const { admin } = ctx.state.organization_employment.roles
-    assertOr403(admin)
+    const admin_role = roleByProfession(
+      ctx.state.organization_employment,
+      'admin',
+    )
+    assertOr403(admin_role)
 
     const active_tab = ctx.url.searchParams.get('active_tab')!
 
@@ -38,7 +42,7 @@ export const handler = {
       ctx.state.trx,
       organization_id,
       {
-        created_by: admin.employment_id,
+        created_by: admin_role.employment_id,
         procurement_id: to_add.procurement_id,
         consumable_id: to_add.consumable_id,
         quantity: to_add.quantity,

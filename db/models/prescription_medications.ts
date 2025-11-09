@@ -7,8 +7,8 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PrescriptionMedicationsFilled } from '../../db.d.ts'
 
-const baseSelect = (trx: TrxOrDb) =>
-  trx
+function baseSelect(trx: TrxOrDb) {
+  return trx
     .selectFrom('prescriptions')
     .innerJoin(
       'prescription_medications',
@@ -61,6 +61,7 @@ const baseSelect = (trx: TrxOrDb) =>
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
     ])
     .orderBy('drugs.generic_name', 'asc')
+}
 
 export async function getByPrescriptionId(
   trx: TrxOrDb,

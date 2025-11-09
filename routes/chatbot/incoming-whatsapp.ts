@@ -9,23 +9,23 @@ import {
   WhatsAppMessageContents,
 } from '../../types.ts'
 import {
-  phoneToChatbotName,
+  PHONE_TO_CHATBOT_NAME,
   WHATSAPP_PATIENT_CHATBOT_NUMBER,
   WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
 } from '../../chatbot/phone_numbers.ts'
 import { Handlers } from 'fresh/compat'
 
-const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
+const verify_token = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
 async function downloadAndInsertMedia(media_id: string) {
   const resp = await whatsapp.get(media_id)
   const { url, mime_type } = resp
   const binary_data = await whatsapp.getBinaryData(url)
-  const insertedMedia = await media.insert(db, {
+  const inserted_media = await media.insert(db, {
     binary_data,
     mime_type,
   })
-  return insertedMedia.id
+  return inserted_media.id
 }
 
 async function getContents(
@@ -90,12 +90,12 @@ async function getContents(
 export const handler: Handlers = {
   GET(ctx) {
     const { searchParams } = ctx.url
-    const hubMode = searchParams.get('hub.mode')
-    const hubVerifyToken = searchParams.get('hub.verify_token')
-    const hubChallenge = searchParams.get('hub.challenge')
+    const hub_mode = searchParams.get('hub.mode')
+    const hub_verify_token = searchParams.get('hub.verify_token')
+    const hub_challenge = searchParams.get('hub.challenge')
 
-    if (hubMode === 'subscribe' && hubVerifyToken === verifyToken) {
-      return new Response(hubChallenge)
+    if (hub_mode === 'subscribe' && hub_verify_token === verify_token) {
+      return new Response(hub_challenge)
     }
     return new Response('Invalid token')
   },
@@ -127,7 +127,7 @@ export const handler: Handlers = {
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    const chatbot_name = phoneToChatbotName[display_phone_number]
+    const chatbot_name = PHONE_TO_CHATBOT_NAME[display_phone_number]
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses

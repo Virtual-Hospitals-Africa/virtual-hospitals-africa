@@ -1,4 +1,4 @@
-export const allAllergies = [
+export const all_allergies = [
   'Wheat',
   'Cereals',
   'Celery',

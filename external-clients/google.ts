@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-
 import {
   DeepPartial,
   GCalCalendarList,
@@ -14,14 +13,15 @@ import {
   LoggedInHealthWorkerContext,
   TrxOrDb,
 } from '../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
 import { formatJohannesburg } from '../util/date.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import memoize from '../util/memoize.ts'
 import selfUrl from '../util/selfUrl.ts'
+import { assertOr401 } from '../util/assertOr.ts'
+import { isHealthWorkerWithGoogleTokens } from '../db/models/health_worker_google_tokens.ts'
 
-const googleApisUrl = 'https://www.googleapis.com'
+const google_apis_url = 'https://www.googleapis.com'
 
 type RequestOpts = {
   method?: 'get' | 'post' | 'put' | 'delete' | 'patch'
@@ -61,7 +61,7 @@ export class GoogleClient {
     if (Deno.env.get('IS_TEST')) {
       return testServerMock(path, opts)
     }
-    const url = `${googleApisUrl}${path}`
+    const url = `${google_apis_url}${path}`
     const method = opts?.method || 'get'
     console.log(
       `${method} ${url}`,
@@ -91,9 +91,9 @@ export class GoogleClient {
         if (data.error.code === 403) {
           return { result: 'insufficient_permission' }
         }
-        const errorMessage = data.error?.errors?.[0]?.message || data.error
+        const error_message = data.error?.errors?.[0]?.message || data.error
         console.error(data.error)
-        throw new Error(errorMessage)
+        throw new Error(error_message)
       }
       return { result: 'success', data }
     } else {
@@ -159,8 +159,8 @@ export class GoogleClient {
   getEvents(
     calendarId = 'primary',
     opts: {
-      timeMin?: string
-      timeMax?: string
+      time_min?: string
+      time_max?: string
     } = {},
   ): Promise<GCalEventsResponse> {
     const params = new URLSearchParams(opts)
@@ -184,8 +184,8 @@ export class GoogleClient {
   async getActiveEvents(
     calendarId = 'primary',
     opts: {
-      timeMin?: string
-      timeMax?: string
+      time_min?: string
+      time_max?: string
     } = {},
   ): Promise<GCalEventsResponse> {
     const events: GCalEventsResponse = await this.getEvents(calendarId, opts)
@@ -308,25 +308,28 @@ export class GoogleClient {
   }
 
   async getFreeBusy({
-    timeMin,
-    timeMax,
+    time_min,
+    time_max,
     calendarIds,
   }: {
-    timeMin: Date
-    timeMax: Date
+    time_min: Date
+    time_max: Date
     calendarIds: string[]
   }): Promise<GCalFreeBusy> {
-    const freeBusy: GCalFreeBusy = await this.makeCalendarRequest('/freeBusy', {
-      method: 'post',
-      data: {
-        timeMin: formatJohannesburg(timeMin),
-        timeMax: formatJohannesburg(timeMax),
-        timeZone: 'Africa/Johannesburg',
-        items: calendarIds.map((id) => ({ id })),
+    const free_busy: GCalFreeBusy = await this.makeCalendarRequest(
+      '/free_busy',
+      {
+        method: 'post',
+        data: {
+          time_min: formatJohannesburg(time_min),
+          time_max: formatJohannesburg(time_max),
+          timeZone: 'Africa/Johannesburg',
+          items: calendarIds.map((id) => ({ id })),
+        },
       },
-    })
+    )
 
-    for (const calendar of Object.values(freeBusy.calendars)) {
+    for (const calendar of Object.values(free_busy.calendars)) {
       for (const busy of calendar.busy) {
         assert(
           busy.start.endsWith('+02:00'),
@@ -339,7 +342,7 @@ export class GoogleClient {
       }
     }
 
-    return freeBusy
+    return free_busy
   }
 
   getProfile(): Promise<GoogleProfile> {
@@ -359,10 +362,10 @@ function testServerMock(
   // deno-lint-ignore no-explicit-any
 ): { result: 'success'; data: any } {
   requests_to_google.push([path, opts])
-  if (path === '/calendar/v3/freeBusy' && opts?.method === 'post') {
+  if (path === '/calendar/v3/free_busy' && opts?.method === 'post') {
     assert(isObjectLike(opts.data))
-    assert(opts.data.timeMin)
-    assert(opts.data.timeMax)
+    assert(opts.data.time_min)
+    assert(opts.data.time_max)
     assert(Array.isArray(opts.data.items))
     const calendars: GCalFreeBusy['calendars'] = {}
     for (const { id } of opts.data.items) {
@@ -373,9 +376,9 @@ function testServerMock(
     return {
       result: 'success' as const,
       data: {
-        kind: 'calendar#freeBusy',
-        timeMin: opts.data.timeMin,
-        timeMax: opts.data.timeMax,
+        kind: 'calendar#free_busy',
+        time_min: opts.data.time_min,
+        time_max: opts.data.time_max,
         calendars,
       },
     }
@@ -400,17 +403,25 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     },
   ) {
     super(health_worker)
-    if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
-      throw new Error('You must google tokens to use this client')
-    }
+    assert(
+      isHealthWorkerWithGoogleTokens(this.health_worker),
+      'You must have google tokens to use this client',
+    )
   }
 
-  static fromCtx<T>(
+  static async fromHealthWorkerContext<T>(
     ctx: LoggedInHealthWorkerContext<T>,
   ) {
+    const { id } = ctx.state.health_worker
+    const tokens = await google_tokens.getByEntityId(
+      ctx.state.trx,
+      'health_worker',
+      id,
+    )
+    assertOr401(tokens, `No google tokens found for health worker ${id}`)
     return new HealthWorkerGoogleClient(
       ctx.state.trx,
-      ctx.state.health_worker,
+      { id, ...tokens },
     )
   }
 
