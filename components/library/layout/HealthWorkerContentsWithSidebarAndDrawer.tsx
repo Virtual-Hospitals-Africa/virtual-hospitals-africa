@@ -1,11 +1,13 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from '../Header.tsx'
+import { AlertListener } from '../../../islands/alert/AlertListener.tsx'
 
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   title: string
   sidebar: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
+  url: URL
 }
 
 export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
@@ -14,10 +16,12 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
     sidebar,
     drawer,
     children,
+    url,
   }: HealthWorkerContentsWithSidebarAndDrawerProps<T>,
 ) {
   return (
     <div className='max-w-screen flex flex-col'>
+      <AlertListener initial_url={url} />
       {sidebar}
       <div className='flex flex-row min-h-screen grow'>
         <section className='flex flex-col flex-1 md:pl-48'>

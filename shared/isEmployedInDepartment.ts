@@ -6,8 +6,11 @@ export default function isEmployedInDepartment(
   department_name: Department,
 ): boolean {
   for (const role of organization_employment.roles) {
-    for (const department of role.departments) {
-      if (department.name === department_name) {
+    for (const department_id of role.department_ids) {
+      const department = organization_employment.departments.find(
+        (d) => d.id === department_id,
+      )
+      if (department?.name === department_name) {
         return true
       }
     }

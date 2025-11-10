@@ -5,7 +5,6 @@ import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.ts
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import RemovableChip from '../RemovableChip.tsx'
 import { TargetsRow } from '../../islands/messaging/drafts/RecipientsRow.tsx'
-import Dropdown from '../../islands/Dropdown.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -16,8 +15,30 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
   const body = draft.body ?? ''
 
   // Mock data for demonstration - these would come from the draft object
-  const regions = ['Polokwane']
-  const facilities = ['All facilities', 'All hospitals', 'All clinics']
+  const regions = [
+    {
+      target_value: '1',
+      target_type: 'region' as const,
+      display_name: 'Polokwane',
+    },
+  ]
+  const facilities = [
+    {
+      target_value: '1',
+      target_type: 'organization' as const,
+      display_name: 'All facilities',
+    },
+    {
+      target_value: '2',
+      target_type: 'organization' as const,
+      display_name: 'All hospitals',
+    },
+    {
+      target_value: '3',
+      target_type: 'organization' as const,
+      display_name: 'All clinics',
+    },
+  ]
   const recipients = [
     {
       target_value: 'doctor',
@@ -32,10 +53,10 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
     <div class='max-w-6xl mx-auto p-8'>
       <Form
         method='POST'
-        class='bg-white shadow-sm rounded-lg border border-gray-200'
+        class='bg-white shadow-sm rounded-lg'
       >
         {/* Header with Title and Priority */}
-        <div class='flex items-center justify-between px-8 py-6 border-b border-gray-200'>
+        <div class='flex items-center justify-between px-6 py-4 border-b border-gray-200'>
           <h1 class='text-2xl font-semibold text-gray-900'>Draft Message</h1>
           <PriorityDropdown
             name='priority'
@@ -43,43 +64,22 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           />
         </div>
 
-        <div class='px-8 py-6 space-y-6'>
+        <div class='space-y-0'>
           {/* Regions Row */}
-          <div class='flex items-start gap-4'>
-            <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
-              Regions
-            </label>
-            <div class='flex flex-wrap gap-2 flex-1'>
-              {regions.map((region) => (
-                <RemovableChip
-                  key={region}
-                  name={`targets.regions.${region}`}
-                  display={region}
-                  remove={() => {}}
-                />
-              ))}
-            </div>
-          </div>
+          <TargetsRow
+            label='Regions'
+            target_types={['region']}
+            targets={regions}
+          />
 
           {/* Facilities Row */}
-          <div class='flex items-start gap-4'>
-            <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
-              Facilities
-            </label>
-            <div class='flex flex-wrap gap-2 flex-1'>
-              {facilities.map((facility) => (
-                <RemovableChip
-                  key={facility}
-                  name={`targets.facilities.${facility}`}
-                  display={facility}
-                  remove={() => {}}
-                />
-              ))}
-            </div>
-          </div>
+          <TargetsRow
+            label='Facilities'
+            target_types={['organization']}
+            targets={facilities}
+          />
 
           {/* Recipients Row */}
-
           <TargetsRow
             label='Recipients'
             target_types={['employment', 'profession']}
@@ -90,8 +90,8 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
             </span>
           </TargetsRow>
           {/* Concerning Row */}
-          <div class='flex items-start gap-4'>
-            <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
+          <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
+            <label class='text-sm text-gray-700 w-24 flex-shrink-0'>
               Concerning
             </label>
             <div class='flex flex-wrap gap-2 flex-1'>
@@ -107,8 +107,8 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           </div>
 
           {/* Subject Row */}
-          <div class='flex items-start gap-4'>
-            <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
+          <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
+            <label class='text-sm text-gray-700 w-24 flex-shrink-0'>
               Subject:
             </label>
             <div class='flex-1'>
@@ -116,14 +116,14 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
                 type='text'
                 name='subject'
                 value={subject}
-                class='block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                class='block w-full border-0 py-0 px-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm'
                 placeholder='Enter subject...'
               />
             </div>
           </div>
 
           {/* Message Body with Toolbar */}
-          <div class='space-y-2 pt-4'>
+          <div class='px-6 py-4'>
             <RichTextEditor
               name='body'
               initial_value={body}
@@ -131,7 +131,7 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           </div>
 
           {/* Action Buttons */}
-          <div class='flex justify-end gap-3 pt-4'>
+          <div class='flex justify-end gap-3 px-6 py-4'>
             <Button
               type='button'
               variant='outline'

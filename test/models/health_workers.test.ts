@@ -89,24 +89,30 @@ describe('db/models/health_workers.ts', () => {
                 profession: 'nurse',
                 employment_id: health_worker.employee_id,
                 specialty: null,
-                departments: result.organizations[0].roles[0].departments,
+                department_ids: result.organizations[0].roles[0].department_ids,
               }],
             },
           ],
         })
 
-        assertLength(result.organizations[0].roles[0].departments, 3)
+        assertLength(result.organizations[0].roles[0].department_ids, 3)
         assertSome(
-          result.organizations[0].roles[0].departments,
-          (department) => department.name === 'primary care',
+          result.organizations[0].roles[0].department_ids,
+          (department_id) =>
+            test_clinic.departments.find((d) => d.id === department_id)
+              ?.name === 'primary care',
         )
         assertSome(
-          result.organizations[0].roles[0].departments,
-          (department) => department.name === 'triage',
+          result.organizations[0].roles[0].department_ids,
+          (department_id) =>
+            test_clinic.departments.find((d) => d.id === department_id)
+              ?.name === 'triage',
         )
         assertSome(
-          result.organizations[0].roles[0].departments,
-          (department) => department.name === 'reception',
+          result.organizations[0].roles[0].department_ids,
+          (department_id) =>
+            test_clinic.departments.find((d) => d.id === department_id)
+              ?.name === 'reception',
         )
       },
     )
@@ -146,38 +152,24 @@ describe('db/models/health_workers.ts', () => {
             'employment_id': result.organizations[0].roles[0].employment_id,
             'profession': 'admin',
             'specialty': null,
-            'departments': [
-              {
-                'id': admin_department_id,
-                'name': 'administration',
-              },
+            'department_ids': [
+              admin_department_id,
             ],
           },
           {
             'employment_id': result.organizations[0].roles[1].employment_id,
             'profession': 'nurse',
             'specialty': null,
-            'departments': [
-              {
-                'id': exists(
-                  test_clinic.departments.find((d) =>
-                    d.name === 'primary care'
-                  ),
-                ).id,
-                'name': 'primary care',
-              },
-              {
-                'id': exists(
-                  test_clinic.departments.find((d) => d.name === 'reception'),
-                ).id,
-                'name': 'reception',
-              },
-              {
-                'id': exists(
-                  test_clinic.departments.find((d) => d.name === 'triage'),
-                ).id,
-                'name': 'triage',
-              },
+            'department_ids': [
+              exists(
+                test_clinic.departments.find((d) => d.name === 'primary care'),
+              ).id,
+              exists(
+                test_clinic.departments.find((d) => d.name === 'reception'),
+              ).id,
+              exists(
+                test_clinic.departments.find((d) => d.name === 'triage'),
+              ).id,
             ],
           },
         ])

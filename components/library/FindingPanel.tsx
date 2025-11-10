@@ -1,6 +1,6 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
-import healthWorkerDisplay from '../../util/healthWorkerDisplay.ts'
+import { patientEncounterEmployeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import {
   BuildingOffice2Icon,
   CalendarIcon,
@@ -52,7 +52,7 @@ export function FindingPanel(
             <div className='flex gap-1.5 items-center'>
               <UserIcon className='w-4 h-4 text-indigo-700' />
               <p className='text-sm font-medium text-gray-900'>
-                {healthWorkerDisplay(finding.provider).display_name}
+                {patientEncounterEmployeeDisplay(finding.provider).display_name}
               </p>
             </div>
 

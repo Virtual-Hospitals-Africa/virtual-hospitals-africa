@@ -393,6 +393,7 @@ export function OpenEncounterWorkflowLayout({
 }): JSX.Element {
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
+      url={ctx.url}
       title={capitalize(ctx.state.workflow)}
       sidebar={
         <StepsSidebar

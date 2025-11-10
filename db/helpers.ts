@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 // Taken from https://github.com/kysely-org/kysely/blob/master/src/helpers/postgres.ts
 import {
   DeleteQueryBuilder,
@@ -17,7 +18,7 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import { DB } from '../db.d.ts'
-import { Coordinates, type TrxOrDb } from '../types.ts'
+import { Coordinates, NonEmptyArray, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
@@ -213,7 +214,6 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
 export function jsonBuildNullableObject<
   O extends Record<string, Expression<unknown>>,
 >(
-  // deno-lint-ignore no-explicit-any
   ew: ExpressionWrapper<any, any, any>,
   obj: O,
 ): RawBuilder<
@@ -252,12 +252,10 @@ export const tomorrow_in_johannesburg = sql<
 >`(now() AT TIME ZONE 'Africa/Johannesburg' + interval '1 day')::date`
 
 export function isoDate(
-  // deno-lint-ignore no-explicit-any
   ref: ExpressionWrapper<DB, any, Date>,
 ): RawBuilder<string>
 
 export function isoDate(
-  // deno-lint-ignore no-explicit-any
   ref: ExpressionWrapper<DB, any, Date | null>,
 ): RawBuilder<string | null>
 
@@ -298,13 +296,9 @@ export function debugReplaceAll(
 
 export function asCompiledSql(
   qb:
-    // deno-lint-ignore no-explicit-any
     | SelectQueryBuilder<any, any, any>
-    // deno-lint-ignore no-explicit-any
     | UpdateQueryBuilder<any, any, any, any>
-    // deno-lint-ignore no-explicit-any
     | DeleteQueryBuilder<any, any, any>
-    // deno-lint-ignore no-explicit-any
     | InsertQueryBuilder<any, any, any>,
 ) {
   const { sql, parameters } = qb.compile()
@@ -314,13 +308,9 @@ export function asCompiledSql(
 // Logs the pretty-printed SQL to the console with parameters interpolated.
 export function debugLog(
   qb:
-    // deno-lint-ignore no-explicit-any
     | SelectQueryBuilder<any, any, any>
-    // deno-lint-ignore no-explicit-any
     | UpdateQueryBuilder<any, any, any, any>
-    // deno-lint-ignore no-explicit-any
     | DeleteQueryBuilder<any, any, any>
-    // deno-lint-ignore no-explicit-any
     | InsertQueryBuilder<any, any, any>,
 ) {
   console.log(
@@ -347,7 +337,6 @@ export function literalUUID(value: string) {
   return sql.raw(`'${value}'::uuid`)
 }
 
-// deno-lint-ignore no-explicit-any
 export function literalOptionalDate(value?: string | null): RawBuilder<any> {
   if (value == null) return sql.raw('null')
   assert(
@@ -419,14 +408,12 @@ export function upsertOne<Table extends keyof DB>(
   return trx
     .insertInto(table)
     .values(values)
-    // deno-lint-ignore no-explicit-any
     .onConflict((oc) => oc.column('id' as any).doUpdateSet(values as any))
     .returningAll()
     .executeTakeFirstOrThrow()
 }
 
 export function blankSelection(
-  // deno-lint-ignore no-explicit-any
   qb: QueryCreator<any>,
 ) {
   return qb.selectNoFrom(sql<0>`0`.as('blank'))
@@ -435,7 +422,6 @@ export function blankSelection(
 export const success_true = sql<true>`true`.as('success')
 
 export function successSelection(
-  // deno-lint-ignore no-explicit-any
   qb: QueryCreator<any>,
 ) {
   return qb.selectNoFrom(success_true)
@@ -509,10 +495,28 @@ export function temporaryTable<T extends Record<string, unknown>>(
   >
 }
 
-// deno-lint-ignore no-explicit-any
 export function asText<EB extends ExpressionBuilder<DB, any>>(
   eb: EB,
   ref: Parameters<EB['ref']>[0],
 ) {
   return sql<string>`${eb.ref(ref)}::text`
+}
+
+export function orderByArrayPosition<
+  EB extends ExpressionBuilder<DB, any>,
+  Ref extends Parameters<EB['ref']>[0],
+>(
+  eb: ExpressionBuilder<DB, any>,
+  ref: Ref,
+  [first, ...rest]: NonEmptyArray<
+    ExtractTypeFromReferenceExpression<DB, any, Ref>
+  >,
+) {
+  let case_statement = eb.case().when(ref, '=', first).then(rest.length)
+  for (let i = 0; i < rest.length; i++) {
+    case_statement = case_statement.when(ref, '=', rest[i]).then(
+      rest.length - i,
+    )
+  }
+  return case_statement.else(0).end()
 }

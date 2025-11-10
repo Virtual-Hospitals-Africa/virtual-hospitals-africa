@@ -7,17 +7,23 @@ import {
   IdSelection,
   InsertShape,
   Maybe,
+  NonEmptyArray,
   PossiblyEmployedHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import * as organizations from './organizations.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  orderByArrayPosition,
+} from '../helpers.ts'
 import pick from '../../util/pick.ts'
 import { HealthWorkers, Profession } from '../../db.d.ts'
 import { asNames, NameInputs } from './asNames.ts'
 import { base } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import { DEPARTMENTS } from '../../shared/departments.ts'
 
 type HealthWorkerUpsert =
   & {
@@ -100,56 +106,6 @@ export function isEmployed(
     !!health_worker.organizations.length
 }
 
-// .leftJoin(
-//   'nurse_registration_details',
-//   'health_workers.id',
-//   'nurse_registration_details.health_worker_id',
-// )
-// eb('nurse_registration_details.health_worker_id', 'is', null).as(
-//   'registration_needed',
-// ),
-// .leftJoin(
-//   'health_worker_organization_calendars',
-//   (join) =>
-//     join
-//       .onRef(
-//         'employment.organization_id',
-//         '=',
-//         'health_worker_organization_calendars.organization_id',
-//       )
-//       .onRef(
-//         'employment.health_worker_id',
-//         '=',
-//         'health_worker_organization_calendars.health_worker_id',
-//       ),
-// )
-// 'health_worker_organization_calendars.gcal_appointments_calendar_id',
-// 'health_worker_organization_calendars.gcal_availability_calendar_id',
-// 'health_worker_organization_calendars.availability_set',
-// .innerJoin(
-//   'organizations',
-//   'employment.organization_id',
-//   'organizations.id',
-// )
-// .leftJoin(
-//   'addresses as organization_address',
-//   'organizations.address_id',
-//   'organization_address.id',
-// )
-// .select((eb_employment) => [
-//   'employment.id as employment_id',
-//   'employment.profession',
-//   'employment.specialty',
-//   jsonBuildObject({
-//     id: eb_employment.ref('employment.organization_id'),
-//     name: eb_employment.ref('organizations.name'),
-//     address: eb_employment.ref('organization_address.formatted'),
-//   }).as('organization'),
-
-// ])
-
-//   .selectFrom
-
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('health_workers')
@@ -191,7 +147,8 @@ export function baseQuery(trx: TrxOrDb) {
                   'employment.id as employment_id',
                   'profession',
                   'specialty',
-                  jsonArrayFrom(
+                  jsonArrayFromColumn(
+                    'department_id',
                     eb_employment.selectFrom('department_employment')
                       .innerJoin(
                         'organization_departments',
@@ -203,31 +160,23 @@ export function baseQuery(trx: TrxOrDb) {
                         '=',
                         'employment.id',
                       )
-                      .select([
-                        'organization_departments.id',
-                        'organization_departments.name',
-                      ]),
-                  ).as('departments'),
+                      .select('organization_departments.id as department_id')
+                      .orderBy(
+                        (eb_employment_departments_order) =>
+                          orderByArrayPosition(
+                            eb_employment_departments_order,
+                            'organization_departments.name',
+                            DEPARTMENTS as NonEmptyArray<string>,
+                          ),
+                        'desc',
+                      ),
+                  ).as('department_ids'),
                 ]).orderBy((eb_roles_order) =>
-                  eb_roles_order.case().when(
+                  orderByArrayPosition(
+                    eb_roles_order,
                     'employment.profession',
-                    '=',
-                    'admin',
-                  ).then(4).when(
-                    'employment.profession',
-                    '=',
-                    'doctor',
-                  ).then(3).when(
-                    'employment.profession',
-                    '=',
-                    'nurse',
-                  ).then(2).when(
-                    'employment.profession',
-                    '=',
-                    'receptionist',
-                  ).then(1)
-                    .else(0)
-                    .end(), 'desc'),
+                    ['admin', 'doctor', 'nurse', 'receptionist'],
+                  ), 'desc'),
             ).as('roles'),
           ]).orderBy(
             // TODO order by most recently interacted with?
