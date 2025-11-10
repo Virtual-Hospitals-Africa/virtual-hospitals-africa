@@ -1,3 +1,5 @@
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { sql } from 'kysely'
 import {
   HealthWorkerOrganization,
@@ -16,6 +18,7 @@ import {
   WorkflowStatus,
 } from '../../types.ts'
 import * as patients from './patients.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import * as organizations from './organizations.ts'
 import { nonAdminId } from '../../shared/nonAdminId.ts'
 import {
@@ -45,10 +48,10 @@ import {
   assertArrayNonEmpty,
 } from '../../util/arraySize.ts'
 import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
+import { isEmployed } from './health_workers.ts'
+import makeAssertion from '../../util/makeAssertion.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -62,20 +65,6 @@ type EncounterExistingOrToCreate = {
     notes?: Maybe<string>
     appointment_id?: Maybe<string>
   }
-}
-
-export function seenPatientEncounterEmployeeId(
-  encounter: RenderedPatientEncounter,
-  organization_employment: HealthWorkerOrganization,
-) {
-  const employee = encounter.all_employees_seen.find((employee) =>
-    employee.employment_id === nonAdminId(organization_employment)
-  )
-  assert(
-    employee,
-    'If the encounter exists and the health worker is manipulating it, the health worker must have seen the patient at least once',
-  )
-  return employee.patient_encounter_employee_id
 }
 
 export async function insertSeekingTreatmentForRegisteredPatient(
@@ -101,7 +90,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
 
   const patient_encounter_employee_id = encounter.create
     ? generateUUID()
-    : seenPatientEncounterEmployeeId(
+    : patient_encounter_employees.seenPatientEncounterEmployeeId(
       encounter.existing,
       organization_employment,
     )
@@ -228,38 +217,6 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   return inserted_patient_presence
 }
 
-export function baseEncounterProviderQuery(trx: TrxOrDb) {
-  return trx
-    .selectFrom('patient_encounter_employees')
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'patient_encounter_employees.employment_id',
-    )
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .select([
-      'patient_encounter_employees.id as patient_encounter_employee_id',
-      'employment.id as employment_id',
-      'employment.organization_id',
-      'organizations.name as organization_name',
-      'employment.profession',
-      'employment.health_worker_id',
-      'health_workers.name as health_worker_name',
-      'health_workers.avatar_url',
-      'employment.specialty',
-      'patient_encounter_employees.seen_at',
-    ])
-}
-
 export function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounters')
@@ -358,19 +315,15 @@ export function baseQuery(trx: TrxOrDb) {
             'patient_presence.department_name',
             'patient_presence.current_workflow',
             'patient_presence.next_workflow',
-            jsonArrayFrom(
-              baseEncounterProviderQuery(trx)
-                .where(
-                  'patient_encounter_employees.employment_id',
-                  'in',
-                  eb_patient_presence.selectFrom('employment_presence')
-                    .whereRef(
-                      'employment_presence.with_patient_id',
-                      '=',
-                      'patient_presence.id',
-                    ).select('employment_presence.id'),
-                ),
-            ).as('employees'),
+            jsonArrayFromColumn(
+              'employment_presence_id',
+              eb_patient_presence.selectFrom('employment_presence')
+                .whereRef(
+                  'employment_presence.with_patient_id',
+                  '=',
+                  'patient_presence.id',
+                ).select('employment_presence.id as employment_presence_id'),
+            ).as('present_with_employee_ids'),
           ])
           .limit(1),
       ).as('patient_presence'),
@@ -407,26 +360,22 @@ export function baseQuery(trx: TrxOrDb) {
                 ).orderBy('order', 'asc')
                 .select('step'),
             ).as('steps_completed'),
-            jsonArrayFrom(
-              baseEncounterProviderQuery(trx)
-                .where(
-                  'patient_encounter_employees.id',
-                  'in',
-                  eb_patient_workflows.selectFrom(
-                    'patient_workflows_started',
-                  )
-                    .whereRef(
-                      'patient_workflows_started.patient_workflow_id',
-                      '=',
-                      'patient_workflows.id',
-                    )
-                    .select('patient_encounter_employee_id').distinct(),
-                ),
-            ).as('employees'),
+            jsonArrayFromColumn(
+              'patient_encounter_employee_id',
+              eb_patient_workflows.selectFrom(
+                'patient_workflows_started',
+              )
+                .whereRef(
+                  'patient_workflows_started.patient_workflow_id',
+                  '=',
+                  'patient_workflows.id',
+                )
+                .select('patient_encounter_employee_id').distinct(),
+            ).as('seen_patient_encounter_employee_ids'),
           ]),
       ).as('workflows'),
       jsonArrayFrom(
-        baseEncounterProviderQuery(trx)
+        patient_encounter_employees.baseQuery(trx)
           .where(
             'patient_encounter_employees.patient_encounter_id',
             '=',
@@ -448,21 +397,26 @@ function asPriority(
 }
 
 function asWorkflowStatus(
-  { patient_workflow_id, workflow, completed_at, steps_completed, employees }:
-    IntermediatePatientEncounterResult['workflows'][0],
+  {
+    patient_workflow_id,
+    workflow,
+    completed_at,
+    steps_completed,
+    seen_patient_encounter_employee_ids,
+  }: IntermediatePatientEncounterResult['workflows'][0],
   status: RenderedPatientEncounterStatus,
 ): WorkflowStatus {
   assert(isWorkflow(workflow))
   const workflow_steps = WORKFLOW_STEPS[workflow]
   if (completed_at) {
-    assertArrayNonEmpty(employees)
+    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
     assertEquals(workflow_steps, steps_completed)
     return {
       patient_workflow_id,
       workflow,
       status: 'completed',
       steps_completed,
-      employees,
+      seen_patient_encounter_employee_ids,
       completed_at,
     }
   }
@@ -470,55 +424,55 @@ function asWorkflowStatus(
   assertNotEquals(workflow_steps, steps_completed)
 
   if (!status.open) {
-    if (arrayIsEmpty(employees)) {
+    if (arrayIsEmpty(seen_patient_encounter_employee_ids)) {
       assertArrayEmpty(steps_completed)
       return {
         patient_workflow_id,
         workflow,
         status: 'not started',
         steps_completed,
-        employees,
+        seen_patient_encounter_employee_ids,
       }
     }
-    assertArrayNonEmpty(employees)
+    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
     return {
       patient_workflow_id,
       workflow,
       status: 'incomplete',
       steps_completed,
-      employees,
+      seen_patient_encounter_employee_ids,
     }
   }
 
   if (status.patient_presence.current_workflow === workflow) {
-    assertArrayNonEmpty(employees)
+    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
     return {
       patient_workflow_id,
       workflow,
       status: 'in progress',
       steps_completed,
-      employees,
+      seen_patient_encounter_employee_ids,
     }
   }
 
-  if (arrayIsEmpty(employees)) {
+  if (arrayIsEmpty(seen_patient_encounter_employee_ids)) {
     assertArrayEmpty(steps_completed)
     return {
       patient_workflow_id,
       workflow,
       status: 'not started',
       steps_completed,
-      employees,
+      seen_patient_encounter_employee_ids,
     }
   }
 
-  assertArrayNonEmpty(employees)
+  assertArrayNonEmpty(seen_patient_encounter_employee_ids)
   return {
     patient_workflow_id,
     workflow,
     status: 'incomplete',
     steps_completed,
-    employees,
+    seen_patient_encounter_employee_ids,
   }
 }
 
@@ -534,7 +488,12 @@ function asWorkflows(
 }
 
 function asPatientPresence(
-  { department_name, current_workflow, next_workflow, employees }: NonNullable<
+  {
+    department_name,
+    current_workflow,
+    next_workflow,
+    present_with_employee_ids,
+  }: NonNullable<
     IntermediatePatientEncounterResult['patient_presence']
   >,
 ): RenderedPatientPresence {
@@ -543,12 +502,12 @@ function asPatientPresence(
   if (department_name === 'waiting room') {
     assert(!current_workflow)
     assert(next_workflow)
-    assertArrayEmpty(employees)
+    assertArrayEmpty(present_with_employee_ids)
     return {
       department_name,
       current_workflow,
       next_workflow,
-      employees,
+      present_with_employee_ids,
     }
   }
 
@@ -557,7 +516,7 @@ function asPatientPresence(
     department_name,
     current_workflow,
     next_workflow,
-    employees,
+    present_with_employee_ids,
   }
 }
 
@@ -594,15 +553,23 @@ const model = base({
       closed_at,
       patient,
       reason,
+      all_employees_seen,
       ...patient_encounter
     },
   ): RenderedPatientEncounter => {
     assert(organization)
+    assertAll(
+      all_employees_seen,
+      makeAssertion(isEmployed),
+    )
+
     const status = asStatus(patient_presence, closed_at)
+
     return {
       organization,
       workflows: asWorkflows(workflows, status),
       priority: asPriority(priority),
+      all_employees_seen,
       status,
       patient,
       reason,
