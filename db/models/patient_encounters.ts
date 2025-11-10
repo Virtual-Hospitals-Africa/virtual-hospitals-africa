@@ -137,8 +137,9 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   }
   const employed_in_workflow_department = organization_employment.roles.some(
     (role) =>
-      role.departments.some((department) =>
-        department.name === patient_presence.department_name
+      role.department_ids.some((department_id) =>
+        organization_employment.departments.find((d) => d.id === department_id)
+          ?.name === patient_presence.department_name
       ),
   )
 

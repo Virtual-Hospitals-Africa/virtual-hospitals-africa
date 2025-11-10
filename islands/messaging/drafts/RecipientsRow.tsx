@@ -67,7 +67,7 @@ function TargetsInput<TargetType extends MessageTargetType>(
 
   return (
     <div class='relative flex-1'>
-      <div class='flex flex-wrap gap-2 items-center px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent bg-white'>
+      <div class='flex flex-wrap gap-2 items-center bg-white'>
         {targets_signal.value.map((target) => (
           <RemovableChip
             key={target}
@@ -124,8 +124,8 @@ export function TargetsRow<TargetType extends MessageTargetType>({
   const targets_signal = useSignal(targets)
 
   return (
-    <div class='flex items-start gap-4'>
-      <label class='text-sm font-medium text-gray-700 w-32 pt-2'>
+    <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
+      <label class='text-sm text-gray-700 w-24 flex-shrink-0'>
         {label}
       </label>
       <div class='flex flex-col gap-2 flex-1'>

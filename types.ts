@@ -1509,46 +1509,12 @@ export type HealthWorkerOrganizationRole = {
   employment_id: string
   profession: Profession
   specialty: string | null
-  departments: {
-    id: string
-    name: string
-  }[]
+  department_ids: string[]
 }
-
-// export type HealthWorkerOrganization = {
-//   organization: RenderedOrganization
-//   roles:
-//     & {
-//       [p in Profession]: null | HealthWorkerOrganizationRole
-//     }
-//     & {
-//       provider:
-//         | null
-//         | (HealthWorkerOrganizationRole & {
-//           profession: 'doctor' | 'nurse'
-//         })
-//     }
-//     & {
-//       non_admin:
-//         | null
-//         | (HealthWorkerOrganizationRole & {
-//           profession: 'doctor' | 'nurse' | 'receptionist'
-//         })
-//     }
-
-//   departments: {
-//     id: string
-//     name: Department
-//   }[]
-// }
 
 export type HealthWorkerOrganization = RenderedOrganization & {
   roles: HealthWorkerOrganizationRole[]
 }
-
-// gcal_appointments_calendar_id: string | null
-// gcal_availability_calendar_id: string | null
-// availability_set: SqlBool | null
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: string
@@ -3257,10 +3223,11 @@ export type HealthWorkerDisplay = {
   description: string
 }
 
-export type RenderedEmployee = {
-  health_worker: EmployedHealthWorker
-  organization_employment: HealthWorkerOrganization
-  display: HealthWorkerDisplay
+export type RenderedEmployee = EmployedHealthWorker & {
+  organization_id: string
+  employee_id: string
+  profession: Profession
+  specialty: string | null
 }
 
 export type MessageTargetEntities = {

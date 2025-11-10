@@ -12,6 +12,7 @@ import * as organizations from './organizations.ts'
 import * as employees from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
+import { healthWorkerDisplay } from '../../util/healthWorkerDisplay.ts'
 
 type IntermediateTargetResult<TargetType extends MessageTargetType> = {
   id: string
@@ -67,7 +68,8 @@ const TARGET_ENTITY_FETCHERS = {
 
 const TARGET_DISPLAYS = {
   employment(entity: RenderedEmployee): string {
-    return entity.display.display_name
+    return healthWorkerDisplay(entity.name, entity.organizations[0])
+      .display_name
   },
   organization(entity: RenderedOrganization): string {
     return entity.name

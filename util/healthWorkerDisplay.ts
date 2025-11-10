@@ -15,27 +15,24 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
   TODO in the data model have a concept of your employment at an organization
     Independent of your profession
 */
-export default function healthWorkerDisplay(
-  employee_or_name: RenderedPatientEncounterEmployee | string,
-  organization_employment?: HealthWorkerOrganization,
+export function patientEncounterEmployeeDisplay(
+  patient_encounter_employee: RenderedPatientEncounterEmployee,
 ): HealthWorkerDisplay {
-  // Handle single argument case (RenderedPatientEncounterEmployee)
-  if (typeof employee_or_name !== 'string') {
-    const employee = employee_or_name
-    return healthWorkerDisplayInner({
-      health_worker_name: employee.health_worker_name,
-      is_doctor: employee.profession === 'doctor',
-      is_admin: employee.profession === 'admin',
-      provider_profession: employee.profession !== 'admin'
-        ? employee.profession
-        : undefined,
-      specialty: employee.specialty,
-    })
-  }
+  return healthWorkerDisplayInner({
+    health_worker_name: patient_encounter_employee.health_worker_name,
+    is_doctor: patient_encounter_employee.profession === 'doctor',
+    is_admin: patient_encounter_employee.profession === 'admin',
+    provider_profession: patient_encounter_employee.profession !== 'admin'
+      ? patient_encounter_employee.profession
+      : undefined,
+    specialty: patient_encounter_employee.specialty,
+  })
+}
 
-  // Handle two argument case (name and organization_employment)
-  assert(organization_employment, 'organization_employment is required')
-  const health_worker_name = employee_or_name
+export function healthWorkerDisplay(
+  health_worker_name: string,
+  organization_employment: HealthWorkerOrganization,
+): HealthWorkerDisplay {
   let is_doctor = false
   let is_admin = false
   let provider_profession: Profession | undefined

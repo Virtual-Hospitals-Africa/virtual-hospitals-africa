@@ -4,6 +4,7 @@ import {
   Coordinates,
   DoctorsWithoutAction,
   Maybe,
+  NonEmptyArray,
   OrganizationDoctorOrNurse,
   OrganizationEmployee,
   OrganizationEmployeeOrInvitee,
@@ -22,13 +23,14 @@ import {
   jsonBuildNullableObject,
   jsonBuildObject,
   literalLocation,
+  orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
-import { Department } from '../../shared/departments.ts'
+import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 
 export function baseQuery(trx: TrxOrDb) {
@@ -67,6 +69,14 @@ export function baseQuery(trx: TrxOrDb) {
             'organization_departments.organization_id',
             '=',
             'organizations.id',
+          ).orderBy(
+            (eb_organization_departments_order) =>
+              orderByArrayPosition(
+                eb_organization_departments_order,
+                'organization_departments.name',
+                DEPARTMENTS as NonEmptyArray<string>,
+              ),
+            'desc',
           ),
       ).as('departments'),
     ])

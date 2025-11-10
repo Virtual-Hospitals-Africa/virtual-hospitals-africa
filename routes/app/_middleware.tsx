@@ -204,6 +204,7 @@ export function HealthWorkerHomePageLayout<
     return (
       <HealthWorkerContentsWithSidebarAndDrawer
         title={title as string}
+        url={ctx.url}
         sidebar={
           <HealthWorkerHomePageSidebar
             route={ctx.route!}

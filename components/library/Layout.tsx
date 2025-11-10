@@ -3,6 +3,7 @@ import { Header } from './Header.tsx'
 import { SimpleFooter } from '../../components/landing-page/Footer.tsx'
 import { RegulatorHomePageSidebar } from './Sidebar.tsx'
 import { Maybe, RenderedNotification } from '../../types.ts'
+import { AlertListener } from '../../islands/alert/AlertListener.tsx'
 
 export type LayoutProps =
   & {
@@ -88,6 +89,7 @@ function JustLogoLayoutContents({
 export default function Layout(props: LayoutProps) {
   return (
     <>
+      <AlertListener initial_url={props.url} />
       {props.variant === 'landing page' && props.children}
       {(
         props.variant === 'regulator home page'
