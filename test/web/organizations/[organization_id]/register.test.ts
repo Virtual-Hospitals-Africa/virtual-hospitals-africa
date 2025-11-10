@@ -135,7 +135,6 @@ describe(
 
         const page_contents = await get_personal_response.text()
         const $ = cheerio.load(page_contents)
-        console.log($.html())
         assertEquals(
           $('input[name="first_names"]').val(),
           demographics.first_names,

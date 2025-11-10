@@ -17,15 +17,15 @@ elif [ -f .env.docker ]; then
   cmp --silent .env .env.docker || fail $'.env differs from .env.docker\nrun deno task switch:docker before running tests'
 fi
 
-HTTP_SERVER_PORT=8004
-HTTPS_PROXY_SERVER_PORT=8005
-
 use_test_servers=false
-use_build=false
+run_test_server_args=""
+test_servers_were_already_running=false
+test_servers_pid=
+
 
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   if [[ "$1" == "--use-build" ]]; then
-    use_build=true
+    run_test_server_args="--use-build"
   elif [[ "$1" == "--verbose" ]]; then
     set -x
   else
@@ -45,33 +45,17 @@ else
   done
 fi
 
-mktemp_with_suffix() {
-  local suffix="$1"
-  # shellcheck disable=SC2155
-  local filename=$(mktemp -u)
-  local temp="$filename.$suffix"
-  : >"$temp"
-  echo "$temp"
-}
+HTTP_SERVER_PORT=8004
+HTTPS_PROXY_SERVER_PORT=8005
 
-test_http_server_output=$(mktemp_with_suffix log)
-test_https_proxy_server_output=$(mktemp_with_suffix log)
-
-kill_test_servers() {
-  ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT
-  ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT
-}
+if lsof -i "tcp:$HTTP_SERVER_PORT" > /dev/null && lsof -i "tcp:$HTTPS_PROXY_SERVER_PORT" > /dev/null; then
+  test_servers_were_already_running=true
+fi
 
 cleanup() {
-  if $use_test_servers; then
-    kill_test_servers
-    echo "Server output available at $test_http_server_output"
-    echo "Proxy output available at $test_https_proxy_server_output"
+  if ! [ -z $test_servers_pid ]; then
+    kill $test_servers_pid
   fi
-}
-
-rm_ansi_escape_codes() {
-  sed -r 's/\x1b\[[^@-~]*[@-~]//g'
 }
 
 run_tests() {
@@ -88,42 +72,13 @@ run_tests() {
     "$@"
 }
 
-http_server_command() {
-  if $use_build; then
-    deno task web
-  else
-    deno task vite
-  fi
-}
-
-start_http_server() {
-  IS_TEST=true \
-  PORT=$HTTP_SERVER_PORT \
-  HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
-  FAKE_GOOGLE_AUTH=false \
-  GOOGLE_CLIENT_ID=FAKE_GOOGLE_CLIENT_ID \
-  http_server_command \
-  >> "$test_http_server_output" 2>&1 &
-}
-
-start_https_proxy_server() {
-  VERBOSE=1 \
-  HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
-  HTTP_SERVER_PORT=$HTTP_SERVER_PORT \
-  deno task proxy \
-  >> "$test_https_proxy_server_output" 2>&1 &
-}
-
-start_servers() {
-  start_http_server
-  start_https_proxy_server
-}
-
 trap cleanup EXIT
 
 if $use_test_servers; then
-  kill_test_servers
-  start_servers
+  if ! $test_servers_were_already_running; then
+    ./scripts/run_test_servers.sh "$run_test_server_args" &
+    test_servers_pid="$!"
+  fi
 fi
 
 run_tests "$@"

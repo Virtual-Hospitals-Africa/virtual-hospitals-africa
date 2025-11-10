@@ -1,25 +1,17 @@
 {
   "deno.enable": true,
   "deno.lint": true,
-  "deno.disablePaths": [
-    "./_fresh",
-    "./db/codegen/node_modules"
+  "deno.testing.args": ["--allow-all"],
+  "deno.codeLens.test": true,
+  "deno.codeLens.testArgs": [
+    "--allow-all"
   ],
-  "deno.documentPreloadLimit": 4000,
-  "git.detectSubmodules": false,
-  "editor.defaultFormatter": "denoland.vscode-deno",
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/*.xml": true,
-    "static/images/heroicons/**/*.svg": true
-    // "**/*.json": true,
-    // "**/*.tsv": true
-  },
-  "typescript.preferences.autoImportFileExcludePatterns": [
-    "node:*",
-    "node_modules/*"
-  ]
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
+    "**/.git/**": true,
+    "**/node_modules/**": true,
+    "**/.vscode/**": true
+  }
 }
