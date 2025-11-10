@@ -143,7 +143,10 @@ export async function availableSlots(
   assert(count > 0, 'count must be greater than 0')
   assertAllJohannesburg(declined_times)
 
-  const providers = await getMany(trx, { employment_ids })
+  const all_providers = await getMany(trx, { employment_ids })
+  const providers = all_providers.filter(
+    (p) => p.profession === 'doctor' || p.profession === 'nurse',
+  ) as Provider[]
   const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const slots: {

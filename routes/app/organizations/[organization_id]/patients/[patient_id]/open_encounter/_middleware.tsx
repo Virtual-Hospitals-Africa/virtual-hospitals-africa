@@ -321,11 +321,16 @@ export async function handler(
 
   const encounter = await findPatientOpenEncounter(ctx)
 
-  const encounter_employee_presence =
-    encounter.status.patient_presence.employees.find((
-      employee,
-    ) => employee.employment_id === nonAdminId(organization_employment)) ??
-      null
+  const non_admin_id = nonAdminId(organization_employment)
+  const encounter_employee_presence = encounter.all_employees_seen.find((
+    employee,
+  ) =>
+    (encounter.status.patient_presence.present_with_employee_ids as string[])
+      .includes(
+        employee.patient_encounter_employee_id,
+      ) && employee.employee_id === non_admin_id
+  ) ??
+    null
 
   assert(encounter_employee_presence, 'No encounter employee found')
 

@@ -42,7 +42,7 @@ async function processEmployee(
 
   const patient_encounter_employees_id = patient_encounter_employees.map((
     provider,
-  ) => provider.employment_id)
+  ) => provider.employee_id)
 
   const sorted_employees = employees.sort((a, b) => {
     if (
@@ -70,7 +70,7 @@ async function processEmployee(
     sorted_employees.slice(0, 3).map(async (employee) => {
       let additional_info = ''
       if (
-        patient_encounter_employees.map((provider) => provider.employment_id)
+        patient_encounter_employees.map((provider) => provider.employee_id)
           .includes(employee.employee_id)
       ) {
         additional_info = `Encounter provider for ${patient_name} `

@@ -80,7 +80,7 @@ export const handler = {
       {
         patient_encounter_id: ctx.state.encounter.patient_encounter_id,
         patient_id,
-        employment_id: ctx.state.encounter_employee_presence.employment_id,
+        employment_id: ctx.state.encounter_employee_presence.employee_id,
         diagnoses: patient_diagnoses,
         diagnoses_collaborations,
       },
@@ -97,7 +97,7 @@ export default OpenEncounterWorkflowPage(
   ) {
     const patient_diagnoses = await diagnoses.getFromReview(ctx.state.trx, {
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      employment_id: ctx.state.encounter_employee_presence.employment_id,
+      employment_id: ctx.state.encounter_employee_presence.employee_id,
     })
     const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,

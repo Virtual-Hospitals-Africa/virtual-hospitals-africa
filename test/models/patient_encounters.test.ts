@@ -72,14 +72,16 @@ describe(
             }
 
             assertArrayNonEmpty(
-              open_encounter.workflows.registration!.employees,
+              open_encounter.workflows.registration!
+                .seen_patient_encounter_employee_ids,
             )
             assertArrayNonEmpty(
               open_encounter.all_employees_seen,
             )
             assert(open_encounter.arrived_timestamp instanceof Date)
             assertEquals(
-              open_encounter.status.patient_presence!.employees.length,
+              open_encounter.status.patient_presence!.present_with_employee_ids
+                .length,
               1,
             )
             assertEquals(open_encounter, {
@@ -91,25 +93,8 @@ describe(
                   workflow: 'registration',
                   status: 'in progress',
                   steps_completed: [],
-                  employees: [
-                    {
-                      patient_encounter_employee_id,
-                      employment_id: exists(
-                        nonAdminId(organization_employment),
-                      ),
-                      organization_id: organization_employment.id,
-                      organization_name: organization_employment.name,
-                      profession: 'receptionist',
-                      health_worker_id: receptionist.id,
-                      health_worker_name: receptionist.name,
-                      avatar_url:
-                        open_encounter.workflows.registration!.employees[0]
-                          .avatar_url,
-                      specialty: null,
-                      seen_at:
-                        open_encounter.workflows.registration!.employees[0]
-                          .seen_at,
-                    },
+                  seen_patient_encounter_employee_ids: [
+                    patient_encounter_employee_id,
                   ],
                 },
               },
@@ -120,19 +105,8 @@ describe(
                   department_name: 'reception',
                   current_workflow: 'registration',
                   next_workflow: null,
-                  employees: [
-                    {
-                      patient_encounter_employee_id,
-                      health_worker_id: receptionist.id,
-                      employment_id: receptionist.employee_id,
-                      health_worker_name: receptionist.name,
-                      profession: 'receptionist',
-                      specialty: null,
-                      seen_at: open_encounter.all_employees_seen[0].seen_at,
-                      avatar_url: receptionist.avatar_url,
-                      organization_id: organization.id,
-                      organization_name: organization.name,
-                    },
+                  present_with_employee_ids: [
+                    patient_encounter_employee_id,
                   ],
                 },
               },
@@ -145,16 +119,15 @@ describe(
               wait_time: open_encounter.wait_time,
               all_employees_seen: [
                 {
+                  ...open_encounter.all_employees_seen[0],
                   patient_encounter_employee_id,
-                  health_worker_id: receptionist.id,
-                  employment_id: receptionist.employee_id,
-                  health_worker_name: receptionist.name,
+                  id: receptionist.id,
+                  employee_id: exists(nonAdminId(organization_employment)),
+                  name: receptionist.name,
                   profession: 'receptionist',
                   specialty: null,
-                  seen_at: open_encounter.all_employees_seen[0].seen_at,
                   avatar_url: receptionist.avatar_url,
                   organization_id: organization.id,
-                  organization_name: organization.name,
                 },
               ],
             })
@@ -182,7 +155,7 @@ describe(
                   `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=registration`,
               }],
               present_employees: [
-                open_encounter.workflows.registration!.employees[0],
+                open_encounter.all_employees_seen[0],
               ],
               reason: null,
               priority_level: null,
@@ -227,7 +200,8 @@ describe(
           )
 
           assertArrayNonEmpty(
-            open_encounter.workflows.registration!.employees,
+            open_encounter.workflows.registration!
+              .seen_patient_encounter_employee_ids,
           )
           assertArrayNonEmpty(
             open_encounter.all_employees_seen,
@@ -251,25 +225,8 @@ describe(
                   'terms_and_conditions',
                   'route_patient',
                 ],
-                employees: [
-                  {
-                    patient_encounter_employee_id:
-                      employee.patient_encounter_employee_id,
-                    employment_id: exists(
-                      nonAdminId(organization_employment),
-                    ),
-                    organization_id: organization_employment.id,
-                    organization_name: organization_employment.name,
-                    profession: 'receptionist',
-                    health_worker_id: receptionist.id,
-                    health_worker_name: receptionist.name,
-                    avatar_url:
-                      open_encounter.workflows.registration!.employees[0]
-                        .avatar_url,
-                    specialty: null,
-                    seen_at: open_encounter.workflows.registration!.employees[0]
-                      .seen_at,
-                  },
+                seen_patient_encounter_employee_ids: [
+                  employee.patient_encounter_employee_id,
                 ],
                 completed_at: open_encounter.workflows.registration!
                   .completed_at!,
@@ -280,7 +237,7 @@ describe(
                 workflow: 'triage',
                 status: 'not started',
                 steps_completed: [],
-                employees: [],
+                seen_patient_encounter_employee_ids: [],
               },
               consultation: {
                 patient_workflow_id: open_encounter.workflows.consultation!
@@ -288,7 +245,7 @@ describe(
                 workflow: 'consultation',
                 status: 'not started',
                 steps_completed: [],
-                employees: [],
+                seen_patient_encounter_employee_ids: [],
               },
             },
             priority: null,
@@ -298,7 +255,7 @@ describe(
                 department_name: 'waiting room',
                 current_workflow: null,
                 next_workflow: 'triage',
-                employees: [],
+                present_with_employee_ids: [],
               },
             },
             patient,
@@ -310,19 +267,15 @@ describe(
             wait_time: open_encounter.wait_time,
             all_employees_seen: [
               {
+                ...open_encounter.all_employees_seen[0],
                 patient_encounter_employee_id:
                   employee.patient_encounter_employee_id,
-                employment_id: exists(nonAdminId(organization_employment)),
+                employee_id: exists(nonAdminId(organization_employment)),
                 organization_id: organization_employment.id,
-                organization_name: organization_employment.name,
                 profession: 'receptionist',
-                health_worker_id: receptionist.id,
-                health_worker_name: receptionist.name,
-                avatar_url: open_encounter.workflows.registration!.employees[0]
-                  .avatar_url,
+                id: receptionist.id,
+                name: receptionist.name,
                 specialty: null,
-                seen_at: open_encounter.workflows.registration!.employees[0]
-                  .seen_at,
               },
             ],
           })

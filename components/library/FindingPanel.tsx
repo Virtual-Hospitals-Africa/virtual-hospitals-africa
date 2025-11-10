@@ -1,4 +1,5 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
+import { organizationOf } from '../../shared/employees.ts'
 import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { patientEncounterEmployeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import {
@@ -79,7 +80,7 @@ export function FindingPanel(
             <div className='flex gap-1.5 items-center'>
               <BuildingOffice2Icon className='w-4 h-4 text-indigo-700' />
               <p className='text-sm font-medium text-gray-900'>
-                at {finding.provider.organization_name}
+                at {organizationOf(finding.provider).name}
               </p>
             </div>
 

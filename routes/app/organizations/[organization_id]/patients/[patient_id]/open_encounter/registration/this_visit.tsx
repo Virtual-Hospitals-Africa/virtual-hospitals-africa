@@ -77,7 +77,7 @@ export const handler = postHandler(
           workflow: 'triage',
           status: 'not started',
           steps_completed: [],
-          employees: [],
+          seen_patient_encounter_employee_ids: [],
         }
         Object.assign(
           encounter.status.patient_presence,

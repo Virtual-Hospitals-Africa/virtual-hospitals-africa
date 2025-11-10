@@ -59,13 +59,14 @@ export async function startWorkflow(
 
   const existing_patient_encounter_employee_id =
     encounter.all_employees_seen.find(
-      (employee) => employee.employment_id === seeing_as_employment_id,
+      (employee) => employee.employee_id === seeing_as_employment_id,
     )?.patient_encounter_employee_id || null
 
   const do_start_workflow = workflow_status.status === 'not started' ||
-    !workflow_status.employees.some((employee) =>
-      employee.employment_id === seeing_as_employment_id
-    )
+    (existing_patient_encounter_employee_id !== null &&
+      !workflow_status.seen_patient_encounter_employee_ids.includes(
+        existing_patient_encounter_employee_id,
+      ))
   if (do_start_workflow) {
     await patient_workflows.start(
       trx,

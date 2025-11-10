@@ -10,6 +10,7 @@ import {
   PostgresInterval,
   RenderedOrganization,
   RenderedPatientEncounter,
+  RenderedPatientEncounterEmployee,
   RenderedPatientEncounterStatus,
   RenderedPatientOpenEncounter,
   RenderedPatientPresence,
@@ -316,13 +317,26 @@ export function baseQuery(trx: TrxOrDb) {
             'patient_presence.current_workflow',
             'patient_presence.next_workflow',
             jsonArrayFromColumn(
-              'employment_presence_id',
+              'patient_encounter_employee_id',
               eb_patient_presence.selectFrom('employment_presence')
+                .innerJoin(
+                  'patient_encounter_employees',
+                  'employment_presence.id',
+                  'patient_encounter_employees.employment_id',
+                )
                 .whereRef(
                   'employment_presence.with_patient_id',
                   '=',
                   'patient_presence.id',
-                ).select('employment_presence.id as employment_presence_id'),
+                )
+                .whereRef(
+                  'patient_encounter_employees.patient_encounter_id',
+                  '=',
+                  'patient_encounters.id',
+                )
+                .select(
+                  'patient_encounter_employees.id as patient_encounter_employee_id',
+                ),
             ).as('present_with_employee_ids'),
           ])
           .limit(1),
@@ -569,7 +583,10 @@ const model = base({
       organization,
       workflows: asWorkflows(workflows, status),
       priority: asPriority(priority),
-      all_employees_seen,
+      all_employees_seen: all_employees_seen.map((employee) => {
+        assertArrayNonEmpty(employee.organizations)
+        return employee as RenderedPatientEncounterEmployee
+      }),
       status,
       patient,
       reason,

@@ -1,0 +1,7 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+NEVER use `as T` to upcast. Typescript is there for a reason.

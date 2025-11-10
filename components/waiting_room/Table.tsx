@@ -35,13 +35,13 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
         <div className='flex flex-col'>
           {row.present_employees.map((employee) => (
             <Person
-              key={employee.health_worker_id}
+              key={employee.id}
               person={{
-                name: employee.health_worker_name,
+                name: employee.name,
                 avatar_url: employee.avatar_url,
                 description: employee.specialty,
                 href:
-                  `/app/organizations/${employee.organization_id}/employees/${employee.health_worker_id}`,
+                  `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
               }}
             />
           ))}

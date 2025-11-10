@@ -32,10 +32,10 @@ export function asWaitingRoom(
     wait_time,
     arrived_timestamp,
     workflows,
+    all_employees_seen,
     // appointment,
     // patient_encounter_id,
     // notes,
-    // all_employees_seen,
   } = patient_encounter
 
   // const organizations_where_doctor = health_worker.organizations.filter((e) =>
@@ -60,8 +60,15 @@ export function asWaitingRoom(
     department_name,
     current_workflow,
     next_workflow,
-    employees: present_employees,
+    present_with_employee_ids,
   } = status.patient_presence
+
+  const present_employees = all_employees_seen.filter((employee) =>
+    (present_with_employee_ids as string[]).includes(
+      employee.patient_encounter_employee_id,
+    )
+  )
+
   const next_workflow_status = next_workflow && workflows[next_workflow]
   const current_workflow_status = current_workflow &&
     workflows[current_workflow]
@@ -72,13 +79,15 @@ export function asWaitingRoom(
     assertEquals(current_workflow_status.workflow, current_workflow)
     assertNotEquals(current_workflow_status.status, 'not started')
     assertNotEquals(current_workflow_status.status, 'completed')
-    assertArrayNonEmpty(current_workflow_status.employees)
+    assertArrayNonEmpty(
+      current_workflow_status.seen_patient_encounter_employee_ids,
+    )
     workflow_status_display =
       `${current_workflow_status.workflow} ${current_workflow_status.status}`
   } else {
     assertEquals(department_name, 'waiting room')
     assert(next_workflow_status)
-    assertArrayEmpty(present_employees)
+    assertArrayEmpty(present_with_employee_ids)
     workflow_status_display = `Awaiting ${next_workflow_status.workflow}`
   }
 
