@@ -13,7 +13,6 @@ import assertLength from '../../util/assertLength.ts'
 import { testHealthWorker } from '../_helpers/health_workers.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
-import { debugLog } from '../../db/helpers.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -203,14 +202,6 @@ describe('db/models/health_workers.ts', () => {
         })
 
         const result = await health_workers.getById(db, health_worker.id)
-
-        debugLog(
-          health_workers.baseQuery(db).where(
-            'health_workers.id',
-            '=',
-            health_worker.id,
-          ),
-        )
 
         assertLength(result.organizations, 2)
         assertEquals(

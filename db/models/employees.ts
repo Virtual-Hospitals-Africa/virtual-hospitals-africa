@@ -4,7 +4,7 @@ import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
-function baseQuery(trx: TrxOrDb) {
+export function baseQuery(trx: TrxOrDb) {
   return health_workers.baseQuery(trx)
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .select([
