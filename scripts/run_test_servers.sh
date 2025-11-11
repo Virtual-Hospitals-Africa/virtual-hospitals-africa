@@ -61,13 +61,20 @@ ensure_test_servers_not_already_running() {
 }
 
 print_server_log_info() {
-  echo "Server output available at $test_http_server_output"
   echo "Proxy output available at $test_https_proxy_server_output"
+  echo "Server output available at $test_http_server_output"
 }
 
 cleanup() {
   kill_test_servers
-  print_server_log_info
+  if [[ "${CI:-}" == "true" ]]; then
+    echo "Server output:"
+    cat "$test_http_server_output"
+    echo "Proxy output:"
+    cat "$test_https_proxy_server_output"
+  else
+    print_server_log_info
+  fi
 }
 
 http_server_command() {

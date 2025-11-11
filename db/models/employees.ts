@@ -3,8 +3,6 @@ import * as health_workers from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-import matching from '../../util/find.ts'
-import { exists } from '../../util/exists.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return health_workers.baseQuery(trx)

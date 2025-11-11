@@ -337,7 +337,7 @@ export function baseQuery(trx: TrxOrDb) {
                 .select(
                   'patient_encounter_employees.id as patient_encounter_employee_id',
                 ),
-            ).as('present_with_employee_ids'),
+            ).as('present_with_patient_encounter_employee_ids'),
           ])
           .limit(1),
       ).as('patient_presence'),
@@ -506,7 +506,7 @@ function asPatientPresence(
     department_name,
     current_workflow,
     next_workflow,
-    present_with_employee_ids,
+    present_with_patient_encounter_employee_ids,
   }: NonNullable<
     IntermediatePatientEncounterResult['patient_presence']
   >,
@@ -516,12 +516,12 @@ function asPatientPresence(
   if (department_name === 'waiting room') {
     assert(!current_workflow)
     assert(next_workflow)
-    assertArrayEmpty(present_with_employee_ids)
+    assertArrayEmpty(present_with_patient_encounter_employee_ids)
     return {
       department_name,
       current_workflow,
       next_workflow,
-      present_with_employee_ids,
+      present_with_patient_encounter_employee_ids,
     }
   }
 
@@ -530,7 +530,7 @@ function asPatientPresence(
     department_name,
     current_workflow,
     next_workflow,
-    present_with_employee_ids,
+    present_with_patient_encounter_employee_ids,
   }
 }
 

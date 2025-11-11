@@ -1,0 +1,9 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+NEVER access arrays by index. 2 reasons:
+  1. There are better methods like find to get the thing you're talking about via semantic means
+  2. Typescript lies. The access type is T, but in reality it's undefined | T

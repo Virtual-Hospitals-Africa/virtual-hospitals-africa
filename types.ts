@@ -2291,14 +2291,14 @@ export type RenderedPatientPresenceWaitingRoom = {
   department_name: 'waiting room'
   current_workflow: null
   next_workflow: Workflow
-  present_with_employee_ids: []
+  present_with_patient_encounter_employee_ids: []
 }
 
 export type RenderedPatientPresenceActiveDepartment = {
   department_name: Exclude<Department, 'waiting room'>
   current_workflow: Workflow
   next_workflow: null | Workflow
-  present_with_employee_ids: string[]
+  present_with_patient_encounter_employee_ids: string[]
 }
 
 export type RenderedPatientPresence =

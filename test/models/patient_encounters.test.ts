@@ -80,7 +80,8 @@ describe(
             )
             assert(open_encounter.arrived_timestamp instanceof Date)
             assertEquals(
-              open_encounter.status.patient_presence!.present_with_employee_ids
+              open_encounter.status.patient_presence!
+                .present_with_patient_encounter_employee_ids
                 .length,
               1,
             )
@@ -105,7 +106,7 @@ describe(
                   department_name: 'reception',
                   current_workflow: 'registration',
                   next_workflow: null,
-                  present_with_employee_ids: [
+                  present_with_patient_encounter_employee_ids: [
                     patient_encounter_employee_id,
                   ],
                 },
@@ -255,7 +256,7 @@ describe(
                 department_name: 'waiting room',
                 current_workflow: null,
                 next_workflow: 'triage',
-                present_with_employee_ids: [],
+                present_with_patient_encounter_employee_ids: [],
               },
             },
             patient,

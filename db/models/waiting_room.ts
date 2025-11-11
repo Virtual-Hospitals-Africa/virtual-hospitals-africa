@@ -60,11 +60,11 @@ export function asWaitingRoom(
     department_name,
     current_workflow,
     next_workflow,
-    present_with_employee_ids,
+    present_with_patient_encounter_employee_ids,
   } = status.patient_presence
 
   const present_employees = all_employees_seen.filter((employee) =>
-    (present_with_employee_ids as string[]).includes(
+    (present_with_patient_encounter_employee_ids as string[]).includes(
       employee.patient_encounter_employee_id,
     )
   )
@@ -87,7 +87,7 @@ export function asWaitingRoom(
   } else {
     assertEquals(department_name, 'waiting room')
     assert(next_workflow_status)
-    assertArrayEmpty(present_with_employee_ids)
+    assertArrayEmpty(present_with_patient_encounter_employee_ids)
     workflow_status_display = `Awaiting ${next_workflow_status.workflow}`
   }
 
