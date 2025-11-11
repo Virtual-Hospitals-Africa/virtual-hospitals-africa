@@ -37,17 +37,22 @@ export const handler = postHandler(
         .execute()
 
       assert(
-        encounter.status.patient_presence.employees.length <= 1,
+        encounter.status.patient_presence
+          .present_with_patient_encounter_employee_ids.length <= 1,
         "Moving patient to waiting room when other employees also with patient isn't supported",
       )
-      const employee_present_with_patient =
-        encounter.status.patient_presence.employees[0]
+      const employee_present_with_patient = encounter.all_employees_seen.find(
+        (employee) =>
+          employee.patient_encounter_employee_id ===
+            encounter.status.patient_presence
+              .present_with_patient_encounter_employee_ids[0],
+      )
       assert(employee_present_with_patient)
 
       const non_admin_employment_id = nonAdminId(organization_employment)
       assert(non_admin_employment_id)
       assertEquals(
-        employee_present_with_patient.employment_id,
+        employee_present_with_patient.employee_id,
         non_admin_employment_id,
       )
 

@@ -211,7 +211,7 @@ export async function renderedPositiveFindings(
       return {
         ...finding,
         provider: {
-          is_me: matching_employee.health_worker_id === health_worker_id,
+          is_me: matching_employee.id === health_worker_id,
           is_same_person_who_made_originally_noted_finding: true,
           ...matching_employee,
         },
@@ -245,11 +245,11 @@ export async function renderedPositiveFindings(
             return {
               ...qualifier,
               provider: {
-                is_me: qualifier_matching_employee.health_worker_id ===
+                is_me: qualifier_matching_employee.id ===
                   health_worker_id,
                 is_same_person_who_made_originally_noted_finding:
-                  qualifier_matching_employee.health_worker_id ===
-                    matching_employee.health_worker_id,
+                  qualifier_matching_employee.id ===
+                    matching_employee.id,
                 ...qualifier_matching_employee,
               },
             }

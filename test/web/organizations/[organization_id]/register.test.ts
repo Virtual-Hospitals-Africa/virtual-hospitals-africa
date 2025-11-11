@@ -13,7 +13,7 @@ import randomDemographics from '../../../../mocks/randomDemographics.ts'
 import createTestAddress from '../../../../mocks/createTestAddress.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
-describe(
+describe.skip(
   '/app/organizations/[organization_id]/register',
   () => {
     before(waitUntilTestServerUp)

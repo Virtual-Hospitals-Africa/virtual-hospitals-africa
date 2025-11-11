@@ -2291,14 +2291,14 @@ export type RenderedPatientPresenceWaitingRoom = {
   department_name: 'waiting room'
   current_workflow: null
   next_workflow: Workflow
-  employees: []
+  present_with_patient_encounter_employee_ids: []
 }
 
 export type RenderedPatientPresenceActiveDepartment = {
   department_name: Exclude<Department, 'waiting room'>
   current_workflow: Workflow
   next_workflow: null | Workflow
-  employees: RenderedPatientEncounterEmployee[]
+  present_with_patient_encounter_employee_ids: string[]
 }
 
 export type RenderedPatientPresence =
@@ -2321,16 +2321,8 @@ export type RenderedPatientEncounterStatus =
   | RenderedPatientEncounterStatusOpen
   | RenderedPatientEncounterStatusClosed
 
-export type RenderedPatientEncounterEmployee = {
+export type RenderedPatientEncounterEmployee = RenderedEmployee & {
   patient_encounter_employee_id: string
-  employment_id: string
-  organization_id: string
-  organization_name: string
-  profession: Profession
-  health_worker_id: string
-  health_worker_name: string
-  avatar_url: string | null
-  specialty: string | null
   seen_at: Date
 }
 
@@ -2378,7 +2370,7 @@ export type WorkflowStatusNotStarted = {
   workflow: Workflow
   status: 'not started'
   steps_completed: []
-  employees: []
+  seen_patient_encounter_employee_ids: []
   completed_at?: never
 }
 
@@ -2387,7 +2379,7 @@ export type WorkflowStatusIncomplete = {
   workflow: Workflow
   status: 'incomplete'
   steps_completed: string[]
-  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  seen_patient_encounter_employee_ids: NonEmptyArray<string>
   completed_at?: never
 }
 
@@ -2396,7 +2388,7 @@ export type WorkflowStatusInProgress = {
   workflow: Workflow
   status: 'in progress'
   steps_completed: string[]
-  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  seen_patient_encounter_employee_ids: NonEmptyArray<string>
   completed_at?: never
 }
 
@@ -2405,7 +2397,7 @@ export type WorkflowStatusCompleted = {
   workflow: Workflow
   status: 'completed'
   steps_completed: string[]
-  employees: NonEmptyArray<RenderedPatientEncounterEmployee>
+  seen_patient_encounter_employee_ids: NonEmptyArray<string>
   completed_at: Date
 }
 

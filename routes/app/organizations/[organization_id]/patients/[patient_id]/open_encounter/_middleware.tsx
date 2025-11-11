@@ -62,6 +62,9 @@ import {
   previouslyCompleted,
 } from '../../../../../../../db/models/patient_procedures.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
+import { exists } from '../../../../../../../util/exists.ts'
+import matching from '../../../../../../../util/matching.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -321,13 +324,14 @@ export async function handler(
 
   const encounter = await findPatientOpenEncounter(ctx)
 
-  const encounter_employee_presence =
-    encounter.status.patient_presence.employees.find((
-      employee,
-    ) => employee.employment_id === nonAdminId(organization_employment)) ??
-      null
-
-  assert(encounter_employee_presence, 'No encounter employee found')
+  const present_with_patient = presentWithPatient(encounter)
+  const encounter_employee_presence = exists(
+    present_with_patient.find(
+      matching({
+        employee_id: nonAdminId(organization_employment),
+      }),
+    ),
+  )
 
   const encounter_props: OpenEncounterState = {
     ...ctx.state,

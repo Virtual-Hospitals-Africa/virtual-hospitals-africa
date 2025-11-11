@@ -19,7 +19,7 @@ export function patientEncounterEmployeeDisplay(
   patient_encounter_employee: RenderedPatientEncounterEmployee,
 ): HealthWorkerDisplay {
   return healthWorkerDisplayInner({
-    health_worker_name: patient_encounter_employee.health_worker_name,
+    health_worker_name: patient_encounter_employee.name,
     is_doctor: patient_encounter_employee.profession === 'doctor',
     is_admin: patient_encounter_employee.profession === 'admin',
     provider_profession: patient_encounter_employee.profession !== 'admin'

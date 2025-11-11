@@ -50,7 +50,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
 
   const existing_patient_encounter_employee_id = encounter.all_employees_seen
     .find(
-      (employee) => employee.employment_id === non_admin_employment_id,
+      (employee) => employee.employee_id === non_admin_employment_id,
     )?.patient_encounter_employee_id
 
   return trx.with(
