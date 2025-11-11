@@ -60,11 +60,11 @@ type IntermediateTargetResult = IntermediateDraftResult['targets'][number]
 export async function findById(
   trx: TrxOrDb,
   { draft_id }: { draft_id: string },
-): Promise<null | RenderedMessageDraft> {
+): Promise<undefined | RenderedMessageDraft> {
   const draft = await baseQuery(trx)
     .where('message_drafts.id', '=', draft_id)
     .executeTakeFirst()
-  if (!draft) return null
+  if (!draft) return
 
   const targets: RenderedMessageTarget[] = await pMap(
     draft.targets,

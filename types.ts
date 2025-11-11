@@ -3224,9 +3224,12 @@ export type RenderedEmployee = EmployedHealthWorker & {
 
 export type MessageTargetEntities = {
   organization: RenderedOrganization
+  organization_category: string
   employment: RenderedEmployee
   profession: Profession
-  region: string
+  locality: string
+  administrative_area_level_1: string
+  administrative_area_level_2: string
 }
 
 export type RenderedMessageTargets = {

@@ -4,7 +4,7 @@ import { Button } from '../library/Button.tsx'
 import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.tsx'
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import RemovableChip from '../RemovableChip.tsx'
-import { TargetsRow } from '../../islands/messaging/drafts/RecipientsRow.tsx'
+import { TargetsRow } from '../../islands/messaging/drafts/TargetsRow.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>

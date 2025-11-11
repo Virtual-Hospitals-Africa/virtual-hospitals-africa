@@ -4,6 +4,7 @@ import { JsonValue, MessageTargetType, Profession } from '../../db.d.ts'
 import {
   MessageTargetEntities,
   RenderedEmployee,
+  RenderedMessageTarget,
   RenderedMessageTargets,
   RenderedOrganization,
   TrxOrDb,
@@ -13,6 +14,7 @@ import * as employees from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
 import { healthWorkerDisplay } from '../../util/healthWorkerDisplay.ts'
+import { MessageTargetCategory } from '../../shared/message_targets.ts'
 
 type IntermediateTargetResult<TargetType extends MessageTargetType> = {
   id: string
@@ -49,11 +51,41 @@ const TARGET_ENTITY_FETCHERS = {
     assert(target.target_value)
     return ProfessionSchema.parse(target.target_value)
   },
-  async region(
+  async organization_category(
     _trx: TrxOrDb,
-    target: IntermediateTargetResult<'region'>,
+    target: IntermediateTargetResult<'organization_category'>,
   ): Promise<string> {
-    assert(target.target_type === 'region')
+    assert(target.target_type === 'organization_category')
+    assert(!target.target_uuid)
+    assert(target.target_value)
+    assert(isString(target.target_value))
+    return target.target_value
+  },
+  async locality(
+    _trx: TrxOrDb,
+    target: IntermediateTargetResult<'locality'>,
+  ): Promise<string> {
+    assert(target.target_type === 'locality')
+    assert(!target.target_uuid)
+    assert(target.target_value)
+    assert(isString(target.target_value))
+    return target.target_value
+  },
+  async administrative_area_level_1(
+    _trx: TrxOrDb,
+    target: IntermediateTargetResult<'administrative_area_level_1'>,
+  ): Promise<string> {
+    assert(target.target_type === 'administrative_area_level_1')
+    assert(!target.target_uuid)
+    assert(target.target_value)
+    assert(isString(target.target_value))
+    return target.target_value
+  },
+  async administrative_area_level_2(
+    _trx: TrxOrDb,
+    target: IntermediateTargetResult<'administrative_area_level_2'>,
+  ): Promise<string> {
+    assert(target.target_type === 'administrative_area_level_2')
     assert(!target.target_uuid)
     assert(target.target_value)
     assert(isString(target.target_value))
@@ -77,7 +109,16 @@ const TARGET_DISPLAYS = {
   profession(entity: Profession): string {
     return entity
   },
-  region(entity: string): string {
+  organization_category(entity: string): string {
+    return entity
+  },
+  locality(entity: string): string {
+    return entity
+  },
+  administrative_area_level_1(entity: string): string {
+    return entity
+  },
+  administrative_area_level_2(entity: string): string {
     return entity
   },
 } satisfies {
@@ -127,17 +168,56 @@ const TARGET_GETTERS = {
       profession,
     }
   },
-  async region(
+  async organization_category(
     trx: TrxOrDb,
-    target: IntermediateTargetResult<'region'>,
-  ): Promise<RenderedMessageTargets['region']> {
-    const region = await TARGET_ENTITY_FETCHERS.region(trx, target)
-    const display_name = TARGET_DISPLAYS.region(region)
+    target: IntermediateTargetResult<'organization_category'>,
+  ): Promise<RenderedMessageTargets['organization_category']> {
+    const organization_category = await TARGET_ENTITY_FETCHERS.organization_category(trx, target)
+    const display_name = TARGET_DISPLAYS.organization_category(organization_category)
     return {
       id: target.id,
-      target_type: 'region',
+      target_type: 'organization_category',
       display_name,
-      region,
+      organization_category,
+    }
+  },
+  async locality(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'locality'>,
+  ): Promise<RenderedMessageTargets['locality']> {
+    const locality = await TARGET_ENTITY_FETCHERS.locality(trx, target)
+    const display_name = TARGET_DISPLAYS.locality(locality)
+    return {
+      id: target.id,
+      target_type: 'locality',
+      display_name,
+      locality,
+    }
+  },
+  async administrative_area_level_1(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'administrative_area_level_1'>,
+  ): Promise<RenderedMessageTargets['administrative_area_level_1']> {
+    const administrative_area_level_1 = await TARGET_ENTITY_FETCHERS.administrative_area_level_1(trx, target)
+    const display_name = TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1)
+    return {
+      id: target.id,
+      target_type: 'administrative_area_level_1',
+      display_name,
+      administrative_area_level_1,
+    }
+  },
+  async administrative_area_level_2(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<'administrative_area_level_2'>,
+  ): Promise<RenderedMessageTargets['administrative_area_level_2']> {
+    const administrative_area_level_2 = await TARGET_ENTITY_FETCHERS.administrative_area_level_2(trx, target)
+    const display_name = TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2)
+    return {
+      id: target.id,
+      target_type: 'administrative_area_level_2',
+      display_name,
+      administrative_area_level_2,
     }
   },
 } satisfies {
@@ -156,3 +236,34 @@ export async function getTarget<TargetType extends MessageTargetType>(
     RenderedMessageTargets[TargetType]
   >
 }
+
+const MESSAGE_CATEGORY_SEARCH = {
+  async regions(trx: TrxOrDb, search: string): Promise<Array<
+    RenderedMessageTargets['locality'] |
+    RenderedMessageTargets['administrative_area_level_1'] |
+    RenderedMessageTargets['administrative_area_level_2']
+    >> {
+    throw new Error('Implement')
+  },
+  async organizations(trx: TrxOrDb, search: string): Promise<Array<
+    RenderedMessageTargets['organization'] |
+    RenderedMessageTargets['organization_category']
+    >> {
+throw new Error('Implement')
+  },
+  async health_workers(trx: TrxOrDb, search: string): Promise<Array<
+    RenderedMessageTargets['profession'] |
+    RenderedMessageTargets['employment']
+    >> {
+throw new Error('Implement')
+  },
+}
+
+export async function searchTargetCategory<TargetCategory extends MessageTargetCategory>(
+  trx: TrxOrDb,
+  target_category: TargetCategory,
+  { search }: {search: string}
+): Promise<RenderedMessageTarget[]> {
+  return MESSAGE_CATEGORY_SEARCH[target_category](trx, search)
+}
+

@@ -10,6 +10,7 @@ import { assert } from 'std/assert/assert.ts'
 import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
 import { Maybe } from '../types.ts'
+import { exists } from '../util/exists.ts'
 
 const migrations: Record<
   string,
@@ -100,7 +101,14 @@ export const migrate = {
   },
   async redo() {
     await migrate.down()
-    return migrate.up()
+    const result = await migrate.up()
+    const migrations = await migrator.getMigrations()
+    logMigrationResults(result)
+    const last_result = result.results && last(result.results)
+    const last_migration = exists(last([...migrations]))
+    if (last_result?.migrationName === last_migration.name) {
+      console.log(`Run shell command deno task db:codegen`)
+    }
   },
   async 'redo:from'(target: string) {
     if (!target) return targetError('redo:from')
@@ -112,6 +120,7 @@ export const migrate = {
     })
     logMigrationResults(results)
     await spinner('Migrating up to latest', migrator.migrateToLatest())
+    console.log(`Run shell command deno task db:codegen`)
   },
   async all(opts: { recreate?: boolean | string[] } = {}) {
     await spinner('Running VHA migrations', migrate.latest, {

@@ -46,7 +46,7 @@ const patient_record_assertion = assertOnInsert({
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('message_target_type')
-    .asEnum(['organization', 'employment', 'profession', 'region'])
+    .asEnum(['organization', 'employment', 'profession', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2'])
     .execute()
 
   await db.schema.createType('message_concerning_type')
@@ -90,7 +90,7 @@ export async function up(db: Kysely<DB>) {
         .addCheckConstraint(
           'target_value_and_uuid_based_on_type',
           sql`(
-            (target_type IN ('profession', 'region') AND target_value IS NOT NULL AND target_uuid IS NULL)
+            (target_type IN ('profession', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2') AND target_value IS NOT NULL AND target_uuid IS NULL)
             OR
             (target_type IN ('organization', 'employment') AND target_uuid IS NOT NULL AND target_value IS NULL)
           )`,
@@ -109,11 +109,6 @@ export async function up(db: Kysely<DB>) {
         .addColumn('concerning_uuid', 'uuid', (col) =>
           col.notNull()),
   )
-
-  await db.schema.createIndex('message_draft_targets_message_draft_id_index')
-    .on('message_draft_targets')
-    .column('message_draft_id')
-    .execute()
 
   await organization_assertion.up(db)
   await employment_assertion.up(db)
