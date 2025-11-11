@@ -7,7 +7,7 @@ import {
   CheckIcon,
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
-import { Maybe } from '../types.ts'
+import { JsonSerializable, Maybe } from '../types.ts'
 import cls from '../util/cls.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import last from '../util/last.ts'
@@ -15,17 +15,20 @@ import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
 import { Label } from '../components/library/Label.tsx'
 import { Signal, useSignal } from '@preact/signals'
+import RemovableChip from '../components/RemovableChip.tsx'
+import remove from '../util/remove.ts'
+import { HiddenInput } from '../components/library/HiddenInput.tsx'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
-export type SearchProps<T extends { id?: unknown; name: string }> = {
+
+type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: string }> = {
   id?: string
   name?: string
   required?: boolean
   label?: Maybe<string>
   just_name?: boolean
-  no_name_form_data?: boolean
   addable?:
     | boolean
     | {
@@ -34,9 +37,6 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
     }
   disabled?: boolean
   readonly?: boolean
-  value?: Maybe<T>
-  signal?: Signal<Maybe<T>>
-  multi?: boolean
   className?: string
   loading_options?: boolean
   options: T[]
@@ -54,6 +54,22 @@ export type SearchProps<T extends { id?: unknown; name: string }> = {
   placeholder?: string
 }
 
+export type SearchPropsSingular<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & {
+  multi?: never
+  value?: Maybe<T>
+  signal?: Signal<Maybe<T>>
+}
+
+export type SearchPropsMulti<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & {
+  multi: true
+  value?: never
+  signal: Signal<T[]>
+}
+
+export type SearchProps<T extends { id?: unknown; name?: string; display_name?: string }> = (
+  SearchPropsSingular<T> | SearchPropsMulti<T>
+)
+
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   if (!name) return false
   const surname_part = last(name.split('.'))!
@@ -61,7 +77,7 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   return /^\d+$/.test(surname_part)
 }
 
-export default function Search<T extends { id?: unknown; name: string }>({
+export default function Search<T extends { id?: unknown; name?: string; display_name?: string }>({
   id,
   name,
   required,
@@ -70,7 +86,6 @@ export default function Search<T extends { id?: unknown; name: string }>({
   signal,
   multi,
   just_name,
-  no_name_form_data,
   addable,
   disabled,
   readonly,
@@ -87,16 +102,16 @@ export default function Search<T extends { id?: unknown; name: string }>({
   placeholder = '',
 }: SearchProps<T>) {
   if (multi) {
-    assert(
-      typeof onSelect === 'function',
-      'onSelect must be provided for a multi search',
-    )
+    assert(signal)
+    assert(Array.isArray(signal.value))
+    assert(!onSelect)
   }
 
   // deno-lint-ignore react-rules-of-hooks
-  const selected = signal || useSignal<T | null>(
+  const selected_singular = multi ? undefined : (signal || useSignal<T | null>(
     hasId(value) ? value : null,
-  )
+  ))
+  const selected_multi = multi ? signal : undefined
 
   const [query, setQuery] = useState(value?.name ?? '')
 
@@ -118,15 +133,14 @@ export default function Search<T extends { id?: unknown; name: string }>({
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
 
-  const name_field = just_name
+  const search_field = multi ? `${name}.search`
+
+  : just_name
     ? name
-    : no_name_form_data
-    ? undefined
     : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
+  
   const id_field = just_name ? undefined : name &&
-    (no_name_form_data
-      ? name
-      : is_array_or_record_item
+    (is_array_or_record_item
       ? `${name}.id`
       : `${name}_id`)
 
@@ -136,13 +150,21 @@ export default function Search<T extends { id?: unknown; name: string }>({
   return (
     <Combobox
       id={id}
-      value={selected.value}
+      value={selected_singular?.value}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
         // Clear the selection for a multiselect so the user now has space to enter another value
-        selected.value = multi ? null : value
+        
+        if (selected_singular) {
+          selected_singular.value = value
+        } else if (value) {
+          selected_multi!.value = [
+            ...selected_multi!.value,
+            value
+          ]
+        }
 
-        // Gets picked up by hijack-form-submission-and-set-focus.js to focus on the next input
+        // Gets picked up by general.js to focus on the next input
         if (value && input_ref.current) {
           self.dispatchEvent(
             new CustomEvent('search-select', {
@@ -165,15 +187,16 @@ export default function Search<T extends { id?: unknown; name: string }>({
         <div className='relative'>
           <Combobox.Input
             ref={input_ref}
-            name={name_field}
+            name={search_field}
             className={cls(
-              'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
+              'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
               disabled && 'bg-gray-300',
             )}
             onChange={(event) => {
-              console.log('mmmwemew', event)
               const query = event.currentTarget.value
-              selected.value = null
+              if (selected_singular) {
+                selected_singular.value = null
+              }
               onSelect?.(undefined)
               setQuery(query)
               onQuery(query)
@@ -183,19 +206,36 @@ export default function Search<T extends { id?: unknown; name: string }>({
               // Open the dropdown when clicking the input
               button_ref.current?.click()
             }}
-            value={selected.value?.name}
+            value={selected_singular?.value?.name}
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
             autoComplete='off'
             onBlur={!addable ? undefined : () => {
-              if (selected.value) return
+              if (selected_singular?.value) return
               if (!query) return
               onSelect?.(add_option)
-              selected.value = add_option
+              if (selected_singular) {
+                selected_singular.value = add_option
+              }
             }}
             placeholder={placeholder}
-          />
+          >
+            {selected_multi && (
+              <>
+              {
+                selected_multi.value.map(selected => (
+                  <RemovableChip
+                    key={selected.id}
+                    display={(selected.display_name || selected.name)!}
+                    remove={() =>
+                      selected_multi.value = remove(selected_multi.value, selected)}
+                  />
+                ))
+              }
+              </>
+            )}
+          </Combobox.Input>
           <Combobox.Button
             ref={button_ref}
             className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
@@ -290,12 +330,18 @@ export default function Search<T extends { id?: unknown; name: string }>({
             </Combobox.Options>
           )}
         </div>
-        {selected.value?.id && selected.value.id !== 'add' && id_field && (
-          <input
-            type='hidden'
-            name={id_field}
-            // deno-lint-ignore no-explicit-any
-            value={selected.value.id as any}
+        {selected_singular && (
+          selected_singular.value?.id && selected_singular.value.id !== 'add' && id_field && (
+            <HiddenInput
+              name={id_field}
+              value={selected_singular.value.id as string}
+            />
+          )
+        )}
+        {selected_multi && (
+          <HiddenInput
+            name={name}
+            value={selected_multi.value as JsonSerializable}
           />
         )}
       </div>

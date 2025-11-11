@@ -108,7 +108,7 @@ export type MessagePriority =
 export type MessageTargetType =
   | 'administrative_area_level_1'
   | 'administrative_area_level_2'
-  | 'employment'
+  | 'employee'
   | 'locality'
   | 'organization'
   | 'organization_category'

@@ -1,10 +1,10 @@
 import { computed, effect, Signal, useSignal } from '@preact/signals'
 import { Maybe } from '../types.ts'
-import Search, { SearchProps } from './Search.tsx'
+import Search, { SearchPropsSingular } from './Search.tsx'
 
 type SelectWithOtherProps<T extends string> =
   & Omit<
-    SearchProps<{
+    SearchPropsSingular<{
       id?: unknown
       name: string
     }>,

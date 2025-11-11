@@ -1,14 +1,6 @@
 import type { JSX } from 'preact'
 import isObjectLike from '../../util/isObjectLike.ts'
-
-type JsonSerializable =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | JsonSerializable[]
-  | { [key: string]: JsonSerializable }
+import { JsonSerializable } from '../../types.ts'
 
 export function HiddenInput(
   { value, form, name }: {

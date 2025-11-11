@@ -3,6 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import { JsonValue, MessageTargetType, Profession } from '../../db.d.ts'
 import {
 HasStringId,
+  Maybe,
   MessageTargetEntities,
   RenderedEmployee,
   RenderedMessageTarget,
@@ -14,12 +15,18 @@ import * as organizations from './organizations.ts'
 import * as employees from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
-import { employeeDisplay, healthWorkerDisplay } from '../../util/healthWorkerDisplay.ts'
+import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { MessageTargetCategory } from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { distinctAdministrativeAreaLevels1, distinctAdministrativeAreaLevels2, distinctLocalities } from './addresses.ts'
-import { pMap } from '../../util/inParallel.ts'
+import { pluralize } from '../../util/pluralize.ts'
+
+type Display = {
+  display_name: string
+  description: string
+  avatar_url?: Maybe<string>
+}
 
 type IntermediateTargetResult<TargetType extends MessageTargetType> = {
   target_type: TargetType
@@ -103,32 +110,49 @@ const TARGET_ENTITY_FETCHERS = {
 }
 
 const TARGET_DISPLAYS = {
-  employee(entity: RenderedEmployee): string {
-    return healthWorkerDisplay(entity.name, entity.organizations[0])
-      .display_name
+  employee(entity: RenderedEmployee): Display {
+    return employeeDisplay(entity)
   },
-  organization(entity: RenderedOrganization): string {
-    return entity.name
+  organization(entity: RenderedOrganization): Display {
+    return {
+      display_name: entity.name,
+      description: entity.formatted_address!,
+    }
   },
-  profession(entity: Profession): string {
-    return entity
+  profession(entity: Profession): Display {
+    return {
+      display_name: `All ${pluralize(entity, 2)}`,
+      description: 'Profession',
+    }
   },
-  organization_category(entity: string): string {
-    return entity
+  organization_category(entity: string): Display {
+    return {
+      display_name: `All ${pluralize(entity, 2)}`,
+      description: 'Facility Category',
+    }
   },
-  locality(entity: string): string {
-    return entity
+  locality(entity: string): Display {
+    return {
+      display_name: entity,
+      description: 'City',
+    }
   },
-  administrative_area_level_1(entity: string): string {
-    return entity
+  administrative_area_level_1(entity: string): Display {
+    return {
+      display_name: entity,
+      description: 'District',
+    }
   },
-  administrative_area_level_2(entity: string): string {
-    return entity
+  administrative_area_level_2(entity: string): Display {
+    return {
+      display_name: entity,
+      description: 'Province',
+    }
   },
 } satisfies {
   [T in MessageTargetType]: ((
     entity: MessageTargetEntities[T],
-  ) => string)
+  ) => Display)
 }
 
 // Don't love the code duplication, but w.e. it's easily to make new ones via copy-pasta
@@ -138,11 +162,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'employee'>>,
   ): Promise<RenderedMessageTargets['employee']> {
     const employee = await TARGET_ENTITY_FETCHERS.employee(trx, target)
-    const display_name = TARGET_DISPLAYS.employee(employee)
     return {
       id: target.id,
       target_type: 'employee',
-      display_name,
+      target_category: 'health_workers',
+      ...TARGET_DISPLAYS.employee(employee),
       employee,
     }
   },
@@ -151,11 +175,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'organization'>>,
   ): Promise<RenderedMessageTargets['organization']> {
     const organization = await TARGET_ENTITY_FETCHERS.organization(trx, target)
-    const display_name = TARGET_DISPLAYS.organization(organization)
     return {
       id: target.id,
       target_type: 'organization',
-      display_name,
+      target_category: 'organizations',
+      ...TARGET_DISPLAYS.organization(organization),
       organization,
     }
   },
@@ -164,11 +188,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'profession'>>,
   ): Promise<RenderedMessageTargets['profession']> {
     const profession = await TARGET_ENTITY_FETCHERS.profession(trx, target)
-    const display_name = TARGET_DISPLAYS.profession(profession)
     return {
       id: target.id,
       target_type: 'profession',
-      display_name,
+      target_category: 'health_workers',
+      ...TARGET_DISPLAYS.profession(profession),
       profession,
     }
   },
@@ -177,11 +201,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'organization_category'>>,
   ): Promise<RenderedMessageTargets['organization_category']> {
     const organization_category = await TARGET_ENTITY_FETCHERS.organization_category(trx, target)
-    const display_name = TARGET_DISPLAYS.organization_category(organization_category)
     return {
       id: target.id,
       target_type: 'organization_category',
-      display_name,
+      target_category: 'organizations',
+      ...TARGET_DISPLAYS.organization_category(organization_category),
       organization_category,
     }
   },
@@ -190,11 +214,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'locality'>>,
   ): Promise<RenderedMessageTargets['locality']> {
     const locality = await TARGET_ENTITY_FETCHERS.locality(trx, target)
-    const display_name = TARGET_DISPLAYS.locality(locality)
     return {
       id: target.id,
       target_type: 'locality',
-      display_name,
+      target_category: 'regions',
+      ...TARGET_DISPLAYS.locality(locality),
       locality,
     }
   },
@@ -203,11 +227,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'administrative_area_level_1'>>,
   ): Promise<RenderedMessageTargets['administrative_area_level_1']> {
     const administrative_area_level_1 = await TARGET_ENTITY_FETCHERS.administrative_area_level_1(trx, target)
-    const display_name = TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1)
     return {
       id: target.id,
       target_type: 'administrative_area_level_1',
-      display_name,
+      target_category: 'regions',
+      ...TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1),
       administrative_area_level_1,
     }
   },
@@ -216,11 +240,11 @@ const TARGET_GETTERS = {
     target: HasStringId<IntermediateTargetResult<'administrative_area_level_2'>>,
   ): Promise<RenderedMessageTargets['administrative_area_level_2']> {
     const administrative_area_level_2 = await TARGET_ENTITY_FETCHERS.administrative_area_level_2(trx, target)
-    const display_name = TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2)
     return {
       id: target.id,
       target_type: 'administrative_area_level_2',
-      display_name,
+      target_category: 'regions',
+      ...TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2),
       administrative_area_level_2,
     }
   },
@@ -261,17 +285,20 @@ const MESSAGE_CATEGORY_SEARCH = {
     return [
       ...localities.map(({ locality }) => ({
         target_type: 'locality' as const,
-        display_name: locality,
+        target_category: 'regions' as const,
+        ...TARGET_DISPLAYS.locality(locality),
         locality,
       })),
       ...administrative_areas_level_1.map(({ administrative_area_level_1 }) => ({
         target_type: 'administrative_area_level_1' as const,
-        display_name: administrative_area_level_1,
+        target_category: 'regions' as const,
+        ...TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1),
         administrative_area_level_1,
       })),
       ...administrative_areas_level_2.map(({ administrative_area_level_2 }) => ({
         target_type: 'administrative_area_level_2' as const,
-        display_name: administrative_area_level_2,
+        target_category: 'regions' as const,
+        ...TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2),
         administrative_area_level_2,
       })),
     ]
@@ -284,7 +311,8 @@ const MESSAGE_CATEGORY_SEARCH = {
 
       const organization_results = organization_search.results.map(organization => ({
         target_type: 'organization' as const,
-        display_name: organization.name,
+        target_category: 'organizations' as const,
+        ...TARGET_DISPLAYS.organization(organization),
         organization,
       }))
 
@@ -299,8 +327,9 @@ const MESSAGE_CATEGORY_SEARCH = {
 
       const employee_results = employees_search.results.map(employee => ({
         target_type: 'employee' as const,
-        display_name: employeeDisplay(employee).display_name,
-        employee: employee,
+        target_category: 'health_workers' as const,
+        ...TARGET_DISPLAYS.employee(employee),
+        employee,
       }))
 
       // TODO, decide whether to do profession results here too

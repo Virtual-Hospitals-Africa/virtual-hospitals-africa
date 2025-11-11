@@ -74,10 +74,11 @@ export const migrate = {
     })
     throw new Error('Please run "deno task db:migrate latest" and try again.')
   },
-  latest() {
-    return spinner('Migrating to latest', async () => {
+  async latest() {
+    await spinner('Migrating to latest', async () => {
       logMigrationResults(await migrator.migrateToLatest())
     })
+    console.log(`Run shell command deno task db:codegen`)
   },
   up() {
     return spinner('Migrating up', migrator.migrateUp().then(logMigrationResults))
