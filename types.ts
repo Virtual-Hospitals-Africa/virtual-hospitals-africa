@@ -3235,7 +3235,7 @@ export type MessageTargetEntities = {
 export type RenderedMessageTargets = {
   [TargetType in keyof MessageTargetEntities]:
     & {
-      id: string
+      id?: string
       display_name: string
       target_type: TargetType
     }

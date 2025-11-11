@@ -5,7 +5,7 @@ import {
   HealthWorkerDisplay,
   HealthWorkerOrganization,
   Maybe,
-  RenderedPatientEncounterEmployee,
+  RenderedEmployee,
 } from '../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
@@ -15,17 +15,17 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
   TODO in the data model have a concept of your employment at an organization
     Independent of your profession
 */
-export function patientEncounterEmployeeDisplay(
-  patient_encounter_employee: RenderedPatientEncounterEmployee,
+export function employeeDisplay(
+  employee: RenderedEmployee,
 ): HealthWorkerDisplay {
   return healthWorkerDisplayInner({
-    health_worker_name: patient_encounter_employee.name,
-    is_doctor: patient_encounter_employee.profession === 'doctor',
-    is_admin: patient_encounter_employee.profession === 'admin',
-    provider_profession: patient_encounter_employee.profession !== 'admin'
-      ? patient_encounter_employee.profession
+    health_worker_name: employee.name,
+    is_doctor: employee.profession === 'doctor',
+    is_admin: employee.profession === 'admin',
+    provider_profession: employee.profession !== 'admin'
+      ? employee.profession
       : undefined,
-    specialty: patient_encounter_employee.specialty,
+    specialty: employee.specialty,
   })
 }
 

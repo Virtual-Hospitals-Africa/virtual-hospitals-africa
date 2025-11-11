@@ -1,8 +1,8 @@
 
 export const MESSAGE_TARGET_CATEGORIES = {
-  regions: ['locality', 'administrative_area_level_1', 'administrative_area_level_2'],
-  organizations: ['organization', 'organization_category'],
-  health_workers: ['profession', 'employment'],
+  regions: ['locality' as const, 'administrative_area_level_1' as const, 'administrative_area_level_2' as const],
+  organizations: ['organization' as const, 'organization_category' as const],
+  health_workers: ['profession' as const, 'employee' as const],
 }
 
 export type MessageTargetCategory = keyof typeof MESSAGE_TARGET_CATEGORIES

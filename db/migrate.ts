@@ -80,10 +80,10 @@ export const migrate = {
     })
   },
   up() {
-    return spinner('Migrating up', migrator.migrateUp())
+    return spinner('Migrating up', migrator.migrateUp().then(logMigrationResults))
   },
   down() {
-    return spinner('Migrating down', migrator.migrateDown())
+    return spinner('Migrating down', migrator.migrateDown().then(logMigrationResults))
   },
   async wipe() {
     const results: MigrationResult[] = []
@@ -103,8 +103,7 @@ export const migrate = {
     await migrate.down()
     const result = await migrate.up()
     const migrations = await migrator.getMigrations()
-    logMigrationResults(result)
-    const last_result = result.results && last(result.results)
+    const last_result = result?.results && last(result.results)
     const last_migration = exists(last([...migrations]))
     if (last_result?.migrationName === last_migration.name) {
       console.log(`Run shell command deno task db:codegen`)
@@ -163,6 +162,7 @@ export function logMigrationResults(
     console.error('  failed to migrate')
     throw error
   }
+  return migration_result_set
 }
 
 export async function migrateCommand(
@@ -186,5 +186,5 @@ if (import.meta.main) {
   }
 
   // deno-lint-ignore no-explicit-any
-  migrateCommand(cmd as any, Deno.args[1])
+  await migrateCommand(cmd as any, Deno.args[1])
 }
