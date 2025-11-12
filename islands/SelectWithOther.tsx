@@ -1,13 +1,15 @@
 import { computed, effect, Signal, useSignal } from '@preact/signals'
 import { Maybe } from '../types.ts'
-import Search, { SearchProps } from './Search.tsx'
+import Search, {
+  OptionLike,
+  SearchPropsCommon,
+  SearchPropsSingular,
+} from './Search.tsx'
 
 type SelectWithOtherProps<T extends string> =
   & Omit<
-    SearchProps<{
-      id?: unknown
-      name: string
-    }>,
+    & SearchPropsSingular<OptionLike>
+    & SearchPropsCommon<OptionLike>,
     'options' | 'onSelect' | 'value' | 'onQuery' | 'signal'
   >
   & {

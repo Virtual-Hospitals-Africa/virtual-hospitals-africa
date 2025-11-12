@@ -25,6 +25,7 @@ import { Department } from './shared/departments.ts'
 import { DietFrequency } from './shared/diet.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
+import { MessageTargetCategory } from './shared/message_targets.ts'
 
 export * from './shared/priorities.ts'
 
@@ -42,6 +43,15 @@ export type DeepPartial<T> = T extends Record<string, unknown> ? {
   : T
 
 export type NonEmptyArray<T> = [T, ...T[]]
+
+export type JsonSerializable =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | JsonSerializable[]
+  | { [key: string]: JsonSerializable }
 
 export type OptionalUndefinedFields<T> =
   & {
@@ -2252,9 +2262,9 @@ export type PatientLifestyle = {
 }
 
 export type Allergy = {
-  patient_allergy_id: string
+  id: string
   snomed_concept_id: string
-  snomed_english_term: string
+  name: string
 }
 
 export type PatientAllergies = {
@@ -3213,6 +3223,7 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
 export type HealthWorkerDisplay = {
   display_name: string
   description: string
+  avatar_url: Maybe<string>
 }
 
 export type RenderedEmployee = EmployedHealthWorker & {
@@ -3224,17 +3235,23 @@ export type RenderedEmployee = EmployedHealthWorker & {
 
 export type MessageTargetEntities = {
   organization: RenderedOrganization
-  employment: RenderedEmployee
+  organization_category: string
+  employee: RenderedEmployee
   profession: Profession
-  region: string
+  locality: string
+  administrative_area_level_1: string
+  administrative_area_level_2: string
 }
 
 export type RenderedMessageTargets = {
   [TargetType in keyof MessageTargetEntities]:
     & {
-      id: string
-      display_name: string
+      id?: string
       target_type: TargetType
+      target_category: MessageTargetCategory
+      display_name: string
+      description: string
+      avatar_url?: Maybe<string>
     }
     & {
       [K in TargetType]: MessageTargetEntities[K]

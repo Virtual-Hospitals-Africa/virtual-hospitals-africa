@@ -1,34 +1,37 @@
-// import { assert } from 'std/assert/assert.ts'
-// import { MessageTargetType } from '../../../db.d.ts'
-// import {
-//   LoggedInHealthWorkerContext,
-//   RenderedMessageTarget,
-// } from '../../../types.ts'
-// import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
-// import arraysEqual from '../../../util/arraysEqual.ts'
-// import { assertOr400 } from '../../../util/assertOr.ts'
+import {
+  LoggedInHealthWorkerContext,
+  RenderedMessageTarget,
+} from '../../../types.ts'
+import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
+import { assertOr400 } from '../../../util/assertOr.ts'
+import isKeyOf from '../../../util/isKeyOf.ts'
+import {
+  MESSAGE_TARGET_CATEGORIES,
+  MessageTargetCategory,
+} from '../../../shared/message_targets.ts'
+import * as message_targets from '../../../db/models/message_targets.ts'
 
-// type SearchType =
-//   | 'profession_and_employment'
-//   | 'organization'
-//   | 'region'
+export const handler = jsonSearchHandler<
+  { message_target_category: MessageTargetCategory; search: string },
+  RenderedMessageTarget,
+  // deno-lint-ignore no-explicit-any
+  LoggedInHealthWorkerContext<any>
+>({
+  async search(trx, { message_target_category, search }) {
+    assertOr400(isKeyOf(message_target_category, MESSAGE_TARGET_CATEGORIES))
 
-// function getSearchType(target_types: MessageTargetType[]): SearchType {
-//   if (arraysEqual(target_types, ['profession', 'employment'])) {
-//     return 'profession_and_employment'
-//   }
-//   if (arraysEqual(target_types, ['organization'])) return 'organization'
-//   if (arraysEqual(target_types, ['region'])) return 'region'
-//   throw new Error(`Unsupported search ${target_types}`)
-// }
+    const results = await message_targets.searchTargetCategory(
+      trx,
+      message_target_category,
+      { search },
+    )
 
-// export const handler = jsonSearchHandler<
-//   { target_types: MessageTargetType[]; search: string },
-//   RenderedMessageTarget,
-//   // deno-lint-ignore no-explicit-any
-//   LoggedInHealthWorkerContext<any>
-// >({
-//   async search(trx, { target_types, search }) {
-//     const search_type = getSearchType(target_types)
-//   },
-// })
+    return {
+      results,
+      page: 1,
+      rows_per_page: 20,
+      has_next_page: false,
+      search_terms: { message_target_category, search },
+    }
+  },
+})

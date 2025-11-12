@@ -10,6 +10,7 @@ import { assert } from 'std/assert/assert.ts'
 import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
 import { Maybe } from '../types.ts'
+import { exists } from '../util/exists.ts'
 
 const migrations: Record<
   string,
@@ -73,16 +74,23 @@ export const migrate = {
     })
     throw new Error('Please run "deno task db:migrate latest" and try again.')
   },
-  latest() {
-    return spinner('Migrating to latest', async () => {
+  async latest() {
+    await spinner('Migrating to latest', async () => {
       logMigrationResults(await migrator.migrateToLatest())
     })
+    console.log(`Run shell command deno task db:codegen`)
   },
   up() {
-    return spinner('Migrating up', migrator.migrateUp())
+    return spinner(
+      'Migrating up',
+      migrator.migrateUp().then(logMigrationResults),
+    )
   },
   down() {
-    return spinner('Migrating down', migrator.migrateDown())
+    return spinner(
+      'Migrating down',
+      migrator.migrateDown().then(logMigrationResults),
+    )
   },
   async wipe() {
     const results: MigrationResult[] = []
@@ -100,7 +108,13 @@ export const migrate = {
   },
   async redo() {
     await migrate.down()
-    return migrate.up()
+    const result = await migrate.up()
+    const migrations = await migrator.getMigrations()
+    const last_result = result?.results && last(result.results)
+    const last_migration = exists(last([...migrations]))
+    if (last_result?.migrationName === last_migration.name) {
+      console.log(`Run shell command deno task db:codegen`)
+    }
   },
   async 'redo:from'(target: string) {
     if (!target) return targetError('redo:from')
@@ -112,6 +126,7 @@ export const migrate = {
     })
     logMigrationResults(results)
     await spinner('Migrating up to latest', migrator.migrateToLatest())
+    console.log(`Run shell command deno task db:codegen`)
   },
   async all(opts: { recreate?: boolean | string[] } = {}) {
     await spinner('Running VHA migrations', migrate.latest, {
@@ -154,6 +169,7 @@ export function logMigrationResults(
     console.error('  failed to migrate')
     throw error
   }
+  return migration_result_set
 }
 
 export async function migrateCommand(
@@ -177,5 +193,5 @@ if (import.meta.main) {
   }
 
   // deno-lint-ignore no-explicit-any
-  migrateCommand(cmd as any, Deno.args[1])
+  await migrateCommand(cmd as any, Deno.args[1])
 }

@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
@@ -126,4 +126,75 @@ export function insert(
     .values(insertValues(address))
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+export function distinctLocalities(
+  trx: TrxOrDb,
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
+) {
+  let qb = trx.selectFrom('addresses')
+    .where('country', '=', country)
+    .where('locality', 'is not', null)
+    .select((eb) => eb.ref('locality').$notNull().as('locality'))
+    .distinct()
+    .limit(limit)
+
+  if (search) {
+    qb = qb.where('locality', 'ilike', `%${search}%`)
+  }
+  return qb.execute()
+}
+
+export function distinctAdministrativeAreaLevels1(
+  trx: TrxOrDb,
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
+) {
+  let qb = trx.selectFrom('addresses')
+    .where('country', '=', country)
+    .where('administrative_area_level_1', 'is not', null)
+    .select((eb) =>
+      eb.ref('administrative_area_level_1').$notNull().as(
+        'administrative_area_level_1',
+      )
+    )
+    .distinct()
+    .limit(limit)
+
+  if (search) {
+    qb = qb.where('administrative_area_level_1', 'ilike', `%${search}%`)
+  }
+  return qb.execute()
+}
+
+export function distinctAdministrativeAreaLevels2(
+  trx: TrxOrDb,
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
+) {
+  let qb = trx.selectFrom('addresses')
+    .where('country', '=', country)
+    .where('administrative_area_level_2', 'is not', null)
+    .select((eb) =>
+      eb.ref('administrative_area_level_2').$notNull().as(
+        'administrative_area_level_2',
+      )
+    )
+    .distinct()
+    .limit(limit)
+
+  if (search) {
+    qb = qb.where('administrative_area_level_2', 'ilike', `%${search}%`)
+  }
+  return qb.execute()
 }

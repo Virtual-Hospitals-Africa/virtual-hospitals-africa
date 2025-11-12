@@ -18,15 +18,15 @@ const employment_assertion = assertOnInsert({
   table: 'message_draft_targets',
   function_name: 'assert_employment_exists_for_draft_target',
   assertion: `
-      NEW.target_type != 'employment' OR
+      NEW.target_type != 'employee' OR
       EXISTS (SELECT 1 FROM employment WHERE id = NEW.target_uuid)
     `,
   error_message: `'Employment with specified target_uuid does not exist'`,
 })
 
 const patient_assertion = assertOnInsert({
-  table: 'message_draft_targets',
-  function_name: 'assert_patient_exists_for_draft_target',
+  table: 'message_draft_concerning',
+  function_name: 'assert_patient_exists_for_draft_concerning',
   assertion: `
       NEW.target_type != 'patient' OR
       EXISTS (SELECT 1 FROM patients WHERE id = NEW.target_uuid)
@@ -35,8 +35,8 @@ const patient_assertion = assertOnInsert({
 })
 
 const patient_record_assertion = assertOnInsert({
-  table: 'message_draft_targets',
-  function_name: 'assert_patient_record_exists_for_draft_target',
+  table: 'message_draft_concerning',
+  function_name: 'assert_patient_record_exists_for_draft_concerning',
   assertion: `
       NEW.target_type != 'patient_record' OR
       EXISTS (SELECT 1 FROM patient_records WHERE id = NEW.target_uuid)
@@ -46,7 +46,15 @@ const patient_record_assertion = assertOnInsert({
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('message_target_type')
-    .asEnum(['organization', 'employment', 'profession', 'region'])
+    .asEnum([
+      'organization',
+      'employee',
+      'profession',
+      'organization_category',
+      'locality',
+      'administrative_area_level_1',
+      'administrative_area_level_2',
+    ])
     .execute()
 
   await db.schema.createType('message_concerning_type')
@@ -62,7 +70,6 @@ export async function up(db: Kysely<DB>) {
     ])
     .execute()
 
-  // Create message_drafts table
   await createStandardTable(
     db,
     'message_drafts',
@@ -90,9 +97,9 @@ export async function up(db: Kysely<DB>) {
         .addCheckConstraint(
           'target_value_and_uuid_based_on_type',
           sql`(
-            (target_type IN ('profession', 'region') AND target_value IS NOT NULL AND target_uuid IS NULL)
+            (target_type IN ('profession', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2') AND target_value IS NOT NULL AND target_uuid IS NULL)
             OR
-            (target_type IN ('organization', 'employment') AND target_uuid IS NOT NULL AND target_value IS NULL)
+            (target_type IN ('organization', 'employee') AND target_uuid IS NOT NULL AND target_value IS NULL)
           )`,
         ),
   )
@@ -109,11 +116,6 @@ export async function up(db: Kysely<DB>) {
         .addColumn('concerning_uuid', 'uuid', (col) =>
           col.notNull()),
   )
-
-  await db.schema.createIndex('message_draft_targets_message_draft_id_index')
-    .on('message_draft_targets')
-    .column('message_draft_id')
-    .execute()
 
   await organization_assertion.up(db)
   await employment_assertion.up(db)

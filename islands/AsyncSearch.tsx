@@ -1,30 +1,46 @@
-import Search, { SearchProps } from './Search.tsx'
+import Search, {
+  OptionLike,
+  SearchPropsCommon,
+  SearchPropsMulti,
+  SearchPropsSingular,
+} from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
 export type AsyncSearchProps<
-  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
-> = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
-  search_route: string
-  onQuery?(query: string): void
-  onSearchResults?(values: {
-    query: string
-    page: number
-    delay: null | number
-    active_request: null | XMLHttpRequest
-    pages: {
-      results: T[]
+  T extends OptionLike = OptionLike,
+> =
+  & SearchPropsCommon<T>
+  & {
+    search_route: string
+    onQuery?(query: string): void
+    onSearchResults?(values: {
+      query: string
       page: number
-    }[]
-    current_page: {
-      results: T[]
-      page: number
-    }
-    has_next_page: boolean
-  }): void
+      delay: null | number
+      active_request: null | XMLHttpRequest
+      pages: {
+        results: T[]
+        page: number
+      }[]
+      current_page: {
+        results: T[]
+        page: number
+      }
+      has_next_page: boolean
+    }): void
+  }
+  & (
+    SearchPropsSingular<T> | SearchPropsMulti<T>
+  )
+
+export type AsyncSearchPropsSingular<
+  T extends OptionLike = OptionLike,
+> = AsyncSearchProps<T> & {
+  multi?: never
 }
 
 export default function AsyncSearch<
-  T extends { id?: unknown; name: string },
+  T extends OptionLike,
 >({
   search_route,
   value,
@@ -32,7 +48,7 @@ export default function AsyncSearch<
   onSearchResults,
   ...rest
 }: AsyncSearchProps<T>) {
-  const { results, loading, load_more, setQuery } = useAsyncSearch({
+  const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
     value,
     onSearchResults,
@@ -40,9 +56,8 @@ export default function AsyncSearch<
   return (
     <Search
       {...rest}
-      value={value}
       loading_options={loading}
-      loadMoreOptions={load_more}
+      loadMoreOptions={loadMore}
       options={results}
       onQuery={(query) => {
         setQuery(query)

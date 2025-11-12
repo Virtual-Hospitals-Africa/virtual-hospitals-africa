@@ -44,7 +44,6 @@ export default function SymptomSection(
       <TextArea name='chief_complaint' label='Chief Complaint' />
       <AsyncSearch
         search_route='/app/symptoms'
-        multi
         onSelect={(
           option?: { id: string; name: string },
         ) => {

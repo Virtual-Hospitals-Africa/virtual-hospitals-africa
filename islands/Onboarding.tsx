@@ -112,6 +112,7 @@ function EnterProfession(
               health_worker_name: name.value,
               app_user: profession.value,
               specialty: specialty.value,
+              avatar_url: health_worker.avatar_url,
             }),
           }}
           size='lg'

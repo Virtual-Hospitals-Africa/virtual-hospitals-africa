@@ -106,10 +106,13 @@ export type MessagePriority =
   | 'Very urgent'
 
 export type MessageTargetType =
-  | 'employment'
+  | 'administrative_area_level_1'
+  | 'administrative_area_level_2'
+  | 'employee'
+  | 'locality'
   | 'organization'
+  | 'organization_category'
   | 'profession'
-  | 'region'
 
 export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
 

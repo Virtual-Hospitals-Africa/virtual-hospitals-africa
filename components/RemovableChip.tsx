@@ -1,21 +1,15 @@
-import { HiddenInput } from './library/HiddenInput.tsx'
 import { XMarkIcon } from './library/icons/heroicons/outline.tsx'
 
 type RemovableChipProps = {
-  name: string
   display: string
   remove: () => void
 }
 
 export default function RemovableChip(
-  { name, display, remove }: RemovableChipProps,
+  { display, remove }: RemovableChipProps,
 ) {
   return (
     <>
-      <HiddenInput
-        name={name}
-        value='true'
-      />
       <button
         type='button'
         onClick={() => remove()}

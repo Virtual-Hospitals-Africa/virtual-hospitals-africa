@@ -1,4 +1,4 @@
-import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
+import AsyncSearch, { AsyncSearchPropsSingular } from './AsyncSearch.tsx'
 import { PharmacistInPharmacy } from '../types.ts'
 import cls from '../util/cls.ts'
 
@@ -27,9 +27,14 @@ function PharmacistOption({
 }
 
 export default function AddPharmacistSearch(
-  props: Omit<AsyncSearchProps<PharmacistOption>, 'Option' | 'search_route'> & {
-    country: string
-  },
+  props:
+    & Omit<
+      AsyncSearchPropsSingular<PharmacistOption>,
+      'Option' | 'search_route'
+    >
+    & {
+      country: string
+    },
 ) {
   return (
     <AsyncSearch

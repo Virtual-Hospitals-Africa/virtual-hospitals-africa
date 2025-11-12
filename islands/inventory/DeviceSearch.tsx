@@ -1,6 +1,6 @@
 import { RenderedDevice } from '../../types.ts'
 import cls from '../../util/cls.ts'
-import AsyncSearch, { AsyncSearchProps } from '../AsyncSearch.tsx'
+import AsyncSearch, { AsyncSearchPropsSingular } from '../AsyncSearch.tsx'
 
 function DeviceOption({
   option,
@@ -23,7 +23,10 @@ function DeviceOption({
 }
 
 export default function DeviceSearch(
-  props: Omit<AsyncSearchProps<RenderedDevice>, 'Option' | 'search_route'>,
+  props: Omit<
+    AsyncSearchPropsSingular<RenderedDevice>,
+    'Option' | 'search_route'
+  >,
 ) {
   return (
     <AsyncSearch {...props} search_route='/app/devices' Option={DeviceOption} />

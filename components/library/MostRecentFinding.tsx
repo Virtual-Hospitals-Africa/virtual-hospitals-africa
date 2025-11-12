@@ -7,7 +7,7 @@ export function MostRecentFinding(
 ) {
   if (!finding) return null
   return (
-    <div className='relative flex text-gray-500 group pb-2'>
+    <span className='relative text-gray-500 group pb-2'>
       <a href='#' className='text-blue-500'>
         {finding.name}
       </a>
@@ -17,6 +17,6 @@ export function MostRecentFinding(
       <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block hover:block'>
         <FindingPanel finding={finding} />
       </div>
-    </div>
+    </span>
   )
 }
