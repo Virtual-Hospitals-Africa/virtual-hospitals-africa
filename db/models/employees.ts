@@ -20,7 +20,7 @@ export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
       'employment.specialty',
       sql<string>`
         '/app/organizations/' || employment.organization_id::text || '/employees/' || employment.health_worker_id::text
-      `.as('href')
+      `.as('href'),
     ])
 }
 

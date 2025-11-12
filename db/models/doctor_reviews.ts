@@ -90,7 +90,7 @@ export function ofHealthWorker(
             'patient_encounter_employees.id',
             '=',
             eb.ref('doctor_reviews.requested_by'),
-          )
+          ),
       ).$notNull().as('requested_by'),
       jsonArrayFromColumn(
         'step',
@@ -142,7 +142,7 @@ export function requests(
             'patient_encounter_employees.id',
             '=',
             eb.ref('doctor_review_requests.requested_by'),
-          )
+          ),
       ).$notNull().as('requested_by'),
     ])
 }
