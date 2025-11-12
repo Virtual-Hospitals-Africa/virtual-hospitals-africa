@@ -22,7 +22,7 @@ import {
   TARGET_TIME_TO_TREATMENT_MINUTES,
   WorkflowStatus,
 } from '../types.ts'
-import randomAvatar from '../mocks/randomAvatar.ts'
+import randomAvatarMediaId from '../mocks/randomAvatarMediaId.ts'
 import randomDateOfBirth from '../mocks/randomDateOfBirth.ts'
 import { TriageLevel } from '../types.ts'
 import { Department } from '../shared/departments.ts'
@@ -98,13 +98,14 @@ async function addPatientsToWaitingRoom(
   },
 ) {
   const avatars_used = new Set<string>()
-  function randomAvatarNotYetUsed(sex: 'male' | 'female') {
-    let random_avatar = randomAvatar(sex)
-    while (avatars_used.has(random_avatar)) {
-      random_avatar = randomAvatar(sex)
+
+  function randomAvatarMediaIdNotYetUsed(sex: 'male' | 'female') {
+    let random_avatar_media_id = randomAvatarMediaId(sex)
+    while (avatars_used.has(random_avatar_media_id)) {
+      random_avatar_media_id = randomAvatarMediaId(sex)
     }
-    avatars_used.add(random_avatar)
-    return random_avatar
+    avatars_used.add(random_avatar_media_id)
+    return random_avatar_media_id
   }
 
   const num_rural_clinic_medical_staff = 5
@@ -113,7 +114,7 @@ async function addPatientsToWaitingRoom(
     profession: 'admin',
     health_worker_attrs: {
       name: admin_demo.name,
-      avatar_url: randomAvatarNotYetUsed(admin_demo.sex),
+      avatar_media_id: randomAvatarMediaIdNotYetUsed(admin_demo.sex),
     },
   })
 
@@ -122,7 +123,7 @@ async function addPatientsToWaitingRoom(
     profession: 'receptionist',
     health_worker_attrs: {
       name: receptionist_demo.name,
-      avatar_url: randomAvatarNotYetUsed(receptionist_demo.sex),
+      avatar_media_id: randomAvatarMediaIdNotYetUsed(receptionist_demo.sex),
     },
   })
 
@@ -135,7 +136,7 @@ async function addPatientsToWaitingRoom(
         registration_status: 'not started',
         health_worker_attrs: {
           name: demo.name,
-          avatar_url: randomAvatarNotYetUsed(demo.sex),
+          avatar_media_id: randomAvatarMediaIdNotYetUsed(demo.sex),
         },
       })
     }),
@@ -152,7 +153,7 @@ async function addPatientsToWaitingRoom(
         organization_id: _requesting_review_of_organization_id,
         health_worker_attrs: {
           name: demo.name,
-          avatar_url: randomAvatarNotYetUsed(demo.sex),
+          avatar_media_id: randomAvatarMediaIdNotYetUsed(demo.sex),
         },
       })
     }),

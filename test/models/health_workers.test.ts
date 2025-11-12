@@ -38,8 +38,9 @@ describe('db/models/health_workers.ts', () => {
         )
 
         assert(result)
-        // deno-lint-ignore no-explicit-any
-        const { access_token, refresh_token, expires_at, avatar_media_id, ...result_without_tokens } = result as any
+        const { access_token, refresh_token, ...result_without_tokens } =
+          // deno-lint-ignore no-explicit-any
+          result as any
         assertEquals(
           await health_workers.getById(db, result.id),
           {

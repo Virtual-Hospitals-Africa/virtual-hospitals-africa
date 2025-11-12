@@ -49,12 +49,12 @@ function asHealthWorkerValues(
   }
 }
 
-export async function upsert(
+export function upsert(
   trx: TrxOrDb,
   details: HealthWorkerUpsert,
 ): Promise<HasStringId<HealthWorker>> {
   const to_upsert = asHealthWorkerValues(details)
-  const hw = await trx
+  return trx
     .insertInto('health_workers')
     .values(to_upsert)
     .onConflict((oc) => oc.column('email').doUpdateSet(details))
@@ -68,13 +68,6 @@ export async function upsert(
       'avatar_media_id',
     ])
     .executeTakeFirstOrThrow()
-  
-  return {
-    ...hw,
-    avatar_url: hw.avatar_media_id
-      ? `/app/health_workers/${hw.id}/avatar`
-      : null,
-  }
 }
 
 export function updateNames(

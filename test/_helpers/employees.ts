@@ -1,5 +1,10 @@
 import * as cheerio from 'cheerio'
-import { HealthWorkerWithGoogleTokens, Names, TrxOrDb } from '../../types.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  Maybe,
+  Names,
+  TrxOrDb,
+} from '../../types.ts'
 import * as sessions from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
@@ -35,7 +40,7 @@ type TestEmployee = Names & {
     gcal_availability_calendar_id: string
   }
   email: string
-  phone_number?: import('../../types.ts').Maybe<string>
+  phone_number?: Maybe<string>
   access_token: string
   refresh_token: string
   expires_at: Date | string

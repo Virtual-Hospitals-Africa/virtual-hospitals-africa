@@ -705,10 +705,10 @@ export interface ManufacturedMedicationStrengths {
 export interface Media {
   binary_data: Buffer
   created_at: Generated<Timestamp>
+  file_name: string | null
   id: Generated<string>
   mime_type: string
   updated_at: Generated<Timestamp>
-  uuid: Generated<string>
 }
 
 export interface MediaAudios {

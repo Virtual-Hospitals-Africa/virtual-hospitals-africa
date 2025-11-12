@@ -1428,7 +1428,7 @@ export type Specialties = {
 
 export type HealthWorker = Names & {
   email: string
-  avatar_url: string | null
+  avatar_media_id: string | null
   phone_number?: Maybe<string>
 }
 
@@ -1526,10 +1526,13 @@ export type HealthWorkerOrganization = RenderedOrganization & {
   roles: HealthWorkerOrganizationRole[]
 }
 
-export type PossiblyEmployedHealthWorker = HealthWorker & {
-  id: string
-  organizations: HealthWorkerOrganization[]
-}
+export type PossiblyEmployedHealthWorker =
+  & Omit<HealthWorker, 'avatar_media_id'>
+  & {
+    id: string
+    avatar_url: string | null
+    organizations: HealthWorkerOrganization[]
+  }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
   organizations: NonEmptyArray<HealthWorkerOrganization>

@@ -8,7 +8,7 @@ import { assert } from 'std/assert/assert.ts'
 import { onProduction } from '../util/onProduction.ts'
 import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
-import randomAvatar from '../mocks/randomAvatar.ts'
+import randomAvatarMediaId from '../mocks/randomAvatarMediaId.ts'
 import randomNamesAndSex from '../mocks/randomDemographics.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
@@ -46,7 +46,7 @@ export const loginHref = memoize(() => {
 async function fakeGoogleLogin(trx: TrxOrDb) {
   const { sex, ...names } = randomNamesAndSex()
   const email = generateUUID() + '@example.com'
-  const avatar_url = randomAvatar(sex)
+  const avatar_media_id = randomAvatarMediaId(sex)
   const access_token = generateUUID()
   const refresh_token = generateUUID()
   const expires_at = new Date()
@@ -54,7 +54,7 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   const health_worker = await upsertWithGoogleCredentials(trx, {
     ...names,
     email,
-    avatar_url,
+    avatar_media_id,
     access_token,
     refresh_token,
     expires_at,

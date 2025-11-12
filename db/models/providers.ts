@@ -35,7 +35,7 @@ function baseQuery(trx: TrxOrDb) {
             'health_worker_organization_calendars.health_worker_id',
           ),
     )
-    .select((eb) => [
+    .select([
       'health_workers.id as health_worker_id',
       'employment.id as provider_id',
       'employment.profession',

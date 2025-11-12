@@ -8,14 +8,9 @@ export async function up(db: Kysely<DB>) {
     'media',
     (qb) =>
       qb
+        .addColumn('file_name', 'varchar(255)')
         .addColumn('mime_type', 'varchar(255)', (col) => col.notNull())
-        .addColumn('binary_data', 'bytea', (col) => col.notNull())
-        .addColumn(
-          'uuid',
-          'uuid',
-          (column) =>
-            column.notNull().unique().defaultTo(sql`gen_random_uuid()`),
-        ),
+        .addColumn('binary_data', 'bytea', (col) => col.notNull()),
   )
 
   await createPointerTable(

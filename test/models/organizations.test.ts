@@ -26,21 +26,18 @@ describe('db/models/organizations.ts', () => {
           const hw_at_organization1 = await health_workers.upsert(trx, {
             name: 'At Organization 1',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_at_organization1)
 
           const hw_at_organization2 = await health_workers.upsert(trx, {
             name: 'At Organization 2',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_at_organization2)
 
           const hw_other_organization = await health_workers.upsert(trx, {
             name: 'At Organization 3',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_other_organization)
 
@@ -94,7 +91,6 @@ describe('db/models/organizations.ts', () => {
           )
           assert(hw_1)
           assertEquals(omit(hw_1, ['professions']), {
-            avatar_url: 'avatar_url',
             email: hw_at_organization1.email,
             display_name: 'At Organization 1',
             health_worker_id: hw_at_organization1.id,
@@ -117,7 +113,6 @@ describe('db/models/organizations.ts', () => {
           )
           assert(hw_2)
           assertEquals(omit(hw_2, ['professions']), {
-            avatar_url: 'avatar_url',
             email: hw_at_organization2.email,
             display_name: 'At Organization 2',
             health_worker_id: hw_at_organization2.id,
@@ -166,7 +161,6 @@ describe('db/models/organizations.ts', () => {
             )
             assert(hw_1)
             assertEquals(omit(hw_1, ['professions']), {
-              avatar_url: 'avatar_url',
               email: hw_at_organization1.email,
               display_name: 'At Organization 1',
               health_worker_id: hw_at_organization1.id,
@@ -189,7 +183,6 @@ describe('db/models/organizations.ts', () => {
             )
             assert(hw_2)
             assertEquals(omit(hw_2, ['professions']), {
-              avatar_url: 'avatar_url',
               email: hw_at_organization2.email,
               display_name: 'At Organization 2',
               health_worker_id: hw_at_organization2.id,
@@ -219,21 +212,18 @@ describe('db/models/organizations.ts', () => {
           const hw_at_organization1 = await health_workers.upsert(trx, {
             name: 'At Organization 1',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_at_organization1)
 
           const hw_at_organization2 = await health_workers.upsert(trx, {
             name: 'At Organization 2',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_at_organization2)
 
           const hw_other_organization = await health_workers.upsert(trx, {
             name: 'At Organization 3',
             email: `${generateUUID()}@worker.com`,
-            avatar_url: 'avatar_url',
           })
           assert(hw_other_organization)
 
@@ -287,7 +277,6 @@ describe('db/models/organizations.ts', () => {
 
           assertEquals(with_invitees.length, 1)
           assertEquals(with_invitees[0], {
-            avatar_url: 'avatar_url',
             email: hw_at_organization2.email,
             display_name: 'At Organization 2',
             health_worker_id: hw_at_organization2.id,
@@ -299,6 +288,7 @@ describe('db/models/organizations.ts', () => {
                 organization_ids[0]
               }/employees/${hw_at_organization2.id}`,
             },
+            avatar_url: null,
             online: null,
             professions: [
               {
@@ -327,7 +317,6 @@ describe('db/models/organizations.ts', () => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
           name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
-          avatar_url: 'avatar_url',
         })
         assert(hw_at_organization1)
 
@@ -373,7 +362,6 @@ describe('db/models/organizations.ts', () => {
 
         assertEquals(with_invitees.length, 1)
         assertEquals(omit(with_invitees[0], ['professions']), {
-          avatar_url: 'avatar_url',
           email: hw_at_organization1.email,
           display_name: 'At Organization 1',
           health_worker_id: hw_at_organization1.id,
@@ -384,6 +372,7 @@ describe('db/models/organizations.ts', () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${hw_at_organization1.id}`,
           },
+          avatar_url: null,
           online: null,
         })
         assertEquals(with_invitees[0].professions.length, 1)
@@ -397,14 +386,12 @@ describe('db/models/organizations.ts', () => {
         const nurse = await health_workers.upsert(trx, {
           name: randomDemographics().name,
           email: `${generateUUID()}@worker.com`,
-          avatar_url: 'avatar_url',
         })
         assert(nurse)
 
         const admin = await health_workers.upsert(trx, {
           name: randomDemographics().name,
           email: `${generateUUID()}@worker.com`,
-          avatar_url: 'avatar_url',
         })
         assert(admin)
 
@@ -461,7 +448,6 @@ describe('db/models/organizations.ts', () => {
           e.professions[0].profession === 'admin'
         )!
         assertEquals(omit(nurse_result, ['professions']), {
-          avatar_url: 'avatar_url',
           email: nurse.email,
           display_name: nurse.name,
           health_worker_id: nurse.id,
@@ -472,12 +458,12 @@ describe('db/models/organizations.ts', () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
           },
+          avatar_url: null,
           online: null,
         })
         assertEquals(nurse_result.professions.length, 1)
         assertEquals(nurse_result.professions[0].profession, 'nurse')
         assertEquals(omit(admin_result, ['professions']), {
-          avatar_url: 'avatar_url',
           email: admin.email,
           display_name: admin.name,
           health_worker_id: admin.id,
@@ -488,6 +474,7 @@ describe('db/models/organizations.ts', () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
           },
+          avatar_url: null,
           online: null,
         })
         assertEquals(admin_result.professions.length, 1)
@@ -528,7 +515,6 @@ describe('db/models/organizations.ts', () => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
           name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
-          avatar_url: 'avatar_url',
         })
         assert(hw_at_organization1)
 
@@ -579,7 +565,6 @@ describe('db/models/organizations.ts', () => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
           name: 'At Organization 1',
           email: same_email,
-          avatar_url: 'avatar_url',
         })
         assert(hw_at_organization1)
 
@@ -609,7 +594,6 @@ describe('db/models/organizations.ts', () => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
           name: 'At Organization 1',
           email: same_email,
-          avatar_url: 'avatar_url',
         })
         assert(hw_at_organization1)
 

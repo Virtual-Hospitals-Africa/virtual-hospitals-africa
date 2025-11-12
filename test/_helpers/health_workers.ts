@@ -22,7 +22,9 @@ export function testHealthWorker() {
 
 export function insertHealthWorker(
   trx: TrxOrDb,
-  opts?: Partial<HealthWorkerWithGoogleTokens> & { avatar_media_id?: string | null },
+  opts?: Partial<HealthWorkerWithGoogleTokens> & {
+    avatar_media_id?: string | null
+  },
 ) {
   const defaults = testHealthWorker()
   return upsertWithGoogleCredentials(trx, {

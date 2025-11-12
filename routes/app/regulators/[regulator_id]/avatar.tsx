@@ -17,4 +17,3 @@ export const handler = {
     return file(avatar.binary_data, avatar.mime_type)
   },
 }
-

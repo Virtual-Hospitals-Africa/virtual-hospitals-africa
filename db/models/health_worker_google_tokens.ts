@@ -24,7 +24,7 @@ export function updateTokens(
 
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
-  details: (Omit<HealthWorker, 'avatar_url'> & { avatar_media_id?: string | null }) & GoogleTokens,
+  details: HealthWorker & GoogleTokens,
 ): Promise<HealthWorkerWithGoogleTokens> {
   const health_worker = await health_workers.upsert(
     trx,

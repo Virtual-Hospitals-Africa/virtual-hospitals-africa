@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eo pipefail
+set -xeo pipefail
 
 fail() {
   >&2 echo "$@"
@@ -46,8 +46,8 @@ while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
 done
 
 kill_test_servers() {
-  kill "$http_server_pid"
-  kill "$https_proxy_server"
+  kill "$http_server_pid" || true
+  kill "$https_proxy_server" || true
 }
 
 ensure_test_servers_not_already_running() {

@@ -127,7 +127,7 @@ describe(
                   name: receptionist.name,
                   profession: 'receptionist',
                   specialty: null,
-                  avatar_url: receptionist.avatar_url,
+                  avatar_url: null,
                   organization_id: organization.id,
                 },
               ],
