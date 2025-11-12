@@ -24,6 +24,7 @@ import { ensureDoctorId } from './doctor.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { exists } from '../../util/exists.ts'
+import { base } from './_base.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -57,21 +58,18 @@ export function getCardQuery(
     ])
 }
 
-export function ofHealthWorker(
+export function baseQuery(
   trx: TrxOrDb,
-  health_worker_id: string | IdSelection,
 ) {
   return trx.selectFrom('doctor_reviews')
-    .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
     .innerJoin(
       'patient_encounters',
       'doctor_reviews.patient_encounter_id',
       'patient_encounters.id',
     )
-    .where('employment.health_worker_id', '=', health_worker_id)
     .select((eb) => [
       'doctor_reviews.id as review_id',
-      'employment.id as employment_id',
+      'doctor_reviews.reviewer_id',
       eb('completed_at', 'is not', null).as('completed'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
@@ -103,6 +101,35 @@ export function ofHealthWorker(
           .select('step'),
       ).as('steps_completed'),
     ])
+}
+
+const model = base({
+  top_level_table: 'doctor_reviews',
+  baseQuery,
+  formatResult: (x: RenderedDoctorReview): RenderedDoctorReview => x,
+  handleSearch(
+    _qb,
+    _opts: { search: string | null },
+  ) {
+    throw new Error('not implemented')
+  },
+})
+
+export const getById = model.getById
+
+export function ofHealthWorker(
+  trx: TrxOrDb,
+  health_worker_id: string | IdSelection,
+) {
+  return baseQuery(trx)
+    .where(
+      'doctor_reviews.reviewer_id',
+      'in',
+      trx.selectFrom('employment')
+        .where('health_worker_id', '=', health_worker_id)
+        .select('employment.id')
+        .distinct(),
+    )
 }
 
 export function requests(
@@ -298,6 +325,7 @@ export async function addSelfAsReviewer(
 
   const started_review = {
     ...requested,
+    reviewer_id: requested.employment_id,
     review_id: review.id,
     steps_completed: [],
     completed: false,

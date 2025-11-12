@@ -24,7 +24,7 @@ import { warning } from '../util/alerts.ts'
 import { could_not_locate_account_href } from './app/_middleware.tsx'
 import * as cookie from '../shared/cookie.ts'
 import { promiseProps } from '../util/promiseProps.ts'
-import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calenders.ts'
+import * as health_worker_organization_calenders from '../db/models/health_worker_organization_calendars.ts'
 import { asNames } from '../db/models/asNames.ts'
 import { Handlers } from 'fresh/compat'
 import {

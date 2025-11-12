@@ -1479,7 +1479,7 @@ export type RenderedDoctorReviewBase = {
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
   review_id: string
-  employment_id: string
+  reviewer_id: string
   steps_completed: DoctorReviewStep[]
   completed: SqlBool
 }
@@ -1655,7 +1655,7 @@ export type ProviderAppointmentSlot = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: Provider[]
+  providers: RenderedEmployee[]
   physicalLocation?: undefined
   virtualLocation?: undefined
 }
@@ -1667,7 +1667,7 @@ export type ProviderAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers?: Provider[]
+  providers?: RenderedEmployee[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1683,7 +1683,7 @@ export type PatientAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: Provider[]
+  providers: RenderedEmployee[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1817,12 +1817,8 @@ export type PatientNearestOrganization = {
   location: Coordinates
   walking_distance: null | string
   distance_meters: number
-  admins: {
-    employment_id: string
-    health_worker_id: string
-    email: string
-    name: string
-  }[]
+  admins: RenderedEmployee[]
+  doctors: RenderedEmployee[]
 }
 
 export type GoogleAddressComponent = {
@@ -2339,15 +2335,7 @@ export type RenderedPatientEncounter = {
   appointment: {
     id: string
     start: Date
-    providers: {
-      employment_id: string
-      health_worker_id: string
-      name: string
-      organization_id: string
-      avatar_url: string | null
-      specialty: string | null
-      profession: Profession
-    }[]
+    providers: RenderedEmployee[]
   } | null
   workflows: Partial<
     {
@@ -2541,20 +2529,6 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   >
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
-export type Provider = {
-  avatar_url: string | null
-  email: string
-  name: string
-  access_token: string
-  refresh_token: string
-  expires_at: Date
-  profession: 'doctor' | 'nurse'
-  availability_set: boolean
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  health_worker_id: string
-  provider_id: string
-}
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
@@ -3328,18 +3302,7 @@ export type MostRecentVitalMeasurement =
   }
   & ({
     finding_type: 'manual'
-    provider: {
-      patient_encounter_employee_id: string
-      employee_id: string
-      organization: {
-        id: string
-        name: string
-      }
-      health_worker_id: string
-      avatar_url: string | null
-      name: string
-      profession: string
-    }
+    provider: RenderedPatientEncounterEmployee
   } | {
     finding_type: 'computed'
     provider: null

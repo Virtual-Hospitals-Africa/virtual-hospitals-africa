@@ -26,7 +26,7 @@ async function appendMostRecentMessage(
           .on('message_reads_by_me.participant_id', '=', thread.participant_id),
     )
     .where('messages.thread_id', '=', thread.id)
-    .orderBy('messages.created_at desc')
+    .orderBy('messages.created_at', 'desc')
     .selectAll('messages')
     .select('message_reads_by_me.created_at as read_by_me_at')
     .select((eb) =>
@@ -354,7 +354,7 @@ function messagesBaseQuery(
 ) {
   return trx
     .selectFrom('messages')
-    .orderBy('messages.created_at desc')
+    .orderBy('messages.created_at', 'desc')
     .selectAll('messages')
     .select((eb) =>
       jsonArrayFrom(

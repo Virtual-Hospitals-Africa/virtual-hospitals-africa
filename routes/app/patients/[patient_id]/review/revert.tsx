@@ -7,8 +7,7 @@ import redirect from '../../../../../util/redirect.ts'
 
 export const handler = {
   async POST(ctx: ReviewContext) {
-    const { review_id, requested_by, employment_id, patient } =
-      ctx.state.doctor_review
+    const { review_id } = ctx.state.doctor_review
     await Promise.all([
       complete(ctx.state.trx, { review_id }),
       completeStep(ctx),
@@ -16,12 +15,6 @@ export const handler = {
         type: 'DoctorReviewCompleted',
         data: {
           review_id,
-          requested_by,
-          employment_id,
-          patient_id: patient.id,
-          patient_name: patient.name,
-          doctor_name: ctx.state.health_worker.name,
-          doctor_avatar_url: ctx.state.health_worker.avatar_url,
         },
       }),
     ])

@@ -1,32 +1,22 @@
-import { assert } from 'std/assert/assert.ts'
-
 import ScheduleForm from '../../../../components/calendar/ScheduleForm.tsx'
 import * as patients from '../../../../db/models/patients.ts'
-import { parseRequestAsserts } from '../../../../util/parseForm.ts'
-import {
-  availableSlots,
-} from '../../../../shared/scheduling/getProviderAvailability.ts'
+import { parseRequest } from '../../../../util/parseForm.ts'
+import { availableSlots } from '../../../../shared/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
-import {
-  LoggedInHealthWorkerContext,
-  ProviderAppointmentSlot,
-} from '../../../../types.ts'
+import { ProviderAppointmentSlot } from '../../../../types.ts'
 import { parseDateTime } from '../../../../util/date.ts'
-import { hasName } from '../../../../util/haveNames.ts'
-import {
-  assertIsScheduleFormValues,
-  makeAppointmentWeb,
-} from '../../../../shared/scheduling/makeAppointment.ts'
+import { makeAppointmentWeb } from '../../../../shared/scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
-import { assertOr400 } from '../../../../util/assertOr.ts'
-import isObjectLike from '../../../../util/isObjectLike.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
-import { EmployedHealthWorker } from '../../../../types.ts'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { promiseProps } from '../../../../util/promiseProps.ts'
+import { postHandler } from '../../../../util/postHandler.ts'
+import z from 'zod'
+import { positive_integer } from '../../../../util/validators.ts'
 
 type SearchFormValues = {
   provider_id?: string
+  organization_id?: string
   provider_name?: string
   patient_id?: string
   patient_name?: string
@@ -34,95 +24,81 @@ type SearchFormValues = {
   reason?: string
 }
 
-export type ScheduleFormValues = {
-  start: string
-  end: string
-  duration_minutes: number
-  reason: string
-  patient_id: string
-  provider_ids: string[]
-}
+const ScheduleFormSchema = z.object({
+  start: z.string().datetime(),
+  end: z.string().datetime(),
+  duration_minutes: positive_integer,
+  reason: z.string(),
+  patient_id: z.string().uuid(),
+  provider_ids: z.string().uuid().array(),
+})
 
-type SchedulePageProps = {
-  health_worker: EmployedHealthWorker
-  slots?: ProviderAppointmentSlot[]
-  patient_info?: { id: string; name: string }
-}
+const SearchSchema = z.object({
+  provider_id: z.string().uuid().optional(),
+  organization_id: z.string().uuid().optional(),
+  provider_name: z.string().uuid().optional(),
+  patient_id: z.string().uuid().optional(),
+  patient_name: z.string().uuid().optional(),
+  date: z.string().uuid().optional(),
+  reason: z.string().uuid().optional(),
+})
 
-function assertIsSearchFormValues(
-  values: unknown,
-): asserts values is SearchFormValues {
-  assertOr400(isObjectLike(values))
-  for (const key in values) {
-    assertOr400(
-      [
-        'provider_id',
-        'provider_name',
-        'patient_id',
-        'patient_name',
-        'date',
-        'reason',
-      ].includes(key),
-      `Invalid key ${key}`,
-    )
-  }
-}
-
-export const handler = {
-  async POST(ctx: LoggedInHealthWorkerContext) {
-    const req = ctx.req
-    const schedule = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsScheduleFormValues,
-    )
-
+export const handler = postHandler(
+  ScheduleFormSchema,
+  async (ctx, form_values) => {
     await makeAppointmentWeb(
       ctx.state.trx,
-      schedule,
+      form_values,
       insertEvent,
     )
     return redirect('/app/calendar')
   },
-}
+)
 
 export default HealthWorkerHomePageLayout(
   'Schedule Appointment',
   async function SchedulePage(
     ctx,
   ) {
-    const search = await parseRequestAsserts<SearchFormValues>(
+    const search = await parseRequest(
       ctx.state.trx,
       ctx.req,
-      assertIsSearchFormValues,
+      SearchSchema.parse,
     )
 
     const { patient, availability } = await promiseProps({
-      patient: patients.getById(ctx.state.trx, search.patient_id!),
-      availability: availableSlots(ctx.state.trx, {
-        count: 10,
-        dates: search.date ? [search.date] : undefined,
-        employment_ids: search.provider_id ? [search.provider_id] : undefined,
-      }),
+      patient: search.patient_id
+        ? patients.getByIdCompletedRegistration(
+          ctx.state.trx,
+          search.patient_id,
+        )
+        : Promise.resolve(undefined),
+      availability: search.provider_id
+        ? availableSlots(ctx.state.trx, {
+          count: 10,
+          dates: search.date ? [search.date] : undefined,
+          employment_ids: [search.provider_id],
+        })
+        : Promise.resolve([]),
     })
 
-    assert(hasName(patient))
-
-    const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
-      type: 'provider_appointment_slot',
-      patient,
-      id: `${slot.provider.provider_id}-${slot.start}`,
-      duration_minutes: slot.duration_minutes,
-      start: parseDateTime(new Date(slot.start), 'numeric'),
-      end: parseDateTime(new Date(slot.end), 'numeric'),
-      providers: [slot.provider],
-    }))
+    const slots: ProviderAppointmentSlot[] = patient
+      ? availability.map((slot) => ({
+        type: 'provider_appointment_slot',
+        patient,
+        id: `${slot.provider.employee_id}-${slot.start}`,
+        duration_minutes: slot.duration_minutes,
+        start: parseDateTime(new Date(slot.start), 'numeric'),
+        end: parseDateTime(new Date(slot.end), 'numeric'),
+        providers: [slot.provider],
+      }))
+      : []
 
     return (
       <div className='flex gap-x-4'>
         <ScheduleForm
           className='w-1/2'
-          patient_info={patient}
+          patient={patient}
         />
         {slots && (
           <Appointments

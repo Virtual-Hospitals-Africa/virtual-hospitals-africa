@@ -7,7 +7,7 @@ import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 describe(
-  '/app/providers',
+  '/app/employees',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
@@ -21,7 +21,7 @@ describe(
         },
       )
       const response = await fetch(
-        `${route}/app/providers?profession=nurse&search=${health_worker.name}`,
+        `${route}/app/employees?professions=[nurse]&search=${health_worker.name}`,
         {
           headers: {
             Accept: 'application/json',

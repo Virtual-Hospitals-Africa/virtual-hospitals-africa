@@ -1,10 +1,12 @@
 import { sql } from 'kysely'
 import {
   Coordinates,
+  IdSelection,
   InsertShape,
   InsertShapeLiteral,
   Maybe,
   RenderedPatient,
+  RenderedPatientCompletedRegistration,
   TrxOrDb,
   UpdateShape,
 } from '../../types.ts'
@@ -19,6 +21,7 @@ import { base } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
+import { completedRegistration } from '../../shared/patient_registration.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -213,3 +216,12 @@ const model = base({
 export const getById = model.getById
 export const getByIds = model.getByIds
 export const search = model.search
+
+export async function getByIdCompletedRegistration(
+  trx: TrxOrDb,
+  patient_id: string | IdSelection,
+): Promise<undefined | RenderedPatientCompletedRegistration> {
+  const patient = await getById(trx, patient_id)
+  assert(completedRegistration(patient))
+  return patient
+}

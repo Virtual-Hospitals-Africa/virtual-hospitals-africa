@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { RenderedEmployee, TrxOrDb } from '../../types.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -37,4 +37,16 @@ export function markAvailabilitySet(
     .where('health_worker_id', '=', opts.health_worker_id)
     .where('organization_id', '=', opts.organization_id)
     .execute()
+}
+
+export function findOne(
+  trx: TrxOrDb,
+  employee: RenderedEmployee,
+) {
+  return trx
+    .selectFrom('health_worker_organization_calendars')
+    .where('health_worker_id', '=', employee.id)
+    .where('organization_id', '=', employee.organization_id)
+    .selectAll('health_worker_organization_calendars')
+    .executeTakeFirst()
 }

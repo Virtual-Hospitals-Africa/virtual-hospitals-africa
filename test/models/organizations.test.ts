@@ -102,6 +102,7 @@ describe('db/models/organizations.ts', () => {
                 organization_ids[0]
               }/employees/${hw_at_organization1.id}`,
             },
+            avatar_url: null,
             online: null,
           })
           assertEquals(hw_1.professions.length, 2)
@@ -124,6 +125,7 @@ describe('db/models/organizations.ts', () => {
                 organization_ids[0]
               }/employees/${hw_at_organization2.id}`,
             },
+            avatar_url: null,
             online: null,
           })
           assertEquals(hw_2.professions.length, 2)
@@ -172,6 +174,7 @@ describe('db/models/organizations.ts', () => {
                   organization_ids[0]
                 }/employees/${hw_at_organization1.id}`,
               },
+              avatar_url: null,
               online: null,
             })
             assertEquals(hw_1.professions.length, 2)
@@ -194,6 +197,7 @@ describe('db/models/organizations.ts', () => {
                   organization_ids[0]
                 }/employees/${hw_at_organization2.id}`,
               },
+              avatar_url: null,
               online: null,
             })
             assertEquals(hw_2.professions.length, 2)

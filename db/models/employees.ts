@@ -38,7 +38,10 @@ const model = base({
   },
   handleSearch(
     qb,
-    opts: health_workers.HealthWorkerSearch,
+    opts: health_workers.HealthWorkerSearch & {
+      // TODO
+      include_incomplete_registration?: boolean
+    },
   ) {
     if (opts.search) {
       qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
@@ -78,6 +81,7 @@ const model = base({
 })
 
 export const getById = model.getById
+export const getByIds = model.getByIds
 export const getByIdOptional = model.getByIdOptional
 export const search = model.search
 export const findAll = model.findAll

@@ -1,30 +1,33 @@
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as google from '../../external-clients/google.ts'
-import { getMany } from '../../db/models/providers.ts'
+import * as employees from '../../db/models/employees.ts'
+import * as google_tokens from '../../db/models/google_tokens.ts'
+import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
 import {
   Availability,
   GCalFreeBusy,
-  Provider,
+  RenderedEmployee,
   TimeRange,
   TrxOrDb,
 } from '../../types.ts'
 import { assertAllJohannesburg, formatJohannesburg } from '../../util/date.ts'
-import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import flatten from '../../util/flatten.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export function getAvailability(
-  provider: {
+  calendars: {
     gcal_availability_calendar_id: string
     gcal_appointments_calendar_id: string
   },
   free_busy: GCalFreeBusy,
 ): Availability {
   const availability = [
-    ...free_busy.calendars[provider.gcal_availability_calendar_id].busy,
+    ...free_busy.calendars[calendars.gcal_availability_calendar_id].busy,
   ]
 
   const appointments =
-    free_busy.calendars[provider.gcal_appointments_calendar_id].busy
+    free_busy.calendars[calendars.gcal_appointments_calendar_id].busy
 
   appointments.forEach((appointment) => {
     const conflict_index = availability.findIndex((availabilityBlock) =>
@@ -86,33 +89,50 @@ export function defaultTimeRange(): TimeRange {
 
 export async function providerAvailability(
   trx: TrxOrDb,
-  provider: Provider,
+  provider: RenderedEmployee,
   timeRange = defaultTimeRange(),
 ) {
+  const { google_tokens_of_provider, calendars_of_provider } =
+    await promiseProps({
+      google_tokens_of_provider: google_tokens.getByEntityId(
+        trx,
+        'health_worker',
+        provider.id,
+      ),
+      calendars_of_provider: health_worker_organization_calendars.findOne(
+        trx,
+        provider,
+      ),
+    })
+
+  if (!google_tokens_of_provider || !calendars_of_provider?.availability_set) {
+    return {
+      provider,
+      availability: [],
+      availability_set: false,
+    }
+  }
   const health_worker_google_client = new google.HealthWorkerGoogleClient(trx, {
     ...provider,
-    id: provider.health_worker_id,
+    ...google_tokens_of_provider,
   })
-  console.log(
-    'health_worker_google_client.getFreeBusy',
-    health_worker_google_client.getFreeBusy,
-  )
+
   const free_busy = await health_worker_google_client.getFreeBusy({
     ...timeRange,
     calendarIds: [
-      provider.gcal_appointments_calendar_id,
-      provider.gcal_availability_calendar_id,
+      calendars_of_provider.gcal_appointments_calendar_id,
+      calendars_of_provider.gcal_availability_calendar_id,
     ],
   })
   return {
     provider,
-    availability: getAvailability(provider, free_busy),
+    availability: getAvailability(calendars_of_provider, free_busy),
   }
 }
 
 export function getAllProviderAvailability(
   trx: TrxOrDb,
-  providers: Provider[],
+  providers: RenderedEmployee[],
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   return Promise.all(
@@ -129,13 +149,13 @@ export async function availableSlots(
   { dates, declined_times = [], count, employment_ids, duration_minutes = 30 }:
     {
       count: number
+      employment_ids: string[]
       declined_times?: string[]
       dates?: string[]
-      employment_ids?: string[]
       duration_minutes?: number
     },
 ): Promise<{
-  provider: Provider
+  provider: RenderedEmployee
   start: Date
   end: Date
   duration_minutes: number
@@ -143,14 +163,11 @@ export async function availableSlots(
   assert(count > 0, 'count must be greater than 0')
   assertAllJohannesburg(declined_times)
 
-  const all_providers = await getMany(trx, { employment_ids })
-  const providers = all_providers.filter(
-    (p) => p.profession === 'doctor' || p.profession === 'nurse',
-  ) as Provider[]
+  const providers = await employees.getByIds(trx, employment_ids)
   const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const slots: {
-    provider: Provider
+    provider: RenderedEmployee
     start: string
     end: string
     duration_minutes: number
