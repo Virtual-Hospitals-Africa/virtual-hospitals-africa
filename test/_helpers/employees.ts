@@ -35,7 +35,6 @@ type TestEmployee = Names & {
     gcal_availability_calendar_id: string
   }
   email: string
-  avatar_url: string
   phone_number?: import('../../types.ts').Maybe<string>
   access_token: string
   refresh_token: string

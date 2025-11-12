@@ -29,7 +29,7 @@ describe('db/models/providers.ts', () => {
         assertEquals(
           result[0],
           {
-            avatar_url: health_worker.avatar_url,
+            avatar_url: null,
             email: health_worker.email,
             organization_id: '00000000-0000-0000-0000-000000000001',
             organization_name: 'VHA Test Clinic South Africa',
@@ -66,7 +66,7 @@ describe('db/models/providers.ts', () => {
       assertEquals(
         nurse_result[0],
         {
-          avatar_url: health_worker.avatar_url,
+          avatar_url: null,
           email: health_worker.email,
           organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic South Africa',
@@ -139,7 +139,7 @@ describe('db/models/providers.ts', () => {
         same_organization_result[0],
         {
           id: health_worker.employee_id,
-          avatar_url: health_worker.avatar_url,
+          avatar_url: null,
           email: health_worker.email,
           organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic South Africa',

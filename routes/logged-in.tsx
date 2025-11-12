@@ -9,6 +9,7 @@ import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as events from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
+import * as media from '../db/models/media.ts'
 import {
   GoogleProfile,
   HasStringId,
@@ -31,6 +32,31 @@ import {
   updateTokens,
   upsertWithGoogleCredentials,
 } from '../db/models/health_worker_google_tokens.ts'
+
+async function downloadAndSaveAvatar(
+  trx: TrxOrDb,
+  picture_url: string,
+): Promise<string | null> {
+  try {
+    const response = await fetch(picture_url)
+    if (!response.ok) return null
+
+    const content_type = response.headers.get('content-type')
+    if (!content_type?.startsWith('image/')) return null
+
+    const array_buffer = await response.arrayBuffer()
+    const binary_data = new Uint8Array(array_buffer)
+
+    const inserted_media = await media.insert(trx, {
+      binary_data,
+      mime_type: content_type,
+    })
+
+    return inserted_media.id
+  } catch {
+    return null
+  }
+}
 
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 
@@ -73,11 +99,13 @@ export async function initializeHealthWorkerWithInvites(
       organization_ids,
     )
 
+  const avatar_media_id = await downloadAndSaveAvatar(trx, profile.picture)
+
   const health_worker = await upsertWithGoogleCredentials(
     trx,
     {
       email: profile.email,
-      avatar_url: profile.picture,
+      avatar_media_id,
       ...pickTokens(google_client.tokens),
       ...asNames({
         first_names: profile.given_name,
@@ -117,6 +145,8 @@ export async function initializeHealthWorkerWithoutInvites(
   google_client: google.GoogleClient,
   profile: GoogleProfile,
 ): Promise<Response> {
+  const avatar_media_id = await downloadAndSaveAvatar(trx, profile.picture)
+
   const { existing_employment, health_worker } = await promiseProps({
     existing_employment: trx.selectFrom('health_workers')
       .innerJoin(
@@ -131,7 +161,7 @@ export async function initializeHealthWorkerWithoutInvites(
       trx,
       {
         email: profile.email,
-        avatar_url: profile.picture,
+        avatar_media_id,
         ...pickTokens(google_client.tokens),
         ...asNames({
           first_names: profile.given_name,
@@ -214,14 +244,16 @@ export const handler: Handlers<Record<string, never>> = {
 
         const regulator = await regulators.getByEmail(trx, profile.email)
         if (regulator) {
-          if (
-            regulator.name !== profile.name ||
-            regulator.avatar_url !== profile.picture
-          ) {
+          const avatar_media_id = await downloadAndSaveAvatar(
+            trx,
+            profile.picture,
+          )
+
+          if (regulator.name !== profile.name) {
             await regulators.update(trx, {
               id: regulator.id,
               name: profile.name,
-              avatar_url: profile.picture,
+              avatar_media_id,
             })
           }
 

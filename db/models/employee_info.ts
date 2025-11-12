@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { EmployeeInfo, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+import { avatar_url_sql } from './health_workers.ts'
 
 export function getEmployeeInfo(
   trx: TrxOrDb,
@@ -76,7 +77,7 @@ export function getEmployeeInfo(
           'nurse_employment.specialty',
           'health_workers.email',
           'health_workers.name',
-          'health_workers.avatar_url',
+          avatar_url_sql.as('avatar_url'),
           'addresses.formatted as address',
           'organizations.id as organization_id',
           'organizations.name as organization_name',

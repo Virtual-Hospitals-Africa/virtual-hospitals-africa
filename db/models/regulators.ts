@@ -1,5 +1,13 @@
 import { Regulator, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
+import { sql } from 'kysely'
+
+export const avatar_url_sql = sql<string | null>`
+  CASE WHEN regulators.avatar_media_id IS NOT NULL
+    THEN concat('/app/regulators/', regulators.id::text, '/avatar')
+    ELSE NULL
+  END
+`
 
 export function getBySession(trx: TrxOrDb, { session_id }: {
   session_id: string
@@ -40,16 +48,16 @@ export function update(
   {
     id,
     name,
-    avatar_url,
+    avatar_media_id,
   }: {
     id: string
     name: string
-    avatar_url: string
+    avatar_media_id: string | null
   },
 ) {
   return trx
     .updateTable('regulators')
-    .set({ name, avatar_url })
+    .set({ name, avatar_media_id })
     .where('id', '=', id)
     .returningAll()
     .executeTakeFirstOrThrow()
@@ -61,7 +69,7 @@ export function upsert(trx: TrxOrDb, regulator: Regulator & { id?: string }) {
     .values(regulator)
     .onConflict((oc) => oc.column('email').doUpdateSet(regulator))
     .onConflict((oc) => oc.column('id').doUpdateSet(regulator))
-    .returning(['id', 'name', 'email', 'avatar_url', 'country'])
+    .returning(['id', 'name', 'email', 'country'])
     .executeTakeFirstOrThrow()
 }
 
@@ -69,6 +77,15 @@ export function insert(trx: TrxOrDb, regulator: Regulator & { id: string }) {
   return trx
     .insertInto('regulators')
     .values(regulator)
-    .returning(['id', 'name', 'email', 'avatar_url', 'country'])
+    .returning(['id', 'name', 'email', 'country'])
     .executeTakeFirstOrThrow()
+}
+
+export function getAvatar(trx: TrxOrDb, opts: { regulator_id: string }) {
+  return trx
+    .selectFrom('media')
+    .innerJoin('regulators', 'regulators.avatar_media_id', 'media.id')
+    .select(['media.mime_type', 'media.binary_data'])
+    .where('regulators.id', '=', opts.regulator_id)
+    .executeTakeFirst()
 }

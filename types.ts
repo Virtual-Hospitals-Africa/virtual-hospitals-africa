@@ -1428,7 +1428,7 @@ export type Specialties = {
 
 export type HealthWorker = Names & {
   email: string
-  avatar_url: string
+  avatar_url: string | null
   phone_number?: Maybe<string>
 }
 
@@ -2548,7 +2548,7 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
 export type Provider = {
-  avatar_url: string
+  avatar_url: string | null
   email: string
   name: string
   access_token: string

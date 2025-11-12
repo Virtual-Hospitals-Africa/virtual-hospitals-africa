@@ -12,7 +12,7 @@ export function testHealthWorker() {
     first_names: 'Test Health Worker',
     preferred_name: 'Test Patient',
     email: generateUUID() + '@example.com',
-    avatar_url: generateUUID() + '.com',
+    avatar_media_id: null,
     access_token: 'access.' + generateUUID(),
     refresh_token: 'refresh.' + generateUUID(),
     expires_in: 3599,
@@ -22,10 +22,11 @@ export function testHealthWorker() {
 
 export function insertHealthWorker(
   trx: TrxOrDb,
-  opts?: Partial<HealthWorkerWithGoogleTokens>,
+  opts?: Partial<HealthWorkerWithGoogleTokens> & { avatar_media_id?: string | null },
 ) {
+  const defaults = testHealthWorker()
   return upsertWithGoogleCredentials(trx, {
-    ...testHealthWorker(),
+    ...defaults,
     ...opts,
   })
 }

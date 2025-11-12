@@ -5,6 +5,7 @@ import { assertAll } from '../../util/assertAll.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
+import { avatar_url_sql } from './health_workers.ts'
 
 // This isn't confirming registration_status
 function baseQuery(trx: TrxOrDb) {
@@ -34,13 +35,14 @@ function baseQuery(trx: TrxOrDb) {
             'health_worker_organization_calendars.health_worker_id',
           ),
     )
-    .select([
+    .select((eb) => [
       'health_workers.id as health_worker_id',
       'employment.id as provider_id',
       'employment.profession',
       'health_worker_organization_calendars.gcal_appointments_calendar_id',
       'health_worker_organization_calendars.gcal_availability_calendar_id',
       'health_worker_organization_calendars.availability_set',
+      avatar_url_sql.as('avatar_url'),
     ])
     .where('employment.profession', 'in', ['doctor' as const, 'nurse' as const])
 }
@@ -130,9 +132,9 @@ export async function search(
     .select([
       'employment.id',
       'health_workers.id as health_worker_id',
-      'health_workers.avatar_url',
       'health_workers.email',
       'health_workers.name',
+      avatar_url_sql.as('avatar_url'),
       'employment.organization_id',
       'employment.profession',
       'organizations.name as organization_name',

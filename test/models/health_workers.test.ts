@@ -38,20 +38,18 @@ describe('db/models/health_workers.ts', () => {
         )
 
         assert(result)
+        // deno-lint-ignore no-explicit-any
+        const { access_token, refresh_token, expires_at, avatar_media_id, ...result_without_tokens } = result as any
         assertEquals(
           await health_workers.getById(db, result.id),
           {
-            ...omit(result, [
-              'access_token',
-              'refresh_token',
-              'expires_at',
-            ]),
+            ...result_without_tokens,
             organizations: [],
             // deno-lint-ignore no-explicit-any
           } as any,
         )
-        assert(!!result.access_token)
-        assert(!!result.refresh_token)
+        assert(!!access_token)
+        assert(!!refresh_token)
       },
     )
   })
@@ -79,7 +77,7 @@ describe('db/models/health_workers.ts', () => {
           first_names: health_worker.first_names,
           surname: health_worker.surname,
           preferred_name: health_worker.preferred_name,
-          avatar_url: health_worker.avatar_url,
+          avatar_url: null,
           email: health_worker.email,
           organizations: [
             {

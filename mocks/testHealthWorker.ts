@@ -6,7 +6,6 @@ export default function testHealthWorker() {
   return {
     name: `Test Health Worker ${generateUUID()}`,
     email: generateUUID() + '@example.com',
-    avatar_url: generateUUID() + '.com',
     access_token: 'access.' + generateUUID(),
     refresh_token: 'refresh.' + generateUUID(),
     expires_in: 3599,

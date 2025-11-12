@@ -551,7 +551,7 @@ export interface HealthWorkerOrganizationCalendars {
 }
 
 export interface HealthWorkers {
-  avatar_url: string
+  avatar_media_id: string | null
   created_at: Generated<Timestamp>
   email: string
   first_names: string
@@ -1400,7 +1400,7 @@ export interface Receptionists {
 }
 
 export interface Regulators {
-  avatar_url: string | null
+  avatar_media_id: string | null
   country: string
   created_at: Generated<Timestamp>
   email: string
