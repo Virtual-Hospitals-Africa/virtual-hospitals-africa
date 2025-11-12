@@ -1,31 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import { useEffect, useState } from 'preact/hooks'
-import { SearchProps } from './Search.tsx'
+import { AsyncSearchProps } from './AsyncSearch.tsx'
 
-export type AsyncSearchProps<
-  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
-> = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
-  search_route: string
-  onQuery?(query: string): void
-  onSearchResults?(values: {
-    query: string
-    page: number
-    delay: null | number
-    active_request: null | XMLHttpRequest
-    pages: {
-      results: T[]
-      page: number
-    }[]
-    current_page: {
-      results: T[]
-      page: number
-    }
-    has_next_page: boolean
-  }): void
-}
 
 export default function useAsyncSearch<
-  T extends { id?: unknown; name: string },
+  T extends { id?: unknown; name?: string; display_name?: string },
 >({
   search_route,
   value,

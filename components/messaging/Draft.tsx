@@ -5,6 +5,7 @@ import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.ts
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import RemovableChip from '../RemovableChip.tsx'
 import { TargetsRow } from '../../islands/messaging/drafts/TargetsRow.tsx'
+import AsyncSearch from '../../islands/AsyncSearch.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -14,38 +15,6 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
   const priority = draft.priority ?? 'Emergency'
   const body = draft.body ?? ''
 
-  // Mock data for demonstration - these would come from the draft object
-  const regions = [
-    {
-      target_value: '1',
-      target_type: 'region' as const,
-      display_name: 'Polokwane',
-    },
-  ]
-  const facilities = [
-    {
-      target_value: '1',
-      target_type: 'organization' as const,
-      display_name: 'All facilities',
-    },
-    {
-      target_value: '2',
-      target_type: 'organization' as const,
-      display_name: 'All hospitals',
-    },
-    {
-      target_value: '3',
-      target_type: 'organization' as const,
-      display_name: 'All clinics',
-    },
-  ]
-  const recipients = [
-    {
-      target_value: 'doctor',
-      target_type: 'profession' as const,
-      display_name: 'All doctors',
-    },
-  ]
   const concerning = ['Patient: Andries Dlamini', 'ARIPIPRAZOLE prescription']
   const subject = 'What is the correct dosage?'
 
@@ -65,32 +34,36 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
         </div>
 
         <div class='space-y-0'>
+          <AsyncSearch
+            search_route=''
+          />
+
           {/* Regions Row */}
           <TargetsRow
             label='Regions'
-            target_types={['region']}
-            targets={regions}
+            message_target_category='regions'
+            targets={[]}
           />
 
           {/* Facilities Row */}
           <TargetsRow
             label='Facilities'
-            target_types={['organization']}
-            targets={facilities}
+            message_target_category='organizations'
+            targets={[]}
           />
 
           {/* Recipients Row */}
           <TargetsRow
             label='Recipients'
-            target_types={['employment', 'profession']}
-            targets={recipients}
-          >
-            <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
+            message_target_category='health_workers'
+            targets={[]}
+          />
+
+          <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
               Total recipient count: 98
             </span>
-          </TargetsRow>
           {/* Concerning Row */}
-          <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
+          {/* <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
             <label class='text-sm text-gray-700 w-24 flex-shrink-0'>
               Concerning
             </label>
@@ -98,13 +71,13 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
               {concerning.map((item) => (
                 <RemovableChip
                   key={item}
-                  name={`targets.concernings.${item}`}
+                  name={`targets.concerning.${item}`}
                   display={item}
                   remove={() => {}}
                 />
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Subject Row */}
           <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>

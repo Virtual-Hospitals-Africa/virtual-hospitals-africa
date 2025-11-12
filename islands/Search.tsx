@@ -23,7 +23,7 @@ function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
 
-type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: string }> = {
+export type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: string }> = {
   id?: string
   name?: string
   required?: boolean
@@ -39,8 +39,6 @@ type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: s
   readonly?: boolean
   className?: string
   loading_options?: boolean
-  options: T[]
-  onQuery(query: string): void
   loadMoreOptions?(): void
   onSelect?(value: T | undefined): void
   Option?(props: {
@@ -54,19 +52,24 @@ type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: s
   placeholder?: string
 }
 
-export type SearchPropsSingular<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & {
+type Foo<T> = {
+  options: T[]
+  onQuery(query: string): void
+}
+
+export type SearchPropsSingular<T extends { id?: unknown; name?: string; display_name?: string }> = {
   multi?: never
   value?: Maybe<T>
   signal?: Signal<Maybe<T>>
 }
 
-export type SearchPropsMulti<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & {
+export type SearchPropsMulti<T extends { id?: unknown; name?: string; display_name?: string }> = {
   multi: true
   value?: never
   signal: Signal<T[]>
 }
 
-export type SearchProps<T extends { id?: unknown; name?: string; display_name?: string }> = (
+export type SearchProps<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & Foo<T> & (
   SearchPropsSingular<T> | SearchPropsMulti<T>
 )
 
@@ -146,6 +149,8 @@ export default function Search<T extends { id?: unknown; name?: string; display_
 
   const input_ref = useRef<HTMLInputElement>(null)
   const button_ref = useRef<HTMLButtonElement>(null)
+
+  console.log('wekwekl', selected_multi?.value)
 
   return (
     <Combobox

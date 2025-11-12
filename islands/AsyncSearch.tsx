@@ -1,9 +1,9 @@
-import Search, { SearchProps } from './Search.tsx'
+import Search, { SearchPropsCommon, SearchPropsMulti, SearchPropsSingular } from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
 export type AsyncSearchProps<
-  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
-> = Omit<SearchProps<T>, 'options' | 'onQuery'> & {
+  T extends { id?: unknown; name?: string; display_name?: string } = { id?: unknown; name?: string; display_name?: string },
+> = SearchPropsCommon<T> & {
   search_route: string
   onQuery?(query: string): void
   onSearchResults?(values: {
@@ -21,10 +21,12 @@ export type AsyncSearchProps<
     }
     has_next_page: boolean
   }): void
-}
+} & (
+  SearchPropsSingular<T> | SearchPropsMulti<T>
+)
 
 export default function AsyncSearch<
-  T extends { id?: unknown; name: string },
+  T extends { id?: unknown; name?: string; display_name?: string },
 >({
   search_route,
   value,
@@ -40,7 +42,6 @@ export default function AsyncSearch<
   return (
     <Search
       {...rest}
-      value={value}
       loading_options={loading}
       loadMoreOptions={loadMore}
       options={results}
