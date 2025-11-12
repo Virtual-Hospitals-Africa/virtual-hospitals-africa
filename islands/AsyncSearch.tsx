@@ -1,32 +1,46 @@
-import Search, { SearchPropsCommon, SearchPropsMulti, SearchPropsSingular } from './Search.tsx'
+import Search, {
+  OptionLike,
+  SearchPropsCommon,
+  SearchPropsMulti,
+  SearchPropsSingular,
+} from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
 export type AsyncSearchProps<
-  T extends { id?: unknown; name?: string; display_name?: string } = { id?: unknown; name?: string; display_name?: string },
-> = SearchPropsCommon<T> & {
-  search_route: string
-  onQuery?(query: string): void
-  onSearchResults?(values: {
-    query: string
-    page: number
-    delay: null | number
-    active_request: null | XMLHttpRequest
-    pages: {
-      results: T[]
+  T extends OptionLike = OptionLike,
+> =
+  & SearchPropsCommon<T>
+  & {
+    search_route: string
+    onQuery?(query: string): void
+    onSearchResults?(values: {
+      query: string
       page: number
-    }[]
-    current_page: {
-      results: T[]
-      page: number
-    }
-    has_next_page: boolean
-  }): void
-} & (
-  SearchPropsSingular<T> | SearchPropsMulti<T>
-)
+      delay: null | number
+      active_request: null | XMLHttpRequest
+      pages: {
+        results: T[]
+        page: number
+      }[]
+      current_page: {
+        results: T[]
+        page: number
+      }
+      has_next_page: boolean
+    }): void
+  }
+  & (
+    SearchPropsSingular<T> | SearchPropsMulti<T>
+  )
+
+export type AsyncSearchPropsSingular<
+  T extends OptionLike = OptionLike,
+> = AsyncSearchProps<T> & {
+  multi?: never
+}
 
 export default function AsyncSearch<
-  T extends { id?: unknown; name?: string; display_name?: string },
+  T extends OptionLike,
 >({
   search_route,
   value,

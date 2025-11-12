@@ -3,9 +3,7 @@ import Form from '../library/Form.tsx'
 import { Button } from '../library/Button.tsx'
 import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.tsx'
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
-import RemovableChip from '../RemovableChip.tsx'
 import { TargetsRow } from '../../islands/messaging/drafts/TargetsRow.tsx'
-import AsyncSearch from '../../islands/AsyncSearch.tsx'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -15,7 +13,7 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
   const priority = draft.priority ?? 'Emergency'
   const body = draft.body ?? ''
 
-  const concerning = ['Patient: Andries Dlamini', 'ARIPIPRAZOLE prescription']
+  // const concerning = ['Patient: Andries Dlamini', 'ARIPIPRAZOLE prescription']
   const subject = 'What is the correct dosage?'
 
   return (
@@ -34,10 +32,6 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
         </div>
 
         <div class='space-y-0'>
-          <AsyncSearch
-            search_route=''
-          />
-
           {/* Regions Row */}
           <TargetsRow
             label='Regions'
@@ -60,10 +54,11 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           />
 
           <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
-              Total recipient count: 98
-            </span>
+            Total recipient count: 98
+          </span>
           {/* Concerning Row */}
-          {/* <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
+          {
+            /* <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>
             <label class='text-sm text-gray-700 w-24 flex-shrink-0'>
               Concerning
             </label>
@@ -77,7 +72,8 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
                 />
               ))}
             </div>
-          </div> */}
+          </div> */
+          }
 
           {/* Subject Row */}
           <div class='flex items-center gap-2 px-6 py-3 border-b border-gray-200'>

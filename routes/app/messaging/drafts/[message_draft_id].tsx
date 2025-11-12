@@ -19,7 +19,7 @@ const MessageDraftSchema = z.object({
   ]),
   targets: z.object({
     organization: MessageTargetSchema,
-    employment: MessageTargetSchema,
+    employee: MessageTargetSchema,
     profession: MessageTargetSchema,
     organization_category: MessageTargetSchema,
     locality: MessageTargetSchema,

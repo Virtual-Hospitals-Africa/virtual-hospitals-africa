@@ -1,5 +1,5 @@
 import { Person, PersonData } from '../components/library/Person.tsx'
-import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
+import AsyncSearch, { AsyncSearchPropsSingular } from './AsyncSearch.tsx'
 
 function PersonOption({
   option,
@@ -12,7 +12,10 @@ function PersonOption({
 }
 
 export default function PersonSearch(
-  props: Omit<AsyncSearchProps<PersonData & { name: string }>, 'Option'>,
+  props: Omit<
+    AsyncSearchPropsSingular<PersonData & { name: string }>,
+    'Option'
+  >,
 ) {
   return <AsyncSearch {...props} Option={PersonOption} />
 }

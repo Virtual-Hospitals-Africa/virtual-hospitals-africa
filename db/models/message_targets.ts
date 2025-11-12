@@ -2,7 +2,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { JsonValue, MessageTargetType, Profession } from '../../db.d.ts'
 import {
-HasStringId,
+  HasStringId,
   Maybe,
   MessageTargetEntities,
   RenderedEmployee,
@@ -19,7 +19,11 @@ import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { MessageTargetCategory } from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-import { distinctAdministrativeAreaLevels1, distinctAdministrativeAreaLevels2, distinctLocalities } from './addresses.ts'
+import {
+  distinctAdministrativeAreaLevels1,
+  distinctAdministrativeAreaLevels2,
+  distinctLocalities,
+} from './addresses.ts'
 import { pluralize } from '../../util/pluralize.ts'
 
 type Display = {
@@ -134,19 +138,19 @@ const TARGET_DISPLAYS = {
   locality(entity: string): Display {
     return {
       display_name: entity,
-      description: 'City',
+      description: 'City / Town',
     }
   },
   administrative_area_level_1(entity: string): Display {
     return {
       display_name: entity,
-      description: 'District',
+      description: 'Province',
     }
   },
   administrative_area_level_2(entity: string): Display {
     return {
       display_name: entity,
-      description: 'Province',
+      description: 'District',
     }
   },
 } satisfies {
@@ -200,7 +204,8 @@ const TARGET_GETTERS = {
     trx: TrxOrDb,
     target: HasStringId<IntermediateTargetResult<'organization_category'>>,
   ): Promise<RenderedMessageTargets['organization_category']> {
-    const organization_category = await TARGET_ENTITY_FETCHERS.organization_category(trx, target)
+    const organization_category = await TARGET_ENTITY_FETCHERS
+      .organization_category(trx, target)
     return {
       id: target.id,
       target_type: 'organization_category',
@@ -224,27 +229,37 @@ const TARGET_GETTERS = {
   },
   async administrative_area_level_1(
     trx: TrxOrDb,
-    target: HasStringId<IntermediateTargetResult<'administrative_area_level_1'>>,
+    target: HasStringId<
+      IntermediateTargetResult<'administrative_area_level_1'>
+    >,
   ): Promise<RenderedMessageTargets['administrative_area_level_1']> {
-    const administrative_area_level_1 = await TARGET_ENTITY_FETCHERS.administrative_area_level_1(trx, target)
+    const administrative_area_level_1 = await TARGET_ENTITY_FETCHERS
+      .administrative_area_level_1(trx, target)
     return {
       id: target.id,
       target_type: 'administrative_area_level_1',
       target_category: 'regions',
-      ...TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1),
+      ...TARGET_DISPLAYS.administrative_area_level_1(
+        administrative_area_level_1,
+      ),
       administrative_area_level_1,
     }
   },
   async administrative_area_level_2(
     trx: TrxOrDb,
-    target: HasStringId<IntermediateTargetResult<'administrative_area_level_2'>>,
+    target: HasStringId<
+      IntermediateTargetResult<'administrative_area_level_2'>
+    >,
   ): Promise<RenderedMessageTargets['administrative_area_level_2']> {
-    const administrative_area_level_2 = await TARGET_ENTITY_FETCHERS.administrative_area_level_2(trx, target)
+    const administrative_area_level_2 = await TARGET_ENTITY_FETCHERS
+      .administrative_area_level_2(trx, target)
     return {
       id: target.id,
       target_type: 'administrative_area_level_2',
       target_category: 'regions',
-      ...TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2),
+      ...TARGET_DISPLAYS.administrative_area_level_2(
+        administrative_area_level_2,
+      ),
       administrative_area_level_2,
     }
   },
@@ -266,11 +281,13 @@ export async function getTarget<TargetType extends MessageTargetType>(
 }
 
 const MESSAGE_CATEGORY_SEARCH = {
-  async regions(trx: TrxOrDb, search: string): Promise<Array<
-    RenderedMessageTargets['locality'] |
-    RenderedMessageTargets['administrative_area_level_1'] |
-    RenderedMessageTargets['administrative_area_level_2']
-    >> {
+  async regions(trx: TrxOrDb, search: string): Promise<
+    Array<
+      | RenderedMessageTargets['locality']
+      | RenderedMessageTargets['administrative_area_level_1']
+      | RenderedMessageTargets['administrative_area_level_2']
+    >
+  > {
     const country = SERVER_COUNTRY
     const {
       localities,
@@ -278,8 +295,16 @@ const MESSAGE_CATEGORY_SEARCH = {
       administrative_areas_level_2,
     } = await promiseProps({
       localities: distinctLocalities(trx, { country, search, limit: 20 }),
-      administrative_areas_level_1: distinctAdministrativeAreaLevels1(trx, { country, search, limit: 20 }),
-      administrative_areas_level_2: distinctAdministrativeAreaLevels2(trx, { country, search, limit: 20 }),
+      administrative_areas_level_1: distinctAdministrativeAreaLevels1(trx, {
+        country,
+        search,
+        limit: 20,
+      }),
+      administrative_areas_level_2: distinctAdministrativeAreaLevels2(trx, {
+        country,
+        search,
+        limit: 20,
+      }),
     })
 
     return [
@@ -289,59 +314,78 @@ const MESSAGE_CATEGORY_SEARCH = {
         ...TARGET_DISPLAYS.locality(locality),
         locality,
       })),
-      ...administrative_areas_level_1.map(({ administrative_area_level_1 }) => ({
+      ...administrative_areas_level_1.map((
+        { administrative_area_level_1 },
+      ) => ({
         target_type: 'administrative_area_level_1' as const,
         target_category: 'regions' as const,
-        ...TARGET_DISPLAYS.administrative_area_level_1(administrative_area_level_1),
+        ...TARGET_DISPLAYS.administrative_area_level_1(
+          administrative_area_level_1,
+        ),
         administrative_area_level_1,
       })),
-      ...administrative_areas_level_2.map(({ administrative_area_level_2 }) => ({
+      ...administrative_areas_level_2.map((
+        { administrative_area_level_2 },
+      ) => ({
         target_type: 'administrative_area_level_2' as const,
         target_category: 'regions' as const,
-        ...TARGET_DISPLAYS.administrative_area_level_2(administrative_area_level_2),
+        ...TARGET_DISPLAYS.administrative_area_level_2(
+          administrative_area_level_2,
+        ),
         administrative_area_level_2,
       })),
     ]
   },
-  async organizations(trx: TrxOrDb, search: string): Promise<Array<
-    RenderedMessageTargets['organization'] |
-    RenderedMessageTargets['organization_category']
-    >> {
-      const organization_search = await organizations.search(trx, { search }, { rows_per_page: 20 })
+  async organizations(trx: TrxOrDb, search: string): Promise<
+    Array<
+      | RenderedMessageTargets['organization']
+      | RenderedMessageTargets['organization_category']
+    >
+  > {
+    const organization_search = await organizations.search(trx, { search }, {
+      rows_per_page: 20,
+    })
 
-      const organization_results = organization_search.results.map(organization => ({
+    const organization_results = organization_search.results.map(
+      (organization) => ({
         target_type: 'organization' as const,
         target_category: 'organizations' as const,
         ...TARGET_DISPLAYS.organization(organization),
         organization,
-      }))
+      }),
+    )
 
-      // TODO, decide whether to do category results here too
-      return organization_results
+    // TODO, decide whether to do category results here too
+    return organization_results
   },
-  async health_workers(trx: TrxOrDb, search: string): Promise<Array<
-    RenderedMessageTargets['profession'] |
-    RenderedMessageTargets['employee']
-    >> {
-      const employees_search = await employees.search(trx, { search }, { rows_per_page: 20 })
+  async health_workers(trx: TrxOrDb, search: string): Promise<
+    Array<
+      | RenderedMessageTargets['profession']
+      | RenderedMessageTargets['employee']
+    >
+  > {
+    const employees_search = await employees.search(trx, { search }, {
+      rows_per_page: 20,
+    })
 
-      const employee_results = employees_search.results.map(employee => ({
-        target_type: 'employee' as const,
-        target_category: 'health_workers' as const,
-        ...TARGET_DISPLAYS.employee(employee),
-        employee,
-      }))
+    const employee_results = employees_search.results.map((employee) => ({
+      target_type: 'employee' as const,
+      target_category: 'health_workers' as const,
+      ...TARGET_DISPLAYS.employee(employee),
+      employee,
+    }))
 
-      // TODO, decide whether to do profession results here too
-      return employee_results
+    // TODO, decide whether to do profession results here too
+    return employee_results
   },
 }
 
-export async function searchTargetCategory<TargetCategory extends MessageTargetCategory>(
+export async function searchTargetCategory<
+  TargetCategory extends MessageTargetCategory,
+>(
   trx: TrxOrDb,
   target_category: TargetCategory,
-  { search }: {search: string}
+  { search }: { search: string },
 ): Promise<RenderedMessageTarget[]> {
   return MESSAGE_CATEGORY_SEARCH[target_category](trx, search)
 }
-

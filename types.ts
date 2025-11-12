@@ -2262,9 +2262,9 @@ export type PatientLifestyle = {
 }
 
 export type Allergy = {
-  patient_allergy_id: string
+  id: string
   snomed_concept_id: string
-  snomed_english_term: string
+  name: string
 }
 
 export type PatientAllergies = {

@@ -1,10 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import { useEffect, useState } from 'preact/hooks'
 import { AsyncSearchProps } from './AsyncSearch.tsx'
-
+import { OptionLike } from './Search.tsx'
 
 export default function useAsyncSearch<
-  T extends { id?: unknown; name?: string; display_name?: string },
+  T extends OptionLike,
 >({
   search_route,
   value,

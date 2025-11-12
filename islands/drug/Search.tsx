@@ -1,5 +1,5 @@
 import { DrugSearchResult } from '../../types.ts'
-import AsyncSearch, { AsyncSearchProps } from '../AsyncSearch.tsx'
+import AsyncSearch, { AsyncSearchPropsSingular } from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 
 function DrugOption({
@@ -34,7 +34,10 @@ function DrugOption({
 }
 
 export default function DrugSearch(
-  props: Omit<AsyncSearchProps<DrugSearchResult>, 'Option' | 'search_route'>,
+  props: Omit<
+    AsyncSearchPropsSingular<DrugSearchResult>,
+    'Option' | 'search_route'
+  >,
 ) {
   return (
     <AsyncSearch search_route='/app/drugs' {...props} Option={DrugOption} />

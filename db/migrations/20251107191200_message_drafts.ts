@@ -46,7 +46,15 @@ const patient_record_assertion = assertOnInsert({
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('message_target_type')
-    .asEnum(['organization', 'employee', 'profession', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2'])
+    .asEnum([
+      'organization',
+      'employee',
+      'profession',
+      'organization_category',
+      'locality',
+      'administrative_area_level_1',
+      'administrative_area_level_2',
+    ])
     .execute()
 
   await db.schema.createType('message_concerning_type')

@@ -81,10 +81,16 @@ export const migrate = {
     console.log(`Run shell command deno task db:codegen`)
   },
   up() {
-    return spinner('Migrating up', migrator.migrateUp().then(logMigrationResults))
+    return spinner(
+      'Migrating up',
+      migrator.migrateUp().then(logMigrationResults),
+    )
   },
   down() {
-    return spinner('Migrating down', migrator.migrateDown().then(logMigrationResults))
+    return spinner(
+      'Migrating down',
+      migrator.migrateDown().then(logMigrationResults),
+    )
   },
   async wipe() {
     const results: MigrationResult[] = []

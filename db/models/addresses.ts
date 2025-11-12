@@ -130,12 +130,16 @@ export function insert(
 
 export function distinctLocalities(
   trx: TrxOrDb,
-  { country, search, limit }: { country: string, search?: Maybe<string>, limit: number }
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
 ) {
   let qb = trx.selectFrom('addresses')
     .where('country', '=', country)
     .where('locality', 'is not', null)
-    .select(eb => eb.ref('locality').$notNull().as('locality'))
+    .select((eb) => eb.ref('locality').$notNull().as('locality'))
     .distinct()
     .limit(limit)
 
@@ -147,12 +151,20 @@ export function distinctLocalities(
 
 export function distinctAdministrativeAreaLevels1(
   trx: TrxOrDb,
-  { country, search, limit }: { country: string, search?: Maybe<string>, limit: number }
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
 ) {
   let qb = trx.selectFrom('addresses')
     .where('country', '=', country)
     .where('administrative_area_level_1', 'is not', null)
-    .select(eb => eb.ref('administrative_area_level_1').$notNull().as('administrative_area_level_1'))
+    .select((eb) =>
+      eb.ref('administrative_area_level_1').$notNull().as(
+        'administrative_area_level_1',
+      )
+    )
     .distinct()
     .limit(limit)
 
@@ -164,12 +176,20 @@ export function distinctAdministrativeAreaLevels1(
 
 export function distinctAdministrativeAreaLevels2(
   trx: TrxOrDb,
-  { country, search, limit }: { country: string, search?: Maybe<string>, limit: number }
+  { country, search, limit }: {
+    country: string
+    search?: Maybe<string>
+    limit: number
+  },
 ) {
   let qb = trx.selectFrom('addresses')
     .where('country', '=', country)
     .where('administrative_area_level_2', 'is not', null)
-    .select(eb => eb.ref('administrative_area_level_2').$notNull().as('administrative_area_level_2'))
+    .select((eb) =>
+      eb.ref('administrative_area_level_2').$notNull().as(
+        'administrative_area_level_2',
+      )
+    )
     .distinct()
     .limit(limit)
 

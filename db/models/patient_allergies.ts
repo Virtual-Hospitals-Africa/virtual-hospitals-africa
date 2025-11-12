@@ -60,20 +60,15 @@ export function getWithName(
   return trx
     .selectFrom('patient_allergies')
     .innerJoin(
-      'snomed_concept',
+      'snomed_inferred_canonical_name_and_category',
       'patient_allergies.snomed_concept_id',
-      'snomed_concept.id',
-    )
-    .innerJoin(
-      'snomed_description',
-      'snomed_concept.id',
-      'snomed_description.concept_id',
+      'snomed_inferred_canonical_name_and_category.id',
     )
     .where('patient_allergies.patient_id', '=', patient_id)
     .select([
-      'patient_allergies.id as patient_allergy_id',
-      'snomed_concept.id as snomed_concept_id',
-      'snomed_description.term as snomed_english_term',
+      'patient_allergies.id',
+      'snomed_inferred_canonical_name_and_category.name',
+      'snomed_inferred_canonical_name_and_category.id as snomed_concept_id',
     ])
     .execute()
 }

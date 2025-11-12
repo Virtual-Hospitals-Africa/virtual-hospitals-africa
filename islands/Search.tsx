@@ -18,12 +18,21 @@ import { Signal, useSignal } from '@preact/signals'
 import RemovableChip from '../components/RemovableChip.tsx'
 import remove from '../util/remove.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
+import isString from '../util/isString.ts'
 
-function hasId(value: unknown): value is { id: unknown } {
-  return isObjectLike(value) && !!value.id
+function hasId(value: unknown): value is { id: string } {
+  return isObjectLike(value) && !!value.id && isString(value.id)
 }
 
-export type SearchPropsCommon<T extends { id?: unknown; name?: string; display_name?: string }> = {
+export type OptionLike = {
+  id?: string
+  name?: Maybe<string>
+  display_name?: Maybe<string>
+}
+
+export type SearchPropsCommon<
+  T extends OptionLike,
+> = {
   id?: string
   name?: string
   required?: boolean
@@ -52,26 +61,35 @@ export type SearchPropsCommon<T extends { id?: unknown; name?: string; display_n
   placeholder?: string
 }
 
-type Foo<T> = {
+type SearchOptionsProps<T> = {
   options: T[]
   onQuery(query: string): void
 }
 
-export type SearchPropsSingular<T extends { id?: unknown; name?: string; display_name?: string }> = {
+export type SearchPropsSingular<
+  T extends OptionLike,
+> = {
   multi?: never
   value?: Maybe<T>
   signal?: Signal<Maybe<T>>
 }
 
-export type SearchPropsMulti<T extends { id?: unknown; name?: string; display_name?: string }> = {
+export type SearchPropsMulti<
+  T extends OptionLike,
+> = {
   multi: true
   value?: never
   signal: Signal<T[]>
 }
 
-export type SearchProps<T extends { id?: unknown; name?: string; display_name?: string }> = SearchPropsCommon<T> & Foo<T> & (
-  SearchPropsSingular<T> | SearchPropsMulti<T>
-)
+export type SearchProps<
+  T extends OptionLike,
+> =
+  & SearchPropsCommon<T>
+  & SearchOptionsProps<T>
+  & (
+    SearchPropsSingular<T> | SearchPropsMulti<T>
+  )
 
 function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   if (!name) return false
@@ -80,7 +98,9 @@ function isArrayOrUUIDRecordItem(name?: Maybe<string>): boolean {
   return /^\d+$/.test(surname_part)
 }
 
-export default function Search<T extends { id?: unknown; name?: string; display_name?: string }>({
+export default function Search<
+  T extends OptionLike,
+>({
   id,
   name,
   required,
@@ -136,21 +156,17 @@ export default function Search<T extends { id?: unknown; name?: string; display_
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
 
-  const search_field = multi ? `${name}.search`
-
-  : just_name
+  const search_field = multi
+    ? `${name}.search`
+    : just_name
     ? name
     : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
-  
+
   const id_field = just_name ? undefined : name &&
-    (is_array_or_record_item
-      ? `${name}.id`
-      : `${name}_id`)
+    (is_array_or_record_item ? `${name}.id` : `${name}_id`)
 
   const input_ref = useRef<HTMLInputElement>(null)
   const button_ref = useRef<HTMLButtonElement>(null)
-
-  console.log('wekwekl', selected_multi?.value)
 
   return (
     <Combobox
@@ -158,27 +174,29 @@ export default function Search<T extends { id?: unknown; name?: string; display_
       value={selected_singular?.value}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
-        // Clear the selection for a multiselect so the user now has space to enter another value
-        
         if (selected_singular) {
           selected_singular.value = value
-        } else if (value) {
-          selected_multi!.value = [
-            ...selected_multi!.value,
-            value
-          ]
+          // Gets picked up by general.js to focus on the next input
+          if (value && input_ref.current) {
+            self.dispatchEvent(
+              new CustomEvent('search-select', {
+                detail: input_ref.current,
+              }),
+            )
+          }
+          return
         }
 
-        // Gets picked up by general.js to focus on the next input
-        if (value && input_ref.current) {
-          self.dispatchEvent(
-            new CustomEvent('search-select', {
-              detail: input_ref.current,
-            }),
-          )
-        }
+        assert(selected_multi)
+        if (!value) return
+        const already_selected = selected_multi.value.some(
+          (selected_option) =>
+            (value === selected_option) ||
+            (!!value.id && value.id === selected_option.id),
+        )
+        if (already_selected) return
+        selected_multi.value = [...selected_multi.value, value]
       }}
-      className={className}
     >
       <div className='grow'>
         {label && (
@@ -190,57 +208,87 @@ export default function Search<T extends { id?: unknown; name?: string; display_
           </Combobox.Label>
         )}
         <div className='relative'>
-          <Combobox.Input
-            ref={input_ref}
-            name={search_field}
-            className={cls(
-              'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
-              disabled && 'bg-gray-300',
-            )}
-            onChange={(event) => {
-              const query = event.currentTarget.value
-              if (selected_singular) {
-                selected_singular.value = null
-              }
-              onSelect?.(undefined)
-              setQuery(query)
-              onQuery(query)
-              event.currentTarget.setCustomValidity('')
-            }}
-            onClick={() => {
-              // Open the dropdown when clicking the input
-              button_ref.current?.click()
-            }}
-            value={selected_singular?.value?.name}
-            required={required}
-            aria-disabled={disabled}
-            readonly={readonly}
-            autoComplete='off'
-            onBlur={!addable ? undefined : () => {
-              if (selected_singular?.value) return
-              if (!query) return
-              onSelect?.(add_option)
-              if (selected_singular) {
-                selected_singular.value = add_option
-              }
-            }}
-            placeholder={placeholder}
-          >
-            {selected_multi && (
-              <>
-              {
-                selected_multi.value.map(selected => (
+          {multi
+            ? (
+              <div
+                className={cls(
+                  'flex flex-wrap gap-2 items-center rounded-md bg-white min-h-12 py-1.5 pl-3 pr-12 outline -outline-offset-1 focus-within:outline-2 focus-within:-outline-offset-2 dark:bg-white/5',
+                  disabled && 'bg-gray-300',
+                  className,
+                )}
+              >
+                {selected_multi?.value.map((selected) => (
                   <RemovableChip
                     key={selected.id}
                     display={(selected.display_name || selected.name)!}
                     remove={() =>
-                      selected_multi.value = remove(selected_multi.value, selected)}
+                      selected_multi.value = remove(
+                        selected_multi.value,
+                        selected,
+                      )}
                   />
-                ))
-              }
-              </>
+                ))}
+                <Combobox.Input
+                  ref={input_ref}
+                  name={search_field}
+                  className='flex-1 min-w-[200px] border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
+                  onChange={(event) => {
+                    const query = event.currentTarget.value
+                    onSelect?.(undefined)
+                    setQuery(query)
+                    onQuery(query)
+                    event.currentTarget.setCustomValidity('')
+                  }}
+                  onClick={() => {
+                    // Open the dropdown when clicking the input
+                    button_ref.current?.click()
+                  }}
+                  required={required}
+                  aria-disabled={disabled}
+                  readonly={readonly}
+                  autoComplete='off'
+                  placeholder={selected_multi!.value.length ? '' : placeholder}
+                />
+              </div>
+            )
+            : (
+              <Combobox.Input
+                ref={input_ref}
+                name={search_field}
+                className={cls(
+                  'h-12 block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-black-900 outline -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:focus:text-black-900',
+                  disabled && 'bg-gray-300',
+                )}
+                onChange={(event) => {
+                  const query = event.currentTarget.value
+                  if (selected_singular) {
+                    selected_singular.value = null
+                  }
+                  onSelect?.(undefined)
+                  setQuery(query)
+                  onQuery(query)
+                  event.currentTarget.setCustomValidity('')
+                }}
+                onClick={() => {
+                  // Open the dropdown when clicking the input
+                  button_ref.current?.click()
+                }}
+                value={selected_singular?.value?.name || undefined}
+                required={required}
+                aria-disabled={disabled}
+                readonly={readonly}
+                autoComplete='off'
+                onBlur={!addable ? undefined : () => {
+                  if (selected_singular?.value) return
+                  if (!query) return
+                  onSelect?.(add_option)
+                  if (selected_singular) {
+                    selected_singular.value = add_option
+                  }
+                }}
+                placeholder={placeholder}
+              />
             )}
-          </Combobox.Input>
           <Combobox.Button
             ref={button_ref}
             className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
@@ -274,14 +322,21 @@ export default function Search<T extends { id?: unknown; name?: string; display_
                     )}
                 >
                   {({ active, selected }) => {
+                    const use_selected = multi
+                      ? selected_multi!.value.some(
+                        (selected_option) =>
+                          (option === selected_option) ||
+                          (!!option.id && option.id === selected_option.id),
+                      )
+                      : selected
                     const fragment = (
                       <>
                         <Option
                           option={option}
                           active={active}
-                          selected={selected}
+                          selected={use_selected}
                         />
-                        {selected && (
+                        {use_selected && (
                           <span
                             className={cls(
                               'absolute inset-y-0 right-0 flex items-center pr-4',
@@ -336,7 +391,8 @@ export default function Search<T extends { id?: unknown; name?: string; display_
           )}
         </div>
         {selected_singular && (
-          selected_singular.value?.id && selected_singular.value.id !== 'add' && id_field && (
+          selected_singular.value?.id && selected_singular.value.id !== 'add' &&
+          id_field && (
             <HiddenInput
               name={id_field}
               value={selected_singular.value.id as string}
