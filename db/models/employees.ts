@@ -1,10 +1,16 @@
+import { SelectQueryBuilder, sql } from 'kysely'
 import { RenderedEmployee, TrxOrDb } from '../../types.ts'
 import * as health_workers from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { DB } from '../../db.d.ts'
 
-export function baseQuery(trx: TrxOrDb) {
+export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
+  DB,
+  'health_workers' | 'employment',
+  RenderedEmployee
+> {
   return health_workers.baseQuery(trx)
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .select([
@@ -12,6 +18,9 @@ export function baseQuery(trx: TrxOrDb) {
       'employment.organization_id',
       'employment.profession',
       'employment.specialty',
+      sql<string>`
+        '/app/organizations/' || employment.organization_id::text || '/employees/' || employment.health_worker_id::text
+      `.as('href')
     ])
 }
 

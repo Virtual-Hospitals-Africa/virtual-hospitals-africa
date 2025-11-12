@@ -1474,17 +1474,7 @@ export type RenderedDoctorReviewBase = {
       view: string
     }
   }
-  requested_by: {
-    profession: 'nurse' | 'doctor'
-    name: string
-    avatar_url: string | null
-    organization: {
-      id: string
-      name: string
-    }
-    patient_encounter_employee_id: string
-    health_worker_id: string
-  }
+  requested_by: RenderedPatientEncounterEmployee
 }
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
@@ -1534,9 +1524,10 @@ export type PossiblyEmployedHealthWorker =
     organizations: HealthWorkerOrganization[]
   }
 
-export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
+export type EmployedHealthWorker = PossiblyEmployedHealthWorker
+/* & {
   organizations: NonEmptyArray<HealthWorkerOrganization>
-}
+}*/
 
 export type HealthWorkerWithGoogleTokens =
   & HealthWorker
@@ -3232,6 +3223,7 @@ export type HealthWorkerDisplay = {
 export type RenderedEmployee = EmployedHealthWorker & {
   organization_id: string
   employee_id: string
+  href: string
   profession: Profession
   specialty: string | null
 }
