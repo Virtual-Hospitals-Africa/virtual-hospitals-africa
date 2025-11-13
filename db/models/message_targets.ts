@@ -25,6 +25,8 @@ import {
   distinctLocalities,
 } from './addresses.ts'
 import { pluralize } from '../../util/pluralize.ts'
+import { pMap } from '../../util/inParallel.ts'
+import entries from '../../util/entries.ts'
 
 type Display = {
   display_name: string
@@ -272,12 +274,45 @@ const TARGET_GETTERS = {
 
 export async function getTarget<TargetType extends MessageTargetType>(
   trx: TrxOrDb,
-  target: HasStringId<IntermediateTargetResult<TargetType>>,
+  target: IntermediateTargetResult<TargetType>,
 ): Promise<RenderedMessageTargets[TargetType]> {
   // deno-lint-ignore no-explicit-any
   return TARGET_GETTERS[target.target_type](trx, target as any) as Promise<
     RenderedMessageTargets[TargetType]
   >
+}
+
+const by_target_uuid = new Set<string>([
+  'organization',
+  'employee',
+])
+
+export async function getMany(
+  trx: TrxOrDb,
+  targets_record: {
+    organization?: Record<string, true>
+    employee?: Record<string, true>
+    profession?: Record<string, true>
+    organization_category?: Record<string, true>
+    locality?: Record<string, true>
+    administrative_area_level_1?: Record<string, true>
+    administrative_area_level_2?: Record<string, true>
+  }
+): Promise<RenderedMessageTarget[]> {
+  const rendered_targets = await pMap(entries(targets_record), async ([target_type, target_values]) => {
+    const by_uuid = by_target_uuid.has(target_type)
+    const target_entities = Object.keys(target_values ?? {}).map(target_string => ({
+      target_type,
+      target_uuid: by_uuid ? target_string : undefined,
+      target_value: by_uuid ? undefined : target_string,
+    }))
+    
+    return pMap(target_entities, async (target) => {
+      return getTarget(trx, target)
+    })
+  })
+
+  return rendered_targets.flat()
 }
 
 const MESSAGE_CATEGORY_SEARCH = {
