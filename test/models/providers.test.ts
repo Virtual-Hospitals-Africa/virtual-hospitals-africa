@@ -19,7 +19,7 @@ describe('db/models/employees.ts', () => {
   afterAll(() => db.destroy())
 
   describe('search', () => {
-    itUsesTrxAnd.only(
+    itUsesTrxAnd(
       'returns providers matching a search with their employment information',
       async (trx) => {
         const health_worker = await addTestEmployee(trx, {
@@ -40,8 +40,8 @@ describe('db/models/employees.ts', () => {
           'surname': result.surname,
           'preferred_name': 'Test',
           'email': result.email,
-          'avatar_url': null,
-          'employee_id': '3e1b5b76-6683-4d07-86c8-3f14cc2f381b',
+          'avatar_url': `/health_workers/${result.id}/avatar`,
+          'employee_id': result.employee_id,
           'organization_id': '00000000-0000-0000-0000-000000000001',
           'profession': 'nurse',
           'specialty': null,

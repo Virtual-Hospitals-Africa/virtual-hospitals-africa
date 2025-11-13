@@ -5,6 +5,7 @@ import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { DB } from '../../db.d.ts'
+import isString from '../../util/isString.ts'
 
 export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
   DB,
@@ -59,8 +60,10 @@ const model = base({
     if (opts.organization_id) {
       qb = qb.where(
         'employment.organization_id',
-        '=',
-        opts.organization_id,
+        'in',
+        isString(opts.organization_id)
+          ? [opts.organization_id]
+          : opts.organization_id,
       )
     }
 
@@ -89,3 +92,4 @@ export const findOne = model.findOne
 export const findOneOptional = model.findOneOptional
 export const searchQuery = model.searchQuery
 export const formatResult = model.formatResult
+export const distinctIds = model.distinctIds

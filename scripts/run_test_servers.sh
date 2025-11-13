@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -xeo pipefail
+set -eo pipefail
 
 fail() {
   >&2 echo "$@"
@@ -45,11 +45,6 @@ while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   shift
 done
 
-kill_test_servers() {
-  kill "$http_server_pid" || true
-  kill "$https_proxy_server" || true
-}
-
 ensure_test_servers_not_already_running() {
   if lsof -i "tcp:$HTTP_SERVER_PORT"; then
     fail "There's a process on port $HTTP_SERVER_PORT"
@@ -66,7 +61,6 @@ print_server_log_info() {
 }
 
 cleanup() {
-  kill_test_servers
   if [[ "${CI:-}" == "true" ]]; then
     echo "Server output:"
     cat "$test_http_server_output"

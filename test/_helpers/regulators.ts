@@ -5,12 +5,13 @@ import * as regulators from '../../db/models/regulators.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
 import { route } from '../route.ts'
+import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 
 export function testRegulator() {
   return {
     name: `Test Regulator ${generateUUID()}`,
     email: generateUUID() + '@example.com',
-    avatar_url: generateUUID() + '.com',
+    avatar_media_id: randomAvatarMediaId(),
     country: 'ZA',
   }
 }

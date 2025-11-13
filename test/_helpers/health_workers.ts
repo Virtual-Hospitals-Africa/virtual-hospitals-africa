@@ -1,4 +1,5 @@
 import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
+import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 
@@ -12,7 +13,7 @@ export function testHealthWorker() {
     first_names: 'Test Health Worker',
     preferred_name: 'Test Patient',
     email: generateUUID() + '@example.com',
-    avatar_media_id: null,
+    avatar_media_id: randomAvatarMediaId(),
     access_token: 'access.' + generateUUID(),
     refresh_token: 'refresh.' + generateUUID(),
     expires_in: 3599,
@@ -22,9 +23,7 @@ export function testHealthWorker() {
 
 export function insertHealthWorker(
   trx: TrxOrDb,
-  opts?: Partial<HealthWorkerWithGoogleTokens> & {
-    avatar_media_id?: string | null
-  },
+  opts?: Partial<HealthWorkerWithGoogleTokens>,
 ) {
   const defaults = testHealthWorker()
   return upsertWithGoogleCredentials(trx, {

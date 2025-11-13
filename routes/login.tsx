@@ -8,7 +8,6 @@ import { assert } from 'std/assert/assert.ts'
 import { onProduction } from '../util/onProduction.ts'
 import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
-import randomAvatarMediaId from '../mocks/randomAvatarMediaId.ts'
 import randomNamesAndSex from '../mocks/randomDemographics.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
@@ -18,6 +17,7 @@ import {
 } from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
 import { upsertWithGoogleCredentials } from '../db/models/health_worker_google_tokens.ts'
+import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {

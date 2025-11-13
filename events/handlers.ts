@@ -1,5 +1,4 @@
 import { TrxOrDb } from '../types.ts'
-
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employees from '../db/models/employees.ts'
@@ -7,12 +6,15 @@ import * as notifications from '../db/models/notifications.ts'
 import * as organizations from '../db/models/organizations.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import * as messages from '../db/models/messages.ts'
+import * as message_threads from '../db/models/message_threads.ts'
+
 import * as conversations from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import { organizationOf } from '../shared/employees.ts'
+import { promiseProps } from '../util/promiseProps.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -125,12 +127,17 @@ export const EVENTS = {
     }),
     {
       async sendPharmacistWhatsApp(trx, payload) {
-        const message = await messages.getByIdForSystem(
-          trx,
-          payload.data.message_id,
-        )
+        const { message, thread } = await promiseProps({
+          message: messages.getById(
+            trx,
+            payload.data.message_id,
+          ),
+          thread: message_threads.findOne(trx, {
+            message_id: payload.data.message_id,
+          }),
+        })
 
-        const pharmacist_participants = message.thread.participants.filter(
+        const pharmacist_participants = thread.participants.filter(
           (p) => p.table_name === 'pharmacists',
         )
 

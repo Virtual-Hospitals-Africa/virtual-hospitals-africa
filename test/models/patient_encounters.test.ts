@@ -127,7 +127,9 @@ describe(
                   name: receptionist.name,
                   profession: 'receptionist',
                   specialty: null,
-                  avatar_url: null,
+                  avatar_url: `/health_workers/${
+                    open_encounter.all_employees_seen[0].id
+                  }/avatar`,
                   organization_id: organization.id,
                 },
               ],

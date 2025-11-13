@@ -4,6 +4,7 @@ import {
   PharmacistConversationState,
   TrxOrDb,
 } from '../../types.ts'
+import * as message_threads from '../../db/models/message_threads.ts'
 import * as messages from '../../db/models/messages.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
@@ -38,12 +39,12 @@ export async function handleAskPrescriber(
     typeof thread.sender_participant_id === 'string'
   ) {
     await messages.send(trx, {
-      thread_id: thread.thread_id,
       body,
-      sender: thread.sender_participant_id,
+      thread_id: thread.thread_id,
+      sender_participant_id: thread.sender_participant_id,
     })
   } else {
-    const thread = await messages.createThread(trx, {
+    const thread = await message_threads.create(trx, {
       sender: {
         table_name: 'pharmacists',
         row_id: pharmacistState.chatbot_user.entity_id!,

@@ -61,6 +61,11 @@ type BaseModel<
     trx: TrxOrDb,
     search_terms: SearchTerms,
   ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
+  findFirstOptional(
+    trx: TrxOrDb,
+    terms: SearchTerms,
+  ): Promise<RenderedResult | null>
   findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
   findOneOptional(
     trx: TrxOrDb,
@@ -76,6 +81,7 @@ type BaseModel<
     id: string | IdSelection,
   ): Promise<RenderedResult | null>
   getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
+  distinctIds(trx: TrxOrDb, search_terms: SearchTerms): IdSelection
 }
 type StandardTables = {
   [Table in keyof DB]: DB[Table] extends
@@ -208,12 +214,27 @@ export function base<
         search_terms,
       }
     },
+    async findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
+      const result = await this.searchQuery(trx, terms).limit(1)
+        .executeTakeFirstOrThrow()
+      return formatResult(result)
+    },
+    async findFirstOptional(
+      trx: TrxOrDb,
+      terms: SearchTerms,
+    ): Promise<null | RenderedResult> {
+      const result = await this.searchQuery(trx, terms).limit(1)
+        .executeTakeFirst()
+      return result ? formatResult(result) : null
+    },
     async findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
       const query = this.searchQuery(trx, terms).limit(2)
       const results = await query.execute()
       if (results.length > 1) {
         console.error(asCompiledSql(query))
-        throw new Error('More than one result returned')
+        throw new Error(
+          'Unexpected: more than one result returned. If the query allows for this, but you want the first result, use findFirst instead.',
+        )
       }
       if (results.length === 0) {
         console.error(asCompiledSql(query))
@@ -230,7 +251,9 @@ export function base<
       if (results.length === 0) return null
       if (results.length > 1) {
         console.error(asCompiledSql(query))
-        throw new Error('More than one result returned')
+        throw new Error(
+          'Unexpected: more than one result returned. If the query allows for this, but you want the first result, use findFirstOptional instead.',
+        )
       }
       return formatResult(results[0])
     },
@@ -286,6 +309,16 @@ export function base<
         .values(to_insert as any)
         .returning('id')
         .executeTakeFirstOrThrow()
+    },
+    distinctIds(
+      trx: TrxOrDb,
+      search_terms?: SearchTerms,
+    ): IdSelection {
+      return this.searchQuery(trx, search_terms || {} as SearchTerms)
+        .clearSelect()
+        // deno-lint-ignore no-explicit-any
+        .select(`${top_level_table}.id` as any)
+        .distinct() as unknown as IdSelection
     },
   })
 }

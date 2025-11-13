@@ -1,8 +1,8 @@
-import { sql } from 'kysely'
-import { HasStringId, Maybe, Media, TrxOrDb } from './../../types.ts'
+import { TrxOrDb } from './../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
+import { base } from './_base.ts'
 
 export function insertSpeech(
   trx: TrxOrDb,
@@ -57,48 +57,18 @@ export function insert(
 ): Promise<{
   id: string
   mime_type: string
-  url: string
 }> {
   return trx.insertInto('media')
     .values(opts)
     .returning([
       'id',
       'mime_type',
-      sql<string>`concat('/app/media/', uuid)`.as('url'),
     ])
     .executeTakeFirstOrThrow()
 }
 
-export function get(
-  trx: TrxOrDb,
-  opts: {
-    media_id: string
-    appointment_id?: string
-  },
-): Promise<HasStringId<Media>> {
-  let query = trx
-    .selectFrom('media')
-    .where(
-      'media.id',
-      '=',
-      opts.media_id,
-    )
-
-  if (opts.appointment_id) {
-    query = query
-      .innerJoin(
-        'appointment_media',
-        'appointment_media.media_id',
-        'media.id',
-      )
-      .where(
-        'appointment_media.appointment_id',
-        '=',
-        opts.appointment_id,
-      )
-  }
-
-  return query
+function baseQuery(trx: TrxOrDb) {
+  return trx.selectFrom('media')
     .select([
       'media.id',
       'media.mime_type',
@@ -106,25 +76,36 @@ export function get(
       'media.created_at',
       'media.updated_at',
     ])
-    .executeTakeFirstOrThrow()
 }
 
-export function getByUUID(
-  trx: TrxOrDb,
-  uuid: string,
-): Promise<Maybe<HasStringId<Media>>> {
-  return trx
-    .selectFrom('media')
-    .where(
-      'media.uuid',
-      '=',
-      uuid,
-    ).select([
-      'media.id',
-      'media.mime_type',
-      'media.binary_data',
-      'media.created_at',
-      'media.updated_at',
-    ])
-    .executeTakeFirst()
-}
+const model = base({
+  top_level_table: 'media' as const,
+  baseQuery,
+  formatResult: (x) => x,
+  handleSearch(
+    qb,
+    opts: {
+      media_id?: string
+      appointment_id?: string
+    },
+  ) {
+    if (opts.media_id) {
+      qb = qb.where('media.id', '=', opts.media_id)
+    }
+    if (opts.appointment_id) {
+      qb = qb.innerJoin(
+        'appointment_media',
+        'appointment_media.media_id',
+        'media.id',
+      )
+        .where('appointment_media.appointment_id', '=', opts.appointment_id)
+    }
+    return qb
+  },
+})
+
+export const search = model.search
+export const getById = model.getById
+export const getByIds = model.getByIds
+export const findAll = model.findAll
+export const findOne = model.findOne

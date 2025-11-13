@@ -52,7 +52,7 @@ export async function ofHealthWorker(
         .as('wait_time'),
     )
     .where('health_worker_id', '=', health_worker_id)
-    .orderBy('health_worker_web_notifications.created_at asc')
+    .orderBy('health_worker_web_notifications.created_at', 'asc')
     .$if(
       !!opts?.past_ts,
       (qb) =>

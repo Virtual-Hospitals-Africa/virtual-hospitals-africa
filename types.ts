@@ -3117,38 +3117,26 @@ export type ExaminationChecklistDefinition = {
   }[]
 }
 
-type RenderedMessageThreadParticipantHealthWorker = {
+export type RenderedMessageThreadParticipant = {
+  participant_type: 'employee' | 'pharmacist'
   participant_id: string
-  avatar_url?: Maybe<string>
+  display_name: string
+  description: string
   href: string
-  name: string
-  description: string | string[]
-  is_me: SqlBool
+  avatar_url: Maybe<string>
+  is_me: boolean
   is_system?: false
 }
-
-type RenderedMessageThreadParticipantPharmacist = {
-  participant_id: string
-  avatar_url?: Maybe<string>
-  href: string
-  name: string
-  description: string | string[]
-  is_me: SqlBool
-  is_system?: false
-}
-
-export type RenderedMessageThreadParticipant =
-  | RenderedMessageThreadParticipantHealthWorker
-  | RenderedMessageThreadParticipantPharmacist
 
 export type RenderedMessageSender = RenderedMessageThreadParticipant | {
-  is_system: true
-  name: 'System'
+  participant_type: 'system'
   participant_id?: never
-  avatar_url?: never
-  href?: never
+  display_name: 'System'
   description?: never
+  href?: never
+  avatar_url?: never
   is_me?: never
+  is_system: true
 }
 
 export type RenderedMessageThreadBase = {

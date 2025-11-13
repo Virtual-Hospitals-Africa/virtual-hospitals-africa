@@ -22,7 +22,6 @@ import {
   TARGET_TIME_TO_TREATMENT_MINUTES,
   WorkflowStatus,
 } from '../types.ts'
-import randomAvatarMediaId from '../mocks/randomAvatarMediaId.ts'
 import randomDateOfBirth from '../mocks/randomDateOfBirth.ts'
 import { TriageLevel } from '../types.ts'
 import { Department } from '../shared/departments.ts'
@@ -34,6 +33,7 @@ import { addTestEmployee } from '../test/_helpers/employees.ts'
 import { exists } from '../util/exists.ts'
 import { nonAdminId } from '../shared/nonAdminId.ts'
 import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
+import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 type WaitingRoomScenario = [
   'male' | 'female',

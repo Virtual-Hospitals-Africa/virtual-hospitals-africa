@@ -51,12 +51,19 @@ describe.skip('patient chatbot', () => {
       national_id_number: null,
     })
 
-    // Insert patient_appointment_requests
-    assert(patient_before)
+    await patients.update(db, {
+      id: patient_before.id,
+      location: {
+        latitude: -19.4554096,
+        longitude: 29.7739353,
+      },
+    })
+
     const scheduling_appointment_request = await appointments
       .createNewRequest(trx, {
         patient_id: patient_before.id,
       })
+
     await appointments.upsertRequest(trx, {
       id: scheduling_appointment_request.id,
       patient_id: patient_before.id,

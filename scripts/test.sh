@@ -22,7 +22,6 @@ run_test_server_args=""
 test_servers_were_already_running=false
 test_servers_pid=
 
-
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   if [[ "$1" == "--use-build" ]]; then
     run_test_server_args="--use-build"
@@ -54,6 +53,8 @@ fi
 
 cleanup() {
   if ! [ -z $test_servers_pid ]; then
+    ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT || true
+    ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT || true
     kill $test_servers_pid
   fi
 }

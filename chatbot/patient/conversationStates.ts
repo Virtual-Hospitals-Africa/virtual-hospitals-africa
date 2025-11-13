@@ -19,6 +19,8 @@ import {
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as employees from '../../db/models/employees.ts'
+
 import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
@@ -366,16 +368,33 @@ const conversationStates: ConversationStates<
               patientState.chatbot_user.entity_id,
             )
           assert(scheduling_appointment_request)
+
+          // TODO this is getting closer to the truth, but still isn't quite right
+          const nearest_facilities = await nearestFacilities(
+            trx,
+            patientState.chatbot_user.entity_id,
+          )
+
+          const doctors = await employees.distinctIds(trx, {
+            professions: ['doctor'],
+            organization_id: nearest_facilities.map((o) => o.id),
+          }).execute()
+          const employment_ids = doctors.map((doctor) => doctor.id)
+
           const first_available = await availableSlots(trx, {
             count: 1,
+            employment_ids,
           })
 
-          assert(first_available.length > 0)
+          assert(
+            first_available.length > 0,
+            'TODO handle no appointments available',
+          )
 
           await appointments.addOfferedTime(trx, {
             patient_appointment_request_id:
               scheduling_appointment_request.patient_appointment_request_id,
-            provider_id: first_available[0].provider.provider_id,
+            provider_id: first_available[0].provider.employee_id,
             start: first_available[0].start,
             end: first_available[0].end,
             duration_minutes: first_available[0].duration_minutes,
@@ -456,9 +475,20 @@ const conversationStates: ConversationStates<
             tomorrow.getTime() + (24 * 60 * 60 * 1000),
           )
 
+          const nearest_facilities = await nearestFacilities(
+            trx,
+            patientState.chatbot_user.entity_id,
+          )
+          const doctors = await employees.distinctIds(trx, {
+            professions: ['doctor'],
+            organization_id: nearest_facilities.map((o) => o.id),
+          }).execute()
+          const employment_ids = doctors.map((doctor) => doctor.id)
+
           const filtered_available_times = await availableSlots(
             trx,
             {
+              employment_ids,
               declined_times: declined_times.map((time) =>
                 formatJohannesburg(time)
               ),
@@ -477,7 +507,7 @@ const conversationStates: ConversationStates<
               appointments.addOfferedTime(trx, {
                 patient_appointment_request_id:
                   scheduling_appointment_request.patient_appointment_request_id,
-                provider_id: timeslot.provider.provider_id,
+                provider_id: timeslot.provider.employee_id,
                 start: timeslot.start,
                 end: timeslot.end,
                 duration_minutes: timeslot.duration_minutes,

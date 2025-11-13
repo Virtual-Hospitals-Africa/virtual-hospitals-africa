@@ -788,7 +788,7 @@ export interface Messages {
   created_at: Generated<Timestamp>
   id: Generated<string>
   is_from_system: Generated<boolean>
-  sender_id: string | null
+  sender_participant_id: string | null
   thread_id: string
   updated_at: Generated<Timestamp>
 }

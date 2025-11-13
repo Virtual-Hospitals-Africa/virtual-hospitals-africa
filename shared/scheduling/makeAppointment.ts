@@ -5,8 +5,10 @@ import {
   formatJohannesburg,
   isIsoJohannesburg,
 } from '../../util/date.ts'
-import { get as getProvider } from '../../db/models/providers.ts'
+import * as employees from '../../db/models/employees.ts'
 import * as appointments from '../../db/models/appointments.ts'
+import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
+import * as google_tokens from '../../db/models/google_tokens.ts'
 import {
   DeepPartial,
   GCalEvent,
@@ -16,7 +18,7 @@ import {
   SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
+import { assertOr400, assertOr401 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
 
@@ -85,17 +87,32 @@ export async function makeAppointmentChatbot(
     'No provider_id found',
   )
 
-  const matching_provider = await getProvider(
+  const matching_provider = await employees.getById(
     trx,
     acceptedTime.provider_id,
+  )
+  const tokens = await google_tokens.getByEntityId(
+    trx,
+    'health_worker',
+    matching_provider.id,
+  )
+  const calendars = await health_worker_organization_calendars.findOne(
+    trx,
+    matching_provider,
+  )
+
+  assertOr401(tokens)
+  assertOr401(
+    calendars?.availability_set,
+    'Google calendar availability not yet set',
   )
 
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
   const inserted_event = await insertEvent(
-    matching_provider,
-    matching_provider.gcal_appointments_calendar_id,
+    tokens,
+    calendars.gcal_appointments_calendar_id,
     gcal,
   )
 
@@ -148,14 +165,29 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matching_provider = await getProvider(
+  const matching_provider = await employees.getById(
     trx,
     values.provider_ids[0],
   )
+  const tokens = await google_tokens.getByEntityId(
+    trx,
+    'health_worker',
+    matching_provider.id,
+  )
+  const calendars = await health_worker_organization_calendars.findOne(
+    trx,
+    matching_provider,
+  )
+
+  assertOr401(tokens)
+  assertOr401(
+    calendars?.availability_set,
+    'Google calendar availability not yet set',
+  )
 
   const inserted_event = await insertEvent(
-    matching_provider,
-    matching_provider.gcal_appointments_calendar_id,
+    tokens,
+    calendars.gcal_appointments_calendar_id,
     gcal({
       start: values.start,
       end: values.end,

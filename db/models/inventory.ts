@@ -23,12 +23,14 @@ import {
 } from '../../types.ts'
 import {
   jsonArrayFromColumn,
+  jsonObjectFrom,
   literalNumber,
   literalOptionalDate,
   literalString,
   longFormattedDateTime,
 } from '../helpers.ts'
 import { strengthDisplay } from './manufactured_medications.ts'
+import * as employees from './employees.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -185,15 +187,10 @@ function consumptionQuery(
     .select((eb) => [
       'procurement.id as procurement_id',
       sql<'consumption'>`'consumption'`.as('interaction'),
-      jsonBuildObject({
-        name: eb.ref('health_workers.name'),
-        href: sql<
-          string
-        >`'/app/organizations/' || ${opts.organization_id} || '/employees/' || ${
-          eb.ref('health_workers.id')
-        }`,
-        avatar_url: eb.ref('health_workers.avatar_url'),
-      }).as('created_by'),
+      jsonObjectFrom(
+        employees.baseQuery(trx)
+          .where('employment.id', '=', eb.ref('consumption.created_by')),
+      ).$notNull().as('created_by'),
       sql<null>`NULL`.as('procured_from'),
       sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
@@ -230,15 +227,10 @@ function procurementQuery(
     .select((eb) => [
       'procurement.id as procurement_id',
       sql<'procurement'>`'procurement'`.as('interaction'),
-      jsonBuildObject({
-        name: eb.ref('health_workers.name'),
-        href: sql<
-          string
-        >`'/app/organizations/' || ${opts.organization_id} || '/employees/' || ${
-          eb.ref('health_workers.id')
-        }`,
-        avatar_url: eb.ref('health_workers.avatar_url'),
-      }).as('created_by'),
+      jsonObjectFrom(
+        employees.baseQuery(trx)
+          .where('employment.id', '=', eb.ref('procurement.created_by')),
+      ).$notNull().as('created_by'),
       jsonBuildObject({
         id: eb.ref('procurers.id'),
         name: eb.ref('procurers.name'),
