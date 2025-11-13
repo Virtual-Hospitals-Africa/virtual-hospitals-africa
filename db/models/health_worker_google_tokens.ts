@@ -28,7 +28,11 @@ export async function upsertWithGoogleCredentials(
 ): Promise<HealthWorkerWithGoogleTokens> {
   const health_worker = await health_workers.upsert(
     trx,
-    health_workers.pickHealthWorkerDetails(details),
+    {
+      name: details.name,
+      email: details.email,
+      avatar_media_id: details.avatar_media_id,
+    },
   )
   const tokens = pickTokens(details)
   assert(tokens.access_token)
@@ -55,7 +59,6 @@ export function getWithTokensQuery(trx: TrxOrDb) {
     )
     .select([
       'health_workers.id',
-      'avatar_url',
       'email',
       'name',
       'access_token',

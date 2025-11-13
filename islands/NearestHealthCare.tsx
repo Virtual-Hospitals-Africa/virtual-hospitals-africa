@@ -12,7 +12,7 @@ export function NearestHealthCareSection(
   },
 ) {
   const nearest_health_facility_signal = useSignal(nearest_health_facility)
-  let doctor_search_href = '/app/providers?profession=doctor'
+  let doctor_search_href = '/app/providers?professions=[doctor]'
   if (nearest_health_facility_signal.value) {
     doctor_search_href +=
       `&prioritize_organization_id=${nearest_health_facility_signal.value.id}`

@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { UpdateResult } from 'kysely'
+import { sql, UpdateResult } from 'kysely'
 import {
   EmployedHealthWorker,
   HasStringId,
@@ -24,11 +24,19 @@ import { base } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
+import isString from '../../util/isString.ts'
+
+export const avatar_url_sql = sql<string | null>`
+  CASE WHEN health_workers.avatar_media_id IS NOT NULL
+    THEN concat('/health_workers/', health_workers.id::text, '/avatar')
+    ELSE NULL
+  END
+`
 
 type HealthWorkerUpsert =
   & {
     id?: string
-    avatar_url: string
+    avatar_media_id?: string | null
     email: string
   }
   & NameInputs
@@ -58,7 +66,7 @@ export function upsert(
       'surname',
       'preferred_name',
       'email',
-      'avatar_url',
+      'avatar_media_id',
     ])
     .executeTakeFirstOrThrow()
 }
@@ -83,7 +91,7 @@ export function updateNames(
 export const pickHealthWorkerDetails = pick([
   'name',
   'email',
-  'avatar_url',
+  'avatar_media_id',
 ])
 
 export function isHealthWorker(
@@ -116,7 +124,7 @@ export function baseQuery(trx: TrxOrDb) {
       'health_workers.surname',
       'health_workers.preferred_name',
       'health_workers.email',
-      'health_workers.avatar_url',
+      avatar_url_sql.as('avatar_url'),
       jsonArrayFrom(
         organizations.baseQuery(trx)
           .where(
@@ -200,7 +208,7 @@ export function baseQuery(trx: TrxOrDb) {
 
 export type HealthWorkerSearch = {
   search?: Maybe<string>
-  organization_id?: Maybe<string>
+  organization_id?: string | string[] | IdSelection
   professions?: Maybe<Profession[]>
   prioritize_organization_id?: Maybe<string>
 }
@@ -234,7 +242,13 @@ const model = base({
         'health_workers.id',
         'in',
         trx.selectFrom('employment')
-          .where('organization_id', '=', opts.organization_id)
+          .where(
+            'organization_id',
+            'in',
+            isString(opts.organization_id)
+              ? [opts.organization_id]
+              : opts.organization_id,
+          )
           .select('health_worker_id'),
       )
     }
@@ -279,6 +293,15 @@ export async function getEmployed(
   const health_worker = await getById(trx, health_worker_id)
   assert(isEmployed(health_worker))
   return health_worker
+}
+
+export function getAvatar(trx: TrxOrDb, opts: { health_worker_id: string }) {
+  return trx
+    .selectFrom('media')
+    .innerJoin('health_workers', 'health_workers.avatar_media_id', 'media.id')
+    .select(['media.mime_type', 'media.binary_data'])
+    .where('health_workers.id', '=', opts.health_worker_id)
+    .executeTakeFirst()
 }
 
 export function removeById(

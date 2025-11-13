@@ -43,6 +43,13 @@ describe('patient chatbot', () => {
       phone_number,
       ...randomDemographics(),
     })
+    await patients.update(db, {
+      id: patient_before.id,
+      location: {
+        latitude: -19.4554096,
+        longitude: 29.7739353,
+      },
+    })
 
     // Insert patient_appointment_requests
     assert(patient_before)

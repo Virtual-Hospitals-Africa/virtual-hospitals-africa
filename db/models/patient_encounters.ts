@@ -19,6 +19,7 @@ import {
   WorkflowStatus,
 } from '../../types.ts'
 import * as patients from './patients.ts'
+import * as employees from './employees.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import * as organizations from './organizations.ts'
 import { nonAdminId } from '../../shared/nonAdminId.ts'
@@ -250,31 +251,17 @@ export function baseQuery(trx: TrxOrDb) {
             'appointments.id',
             'appointments.start',
             jsonArrayFrom(
-              eb_appointments.selectFrom('appointment_providers')
+              employees.baseQuery(trx)
                 .innerJoin(
-                  'employment',
-                  'employment.id',
+                  'appointment_providers',
                   'appointment_providers.provider_id',
+                  'employment.id',
                 )
-                .innerJoin(
-                  'health_workers',
-                  'health_workers.id',
-                  'employment.health_worker_id',
-                )
-                .whereRef(
+                .where(
                   'appointment_providers.appointment_id',
                   '=',
-                  'appointments.id',
-                )
-                .select([
-                  'health_workers.id as health_worker_id',
-                  'employment.id as employment_id',
-                  'health_workers.name',
-                  'employment.organization_id',
-                  'health_workers.avatar_url',
-                  'employment.specialty',
-                  'employment.profession',
-                ]),
+                  eb_appointments.ref('appointments.id'),
+                ),
             ).as('providers'),
           ]),
       ).as('appointment'),

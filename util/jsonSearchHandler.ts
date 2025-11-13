@@ -48,6 +48,8 @@ export function jsonSearchHandler<
           page = parseInt(value) || 1
         } else if (value === 'true' || value === 'false') {
           search_terms[key] = value === 'true'
+        } else if (value.startsWith('[')) {
+          search_terms[key] = value.slice(1, -1).split(',')
         } else {
           // TODO use zod to parse all this?
           // const as_int = parseInt(value)

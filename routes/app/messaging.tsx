@@ -1,5 +1,5 @@
 import { LoggedInHealthWorkerContext } from '../../types.ts'
-import * as messages from '../../db/models/messages.ts'
+import * as message_threads from '../../db/models/message_threads.ts'
 import ThreadList from '../../islands/messages/ThreadList.tsx'
 import { HealthWorkerHomePageLayout } from './_middleware.tsx'
 
@@ -8,9 +8,9 @@ export default HealthWorkerHomePageLayout(
   async function MessagingPage(
     ctx: LoggedInHealthWorkerContext,
   ) {
-    const threads = await messages.getThreadsWithMostRecentMessages(
+    const threads = await message_threads.getForHealthWorker(
       ctx.state.trx,
-      messages.participantsQueryForHealthWorker(ctx.state.health_worker),
+      ctx.state.health_worker,
     )
     return <ThreadList threads={threads} />
   },

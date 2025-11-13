@@ -1,10 +1,17 @@
+import { SelectQueryBuilder, sql } from 'kysely'
 import { RenderedEmployee, TrxOrDb } from '../../types.ts'
 import * as health_workers from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { DB } from '../../db.d.ts'
+import isString from '../../util/isString.ts'
 
-export function baseQuery(trx: TrxOrDb) {
+export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
+  DB,
+  'health_workers' | 'employment',
+  RenderedEmployee
+> {
   return health_workers.baseQuery(trx)
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .select([
@@ -12,6 +19,9 @@ export function baseQuery(trx: TrxOrDb) {
       'employment.organization_id',
       'employment.profession',
       'employment.specialty',
+      sql<string>`
+        '/app/organizations/' || employment.organization_id::text || '/employees/' || employment.health_worker_id::text
+      `.as('href'),
     ])
 }
 
@@ -29,7 +39,10 @@ const model = base({
   },
   handleSearch(
     qb,
-    opts: health_workers.HealthWorkerSearch,
+    opts: health_workers.HealthWorkerSearch & {
+      // TODO
+      include_incomplete_registration?: boolean
+    },
   ) {
     if (opts.search) {
       qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
@@ -47,8 +60,10 @@ const model = base({
     if (opts.organization_id) {
       qb = qb.where(
         'employment.organization_id',
-        '=',
-        opts.organization_id,
+        'in',
+        isString(opts.organization_id)
+          ? [opts.organization_id]
+          : opts.organization_id,
       )
     }
 
@@ -69,6 +84,7 @@ const model = base({
 })
 
 export const getById = model.getById
+export const getByIds = model.getByIds
 export const getByIdOptional = model.getByIdOptional
 export const search = model.search
 export const findAll = model.findAll
@@ -76,3 +92,4 @@ export const findOne = model.findOne
 export const findOneOptional = model.findOneOptional
 export const searchQuery = model.searchQuery
 export const formatResult = model.formatResult
+export const distinctIds = model.distinctIds

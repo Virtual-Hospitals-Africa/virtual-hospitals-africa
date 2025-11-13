@@ -89,7 +89,7 @@ async function addPrescription(
 
   const { id } = await prescriptions.upsert(ctx.state.trx, {
     doctor_review_id: ctx.state.doctor_review.review_id,
-    prescriber_id: ctx.state.doctor_review.employment_id,
+    prescriber_id: ctx.state.doctor_review.reviewer_id,
     patient_id: ctx.state.doctor_review.patient.id,
     prescribing,
   })
@@ -137,7 +137,7 @@ export default async function PrescriptionsPage(
   const { patient_diagnoses, patient_prescription } = await promiseProps({
     patient_diagnoses: diagnoses.getFromReview(trx, {
       review_id,
-      employment_id: ctx.state.doctor_review.employment_id,
+      employment_id: ctx.state.doctor_review.reviewer_id,
       patient_encounter_id: ctx.state.doctor_review.encounter.id,
     }),
     patient_prescription: prescriptions.getFromReview(trx, { review_id }),

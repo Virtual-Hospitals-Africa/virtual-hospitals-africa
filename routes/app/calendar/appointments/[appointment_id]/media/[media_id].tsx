@@ -6,7 +6,7 @@ export const handler = {
   async GET(ctx: LoggedInHealthWorkerContext) {
     const { appointment_id, media_id } = ctx.params
 
-    const appointment_media = await media.get(ctx.state.trx, {
+    const appointment_media = await media.findOne(ctx.state.trx, {
       media_id,
       appointment_id,
     })

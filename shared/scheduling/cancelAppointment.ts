@@ -2,8 +2,11 @@ import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as google from '../../external-clients/google.ts'
 import { scheduledAppointments } from '../../db/models/patient_appointments.ts'
-import { get } from '../../db/models/providers.ts'
+import { getById } from '../../db/models/employees.ts'
+import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
+import * as google_tokens from '../../db/models/google_tokens.ts'
 import { remove } from '../../db/models/appointments.ts'
+import { assertOr401 } from '../../util/assertOr.ts'
 
 // This should remove the scheduled appointment from the database and from google calendar
 export async function cancelAppointment(
@@ -25,14 +28,29 @@ export async function cancelAppointment(
   )
   await remove(trx, scheduled_appointment.id)
 
-  const matching_provider = await get(
+  const matching_provider = await getById(
     trx,
     scheduled_appointment.provider_id,
   )
+  const tokens = await google_tokens.getByEntityId(
+    trx,
+    'health_worker',
+    matching_provider.id,
+  )
+  const calendars = await health_worker_organization_calendars.findOne(
+    trx,
+    matching_provider,
+  )
 
-  const health_worker_google_client = new google.GoogleClient(matching_provider)
+  assertOr401(tokens)
+  assertOr401(
+    calendars?.availability_set,
+    'Google calendar availability not yet set',
+  )
+
+  const health_worker_google_client = new google.GoogleClient(tokens)
   await health_worker_google_client.deleteEvent(
-    matching_provider.gcal_appointments_calendar_id,
+    calendars.gcal_appointments_calendar_id,
     scheduled_appointment.gcal_event_id,
   )
 }

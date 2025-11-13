@@ -1,16 +1,20 @@
 import { TrxOrDb } from '../types.ts'
-
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+import * as employees from '../db/models/employees.ts'
 import * as notifications from '../db/models/notifications.ts'
 import * as organizations from '../db/models/organizations.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import * as messages from '../db/models/messages.ts'
+import * as message_threads from '../db/models/message_threads.ts'
+
 import * as conversations from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
 import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
+import { organizationOf } from '../shared/employees.ts'
+import { promiseProps } from '../util/promiseProps.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -66,8 +70,9 @@ export const EVENTS = {
           action_title: 'Review',
           avatar_url: doctor_review_request.requested_by.avatar_url ||
             '/images/heroicons/24/solid/slipboard-document-list.svg',
-          description:
-            `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
+          description: `${doctor_review_request.requested_by.name} at ${
+            organizationOf(doctor_review_request.requested_by).name
+          } has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
           employment_id: doctor_review_request.requesting.doctor_id,
           table_name: 'doctor_review_requests',
           row_id: payload.data.review_request_id,
@@ -99,8 +104,9 @@ export const EVENTS = {
             action_title: 'Review',
             avatar_url: doctor_review_request.requested_by.avatar_url ||
               '/images/heroicons/24/solid/slipboard-document-list.svg',
-            description:
-              `${doctor_review_request.requested_by.name} at ${doctor_review_request.requested_by.organization.name} has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
+            description: `${doctor_review_request.requested_by.name} at ${
+              organizationOf(doctor_review_request.requested_by).name
+            } has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
             employment_id: doctor.professions.find((p) =>
               p.profession === 'doctor'
             )!.employee_id,
@@ -121,12 +127,17 @@ export const EVENTS = {
     }),
     {
       async sendPharmacistWhatsApp(trx, payload) {
-        const message = await messages.getByIdForSystem(
-          trx,
-          payload.data.message_id,
-        )
+        const { message, thread } = await promiseProps({
+          message: messages.getById(
+            trx,
+            payload.data.message_id,
+          ),
+          thread: message_threads.findOne(trx, {
+            message_id: payload.data.message_id,
+          }),
+        })
 
-        const pharmacist_participants = message.thread.participants.filter(
+        const pharmacist_participants = thread.participants.filter(
           (p) => p.table_name === 'pharmacists',
         )
 
@@ -201,38 +212,26 @@ export const EVENTS = {
   DoctorReviewCompleted: defineEvent(
     z.object({
       review_id: z.string().uuid(),
-      employment_id: z.string().uuid(),
-      patient_id: z.string().uuid(),
-      patient_name: z.string(),
-      doctor_name: z.string(),
-      doctor_avatar_url: z.string().nullable(),
-      requested_by: z.object({
-        health_worker_id: z.string().uuid(),
-        profession: z.string(),
-        name: z.string(),
-        avatar_url: z.string().nullable(),
-        organization: z.object({
-          name: z.string(),
-          id: z.string().uuid(),
-        }),
-        patient_encounter_employee_id: z.string().uuid(),
-      }),
     }),
     {
-      notifyOriginalRequester(_trx, _payload) {
-        return notifications.insert(_trx, {
+      async notifyOriginalRequester(trx, payload) {
+        const review = await doctor_reviews.getById(trx, payload.data.review_id)
+        const doctor = await employees.getById(trx, review.reviewer_id)
+
+        return notifications.insert(trx, {
           action_title: 'View completed review',
-          avatar_url: _payload.data.doctor_avatar_url ||
+          avatar_url: doctor.avatar_url ||
             '/images/heroicons/24/solid/slipboard-document-list.svg',
-          description:
-            `Doctor ${_payload.data.doctor_name} at ${_payload.data.requested_by.organization.name} has reviewed ${_payload.data.patient_name}`,
-          health_worker_id: _payload.data.requested_by.health_worker_id,
+          description: `Doctor ${doctor.name} at ${
+            organizationOf(review.requested_by).name
+          } has reviewed ${review.patient.name}`,
+          health_worker_id: review.requested_by.id,
           table_name: 'doctor_review_requests',
-          row_id: _payload.data.review_id,
+          row_id: review.review_id,
           notification_type: 'doctor_review_request',
           title: 'Review Requested',
           action_href:
-            `/app/patients/${_payload.data.patient_id}/review/clinical_notes`,
+            `/app/patients/${review.patient.id}/review/clinical_notes`,
         })
       },
     },

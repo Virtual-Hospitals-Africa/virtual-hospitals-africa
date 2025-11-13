@@ -32,6 +32,7 @@ import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 import { SERVER_COUNTRY } from './countries.ts'
+import { avatar_url_sql } from './health_workers.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -243,7 +244,7 @@ export function getEmployeesQuery(
           'health_workers.name as name',
           'health_workers.email as email',
           'health_workers.name as display_name',
-          'health_workers.avatar_url as avatar_url',
+          avatar_url_sql.as('avatar_url'),
           eb.selectFrom('sessions')
             .whereRef(
               'sessions.entity_id',
@@ -321,7 +322,7 @@ export function getAllEmployeesWithoutActionQuery(
           'health_workers.name as name',
           'health_workers.email as email',
           'health_workers.name as display_name',
-          'health_workers.avatar_url as avatar_url',
+          avatar_url_sql.as('avatar_url'),
           eb.selectFrom('sessions')
             .whereRef(
               'sessions.entity_id',

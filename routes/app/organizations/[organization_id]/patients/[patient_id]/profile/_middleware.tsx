@@ -17,6 +17,7 @@ import { RenderedPatient } from '../../../../../../../types.ts'
 import { ActionButton } from '../../../../../../../components/library/ActionButton.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../../../../../../util/haveNames.ts'
+import { employeeDisplay } from '../../../../../../../util/healthWorkerDisplay.ts'
 
 export type PatientProfileState = {
   patient: RenderedPatient & {
@@ -123,11 +124,11 @@ export const PatientProfilePage = (
 
                       {primary_doctor && (
                         <a
-                          href={`/app/organizations/${primary_doctor.organization.id}/employees/${primary_doctor.health_worker_id}`}
+                          href={primary_doctor.href}
                           title={`View details of Dr. ${primary_doctor.name}`}
                           className='text-blue-600 hover:underline'
                         >
-                          Dr. {primary_doctor.name}
+                          {employeeDisplay(primary_doctor).display_name}
                         </a>
                       )}
                       {nearest_organization && (

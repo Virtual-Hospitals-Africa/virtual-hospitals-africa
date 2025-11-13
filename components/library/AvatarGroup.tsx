@@ -1,10 +1,11 @@
+import { Maybe } from '../../types.ts'
 import { initials } from '../../util/initials.ts'
 import Avatar from './Avatar.tsx'
 
 type AvatarGroupProps = {
   people: {
     name: string
-    avatar_url?: string
+    avatar_url?: Maybe<string>
   }[]
   plus_count?: number
 }

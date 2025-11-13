@@ -1,5 +1,6 @@
 import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
+import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
@@ -37,11 +38,8 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
             <Person
               key={employee.id}
               person={{
-                name: employee.name,
-                avatar_url: employee.avatar_url,
-                description: employee.specialty,
-                href:
-                  `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
+                ...employee,
+                ...employeeDisplay(employee),
               }}
             />
           ))}

@@ -8,6 +8,7 @@ import {
 } from '../../../../../../../external-clients/google.ts'
 import { parseDateTime } from '../../../../../../../util/date.ts'
 import { uniqBy } from '../../../../../../../util/uniqBy.ts'
+import { organizationOf } from '../../../../../../../shared/employees.ts'
 
 export default PatientProfilePage(
   'Appointments',
@@ -27,7 +28,7 @@ export default PatientProfilePage(
       patient_appointments.map(async (appt) => {
         const first_provider = appt.providers[0]
         const organizations = uniqBy(
-          appt.providers.flatMap((p) => p.organization),
+          appt.providers.map(organizationOf),
           'id',
         )
 
@@ -44,17 +45,17 @@ export default PatientProfilePage(
           first_provider,
           `Could not find a provider for a patient appointment ${appt.id}`,
         )
-        const google_client = new HealthWorkerGoogleClient(ctx.state.trx, {
-          ...first_provider,
-          id: first_provider.health_worker_id,
-        })
+        const google_client = new HealthWorkerGoogleClient(
+          ctx.state.trx,
+          first_provider,
+        )
         const gcal_item = await google_client.getEvent(
           first_provider.gcal_appointments_calendar_id,
           appt.gcal_event_id,
         )
         assert(
           gcal_item,
-          `Could not find event ${appt.gcal_event_id} in google calendar for provider ${first_provider.provider_id}`,
+          `Could not find event ${appt.gcal_event_id} in google calendar for provider ${first_provider.employee_id}`,
         )
 
         return {

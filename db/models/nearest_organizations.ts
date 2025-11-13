@@ -3,6 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
+import * as employees from './employees.ts'
 
 export type SearchOpts = {
   location: Coordinates
@@ -41,38 +42,14 @@ export function baseQuery(
       sql<string>`'https://maps.google.com'`.as('google_maps_link'),
       sql<string>`'Open'`.as('status'),
       jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'health_workers',
-            'health_workers.id',
-            'employment.health_worker_id',
-          )
-          .select([
-            'employment.id as employment_id',
-            'employment.health_worker_id',
-            'health_workers.email',
-            'health_workers.name',
-          ])
+        employees.baseQuery(trx)
           .where('employment.profession', '=', 'admin')
-          .whereRef('employment.organization_id', '=', 'organizations.id'),
+          .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('admins'),
       jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'health_workers',
-            'employment.health_worker_id',
-            'health_workers.id',
-          )
-          .select([
-            'health_workers.name',
-            'health_workers.avatar_url',
-          ])
-          .whereRef(
-            'employment.organization_id',
-            '=',
-            'organizations.id',
-          )
-          .where('employment.profession', '=', 'doctor'),
+        employees.baseQuery(trx)
+          .where('employment.profession', '=', 'doctor')
+          .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('doctors'),
       jsonArrayFrom(
         eb.selectFrom('organization_departments')

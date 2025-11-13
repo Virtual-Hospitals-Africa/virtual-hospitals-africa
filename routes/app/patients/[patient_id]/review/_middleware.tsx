@@ -37,10 +37,10 @@ export async function handler(
   )
 
   const { organizations } = ctx.state.health_worker
-  const { employment_id } = doctor_review
+  const { reviewer_id } = doctor_review
   const reviewing_via_employment = organizations.find((org) =>
     org.roles.some((role) =>
-      role.profession === 'doctor' && role.employment_id === employment_id
+      role.profession === 'doctor' && role.employment_id === reviewer_id
     )
   )
   assertOr400(reviewing_via_employment, 'Doctor employment not found')
@@ -50,7 +50,7 @@ export async function handler(
     {
       doctor_review,
       reviewing_via_employment: {
-        employment_id,
+        employment_id: reviewer_id,
         organization_id: reviewing_via_employment.id,
       },
     },
@@ -64,7 +64,8 @@ const nav_links = DOCTOR_REVIEW_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/review/${step}`,
 }))
 
-export const nextLink = ({ route, params }: Context<unknown>) => {
+// deno-lint-ignore no-explicit-any
+export const nextLink = ({ route, params }: Context<any>) => {
   const current_index = nav_links.findIndex(
     (link) => link.route === route,
   )

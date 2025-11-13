@@ -1,11 +1,6 @@
+import { assert } from 'std/assert/assert.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
-import {
-  DB,
-  DoctorReviewStep,
-  Employment,
-  HealthWorkers,
-  Organizations,
-} from '../../db.d.ts'
+import { DB, DoctorReviewStep } from '../../db.d.ts'
 import {
   HealthWorkerOrganization,
   IdSelection,
@@ -22,13 +17,14 @@ import {
   literalString,
   now,
 } from '../helpers.ts'
-import { assert } from 'std/assert/assert.ts'
 import roleByProfession from '../../shared/roleByProfession.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import { ensureDoctorId } from './doctor.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { exists } from '../../util/exists.ts'
+import { base } from './_base.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -62,41 +58,18 @@ export function getCardQuery(
     ])
 }
 
-export function ofHealthWorker(
+export function baseQuery(
   trx: TrxOrDb,
-  health_worker_id: string | IdSelection,
 ) {
   return trx.selectFrom('doctor_reviews')
-    .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
-    .innerJoin(
-      'patient_encounter_employees',
-      'doctor_reviews.requested_by',
-      'patient_encounter_employees.id',
-    )
     .innerJoin(
       'patient_encounters',
       'doctor_reviews.patient_encounter_id',
       'patient_encounters.id',
     )
-    .innerJoin(
-      'employment as requested_by_employee',
-      'patient_encounter_employees.employment_id',
-      'requested_by_employee.id',
-    )
-    .innerJoin(
-      'organizations',
-      'requested_by_employee.organization_id',
-      'organizations.id',
-    )
-    .innerJoin(
-      'health_workers as requested_by_health_worker',
-      'requested_by_employee.health_worker_id',
-      'requested_by_health_worker.id',
-    )
-    .where('employment.health_worker_id', '=', health_worker_id)
     .select((eb) => [
       'doctor_reviews.id as review_id',
-      'employment.id as employment_id',
+      'doctor_reviews.reviewer_id',
       eb('completed_at', 'is not', null).as('completed'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
@@ -109,19 +82,14 @@ export function ofHealthWorker(
           eb.ref('doctor_reviews.patient_id'),
         ),
       ).$notNull().as('patient'),
-      jsonBuildObject({
-        name: eb.ref('requested_by_health_worker.name'),
-        avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
-        profession: eb.ref('requested_by_employee.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
-        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
-        organization: jsonBuildObject({
-          id: eb.ref('organizations.id'),
-          name: eb.ref('organizations.name'),
-        }),
-        health_worker_id: eb.ref('requested_by_health_worker.id'),
-      }).as('requested_by'),
+      jsonObjectFrom(
+        patient_encounter_employees.baseQuery(trx)
+          .where(
+            'patient_encounter_employees.id',
+            '=',
+            eb.ref('doctor_reviews.requested_by'),
+          ),
+      ).$notNull().as('requested_by'),
       jsonArrayFromColumn(
         'step',
         eb.selectFrom('doctor_review_steps')
@@ -135,49 +103,47 @@ export function ofHealthWorker(
     ])
 }
 
+const model = base({
+  top_level_table: 'doctor_reviews',
+  baseQuery,
+  formatResult: (x: RenderedDoctorReview): RenderedDoctorReview => x,
+  handleSearch(
+    _qb,
+    _opts: { search: string | null },
+  ) {
+    throw new Error('not implemented')
+  },
+})
+
+export const getById = model.getById
+
+export function ofHealthWorker(
+  trx: TrxOrDb,
+  health_worker_id: string | IdSelection,
+) {
+  return baseQuery(trx)
+    .where(
+      'doctor_reviews.reviewer_id',
+      'in',
+      trx.selectFrom('employment')
+        .where('health_worker_id', '=', health_worker_id)
+        .select('employment.id')
+        .distinct(),
+    )
+}
+
 export function requests(
   trx: TrxOrDb,
 ): SelectQueryBuilder<
-  DB & {
-    requested_by_employee: Employment
-  } & {
-    requested_by_organization: Organizations
-  } & {
-    requested_by_health_worker: HealthWorkers
-  },
-  | 'doctor_review_requests'
-  | 'patient_encounter_employees'
-  | 'patient_encounters'
-  | 'requested_by_employee'
-  | 'requested_by_organization'
-  | 'requested_by_health_worker',
+  DB,
+  'doctor_review_requests' | 'patient_encounters',
   RenderedDoctorReviewRequest
 > {
   return trx.selectFrom('doctor_review_requests')
     .innerJoin(
-      'patient_encounter_employees',
-      'doctor_review_requests.requested_by',
-      'patient_encounter_employees.id',
-    )
-    .innerJoin(
       'patient_encounters',
       'doctor_review_requests.patient_encounter_id',
       'patient_encounters.id',
-    )
-    .innerJoin(
-      'employment as requested_by_employee',
-      'patient_encounter_employees.employment_id',
-      'requested_by_employee.id',
-    )
-    .innerJoin(
-      'organizations as requested_by_organization',
-      'requested_by_employee.organization_id',
-      'requested_by_organization.id',
-    )
-    .innerJoin(
-      'health_workers as requested_by_health_worker',
-      'requested_by_employee.health_worker_id',
-      'requested_by_health_worker.id',
     )
     .where('patient_encounters.reason', 'is not', null)
     .select((eb) => [
@@ -197,19 +163,14 @@ export function requests(
           eb.ref('doctor_review_requests.patient_id'),
         ),
       ).$notNull().as('patient'),
-      jsonBuildObject({
-        name: eb.ref('requested_by_health_worker.name'),
-        avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
-        profession: eb.ref('requested_by_employee.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
-        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
-        organization: jsonBuildObject({
-          id: eb.ref('requested_by_organization.id'),
-          name: eb.ref('requested_by_organization.name'),
-        }),
-        health_worker_id: eb.ref('requested_by_health_worker.id'),
-      }).as('requested_by'),
+      jsonObjectFrom(
+        patient_encounter_employees.baseQuery(trx)
+          .where(
+            'patient_encounter_employees.id',
+            '=',
+            eb.ref('doctor_review_requests.requested_by'),
+          ),
+      ).$notNull().as('requested_by'),
     ])
 }
 
@@ -364,6 +325,7 @@ export async function addSelfAsReviewer(
 
   const started_review = {
     ...requested,
+    reviewer_id: requested.employment_id,
     review_id: review.id,
     steps_completed: [],
     completed: false,

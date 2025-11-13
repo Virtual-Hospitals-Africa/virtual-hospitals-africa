@@ -5,6 +5,7 @@ import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
+import matching from '../../util/matching.ts'
 
 describe(
   '/app/providers',
@@ -21,7 +22,7 @@ describe(
         },
       )
       const response = await fetch(
-        `${route}/app/providers?profession=nurse&search=${health_worker.name}`,
+        `${route}/app/providers?professions=[nurse]&search=${health_worker.name}`,
         {
           headers: {
             Accept: 'application/json',
@@ -29,10 +30,10 @@ describe(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      const json = await response.json()
-      assert(Array.isArray(json))
+      const { results } = await response.json()
+      assert(Array.isArray(results))
 
-      const found = json.find((hw) => hw.health_worker_id === health_worker.id)
+      const found = results.find(matching({ id: health_worker.id }))
       assert(found)
       assertEquals(found.name, health_worker.name)
     })

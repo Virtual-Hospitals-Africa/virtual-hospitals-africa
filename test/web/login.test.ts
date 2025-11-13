@@ -6,7 +6,10 @@ import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
-import { withTestOrganization } from '../_helpers/organizations.ts'
+import {
+  createTestOrganization,
+  withTestOrganization,
+} from '../_helpers/organizations.ts'
 import { testHealthWorker } from '../_helpers/health_workers.ts'
 import sample from '../../util/sample.ts'
 import { route } from '../route.ts'
@@ -52,16 +55,20 @@ describe('/login', () => {
     })
 
     it('allows admin access to /app', async () => {
+      const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'admin',
+        organization_id: organization.id,
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
       assert($.html().includes('Open Encounters'))
     })
 
     it('allows doctor access /app', async () => {
+      const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'doctor',
+        organization_id: organization.id,
       })
 
       const response = await mock.fetch(`/app`)
@@ -69,7 +76,7 @@ describe('/login', () => {
       if (!response.ok) throw new Error(await response.text())
       assertEquals(
         response.url,
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
+        `${route}/app/organizations/${organization.id}/waiting_room`,
       )
       const page_contents = await response.text()
       assert(page_contents.includes('Open Encounters'))
@@ -122,10 +129,12 @@ describe('/login', () => {
     })
 
     it('allows approved nurse access to /app', async () => {
+      const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
         specialty: 'primary care',
         registration_status: 'approved',
+        organization_id: organization.id,
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
       assert($.html().includes('Open Encounters'))

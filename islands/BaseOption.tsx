@@ -18,7 +18,8 @@ export function BaseOption<
   active: boolean
   selected: boolean
 }) {
-  const avatar = option.avatar_url && (
+  // If the key is there
+  const avatar = 'avatar_url' in option && (
     <Avatar
       src={option.avatar_url}
       className={cls(

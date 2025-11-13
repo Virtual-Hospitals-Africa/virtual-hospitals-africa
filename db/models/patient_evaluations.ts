@@ -1,13 +1,14 @@
+import z from 'zod'
 import { sql } from 'kysely'
 import {
   MostRecentVitalMeasurement,
   PRIORITY_SNOMED_CODES,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonBuildObject, success_true } from '../helpers.ts'
+import { jsonArrayFrom, jsonObjectFrom, success_true } from '../helpers.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
-import z from 'zod'
 import flatten from '../../util/flatten.ts'
 import { decimal } from '../../util/validators.ts'
 
@@ -137,26 +138,6 @@ export async function getMostRecentManualVitalsWithEvaluations(
             .as('rank'),
         ),
   ).selectFrom('ranked_manual_findings')
-    .innerJoin(
-      'patient_encounter_employees',
-      'patient_encounter_employees.id',
-      'ranked_manual_findings.patient_encounter_employee_id',
-    )
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'patient_encounter_employees.employment_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
     .where('ranked_manual_findings.rank', '=', 1)
     .select([
       'ranked_manual_findings.id as finding_id',
@@ -168,20 +149,14 @@ export async function getMostRecentManualVitalsWithEvaluations(
       'ranked_manual_findings.finding_type',
     ])
     .select((eb) => [
-      jsonBuildObject({
-        name: eb.ref('health_workers.name'),
-        avatar_url: eb.ref('health_workers.avatar_url'),
-        profession: eb.ref('employment.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
-        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
-        organization: jsonBuildObject({
-          id: eb.ref('organizations.id'),
-          name: eb.ref('organizations.name'),
-        }),
-        employee_id: eb.ref('employment.id'),
-        health_worker_id: eb.ref('health_workers.id'),
-      }).as('provider'),
+      jsonObjectFrom(
+        patient_encounter_employees.baseQuery(trx)
+          .where(
+            'patient_encounter_employees.id',
+            '=',
+            eb.ref('ranked_manual_findings.patient_encounter_employee_id'),
+          ),
+      ).$notNull().as('provider'),
       jsonArrayFrom(
         eb
           .selectFrom('patient_evaluations')

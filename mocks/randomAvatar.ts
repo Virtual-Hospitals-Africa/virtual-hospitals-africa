@@ -1,9 +1,9 @@
+import { predefinedAvatarMediaUUID } from '../db/seed/defs/17_media.ts'
 import sample from '../util/sample.ts'
 
-export default function randomAvatar(
-  gender: 'male' | 'female' = sample(['male', 'female']),
+export default function randomAvatarMediaId(
+  sex: 'male' | 'female' = sample(['male', 'female']),
 ) {
-  return `/images/avatars/random/${gender}/${
-    1 + Math.floor(Math.random() * 10)
-  }.png`
+  const int = 1 + Math.floor(Math.random() * 10)
+  return predefinedAvatarMediaUUID(sex, int)
 }

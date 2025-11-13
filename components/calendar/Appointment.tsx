@@ -109,7 +109,7 @@ function AppointmentSlot({ slot, url }: {
     search.set(
       'provider_ids',
       JSON.stringify(
-        slot.providers.map((provider) => provider.provider_id),
+        slot.providers.map((provider) => provider.employee_id),
       ),
     )
   }

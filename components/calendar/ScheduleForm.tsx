@@ -5,11 +5,12 @@ import FormButtons from '../../islands/form/buttons.tsx'
 import PersonSearch from '../../islands/PersonSearch.tsx'
 import { DateInput } from '../../islands/form/inputs/date.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
+import { RenderedPatientCompletedRegistration } from '../../types.ts'
 
 export default function ScheduleForm(
-  { className, patient_info }: {
+  { className, patient }: {
     className?: string
-    patient_info?: { id: string; name: string }
+    patient?: RenderedPatientCompletedRegistration
   },
 ) {
   return (
@@ -17,7 +18,7 @@ export default function ScheduleForm(
       <FormRow>
         <PersonSearch
           name='patient'
-          value={patient_info}
+          value={patient}
           search_route='/app/patients?completed_registration=true'
           required
         />
@@ -25,7 +26,7 @@ export default function ScheduleForm(
       <FormRow>
         <PersonSearch
           name='provider'
-          search_route='/app/providers'
+          search_route='/app/providers?professions=[doctor,nurse]'
         />
       </FormRow>
       <FormRow>

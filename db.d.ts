@@ -551,7 +551,7 @@ export interface HealthWorkerOrganizationCalendars {
 }
 
 export interface HealthWorkers {
-  avatar_url: string
+  avatar_media_id: string | null
   created_at: Generated<Timestamp>
   email: string
   first_names: string
@@ -705,10 +705,10 @@ export interface ManufacturedMedicationStrengths {
 export interface Media {
   binary_data: Buffer
   created_at: Generated<Timestamp>
+  file_name: string | null
   id: Generated<string>
   mime_type: string
   updated_at: Generated<Timestamp>
-  uuid: Generated<string>
 }
 
 export interface MediaAudios {
@@ -788,7 +788,7 @@ export interface Messages {
   created_at: Generated<Timestamp>
   id: Generated<string>
   is_from_system: Generated<boolean>
-  sender_id: string | null
+  sender_participant_id: string | null
   thread_id: string
   updated_at: Generated<Timestamp>
 }
@@ -1400,7 +1400,7 @@ export interface Receptionists {
 }
 
 export interface Regulators {
-  avatar_url: string | null
+  avatar_media_id: string | null
   country: string
   created_at: Generated<Timestamp>
   email: string

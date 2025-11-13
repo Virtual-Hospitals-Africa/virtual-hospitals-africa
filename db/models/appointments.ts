@@ -1,4 +1,5 @@
 import { sql } from 'kysely'
+import { assert } from 'std/assert/assert.ts'
 import {
   Appointment,
   HasStringId,
@@ -10,8 +11,7 @@ import {
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import * as patients from './patients.ts'
-import * as organizations from './organizations.ts'
-import { assert } from 'std/assert/assert.ts'
+import * as employees from './employees.ts'
 import isDate from '../../util/isDate.ts'
 import {
   jsonArrayFrom,
@@ -372,83 +372,58 @@ export async function getWithPatientInfo(
   })
 }
 
+export type AppointmentProviderWithGoogleCalendar = Awaited<
+  ReturnType<typeof getForPatient>
+>[0]['providers'][0]
+
 export function getForPatient(
   trx: TrxOrDb,
   query: AppointmentQuery & { patient_id: string },
 ) {
-  return baseQuery(trx, query)
-    .select((eb) => [
-      jsonArrayFrom(
-        eb.selectFrom('appointment_providers')
-          .whereRef(
-            'appointment_providers.appointment_id',
-            '=',
-            'appointments.id',
-          )
-          .innerJoin(
-            'employment',
-            'appointment_providers.provider_id',
-            'employment.id',
-          )
-          .innerJoin(
-            'organizations',
-            'employment.organization_id',
-            'organizations.id',
-          )
-          .innerJoin(
-            'health_workers',
-            'employment.health_worker_id',
-            'health_workers.id',
-          )
-          .innerJoin(
-            'google_tokens',
-            'google_tokens.entity_id',
-            'health_workers.id',
-          )
-          .innerJoin(
-            'health_worker_organization_calendars',
-            (join) =>
-              join
-                .onRef(
-                  'employment.organization_id',
-                  '=',
-                  'health_worker_organization_calendars.organization_id',
-                )
-                .onRef(
-                  'employment.health_worker_id',
-                  '=',
-                  'health_worker_organization_calendars.health_worker_id',
-                ),
-          ).select((eb) => [
-            'employment.health_worker_id',
-            'appointment_providers.provider_id',
-            eb.ref('employment.profession').$castTo<'doctor' | 'nurse'>().as(
-              'profession',
-            ),
-            'employment.specialty',
-            'health_workers.name',
-            'health_workers.email',
-            'health_workers.avatar_url',
-            'health_worker_organization_calendars.gcal_availability_calendar_id',
-            'health_worker_organization_calendars.gcal_appointments_calendar_id',
-            'health_worker_organization_calendars.availability_set',
-            'google_tokens.expires_at',
-            'google_tokens.access_token',
-            'google_tokens.refresh_token',
-            'appointment_providers.confirmed',
-            // TODO this shouldn't be an array
-            // make a helper that can select 0 or 1
-            jsonArrayFrom(
-              organizations.baseQuery(trx)
-                .whereRef(
-                  'organizations.id',
-                  '=',
-                  sql.ref('employment.organization_id'),
-                ),
-            ).as('organization'),
-          ]),
-      ).as('providers'),
-    ])
+  return baseQuery(trx, query).select((eb) => [
+    jsonArrayFrom(
+      employees.baseQuery(trx)
+        .innerJoin(
+          'appointment_providers',
+          'appointment_providers.provider_id',
+          'employment.id',
+        )
+        .innerJoin(
+          'google_tokens',
+          'google_tokens.entity_id',
+          'health_workers.id',
+        )
+        .innerJoin(
+          'health_worker_organization_calendars',
+          (join) =>
+            join
+              .onRef(
+                'employment.organization_id',
+                '=',
+                'health_worker_organization_calendars.organization_id',
+              )
+              .onRef(
+                'employment.health_worker_id',
+                '=',
+                'health_worker_organization_calendars.health_worker_id',
+              ),
+        )
+        .where(
+          'appointment_providers.appointment_id',
+          '=',
+          eb.ref('appointments.id'),
+        )
+        .select([
+          'health_worker_organization_calendars.gcal_availability_calendar_id',
+          'health_worker_organization_calendars.gcal_appointments_calendar_id',
+          'health_worker_organization_calendars.availability_set',
+          'google_tokens.expires_at',
+          'google_tokens.access_token',
+          'google_tokens.refresh_token',
+          'appointment_providers.confirmed',
+        ]),
+    ).as('providers'),
+  ])
     .execute()
 }
 
