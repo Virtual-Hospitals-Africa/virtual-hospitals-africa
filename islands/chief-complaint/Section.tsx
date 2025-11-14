@@ -1,5 +1,5 @@
 import { computed, effect, useSignal } from '@preact/signals'
-import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
+import { Button } from '../../components/library/Button.tsx'
 import { MicrophoneIcon } from '../../components/library/icons/heroicons/outline.tsx'
 
 import { assert } from 'std/assert/assert.ts'
@@ -106,7 +106,7 @@ export function ChiefComplaintSection({
       />
 
       {transcribing_audio.value ? 'Transcribing audio...' : (
-        <HeroIconButton
+        <Button
           variant='secondary'
           color='blue'
           type='button'
@@ -120,7 +120,7 @@ export function ChiefComplaintSection({
           }}
         >
           <MicrophoneIcon className='w-4 h-4' />
-        </HeroIconButton>
+        </Button>
       )}
 
       {'media_speech_id' in speech_websocket_signal.value && (

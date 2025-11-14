@@ -53,7 +53,7 @@ type ButtonProps =
     color?: keyof typeof variant_styles.solid
   })
 
-export function HeroIconButton({
+export function Button({
   variant = 'solid',
   color = 'primary',
   className,

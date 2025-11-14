@@ -7,7 +7,7 @@ import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 import { LocalTime } from '../LocalTime.tsx'
-import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
+import { Button } from '../../components/library/Button.tsx'
 import {
   FlagIcon,
   PencilIcon,
@@ -52,7 +52,7 @@ export default function VitalInputWithNote(
             min={0}
             suffix={vital.units}
           />
-          <HeroIconButton
+          <Button
             variant='secondary'
             color='slate'
             type='button'
@@ -61,8 +61,8 @@ export default function VitalInputWithNote(
             className='w-8 h-8 p-1'
           >
             <FlagIcon className='w-4 h-4' />
-          </HeroIconButton>
-          <HeroIconButton
+          </Button>
+          <Button
             variant='secondary'
             color='blue'
             type='button'
@@ -71,7 +71,7 @@ export default function VitalInputWithNote(
             onClick={() => show_note.value = !show_note.value}
           >
             <PencilIcon className='w-4 h-4' />
-          </HeroIconButton>
+          </Button>
           {
             /* <CheckboxInput
           name={`${name}.is_flagged`}

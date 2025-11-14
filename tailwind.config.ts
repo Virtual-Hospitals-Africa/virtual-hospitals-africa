@@ -1,4 +1,3 @@
-import colors from 'tailwindcss/colors.js'
 import formsPlugin from '@tailwindcss/forms'
 import { type Config } from 'tailwindcss'
 
@@ -8,70 +7,71 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: colors.indigo[900],
-          secondary: colors.indigo[700],
-          tertiary: colors.indigo[200],
+          DEFAULT: '#312e81',
+          secondary: '#4338ca',
+          tertiary: '#c7d2fe',
+          onBrand: '#ffffff',
         },
 
         neutral: {
-          primary: colors.gray[800],
-          secondary: colors.gray[600],
-          tertiary: colors.gray[400],
-          disabled: colors.gray[300],
+          primary: '#1e2939',
+          secondary: '#4a5565',
+          tertiary: '#99a1af',
+          disabled: '#d1d5dc',
         },
 
         background: {
-          primary: colors.white,
-          base: colors.neutral[50],
-          secondary: colors.neutral[100],
-          border: colors.neutral[200],
+          primary: '#ffffff',
+          base: '#f9fafb',
+          secondary: '#f3f4f6',
+          border: '#e5e7eb',
         },
 
         success: {
-          bg: colors.green[100],
-          text: colors.green[600],
-          status: colors.green[600],
+          bg: '#dcfce7',
+          textIcon: '#016630',
+          status: '#00a63e',
         },
 
         error: {
-          bg: colors.red[100],
-          text: colors.red[800],
-          status: colors.red[600],
+          bg: '#fee2e2',
+          textIcon: '#991b1b',
+          status: '#dc2626',
         },
 
         warning: {
-          bg: colors.yellow[100],
-          text: colors.yellow[800],
-          status: colors.yellow[500],
+          bg: '#fef9c3',
+          textIcon: '#854d0e',
+          status: '#facc15',
         },
 
         disabled: {
-          bg: colors.neutral[100],
-          text: colors.neutral[600],
-          status: colors.neutral[200],
+          bg: '#f3f4f6',
+          textIcon: '#4a5565',
+          status: '#d1d5dc',
         },
 
         accent: {
           blue: {
-            bg: colors.blue[100],
-            text: colors.blue[800],
+            bg: '#dbeafe',
+            textIcon: '#1e40af',
           },
           teal: {
-            bg: colors.teal[100],
-            text: colors.teal[800],
+            bg: '#ccfbf1',
+            textIcon: '#115e59',
           },
           pink: {
-            bg: colors.pink[100],
-            text: colors.pink[800],
+            bg: '#fce7f3',
+            textIcon: '#9d174d',
           },
           purple: {
-            bg: colors.purple[200],
-            text: colors.purple[800],
+            bg: '#f3e8ff',
+            textIcon: '#6b21a8',
           },
           orange: {
-            bg: colors.orange[100],
-            text: colors.orange[700],
-            status: colors.orange[500],
+            bg: '#ffedd5',
+            textIcon: '#c2410c',
+            status: '#f97316',
           },
         },
       },
