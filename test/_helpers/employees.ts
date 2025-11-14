@@ -1,10 +1,5 @@
 import * as cheerio from 'cheerio'
-import {
-  HealthWorkerWithGoogleTokens,
-  Maybe,
-  Names,
-  TrxOrDb,
-} from '../../types.ts'
+import { Maybe, Names, TrxOrDb } from '../../types.ts'
 import * as sessions from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
@@ -17,7 +12,10 @@ import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
-import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  upsertWithGoogleCredentials,
+} from '../../db/models/health_worker_google_tokens.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -111,9 +109,9 @@ export async function addTestEmployee(
   const calendars = testCalendars()
   await employment_calendars.add(
     trx,
-    health_worker.id,
     [{
       ...calendars,
+      employment_id: employee_id,
       availability_set: true,
     }],
   )

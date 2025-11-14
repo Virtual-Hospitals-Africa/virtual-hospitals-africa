@@ -5,14 +5,13 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import * as employees from './employees.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 export function seenPatientEncounterEmployeeId(
   encounter: RenderedPatientEncounter,
   organization_employment: HealthWorkerOrganization,
 ) {
   const employee = encounter.all_employees_seen.find((employee) =>
-    employee.employee_id === nonAdminId(organization_employment)
+    employee.employee_id === organization_employment.employment_id
   )
   assert(
     employee,

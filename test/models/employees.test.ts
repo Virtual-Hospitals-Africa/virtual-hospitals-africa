@@ -32,6 +32,7 @@ describe('db/models/employees.ts ', () => {
       const receptionist_employment = await employment.addOne(db, {
         health_worker_id: health_worker.id,
         profession: 'receptionist',
+        is_admin: false,
         organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
         department_ids: [reception_department_id],
       })
@@ -46,14 +47,14 @@ describe('db/models/employees.ts ', () => {
         doctor_result.organizations[0].id,
         TEST_ORGANIZATION_UUIDS.ZA.hospital,
       )
-      assertLength(doctor_result.organizations[0].roles, 1)
-      assertEquals(doctor_result.organizations[0].roles[0].profession, 'doctor')
+
+      assertEquals(doctor_result.organizations[0].profession, 'doctor')
       assertEquals(
         doctor_result.organizations[1].id,
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
       assertEquals(
-        doctor_result.organizations[1].roles[0].profession,
+        doctor_result.organizations[1].profession,
         'receptionist',
       )
       assertEquals(
@@ -79,9 +80,9 @@ describe('db/models/employees.ts ', () => {
         receptionist_result.organizations[0].id,
         TEST_ORGANIZATION_UUIDS.ZA.hospital,
       )
-      assertLength(receptionist_result.organizations[0].roles, 1)
+
       assertEquals(
-        receptionist_result.organizations[0].roles[0].profession,
+        receptionist_result.organizations[0].profession,
         'doctor',
       )
       assertEquals(
@@ -89,7 +90,7 @@ describe('db/models/employees.ts ', () => {
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
       assertEquals(
-        receptionist_result.organizations[1].roles[0].profession,
+        receptionist_result.organizations[1].profession,
         'receptionist',
       )
       assertEquals(

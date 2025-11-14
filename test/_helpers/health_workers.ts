@@ -1,6 +1,9 @@
-import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  upsertWithGoogleCredentials,
+} from '../../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 
 export function testHealthWorker() {

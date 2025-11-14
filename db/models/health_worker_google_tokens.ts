@@ -1,10 +1,6 @@
 import { DeleteResult, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
-import {
-  GoogleTokens,
-  HealthWorkerWithGoogleTokens,
-  TrxOrDb,
-} from '../../types.ts'
+import { GoogleTokens, TrxOrDb } from '../../types.ts'
 import pick from '../../util/pick.ts'
 import * as health_workers from './health_workers.ts'
 import * as google_tokens from './google_tokens.ts'
@@ -21,12 +17,16 @@ export function updateTokens(
   return google_tokens.updateTokensByEmail(trx, 'health_worker', email, tokens)
 }
 
+export type HealthWorkerWithGoogleTokens = Awaited<
+  ReturnType<typeof upsertWithGoogleCredentials>
+>
+
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   { access_token, refresh_token, expires_at, ...health_worker_details }:
     & HealthWorkerUpsert
     & GoogleTokens,
-): Promise<HealthWorkerWithGoogleTokens> {
+) {
   const health_worker = await health_workers.upsert(
     trx,
     health_worker_details,

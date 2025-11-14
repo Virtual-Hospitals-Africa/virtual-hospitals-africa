@@ -23,6 +23,8 @@ describe('getEmployeeInfo', () => {
       await employment.add(trx, [{
         health_worker_id: health_worker.id,
         profession: 'doctor',
+        is_admin: false,
+
         organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
@@ -73,6 +75,8 @@ describe('getEmployeeInfo', () => {
       const [secondEmployment] = await employment.add(trx, [{
         health_worker_id: health_worker.id,
         profession: 'nurse',
+        is_admin: false,
+
         organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
@@ -147,6 +151,7 @@ describe('getEmployeeInfo', () => {
     await employment.add(trx, [{
       health_worker_id: health_worker.id,
       profession: 'nurse',
+      is_admin: false,
       organization_id: '00000000-0000-0000-0000-000000000002',
     }])
 

@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import { Maybe, OrganizationDoctorOrNurse } from '../types.ts'
+import { Maybe, RenderedEmployee } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import words from '../util/words.ts'
@@ -84,9 +84,9 @@ function ProviderSelectOption(
 }
 
 export default function ProvidersSelect(
-  { providers }: { providers: OrganizationDoctorOrNurse[] },
+  { providers }: { providers: RenderedEmployee[] },
 ) {
-  const selected = useSignal<Set<OrganizationDoctorOrNurse>>(new Set())
+  const selected = useSignal<Set<RenderedEmployee>>(new Set())
 
   return (
     <fieldset className='grid grid-cols-2 gap-2 w-full'>

@@ -1138,17 +1138,6 @@ export type OrganizationEmployeeWithActions = Omit<
   'actions'
 >
 
-export type OrganizationDoctorOrNurse =
-  & Omit<
-    OrganizationEmployee,
-    'is_invitee' | 'professions'
-  >
-  & {
-    profession: 'doctor' | 'nurse'
-    employee_id: string
-    specialty: string | null
-  }
-
 export type DoctorsWithoutAction =
   & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
   & {
@@ -1530,13 +1519,6 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker
 
-export type HealthWorkerWithGoogleTokens =
-  & HealthWorker
-  & GoogleTokens
-  & {
-    id: string
-  }
-
 export type Availability = {
   start: string
   end: string
@@ -1545,11 +1527,6 @@ export type Availability = {
 export type TimeRange = {
   time_min: Date
   time_max: Date
-}
-
-export type HealthWorkerAvailability = {
-  health_worker: HealthWorkerWithGoogleTokens
-  availability: Availability
 }
 
 export type WhatsAppMessageContents =

@@ -8,7 +8,6 @@ import {
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
 import { blankSelection } from '../helpers.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 /**
  * Move the patient to the waiting room if the health worker doesn't do the next workflow
@@ -23,7 +22,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
   assert(next_workflow)
   const next_department: Department = WORKFLOW_DEPARTMENTS[next_workflow]
   assert(next_department)
-  const non_admin_employment_id = nonAdminId(organization_employment)
+  const non_admin_employment_id = organization_employment.employment_id
   assert(non_admin_employment_id)
 
   const patient_id = encounter.patient.id

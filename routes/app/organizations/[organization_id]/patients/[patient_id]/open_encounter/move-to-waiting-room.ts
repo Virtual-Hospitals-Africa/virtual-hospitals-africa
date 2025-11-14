@@ -11,7 +11,6 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
-import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
 
 const MoveToWaitingRoomSchema = z.object({})
 
@@ -49,7 +48,7 @@ export const handler = postHandler(
       )
       assert(employee_present_with_patient)
 
-      const non_admin_employment_id = nonAdminId(organization_employment)
+      const non_admin_employment_id = organization_employment.employment_id
       assert(non_admin_employment_id)
       assertEquals(
         employee_present_with_patient.employee_id,

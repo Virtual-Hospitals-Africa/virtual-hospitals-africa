@@ -92,7 +92,7 @@ describe('db/models/prescriptions.ts', () => {
           .executeTakeFirstOrThrow()
 
         const result = await prescriptions.upsert(trx, {
-          prescriber_id: doctor_review.reviewer_id,
+          prescriber_id: doctor_review.employment_id,
           patient_id: patient.id,
           doctor_review_id: doctor_review.review_id,
           prescribing: [
@@ -115,7 +115,7 @@ describe('db/models/prescriptions.ts', () => {
         // Check prescriptions
         assertEquals(
           result.prescriber_id,
-          doctor_review.reviewer_id,
+          doctor_review.employment_id,
         )
         assertEquals(
           result.patient_id,

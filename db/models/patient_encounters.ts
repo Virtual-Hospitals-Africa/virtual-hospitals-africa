@@ -22,7 +22,7 @@ import * as patients from './patients.ts'
 import * as employees from './employees.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import * as organizations from './organizations.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
+
 import {
   blankSelection,
   jsonArrayFrom,
@@ -109,7 +109,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     'Only seeking treatment supported for now!',
   )
 
-  const non_admin_employment_id = nonAdminId(organization_employment)
+  const non_admin_employment_id = organization_employment.employment_id
   assert(non_admin_employment_id)
   const workflows: Workflow[] = ['triage', 'consultation']
   const patient_workflows = workflows.map((workflow) => ({

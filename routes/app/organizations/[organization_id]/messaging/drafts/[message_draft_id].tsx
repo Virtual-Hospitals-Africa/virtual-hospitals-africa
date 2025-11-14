@@ -9,7 +9,6 @@ import { HealthWorkerHomePageLayout } from '../../../../_middleware.tsx'
 import { MessageTargetType } from '../../../../../../db.d.ts'
 import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { OrganizationContext } from '../../_middleware.ts'
-import { preferredEmploymentId } from '../../../../../../shared/preferredEmploymentId.ts'
 
 const MessageTargetSchema = z.record(z.string(), z.literal(true)).transform(
   (value) => Object.keys(value),
@@ -55,9 +54,7 @@ export const handler = postHandler(
         {
           ...form_values,
           message_draft_id,
-          employment_id: preferredEmploymentId(
-            ctx.state.organization_employment,
-          ),
+          employment_id: ctx.state.organization_employment.employment_id,
         },
       )
     }
@@ -83,7 +80,7 @@ async function draftFromFormValues(
   )
   return {
     id: getRequiredUUIDParam(ctx, 'message_draft_id'),
-    employment_id: preferredEmploymentId(ctx.state.organization_employment),
+    employment_id: ctx.state.organization_employment.employment_id,
     body: form_values.body ?? '',
     priority: form_values.priority ?? 'Non-urgent',
     targets,
