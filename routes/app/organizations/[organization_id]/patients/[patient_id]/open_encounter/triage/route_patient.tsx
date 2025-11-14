@@ -23,6 +23,7 @@ import assert from 'assert'
 import { success, warning } from '../../../../../../../../util/alerts.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { startWorkflow } from '../start-workflow.tsx'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 // TODO not hard code this
 const senior_health_worker_name = 'Nomsa Moyo'
@@ -38,27 +39,31 @@ const PatientRegistrationRoutePatientSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationRoutePatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, { next_workflow, notes }) => {
     const { trx, patient, encounter, organization, organization_employment } =
       ctx.state
     const can_do_triage = canPerform(organization_employment, 'triage')
 
+    const { next_patient_presence } = await promiseProps({
+      completed_last_step: completeLastStep(ctx),
+      next_patient_presence: updateForOpenEncounterAfterCompletingWorkflow(
+        trx,
+        encounter,
+        organization_employment,
+      ),
+      updating_encounter: patient_encounters.updateOne(
+        trx,
+        encounter.patient_encounter_id,
+        { reason: 'seeking treatment', notes },
+      ),
+    })
+
     switch (next_workflow) {
-      case 'continue_with_registration': {
-        const { response } = await promiseProps({
-          updating_encounter: patient_encounters.updateOne(
-            trx,
-            encounter.patient_encounter_id,
-            { reason: 'seeking treatment', notes },
-          ),
-          response: completeAndProceedToNextStep(ctx),
-        })
-        return response
+      case 'await_triage': {
+        return redirect(nextRouteAfterCompletingWorkflow(ctx, next_patient_presence))
       }
       case 'immediate_triage': {
-        assert(!encounter.workflows.triage)
-
-        const patient_workflow_id = generateUUID()
+        assertEquals(encounter.workflows.triage?.status, 'not started')
 
         const patient_presence_updates = {
           current_workflow: 'triage' as const,
@@ -66,24 +71,9 @@ export const handler = postHandler(
           next_workflow: 'registration' as const,
         }
 
-        await Promise.all([
-          completeStep(ctx),
-          patient_workflows.insert(trx, {
-            id: patient_workflow_id,
-            patient_encounter_id: encounter.patient_encounter_id,
-            workflow: 'triage',
-          }),
-          patient_presence.set(trx, patient.id, patient_presence_updates),
-        ])
+        await patient_presence.set(trx, patient.id, patient_presence_updates)
 
         // Update the encounter in line rather than refetching
-        encounter.workflows.triage = {
-          patient_workflow_id,
-          workflow: 'triage',
-          status: 'not started',
-          steps_completed: [],
-          seen_patient_encounter_employee_ids: [],
-        }
         Object.assign(
           encounter.status.patient_presence,
           patient_presence_updates,
@@ -104,10 +94,6 @@ export const handler = postHandler(
         throw new Error('Not yet supported')
       }
     }
-
-    return redirect(
-      nextRouteAfterCompletingWorkflow(ctx, next_patient_presence),
-    )
   },
 )
 
