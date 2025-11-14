@@ -28,45 +28,16 @@ export function healthWorkerDisplay(
   health_worker: EmployedHealthWorker,
   organization_employment: HealthWorkerOrganization,
 ): HealthWorkerDisplay {
-  let is_doctor = false
-  let is_admin = false
-  let provider_profession: Profession | undefined
-  let specialty: Maybe<string>
+  const is_doctor = organization_employment.profession === 'doctor'
+  const is_admin = organization_employment.is_admin
+  const provider_profession = organization_employment.profession
+  const specialty = organization_employment.specialty
 
-  for (const role of organization_employment.roles) {
-    if (!role) continue
-    switch (role.profession) {
-      case 'receptionist': {
-        assert(!specialty)
-        assert(!role.specialty)
-        assert(!provider_profession)
-        provider_profession = role.profession
-        break
-      }
-      case 'doctor': {
-        is_doctor = true
-        assert(!specialty)
-        assert(!provider_profession)
-        provider_profession = role.profession
-        specialty = role.specialty
-        break
-      }
-      case 'nurse': {
-        assert(!specialty)
-        assert(!provider_profession)
-        provider_profession = role.profession
-        specialty = role.specialty
-        break
-      }
-      case 'admin': {
-        assert(!role.specialty)
-        is_admin = true
-        break
-      }
-      default: {
-        throw new Error(`Unrecognized profession ${String(role.profession)}`)
-      }
-    }
+  if (provider_profession === 'nurse') {
+    assert(specialty)
+  }
+  if (provider_profession === 'doctor') {
+    assert(specialty)
   }
 
   return healthWorkerDisplayInner({
@@ -90,7 +61,7 @@ export function healthWorkerDisplayInner({
   health_worker_name: string
   is_doctor: boolean
   is_admin: boolean
-  provider_profession: Profession | undefined
+  provider_profession: Profession | null
   specialty: Maybe<string>
   avatar_url: Maybe<string>
 }): HealthWorkerDisplay {
@@ -175,7 +146,7 @@ export function appUserDisplay(
         health_worker_name,
         is_doctor: false,
         is_admin: true,
-        provider_profession: undefined,
+        provider_profession: null,
         specialty,
         avatar_url,
       })

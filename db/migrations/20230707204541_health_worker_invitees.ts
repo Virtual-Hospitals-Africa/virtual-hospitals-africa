@@ -15,13 +15,21 @@ export function up(db: Kysely<DB>) {
         .addColumn(
           'profession',
           sql`profession`,
+        )
+        .addColumn(
+          'is_admin',
+          'boolean',
           (col) => col.notNull(),
         )
-        .addUniqueConstraint('only_invited_once_per_profession', [
+        .addUniqueConstraint('only_invited_once_per_organization', [
           'email',
           'organization_id',
-          'profession',
-        ]),
+        ]).addCheckConstraint(
+          'only_admins_can_be_invited_in_another_profession',
+          sql`
+          (profession IS NOT NULL) OR (is_admin = TRUE)
+        `,
+        ),
   )
 }
 

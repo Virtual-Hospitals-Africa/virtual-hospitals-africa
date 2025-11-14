@@ -6,7 +6,6 @@ export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('profession')
     .asEnum([
-      'admin',
       'doctor',
       'nurse',
       'receptionist',
@@ -28,15 +27,18 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'profession',
           sql`profession`,
-        ).addColumn('is_admin', 'boolean', col => col.notNull())
+        ).addColumn('is_admin', 'boolean', (col) => col.notNull())
         .addColumn('specialty', 'varchar(255)')
         .addUniqueConstraint('only_employed_once_per_organization', [
           'health_worker_id',
           'organization_id',
         ])
-        .addCheckConstraint('only_admins_can_not_be_employed_in_another_profession', sql`
+        .addCheckConstraint(
+          'only_admins_can_be_employed_in_another_profession',
+          sql`
           (profession IS NOT NULL) OR (is_admin = TRUE)
-        `),
+        `,
+        ),
   )
 
   await createPointerTable(
@@ -110,7 +112,9 @@ export async function up(db: Kysely<DB>) {
         'employment_id',
         'uuid',
         (col) =>
-          col.notNull().references('employment.id').unique().onDelete('cascade'),
+          col.notNull().references('employment.id').unique().onDelete(
+            'cascade',
+          ),
       )
         .addColumn(
           'gcal_appointments_calendar_id',
@@ -126,7 +130,7 @@ export async function up(db: Kysely<DB>) {
           'availability_set',
           'boolean',
           (col) => col.notNull().defaultTo(false),
-        )
+        ),
   )
 }
 

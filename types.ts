@@ -1330,7 +1330,7 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
+export type Profession = 'doctor' | 'nurse' | 'receptionist'
 
 export type NurseSpecialty =
   | 'primary care'
@@ -1428,7 +1428,7 @@ export type Specialties = {
 
 export type HealthWorker = Names & {
   email: string
-  avatar_media_id: string | null
+  avatar_url: string | null
   phone_number?: Maybe<string>
 }
 
@@ -1474,12 +1474,22 @@ export type RenderedDoctorReviewBase = {
       view: string
     }
   }
-  requested_by: RenderedPatientEncounterEmployee
+  requested_by: {
+    profession: 'nurse' | 'doctor'
+    name: string
+    avatar_url: string | null
+    organization: {
+      id: string
+      name: string
+    }
+    patient_encounter_employee_id: string
+    health_worker_id: string
+  }
 }
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
   review_id: string
-  reviewer_id: string
+  employment_id: string
   steps_completed: DoctorReviewStep[]
   completed: SqlBool
 }
@@ -1505,29 +1515,20 @@ export type HealthWorkerRegistrationStatus = {
   registration_pending_approval: boolean
 }
 
-export type HealthWorkerOrganizationRole = {
+export type HealthWorkerOrganization = RenderedOrganization & {
   employment_id: string
-  profession: Profession
   specialty: string | null
   department_ids: string[]
+  profession: Profession | null
+  is_admin: boolean
 }
 
-export type HealthWorkerOrganization = RenderedOrganization & {
-  roles: HealthWorkerOrganizationRole[]
+export type PossiblyEmployedHealthWorker = HealthWorker & {
+  id: string
+  organizations: HealthWorkerOrganization[]
 }
-
-export type PossiblyEmployedHealthWorker =
-  & Omit<HealthWorker, 'avatar_media_id'>
-  & {
-    id: string
-    avatar_url: string | null
-    organizations: HealthWorkerOrganization[]
-  }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker
-/* & {
-  organizations: NonEmptyArray<HealthWorkerOrganization>
-}*/
 
 export type HealthWorkerWithGoogleTokens =
   & HealthWorker
@@ -1655,7 +1656,7 @@ export type ProviderAppointmentSlot = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: RenderedEmployee[]
+  providers: Provider[]
   physicalLocation?: undefined
   virtualLocation?: undefined
 }
@@ -1667,7 +1668,7 @@ export type ProviderAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers?: RenderedEmployee[]
+  providers?: Provider[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1683,7 +1684,7 @@ export type PatientAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: RenderedEmployee[]
+  providers: Provider[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1817,8 +1818,12 @@ export type PatientNearestOrganization = {
   location: Coordinates
   walking_distance: null | string
   distance_meters: number
-  admins: RenderedEmployee[]
-  doctors: RenderedEmployee[]
+  admins: {
+    employment_id: string
+    health_worker_id: string
+    email: string
+    name: string
+  }[]
 }
 
 export type GoogleAddressComponent = {
@@ -2335,7 +2340,15 @@ export type RenderedPatientEncounter = {
   appointment: {
     id: string
     start: Date
-    providers: RenderedEmployee[]
+    providers: {
+      employment_id: string
+      health_worker_id: string
+      name: string
+      organization_id: string
+      avatar_url: string | null
+      specialty: string | null
+      profession: Profession
+    }[]
   } | null
   workflows: Partial<
     {
@@ -2529,6 +2542,20 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   >
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
+export type Provider = {
+  avatar_url: string
+  email: string
+  name: string
+  access_token: string
+  refresh_token: string
+  expires_at: Date
+  profession: 'doctor' | 'nurse'
+  availability_set: boolean
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  health_worker_id: string
+  provider_id: string
+}
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
   examination_identifier: string
@@ -3117,26 +3144,38 @@ export type ExaminationChecklistDefinition = {
   }[]
 }
 
-export type RenderedMessageThreadParticipant = {
-  participant_type: 'employee' | 'pharmacist'
+type RenderedMessageThreadParticipantHealthWorker = {
   participant_id: string
-  display_name: string
-  description: string
+  avatar_url?: Maybe<string>
   href: string
-  avatar_url: Maybe<string>
-  is_me: boolean
+  name: string
+  description: string | string[]
+  is_me: SqlBool
   is_system?: false
 }
 
+type RenderedMessageThreadParticipantPharmacist = {
+  participant_id: string
+  avatar_url?: Maybe<string>
+  href: string
+  name: string
+  description: string | string[]
+  is_me: SqlBool
+  is_system?: false
+}
+
+export type RenderedMessageThreadParticipant =
+  | RenderedMessageThreadParticipantHealthWorker
+  | RenderedMessageThreadParticipantPharmacist
+
 export type RenderedMessageSender = RenderedMessageThreadParticipant | {
-  participant_type: 'system'
-  participant_id?: never
-  display_name: 'System'
-  description?: never
-  href?: never
-  avatar_url?: never
-  is_me?: never
   is_system: true
+  name: 'System'
+  participant_id?: never
+  avatar_url?: never
+  href?: never
+  description?: never
+  is_me?: never
 }
 
 export type RenderedMessageThreadBase = {
@@ -3185,9 +3224,10 @@ export type HealthWorkerDisplay = {
 export type RenderedEmployee = EmployedHealthWorker & {
   organization_id: string
   employee_id: string
-  href: string
-  profession: Profession
+  profession: Profession | null
+  is_admin: boolean
   specialty: string | null
+  href: string
 }
 
 export type MessageTargetEntities = {
@@ -3290,7 +3330,18 @@ export type MostRecentVitalMeasurement =
   }
   & ({
     finding_type: 'manual'
-    provider: RenderedPatientEncounterEmployee
+    provider: {
+      patient_encounter_employee_id: string
+      employee_id: string
+      organization: {
+        id: string
+        name: string
+      }
+      health_worker_id: string
+      avatar_url: string | null
+      name: string
+      profession: string
+    }
   } | {
     finding_type: 'computed'
     provider: null
@@ -3483,7 +3534,7 @@ export type RenderedFindingRelativeToHealthWorker = {
   }[]
 }
 
-export type AppUser = Profession | 'regulator'
+export type AppUser = Profession | 'admin' | 'regulator'
 
 export type Alert = {
   message: string

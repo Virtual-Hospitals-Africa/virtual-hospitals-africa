@@ -185,15 +185,19 @@ describe('/login', () => {
       const nurse = await upsertWithGoogleCredentials(db, testHealthWorker())
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
 
-      await employment.add(db, [{
+      await employment.addOne(db, {
         organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: nurse.id,
         profession: 'nurse',
-      }, {
+        is_admin: false,
+      })
+
+      await employment.addOne(db, {
         organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: admin.id,
-        profession: 'admin',
-      }])
+        profession: null,
+        is_admin: true,
+      })
 
       const details = await testNurseRegistrationDetails(db, {
         health_worker_id: nurse.id,

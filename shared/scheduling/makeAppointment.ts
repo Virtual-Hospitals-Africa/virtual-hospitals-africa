@@ -96,7 +96,7 @@ export async function makeAppointmentChatbot(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await employment_calendars.findOne(
+  const calendars = await employment_calendars.findOneOptional(
     trx,
     matching_provider,
   )
@@ -174,7 +174,7 @@ export async function makeAppointmentWeb(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await employment_calendars.findOne(
+  const calendars = await employment_calendars.findOneOptional(
     trx,
     matching_provider,
   )

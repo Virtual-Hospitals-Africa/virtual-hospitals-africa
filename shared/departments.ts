@@ -91,7 +91,7 @@ export function assertDepartmentResponsibleForWorkflow(
 }
 
 export function departmentsOfProfession(
-  profession: Profession,
+  profession: Profession | 'admin',
   specialty?: Maybe<string>,
 ): Department[] {
   switch (profession) {
@@ -131,7 +131,7 @@ export function departmentsOfProfession(
 
 export function organizationDepartmentIdsOfProfession(
   organization: RenderedOrganization,
-  profession: Profession,
+  profession: Profession | 'admin',
   specialty?: Maybe<string>,
 ): string[] {
   const department_names = departmentsOfProfession(profession, specialty)

@@ -37,7 +37,7 @@ export async function cancelAppointment(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await employment_calendars.findOne(
+  const calendars = await employment_calendars.findOneOptional(
     trx,
     matching_provider,
   )

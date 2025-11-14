@@ -99,7 +99,7 @@ export async function providerAvailability(
         'health_worker',
         provider.id,
       ),
-      calendars_of_provider: employment_calendars.findOne(
+      calendars_of_provider: employment_calendars.findOneOptional(
         trx,
         provider,
       ),

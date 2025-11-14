@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   HasStringId,
-  HealthWorkerInvitee,
+  IdSelection,
   Maybe,
   Profession,
   TrxOrDb,
@@ -13,8 +13,9 @@ import { blankSelection } from '../helpers.ts'
 
 type Employee = {
   health_worker_id: string
-  profession: Profession
   organization_id: string
+  profession: Profession | null
+  is_admin: boolean
   specialty?: Maybe<string>
 }
 
@@ -36,7 +37,7 @@ export type OrganizationAdmin = {
 
 export function addOne(
   trx: TrxOrDb,
-  { department_ids, profession, ...rest }: Employee & {
+  { department_ids, profession, is_admin, ...rest }: Employee & {
     department_ids?: string[]
   },
 ) {
@@ -46,7 +47,7 @@ export function addOne(
     'employment_insert',
     (qb) =>
       qb.insertInto('employment')
-        .values({ id, profession, ...rest })
+        .values({ id, profession, is_admin, ...rest })
         .returningAll(),
   ).with(
     'department_insert',
@@ -68,7 +69,7 @@ export function addOne(
     .with(
       'organization_admin_insert',
       (qb) =>
-        (profession === 'admin')
+        is_admin
           ? qb.insertInto('organization_admins').values({ id })
           : blankSelection(qb),
     ).with(
@@ -92,6 +93,16 @@ export function addOne(
     )
     .selectFrom('employment_insert')
     .selectAll('employment_insert')
+    .executeTakeFirstOrThrow()
+}
+
+export function markAdmin(
+  trx: TrxOrDb,
+  employment_id: string | IdSelection,
+) {
+  return trx.updateTable('employment')
+    .set({ 'is_admin': true })
+    .where('employment.id', '=', employment_id)
     .executeTakeFirstOrThrow()
 }
 
@@ -150,55 +161,56 @@ export function getName(
     .executeTakeFirstOrThrow()
 }
 
-export function addInvitees(
-  trx: TrxOrDb,
-  organization_id: string,
-  invites: {
-    email: string
-    profession: Profession
-  }[],
-) {
-  assert(invites.length > 0)
-  return trx
-    .insertInto('health_worker_invitees')
-    .values(invites.map((invite) => ({
-      organization_id,
-      ...invite,
-    })))
-    .returningAll()
-    .execute()
-}
+// export function addInvitees(
+//   trx: TrxOrDb,
+//   organization_id: string,
+//   invites: {
+//     email: string
+//     profession: Profession | null
+//     is_admin: boolean
+//   }[],
+// ) {
+//   assert(invites.length > 0)
+//   return trx
+//     .insertInto('health_worker_invitees')
+//     .values(invites.map((invite) => ({
+//       organization_id,
+//       ...invite,
+//     })))
+//     .returningAll()
+//     .execute()
+// }
 
-export function approveInvitee(
-  trx: TrxOrDb,
-  { admin_id, approving_id }: { admin_id: string; approving_id: string },
-) {
-  return trx.updateTable('nurse_registration_details')
-    .set({ approved_by: admin_id })
-    .where('health_worker_id', '=', approving_id)
-    .execute()
-}
+// export function approveInvitee(
+//   trx: TrxOrDb,
+//   { admin_id, approving_id }: { admin_id: string; approving_id: string },
+// ) {
+//   return trx.updateTable('nurse_registration_details')
+//     .set({ approved_by: admin_id })
+//     .where('health_worker_id', '=', approving_id)
+//     .execute()
+// }
 
-export function getInvitees(
-  trx: TrxOrDb,
-  opts: {
-    email: string
-  },
-): Promise<HasStringId<HealthWorkerInvitee>[]> {
-  return trx
-    .selectFrom('health_worker_invitees')
-    .where('email', '=', opts.email)
-    .selectAll()
-    .execute()
-}
+// export function getInvitees(
+//   trx: TrxOrDb,
+//   opts: {
+//     email: string
+//   },
+// ): Promise<HasStringId<HealthWorkerInvitee>[]> {
+//   return trx
+//     .selectFrom('health_worker_invitees')
+//     .where('email', '=', opts.email)
+//     .selectAll()
+//     .execute()
+// }
 
-export function removeInvitees(
-  trx: TrxOrDb,
-  ids: string[],
-) {
-  return trx.deleteFrom('health_worker_invitees').where('id', 'in', ids)
-    .execute()
-}
+// export function removeInvitees(
+//   trx: TrxOrDb,
+//   ids: string[],
+// ) {
+//   return trx.deleteFrom('health_worker_invitees').where('id', 'in', ids)
+//     .execute()
+// }
 
 export function getOrganizationAdmin(
   trx: TrxOrDb,
@@ -209,7 +221,7 @@ export function getOrganizationAdmin(
   return trx
     .selectFrom('employment')
     .where('organization_id', '=', opts.organization_id)
-    .where('profession', '=', 'admin')
+    .where('is_admin', '=', true)
     .innerJoin(
       'health_workers',
       'health_workers.id',
@@ -226,6 +238,7 @@ export function getOrganizationAdmin(
       'health_workers.name',
       'email',
       'profession',
+      'is_admin',
       'specialty',
       'organization_id',
       'organizations.name as organization_name',

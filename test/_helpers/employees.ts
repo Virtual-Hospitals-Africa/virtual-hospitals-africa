@@ -9,7 +9,7 @@ import * as sessions from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as health_worker_organization_calenders from '../../db/models/employment_calendars.ts'
+import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import testCalendars from '../../mocks/testCalendars.ts'
@@ -102,17 +102,17 @@ export async function addTestEmployee(
 
   const created_employee = await employment.addOne(trx, {
     organization_id,
-    profession,
+    profession: profession === 'admin' ? null : profession,
+    is_admin: profession === 'admin',
     department_ids,
     health_worker_id: health_worker.id,
   })
   const employee_id = created_employee.id
   const calendars = testCalendars()
-  await health_worker_organization_calenders.add(
+  await employment_calendars.add(
     trx,
     health_worker.id,
     [{
-      organization_id,
       ...calendars,
       availability_set: true,
     }],
@@ -143,7 +143,8 @@ export async function addTestEmployee(
     await employment.addOne(trx, {
       organization_id,
       health_worker_id: admin.id,
-      profession: 'admin',
+      profession: null,
+      is_admin: true,
       department_ids: admin_department_ids,
     })
 
