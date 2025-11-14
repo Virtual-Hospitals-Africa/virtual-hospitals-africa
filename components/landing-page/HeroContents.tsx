@@ -18,13 +18,13 @@ export default function HeroContents() {
                 Bringing accessible health care to Africans
               </p>
               <div className='mt-4 flex gap-4'>
-                <Button href='#demo' color='blue'>
+                <Button href='#demo' variant='secondary'>
                   Learn more
                 </Button>
 
                 <Button
                   href='/waitlist?entrypoint=hero'
-                  color='white'
+                  variant='hyperlink'
                 >
                   Join the waitlist
                 </Button>

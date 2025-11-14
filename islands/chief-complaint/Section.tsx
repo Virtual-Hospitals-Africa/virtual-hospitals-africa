@@ -108,10 +108,9 @@ export function ChiefComplaintSection({
       {transcribing_audio.value ? 'Transcribing audio...' : (
         <Button
           variant='secondary'
-          color='blue'
           type='button'
           title='Record Chief Complaint'
-          className='w-8 h-8'
+          // className='w-8 h-8'
           onClick={() => {
             startSpeechWebsocket({
               language_code: language_code.value,

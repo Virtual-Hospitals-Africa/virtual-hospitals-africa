@@ -12,7 +12,13 @@ export type ColorName =
   | 'orange'
   | 'neutral'
 
-type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'hyperlink' | 'destructive' | 'ghost'
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'hyperlink'
+  | 'destructive'
+  | 'ghost'
 
 export const get_color_styles = (
   color: ColorName,
@@ -21,16 +27,23 @@ export const get_color_styles = (
   if (variant === 'ghost') {
     const ghost_colors: Record<ColorName, string> = {
       primary: 'hover:text-primary focus-visible:text-primary',
-      secondary: 'hover:text-primary-secondary focus-visible:text-primary-secondary',
-      tertiary: 'hover:text-primary-tertiary focus-visible:text-primary-tertiary',
+      secondary:
+        'hover:text-primary-secondary focus-visible:text-primary-secondary',
+      tertiary:
+        'hover:text-primary-tertiary focus-visible:text-primary-tertiary',
       success: 'hover:text-success-status focus-visible:text-success-status',
       error: 'hover:text-error-status focus-visible:text-error-status',
       warning: 'hover:text-warning-status focus-visible:text-warning-status',
-      blue: 'hover:text-accent-blue-textIcon focus-visible:text-accent-blue-textIcon',
-      teal: 'hover:text-accent-teal-textIcon focus-visible:text-accent-teal-textIcon',
-      pink: 'hover:text-accent-pink-textIcon focus-visible:text-accent-pink-textIcon',
-      purple: 'hover:text-accent-purple-textIcon focus-visible:text-accent-purple-textIcon',
-      orange: 'hover:text-accent-orange-status focus-visible:text-accent-orange-status',
+      blue:
+        'hover:text-accent-blue-textIcon focus-visible:text-accent-blue-textIcon',
+      teal:
+        'hover:text-accent-teal-textIcon focus-visible:text-accent-teal-textIcon',
+      pink:
+        'hover:text-accent-pink-textIcon focus-visible:text-accent-pink-textIcon',
+      purple:
+        'hover:text-accent-purple-textIcon focus-visible:text-accent-purple-textIcon',
+      orange:
+        'hover:text-accent-orange-status focus-visible:text-accent-orange-status',
       neutral: 'hover:text-neutral-primary focus-visible:text-neutral-primary',
     }
     return ghost_colors[color] || ''
@@ -158,4 +171,3 @@ export const get_color_styles = (
 
   return ''
 }
-

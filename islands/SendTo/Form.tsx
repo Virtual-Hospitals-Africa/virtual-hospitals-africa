@@ -34,7 +34,6 @@ export function SendToForm(
           form={form}
           type='submit'
           variant='primary'
-          color='primary'
         >
           Send
         </Button>

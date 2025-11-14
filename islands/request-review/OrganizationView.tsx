@@ -118,9 +118,8 @@ export function OrganizationView(props: {
           button={
             <Button
               className='items-center w-full gap-2 d-flex'
-              variant='secondary'
+              variant='tertiary'
               size='sm'
-              color='gray'
               type='button'
             >
               <p className='flex-1 truncate'>

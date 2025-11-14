@@ -53,8 +53,7 @@ export default function VitalInputWithNote(
             suffix={vital.units}
           />
           <Button
-            variant='secondary'
-            color='slate'
+            variant='tertiary'
             type='button'
             disabled
             title={`Flag ${vital.label}`}
@@ -64,7 +63,6 @@ export default function VitalInputWithNote(
           </Button>
           <Button
             variant='secondary'
-            color='blue'
             type='button'
             title={`Add note for ${vital.label}`}
             className='w-8 h-8 p-1'

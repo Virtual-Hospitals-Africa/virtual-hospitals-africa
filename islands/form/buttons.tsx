@@ -44,7 +44,6 @@ export default function FormButtons(
         <Button
           type='button'
           variant='secondary'
-          color='blue'
           href={cancel.href}
           className='flex-1 max-w-xl'
         >
