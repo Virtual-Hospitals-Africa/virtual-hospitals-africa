@@ -1,6 +1,10 @@
-import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
+import { asMaybeNames } from '../../db/models/asNames.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  upsertWithGoogleCredentials,
+} from '../../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 
 export function testHealthWorker() {
@@ -11,7 +15,7 @@ export function testHealthWorker() {
     name: `Test Health Worker ${surname}`,
     surname,
     first_names: 'Test Health Worker',
-    preferred_name: 'Test Patient',
+    preferred_name: 'Test',
     email: generateUUID() + '@example.com',
     avatar_media_id: randomAvatarMediaId(),
     access_token: 'access.' + generateUUID(),
@@ -26,8 +30,11 @@ export function insertHealthWorker(
   opts?: Partial<HealthWorkerWithGoogleTokens>,
 ) {
   const defaults = testHealthWorker()
-  return upsertWithGoogleCredentials(trx, {
+  const to_insert = {
     ...defaults,
     ...opts,
-  })
+    ...asMaybeNames(opts || {}),
+  }
+  console.log({ to_insert })
+  return upsertWithGoogleCredentials(trx, to_insert)
 }

@@ -1,16 +1,11 @@
 import { DeleteResult, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
-import {
-  GoogleTokens,
-  HealthWorker,
-  HealthWorkerWithGoogleTokens,
-  TrxOrDb,
-} from '../../types.ts'
-import { assert } from 'std/assert/assert.ts'
+import { GoogleTokens, TrxOrDb } from '../../types.ts'
 import pick from '../../util/pick.ts'
 import * as health_workers from './health_workers.ts'
 import * as google_tokens from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
+import { HealthWorkerUpsert } from './health_workers.ts'
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
@@ -22,22 +17,35 @@ export function updateTokens(
   return google_tokens.updateTokensByEmail(trx, 'health_worker', email, tokens)
 }
 
+export type HealthWorkerWithGoogleTokens = Awaited<
+  ReturnType<typeof upsertWithGoogleCredentials>
+>
+
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
-  details: HealthWorker & GoogleTokens,
-): Promise<HealthWorkerWithGoogleTokens> {
+  {
+    access_token,
+    refresh_token,
+    expires_at,
+    expires_in: _expires_in,
+    ...health_worker_details
+  }:
+    & HealthWorkerUpsert
+    & GoogleTokens
+    & {
+      expires_in?: string | number | Date
+    },
+) {
   const health_worker = await health_workers.upsert(
     trx,
-    {
-      name: details.name,
-      email: details.email,
-      avatar_media_id: details.avatar_media_id,
-    },
+    health_worker_details,
   )
-  const tokens = pickTokens(details)
-  assert(tokens.access_token)
-  assert(tokens.refresh_token)
-  assert(tokens.expires_at)
+  const tokens = {
+    access_token,
+    refresh_token,
+    expires_at,
+  }
+
   await google_tokens.upsert(
     trx,
     'health_worker',

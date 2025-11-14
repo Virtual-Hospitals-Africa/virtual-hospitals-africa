@@ -37,8 +37,7 @@ export async function handler(
 
   ctx.state.organization = organization
   ctx.state.organization_employment = organization_employment
-  ctx.state.is_admin_at_organization = organization_employment.roles.some(
-    (role) => role.profession === 'admin',
-  )
+  ctx.state.is_admin_at_organization = organization_employment.is_admin
+
   return ctx.next()
 }

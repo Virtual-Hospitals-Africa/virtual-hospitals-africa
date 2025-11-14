@@ -13,6 +13,7 @@ import assertLength from '../../util/assertLength.ts'
 import { testHealthWorker } from '../_helpers/health_workers.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -92,31 +93,30 @@ describe('db/models/health_workers.ts', () => {
           organizations: [
             {
               ...test_clinic,
-              roles: [{
-                profession: 'nurse',
-                employment_id: health_worker.employee_id,
-                specialty: null,
-                department_ids: result.organizations[0].roles[0].department_ids,
-              }],
+              profession: 'nurse',
+              is_admin: false,
+              employment_id: health_worker.employee_id,
+              specialty: null,
+              department_ids: result.organizations[0].department_ids,
             },
           ],
         })
 
-        assertLength(result.organizations[0].roles[0].department_ids, 3)
+        assertLength(result.organizations[0].department_ids, 3)
         assertSome(
-          result.organizations[0].roles[0].department_ids,
+          result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
               ?.name === 'primary care',
         )
         assertSome(
-          result.organizations[0].roles[0].department_ids,
+          result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
               ?.name === 'triage',
         )
         assertSome(
-          result.organizations[0].roles[0].department_ids,
+          result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
               ?.name === 'reception',
@@ -127,58 +127,27 @@ describe('db/models/health_workers.ts', () => {
     it(
       'handles a health worker who is both a nurse and admin at one organization',
       async () => {
-        const getting_test_clinic = organizations.getById(
-          db,
-          TEST_ORGANIZATION_UUIDS.ZA.clinic,
-        )
-
         const health_worker = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'approved',
-        })
-
-        const test_clinic = await getting_test_clinic
-
-        const admin_department_id = exists(
-          test_clinic.departments.find((d) => d.name === 'administration'),
-        ).id
-        await employment.addOne(db, {
-          health_worker_id: health_worker.id,
-          profession: 'admin',
-          organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
-          department_ids: [admin_department_id],
+          is_admin: true,
         })
 
         const result = await health_workers.getById(db, health_worker.id)
 
         assertLength(result.organizations, 1)
-        assertLength(result.organizations[0].roles, 2)
+        assertEquals(result.organizations[0].profession, 'nurse')
+        assertEquals(result.organizations[0].is_admin, true)
 
-        assertEquals(result.organizations[0].roles, [
-          {
-            'employment_id': result.organizations[0].roles[0].employment_id,
-            'profession': 'admin',
-            'specialty': null,
-            'department_ids': [
-              admin_department_id,
-            ],
-          },
-          {
-            'employment_id': result.organizations[0].roles[1].employment_id,
-            'profession': 'nurse',
-            'specialty': null,
-            'department_ids': [
-              exists(
-                test_clinic.departments.find((d) => d.name === 'primary care'),
-              ).id,
-              exists(
-                test_clinic.departments.find((d) => d.name === 'reception'),
-              ).id,
-              exists(
-                test_clinic.departments.find((d) => d.name === 'triage'),
-              ).id,
-            ],
-          },
+        const department_names = healthWorkerOrganizationDepartmentNames(
+          result,
+          result.organizations[0].id,
+        )
+        assertEquals(department_names, [
+          'primary care',
+          'reception',
+          'triage',
+          'administration',
         ])
       },
     )
@@ -205,6 +174,7 @@ describe('db/models/health_workers.ts', () => {
         await employment.addOne(db, {
           health_worker_id: health_worker.id,
           profession: 'receptionist',
+          is_admin: false,
           organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
           department_ids: [reception_department_id],
         })
@@ -216,14 +186,13 @@ describe('db/models/health_workers.ts', () => {
           result.organizations[0].id,
           TEST_ORGANIZATION_UUIDS.ZA.hospital,
         )
-        assertLength(result.organizations[0].roles, 1)
-        assertEquals(result.organizations[0].roles[0].profession, 'doctor')
+        assertEquals(result.organizations[0].profession, 'doctor')
         assertEquals(
           result.organizations[1].id,
           TEST_ORGANIZATION_UUIDS.ZA.clinic,
         )
         assertEquals(
-          result.organizations[1].roles[0].profession,
+          result.organizations[1].profession,
           'receptionist',
         )
       },

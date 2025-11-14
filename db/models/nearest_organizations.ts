@@ -43,7 +43,7 @@ export function baseQuery(
       sql<string>`'Open'`.as('status'),
       jsonArrayFrom(
         employees.baseQuery(trx)
-          .where('employment.profession', '=', 'admin')
+          .where('employment.is_admin', '=', true)
           .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('admins'),
       jsonArrayFrom(

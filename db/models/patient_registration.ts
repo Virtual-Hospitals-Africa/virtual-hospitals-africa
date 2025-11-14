@@ -22,7 +22,6 @@ import { assert } from 'std/assert/assert.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { description_sql } from './patients.ts'
 import isEmployedInDepartment from '../../shared/isEmployedInDepartment.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 export async function start(
   trx: TrxOrDb,
@@ -35,7 +34,7 @@ export async function start(
     'Must work in the reception department to register patients',
   )
 
-  const non_admin_id = nonAdminId(organization_employment)
+  const non_admin_id = organization_employment.employment_id
   assertOr403(non_admin_id)
 
   const patient_id = generateUUID()

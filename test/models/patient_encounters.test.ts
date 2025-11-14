@@ -18,7 +18,6 @@ import {
 } from '../_helpers/workflows.ts'
 import { RenderedPatient } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
 
 describe(
   'db/models/patient_encounters.ts',
@@ -123,7 +122,7 @@ describe(
                   ...open_encounter.all_employees_seen[0],
                   patient_encounter_employee_id,
                   id: receptionist.id,
-                  employee_id: exists(nonAdminId(organization_employment)),
+                  employee_id: exists(organization_employment).employment_id,
                   name: receptionist.name,
                   profession: 'receptionist',
                   specialty: null,
@@ -273,7 +272,7 @@ describe(
                 ...open_encounter.all_employees_seen[0],
                 patient_encounter_employee_id:
                   employee.patient_encounter_employee_id,
-                employee_id: exists(nonAdminId(organization_employment)),
+                employee_id: exists(organization_employment).employment_id,
                 organization_id: organization_employment.id,
                 profession: 'receptionist',
                 id: receptionist.id,

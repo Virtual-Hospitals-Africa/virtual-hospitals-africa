@@ -69,7 +69,7 @@ export function baseQuery(
     )
     .select((eb) => [
       'doctor_reviews.id as review_id',
-      'doctor_reviews.reviewer_id',
+      'doctor_reviews.reviewer_id as employment_id',
       eb('completed_at', 'is not', null).as('completed'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),

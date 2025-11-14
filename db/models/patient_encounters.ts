@@ -22,7 +22,7 @@ import * as patients from './patients.ts'
 import * as employees from './employees.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import * as organizations from './organizations.ts'
-import { nonAdminId } from '../../shared/nonAdminId.ts'
+
 import {
   blankSelection,
   jsonArrayFrom,
@@ -109,7 +109,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     'Only seeking treatment supported for now!',
   )
 
-  const non_admin_employment_id = nonAdminId(organization_employment)
+  const non_admin_employment_id = organization_employment.employment_id
   assert(non_admin_employment_id)
   const workflows: Workflow[] = ['triage', 'consultation']
   const patient_workflows = workflows.map((workflow) => ({
@@ -126,13 +126,11 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     next_workflow: workflows[1],
     department_name: WORKFLOW_DEPARTMENTS[workflows[0]],
   }
-  const employed_in_workflow_department = organization_employment.roles.some(
-    (role) =>
-      role.department_ids.some((department_id) =>
-        organization_employment.departments.find((d) => d.id === department_id)
-          ?.name === patient_presence.department_name
-      ),
-  )
+  const employed_in_workflow_department = organization_employment.department_ids
+    .some((department_id) =>
+      organization_employment.departments.find((d) => d.id === department_id)
+        ?.name === patient_presence.department_name
+    )
 
   if (!employed_in_workflow_department) {
     patient_presence.next_workflow = patient_presence.current_workflow

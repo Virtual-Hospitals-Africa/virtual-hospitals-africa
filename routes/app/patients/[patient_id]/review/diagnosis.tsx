@@ -80,7 +80,7 @@ export const handler = {
         review_id: ctx.state.doctor_review.review_id,
         patient_id: ctx.state.doctor_review.patient.id,
         patient_encounter_id: ctx.state.doctor_review.encounter.id,
-        employment_id: ctx.state.doctor_review.reviewer_id,
+        employment_id: ctx.state.doctor_review.employment_id,
         diagnoses: patient_diagnoses,
         diagnoses_collaborations,
       },
@@ -97,7 +97,7 @@ export default async function DiagnosisPage(
   const { trx, doctor_review: { review_id } } = ctx.state
   const patient_diagnoses = await diagnoses.getFromReview(trx, {
     review_id,
-    employment_id: ctx.state.doctor_review.reviewer_id,
+    employment_id: ctx.state.doctor_review.employment_id,
     patient_encounter_id: ctx.state.doctor_review.encounter.id,
   })
 

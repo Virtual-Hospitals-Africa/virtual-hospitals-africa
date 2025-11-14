@@ -14,16 +14,6 @@ import { postHandler } from '../../../../util/postHandler.ts'
 import z from 'zod'
 import { positive_integer } from '../../../../util/validators.ts'
 
-type SearchFormValues = {
-  provider_id?: string
-  organization_id?: string
-  provider_name?: string
-  patient_id?: string
-  patient_name?: string
-  date?: string
-  reason?: string
-}
-
 const ScheduleFormSchema = z.object({
   start: z.string().datetime(),
   end: z.string().datetime(),

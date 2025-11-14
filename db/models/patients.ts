@@ -77,7 +77,7 @@ export function baseQuery(trx: TrxOrDb) {
 
 export async function insert(
   trx: TrxOrDb,
-  { conversation_state, country, ...to_insert }:
+  { conversation_state, country, location, ...to_insert }:
     & Omit<
       InsertShapeLiteral<Patients>,
       'id' | 'phone_number' | 'country' | 'location'
@@ -86,6 +86,7 @@ export async function insert(
       country?: string
       phone_number?: string
       conversation_state?: string
+      location?: Coordinates
     },
 ) {
   const patient = await trx
@@ -94,6 +95,7 @@ export async function insert(
       ...to_insert,
       ...asMaybeNames(to_insert),
       country: country || SERVER_COUNTRY,
+      location: location && literalLocation(location),
     })
     .returningAll()
     .executeTakeFirstOrThrow()

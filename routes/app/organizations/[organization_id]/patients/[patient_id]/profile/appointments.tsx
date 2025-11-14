@@ -1,11 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import Appointments from '../../../../../../../components/calendar/Appointments.tsx'
 import * as appointments from '../../../../../../../db/models/appointments.ts'
+import * as google_tokens from '../../../../../../../db/models/google_tokens.ts'
 import type { RenderableAppointment } from '../../../../../../../types.ts'
 import { PatientProfilePage } from './_middleware.tsx'
-import {
-  HealthWorkerGoogleClient,
-} from '../../../../../../../external-clients/google.ts'
+import { HealthWorkerGoogleClient } from '../../../../../../../external-clients/google.ts'
 import { parseDateTime } from '../../../../../../../util/date.ts'
 import { uniqBy } from '../../../../../../../util/uniqBy.ts'
 import { organizationOf } from '../../../../../../../shared/employees.ts'
@@ -32,6 +31,12 @@ export default PatientProfilePage(
           'id',
         )
 
+        const tokens = await google_tokens.getByEntityId(
+          ctx.state.trx,
+          'health_worker',
+          first_provider.health_worker_id,
+        )
+        assert(tokens)
         const organizations_with_addresses = organizations.filter((o) =>
           o.formatted_address
         )
@@ -47,10 +52,13 @@ export default PatientProfilePage(
         )
         const google_client = new HealthWorkerGoogleClient(
           ctx.state.trx,
-          first_provider,
+          {
+            id: first_provider.health_worker_id,
+            ...tokens,
+          },
         )
         const gcal_item = await google_client.getEvent(
-          first_provider.gcal_appointments_calendar_id,
+          first_provider.calendars.gcal_appointments_calendar_id,
           appt.gcal_event_id,
         )
         assert(

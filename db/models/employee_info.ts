@@ -92,7 +92,11 @@ export function getEmployeeInfo(
                 opts.health_worker_id,
               )
               .where('organization_id', '=', opts.organization_id)
-              .select(['employment.profession']),
+              .select((eb_employment) => [
+                eb_employment.ref('employment.profession').$notNull().as(
+                  'profession',
+                ),
+              ]),
           ).as('professions'),
           ({ eb, and }) =>
             and([

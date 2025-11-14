@@ -32,7 +32,7 @@ describe('db/models/employees.ts', () => {
         })
         assertEquals(results.length, 1)
         const [result] = results
-        assertLength(result.organizations[0].roles[0].department_ids, 3)
+        assertLength(result.organizations[0].department_ids, 3)
         assertEquals(result, {
           'id': result.id,
           'name': result.name,
@@ -44,6 +44,7 @@ describe('db/models/employees.ts', () => {
           'employee_id': result.employee_id,
           'organization_id': '00000000-0000-0000-0000-000000000001',
           'profession': 'nurse',
+          'is_admin': false,
           'specialty': null,
           'href':
             `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${result.id}`,
@@ -53,15 +54,11 @@ describe('db/models/employees.ts', () => {
                 trx,
                 TEST_ORGANIZATION_UUIDS.ZA.clinic,
               ),
-              'roles': [
-                {
-                  'employment_id': health_worker.employee_id,
-                  'profession': 'nurse',
-                  'specialty': null,
-                  'department_ids':
-                    result.organizations[0].roles[0].department_ids,
-                },
-              ],
+              'employment_id': health_worker.employee_id,
+              'profession': 'nurse',
+              'is_admin': false,
+              'specialty': null,
+              'department_ids': result.organizations[0].department_ids,
             },
           ],
         })
@@ -135,11 +132,12 @@ describe('db/models/employees.ts', () => {
         registration_status: 'not started',
       })
 
-      await employment.add(trx, [{
+      await employment.addOne(trx, {
         health_worker_id: health_worker.id,
         profession: 'nurse',
         organization_id: '00000000-0000-0000-0000-000000000002',
-      }])
+        is_admin: false,
+      })
 
       const same_organization_search = await employees.search(trx, {
         search: health_worker.name,

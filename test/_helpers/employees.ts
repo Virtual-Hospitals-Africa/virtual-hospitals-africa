@@ -1,15 +1,10 @@
 import * as cheerio from 'cheerio'
-import {
-  HealthWorkerWithGoogleTokens,
-  Maybe,
-  Names,
-  TrxOrDb,
-} from '../../types.ts'
+import { Maybe, Names, TrxOrDb } from '../../types.ts'
 import * as sessions from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as health_worker_organization_calenders from '../../db/models/health_worker_organization_calendars.ts'
+import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import testCalendars from '../../mocks/testCalendars.ts'
@@ -17,7 +12,12 @@ import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
 import { route } from '../route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
-import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  upsertWithGoogleCredentials,
+} from '../../db/models/health_worker_google_tokens.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -27,6 +27,7 @@ type TestHealthWorkerOpts = {
     | 'receptionist'
     | 'none'
   specialty?: string
+  is_admin?: boolean
   registration_status?: 'approved' | 'awaiting approval' | 'not started'
   organization_id?: string
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
@@ -55,6 +56,7 @@ export async function addTestEmployee(
     health_worker_attrs = {},
     registration_status = 'approved',
     specialty,
+    is_admin,
   }: TestHealthWorkerOpts = {},
 ): Promise<TestEmployee> {
   if (!specialty && ['nurse', 'doctor'].includes(profession)) {
@@ -73,6 +75,7 @@ export async function addTestEmployee(
     health_worker_attrs,
   )
   if (profession === 'none') {
+    assert(!is_admin)
     return {
       ...health_worker,
       get organization_id() {
@@ -99,21 +102,29 @@ export async function addTestEmployee(
     profession,
     specialty,
   )
+  if (is_admin) {
+    assertNotEquals(profession, 'admin')
+    const admin_department_ids = organizationDepartmentIdsOfProfession(
+      organization,
+      'admin',
+    )
+    department_ids.push(...admin_department_ids)
+  }
 
   const created_employee = await employment.addOne(trx, {
     organization_id,
-    profession,
+    profession: profession === 'admin' ? null : profession,
+    is_admin: profession === 'admin' || !!is_admin,
     department_ids,
     health_worker_id: health_worker.id,
   })
   const employee_id = created_employee.id
   const calendars = testCalendars()
-  await health_worker_organization_calenders.add(
+  await employment_calendars.add(
     trx,
-    health_worker.id,
     [{
-      organization_id,
       ...calendars,
+      employment_id: employee_id,
       availability_set: true,
     }],
   )
@@ -143,7 +154,8 @@ export async function addTestEmployee(
     await employment.addOne(trx, {
       organization_id,
       health_worker_id: admin.id,
-      profession: 'admin',
+      profession: null,
+      is_admin: true,
       department_ids: admin_department_ids,
     })
 

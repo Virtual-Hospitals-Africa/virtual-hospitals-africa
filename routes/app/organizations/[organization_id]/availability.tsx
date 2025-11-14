@@ -25,7 +25,7 @@ import { postHandler } from '../../../../util/postHandler.ts'
 import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { OrganizationContext } from './_middleware.ts'
-import * as health_worker_organization_calenders from '../../../../db/models/health_worker_organization_calendars.ts'
+import * as employment_calendars from '../../../../db/models/employment_calendars.ts'
 import {
   nonnegative_integer,
   positive_integer,
@@ -127,11 +127,13 @@ async function writeCalendarsToGoogle(
   ctx: OrganizationContext,
   availability: Partial<AvailabilityJSON>,
 ) {
-  // Get calendar ID from health_worker_organization_calendars table
   const calendar_record = await ctx.state.trx
-    .selectFrom('health_worker_organization_calendars')
-    .where('health_worker_id', '=', ctx.state.health_worker.id)
-    .where('organization_id', '=', ctx.state.organization.id)
+    .selectFrom('employment_calendars')
+    .where(
+      'employment_id',
+      '=',
+      ctx.state.organization_employment.employment_id,
+    )
     .select('gcal_availability_calendar_id')
     .executeTakeFirst()
 
@@ -149,10 +151,12 @@ async function writeCalendarsToGoogle(
         google_client,
         [ctx.state.organization.id],
       )
-    await health_worker_organization_calenders.add(
+    await employment_calendars.add(
       ctx.state.trx,
-      ctx.state.health_worker.id,
-      [calendars],
+      [{
+        ...calendars,
+        employment_id: ctx.state.organization_employment.employment_id,
+      }],
     )
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }
@@ -180,17 +184,14 @@ async function writeCalendarsToGoogle(
 export const handler = postHandler(
   AvailabilitySchema,
   async (ctx: OrganizationContext, form_values) => {
-    const { health_worker, trx, organization } = ctx.state
+    const { trx, organization_employment } = ctx.state
     const from_url = !!ctx.url.searchParams.get('from_url')
 
     await promiseProps({
-      marking_availability_set: health_worker_organization_calenders
+      marking_availability_set: employment_calendars
         .markAvailabilitySet(
           trx,
-          {
-            health_worker_id: health_worker.id,
-            organization_id: organization.id,
-          },
+          organization_employment.employment_id,
         ),
       write_calendars_to_google: writeCalendarsToGoogle(
         ctx,
@@ -212,18 +213,15 @@ export default HealthWorkerHomePageLayout(
     // deno-lint-ignore no-explicit-any
     ctx: OrganizationContext<any>,
   ) {
-    const { health_worker, organization } = ctx.state
+    const { trx, organization_employment } = ctx.state
     const from_url = ctx.url.searchParams.get('from_url')
 
-    // Get calendar ID from health_worker_organization_calendars table
-    const calendar_record = await ctx.state.trx
-      .selectFrom('health_worker_organization_calendars')
-      .where('health_worker_id', '=', health_worker.id)
-      .where('organization_id', '=', organization.id)
-      .select('gcal_availability_calendar_id')
-      .executeTakeFirst()
+    const calendars = await employment_calendars.findOneOptional(
+      trx,
+      organization_employment,
+    )
 
-    const gcal_availability_calendar_id = calendar_record
+    const gcal_availability_calendar_id = calendars
       ?.gcal_availability_calendar_id
 
     const google_client = await HealthWorkerGoogleClient
@@ -246,12 +244,9 @@ export default HealthWorkerHomePageLayout(
 
     // If initially directed here by _middleware, but you already have availability in google calendar, mark that the availability is set
     if (events.items.length && !!from_url) {
-      await health_worker_organization_calenders.markAvailabilitySet(
-        ctx.state.trx,
-        {
-          health_worker_id: health_worker.id,
-          organization_id: organization.id,
-        },
+      await employment_calendars.markAvailabilitySet(
+        trx,
+        organization_employment.employee_id,
       )
       return redirect('/app')
     }

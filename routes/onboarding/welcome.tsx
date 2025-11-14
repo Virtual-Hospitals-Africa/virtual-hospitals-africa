@@ -81,6 +81,7 @@ export const handler = postHandler(
       profession,
       specialty,
       health_worker_id: health_worker.id,
+      is_admin: false,
     })
 
     return redirect('/app')

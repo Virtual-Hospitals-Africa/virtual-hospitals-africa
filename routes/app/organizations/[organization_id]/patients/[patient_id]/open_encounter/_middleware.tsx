@@ -32,7 +32,7 @@ import {
   assertOr405,
   assertOrRedirect,
 } from '../../../../../../../util/assertOr.ts'
-import { nonAdminId } from '../../../../../../../shared/nonAdminId.ts'
+
 import PatientDrawerV3 from '../../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
@@ -328,7 +328,7 @@ export async function handler(
   const encounter_employee_presence = exists(
     present_with_patient.find(
       matching({
-        employee_id: nonAdminId(organization_employment),
+        employee_id: organization_employment.employment_id,
       }),
     ),
   )

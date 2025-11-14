@@ -271,9 +271,7 @@ export async function getOneForHealthWorker(
   health_worker: EmployedHealthWorker,
   message_thread_id: string | IdSelection,
 ): Promise<RenderedMessageThreadWithAllMessages> {
-  const employee_ids = health_worker.organizations.flatMap((e) =>
-    e.roles.map((role) => role.employment_id)
-  )
+  const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
   assert(employee_ids.length, 'Must complete onboarding first')
 
@@ -348,9 +346,7 @@ export async function getForHealthWorker(
   trx: TrxOrDb,
   health_worker: EmployedHealthWorker,
 ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
-  const employee_ids = health_worker.organizations.flatMap((e) =>
-    e.roles.map((role) => role.employment_id)
-  )
+  const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
   assert(employee_ids.length, 'Must complete onboarding first')
 

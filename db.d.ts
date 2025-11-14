@@ -148,7 +148,7 @@ export type PharmacistType =
   | 'Pharmacist'
   | 'Pharmacy Technician'
 
-export type Profession = 'admin' | 'doctor' | 'nurse' | 'receptionist'
+export type Profession = 'doctor' | 'nurse' | 'receptionist'
 
 export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
@@ -445,9 +445,20 @@ export interface Employment {
   created_at: Generated<Timestamp>
   health_worker_id: string
   id: Generated<string>
+  is_admin: boolean
   organization_id: string
-  profession: Profession
+  profession: Profession | null
   specialty: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface EmploymentCalendars {
+  availability_set: Generated<boolean>
+  created_at: Generated<Timestamp>
+  employment_id: string
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  id: Generated<string>
   updated_at: Generated<Timestamp>
 }
 
@@ -534,19 +545,9 @@ export interface HealthWorkerInvitees {
   created_at: Generated<Timestamp>
   email: string
   id: Generated<string>
+  is_admin: boolean
   organization_id: string
-  profession: Profession
-  updated_at: Generated<Timestamp>
-}
-
-export interface HealthWorkerOrganizationCalendars {
-  availability_set: Generated<boolean>
-  created_at: Generated<Timestamp>
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  health_worker_id: string
-  id: Generated<string>
-  organization_id: string
+  profession: Profession | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1755,6 +1756,7 @@ export interface DB {
   doctors: Doctors
   drugs: Drugs
   employment: Employment
+  employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence
   event_listeners: EventListeners
   events: Events
@@ -1764,7 +1766,6 @@ export interface DB {
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
   health_worker_invitees: HealthWorkerInvitees
-  health_worker_organization_calendars: HealthWorkerOrganizationCalendars
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories

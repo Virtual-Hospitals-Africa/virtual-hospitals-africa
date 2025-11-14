@@ -1,7 +1,6 @@
 import FormRow from '../../components/library/FormRow.tsx'
 import PersonSearch from '../PersonSearch.tsx'
-import { Maybe, OrganizationDoctorOrNurse } from '../../types.ts'
-
+import { Maybe, RenderedEmployee } from '../../types.ts'
 import ProvidersSelect from '../ProvidersSelect.tsx'
 import Form from '../../components/library/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
@@ -20,7 +19,7 @@ export default function AddPatientForm({
   providers,
   patient,
 }: {
-  providers: OrganizationDoctorOrNurse[]
+  providers: RenderedEmployee[]
   patient: { id: string; name?: Maybe<string> }
 }) {
   return (

@@ -41,7 +41,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
         devices={organization_devices}
         consumables={organization_consumbales}
         medicines={organization_medicines}
-        isAdmin={is_admin_at_organization}
+        is_admin={is_admin_at_organization}
         active_tab={active_tab}
       />
     )

@@ -19,6 +19,7 @@ export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
       'employment.organization_id',
       'employment.profession',
       'employment.specialty',
+      'employment.is_admin',
       sql<string>`
         '/app/organizations/' || employment.organization_id::text || '/employees/' || employment.health_worker_id::text
       `.as('href'),

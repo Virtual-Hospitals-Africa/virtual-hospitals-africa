@@ -2,8 +2,6 @@ import { assert } from 'std/assert/assert.ts'
 import { sql, UpdateResult } from 'kysely'
 import {
   EmployedHealthWorker,
-  HasStringId,
-  HealthWorker,
   IdSelection,
   InsertShape,
   Maybe,
@@ -25,6 +23,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
 import isString from '../../util/isString.ts'
+import generateUUID from '../../util/uuid.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN health_workers.avatar_media_id IS NOT NULL
@@ -33,7 +32,7 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
-type HealthWorkerUpsert =
+export type HealthWorkerUpsert =
   & {
     id?: string
     avatar_media_id?: string | null
@@ -53,7 +52,7 @@ function asHealthWorkerValues(
 export function upsert(
   trx: TrxOrDb,
   details: HealthWorkerUpsert,
-): Promise<HasStringId<HealthWorker>> {
+) {
   const to_upsert = asHealthWorkerValues(details)
   return trx
     .insertInto('health_workers')
@@ -69,6 +68,18 @@ export function upsert(
       'avatar_media_id',
     ])
     .executeTakeFirstOrThrow()
+}
+
+export async function getIdByEmailOrGenerateNew(
+  trx: TrxOrDb,
+  email: string,
+) {
+  const health_worker = await trx.selectFrom('health_workers')
+    .where('email', '=', email)
+    .select('id')
+    .executeTakeFirst()
+
+  return health_worker?.id || generateUUID()
 }
 
 export function updateNames(
@@ -138,54 +149,46 @@ export function baseQuery(trx: TrxOrDb) {
               )
               .select('employment.organization_id')
               .distinct(),
-          ).select((eb_organization) => [
-            jsonArrayFrom(
-              eb_organization.selectFrom('employment')
-                .where(
+          )
+          .innerJoin(
+            'employment',
+            (join) =>
+              join.onRef('employment.organization_id', '=', 'organizations.id')
+                .on(
                   'employment.health_worker_id',
                   '=',
                   eb.ref('health_workers.id'),
+                ),
+          )
+          .select((eb_employment) => [
+            'employment.id as employment_id',
+            'profession',
+            'specialty',
+            'is_admin',
+            jsonArrayFromColumn(
+              'department_id',
+              eb_employment.selectFrom('department_employment')
+                .innerJoin(
+                  'organization_departments',
+                  'organization_departments.id',
+                  'department_employment.department_id',
                 )
                 .whereRef(
-                  'employment.organization_id',
+                  'department_employment.employment_id',
                   '=',
-                  'organizations.id',
+                  'employment.id',
                 )
-                .select((eb_employment) => [
-                  'employment.id as employment_id',
-                  'profession',
-                  'specialty',
-                  jsonArrayFromColumn(
-                    'department_id',
-                    eb_employment.selectFrom('department_employment')
-                      .innerJoin(
-                        'organization_departments',
-                        'organization_departments.id',
-                        'department_employment.department_id',
-                      )
-                      .whereRef(
-                        'department_employment.employment_id',
-                        '=',
-                        'employment.id',
-                      )
-                      .select('organization_departments.id as department_id')
-                      .orderBy(
-                        (eb_employment_departments_order) =>
-                          orderByArrayPosition(
-                            eb_employment_departments_order,
-                            'organization_departments.name',
-                            DEPARTMENTS as NonEmptyArray<string>,
-                          ),
-                        'desc',
-                      ),
-                  ).as('department_ids'),
-                ]).orderBy((eb_roles_order) =>
-                  orderByArrayPosition(
-                    eb_roles_order,
-                    'employment.profession',
-                    ['admin', 'doctor', 'nurse', 'receptionist'],
-                  ), 'desc'),
-            ).as('roles'),
+                .select('organization_departments.id as department_id')
+                .orderBy(
+                  (eb_employment_departments_order) =>
+                    orderByArrayPosition(
+                      eb_employment_departments_order,
+                      'organization_departments.name',
+                      DEPARTMENTS as NonEmptyArray<string>,
+                    ),
+                  'desc',
+                ),
+            ).as('department_ids'),
           ]).orderBy(
             // TODO order by most recently interacted with?
             (eb_organization_order) =>

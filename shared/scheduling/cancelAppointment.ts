@@ -3,7 +3,7 @@ import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as google from '../../external-clients/google.ts'
 import { scheduledAppointments } from '../../db/models/patient_appointments.ts'
 import { getById } from '../../db/models/employees.ts'
-import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
+import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import * as google_tokens from '../../db/models/google_tokens.ts'
 import { remove } from '../../db/models/appointments.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
@@ -37,7 +37,7 @@ export async function cancelAppointment(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await health_worker_organization_calendars.findOne(
+  const calendars = await employment_calendars.findOneOptional(
     trx,
     matching_provider,
   )

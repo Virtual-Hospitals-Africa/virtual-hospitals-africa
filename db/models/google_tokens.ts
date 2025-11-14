@@ -1,5 +1,5 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
-import { GoogleTokens, HasStringId, TrxOrDb } from '../../types.ts'
+import { GoogleTokens, HasStringId, IdSelection, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -12,7 +12,7 @@ export type EntityType = 'health_worker' | 'regulator'
 export function upsert(
   trx: TrxOrDb,
   entity_type: EntityType,
-  entity_id: string,
+  entity_id: string | IdSelection,
   tokens: GoogleTokens,
 ): Promise<HasStringId<GoogleTokens> | undefined> {
   assert(entity_id)

@@ -3,7 +3,6 @@ import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employees from '../db/models/employees.ts'
 import * as notifications from '../db/models/notifications.ts'
-import * as organizations from '../db/models/organizations.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import * as messages from '../db/models/messages.ts'
 import * as message_threads from '../db/models/message_threads.ts'
@@ -91,10 +90,10 @@ export const EVENTS = {
         const { organization_id } = doctor_review_request.requesting
         if (!organization_id) return
 
-        const doctors_at_organization = await organizations.getEmployees(
+        const doctors_at_organization = await employees.findAll(
           trx,
-          organization_id,
           {
+            organization_id,
             professions: ['doctor'],
           },
         )
@@ -107,9 +106,7 @@ export const EVENTS = {
             description: `${doctor_review_request.requested_by.name} at ${
               organizationOf(doctor_review_request.requested_by).name
             } has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
-            employment_id: doctor.professions.find((p) =>
-              p.profession === 'doctor'
-            )!.employee_id,
+            employment_id: doctor.employee_id,
             table_name: 'doctor_review_requests',
             row_id: payload.data.review_request_id,
             notification_type: 'doctor_review_request',
@@ -216,7 +213,7 @@ export const EVENTS = {
     {
       async notifyOriginalRequester(trx, payload) {
         const review = await doctor_reviews.getById(trx, payload.data.review_id)
-        const doctor = await employees.getById(trx, review.reviewer_id)
+        const doctor = await employees.getById(trx, review.employment_id)
 
         return notifications.insert(trx, {
           action_title: 'View completed review',

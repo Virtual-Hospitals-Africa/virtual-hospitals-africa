@@ -1,7 +1,7 @@
 import z from 'zod'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import * as organizations from '../../../../../db/models/organizations.ts'
+import * as employees from '../../../../../db/models/employees.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
@@ -61,9 +61,12 @@ export default HealthWorkerHomePageLayout(
 
     const { patient, providers, open_encounter } = await promiseProps({
       patient: patients.getById(trx, patient_id),
-      providers: organizations.getApprovedProviders(
+      providers: employees.findAll(
         trx,
-        organization.id,
+        {
+          organization_id: organization.id,
+          professions: ['nurse', 'doctor'],
+        },
       ),
       open_encounter: patient_encounters.getFirstOpen(trx, {
         patient_id,

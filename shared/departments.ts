@@ -2,8 +2,16 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import { Maybe, Profession, RenderedOrganization } from '../types.ts'
+import {
+  EmployedHealthWorker,
+  Maybe,
+  Profession,
+  RenderedEmployee,
+  RenderedOrganization,
+} from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
+import { exists } from '../util/exists.ts'
+import matching from '../util/matching.ts'
 
 export const DEPARTMENTS = [
   'primary care' as const,
@@ -91,7 +99,7 @@ export function assertDepartmentResponsibleForWorkflow(
 }
 
 export function departmentsOfProfession(
-  profession: Profession,
+  profession: Profession | 'admin',
   specialty?: Maybe<string>,
 ): Department[] {
   switch (profession) {
@@ -131,7 +139,7 @@ export function departmentsOfProfession(
 
 export function organizationDepartmentIdsOfProfession(
   organization: RenderedOrganization,
-  profession: Profession,
+  profession: Profession | 'admin',
   specialty?: Maybe<string>,
 ): string[] {
   const department_names = departmentsOfProfession(profession, specialty)
@@ -142,4 +150,25 @@ export function organizationDepartmentIdsOfProfession(
     assert(matching_organization_department)
     return matching_organization_department.id
   })
+}
+
+export function employeeOrganizationDepartmentNames(
+  employee: RenderedEmployee,
+): string[] {
+  return healthWorkerOrganizationDepartmentNames(
+    employee,
+    employee.organization_id,
+  )
+}
+
+export function healthWorkerOrganizationDepartmentNames(
+  health_worker: EmployedHealthWorker,
+  organization_id: string,
+): string[] {
+  const organization = exists(health_worker.organizations.find(matching({
+    id: organization_id,
+  })))
+  return organization.departments
+    .filter((dept) => organization.department_ids.includes(dept.id))
+    .map((dept) => dept.name)
 }
