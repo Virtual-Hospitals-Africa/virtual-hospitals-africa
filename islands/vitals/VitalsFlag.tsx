@@ -1,5 +1,5 @@
 import { FlagIcon } from '../../components/library/icons/heroicons/solid.tsx'
-import { Button } from '../../components/library/Button.tsx'
+import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
 import cls from '../../util/cls.ts'
 
 export default function FindingFlagToggle({
@@ -13,7 +13,7 @@ export default function FindingFlagToggle({
 }) {
   const action = on ? 'Unflag' : 'Flag'
   return (
-    <Button
+    <HeroIconButton
       variant='ghost'
       type='button'
       onClick={() => {
@@ -22,6 +22,6 @@ export default function FindingFlagToggle({
       title={`${action} ${description} as a finding`}
     >
       <FlagIcon className={cls('h-5 w-5', on ? 'fill-indigo-900' : '')} />
-    </Button>
+    </HeroIconButton>
   )
 }
