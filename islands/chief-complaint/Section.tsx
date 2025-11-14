@@ -107,7 +107,7 @@ export function ChiefComplaintSection({
 
       {transcribing_audio.value ? 'Transcribing audio...' : (
         <HeroIconButton
-          variant='outline'
+          variant='secondary'
           color='blue'
           type='button'
           title='Record Chief Complaint'

@@ -2,15 +2,21 @@ import { LocalTime } from '../../islands/LocalTime.tsx'
 import { organizationOf } from '../../shared/employees.ts'
 import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
+import generateUUID from '../../util/uuid.ts'
+import { Button } from './Button.tsx'
 import {
   BuildingOffice2Icon,
   CalendarIcon,
+  ChatBubbleLeftIcon,
   UserIcon,
   XMarkIcon,
 } from './icons/heroicons/outline.tsx'
 
 export function FindingPanel(
-  { finding }: { finding: RenderedFindingRelativeToHealthWorker },
+  { finding, organization_id }: {
+    finding: RenderedFindingRelativeToHealthWorker
+    organization_id: string
+  },
 ) {
   return (
     <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 w-full max-w-[296px]'>
@@ -91,6 +97,17 @@ export function FindingPanel(
                 <LocalTime timestamp={finding.created_at} />
               </p>
             </div>
+
+            {/* Message */}
+            <Button
+              variant='secondary'
+              href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${finding.provider.employee_id}=true`}
+              left_icon={
+                <ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />
+              }
+            >
+              Message
+            </Button>
           </div>
 
           {/* Notes section */}

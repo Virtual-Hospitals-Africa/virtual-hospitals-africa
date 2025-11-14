@@ -30,7 +30,7 @@ export default function PartnersContent() {
             </p>
             <Button
               className='mt-4'
-              variant='solid'
+              variant='primary'
               color='indigo'
               href='/partner'
             >

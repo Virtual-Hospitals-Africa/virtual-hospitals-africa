@@ -1,18 +1,12 @@
 import { useSignal } from '@preact/signals'
-import { MessageTargetType } from '../../../db.d.ts'
 import { MessageTargetCategory } from '../../../shared/message_targets.ts'
 import AsyncSearch from '../../AsyncSearch.tsx'
-
-type Target = {
-  target_type: MessageTargetType
-  display_name: string
-  target_value: string
-}
+import { RenderedMessageTarget } from '../../../types.ts'
 
 type TargetsRowProps = {
   label: string
   message_target_category: MessageTargetCategory
-  targets: Target[]
+  targets: RenderedMessageTarget[]
 }
 
 const placeholders = {

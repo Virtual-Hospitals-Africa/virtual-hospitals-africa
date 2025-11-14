@@ -25,7 +25,7 @@ export function ScheduleADemo() {
             </p>
             <Button
               href='/schedule-demo'
-              variant='solid'
+              variant='primary'
               color='white'
               className='mt-4'
             >

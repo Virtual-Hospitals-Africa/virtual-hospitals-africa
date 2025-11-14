@@ -1,42 +1,30 @@
-import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'preact'
+import {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ComponentChild,
+} from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import cls from '../../util/cls.ts'
 
-const base_styles = {
-  solid: 'shadow-sm py-1 px-4',
-  outline: 'border py-1 px-4',
-  ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
-}
-
 const size_styles = {
-  sm: 'text-base/6',
-  md: 'text-base',
+  sm: 'h-8 px-3 text-sm leading-6',
+  md: 'h-9 px-4 text-base leading-6',
+  lg: 'h-10 px-5 text-base leading-6',
+  xl: 'h-11 px-6 text-base leading-6',
 }
 
 const variant_styles = {
-  solid: {
-    primary:
-      'rounded-lg bg-indigo-700 px-2 py-2 font-medium text-white shadow hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
-    slate:
-      'bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-slate-900',
-    blue:
-      'bg-blue-600 text-white hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:bg-blue-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-blue-600',
-    indigo:
-      'bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-indigo-600',
-    white:
-      'bg-white text-blue-600 hover:text-blue-700 focus-visible:text-blue-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-blue-50 active:text-blue-900/80 disabled:opacity-40 disabled:hover:text-blue-600',
-  },
-  outline: {
-    slate:
-      'border-slate-200 text-slate-900 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 active:border-slate-200 active:bg-slate-50 active:text-slate-900/70 disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:bg-transparent',
-    blue:
-      'border-blue-300 text-blue-600 hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
-    blueTwo:
-      'border-slate-500 text-slate-900 px-1 py-1 text-xl font-extrabold hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
-    gray:
-      'border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 active:text-gray-600/70 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-transparent',
-  },
-  ghost: {},
+  primary:
+    'bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-800 disabled:opacity-40 disabled:hover:bg-indigo-600',
+  secondary:
+    'border border-indigo-200 bg-indigo-50 text-indigo-700 font-semibold rounded-lg hover:border-indigo-300 hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-200 disabled:opacity-40 disabled:hover:border-indigo-200 disabled:hover:bg-indigo-50',
+  tertiary:
+    'bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 active:bg-gray-400 disabled:opacity-40 disabled:hover:bg-gray-200',
+  hyperlink:
+    'border border-gray-300 bg-white text-indigo-600 font-semibold rounded-lg hover:border-indigo-600 hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:border-indigo-700 active:bg-indigo-100 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white',
+  destructive:
+    'bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 active:bg-red-800 disabled:opacity-40 disabled:hover:bg-red-600',
+  ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
 export type ButtonLinkProps =
@@ -56,49 +44,43 @@ export type ButtonProps =
   & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'>
   & {
     className?: string
-    size?: 'sm' | 'md'
+    size?: 'sm' | 'md' | 'lg' | 'xl'
+    variant?: keyof typeof variant_styles
+    left_icon?: ComponentChild
+    right_icon?: ComponentChild
   }
-  & (
-    | {
-      variant: 'solid'
-      color?: keyof typeof variant_styles.solid
-    }
-    | {
-      variant: 'outline'
-      color?: keyof typeof variant_styles.outline
-    }
-    | {
-      variant: 'ghost'
-      color?: undefined
-    }
-    | {
-      variant?: undefined
-      color?: keyof typeof variant_styles.solid
-    }
-  )
   & ButtonLinkProps
 
 export type ButtonVariant = NonNullable<ButtonProps['variant']>
 
 export function Button({
-  variant = 'solid',
-  color = 'primary',
+  variant = 'primary',
   size = 'md',
   className,
   href,
   action,
   method,
   type = 'submit',
+  left_icon,
+  right_icon,
+  children,
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex rounded-lg font-medium tracking-tight focus:outline-none',
-    base_styles[variant],
-    // deno-lint-ignore no-explicit-any
-    (variant_styles as any)[variant][color],
+    'inline-flex items-center tracking-tight focus:outline-none',
+    variant_styles[variant],
     size_styles[size],
-    variant !== 'ghost' && 'justify-center', // TODO, do this more elegantly for ActionButton ?
+    variant !== 'ghost' && 'justify-center',
+    !!(left_icon || right_icon) && 'gap-2',
     className,
+  )
+
+  const content = (
+    <>
+      {left_icon}
+      {children}
+      {right_icon}
+    </>
   )
 
   if (method === 'POST') {
@@ -110,7 +92,9 @@ export function Button({
 
     return (
       <form method='POST' action={action}>
-        <button className={className} type='submit' {...props} />
+        <button className={className} type='submit' {...props}>
+          {content}
+        </button>
       </form>
     )
   }
@@ -121,7 +105,13 @@ export function Button({
         href={href}
         className={className}
         {...(props as unknown as AnchorHTMLAttributes<HTMLAnchorElement>)}
-      />
+      >
+        {content}
+      </a>
     )
-    : <button className={className} type={type} {...props} />
+    : (
+      <button className={className} type={type} {...props}>
+        {content}
+      </button>
+    )
 }

@@ -43,7 +43,7 @@ export default function FormButtons(
       {cancel && (
         <Button
           type='button'
-          variant='outline'
+          variant='secondary'
           color='blue'
           href={cancel.href}
           className='flex-1 max-w-xl'

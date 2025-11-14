@@ -6,8 +6,9 @@ import partition from '../util/partition.ts'
 export function preferredEmploymentId(
   organization_employment: HealthWorkerOrganization,
 ): string {
-  const [admin_roles, non_admin_roles] = partition(organization_employment.roles, (role) =>
-    role.profession === 'admin'
+  const [admin_roles, non_admin_roles] = partition(
+    organization_employment.roles,
+    (role) => role.profession === 'admin',
   )
   if (non_admin_roles.length) {
     assertLength(non_admin_roles, 1)

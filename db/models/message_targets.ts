@@ -16,7 +16,10 @@ import * as employees from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import { MessageTargetCategory } from '../../shared/message_targets.ts'
+import {
+  BY_TARGET_UUID,
+  MessageTargetCategory,
+} from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import {
@@ -282,35 +285,35 @@ export async function getTarget<TargetType extends MessageTargetType>(
   >
 }
 
-const by_target_uuid = new Set<string>([
-  'organization',
-  'employee',
-])
-
 export async function getMany(
   trx: TrxOrDb,
   targets_record: {
-    organization?: Record<string, true>
-    employee?: Record<string, true>
-    profession?: Record<string, true>
-    organization_category?: Record<string, true>
-    locality?: Record<string, true>
-    administrative_area_level_1?: Record<string, true>
-    administrative_area_level_2?: Record<string, true>
-  }
+    organization?: string[]
+    employee?: string[]
+    profession?: string[]
+    organization_category?: string[]
+    locality?: string[]
+    administrative_area_level_1?: string[]
+    administrative_area_level_2?: string[]
+  },
 ): Promise<RenderedMessageTarget[]> {
-  const rendered_targets = await pMap(entries(targets_record), async ([target_type, target_values]) => {
-    const by_uuid = by_target_uuid.has(target_type)
-    const target_entities = Object.keys(target_values ?? {}).map(target_string => ({
-      target_type,
-      target_uuid: by_uuid ? target_string : undefined,
-      target_value: by_uuid ? undefined : target_string,
-    }))
-    
-    return pMap(target_entities, async (target) => {
-      return getTarget(trx, target)
-    })
-  })
+  const rendered_targets = await pMap(
+    entries(targets_record),
+    async ([target_type, target_values = []]) => {
+      const by_uuid = BY_TARGET_UUID.has(target_type)
+      const target_entities = target_values.map(
+        (target_string) => ({
+          target_type,
+          target_uuid: by_uuid ? target_string : undefined,
+          target_value: by_uuid ? undefined : target_string,
+        }),
+      )
+
+      return pMap(target_entities, async (target) => {
+        return getTarget(trx, target)
+      })
+    },
+  )
 
   return rendered_targets.flat()
 }

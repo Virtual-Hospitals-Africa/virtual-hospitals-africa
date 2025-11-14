@@ -1,31 +1,16 @@
-import { MessagePriority, MessageTargetType } from '../../db.d.ts'
+import { MessageDraftTargets, MessagePriority } from '../../db.d.ts'
+import { BY_TARGET_UUID } from '../../shared/message_targets.ts'
 import {
+  InsertShape,
   RenderedMessageDraft,
   RenderedMessageTarget,
   TrxOrDb,
 } from '../../types.ts'
+import entries from '../../util/entries.ts'
 import { pMap } from '../../util/inParallel.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
 import { QueryResult } from './_base.ts'
 import { getTarget } from './message_targets.ts'
-
-export type MessageDraftTarget = {
-  target_type: MessageTargetType
-  target_uuid?: string
-  target_value?: unknown
-}
-
-export type MessageDraftInsert = {
-  employment_id: string
-  body: string
-  priority: MessagePriority
-  targets?: MessageDraftTarget[]
-}
-
-export type MessageDraftUpdate = {
-  body?: string
-  priority?: MessagePriority
-}
 
 function baseQuery(trx: TrxOrDb) {
   return trx
@@ -64,6 +49,7 @@ export async function findById(
   const draft = await baseQuery(trx)
     .where('message_drafts.id', '=', draft_id)
     .executeTakeFirst()
+
   if (!draft) return
 
   const targets: RenderedMessageTarget[] = await pMap(
@@ -77,80 +63,6 @@ export async function findById(
   }
 }
 
-export async function create(
-  trx: TrxOrDb,
-  insert: MessageDraftInsert,
-) {
-  const { targets, ...draft_data } = insert
-
-  const draft = await trx
-    .insertInto('message_drafts')
-    .values(draft_data)
-    .returningAll()
-    .executeTakeFirstOrThrow()
-
-  if (targets?.length) {
-    await trx
-      .insertInto('message_draft_targets')
-      .values(
-        targets.map((target) => ({
-          message_draft_id: draft.id,
-          target_type: target.target_type,
-          target_uuid: target.target_uuid,
-          target_value: target.target_value
-            ? JSON.stringify(target.target_value)
-            : undefined,
-        })),
-      )
-      .execute()
-  }
-
-  return findById(trx, { draft_id: draft.id })
-}
-
-export async function update(
-  trx: TrxOrDb,
-  { draft_id, ...update_data }: { draft_id: string } & MessageDraftUpdate,
-) {
-  await trx
-    .updateTable('message_drafts')
-    .set(update_data)
-    .where('id', '=', draft_id)
-    .execute()
-
-  return findById(trx, { draft_id })
-}
-
-export async function updateTargets(
-  trx: TrxOrDb,
-  { draft_id, targets }: { draft_id: string; targets: MessageDraftTarget[] },
-) {
-  // Delete existing targets
-  await trx
-    .deleteFrom('message_draft_targets')
-    .where('message_draft_id', '=', draft_id)
-    .execute()
-
-  // Insert new targets
-  if (targets.length) {
-    await trx
-      .insertInto('message_draft_targets')
-      .values(
-        targets.map((target) => ({
-          message_draft_id: draft_id,
-          target_type: target.target_type,
-          target_uuid: target.target_uuid,
-          target_value: target.target_value
-            ? JSON.stringify(target.target_value)
-            : undefined,
-        })),
-      )
-      .execute()
-  }
-
-  return findById(trx, { draft_id })
-}
-
 export function removeById(
   trx: TrxOrDb,
   draft_id: string,
@@ -159,4 +71,62 @@ export function removeById(
     .deleteFrom('message_drafts')
     .where('id', '=', draft_id)
     .execute()
+}
+
+export function save(
+  trx: TrxOrDb,
+  {
+    message_draft_id,
+    targets = {},
+    ...updates
+  }: {
+    message_draft_id: string
+    body: string
+    priority: MessagePriority
+    targets?: {
+      organization?: string[]
+      employee?: string[]
+      profession?: string[]
+      organization_category?: string[]
+      locality?: string[]
+      administrative_area_level_1?: string[]
+      administrative_area_level_2?: string[]
+    }
+    employment_id: string
+  },
+): Promise<{ success: true }> {
+  const draft_targets: InsertShape<MessageDraftTargets>[] = entries(targets)
+    .flatMap(([target_type, target_strings = []]) => {
+      const by_uuid = BY_TARGET_UUID.has(target_type)
+      return target_strings.map((target_string) => ({
+        message_draft_id,
+        target_type,
+        target_uuid: by_uuid ? target_string : null,
+        target_value: by_uuid ? null : target_string,
+      }))
+    })
+
+  return trx.with('inserting_draft', (qb) =>
+    qb.insertInto('message_drafts')
+      .values({
+        id: message_draft_id,
+        ...updates,
+      })
+      .onConflict((oc) => oc.column('id').doUpdateSet(updates)))
+    .with(
+      'removing_existing_targets',
+      (qb) =>
+        qb.deleteFrom('message_draft_targets')
+          .where('message_draft_id', '=', message_draft_id),
+    ).with(
+      'inserting_new_targets',
+      (qb) =>
+        draft_targets.length
+          ? qb.insertInto('message_draft_targets').values(draft_targets)
+          : blankSelection(qb),
+    )
+    .selectNoFrom([
+      success_true,
+    ])
+    .executeTakeFirstOrThrow()
 }

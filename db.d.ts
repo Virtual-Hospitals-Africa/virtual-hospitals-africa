@@ -771,7 +771,7 @@ export interface MessageDraftTargets {
   message_draft_id: string
   target_type: MessageTargetType
   target_uuid: string | null
-  target_value: Json | null
+  target_value: string | null
   updated_at: Generated<Timestamp>
 }
 

@@ -110,10 +110,11 @@ export const handler = postHandler(
 )
 
 function CommonConditionRow(
-  { condition, positive_findings, sex }: {
+  { condition, positive_findings, sex, organization_id }: {
     condition: typeof COMMON_CONDITIONS[number]
     positive_findings: RenderedFindingRelativeToHealthWorker[]
     sex: Sex
+    organization_id: string
   },
 ) {
   const positive_finding = positive_findings.find((f) =>
@@ -129,15 +130,21 @@ function CommonConditionRow(
         ? false
         : undefined}
       label={condition.label}
-      most_recent_finding={<MostRecentFinding finding={positive_finding} />}
+      most_recent_finding={
+        <MostRecentFinding
+          finding={positive_finding}
+          organization_id={organization_id}
+        />
+      }
     />
   )
 }
 
 function BriefHistorySection(
-  { positive_findings, sex }: {
+  { positive_findings, sex, organization_id }: {
     positive_findings: RenderedFindingRelativeToHealthWorker[]
     sex: Sex
+    organization_id: string
   },
 ) {
   return (
@@ -149,6 +156,7 @@ function BriefHistorySection(
             condition={condition}
             positive_findings={positive_findings}
             sex={sex}
+            organization_id={organization_id}
           />
         ))}
       </YesNoGrid>
@@ -159,7 +167,7 @@ function BriefHistorySection(
 export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, encounter, health_worker } = ctx.state
+  const { trx, encounter, health_worker, organization_employment } = ctx.state
   const { patient } = encounter
   const patient_id = patient.id
 
@@ -174,6 +182,7 @@ export async function TriageBriefHistoryPage(
     <BriefHistorySection
       positive_findings={positive_findings}
       sex={patient.sex}
+      organization_id={organization_employment.id}
     />
   )
 }

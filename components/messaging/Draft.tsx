@@ -4,6 +4,7 @@ import { Button } from '../library/Button.tsx'
 import PriorityDropdown from '../../islands/messaging/drafts/PriorityDropdown.tsx'
 import RichTextEditor from '../../islands/messaging/drafts/RichTextEditor.tsx'
 import { TargetsRow } from '../../islands/messaging/drafts/TargetsRow.tsx'
+import { groupByCategory } from '../../shared/message_targets.ts'
 
 export type DraftProps = {
   draft?: Partial<RenderedMessageDraft>
@@ -15,6 +16,10 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
 
   // const concerning = ['Patient: Andries Dlamini', 'ARIPIPRAZOLE prescription']
   const subject = 'What is the correct dosage?'
+
+  const targets = groupByCategory(draft.targets || [])
+
+  console.log(targets)
 
   return (
     <div class='max-w-6xl mx-auto p-8'>
@@ -36,21 +41,21 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           <TargetsRow
             label='Regions'
             message_target_category='regions'
-            targets={[]}
+            targets={targets.get('regions') || []}
           />
 
           {/* Facilities Row */}
           <TargetsRow
             label='Facilities'
             message_target_category='organizations'
-            targets={[]}
+            targets={targets.get('organizations') || []}
           />
 
           {/* Recipients Row */}
           <TargetsRow
             label='Recipients'
             message_target_category='health_workers'
-            targets={[]}
+            targets={targets.get('health_workers') || []}
           />
 
           <span class='ml-auto text-sm text-gray-600 whitespace-nowrap'>
@@ -103,15 +108,13 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
           <div class='flex justify-end gap-3 px-6 py-4'>
             <Button
               type='button'
-              variant='outline'
-              color='gray'
+              variant='secondary'
             >
               Save to drafts
             </Button>
             <Button
               type='submit'
-              variant='solid'
-              color='indigo'
+              variant='primary'
             >
               Send Message
             </Button>

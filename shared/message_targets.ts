@@ -1,3 +1,7 @@
+import { MessageTargetType } from '../db.d.ts'
+import { RenderedMessageTarget } from '../types.ts'
+import { groupBy } from '../util/groupBy.ts'
+
 export const MESSAGE_TARGET_CATEGORIES = {
   regions: [
     'locality' as const,
@@ -9,3 +13,27 @@ export const MESSAGE_TARGET_CATEGORIES = {
 }
 
 export type MessageTargetCategory = keyof typeof MESSAGE_TARGET_CATEGORIES
+
+const MESSAGE_TYPE_TO_CATEGORY = {
+  locality: 'regions',
+  administrative_area_level_1: 'regions',
+  administrative_area_level_2: 'regions',
+  organization: 'organizations',
+  organization_category: 'organizations',
+  profession: 'health_workers',
+  employee: 'health_workers',
+} satisfies Record<MessageTargetType, MessageTargetCategory>
+
+export function groupByCategory(
+  targets: RenderedMessageTarget[],
+): Map<MessageTargetCategory, RenderedMessageTarget[]> {
+  return groupBy(
+    targets,
+    (target) => MESSAGE_TYPE_TO_CATEGORY[target.target_type],
+  )
+}
+
+export const BY_TARGET_UUID = new Set<string>([
+  'organization',
+  'employee',
+])

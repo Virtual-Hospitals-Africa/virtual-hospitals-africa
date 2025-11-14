@@ -1,5 +1,5 @@
 import { z, ZodObject, ZodTypeAny } from 'zod'
-import { LoggedInHealthWorkerContext, RenderedMessageDraft } from '../../../../../../types.ts'
+import { RenderedMessageDraft } from '../../../../../../types.ts'
 import * as message_drafts from '../../../../../../db/models/message_drafts.ts'
 import * as message_targets from '../../../../../../db/models/message_targets.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
@@ -11,7 +11,9 @@ import { parseRequest } from '../../../../../../util/parseForm.ts'
 import { OrganizationContext } from '../../_middleware.ts'
 import { preferredEmploymentId } from '../../../../../../shared/preferredEmploymentId.ts'
 
-const MessageTargetSchema = z.record(z.string(), z.literal(true)).optional()
+const MessageTargetSchema = z.record(z.string(), z.literal(true)).transform(
+  (value) => Object.keys(value),
+).optional()
 
 const MessageDraftSchema = z.object({
   body: z.string(),
@@ -20,6 +22,10 @@ const MessageDraftSchema = z.object({
     'Urgent',
     'Very urgent',
     'Emergency',
+  ]),
+  action: z.enum([
+    'save_draft',
+    'send_message',
   ]),
   targets: z.object({
     organization: MessageTargetSchema,
@@ -40,8 +46,21 @@ const PartialMessageDraftSchema = MessageDraftSchema.partial()
 
 export const handler = postHandler(
   MessageDraftSchema,
-  (ctx: LoggedInHealthWorkerContext, form_values) => {
+  async (ctx: OrganizationContext, form_values) => {
     const message_draft_id = getRequiredUUIDParam(ctx, 'message_draft_id')
+
+    if (form_values.action === 'save_draft') {
+      await message_drafts.save(
+        ctx.state.trx,
+        {
+          ...form_values,
+          message_draft_id,
+          employment_id: preferredEmploymentId(
+            ctx.state.organization_employment,
+          ),
+        },
+      )
+    }
 
     return new Response('Draft submitted (not yet implemented)', {
       status: 200,
@@ -52,8 +71,16 @@ export const handler = postHandler(
 async function draftFromFormValues(
   ctx: OrganizationContext,
 ): Promise<RenderedMessageDraft> {
-  const form_values = await parseRequest(ctx.state.trx, ctx.req, PartialMessageDraftSchema.parse)
-  const targets = await message_targets.getMany(ctx.state.trx, form_values.targets ?? {})
+  const form_values = await parseRequest(
+    ctx.state.trx,
+    ctx.req,
+    PartialMessageDraftSchema.parse,
+  )
+  console.log({ form_values })
+  const targets = await message_targets.getMany(
+    ctx.state.trx,
+    form_values.targets ?? {},
+  )
   return {
     id: getRequiredUUIDParam(ctx, 'message_draft_id'),
     employment_id: preferredEmploymentId(ctx.state.organization_employment),
@@ -70,7 +97,6 @@ export default HealthWorkerHomePageLayout(
   async function DraftPage(
     ctx: OrganizationContext,
   ) {
-
     const message_draft_id = getRequiredUUIDParam(ctx, 'message_draft_id')
 
     // Try to load existing draft
@@ -79,6 +105,8 @@ export default HealthWorkerHomePageLayout(
     })) || (
       await draftFromFormValues(ctx)
     )
+
+    console.log({ draft })
 
     return <MessageDraft draft={draft} />
   },
