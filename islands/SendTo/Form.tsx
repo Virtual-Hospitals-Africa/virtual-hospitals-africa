@@ -33,8 +33,7 @@ export function SendToForm(
         <Button
           form={form}
           type='submit'
-          variant='solid'
-          color='primary'
+          variant='primary'
         >
           Send
         </Button>

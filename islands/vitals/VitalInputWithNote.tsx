@@ -53,7 +53,7 @@ export default function VitalInputWithNote(
             suffix={vital.units}
           />
           <HeroIconButton
-            variant='outline'
+            variant='secondary'
             color='slate'
             type='button'
             disabled
@@ -63,7 +63,7 @@ export default function VitalInputWithNote(
             <FlagIcon className='w-4 h-4' />
           </HeroIconButton>
           <HeroIconButton
-            variant='outline'
+            variant='secondary'
             color='blue'
             type='button'
             title={`Add note for ${vital.label}`}

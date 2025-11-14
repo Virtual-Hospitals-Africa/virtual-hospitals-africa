@@ -19,7 +19,7 @@ export default function UnauthorizedPage(props: PageProps) {
             in which case you can try again
           </p>
           <div class='mt-10 flex items-center justify-center gap-x-6'>
-            <Button href='/login' color='blue'>
+            <Button href='/login'>
               Sign&#160;In
             </Button>
           </div>

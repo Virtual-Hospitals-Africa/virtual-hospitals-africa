@@ -93,7 +93,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn('target_type', sql`message_target_type`, (col) =>
           col.notNull())
         .addColumn('target_uuid', 'uuid')
-        .addColumn('target_value', 'json')
+        .addColumn('target_value', 'varchar(255)')
         .addCheckConstraint(
           'target_value_and_uuid_based_on_type',
           sql`(

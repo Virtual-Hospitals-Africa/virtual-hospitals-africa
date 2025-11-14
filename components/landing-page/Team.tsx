@@ -61,7 +61,7 @@ export function Team() {
         /* <Button
         className='mt-6'
         href='/volunteer'
-        variant='solid'
+        variant='primary'
         color='indigo'
       >
         Volunteer Opportunities

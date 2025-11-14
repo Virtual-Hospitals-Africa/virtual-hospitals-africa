@@ -221,11 +221,14 @@ export default function Search<
                   <RemovableChip
                     key={selected.id}
                     display={(selected.display_name || selected.name)!}
-                    remove={() =>
+                    remove={() => {
+                      console.log(selected_multi.value)
+                      console.log(selected)
                       selected_multi.value = remove(
                         selected_multi.value,
                         selected,
-                      )}
+                      )
+                    }}
                   />
                 ))}
                 <Combobox.Input

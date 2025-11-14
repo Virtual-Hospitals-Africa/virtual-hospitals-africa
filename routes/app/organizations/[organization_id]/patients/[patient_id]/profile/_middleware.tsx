@@ -169,7 +169,7 @@ export const PatientProfilePage = (
             {action && (
               <ActionButton
                 action={action}
-                variant='solid'
+                variant='primary'
               />
             )}
           </>

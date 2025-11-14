@@ -3,7 +3,10 @@ import { Maybe, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { FindingPanel } from './FindingPanel.tsx'
 
 export function MostRecentFinding(
-  { finding }: { finding: Maybe<RenderedFindingRelativeToHealthWorker> },
+  { finding, organization_id }: {
+    finding: Maybe<RenderedFindingRelativeToHealthWorker>
+    organization_id: string
+  },
 ) {
   if (!finding) return null
   return (
@@ -15,7 +18,7 @@ export function MostRecentFinding(
       <LocalTime timestamp={finding.created_at} />
 
       <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block hover:block'>
-        <FindingPanel finding={finding} />
+        <FindingPanel finding={finding} organization_id={organization_id} />
       </div>
     </span>
   )

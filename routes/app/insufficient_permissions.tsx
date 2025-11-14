@@ -21,7 +21,7 @@ export default function InsufficientPermissionsPage(props: PageProps) {
             Please sign in again and allow calendar access.
           </p>
           <div class='mt-10 flex items-center justify-center gap-x-6'>
-            <Button href='/login' color='blue'>
+            <Button href='/login' variant='secondary'>
               Sign&#160;In
             </Button>
           </div>

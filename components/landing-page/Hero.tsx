@@ -17,7 +17,7 @@ export function Hero() {
           <div className='grid place-items-center md:self-end grow p-2 pr-6'>
             <Button
               href='/login'
-              color='blue'
+              variant='secondary'
               className='md:absolute md:top-3 md:right-3'
             >
               Sign&#160;In

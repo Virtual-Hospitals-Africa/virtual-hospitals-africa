@@ -3,6 +3,8 @@ set -euo pipefail
 
 HTTP_SERVER_PORT=8001
 HTTPS_PROXY_SERVER_PORT=8000
+VITE_PID=
+PROXY_PID=
 
 ensure_no_process_on_port() {
   local port=$1
@@ -13,8 +15,8 @@ ensure_no_process_on_port() {
 }
 
 clean_up() {
-  kill $VITE_PID
-  kill $PROXY_PID
+  [ ! -z $VITE_PID ] && kill $VITE_PID || true
+  [ ! -z $PROXY_PID ] && kill $PROXY_PID || true
 }
 
 ensure_no_process_on_port $HTTP_SERVER_PORT

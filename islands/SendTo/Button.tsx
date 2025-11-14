@@ -27,8 +27,7 @@ export function SendToButton(
     <>
       <Button
         type='button'
-        variant='outline'
-        color='blue'
+        variant='secondary'
         className='flex-1 max-w-xl'
         onClick={handleClick}
       >
