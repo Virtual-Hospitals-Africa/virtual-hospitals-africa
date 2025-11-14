@@ -95,11 +95,8 @@ export function asWaitingRoom(
     next_workflow_status?.workflow
   assert(workflow_to_start)
 
-  const employment_department_ids = organization_employment.roles.flatMap((
-    role,
-  ) => role.department_ids)
   const employment_departments = organization_employment.departments.filter(
-    (d) => employment_department_ids.includes(d.id),
+    (d) => organization_employment.department_ids.includes(d.id),
   )
   const can_perform_action = employment_departments.some(
     (department) =>

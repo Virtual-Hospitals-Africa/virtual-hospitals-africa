@@ -9,12 +9,12 @@ import OrganizationDevicesTable from './DevicesTable.tsx'
 import OrganizationMedicinesTable from './MedicinesTable.tsx'
 
 export default function inventoryView(
-  { devices, consumables, medicines, organization_id, isAdmin, active_tab }: {
+  { devices, consumables, medicines, organization_id, is_admin, active_tab }: {
     devices: RenderedOrganizationDevice[]
     consumables: RenderedOrganizationConsumable[]
     medicines: RenderedOrganizationMedicine[]
     organization_id: string
-    isAdmin: boolean
+    is_admin: boolean
     active_tab: string
   },
 ) {
@@ -47,7 +47,7 @@ export default function inventoryView(
           <OrganizationDevicesTable
             devices={devices}
             organization_id={organization_id}
-            isAdmin={isAdmin}
+            is_admin={is_admin}
           />
         )}
 
@@ -55,7 +55,7 @@ export default function inventoryView(
           <OrganizationConsumablesTable
             consumables={consumables}
             organization_id={organization_id}
-            isAdmin={isAdmin}
+            is_admin={is_admin}
           />
         )}
 
@@ -63,7 +63,7 @@ export default function inventoryView(
           <OrganizationMedicinesTable
             medicines={medicines}
             organization_id={organization_id}
-            isAdmin={isAdmin}
+            is_admin={is_admin}
           />
         )}
       </div>

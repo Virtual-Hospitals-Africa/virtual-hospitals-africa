@@ -12,10 +12,6 @@ export function add(
   return trx
     .insertInto('employment_calendars')
     .values(calendars)
-    .onConflict((oc) =>
-      oc.constraint('only_one_calendar_set_per_health_worker_organization')
-        .doNothing()
-    )
     .execute()
 }
 

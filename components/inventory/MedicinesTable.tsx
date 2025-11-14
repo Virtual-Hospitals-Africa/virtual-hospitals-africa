@@ -59,17 +59,17 @@ const columns: TableColumn<RenderedOrganizationMedicine>[] = [
 ]
 
 export default function OrganizationMedicinesTable(
-  { medicines, organization_id, isAdmin }: {
+  { medicines, organization_id, is_admin }: {
     medicines: RenderedOrganizationMedicine[]
     organization_id: string
-    isAdmin: boolean
+    is_admin: boolean
   },
 ) {
   const add_href =
     `/app/organizations/${organization_id}/inventory/add_medicine`
   return (
     <>
-      {isAdmin && (
+      {is_admin && (
         <FormRow className='mb-2'>
           <AddMedicineSearch organization_id={organization_id} />
           <Button
@@ -89,7 +89,7 @@ export default function OrganizationMedicinesTable(
             header='No medicines in stock'
             explanation='Add a medicine to get started'
             Icon={ArchiveBoxIcon}
-            button={isAdmin
+            button={is_admin
               ? { children: 'Add Medicine', href: add_href }
               : undefined}
           />

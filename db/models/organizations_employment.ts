@@ -1,3 +1,4 @@
+// TODO USE_INVITE_SYSTEM
 // import { sql } from 'kysely'
 // import { assert } from 'std/assert/assert.ts'
 // import {
@@ -430,4 +431,55 @@
 //     organization_id,
 //     invites,
 //   )
+// }
+
+// export function addInvitees(
+//   trx: TrxOrDb,
+//   organization_id: string,
+//   invites: {
+//     email: string
+//     profession: Profession | null
+//     is_admin: boolean
+//   }[],
+// ) {
+//   assert(invites.length > 0)
+//   return trx
+//     .insertInto('health_worker_invitees')
+//     .values(invites.map((invite) => ({
+//       organization_id,
+//       ...invite,
+//     })))
+//     .returningAll()
+//     .execute()
+// }
+
+// export function approveInvitee(
+//   trx: TrxOrDb,
+//   { admin_id, approving_id }: { admin_id: string; approving_id: string },
+// ) {
+//   return trx.updateTable('nurse_registration_details')
+//     .set({ approved_by: admin_id })
+//     .where('health_worker_id', '=', approving_id)
+//     .execute()
+// }
+
+// export function getInvitees(
+//   trx: TrxOrDb,
+//   opts: {
+//     email: string
+//   },
+// ): Promise<HasStringId<HealthWorkerInvitee>[]> {
+//   return trx
+//     .selectFrom('health_worker_invitees')
+//     .where('email', '=', opts.email)
+//     .selectAll()
+//     .execute()
+// }
+
+// export function removeInvitees(
+//   trx: TrxOrDb,
+//   ids: string[],
+// ) {
+//   return trx.deleteFrom('health_worker_invitees').where('id', 'in', ids)
+//     .execute()
 // }

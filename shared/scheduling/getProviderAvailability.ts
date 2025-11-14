@@ -7,6 +7,7 @@ import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import {
   Availability,
   GCalFreeBusy,
+  RenderedAppointmentProvider,
   RenderedEmployee,
   TimeRange,
   TrxOrDb,
@@ -89,44 +90,50 @@ export function defaultTimeRange(): TimeRange {
 
 export async function providerAvailability(
   trx: TrxOrDb,
-  provider: RenderedEmployee,
+  employee: RenderedEmployee,
   timeRange = defaultTimeRange(),
 ) {
-  const { google_tokens_of_provider, calendars_of_provider } =
-    await promiseProps({
-      google_tokens_of_provider: google_tokens.getByEntityId(
-        trx,
-        'health_worker',
-        provider.id,
-      ),
-      calendars_of_provider: employment_calendars.findOneOptional(
-        trx,
-        provider,
-      ),
-    })
+  const { google_tokens_of_provider, calendars } = await promiseProps({
+    google_tokens_of_provider: google_tokens.getByEntityId(
+      trx,
+      'health_worker',
+      employee.id,
+    ),
+    calendars: employment_calendars.findOneOptional(
+      trx,
+      employee,
+    ),
+  })
 
-  if (!google_tokens_of_provider || !calendars_of_provider?.availability_set) {
+  if (!google_tokens_of_provider || !calendars?.availability_set) {
     return {
-      provider,
+      provider: {
+        ...employee,
+        calendars: null,
+      },
       availability: [],
       availability_set: false,
     }
   }
   const health_worker_google_client = new google.HealthWorkerGoogleClient(trx, {
-    ...provider,
+    ...employee,
     ...google_tokens_of_provider,
   })
 
   const free_busy = await health_worker_google_client.getFreeBusy({
     ...timeRange,
     calendarIds: [
-      calendars_of_provider.gcal_appointments_calendar_id,
-      calendars_of_provider.gcal_availability_calendar_id,
+      calendars.gcal_appointments_calendar_id,
+      calendars.gcal_availability_calendar_id,
     ],
   })
   return {
-    provider,
-    availability: getAvailability(calendars_of_provider, free_busy),
+    provider: {
+      ...employee,
+      calendars,
+    },
+    health_worker_google_client,
+    availability: getAvailability(calendars, free_busy),
   }
 }
 
@@ -155,7 +162,7 @@ export async function availableSlots(
       duration_minutes?: number
     },
 ): Promise<{
-  provider: RenderedEmployee
+  provider: RenderedAppointmentProvider
   start: Date
   end: Date
   duration_minutes: number
@@ -167,7 +174,7 @@ export async function availableSlots(
   const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const slots: {
-    provider: RenderedEmployee
+    provider: RenderedAppointmentProvider
     start: string
     end: string
     duration_minutes: number

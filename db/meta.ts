@@ -96,7 +96,6 @@ const top_level_tables = [
   'patients' as const,
   'health_workers' as const,
   'health_worker_invitees' as const,
-  'media' as const,
 ]
 export async function resetInTest(trx: TrxOrDb = db) {
   assert(Deno.env.get('IS_TEST'), "Don't run this outside tests!")

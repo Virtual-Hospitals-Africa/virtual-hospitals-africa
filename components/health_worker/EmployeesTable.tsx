@@ -5,25 +5,27 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/FormRow.tsx'
 
-import { OrganizationEmployeeOrInvitee } from '../../types.ts'
+import { RenderedEmployee } from '../../types.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { SearchInput } from '../../islands/form/inputs/search.tsx'
+import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
+import { employeeOrganizationDepartmentNames } from '../../shared/departments.ts'
 
 type EmployeesTableProps = {
-  isAdmin: boolean
-  employees: OrganizationEmployeeOrInvitee[]
+  is_admin: boolean
+  employees: RenderedEmployee[]
   pathname: string
   organization_id: string
   health_worker_id: string
 }
 
 export default function EmployeesTable({
-  isAdmin,
+  is_admin,
   employees,
   pathname,
 }: EmployeesTableProps): JSX.Element {
-  const columns: TableColumn<OrganizationEmployeeOrInvitee>[] = [
+  const columns: TableColumn<RenderedEmployee>[] = [
     {
       label: 'Employee',
       headerClassName: 'pl-12',
@@ -32,7 +34,7 @@ export default function EmployeesTable({
           <Person
             person={{
               ...row,
-              name: row.display_name,
+              display_name: employeeDisplay(row).display_name,
             }}
           />
         )
@@ -41,8 +43,12 @@ export default function EmployeesTable({
     {
       label: 'Profession',
       data(row) {
-        return row.professions.map(({ profession }) => profession).join(', ')
+        return employeeDisplay(row).description
       },
+    },
+    {
+      label: 'Departments',
+      data: employeeOrganizationDepartmentNames,
     },
     {
       label: 'Actions',
@@ -56,7 +62,7 @@ export default function EmployeesTable({
     <>
       <FormRow className='mb-4'>
         <SearchInput />
-        {isAdmin &&
+        {is_admin &&
           (
             <Button
               type='button'
@@ -75,7 +81,7 @@ export default function EmployeesTable({
             header='No employees'
             explanation='Invite a health worker to get started'
             Icon={UserCircleIcon}
-            button={isAdmin
+            button={is_admin
               ? { children: 'Invite', href: add_href }
               : undefined}
           />

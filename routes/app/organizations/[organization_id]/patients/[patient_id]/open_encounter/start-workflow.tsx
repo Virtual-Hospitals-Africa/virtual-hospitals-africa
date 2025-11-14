@@ -24,8 +24,8 @@ const StartWorkflowSchema = z.object({
   ]),
 })
 
-export async function startWorkflow(
-  ctx: OpenEncounterContext,
+export async function startWorkflow<T>(
+  ctx: OpenEncounterContext<T>,
   workflow: Workflow,
 ) {
   const { trx, organization_employment, encounter } = ctx.state

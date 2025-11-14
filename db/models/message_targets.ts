@@ -65,7 +65,7 @@ const TARGET_ENTITY_FETCHERS = {
   async profession(
     _trx: TrxOrDb,
     target: IntermediateTargetResult<'profession'>,
-  ): Promise<Profession> {
+  ): Promise<Profession | 'admin'> {
     assert(target.target_type === 'profession')
     assert(!target.target_uuid)
     assert(target.target_value)
@@ -128,7 +128,7 @@ const TARGET_DISPLAYS = {
       description: entity.formatted_address!,
     }
   },
-  profession(entity: Profession): Display {
+  profession(entity: Profession | 'admin'): Display {
     return {
       display_name: `All ${pluralize(entity, 2)}`,
       description: 'Profession',

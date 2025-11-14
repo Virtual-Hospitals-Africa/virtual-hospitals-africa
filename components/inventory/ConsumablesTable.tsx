@@ -26,17 +26,17 @@ const columns: TableColumn<RenderedOrganizationConsumable>[] = [
 ]
 
 export default function OrganizationConsumablesTable(
-  { consumables, organization_id, isAdmin }: {
+  { consumables, organization_id, is_admin }: {
     consumables: RenderedOrganizationConsumable[]
     organization_id: string
-    isAdmin: boolean
+    is_admin: boolean
   },
 ) {
   const add_href =
     `/app/organizations/${organization_id}/inventory/add_consumable`
   return (
     <>
-      {isAdmin && (
+      {is_admin && (
         <FormRow className='mb-2'>
           <AddConsumableSearch organization_id={organization_id} />
           <Button
@@ -57,7 +57,7 @@ export default function OrganizationConsumablesTable(
             header='No consumables in stock'
             explanation='Add a consumable to get started'
             Icon={ArchiveBoxIcon}
-            button={isAdmin
+            button={is_admin
               ? { children: 'Add Consumable', href: add_href }
               : undefined}
           />

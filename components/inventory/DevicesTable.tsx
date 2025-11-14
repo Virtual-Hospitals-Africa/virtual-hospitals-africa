@@ -33,16 +33,16 @@ const columns: TableColumn<RenderedOrganizationDevice>[] = [
 ]
 
 export default function OrganizationDevicesTable(
-  { devices, organization_id, isAdmin }: {
+  { devices, organization_id, is_admin }: {
     devices: RenderedOrganizationDevice[]
     organization_id: string
-    isAdmin: boolean
+    is_admin: boolean
   },
 ) {
   const add_href = `/app/organizations/${organization_id}/inventory/add_device`
   return (
     <>
-      {isAdmin && (
+      {is_admin && (
         <FormRow className='mb-2'>
           <AddDeviceSearch organization_id={organization_id} />
           <Button
@@ -63,7 +63,7 @@ export default function OrganizationDevicesTable(
             header='No devices in the inventory'
             explanation='Add a device to get started'
             Icon={ArchiveBoxIcon}
-            button={isAdmin
+            button={is_admin
               ? { children: 'Add Device', href: add_href }
               : undefined}
           />

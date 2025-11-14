@@ -15,6 +15,7 @@ import * as employees from './employees.ts'
 import isDate from '../../util/isDate.ts'
 import {
   jsonArrayFrom,
+  jsonBuildObject,
   now,
   today_in_johannesburg,
   tomorrow_in_johannesburg,
@@ -49,7 +50,8 @@ export function addOfferedTime(
         )
         .selectAll('inserted_offer_time')
         .select('health_workers.name as health_worker_name')
-        .select('employment.profession'),
+        .select('employment.profession')
+        .select('employment.is_admin'),
   )
     .selectFrom('inserted_with_health_worker_name')
     .selectAll()
@@ -389,38 +391,29 @@ export function getForPatient(
           'employment.id',
         )
         .innerJoin(
-          'google_tokens',
-          'google_tokens.entity_id',
-          'health_workers.id',
-        )
-        .innerJoin(
           'employment_calendars',
-          (join) =>
-            join
-              .onRef(
-                'employment.organization_id',
-                '=',
-                'employment_calendars.organization_id',
-              )
-              .onRef(
-                'employment.health_worker_id',
-                '=',
-                'employment_calendars.health_worker_id',
-              ),
+          'employment.id',
+          'employment_calendars.employment_id',
         )
         .where(
           'appointment_providers.appointment_id',
           '=',
           eb.ref('appointments.id'),
         )
-        .select([
-          'employment_calendars.gcal_availability_calendar_id',
-          'employment_calendars.gcal_appointments_calendar_id',
-          'employment_calendars.availability_set',
-          'google_tokens.expires_at',
-          'google_tokens.access_token',
-          'google_tokens.refresh_token',
+        .select((eb_calendars) => [
+          jsonBuildObject({
+            gcal_availability_calendar_id: eb_calendars.ref(
+              'employment_calendars.gcal_availability_calendar_id',
+            ),
+            gcal_appointments_calendar_id: eb_calendars.ref(
+              'employment_calendars.gcal_appointments_calendar_id',
+            ),
+            availability_set: eb_calendars.ref(
+              'employment_calendars.availability_set',
+            ),
+          }).as('calendars'),
           'appointment_providers.confirmed',
+          'employment.health_worker_id',
         ]),
     ).as('providers'),
   ])

@@ -488,7 +488,8 @@ export type PatientAppointmentOfferedTime = {
 export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   id: string
   health_worker_name: string
-  profession: Profession
+  profession: Profession | null
+  is_admin: boolean
 }
 
 export type PharmacistConversationState =
@@ -1463,17 +1464,7 @@ export type RenderedDoctorReviewBase = {
       view: string
     }
   }
-  requested_by: {
-    profession: 'nurse' | 'doctor'
-    name: string
-    avatar_url: string | null
-    organization: {
-      id: string
-      name: string
-    }
-    patient_encounter_employee_id: string
-    health_worker_id: string
-  }
+  requested_by: RenderedPatientEncounterEmployee
 }
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
@@ -1633,7 +1624,7 @@ export type ProviderAppointmentSlot = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: Provider[]
+  providers: RenderedAppointmentProvider[]
   physicalLocation?: undefined
   virtualLocation?: undefined
 }
@@ -1645,7 +1636,7 @@ export type ProviderAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers?: Provider[]
+  providers?: RenderedAppointmentProvider[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1661,7 +1652,7 @@ export type PatientAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: Provider[]
+  providers: RenderedAppointmentProvider[]
   physicalLocation?: {
     organization: HasStringId<Organization>
   }
@@ -1795,12 +1786,7 @@ export type PatientNearestOrganization = {
   location: Coordinates
   walking_distance: null | string
   distance_meters: number
-  admins: {
-    employment_id: string
-    health_worker_id: string
-    email: string
-    name: string
-  }[]
+  admins: RenderedEmployee[]
 }
 
 export type GoogleAddressComponent = {
@@ -2317,15 +2303,7 @@ export type RenderedPatientEncounter = {
   appointment: {
     id: string
     start: Date
-    providers: {
-      employment_id: string
-      health_worker_id: string
-      name: string
-      organization_id: string
-      avatar_url: string | null
-      specialty: string | null
-      profession: Profession
-    }[]
+    providers: RenderedEmployee[]
   } | null
   workflows: Partial<
     {
@@ -2519,19 +2497,12 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   >
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
-export type Provider = {
-  avatar_url: string
-  email: string
-  name: string
-  access_token: string
-  refresh_token: string
-  expires_at: Date
-  profession: 'doctor' | 'nurse'
-  availability_set: boolean
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  health_worker_id: string
-  provider_id: string
+export type RenderedAppointmentProvider = RenderedEmployee & {
+  calendars: {
+    availability_set: boolean
+    gcal_appointments_calendar_id: string
+    gcal_availability_calendar_id: string
+  } | null
 }
 export type RenderedPatientExamination = {
   patient_examination_id: string | null
@@ -3121,33 +3092,20 @@ export type ExaminationChecklistDefinition = {
   }[]
 }
 
-type RenderedMessageThreadParticipantHealthWorker = {
+export type RenderedMessageThreadParticipant = {
+  participant_type: 'employee' | 'pharmacist'
   participant_id: string
   avatar_url?: Maybe<string>
   href: string
-  name: string
+  display_name: string
   description: string | string[]
   is_me: SqlBool
   is_system?: false
 }
-
-type RenderedMessageThreadParticipantPharmacist = {
-  participant_id: string
-  avatar_url?: Maybe<string>
-  href: string
-  name: string
-  description: string | string[]
-  is_me: SqlBool
-  is_system?: false
-}
-
-export type RenderedMessageThreadParticipant =
-  | RenderedMessageThreadParticipantHealthWorker
-  | RenderedMessageThreadParticipantPharmacist
-
 export type RenderedMessageSender = RenderedMessageThreadParticipant | {
   is_system: true
-  name: 'System'
+  participant_type: 'system'
+  display_name: 'System'
   participant_id?: never
   avatar_url?: never
   href?: never
@@ -3211,7 +3169,7 @@ export type MessageTargetEntities = {
   organization: RenderedOrganization
   organization_category: string
   employee: RenderedEmployee
-  profession: Profession
+  profession: Profession | 'admin'
   locality: string
   administrative_area_level_1: string
   administrative_area_level_2: string
@@ -3307,18 +3265,7 @@ export type MostRecentVitalMeasurement =
   }
   & ({
     finding_type: 'manual'
-    provider: {
-      patient_encounter_employee_id: string
-      employee_id: string
-      organization: {
-        id: string
-        name: string
-      }
-      health_worker_id: string
-      avatar_url: string | null
-      name: string
-      profession: string
-    }
+    provider: RenderedPatientEncounterEmployee
   } | {
     finding_type: 'computed'
     provider: null

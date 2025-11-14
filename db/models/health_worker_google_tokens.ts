@@ -23,9 +23,18 @@ export type HealthWorkerWithGoogleTokens = Awaited<
 
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
-  { access_token, refresh_token, expires_at, ...health_worker_details }:
+  {
+    access_token,
+    refresh_token,
+    expires_at,
+    expires_in: _expires_in,
+    ...health_worker_details
+  }:
     & HealthWorkerUpsert
-    & GoogleTokens,
+    & GoogleTokens
+    & {
+      expires_in?: string | number | Date
+    },
 ) {
   const health_worker = await health_workers.upsert(
     trx,

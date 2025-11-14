@@ -13,6 +13,7 @@ import assertLength from '../../util/assertLength.ts'
 import { testHealthWorker } from '../_helpers/health_workers.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -126,46 +127,27 @@ describe('db/models/health_workers.ts', () => {
     it(
       'handles a health worker who is both a nurse and admin at one organization',
       async () => {
-        const getting_test_clinic = organizations.getById(
-          db,
-          TEST_ORGANIZATION_UUIDS.ZA.clinic,
-        )
-
         const health_worker = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'approved',
-        })
-
-        const test_clinic = await getting_test_clinic
-
-        const admin_department_id = exists(
-          test_clinic.departments.find((d) => d.name === 'administration'),
-        ).id
-        await employment.addOne(db, {
-          health_worker_id: health_worker.id,
-          profession: null,
           is_admin: true,
-          organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
-          department_ids: [admin_department_id],
         })
 
         const result = await health_workers.getById(db, health_worker.id)
 
         assertLength(result.organizations, 1)
-
         assertEquals(result.organizations[0].profession, 'nurse')
         assertEquals(result.organizations[0].is_admin, true)
-        assertEquals(result.organizations[0].department_ids, [
-          admin_department_id,
-          exists(
-            test_clinic.departments.find((d) => d.name === 'primary care'),
-          ).id,
-          exists(
-            test_clinic.departments.find((d) => d.name === 'reception'),
-          ).id,
-          exists(
-            test_clinic.departments.find((d) => d.name === 'triage'),
-          ).id,
+
+        const department_names = healthWorkerOrganizationDepartmentNames(
+          result,
+          result.organizations[0].id,
+        )
+        assertEquals(department_names, [
+          'primary care',
+          'reception',
+          'triage',
+          'administration',
         ])
       },
     )

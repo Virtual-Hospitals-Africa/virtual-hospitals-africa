@@ -153,8 +153,10 @@ async function writeCalendarsToGoogle(
       )
     await employment_calendars.add(
       ctx.state.trx,
-      ctx.state.health_worker.id,
-      [calendars],
+      [{
+        ...calendars,
+        employment_id: ctx.state.organization_employment.employment_id,
+      }],
     )
     gcal_availability_calendar_id = calendars.gcal_availability_calendar_id
   }

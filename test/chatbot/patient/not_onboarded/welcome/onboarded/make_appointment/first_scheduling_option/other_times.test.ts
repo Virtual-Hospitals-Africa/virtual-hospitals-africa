@@ -48,6 +48,10 @@ describe('patient chatbot', () => {
       sex: 'female',
       date_of_birth: '2023-01-01',
       national_id_number: null,
+      location: {
+        latitude: -19.4554096,
+        longitude: 29.7739353,
+      },
     })
 
     // Insert patient_appointment_requests
