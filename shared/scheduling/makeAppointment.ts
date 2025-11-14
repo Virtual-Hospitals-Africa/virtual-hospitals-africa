@@ -7,7 +7,7 @@ import {
 } from '../../util/date.ts'
 import * as employees from '../../db/models/employees.ts'
 import * as appointments from '../../db/models/appointments.ts'
-import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
+import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import * as google_tokens from '../../db/models/google_tokens.ts'
 import {
   DeepPartial,
@@ -96,7 +96,7 @@ export async function makeAppointmentChatbot(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await health_worker_organization_calendars.findOne(
+  const calendars = await employment_calendars.findOne(
     trx,
     matching_provider,
   )
@@ -174,7 +174,7 @@ export async function makeAppointmentWeb(
     'health_worker',
     matching_provider.id,
   )
-  const calendars = await health_worker_organization_calendars.findOne(
+  const calendars = await employment_calendars.findOne(
     trx,
     matching_provider,
   )

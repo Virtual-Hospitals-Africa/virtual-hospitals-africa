@@ -1764,7 +1764,7 @@ export interface DB {
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
   health_worker_invitees: HealthWorkerInvitees
-  health_worker_organization_calendars: HealthWorkerOrganizationCalendars
+  employment_calendars: HealthWorkerOrganizationCalendars
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories

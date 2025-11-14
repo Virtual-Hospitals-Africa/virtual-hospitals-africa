@@ -11,7 +11,7 @@ export function add(
   }[],
 ) {
   return trx
-    .insertInto('health_worker_organization_calendars')
+    .insertInto('employment_calendars')
     .values(
       cals.map((cal) => ({
         ...cal,
@@ -32,7 +32,7 @@ export function markAvailabilitySet(
     health_worker_id: string
   },
 ) {
-  return trx.updateTable('health_worker_organization_calendars')
+  return trx.updateTable('employment_calendars')
     .set({ availability_set: true })
     .where('health_worker_id', '=', opts.health_worker_id)
     .where('organization_id', '=', opts.organization_id)
@@ -44,9 +44,9 @@ export function findOne(
   employee: RenderedEmployee,
 ) {
   return trx
-    .selectFrom('health_worker_organization_calendars')
+    .selectFrom('employment_calendars')
     .where('health_worker_id', '=', employee.id)
     .where('organization_id', '=', employee.organization_id)
-    .selectAll('health_worker_organization_calendars')
+    .selectAll('employment_calendars')
     .executeTakeFirst()
 }

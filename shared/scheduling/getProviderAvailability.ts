@@ -3,7 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as google from '../../external-clients/google.ts'
 import * as employees from '../../db/models/employees.ts'
 import * as google_tokens from '../../db/models/google_tokens.ts'
-import * as health_worker_organization_calendars from '../../db/models/health_worker_organization_calendars.ts'
+import * as employment_calendars from '../../db/models/employment_calendars.ts'
 import {
   Availability,
   GCalFreeBusy,
@@ -99,7 +99,7 @@ export async function providerAvailability(
         'health_worker',
         provider.id,
       ),
-      calendars_of_provider: health_worker_organization_calendars.findOne(
+      calendars_of_provider: employment_calendars.findOne(
         trx,
         provider,
       ),

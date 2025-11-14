@@ -394,18 +394,18 @@ export function getForPatient(
           'health_workers.id',
         )
         .innerJoin(
-          'health_worker_organization_calendars',
+          'employment_calendars',
           (join) =>
             join
               .onRef(
                 'employment.organization_id',
                 '=',
-                'health_worker_organization_calendars.organization_id',
+                'employment_calendars.organization_id',
               )
               .onRef(
                 'employment.health_worker_id',
                 '=',
-                'health_worker_organization_calendars.health_worker_id',
+                'employment_calendars.health_worker_id',
               ),
         )
         .where(
@@ -414,9 +414,9 @@ export function getForPatient(
           eb.ref('appointments.id'),
         )
         .select([
-          'health_worker_organization_calendars.gcal_availability_calendar_id',
-          'health_worker_organization_calendars.gcal_appointments_calendar_id',
-          'health_worker_organization_calendars.availability_set',
+          'employment_calendars.gcal_availability_calendar_id',
+          'employment_calendars.gcal_appointments_calendar_id',
+          'employment_calendars.availability_set',
           'google_tokens.expires_at',
           'google_tokens.access_token',
           'google_tokens.refresh_token',
