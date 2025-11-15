@@ -46,6 +46,7 @@ import {
 } from '../../shared/departments.ts'
 import {
   arrayIsEmpty,
+  arrayIsNonEmpty,
   assertArrayEmpty,
   assertArrayNonEmpty,
 } from '../../util/arraySize.ts'
@@ -408,7 +409,7 @@ function asWorkflowStatus(
   assert(isWorkflow(workflow))
   const workflow_steps = WORKFLOW_STEPS[workflow]
   if (completed_at) {
-    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
+    assertArrayNonEmpty(seen_patient_encounter_employee_ids, '1')
     assertEquals(workflow_steps, steps_completed)
     return {
       patient_workflow_id,
@@ -433,7 +434,7 @@ function asWorkflowStatus(
         seen_patient_encounter_employee_ids,
       }
     }
-    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
+    assertArrayNonEmpty(seen_patient_encounter_employee_ids, '2')
     return {
       patient_workflow_id,
       workflow,
@@ -443,8 +444,10 @@ function asWorkflowStatus(
     }
   }
 
-  if (status.patient_presence.current_workflow === workflow) {
-    assertArrayNonEmpty(seen_patient_encounter_employee_ids)
+  if (
+    status.patient_presence.current_workflow === workflow &&
+    arrayIsNonEmpty(seen_patient_encounter_employee_ids)
+  ) {
     return {
       patient_workflow_id,
       workflow,
@@ -465,7 +468,7 @@ function asWorkflowStatus(
     }
   }
 
-  assertArrayNonEmpty(seen_patient_encounter_employee_ids)
+  assertArrayNonEmpty(seen_patient_encounter_employee_ids, '4')
   return {
     patient_workflow_id,
     workflow,

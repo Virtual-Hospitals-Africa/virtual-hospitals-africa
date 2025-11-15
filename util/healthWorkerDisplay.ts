@@ -34,10 +34,10 @@ export function healthWorkerDisplay(
   const specialty = organization_employment.specialty
 
   if (provider_profession === 'nurse') {
-    assert(specialty)
+    assert(specialty, 'nurse has specialty')
   }
   if (provider_profession === 'doctor') {
-    assert(specialty)
+    assert(specialty, 'doctor has specialty')
   }
 
   return healthWorkerDisplayInner({
@@ -67,7 +67,7 @@ export function healthWorkerDisplayInner({
 }): HealthWorkerDisplay {
   // Doctors are special. They're named Dr. and the Administrator label goes after, not before
   if (is_doctor) {
-    assert(specialty)
+    assert(specialty, 'is_doctor has specialty')
     assert(provider_profession === 'doctor')
     return {
       avatar_url,

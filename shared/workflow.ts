@@ -3,7 +3,6 @@ import { HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
 import last from '../util/last.ts'
 import first from '../util/first.ts'
 import {
-  assertDepartmentName,
   departmentNames,
   departmentResponsibleForWorkflow,
 } from './departments.ts'
@@ -153,7 +152,7 @@ export function canPerform(
   organization_employment: HealthWorkerOrganization,
   workflow: Workflow,
 ): boolean {
-  return departmentNames(organization_employment).some((dept) => 
+  return departmentNames(organization_employment).some((dept) =>
     departmentResponsibleForWorkflow(dept, workflow)
   )
 }

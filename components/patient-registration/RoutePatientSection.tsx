@@ -30,7 +30,7 @@ export default function RegistrationRoutePatientSection(
                 name: 'Await triage prior to consultation',
                 description: [
                   `I will show ${patient_names.preferred_name} to the waiting room.`,
-                  `The next available health worker will triage ${patient_names.preferred_name} prior to consultation.`
+                  `The next available health worker will triage ${patient_names.preferred_name} prior to consultation.`,
                 ],
               },
               {

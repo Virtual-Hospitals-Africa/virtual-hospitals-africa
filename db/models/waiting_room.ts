@@ -17,7 +17,7 @@ import {
   departmentResponsibleForWorkflow,
 } from '../../shared/departments.ts'
 import { assertAll } from '../../util/assertAll.ts'
-import { assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { assertArrayEmpty } from '../../util/arraySize.ts'
 
 export function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
@@ -77,11 +77,7 @@ export function asWaitingRoom(
   if (current_workflow_status) {
     assertNotEquals(department_name, 'waiting room')
     assertEquals(current_workflow_status.workflow, current_workflow)
-    assertNotEquals(current_workflow_status.status, 'not started')
     assertNotEquals(current_workflow_status.status, 'completed')
-    assertArrayNonEmpty(
-      current_workflow_status.seen_patient_encounter_employee_ids,
-    )
     workflow_status_display =
       `${current_workflow_status.workflow} ${current_workflow_status.status}`
   } else {

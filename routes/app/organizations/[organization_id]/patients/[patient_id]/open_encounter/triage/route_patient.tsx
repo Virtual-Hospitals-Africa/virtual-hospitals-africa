@@ -1,7 +1,5 @@
 import {
-completeAndProceedToNextStep,
   completeLastStep,
-  completeStep,
   nextRouteAfterCompletingWorkflow,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
@@ -12,16 +10,13 @@ import redirect from '../../../../../../../../util/redirect.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { updateForOpenEncounterAfterCompletingWorkflow } from '../../../../../../../../db/models/patient_presence.ts'
 
-import * as patient_workflows from '../../../../../../../../db/models/patient_workflows.ts'
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
 import * as patient_presence from '../../../../../../../../db/models/patient_presence.ts'
 import { canPerform } from '../../../../../../../../shared/workflow.ts'
 
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import RegistrationRoutePatientSection from '../../../../../../../../components/patient-registration/RoutePatientSection.tsx'
-import assert from 'assert'
 import { success, warning } from '../../../../../../../../util/alerts.ts'
-import generateUUID from '../../../../../../../../util/uuid.ts'
 import { startWorkflow } from '../start-workflow.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
@@ -60,7 +55,9 @@ export const handler = postHandler(
 
     switch (next_workflow) {
       case 'await_triage': {
-        return redirect(nextRouteAfterCompletingWorkflow(ctx, next_patient_presence))
+        return redirect(
+          nextRouteAfterCompletingWorkflow(ctx, next_patient_presence),
+        )
       }
       case 'immediate_triage': {
         assertEquals(encounter.workflows.triage?.status, 'not started')

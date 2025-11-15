@@ -69,22 +69,29 @@ export const handler = postHandler(
             workflow: 'triage',
           }),
           patient_presence.set(trx, patient.id, patient_presence_updates),
+          !can_do_triage && trx.updateTable('employment_presence')
+            .set({ with_patient_id: null })
+            .where(
+              'employment_presence.id',
+              '=',
+              organization_employment.employment_id,
+            )
+            .execute(),
         ])
 
-        // Update the encounter in line rather than refetching
-        encounter.workflows.triage = {
-          patient_workflow_id,
-          workflow: 'triage',
-          status: 'not started',
-          steps_completed: [],
-          seen_patient_encounter_employee_ids: [],
-        }
-        Object.assign(
-          encounter.status.patient_presence,
-          patient_presence_updates,
-        )
-
         if (can_do_triage) {
+          // Update the encounter in line rather than refetching
+          encounter.workflows.triage = {
+            patient_workflow_id,
+            workflow: 'triage',
+            status: 'not started',
+            steps_completed: [],
+            seen_patient_encounter_employee_ids: [],
+          }
+          Object.assign(
+            encounter.status.patient_presence,
+            patient_presence_updates,
+          )
           return startWorkflow(ctx, 'triage')
         }
         // TODO notify senior_health_worker_name
