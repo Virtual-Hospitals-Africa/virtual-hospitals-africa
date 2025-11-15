@@ -50,15 +50,11 @@ export async function startWorkflow<T>(
     `${workflow} workflow already completed`,
   )
 
-  const seeing_as_employment_id = organization_employment.employment_id
-  assertOr403(
-    seeing_as_employment_id,
-    'Must be seeing the patient in the context of a non-admin profession',
-  )
+  const { employment_id } = organization_employment
 
   const existing_patient_encounter_employee_id =
     encounter.all_employees_seen.find(
-      (employee) => employee.employee_id === seeing_as_employment_id,
+      (employee) => employee.employee_id === employment_id,
     )?.patient_encounter_employee_id || null
 
   const do_start_workflow = workflow_status.status === 'not started' ||
@@ -66,13 +62,19 @@ export async function startWorkflow<T>(
       !workflow_status.seen_patient_encounter_employee_ids.includes(
         existing_patient_encounter_employee_id,
       ))
+  console.log({
+    do_start_workflow,
+    existing_patient_encounter_employee_id,
+    workflow_status,
+    workflow,
+  })
   if (do_start_workflow) {
     await patient_workflows.start(
       trx,
       {
         encounter,
         existing_patient_encounter_employee_id,
-        seeing_as_employment_id,
+        employment_id,
         workflow_status,
       },
     )

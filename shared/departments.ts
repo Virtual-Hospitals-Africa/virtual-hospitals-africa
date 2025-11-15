@@ -4,6 +4,7 @@ import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
 import {
   EmployedHealthWorker,
+  HealthWorkerOrganization,
   Maybe,
   Profession,
   RenderedEmployee,
@@ -164,11 +165,19 @@ export function employeeOrganizationDepartmentNames(
 export function healthWorkerOrganizationDepartmentNames(
   health_worker: EmployedHealthWorker,
   organization_id: string,
-): string[] {
-  const organization = exists(health_worker.organizations.find(matching({
-    id: organization_id,
-  })))
-  return organization.departments
-    .filter((dept) => organization.department_ids.includes(dept.id))
-    .map((dept) => dept.name)
+): Department[] {
+  const organization_employment = exists(
+    health_worker.organizations.find(matching({
+      id: organization_id,
+    })),
+  )
+  return departmentNames(organization_employment)
+}
+
+export function departmentNames(
+  organization_employment: HealthWorkerOrganization,
+): Department[] {
+  return organization_employment.departments
+    .filter((dept) => organization_employment.department_ids.includes(dept.id))
+    .map((dept) => dept.name as Department)
 }

@@ -324,6 +324,8 @@ export async function handler(
 
   const encounter = await findPatientOpenEncounter(ctx)
 
+  console.log({ encounter })
+
   const present_with_patient = presentWithPatient(encounter)
   const encounter_employee_presence = exists(
     present_with_patient.find(

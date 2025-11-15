@@ -28,7 +28,7 @@ export function CheckboxInput({
     value?: string
   }) {
   return (
-    <div>
+    <label>
       <input
         type='checkbox'
         {...(name && { name })}
@@ -47,6 +47,6 @@ export function CheckboxInput({
       />
       <LabelSpan label={label} required={required} />
       {/* <Label label={label} required={required} /> */}
-    </div>
+    </label>
   )
 }

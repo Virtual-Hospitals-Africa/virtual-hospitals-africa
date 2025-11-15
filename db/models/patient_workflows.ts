@@ -51,12 +51,12 @@ export function start(
   {
     encounter,
     existing_patient_encounter_employee_id,
-    seeing_as_employment_id,
+    employment_id,
     workflow_status,
   }: {
     encounter: RenderedPatientEncounter
     existing_patient_encounter_employee_id: string | null
-    seeing_as_employment_id: string
+    employment_id: string
     workflow_status: WorkflowStatus
   },
 ) {
@@ -78,7 +78,7 @@ export function start(
           .values({
             id: patient_encounter_employee_id,
             patient_encounter_id: encounter.patient_encounter_id,
-            employment_id: seeing_as_employment_id,
+            employment_id: employment_id,
           })
         : blankSelection(qb),
   )

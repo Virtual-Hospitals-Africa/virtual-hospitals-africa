@@ -19,11 +19,11 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
   organization_employment: HealthWorkerOrganization,
 ) {
   const { next_workflow } = encounter.status.patient_presence
-  assert(next_workflow)
+  assert(next_workflow, 'Expected next_workflow to exist')
   const next_department: Department = WORKFLOW_DEPARTMENTS[next_workflow]
-  assert(next_department)
+  assert(next_department, 'Expected next_department to exist')
   const non_admin_employment_id = organization_employment.employment_id
-  assert(non_admin_employment_id)
+  assert(non_admin_employment_id, 'Expected non_admin_employment_id to exist')
 
   const patient_id = encounter.patient.id
 

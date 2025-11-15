@@ -35,6 +35,5 @@ export function insertHealthWorker(
     ...opts,
     ...asMaybeNames(opts || {}),
   }
-  console.log({ to_insert })
   return upsertWithGoogleCredentials(trx, to_insert)
 }
