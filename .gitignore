@@ -70,3 +70,15 @@ _fresh/
 # SNOMED and other large files
 db/resources/extracted
 db/dumps/latest
+
+# Android / Bubblewrap
+.gradle/
+build/
+app/build/
+*.keystore
+*.apk
+*.aab
+*.idsig
+app-release-*
+manifest-checksum.txt
+/app
