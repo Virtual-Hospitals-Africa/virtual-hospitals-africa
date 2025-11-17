@@ -5,11 +5,15 @@ import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import {
+  createTestOrganization,
+  TEST_ORGANIZATION_UUIDS,
+} from '../_helpers/organizations.ts'
 import * as employees from '../../db/models/employees.ts'
-import { describe, it } from 'node:test'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 
 describe('db/models/employees.ts ', () => {
+  afterAll(() => db.destroy())
   it(
     'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
     async () => {
@@ -107,4 +111,27 @@ describe('db/models/employees.ts ', () => {
       )
     },
   )
+
+  it('can find employees who can do triage', async () => {
+    const organization = await createTestOrganization(db)
+    await Promise.all([
+      addTestEmployee(db, {
+        profession: 'receptionist',
+        registration_status: 'approved',
+        organization_id: organization.id,
+      }),
+      addTestEmployee(db, {
+        profession: 'nurse',
+        registration_status: 'approved',
+        organization_id: organization.id,
+      }),
+    ])
+
+    const can_perform_triage = await employees.findAll(db, {
+      organization_id: organization.id,
+      can_perform_workflow: 'triage',
+    })
+    assertLength(can_perform_triage, 1)
+    assertEquals(can_perform_triage[0].profession, 'nurse')
+  })
 })

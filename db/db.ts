@@ -60,7 +60,7 @@ export const opts = uri ? parseConnectionString(uri) : null
 
 const LOG_ALL_QUERIES = Deno.env.has('LOG_ALL_QUERIES')
 
-const db = new Kysely<DB>({
+const db = (NO_EXTERNAL_CONNECT ? undefined : new Kysely<DB>({
   dialect: {
     createAdapter() {
       return new PostgresAdapter()
@@ -104,6 +104,6 @@ const db = new Kysely<DB>({
       event.query.parameters,
     ))
   },
-})
+}))!
 
 export default db

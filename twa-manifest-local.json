@@ -1,0 +1,51 @@
+{
+  "packageId": "org.virtualhospitalsafrica.za.twa.dev",
+  "host": "192.168.50.56:8000",
+  "name": "Virtual Hospitals Africa Dev",
+  "launcherName": "VHA Dev",
+  "display": "minimal-ui",
+  "themeColor": "#312E81",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#312E81",
+  "enableNotifications": true,
+  "startUrl": "/?source=pwa",
+  "iconUrl": "https://192.168.50.56:8000/logo.svg",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://192.168.50.56:8000/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://192.168.50.56:8000/",
+  "minSdkVersion": 21,
+  "orientation": "landscape",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "1"
+}
+

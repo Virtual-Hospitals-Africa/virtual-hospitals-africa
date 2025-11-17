@@ -108,7 +108,8 @@ jobs:
         run: deno task db:migrate all
 
       - name: Run build
-        run: deno task build
+        run: |
+          deno task build
 
       - name: Run tests
         run: deno task test --use-build

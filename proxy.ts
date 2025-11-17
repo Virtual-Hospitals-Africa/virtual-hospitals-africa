@@ -44,6 +44,13 @@ try {
 async function handleRequest(request: Request): Promise<Response> {
   debug(`${request.method} ${request.url}`)
   const url = new URL(request.url)
+
+  // Check if this is a WebSocket upgrade request
+  const upgrade_header = request.headers.get('upgrade')
+  if (upgrade_header?.toLowerCase() === 'websocket') {
+    return handleWebSocketUpgrade(request, url)
+  }
+
   url.protocol = 'http:'
   url.port = String(HTTP_SERVER_PORT)
 
@@ -82,6 +89,97 @@ async function handleRequest(request: Request): Promise<Response> {
     console.error(`Failed to proxy ${request.url}:`, error)
     return new Response('Bad Gateway', { status: 502 })
   }
+}
+
+function handleWebSocketUpgrade(request: Request, url: URL): Response {
+  debug(`WebSocket upgrade request: ${url}`)
+
+  // Upgrade the incoming connection to WebSocket
+  const { socket: client_socket, response } = Deno.upgradeWebSocket(request)
+
+  // Create WebSocket connection to the backend server
+  const backend_url = new URL(url)
+  backend_url.protocol = 'ws:'
+  backend_url.port = String(HTTP_SERVER_PORT)
+
+  debug(`Connecting to backend WebSocket: ${backend_url}`)
+  const backend_socket = new WebSocket(backend_url.toString())
+
+  backend_socket.onopen = () => {
+    debug('Backend WebSocket opened')
+  }
+
+  // Forward messages from client to backend
+  client_socket.onmessage = (event) => {
+    debug(
+      'Client -> Backend:',
+      typeof event.data === 'string' ? event.data : '[binary]',
+    )
+    if (backend_socket.readyState === WebSocket.OPEN) {
+      backend_socket.send(event.data)
+    }
+  }
+
+  // Forward messages from backend to client
+  backend_socket.onmessage = (event) => {
+    debug(
+      'Backend -> Client:',
+      typeof event.data === 'string' ? event.data : '[binary]',
+    )
+    if (client_socket.readyState === WebSocket.OPEN) {
+      client_socket.send(event.data)
+    }
+  }
+
+  // Handle client close
+  client_socket.onclose = (event) => {
+    debug(`Client WebSocket closed: ${event.code} ${event.reason}`)
+    if (
+      backend_socket.readyState === WebSocket.OPEN ||
+      backend_socket.readyState === WebSocket.CONNECTING
+    ) {
+      // Normalize close code: 1005 is reserved and cannot be sent
+      const close_code = event.code === 1005 ? 1000 : event.code
+      backend_socket.close(close_code, event.reason)
+    }
+  }
+
+  // Handle backend close
+  backend_socket.onclose = (event) => {
+    debug(`Backend WebSocket closed: ${event.code} ${event.reason}`)
+    if (
+      client_socket.readyState === WebSocket.OPEN ||
+      client_socket.readyState === WebSocket.CONNECTING
+    ) {
+      // Normalize close code: 1005 is reserved and cannot be sent
+      const close_code = event.code === 1005 ? 1000 : event.code
+      client_socket.close(close_code, event.reason)
+    }
+  }
+
+  // Handle client error
+  client_socket.onerror = (event) => {
+    console.error('Client WebSocket error:', event)
+    if (
+      backend_socket.readyState === WebSocket.OPEN ||
+      backend_socket.readyState === WebSocket.CONNECTING
+    ) {
+      backend_socket.close()
+    }
+  }
+
+  // Handle backend error
+  backend_socket.onerror = (event) => {
+    console.error('Backend WebSocket error:', event)
+    if (
+      client_socket.readyState === WebSocket.OPEN ||
+      client_socket.readyState === WebSocket.CONNECTING
+    ) {
+      client_socket.close()
+    }
+  }
+
+  return response
 }
 
 // Start the HTTPS proxy server with TLS

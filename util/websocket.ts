@@ -17,6 +17,7 @@ export default function upgradeWebsocket<State>(
   return async function (
     ctx: Context<State>,
   ) {
+    console.log('wL:EL:EWLEWKLWEKLLK')
     assert(
       isWebsocketPath(ctx),
       'Route must follow the convention that websocket routes end in websocket. This is used to determine whether to open a transaction or not.',

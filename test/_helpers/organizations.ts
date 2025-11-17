@@ -77,9 +77,13 @@ export function testOrganizationDepartments(
 
 export function createTestOrganization(
   trx: TrxOrDb,
-  { category = 'Clinic' }: { category?: 'Clinic' | 'Hospital' } = {},
+  { id, category = 'Clinic' }: {
+    id?: string
+    category?: 'Clinic' | 'Hospital'
+  } = {},
 ) {
   const organization = {
+    id,
     category,
     name: `Test ${generateUUID()} ${category}`,
     country: 'ZA',

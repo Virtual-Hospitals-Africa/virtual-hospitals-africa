@@ -178,6 +178,7 @@ export async function addTestEmployeeWithSession(
   const session = await sessions.create(trx, 'health_worker', {
     entity_id: health_worker.id,
   })
+  const Cookie = `session_id=${session.id}`
 
   function fetchWithSession(
     input: URL | RequestInfo,
@@ -188,10 +189,7 @@ export async function addTestEmployeeWithSession(
         ? `${route}${input}`
         : input,
       {
-        headers: {
-          ...headers,
-          Cookie: `session_id=${session.id}`,
-        },
+        headers: { ...headers, Cookie },
         ...rest,
       },
     )
@@ -230,6 +228,7 @@ export async function addTestEmployeeWithSession(
 
   return {
     session_id: session.id,
+    Cookie,
     health_worker,
     fetch: fetchWithSession,
     fetchOk,
