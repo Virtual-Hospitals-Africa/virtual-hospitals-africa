@@ -10,6 +10,7 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import * as patient_workflows from '../../../../../../../../db/models/patient_workflows.ts'
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
 import * as patient_presence from '../../../../../../../../db/models/patient_presence.ts'
+import * as events from '../../../../../../../../db/models/events.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { success, warning } from '../../../../../../../../util/alerts.ts'
@@ -94,6 +95,15 @@ export const handler = postHandler(
           )
           return startWorkflow(ctx, 'triage')
         }
+
+        await events.insert(trx, {
+          type: 'ImmediateTriage',
+          data: {
+            patient_encounter_id: encounter.patient_encounter_id,
+            requested_by_employee_id: organization_employment.employment_id,
+          },
+        })
+
         // TODO notify senior_health_worker_name
         return redirect(success(
           `${

@@ -9,10 +9,11 @@ import {
 } from '../../../../_helpers/organizations.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { route } from '../../../../route.ts'
+import { route, wss_route } from '../../../../route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { employeeOrganizationDepartmentNames } from '../../../../../shared/departments.ts'
+import { employeeDisplay } from '../../../../../util/healthWorkerDisplay.ts'
 
 describe(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/this_visit',
@@ -74,9 +75,9 @@ describe(
       )
     })
 
-    it('can route immediately to triage as a receptionist', async () => {
+    it('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
       const organization = await createTestOrganization(db)
-      const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
+      const receptionist = await addTestEmployeeWithSession(
         db,
         {
           profession: 'receptionist',
@@ -84,15 +85,42 @@ describe(
           organization_id: organization.id,
         },
       )
-
-      const receptionist = await employees.getById(
+      const nurse = await addTestEmployeeWithSession(
         db,
-        health_worker.employee_id,
+        {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: organization.id,
+        },
       )
-      const departments = employeeOrganizationDepartmentNames(receptionist)
+
+      const received_notification = Promise.withResolvers<MessageEvent>()
+
+      const nurse_notifications_websocket = new WebSocket(`${wss_route}/app/notifications-websocket`, {
+        headers: {
+          Cookie: nurse.Cookie,
+        }
+      })
+
+      nurse_notifications_websocket.onopen = function() {
+        console.log('opened')
+      }
+
+      nurse_notifications_websocket.onmessage = function (e) {
+        console.log('message', e)
+        received_notification.resolve(e)
+      }
+
+      nurse_notifications_websocket.onerror = function (e) {
+        received_notification.reject(e)
+      }
+
+      const receptionist_employee = await employees.getById(db, receptionist.health_worker.employee_id)
+
+      const departments = employeeOrganizationDepartmentNames(receptionist_employee)
       assertEquals(departments, ['reception'])
 
-      const $personal = await fetchCheerio(
+      const $personal = await receptionist.fetchCheerio(
         `/app/organizations/${organization.id}/patients/start-registration`,
         {
           method: 'POST',
@@ -101,7 +129,7 @@ describe(
       const patient_id =
         $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
-      const $this_visit = await fetchCheerio(
+      const $this_visit = await receptionist.fetchCheerio(
         $personal.url,
         {
           method: 'POST',
@@ -124,7 +152,7 @@ describe(
         'call_for_help',
       ])
 
-      const $waiting_room = await fetchCheerio(
+      const $waiting_room = await receptionist.fetchCheerio(
         $this_visit.url,
         {
           method: 'POST',
@@ -154,6 +182,29 @@ describe(
           patient.names!.preferred_name
         } has been moved to triage and ${hardcoded_senior_health_care_professional_name} has been notified.`,
       )
+
+      const notification = await received_notification.promise
+
+      nurse_notifications_websocket.close()
+
+
+      const notification_data = JSON.parse(notification.data)
+      assertEquals(notification_data, {
+        "created_at": notification_data.created_at,
+        "updated_at": notification_data.updated_at,
+        "health_worker_id": nurse.health_worker.id,
+        "notification_type": "patient_encounter_immediate_triage",
+        "title": "Immediate Triage Requested",
+        "description": `${employeeDisplay(receptionist_employee).display_name} has requested immediate triage for a patient`,
+        "avatar_url": "/images/heroicons/24/solid/exclamation-triangle.svg",
+        "seen_at": null,
+        "notification_id": notification_data.notification_id,
+        "time_display": "Just now",
+        "action": {
+          "title": "View patient case",
+          "href": `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`
+        }
+      })
     })
 
     it('can route immediately to triage as a nurse', async () => {

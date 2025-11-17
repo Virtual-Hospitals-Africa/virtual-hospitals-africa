@@ -6,6 +6,8 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { DB } from '../../db.d.ts'
 import isString from '../../util/isString.ts'
+import { Workflow } from '../../shared/workflow.ts'
+import { WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 
 export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
   DB,
@@ -43,6 +45,7 @@ const model = base({
     opts: health_workers.HealthWorkerSearch & {
       // TODO
       include_incomplete_registration?: boolean
+      can_perform_workflow?: Workflow
     },
   ) {
     if (opts.search) {
@@ -78,6 +81,17 @@ const model = base({
           ),
         'desc',
       )
+    }
+    if (opts.can_perform_workflow) {
+      const department = WORKFLOW_DEPARTMENTS[opts.can_perform_workflow]
+
+      qb = qb.innerJoin(
+        'department_employment',
+        'department_employment.employment_id',
+        'employment.id',
+      )
+      .innerJoin('organization_departments', 'organization_departments.id', 'department_employment.department_id')
+      .where('organization_departments.name', '=', department)
     }
 
     return qb

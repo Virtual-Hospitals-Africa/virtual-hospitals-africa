@@ -2,6 +2,8 @@ import { TrxOrDb } from '../types.ts'
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employees from '../db/models/employees.ts'
+import * as patient_encounters from '../db/models/patient_encounters.ts'
+
 import * as notifications from '../db/models/notifications.ts'
 import * as doctor_reviews from '../db/models/doctor_reviews.ts'
 import * as messages from '../db/models/messages.ts'
@@ -14,6 +16,7 @@ import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
+import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -177,6 +180,44 @@ export const EVENTS = {
             corresponding_message_id: message.id,
             whatsapp_id: whatsapp_response.messages[0].id,
             body: JSON.stringify(whatsapp_to_send),
+          })
+        }
+      },
+    },
+  ),
+  ImmediateTriage: defineEvent(
+    z.object({
+      patient_encounter_id: z.string().uuid(),
+      requested_by_employee_id: z.string().uuid(),
+    }),
+    {
+      async notifyHealthWorker(trx, payload) {
+        console.log('ImmediateTriage notifyHealthWorker', payload)
+        const { patient_encounter_id, requested_by_employee_id } = payload.data
+        const patient_encounter = await patient_encounters.getById(trx, patient_encounter_id)
+        const requested_by_employee = await employees.getById(trx, requested_by_employee_id)
+
+        const can_perform_triage = await employees.findAll(trx, {
+          organization_id: patient_encounter.organization.id,
+          can_perform_workflow: 'triage',
+        })
+
+        if (!can_perform_triage.length) {
+          console.warn(`No health workers can perform triage for organization ${patient_encounter.organization.id}`)
+          return
+        }
+
+        for (const employee of can_perform_triage) {
+          await notifications.insert(trx, {
+            title: 'Immediate Triage Requested',
+            avatar_url: '/images/heroicons/24/solid/exclamation-triangle.svg',
+            description: `${employeeDisplay(requested_by_employee).display_name} has requested immediate triage for a patient`,
+            employment_id: employee.employee_id,
+            table_name: 'patient_encounters',
+            row_id: patient_encounter_id,
+            notification_type: 'patient_encounter_immediate_triage',
+            action_title: 'View patient case',
+            action_href: `/app/organizations/${patient_encounter.organization.id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
           })
         }
       },

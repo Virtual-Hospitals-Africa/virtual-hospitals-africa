@@ -10,9 +10,10 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-export const handler = (ctx: Context<unknown>) =>
+export const handler = (ctx: Context<unknown>) => {
+  console.log('CTX.url', ctx.url)
   // deno-lint-ignore no-explicit-any
-  ctx.next().catch(function handleError(err: any) {
+  return ctx.next().catch(function handleError(err: any) {
     if (err.status === 302) {
       assert(err.location, '302 redirect must have a location')
       return redirect(err.location)
@@ -35,3 +36,4 @@ export const handler = (ctx: Context<unknown>) =>
       'Internal Server Error'
     return new Response(message, { status })
   })
+}
