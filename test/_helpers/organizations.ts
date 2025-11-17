@@ -77,7 +77,10 @@ export function testOrganizationDepartments(
 
 export function createTestOrganization(
   trx: TrxOrDb,
-  { id, category = 'Clinic' }: { id?: string, category?: 'Clinic' | 'Hospital' } = {},
+  { id, category = 'Clinic' }: {
+    id?: string
+    category?: 'Clinic' | 'Hospital'
+  } = {},
 ) {
   const organization = {
     id,

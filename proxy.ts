@@ -44,13 +44,13 @@ try {
 async function handleRequest(request: Request): Promise<Response> {
   debug(`${request.method} ${request.url}`)
   const url = new URL(request.url)
-  
+
   // Check if this is a WebSocket upgrade request
   const upgrade_header = request.headers.get('upgrade')
   if (upgrade_header?.toLowerCase() === 'websocket') {
     return handleWebSocketUpgrade(request, url)
   }
-  
+
   url.protocol = 'http:'
   url.port = String(HTTP_SERVER_PORT)
 
@@ -91,78 +91,93 @@ async function handleRequest(request: Request): Promise<Response> {
   }
 }
 
-const backend_sockets = new Set<WebSocket>()
-const client_sockets = new Set<WebSocket>()
-
 function handleWebSocketUpgrade(request: Request, url: URL): Response {
   debug(`WebSocket upgrade request: ${url}`)
-  
+
   // Upgrade the incoming connection to WebSocket
   const { socket: client_socket, response } = Deno.upgradeWebSocket(request)
-    
+
   // Create WebSocket connection to the backend server
   const backend_url = new URL(url)
   backend_url.protocol = 'ws:'
   backend_url.port = String(HTTP_SERVER_PORT)
-  
+
   debug(`Connecting to backend WebSocket: ${backend_url}`)
   const proxy_headers = new Headers(request.headers)
-  const backend_socket = new WebSocket(backend_url.toString(), { headers: proxy_headers })
+  const backend_socket = new WebSocket(backend_url.toString(), {
+    headers: proxy_headers,
+  } as unknown as string[])
 
   backend_socket.onopen = () => {
     debug('Backend WebSocket opened')
   }
-  
+
   // Forward messages from client to backend
   client_socket.onmessage = (event) => {
-    debug('Client -> Backend:', typeof event.data === 'string' ? event.data : '[binary]')
+    debug(
+      'Client -> Backend:',
+      typeof event.data === 'string' ? event.data : '[binary]',
+    )
     if (backend_socket.readyState === WebSocket.OPEN) {
       backend_socket.send(event.data)
     }
   }
-  
+
   // Forward messages from backend to client
   backend_socket.onmessage = (event) => {
-    debug('Backend -> Client:', typeof event.data === 'string' ? event.data : '[binary]')
+    debug(
+      'Backend -> Client:',
+      typeof event.data === 'string' ? event.data : '[binary]',
+    )
     if (client_socket.readyState === WebSocket.OPEN) {
       client_socket.send(event.data)
     }
   }
-  
+
   // Handle client close
   client_socket.onclose = (event) => {
     debug(`Client WebSocket closed: ${event.code} ${event.reason}`)
-    if (backend_socket.readyState === WebSocket.OPEN || backend_socket.readyState === WebSocket.CONNECTING) {
+    if (
+      backend_socket.readyState === WebSocket.OPEN ||
+      backend_socket.readyState === WebSocket.CONNECTING
+    ) {
       backend_socket.close(event.code, event.reason)
     }
   }
-  
+
   // Handle backend close
   backend_socket.onclose = (event) => {
     debug(`Backend WebSocket closed: ${event.code} ${event.reason}`)
-    if (client_socket.readyState === WebSocket.OPEN || client_socket.readyState === WebSocket.CONNECTING) {
+    if (
+      client_socket.readyState === WebSocket.OPEN ||
+      client_socket.readyState === WebSocket.CONNECTING
+    ) {
       client_socket.close(event.code, event.reason)
     }
   }
-  
+
   // Handle client error
   client_socket.onerror = (event) => {
     console.error('Client WebSocket error:', event)
-    if (backend_socket.readyState === WebSocket.OPEN || backend_socket.readyState === WebSocket.CONNECTING) {
+    if (
+      backend_socket.readyState === WebSocket.OPEN ||
+      backend_socket.readyState === WebSocket.CONNECTING
+    ) {
       backend_socket.close()
     }
   }
-  
+
   // Handle backend error
   backend_socket.onerror = (event) => {
     console.error('Backend WebSocket error:', event)
-    if (client_socket.readyState === WebSocket.OPEN || client_socket.readyState === WebSocket.CONNECTING) {
+    if (
+      client_socket.readyState === WebSocket.OPEN ||
+      client_socket.readyState === WebSocket.CONNECTING
+    ) {
       client_socket.close()
     }
   }
 
-  backend_sockets.add(backend_socket)
-  
   return response
 }
 

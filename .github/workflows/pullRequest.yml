@@ -22,7 +22,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - name: Install ripgrep
         run: sudo apt-get install -y ripgrep
@@ -73,7 +73,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -161,7 +161,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -231,7 +231,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -293,7 +293,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
@@ -317,7 +317,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.3.5
+          deno-version: v2.5.6
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules

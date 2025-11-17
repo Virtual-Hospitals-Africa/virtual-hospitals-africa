@@ -5,11 +5,12 @@ import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { createTestOrganization, TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import {
+  createTestOrganization,
+  TEST_ORGANIZATION_UUIDS,
+} from '../_helpers/organizations.ts'
 import * as employees from '../../db/models/employees.ts'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import generateUUID from '../../util/uuid.ts'
-
 
 describe('db/models/employees.ts ', () => {
   afterAll(() => db.destroy())
@@ -123,7 +124,7 @@ describe('db/models/employees.ts ', () => {
         profession: 'nurse',
         registration_status: 'approved',
         organization_id: organization.id,
-      })
+      }),
     ])
 
     const can_perform_triage = await employees.findAll(db, {

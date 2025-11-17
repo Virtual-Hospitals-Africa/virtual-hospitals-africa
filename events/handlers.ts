@@ -194,8 +194,14 @@ export const EVENTS = {
       async notifyHealthWorker(trx, payload) {
         console.log('ImmediateTriage notifyHealthWorker', payload)
         const { patient_encounter_id, requested_by_employee_id } = payload.data
-        const patient_encounter = await patient_encounters.getById(trx, patient_encounter_id)
-        const requested_by_employee = await employees.getById(trx, requested_by_employee_id)
+        const patient_encounter = await patient_encounters.getById(
+          trx,
+          patient_encounter_id,
+        )
+        const requested_by_employee = await employees.getById(
+          trx,
+          requested_by_employee_id,
+        )
 
         const can_perform_triage = await employees.findAll(trx, {
           organization_id: patient_encounter.organization.id,
@@ -203,7 +209,9 @@ export const EVENTS = {
         })
 
         if (!can_perform_triage.length) {
-          console.warn(`No health workers can perform triage for organization ${patient_encounter.organization.id}`)
+          console.warn(
+            `No health workers can perform triage for organization ${patient_encounter.organization.id}`,
+          )
           return
         }
 
@@ -211,13 +219,16 @@ export const EVENTS = {
           await notifications.insert(trx, {
             title: 'Immediate Triage Requested',
             avatar_url: '/images/heroicons/24/solid/exclamation-triangle.svg',
-            description: `${employeeDisplay(requested_by_employee).display_name} has requested immediate triage for a patient`,
+            description: `${
+              employeeDisplay(requested_by_employee).display_name
+            } has requested immediate triage for a patient`,
             employment_id: employee.employee_id,
             table_name: 'patient_encounters',
             row_id: patient_encounter_id,
             notification_type: 'patient_encounter_immediate_triage',
             action_title: 'View patient case',
-            action_href: `/app/organizations/${patient_encounter.organization.id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
+            action_href:
+              `/app/organizations/${patient_encounter.organization.id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
           })
         }
       },

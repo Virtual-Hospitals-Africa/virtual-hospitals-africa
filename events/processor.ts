@@ -4,6 +4,7 @@ import * as events from '../db/models/events.ts'
 import { forEach } from '../util/inParallel.ts'
 import { TrxOrDb } from '../types.ts'
 import { now } from '../db/helpers.ts'
+import { NO_EXTERNAL_CONNECT } from '../util/env.ts'
 
 export type EventProcessor = { start(): void; exit(): void }
 
@@ -117,6 +118,12 @@ export function createEventProcessor(): EventProcessor {
   }
   return {
     start: () => {
+      if (NO_EXTERNAL_CONNECT) {
+        console.log(
+          'Not starting the event processor due to NO_EXTERNAL_CONNECT',
+        )
+        return
+      }
       console.log('Starting event processor')
       addListenersOnLoop()
       processListenersOnLoop()
@@ -127,8 +134,4 @@ export function createEventProcessor(): EventProcessor {
       clearTimeout(process_listeners_timer)
     },
   }
-}
-
-if (import.meta.main) {
-  createEventProcessor().start()
 }

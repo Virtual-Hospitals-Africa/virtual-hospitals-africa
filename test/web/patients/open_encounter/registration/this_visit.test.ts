@@ -96,13 +96,16 @@ describe(
 
       const received_notification = Promise.withResolvers<MessageEvent>()
 
-      const nurse_notifications_websocket = new WebSocket(`${wss_route}/app/notifications-websocket`, {
-        headers: {
-          Cookie: nurse.Cookie,
-        }
-      })
+      const nurse_notifications_websocket = new WebSocket(
+        `${wss_route}/app/notifications-websocket`,
+        {
+          headers: {
+            Cookie: nurse.Cookie,
+          },
+        } as unknown as string[],
+      )
 
-      nurse_notifications_websocket.onopen = function() {
+      nurse_notifications_websocket.onopen = function () {
         console.log('opened')
       }
 
@@ -115,9 +118,14 @@ describe(
         received_notification.reject(e)
       }
 
-      const receptionist_employee = await employees.getById(db, receptionist.health_worker.employee_id)
+      const receptionist_employee = await employees.getById(
+        db,
+        receptionist.health_worker.employee_id,
+      )
 
-      const departments = employeeOrganizationDepartmentNames(receptionist_employee)
+      const departments = employeeOrganizationDepartmentNames(
+        receptionist_employee,
+      )
       assertEquals(departments, ['reception'])
 
       const $personal = await receptionist.fetchCheerio(
@@ -187,23 +195,25 @@ describe(
 
       nurse_notifications_websocket.close()
 
-
       const notification_data = JSON.parse(notification.data)
       assertEquals(notification_data, {
-        "created_at": notification_data.created_at,
-        "updated_at": notification_data.updated_at,
-        "health_worker_id": nurse.health_worker.id,
-        "notification_type": "patient_encounter_immediate_triage",
-        "title": "Immediate Triage Requested",
-        "description": `${employeeDisplay(receptionist_employee).display_name} has requested immediate triage for a patient`,
-        "avatar_url": "/images/heroicons/24/solid/exclamation-triangle.svg",
-        "seen_at": null,
-        "notification_id": notification_data.notification_id,
-        "time_display": "Just now",
-        "action": {
-          "title": "View patient case",
-          "href": `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`
-        }
+        'created_at': notification_data.created_at,
+        'updated_at': notification_data.updated_at,
+        'health_worker_id': nurse.health_worker.id,
+        'notification_type': 'patient_encounter_immediate_triage',
+        'title': 'Immediate Triage Requested',
+        'description': `${
+          employeeDisplay(receptionist_employee).display_name
+        } has requested immediate triage for a patient`,
+        'avatar_url': '/images/heroicons/24/solid/exclamation-triangle.svg',
+        'seen_at': null,
+        'notification_id': notification_data.notification_id,
+        'time_display': 'Just now',
+        'action': {
+          'title': 'View patient case',
+          'href':
+            `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`,
+        },
       })
     })
 

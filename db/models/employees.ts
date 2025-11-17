@@ -90,8 +90,12 @@ const model = base({
         'department_employment.employment_id',
         'employment.id',
       )
-      .innerJoin('organization_departments', 'organization_departments.id', 'department_employment.department_id')
-      .where('organization_departments.name', '=', department)
+        .innerJoin(
+          'organization_departments',
+          'organization_departments.id',
+          'department_employment.department_id',
+        )
+        .where('organization_departments.name', '=', department)
     }
 
     return qb

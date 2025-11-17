@@ -12,7 +12,6 @@ import capitalize from '../../../../../../../util/capitalize.ts'
 import Form from '../../../../../../../components/library/Form.tsx'
 import { Button } from '../../../../../../../components/library/Button.tsx'
 
-
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   'Immediate Triage Request',
   async function RespondToImmediateTriageRequestPage(
@@ -200,4 +199,3 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
     }
   },
 )
-
