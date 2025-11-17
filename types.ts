@@ -270,6 +270,7 @@ export type RenderedPatient = {
   description: string | null
   age_display: Maybe<string>
   age_years: Maybe<number>
+  age_days: Maybe<number>
   avatar_url: string | null
   preferred_language_code_iso_639_2_b: string | null
 }
