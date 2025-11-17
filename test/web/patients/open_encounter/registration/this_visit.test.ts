@@ -2,6 +2,7 @@ import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import * as employees from '../../../../../db/models/employees.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import {
   createTestOrganization,
@@ -97,20 +98,10 @@ describe(
       const received_notification = Promise.withResolvers<MessageEvent>()
 
       const nurse_notifications_websocket = new WebSocket(
-        `${wss_route}/app/notifications-websocket`,
-        {
-          headers: {
-            Cookie: nurse.Cookie,
-          },
-        } as unknown as string[],
+        `${wss_route}/app/notifications-websocket?session_id=${nurse.session_id}`,
       )
 
-      nurse_notifications_websocket.onopen = function () {
-        console.log('opened')
-      }
-
       nurse_notifications_websocket.onmessage = function (e) {
-        console.log('message', e)
         received_notification.resolve(e)
       }
 
@@ -123,10 +114,10 @@ describe(
         receptionist.health_worker.employee_id,
       )
 
-      const departments = employeeOrganizationDepartmentNames(
+      const receptionist_departments = employeeOrganizationDepartmentNames(
         receptionist_employee,
       )
-      assertEquals(departments, ['reception'])
+      assertEquals(receptionist_departments, ['reception'])
 
       const $personal = await receptionist.fetchCheerio(
         `/app/organizations/${organization.id}/patients/start-registration`,
@@ -208,6 +199,8 @@ describe(
         'avatar_url': '/images/heroicons/24/solid/exclamation-triangle.svg',
         'seen_at': null,
         'notification_id': notification_data.notification_id,
+        'row_id': notification_data.row_id,
+        'table_name': 'patient_encounters',
         'time_display': 'Just now',
         'action': {
           'title': 'View patient case',
@@ -215,6 +208,12 @@ describe(
             `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`,
         },
       })
+
+      const encounter = await patient_encounters.getById(
+        db,
+        notification_data.row_id,
+      )
+      assertEquals(encounter.patient.id, patient_id)
     })
 
     it('can route immediately to triage as a nurse', async () => {

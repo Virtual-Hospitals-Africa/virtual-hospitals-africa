@@ -103,10 +103,7 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
   backend_url.port = String(HTTP_SERVER_PORT)
 
   debug(`Connecting to backend WebSocket: ${backend_url}`)
-  const proxy_headers = new Headers(request.headers)
-  const backend_socket = new WebSocket(backend_url.toString(), {
-    headers: proxy_headers,
-  } as unknown as string[])
+  const backend_socket = new WebSocket(backend_url.toString())
 
   backend_socket.onopen = () => {
     debug('Backend WebSocket opened')
@@ -141,7 +138,9 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
       backend_socket.readyState === WebSocket.OPEN ||
       backend_socket.readyState === WebSocket.CONNECTING
     ) {
-      backend_socket.close(event.code, event.reason)
+      // Normalize close code: 1005 is reserved and cannot be sent
+      const close_code = event.code === 1005 ? 1000 : event.code
+      backend_socket.close(close_code, event.reason)
     }
   }
 
@@ -152,7 +151,9 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
       client_socket.readyState === WebSocket.OPEN ||
       client_socket.readyState === WebSocket.CONNECTING
     ) {
-      client_socket.close(event.code, event.reason)
+      // Normalize close code: 1005 is reserved and cannot be sent
+      const close_code = event.code === 1005 ? 1000 : event.code
+      client_socket.close(close_code, event.reason)
     }
   }
 
