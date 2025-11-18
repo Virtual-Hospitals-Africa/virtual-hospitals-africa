@@ -1,5 +1,5 @@
 import { SelectQueryBuilder, sql } from 'kysely'
-import { RenderedEmployee, TrxOrDb } from '../../types.ts'
+import { EmployedHealthWorker, RenderedEmployee, TrxOrDb } from '../../types.ts'
 import * as health_workers from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -8,6 +8,8 @@ import { DB } from '../../db.d.ts'
 import isString from '../../util/isString.ts'
 import { Workflow } from '../../shared/workflow.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
+import { exists } from '../../util/exists.ts'
+import matching from '../../util/matching.ts'
 
 export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
   DB,
@@ -112,3 +114,24 @@ export const findOneOptional = model.findOneOptional
 export const searchQuery = model.searchQuery
 export const formatResult = model.formatResult
 export const distinctIds = model.distinctIds
+
+export function fromHealthWorker(
+  health_worker: EmployedHealthWorker,
+  organization_id: string | undefined,
+): RenderedEmployee {
+  const organization_employment = organization_id
+    ? exists(health_worker.organizations.find(matching({
+      id: organization_id,
+    })))
+    : health_worker.organizations[0]
+  return {
+    ...health_worker,
+    organization_id: organization_employment.id,
+    employee_id: organization_employment.employment_id,
+    profession: organization_employment.profession,
+    is_admin: organization_employment.is_admin,
+    specialty: organization_employment.specialty,
+    href:
+      `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
+  }
+}

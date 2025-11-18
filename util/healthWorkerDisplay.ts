@@ -56,7 +56,7 @@ export function healthWorkerDisplayInner({
   is_admin,
   provider_profession,
   specialty,
-  avatar_url,
+  avatar_url = null,
 }: {
   health_worker_name: string
   is_doctor: boolean

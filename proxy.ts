@@ -131,6 +131,16 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
     }
   }
 
+  function closeCode(code: number) {
+    switch (code) {
+      case 1005:
+      case 1001:
+        return 1000
+      default:
+        return code
+    }
+  }
+
   // Handle client close
   client_socket.onclose = (event) => {
     debug(`Client WebSocket closed: ${event.code} ${event.reason}`)
@@ -139,7 +149,7 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
       backend_socket.readyState === WebSocket.CONNECTING
     ) {
       // Normalize close code: 1005 is reserved and cannot be sent
-      const close_code = event.code === 1005 ? 1000 : event.code
+      const close_code = closeCode(event.code)
       backend_socket.close(close_code, event.reason)
     }
   }

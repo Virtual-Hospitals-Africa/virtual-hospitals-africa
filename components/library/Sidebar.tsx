@@ -27,6 +27,7 @@ export type SidebarProps = {
     href: string
     child: ComponentChild
   }
+  bottom?: ComponentChild
   route: string
   params: Record<string, string>
   urlSearchParams: URLSearchParams
@@ -110,14 +111,14 @@ const regulator_home_page_nav_links: LinkDef[] = [
 ]
 
 export function GenericSidebar(
-  { nav_links, route, params, urlSearchParams, top }: SidebarProps,
+  { nav_links, route, params, urlSearchParams, top, bottom }: SidebarProps,
 ) {
   const all_params = { ...params }
   urlSearchParams.forEach((value, key) => all_params[key] = value)
   const active_link = matchActiveLink(nav_links, route)
   return (
     <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
-      <div className='flex flex-col flex-auto overflow-y-auto bg-white border-r border-gray-200 gap-y-5'>
+      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 gap-y-5 overflow-visible'>
         <div
           style={{
             height: HEADER_HEIGHT_PX,
@@ -149,6 +150,11 @@ export function GenericSidebar(
             ))}
           </ul>
         </nav>
+        {bottom && (
+          <div className='p-2'>
+            {bottom}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -165,10 +171,11 @@ export const RegulatorDefaultTop = {
 }
 
 export function HealthWorkerHomePageSidebar(
-  { route, params, urlSearchParams }: {
+  { route, params, urlSearchParams, bottom }: {
     route: string
     params: Record<string, string>
     urlSearchParams: URLSearchParams
+    bottom?: ComponentChild
   },
 ) {
   return (
@@ -178,6 +185,7 @@ export function HealthWorkerHomePageSidebar(
       urlSearchParams={urlSearchParams}
       nav_links={practitioner_home_page_nav_links}
       top={HealthWorkerDefaultTop}
+      bottom={bottom}
     />
   )
 }
@@ -207,6 +215,7 @@ type StepsSidebarProps = {
   }
   // deno-lint-ignore no-explicit-any
   ctx: Context<any>
+  bottom?: ComponentChild
   nav_links: {
     step: string
     route: string
@@ -226,11 +235,12 @@ function defaultTop(ctx: Context<any>) {
 }
 
 export function StepsSidebar(
-  { top, ctx, nav_links, steps_completed }: StepsSidebarProps,
+  { top, bottom, ctx, nav_links, steps_completed }: StepsSidebarProps,
 ) {
   return (
     <GenericSidebar
       top={top || defaultTop(ctx)}
+      bottom={bottom}
       route={ctx.route!}
       params={ctx.params}
       urlSearchParams={ctx.url.searchParams}

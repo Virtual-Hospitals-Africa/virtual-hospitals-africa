@@ -96,7 +96,7 @@ describe('db/models/health_workers.ts', () => {
               profession: 'nurse',
               is_admin: false,
               employment_id: health_worker.employee_id,
-              specialty: null,
+              specialty: 'primary care',
               department_ids: result.organizations[0].department_ids,
             },
           ],
