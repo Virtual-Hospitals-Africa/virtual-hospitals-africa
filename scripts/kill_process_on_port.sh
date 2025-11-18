@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
-PORT="$1"
-
-pid=$(lsof -i tcp:"$PORT" | awk 'NR==2 { print $2 }')
-[[ -n "$pid" ]] && kill "$pid"
-exit 0
+for port in "$@"; do
+  pid=$(lsof -i tcp:"$port" | awk 'NR==2 { print $2 }')
+  [[ -n "$pid" ]] && kill "$pid"
+done
