@@ -1,266 +1,290 @@
 import * as patient_measurements from './patient_measurements.ts'
 import * as patient_computed_findings from './patient_computed_findings.ts'
+import * as patient_categorical_findings from './patient_categorical_findings.ts'
+import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
   Measurement,
+  RenderedPatient,
+  RenderedTriageVitalRow,
   TrxOrDb,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import {
-  TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-  VITALS_SNOMED_CODE,
-  VITALS_UNITS,
-} from '../../shared/vitals.ts'
+import { TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE } from '../../shared/vitals.ts'
+import { literalString } from '../helpers.ts'
+import { sql } from 'kysely'
+import type { CategoricalAssessment } from './patient_categorical_findings.ts'
 
-// TODO
-type PatientRecord = unknown
-
-export function insertMeasurements(
+export async function insertMeasurements(
   trx: TrxOrDb,
   opts: {
+    patient_record: RenderedPatient
     patient_id: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
     input_measurements: Measurement[]
+    active_condition_snomed_codes: readonly string[]
   },
-): Promise<{ success: true; procedure_id: string }> {
-  return patient_measurements.insertMany(trx, {
+): Promise<{
+  success: true
+  procedure_id: string
+  auto_evaluations?: string[]
+  performance_metrics?: {
+    evaluation_time_ms: number
+    database_queries: number
+    abnormal_measurements: number
+  }
+}> {
+  const insertion_result = await patient_measurements.insertMany(trx, {
     ...opts,
     procedure: {
       create_from_snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
     },
   })
+
+  await patient_computed_findings.computeAndInsertDerivedMeasurements(trx, {
+    patient_id: opts.patient_id,
+    patient_encounter_id: opts.patient_encounter_id,
+    patient_encounter_employee_id: opts.patient_encounter_employee_id,
+    source_measurements: opts.input_measurements,
+    source_procedure_id: insertion_result.procedure_id,
+  })
+
+  return {
+    success: true,
+    procedure_id: insertion_result.procedure_id,
+  }
 }
 
-// deno-lint-ignore require-await
 export async function measurementsNeededForEncounter(
-  _trx: TrxOrDb,
-  _patient_record: PatientRecord,
+  trx: TrxOrDb,
+  patient_record: RenderedPatient,
+  active_condition_snomed_codes: readonly string[],
 ): Promise<VitalMeasurementFormInputDefition[]> {
-  // Returning just adult values for now
-  return [
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.height,
-      required: true,
-      label: 'height',
-      units: VITALS_UNITS.height,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.weight,
-      required: true,
-      label: 'weight',
-      units: VITALS_UNITS.weight,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.temperature,
-      required: true,
-      label: 'temperature',
-      units: VITALS_UNITS.temperature,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_diastolic,
-      required: true,
-      label: 'blood_pressure_diastolic',
-      units: VITALS_UNITS.blood_pressure_diastolic,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure_systolic,
-      required: true,
-      label: 'blood_pressure_systolic',
-      units: VITALS_UNITS.blood_pressure_systolic,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_oxygen_saturation,
-      required: true,
-      label: 'blood_oxygen_saturation',
-      units: VITALS_UNITS.blood_oxygen_saturation,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.blood_glucose,
-      required: true,
-      label: 'blood_glucose',
-      units: VITALS_UNITS.blood_glucose,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.pulse,
-      required: true,
-      label: 'pulse',
-      units: VITALS_UNITS.pulse,
-    },
-    {
-      finding_id: generateUUID(),
-      snomed_concept_id: VITALS_SNOMED_CODE.respiratory_rate,
-      required: true,
-      label: 'respiratory_rate',
-      units: VITALS_UNITS.respiratory_rate,
-    },
-  ]
+  const requirements_result = await clinical_measurement_requirements
+    .determineMeasurementsForPatient(trx, {
+      patient_id: patient_record.id,
+      age_days: patient_record.age_days ?? 0,
+      gender: patient_record.gender,
+      active_condition_snomed_codes,
+      pregnancy_status: active_condition_snomed_codes.includes('77386006'),
+    })
+
+  return requirements_result.measurements
 }
 
-export async function computeAndInsertDerivedMeasurements(
+/**
+ * NEW: Insert both quantitative measurements AND categorical assessments
+ * This is the new unified function that handles AVPU/Mobility/Trauma as categorical findings
+ */
+export async function insertMeasurementsAndAssessments(
   trx: TrxOrDb,
-  {
-    patient_id,
-    patient_encounter_id,
-    patient_encounter_employee_id,
-    source_measurements,
-    source_procedure_id,
-  }: {
+  opts: {
+    patient_record: RenderedPatient
     patient_id: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
-    source_measurements: Measurement[]
-    source_procedure_id: string
+    input_measurements: Measurement[]
+    input_assessments: CategoricalAssessment[]
+    active_condition_snomed_codes: readonly string[]
   },
-): Promise<{ success: true; computed_findings: string[] }> {
-  const measurements = new Map(
-    source_measurements.map((m) => [m.snomed_concept_id, m]),
-  )
-
-  const computed_findings: string[] = []
-
-  // Validate required input measurements exist
-  if (source_measurements.length === 0) {
-    return { success: true as const, computed_findings }
+): Promise<{
+  success: true
+  procedure_id: string
+  auto_evaluations?: string[]
+  performance_metrics?: {
+    evaluation_time_ms: number
+    database_queries: number
+    abnormal_measurements: number
   }
+}> {
+  const procedure_snomed_code = TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE
 
-  // BMI Calculation
-  const height_measurement = measurements.get(VITALS_SNOMED_CODE.height)
-  const weight_measurement = measurements.get(VITALS_SNOMED_CODE.weight)
-
-  if (
-    height_measurement &&
-    weight_measurement &&
-    height_measurement.value &&
-    weight_measurement.value &&
-    height_measurement.value > 0 &&
-    weight_measurement.value > 0
-  ) {
-    const height_m = height_measurement.value / 100 // Convert cm to m
-
-    const body_mass_index = weight_measurement.value / (height_m * height_m)
-
-    const body_mass_index_result = await patient_computed_findings
-      .insertComputedFinding(
-        trx,
-        {
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          procedure_id: source_procedure_id,
-          snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
-          value: Math.round(body_mass_index * 10) / 10, // Round to 1 decimal place
-          units: VITALS_UNITS.body_mass_index,
-          algorithm_version: 'BMI_v1.0',
-          computation_metadata: {
-            formula: 'weight_kg / (height_m^2)',
-            height_m,
-            weight_kg: weight_measurement.value,
-          },
-          input_measurements: [
-            { record_id: height_measurement.finding_id },
-            { record_id: weight_measurement.finding_id },
-          ],
-        },
-      )
-    computed_findings.push(body_mass_index_result.computed_finding_id)
-  }
-
-  // Mean Arterial Pressure (MAP) calculation
-  const systolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_systolic,
-  )
-  const diastolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_diastolic,
-  )
-
-  if (
-    systolic_measurement &&
-    diastolic_measurement &&
-    systolic_measurement.value &&
-    diastolic_measurement.value &&
-    systolic_measurement.value > 0 &&
-    diastolic_measurement.value > 0
-  ) {
-    const map = diastolic_measurement.value +
-      (systolic_measurement.value - diastolic_measurement.value) / 3
-
-    const map_result = await patient_computed_findings.insertComputedFinding(
+  // Insert quantitative measurements (if any)
+  let procedure_id: string
+  if (opts.input_measurements.length) {
+    const measurement_result = await patient_measurements.insertMany(trx, {
+      ...opts,
+      procedure: {
+        create_from_snomed_concept_id: procedure_snomed_code,
+      },
+    })
+    procedure_id = measurement_result.procedure_id
+  } else {
+    // Create procedure for assessments only
+    const assessment_result = await patient_categorical_findings.insertMany(
       trx,
       {
-        patient_id,
-        patient_encounter_id,
-        patient_encounter_employee_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
-        value: Math.round(map),
-        units: VITALS_UNITS.mean_arterial_pressure,
-        algorithm_version: 'MAP_v1.0',
-        computation_metadata: {
-          formula: 'diastolic + (systolic - diastolic) / 3',
-          systolic_mmhg: systolic_measurement.value,
-          diastolic_mmhg: diastolic_measurement.value,
+        input_assessments: opts.input_assessments,
+        patient_id: opts.patient_id,
+        patient_encounter_id: opts.patient_encounter_id,
+        patient_encounter_employee_id: opts.patient_encounter_employee_id,
+        procedure: {
+          create_from_snomed_concept_id: procedure_snomed_code,
         },
-        input_measurements: [
-          {
-            record_id: systolic_measurement.finding_id,
-          },
-          {
-            record_id: diastolic_measurement.finding_id,
-          },
-        ],
       },
     )
-    computed_findings.push(map_result.computed_finding_id)
+    procedure_id = assessment_result.procedure_id
   }
 
-  // Blood Pressure composite display (systolic/diastolic format)
-  if (
-    systolic_measurement &&
-    diastolic_measurement &&
-    systolic_measurement.value &&
-    diastolic_measurement.value &&
-    systolic_measurement.value > 0 &&
-    diastolic_measurement.value > 0
-  ) {
-    const bp_display =
-      `${systolic_measurement.value}/${diastolic_measurement.value} mmHg`
-
-    const bp_result = await patient_computed_findings.insertComputedFinding(
-      trx,
-      {
-        patient_id,
-        patient_encounter_id,
-        patient_encounter_employee_id,
-        procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure,
-        value_display: bp_display,
-        algorithm_version: 'BP_v1.0',
-        computation_metadata: {
-          format: 'systolic/diastolic mmHg',
-          systolic_mmhg: systolic_measurement.value,
-          diastolic_mmhg: diastolic_measurement.value,
-        },
-        input_measurements: [
-          {
-            record_id: systolic_measurement.finding_id,
-          },
-          {
-            record_id: diastolic_measurement.finding_id,
-          },
-        ],
+  // Insert categorical assessments (if any and we have a procedure)
+  if (opts.input_assessments.length && opts.input_measurements.length) {
+    await patient_categorical_findings.insertMany(trx, {
+      input_assessments: opts.input_assessments,
+      patient_id: opts.patient_id,
+      patient_encounter_id: opts.patient_encounter_id,
+      patient_encounter_employee_id: opts.patient_encounter_employee_id,
+      procedure: {
+        id: procedure_id, // Reuse same procedure
+        create_from_snomed_concept_id: procedure_snomed_code,
       },
-    )
-    computed_findings.push(bp_result.computed_finding_id)
+    })
   }
 
-  return { success: true as const, computed_findings }
+  // Compute derived measurements (BMI, MAP, etc.)
+  if (opts.input_measurements.length) {
+    await patient_computed_findings
+      .computeAndInsertDerivedMeasurements(trx, {
+        patient_id: opts.patient_id,
+        patient_encounter_id: opts.patient_encounter_id,
+        patient_encounter_employee_id: opts.patient_encounter_employee_id,
+        source_measurements: opts.input_measurements,
+        source_procedure_id: procedure_id,
+      })
+  }
+
+  return {
+    success: true,
+    procedure_id,
+  }
+}
+
+export async function measurementsNeededForTriageEncounter(
+  trx: TrxOrDb,
+  patient_record: RenderedPatient,
+  active_condition_snomed_codes: readonly string[],
+): Promise<VitalMeasurementFormInputDefition[]> {
+  // Get regular vital measurements based on clinical context
+  // AVPU/Mobility/Trauma are now handled by database-driven categorical assessments
+  return await measurementsNeededForEncounter(
+    trx,
+    patient_record,
+    active_condition_snomed_codes,
+  )
+}
+
+/**
+ * Reads triage vital rows from a procedure, computing reference ranges and evaluations at the database level.
+ * This function groups computed findings with their input measurements for proper display ordering.
+ *
+ * Note: This function currently returns a simplified reference range structure based on the existing
+ * measurement_reference_ranges table schema which has normal_min, normal_max, critical_min, and critical_max.
+ * The ReferenceRange type expects multi-level abnormal ranges which would require schema changes.
+ */
+export async function readRows(
+  trx: TrxOrDb,
+  procedure_id: string,
+): Promise<RenderedTriageVitalRow[]> {
+  // First, get the patient_id from the procedure to fetch reference ranges
+  const procedure_info = await trx
+    .selectFrom('patient_procedures')
+    .innerJoin('patient_records', 'patient_records.id', 'patient_procedures.id')
+    .where('patient_procedures.id', '=', procedure_id)
+    .select(['patient_records.patient_id'])
+    .executeTakeFirst()
+
+  if (!procedure_info) {
+    throw new Error(`Procedure ${procedure_id} not found`)
+  }
+
+  const results = await trx.selectFrom('patient_findings')
+    .innerJoin(
+      'patient_records',
+      'patient_findings.id',
+      'patient_records.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category.id',
+      'patient_records.snomed_concept_id',
+    )
+    .leftJoin(
+      'patient_computed_findings as self_patient_computed_findings',
+      'patient_findings.id',
+      'self_patient_computed_findings.id',
+    )
+    .leftJoin(
+      'patient_computed_findings_inputs',
+      'patient_findings.id',
+      'patient_computed_findings_inputs.input_measurement_id',
+    )
+    .leftJoin(
+      'patient_computed_findings as computation_based_on_self',
+      'computation_based_on_self.id',
+      'patient_computed_findings_inputs.computed_finding_id',
+    )
+    .leftJoin(
+      'patient_measurements',
+      'patient_measurements.id',
+      'patient_findings.id',
+    )
+    .where('patient_findings.procedure_id', '=', procedure_id)
+    .select([
+      literalString('triage_vital').as('type'),
+      sql<string>`patient_records.snomed_concept_id::text`.as(
+        'snomed_concept_id',
+      ),
+      sql<string>`patient_records.id`.as('patient_record_id'),
+      // This expression creates a grouping key. For a computed finding (e.g., BMI),
+      // both the computed finding itself and its inputs (e.g., height, weight)
+      // will share the same `finding_computation_group_id`, which is the ID of the
+      // computed finding record. This allows grouping them together in the UI.
+      sql<string>`coalesce(computation_based_on_self.id, patient_findings.id)`
+        .as('finding_computation_group_id'),
+      'snomed_inferred_canonical_name_and_category.canonical_name as display_name',
+      sql<string>`
+        CASE
+          WHEN patient_measurements.value IS NOT NULL
+          THEN CASE
+            WHEN patient_measurements.units = '' THEN patient_measurements.value::text
+            ELSE CONCAT(patient_measurements.value::text, ' ', patient_measurements.units)
+          END
+          WHEN self_patient_computed_findings.value_display IS NOT NULL
+          THEN self_patient_computed_findings.value_display
+          WHEN self_patient_computed_findings.value IS NOT NULL
+          THEN CASE
+            WHEN self_patient_computed_findings.units = '' THEN self_patient_computed_findings.value::text
+            ELSE CONCAT(self_patient_computed_findings.value::text, ' ', self_patient_computed_findings.units)
+          END
+          ELSE 'N/A'
+        END
+      `.as('measurement_display'),
+      // Get the numeric value for score calculation
+      sql<number | null>`
+        CASE
+          WHEN patient_measurements.value IS NOT NULL
+          THEN patient_measurements.value::numeric
+          WHEN self_patient_computed_findings.value IS NOT NULL
+          THEN self_patient_computed_findings.value::numeric
+          ELSE NULL
+        END
+      `.as('numeric_value'),
+      sql<string>`patient_records.patient_id`.as('patient_id'),
+    ])
+    .execute()
+
+  // Map results to RenderedTriageVitalRow
+  return results.map((result) => {
+    return {
+      type: 'triage_vital' as const,
+      snomed_concept_id: result.snomed_concept_id,
+      patient_record_id: result.patient_record_id,
+      finding_computation_group_id: result.finding_computation_group_id,
+      display_name: result.display_name,
+      measurement_display: result.measurement_display,
+      reference_range: { normal_min: 0, normal_max: 0 },
+      system_evaluation: null,
+      notes: null,
+      score: 0,
+    }
+  })
 }

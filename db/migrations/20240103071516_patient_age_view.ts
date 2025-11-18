@@ -26,6 +26,7 @@ export async function up(db: Kysely<DB>) {
       SELECT id,
              AGE(CURRENT_DATE, date_of_birth) as age,
              CURRENT_DATE::timestamp - date_of_birth::timestamp as diff
+             CURRENT_DATE - date_of_birth as age_days_total
         from patients
        WHERE date_of_birth IS NOT NULL
     ),
@@ -34,6 +35,8 @@ export async function up(db: Kysely<DB>) {
       SELECT 
         id AS patient_id,
         EXTRACT(YEAR FROM age) as age_years,
+        diff,
+        age_days_total,
         CASE WHEN age >= INTERVAL '2 years'
           THEN (EXTRACT(YEAR FROM age), 'year')::AGE
         WHEN age >= INTERVAL '3 months'
@@ -54,6 +57,7 @@ export async function up(db: Kysely<DB>) {
       patient_id,
       age,
       age_years,
+      age_days_total AS age_days,
       (age).number AS age_number,
       (age).unit AS age_unit,
       (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display

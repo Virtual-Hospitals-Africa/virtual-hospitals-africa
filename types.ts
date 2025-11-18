@@ -400,6 +400,7 @@ export type RenderedPatientAge = {
   age_number: number
   age_unit: AgeUnit
   age_years: number
+  age_days: number
 }
 
 export type Address = {

@@ -58,6 +58,7 @@ export function baseQuery(trx: TrxOrDb) {
       isoDate(eb.ref('patients.date_of_birth')).as('date_of_birth'),
       description_sql.as('description'),
       'patient_age.age_display',
+      'patient_age.age_days',
       sql<number | null>`patient_age.age_years::integer`.as('age_years'),
       'patients.national_id_number',
       'patients.completed_registration',
