@@ -1015,6 +1015,17 @@ export interface PatientConditions {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientEmergencyContacts {
+  created_at: Generated<Timestamp>
+  emergency_contact_name: string | null
+  emergency_contact_patient_id: string | null
+  emergency_contact_phone_number: string | null
+  id: Generated<string>
+  patient_id: string
+  relationship: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientEncounterEmployees {
   created_at: Generated<Timestamp>
   employment_id: string
@@ -1126,15 +1137,6 @@ export interface PatientInsurance {
   plan_name: string | null
   updated_at: Generated<Timestamp>
   valid_from: Timestamp
-}
-
-export interface PatientKin {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  next_of_kin_patient_id: string
-  patient_id: string
-  relationship: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface PatientLifestyle {
@@ -1819,6 +1821,7 @@ export interface DB {
   patient_computed_findings_inputs: PatientComputedFindingsInputs
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
+  patient_emergency_contacts: PatientEmergencyContacts
   patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
   patient_evaluations: PatientEvaluations
@@ -1831,7 +1834,6 @@ export interface DB {
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
   patient_insurance: PatientInsurance
-  patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
   patient_occupations: PatientOccupations
