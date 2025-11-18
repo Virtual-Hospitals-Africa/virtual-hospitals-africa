@@ -3153,7 +3153,7 @@ export type RenderedMessageThreadWithAllMessages = RenderedMessageThreadBase & {
 export type HealthWorkerDisplay = {
   display_name: string
   description: string
-  avatar_url: Maybe<string>
+  avatar_url: string | null
 }
 
 export type RenderedEmployee = EmployedHealthWorker & {

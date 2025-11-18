@@ -65,6 +65,7 @@ import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../compo
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
 import { exists } from '../../../../../../../util/exists.ts'
 import matching from '../../../../../../../util/matching.ts'
+import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -404,6 +405,7 @@ export function OpenEncounterWorkflowLayout({
           ctx={ctx}
           nav_links={nav_links[ctx.state.workflow]}
           steps_completed={ctx.state.workflow_status.steps_completed}
+          bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
         />
       }
       drawer={ctx.state.workflow !== 'registration'

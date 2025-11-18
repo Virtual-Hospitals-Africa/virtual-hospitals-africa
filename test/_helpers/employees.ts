@@ -62,6 +62,7 @@ export async function addTestEmployee(
   if (!specialty && ['nurse', 'doctor'].includes(profession)) {
     specialty = 'primary care'
   }
+  console.log({ specialty })
   if (profession !== 'nurse') {
     assertEquals(
       registration_status,
@@ -117,6 +118,7 @@ export async function addTestEmployee(
     is_admin: profession === 'admin' || !!is_admin,
     department_ids,
     health_worker_id: health_worker.id,
+    specialty,
   })
   const employee_id = created_employee.id
   const calendars = testCalendars()

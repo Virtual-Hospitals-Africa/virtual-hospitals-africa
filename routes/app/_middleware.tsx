@@ -2,6 +2,7 @@ import { Context } from 'fresh'
 import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import * as employees from '../../db/models/employees.ts'
 import * as health_worker_registration_status from '../../db/models/health_worker_registration_status.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as notifications from '../../db/models/notifications.ts'
@@ -21,6 +22,7 @@ import { SKIP_NURSE_REGISTRATION } from '../../db/models/health_worker_registrat
 import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { HealthWorkerHomePageSidebar } from '../../components/library/Sidebar.tsx'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
+import { HealthWorkerSidebarBottom } from '../../components/library/HealthWorkerSidebarBottom.tsx'
 
 export default [
   ensureCookiePresent,
@@ -215,6 +217,14 @@ export function HealthWorkerHomePageLayout<
                 organization_id: defaultOrganizationId(ctx.state.health_worker),
               }}
             urlSearchParams={ctx.url.searchParams}
+            bottom={
+              <HealthWorkerSidebarBottom
+                employee={employees.fromHealthWorker(
+                  ctx.state.health_worker,
+                  ctx.params.organization_id,
+                )}
+              />
+            }
           />
         }
         drawer={drawer}

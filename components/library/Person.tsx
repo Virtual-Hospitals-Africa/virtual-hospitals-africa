@@ -31,11 +31,12 @@ export function assertPersonLike(
 }
 
 export function Person(
-  { person, bold, size = 'md', no_avatar }: {
+  { person, bold, size = 'md', no_avatar, className }: {
     person: PersonData
     bold?: boolean
-    size?: 'md' | 'lg'
+    size?: 'md' | 'lg' | 'sm'
     no_avatar?: boolean
+    className?: string
   },
 ): JSX.Element {
   const Component = person.href ? 'a' : 'div'
@@ -45,6 +46,7 @@ export function Person(
       className={cls(
         'flex items-center',
         person.href && 'text-indigo-600 hover:text-indigo-900',
+        className,
       )}
       href={person.href ?? undefined}
     >
@@ -53,7 +55,7 @@ export function Person(
           src={person.avatar_url}
           className={cls(
             'flex-shrink-0 rounded-full',
-            size === 'lg' ? 'h-10 w-10' : 'h-10 w-10',
+            size === 'md' ? 'h-8 w-8' : size === 'sm' ? 'h-6 w-6' : 'h-10 w-10',
           )}
         />
       )}
@@ -64,10 +66,12 @@ export function Person(
         )}
       >
       </span>
-      <div className='flex flex-col gap-0'>
-        <div>{person.display_name || person.name}</div>
+      <div className='flex flex-col'>
+        <div className='person-name text-xs'>
+          {person.display_name || person.name}
+        </div>
         {person.description && (
-          <div className='text-sm font-normal text-gray-500 capitalize'>
+          <div className='font-normal capitalize text-xs text-gray-500'>
             {person.description}
           </div>
         )}

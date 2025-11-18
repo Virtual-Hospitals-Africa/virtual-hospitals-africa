@@ -135,7 +135,7 @@ describe('/login', () => {
       assert($.html().includes('Open Encounters'))
     })
 
-    it('starts in an empty waiting room with sidebar links', () =>
+    it('starts in an empty waiting room with sidebar links for a nurse', () =>
       withTestOrganization(db, async (organization_id) => {
         const mock = await addTestEmployeeWithSession(db, {
           profession: 'nurse',
@@ -145,6 +145,7 @@ describe('/login', () => {
         })
 
         const $ = await mock.fetchCheerio(`${route}/app`)
+
         const waiting_room_add_link = $(
           `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
         )
@@ -171,6 +172,26 @@ describe('/login', () => {
 
         const logout_link = $('a[href="/app/logout"]')
         assert(logout_link.first().text().includes('Log Out'))
+      }))
+
+    it('starts in an empty waiting room with a start-registration link for a receptionist', () =>
+      withTestOrganization(db, async (organization_id) => {
+        const mock = await addTestEmployeeWithSession(db, {
+          profession: 'receptionist',
+          registration_status: 'approved',
+          organization_id,
+        })
+
+        const $ = await mock.fetchCheerio(`${route}/app`)
+
+        console.log($.html())
+        const waiting_room_add_link = $(
+          `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
+        )
+        assertEquals(
+          waiting_room_add_link.first().text(),
+          'Register patient',
+        )
       }))
 
     it("doesn't allow access to employees if you are employed at a different organization", async () => {

@@ -1,6 +1,7 @@
 import {
   HealthWorkerOrganization,
   LoggedInHealthWorkerContext,
+  RenderedEmployee,
   RenderedOrganization,
 } from '../../../../types.ts'
 import * as organizations from '../../../../db/models/organizations.ts'
@@ -9,6 +10,7 @@ import { assertOr403 } from '../../../../util/assertOr.ts'
 export type OrganizationState = {
   organization: RenderedOrganization
   organization_employment: HealthWorkerOrganization
+  employee: RenderedEmployee
   is_admin_at_organization: boolean
 }
 
@@ -35,9 +37,24 @@ export async function handler(
     organization_id,
   )
 
-  ctx.state.organization = organization
-  ctx.state.organization_employment = organization_employment
-  ctx.state.is_admin_at_organization = organization_employment.is_admin
+  const employee: RenderedEmployee = {
+    ...health_worker,
+    organization_id: organization.id,
+    employee_id: organization_employment.employment_id,
+    profession: organization_employment.profession,
+    is_admin: organization_employment.is_admin,
+    specialty: organization_employment.specialty,
+    href: `/app/organizations/${organization.id}/employees/${health_worker.id}`,
+  }
+
+  const organization_state: OrganizationState = {
+    organization,
+    organization_employment,
+    employee,
+    is_admin_at_organization: organization_employment.is_admin,
+  }
+
+  Object.assign(ctx.state, organization_state)
 
   return ctx.next()
 }

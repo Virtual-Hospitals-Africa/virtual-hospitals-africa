@@ -24,7 +24,7 @@ const variant_styles = {
     'border border-gray-300 bg-white text-indigo-600 font-semibold rounded-lg hover:border-indigo-600 hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:border-indigo-700 active:bg-indigo-100 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white',
   destructive:
     'bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 active:bg-red-800 disabled:opacity-40 disabled:hover:bg-red-600',
-  ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
+  ghost: 'hover:text-blue-600 focus-visible:text-blue-600 !p-0',
 }
 
 export type ButtonLinkProps =
@@ -71,15 +71,15 @@ export function Button({
     variant_styles[variant],
     size_styles[size],
     variant !== 'ghost' && 'justify-center',
-    !!(left_icon || right_icon) && 'gap-2',
+    !!(left_icon || right_icon) && 'gap-1.5',
     className,
   )
 
   const content = (
     <>
-      {left_icon}
+      {left_icon && <span className='-ml-1'>{left_icon}</span>}
       {children}
-      {right_icon}
+      {right_icon && <span className='-mr-1'>{right_icon}</span>}
     </>
   )
 
