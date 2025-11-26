@@ -8,7 +8,7 @@ import { assert } from 'std/assert/assert.ts'
 import { onProduction } from '../util/onProduction.ts'
 import generateUUID from '../util/uuid.ts'
 import { TrxOrDb } from '../types.ts'
-import randomNamesAndSex from '../mocks/randomDemographics.ts'
+import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
 import {
@@ -23,6 +23,7 @@ const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {
   assert(!onProduction(), 'Cannot fake google authentication on production')
 }
+console.log({ FAKE_GOOGLE_AUTH })
 
 export const loginHref = memoize(() => {
   const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')
@@ -44,7 +45,7 @@ export const loginHref = memoize(() => {
 })
 
 async function fakeGoogleLogin(trx: TrxOrDb) {
-  const { sex, ...names } = randomNamesAndSex()
+  const { sex, ...names } = randomNamesAndSex('ZA')
   const email = generateUUID() + '@example.com'
   const avatar_media_id = randomAvatarMediaId(sex)
   const access_token = generateUUID()
