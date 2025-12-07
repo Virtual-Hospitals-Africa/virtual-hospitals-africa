@@ -1687,13 +1687,6 @@ export interface SpeechTranscriptions {
   updated_at: Generated<Timestamp>
 }
 
-export interface WarningSigns {
-  id: Int8
-  sats_primary_name: string
-  sats_priority_snomed_concept_id: Int8
-  sats_secondary_text: string | null
-}
-
 export interface WhatsappMessagesReceived {
   body: string | null
   chatbot_name: ChatbotName
