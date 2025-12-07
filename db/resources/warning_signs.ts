@@ -1,4 +1,4 @@
-export default [
+export const WARNING_SIGNS = [
   {
     "finding_snomed_concept_id": "79688008",
     "qualifer_relationship_snomed_concept_id": null,
