@@ -1687,6 +1687,13 @@ export interface SpeechTranscriptions {
   updated_at: Generated<Timestamp>
 }
 
+export interface WarningSigns {
+  id: Int8
+  sats_primary_name: string
+  sats_priority_snomed_concept_id: Int8
+  sats_secondary_text: string | null
+}
+
 export interface WhatsappMessagesReceived {
   body: string | null
   chatbot_name: ChatbotName
@@ -1890,6 +1897,7 @@ export interface DB {
   snomed_text_definition: SnomedTextDefinition
   spatial_ref_sys: SpatialRefSys
   speech_transcriptions: SpeechTranscriptions
+  warning_signs: WarningSigns
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
   workflow_steps: WorkflowSteps

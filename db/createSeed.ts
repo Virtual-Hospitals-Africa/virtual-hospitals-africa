@@ -55,7 +55,7 @@ import { define } from '../define.ts'
 import { collectTsvResource } from '../../parseTsvResource.ts'
 
 
-export const ${table_name} = await collectTsvResource(
+export const ${table_name}: InsertShape<${interface_name}>[] = await collectTsvResource(
   '${table_name}',
   z.object({
 
