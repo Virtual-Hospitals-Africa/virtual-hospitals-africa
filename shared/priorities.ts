@@ -38,7 +38,7 @@ export function isTriageLevel(priority: string): priority is TriageLevel {
 }
 
 export const PRIORITY_COLORS: Record<
-  Priority,
+  Priority | 'Normal',
   { bg: string; text: string; border: string }
 > = {
   Normal: {

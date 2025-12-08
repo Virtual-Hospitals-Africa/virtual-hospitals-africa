@@ -1890,7 +1890,6 @@ export interface DB {
   snomed_text_definition: SnomedTextDefinition
   spatial_ref_sys: SpatialRefSys
   speech_transcriptions: SpeechTranscriptions
-  warning_signs: WarningSigns
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
   workflow_steps: WorkflowSteps
