@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -xeo pipefail
+set -eo pipefail
 
 fail() {
   >&2 echo "$@"

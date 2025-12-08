@@ -1,20 +1,26 @@
-import { describe, afterAll, it } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { fromFindingDescription, fromParsedExpression, parseFindingExpression } from '../../db/models/simple_record_language.ts'
+import {
+  fromFindingDescription,
+  fromParsedExpression,
+  parseFindingExpression,
+} from '../../db/models/simple_record_language.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { asResult } from '../../util/asResult.ts'
 import { assert } from 'std/assert/assert.ts'
+import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 
 describe('db/models/simple_record_language.ts', () => {
   afterAll(() => db.destroy())
-  
+
   describe('parseFindingExpression', () => {
     it('can parse an expression signifying Uncontrolled Hemorrhage', () => {
-
       // 131148009 |Bleeding (finding)|
       // 19032002 |Uncontrolled (qualifier value)|
 
-      const parsed = parseFindingExpression(`(finding 131148009 (qualifier 19032002))`)
+      const parsed = parseFindingExpression(
+        `(finding 131148009 (qualifier 19032002))`,
+      )
       assertEquals(parsed, {
         type: 'finding',
         snomed_concept_id: '131148009',
@@ -23,23 +29,38 @@ describe('db/models/simple_record_language.ts', () => {
             type: 'qualifier',
             snomed_concept_id: '19032002',
             qualifiers: [],
-          }
-        ]
+          },
+        ],
       })
     })
 
     it('throws an error if the expression is invalid', () => {
-      const result = asResult(() => parseFindingExpression('(finding 131148009 (qualifier 19032002'))
+      const result = asResult(() =>
+        parseFindingExpression('(finding 131148009 (qualifier 19032002')
+      )
       assert(result.success === false)
       assert(result.error instanceof Error)
-      assertEquals(result.error.message, 'Expected array, got: {"line":1,"col":39}')
+      assertEquals(result.error.message, 'Syntax error: Expected `)` - saw: ``')
     })
 
     it('throws an error if the expression is a valid s-expression but not a valid finding expression', () => {
-      const result = asResult(() => parseFindingExpression('(qualifier 19032002)'))
+      const result = asResult(() =>
+        parseFindingExpression('(qualifier 19032002)')
+      )
       assert(result.success === false)
       assert(result.error instanceof Error)
-      assertEquals(result.error.message, 'Expected top-level node to be "finding", got: "qualifier"')
+      assertEquals(
+        result.error.message,
+        'Expected top-level node to be "finding", got: "qualifier"',
+      )
+    })
+
+    it('can parse all the expressions for warning signs', () => {
+      for (const sign of WARNING_SIGNS) {
+        console.log(sign)
+        const parsed = parseFindingExpression(sign.finding_s_expression)
+        console.log(parsed)
+      }
     })
   })
 
@@ -72,7 +93,7 @@ describe('db/models/simple_record_language.ts', () => {
               term: 'Uncontrolled',
             },
             qualifiers: [],
-          }
+          },
         ],
       })
     })

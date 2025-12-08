@@ -117,7 +117,8 @@ export const WARNING_SIGNS: WarningSign[] = [
     'sats_priority_snomed_concept_id': '1356878002',
   },
   {
-    'finding_s_expression': '(finding 87642003 (not (qualifier 363698007 7569003)) (not (qualifier 363698007 29707007)))',
+    'finding_s_expression':
+      '(finding 87642003 (not (qualifier 363698007 7569003)) (not (qualifier 363698007 29707007)))',
     'sats_primary_name': 'Dislocation of larger joint',
     'sats_secondary_text': 'not finger or toe',
     'sats_priority_snomed_concept_id': '1356878002',
@@ -141,18 +142,19 @@ export const WARNING_SIGNS: WarningSign[] = [
     'sats_priority_snomed_concept_id': '1356878002',
   },
   {
-    'finding_s_expression': '(finding 417746004 (qualifier 363698007 818983003))',
+    'finding_s_expression':
+      '(finding 417746004 (qualifier 363698007 818983003))',
     'sats_primary_name': 'Pregnancy and abdominal trauma',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '1356878002',
-    'prompt_when_s_expression': '(finding 77386006)'
+    'prompt_when_s_expression': '(finding 77386006)',
   },
   {
     'finding_s_expression': '(finding 21522001)',
     'sats_primary_name': 'Pregnancy and abdominal pain',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '1356878002',
-    'prompt_when_s_expression': '(finding 77386006)'
+    'prompt_when_s_expression': '(finding 77386006)',
   },
   {
     'finding_s_expression': '(finding 131148009 (qualifier 19032002))',
@@ -223,7 +225,7 @@ export const WARNING_SIGNS: WarningSign[] = [
     'sats_primary_name': 'Abdominal pain',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '103391001',
-    'prompt_when_s_expression': '(not (finding 77386006))'
+    'prompt_when_s_expression': '(not (finding 77386006))',
   },
   {
     'finding_s_expression': '(finding 196746003)',

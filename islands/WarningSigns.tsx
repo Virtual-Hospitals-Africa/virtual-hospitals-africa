@@ -53,17 +53,8 @@ function groupByPriority(signs: readonly WarningSign[]) {
   return grouped
 }
 
-function getWarningSignKey(sign: WarningSign): string {
-  return [
-    sign.finding_snomed_concept_id,
-    sign.qualifer_relationship_snomed_concept_id,
-    sign.qualifer_value_snomed_concept_id,
-    sign.qualifer_value_concrete,
-  ].filter(Boolean).join(':')
-}
-
 function WarningSignCheckbox({ sign }: { sign: WarningSign }) {
-  const key = getWarningSignKey(sign)
+  // const key =
   return (
     <label class='flex gap-3 items-start cursor-pointer'>
       <div class='pt-0.5'>

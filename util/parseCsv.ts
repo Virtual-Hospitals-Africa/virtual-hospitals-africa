@@ -11,7 +11,7 @@ export default async function* parseCsv(
   let file: Deno.FsFile | undefined
   try {
     file = await Deno.open(file_path)
-  
+
     let header: string[] = []
     let isFirstRow = true
 
@@ -58,8 +58,6 @@ export default async function* parseCsv(
   } finally {
     file?.close()
   }
-
-
 }
 
 export type ParseTsvOptions =

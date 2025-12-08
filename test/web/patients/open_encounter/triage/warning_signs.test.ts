@@ -11,7 +11,7 @@ import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
-  
+
   describe('GET', () => {
     it('renders a ', async () => {
       const { health_worker: nurse, fetchCheerio } =
@@ -48,9 +48,6 @@ describe('triage/warning_signs', () => {
         $.url,
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
       )
-
-      
-
     })
   })
 })
