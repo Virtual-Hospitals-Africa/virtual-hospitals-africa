@@ -29,22 +29,7 @@ describe('db/models/warning_signs.ts', () => {
       console.log(not_matching)
       assertArrayEmpty(not_matching)
 
-  //       sign: {
-  //   finding_snomed_concept_id: "284549007",
-  //   qualifer_relationship_snomed_concept_id: "246112005",
-  //   qualifer_value_snomed_concept_id: "6736007",
-  //   qualifer_value_concrete: null,
-  //   sats_primary_name: "Burn",
-  //   sats_secondary_text: "Moderate pain",
-  //   sats_priority_snomed_concept_id: "103391001"
-  // },
-  // result: {
-  //   id: "284549007",
-  //   description_id: "678455013",
-  //   language_code: "en",
-  //   name: "Laceration of hand",
-  //   category: "disorder"
-  // }
+
     })
   })
 })
