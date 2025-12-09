@@ -2,8 +2,9 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import memoize from '../../util/memoize.ts'
 import {
-  AsPartOfProcedure,
-  RenderedFindingQualifierRelativeToHealthWorker,
+  // AsPartOfProcedure,
+  PositiveFindingRecord,
+  // RenderedFindingQualifierRelativeToHealthWorker,
   RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
   TrxOrDb,
@@ -101,24 +102,6 @@ export const commonConditionSnomedConceptId = memoize(
     return condition.snomed_concept_id
   },
 )
-
-type QualifierIntermediate =
-  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
-  & {
-    patient_encounter_employee_id: string
-  }
-
-type PositiveFindingRecord = {
-  created_at: Date
-  record_id: string
-  snomed_concept_id: string
-  name: string
-  patient_encounter_id: string
-  patient_encounter_employee_id: string
-  pertaining_to_key: CommonConditionKey
-  as_part_of_procedure: AsPartOfProcedure
-  qualifiers: QualifierIntermediate[]
-}
 
 export function positiveFindings(
   trx: TrxOrDb,

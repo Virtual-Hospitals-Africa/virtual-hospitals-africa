@@ -3469,3 +3469,22 @@ export type Alert = {
     method?: 'GET' | 'POST'
   }[]
 }
+
+
+type QualifierIntermediate =
+  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
+  & {
+    patient_encounter_employee_id: string
+  }
+
+export type PositiveFindingRecord = {
+  created_at: Date
+  record_id: string
+  snomed_concept_id: string
+  name: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  pertaining_to_key: string
+  as_part_of_procedure: AsPartOfProcedure
+  qualifiers: QualifierIntermediate[]
+}

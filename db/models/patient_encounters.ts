@@ -25,6 +25,7 @@ import * as organizations from './organizations.ts'
 
 import {
   blankSelection,
+  debugLog,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonObjectFrom,
@@ -55,6 +56,8 @@ import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
 import { isEmployed } from './health_workers.ts'
 import makeAssertion from '../../util/makeAssertion.ts'
+import matching from '../../util/matching.ts'
+import { exists } from '../../util/exists.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -296,6 +299,7 @@ export function baseQuery(trx: TrxOrDb) {
       ).as('priority'),
       jsonObjectFrom(
         eb_encounters.selectFrom('patient_presence')
+          .where('patient_encounters.closed_at', 'is', null)
           .whereRef('patient_encounters.patient_id', '=', 'patient_presence.id')
           .select((eb_patient_presence) => [
             'patient_presence.organization_id',
@@ -565,6 +569,20 @@ const model = base({
       makeAssertion(isEmployed),
     )
 
+    console.log(new Error('here'))
+
+    console.log({
+      workflows,
+      organization,
+      priority,
+      patient_presence,
+      closed_at,
+      patient,
+      reason,
+      all_employees_seen,
+      ...patient_encounter
+    })
+
     const status = asStatus(patient_presence, closed_at)
 
     return {
@@ -637,18 +655,48 @@ export const findOneOptional = model.findOneOptional
 export const searchQuery = model.searchQuery
 export const formatResult = model.formatResult
 
-export function close(
+/* 
+  Does not ensure that workflows are done. 
+  Any employees that are with the patient are no longer (employment_presence)
+  and the patient is no longer at the organization (patient_presence)
+*/
+export async function close(
   trx: TrxOrDb,
   { patient_encounter_id }: {
     patient_encounter_id: string
   },
 ) {
-  return trx.updateTable('patient_encounters')
-    .set({
-      closed_at: now,
-    })
-    .where('id', '=', patient_encounter_id)
-    .executeTakeFirstOrThrow()
+  const encounter = await getById(trx, patient_encounter_id)
+
+  assert(encounter.status.open, 'Encounter already closed')
+
+  const present_with_patient = encounter.status.patient_presence.present_with_patient_encounter_employee_ids.map(patient_encounter_employee_id => 
+    exists(encounter.all_employees_seen.find(matching({
+      patient_encounter_employee_id
+    })))
+  )
+
+  await Promise.all([
+    present_with_patient.length && trx.updateTable('employment_presence').
+      set({
+        at_work: true,
+        with_patient_id: null
+      })
+      .where('employment_presence.id', 'in', present_with_patient.map(e => e.employee_id))
+      .execute(),
+
+    trx.deleteFrom('patient_presence')
+      .where('id', '=', encounter.patient.id)
+      .execute(),
+
+    trx.updateTable('patient_encounters')
+      .set({
+        closed_at: now,
+      })
+      .where('id', '=', patient_encounter_id)
+      .executeTakeFirstOrThrow()
+  ])
+
 }
 
 export function isOpen(
@@ -667,6 +715,11 @@ export async function getOpen(
   trx: TrxOrDb,
   search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
 ): Promise<RenderedPatientOpenEncounter[]> {
+  debugLog(searchQuery(trx, {
+    ...search_terms,
+    is_open: true,
+  }))
+
   const results = await findAll(trx, {
     ...search_terms,
     is_open: true,
@@ -680,6 +733,9 @@ export async function getFirstOpen(
   search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
 ): Promise<RenderedPatientOpenEncounter | undefined> {
   const results = await getOpen(trx, search_terms)
+  if (results.length > 1) {
+    throw new Error('Multiple open encounters found for the same patient')
+  }
   return first(results)
 }
 

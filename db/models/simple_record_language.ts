@@ -6,17 +6,17 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 
-type ParsedFindingExpression = {
+export type ParsedFindingExpression = {
   type: 'finding'
   snomed_concept_id: string
   qualifiers: ParsedQualifierOrNotExpression[]
 }
 
-type ParsedQualifierOrNotExpression =
+export type ParsedQualifierOrNotExpression =
   | ParsedQualifierExpression
   | ParsedNotExpression
 
-type ParsedQualifierExpression = {
+export type ParsedQualifierExpression = {
   type: 'qualifier'
   snomed_concept_id: string
   // May support this later
@@ -25,17 +25,17 @@ type ParsedQualifierExpression = {
   qualifiers: ParsedQualifierOrNotExpression[]
 }
 
-type ParsedNotExpression = {
+export type ParsedNotExpression = {
   type: 'not'
   qualifier: ParsedQualifierExpression
 }
 
-type ParsedExpression =
+export type ParsedExpression =
   | ParsedFindingExpression
   | ParsedQualifierExpression
   | ParsedNotExpression
 
-type SExpressionNode = string | SExpressionNode[]
+export type SExpressionNode = string | SExpressionNode[]
 
 const PARSERS = {
   finding: (node: SExpressionNode): ParsedFindingExpression => {
@@ -153,7 +153,7 @@ function parseArrayNode(node: SExpressionNode): ParsedExpression {
   return parser(node)
 }
 
-export function parseFindingExpression(expression: string): ParsedExpression {
+export function parseFindingExpression(expression: string): ParsedFindingExpression {
   const parsed = s_expression(expression)
   if (parsed instanceof Error) {
     throw parsed

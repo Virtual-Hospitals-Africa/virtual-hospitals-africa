@@ -22,7 +22,7 @@ export function VerticalRadioButtons({ options, name, defaultValue }: {
                 type='radio'
                 value={option.id}
                 aria-describedby={`${option.id}-description`}
-                className='bg-white border border-gray-300 rounded-full appearance-none size-4 checked:border-indigo-700 checked:bg-white checked:ring-4 checked:ring-indigo-700 checked:ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700'
+                className='bg-white border border-gray-300 rounded-full appearance-none size-4 checked:border-indigo-700 checked:bg-white checked:ring-4 checked:ring-indigo-700 checked:ring-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700'
               />
             </div>
             <div

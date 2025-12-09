@@ -6,15 +6,27 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
+import { parseFindingExpression } from '../../../../../../../../db/models/simple_record_language.ts'
+import entries from '../../../../../../../../util/entries.ts'
+
 
 const WarningSignsSchema = z.object({
-  warning_signs: z.record(z.string(), z.literal('true')).optional(),
+  warning_signs: z.record(
+    z.string(), 
+    z.string().transform(value => parseFindingExpression(value))
+  ).optional().default({}).transform(signs => 
+    entries(signs).map(([key, finding]) => ({
+      key,
+      finding,
+    }))
+  ),
 })
 
 export const handler = postHandler(
   WarningSignsSchema,
-  (ctx: OpenEncounterWorkflowContext, _form_values) => {
-    // TODO: Save warning signs to database
+  (ctx: OpenEncounterWorkflowContext, { warning_signs }) => {
+    
+    
     return completeAndProceedToNextStep(ctx)
   },
 )

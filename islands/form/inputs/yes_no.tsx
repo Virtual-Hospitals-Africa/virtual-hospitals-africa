@@ -30,6 +30,7 @@ export function YesNoQuestion({
 
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
           checked={value === true}
@@ -41,6 +42,7 @@ export function YesNoQuestion({
       </div>
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
           checked={value === false}
@@ -52,6 +54,7 @@ export function YesNoQuestion({
       </div>
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
           checked={value === null}

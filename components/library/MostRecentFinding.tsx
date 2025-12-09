@@ -10,8 +10,8 @@ export function MostRecentFinding(
 ) {
   if (!finding) return null
   return (
-    <span className='relative text-gray-500 group pb-2'>
-      <a href='#' className='text-blue-500'>
+    <span className='relative text-gray-500 group pb-2' id={`most-recent-finding-${finding.pertaining_to_key || finding.record_id}`}>
+      <a href={`#most-recent-finding-${finding.pertaining_to_key || finding.record_id}`} className='text-blue-500'>
         {finding.name}
       </a>
       &nbsp;recorded&nbsp;

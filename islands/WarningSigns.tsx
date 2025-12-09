@@ -60,7 +60,7 @@ function WarningSignCheckbox({ sign }: { sign: WarningSign }) {
       <div class='pt-0.5'>
         <input
           type='checkbox'
-          name={`warning_signs[${key}]`}
+          name={`warning_signs[${sign.key}]`}
           value='true'
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
         />
@@ -114,7 +114,7 @@ function WarningSignsTable({
           <div key={rowIndex} class='flex'>
             {row.map((sign) => (
               <div
-                key={getWarningSignKey(sign)}
+                key={sign.key}
                 class='flex-1 p-3 min-w-0'
               >
                 <WarningSignCheckbox sign={sign} />
