@@ -86,7 +86,7 @@ export default function PriorityDropdown({
 
   return (
     <div className='relative'>
-      <Menu as='div' className='relative inline-block text-left'>
+      <Menu className='relative inline-block text-left'>
         <div>
           <Menu.Button as={Fragment}>
             <button

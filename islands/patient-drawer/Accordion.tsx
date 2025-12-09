@@ -1,4 +1,8 @@
-import { Disclosure } from '@headlessui/react'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/react'
 import {
   ChevronUpIcon,
 } from '../../components/library/icons/heroicons/solid.tsx'
@@ -63,97 +67,57 @@ export function PatientDrawerAccordion({ encounter_reason, care_team }: {
     <div className='w-full px-0 pt-2'>
       <div className='mx-auto w-full rounded-2xl bg-white'>
         <Disclosure defaultOpen>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
-                <span>{capitalize(encounter_reason)}</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-purple-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
-                {progressSteps.length > 0
-                  ? <VerticalProgressBar steps={progressSteps} />
-                  : "See a list of the patient's treatment steps here."}
-              </Disclosure.Panel>
-            </>
-          )}
+          <DisclosureButton className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+            <span>{capitalize(encounter_reason)}</span>
+            <ChevronUpIcon className='h-5 w-5 text-purple-500 data-open:rotate-180' />
+          </DisclosureButton>
+          <DisclosurePanel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+            {progressSteps.length > 0
+              ? <VerticalProgressBar steps={progressSteps} />
+              : "See a list of the patient's treatment steps here."}
+          </DisclosurePanel>
         </Disclosure>
-        <Disclosure as='div' className='mt-2'>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
-                <span>Conditions and Medications</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-purple-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
-                <div>
-                  See a list of the patient's medication here.
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
+        <Disclosure className='mt-2'>
+          <DisclosureButton className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+            <span>Conditions and Medications</span>
+            <ChevronUpIcon className='h-5 w-5 text-purple-500 data-open:rotate-180' />
+          </DisclosureButton>
+          <DisclosurePanel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+            <div>
+              See a list of the patient's medication here.
+            </div>
+          </DisclosurePanel>
         </Disclosure>
-        <Disclosure as='div' className='mt-2'>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
-                <span>History</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-purple-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
-                <div>
-                  See a list of the patient's medical history here.
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
+        <Disclosure className='mt-2'>
+          <DisclosureButton className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+            <span>History</span>
+            <ChevronUpIcon className='h-5 w-5 text-purple-500 data-open:rotate-180' />
+          </DisclosureButton>
+          <DisclosurePanel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+            <div>
+              See a list of the patient's medical history here.
+            </div>
+          </DisclosurePanel>
         </Disclosure>
-        <Disclosure as='div' className='mt-2'>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
-                <span>Contacts</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-purple-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
-                <div>
-                  See a list of the patient's contacts here.
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
+        <Disclosure className='mt-2'>
+          <DisclosureButton className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+            <span>Contacts</span>
+            <ChevronUpIcon className='h-5 w-5 text-purple-500 data-open:rotate-180' />
+          </DisclosureButton>
+          <DisclosurePanel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+            <div>
+              See a list of the patient's contacts here.
+            </div>
+          </DisclosurePanel>
         </Disclosure>
-        <Disclosure as='div' className='mt-2' defaultOpen>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
-                <span>Care Team</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? 'rotate-180 transform' : ''
-                  } h-5 w-5 text-purple-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
-                <CareTeamSection care_team={care_team} />
-              </Disclosure.Panel>
-            </>
-          )}
+        <Disclosure className='mt-2' defaultOpen>
+          <DisclosureButton className='flex w-full justify-between rounded-lg text-left text-med font-medium text-purple-700 py-2'>
+            <span>Care Team</span>
+            <ChevronUpIcon className='h-5 w-5 text-purple-500 data-open:rotate-180' />
+          </DisclosureButton>
+          <DisclosurePanel className='px-4 pb-2 pt-2 text-sm text-gray-500'>
+            <CareTeamSection care_team={care_team} />
+          </DisclosurePanel>
         </Disclosure>
       </div>
     </div>

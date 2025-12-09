@@ -1,4 +1,9 @@
-import { Listbox } from '@headlessui/react'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react'
 import cls from '../../util/cls.ts'
 import { ComponentChild } from 'preact'
 import isString from '../../util/isString.ts'
@@ -55,7 +60,7 @@ export function ListboxMulti<O extends Option>({
       name={name}
     >
       {variant === 'starts_closed' && (
-        <Listbox.Button className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
+        <ListboxButton className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
           <span className='block py-3 px-1.5'>
             {selected_ids.value.map((id) => {
               const matching_option = using_options.find((option) =>
@@ -68,10 +73,10 @@ export function ListboxMulti<O extends Option>({
               return matching_option?.name
             }).join(', ') || 'Select...'}
           </span>
-        </Listbox.Button>
+        </ListboxButton>
       )}
 
-      <Listbox.Options
+      <ListboxOptions
         static={variant === 'always_open'}
         className={cls(
           'relative w-full mt-2 bg-white flex flex-col gap-2 p-1',
@@ -80,49 +85,40 @@ export function ListboxMulti<O extends Option>({
         )}
       >
         {using_options.map((option) => (
-          <Listbox.Option
+          <ListboxOption
             key={option.id}
             value={option.id}
             disabled={option.disabled}
-            className={({ selected }) =>
-              cls(
-                'cursor-pointer select-none relative p-2 rounded-md hover:bg-indigo-100',
-                selected && '!bg-indigo-500',
-              )}
+            className={cls(
+              'group cursor-pointer select-none relative p-2 rounded-md hover:bg-indigo-100',
+              'data-selected:!bg-indigo-500',
+            )}
           >
-            {({ selected }) => (
-              <div
+            <div
+              className={cls(
+                'flex gap-2 text-gray-900 group-data-selected:font-semibold group-data-selected:text-white',
+                variant === 'always_open' && 'flex-row-reverse',
+              )}
+            >
+              <span className='block truncate flex-grow'>
+                {option.display || option.name}
+              </span>
+              <span
                 className={cls(
-                  'flex gap-2',
-                  selected ? 'font-semibold text-white' : 'text-gray-900',
-                  variant === 'always_open' && 'flex-row-reverse',
+                  'flex items-center opacity-0 group-data-selected:opacity-100',
+                  variant === 'starts_closed' && 'pr-4',
                 )}
               >
-                <span
-                  className={cls(
-                    'block truncate flex-grow',
-                  )}
-                >
-                  {option.display || option.name}
-                </span>
-                <span
-                  className={cls(
-                    'flex items-center',
-                    selected ? 'opacity-100' : 'opacity-0',
-                    variant === 'starts_closed' && 'pr-4',
-                  )}
-                >
-                  <CheckIcon
-                    className='h-5 w-5'
-                    fill='white'
-                    aria-hidden='true'
-                  />
-                </span>
-              </div>
-            )}
-          </Listbox.Option>
+                <CheckIcon
+                  className='h-5 w-5'
+                  fill='white'
+                  aria-hidden='true'
+                />
+              </span>
+            </div>
+          </ListboxOption>
         ))}
-      </Listbox.Options>
+      </ListboxOptions>
     </Listbox>
   )
 }
