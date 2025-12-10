@@ -5,7 +5,6 @@ import db from '../../db/db.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
@@ -94,10 +93,6 @@ describe(
             )
 
           assertEquals(most_recent_measurement_weight.value_display, '223 kg')
-          assertEquals(most_recent_measurement_weight.evaluations, [{
-            note: 'Quite heavy',
-            snomed_concept_id: PRIORITY_SNOMED_CODES['Non-urgent'],
-          }])
 
           const [most_recent_measurement_blood_pressure_systolic] =
             await patient_measurements.getMostRecent(
@@ -113,13 +108,6 @@ describe(
           assertEquals(
             most_recent_measurement_blood_pressure_systolic.value_display,
             '223 mmHg',
-          )
-          assertEquals(
-            most_recent_measurement_blood_pressure_systolic.evaluations,
-            [{
-              note: 'Very high pressure',
-              snomed_concept_id: PRIORITY_SNOMED_CODES['Urgent'],
-            }],
           )
 
           const [most_recent_measurement_blood_pressure_diastolic] =

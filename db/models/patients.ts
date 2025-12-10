@@ -84,6 +84,11 @@ export function baseQuery(trx: TrxOrDb) {
           'patient_measurements.id',
         )
         .where(
+          'patient_records.patient_id',
+          '=',
+          eb.ref('patients.id'),
+        )
+        .where(
           'patient_records.snomed_concept_id',
           '=',
           VITALS_SNOMED_CODE.height,
