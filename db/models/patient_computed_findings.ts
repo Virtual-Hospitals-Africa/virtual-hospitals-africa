@@ -82,19 +82,19 @@ export function insertComputedFinding(
     input_measurements?: Array<{ record_id: string }>
   },
 ) {
-  const hasStructured = value !== undefined && units !== undefined &&
+  const has_structured = value !== undefined && units !== undefined &&
     value_display === undefined
-  const hasDisplay = !hasStructured
+  const has_display = !has_structured
 
-  if (!hasStructured && !hasDisplay) {
+  if (!has_structured && !has_display) {
     throw new Error('Must provide either value + units OR value_display')
   }
 
-  if (hasStructured && hasDisplay) {
+  if (has_structured && has_display) {
     throw new Error('Cannot provide both structured values and value_display')
   }
 
-  if (hasStructured && (typeof value !== 'number' || isNaN(value))) {
+  if (has_structured && (typeof value !== 'number' || isNaN(value))) {
     throw new Error(`Invalid computed value: ${value}`)
   }
 

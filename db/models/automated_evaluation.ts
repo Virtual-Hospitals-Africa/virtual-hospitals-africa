@@ -1,5 +1,4 @@
 import { TrxOrDb } from '../../types.ts'
-import { sql } from 'kysely'
 import { now } from '../helpers.ts'
 
 export interface ReferenceRange {

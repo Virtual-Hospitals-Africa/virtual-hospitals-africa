@@ -179,8 +179,8 @@ function TriageVitalsTable({
       )
       const value = parseFloat(measurement.value_display)
 
-      const is_computed = isComputedVital(measurement.snomed_concept_id)
-      const is_computed_of_computed = isComponentOfComputedVital(
+      const is_computed = is_computedVital(measurement.snomed_concept_id)
+      const is_computed_of_computed = is_component_of_computedVital(
         measurement.snomed_concept_id,
         measurements,
       )
@@ -198,12 +198,12 @@ function TriageVitalsTable({
         value_display = categorical_finding.display_label
       }
 
-      const previousDisplay = previous_measurements.get(
+      const previous_display = previous_measurements.get(
         measurement.snomed_concept_id,
       )
 
-      const previousValue = previousDisplay
-        ? parseFloat(previousDisplay)
+      const previous_value = previous_display
+        ? parseFloat(previous_display)
         : undefined
 
       // Get individual TEWS score for this measurement
@@ -245,7 +245,7 @@ function TriageVitalsTable({
         vital_range_visualized = (
           <ReferenceRangeIndicator
             value={value}
-            previousValue={previousValue}
+            previous_value={previous_value}
             normal_min={range.normal_min}
             normal_max={range.normal_max}
             critical_min={range.critical_min}
@@ -261,7 +261,7 @@ function TriageVitalsTable({
         id: measurement.finding_id,
         vital_name: measurement.snomed_canonical_name,
         vital_value: value_display,
-        previous: previousDisplay || '-',
+        previous: previous_display || '-',
         vital_range_visualized,
         tews_score: tews_score !== null ? tews_score.toString() : '',
         is_computed: is_computed,
@@ -345,7 +345,7 @@ function TriageVitalsTable({
   )
 }
 
-function isComputedVital(snomed_concept_id: string): boolean {
+function is_computedVital(snomed_concept_id: string): boolean {
   return [
     VITALS_SNOMED_CODE.body_mass_index,
     VITALS_SNOMED_CODE.mean_arterial_pressure,
@@ -354,7 +354,7 @@ function isComputedVital(snomed_concept_id: string): boolean {
 }
 
 // Helper function to determine if a vital is a component of a computed vital
-function isComponentOfComputedVital(
+function is_component_of_computedVital(
   snomed_concept_id: string,
   all_measurements: any[],
 ): boolean {

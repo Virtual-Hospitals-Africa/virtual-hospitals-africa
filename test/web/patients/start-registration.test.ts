@@ -60,6 +60,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
       national_id_number: null,
       completed_registration: false,
       avatar_url: null,
+      most_recent_height_cm_measurement: null,
     })
   })
 })

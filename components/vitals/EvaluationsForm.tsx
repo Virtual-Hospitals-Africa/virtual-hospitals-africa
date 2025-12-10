@@ -6,7 +6,7 @@ export function VitalsEvaluationsForm({
 }: {
   measurements: (MostRecentVitalMeasurement & {
     finding_type: 'manual' | 'computed'
-    existing_evaluation?: {
+    evaluation?: {
       evaluation_id: string
       evaluates_record_id: string
       priority?: Priority
@@ -43,7 +43,7 @@ export function VitalsEvaluationsForm({
                   key={measurement.finding_id}
                   measurement={measurement}
                   computed
-                  existingEvaluation={measurement.existing_evaluation}
+                  existingEvaluation={measurement.evaluation}
                 />
               ))}
             </div>
@@ -55,7 +55,7 @@ export function VitalsEvaluationsForm({
                   key={measurement.finding_id}
                   measurement={measurement}
                   computed={false}
-                  existingEvaluation={measurement.existing_evaluation}
+                  existingEvaluation={measurement.evaluation}
                 />
               ))}
             </div>

@@ -45,7 +45,7 @@ export function insertMany(
     return Promise.resolve({ success: true as const })
   }
 
-  const validEvaluations = evaluations
+  const valid_evaluations = evaluations
     .filter((evaluation) => evaluation.priority || evaluation.note?.trim())
     .map((evaluation) => ({
       id: generateUUID(),
@@ -54,7 +54,7 @@ export function insertMany(
       note: evaluation.note?.trim(),
     }))
 
-  if (validEvaluations.length === 0) {
+  if (valid_evaluations.length === 0) {
     return Promise.resolve({ success: true as const })
   }
 
@@ -62,7 +62,7 @@ export function insertMany(
     'inserting_evaluation_records',
     (qb) =>
       qb.insertInto('patient_records')
-        .values(validEvaluations.map((evaluation) => ({
+        .values(valid_evaluations.map((evaluation) => ({
           id: evaluation.id,
           patient_id,
           patient_encounter_id,
@@ -70,7 +70,7 @@ export function insertMany(
         }))),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')
-      .values(validEvaluations.map((evaluation) => ({
+      .values(valid_evaluations.map((evaluation) => ({
         id: evaluation.id,
         patient_encounter_employee_id,
         evaluates_record_id: evaluation.evaluates_record_id,
@@ -330,10 +330,10 @@ export async function getPreviousVitalMeasurements(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
 ): Promise<Map<string, string>> {
-  const previousMeasurements = new Map<string, string>()
+  const previous_measurements = new Map<string, string>()
 
   // 1. Handle new categorical assessments
-  const categoricalAssessments = await trx.with(
+  const categorical_assessments = await trx.with(
     'ranked_categorical_findings',
     (qb) =>
       qb.selectFrom('patient_records')
@@ -377,15 +377,15 @@ export async function getPreviousVitalMeasurements(
     .select(['assessment_snomed_id', 'display_label'])
     .execute()
 
-  for (const assessment of categoricalAssessments) {
-    previousMeasurements.set(
+  for (const assessment of categorical_assessments) {
+    previous_measurements.set(
       assessment.assessment_snomed_id,
       assessment.display_label,
     )
   }
 
   // 2. Handle other manual measurements
-  const manualMeasurements = await trx.with(
+  const manual_measurements = await trx.with(
     'ranked_manual_findings',
     (qb) =>
       qb.selectFrom('patient_records')
@@ -425,9 +425,9 @@ export async function getPreviousVitalMeasurements(
     .select(['snomed_concept_id', 'value', 'units'])
     .execute()
 
-  for (const measurement of manualMeasurements) {
+  for (const measurement of manual_measurements) {
     if (measurement.value !== null) {
-      previousMeasurements.set(
+      previous_measurements.set(
         measurement.snomed_concept_id,
         valueDisplay({ value: measurement.value, units: measurement.units }),
       )
@@ -435,7 +435,7 @@ export async function getPreviousVitalMeasurements(
   }
 
   // 3. Handle computed measurements
-  const computedMeasurements = await trx.with(
+  const computed_measurements = await trx.with(
     'ranked_computed_findings',
     (qb) =>
       qb.selectFrom('patient_records')
@@ -471,7 +471,7 @@ export async function getPreviousVitalMeasurements(
     .select(['snomed_concept_id', 'value', 'units', 'value_display'])
     .execute()
 
-  for (const measurement of computedMeasurements) {
+  for (const measurement of computed_measurements) {
     const display = valueDisplay(
       ComputedFindingSchema.parse({
         value: measurement.value,
@@ -479,8 +479,8 @@ export async function getPreviousVitalMeasurements(
         value_display: measurement.value_display,
       }),
     )
-    previousMeasurements.set(measurement.snomed_concept_id, display)
+    previous_measurements.set(measurement.snomed_concept_id, display)
   }
 
-  return previousMeasurements
+  return previous_measurements
 }

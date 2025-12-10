@@ -6,7 +6,6 @@ import * as health_workers from './health_workers.ts'
 import * as google_tokens from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
 import { HealthWorkerUpsert } from './health_workers.ts'
-import omit from '../../util/omit.ts'
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
@@ -39,12 +38,7 @@ export async function upsertWithGoogleCredentials(
 ) {
   const health_worker = await health_workers.upsert(
     trx,
-    omit(health_worker_details, [
-      'date_of_birth' as any,
-      'national_id_number' as any,
-      'country' as any,
-      'gender' as any,
-    ]),
+    health_worker_details,
   )
   const tokens = {
     access_token,

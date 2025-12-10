@@ -8,20 +8,17 @@ import {
   ExtantProcedureOrCreationIntent,
   Measurement,
   MostRecentVitalMeasurement,
-  PRIORITY_SNOMED_CODES,
   TrxOrDb,
 } from '../../types.ts'
 import {
   blankSelection,
   jsonArrayFrom,
-  jsonBuildObject,
   jsonObjectFrom,
   literalString,
   success_true,
 } from '../helpers.ts'
 import z from 'zod'
 import { decimal } from '../../util/validators.ts'
-import compact from '../../util/compact.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
@@ -48,17 +45,6 @@ export function insertMany(
   )
 
   const procedure_id = procedure.id || generateUUID()
-
-  const evaluations = compact(
-    input_measurements.map(({ finding_id, evaluation }) => (
-      evaluation && ({
-        id: generateUUID(),
-        evaluates_record_id: finding_id,
-        snomed_concept_id: PRIORITY_SNOMED_CODES[evaluation.priority],
-        note: evaluation.note,
-      })
-    )),
-  )
 
   return trx.with(
     'inserting_procedure_record',
@@ -110,31 +96,6 @@ export function insertMany(
               units: input_measurement.units,
             }),
           )),
-    ).with(
-      'inserting_priority_evaluation_records',
-      (qb) =>
-        evaluations.length
-          ? qb.insertInto('patient_records')
-            .values(evaluations.map((evaluation) => ({
-              id: evaluation.id,
-              snomed_concept_id: evaluation.snomed_concept_id,
-              patient_id,
-              patient_encounter_id,
-            })))
-          : blankSelection(qb),
-    ).with(
-      'inserting_priority_evaluations',
-      (qb) =>
-        evaluations.length
-          ? qb.insertInto('patient_evaluations')
-            .values(evaluations.map((evaluation) => ({
-              patient_encounter_employee_id,
-              id: evaluation.id,
-              evaluates_record_id: evaluation.evaluates_record_id,
-              note: evaluation.note,
-              by_system: false,
-            })))
-          : blankSelection(qb),
     ).selectNoFrom([
       success_true,
       literalString(procedure_id).as('procedure_id'),

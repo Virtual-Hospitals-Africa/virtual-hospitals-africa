@@ -93,6 +93,7 @@ describe('scheduling/makeAppointment.ts', () => {
             },
             national_id_number: null,
             completed_registration: false,
+            most_recent_height_cm_measurement: null,
           },
           patient_id: patient.id,
           reason: 'back pain',

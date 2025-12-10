@@ -162,7 +162,9 @@ export async function up(db: Kysely<unknown>) {
     .on('measurement_reference_ranges')
     .using('gin')
     .column('condition_codes')
-    .where('active', '=', true)
+    // TODO @Ettore what's going on here?
+    // deno-lint-ignore no-explicit-any
+    .where('active' as any, '=', true)
     .execute()
 }
 
