@@ -9,7 +9,7 @@ import * as patient_measurements from '../../../../../../../../db/models/patient
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { snomed_concept_id } from '../../../../../../../../util/validators.ts'
+import { positive_number, snomed_concept_id } from '../../../../../../../../util/validators.ts'
 import filterOfType from '../../../../../../../../util/filterOfType.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { getActiveConditionsSnomedCodesFromContext } from '../../../../../../../../shared/vitals.ts'
@@ -19,11 +19,11 @@ const TriageMeasureVitalsSchema = z.object({
     z.string().uuid(),
     z.object({
       snomed_concept_id,
-      value: z.number().nonnegative().optional(),
+      value: positive_number,
       units: z.string().min(1),
     }).strict(),
-  ).optional().transform((findings) =>
-    Object.entries(findings || {}).map((
+  ).transform((findings) =>
+    Object.entries(findings).map((
       [finding_id, finding],
     ) => ({
       finding_id,
@@ -32,14 +32,16 @@ const TriageMeasureVitalsSchema = z.object({
     }))
   ),
   assessments: z.record(
-    z.string(), // assessment category (consciousness, mobility, trauma)
+    z.string().uuid(), // finding_id (generated server-side)
     z.object({
+      finding_id: z.string().uuid(),
       option_snomed_concept_id: snomed_concept_id,
     }).strict(),
-  ).optional().transform((assessments) =>
-    Object.entries(assessments || {}).map((
-      [_category, assessment],
+  ).transform((assessments) =>
+    Object.entries(assessments).map((
+      [finding_id, assessment],
     ) => ({
+      finding_id,
       option_snomed_concept_id: assessment.option_snomed_concept_id,
     }))
   ),
@@ -54,30 +56,27 @@ function hasValue(
 
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
-  async (_req, ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
-    const input_assessments = form_values.assessments || []
+    const input_assessments = form_values.assessments
+    const active_condition_snomed_codes = getActiveConditionsSnomedCodesFromContext(
+      ctx.state.patient_history,
+    )
 
-    if (input_measurements.length || input_assessments.length) {
-      const active_condition_snomed_codes = getActiveConditionsSnomedCodesFromContext(
-        ctx.state.patient_history,
-      )
-
-      await vitals.insertMeasurementsAndAssessments(
-        ctx.state.trx,
-        {
-          patient_record: ctx.state.patient,
-          patient_id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          input_measurements,
-          input_assessments,
-          active_condition_snomed_codes,
-        },
-      )
-    }
+    await vitals.insertMeasurementsAndAssessments(
+      ctx.state.trx,
+      {
+        patient_record: ctx.state.patient,
+        patient_id,
+        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+        patient_encounter_employee_id:
+          ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+        input_measurements,
+        input_assessments,
+        active_condition_snomed_codes,
+      },
+    )
 
     return completeAndProceedToNextStep(ctx)
   },
@@ -430,7 +429,7 @@ export const handler = postHandler(
   pattern: [Getter],
   data: undefined
 }
-*/ 
+*/
 
 
 export async function TriageMeasureVitalsPage(

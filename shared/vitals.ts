@@ -53,3 +53,28 @@ export function getActiveConditionsSnomedCodesFromContext(
 ): readonly string[] {
   return patient_history.pre_existing_conditions as readonly string[]
 }
+
+export const CM_TO_METERS = 100
+export const BMI_DECIMAL_PLACES = 1
+
+export function computeBMI(height_cm: number, weight_kg: number): number {
+  if (height_cm <= 0 || weight_kg <= 0) {
+    return 0
+  }
+  const height_m = height_cm / CM_TO_METERS
+  return weight_kg / (height_m * height_m)
+}
+
+export function computeMeanArterialPressure(
+  systolic: number,
+  diastolic: number,
+): number {
+  return diastolic + (systolic - diastolic) / 3
+}
+
+export function formatBloodPressureDisplay(
+  systolic: number,
+  diastolic: number,
+): string {
+  return `${systolic}/${diastolic}`
+}

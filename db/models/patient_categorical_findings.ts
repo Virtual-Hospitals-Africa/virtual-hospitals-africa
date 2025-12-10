@@ -3,7 +3,7 @@ import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 
 export interface CategoricalAssessment {
-  finding_id?: string
+  finding_id: string
   option_snomed_concept_id: string | number
 }
 
@@ -25,6 +25,7 @@ export interface AssessmentType {
 }
 
 export interface AssessmentForForm extends AssessmentType {
+  finding_id: string
   options: AssessmentOption[]
 }
 
@@ -200,6 +201,7 @@ export async function getTriageAssessmentsWithOptions(
     assessments_with_options.push({
       ...assessment,
       assessment_snomed_id: assessment.assessment_snomed_id.toString(),
+      finding_id: generateUUID(), // Generate server-side like measurements
       options,
     })
   }

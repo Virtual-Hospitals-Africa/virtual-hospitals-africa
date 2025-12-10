@@ -4,12 +4,13 @@ import {
   PRIORITY_SNOMED_CODES,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonBuildObject, success_true } from '../helpers.ts'
+import { jsonArrayFrom, jsonObjectFrom, success_true } from '../helpers.ts'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 import z from 'zod'
 import flatten from '../../util/flatten.ts'
 import { decimal } from '../../util/validators.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 
 export interface VitalsEvaluation {
   finding_id: string
@@ -81,94 +82,6 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-// TODO: I need to refactor this to make it more enterprisey and reliable
-export interface SystemEvaluation {
-  finding_id: string
-  priority: keyof typeof PRIORITY_SNOMED_CODES
-  clinical_note: string
-  reference_range_source?: string
-  confidence?: number
-}
-
-export async function insertSystemEvaluations(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    encounter_id,
-    evaluations,
-  }: {
-    patient_id: string
-    encounter_id: string
-    evaluations: SystemEvaluation[]
-  },
-): Promise<{ success: true; evaluation_ids: string[] }> {
-  if (!evaluations.length) {
-    return { success: true as const, evaluation_ids: [] }
-  }
-
-  // Filter out evaluations with empty clinical notes (normal range measurements)
-  const evaluationsToInsert = evaluations.filter(
-    (evaluation) => evaluation.clinical_note.trim() !== ''
-  )
-
-  if (!evaluationsToInsert.length) {
-    return { success: true as const, evaluation_ids: [] }
-  }
-
-  const validEvaluations = evaluationsToInsert.map((evaluation) => {
-    const evaluation_id = generateUUID()
-    const timestamp = new Date().toISOString()
-
-    const audit_components = [
-      `[AUTOMATED EVALUATION ${timestamp}]`,
-      evaluation.clinical_note,
-      evaluation.reference_range_source
-        ? `Reference: ${evaluation.reference_range_source}`
-        : null,
-      evaluation.confidence !== undefined
-        ? `Confidence: ${(evaluation.confidence * 100).toFixed(0)}%`
-        : null,
-    ].filter(Boolean)
-
-    return {
-      id: evaluation_id,
-      evaluates_record_id: evaluation.finding_id,
-      snomed_concept_id: PRIORITY_SNOMED_CODES[evaluation.priority],
-      note: audit_components.join(' | '),
-    }
-  })
-
-  await trx.with(
-    'inserting_system_evaluation_records',
-    (qb) =>
-      qb.insertInto('patient_records')
-        .values(validEvaluations.map((evaluation) => ({
-          id: evaluation.id,
-          patient_id,
-          patient_encounter_id: encounter_id,
-          snomed_concept_id: evaluation.snomed_concept_id,
-        }))),
-  ).with(
-    'inserting_system_evaluations',
-    (qb) =>
-      qb.insertInto('patient_evaluations')
-        .values(validEvaluations.map((evaluation) => ({
-          id: evaluation.id,
-          patient_encounter_employee_id: null, // System evaluations have no provider (TODO: ask Will how to deal with this)
-          evaluates_record_id: evaluation.evaluates_record_id,
-          note: evaluation.note,
-          by_system: true,
-        }))),
-  ).selectNoFrom([
-    success_true,
-  ])
-    .executeTakeFirstOrThrow()
-
-  return {
-    success: true as const,
-    evaluation_ids: validEvaluations.map((e) => e.id),
-  }
-}
 
 const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
 
@@ -218,26 +131,6 @@ export async function getMostRecentManualVitalsWithEvaluations(
       'ranked_manual_findings.snomed_concept_id',
       'snomed_inferred_canonical_name_and_category.id',
     )
-    .innerJoin(
-      'patient_encounter_employees',
-      'patient_encounter_employees.id',
-      'ranked_manual_findings.patient_encounter_employee_id',
-    )
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'patient_encounter_employees.employment_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
     .where('ranked_manual_findings.rank', '=', 1)
     .select([
       'ranked_manual_findings.id as finding_id',
@@ -250,20 +143,14 @@ export async function getMostRecentManualVitalsWithEvaluations(
       'snomed_inferred_canonical_name_and_category.name as snomed_canonical_name',
     ])
     .select((eb) => [
-      jsonBuildObject({
-        name: eb.ref('health_workers.name'),
-        avatar_url: eb.ref('health_workers.avatar_url'),
-        profession: eb.ref('employment.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
-        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
-        organization: jsonBuildObject({
-          id: eb.ref('organizations.id'),
-          name: eb.ref('organizations.name'),
-        }),
-        employee_id: eb.ref('employment.id'),
-        health_worker_id: eb.ref('health_workers.id'),
-      }).as('provider'),
+      jsonObjectFrom(
+        patient_encounter_employees.baseQuery(trx)
+          .where(
+            'patient_encounter_employees.id',
+            '=',
+            eb.ref('ranked_manual_findings.patient_encounter_employee_id'),
+          ),
+      ).$notNull().as('provider'),
       jsonArrayFrom(
         eb
           .selectFrom('patient_evaluations')
@@ -370,8 +257,6 @@ export async function getMostRecentComputedVitalsWithEvaluations(
             'patient_evaluations.id',
           )
           .select([
-            // json_agg casts bigint to number, but when selected as a column by itself
-            // kysely reads as a string so we replicate kysely's behavior here
             sql<string>`evaluation_records.snomed_concept_id::text`.as(
               'snomed_concept_id',
             ),

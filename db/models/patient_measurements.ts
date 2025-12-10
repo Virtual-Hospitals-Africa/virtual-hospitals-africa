@@ -15,6 +15,7 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
+  jsonObjectFrom,
   literalString,
   success_true,
 } from '../helpers.ts'
@@ -23,6 +24,7 @@ import { decimal } from '../../util/validators.ts'
 import compact from '../../util/compact.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 
 export function insertMany(
   trx: TrxOrDb,
@@ -208,26 +210,6 @@ export async function getMostRecent(
             .as('rank'),
         ),
   ).selectFrom('ranked_findings')
-    .innerJoin(
-      'patient_encounter_employees',
-      'patient_encounter_employees.id',
-      'ranked_findings.patient_encounter_employee_id',
-    )
-    .innerJoin(
-      'employment',
-      'employment.id',
-      'patient_encounter_employees.employment_id',
-    )
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
     .where('ranked_findings.rank', '=', 1)
     .select([
       'ranked_findings.id as finding_id',
@@ -239,20 +221,14 @@ export async function getMostRecent(
     ])
     .select(sql<'manual'>`'manual'`.as('finding_type'))
     .select((eb) => [
-      jsonBuildObject({
-        name: eb.ref('health_workers.name'),
-        avatar_url: eb.ref('health_workers.avatar_url'),
-        profession: eb.ref('employment.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
-        patient_encounter_employee_id: eb.ref('patient_encounter_employees.id'),
-        organization: jsonBuildObject({
-          id: eb.ref('organizations.id'),
-          name: eb.ref('organizations.name'),
-        }),
-        employee_id: eb.ref('employment.id'),
-        health_worker_id: eb.ref('health_workers.id'),
-      }).as('provider'),
+jsonObjectFrom(
+        patient_encounter_employees.baseQuery(trx)
+          .where(
+            'patient_encounter_employees.id',
+            '=',
+            eb.ref('ranked_findings.patient_encounter_employee_id'),
+          ),
+      ).$notNull().as('provider'),
       jsonArrayFrom(
         eb
           .selectFrom('patient_evaluations')

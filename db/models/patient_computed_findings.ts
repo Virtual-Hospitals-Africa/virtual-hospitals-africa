@@ -264,14 +264,6 @@ export async function getComputedFindingWithProvider(
   const result = await trx.selectFrom('patient_computed_findings as pcf')
     .innerJoin('patient_findings as pf', 'pcf.id', 'pf.id')
     .innerJoin('patient_records as pr', 'pf.id', 'pr.id')
-    .innerJoin(
-      'patient_encounter_employees as pep',
-      'pf.patient_encounter_employee_id',
-      'pep.id',
-    )
-    .innerJoin('employment as e', 'pep.employment_id', 'e.id')
-    .innerJoin('health_workers as hw', 'e.health_worker_id', 'hw.id')
-    .innerJoin('organizations as org', 'e.organization_id', 'org.id')
     .select([
       'pcf.id',
       'pcf.computation_algorithm_version',
@@ -283,13 +275,6 @@ export async function getComputedFindingWithProvider(
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
       'pr.patient_id',
       'pr.patient_encounter_id',
-    ])
-    .select((eb) => [
-      jsonBuildObject({
-        name: eb.ref('hw.name'),
-        profession: eb.ref('e.profession'),
-        organization_name: eb.ref('org.name'),
-      }).as('provider'),
     ])
     .where('pcf.id', '=', computed_finding_id)
     .executeTakeFirst()

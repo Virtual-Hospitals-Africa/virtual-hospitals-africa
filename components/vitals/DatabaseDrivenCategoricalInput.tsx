@@ -2,8 +2,9 @@ import { Maybe, MostRecentVitalMeasurement } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
-import { SelectWithOptions } from '../../islands/form/Inputs.tsx'
+import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
 import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
+import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 export default function DatabaseDrivenCategoricalInput({
   assessment,
@@ -12,7 +13,7 @@ export default function DatabaseDrivenCategoricalInput({
   assessment: AssessmentForForm
   most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
 }) {
-  const name = `assessments.${assessment.category}`
+  const name = `assessments.${assessment.finding_id}`
 
   const options = assessment.options.map((opt) => ({
     value: opt.option_snomed_concept_id,
@@ -40,6 +41,10 @@ export default function DatabaseDrivenCategoricalInput({
           required={assessment.required_for_triage}
           options={options}
           blank_option='Select...'
+        />
+        <HiddenInput
+          name={`${name}.finding_id`}
+          value={assessment.finding_id}
         />
       </div>
     </div>

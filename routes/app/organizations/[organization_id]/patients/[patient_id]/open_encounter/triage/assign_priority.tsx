@@ -24,7 +24,7 @@ const TriageAssignPrioritySchema = z.object({});
 export const handler = postHandler(
   TriageAssignPrioritySchema,
   // deno-lint-ignore require-await
-  async (_req, ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     return completeAndProceedToNextStep(ctx);
   },
 );
@@ -46,8 +46,6 @@ export async function TriageAssignPriorityPage(
         patient_id,
       }),
       (async () => {
-        const active_condition_snomed_codes =
-          getActiveConditionsSnomedCodesFromContext(ctx.state.patient_history);
         const measurement_snomed_codes = recent_measurements.map((m) =>
           m.snomed_concept_id
         );
@@ -56,9 +54,10 @@ export async function TriageAssignPriorityPage(
           ctx.state.trx,
           {
             measurement_snomed_codes,
-            age_days: ctx.state.patient.age_days ?? 0,
-            gender: ctx.state.patient.gender,
-            active_condition_snomed_codes,
+            patient_context: {
+              age_days: ctx.state.patient.age_days ?? 0,
+              gender: ctx.state.patient.gender,
+            },
           },
         );
       })(),

@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { PencilIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { TextArea } from '../form/Inputs.tsx'
+import { TextArea } from '../form/inputs/textarea.tsx'
 import PriorityDropdown from './PriorityDropdown.tsx'
 import { ReferenceRangeIndicator } from '../../components/vitals/SimpleReferenceRangeIndicator.tsx'
 
