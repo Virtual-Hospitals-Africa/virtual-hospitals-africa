@@ -31,14 +31,14 @@ export default function VitalsMeasurementsInput(
           </div>
         )}
       </div>
-      <div className='flex items-center min-w-30 max-w-30'>
+      <div className='flex items-center w-32'>
         <TextInput
           inputmode='numeric'
           required={vital.required}
           name={`${name}.value`}
           label={null}
           value={null}
-          className='justify-end'
+          className='justify-end !min-w-0'
           min={0}
           suffix={vital.units}
         />

@@ -239,6 +239,21 @@ export interface Addresses {
   updated_at: Generated<Timestamp>
 }
 
+export interface AgeMeasurementRequirements {
+  active: Generated<boolean>
+  age_max_days: number | null
+  age_min_days: number | null
+  clinical_rationale: string
+  created_at: Generated<Timestamp>
+  effective_date: Generated<Timestamp>
+  expiration_date: Timestamp | null
+  id: Generated<string>
+  is_required: Generated<boolean>
+  medical_standard: string
+  required_measurement_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+}
+
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
@@ -272,6 +287,21 @@ export interface Appointments {
 export interface ConditionIcd10Codes {
   condition_id: string
   icd10_code: string
+}
+
+export interface ConditionMeasurementRequirements {
+  active: Generated<boolean>
+  clinical_rationale: string
+  condition_snomed_concept_id: Int8
+  created_at: Generated<Timestamp>
+  effective_date: Generated<Timestamp>
+  expiration_date: Timestamp | null
+  frequency_recommendation: string | null
+  id: Generated<string>
+  is_required: Generated<boolean>
+  medical_standard: string
+  required_measurement_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
 }
 
 export interface Conditions {
@@ -703,6 +733,28 @@ export interface ManufacturedMedicationStrengths {
   updated_at: Generated<Timestamp>
 }
 
+export interface MeasurementReferenceRanges {
+  active: Generated<boolean>
+  age_max_days: number | null
+  age_min_days: number | null
+  clinical_context: string | null
+  condition_codes: ArrayType<Int8> | null
+  created_at: Generated<Timestamp>
+  critical_max: Numeric | null
+  critical_min: Numeric | null
+  effective_date: Generated<Timestamp>
+  evidence_level: string | null
+  expiration_date: Timestamp | null
+  gender: string | null
+  id: Generated<string>
+  measurement_snomed_concept_id: Int8
+  normal_max: Numeric
+  normal_min: Numeric
+  reference_source: string
+  units: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Media {
   binary_data: Buffer
   created_at: Generated<Timestamp>
@@ -903,6 +955,7 @@ export interface Organizations {
 
 export interface PatientAge {
   age: string | null
+  age_days: number | null
   age_display: string | null
   age_number: number | null
   age_unit: AgeUnit | null
@@ -944,6 +997,10 @@ export interface PatientAppointmentRequests {
   patient_id: string
   reason: string | null
   updated_at: Generated<Timestamp>
+}
+
+export interface PatientCategoricalFindings {
+  id: string
 }
 
 export interface PatientChatbotUsers {
@@ -1415,6 +1472,43 @@ export interface SatsPriorityLevels {
   sats_name: string
 }
 
+export interface SatsTriageAssessmentOptions {
+  assessment_snomed_id: Int8
+  created_at: Generated<Timestamp>
+  display_label: string
+  display_order: number
+  id: string
+  option_snomed_concept_id: Int8
+  ordinal_value: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface SatsTriageAssessments {
+  assessment_snomed_id: Int8
+  category: string
+  created_at: Generated<Timestamp>
+  display_order: number
+  name: string
+  required_for_triage: Generated<boolean>
+  updated_at: Generated<Timestamp>
+}
+
+export interface SatsTriageScoringRules {
+  age_max_days: number | null
+  age_min_days: number | null
+  assessment_option_id: string | null
+  created_at: Generated<Timestamp>
+  finding_snomed_concept_id: Int8 | null
+  height_max_cm: number | null
+  height_min_cm: number | null
+  id: string
+  score_value: number
+  scoring_system: string
+  updated_at: Generated<Timestamp>
+  value_max: Numeric | null
+  value_min: Numeric | null
+}
+
 export interface Sessions {
   created_at: Generated<Timestamp>
   entity_id: string
@@ -1733,10 +1827,12 @@ export interface WorkflowSteps {
 
 export interface DB {
   addresses: Addresses
+  age_measurement_requirements: AgeMeasurementRequirements
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
+  condition_measurement_requirements: ConditionMeasurementRequirements
   conditions: Conditions
   consumables: Consumables
   consumption: Consumption
@@ -1783,6 +1879,7 @@ export interface DB {
   manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
+  measurement_reference_ranges: MeasurementReferenceRanges
   media: Media
   media_audios: MediaAudios
   media_images: MediaImages
@@ -1811,6 +1908,7 @@ export interface DB {
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
+  patient_categorical_findings: PatientCategoricalFindings
   patient_chatbot_user_whatsapp_messages_received:
     PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers
@@ -1863,6 +1961,9 @@ export interface DB {
   receptionists: Receptionists
   regulators: Regulators
   sats_priority_levels: SatsPriorityLevels
+  sats_triage_assessment_options: SatsTriageAssessmentOptions
+  sats_triage_assessments: SatsTriageAssessments
+  sats_triage_scoring_rules: SatsTriageScoringRules
   sessions: Sessions
   snomed_c_refset_association: SnomedCRefsetAssociation
   snomed_c_refset_attribute_value: SnomedCRefsetAttributeValue

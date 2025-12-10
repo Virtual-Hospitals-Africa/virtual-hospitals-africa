@@ -1,3 +1,4 @@
+import { ExpressionWrapper } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
@@ -83,7 +84,8 @@ export function markEnteredInError(
 
 export function nowInvalidRecords(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: string },
+  // deno-lint-ignore no-explicit-any
+  { patient_id }: { patient_id: string | ExpressionWrapper<any, any, string> },
 ) {
   return trx.selectFrom(
     'patient_records as now_invalid_patient_records',

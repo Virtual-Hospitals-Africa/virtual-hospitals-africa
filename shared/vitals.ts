@@ -8,15 +8,34 @@ export const VITALS_SNOMED_CODE = {
   blood_pressure_diastolic: '271650006',
   blood_oxygen_saturation: '103228002',
   blood_glucose: '405176005',
-  pulse: '8499008',
+  heart_rate: '8499008',
   respiratory_rate: '86290005',
-  midarm_circumference: '---', //284473002 | Mid upper arm circumference , left arm: 1162540006, right arm: 1162545001
-  triceps_skinfold: '---', //301851003 | Triceps skin fold thickness
+  midarm_circumference: '284473002',
+  triceps_skinfold: '301851003',
+  head_circumference: '363812007',
   // Computed vitals
   body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
   blood_pressure: '75367002',
+  // Triage assessments
+  avpu_consciousness: '1104441000000107',
+  mobility_assessment: '301438001',
+  trauma_presence: '417746004',
 }
+
+export type Vital = keyof typeof VITALS_SNOMED_CODE
+
+export const ADULT_TEWS_COMPONENTS = [
+  'mobility_assessment' as const,
+  'respiratory_rate' as const,
+  'heart_rate' as const,
+  'blood_pressure_systolic' as const,
+  'temperature' as const,
+  'avpu_consciousness' as const,
+  'trauma_presence' as const,
+] satisfies Vital[]
+
+export type AdultTEWSComponent = (typeof ADULT_TEWS_COMPONENTS)[number]
 
 export const VITALS_UNITS = {
   height: 'cm',
@@ -26,11 +45,55 @@ export const VITALS_UNITS = {
   blood_pressure_diastolic: 'mmHg',
   blood_oxygen_saturation: '%',
   blood_glucose: 'mg/dL',
-  pulse: 'bpm',
+  heart_rate: 'bpm',
   respiratory_rate: 'bpm',
   midarm_circumference: 'cm',
+  head_circumference: 'cm',
   triceps_skinfold: 'cm',
   // Computed vitals
   body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
+  // Triage assessments
+  avpu_consciousness: 'score',
+  mobility_assessment: 'score',
+  trauma_presence: 'score',
+} satisfies {
+  [v in Vital]?: string
+}
+
+/**
+ * Extracts active condition SNOMED codes from patient history context.
+ *
+ * TODO: When patient_history.pre_existing_conditions schema is properly implemented
+ * with condition objects containing snomed_concept_id fields, update this function
+ */
+export function getActiveConditionsSnomedCodesFromContext(
+  patient_history: { pre_existing_conditions: readonly unknown[] },
+): readonly string[] {
+  return patient_history.pre_existing_conditions as readonly string[]
+}
+
+export const CM_TO_METERS = 100
+export const BMI_DECIMAL_PLACES = 1
+
+export function computeBMI(height_cm: number, weight_kg: number): number {
+  if (height_cm <= 0 || weight_kg <= 0) {
+    return 0
+  }
+  const height_m = height_cm / CM_TO_METERS
+  return weight_kg / (height_m * height_m)
+}
+
+export function computeMeanArterialPressure(
+  systolic: number,
+  diastolic: number,
+): number {
+  return diastolic + (systolic - diastolic) / 3
+}
+
+export function formatBloodPressureDisplay(
+  systolic: number,
+  diastolic: number,
+): string {
+  return `${systolic}/${diastolic}`
 }

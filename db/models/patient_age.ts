@@ -17,6 +17,7 @@ export async function get(
   assert(result.age_number != null)
   assert(result.age_unit != null)
   assert(result.age_years != null)
+  assert(result.age_days != null)
   assert(result.patient_id != null)
 
   return {
@@ -25,6 +26,7 @@ export async function get(
     age_number: result.age_number,
     age_unit: result.age_unit,
     age_years: parseInt(result.age_years, 10),
+    age_days: result.age_days,
   }
 }
 

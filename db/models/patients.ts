@@ -22,6 +22,8 @@ import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
+import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
+import { nowInvalidRecords } from './patient_records.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -58,6 +60,7 @@ export function baseQuery(trx: TrxOrDb) {
       isoDate(eb.ref('patients.date_of_birth')).as('date_of_birth'),
       description_sql.as('description'),
       'patient_age.age_display',
+      'patient_age.age_days',
       sql<number | null>`patient_age.age_years::integer`.as('age_years'),
       'patients.national_id_number',
       'patients.completed_registration',
@@ -68,6 +71,37 @@ export function baseQuery(trx: TrxOrDb) {
         surname: eb.ref('patients.surname').$notNull(),
         preferred_name: eb.ref('patients.preferred_name').$notNull(),
       }).as('names'),
+      // TODO make its own function?
+      eb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_measurements',
+          'patient_findings.id',
+          'patient_measurements.id',
+        )
+        .where(
+          'patient_records.patient_id',
+          '=',
+          eb.ref('patients.id'),
+        )
+        .where(
+          'patient_records.snomed_concept_id',
+          '=',
+          VITALS_SNOMED_CODE.height,
+        )
+        .where(
+          'patient_records.id',
+          'not in',
+          nowInvalidRecords(trx, { patient_id: eb.ref('patients.id') }),
+        )
+        .orderBy('patient_records.created_at', 'desc')
+        .select('patient_measurements.value')
+        .limit(1)
+        .as('most_recent_height_cm_measurement'),
     ])
     .orderBy(
       'name',

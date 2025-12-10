@@ -46,25 +46,17 @@ export async function upsertWithGoogleCredentials(
     expires_at,
   }
 
-  await google_tokens.upsert(
-    trx,
-    'health_worker',
-    health_worker.id,
-    tokens,
-  )
+  await google_tokens.upsert(trx, 'health_worker', health_worker.id, tokens)
   return combine(health_worker, tokens)
 }
 
 export function getWithTokensQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('health_workers')
-    .innerJoin(
-      'google_tokens',
-      (join) =>
-        join
-          .onRef('health_workers.id', '=', 'google_tokens.entity_id')
-          .on('google_tokens.entity_type', '=', 'health_worker'),
-    )
+    .innerJoin('google_tokens', (join) =>
+      join
+        .onRef('health_workers.id', '=', 'google_tokens.entity_id')
+        .on('google_tokens.entity_type', '=', 'health_worker'))
     .select([
       'health_workers.id',
       'email',
@@ -78,7 +70,8 @@ export function getWithTokensQuery(trx: TrxOrDb) {
 export function isHealthWorkerWithGoogleTokens(
   health_worker: unknown,
 ): health_worker is HealthWorkerWithGoogleTokens {
-  return health_workers.isHealthWorker(health_worker) &&
+  return (
+    health_workers.isHealthWorker(health_worker) &&
     'access_token' in health_worker &&
     typeof health_worker.access_token === 'string' &&
     'refresh_token' in health_worker &&
@@ -86,6 +79,7 @@ export function isHealthWorkerWithGoogleTokens(
     'expires_at' in health_worker &&
     (typeof health_worker.expires_at === 'string' ||
       isDate(health_worker.expires_at))
+  )
 }
 
 export function updateAccessToken(

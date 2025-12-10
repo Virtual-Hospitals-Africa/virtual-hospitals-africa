@@ -1,4 +1,3 @@
-import z from 'zod'
 import { sql } from 'kysely'
 import {
   MostRecentVitalMeasurement,
@@ -6,11 +5,12 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, jsonObjectFrom, success_true } from '../helpers.ts'
-import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
+import z from 'zod'
 import flatten from '../../util/flatten.ts'
 import { decimal } from '../../util/validators.ts'
+import * as patient_encounter_employees from './patient_encounter_employees.ts'
 
 export interface VitalsEvaluation {
   finding_id: string
@@ -82,20 +82,7 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-const VITAL_SNOMED_CONCEPT_IDS = [
-  VITALS_SNOMED_CODE.height,
-  VITALS_SNOMED_CODE.weight,
-  VITALS_SNOMED_CODE.temperature,
-  VITALS_SNOMED_CODE.blood_pressure_diastolic,
-  VITALS_SNOMED_CODE.blood_pressure_systolic,
-  VITALS_SNOMED_CODE.blood_oxygen_saturation,
-  VITALS_SNOMED_CODE.blood_glucose,
-  VITALS_SNOMED_CODE.pulse,
-  VITALS_SNOMED_CODE.respiratory_rate,
-  VITALS_SNOMED_CODE.body_mass_index,
-  VITALS_SNOMED_CODE.mean_arterial_pressure,
-  VITALS_SNOMED_CODE.blood_pressure,
-]
+const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
 
 export async function getMostRecentManualVitalsWithEvaluations(
   trx: TrxOrDb,
@@ -138,6 +125,11 @@ export async function getMostRecentManualVitalsWithEvaluations(
             .as('rank'),
         ),
   ).selectFrom('ranked_manual_findings')
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'ranked_manual_findings.snomed_concept_id',
+      'snomed_inferred_canonical_name_and_category.id',
+    )
     .where('ranked_manual_findings.rank', '=', 1)
     .select([
       'ranked_manual_findings.id as finding_id',
@@ -147,6 +139,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
       'ranked_manual_findings.created_at',
       'ranked_manual_findings.patient_encounter_id',
       'ranked_manual_findings.finding_type',
+      'snomed_inferred_canonical_name_and_category.name as snomed_canonical_name',
     ])
     .select((eb) => [
       jsonObjectFrom(
@@ -236,6 +229,11 @@ export async function getMostRecentComputedVitalsWithEvaluations(
             .as('rank'),
         ),
   ).selectFrom('ranked_computed_findings')
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'ranked_computed_findings.snomed_concept_id',
+      'snomed_inferred_canonical_name_and_category.id',
+    )
     .where('ranked_computed_findings.rank', '=', 1)
     .select([
       'ranked_computed_findings.id as finding_id',
@@ -246,6 +244,7 @@ export async function getMostRecentComputedVitalsWithEvaluations(
       'ranked_computed_findings.created_at',
       'ranked_computed_findings.patient_encounter_id',
       'ranked_computed_findings.finding_type',
+      'snomed_inferred_canonical_name_and_category.name as snomed_canonical_name',
     ])
     .select((eb) => [
       jsonArrayFrom(
@@ -257,8 +256,6 @@ export async function getMostRecentComputedVitalsWithEvaluations(
             'patient_evaluations.id',
           )
           .select([
-            // json_agg casts bigint to number, but when selected as a column by itself
-            // kysely reads as a string so we replicate kysely's behavior here
             sql<string>`evaluation_records.snomed_concept_id::text`.as(
               'snomed_concept_id',
             ),
@@ -321,4 +318,169 @@ export async function getMostRecentVitalsWithEvaluations(
       getMostRecentComputedVitalsWithEvaluations(trx, { patient_id }),
     ]),
   )
+}
+
+const CATEGORICAL_ASSESSMENT_SNOMED_CODES = [
+  VITALS_SNOMED_CODE.avpu_consciousness,
+  VITALS_SNOMED_CODE.mobility_assessment,
+  VITALS_SNOMED_CODE.trauma_presence,
+]
+
+export async function getPreviousVitalMeasurements(
+  trx: TrxOrDb,
+  { patient_id }: { patient_id: string },
+): Promise<Map<string, string>> {
+  const previous_measurements = new Map<string, string>()
+
+  // 1. Handle new categorical assessments
+  const categorical_assessments = await trx.with(
+    'ranked_categorical_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_categorical_findings',
+          'patient_findings.id',
+          'patient_categorical_findings.id',
+        )
+        .innerJoin(
+          'sats_triage_assessment_options as opt',
+          'patient_records.snomed_concept_id',
+          'opt.option_snomed_concept_id',
+        )
+        .innerJoin(
+          'sats_triage_assessments as assessment',
+          'opt.assessment_snomed_id',
+          'assessment.assessment_snomed_id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where('assessment.category', 'in', [
+          'consciousness',
+          'mobility',
+          'trauma',
+        ])
+        .select([
+          'assessment.assessment_snomed_id',
+          'opt.display_label',
+          'patient_records.created_at',
+        ])
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY assessment.assessment_snomed_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_categorical_findings')
+    .where('rank', '=', 2)
+    .select(['assessment_snomed_id', 'display_label'])
+    .execute()
+
+  for (const assessment of categorical_assessments) {
+    previous_measurements.set(
+      assessment.assessment_snomed_id,
+      assessment.display_label,
+    )
+  }
+
+  // 2. Handle other manual measurements
+  const manual_measurements = await trx.with(
+    'ranked_manual_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_measurements',
+          'patient_findings.id',
+          'patient_measurements.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_records.snomed_concept_id',
+          'in',
+          VITAL_SNOMED_CONCEPT_IDS,
+        )
+        .where(
+          'patient_records.snomed_concept_id',
+          'not in',
+          CATEGORICAL_ASSESSMENT_SNOMED_CODES,
+        )
+        .select([
+          'patient_records.snomed_concept_id',
+          'patient_measurements.value',
+          'patient_measurements.units',
+          'patient_records.created_at',
+        ])
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_manual_findings')
+    .where('rank', '=', 2)
+    .select(['snomed_concept_id', 'value', 'units'])
+    .execute()
+
+  for (const measurement of manual_measurements) {
+    if (measurement.value !== null) {
+      previous_measurements.set(
+        measurement.snomed_concept_id,
+        valueDisplay({ value: measurement.value, units: measurement.units }),
+      )
+    }
+  }
+
+  // 3. Handle computed measurements
+  const computed_measurements = await trx.with(
+    'ranked_computed_findings',
+    (qb) =>
+      qb.selectFrom('patient_records')
+        .innerJoin(
+          'patient_findings',
+          'patient_records.id',
+          'patient_findings.id',
+        )
+        .innerJoin(
+          'patient_computed_findings',
+          'patient_findings.id',
+          'patient_computed_findings.id',
+        )
+        .where('patient_records.patient_id', '=', patient_id)
+        .where(
+          'patient_records.snomed_concept_id',
+          'in',
+          VITAL_SNOMED_CONCEPT_IDS,
+        )
+        .select([
+          'patient_records.snomed_concept_id',
+          'patient_computed_findings.value',
+          'patient_computed_findings.units',
+          'patient_computed_findings.value_display',
+          'patient_records.created_at',
+        ])
+        .select(
+          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            .as('rank'),
+        ),
+  ).selectFrom('ranked_computed_findings')
+    .where('ranked_computed_findings.rank', '=', 2)
+    .select(['snomed_concept_id', 'value', 'units', 'value_display'])
+    .execute()
+
+  for (const measurement of computed_measurements) {
+    const display = valueDisplay(
+      ComputedFindingSchema.parse({
+        value: measurement.value,
+        units: measurement.units,
+        value_display: measurement.value_display,
+      }),
+    )
+    previous_measurements.set(measurement.snomed_concept_id, display)
+  }
+
+  return previous_measurements
 }

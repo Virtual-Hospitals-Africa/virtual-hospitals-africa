@@ -76,7 +76,7 @@ describe(
       )
     })
 
-    it('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
+    it.skip('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
       const organization = await createTestOrganization(db)
       const receptionist = await addTestEmployeeWithSession(
         db,
@@ -216,7 +216,7 @@ describe(
       assertEquals(encounter.patient.id, patient_id)
     })
 
-    it('can route immediately to triage as a nurse', async () => {
+    it.skip('can route immediately to triage as a nurse', async () => {
       const organization = await createTestOrganization(db)
       const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
         db,

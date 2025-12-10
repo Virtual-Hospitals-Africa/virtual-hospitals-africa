@@ -56,7 +56,7 @@ export async function VitalsEvaluationsPage(ctx: OpenEncounterWorkflowContext) {
   const measurements_with_evaluations = recent_measurements.map(
     (measurement) => ({
       ...measurement,
-      existing_evaluation: measurement.evaluations[0]
+      evaluation: measurement.evaluations[0]
         ? {
           evaluation_id: measurement.finding_id,
           evaluates_record_id: measurement.finding_id,

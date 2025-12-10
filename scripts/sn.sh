@@ -230,7 +230,7 @@ camel_vars=(
   postResponse
   preExistingConditions
   prettyTime
-  previousValue
+  previous_value
   priorityStyles
   proxyHeaders
   proxyRequest

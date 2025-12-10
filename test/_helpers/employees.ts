@@ -62,7 +62,6 @@ export async function addTestEmployee(
   if (!specialty && ['nurse', 'doctor'].includes(profession)) {
     specialty = 'primary care'
   }
-  console.log({ specialty })
   if (profession !== 'nurse') {
     assertEquals(
       registration_status,
