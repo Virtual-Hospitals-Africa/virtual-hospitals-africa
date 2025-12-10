@@ -1,6 +1,5 @@
-import { Combobox } from '@headlessui/react'
+import { Combobox, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { JSX } from 'preact'
-import { TargetedEvent } from 'preact/compat'
 import { useRef, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import {
@@ -303,8 +302,8 @@ export default function Search<
           </Combobox.Button>
 
           {!do_not_render_built_in_options && (
-            <Combobox.Options
-              onScroll={(event: TargetedEvent<HTMLUListElement>) => {
+            <ComboboxOptions
+              onScroll={(event) => {
                 const scrolled_to_bottom = event.currentTarget.scrollTop +
                     event.currentTarget.clientHeight >=
                   event.currentTarget.scrollHeight
@@ -315,16 +314,20 @@ export default function Search<
               className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
             >
               {all_options.map((option) => (
-                <Combobox.Option
+                <ComboboxOption
                   key={option.id}
                   value={option}
-                  className={({ active }) =>
-                    cls(
-                      'relative cursor-default select-none py-2 pl-3 pr-9',
-                      active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                    )}
+                  // as={Fragment}
+                  className='relative cursor-default select-none py-2 pl-3 pr-9'
+                  // ({ active }) =>
+                  // cls(
+                  //   ,
+                  //   active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                  // )
                 >
-                  {({ active, selected }) => {
+                  {(
+                    { focus, selected }: { focus: boolean; selected: boolean },
+                  ) => {
                     const use_selected = multi
                       ? selected_multi!.value.some(
                         (selected_option) =>
@@ -336,14 +339,14 @@ export default function Search<
                       <>
                         <Option
                           option={option}
-                          active={active}
+                          active={focus}
                           selected={use_selected}
                         />
                         {use_selected && (
                           <span
                             className={cls(
                               'absolute inset-y-0 right-0 flex items-center pr-4',
-                              active ? 'text-white' : 'text-indigo-600',
+                              focus ? 'text-white' : 'text-indigo-600',
                             )}
                           >
                             <CheckIcon className='w-5 h-5' aria-hidden='true' />
@@ -373,7 +376,7 @@ export default function Search<
                     }
                     return fragment
                   }}
-                </Combobox.Option>
+                </ComboboxOption>
               ))}
               {loading_options || loadMoreOptions
                 ? (
@@ -390,7 +393,7 @@ export default function Search<
                     </Combobox.Option>
                   )
                 )}
-            </Combobox.Options>
+            </ComboboxOptions>
           )}
         </div>
         {selected_singular && (

@@ -62,13 +62,12 @@
     "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
   },
   "imports": {
-    "@headlessui/react": "https://esm.sh/*@headlessui/react@1.7.17?alias=react:preact/compat,react-dom:preact/compat,client-only:preact/compat",
+    "@headlessui/react": "npm:@headlessui/react@2.2.9",
     "@preact/signals": "npm:@preact/signals@2.3.2",
     "@std/cli": "jsr:@std/cli@0.224.7",
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
     "awesome-phonenumber": "npm:awesome-phonenumber@7.2.0",
-    "cheerio": "https://esm.sh/cheerio@1.0.0",
-    "client-only": "https://esm.sh/v135/client-only@0.0.1/",
+    "cheerio": "npm:cheerio@1.1.2",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",

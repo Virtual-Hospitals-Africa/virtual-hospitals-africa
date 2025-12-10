@@ -50,7 +50,7 @@ export default function Dropdown({
   items,
 }: DropdownProps) {
   return (
-    <Menu as='div' className='relative inline-block text-left' id={id}>
+    <Menu className='relative inline-block text-left' id={id}>
       <div>
         <Menu.Button as={Fragment}>
           {button}
