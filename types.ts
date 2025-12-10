@@ -273,6 +273,7 @@ export type RenderedPatient = {
   age_days: Maybe<number>
   avatar_url: string | null
   preferred_language_code_iso_639_2_b: string | null
+  most_recent_height_cm_measurement: string | null
 }
 
 export type RenderedPatientCompletedPersonal =
@@ -3282,7 +3283,6 @@ export type Measurement = {
   snomed_concept_id: string
   value: number
   units: string
-  evaluation: Evaluation | null
 }
 
 export type ExtantProcedureOrCreationIntent = {

@@ -6,7 +6,7 @@ export async function up(db: Kysely<unknown>) {
     .createTable('sats_triage_scoring_rules')
     .addColumn('id', 'uuid', (col) => col.primaryKey())
     .addColumn('scoring_system', 'varchar(50)', (col) => col.notNull())
-    // For categorical assessments (AVPU, mobility, trauma)
+    // For categorical assessments (AVPU, mobility_assessment, trauma_presence)
     .addColumn(
       'assessment_option_id',
       'uuid',
@@ -74,7 +74,7 @@ export async function up(db: Kysely<unknown>) {
             JOIN sats_triage_assessments AS assessment ON opt.assessment_snomed_id = assessment.assessment_snomed_id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND assessment.category IN ('consciousness', 'mobility', 'trauma')
+              AND assessment.category IN ('avpu_consciousness', 'mobility_assessment', 'trauma_presence')
             ORDER BY assessment.category, records.created_at DESC
         ),
         categorical_scores AS (
@@ -117,7 +117,7 @@ export async function up(db: Kysely<unknown>) {
             JOIN patient_measurements AS meas ON findings.id = meas.id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND records.snomed_concept_id IN ('8499008', '86290005', '271649006', '722490005') -- pulse, resp_rate, systolic_bp, temp
+              AND records.snomed_concept_id IN ('8499008', '86290005', '271649006', '722490005') -- pulse, resp_rate, blood_pressure_systolic, temp
             ORDER BY records.snomed_concept_id, records.created_at DESC
         ),
         quantitative_scores AS (
@@ -151,17 +151,17 @@ export async function up(db: Kysely<unknown>) {
             ORDER BY rqm.snomed_concept_id, rule.score_value DESC
         ),
         all_components AS (
-            SELECT 'consciousness' as component, score_value FROM categorical_scores WHERE category = 'consciousness'
+            SELECT 'avpu_consciousness' as component, score_value FROM categorical_scores WHERE category = 'avpu_consciousness'
             UNION ALL
-            SELECT 'mobility' as component, score_value FROM categorical_scores WHERE category = 'mobility'
+            SELECT 'mobility_assessment' as component, score_value FROM categorical_scores WHERE category = 'mobility_assessment'
             UNION ALL
-            SELECT 'trauma' as component, score_value FROM categorical_scores WHERE category = 'trauma'
+            SELECT 'trauma_presence' as component, score_value FROM categorical_scores WHERE category = 'trauma_presence'
             UNION ALL
             SELECT 'heart_rate' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '8499008'
             UNION ALL
             SELECT 'respiratory_rate' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '86290005'
             UNION ALL
-            SELECT 'systolic_bp' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '271649006'
+            SELECT 'blood_pressure_systolic' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '271649006'
             UNION ALL
             SELECT 'temperature' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '722490005'
         )

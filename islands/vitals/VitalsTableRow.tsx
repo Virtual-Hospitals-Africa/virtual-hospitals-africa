@@ -53,10 +53,10 @@ export default function VitalsTableRow({
               <ReferenceRangeIndicator
                 value={value}
                 previousValue={previousValue}
-                normalMin={range.normal_min}
-                normalMax={range.normal_max}
-                criticalMin={range.critical_min}
-                criticalMax={range.critical_max}
+                normal_min={range.normal_min}
+                normal_max={range.normal_max}
+                critical_min={range.critical_min}
+                critical_max={range.critical_max}
                 units={range.units}
               />
             )

@@ -1,127 +1,79 @@
+import { sql } from 'kysely'
+import { TrxOrDb } from '../../types.ts'
+import { literalString } from '../helpers.ts'
 
 export async function readRows(
-
-trx: TrxOrDb,
-
-procedure_id: string,
-
+  trx: TrxOrDb,
+  procedure_id: string,
 ): Promise<RenderedTriageVitalRow[]> {
+  // First, get the patient_id from the procedure to fetch reference ranges
 
-// First, get the patient_id from the procedure to fetch reference ranges
+  const procedure_info = await trx
+    .selectFrom('patient_procedures')
+    .innerJoin('patient_records', 'patient_records.id', 'patient_procedures.id')
+    .where('patient_procedures.id', '=', procedure_id)
+    .select(['patient_records.patient_id'])
+    .executeTakeFirst()
 
-const procedure_info = await trx
+  if (!procedure_info) {
+    throw new Error(`Procedure ${procedure_id} not found`)
+  }
 
-.selectFrom('patient_procedures')
+  const results = await trx.selectFrom('patient_findings')
+    .innerJoin(
+      'patient_records',
+      'patient_findings.id',
+      'patient_records.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category.id',
+      'patient_records.snomed_concept_id',
+    )
+    .leftJoin(
+      'patient_computed_findings as self_patient_computed_findings',
+      'patient_findings.id',
+      'self_patient_computed_findings.id',
+    )
+    .leftJoin(
+      'patient_computed_findings_inputs',
+      'patient_findings.id',
+      'patient_computed_findings_inputs.input_measurement_id',
+    )
+    .leftJoin(
+      'patient_computed_findings as computation_based_on_self',
+      'computation_based_on_self.id',
+      'patient_computed_findings_inputs.computed_finding_id',
+    )
+    .leftJoin(
+      'patient_measurements',
+      'patient_measurements.id',
+      'patient_findings.id',
+    )
+    .where('patient_findings.procedure_id', '=', procedure_id)
+    .select([
+      literalString('triage_vital').as('type'),
 
-.innerJoin('patient_records', 'patient_records.id', 'patient_procedures.id')
+      sql<string>`patient_records.snomed_concept_id::text`.as(
+        'snomed_concept_id',
+      ),
 
-.where('patient_procedures.id', '=', procedure_id)
+      sql<string>`patient_records.id`.as('patient_record_id'),
 
-.select(['patient_records.patient_id'])
+      // This expression creates a grouping key. For a computed finding (e.g., BMI),
 
-.executeTakeFirst()
+      // both the computed finding itself and its inputs (e.g., height, weight)
 
-  
+      // will share the same `finding_computation_group_id`, which is the ID of the
 
-if (!procedure_info) {
+      // computed finding record. This allows grouping them together in the UI.
 
-throw new Error(`Procedure ${procedure_id} not found`)
+      sql<string>`coalesce(computation_based_on_self.id, patient_findings.id)`
+        .as('finding_computation_group_id'),
 
-}
+      'snomed_inferred_canonical_name_and_category.canonical_name as display_name',
 
-  
-
-const results = await trx.selectFrom('patient_findings')
-
-.innerJoin(
-
-'patient_records',
-
-'patient_findings.id',
-
-'patient_records.id',
-
-)
-
-.innerJoin(
-
-'snomed_inferred_canonical_name_and_category',
-
-'snomed_inferred_canonical_name_and_category.id',
-
-'patient_records.snomed_concept_id',
-
-)
-
-.leftJoin(
-
-'patient_computed_findings as self_patient_computed_findings',
-
-'patient_findings.id',
-
-'self_patient_computed_findings.id',
-
-)
-
-.leftJoin(
-
-'patient_computed_findings_inputs',
-
-'patient_findings.id',
-
-'patient_computed_findings_inputs.input_measurement_id',
-
-)
-
-.leftJoin(
-
-'patient_computed_findings as computation_based_on_self',
-
-'computation_based_on_self.id',
-
-'patient_computed_findings_inputs.computed_finding_id',
-
-)
-
-.leftJoin(
-
-'patient_measurements',
-
-'patient_measurements.id',
-
-'patient_findings.id',
-
-)
-
-.where('patient_findings.procedure_id', '=', procedure_id)
-
-.select([
-
-literalString('triage_vital').as('type'),
-
-sql<string>`patient_records.snomed_concept_id::text`.as(
-
-'snomed_concept_id',
-
-),
-
-sql<string>`patient_records.id`.as('patient_record_id'),
-
-// This expression creates a grouping key. For a computed finding (e.g., BMI),
-
-// both the computed finding itself and its inputs (e.g., height, weight)
-
-// will share the same `finding_computation_group_id`, which is the ID of the
-
-// computed finding record. This allows grouping them together in the UI.
-
-sql<string>`coalesce(computation_based_on_self.id, patient_findings.id)`
-
-.as('finding_computation_group_id'),
-
-'snomed_inferred_canonical_name_and_category.canonical_name as display_name',
-
-sql<string>`
+      sql<string>`
 
 CASE
 
@@ -155,9 +107,9 @@ END
 
 `.as('measurement_display'),
 
-// Get the numeric value for score calculation
+      // Get the numeric value for score calculation
 
-sql<number | null>`
+      sql<number | null>`
 
 CASE
 
@@ -175,42 +127,24 @@ END
 
 `.as('numeric_value'),
 
-sql<string>`patient_records.patient_id`.as('patient_id'),
+      sql<string>`patient_records.patient_id`.as('patient_id'),
+    ])
+    .execute()
 
-])
+  // Map results to RenderedTriageVitalRow
 
-.execute()
-
-  
-
-// Map results to RenderedTriageVitalRow
-
-return results.map((result) => {
-
-return {
-
-type: 'triage_vital' as const,
-
-snomed_concept_id: result.snomed_concept_id,
-
-patient_record_id: result.patient_record_id,
-
-finding_computation_group_id: result.finding_computation_group_id,
-
-display_name: result.display_name,
-
-measurement_display: result.measurement_display,
-
-reference_range: { normal_min: 0, normal_max: 0 },
-
-system_evaluation: null,
-
-notes: null,
-
-score: 0,
-
-}
-
-})
-
+  return results.map((result) => {
+    return {
+      type: 'triage_vital' as const,
+      snomed_concept_id: result.snomed_concept_id,
+      patient_record_id: result.patient_record_id,
+      finding_computation_group_id: result.finding_computation_group_id,
+      display_name: result.display_name,
+      measurement_display: result.measurement_display,
+      reference_range: { normal_min: 0, normal_max: 0 },
+      system_evaluation: null,
+      notes: null,
+      score: 0,
+    }
+  })
 }

@@ -44,28 +44,30 @@ export const handler = postHandler(
     const input_measurements = filterOfType(form_values.findings, hasValue)
 
     if (input_measurements.length) {
-      const manual_insertion_result = await vitals.insertMeasurements(
-        ctx.state.trx,
-        {
-          patient_id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          input_measurements,
-        },
-      )
+      /* const manual_insertion_result = */ await vitals
+        .insertMeasurementsAndAssessments(
+          ctx.state.trx,
+          {
+            patient_id,
+            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+            patient_encounter_employee_id: ctx.state.encounter_employee_presence
+              .patient_encounter_employee_id,
+            input_measurements,
+            input_assessments: [],
+          },
+        )
 
-      await vitals.computeAndInsertDerivedMeasurements(
-        ctx.state.trx,
-        {
-          patient_id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          source_measurements: input_measurements,
-          source_procedure_id: manual_insertion_result.procedure_id,
-        },
-      )
+      // await vitals.computeAndInsertDerivedMeasurements(
+      //   ctx.state.trx,
+      //   {
+      //     patient_id,
+      //     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+      //     patient_encounter_employee_id:
+      //       ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+      //     source_measurements: input_measurements,
+      //     source_procedure_id: manual_insertion_result.procedure_id,
+      //   },
+      // )
     }
 
     const url = new URL(ctx.url)
@@ -82,6 +84,8 @@ export async function VitalsMeasurementsPage(
     .measurementsNeededForEncounter(
       ctx.state.trx,
       ctx.state.patient,
+      // TODO actually get these
+      [],
     )
 
   const most_recent_patient_vitals = await patient_measurements
@@ -99,6 +103,7 @@ export async function VitalsMeasurementsPage(
     <VitalsMeasurementsForm
       vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
       most_recent_patient_vitals={most_recent_patient_vitals}
+      triage_assessments={[]}
     />
   )
 }

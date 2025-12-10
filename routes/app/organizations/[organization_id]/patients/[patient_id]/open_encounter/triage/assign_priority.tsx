@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import {
   completeAndProceedToNextStep,
   OpenEncounterWorkflowContext,
@@ -41,7 +42,7 @@ export async function TriageAssignPriorityPage(
   const measurement_snomed_codes = recent_measurements.map((m) =>
     m.snomed_concept_id
   )
-  
+
   const height_measurement = recent_measurements.find(
     (m) => m.snomed_concept_id === VITALS_SNOMED_CODE.height,
   )
@@ -50,32 +51,38 @@ export async function TriageAssignPriorityPage(
     : null
 
   // Fetch data in parallel for optimal performance
-  const { previous_measurements, reference_ranges, tews_result } = await promiseProps({
-    previous_measurements: patient_evaluations.getPreviousVitalMeasurements(ctx.state.trx, {
-      patient_id,
-    }),
-    reference_ranges: automated_evaluation.getApplicableReferenceRanges(
-      ctx.state.trx,
-      {
-        measurement_snomed_codes,
-        patient_context: {
-          age_days: ctx.state.patient.age_days ?? 0,
-          gender: ctx.state.patient.gender,
+  const { previous_measurements, reference_ranges, tews_result } =
+    await promiseProps({
+      previous_measurements: patient_evaluations.getPreviousVitalMeasurements(
+        ctx.state.trx,
+        {
+          patient_id,
         },
-      },
-    ),
-    tews_result: sats_triage_scoring.calculateTEWSFromDatabase(ctx.state.trx, {
-        patient_id,
-        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-        age_days: ctx.state.patient.age_days ?? null,
-        height_cm,
-      })
-      
-  })
+      ),
+      reference_ranges: automated_evaluation.getApplicableReferenceRanges(
+        ctx.state.trx,
+        {
+          measurement_snomed_codes,
+          patient_context: {
+            age_days: ctx.state.patient.age_days ?? 0,
+            gender: ctx.state.patient.gender,
+          },
+        },
+      ),
+      tews_result: sats_triage_scoring.calculateTEWSFromDatabase(
+        ctx.state.trx,
+        {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          age_days: ctx.state.patient.age_days ?? null,
+          height_cm,
+        },
+      ),
+    })
 
-  const all_findings_for_table = [...recent_measurements]
+  const all_findings_for_table: any[] = [...recent_measurements]
 
-  const categoryMap: Record<string, { code: string; name: string }> = {
+  const category_map: Record<string, { code: string; name: string }> = {
     consciousness: {
       code: VITALS_SNOMED_CODE.avpu_consciousness,
       name: 'Consciousness (AVPU)',
@@ -89,7 +96,7 @@ export async function TriageAssignPriorityPage(
 
   if (tews_result && tews_result.categorical_findings) {
     tews_result.categorical_findings.forEach((finding) => {
-      const assessment_info = categoryMap[finding.category]
+      const assessment_info = category_map[finding.category]
       // Ensure we have info for the category and that it's not already in the measurements list
       if (
         assessment_info &&
@@ -110,8 +117,8 @@ export async function TriageAssignPriorityPage(
   return (
     <TriageVitalsTable
       measurements={all_findings_for_table}
-      referenceRanges={reference_ranges}
-      previousMeasurements={previous_measurements}
+      reference_ranges={reference_ranges}
+      previous_measurements={previous_measurements}
       tews={tews_result}
     />
   )
@@ -133,9 +140,16 @@ type VitalRow = {
 }
 
 interface TriageVitalsTableProps {
-  measurements: any[]
-  referenceRanges: readonly any[]
-  previousMeasurements: Map<string, string>
+  measurements: {
+    is_computed: any
+    is_component_of_computed: any
+    vital_value: any
+    previous: any
+    vital_range_visualized: any
+    tews_score: number | null
+  }[]
+  reference_ranges: readonly any[]
+  previous_measurements: Map<string, string>
   tews: sats_triage_scoring.TEWSScore
 }
 
@@ -151,40 +165,40 @@ function getCategoryFromSnomedCode(snomedCode: string): string | null {
 
 function TriageVitalsTable({
   measurements,
-  referenceRanges,
-  previousMeasurements,
+  reference_ranges,
+  previous_measurements,
   tews,
 }: TriageVitalsTableProps) {
   const priority = getPriorityFromTEWSScore(tews.total_score)
 
   const rows: VitalRow[] = getOrderedMeasurementsForDisplay(measurements).map(
     (measurement) => {
-      const range = referenceRanges.find(
+      const range = reference_ranges.find(
         (r) =>
           r.measurement_snomed_concept_id === measurement.snomed_concept_id,
       )
       const value = parseFloat(measurement.value_display)
 
-      const isComputed = isComputedVital(measurement.snomed_concept_id)
-      const isComponentOfComputed = isComponentOfComputedVital(
+      const is_computed = isComputedVital(measurement.snomed_concept_id)
+      const is_computed_of_computed = isComponentOfComputedVital(
         measurement.snomed_concept_id,
         measurements,
       )
 
       // Check if this is a categorical finding
-      const categoricalFinding = tews.categorical_findings.find(
+      const categorical_finding = tews.categorical_findings.find(
         (f) =>
           f.category ===
             getCategoryFromSnomedCode(measurement.snomed_concept_id),
       )
 
       // Get display value - use categorical finding label if available
-      let displayValue = measurement.value_display
-      if (categoricalFinding) {
-        displayValue = categoricalFinding.display_label
+      let { value_display } = measurement
+      if (categorical_finding) {
+        value_display = categorical_finding.display_label
       }
 
-      const previousDisplay = previousMeasurements.get(
+      const previousDisplay = previous_measurements.get(
         measurement.snomed_concept_id,
       )
 
@@ -194,7 +208,7 @@ function TriageVitalsTable({
 
       // Get individual TEWS score for this measurement
       let tews_score: number | null = null
-      if (measurement.snomed_concept_id === VITALS_SNOMED_CODE.pulse) {
+      if (measurement.snomed_concept_id === VITALS_SNOMED_CODE.heart_rate) {
         tews_score = tews.components.heart_rate
       } else if (
         measurement.snomed_concept_id === VITALS_SNOMED_CODE.respiratory_rate
@@ -225,17 +239,17 @@ function TriageVitalsTable({
 
       // Build vital range visualized component
       let vital_range_visualized: JSX.Element
-      if (categoricalFinding) {
+      if (categorical_finding) {
         vital_range_visualized = <span />
       } else if (range && !isNaN(value)) {
         vital_range_visualized = (
           <ReferenceRangeIndicator
             value={value}
             previousValue={previousValue}
-            normalMin={range.normal_min}
-            normalMax={range.normal_max}
-            criticalMin={range.critical_min}
-            criticalMax={range.critical_max}
+            normal_min={range.normal_min}
+            normal_max={range.normal_max}
+            critical_min={range.critical_min}
+            critical_max={range.critical_max}
             units={range.units}
           />
         )
@@ -246,12 +260,12 @@ function TriageVitalsTable({
       return {
         id: measurement.finding_id,
         vital_name: measurement.snomed_canonical_name,
-        vital_value: displayValue,
+        vital_value: value_display,
         previous: previousDisplay || '-',
         vital_range_visualized,
         tews_score: tews_score !== null ? tews_score.toString() : '',
-        is_computed: isComputed,
-        is_component_of_computed: isComponentOfComputed,
+        is_computed: is_computed,
+        is_component_of_computed: is_computed_of_computed,
       }
     },
   )
@@ -395,7 +409,7 @@ function getOrderedMeasurementsForDisplay(measurements: any[]): any[] {
       components: [],
     },
     VITALS_SNOMED_CODE.temperature,
-    VITALS_SNOMED_CODE.pulse,
+    VITALS_SNOMED_CODE.heart_rate,
     VITALS_SNOMED_CODE.respiratory_rate,
     VITALS_SNOMED_CODE.blood_oxygen_saturation,
     VITALS_SNOMED_CODE.blood_glucose,

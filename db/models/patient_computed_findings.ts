@@ -6,7 +6,7 @@
 import { sql } from 'kysely'
 import type { DB } from '../../db.d.ts'
 import type { Insertable, Selectable } from 'kysely'
-import { blankSelection, jsonBuildObject, success_true } from '../helpers.ts'
+import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Measurement, TrxOrDb } from '../../types.ts'
 import {
@@ -369,7 +369,6 @@ export async function computeAndInsertDerivedMeasurements(
       snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
       value: bmi_value,
       units: VITALS_UNITS.body_mass_index,
-      evaluation: null,
     })
   }
 
@@ -426,7 +425,6 @@ export async function computeAndInsertDerivedMeasurements(
       snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
       value: map_value,
       units: VITALS_UNITS.mean_arterial_pressure,
-      evaluation: null,
     })
   }
 

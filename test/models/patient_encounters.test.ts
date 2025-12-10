@@ -67,7 +67,9 @@ describe(
               dob_formatted: null,
               age_display: null,
               age_years: null,
+              age_days: null,
               preferred_language_code_iso_639_2_b: null,
+              most_recent_height_cm_measurement: null,
             }
 
             assertArrayNonEmpty(

@@ -1,6 +1,4 @@
-import * as patient_measurements from './patient_measurements.ts'
 import * as patient_computed_findings from './patient_computed_findings.ts'
-import * as patient_categorical_findings from './patient_categorical_findings.ts'
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
   Measurement,
@@ -10,55 +8,23 @@ import {
 } from '../../types.ts'
 import { TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE } from '../../shared/vitals.ts'
 import { blankSelection, literalString } from '../helpers.ts'
-import { sql } from 'kysely'
 import type { CategoricalAssessment } from './patient_categorical_findings.ts'
 import generateUUID from '../../util/uuid.ts'
-
-export async function insertMeasurements(
-  trx: TrxOrDb,
-  opts: {
-    patient_record: RenderedPatient
-    patient_id: string
-    patient_encounter_id: string
-    patient_encounter_employee_id: string
-    input_measurements: Measurement[]
-    active_condition_snomed_codes: readonly string[]
-  },
-): Promise<{
-  success: true
-  procedure_id: string
-}> {
-  const insertion_result = await patient_measurements.insertMany(trx, {
-    ...opts,
-    procedure: {
-      create_from_snomed_concept_id: TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE,
-    },
-  })
-
-  await patient_computed_findings.computeAndInsertDerivedMeasurements(trx, {
-    patient_id: opts.patient_id,
-    patient_encounter_id: opts.patient_encounter_id,
-    patient_encounter_employee_id: opts.patient_encounter_employee_id,
-    source_measurements: opts.input_measurements,
-    source_procedure_id: insertion_result.procedure_id,
-  })
-
-  return {
-    success: true,
-    procedure_id: insertion_result.procedure_id,
-  }
-}
+import { assert } from 'std/assert/assert.ts'
+import { completedPersonal } from '../../shared/patient_registration.ts'
 
 export async function measurementsNeededForEncounter(
   trx: TrxOrDb,
   patient_record: RenderedPatient,
   active_condition_snomed_codes: readonly string[],
 ): Promise<VitalMeasurementFormInputDefition[]> {
+  assert(completedPersonal(patient_record))
+
   const requirements_result = await clinical_measurement_requirements
     .determineMeasurementsForPatient(trx, {
       patient_id: patient_record.id,
       age_days: patient_record.age_days ?? 0,
-      gender: patient_record.gender,
+      sex: patient_record.sex,
       active_condition_snomed_codes,
       pregnancy_status: active_condition_snomed_codes.includes('77386006'),
     })
@@ -72,13 +38,11 @@ export async function measurementsNeededForEncounter(
 export async function insertMeasurementsAndAssessments(
   trx: TrxOrDb,
   opts: {
-    patient_record: RenderedPatient
     patient_id: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
     input_measurements: Measurement[]
     input_assessments: CategoricalAssessment[]
-    active_condition_snomed_codes: readonly string[]
   },
 ): Promise<{
   success: true
@@ -214,6 +178,3 @@ export async function measurementsNeededForTriageEncounter(
     active_condition_snomed_codes,
   )
 }
-
-
-

@@ -16,6 +16,7 @@ import {
 import filterOfType from '../../../../../../../../util/filterOfType.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { getActiveConditionsSnomedCodesFromContext } from '../../../../../../../../shared/vitals.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   findings: z.record(
@@ -63,26 +64,23 @@ export const handler = postHandler(
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
     const input_assessments = form_values.assessments
-    const active_condition_snomed_codes =
-      getActiveConditionsSnomedCodesFromContext(
-        ctx.state.patient_history,
-      )
 
-    await vitals.insertMeasurementsAndAssessments(
-      ctx.state.trx,
-      {
-        patient_record: ctx.state.patient,
-        patient_id,
-        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-        patient_encounter_employee_id:
-          ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-        input_measurements,
-        input_assessments,
-        active_condition_snomed_codes,
-      },
-    )
+    const { response } = await promiseProps({
+      inserting_vitals: vitals.insertMeasurementsAndAssessments(
+        ctx.state.trx,
+        {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id:
+            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+          input_measurements,
+          input_assessments,
+        },
+      ),
+      response: completeAndProceedToNextStep(ctx),
+    })
 
-    return completeAndProceedToNextStep(ctx)
+    return response
   },
 )
 

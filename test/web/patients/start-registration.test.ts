@@ -55,6 +55,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
       age_display: null,
       preferred_language_code_iso_639_2_b: null,
       age_years: null,
+      age_days: null,
       description: null,
       national_id_number: null,
       completed_registration: false,

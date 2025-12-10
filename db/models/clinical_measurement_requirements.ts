@@ -1,8 +1,4 @@
-import {
-  Gender,
-  TrxOrDb,
-  VitalMeasurementFormInputDefition,
-} from '../../types.ts'
+import { Sex, TrxOrDb, VitalMeasurementFormInputDefition } from '../../types.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 
@@ -36,7 +32,7 @@ export async function determineMeasurementsForPatient(
   }: {
     patient_id: string
     age_days: number
-    gender: Gender
+    sex: Sex
     active_condition_snomed_codes: readonly string[]
     pregnancy_status?: boolean
   },
@@ -182,7 +178,7 @@ function mergeMeasurementRequirements(
 function getVitalLabelFromSnomedCode(snomed_concept_id: string): string {
   const label_map: Record<string, string> = {
     [VITALS_SNOMED_CODE.temperature]: 'temperature',
-    [VITALS_SNOMED_CODE.pulse]: 'pulse',
+    [VITALS_SNOMED_CODE.heart_rate]: 'heart_rate',
     [VITALS_SNOMED_CODE.respiratory_rate]: 'respiratory_rate',
     [VITALS_SNOMED_CODE.height]: 'height',
     [VITALS_SNOMED_CODE.weight]: 'weight',
@@ -201,7 +197,7 @@ function getVitalLabelFromSnomedCode(snomed_concept_id: string): string {
 function getVitalUnitsFromSnomedCode(snomed_concept_id: string): string {
   const units_map: Record<string, string> = {
     [VITALS_SNOMED_CODE.temperature]: VITALS_UNITS.temperature,
-    [VITALS_SNOMED_CODE.pulse]: VITALS_UNITS.pulse,
+    [VITALS_SNOMED_CODE.heart_rate]: VITALS_UNITS.heart_rate,
     [VITALS_SNOMED_CODE.respiratory_rate]: VITALS_UNITS.respiratory_rate,
     [VITALS_SNOMED_CODE.height]: VITALS_UNITS.height,
     [VITALS_SNOMED_CODE.weight]: VITALS_UNITS.weight,

@@ -1,46 +1,46 @@
 interface SimpleReferenceRangeIndicatorProps {
   value: number
   previousValue?: number
-  normalMin: number
-  normalMax: number
-  criticalMin?: number
-  criticalMax?: number
+  normal_min: number
+  normal_max: number
+  critical_min?: number
+  critical_max?: number
   units: string
 }
 
 export function ReferenceRangeIndicator({
   value,
   previousValue,
-  normalMin,
-  normalMax,
-  criticalMin,
-  criticalMax,
+  normal_min,
+  normal_max,
+  critical_min,
+  critical_max,
   units,
 }: SimpleReferenceRangeIndicatorProps) {
-  const definedRangeMin = criticalMin ?? normalMin
-  const definedRangeMax = criticalMax ?? normalMax
+  const definedRangeMin = critical_min ?? normal_min
+  const definedRangeMax = critical_max ?? normal_max
   const totalDefinedRange = definedRangeMax - definedRangeMin
 
   const extensionCap = totalDefinedRange * 0.25
 
   let overallMin: number
-  if (criticalMin !== undefined && criticalMin < normalMin) {
-    const abnormalLowWidth = normalMin - criticalMin
+  if (critical_min !== undefined && critical_min < normal_min) {
+    const abnormalLowWidth = normal_min - critical_min
 
     const lowExtension = Math.min(abnormalLowWidth, extensionCap)
-    overallMin = criticalMin - lowExtension
+    overallMin = critical_min - lowExtension
   } else {
-    overallMin = normalMin
+    overallMin = normal_min
   }
 
   let overallMax: number
-  if (criticalMax !== undefined && criticalMax > normalMax) {
-    const abnormalHighWidth = criticalMax - normalMax
+  if (critical_max !== undefined && critical_max > normal_max) {
+    const abnormalHighWidth = critical_max - normal_max
 
     const highExtension = Math.min(abnormalHighWidth, extensionCap)
-    overallMax = criticalMax + highExtension
+    overallMax = critical_max + highExtension
   } else {
-    overallMax = normalMax
+    overallMax = normal_max
   }
 
   const totalRange = overallMax - overallMin
@@ -57,21 +57,22 @@ export function ReferenceRangeIndicator({
     ? getPosition(previousValue)
     : null
 
-  const normalStartPosition = ((normalMin - overallMin) / totalRange) * 100
-  const normalWidth = ((normalMax - normalMin) / totalRange) * 100
+  const normalStartPosition = ((normal_min - overallMin) / totalRange) * 100
+  const normalWidth = ((normal_max - normal_min) / totalRange) * 100
 
-  const hasAbnormalLow = criticalMin !== undefined && criticalMin < normalMin
+  const hasAbnormalLow = critical_min !== undefined && critical_min < normal_min
   const criticalLowPosition = hasAbnormalLow
-    ? ((criticalMin - overallMin) / totalRange) * 100
+    ? ((critical_min - overallMin) / totalRange) * 100
     : 0
   const abnormalLowWidth = hasAbnormalLow
     ? normalStartPosition - criticalLowPosition
     : 0
 
-  const hasAbnormalHigh = criticalMax !== undefined && criticalMax > normalMax
+  const hasAbnormalHigh = critical_max !== undefined &&
+    critical_max > normal_max
   const abnormalHighPosition = normalStartPosition + normalWidth
   const abnormalHighWidth = hasAbnormalHigh
-    ? (((criticalMax - normalMax) / totalRange) * 100)
+    ? (((critical_max - normal_max) / totalRange) * 100)
     : 0
 
   const hasCriticalLow = hasAbnormalLow
@@ -231,7 +232,7 @@ export function ReferenceRangeIndicator({
             fill='#6b7280'
             fontWeight='500'
           >
-            {criticalMin}
+            {critical_min}
           </text>
         )}
 
@@ -243,7 +244,7 @@ export function ReferenceRangeIndicator({
           fill='#6b7280'
           fontWeight='500'
         >
-          {normalMin}
+          {normal_min}
         </text>
 
         <text
@@ -254,7 +255,7 @@ export function ReferenceRangeIndicator({
           fill='#6b7280'
           fontWeight='500'
         >
-          {normalMax}
+          {normal_max}
         </text>
 
         {hasAbnormalHigh && (
@@ -266,7 +267,7 @@ export function ReferenceRangeIndicator({
             fill='#6b7280'
             fontWeight='500'
           >
-            {criticalMax}
+            {critical_max}
           </text>
         )}
       </svg>

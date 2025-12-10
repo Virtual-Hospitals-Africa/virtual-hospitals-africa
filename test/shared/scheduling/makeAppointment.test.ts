@@ -77,6 +77,7 @@ describe('scheduling/makeAppointment.ts', () => {
             dob_formatted: null,
             date_of_birth: null,
             age_display: null,
+            age_days: null,
             age_years: null,
             description: null,
             preferred_language_code_iso_639_2_b: null,

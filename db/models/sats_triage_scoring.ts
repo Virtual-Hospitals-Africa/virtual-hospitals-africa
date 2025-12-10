@@ -54,10 +54,10 @@ export async function calculateTEWSFromDatabase(
     .execute(trx)
 
   // deno-lint-ignore no-explicit-any
-  const tewsResult = (result.rows[0] as any).calculate_tews_score
+  const { calculate_tews_score } = result.rows[0] as any
 
-  const parsedResult: TEWSScore = {
-    components: tewsResult.components || {
+  return {
+    components: calculate_tews_score.components || {
       heart_rate: 0,
       respiratory_rate: 0,
       systolic_bp: 0,
@@ -66,10 +66,8 @@ export async function calculateTEWSFromDatabase(
       mobility: 0,
       trauma: 0,
     },
-    total_score: tewsResult.total_score || 0,
-    categorical_findings: tewsResult.categorical_findings || [],
-    measurement_scores: tewsResult.measurement_scores || [],
+    total_score: calculate_tews_score.total_score || 0,
+    categorical_findings: calculate_tews_score.categorical_findings || [],
+    measurement_scores: calculate_tews_score.measurement_scores || [],
   }
-
-  return parsedResult
 }
