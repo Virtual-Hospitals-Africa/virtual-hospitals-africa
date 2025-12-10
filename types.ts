@@ -26,6 +26,7 @@ import { DietFrequency } from './shared/diet.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Priority } from './shared/priorities.ts'
 import { MessageTargetCategory } from './shared/message_targets.ts'
+import { CommonConditionKey } from './shared/brief_history.ts'
 
 export * from './shared/priorities.ts'
 
@@ -2013,13 +2014,13 @@ export type School =
     status: 'adult stopped school'
     education_level: string
     reason: string
-    desire_to_return: boolean
+    desire_to_return: Existence
   }
 
 export type CurrentSchool = {
   grade: string
   grades_dropping_reason: string | null
-  happy: boolean | null
+  happy: Existence | null
   inappropriate_reason: string | null
 }
 
@@ -2029,16 +2030,16 @@ export type PastSchool = {
 }
 
 export type Job = {
-  happy: boolean
-  descendants_employed: boolean
-  require_assistance: boolean
+  happy: Existence
+  descendants_employed: Existence
+  require_assistance: Existence
   profession: string
   work_satisfaction: string
 }
 
 export type Occupation = {
   school: School
-  sport?: boolean
+  sport?: Existence
   job?: Job | null
 }
 
@@ -2064,40 +2065,40 @@ export type Lifestyle = {
 
 export type SexualActivity =
   | {
-    ever_been_sexually_active: false | null
+    ever_been_sexually_active: 'no' | 'not_sure' | null
   }
   | {
-    ever_been_sexually_active: true
-    currently_sexually_active?: Maybe<boolean>
+    ever_been_sexually_active: 'yes'
+    currently_sexually_active?: Maybe<Existence>
     first_encounter?: Maybe<number>
     current_sexual_partners?: Maybe<number>
     attracted_to?: Maybe<string>
-    has_traded_sex_for_favors?: Maybe<boolean>
-    had_sex_after_drugs?: Maybe<boolean>
-    recently_treated_for_stis?: Maybe<boolean>
-    recently_hiv_tested?: Maybe<boolean>
-    know_partner_hiv_status?: Maybe<boolean>
-    partner_hiv_status?: Maybe<boolean>
+    has_traded_sex_for_favors?: Maybe<Existence>
+    had_sex_after_drugs?: Maybe<Existence>
+    recently_treated_for_stis?: Maybe<Existence>
+    recently_hiv_tested?: Maybe<Existence>
+    know_partner_hiv_status?: Maybe<Existence>
+    partner_hiv_status?: Maybe<Existence>
   }
 
 export type Alcohol =
   | {
-    has_ever_drank: false | null
+    has_ever_drank: 'no' | 'not_sure' | null
   }
   | {
-    has_ever_drank: true
-    currently_drinks?: boolean | null
-    binge_drinking?: boolean | null
-    drawn_to_cut_down?: boolean | null
-    annoyed_by_critics?: boolean | null
-    eye_opener?: boolean | null
-    guilty?: boolean | null
-    missed_work?: boolean | null
-    criticized?: boolean | null
-    arrested?: boolean | null
-    attempted_to_stop?: boolean | null
-    withdrawal?: boolean | null
-    quit_for_six_or_more_months?: boolean | null
+    has_ever_drank: 'yes'
+    currently_drinks?: Existence | null
+    binge_drinking?: Existence | null
+    drawn_to_cut_down?: Existence | null
+    annoyed_by_critics?: Existence | null
+    eye_opener?: Existence | null
+    guilty?: Existence | null
+    missed_work?: Existence | null
+    criticized?: Existence | null
+    arrested?: Existence | null
+    attempted_to_stop?: Existence | null
+    withdrawal?: Existence | null
+    quit_for_six_or_more_months?: Existence | null
     abstinence_length_months?: number | null
     first_drink?: number | null
     years_drinking?: number | null
@@ -2107,37 +2108,37 @@ export type Alcohol =
 
 export type Smoking =
   | {
-    has_ever_smoked: false | null
+    has_ever_smoked: 'no' | 'not_sure' | null
   }
   | {
-    has_ever_smoked: true
-    currently_smokes?: Maybe<boolean>
+    has_ever_smoked: 'yes'
+    currently_smokes?: Maybe<Existence>
     first_smoke_age?: number
     weekly_smokes?: number | null
     number_of_products?: number | null
-    felt_to_cutdown?: boolean | null
-    annoyed_by_criticism?: boolean | null
-    guilty?: boolean | null
-    forbidden_place?: boolean | null
-    attempt_to_quit?: boolean | null
-    quit_more_than_six_months?: boolean | null
+    felt_to_cutdown?: Existence | null
+    annoyed_by_criticism?: Existence | null
+    guilty?: Existence | null
+    forbidden_place?: Existence | null
+    attempt_to_quit?: Existence | null
+    quit_more_than_six_months?: Existence | null
     quit_smoking_years?: number | null
     tobacco_products_used?: string[] | null
   }
 
 export type SubstanceUse =
   | {
-    has_ever_used_substance: false | null
+    has_ever_used_substance: 'no' | 'not_sure' | null
   }
   | {
-    has_ever_used_substance: true
+    has_ever_used_substance: 'yes'
     substances_used: {
       name: string
-      injected_substance: boolean | null
-      annoyed_by_criticism: boolean | null
-      attempt_to_stop: boolean | null
-      withdrawal_symptoms: boolean | null
-      quit_more_than_six_months: boolean | null
+      injected_substance: Existence | null
+      annoyed_by_criticism: Existence | null
+      attempt_to_stop: Existence | null
+      withdrawal_symptoms: Existence | null
+      quit_more_than_six_months: Existence | null
       quit_substance_use_years: number | null
       first_use_age: number | null
       used_regularly_years: number | null
@@ -2147,10 +2148,10 @@ export type SubstanceUse =
 
 export type Exercise =
   | {
-    currently_exercises: false | null
+    currently_exercises: 'no' | 'not_sure' | null
   }
   | {
-    currently_exercises: true
+    currently_exercises: 'yes'
     physical_activities: {
       name: string
       frequency: string
@@ -3432,25 +3433,26 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   patient_encounter_id: string
   snomed_concept_id: string
   name: string
+  concrete_value: any
   value_display: string | null
-  created_at: Date
-  provider: RenderedFindingProvider & {
-    is_same_person_who_made_originally_noted_finding: boolean
-  }
+  created_at: Date | string
+  provider: RenderedFindingProvider
 }
 
-export type RenderedFindingRelativeToHealthWorker = {
+export type RenderedFindingRelativeToHealthWorker<
+  PertainingToKey extends string = string,
+> = {
   record_id: string
   patient_encounter_id: string
   snomed_concept_id: string
   name: string
-  pertaining_to_key: string
-  created_at: Date
-  provider: RenderedFindingProvider & {
-    is_same_person_who_made_originally_noted_finding: true
-  }
+  value_display: string
+  pertaining_to_key: PertainingToKey
+  created_at: Date | string
+  provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  existence: Existence
   notes?: {
     note: string
     created_at: Date
@@ -3470,4 +3472,30 @@ export type Alert = {
     href: string
     method?: 'GET' | 'POST'
   }[]
+}
+
+type QualifierIntermediate =
+  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
+  & {
+    patient_encounter_employee_id: string
+  }
+
+export type Existence = 'yes' | 'no' | 'not_sure'
+
+export type IntermediateFindingRecord<PertainingToKey extends string = string> =
+  {
+    created_at: Date
+    record_id: string
+    snomed_concept_id: string
+    name: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
+    pertaining_to_key: PertainingToKey
+    existence: Existence
+    as_part_of_procedure: AsPartOfProcedure
+    qualifiers: QualifierIntermediate[]
+  }
+
+export type MostRecentBriefHistoryFindings = {
+  [c in CommonConditionKey]: null | RenderedFindingRelativeToHealthWorker
 }

@@ -222,6 +222,10 @@ export async function addTestEmployeeWithSession(
     const $ = cheerio.load(html, {
       baseURI: response.url,
     })
+
+    // We aren't testing CSS. This keeps the output small enough where it can be easily copied.
+    $('style').remove()
+
     return Object.assign($, {
       url: response.url,
     })

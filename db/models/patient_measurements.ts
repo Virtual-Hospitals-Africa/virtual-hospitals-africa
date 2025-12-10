@@ -1,6 +1,6 @@
 /*
   Treat patient_records and all its related tables as append only logs
-  Deletions would be handled by making a `referrant_finding` with snomed_concept_id: 723510000 | Entered in error
+  Deletions would be handled by making a `referent_finding` with snomed_concept_id: 723510000 | Entered in error
   Edits would be a deletion and a new entry
 */
 import { sql } from 'kysely'

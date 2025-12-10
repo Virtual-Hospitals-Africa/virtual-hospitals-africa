@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
-import { getCaller } from '../../util/getFileLineNumber.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { getCaller } from '../../util/getFileLineNumber.ts'
 
 /**
  * Replaces the line with an assertEquals()

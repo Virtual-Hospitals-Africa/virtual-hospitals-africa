@@ -1,5 +1,5 @@
 import { ComponentChild, ComponentChildren } from 'preact'
-import { Maybe } from '../../../types.ts'
+import { Existence, Maybe } from '../../../types.ts'
 
 export function YesNoQuestion({
   name,
@@ -12,9 +12,9 @@ export function YesNoQuestion({
   name?: string
   label: ComponentChild
   most_recent_finding?: ComponentChild
-  value?: Maybe<boolean>
+  value?: Maybe<Existence>
   required?: boolean
-  onChange?(value: boolean | null): void
+  onChange?(value: Existence | null): void
 }) {
   return (
     <div
@@ -30,35 +30,38 @@ export function YesNoQuestion({
 
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
-          checked={value === true}
+          checked={value === 'yes'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='yes'
           required={required}
-          onChange={() => onChange?.(true)}
+          onChange={() => onChange?.('yes')}
         />
       </div>
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
-          checked={value === false}
+          checked={value === 'no'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='no'
           required={required}
-          onChange={() => onChange?.(false)}
+          onChange={() => onChange?.('no')}
         />
       </div>
       <div className='flex justify-center'>
         <input
+          id={name}
           name={name}
           type='radio'
-          checked={value === null}
+          checked={value === 'not_sure'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='not_sure'
           required={required}
-          onChange={() => onChange?.(null)}
+          onChange={() => onChange?.('not_sure')}
         />
       </div>
     </div>

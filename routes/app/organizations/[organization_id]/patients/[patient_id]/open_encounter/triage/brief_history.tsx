@@ -13,32 +13,35 @@ import {
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import { yes_no_not_sure } from '../../../../../../../../util/validators.ts'
 import {
-  COMMON_CONDITIONS,
-  CommonConditionKey,
-  commonConditionSnomedConceptId,
-  renderedPositiveFindings,
+  renderedMostRecentFindings,
 } from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
-import { NO_QUALIFIER_SNOMED_CONCEPT_ID } from '../../../../../../../../db/models/patient_findings.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import {
+  Existence,
+  MostRecentBriefHistoryFindings,
   RenderedFindingRelativeToHealthWorker,
   Sex,
 } from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
+import {
+  COMMON_CONDITIONS,
+  CommonConditionKey,
+  commonConditionSnomedConceptId,
+} from '../../../../../../../../shared/brief_history.ts'
 
 const ConditionSchemaOptional = z.object(
   {
-    presence: yes_no_not_sure.optional(),
+    existence: yes_no_not_sure.optional(),
   },
 ).optional()
 
 const ConditionSchemaRequired = z.object(
   {
-    presence: yes_no_not_sure,
+    existence: yes_no_not_sure,
   },
 )
 
@@ -61,28 +64,58 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
+const QUALIFIERS_BY_EXISTENCE = {
+  yes: [],
+  no: [{
+    snomed_concept_id: patient_findings.NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+  }],
+  not_sure: [{
+    snomed_concept_id: patient_findings.UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+  }],
+}
+
 export const handler = postHandler(
   TriageBriefHistorySchema,
-  (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const { trx, encounter, health_worker } = ctx.state
+    const { patient } = encounter
+    const patient_id = patient.id
+
+    const most_recent_findings = await renderedMostRecentFindings(
+      trx,
+      { patient_id, encounter, health_worker_id: health_worker.id },
+    )
+
     const inserting_findings = forEach(
       entries(form_values),
-      async ([condition_key, condition]) => {
-        if (
-          condition?.presence === undefined || condition.presence === 'not_sure'
-        ) {
-          return
-        }
+      ([condition_key, condition]) => {
+        if (!condition) return Promise.resolve()
+        if (condition.existence === undefined) return Promise.resolve()
+
         const finding_snomed_concept_id = commonConditionSnomedConceptId(
           condition_key,
         )
 
-        const qualifiers = condition.presence === 'yes' ? [] : [
-          {
-            snomed_concept_id: NO_QUALIFIER_SNOMED_CONCEPT_ID,
-          },
-        ]
+        const existing_finding = most_recent_findings[condition_key]
 
-        await patient_findings.insertOne(
+        if (
+          condition.existence === 'yes' && existing_finding?.existence === 'yes'
+        ) {
+          return Promise.resolve()
+        }
+
+        if (
+          existing_finding &&
+          existing_finding.patient_encounter_id ===
+            encounter.patient_encounter_id &&
+          existing_finding.existence
+        ) {
+          return Promise.resolve()
+        }
+
+        const qualifiers = QUALIFIERS_BY_EXISTENCE[condition.existence]
+
+        return patient_findings.insertOne(
           ctx.state.trx,
           {
             patient_id: ctx.state.patient.id,
@@ -110,29 +143,27 @@ export const handler = postHandler(
 )
 
 function CommonConditionRow(
-  { condition, positive_findings, sex, organization_id }: {
-    condition: typeof COMMON_CONDITIONS[number]
-    positive_findings: RenderedFindingRelativeToHealthWorker[]
+  { condition, most_recent_finding, sex, organization_id }: {
+    condition: (typeof COMMON_CONDITIONS)[number]
+    most_recent_finding: RenderedFindingRelativeToHealthWorker | null
     sex: Sex
     organization_id: string
   },
 ) {
-  const positive_finding = positive_findings.find((f) =>
-    f.pertaining_to_key === condition.key
-  )
+  const value: Existence | undefined =
+    !most_recent_finding && condition.key === 'pregnancy' && sex === 'male'
+      ? 'no'
+      : most_recent_finding?.existence
+
   return (
     <YesNoQuestion
-      name={`${condition.key}.presence`}
+      name={`${condition.key}.existence`}
       required={condition.required}
-      value={positive_finding
-        ? true
-        : condition.key === 'pregnancy' && sex === 'male'
-        ? false
-        : undefined}
+      value={value}
       label={condition.label}
       most_recent_finding={
         <MostRecentFinding
-          finding={positive_finding}
+          finding={most_recent_finding}
           organization_id={organization_id}
         />
       }
@@ -141,8 +172,8 @@ function CommonConditionRow(
 }
 
 function BriefHistorySection(
-  { positive_findings, sex, organization_id }: {
-    positive_findings: RenderedFindingRelativeToHealthWorker[]
+  { most_recent_findings, sex, organization_id }: {
+    most_recent_findings: MostRecentBriefHistoryFindings
     sex: Sex
     organization_id: string
   },
@@ -154,9 +185,9 @@ function BriefHistorySection(
           <CommonConditionRow
             key={condition.key}
             condition={condition}
-            positive_findings={positive_findings}
             sex={sex}
             organization_id={organization_id}
+            most_recent_finding={most_recent_findings[condition.key]}
           />
         ))}
       </YesNoGrid>
@@ -171,7 +202,7 @@ export async function TriageBriefHistoryPage(
   const { patient } = encounter
   const patient_id = patient.id
 
-  const positive_findings = await renderedPositiveFindings(
+  const most_recent_findings = await renderedMostRecentFindings(
     trx,
     { patient_id, encounter, health_worker_id: health_worker.id },
   )
@@ -180,7 +211,7 @@ export async function TriageBriefHistoryPage(
 
   return (
     <BriefHistorySection
-      positive_findings={positive_findings}
+      most_recent_findings={most_recent_findings}
       sex={patient.sex}
       organization_id={organization_employment.id}
     />

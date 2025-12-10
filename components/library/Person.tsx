@@ -59,14 +59,8 @@ export function Person(
           )}
         />
       )}
-      <span
-        className={cls(
-          'ml-3 truncate font-medium text-md text-gray-600',
-          bold && 'font-bold',
-        )}
-      >
-      </span>
-      <div className='flex flex-col'>
+
+      <div className={cls('flex flex-col', bold && 'font-bold')}>
         <div className='person-name text-xs'>
           {person.display_name || person.name}
         </div>

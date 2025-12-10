@@ -43,7 +43,7 @@ type ExcludeRow = {
   code_range_end?: string
   code_range_start_dash?: boolean
   code_range_end_dash?: boolean
-  check_referrant_code_before_insertion?: boolean
+  check_referent_code_before_insertion?: boolean
 }
 
 // Some codes end in a dash, indicating that the person is supposed to enter a more in-depth code
@@ -174,7 +174,7 @@ function parseExclude(
       const excludes = range(start, end + 1).flatMap((num) =>
         suffix_codes.map((suffix) => ({
           code: `${letter}${num}${suffix}`,
-          check_referrant_code_before_insertion: true,
+          check_referent_code_before_insertion: true,
         }))
       )
 
@@ -184,7 +184,7 @@ function parseExclude(
     const excludes = code_start.split(/, ?/g).flatMap((code) =>
       suffix_codes.map((suffix) => ({
         code: `${code}${suffix}`,
-        check_referrant_code_before_insertion: true,
+        check_referent_code_before_insertion: true,
       }))
     )
 
@@ -394,7 +394,7 @@ async function readICD10TabularSections() {
 async function insertExcludeRow(
   trx: TrxOrDb,
   exclude_id: string,
-  { check_referrant_code_before_insertion, ...row }: ExcludeRow,
+  { check_referent_code_before_insertion, ...row }: ExcludeRow,
 ) {
   if (row.category) {
     return trx.insertInto('icd10_diagnoses_excludes_categories')
@@ -407,7 +407,7 @@ async function insertExcludeRow(
       .execute()
   }
   if (row.code) {
-    if (check_referrant_code_before_insertion) {
+    if (check_referent_code_before_insertion) {
       const exists = await trx.selectFrom('icd10_diagnoses').select('code')
         .where('code', '=', row.code).executeTakeFirst()
       if (!exists) return

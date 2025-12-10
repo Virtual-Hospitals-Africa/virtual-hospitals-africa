@@ -24,9 +24,10 @@ test_servers_pid=
 
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   if [[ "$1" == "--use-build" ]]; then
-    run_test_server_args="--use-build"
+    run_test_server_args+=" --use-build"
   elif [[ "$1" == "--verbose" ]]; then
     set -x
+    run_test_server_args+=" --verbose"
   else
     fail "Unknown option: $1"
   fi
@@ -55,7 +56,7 @@ cleanup() {
   if ! [ -z $test_servers_pid ]; then
     ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT || true
     ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT || true
-    kill $test_servers_pid || true
+    kill $test_servers_pid > /dev/null || true
   fi
 }
 

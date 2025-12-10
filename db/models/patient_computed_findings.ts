@@ -1,6 +1,6 @@
 /*
   Computed findings follow the same append-only log pattern as patient_records
-  Deletions handled by referrant_finding with snomed_concept_id: 723510000 | Entered in error
+  Deletions handled by referent_finding with snomed_concept_id: 723510000 | Entered in error
   Edits would be a deletion and a new entry
 */
 import { sql } from 'kysely'

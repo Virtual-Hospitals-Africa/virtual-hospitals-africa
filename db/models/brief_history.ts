@@ -1,130 +1,32 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import memoize from '../../util/memoize.ts'
 import {
-  AsPartOfProcedure,
-  RenderedFindingQualifierRelativeToHealthWorker,
+  IntermediateFindingRecord,
+  MostRecentBriefHistoryFindings,
   RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
   TrxOrDb,
 } from '../../types.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import { temporaryTable } from '../helpers.ts'
-import { positiveFindingsQuery } from './patient_findings.ts'
+import * as patient_findings from './patient_findings.ts'
 import uniq from '../../util/uniq.ts'
-import { groupByUniq } from '../../util/groupBy.ts'
+import { groupBy, groupByUniq } from '../../util/groupBy.ts'
+import first from '../../util/first.ts'
+import mapEntries from '../../util/mapEntries.ts'
+import {
+  COMMON_CONDITION_KEYS,
+  COMMON_CONDITIONS,
+  CommonConditionKey,
+  commonConditionSnomedConceptId,
+} from '../../shared/brief_history.ts'
+import fromEntries from '../../util/fromEntries.ts'
 
-export const COMMON_CONDITIONS = [
-  {
-    key: 'pregnancy' as const,
-    label: 'Pregnancy',
-    snomed_concept_id: '77386006',
-    required: true,
-  },
-  {
-    key: 'diabetes' as const,
-    label: 'Diabetes',
-    snomed_concept_id: '73211009',
-    required: true,
-  },
-  {
-    key: 'tuberculosis' as const,
-    label: 'Tuberculosis',
-    snomed_concept_id: '56717001',
-    required: false,
-  },
-  {
-    key: 'hiv' as const,
-    label: 'Human Immunodeficiency Virus',
-    snomed_concept_id: '86406008',
-    required: false,
-  },
-  {
-    key: 'asthma' as const,
-    label: 'Asthma',
-    snomed_concept_id: '195967001',
-    required: false,
-  },
-  {
-    key: 'copd' as const,
-    label: 'Chronic Obstructive Pulmonary Disease',
-    snomed_concept_id: '13645005',
-    required: false,
-  },
-  {
-    key: 'coronavirus' as const,
-    label: 'Coronavirus',
-    snomed_concept_id: '186747009',
-    required: false,
-  },
-  {
-    key: 'heart_disease' as const,
-    label: 'Heart Disease',
-    snomed_concept_id: '56265001',
-    required: false,
-  },
-  {
-    key: 'mental_disorder' as const,
-    label: 'Mental Disorder',
-    snomed_concept_id: '74732009',
-    required: false,
-  },
-  {
-    key: 'epilepsy' as const,
-    label: 'Epilepsy',
-    snomed_concept_id: '84757009',
-    required: false,
-  },
-  {
-    key: 'arthritis' as const,
-    label: 'Arthritis',
-    snomed_concept_id: '3723001',
-    required: false,
-  },
-  {
-    key: 'cancer' as const,
-    label: 'Cancer',
-    snomed_concept_id: '363346000',
-    required: false,
-  },
-]
-
-export type CommonConditionKey = (typeof COMMON_CONDITIONS)[number]['key']
-
-export const COMMON_CONDITION_KEYS: CommonConditionKey[] = COMMON_CONDITIONS
-  .map((c) => c.key)
-
-export const commonConditionSnomedConceptId = memoize(
-  (key: CommonConditionKey): string => {
-    const condition = COMMON_CONDITIONS.find((c) => c.key === key)
-    assert(condition)
-    return condition.snomed_concept_id
-  },
-)
-
-type QualifierIntermediate =
-  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
-  & {
-    patient_encounter_employee_id: string
-  }
-
-type PositiveFindingRecord = {
-  created_at: Date
-  record_id: string
-  snomed_concept_id: string
-  name: string
-  patient_encounter_id: string
-  patient_encounter_employee_id: string
-  pertaining_to_key: CommonConditionKey
-  as_part_of_procedure: AsPartOfProcedure
-  qualifiers: QualifierIntermediate[]
-}
-
-export function positiveFindings(
+export function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-): Promise<PositiveFindingRecord[]> {
-  return positiveFindingsQuery(trx, { patient_id })
+): Promise<IntermediateFindingRecord<CommonConditionKey>[]> {
+  return trx
     .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
     .with(
       'common_condition_descendants',
@@ -144,30 +46,91 @@ export function positiveFindings(
             'common_conditions.snomed_concept_id',
           ]),
     )
-    .selectFrom('patient_positive_findings')
+    .with('this_patient_findings', () =>
+      patient_findings.baseQuery(trx)
+        .where('patient_records.patient_id', '=', patient_id))
+    .selectFrom('this_patient_findings')
     .innerJoin(
       'common_condition_descendants',
       'common_condition_descendants.descendant_id',
-      'patient_positive_findings.snomed_concept_id',
+      'this_patient_findings.snomed_concept_id',
     )
-    .selectAll('patient_positive_findings')
-    .select([
-      'common_condition_descendants.key as pertaining_to_key',
+    .selectAll('this_patient_findings')
+    .select((eb) => [
+      eb.ref('common_condition_descendants.key').$castTo<CommonConditionKey>()
+        .as('pertaining_to_key'),
     ])
+    .orderBy('this_patient_findings.created_at', 'desc')
     .execute()
 }
 
-export async function renderedPositiveFindings(
+function mostRecentFinding(
+  findings_of_condition: IntermediateFindingRecord[],
+  pertaining_to_key: CommonConditionKey,
+) {
+  if (findings_of_condition.length > 1) {
+    assert(
+      findings_of_condition[0].created_at >=
+        findings_of_condition[1].created_at,
+    )
+  }
+
+  const parent_snomed_concept_id = commonConditionSnomedConceptId(
+    pertaining_to_key,
+  )
+  assert(parent_snomed_concept_id)
+
+  const findings_of_condition_grouped_by_concept = groupBy(
+    findings_of_condition,
+    'snomed_concept_id',
+  )
+  const most_recent_parent_concept_finding = first(
+    findings_of_condition_grouped_by_concept.get(parent_snomed_concept_id) ||
+      [],
+  )
+
+  const first_positive_finding_not_invalidated_by_a_later_negative_finding =
+    findings_of_condition.find((finding) => {
+      if (!finding.existence) return false
+
+      const most_recent_finding_of_concept = first(
+        findings_of_condition_grouped_by_concept.get(
+          finding.snomed_concept_id,
+        )!,
+      )
+      assert(most_recent_finding_of_concept)
+      if (finding !== most_recent_finding_of_concept) return false
+
+      const invalidated = most_recent_parent_concept_finding &&
+        !most_recent_parent_concept_finding.existence &&
+        most_recent_parent_concept_finding.created_at > finding.created_at
+
+      return !invalidated
+    })
+
+  return first_positive_finding_not_invalidated_by_a_later_negative_finding ||
+    findings_of_condition[0]
+}
+
+export async function renderedMostRecentFindings(
   trx: TrxOrDb,
   { patient_id, encounter, health_worker_id }: {
     patient_id: string
     encounter: RenderedPatientEncounter
     health_worker_id: string
   },
-): Promise<RenderedFindingRelativeToHealthWorker[]> {
-  const positive_findings = await positiveFindings(trx, { patient_id })
+): Promise<MostRecentBriefHistoryFindings> {
+  const most_recent_findings = await mostRecentFindings(trx, { patient_id })
+
+  const most_recent_findings_by_common_condition_key = mapEntries(
+    groupBy(most_recent_findings, 'pertaining_to_key'),
+    mostRecentFinding,
+  )
+
   const encounter_ids = uniq(
-    positive_findings.flatMap((finding) => [
+    Object.values(most_recent_findings_by_common_condition_key).flatMap((
+      finding,
+    ) => [
       finding.patient_encounter_id,
       ...finding.qualifiers.map((qualifier) => qualifier.patient_encounter_id),
     ]),
@@ -187,8 +150,23 @@ export async function renderedPositiveFindings(
     'patient_encounter_id',
   )
 
-  return positive_findings.map(
-    ({ qualifiers, patient_encounter_employee_id, ...finding }) => {
+  const most_recent_all_conditions_raw = fromEntries(
+    COMMON_CONDITION_KEYS.map(
+      (condition) => [
+        condition,
+        most_recent_findings_by_common_condition_key[condition],
+      ],
+    ),
+  )
+
+  return mapEntries(
+    most_recent_all_conditions_raw,
+    (most_recent_finding) => {
+      if (!most_recent_finding) return null
+
+      const { qualifiers, patient_encounter_employee_id, ...finding } =
+        most_recent_finding
+
       const matching_encounter = encounter_id_to_encounter.get(
         finding.patient_encounter_id,
       )
@@ -208,11 +186,16 @@ export async function renderedPositiveFindings(
         `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
       )
 
+      const value_display = qualifiers
+        .map((q) => q.value_display)
+        .concat([finding.name])
+        .join(' ')
+
       return {
         ...finding,
+        value_display,
         provider: {
           is_me: matching_employee.id === health_worker_id,
-          is_same_person_who_made_originally_noted_finding: true,
           ...matching_employee,
         },
         qualifiers: qualifiers.map(
@@ -247,9 +230,7 @@ export async function renderedPositiveFindings(
               provider: {
                 is_me: qualifier_matching_employee.id ===
                   health_worker_id,
-                is_same_person_who_made_originally_noted_finding:
-                  qualifier_matching_employee.id ===
-                    matching_employee.id,
+
                 ...qualifier_matching_employee,
               },
             }

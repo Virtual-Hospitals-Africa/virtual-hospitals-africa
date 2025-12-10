@@ -36,7 +36,7 @@ export default function AlcoholSection(
           value={alcohol.value.has_ever_drank}
           onChange={(value) => alcohol.value = { has_ever_drank: value }}
         />
-        {alcohol.value.has_ever_drank === true && (
+        {alcohol.value.has_ever_drank === 'yes' && (
           <>
             <YesNoQuestion
               name='lifestyle.alcohol.currently_drinks'
@@ -45,7 +45,7 @@ export default function AlcoholSection(
               onChange={(value) => {
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   currently_drinks: value,
                 }
               }}
@@ -57,7 +57,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   binge_drinking: value,
                 }}
             />
@@ -68,7 +68,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   drawn_to_cut_down: value,
                 }}
             />
@@ -79,7 +79,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   annoyed_by_critics: value,
                 }}
             />
@@ -90,7 +90,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   eye_opener: value,
                 }}
             />
@@ -101,7 +101,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   guilty: value,
                 }}
             />
@@ -112,7 +112,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   missed_work: value,
                 }}
             />
@@ -123,7 +123,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   criticized: value,
                 }}
             />
@@ -134,7 +134,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   arrested: value,
                 }}
             />
@@ -145,7 +145,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   attempted_to_stop: value,
                 }}
             />
@@ -156,7 +156,7 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   withdrawal: value,
                 }}
             />
@@ -167,14 +167,14 @@ export default function AlcoholSection(
               onChange={(value) =>
                 alcohol.value = {
                   ...alcohol.value,
-                  has_ever_drank: true,
+                  has_ever_drank: 'yes',
                   quit_for_six_or_more_months: value,
                 }}
             />
           </>
         )}
       </YesNoGrid>
-      {alcohol.value.has_ever_drank &&
+      {alcohol.value.has_ever_drank === 'yes' &&
         alcohol.value.quit_for_six_or_more_months && (
         <NumberInput
           name={`lifestyle.alcohol.abstinence_length_months`}
@@ -185,7 +185,7 @@ export default function AlcoholSection(
           max={age_years * 12}
         />
       )}
-      {alcohol.value.has_ever_drank && (
+      {alcohol.value.has_ever_drank === 'yes' && (
         <>
           <NumberInput
             name='lifestyle.alcohol.first_drink'
@@ -213,8 +213,8 @@ export default function AlcoholSection(
         </>
       )}
 
-      {alcohol.value.has_ever_drank === true &&
-        alcohol.value.currently_drinks === true && (
+      {alcohol.value.has_ever_drank === 'yes' &&
+        alcohol.value.currently_drinks === 'yes' && (
         <LabelledListboxMulti
           variant='starts_closed'
           label='Which alcoholic drinks does the patient take?'

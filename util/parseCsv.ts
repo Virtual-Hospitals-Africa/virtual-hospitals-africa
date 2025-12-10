@@ -8,50 +8,56 @@ export default async function* parseCsv(
   file_path: string,
   opts: Partial<CommonCSVReaderOptions> = {},
 ) {
-  const file = await Deno.open(file_path)
+  let file: Deno.FsFile | undefined
+  try {
+    file = await Deno.open(file_path)
 
-  let header: string[] = []
-  let isFirstRow = true
+    let header: string[] = []
+    let isFirstRow = true
 
-  for await (const row of readCSV(file, opts)) {
-    // Collecting data from the async iterable row into an array
-    const rowDataArray: string[] = []
-    for await (let cell of row) {
-      if (cell.endsWith('\r')) {
-        cell = cell.slice(0, cell.length - 1)
+    for await (const row of readCSV(file, opts)) {
+      // Collecting data from the async iterable row into an array
+      const rowDataArray: string[] = []
+      for await (let cell of row) {
+        if (cell.endsWith('\r')) {
+          cell = cell.slice(0, cell.length - 1)
+        }
+        rowDataArray.push(cell)
       }
-      rowDataArray.push(cell)
-    }
 
-    if (isFirstRow) {
-      if (rowDataArray.some((row) => row === '')) {
-        throw new Error(
-          `Error parsing ${file_path}. Check the header for extraneous trailing characters`,
-        )
+      if (isFirstRow) {
+        if (rowDataArray.some((row) => row === '')) {
+          throw new Error(
+            `Error parsing ${file_path}. Check the header for extraneous trailing characters`,
+          )
+        }
+        // Assuming the first row of the CSV contains the header
+        header = rowDataArray
+        isFirstRow = false
+        continue
       }
-      // Assuming the first row of the CSV contains the header
-      header = rowDataArray
-      isFirstRow = false
-      continue
-    }
 
-    const rowData: Record<string, string | null> = {}
+      const rowData: Record<string, string | null> = {}
 
-    let at_least_one_column_is_not_null = false
-    header.forEach((column, i) => {
-      const value = rowDataArray[i] || null
-      rowData[column] = value
-      if (value) {
-        at_least_one_column_is_not_null = true
+      let at_least_one_column_is_not_null = false
+      header.forEach((column, i) => {
+        const value = rowDataArray[i] || null
+        rowData[column] = value
+        if (value) {
+          at_least_one_column_is_not_null = true
+        }
+      })
+
+      if (at_least_one_column_is_not_null) {
+        yield rowData
       }
-    })
-
-    if (at_least_one_column_is_not_null) {
-      yield rowData
     }
+  } catch (err) {
+    console.error(file_path)
+    throw err
+  } finally {
+    file?.close()
   }
-
-  file.close()
 }
 
 export type ParseTsvOptions =

@@ -50,7 +50,8 @@ export function insertMany(
     .map((evaluation) => ({
       id: generateUUID(),
       evaluates_record_id: evaluation.finding_id,
-      snomed_concept_id: PRIORITY_SNOMED_CODES[evaluation.priority || 'Normal'],
+      snomed_concept_id:
+        PRIORITY_SNOMED_CODES[evaluation.priority || 'Non-urgent'],
       note: evaluation.note?.trim(),
     }))
 
