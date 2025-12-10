@@ -1,5 +1,5 @@
-import { Kysely } from "kysely";
-import { createPointerTable } from "../createTable.ts";
+import { Kysely } from 'kysely'
+import { createPointerTable } from '../createTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   /* not sure this is what we want, but it will introduce a new type of finding that doesn't
@@ -7,15 +7,15 @@ export async function up(db: Kysely<unknown>) {
   */
   await createPointerTable(
     db,
-    "patient_categorical_findings",
+    'patient_categorical_findings',
     {
-      references: "patient_records",
-      primary_key_type: "uuid",
+      references: 'patient_records',
+      primary_key_type: 'uuid',
     },
     (qb) => qb,
-  );
+  )
 }
 
 export async function down(db: Kysely<unknown>) {
- await db.schema.dropTable('patient_categorical_findings').execute()
+  await db.schema.dropTable('patient_categorical_findings').execute()
 }

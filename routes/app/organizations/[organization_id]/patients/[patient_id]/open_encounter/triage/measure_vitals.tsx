@@ -9,7 +9,10 @@ import * as patient_measurements from '../../../../../../../../db/models/patient
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { positive_number, snomed_concept_id } from '../../../../../../../../util/validators.ts'
+import {
+  positive_number,
+  snomed_concept_id,
+} from '../../../../../../../../util/validators.ts'
 import filterOfType from '../../../../../../../../util/filterOfType.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { getActiveConditionsSnomedCodesFromContext } from '../../../../../../../../shared/vitals.ts'
@@ -60,9 +63,10 @@ export const handler = postHandler(
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
     const input_measurements = filterOfType(form_values.findings, hasValue)
     const input_assessments = form_values.assessments
-    const active_condition_snomed_codes = getActiveConditionsSnomedCodesFromContext(
-      ctx.state.patient_history,
-    )
+    const active_condition_snomed_codes =
+      getActiveConditionsSnomedCodesFromContext(
+        ctx.state.patient_history,
+      )
 
     await vitals.insertMeasurementsAndAssessments(
       ctx.state.trx,
@@ -431,23 +435,26 @@ export const handler = postHandler(
 }
 */
 
-
 export async function TriageMeasureVitalsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   // TODO: Ask Will if during triage we care about active conditions as far as measurements are concerned
-  const active_condition_snomed_codes = getActiveConditionsSnomedCodesFromContext(
-    ctx.state.patient_history,
-  )
+  const active_condition_snomed_codes =
+    getActiveConditionsSnomedCodesFromContext(
+      ctx.state.patient_history,
+    )
 
-  const [vital_measurements_for_this_encounter, triage_assessments] = await Promise.all([
-    vitals.measurementsNeededForTriageEncounter(
-      ctx.state.trx,
-      ctx.state.patient,
-      active_condition_snomed_codes,
-    ),
-    patient_categorical_findings.getTriageAssessmentsWithOptions(ctx.state.trx),
-  ])
+  const [vital_measurements_for_this_encounter, triage_assessments] =
+    await Promise.all([
+      vitals.measurementsNeededForTriageEncounter(
+        ctx.state.trx,
+        ctx.state.patient,
+        active_condition_snomed_codes,
+      ),
+      patient_categorical_findings.getTriageAssessmentsWithOptions(
+        ctx.state.trx,
+      ),
+    ])
 
   const most_recent_patient_vitals = await patient_measurements
     .getMostRecent(

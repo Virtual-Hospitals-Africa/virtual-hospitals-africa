@@ -57,19 +57,22 @@ export function insert(
         patient_id,
         patient_encounter_id,
         snomed_concept_id: finding_snomed_concept_id,
-      })
+      }))
+    .with(
+      'inserting_finding',
+      (qb) =>
+        qb.insertInto('patient_findings').values({
+          id: finding_id,
+          patient_encounter_employee_id,
+          procedure_id,
+        }),
     )
-    .with('inserting_finding', (qb) =>
-      qb.insertInto('patient_findings').values({
-        id: finding_id,
-        patient_encounter_employee_id,
-        procedure_id,
-      })
-    )
-    .with('inserting_categorical_finding', (qb) =>
-      qb.insertInto('patient_categorical_findings').values({
-        id: finding_id,
-      })
+    .with(
+      'inserting_categorical_finding',
+      (qb) =>
+        qb.insertInto('patient_categorical_findings').values({
+          id: finding_id,
+        }),
     )
     .selectFrom('inserting_categorical_finding')
     .selectAll()
@@ -107,55 +110,65 @@ export async function insertMany(
   }))
 
   return trx
-    .with('inserting_procedure_record', (qb) =>
-      procedure.id
-        ? blankSelection(qb)
-        : qb.insertInto('patient_records').values({
+    .with(
+      'inserting_procedure_record',
+      (qb) =>
+        procedure.id
+          ? blankSelection(qb)
+          : qb.insertInto('patient_records').values({
             id: procedure_id,
             patient_id,
             patient_encounter_id,
             snomed_concept_id: procedure.create_from_snomed_concept_id,
-          })
+          }),
     )
-    .with('inserting_procedure', (qb) =>
-      procedure.id
-        ? blankSelection(qb)
-        : qb.insertInto('patient_procedures').values({
+    .with(
+      'inserting_procedure',
+      (qb) =>
+        procedure.id
+          ? blankSelection(qb)
+          : qb.insertInto('patient_procedures').values({
             id: procedure_id,
             patient_encounter_employee_id,
-          })
+          }),
     )
-    .with('inserting_finding_records', (qb) =>
-      assessments_with_ids.length
-        ? qb.insertInto('patient_records').values(
+    .with(
+      'inserting_finding_records',
+      (qb) =>
+        assessments_with_ids.length
+          ? qb.insertInto('patient_records').values(
             assessments_with_ids.map((a) => ({
               id: a.finding_id,
               patient_id,
               patient_encounter_id,
               snomed_concept_id: a.option_snomed_concept_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_findings', (qb) =>
-      assessments_with_ids.length
-        ? qb.insertInto('patient_findings').values(
+    .with(
+      'inserting_findings',
+      (qb) =>
+        assessments_with_ids.length
+          ? qb.insertInto('patient_findings').values(
             assessments_with_ids.map((a) => ({
               id: a.finding_id,
               procedure_id,
               patient_encounter_employee_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_categorical_findings', (qb) =>
-      assessments_with_ids.length
-        ? qb.insertInto('patient_categorical_findings').values(
+    .with(
+      'inserting_categorical_findings',
+      (qb) =>
+        assessments_with_ids.length
+          ? qb.insertInto('patient_categorical_findings').values(
             assessments_with_ids.map((a) => ({
               id: a.finding_id,
-            }))
+            })),
           ).returning('id')
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
     .selectFrom('inserting_categorical_findings')
     .selectAll()

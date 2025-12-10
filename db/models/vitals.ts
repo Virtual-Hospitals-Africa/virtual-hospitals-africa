@@ -89,85 +89,101 @@ export async function insertMeasurementsAndAssessments(
 
   // Single CTE: procedure + measurements + assessments
   await trx
-    .with('inserting_procedure_record', (qb) =>
-      qb.insertInto('patient_records').values({
-        id: procedure_id,
-        patient_id: opts.patient_id,
-        patient_encounter_id: opts.patient_encounter_id,
-        snomed_concept_id: procedure_snomed_code,
-      })
+    .with(
+      'inserting_procedure_record',
+      (qb) =>
+        qb.insertInto('patient_records').values({
+          id: procedure_id,
+          patient_id: opts.patient_id,
+          patient_encounter_id: opts.patient_encounter_id,
+          snomed_concept_id: procedure_snomed_code,
+        }),
     )
-    .with('inserting_procedure', (qb) =>
-      qb.insertInto('patient_procedures').values({
-        id: procedure_id,
-        patient_encounter_employee_id: opts.patient_encounter_employee_id,
-      })
+    .with(
+      'inserting_procedure',
+      (qb) =>
+        qb.insertInto('patient_procedures').values({
+          id: procedure_id,
+          patient_encounter_employee_id: opts.patient_encounter_employee_id,
+        }),
     )
-    .with('inserting_measurement_records', (qb) =>
-      opts.input_measurements.length
-        ? qb.insertInto('patient_records').values(
+    .with(
+      'inserting_measurement_records',
+      (qb) =>
+        opts.input_measurements.length
+          ? qb.insertInto('patient_records').values(
             opts.input_measurements.map((m) => ({
               id: m.finding_id,
               patient_id: opts.patient_id,
               patient_encounter_id: opts.patient_encounter_id,
               snomed_concept_id: m.snomed_concept_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_measurement_findings', (qb) =>
-      opts.input_measurements.length
-        ? qb.insertInto('patient_findings').values(
+    .with(
+      'inserting_measurement_findings',
+      (qb) =>
+        opts.input_measurements.length
+          ? qb.insertInto('patient_findings').values(
             opts.input_measurements.map((m) => ({
               id: m.finding_id,
               procedure_id,
               patient_encounter_employee_id: opts.patient_encounter_employee_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_measurements', (qb) =>
-      opts.input_measurements.length
-        ? qb.insertInto('patient_measurements').values(
+    .with(
+      'inserting_measurements',
+      (qb) =>
+        opts.input_measurements.length
+          ? qb.insertInto('patient_measurements').values(
             opts.input_measurements.map((m) => ({
               id: m.finding_id,
               value: m.value,
               units: m.units,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_assessment_records', (qb) =>
-      opts.input_assessments.length
-        ? qb.insertInto('patient_records').values(
+    .with(
+      'inserting_assessment_records',
+      (qb) =>
+        opts.input_assessments.length
+          ? qb.insertInto('patient_records').values(
             opts.input_assessments.map((a) => ({
               id: a.finding_id,
               patient_id: opts.patient_id,
               patient_encounter_id: opts.patient_encounter_id,
               snomed_concept_id: a.option_snomed_concept_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_assessment_findings', (qb) =>
-      opts.input_assessments.length
-        ? qb.insertInto('patient_findings').values(
+    .with(
+      'inserting_assessment_findings',
+      (qb) =>
+        opts.input_assessments.length
+          ? qb.insertInto('patient_findings').values(
             opts.input_assessments.map((a) => ({
               id: a.finding_id,
               procedure_id,
               patient_encounter_employee_id: opts.patient_encounter_employee_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
-    .with('inserting_categorical_findings', (qb) =>
-      opts.input_assessments.length
-        ? qb.insertInto('patient_categorical_findings').values(
+    .with(
+      'inserting_categorical_findings',
+      (qb) =>
+        opts.input_assessments.length
+          ? qb.insertInto('patient_categorical_findings').values(
             opts.input_assessments.map((a) => ({
               id: a.finding_id,
-            }))
+            })),
           )
-        : blankSelection(qb)
+          : blankSelection(qb),
     )
     .selectNoFrom([literalString(procedure_id).as('procedure_id')])
     .executeTakeFirst()
@@ -198,4 +214,6 @@ export async function measurementsNeededForTriageEncounter(
     active_condition_snomed_codes,
   )
 }
+
+
 

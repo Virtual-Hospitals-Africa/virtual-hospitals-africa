@@ -7,12 +7,24 @@ const SatsTriageScoringRuleSchema = z.object({
   scoring_system: z.string(),
   assessment_option_id: z.string().nullable(),
   finding_snomed_concept_id: z.string().nullable(),
-  value_min: z.string().nullable().transform((val) => val ? parseFloat(val) : null),
-  value_max: z.string().nullable().transform((val) => val ? parseFloat(val) : null),
-  age_min_days: z.string().nullable().transform((val) => val ? parseInt(val, 10) : null),
-  age_max_days: z.string().nullable().transform((val) => val ? parseInt(val, 10) : null),
-  height_min_cm: z.string().nullable().transform((val) => val ? parseInt(val, 10) : null),
-  height_max_cm: z.string().nullable().transform((val) => val ? parseInt(val, 10) : null),
+  value_min: z.string().nullable().transform((val) =>
+    val ? parseFloat(val) : null
+  ),
+  value_max: z.string().nullable().transform((val) =>
+    val ? parseFloat(val) : null
+  ),
+  age_min_days: z.string().nullable().transform((val) =>
+    val ? parseInt(val, 10) : null
+  ),
+  age_max_days: z.string().nullable().transform((val) =>
+    val ? parseInt(val, 10) : null
+  ),
+  height_min_cm: z.string().nullable().transform((val) =>
+    val ? parseInt(val, 10) : null
+  ),
+  height_max_cm: z.string().nullable().transform((val) =>
+    val ? parseInt(val, 10) : null
+  ),
   score_value: z.string().transform((val) => parseInt(val, 10)),
 })
 

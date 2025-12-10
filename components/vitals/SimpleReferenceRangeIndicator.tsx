@@ -17,36 +17,33 @@ export function ReferenceRangeIndicator({
   criticalMax,
   units,
 }: SimpleReferenceRangeIndicatorProps) {
+  const definedRangeMin = criticalMin ?? normalMin
+  const definedRangeMax = criticalMax ?? normalMax
+  const totalDefinedRange = definedRangeMax - definedRangeMin
 
+  const extensionCap = totalDefinedRange * 0.25
 
-  const definedRangeMin = criticalMin ?? normalMin;
-  const definedRangeMax = criticalMax ?? normalMax;
-  const totalDefinedRange = definedRangeMax - definedRangeMin;
-
-
-  const extensionCap = totalDefinedRange * 0.25;
-
-  let overallMin: number;
+  let overallMin: number
   if (criticalMin !== undefined && criticalMin < normalMin) {
-    const abnormalLowWidth = normalMin - criticalMin;
+    const abnormalLowWidth = normalMin - criticalMin
 
-    const lowExtension = Math.min(abnormalLowWidth, extensionCap);
-    overallMin = criticalMin - lowExtension;
+    const lowExtension = Math.min(abnormalLowWidth, extensionCap)
+    overallMin = criticalMin - lowExtension
   } else {
-    overallMin = normalMin;
+    overallMin = normalMin
   }
 
-  let overallMax: number;
+  let overallMax: number
   if (criticalMax !== undefined && criticalMax > normalMax) {
-    const abnormalHighWidth = criticalMax - normalMax;
+    const abnormalHighWidth = criticalMax - normalMax
 
-    const highExtension = Math.min(abnormalHighWidth, extensionCap);
-    overallMax = criticalMax + highExtension;
+    const highExtension = Math.min(abnormalHighWidth, extensionCap)
+    overallMax = criticalMax + highExtension
   } else {
-    overallMax = normalMax;
+    overallMax = normalMax
   }
 
-  const totalRange = overallMax - overallMin;
+  const totalRange = overallMax - overallMin
 
   const getPosition = (val: number) => {
     return Math.max(
@@ -60,15 +57,16 @@ export function ReferenceRangeIndicator({
     ? getPosition(previousValue)
     : null
 
-
   const normalStartPosition = ((normalMin - overallMin) / totalRange) * 100
   const normalWidth = ((normalMax - normalMin) / totalRange) * 100
 
-
   const hasAbnormalLow = criticalMin !== undefined && criticalMin < normalMin
-  const criticalLowPosition = hasAbnormalLow ? ((criticalMin - overallMin) / totalRange) * 100 : 0
-  const abnormalLowWidth = hasAbnormalLow ? normalStartPosition - criticalLowPosition : 0
-
+  const criticalLowPosition = hasAbnormalLow
+    ? ((criticalMin - overallMin) / totalRange) * 100
+    : 0
+  const abnormalLowWidth = hasAbnormalLow
+    ? normalStartPosition - criticalLowPosition
+    : 0
 
   const hasAbnormalHigh = criticalMax !== undefined && criticalMax > normalMax
   const abnormalHighPosition = normalStartPosition + normalWidth
@@ -76,10 +74,8 @@ export function ReferenceRangeIndicator({
     ? (((criticalMax - normalMax) / totalRange) * 100)
     : 0
 
-
   const hasCriticalLow = hasAbnormalLow
   const criticalLowWidth = hasCriticalLow ? criticalLowPosition : 0
-
 
   const hasCriticalHigh = hasAbnormalHigh
   const criticalHighPosition = abnormalHighPosition + abnormalHighWidth
@@ -113,7 +109,6 @@ export function ReferenceRangeIndicator({
           </clipPath>
         </defs>
         <g clipPath={`url(#rounded-bar-${value})`}>
-
           {hasCriticalLow && (
             <rect
               x={paddingX}
@@ -165,7 +160,6 @@ export function ReferenceRangeIndicator({
 
         {previousPosition !== null && (
           <g>
-
             <line
               x1={paddingX + (previousPosition * barWidth / 100)}
               y1={barY - 1}
@@ -188,16 +182,17 @@ export function ReferenceRangeIndicator({
             <polygon
               points={`${paddingX + (previousPosition * barWidth / 100) - 5},${
                 barY - 13
-              } ${paddingX + (previousPosition * barWidth / 100) + 5},${barY - 13} ${
-                paddingX + (previousPosition * barWidth / 100)
-              },${barY - 4.5}`}
+              } ${paddingX + (previousPosition * barWidth / 100) + 5},${
+                barY - 13
+              } ${paddingX + (previousPosition * barWidth / 100)},${
+                barY - 4.5
+              }`}
               fill='#9ca3af'
             />
           </g>
         )}
 
         <g>
-
           <line
             x1={paddingX + (valuePosition * barWidth / 100)}
             y1={barY - 2}
@@ -221,8 +216,8 @@ export function ReferenceRangeIndicator({
             points={`${paddingX + (valuePosition * barWidth / 100) - 5},${
               barY - 14
             } ${paddingX + (valuePosition * barWidth / 100) + 5},${barY - 14} ${
-                paddingX + (valuePosition * barWidth / 100)
-              },${barY - 5.5}`}
+              paddingX + (valuePosition * barWidth / 100)
+            },${barY - 5.5}`}
             fill='#000000'
           />
         </g>

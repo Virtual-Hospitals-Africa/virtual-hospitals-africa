@@ -38,7 +38,8 @@ export function VitalsMeasurementsForm({
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.snomed_concept_id === assessment.assessment_snomed_id,
+                  patient_vital.snomed_concept_id ===
+                    assessment.assessment_snomed_id,
               )}
             />
           ))}

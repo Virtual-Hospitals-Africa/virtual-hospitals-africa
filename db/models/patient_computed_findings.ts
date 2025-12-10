@@ -310,7 +310,13 @@ export async function computeAndInsertDerivedMeasurements(
     source_measurements: Measurement[]
     source_procedure_id: string
   },
-): Promise<{ success: true; computed_findings: string[]; computed_measurements: Measurement[] }> {
+): Promise<
+  {
+    success: true
+    computed_findings: string[]
+    computed_measurements: Measurement[]
+  }
+> {
   const measurements = new Map(
     source_measurements.map((m) => [m.snomed_concept_id, m]),
   )

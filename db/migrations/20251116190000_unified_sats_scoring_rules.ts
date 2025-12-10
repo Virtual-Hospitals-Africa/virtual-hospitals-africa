@@ -1,41 +1,43 @@
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   // Create unified SATS triage scoring rules table
   await db.schema
-    .createTable("sats_triage_scoring_rules")
-    .addColumn("id", "uuid", (col) => col.primaryKey())
-    .addColumn("scoring_system", "varchar(50)", (col) => col.notNull())
-
+    .createTable('sats_triage_scoring_rules')
+    .addColumn('id', 'uuid', (col) => col.primaryKey())
+    .addColumn('scoring_system', 'varchar(50)', (col) => col.notNull())
     // For categorical assessments (AVPU, mobility, trauma)
-    .addColumn("assessment_option_id", "uuid", (col) =>
-      col.references("sats_triage_assessment_options.id").onDelete("cascade")
+    .addColumn(
+      'assessment_option_id',
+      'uuid',
+      (col) =>
+        col.references('sats_triage_assessment_options.id').onDelete('cascade'),
     )
-
     // For quantitative measurements (HR, RR, BP, Temp)
-    .addColumn("finding_snomed_concept_id", "bigint")
-    .addColumn("value_min", "numeric(10, 2)")
-    .addColumn("value_max", "numeric(10, 2)")
-
+    .addColumn('finding_snomed_concept_id', 'bigint')
+    .addColumn('value_min', 'numeric(10, 2)')
+    .addColumn('value_max', 'numeric(10, 2)')
     // Age/height stratification (applies to both types)
-    .addColumn("age_min_days", "integer")
-    .addColumn("age_max_days", "integer")
-    .addColumn("height_min_cm", "integer")
-    .addColumn("height_max_cm", "integer")
-
-    .addColumn("score_value", "integer", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) =>
-      col.notNull().defaultTo(sql`now()`)
+    .addColumn('age_min_days', 'integer')
+    .addColumn('age_max_days', 'integer')
+    .addColumn('height_min_cm', 'integer')
+    .addColumn('height_max_cm', 'integer')
+    .addColumn('score_value', 'integer', (col) => col.notNull())
+    .addColumn(
+      'created_at',
+      'timestamptz',
+      (col) => col.notNull().defaultTo(sql`now()`),
     )
-    .addColumn("updated_at", "timestamptz", (col) =>
-      col.notNull().defaultTo(sql`now()`)
+    .addColumn(
+      'updated_at',
+      'timestamptz',
+      (col) => col.notNull().defaultTo(sql`now()`),
     )
-
     // Check constraint: must be either categorical OR quantitative
     // Categorical: has assessment_option_id, no finding/values
     // Quantitative: has finding_snomed_concept_id, at least one value bound (min or max)
     .addCheckConstraint(
-      "scoring_rule_type_check",
+      'scoring_rule_type_check',
       sql`(
         (assessment_option_id IS NOT NULL
          AND finding_snomed_concept_id IS NULL
@@ -45,9 +47,9 @@ export async function up(db: Kysely<unknown>) {
         (assessment_option_id IS NULL
          AND finding_snomed_concept_id IS NOT NULL
          AND (value_min IS NOT NULL OR value_max IS NOT NULL))
-      )`
+      )`,
     )
-    .execute();
+    .execute()
 
   await sql`
     CREATE OR REPLACE FUNCTION calculate_tews_score(
@@ -175,10 +177,11 @@ export async function up(db: Kysely<unknown>) {
         RETURN COALESCE(result, '{}'::jsonb);
     END;
     $$ LANGUAGE plpgsql;
-  `.execute(db);
+  `.execute(db)
 }
 
 export async function down(db: Kysely<unknown>) {
-  await sql`DROP FUNCTION IF EXISTS calculate_tews_score(UUID, UUID, INT, INT);`.execute(db);
-  await db.schema.dropTable("sats_triage_scoring_rules").execute();
+  await sql`DROP FUNCTION IF EXISTS calculate_tews_score(UUID, UUID, INT, INT);`
+    .execute(db)
+  await db.schema.dropTable('sats_triage_scoring_rules').execute()
 }

@@ -46,7 +46,7 @@ export const VITALS_UNITS = {
  * Extracts active condition SNOMED codes from patient history context.
  *
  * TODO: When patient_history.pre_existing_conditions schema is properly implemented
- * with condition objects containing snomed_concept_id fields, update this function 
+ * with condition objects containing snomed_concept_id fields, update this function
  */
 export function getActiveConditionsSnomedCodesFromContext(
   patient_history: { pre_existing_conditions: readonly unknown[] },

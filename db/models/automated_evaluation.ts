@@ -1,5 +1,6 @@
 import { TrxOrDb } from '../../types.ts'
 import { sql } from 'kysely'
+import { now } from '../helpers.ts'
 
 export interface ReferenceRange {
   readonly measurement_snomed_concept_id: string
@@ -42,12 +43,12 @@ export async function getApplicableReferenceRanges(
       measurement_snomed_codes,
     )
     .where('mrr.active', '=', true)
-    .where('mrr.effective_date', '<=', new Date())
+    .where('mrr.effective_date', '<=', now)
     .where('mrr.condition_codes', 'is', null) // Only general ranges for now
     .where((eb) =>
       eb.or([
         eb('mrr.expiration_date', 'is', null),
-        eb('mrr.expiration_date', '>', new Date()),
+        eb('mrr.expiration_date', '>', now),
       ])
     )
     .where((eb) =>

@@ -14,35 +14,35 @@ import memoize from '../util/memoize.ts'
 import {
   readBooleanEnvironmentVariable,
   readMandatoryStringEnvironmentVariable,
-} from "../util/env.ts";
-import { redirectUri } from "../external-clients/google.ts";
-import { upsertWithGoogleCredentials } from "../db/models/health_worker_google_tokens.ts";
-import randomAvatarMediaId from "../mocks/randomAvatar.ts";
+} from '../util/env.ts'
+import { redirectUri } from '../external-clients/google.ts'
+import { upsertWithGoogleCredentials } from '../db/models/health_worker_google_tokens.ts'
+import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
-const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable("FAKE_GOOGLE_AUTH");
+const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {
-  assert(!onProduction(), "Cannot fake google authentication on production");
+  assert(!onProduction(), 'Cannot fake google authentication on production')
 }
 console.log({ FAKE_GOOGLE_AUTH })
 
 export const loginHref = memoize(() => {
-  const client_id = readMandatoryStringEnvironmentVariable("GOOGLE_CLIENT_ID");
+  const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')
 
   const oauth_params = new URLSearchParams({
     redirect_uri: redirectUri(),
-    prompt: "consent",
-    response_type: "code",
+    prompt: 'consent',
+    response_type: 'code',
     client_id,
     scope:
-      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-    access_type: "offline",
-    service: "lso",
-    o2v: "2",
-    flowName: "GeneralOAuthFlow",
-  });
+      'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+    access_type: 'offline',
+    service: 'lso',
+    o2v: '2',
+    flowName: 'GeneralOAuthFlow',
+  })
 
-  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauth_params}`;
-});
+  return `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauth_params}`
+})
 
 async function fakeGoogleLogin(trx: TrxOrDb) {
   const { sex, ...names } = randomNamesAndSex('ZA')
@@ -59,47 +59,46 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
     access_token,
     refresh_token,
     expires_at,
-  });
+  })
 
-  const session = await sessions.create(trx, "health_worker", {
+  const session = await sessions.create(trx, 'health_worker', {
     entity_id: health_worker.id,
-  });
+  })
 
-  const response = redirect("/onboarding/welcome");
+  const response = redirect('/onboarding/welcome')
 
   setCookie(response.headers, {
     name: cookie.session_key,
     value: session.id,
-  });
+  })
 
-  return response;
+  return response
 }
 
 export const handler = {
   // deno-lint-ignore no-explicit-any
   async GET(ctx: Context<any>) {
-    const req = ctx.req;
-    const session_id = cookie.get(req);
+    const req = ctx.req
+    const session_id = cookie.get(req)
     if (!session_id) {
-      return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref());
+      return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }
 
-    const session = await sessions.getBySessionId(db, session_id);
+    const session = await sessions.getBySessionId(db, session_id)
 
     if (!session) {
-      const response = await (FAKE_GOOGLE_AUTH
-        ? fakeGoogleLogin(db)
-        : redirect(loginHref()));
-      deleteCookie(response.headers, cookie.session_key);
-      return response;
+      const response =
+        await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
+      deleteCookie(response.headers, cookie.session_key)
+      return response
     }
 
-    if (session.entity_type === "health_worker") {
-      return redirect(`/app?from_login=true`);
+    if (session.entity_type === 'health_worker') {
+      return redirect(`/app?from_login=true`)
     }
 
-    assertEquals(session.entity_type, "regulator");
+    assertEquals(session.entity_type, 'regulator')
 
-    return redirect("/regulator?from_login=true");
+    return redirect('/regulator?from_login=true')
   },
-};
+}

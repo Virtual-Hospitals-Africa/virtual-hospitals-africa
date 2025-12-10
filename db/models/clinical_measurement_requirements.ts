@@ -1,4 +1,8 @@
-import { Gender, TrxOrDb, VitalMeasurementFormInputDefition } from '../../types.ts'
+import {
+  Gender,
+  TrxOrDb,
+  VitalMeasurementFormInputDefition,
+} from '../../types.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 

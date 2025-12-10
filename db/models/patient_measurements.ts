@@ -221,7 +221,7 @@ export async function getMostRecent(
     ])
     .select(sql<'manual'>`'manual'`.as('finding_type'))
     .select((eb) => [
-jsonObjectFrom(
+      jsonObjectFrom(
         patient_encounter_employees.baseQuery(trx)
           .where(
             'patient_encounter_employees.id',

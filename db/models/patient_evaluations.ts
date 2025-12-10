@@ -82,7 +82,6 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-
 const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
 
 export async function getMostRecentManualVitalsWithEvaluations(
@@ -325,7 +324,7 @@ const CATEGORICAL_ASSESSMENT_SNOMED_CODES = [
   VITALS_SNOMED_CODE.avpu_consciousness,
   VITALS_SNOMED_CODE.mobility_assessment,
   VITALS_SNOMED_CODE.trauma_presence,
-];
+]
 
 export async function getPreviousVitalMeasurements(
   trx: TrxOrDb,
@@ -351,19 +350,23 @@ export async function getPreviousVitalMeasurements(
         .innerJoin(
           'sats_triage_assessment_options as opt',
           'patient_records.snomed_concept_id',
-          'opt.option_snomed_concept_id'
+          'opt.option_snomed_concept_id',
         )
         .innerJoin(
           'sats_triage_assessments as assessment',
           'opt.assessment_snomed_id',
-          'assessment.assessment_snomed_id'
+          'assessment.assessment_snomed_id',
         )
         .where('patient_records.patient_id', '=', patient_id)
-        .where('assessment.category', 'in', ['consciousness', 'mobility', 'trauma'])
+        .where('assessment.category', 'in', [
+          'consciousness',
+          'mobility',
+          'trauma',
+        ])
         .select([
           'assessment.assessment_snomed_id',
           'opt.display_label',
-          'patient_records.created_at'
+          'patient_records.created_at',
         ])
         .select(
           sql`ROW_NUMBER() OVER (PARTITION BY assessment.assessment_snomed_id ORDER BY patient_records.created_at DESC)`
