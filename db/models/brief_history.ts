@@ -23,25 +23,10 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import partition from '../../util/partition.ts'
 import { nowInvalidRecords } from './patient_records.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 
-// .with(
-//   'common_condition_descendants',
-//   (qb) =>
-//     qb.selectFrom('common_conditions')
-//       .crossJoinLateral((eb) =>
-//         sql<{ descendant_id: string; ancestor_ids: string[] }>`
-//           active_descendant_snomed_concepts(${
-//           eb.ref('common_conditions.snomed_concept_id')
-//         }::bigint)
-//         `.as('descendants')
-//       )
-//       .select([
-//         'descendants.descendant_id',
-//         'common_conditions.key',
-//         'common_conditions.label',
-//         'common_conditions.snomed_concept_id',
-//       ]),
-// )
+
 export function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
@@ -54,7 +39,7 @@ export function mostRecentFindings(
         .innerJoin(
           'common_conditions',
           join => join.on(eb =>
-            sql<boolean>`is_descendant(${eb.ref('patient_records.snomed_concept_id')}, ${eb.ref('common_conditions.snomed_concept_id')})`
+            sql<boolean>`is_descendant(${eb.ref('patient_records.snomed_concept_id')}, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
           )
         )
         .where(
@@ -71,16 +56,30 @@ export function mostRecentFindings(
     .with('this_patient_findings', qb =>
       patient_findings.baseQuery(trx)
         .where('patient_records.patient_id', '=', patient_id)
+        .innerJoin(
+          qb.selectFrom('patient_records_having_anything_to_do_with_common_conditions')
+            .selectAll('patient_records_having_anything_to_do_with_common_conditions')
+            .as('prcc'),
+          join => join.on(eb =>
+            eb.or([
+              eb('patient_records.id', '=', eb.ref('prcc.id')),
+              eb(
+                'patient_records.id',
+                'in',
+                eb.selectFrom('patient_record_qualifiers')
+                  .whereRef('patient_record_qualifiers.id', '=', 'prcc.id')
+                  .select('qualifies_record_id')
+                  .distinct()
+              ),
+            ])
+          )
+        )
         .select([
-          'patient_records_having_anything_to_do_with_common_conditions'
+          'prcc.pertaining_to_key'
         ])
     )
     .selectFrom('this_patient_findings')
     .selectAll('this_patient_findings')
-    // .select((eb) => [
-    //   eb.ref('common_condition_descendants.key').$castTo<CommonConditionKey>()
-    //     .as('pertaining_to_key'),
-    // ])
     .orderBy('this_patient_findings.created_at', 'desc')
     .execute()
 }
@@ -112,7 +111,11 @@ function mostRecentFinding(
 
   const first_positive_finding_not_invalidated_by_a_later_negative_finding =
     findings_of_condition.find((finding) => {
-      if (!finding.existence) return false
+      assertEquals(finding.name, 'Status', "Revisit this function when considering how other types of findings interplay with what's shown for brief history")
+      assert(finding.value_name)
+      assertArrayIncludes(['Yes', 'No', 'Unknown'], [finding.value_name])
+
+      if (finding.value_name !== 'Yes') return
 
       const most_recent_finding_of_concept = first(
         findings_of_condition_grouped_by_concept.get(
@@ -123,7 +126,7 @@ function mostRecentFinding(
       if (finding !== most_recent_finding_of_concept) return false
 
       const invalidated = most_recent_parent_concept_finding &&
-        !most_recent_parent_concept_finding.existence &&
+        most_recent_parent_concept_finding.value_name !== 'Yes' &&
         most_recent_parent_concept_finding.created_at > finding.created_at
 
       return !invalidated

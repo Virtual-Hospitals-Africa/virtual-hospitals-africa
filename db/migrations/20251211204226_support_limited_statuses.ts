@@ -4,9 +4,9 @@ const assertion = assertOnInsert({
   table: 'patient_finding_values',
   function_name: 'support_limited_statuses',
   assertion: `
-    patient_finding_values.value_snomed_concept_id = 373066001 OR -- Yes 
-    patient_finding_values.value_snomed_concept_id = 373067005 OR -- No 
-    patient_finding_values.value_snomed_concept_id = 261665006 OR -- Unknown 
+    NEW.value_snomed_concept_id = 373066001 OR -- Yes
+    NEW.value_snomed_concept_id = 373067005 OR -- No
+    NEW.value_snomed_concept_id = 261665006 OR -- Unknown
     NOT EXISTS (
         SELECT 1
           FROM patient_records
