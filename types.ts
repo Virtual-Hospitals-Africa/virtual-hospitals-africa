@@ -3435,7 +3435,6 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   name: string
   concrete_value: any
   attribute_value: string | null
-  created_at: Date | string
 }
 
 export type RenderedFindingRelativeToHealthWorker<
@@ -3494,7 +3493,6 @@ export type IntermediateFindingRecord<PertainingToKey extends string = string> =
     patient_encounter_id: string
     patient_encounter_employee_id: string
     pertaining_to_key: PertainingToKey
-    existence: Existence
     as_part_of_procedure: AsPartOfProcedure
     qualifiers: QualifierIntermediate[]
     value_snomed_concept_id: null | string

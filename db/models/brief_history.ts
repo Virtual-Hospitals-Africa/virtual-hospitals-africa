@@ -22,47 +22,65 @@ import {
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import partition from '../../util/partition.ts'
+import { nowInvalidRecords } from './patient_records.ts'
 
-
-
+// .with(
+//   'common_condition_descendants',
+//   (qb) =>
+//     qb.selectFrom('common_conditions')
+//       .crossJoinLateral((eb) =>
+//         sql<{ descendant_id: string; ancestor_ids: string[] }>`
+//           active_descendant_snomed_concepts(${
+//           eb.ref('common_conditions.snomed_concept_id')
+//         }::bigint)
+//         `.as('descendants')
+//       )
+//       .select([
+//         'descendants.descendant_id',
+//         'common_conditions.key',
+//         'common_conditions.label',
+//         'common_conditions.snomed_concept_id',
+//       ]),
+// )
 export function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
 ): Promise<IntermediateFindingRecord<CommonConditionKey>[]> {
   return trx
     .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
-    .with(
-      'common_condition_descendants',
-      (qb) =>
-        qb.selectFrom('common_conditions')
-          .crossJoinLateral((eb) =>
-            sql<{ descendant_id: string; ancestor_ids: string[] }>`
-              active_descendant_snomed_concepts(${
-              eb.ref('common_conditions.snomed_concept_id')
-            }::bigint)
-            `.as('descendants')
+    .with('patient_records_having_anything_to_do_with_common_conditions', qb =>
+      qb.selectFrom('patient_records')
+        .where('patient_id', '=', patient_id)
+        .innerJoin(
+          'common_conditions',
+          join => join.on(eb =>
+            sql<boolean>`is_descendant(${eb.ref('patient_records.snomed_concept_id')}, ${eb.ref('common_conditions.snomed_concept_id')})`
           )
-          .select([
-            'descendants.descendant_id',
-            'common_conditions.key',
-            'common_conditions.label',
-            'common_conditions.snomed_concept_id',
-          ]),
+        )
+        .where(
+          'patient_records.id',
+          'not in',
+          nowInvalidRecords(trx, { patient_id }),
+        )
+        .select(eb => [
+          'patient_records.id',
+          eb.ref('common_conditions.key').$castTo<CommonConditionKey>()
+            .as('pertaining_to_key'),
+        ])
     )
-    .with('this_patient_findings', () =>
+    .with('this_patient_findings', qb =>
       patient_findings.baseQuery(trx)
-        .where('patient_records.patient_id', '=', patient_id))
-    .selectFrom('this_patient_findings')
-    .innerJoin(
-      'common_condition_descendants',
-      'common_condition_descendants.descendant_id',
-      'this_patient_findings.snomed_concept_id',
+        .where('patient_records.patient_id', '=', patient_id)
+        .select([
+          'patient_records_having_anything_to_do_with_common_conditions'
+        ])
     )
+    .selectFrom('this_patient_findings')
     .selectAll('this_patient_findings')
-    .select((eb) => [
-      eb.ref('common_condition_descendants.key').$castTo<CommonConditionKey>()
-        .as('pertaining_to_key'),
-    ])
+    // .select((eb) => [
+    //   eb.ref('common_condition_descendants.key').$castTo<CommonConditionKey>()
+    //     .as('pertaining_to_key'),
+    // ])
     .orderBy('this_patient_findings.created_at', 'desc')
     .execute()
 }
@@ -211,6 +229,11 @@ export async function renderedMostRecentFindings(
       return {
         ...finding,
         value_display,
+        existence: finding.value_name === 'No'
+          ? 'no'
+          : finding.value_name === 'Unknown'
+            ? 'unknown'
+            : 'yes',
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

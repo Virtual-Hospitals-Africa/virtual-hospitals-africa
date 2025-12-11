@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as patient_findings from '../../../../../../../../db/models/patient_findings.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
   YesNoGrid,
@@ -64,12 +64,6 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
-const QUALIFIERS_BY_EXISTENCE = {
-  yes: patient_findings.YES_QUALIFIER_SNOMED_CONCEPT_ID,
-  no: patient_findings.NO_QUALIFIER_SNOMED_CONCEPT_ID,
-  unknown: patient_findings.UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
-}
-
 export const handler = postHandler(
   TriageBriefHistorySchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
@@ -88,7 +82,7 @@ export const handler = postHandler(
         if (!condition) return Promise.resolve()
         if (condition.existence === undefined) return Promise.resolve()
 
-        // const 
+        // const
 
         const condition_snomed_concept_id = commonConditionSnomedConceptId(
           condition_key,
@@ -111,7 +105,7 @@ export const handler = postHandler(
           return Promise.resolve()
         }
 
-        return patient_findings.insertOne(
+        return patient_findings.insertOneNested(
           ctx.state.trx,
           {
             patient_id: ctx.state.patient.id,
@@ -123,16 +117,19 @@ export const handler = postHandler(
               ctx.state.workflow_step_snomed_concept_id,
             previously_completed_procedures:
               ctx.state.previously_completed_procedures,
-            finding_snomed_concept_id: patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-            value_snomed_concept_id: QUALIFIERS_BY_EXISTENCE[condition.existence],
+            finding_snomed_concept_id:
+              patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+            value_snomed_concept_id:
+              patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence],
             altered_record_id: null,
             qualifiers: [
               {
-                snomed_concept_id: patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
+                snomed_concept_id:
+                  patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
               },
               {
                 snomed_concept_id: condition_snomed_concept_id,
-              }
+              },
             ],
           },
         )
