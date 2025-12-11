@@ -22,6 +22,9 @@ import {
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import partition from '../../util/partition.ts'
+import { nowInvalidRecords } from './patient_records.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 
 export function mostRecentFindings(
   trx: TrxOrDb,
@@ -30,37 +33,61 @@ export function mostRecentFindings(
   return trx
     .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
     .with(
-      'common_condition_descendants',
+      'patient_records_having_anything_to_do_with_common_conditions',
       (qb) =>
-        qb.selectFrom('common_conditions')
-          .crossJoinLateral((eb) =>
-            sql<{ descendant_id: string; ancestor_ids: string[] }>`
-              active_descendant_snomed_concepts(${
-              eb.ref('common_conditions.snomed_concept_id')
-            }::bigint)
-            `.as('descendants')
+        qb.selectFrom('patient_records')
+          .where('patient_id', '=', patient_id)
+          .innerJoin(
+            'common_conditions',
+            (join) =>
+              join.on((eb) =>
+                sql<boolean>`is_descendant(${
+                  eb.ref('patient_records.snomed_concept_id')
+                }, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
+              ),
           )
-          .select([
-            'descendants.descendant_id',
-            'common_conditions.key',
-            'common_conditions.label',
-            'common_conditions.snomed_concept_id',
+          .where(
+            'patient_records.id',
+            'not in',
+            nowInvalidRecords(trx, { patient_id }),
+          )
+          .select((eb) => [
+            'patient_records.id',
+            eb.ref('common_conditions.key').$castTo<CommonConditionKey>()
+              .as('pertaining_to_key'),
           ]),
     )
-    .with('this_patient_findings', () =>
+    .with('this_patient_findings', (qb) =>
       patient_findings.baseQuery(trx)
-        .where('patient_records.patient_id', '=', patient_id))
+        .where('patient_records.patient_id', '=', patient_id)
+        .innerJoin(
+          qb.selectFrom(
+            'patient_records_having_anything_to_do_with_common_conditions',
+          )
+            .selectAll(
+              'patient_records_having_anything_to_do_with_common_conditions',
+            )
+            .as('prcc'),
+          (join) =>
+            join.on((eb) =>
+              eb.or([
+                eb('patient_records.id', '=', eb.ref('prcc.id')),
+                eb(
+                  'patient_records.id',
+                  'in',
+                  eb.selectFrom('patient_record_qualifiers')
+                    .whereRef('patient_record_qualifiers.id', '=', 'prcc.id')
+                    .select('qualifies_record_id')
+                    .distinct(),
+                ),
+              ])
+            ),
+        )
+        .select([
+          'prcc.pertaining_to_key',
+        ]))
     .selectFrom('this_patient_findings')
-    .innerJoin(
-      'common_condition_descendants',
-      'common_condition_descendants.descendant_id',
-      'this_patient_findings.snomed_concept_id',
-    )
     .selectAll('this_patient_findings')
-    .select((eb) => [
-      eb.ref('common_condition_descendants.key').$castTo<CommonConditionKey>()
-        .as('pertaining_to_key'),
-    ])
     .orderBy('this_patient_findings.created_at', 'desc')
     .execute()
 }
@@ -92,7 +119,15 @@ function mostRecentFinding(
 
   const first_positive_finding_not_invalidated_by_a_later_negative_finding =
     findings_of_condition.find((finding) => {
-      if (!finding.existence) return false
+      assertEquals(
+        finding.name,
+        'Status',
+        "Revisit this function when considering how other types of findings interplay with what's shown for brief history",
+      )
+      assert(finding.value_name)
+      assertArrayIncludes(['Yes', 'No', 'Unknown'], [finding.value_name])
+
+      if (finding.value_name !== 'Yes') return
 
       const most_recent_finding_of_concept = first(
         findings_of_condition_grouped_by_concept.get(
@@ -103,7 +138,7 @@ function mostRecentFinding(
       if (finding !== most_recent_finding_of_concept) return false
 
       const invalidated = most_recent_parent_concept_finding &&
-        !most_recent_parent_concept_finding.existence &&
+        most_recent_parent_concept_finding.value_name !== 'Yes' &&
         most_recent_parent_concept_finding.created_at > finding.created_at
 
       return !invalidated
@@ -202,51 +237,23 @@ export async function renderedMostRecentFindings(
         value_display +=
           ` ${attribute_qualifier.name} ${attribute_qualifier.attribute_value}`
       })
+      if (finding.value_name) {
+        value_display += `: ${finding.value_name}`
+      }
 
       return {
         ...finding,
         value_display,
+        existence: finding.value_name === 'No'
+          ? 'no'
+          : finding.value_name === 'Unknown'
+          ? 'unknown'
+          : 'yes',
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,
         },
-        qualifiers: qualifiers.map(
-          (
-            {
-              patient_encounter_employee_id:
-                qualifier_patient_encounter_employee_id,
-              ...qualifier
-            },
-          ) => {
-            const qualifier_matching_encounter = encounter_id_to_encounter.get(
-              qualifier.patient_encounter_id,
-            )
-            assert(
-              qualifier_matching_encounter,
-              `Qualifier matching encounter not found ${qualifier.patient_encounter_id} ${qualifier.record_id}`,
-            )
-            const qualifier_matching_employee = qualifier_matching_encounter
-              .all_employees_seen.find((
-                employee,
-              ) =>
-                employee.patient_encounter_employee_id ===
-                  qualifier_patient_encounter_employee_id
-              )
-            assert(
-              qualifier_matching_employee,
-              `Qualifier matching employee not found ${qualifier_patient_encounter_employee_id} ${qualifier.record_id}`,
-            )
-
-            return {
-              ...qualifier,
-              provider: {
-                is_me: qualifier_matching_employee.id ===
-                  health_worker_id,
-                ...qualifier_matching_employee,
-              },
-            }
-          },
-        ),
+        qualifiers,
       } satisfies RenderedFindingRelativeToHealthWorker
     },
   )

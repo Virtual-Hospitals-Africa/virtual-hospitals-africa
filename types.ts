@@ -2065,7 +2065,7 @@ export type Lifestyle = {
 
 export type SexualActivity =
   | {
-    ever_been_sexually_active: 'no' | 'not_sure' | null
+    ever_been_sexually_active: 'no' | 'unknown' | null
   }
   | {
     ever_been_sexually_active: 'yes'
@@ -2083,7 +2083,7 @@ export type SexualActivity =
 
 export type Alcohol =
   | {
-    has_ever_drank: 'no' | 'not_sure' | null
+    has_ever_drank: 'no' | 'unknown' | null
   }
   | {
     has_ever_drank: 'yes'
@@ -2108,7 +2108,7 @@ export type Alcohol =
 
 export type Smoking =
   | {
-    has_ever_smoked: 'no' | 'not_sure' | null
+    has_ever_smoked: 'no' | 'unknown' | null
   }
   | {
     has_ever_smoked: 'yes'
@@ -2128,7 +2128,7 @@ export type Smoking =
 
 export type SubstanceUse =
   | {
-    has_ever_used_substance: 'no' | 'not_sure' | null
+    has_ever_used_substance: 'no' | 'unknown' | null
   }
   | {
     has_ever_used_substance: 'yes'
@@ -2148,7 +2148,7 @@ export type SubstanceUse =
 
 export type Exercise =
   | {
-    currently_exercises: 'no' | 'not_sure' | null
+    currently_exercises: 'no' | 'unknown' | null
   }
   | {
     currently_exercises: 'yes'
@@ -3409,7 +3409,7 @@ export type BriefHistory =
     key: BriefHistoryKey
   }
   & (
-    | { presence: 'no' | 'not_sure' }
+    | { presence: 'no' | 'unknown' }
     | { presence: 'yes' }
   )
 
@@ -3435,7 +3435,6 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   name: string
   concrete_value: any
   attribute_value: string | null
-  created_at: Date | string
 }
 
 export type RenderedFindingRelativeToHealthWorker<
@@ -3483,7 +3482,7 @@ type QualifierIntermediate =
     attribute_value: string | null
   }
 
-export type Existence = 'yes' | 'no' | 'not_sure'
+export type Existence = 'yes' | 'no' | 'unknown'
 
 export type IntermediateFindingRecord<PertainingToKey extends string = string> =
   {
@@ -3494,9 +3493,10 @@ export type IntermediateFindingRecord<PertainingToKey extends string = string> =
     patient_encounter_id: string
     patient_encounter_employee_id: string
     pertaining_to_key: PertainingToKey
-    existence: Existence
     as_part_of_procedure: AsPartOfProcedure
     qualifiers: QualifierIntermediate[]
+    value_snomed_concept_id: null | string
+    value_name: null | string
   }
 
 export type MostRecentBriefHistoryFindings = {

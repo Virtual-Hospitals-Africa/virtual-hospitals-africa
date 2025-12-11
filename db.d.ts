@@ -1163,6 +1163,11 @@ export interface PatientFindings {
   referent_finding_id: string | null
 }
 
+export interface PatientFindingValues {
+  id: string
+  value_snomed_concept_id: Int8 | null
+}
+
 export interface PatientGuardians {
   created_at: Generated<Timestamp>
   dependent_patient_id: string
@@ -1926,6 +1931,7 @@ export interface DB {
   patient_family: PatientFamily
   patient_finding_media_images: PatientFindingMediaImages
   patient_finding_media_speeches: PatientFindingMediaSpeeches
+  patient_finding_values: PatientFindingValues
   patient_findings: PatientFindings
   patient_guardians: PatientGuardians
   patient_insurance: PatientInsurance

@@ -57,11 +57,11 @@ export function YesNoQuestion({
           id={name}
           name={name}
           type='radio'
-          checked={value === 'not_sure'}
+          checked={value === 'unknown'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='not_sure'
+          value='unknown'
           required={required}
-          onChange={() => onChange?.('not_sure')}
+          onChange={() => onChange?.('unknown')}
         />
       </div>
     </div>
@@ -82,7 +82,7 @@ export function YesNoGrid({ children }: { children: ComponentChildren }) {
           No
         </div>
         <div className='text-sm font-medium text-center text-indigo-900'>
-          Not sure
+          Unknown
         </div>
       </div>
       {children}

@@ -4,14 +4,14 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as patient_findings from '../../../../../../../../db/models/patient_findings.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
   YesNoGrid,
   YesNoQuestion,
 } from '../../../../../../../../islands/form/inputs/yes_no.tsx'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
-import { yes_no_not_sure } from '../../../../../../../../util/validators.ts'
+import { yes_no_unknown } from '../../../../../../../../util/validators.ts'
 import {
   renderedMostRecentFindings,
 } from '../../../../../../../../db/models/brief_history.ts'
@@ -35,13 +35,13 @@ import {
 
 const ConditionSchemaOptional = z.object(
   {
-    existence: yes_no_not_sure.optional(),
+    existence: yes_no_unknown.optional(),
   },
 ).optional()
 
 const ConditionSchemaRequired = z.object(
   {
-    existence: yes_no_not_sure,
+    existence: yes_no_unknown,
   },
 )
 
@@ -64,18 +64,6 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
-const QUALIFIERS_BY_EXISTENCE = {
-  yes: [],
-  no: [{
-    snomed_concept_id: patient_findings.NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
-  }],
-  not_sure: [{
-    snomed_concept_id: patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-    snomed_concept_id_value:
-      patient_findings.NOT_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
-  }],
-}
-
 export const handler = postHandler(
   TriageBriefHistorySchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
@@ -94,7 +82,9 @@ export const handler = postHandler(
         if (!condition) return Promise.resolve()
         if (condition.existence === undefined) return Promise.resolve()
 
-        const finding_snomed_concept_id = commonConditionSnomedConceptId(
+        // const
+
+        const condition_snomed_concept_id = commonConditionSnomedConceptId(
           condition_key,
         )
 
@@ -115,9 +105,7 @@ export const handler = postHandler(
           return Promise.resolve()
         }
 
-        const qualifiers = QUALIFIERS_BY_EXISTENCE[condition.existence]
-
-        return patient_findings.insertOne(
+        return patient_findings.insertOneNested(
           ctx.state.trx,
           {
             patient_id: ctx.state.patient.id,
@@ -129,9 +117,20 @@ export const handler = postHandler(
               ctx.state.workflow_step_snomed_concept_id,
             previously_completed_procedures:
               ctx.state.previously_completed_procedures,
-            finding_snomed_concept_id,
+            finding_snomed_concept_id:
+              patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+            value_snomed_concept_id:
+              patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence],
             altered_record_id: null,
-            qualifiers,
+            qualifiers: [
+              {
+                snomed_concept_id:
+                  patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
+              },
+              {
+                snomed_concept_id: condition_snomed_concept_id,
+              },
+            ],
           },
         )
       },
