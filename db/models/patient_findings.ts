@@ -4,6 +4,7 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
+  // orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -12,13 +13,16 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import { sql } from 'kysely'
 // import { ParsedFindingExpression } from './simple_record_language.ts'
 
+export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
-export const NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '1381510001' // |No known (qualifier value)|
 export const UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
-export const NOT_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
+
+export const NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '1381510001' // |No known (qualifier value)|
 export const ACTIVE_QUALIFIER_SNOMED_CONCEPT_ID = '55561003' // |Active (qualifier value)|
 
 export const STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID = '263490005'
+
+export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self reported (qualifier value)|
 
 type FindingQualifier = {
   snomed_concept_id: string
@@ -37,6 +41,7 @@ type FindingInsert = {
   finding_snomed_concept_id: string
   altered_record_id?: Maybe<string>
   qualifiers?: FindingQualifier[]
+  value_snomed_concept_id?: string
 }
 
 function doInsertOne(
@@ -50,6 +55,7 @@ function doInsertOne(
     previously_completed_procedures,
     finding_snomed_concept_id,
     qualifiers,
+    value_snomed_concept_id,
   }: FindingInsert,
 ) {
   const previously_completed_procedure_record_id =
@@ -129,6 +135,12 @@ function doInsertOne(
             })))
           : blankSelection(qb),
     )
+    .with('inserting_value_snomed_concept_id', (qb) => 
+      value_snomed_concept_id
+        ? qb.insertInto('patient_finding_values')
+            .values({ id: finding_id, value_snomed_concept_id })
+        : blankSelection(qb)
+    )
     .selectNoFrom([
       success_true,
     ])
@@ -184,6 +196,16 @@ export function baseQuery(
       'patient_procedure_records.snomed_concept_id',
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
+    .leftJoin(
+      'patient_finding_values',
+      'patient_finding_values.id',
+      'patient_findings.id',
+    )
+    .leftJoin(
+      'snomed_inferred_canonical_name_and_category as finding_value_snomed_inferred_canonical_name_and_category',
+      'patient_finding_values.value_snomed_concept_id',
+      'finding_value_snomed_inferred_canonical_name_and_category.id',
+    )
     .select((eb) => [
       'patient_records.id as record_id',
       'patient_records.created_at',
@@ -191,6 +213,9 @@ export function baseQuery(
       'patient_records.patient_encounter_id',
       'patient_findings.patient_encounter_employee_id',
       'snomed_inferred_canonical_name_and_category.name',
+
+      'patient_finding_values.value_snomed_concept_id',
+      'finding_value_snomed_inferred_canonical_name_and_category.name as value_name',
 
       // Check for specific qualifiers to note the "existence" of a record.
       eb.case()
@@ -225,31 +250,31 @@ export function baseQuery(
           eb(
             'patient_records.id',
             'in',
-            eb.selectFrom('patient_record_qualifiers as not_sure_qualifiers')
+            eb.selectFrom('patient_record_qualifiers as unknown_qualifiers')
               .innerJoin(
-                'patient_records as not_sure_records',
-                'not_sure_qualifiers.id',
-                'not_sure_records.id',
+                'patient_records as unknown_records',
+                'unknown_qualifiers.id',
+                'unknown_records.id',
               )
               .where(
-                'not_sure_qualifiers.qualifies_record_id',
+                'unknown_qualifiers.qualifies_record_id',
                 '=',
                 eb.ref('patient_records.id'),
               )
               .where(
-                'not_sure_records.snomed_concept_id',
+                'unknown_records.snomed_concept_id',
                 '=',
                 STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
               )
               .where(
-                'not_sure_qualifiers.snomed_concept_id_value',
+                'unknown_qualifiers.snomed_concept_id_value',
                 '=',
                 UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
               )
               .select('qualifies_record_id'),
           ),
         )
-        .then('not_sure' as const)
+        .then('unknown' as const)
         .else('yes' as const)
         .end()
         .as('existence'),
@@ -285,6 +310,7 @@ export function baseQuery(
             '=',
             'patient_records.id',
           )
+
           .select((eb_qualifiers) => [
             'qualifier_patient_records.id as record_id',
             'qualifier_patient_records.patient_encounter_id',
@@ -300,7 +326,20 @@ export function baseQuery(
               patient_record_qualifiers.concrete_value::text,
               qualifier_snomed_inferred_canonical_name_and_category_value.name
             )`.as('attribute_value'),
-          ]),
+          ])
+          // .orderBy((eb_qualifier_order) =>
+          // {
+          //   const x = eb_qualifier_order.ref('qualifier_snomed_inferred_canonical_name_and_category.category')
+          //   const y: ExtractTypeFromReferenceExpression<>
+          //   orderByArrayPosition(
+          //     eb_qualifier_order,
+          //     'qualifier_snomed_inferred_canonical_name_and_category.category',
+          //     ['qualifier value'] as NonEmptyArray<string>
+          //   )
+          // }
+          //   ,
+          //   'desc'
+          // )
       ).as('qualifiers'),
     ])
 }

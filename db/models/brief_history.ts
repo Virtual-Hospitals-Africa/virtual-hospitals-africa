@@ -23,6 +23,8 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import partition from '../../util/partition.ts'
 
+
+
 export function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
@@ -202,6 +204,9 @@ export async function renderedMostRecentFindings(
         value_display +=
           ` ${attribute_qualifier.name} ${attribute_qualifier.attribute_value}`
       })
+      if (finding.value_name) {
+        value_display += `: ${finding.value_name}`
+      }
 
       return {
         ...finding,

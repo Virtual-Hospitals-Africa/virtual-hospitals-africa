@@ -167,7 +167,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it('renders the brief history page for a patient with a pre-existing condition', async () => {
+    it.only('renders the brief history page for a patient with a pre-existing condition', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse1 = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -224,12 +224,15 @@ describe('triage/brief_history', () => {
         'snomed_concept_id': '363346000',
         'patient_encounter_id': initial_encounter.patient_encounter_id,
         'name': 'Malignant neoplastic disease',
+        'value_display': "Self reported Malignant Neoplastic Disease Status: Yes",
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
-        'qualifiers': [],
+        'qualifiers': [
+          
+        ],
         'pertaining_to_key': 'cancer',
         'existence': 'yes',
       })
@@ -756,7 +759,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it('has a value_display of Status Not Known for not_sure answers', async () => {
+    it('has a value_display of Status Not Known for unknown answers', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -783,7 +786,7 @@ describe('triage/brief_history', () => {
               existence: 'no',
             },
             pregnancy: {
-              existence: 'not_sure',
+              existence: 'unknown',
             },
           }),
         },

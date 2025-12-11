@@ -57,11 +57,11 @@ export function YesNoQuestion({
           id={name}
           name={name}
           type='radio'
-          checked={value === 'not_sure'}
+          checked={value === 'unknown'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='not_sure'
+          value='unknown'
           required={required}
-          onChange={() => onChange?.('not_sure')}
+          onChange={() => onChange?.('unknown')}
         />
       </div>
     </div>

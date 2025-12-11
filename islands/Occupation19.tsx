@@ -21,9 +21,9 @@
 
 //   const [job, setJob] = useState<Job>(
 //     occupation.job || {
-//       happy: 'not_sure',
-//       descendants_employed: 'not_sure',
-//       require_assistance: 'not_sure',
+//       happy: 'unknown',
+//       descendants_employed: 'unknown',
+//       require_assistance: 'unknown',
 //       profession: 'None',
 //       work_satisfaction: 'None',
 //     },
