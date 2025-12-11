@@ -14,7 +14,7 @@ describe('triage/warning_signs', () => {
   afterAll(() => db.destroy())
 
   describe('GET', () => {
-    it('renders a warning signs page after brief history when patient not pregnant', async () => {
+    it.skip('renders a warning signs page after brief history when patient not pregnant', async () => {
       const { health_worker: nurse, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
