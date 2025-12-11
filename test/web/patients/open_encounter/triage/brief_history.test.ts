@@ -261,7 +261,6 @@ describe('triage/brief_history', () => {
             'snomed_concept_id': '1381510001',
             'name': 'No known',
             'concrete_value': null,
-            'value_display': 'No known',
             'provider': {
               'is_me': true,
               'id': nurse1.health_worker.id,
@@ -379,16 +378,22 @@ describe('triage/brief_history', () => {
         $brief_history_after_subsequent_encounter_start,
         '#most-recent-finding-cancer',
       )
+
       assertMatches(most_recent_finding, {
         'tag': 'span',
         'children': [
           {
-            'tag': 'a',
-            'text': 'Malignant neoplastic disease',
-          },
-          {
             'tag': 'span',
-            'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
+            'children': [
+              {
+                'tag': 'a',
+                'text': 'Malignant neoplastic disease',
+              },
+              {
+                'tag': 'span',
+                'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
+              },
+            ],
           },
           {
             'tag': 'div',
@@ -622,7 +627,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it.only('does not insert the same positive finding again if a condition is already known, but does insert negative records each time', async () => {
+    it('does not insert the same positive finding again if a condition is already known, but does insert negative records each time', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse1 = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -747,6 +752,78 @@ describe('triage/brief_history', () => {
           'is_me': true,
           'id': nurse2.health_worker.id,
           'employee_id': nurse2.health_worker.employee_id,
+        },
+      })
+    })
+
+    it('has a value_display of Status Not Known for not_sure answers', async () => {
+      const clinic = await createTestOrganization(db, { category: 'Clinic' })
+      const nurse = await addTestEmployeeWithSession(db, {
+        organization_id: clinic.id,
+        profession: 'nurse',
+        registration_status: 'approved',
+      })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.health_worker.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse.health_worker.employee_id,
+          },
+        )
+
+      await nurse.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        {
+          method: 'POST',
+          body: asFormData({
+            diabetes: {
+              existence: 'no',
+            },
+            pregnancy: {
+              existence: 'not_sure',
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const most_recent_findings = await renderedMostRecentFindings(db, {
+        patient_id: encounter.patient.id,
+        encounter: encounter,
+        health_worker_id: nurse.health_worker.id,
+      })
+
+      assertMatches(most_recent_findings.pregnancy, {
+        'snomed_concept_id': '77386006',
+        'patient_encounter_id': encounter.patient_encounter_id,
+        'name': 'Pregnancy',
+        'as_part_of_procedure': {
+          'record_id': z.string().uuid(),
+          'snomed_concept_id': '203421005',
+          'name': 'History taking, limited',
+        },
+        'value_display': 'Pregnancy Status Unknown',
+        'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': encounter.patient_encounter_id,
+            'created_at': z.string().datetime({ offset: true }),
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'concrete_value': null,
+            'attribute_value': 'Unknown',
+          },
+        ],
+        'pertaining_to_key': 'pregnancy',
+        'provider': {
+          'is_me': true,
+          'id': nurse.health_worker.id,
+          'employee_id': nurse.health_worker.employee_id,
         },
       })
     })

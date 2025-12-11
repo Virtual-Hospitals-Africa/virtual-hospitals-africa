@@ -21,6 +21,7 @@ import {
   commonConditionSnomedConceptId,
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
+import partition from '../../util/partition.ts'
 
 export function mostRecentFindings(
   trx: TrxOrDb,
@@ -186,10 +187,21 @@ export async function renderedMostRecentFindings(
         `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
       )
 
-      const value_display = qualifiers
-        .map((q) => q.value_display)
-        .concat([finding.name])
-        .join(' ')
+      const [attribute_qualifiers, prefix_qualifiers] = partition(
+        qualifiers,
+        (q) => !!q.attribute_value,
+      )
+
+      let value_display = finding.name
+      prefix_qualifiers.forEach((prefix_qualifier) => {
+        assert(!prefix_qualifier.attribute_value)
+        value_display = `${prefix_qualifier.name} ${value_display}`
+      })
+      attribute_qualifiers.forEach((attribute_qualifier) => {
+        assert(attribute_qualifier.attribute_value)
+        value_display +=
+          ` ${attribute_qualifier.name} ${attribute_qualifier.attribute_value}`
+      })
 
       return {
         ...finding,
@@ -230,7 +242,6 @@ export async function renderedMostRecentFindings(
               provider: {
                 is_me: qualifier_matching_employee.id ===
                   health_worker_id,
-
                 ...qualifier_matching_employee,
               },
             }

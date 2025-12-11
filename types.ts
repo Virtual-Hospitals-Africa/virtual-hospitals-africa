@@ -3434,9 +3434,8 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   snomed_concept_id: string
   name: string
   concrete_value: any
-  value_display: string | null
+  attribute_value: string | null
   created_at: Date | string
-  provider: RenderedFindingProvider
 }
 
 export type RenderedFindingRelativeToHealthWorker<
@@ -3475,9 +3474,13 @@ export type Alert = {
 }
 
 type QualifierIntermediate =
-  & Omit<RenderedFindingQualifierRelativeToHealthWorker, 'provider'>
+  & Omit<
+    RenderedFindingQualifierRelativeToHealthWorker,
+    'provider' | 'value_display'
+  >
   & {
     patient_encounter_employee_id: string
+    attribute_value: string | null
   }
 
 export type Existence = 'yes' | 'no' | 'not_sure'

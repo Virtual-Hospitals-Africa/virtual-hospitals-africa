@@ -70,7 +70,9 @@ const QUALIFIERS_BY_EXISTENCE = {
     snomed_concept_id: patient_findings.NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
   }],
   not_sure: [{
-    snomed_concept_id: patient_findings.UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+    snomed_concept_id: patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+    snomed_concept_id_value:
+      patient_findings.NOT_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
   }],
 }
 

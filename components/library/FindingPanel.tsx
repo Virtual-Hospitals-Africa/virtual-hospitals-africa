@@ -25,7 +25,7 @@ export function FindingPanel(
         <div className='flex items-start justify-between'>
           <div className='flex-1'>
             <h3 className='text-lg font-semibold leading-6 text-red-800'>
-              {finding.name}
+              {finding.value_display}
             </h3>
           </div>
           <div className='flex gap-2'>
@@ -132,8 +132,10 @@ export function FindingPanel(
             </>
           )}
 
+          {/* TODO: switch this to a referent findings section */}
           {/* Qualifiers section */}
-          {finding.qualifiers.length > 0 && (
+          {
+            /* {finding.qualifiers.length > 0 && (
             <>
               <hr className='border-gray-200' />
               <div className='flex flex-col gap-1'>
@@ -159,7 +161,8 @@ export function FindingPanel(
                 ))}
               </div>
             </>
-          )}
+          )} */
+          }
         </div>
       </div>
     </div>

@@ -15,7 +15,10 @@ import { sql } from 'kysely'
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
 export const NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '1381510001' // |No known (qualifier value)|
 export const UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
+export const NOT_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
 export const ACTIVE_QUALIFIER_SNOMED_CONCEPT_ID = '55561003' // |Active (qualifier value)|
+
+export const STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID = '263490005'
 
 type FindingQualifier = {
   snomed_concept_id: string
@@ -235,10 +238,13 @@ export function baseQuery(
               )
               .where(
                 'not_sure_records.snomed_concept_id',
-                'in',
-                [
-                  UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
-                ],
+                '=',
+                STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+              )
+              .where(
+                'not_sure_qualifiers.snomed_concept_id_value',
+                '=',
+                UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
               )
               .select('qualifies_record_id'),
           ),
@@ -291,10 +297,9 @@ export function baseQuery(
             'qualifier_snomed_inferred_canonical_name_and_category.name',
             'patient_record_qualifiers.concrete_value',
             sql<string>`coalesce(
-              qualifier_snomed_inferred_canonical_name_and_category_value.name,
               patient_record_qualifiers.concrete_value::text,
-              qualifier_snomed_inferred_canonical_name_and_category.name
-            )`.as('value_display'),
+              qualifier_snomed_inferred_canonical_name_and_category_value.name
+            )`.as('attribute_value'),
           ]),
       ).as('qualifiers'),
     ])
