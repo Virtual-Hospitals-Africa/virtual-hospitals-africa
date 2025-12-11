@@ -87,7 +87,7 @@
 //         value: null,
 //       }])
 //       assertArrayIncludes(findings, [{
-//         snomed_concept_id: 722490005,
+//         snomed_concept_id: 386725007,
 //         units: '°C',
 //         value: null,
 //       }])
@@ -236,7 +236,7 @@
 //           value: null,
 //         }])
 //         assertArrayIncludes(findings, [{
-//           snomed_concept_id: 722490005,
+//           snomed_concept_id: 386725007,
 //           units: '°C',
 //           value: null,
 //         }])

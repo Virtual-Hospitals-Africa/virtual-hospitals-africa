@@ -17,6 +17,7 @@ export type WrapperInputProps<
 export type InputProps =
   & WrapperInputProps<HTMLInputElement, string | number>
   & {
+    id?: string
     type?: 'text' | 'email' | 'tel' | 'date'
     placeholder?: string
     pattern?: string
@@ -52,6 +53,7 @@ type InputSize = 'normal' | 'large' | 'small'
 
 export function InternalInput({
   name,
+  id,
   type,
   label,
   placeholder,
@@ -101,6 +103,7 @@ export function InternalInput({
           )}
           <input
             type={type}
+            id={id}
             {...(name && { name })}
             className={cls(
               'col-start-1 row-start-1 h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',

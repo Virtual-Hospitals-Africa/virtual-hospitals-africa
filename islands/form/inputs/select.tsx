@@ -9,6 +9,7 @@ export type SelectProps =
     'onInput'
   >
   & {
+    id?: string
     onChange?: SelectHTMLAttributes<HTMLSelectElement>['onChange']
     selectClassName?: string
     children: ComponentChildren
@@ -18,6 +19,7 @@ export const Select = forwardRef(
   (
     {
       name,
+      id,
       label,
       required,
       onChange,
@@ -38,6 +40,7 @@ export const Select = forwardRef(
       >
         <select
           {...(name && { name })}
+          id={id}
           className={cls(
             'h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 text-black-900 dark:bg-white/5 dark:focus:text-black-900',
             selectClassName,

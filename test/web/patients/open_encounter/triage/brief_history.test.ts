@@ -15,7 +15,7 @@ import {
 import { route } from '../../../../route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormDisplay, getFormValues } from '../../../../_helpers/form.ts'
+import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
 import { getDOMTree } from '../../../../_helpers/dom.ts'
 import { assert } from 'std/assert/assert.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
@@ -54,10 +54,10 @@ describe('triage/brief_history', () => {
       )
 
       const form_values = getFormValues($)
-      const form_display = getFormDisplay($)
+      const form_labels = getFormLabels($)
 
       assertEquals(form_values, {})
-      assertEquals(form_display, {
+      assertEquals(form_labels, {
         'pregnancy': {
           'existence': 'Pregnancy*',
         },
@@ -118,16 +118,16 @@ describe('triage/brief_history', () => {
         `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
-      // const form_display = getFormDisplay($)
+      // const form_labels = getFormLabels($)
       const form_values = getFormValues($)
-      const form_display = getFormDisplay($)
+      const form_labels = getFormLabels($)
 
       assertEquals(form_values, {
         'pregnancy': {
           'existence': 'no',
         },
       })
-      assertEquals(form_display, {
+      assertEquals(form_labels, {
         'pregnancy': {
           'existence': 'Pregnancy*',
         },
