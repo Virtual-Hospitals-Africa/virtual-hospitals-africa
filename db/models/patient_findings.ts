@@ -13,7 +13,10 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { markAltered, RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
+import {
+  markAltered,
+  RECORD_NOW_INVALID_CONCEPT_ID,
+} from './patient_records.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
@@ -272,25 +275,26 @@ export function baseQuery(
         // )
       ).as('qualifiers'),
     ])
-    // 
+    //
     .where(
-      eb => eb(
-        'patient_records.id',
-        'not in',
-        eb.selectFrom(
-          'patient_records as now_invalid_patient_records',
-        ).innerJoin(
-          'patient_evaluations as now_invalid_patient_evaluations',
-          'now_invalid_patient_evaluations.id',
-          'now_invalid_patient_evaluations.id',
-        ).where(
-          'now_invalid_patient_records.snomed_concept_id',
-          'in',
-          RECORD_NOW_INVALID_CONCEPT_ID,
-        )
-        .select('now_invalid_patient_evaluations.evaluates_record_id')
-        .distinct()
-      )
+      (eb) =>
+        eb(
+          'patient_records.id',
+          'not in',
+          eb.selectFrom(
+            'patient_records as now_invalid_patient_records',
+          ).innerJoin(
+            'patient_evaluations as now_invalid_patient_evaluations',
+            'now_invalid_patient_evaluations.id',
+            'now_invalid_patient_evaluations.id',
+          ).where(
+            'now_invalid_patient_records.snomed_concept_id',
+            'in',
+            RECORD_NOW_INVALID_CONCEPT_ID,
+          )
+            .select('now_invalid_patient_evaluations.evaluates_record_id')
+            .distinct(),
+        ),
     )
 }
 

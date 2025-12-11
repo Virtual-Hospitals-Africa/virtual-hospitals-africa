@@ -168,7 +168,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it.only('renders the brief history page for a patient with a pre-existing condition', async () => {
+    it('renders the brief history page for a patient with a pre-existing condition', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse1 = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -316,357 +316,384 @@ describe('triage/brief_history', () => {
         },
       ])
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: initial_encounter.patient.id,
-          encounter: initial_encounter,
-          health_worker_id: nurse1.health_worker.id,
-        })
+      const most_recent_findings = await renderedMostRecentFindings(db, {
+        patient_id: initial_encounter.patient.id,
+        encounter: initial_encounter,
+        health_worker_id: nurse1.health_worker.id,
+      })
 
-        assertMatches(most_recent_findings.cancer, {
+      // @Claude - findings will look
+      assertMatches(most_recent_findings.cancer, {
+        'record_id': z.string().uuid(),
+        'created_at': z.date(),
+        'snomed_concept_id': '263490005',
+        'patient_encounter_id': initial_encounter.patient_encounter_id,
+        'name': 'Status',
+        'value_snomed_concept_id': '373066001',
+        'value_name': 'Yes',
+        'as_part_of_procedure': {
           'record_id': z.string().uuid(),
-          created_at: z.date(),
-          'snomed_concept_id': '363346000',
-          'patient_encounter_id': initial_encounter.patient_encounter_id,
-          'name': 'Malignant neoplastic disease',
-          'value_display': "Self reported Malignant Neoplastic Disease Status: Yes",
-          'as_part_of_procedure': {
+          'snomed_concept_id': '203421005',
+          'name': 'History taking, limited',
+        },
+        'pertaining_to_key': 'cancer',
+        'value_display':
+          'Malignant neoplastic disease Self reported Status: Yes',
+        'existence': 'yes',
+        'provider': {
+          'is_me': true,
+          'profession': 'nurse',
+          'specialty': 'primary care',
+          'is_admin': false,
+          'seen_at': z.string().datetime({ offset: true }),
+        },
+        'qualifiers': [
+          {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '203421005',
-            'name': 'History taking, limited',
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
           },
-          'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '363346000',
+            'name': 'Malignant neoplastic disease',
+          },
+        ],
+      })
 
-          ],
-          'pertaining_to_key': 'cancer',
+      assertMatches(most_recent_findings.diabetes, {
+        'record_id': z.string().uuid(),
+        'created_at': z.date(),
+        'snomed_concept_id': '263490005',
+        'patient_encounter_id': initial_encounter.patient_encounter_id,
+        'name': 'Status',
+        'value_snomed_concept_id': '373067005',
+        'value_name': 'No',
+        'as_part_of_procedure': {
+          'record_id': z.string().uuid(),
+          'snomed_concept_id': '203421005',
+          'name': 'History taking, limited',
+        },
+        'pertaining_to_key': 'diabetes',
+        'value_display': 'Diabetes mellitus Self reported Status: No',
+        'existence': 'no',
+        'provider': {
+          'is_me': true,
+          'profession': 'nurse',
+          'specialty': 'primary care',
+          'is_admin': false,
+          'seen_at': z.string().datetime({ offset: true }),
+        },
+        'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
+          },
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+          },
+        ],
+      })
+
+      assertEquals(most_recent_findings.copd, null)
+
+      const $waiting_room_before_initial_encounter_close = await nurse2
+        .fetchCheerio(
+          `/app/organizations/${clinic.id}/waiting_room`,
+        )
+
+      const waiting_room_table_before_initial_encounter_close = getTableDisplay(
+        $waiting_room_before_initial_encounter_close,
+      )
+      assertEquals(waiting_room_table_before_initial_encounter_close, [
+        {
+          Patient:
+            `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+              prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
+            }`,
+          'Reason for visit': 'Seeking Treatment',
+          Department: 'triage',
+          Status: 'Triage In Progress',
+          Employees: `${nurse1.health_worker.name}primary care nurse`,
+          Arrived: 'Just now',
+          Actions: 'triage',
+        },
+      ])
+
+      await patient_encounters.close(db, {
+        patient_encounter_id: initial_encounter.patient_encounter_id,
+      })
+
+      const open_encounters = await patient_encounters.getOpen(db, {
+        patient_id: initial_encounter.patient.id,
+      })
+
+      assertArrayEmpty(open_encounters)
+
+      const $waiting_room_after_initial_encounter_close = await nurse2
+        .fetchCheerio(
+          `/app/organizations/${clinic.id}/waiting_room`,
+        )
+
+      assert(
+        $waiting_room_after_initial_encounter_close.text().includes(
+          'No patients present at the facility',
+        ),
+      )
+
+      const subsequent_encounter =
+        await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse2.health_worker.organization_id,
+          {
+            patient_id: initial_encounter.patient.id,
+            employment_id: nurse2.health_worker.employee_id,
+          },
+        )
+
+      assertNotEquals(
+        subsequent_encounter.patient_encounter_id,
+        initial_encounter.patient_encounter_id,
+      )
+      assertLength(subsequent_encounter.all_employees_seen, 1)
+
+      const $waiting_room_after_subsequent_encounter_start = await nurse2
+        .fetchCheerio(
+          `/app/organizations/${clinic.id}/waiting_room`,
+        )
+
+      const waiting_room_table_after_subsequent_encounter_start =
+        getTableDisplay($waiting_room_after_subsequent_encounter_start)
+      assertEquals(waiting_room_table_after_subsequent_encounter_start, [
+        {
+          Patient:
+            `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+              prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
+            }`,
+          'Reason for visit': 'Seeking Treatment',
+          Department: 'triage',
+          Status: 'Triage In Progress',
+          Employees: `${nurse2.health_worker.name}primary care nurse`,
+          Arrived: 'Just now',
+          Actions: 'triage',
+        },
+      ])
+
+      const $brief_history_after_subsequent_encounter_start = await nurse2
+        .fetchCheerio(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
+        )
+
+      const form_values = getFormValues(
+        $brief_history_after_subsequent_encounter_start,
+      )
+      assertEquals(form_values, {
+        'cancer': {
           'existence': 'yes',
-        })
-
-        assertMatches(most_recent_findings.diabetes, {
-          'record_id': z.string().uuid(),
-          'created_at': z.date(),
-          'snomed_concept_id': '73211009',
-          'patient_encounter_id': initial_encounter.patient_encounter_id,
-          'name': 'Diabetes mellitus',
+        },
+        'diabetes': {
           'existence': 'no',
-          'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
-            'snomed_concept_id': '203421005',
-            'name': 'History taking, limited',
-          },
-          'pertaining_to_key': 'diabetes',
-          'value_display': 'No known Diabetes mellitus',
-          'provider': {
-            'is_me': true,
-            'id': nurse1.health_worker.id,
-            'employee_id': nurse1.health_worker.employee_id,
-          },
-          'qualifiers': [
-            {
-              'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
-              'created_at': z.string().datetime({ offset: true }),
-              'snomed_concept_id': '1381510001',
-              'name': 'No known',
-              'concrete_value': null,
-              'provider': {
-                'is_me': true,
-                'id': nurse1.health_worker.id,
-                'employee_id': nurse1.health_worker.employee_id,
+        },
+        'pregnancy': {
+          'existence': 'no',
+        },
+      })
+
+      const most_recent_finding = getDOMTree(
+        $brief_history_after_subsequent_encounter_start,
+        '#most-recent-finding-cancer',
+      )
+
+      assertMatches(most_recent_finding, {
+        'tag': 'span',
+        'children': [
+          {
+            'tag': 'span',
+            'children': [
+              {
+                'tag': 'a',
+                'text':
+                  'Malignant neoplastic disease Self reported Status: Yes',
               },
-            },
-          ],
-        })
-
-        assertEquals(most_recent_findings.copd, null)
-
-        const $waiting_room_before_initial_encounter_close = await nurse2
-          .fetchCheerio(
-            `/app/organizations/${clinic.id}/waiting_room`,
-          )
-
-        const waiting_room_table_before_initial_encounter_close = getTableDisplay(
-          $waiting_room_before_initial_encounter_close,
-        )
-        assertEquals(waiting_room_table_before_initial_encounter_close, [
+              {
+                'tag': 'span',
+                'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
+              },
+            ],
+          },
           {
-            Patient:
-              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
-                prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
-              }`,
-            'Reason for visit': 'Seeking Treatment',
-            Department: 'triage',
-            Status: 'Triage In Progress',
-            Employees: `${nurse1.health_worker.name}primary care nurse`,
-            Arrived: 'Just now',
-            Actions: 'triage',
+            'tag': 'div',
+            'children': [
+              {
+                'tag': 'div',
+                'children': [
+                  {
+                    'tag': 'div',
+                    'children': [
+                      {
+                        'tag': 'div',
+                        'children': [
+                          {
+                            'tag': 'div',
+                            'children': [
+                              {
+                                'tag': 'h3',
+                                'text':
+                                  'Malignant neoplastic disease Self reported Status: Yes',
+                              },
+                            ],
+                          },
+                          {
+                            'tag': 'div',
+                            'children': [
+                              {
+                                'tag': 'button',
+                                'children': [
+                                  {
+                                    'tag': 'svg',
+                                    'children': [
+                                      {
+                                        'tag': 'path',
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        'tag': 'div',
+                        'children': [
+                          {
+                            'tag': 'div',
+                            'children': [
+                              {
+                                'tag': 'p',
+                                'text': 'Recorded by:',
+                              },
+                              {
+                                'tag': 'div',
+                                'children': [
+                                  {
+                                    'tag': 'svg',
+                                    'children': [
+                                      {
+                                        'tag': 'path',
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    'tag': 'p',
+                                    'text': initial_encounter.employee.name,
+                                  },
+                                ],
+                              },
+                              {
+                                'tag': 'div',
+                                'children': [
+                                  {
+                                    'tag': 'div',
+                                    'children': [
+                                      {
+                                        'tag': 'svg',
+                                        'children': [
+                                          {
+                                            'tag': 'path',
+                                          },
+                                          {
+                                            'tag': 'path',
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    'tag': 'p',
+                                    'text': 'during History taking, limited',
+                                  },
+                                ],
+                              },
+                              {
+                                'tag': 'div',
+                                'children': [
+                                  {
+                                    'tag': 'svg',
+                                    'children': [
+                                      {
+                                        'tag': 'path',
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    'tag': 'p',
+                                    'text':
+                                      `at ${subsequent_encounter.organization.name}`,
+                                  },
+                                ],
+                              },
+                              {
+                                'tag': 'div',
+                                'children': [
+                                  {
+                                    'tag': 'svg',
+                                    'children': [
+                                      {
+                                        'tag': 'path',
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    'tag': 'p',
+                                    'children': [
+                                      {
+                                        'tag': 'span',
+                                        'text': z.string().regex(
+                                          /^at \d{1,2}:\d{2} [AP]M$/,
+                                        ),
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                              {
+                                'tag': 'a',
+                                'children': [
+                                  {
+                                    'tag': 'span',
+                                    'children': [
+                                      {
+                                        'tag': 'svg',
+                                        'children': [
+                                          {
+                                            'tag': 'path',
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
-        ])
-
-        await patient_encounters.close(db, {
-          patient_encounter_id: initial_encounter.patient_encounter_id,
-        })
-
-        const open_encounters = await patient_encounters.getOpen(db, {
-          patient_id: initial_encounter.patient.id,
-        })
-
-        assertArrayEmpty(open_encounters)
-
-        const $waiting_room_after_initial_encounter_close = await nurse2
-          .fetchCheerio(
-            `/app/organizations/${clinic.id}/waiting_room`,
-          )
-
-        assert(
-          $waiting_room_after_initial_encounter_close.text().includes(
-            'No patients present at the facility',
-          ),
-        )
-
-        const subsequent_encounter =
-          await insertReturningSeekingTreatmentWithEmployeeForTest(
-            db,
-            nurse2.health_worker.organization_id,
-            {
-              patient_id: initial_encounter.patient.id,
-              employment_id: nurse2.health_worker.employee_id,
-            },
-          )
-
-        assertNotEquals(
-          subsequent_encounter.patient_encounter_id,
-          initial_encounter.patient_encounter_id,
-        )
-        assertLength(subsequent_encounter.all_employees_seen, 1)
-
-        const $waiting_room_after_subsequent_encounter_start = await nurse2
-          .fetchCheerio(
-            `/app/organizations/${clinic.id}/waiting_room`,
-          )
-
-        const waiting_room_table_after_subsequent_encounter_start =
-          getTableDisplay($waiting_room_after_subsequent_encounter_start)
-        assertEquals(waiting_room_table_after_subsequent_encounter_start, [
-          {
-            Patient:
-              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
-                prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
-              }`,
-            'Reason for visit': 'Seeking Treatment',
-            Department: 'triage',
-            Status: 'Triage In Progress',
-            Employees: `${nurse2.health_worker.name}primary care nurse`,
-            Arrived: 'Just now',
-            Actions: 'triage',
-          },
-        ])
-
-        const $brief_history_after_subsequent_encounter_start = await nurse2
-          .fetchCheerio(
-            `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
-          )
-
-        const form_values = getFormValues(
-          $brief_history_after_subsequent_encounter_start,
-        )
-        assertEquals(form_values, {
-          'cancer': {
-            'existence': 'yes',
-          },
-          'diabetes': {
-            'existence': 'no',
-          },
-          'pregnancy': {
-            'existence': 'no',
-          },
-        })
-
-        const most_recent_finding = getDOMTree(
-          $brief_history_after_subsequent_encounter_start,
-          '#most-recent-finding-cancer',
-        )
-
-        assertMatches(most_recent_finding, {
-          'tag': 'span',
-          'children': [
-            {
-              'tag': 'span',
-              'children': [
-                {
-                  'tag': 'a',
-                  'text': 'Malignant neoplastic disease',
-                },
-                {
-                  'tag': 'span',
-                  'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
-                },
-              ],
-            },
-            {
-              'tag': 'div',
-              'children': [
-                {
-                  'tag': 'div',
-                  'children': [
-                    {
-                      'tag': 'div',
-                      'children': [
-                        {
-                          'tag': 'div',
-                          'children': [
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'h3',
-                                  'text': 'Malignant neoplastic disease',
-                                },
-                              ],
-                            },
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'button',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          'tag': 'div',
-                          'children': [
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'p',
-                                  'text': 'Recorded by:',
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text': initial_encounter.employee.name,
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'div',
-                                      'children': [
-                                        {
-                                          'tag': 'svg',
-                                          'children': [
-                                            {
-                                              'tag': 'path',
-                                            },
-                                            {
-                                              'tag': 'path',
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text': 'during History taking, limited',
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text':
-                                        `at ${subsequent_encounter.organization.name}`,
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'children': [
-                                        {
-                                          'tag': 'span',
-                                          'text': z.string().regex(
-                                            /^at \d{1,2}:\d{2} [AP]M$/,
-                                          ),
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'a',
-                                  'children': [
-                                    {
-                                      'tag': 'span',
-                                      'children': [
-                                        {
-                                          'tag': 'svg',
-                                          'children': [
-                                            {
-                                              'tag': 'path',
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        })
+        ],
+      })
     })
   })
 
@@ -719,17 +746,33 @@ describe('triage/brief_history', () => {
       assertMatches(most_recent_findings.diabetes, {
         'record_id': most_recent_findings.diabetes!.record_id,
         created_at: most_recent_findings.diabetes!.created_at,
-        'snomed_concept_id': '73211009',
+        'snomed_concept_id': '263490005',
         'patient_encounter_id': encounter.patient_encounter_id,
-        'name': 'Diabetes mellitus',
+        'name': 'Status',
+        'value_snomed_concept_id': '373066001',
+        'value_name': 'Yes',
         'as_part_of_procedure': {
           'record_id':
             most_recent_findings.diabetes!.as_part_of_procedure.record_id,
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
-        'qualifiers': [],
+        'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': encounter.patient_encounter_id,
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
+          },
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': encounter.patient_encounter_id,
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+          },
+        ],
         'pertaining_to_key': 'diabetes',
+        'value_display': 'Diabetes mellitus Self reported Status: Yes',
         'existence': 'yes',
       })
     })
@@ -823,17 +866,35 @@ describe('triage/brief_history', () => {
       assertMatches(most_recent_findings.cancer, {
         'record_id': most_recent_findings.cancer!.record_id,
         created_at: most_recent_findings.cancer!.created_at,
-        'snomed_concept_id': '363346000',
+        'snomed_concept_id': '263490005',
         'patient_encounter_id': initial_encounter.patient_encounter_id,
-        'name': 'Malignant neoplastic disease',
+        'name': 'Status',
+        'value_snomed_concept_id': '373066001',
+        'value_name': 'Yes',
         'as_part_of_procedure': {
           'record_id':
             most_recent_findings.cancer!.as_part_of_procedure.record_id,
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
-        'qualifiers': [],
+        'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
+          },
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': initial_encounter.patient_encounter_id,
+            'snomed_concept_id': '363346000',
+            'name': 'Malignant neoplastic disease',
+          },
+        ],
         'pertaining_to_key': 'cancer',
+        'value_display':
+          'Malignant neoplastic disease Self reported Status: Yes',
+        'existence': 'yes',
         'provider': {
           'is_me': false,
           'id': nurse1.health_worker.id,
@@ -844,9 +905,11 @@ describe('triage/brief_history', () => {
       assertMatches(most_recent_findings.diabetes, {
         'record_id': z.string().uuid(),
         'created_at': z.date(),
-        'snomed_concept_id': '73211009',
+        'snomed_concept_id': '263490005',
         'patient_encounter_id': subsequent_encounter.patient_encounter_id,
-        'name': 'Diabetes mellitus',
+        'name': 'Status',
+        'value_snomed_concept_id': '373067005',
+        'value_name': 'No',
         'existence': 'no',
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
@@ -854,7 +917,21 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'pertaining_to_key': 'diabetes',
-        'value_display': 'No known Diabetes mellitus',
+        'value_display': 'Diabetes mellitus Self reported Status: No',
+        'qualifiers': [
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': subsequent_encounter.patient_encounter_id,
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
+          },
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': subsequent_encounter.patient_encounter_id,
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+          },
+        ],
         'provider': {
           'is_me': true,
           'id': nurse2.health_worker.id,
@@ -906,24 +983,32 @@ describe('triage/brief_history', () => {
       })
 
       assertMatches(most_recent_findings.pregnancy, {
-        'snomed_concept_id': '77386006',
+        'record_id': z.string().uuid(),
+        'created_at': z.date(),
+        'snomed_concept_id': '263490005',
         'patient_encounter_id': encounter.patient_encounter_id,
-        'name': 'Pregnancy',
+        'name': 'Status',
+        'value_snomed_concept_id': '261665006',
+        'value_name': 'Unknown',
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
-        'value_display': 'Pregnancy Status Unknown',
+        'value_display': 'Pregnancy Self reported Status: Unknown',
+        'existence': 'unknown',
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
             'patient_encounter_id': encounter.patient_encounter_id,
-            'created_at': z.string().datetime({ offset: true }),
-            'snomed_concept_id': '263490005',
-            'name': 'Status',
-            'concrete_value': null,
-            'attribute_value': 'Unknown',
+            'snomed_concept_id': '1156040003',
+            'name': 'Self reported',
+          },
+          {
+            'record_id': z.string().uuid(),
+            'patient_encounter_id': encounter.patient_encounter_id,
+            'snomed_concept_id': '77386006',
+            'name': 'Pregnancy',
           },
         ],
         'pertaining_to_key': 'pregnancy',

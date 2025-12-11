@@ -82,7 +82,7 @@ export function YesNoGrid({ children }: { children: ComponentChildren }) {
           No
         </div>
         <div className='text-sm font-medium text-center text-indigo-900'>
-          Not sure
+          Unknown
         </div>
       </div>
       {children}
