@@ -59,40 +59,40 @@ describe('triage/brief_history', () => {
       assertEquals(form_values, {})
       assertEquals(form_display, {
         'pregnancy': {
-          'presence': 'Pregnancy*',
+          'existence': 'Pregnancy*',
         },
         'diabetes': {
-          'presence': 'Diabetes*',
+          'existence': 'Diabetes*',
         },
         'tuberculosis': {
-          'presence': 'Tuberculosis',
+          'existence': 'Tuberculosis',
         },
         'hiv': {
-          'presence': 'Human Immunodeficiency Virus',
+          'existence': 'Human Immunodeficiency Virus',
         },
         'asthma': {
-          'presence': 'Asthma',
+          'existence': 'Asthma',
         },
         'copd': {
-          'presence': 'Chronic Obstructive Pulmonary Disease',
+          'existence': 'Chronic Obstructive Pulmonary Disease',
         },
         'coronavirus': {
-          'presence': 'Coronavirus',
+          'existence': 'Coronavirus',
         },
         'heart_disease': {
-          'presence': 'Heart Disease',
+          'existence': 'Heart Disease',
         },
         'mental_disorder': {
-          'presence': 'Mental Disorder',
+          'existence': 'Mental Disorder',
         },
         'epilepsy': {
-          'presence': 'Epilepsy',
+          'existence': 'Epilepsy',
         },
         'arthritis': {
-          'presence': 'Arthritis',
+          'existence': 'Arthritis',
         },
         'cancer': {
-          'presence': 'Cancer',
+          'existence': 'Cancer',
         },
       })
     })
@@ -124,45 +124,45 @@ describe('triage/brief_history', () => {
 
       assertEquals(form_values, {
         'pregnancy': {
-          'presence': 'no',
+          'existence': 'no',
         },
       })
       assertEquals(form_display, {
         'pregnancy': {
-          'presence': 'Pregnancy*',
+          'existence': 'Pregnancy*',
         },
         'diabetes': {
-          'presence': 'Diabetes*',
+          'existence': 'Diabetes*',
         },
         'tuberculosis': {
-          'presence': 'Tuberculosis',
+          'existence': 'Tuberculosis',
         },
         'hiv': {
-          'presence': 'Human Immunodeficiency Virus',
+          'existence': 'Human Immunodeficiency Virus',
         },
         'asthma': {
-          'presence': 'Asthma',
+          'existence': 'Asthma',
         },
         'copd': {
-          'presence': 'Chronic Obstructive Pulmonary Disease',
+          'existence': 'Chronic Obstructive Pulmonary Disease',
         },
         'coronavirus': {
-          'presence': 'Coronavirus',
+          'existence': 'Coronavirus',
         },
         'heart_disease': {
-          'presence': 'Heart Disease',
+          'existence': 'Heart Disease',
         },
         'mental_disorder': {
-          'presence': 'Mental Disorder',
+          'existence': 'Mental Disorder',
         },
         'epilepsy': {
-          'presence': 'Epilepsy',
+          'existence': 'Epilepsy',
         },
         'arthritis': {
-          'presence': 'Arthritis',
+          'existence': 'Arthritis',
         },
         'cancer': {
-          'presence': 'Cancer',
+          'existence': 'Cancer',
         },
       })
     })
@@ -197,13 +197,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              presence: 'yes',
+              existence: 'yes',
             },
             diabetes: {
-              presence: 'no',
+              existence: 'no',
             },
             pregnancy: {
-              presence: 'no',
+              existence: 'no',
             },
           }),
         },
@@ -365,13 +365,13 @@ describe('triage/brief_history', () => {
       )
       assertEquals(form_values, {
         'cancer': {
-          'presence': 'yes',
+          'existence': 'yes',
         },
         'diabetes': {
-          'presence': 'no',
+          'existence': 'no',
         },
         'pregnancy': {
-          'presence': 'no',
+          'existence': 'no',
         },
       })
 
@@ -581,10 +581,10 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             diabetes: {
-              presence: 'yes',
+              existence: 'yes',
             },
             pregnancy: {
-              presence: 'no',
+              existence: 'no',
             },
           }),
         },
@@ -652,13 +652,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              presence: 'yes',
+              existence: 'yes',
             },
             diabetes: {
-              presence: 'no',
+              existence: 'no',
             },
             pregnancy: {
-              presence: 'no',
+              existence: 'no',
             },
           }),
         },
@@ -687,13 +687,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              presence: 'yes',
+              existence: 'yes',
             },
             diabetes: {
-              presence: 'no',
+              existence: 'no',
             },
             pregnancy: {
-              presence: 'no',
+              existence: 'no',
             },
           }),
         },
