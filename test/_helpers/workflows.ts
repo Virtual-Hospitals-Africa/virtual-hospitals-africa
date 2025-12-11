@@ -17,6 +17,7 @@ import {
 import { PatientWorkflowStepsCompleted, Sex } from '../../db.d.ts'
 import { completedWorkflow } from '../../db/models/patient_workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
+import assertLength from '../../util/assertLength.ts'
 
 export async function insertRegistrationWithEmployeeForTest(
   trx: TrxOrDb,
@@ -180,21 +181,16 @@ export async function insertReturningSeekingTreatmentWithEmployeeForTest(
       },
     )
 
-  const employee = await trx.insertInto(
-    'patient_encounter_employees',
-  ).values({
-    patient_encounter_id: patient_presence.patient_encounter_id,
-    employment_id,
-  })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  const encounter = await patient_encounters.getById(
+    trx,
+    patient_presence.patient_encounter_id,
+  )
+
+  assertLength(encounter.all_employees_seen, 1)
 
   return {
-    ...await patient_encounters.getById(
-      trx,
-      patient_presence.patient_encounter_id,
-    ),
-    employee,
+    ...encounter,
+    employee: encounter.all_employees_seen[0],
     organization_employment,
     organization,
     health_worker,

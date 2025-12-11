@@ -8,7 +8,7 @@ import cls from '../../util/cls.ts'
 import { Fragment } from 'preact'
 
 const PRIORITY_COLORS: Record<
-  Priority,
+  Priority | 'Normal',
   { bg: string; text: string; border: string }
 > = {
   Normal: {
@@ -55,7 +55,7 @@ export default function PriorityDropdown({
   initialPriority,
 }: PriorityDropdownProps) {
   // Default to "Normal" for SNOMED CT compliance - all evaluations must have a priority
-  const selected_priority = useSignal<Priority>(initialPriority || 'Normal')
+  const selected_priority = useSignal<Priority>(initialPriority || 'Non-urgent')
   const button_ref = useRef<HTMLButtonElement>(null)
   const should_open_upward = useSignal(false)
   const checkSpaceAndPosition = () => {

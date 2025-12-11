@@ -9,8 +9,8 @@ import { chunkTsvResource } from '../../parseTsvResource.ts'
 import { define } from '../define.ts'
 import z from 'zod'
 
-const latest_snomed = 'SnomedCT_InternationalRF2_PRODUCTION_20250801T120000Z'
-const snomed_file_suffix = '_INT_20250801.txt'
+const latest_snomed = 'SnomedCT_InternationalRF2_PRODUCTION_20251201T120000Z'
+const snomed_file_suffix = '_INT_20251201.txt'
 
 async function ensureLatestSnomedExtractedAndFilesLayFlatInDirectory() {
   const already_extracted = await directoryExists(

@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
-import { Lifestyle } from '../../types.ts'
+import { Existence, Lifestyle } from '../../types.ts'
 import FormSection from '../../components/library/FormSection.tsx'
 import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 import { YesNoGrid, YesNoQuestion } from '../form/inputs/yes_no.tsx'
@@ -163,49 +163,49 @@ const MUSCULOSKELETAL_INJURIES = [ //Make all caps
 export default function ExerciseSection(
   { lifestyle }: { lifestyle?: Lifestyle },
 ) {
-  const currently_exercises = useSignal<null | boolean>(
+  const currently_exercises = useSignal<null | Existence>(
     lifestyle?.exercise?.currently_exercises ?? null,
   )
   const physical_activities = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.physical_activities || [])
       : [],
   )
   const sports = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.sports || [])
       : [],
   )
   const types_of_exercises = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.types_of_exercises || [])
       : [],
   )
   const disabilities = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.physical_injuries_or_disability.disabilities || [])
       : [],
   )
 
   const musculoskeletal_injuries = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.physical_injuries_or_disability
         .musculoskeletal_injuries || [])
       : [],
   )
 
   const limitations = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.limitations.limits || [])
       : [],
   )
   const structural = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.limitations.structural_conditions || [])
       : [],
   )
   const medical = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises
+    lifestyle?.exercise?.currently_exercises === 'yes'
       ? (lifestyle.exercise.limitations.medical_conditions || [])
       : [],
   )

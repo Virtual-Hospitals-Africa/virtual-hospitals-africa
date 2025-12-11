@@ -1,7 +1,6 @@
 import keys from '../util/keys.ts'
 
 export const PRIORITY_SNOMED_CODES = {
-  'Normal': '394848005',
   'Non-urgent': '1357728000',
   'Urgent': '103391001',
   'Very urgent': '1356878002',
@@ -39,7 +38,7 @@ export function isTriageLevel(priority: string): priority is TriageLevel {
 }
 
 export const PRIORITY_COLORS: Record<
-  Priority,
+  Priority | 'Normal',
   { bg: string; text: string; border: string }
 > = {
   Normal: {

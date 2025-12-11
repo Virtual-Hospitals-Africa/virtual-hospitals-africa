@@ -10,9 +10,7 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-export const handler = (ctx: Context<unknown>) => {
-  console.log('CTX.url', ctx.url)
-  // deno-lint-ignore no-explicit-any
+export const handler = (ctx: Context<unknown>) => { // deno-lint-ignore no-explicit-any
   return ctx.next().catch(function handleError(err: any) {
     if (err.status === 302) {
       assert(err.location, '302 redirect must have a location')

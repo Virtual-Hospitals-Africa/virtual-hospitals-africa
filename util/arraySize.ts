@@ -10,12 +10,12 @@ export function arrayIsNonEmpty<T>(arr: T[]): arr is NonEmptyArray<T> {
 }
 
 export function assertArrayEmpty<T>(arr: T[]): asserts arr is [] {
-  assert(!arr.length, 'Expected array to be empty')
+  assert(!arr.length, `Expected array to be empty.`)
 }
 
 export function assertArrayNonEmpty<T>(
   arr: T[],
   message?: string,
 ): asserts arr is NonEmptyArray<T> {
-  assert(arr.length, message || 'Expected array to be nonempty')
+  assert(arr.length, message || `Expected array to be nonempty.`)
 }

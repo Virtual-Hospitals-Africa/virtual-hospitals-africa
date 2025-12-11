@@ -43,13 +43,22 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
 export function getFormDisplay($: cheerio.CheerioAPI): unknown {
   const form_display = {}
   $('form input,textarea').each((_i, el) => {
-    if (el.attribs.type !== 'hidden' && el.attribs.name) {
-      set(
+    if (el.attribs.type === 'hidden' || !el.attribs.name) {
+      return
+    }
+    if (el.attribs.type === 'radio' || el.attribs.type === 'checkbox') {
+      const label = $(`label[for="${el.attribs.id}"]`).text()
+      return set(
         form_display,
         el.attribs.name,
-        el.attribs.value ?? null,
+        label,
       )
     }
+    set(
+      form_display,
+      el.attribs.name,
+      el.attribs.value ?? null,
+    )
   })
   $('form select').each((_i, el) => {
     $(el).find('option[selected]').each((_i, option) => {

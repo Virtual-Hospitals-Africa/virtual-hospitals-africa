@@ -36,7 +36,7 @@ export default function SubstanceUseSection(
       has_ever_used_substance: null,
     },
   )
-  const substances_used = substance_use.value.has_ever_used_substance
+  const substances_used = substance_use.value.has_ever_used_substance === 'yes'
     ? substance_use.value.substances_used
     : []
 
@@ -55,7 +55,7 @@ export default function SubstanceUseSection(
         />
       </YesNoGrid>
 
-      {substance_use.value.has_ever_used_substance === true && (
+      {substance_use.value.has_ever_used_substance === 'yes' && (
         <LabelledListboxMulti
           variant='starts_closed'
           label='Which substances does the patient use?'
@@ -70,28 +70,29 @@ export default function SubstanceUseSection(
             const names: string[] = selectedValues.map((item) =>
               item
             ) as unknown as string[]
-            substance_use.value = substance_use.value.has_ever_used_substance
-              ? {
-                ...substance_use.value,
-                substances_used: names.map((name) => ({
-                  name: name,
-                  first_use_age: 0,
-                  used_regularly_years: 0,
-                  times_used_in_a_week: 0,
-                  injected_substance: null,
-                  annoyed_by_criticism: null,
-                  attempt_to_stop: null,
-                  withdrawal_symptoms: null,
-                  quit_more_than_six_months: null,
-                  quit_substance_use_years: 0,
-                })),
-              }
-              : { ...substance_use.value }
+            substance_use.value =
+              substance_use.value.has_ever_used_substance === 'yes'
+                ? {
+                  ...substance_use.value,
+                  substances_used: names.map((name) => ({
+                    name: name,
+                    first_use_age: 0,
+                    used_regularly_years: 0,
+                    times_used_in_a_week: 0,
+                    injected_substance: null,
+                    annoyed_by_criticism: null,
+                    attempt_to_stop: null,
+                    withdrawal_symptoms: null,
+                    quit_more_than_six_months: null,
+                    quit_substance_use_years: 0,
+                  })),
+                }
+                : { ...substance_use.value }
           }}
         />
       )}
 
-      {substance_use.value.has_ever_used_substance === true &&
+      {substance_use.value.has_ever_used_substance === 'yes' &&
         !!substance_use.value.substances_used.length &&
         substance_use.value.substances_used && (
         <YesNoGrid>
@@ -109,7 +110,7 @@ export default function SubstanceUseSection(
                 value={substance.injected_substance}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: true,
+                    has_ever_used_substance: 'yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, injected_substance: value }
@@ -124,7 +125,7 @@ export default function SubstanceUseSection(
                 value={substance.annoyed_by_criticism}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: true,
+                    has_ever_used_substance: 'yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, annoyed_by_criticism: value }
@@ -139,7 +140,7 @@ export default function SubstanceUseSection(
                 value={substance.attempt_to_stop}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: true,
+                    has_ever_used_substance: 'yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, attempt_to_stop: value }
@@ -154,7 +155,7 @@ export default function SubstanceUseSection(
                 value={substance.withdrawal_symptoms}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: true,
+                    has_ever_used_substance: 'yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, withdrawal_symptoms: value }
@@ -169,7 +170,7 @@ export default function SubstanceUseSection(
                 value={substance.quit_more_than_six_months}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: true,
+                    has_ever_used_substance: 'yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? {
@@ -185,7 +186,7 @@ export default function SubstanceUseSection(
         </YesNoGrid>
       )}
 
-      {substance_use.value.has_ever_used_substance === true &&
+      {substance_use.value.has_ever_used_substance === 'yes' &&
         !!substance_use.value.substances_used.length &&
         substance_use.value.substances_used && (
           substance_use.value.substances_used.map((
@@ -220,8 +221,8 @@ export default function SubstanceUseSection(
                   min={0}
                 />
 
-                {substance_use.value.has_ever_used_substance === true &&
-                  substance.quit_more_than_six_months === true && (
+                {substance_use.value.has_ever_used_substance === 'yes' &&
+                  substance.quit_more_than_six_months === 'yes' && (
                   <NumberInput
                     name={`lifestyle.substance_use.substances_used.${index}.quit_substance_use_years`}
                     label={`How many cumulative years, has the patient abstained from ${substance.name} use?`}

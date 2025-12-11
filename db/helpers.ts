@@ -445,11 +445,13 @@ export function assertOnInsert({
   function_name,
   assertion,
   error_message,
+  after,
 }: {
   table: keyof DB
   function_name: string
   assertion: string
   error_message: string
+  after?: boolean
 }) {
   const trigger_name = `${function_name}_trigger`
 
@@ -466,7 +468,9 @@ export function assertOnInsert({
       `.execute(db)
       await sql`
         CREATE TRIGGER ${sql.raw(trigger_name)}
-        BEFORE INSERT OR UPDATE ON ${sql.raw(table)}
+        ${sql.raw(after ? 'AFTER' : 'BEFORE')} INSERT OR UPDATE ON ${
+        sql.raw(table)
+      }
         FOR EACH ROW
         EXECUTE FUNCTION ${sql.raw(function_name)}();
       `.execute(db)

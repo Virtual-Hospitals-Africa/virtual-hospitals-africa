@@ -3,4 +3,4 @@ set -euo pipefail
 
 rm -f deno.lock 
 rm -rf node_modules
-deno install --allow-scripts
+deno install --allow-scripts --reload

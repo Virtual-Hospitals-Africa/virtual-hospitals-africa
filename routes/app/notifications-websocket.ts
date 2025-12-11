@@ -12,6 +12,7 @@ export default upgradeWebsocket((
   let past_ts: Date | undefined
 
   async function loop() {
+    console.log('notifications-websocket loop')
     const new_notifs = await notifications.ofHealthWorker(
       ctx.state.trx,
       ctx.state.health_worker.id,
