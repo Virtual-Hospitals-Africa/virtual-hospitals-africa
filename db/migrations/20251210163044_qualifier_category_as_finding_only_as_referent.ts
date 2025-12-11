@@ -14,7 +14,7 @@ const assertion = assertOnInsert({
     )
   `,
   error_message:
-    `'patient_findings whose snomed_concept_id are qualifier values must refer to other findings'`,
+    `format('patient_findings whose snomed_concept_id are qualifier values must refer to other findings. id: %s', NEW.id)`,
   after: true,
 })
 

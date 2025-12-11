@@ -20,7 +20,7 @@ export default function VitalsMeasurementsInput(
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-col'>
-        <Label label={capitalize(vital.label)} />
+        <Label label={capitalize(vital.label)} htmlFor={name} />
         {most_recent_patient_finding && (
           <div className='flex text-gray-500'>
             <a href='#' className='text-blue-500'>
@@ -35,6 +35,7 @@ export default function VitalsMeasurementsInput(
         <TextInput
           inputmode='numeric'
           required={vital.required}
+          id={name}
           name={`${name}.value`}
           label={null}
           value={null}

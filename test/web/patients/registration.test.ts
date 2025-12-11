@@ -3,7 +3,7 @@
 // import {
 //   addTestEmployee,
 //   addTestEmployeeWithSession,
-//   getFormDisplay,
+//   getFormLabels,
 //   getFormValues,
 //   route,
 // } from '../utilities.ts'
@@ -322,7 +322,7 @@
 //     const page_contents =await get_response.text()
 //     const $ = cheerio.load(page_contents)
 //     const form_values = getFormValues($)
-//     const form_display =getFormDisplay($)
+//     const form_labels =getFormLabels($)
 //     assertEquals(
 //       form_values,
 //       deepOmit({ pre_existing_conditions }, [
@@ -332,7 +332,7 @@
 //       ]),
 //       'The form should be 1:1 with the conditions in the DB',
 //     )
-//     assertEquals(form_display, {
+//     assertEquals(form_labels, {
 //       pre_existing_conditions: [
 //         {
 //           name: 'Cigarette smoker',

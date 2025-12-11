@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import {
   completeAndProceedToNextStep,
   OpenEncounterWorkflowContext,
@@ -18,6 +17,28 @@ import Table, {
 } from '../../../../../../../../components/library/Table.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { JSX } from 'preact/jsx-runtime'
+import entries from '../../../../../../../../util/entries.ts'
+import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
+import { ReferenceRange } from '../../../../../../../../db/models/automated_evaluation.ts'
+import { MostRecentVitalMeasurement } from '../../../../../../../../types.ts'
+
+// Extended measurement type with snomed_canonical_name (included in DB query results)
+type VitalMeasurementWithCanonicalName = MostRecentVitalMeasurement & {
+  snomed_canonical_name: string
+}
+
+// Synthetic finding created for categorical assessments not in recent_measurements
+type CategoricalAssessmentFinding = {
+  finding_id: string
+  snomed_canonical_name: string
+  snomed_concept_id: string
+  value_display: string
+}
+
+// Union type for all table row source data
+type TableFinding =
+  | VitalMeasurementWithCanonicalName
+  | CategoricalAssessmentFinding
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -80,7 +101,9 @@ export async function TriageAssignPriorityPage(
       ),
     })
 
-  const all_findings_for_table: any[] = [...recent_measurements]
+  const all_findings_for_table: TableFinding[] = [
+    ...(recent_measurements as VitalMeasurementWithCanonicalName[]),
+  ]
 
   const category_map: Record<string, { code: string; name: string }> = {
     consciousness: {
@@ -140,15 +163,8 @@ type VitalRow = {
 }
 
 interface TriageVitalsTableProps {
-  measurements: {
-    is_computed: any
-    is_component_of_computed: any
-    vital_value: any
-    previous: any
-    vital_range_visualized: any
-    tews_score: number | null
-  }[]
-  reference_ranges: readonly any[]
+  measurements: TableFinding[]
+  reference_ranges: readonly ReferenceRange[]
   previous_measurements: Map<string, string>
   tews: sats_triage_scoring.TEWSScore
 }
@@ -179,8 +195,8 @@ function TriageVitalsTable({
       )
       const value = parseFloat(measurement.value_display)
 
-      const is_computed = is_computedVital(measurement.snomed_concept_id)
-      const is_computed_of_computed = is_component_of_computedVital(
+      const is_computed = isComputedVital(measurement.snomed_concept_id)
+      const is_component_of_computed = isComponentOfComputedVital(
         measurement.snomed_concept_id,
         measurements,
       )
@@ -207,34 +223,15 @@ function TriageVitalsTable({
         : undefined
 
       // Get individual TEWS score for this measurement
+
       let tews_score: number | null = null
-      if (measurement.snomed_concept_id === VITALS_SNOMED_CODE.heart_rate) {
-        tews_score = tews.components.heart_rate
-      } else if (
-        measurement.snomed_concept_id === VITALS_SNOMED_CODE.respiratory_rate
-      ) {
-        tews_score = tews.components.respiratory_rate
-      } else if (
-        measurement.snomed_concept_id ===
-          VITALS_SNOMED_CODE.blood_pressure_systolic
-      ) {
-        tews_score = tews.components.systolic_bp
-      } else if (
-        measurement.snomed_concept_id === VITALS_SNOMED_CODE.temperature
-      ) {
-        tews_score = tews.components.temperature
-      } else if (
-        measurement.snomed_concept_id === VITALS_SNOMED_CODE.avpu_consciousness
-      ) {
-        tews_score = tews.components.consciousness
-      } else if (
-        measurement.snomed_concept_id === VITALS_SNOMED_CODE.mobility_assessment
-      ) {
-        tews_score = tews.components.mobility
-      } else if (
-        measurement.snomed_concept_id === VITALS_SNOMED_CODE.trauma_presence
-      ) {
-        tews_score = tews.components.trauma
+      for (const [vital, snomed_concept_id] of entries(VITALS_SNOMED_CODE)) {
+        if (measurement.snomed_concept_id === snomed_concept_id) {
+          if (isKeyOf(vital, tews.components)) {
+            tews_score = tews.components[vital]
+          }
+          break
+        }
       }
 
       // Build vital range visualized component
@@ -265,7 +262,7 @@ function TriageVitalsTable({
         vital_range_visualized,
         tews_score: tews_score !== null ? tews_score.toString() : '',
         is_computed: is_computed,
-        is_component_of_computed: is_computed_of_computed,
+        is_component_of_computed: is_component_of_computed,
       }
     },
   )
@@ -345,7 +342,7 @@ function TriageVitalsTable({
   )
 }
 
-function is_computedVital(snomed_concept_id: string): boolean {
+function isComputedVital(snomed_concept_id: string): boolean {
   return [
     VITALS_SNOMED_CODE.body_mass_index,
     VITALS_SNOMED_CODE.mean_arterial_pressure,
@@ -354,9 +351,9 @@ function is_computedVital(snomed_concept_id: string): boolean {
 }
 
 // Helper function to determine if a vital is a component of a computed vital
-function is_component_of_computedVital(
+function isComponentOfComputedVital(
   snomed_concept_id: string,
-  all_measurements: any[],
+  all_measurements: TableFinding[],
 ): boolean {
   const bmi_components = [VITALS_SNOMED_CODE.height, VITALS_SNOMED_CODE.weight]
   const bp_components = [
@@ -385,8 +382,10 @@ function is_component_of_computedVital(
 }
 
 // Helper function to order measurements for display
-function getOrderedMeasurementsForDisplay(measurements: any[]): any[] {
-  const ordered: any[] = []
+function getOrderedMeasurementsForDisplay(
+  measurements: TableFinding[],
+): TableFinding[] {
+  const ordered: TableFinding[] = []
   const used_measurements = new Set<string>()
 
   const display_order = [

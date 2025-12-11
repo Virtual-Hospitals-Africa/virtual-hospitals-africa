@@ -117,7 +117,7 @@ export async function up(db: Kysely<unknown>) {
             JOIN patient_measurements AS meas ON findings.id = meas.id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND records.snomed_concept_id IN ('8499008', '86290005', '271649006', '722490005') -- pulse, resp_rate, blood_pressure_systolic, temp
+              AND records.snomed_concept_id IN ('8499008', '86290005', '271649006', '386725007') -- pulse, resp_rate, blood_pressure_systolic, temp
             ORDER BY records.snomed_concept_id, records.created_at DESC
         ),
         quantitative_scores AS (
@@ -163,7 +163,7 @@ export async function up(db: Kysely<unknown>) {
             UNION ALL
             SELECT 'blood_pressure_systolic' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '271649006'
             UNION ALL
-            SELECT 'temperature' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '722490005'
+            SELECT 'temperature' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '386725007'
         )
         SELECT jsonb_build_object(
             'components', jsonb_object_agg(component, score_value),

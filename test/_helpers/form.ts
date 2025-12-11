@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
 import last from '../../util/last.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {
   const form_values = {}
@@ -40,36 +41,21 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
   return form_values
 }
 
-export function getFormDisplay($: cheerio.CheerioAPI): unknown {
-  const form_display = {}
-  $('form input,textarea').each((_i, el) => {
+export function getFormLabels($: cheerio.CheerioAPI): unknown {
+  const form_labels = {}
+  $('form input,textarea,select').each((_i, el) => {
     if (el.attribs.type === 'hidden' || !el.attribs.name) {
       return
     }
-    if (el.attribs.type === 'radio' || el.attribs.type === 'checkbox') {
-      const label = $(`label[for="${el.attribs.id}"]`).text()
-      return set(
-        form_display,
-        el.attribs.name,
-        label,
-      )
-    }
-    set(
-      form_display,
+    // Try to find label by 'for' attribute matching input id
+    const label = $(`label[for="${el.attribs.id}"]`).text() ||
+      $(el).closest('label').text()
+    assert(label, `No label found for ${el}`)
+    return set(
+      form_labels,
       el.attribs.name,
-      el.attribs.value ?? null,
+      label,
     )
   })
-  $('form select').each((_i, el) => {
-    $(el).find('option[selected]').each((_i, option) => {
-      if (el.attribs.name) {
-        set(
-          form_display,
-          el.attribs.name,
-          $(option).text(),
-        )
-      }
-    })
-  })
-  return form_display
+  return form_labels
 }

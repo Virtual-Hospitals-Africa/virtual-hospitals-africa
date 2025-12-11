@@ -7,7 +7,7 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import { route } from '../../../../route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormDisplay } from '../../../../_helpers/form.ts'
+import { getFormLabels } from '../../../../_helpers/form.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -50,8 +50,8 @@ describe('triage/warning_signs', () => {
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
       )
 
-      const form_display = getFormDisplay($warning_signs)
-      assertEquals(form_display, {
+      const form_labels = getFormLabels($warning_signs)
+      assertEquals(form_labels, {
         'warning_signs': {
           'Obstructed airway': 'Obstructed airwayNot breathing',
           'Seizure': 'SeizureCurrent',

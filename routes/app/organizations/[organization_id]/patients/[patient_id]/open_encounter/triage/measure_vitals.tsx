@@ -121,7 +121,7 @@ export const handler = postHandler(
         workflows: {
           registration: [Object],
           triage: [Object],
-          seeking_treatment: [Object]
+          consultation: [Object]
         },
         priority: null,
         status: { open: true, patient_presence: [Object] },
@@ -290,9 +290,9 @@ export const handler = postHandler(
           steps_completed: [Array],
           employees: [Array]
         },
-        seeking_treatment: {
+        consultation: {
           patient_workflow_id: "1d3bace2-2975-4827-a975-1781370911be",
-          workflow: "seeking_treatment",
+          workflow: "consultation",
           status: "not started",
           steps_completed: [],
           employees: []
@@ -304,7 +304,7 @@ export const handler = postHandler(
         patient_presence: {
           department_name: "triage",
           current_workflow: "triage",
-          next_workflow: "seeking_treatment",
+          next_workflow: "consultation",
           employees: [Array]
         }
       },

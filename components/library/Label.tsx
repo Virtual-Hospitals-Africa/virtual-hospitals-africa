@@ -6,15 +6,18 @@ type LabelProps = {
   className?: string
   label?: Maybe<ComponentChildren>
   children?: Maybe<ComponentChildren>
+  htmlFor?: string
 }
 
 export function Label({
   label,
   className,
   children,
+  htmlFor,
 }: LabelProps) {
   return (
     <label
+      htmlFor={htmlFor}
       className={cls(
         'block text-sm font-medium leading-6 text-black-900 relative min-w-max text-left',
         className,

@@ -1,29 +1,29 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 
-export interface TEWSScoreComponents {
+export type TEWSScoreComponents = {
   heart_rate: number
   respiratory_rate: number
-  systolic_bp: number
+  blood_pressure_systolic: number
   temperature: number
-  consciousness: number
-  mobility: number
-  trauma: number
+  avpu_consciousness: number
+  mobility_assessment: number
+  trauma_presence: number
 }
 
-export interface CategoricalFinding {
+export type CategoricalFinding = {
   snomed_concept_id: string
   category: string
   display_label: string
   score_value: number
 }
 
-export interface MeasurementScore {
+export type MeasurementScore = {
   snomed_concept_id: string
   score_value: number
 }
 
-export interface TEWSScore {
+export type TEWSScore = {
   components: TEWSScoreComponents
   total_score: number
   categorical_findings: CategoricalFinding[]
@@ -60,11 +60,11 @@ export async function calculateTEWSFromDatabase(
     components: calculate_tews_score.components || {
       heart_rate: 0,
       respiratory_rate: 0,
-      systolic_bp: 0,
+      blood_pressure_systolic: 0,
       temperature: 0,
-      consciousness: 0,
-      mobility: 0,
-      trauma: 0,
+      avpu_consciousness: 0,
+      mobility_assessment: 0,
+      trauma_presence: 0,
     },
     total_score: calculate_tews_score.total_score || 0,
     categorical_findings: calculate_tews_score.categorical_findings || [],

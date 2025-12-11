@@ -23,7 +23,7 @@ export default function DatabaseDrivenCategoricalInput({
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-col'>
-        <Label label={capitalize(assessment.name)} />
+        <Label label={capitalize(assessment.name)} htmlFor={name} />
         {most_recent_patient_finding && (
           <div className='flex text-gray-500'>
             <a href='#' className='text-blue-500'>
@@ -36,6 +36,7 @@ export default function DatabaseDrivenCategoricalInput({
       </div>
       <div className='min-w-60 max-w-60 flex items-center'>
         <SelectWithOptions
+          id={name}
           name={`${name}.option_snomed_concept_id`}
           label={null}
           required={assessment.required_for_triage}

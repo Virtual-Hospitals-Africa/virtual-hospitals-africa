@@ -3,7 +3,7 @@ export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
 export const VITALS_SNOMED_CODE = {
   height: '1153637007',
   weight: '363808001',
-  temperature: '722490005',
+  temperature: '386725007',
   blood_pressure_systolic: '271649006',
   blood_pressure_diastolic: '271650006',
   blood_oxygen_saturation: '103228002',
