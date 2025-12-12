@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
+Existence,
   IntermediateFindingRecord,
   MostRecentBriefHistoryFindings,
   RenderedFindingRelativeToHealthWorker,
@@ -23,8 +24,6 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import partition from '../../util/partition.ts'
 import { nowInvalidRecords } from './patient_records.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 
 export function mostRecentFindings(
@@ -93,11 +92,32 @@ export function mostRecentFindings(
     .execute()
 }
 
+function findingExistence(finding: IntermediateFindingRecord): Existence {
+  assertOneOf(
+    finding.name,
+    ['Status' as const, 'Clinical finding' as const],
+    "Revisit this function when considering how other types of findings interplay with what's shown for brief history",
+  )
+
+  if (finding.name !== 'Status') {
+    return 'Yes'
+  }
+
+  assert(finding.value_name)
+  assertOneOf(finding.value_name, ['Yes' as const, 'No' as const, 'Unknown' as const])
+  return finding.value_name
+}
+
 function mostRecentFinding(
   findings_of_condition: IntermediateFindingRecord[],
   pertaining_to_key: CommonConditionKey,
 ) {
-  if (findings_of_condition.length > 1) {
+  const findings_of_condition_with_existence = findings_of_condition.map(finding => ({
+    ...finding,
+    existence: findingExistence(finding)
+  }))
+
+  if (findings_of_condition_with_existence.length > 1) {
     assert(
       findings_of_condition[0].created_at >=
         findings_of_condition[1].created_at,
@@ -110,7 +130,7 @@ function mostRecentFinding(
   assert(parent_snomed_concept_id)
 
   const findings_of_condition_grouped_by_concept = groupBy(
-    findings_of_condition,
+    findings_of_condition_with_existence,
     'snomed_concept_id',
   )
   const most_recent_parent_concept_finding = first(
@@ -118,17 +138,11 @@ function mostRecentFinding(
       [],
   )
 
-  const first_positive_finding_not_invalidated_by_a_later_negative_finding =
-    findings_of_condition.find((finding) => {
-      assertEquals(
-        finding.name,
-        'Status',
-        "Revisit this function when considering how other types of findings interplay with what's shown for brief history",
-      )
-      assert(finding.value_name)
-      assertArrayIncludes(['Yes', 'No', 'Unknown'], [finding.value_name])
+  console.log({findings_of_condition})
 
-      if (finding.value_name !== 'Yes') return
+  const first_positive_finding_not_invalidated_by_a_later_negative_finding =
+    findings_of_condition_with_existence.find((finding) => {
+      if (finding.existence !== 'Yes') return
 
       const most_recent_finding_of_concept = first(
         findings_of_condition_grouped_by_concept.get(
@@ -139,14 +153,14 @@ function mostRecentFinding(
       if (finding !== most_recent_finding_of_concept) return false
 
       const invalidated = most_recent_parent_concept_finding &&
-        most_recent_parent_concept_finding.value_name !== 'Yes' &&
+        most_recent_parent_concept_finding.existence !== 'Yes' &&
         most_recent_parent_concept_finding.created_at > finding.created_at
 
       return !invalidated
     })
 
   return first_positive_finding_not_invalidated_by_a_later_negative_finding ||
-    findings_of_condition[0]
+    findings_of_condition_with_existence[0]
 }
 
 export async function renderedMostRecentFindings(
@@ -241,16 +255,11 @@ export async function renderedMostRecentFindings(
       if (finding.value_name) {
         value_display += `: ${finding.value_name}`
       }
-      assertOneOf(finding.value_name, [
-        'Yes' as const,
-        'No' as const,
-        'Unknown' as const,
-      ])
+
 
       return {
         ...finding,
         value_display,
-        existence: finding.value_name,
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

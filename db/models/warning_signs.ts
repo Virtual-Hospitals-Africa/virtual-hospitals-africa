@@ -1,3 +1,4 @@
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, success_true } from '../helpers.ts'
@@ -5,7 +6,7 @@ import {
   ParsedFindingExpression,
   ParsedQualifierExpression,
 } from './simple_record_language.ts'
-import { SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID } from './patient_findings.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 
@@ -15,13 +16,16 @@ type QualifierInsert = {
   snomed_concept_id_value?: string
 }
 
-function flattenQualifiers(
+function qualifersForInsertion(
   qualifiers: ParsedQualifierExpression[],
 ): QualifierInsert[] {
   const result: QualifierInsert[] = []
 
   for (const qualifier of qualifiers) {
-    if (qualifier.type !== 'qualifier') continue
+    if (qualifier.type !== 'qualifier') {
+      assertEquals(qualifier.type, 'not', `Unsupported qualifier type: ${qualifier.type}`)
+      continue
+    }
 
     result.push({
       id: generateUUID(),
@@ -29,13 +33,7 @@ function flattenQualifiers(
       snomed_concept_id_value: qualifier.snomed_concept_id_value,
     })
 
-    // Recursively flatten nested qualifiers
-    if (qualifier.qualifiers.length > 0) {
-      const nested = qualifier.qualifiers.filter(
-        (q): q is ParsedQualifierExpression => q.type === 'qualifier',
-      )
-      result.push(...flattenQualifiers(nested))
-    }
+    assert(!qualifier.qualifiers.length, 'Unsupported nested qualifiers')
   }
 
   return result
@@ -80,14 +78,8 @@ export function insertOne(
     snomed_concept_id: finding.snomed_concept_id,
   }
 
-  // Then add self-reported qualifier
-  const self_reported_qualifier: QualifierInsert = {
-    id: generateUUID(),
-    snomed_concept_id: SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
-  }
-
   // Flatten any nested qualifiers from the s_expression (excluding 'not' expressions)
-  const expression_qualifiers = flattenQualifiers(
+  const expression_qualifiers = qualifersForInsertion(
     finding.qualifiers.filter(
       (q): q is ParsedQualifierExpression => q.type === 'qualifier',
     ),
@@ -95,7 +87,6 @@ export function insertOne(
 
   const all_qualifiers = [
     finding_qualifier,
-    self_reported_qualifier,
     ...expression_qualifiers,
   ]
 
