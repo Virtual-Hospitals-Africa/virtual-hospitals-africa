@@ -17,11 +17,13 @@ export async function upsertOne(
   {
     patient_id,
     patient_encounter_id,
+    employment_id,
     patient_encounter_employee_id,
     chief_complaint,
   }: {
     patient_id: string
     patient_encounter_id: string
+    employment_id: string
     patient_encounter_employee_id: string
     chief_complaint: {
       altered_patient_chief_complaint_id?: Maybe<string>
@@ -42,7 +44,7 @@ export async function upsertOne(
     await markAltered(trx, {
       patient_id,
       patient_encounter_id,
-      patient_encounter_employee_id,
+      employment_id,
       altered_record_id: altered_patient_chief_complaint_id,
     })
   }

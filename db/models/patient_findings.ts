@@ -13,11 +13,7 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  markAltered,
-  RECORD_NOW_INVALID_CONCEPT_ID,
-} from './patient_records.ts'
-import { promiseProps } from '../../util/promiseProps.ts'
+import { RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
 import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -136,7 +132,6 @@ function doInsertOne(
           ? qb.insertInto('patient_record_qualifiers')
             .values(qualifiers_insert.map((q) => ({
               id: q.id,
-              patient_encounter_employee_id,
               qualifies_record_id: finding_id,
               concrete_value: q.concrete_value,
               snomed_concept_id_value: q.snomed_concept_id_value,
@@ -155,12 +150,6 @@ function doInsertOne(
       success_true,
     ])
     .executeTakeFirstOrThrow()
-}
-
-function isAltered(to_insert: FindingInsert): to_insert is FindingInsert & {
-  altered_record_id: string
-} {
-  return !!to_insert.altered_record_id
 }
 
 export function baseQuery(
@@ -248,7 +237,6 @@ export function baseQuery(
           .select((eb_qualifiers) => [
             'qualifier_patient_records.id as record_id',
             'qualifier_patient_records.patient_encounter_id',
-            'patient_record_qualifiers.patient_encounter_employee_id',
             asText(
               eb_qualifiers,
               'qualifier_patient_records.snomed_concept_id',
@@ -324,18 +312,11 @@ export const patient_findings = base({
 
     return qb
   },
-  async insertOneNested(
+  insertOneNested(
     trx: TrxOrDb,
     to_insert: FindingInsert,
   ) {
-    const { inserted_finding_result } = await promiseProps({
-      inserted_finding_result: doInsertOne(trx, to_insert),
-      altering: isAltered(to_insert)
-        ? markAltered(trx, to_insert)
-        : Promise.resolve(),
-    })
-
-    return inserted_finding_result
+    return doInsertOne(trx, to_insert)
   },
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,

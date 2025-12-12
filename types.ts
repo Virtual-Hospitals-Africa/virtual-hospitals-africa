@@ -3478,7 +3478,6 @@ type QualifierIntermediate =
     'provider' | 'value_display'
   >
   & {
-    patient_encounter_employee_id: string
     attribute_value: string | null
   }
 

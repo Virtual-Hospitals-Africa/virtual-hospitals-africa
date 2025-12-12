@@ -160,7 +160,6 @@ export async function getMostRecent(
         .select([
           'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
-          'patient_findings.referent_finding_id',
         ])
         .select([
           'patient_measurements.value',
@@ -204,7 +203,7 @@ export async function getMostRecent(
             sql<string>`evaluation_records.snomed_concept_id::text`.as(
               'snomed_concept_id',
             ),
-            'note',
+            sql<string | null>`null`.as('note'),
           ])
           .whereRef(
             'ranked_findings.id',

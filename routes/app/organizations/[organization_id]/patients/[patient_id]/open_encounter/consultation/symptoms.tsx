@@ -44,6 +44,7 @@ export const handler = postHandler(
     await patient_symptoms.upsertOne(ctx.state.trx, {
       patient_id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+      employment_id: ctx.state.organization_employment.employment_id,
       patient_encounter_employee_id:
         ctx.state.encounter_employee_presence.patient_encounter_employee_id,
       symptom,

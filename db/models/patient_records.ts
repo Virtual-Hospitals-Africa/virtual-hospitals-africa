@@ -18,13 +18,13 @@ function markInvalid(
   {
     patient_id,
     patient_encounter_id,
-    patient_encounter_employee_id,
+    employment_id,
     altered_record_id,
     snomed_concept_id,
   }: {
     patient_id: string
     patient_encounter_id: string
-    patient_encounter_employee_id: string
+    employment_id: string
     altered_record_id: string
     snomed_concept_id: RecordNowInvalidConceptId
   },
@@ -44,7 +44,7 @@ function markInvalid(
         qb.insertInto('patient_evaluations')
           .values({
             id,
-            patient_encounter_employee_id,
+            employment_id,
             evaluates_record_id: altered_record_id,
             by_system: false,
           }),
@@ -57,7 +57,7 @@ export function markAltered(
   opts: {
     patient_id: string
     patient_encounter_id: string
-    patient_encounter_employee_id: string
+    employment_id: string
     altered_record_id: string
   },
 ) {
@@ -72,7 +72,7 @@ export function markEnteredInError(
   opts: {
     patient_id: string
     patient_encounter_id: string
-    patient_encounter_employee_id: string
+    employment_id: string
     altered_record_id: string
   },
 ) {
