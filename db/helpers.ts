@@ -507,20 +507,21 @@ export function asText<EB extends ExpressionBuilder<DB, any>>(
 }
 
 export function orderByArrayPosition<
-  EB extends ExpressionBuilder<DB, any>,
+  EB extends ExpressionBuilder<any, any>,
   Ref extends Parameters<EB['ref']>[0],
 >(
-  eb: ExpressionBuilder<DB, any>,
+  eb: EB,
   ref: Ref,
-  [first, ...rest]: NonEmptyArray<
-    ExtractTypeFromReferenceExpression<DB, any, Ref>
-  >,
+  [first, ...rest]: EB extends ExpressionBuilder<infer SDB, any>
+    ? NonEmptyArray<
+      ExtractTypeFromReferenceExpression<SDB, any, Ref>
+    >
+    : never,
 ) {
-  let case_statement = eb.case().when(ref, '=', first).then(rest.length)
-  for (let i = 0; i < rest.length; i++) {
-    case_statement = case_statement.when(ref, '=', rest[i]).then(
-      rest.length - i,
-    )
-  }
-  return case_statement.else(0).end()
+  const case_statement = eb.case().when(ref, '=', first).then(rest.length + 1)
+  return rest.reduce(
+    (statement, option, i) =>
+      statement.when(ref, '=', option).then(rest.length - i),
+    case_statement,
+  ).else(0).end()
 }

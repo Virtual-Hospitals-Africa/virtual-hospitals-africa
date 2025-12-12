@@ -50,8 +50,7 @@ describe('triage/warning_signs', () => {
           'High energy transfer':
             'High energy transferSevere mechanism of injury',
           'Focal neurology — acute': 'Focal neurology — acuteStroke',
-          'Fracture':
-            'FractureClosed (no break in the skin)FractureClosed (no break in the skin)',
+          'Fracture': 'FractureClosed (no break in the skin)',
           'Burn Circumferential': 'BurnCircumferential',
           'Shortness of breath - acute': 'Shortness of breath - acute',
           'Aggression': 'Aggression',
@@ -108,7 +107,8 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             warning_signs: {
-              'Cardiac arrest': WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
+              'Cardiac arrest':
+                WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
             },
           }),
         },
@@ -146,7 +146,6 @@ describe('triage/warning_signs', () => {
               'patient_encounter_id': encounter.patient_encounter_id,
               'snomed_concept_id': '410429000',
               'name': 'Cardiac arrest',
-              'concrete_value': null,
               'attribute_value': null,
             },
           ],
@@ -154,7 +153,7 @@ describe('triage/warning_signs', () => {
       ])
     })
 
-    it.only('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
+    it('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
@@ -217,16 +216,14 @@ describe('triage/warning_signs', () => {
               'patient_encounter_id': encounter.patient_encounter_id,
               'snomed_concept_id': '91175000',
               'name': 'Seizure',
-              'concrete_value': null,
               'attribute_value': null,
               'qualifiers': [{
                 'record_id': z.string().uuid(),
                 'patient_encounter_id': encounter.patient_encounter_id,
                 'snomed_concept_id': '15240007',
                 'name': 'Current',
-                'concrete_value': null,
                 'attribute_value': null,
-              }]
+              }],
             },
           ],
         },
@@ -256,8 +253,10 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             warning_signs: {
-              'Cardiac arrest': WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
-              'Chest pain': WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              'Cardiac arrest':
+                WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
             },
           }),
         },

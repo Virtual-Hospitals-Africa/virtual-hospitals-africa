@@ -14,7 +14,7 @@ import {
 } from '../../../../../../../../db/models/warning_signs.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
-import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
+import { KEYED_WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import compact from '../../../../../../../../util/compact.ts'
 
@@ -68,7 +68,7 @@ export async function TriageWarningSignsPage(
 
   // Filter warning signs based on prompt_when_s_expression
   const filtered_warning_signs = await Promise.all(
-    WARNING_SIGNS.map(async (sign) => {
+    KEYED_WARNING_SIGNS.map(async (sign) => {
       if (!sign.prompt_when_s_expression) {
         return sign
       }

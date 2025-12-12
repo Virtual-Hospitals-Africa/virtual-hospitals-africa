@@ -10,7 +10,7 @@ export type WarningSign = {
 
 export type KeyedWarningSign = {
   key: string
-  } & WarningSign
+} & WarningSign
 
 export const WARNING_SIGNS = {
   'Obstructed airway': {
@@ -251,7 +251,8 @@ export const WARNING_SIGNS = {
   },
 } satisfies Record<string, WarningSign>
 
-export const KEYED_WARNING_SIGNS: KeyedWarningSign[] = entries(WARNING_SIGNS).map(([key, sign]) => ({
-  key,
-  ...sign
-}))
+export const KEYED_WARNING_SIGNS: KeyedWarningSign[] = entries(WARNING_SIGNS)
+  .map(([key, sign]) => ({
+    key,
+    ...sign,
+  }))

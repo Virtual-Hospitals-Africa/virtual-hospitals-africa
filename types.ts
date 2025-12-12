@@ -3433,8 +3433,8 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   patient_encounter_id: string
   snomed_concept_id: string
   name: string
-  concrete_value: any
   attribute_value: string | null
+  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
 }
 
 export type RenderedFindingRelativeToHealthWorker<

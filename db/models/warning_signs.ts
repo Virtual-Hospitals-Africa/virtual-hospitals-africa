@@ -2,7 +2,7 @@ import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, debugLog, success_true } from '../helpers.ts'
 import {
-ParsedExpression,
+  ParsedExpression,
   ParsedFindingExpression,
 } from './simple_record_language.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -77,58 +77,61 @@ export function insertOne(
           id: finding_id,
           procedure_id,
           patient_encounter_employee_id,
-        })
-    )
+        }))
 
-    function qualifierCte(
-      qb: typeof query,
-      qualifier: ParsedExpression,
-      qualifies_record_id: string
-    ) {
-      assert(qualifier.type === 'qualifier')
-      const id = generateUUID()
-      const id_token = id.replaceAll('-', '_')
-      
-      let next_query = qb.with(
-        `inserting_qualifier_record_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_records')
-            .values({
-              id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id: qualifier.snomed_concept_id,
-            }),
-      ).with(
-        `inserting_qualifiers_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_record_qualifiers')
-            .values({
-              id,
-              qualifies_record_id,
-              snomed_concept_id_value: qualifier.snomed_concept_id_value,
-            }),
+  function qualifierCte(
+    qb: typeof query,
+    qualifier: ParsedExpression,
+    qualifies_record_id: string,
+  ) {
+    assert(qualifier.type === 'qualifier')
+    const id = generateUUID()
+    const id_token = id.replaceAll('-', '_')
+
+    let next_query = qb.with(
+      `inserting_qualifier_record_${id_token}`,
+      (qb) =>
+        qb.insertInto('patient_records')
+          .values({
+            id,
+            patient_id,
+            patient_encounter_id,
+            snomed_concept_id: qualifier.snomed_concept_id,
+          }),
+    ).with(
+      `inserting_qualifiers_${id_token}`,
+      (qb) =>
+        qb.insertInto('patient_record_qualifiers')
+          .values({
+            id,
+            qualifies_record_id,
+            snomed_concept_id_value: qualifier.snomed_concept_id_value,
+          }),
+    ) as unknown as typeof query
+
+    for (const sub_qualifier of qualifier.qualifiers) {
+      next_query = qualifierCte(
+        next_query,
+        sub_qualifier,
+        id,
       ) as unknown as typeof query
-
-      for (const sub_qualifier of qualifier.qualifiers) {
-        next_query = qualifierCte(next_query, sub_qualifier, id) as unknown as typeof query
-      }
-
-      return next_query
     }
 
-    for (const qualifier of finding.qualifiers) {
-      query = qualifierCte(query, qualifier, finding_id)
-    }
+    return next_query
+  }
 
-    debugLog(query
-      .selectNoFrom([
-        success_true,
-      ]))
+  for (const qualifier of finding.qualifiers) {
+    query = qualifierCte(query, qualifier, finding_id)
+  }
 
-    return query
-      .selectNoFrom([
-        success_true,
-      ])
-      .executeTakeFirstOrThrow()
+  debugLog(query
+    .selectNoFrom([
+      success_true,
+    ]))
+
+  return query
+    .selectNoFrom([
+      success_true,
+    ])
+    .executeTakeFirstOrThrow()
 }

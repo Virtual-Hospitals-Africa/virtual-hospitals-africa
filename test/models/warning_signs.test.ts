@@ -41,10 +41,10 @@ describe('db/models/warning_signs.ts', () => {
             'type': 'qualifier',
             'snomed_concept_id': '91175000',
             'qualifiers': [{
-            'type': 'qualifier',
-            'snomed_concept_id': '15240007',
-            'qualifiers': [],
-          }],
+              'type': 'qualifier',
+              'snomed_concept_id': '15240007',
+              'qualifiers': [],
+            }],
           },
           'prompt_when': null,
         },
@@ -104,18 +104,6 @@ describe('db/models/warning_signs.ts', () => {
           'clinical_finding': {
             'type': 'qualifier',
             'snomed_concept_id': '230690007',
-            'qualifiers': [],
-          },
-          'prompt_when': null,
-        },
-        {
-          'key': 'Fracture',
-          'sats_primary_name': 'Fracture',
-          'sats_secondary_text': 'Closed (no break in the skin)',
-          'sats_priority_snomed_concept_id': '1356878002',
-          'clinical_finding': {
-            'type': 'qualifier',
-            'snomed_concept_id': '706886007',
             'qualifiers': [],
           },
           'prompt_when': null,

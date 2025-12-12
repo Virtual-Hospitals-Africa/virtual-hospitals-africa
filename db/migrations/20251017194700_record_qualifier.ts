@@ -1,4 +1,4 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { createPointerTable } from '../createTable.ts'
 import { DB } from '../../db.d.ts'
 
@@ -17,20 +17,9 @@ export async function up(db: Kysely<DB>) {
         (col) => col.references('patient_records.id').notNull(),
       )
         .addColumn(
-          'concrete_value',
-          'json',
-        )
-        .addColumn(
           'snomed_concept_id_value',
           'bigint',
           (col) => col.references('snomed_concept.id'),
-        )
-        .addCheckConstraint(
-          'patient_record_qualifier_values_either_snomed_concept_or_concrete',
-          sql`(
-            (concrete_value IS NULL) OR
-            (snomed_concept_id_value IS NULL)
-          )`,
         ),
   )
 }
