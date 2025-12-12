@@ -2065,10 +2065,10 @@ export type Lifestyle = {
 
 export type SexualActivity =
   | {
-    ever_been_sexually_active: 'no' | 'unknown' | null
+    ever_been_sexually_active: 'No' | 'Unknown' | null
   }
   | {
-    ever_been_sexually_active: 'yes'
+    ever_been_sexually_active: 'Yes'
     currently_sexually_active?: Maybe<Existence>
     first_encounter?: Maybe<number>
     current_sexual_partners?: Maybe<number>
@@ -2083,10 +2083,10 @@ export type SexualActivity =
 
 export type Alcohol =
   | {
-    has_ever_drank: 'no' | 'unknown' | null
+    has_ever_drank: 'No' | 'Unknown' | null
   }
   | {
-    has_ever_drank: 'yes'
+    has_ever_drank: 'Yes'
     currently_drinks?: Existence | null
     binge_drinking?: Existence | null
     drawn_to_cut_down?: Existence | null
@@ -2108,10 +2108,10 @@ export type Alcohol =
 
 export type Smoking =
   | {
-    has_ever_smoked: 'no' | 'unknown' | null
+    has_ever_smoked: 'No' | 'Unknown' | null
   }
   | {
-    has_ever_smoked: 'yes'
+    has_ever_smoked: 'Yes'
     currently_smokes?: Maybe<Existence>
     first_smoke_age?: number
     weekly_smokes?: number | null
@@ -2128,10 +2128,10 @@ export type Smoking =
 
 export type SubstanceUse =
   | {
-    has_ever_used_substance: 'no' | 'unknown' | null
+    has_ever_used_substance: 'No' | 'Unknown' | null
   }
   | {
-    has_ever_used_substance: 'yes'
+    has_ever_used_substance: 'Yes'
     substances_used: {
       name: string
       injected_substance: Existence | null
@@ -2148,10 +2148,10 @@ export type SubstanceUse =
 
 export type Exercise =
   | {
-    currently_exercises: 'no' | 'unknown' | null
+    currently_exercises: 'No' | 'Unknown' | null
   }
   | {
-    currently_exercises: 'yes'
+    currently_exercises: 'Yes'
     physical_activities: {
       name: string
       frequency: string
@@ -3409,8 +3409,8 @@ export type BriefHistory =
     key: BriefHistoryKey
   }
   & (
-    | { presence: 'no' | 'unknown' }
-    | { presence: 'yes' }
+    | { presence: 'No' | 'Unknown' }
+    | { presence: 'Yes' }
   )
 
 export type PreviouslyCompletedProcedures = {
@@ -3482,7 +3482,7 @@ type QualifierIntermediate =
     attribute_value: string | null
   }
 
-export type Existence = 'yes' | 'no' | 'unknown'
+export type Existence = 'Yes' | 'No' | 'Unknown'
 
 export type IntermediateFindingRecord<PertainingToKey extends string = string> =
   {

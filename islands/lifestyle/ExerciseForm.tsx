@@ -167,45 +167,45 @@ export default function ExerciseSection(
     lifestyle?.exercise?.currently_exercises ?? null,
   )
   const physical_activities = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.physical_activities || [])
       : [],
   )
   const sports = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.sports || [])
       : [],
   )
   const types_of_exercises = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.types_of_exercises || [])
       : [],
   )
   const disabilities = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.physical_injuries_or_disability.disabilities || [])
       : [],
   )
 
   const musculoskeletal_injuries = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.physical_injuries_or_disability
         .musculoskeletal_injuries || [])
       : [],
   )
 
   const limitations = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.limitations.limits || [])
       : [],
   )
   const structural = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.limitations.structural_conditions || [])
       : [],
   )
   const medical = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'yes'
+    lifestyle?.exercise?.currently_exercises === 'Yes'
       ? (lifestyle.exercise.limitations.medical_conditions || [])
       : [],
   )

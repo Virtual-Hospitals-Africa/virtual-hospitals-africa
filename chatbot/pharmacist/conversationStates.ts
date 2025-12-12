@@ -158,12 +158,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
     options: [
       {
-        id: 'yes',
+        id: 'Yes',
         title: 'Yes',
         onExit: 'not_onboarded:enter_pharmacy_licence',
       },
       {
-        id: 'no',
+        id: 'No',
         title: 'No',
         async onExit(trx, pharmacistState) {
           await conversations.updateChatbotUser(
@@ -239,12 +239,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
     options: [
       {
-        id: 'yes',
+        id: 'Yes',
         title: 'Yes',
         onExit: 'not_onboarded:share_location',
       },
       {
-        id: 'no',
+        id: 'No',
         title: 'No',
         async onExit(trx, pharmacistState) {
           await conversations.updateChatbotUser(
@@ -403,12 +403,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
     options: [
       {
-        id: 'yes',
+        id: 'Yes',
         title: 'Yes',
         onExit: dispenseOne,
       },
       {
-        id: 'no',
+        id: 'No',
         title: 'No',
         onExit: dispenseSkip,
       },

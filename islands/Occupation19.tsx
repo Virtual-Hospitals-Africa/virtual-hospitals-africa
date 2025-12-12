@@ -21,9 +21,9 @@
 
 //   const [job, setJob] = useState<Job>(
 //     occupation.job || {
-//       happy: 'unknown',
-//       descendants_employed: 'unknown',
-//       require_assistance: 'unknown',
+//       happy: 'Unknown',
+//       descendants_employed: 'Unknown',
+//       require_assistance: 'Unknown',
 //       profession: 'None',
 //       work_satisfaction: 'None',
 //     },
@@ -77,7 +77,7 @@
 //         <YesNoQuestion
 //           name='omit.patient_goes_to_school'
 //           label='Is the patient advancing their education?'
-//           value={school.status === 'adult in school' ? 'yes' : 'no'}
+//           value={school.status === 'adult in school' ? 'Yes' : 'No'}
 //           onChange={(value) => {
 //             const thisSchool: School = value
 //               ? {

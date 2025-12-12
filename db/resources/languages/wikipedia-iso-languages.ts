@@ -4603,7 +4603,7 @@ export default [
   {
     'iso_639_2_b': 'nor',
     'iso_639_2_t': 'nor',
-    'iso_639_1': 'no',
+    'iso_639_1': 'No',
     'language_names': [
       'Norwegian',
     ],

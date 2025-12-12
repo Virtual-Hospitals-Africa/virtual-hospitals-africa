@@ -36,10 +36,10 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             diabetes: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },

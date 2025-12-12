@@ -41,7 +41,7 @@ export default function SmokingSection(
           onChange={(value) => smoking.value = { has_ever_smoked: value }}
         />
 
-        {smoking.value.has_ever_smoked === 'yes' && (
+        {smoking.value.has_ever_smoked === 'Yes' && (
           <>
             <YesNoQuestion
               name='lifestyle.smoking.currently_smokes'
@@ -50,7 +50,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   currently_smokes: value,
                 }}
             />
@@ -61,7 +61,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   felt_to_cutdown: value,
                 }}
             />
@@ -72,7 +72,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   annoyed_by_criticism: value,
                 }}
             />
@@ -83,7 +83,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   guilty: value,
                 }}
             />
@@ -94,7 +94,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   forbidden_place: value,
                 }}
             />
@@ -105,7 +105,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   attempt_to_quit: value,
                 }}
             />
@@ -117,7 +117,7 @@ export default function SmokingSection(
               onChange={(value) =>
                 smoking.value = {
                   ...smoking.value,
-                  has_ever_smoked: 'yes',
+                  has_ever_smoked: 'Yes',
                   quit_more_than_six_months: value,
                 }}
             />
@@ -125,8 +125,8 @@ export default function SmokingSection(
         )}
       </YesNoGrid>
 
-      {smoking.value.has_ever_smoked === 'yes' &&
-        smoking.value.quit_more_than_six_months === 'yes' && (
+      {smoking.value.has_ever_smoked === 'Yes' &&
+        smoking.value.quit_more_than_six_months === 'Yes' && (
         <NumberInput
           name='lifestyle.smoking.quit_smoking_years'
           label='How many cumulative years has the patient quit smoking?'
@@ -137,7 +137,7 @@ export default function SmokingSection(
         />
       )}
 
-      {smoking.value.has_ever_smoked === 'yes' && (
+      {smoking.value.has_ever_smoked === 'Yes' && (
         <>
           <NumberInput
             name='lifestyle.smoking.first_smoke_age'
@@ -166,8 +166,8 @@ export default function SmokingSection(
         </>
       )}
 
-      {smoking.value.has_ever_smoked === 'yes' &&
-        smoking.value.currently_smokes === 'yes' && (
+      {smoking.value.has_ever_smoked === 'Yes' &&
+        smoking.value.currently_smokes === 'Yes' && (
         <LabelledListboxMulti
           variant='starts_closed'
           label='Which tobacco products does the patient use?'

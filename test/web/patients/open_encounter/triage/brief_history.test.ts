@@ -125,7 +125,7 @@ describe('triage/brief_history', () => {
 
       assertEquals(form_values, {
         'pregnancy': {
-          'existence': 'no',
+          'existence': 'No',
         },
       })
       assertEquals(form_labels, {
@@ -198,13 +198,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             diabetes: {
-              existence: 'no',
+              existence: 'No',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },
@@ -339,7 +339,7 @@ describe('triage/brief_history', () => {
         'pertaining_to_key': 'cancer',
         'value_display':
           'Malignant neoplastic disease Self reported Status: Yes',
-        'existence': 'yes',
+        'existence': 'Yes',
         'provider': {
           'is_me': true,
           'profession': 'nurse',
@@ -378,7 +378,7 @@ describe('triage/brief_history', () => {
         },
         'pertaining_to_key': 'diabetes',
         'value_display': 'Diabetes mellitus Self reported Status: No',
-        'existence': 'no',
+        'existence': 'No',
         'provider': {
           'is_me': true,
           'profession': 'nurse',
@@ -496,13 +496,13 @@ describe('triage/brief_history', () => {
       )
       assertEquals(form_values, {
         'cancer': {
-          'existence': 'yes',
+          'existence': 'Yes',
         },
         'diabetes': {
-          'existence': 'no',
+          'existence': 'No',
         },
         'pregnancy': {
-          'existence': 'no',
+          'existence': 'No',
         },
       })
 
@@ -720,10 +720,10 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             diabetes: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },
@@ -773,7 +773,7 @@ describe('triage/brief_history', () => {
         ],
         'pertaining_to_key': 'diabetes',
         'value_display': 'Diabetes mellitus Self reported Status: Yes',
-        'existence': 'yes',
+        'existence': 'Yes',
       })
     })
 
@@ -807,13 +807,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             diabetes: {
-              existence: 'no',
+              existence: 'No',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },
@@ -842,13 +842,13 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             cancer: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             diabetes: {
-              existence: 'no',
+              existence: 'No',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },
@@ -894,7 +894,7 @@ describe('triage/brief_history', () => {
         'pertaining_to_key': 'cancer',
         'value_display':
           'Malignant neoplastic disease Self reported Status: Yes',
-        'existence': 'yes',
+        'existence': 'Yes',
         'provider': {
           'is_me': false,
           'id': nurse1.health_worker.id,
@@ -910,7 +910,7 @@ describe('triage/brief_history', () => {
         'name': 'Status',
         'value_snomed_concept_id': '373067005',
         'value_name': 'No',
-        'existence': 'no',
+        'existence': 'No',
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
           'snomed_concept_id': '203421005',
@@ -964,10 +964,10 @@ describe('triage/brief_history', () => {
           method: 'POST',
           body: asFormData({
             diabetes: {
-              existence: 'no',
+              existence: 'No',
             },
             pregnancy: {
-              existence: 'unknown',
+              existence: 'Unknown',
             },
           }),
         },
@@ -996,7 +996,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'value_display': 'Pregnancy Self reported Status: Unknown',
-        'existence': 'unknown',
+        'existence': 'Unknown',
         'qualifiers': [
           {
             'record_id': z.string().uuid(),

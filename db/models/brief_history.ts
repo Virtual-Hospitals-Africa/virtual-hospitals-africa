@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import { temporaryTable } from '../helpers.ts'
-import * as patient_findings from './patient_findings.ts'
+import { patient_findings } from './patient_findings.ts'
 import uniq from '../../util/uniq.ts'
 import { groupBy, groupByUniq } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
@@ -25,6 +25,7 @@ import partition from '../../util/partition.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
+import assertOneOf from '../../util/assertOneOf.ts'
 
 export function mostRecentFindings(
   trx: TrxOrDb,
@@ -240,15 +241,16 @@ export async function renderedMostRecentFindings(
       if (finding.value_name) {
         value_display += `: ${finding.value_name}`
       }
+      assertOneOf(finding.value_name, [
+        'Yes' as const,
+        'No' as const,
+        'Unknown' as const,
+      ])
 
       return {
         ...finding,
         value_display,
-        existence: finding.value_name === 'No'
-          ? 'no'
-          : finding.value_name === 'Unknown'
-          ? 'unknown'
-          : 'yes',
+        existence: finding.value_name,
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,
