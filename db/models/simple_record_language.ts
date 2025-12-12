@@ -4,10 +4,11 @@ import db from '../db.ts'
 import { SnomedCategory } from '../../db.d.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import { arrayIsEmpty } from '../../util/arraySize.ts'
+import { arrayIsEmpty, assertArrayEmpty } from '../../util/arraySize.ts'
 import { orderByArrayPosition } from '../helpers.ts'
 import { TrxOrDb } from '../../types.ts'
 import { getAllNgrams } from '../../util/ngrams.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './warning_signs.ts'
 
 export type ParsedFindingExpression = {
   type: 'finding'
@@ -22,21 +23,31 @@ export type ParsedQualifierOrNotExpression =
 export type ParsedQualifierExpression = {
   type: 'qualifier'
   snomed_concept_id: string
-  // May support this later
-  // concrete_value?: any
   snomed_concept_id_value?: string
   qualifiers: ParsedQualifierOrNotExpression[]
 }
 
 export type ParsedNotExpression = {
   type: 'not'
-  expression: ParsedFindingExpression | ParsedQualifierExpression
+  expression: ParsedExpression
+}
+
+export type ParsedOrExpression = {
+  type: 'or'
+  expressions: ParsedExpression[]
+}
+
+export type ParsedActiveConditionExpression = {
+  type: 'active_condition'
+  snomed_concept_id: string
 }
 
 export type ParsedExpression =
   | ParsedFindingExpression
   | ParsedQualifierExpression
   | ParsedNotExpression
+  | ParsedOrExpression
+  | ParsedActiveConditionExpression
 
 export type SExpressionNode = string | SExpressionNode[]
 
@@ -117,21 +128,50 @@ const PARSERS = {
   },
   not: (node: SExpressionNode): ParsedNotExpression => {
     assert(Array.isArray(node))
-    const [type, inner] = node
+    const [type, inner, ...rest] = node
     assertEquals(type, 'not')
+    assertArrayEmpty(rest)
     if (!Array.isArray(inner)) {
       throw new Error(`Expected array, got: ${JSON.stringify(inner)}`)
     }
-    const inner_type = inner[0]
-    if (inner_type === 'finding') {
-      return {
-        type: 'not',
-        expression: PARSERS.finding(inner),
-      }
-    }
+
     return {
       type: 'not',
-      expression: PARSERS.qualifier(inner),
+      expression: parseArrayNode(inner)
+    }
+  },
+  or: (node: SExpressionNode): ParsedOrExpression => {
+    assert(Array.isArray(node))
+    const [type, ...expressions] = node
+    assertEquals(type, 'or')
+    assert(expressions.length >= 2)
+    expressions.forEach(expression => {
+      if (!Array.isArray(expression)) {
+        throw new Error(`Expected array, got: ${JSON.stringify(expression)}`)
+      }
+    })
+
+    return {
+      type: 'or',
+      expressions: expressions.map(parseArrayNode)
+    }
+  },
+  active_condition: (node: SExpressionNode): ParsedActiveConditionExpression => {
+    assert(Array.isArray(node))
+    const [type, snomed_concept_id, ...rest] = node
+    assertEquals(type, 'active_condition')
+    if (typeof snomed_concept_id !== 'string') {
+      throw new Error(
+        `Expected snomed_concept_id to be a string, got: ${
+          JSON.stringify(snomed_concept_id)
+        }`,
+      )
+    }
+    assert(arrayIsEmpty(rest))
+
+    return {
+      type: 'active_condition',
+      snomed_concept_id
     }
   },
 }
@@ -149,9 +189,13 @@ const FROM_PARSERS = {
       ? `(${parsed.type} ${parsed.snomed_concept_id} ${qualifiers})`
       : `(${parsed.type} ${parsed.snomed_concept_id})`
   },
-  not: (parsed: ParsedNotExpression): string => {
-    return `(not ${fromParsedExpression(parsed.expression)})`
-  },
+  not: (parsed: ParsedNotExpression): string =>
+    `(not ${fromParsedExpression(parsed.expression)})`
+  ,
+  or: (parsed: ParsedOrExpression): string => 
+    `(or  ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
+  active_condition: (parsed: ParsedActiveConditionExpression): string => 
+    `(active_condition  ${parsed.snomed_concept_id})`,
 }
 
 function parseArrayNode(node: SExpressionNode): ParsedExpression {

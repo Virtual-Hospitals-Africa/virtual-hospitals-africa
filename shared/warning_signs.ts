@@ -153,14 +153,14 @@ export const WARNING_SIGNS = {
     'sats_primary_name': 'Pregnancy and abdominal trauma',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '1356878002',
-    'prompt_when_s_expression': '(finding 404684003 (qualifier 77386006))',
+    'prompt_when_s_expression': '(active_condition 77386006)',
   },
   'Pregnancy and abdominal pain': {
     'clinical_finding_s_expression': '(qualifier 21522001)',
     'sats_primary_name': 'Pregnancy and abdominal pain',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '1356878002',
-    'prompt_when_s_expression': '(finding 404684003 (qualifier 77386006))',
+    'prompt_when_s_expression': '(active_condition 77386006)',
   },
   'Hemorrhage Uncontrolled': {
     'clinical_finding_s_expression':
@@ -234,8 +234,7 @@ export const WARNING_SIGNS = {
     'sats_primary_name': 'Abdominal pain',
     'sats_secondary_text': null,
     'sats_priority_snomed_concept_id': '103391001',
-    'prompt_when_s_expression':
-      '(not (finding 404684003 (qualifier 77386006)))',
+    'prompt_when_s_expression': '(not (active_condition 77386006))',
   },
   'Persistent vomiting': {
     'clinical_finding_s_expression': '(qualifier 196746003)',
