@@ -3,6 +3,7 @@ import db from '../../db/db.ts'
 import {
   fromFindingDescription,
   fromParsedExpression,
+  parseExpression,
   parseFindingExpression,
 } from '../../db/models/simple_record_language.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -57,9 +58,10 @@ describe('db/models/simple_record_language.ts', () => {
 
     it('can parse all the expressions for warning signs', () => {
       for (const sign of WARNING_SIGNS) {
-        console.log(sign)
-        const parsed = parseFindingExpression(sign.finding_s_expression)
-        console.log(parsed)
+        const parsed = parseExpression(
+          sign.clinical_finding_s_expression,
+        )
+        assertEquals(parsed.type, 'qualifier')
       }
     })
   })
