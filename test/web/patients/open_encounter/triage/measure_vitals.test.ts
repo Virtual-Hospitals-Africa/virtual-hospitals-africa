@@ -36,10 +36,10 @@ describe('triage/measure_vitals', () => {
           method: 'POST',
           body: asFormData({
             diabetes: {
-              existence: 'yes',
+              existence: 'Yes',
             },
             pregnancy: {
-              existence: 'no',
+              existence: 'No',
             },
           }),
         },

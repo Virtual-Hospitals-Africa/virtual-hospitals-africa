@@ -33,11 +33,11 @@ export function YesNoQuestion({
           id={name}
           name={name}
           type='radio'
-          checked={value === 'yes'}
+          checked={value === 'Yes'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='yes'
+          value='Yes'
           required={required}
-          onChange={() => onChange?.('yes')}
+          onChange={() => onChange?.('Yes')}
         />
       </div>
       <div className='flex justify-center'>
@@ -45,11 +45,11 @@ export function YesNoQuestion({
           id={name}
           name={name}
           type='radio'
-          checked={value === 'no'}
+          checked={value === 'No'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='no'
+          value='No'
           required={required}
-          onChange={() => onChange?.('no')}
+          onChange={() => onChange?.('No')}
         />
       </div>
       <div className='flex justify-center'>
@@ -57,11 +57,11 @@ export function YesNoQuestion({
           id={name}
           name={name}
           type='radio'
-          checked={value === 'unknown'}
+          checked={value === 'Unknown'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='unknown'
+          value='Unknown'
           required={required}
-          onChange={() => onChange?.('unknown')}
+          onChange={() => onChange?.('Unknown')}
         />
       </div>
     </div>

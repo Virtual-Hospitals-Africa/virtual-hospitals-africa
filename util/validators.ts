@@ -79,4 +79,4 @@ export const string_or_number_as_string = z.string().or(z.number()).transform(
 
 export const south_african_national_id = string_or_number_as_string
 
-export const yes_no_unknown = z.enum(['yes', 'no', 'unknown'])
+export const yes_no_unknown = z.enum(['Yes', 'No', 'Unknown'])

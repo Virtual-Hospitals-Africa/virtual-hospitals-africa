@@ -82,8 +82,6 @@ export const handler = postHandler(
         if (!condition) return Promise.resolve()
         if (condition.existence === undefined) return Promise.resolve()
 
-        // const
-
         const condition_snomed_concept_id = commonConditionSnomedConceptId(
           condition_key,
         )
@@ -91,7 +89,7 @@ export const handler = postHandler(
         const existing_finding = most_recent_findings[condition_key]
 
         if (
-          condition.existence === 'yes' && existing_finding?.existence === 'yes'
+          condition.existence === 'Yes' && existing_finding?.existence === 'Yes'
         ) {
           return Promise.resolve()
         }
@@ -153,7 +151,7 @@ function CommonConditionRow(
 ) {
   const value: Existence | undefined =
     !most_recent_finding && condition.key === 'pregnancy' && sex === 'male'
-      ? 'no'
+      ? 'No'
       : most_recent_finding?.existence
 
   return (

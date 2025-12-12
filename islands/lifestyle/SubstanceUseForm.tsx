@@ -36,7 +36,7 @@ export default function SubstanceUseSection(
       has_ever_used_substance: null,
     },
   )
-  const substances_used = substance_use.value.has_ever_used_substance === 'yes'
+  const substances_used = substance_use.value.has_ever_used_substance === 'Yes'
     ? substance_use.value.substances_used
     : []
 
@@ -55,7 +55,7 @@ export default function SubstanceUseSection(
         />
       </YesNoGrid>
 
-      {substance_use.value.has_ever_used_substance === 'yes' && (
+      {substance_use.value.has_ever_used_substance === 'Yes' && (
         <LabelledListboxMulti
           variant='starts_closed'
           label='Which substances does the patient use?'
@@ -71,7 +71,7 @@ export default function SubstanceUseSection(
               item
             ) as unknown as string[]
             substance_use.value =
-              substance_use.value.has_ever_used_substance === 'yes'
+              substance_use.value.has_ever_used_substance === 'Yes'
                 ? {
                   ...substance_use.value,
                   substances_used: names.map((name) => ({
@@ -92,7 +92,7 @@ export default function SubstanceUseSection(
         />
       )}
 
-      {substance_use.value.has_ever_used_substance === 'yes' &&
+      {substance_use.value.has_ever_used_substance === 'Yes' &&
         !!substance_use.value.substances_used.length &&
         substance_use.value.substances_used && (
         <YesNoGrid>
@@ -110,7 +110,7 @@ export default function SubstanceUseSection(
                 value={substance.injected_substance}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: 'yes',
+                    has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, injected_substance: value }
@@ -125,7 +125,7 @@ export default function SubstanceUseSection(
                 value={substance.annoyed_by_criticism}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: 'yes',
+                    has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, annoyed_by_criticism: value }
@@ -140,7 +140,7 @@ export default function SubstanceUseSection(
                 value={substance.attempt_to_stop}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: 'yes',
+                    has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, attempt_to_stop: value }
@@ -155,7 +155,7 @@ export default function SubstanceUseSection(
                 value={substance.withdrawal_symptoms}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: 'yes',
+                    has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? { ...other_substance, withdrawal_symptoms: value }
@@ -170,7 +170,7 @@ export default function SubstanceUseSection(
                 value={substance.quit_more_than_six_months}
                 onChange={(value) =>
                   substance_use.value = {
-                    has_ever_used_substance: 'yes',
+                    has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
                       other_substance === substance
                         ? {
@@ -186,7 +186,7 @@ export default function SubstanceUseSection(
         </YesNoGrid>
       )}
 
-      {substance_use.value.has_ever_used_substance === 'yes' &&
+      {substance_use.value.has_ever_used_substance === 'Yes' &&
         !!substance_use.value.substances_used.length &&
         substance_use.value.substances_used && (
           substance_use.value.substances_used.map((
@@ -221,8 +221,8 @@ export default function SubstanceUseSection(
                   min={0}
                 />
 
-                {substance_use.value.has_ever_used_substance === 'yes' &&
-                  substance.quit_more_than_six_months === 'yes' && (
+                {substance_use.value.has_ever_used_substance === 'Yes' &&
+                  substance.quit_more_than_six_months === 'Yes' && (
                   <NumberInput
                     name={`lifestyle.substance_use.substances_used.${index}.quit_substance_use_years`}
                     label={`How many cumulative years, has the patient abstained from ${substance.name} use?`}

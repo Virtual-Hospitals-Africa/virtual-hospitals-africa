@@ -28,7 +28,7 @@ export default function SexualActivitySection(
           }}
         />
 
-        {sexual_activity.value.ever_been_sexually_active === 'yes' && (
+        {sexual_activity.value.ever_been_sexually_active === 'Yes' && (
           <>
             <YesNoQuestion
               name='lifestyle.sexual_activity.currently_sexually_active'
@@ -37,7 +37,7 @@ export default function SexualActivitySection(
               onChange={(value) => {
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   currently_sexually_active: value,
                 }
               }}
@@ -49,7 +49,7 @@ export default function SexualActivitySection(
               onChange={(value) => {
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   has_traded_sex_for_favors: value,
                 }
               }}
@@ -61,7 +61,7 @@ export default function SexualActivitySection(
               onChange={(value) =>
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   had_sex_after_drugs: value,
                 }}
             />
@@ -72,7 +72,7 @@ export default function SexualActivitySection(
               onChange={(value) =>
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   recently_treated_for_stis: value,
                 }}
             />
@@ -83,7 +83,7 @@ export default function SexualActivitySection(
               onChange={(value) =>
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   recently_hiv_tested: value,
                 }}
             />
@@ -94,11 +94,11 @@ export default function SexualActivitySection(
               onChange={(value) =>
                 sexual_activity.value = {
                   ...sexual_activity.value,
-                  ever_been_sexually_active: 'yes',
+                  ever_been_sexually_active: 'Yes',
                   know_partner_hiv_status: value,
                 }}
             />
-            {sexual_activity.value.know_partner_hiv_status == 'yes' && (
+            {sexual_activity.value.know_partner_hiv_status == 'Yes' && (
               <YesNoQuestion
                 name='lifestyle.sexual_activity.partner_hiv_status'
                 label="What is the patient's partner's HIV status?"
@@ -106,7 +106,7 @@ export default function SexualActivitySection(
                 onChange={(value) =>
                   sexual_activity.value = {
                     ...sexual_activity.value,
-                    ever_been_sexually_active: 'yes',
+                    ever_been_sexually_active: 'Yes',
                     partner_hiv_status: value,
                   }}
               />
@@ -123,7 +123,7 @@ export default function SexualActivitySection(
           </>
         )}
       </YesNoGrid>
-      {sexual_activity.value.ever_been_sexually_active === 'yes' && (
+      {sexual_activity.value.ever_been_sexually_active === 'Yes' && (
         <>
           <NumberInput
             name='lifestyle.sexual_activity.first_encounter'

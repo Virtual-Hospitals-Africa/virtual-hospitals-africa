@@ -19,7 +19,7 @@ export function MostRecentFinding(
     >
       <span
         className={cls({
-          'opacity-50': finding.existence !== 'yes',
+          'opacity-50': finding.existence !== 'Yes',
         })}
       >
         <a
