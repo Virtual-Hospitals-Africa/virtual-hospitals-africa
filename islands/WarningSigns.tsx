@@ -1,6 +1,4 @@
-import { WARNING_SIGNS } from '../shared/warning_signs.ts'
-
-export type WarningSign = (typeof WARNING_SIGNS)[number]
+import { KeyedWarningSign } from '../shared/warning_signs.ts'
 
 // SNOMED concept IDs for priority levels
 const PRIORITY = {
@@ -38,8 +36,8 @@ const PRIORITIES_IN_ORDER: PriorityLevel[] = [
   PRIORITY.URGENT,
 ]
 
-function groupByPriority(signs: readonly WarningSign[]) {
-  const grouped: Record<PriorityLevel, WarningSign[]> = {
+function groupByPriority(signs: readonly KeyedWarningSign[]) {
+  const grouped: Record<PriorityLevel, KeyedWarningSign[]> = {
     [PRIORITY.EMERGENCY]: [],
     [PRIORITY.VERY_URGENT]: [],
     [PRIORITY.URGENT]: [],
@@ -53,7 +51,7 @@ function groupByPriority(signs: readonly WarningSign[]) {
   return grouped
 }
 
-function WarningSignCheckbox({ sign }: { sign: WarningSign }) {
+function KeyedWarningSignCheckbox({ sign }: { sign: KeyedWarningSign }) {
   const name = `warning_signs.${sign.key}`
   return (
     <label class='flex gap-3 items-start cursor-pointer'>
@@ -80,16 +78,16 @@ function WarningSignCheckbox({ sign }: { sign: WarningSign }) {
   )
 }
 
-function WarningSignsTable({
+function KeyedWarningSignsTable({
   priority,
   signs,
 }: {
   priority: PriorityLevel
-  signs: WarningSign[]
+  signs: KeyedWarningSign[]
 }) {
   const config = PRIORITY_CONFIG[priority]
   const columns = 5
-  const rows: WarningSign[][] = []
+  const rows: KeyedWarningSign[][] = []
 
   for (let i = 0; i < signs.length; i += columns) {
     rows.push(signs.slice(i, i + columns))
@@ -118,7 +116,7 @@ function WarningSignsTable({
                 key={sign.key}
                 class='flex-1 p-3 min-w-0'
               >
-                <WarningSignCheckbox sign={sign} />
+                <KeyedWarningSignCheckbox sign={sign} />
               </div>
             ))}
             {/* Fill remaining columns with empty cells */}
@@ -133,10 +131,10 @@ function WarningSignsTable({
   )
 }
 
-export default function WarningSigns({
+export default function KeyedWarningSigns({
   warning_signs,
 }: {
-  warning_signs: readonly WarningSign[]
+  warning_signs: readonly KeyedWarningSign[]
 }) {
   const grouped = groupByPriority(warning_signs)
 
@@ -146,7 +144,7 @@ export default function WarningSigns({
         const signs = grouped[priority]
         if (!signs.length) return null
         return (
-          <WarningSignsTable
+          <KeyedWarningSignsTable
             key={priority}
             priority={priority}
             signs={signs}
