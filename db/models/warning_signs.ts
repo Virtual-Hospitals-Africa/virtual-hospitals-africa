@@ -23,7 +23,11 @@ function qualifersForInsertion(
 
   for (const qualifier of qualifiers) {
     if (qualifier.type !== 'qualifier') {
-      assertEquals(qualifier.type, 'not', `Unsupported qualifier type: ${qualifier.type}`)
+      assertEquals(
+        qualifier.type,
+        'not',
+        `Unsupported qualifier type: ${qualifier.type}`,
+      )
       continue
     }
 

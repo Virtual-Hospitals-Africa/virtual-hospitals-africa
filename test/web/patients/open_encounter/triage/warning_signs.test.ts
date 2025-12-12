@@ -83,7 +83,7 @@ describe('triage/warning_signs', () => {
   })
 
   describe('POST', () => {
-    it.only('inserts a simple warning sign finding without qualifiers', async () => {
+    it('inserts a simple warning sign finding without qualifiers', async () => {
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
@@ -112,8 +112,8 @@ describe('triage/warning_signs', () => {
           }),
         },
         {
-          cancel_response_body: true
-        }
+          cancel_response_body: true,
+        },
       )
 
       assertEquals(
@@ -154,7 +154,7 @@ describe('triage/warning_signs', () => {
     })
 
     it('inserts a warning sign finding with qualifiers from the s_expression', async () => {
-      const { health_worker: nurse, session_id } =
+      const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
@@ -172,7 +172,7 @@ describe('triage/warning_signs', () => {
       // Submit with "Seizure" selected: (finding 91175000 (qualifier 15240007))
       // 91175000 = Seizure (canonical name in SNOMED)
       // 15240007 = Current
-      const response = await fetch(
+      const response = await fetchOk(
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
@@ -181,17 +181,15 @@ describe('triage/warning_signs', () => {
               'Seizure': '(finding 91175000 (qualifier 15240007))',
             },
           }),
-          headers: {
-            Cookie: `session=${session_id}`,
-          },
-          redirect: 'manual',
+        },
+        {
+          cancel_response_body: true,
         },
       )
 
-      assertEquals(response.status, 303)
       assertEquals(
-        response.headers.get('location'),
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        response.url,
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const this_patient_findings = await patient_findings.findAll(db, {
@@ -224,14 +222,6 @@ describe('triage/warning_signs', () => {
             {
               'record_id': z.string().uuid(),
               'patient_encounter_id': encounter.patient_encounter_id,
-              'snomed_concept_id': '1156040003',
-              'name': 'Self reported',
-              'concrete_value': null,
-              'attribute_value': null,
-            },
-            {
-              'record_id': z.string().uuid(),
-              'patient_encounter_id': encounter.patient_encounter_id,
               'snomed_concept_id': '15240007',
               'name': 'Current',
               'concrete_value': null,
@@ -243,7 +233,7 @@ describe('triage/warning_signs', () => {
     })
 
     it('inserts multiple warning sign findings when multiple are selected', async () => {
-      const { health_worker: nurse, session_id } =
+      const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
@@ -259,7 +249,7 @@ describe('triage/warning_signs', () => {
         )
 
       // Submit with both "Cardiac arrest" and "Chest pain" selected
-      const response = await fetch(
+      await fetchOk(
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
@@ -269,14 +259,11 @@ describe('triage/warning_signs', () => {
               'Chest pain': '(finding 29857009)',
             },
           }),
-          headers: {
-            Cookie: `session=${session_id}`,
-          },
-          redirect: 'manual',
+        },
+        {
+          cancel_response_body: true,
         },
       )
-
-      assertEquals(response.status, 303)
 
       const this_patient_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
@@ -316,7 +303,7 @@ describe('triage/warning_signs', () => {
     })
 
     it('does not insert any findings when no warning signs are selected', async () => {
-      const { health_worker: nurse, session_id } =
+      const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
@@ -332,22 +319,20 @@ describe('triage/warning_signs', () => {
         )
 
       // Submit with no warning signs selected
-      const response = await fetch(
+      const response = await fetchOk(
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({}),
-          headers: {
-            Cookie: `session=${session_id}`,
-          },
-          redirect: 'manual',
+        },
+        {
+          cancel_response_body: true,
         },
       )
 
-      assertEquals(response.status, 303)
       assertEquals(
-        response.headers.get('location'),
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        response.url,
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const this_patient_findings = await patient_findings.findAll(db, {

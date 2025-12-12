@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
-Existence,
+  Existence,
   IntermediateFindingRecord,
   MostRecentBriefHistoryFindings,
   RenderedFindingRelativeToHealthWorker,
@@ -104,7 +104,11 @@ function findingExistence(finding: IntermediateFindingRecord): Existence {
   }
 
   assert(finding.value_name)
-  assertOneOf(finding.value_name, ['Yes' as const, 'No' as const, 'Unknown' as const])
+  assertOneOf(finding.value_name, [
+    'Yes' as const,
+    'No' as const,
+    'Unknown' as const,
+  ])
   return finding.value_name
 }
 
@@ -112,10 +116,12 @@ function mostRecentFinding(
   findings_of_condition: IntermediateFindingRecord[],
   pertaining_to_key: CommonConditionKey,
 ) {
-  const findings_of_condition_with_existence = findings_of_condition.map(finding => ({
-    ...finding,
-    existence: findingExistence(finding)
-  }))
+  const findings_of_condition_with_existence = findings_of_condition.map(
+    (finding) => ({
+      ...finding,
+      existence: findingExistence(finding),
+    }),
+  )
 
   if (findings_of_condition_with_existence.length > 1) {
     assert(
@@ -138,7 +144,7 @@ function mostRecentFinding(
       [],
   )
 
-  console.log({findings_of_condition})
+  console.log({ findings_of_condition })
 
   const first_positive_finding_not_invalidated_by_a_later_negative_finding =
     findings_of_condition_with_existence.find((finding) => {
@@ -255,7 +261,6 @@ export async function renderedMostRecentFindings(
       if (finding.value_name) {
         value_display += `: ${finding.value_name}`
       }
-
 
       return {
         ...finding,
