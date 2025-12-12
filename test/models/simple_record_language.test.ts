@@ -58,7 +58,7 @@ describe('db/models/simple_record_language.ts', () => {
     it('can parse all the expressions for warning signs', () => {
       for (const sign of WARNING_SIGNS) {
         console.log(sign)
-        const parsed = parseFindingExpression(sign.finding_s_expression)
+        const parsed = parseFindingExpression(sign.clinical_finding_s_expression)
         console.log(parsed)
       }
     })
