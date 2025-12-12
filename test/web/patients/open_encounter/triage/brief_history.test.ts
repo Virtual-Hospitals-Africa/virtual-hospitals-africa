@@ -34,7 +34,7 @@ describe('triage/brief_history', () => {
 
   describe('GET', () => {
     it('renders the brief history page for a female patient', async () => {
-      const { health_worker: nurse, fetchCheerio } =
+      const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
@@ -49,6 +49,12 @@ describe('triage/brief_history', () => {
             employment_id: nurse.employee_id,
           },
         )
+
+      await fetchOk(
+        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
 
       const $ = await fetchCheerio(
         `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
@@ -193,6 +199,12 @@ describe('triage/brief_history', () => {
         )
 
       await nurse1.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
+
+      await nurse1.fetchOk(
         `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
         {
           method: 'POST',
@@ -322,7 +334,6 @@ describe('triage/brief_history', () => {
         health_worker_id: nurse1.health_worker.id,
       })
 
-      // @Claude - findings will look
       assertMatches(most_recent_findings.cancer, {
         'record_id': z.string().uuid(),
         'created_at': z.date(),
@@ -485,6 +496,12 @@ describe('triage/brief_history', () => {
           Actions: 'triage',
         },
       ])
+
+      await nurse2.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
 
       const $brief_history_after_subsequent_encounter_start = await nurse2
         .fetchCheerio(
@@ -698,7 +715,7 @@ describe('triage/brief_history', () => {
   })
 
   describe('POST', () => {
-    it('inserts positive & negative findings, redirecting to the warning signs page', async () => {
+    it('inserts positive & negative findings, redirecting to the measure_vitals page', async () => {
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
@@ -713,6 +730,12 @@ describe('triage/brief_history', () => {
             employment_id: nurse.employee_id,
           },
         )
+
+      await fetchOk(
+        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
 
       const response = await fetchOk(
         `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
@@ -734,7 +757,7 @@ describe('triage/brief_history', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
       )
 
       const most_recent_findings = await renderedMostRecentFindings(db, {
@@ -802,6 +825,12 @@ describe('triage/brief_history', () => {
         )
 
       await nurse1.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
+
+      await nurse1.fetchOk(
         `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
         {
           method: 'POST',
@@ -835,6 +864,12 @@ describe('triage/brief_history', () => {
             employment_id: nurse2.health_worker.employee_id,
           },
         )
+
+      await nurse2.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
 
       await nurse2.fetchOk(
         `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
@@ -957,6 +992,12 @@ describe('triage/brief_history', () => {
             employment_id: nurse.health_worker.employee_id,
           },
         )
+
+      await nurse.fetchOk(
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        { method: 'POST' },
+        { cancel_response_body: true },
+      )
 
       await nurse.fetchOk(
         `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
