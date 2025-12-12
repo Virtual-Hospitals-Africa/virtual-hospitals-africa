@@ -30,7 +30,7 @@ export type ParsedQualifierExpression = {
 
 export type ParsedNotExpression = {
   type: 'not'
-  qualifier: ParsedQualifierExpression
+  expression: ParsedFindingExpression | ParsedQualifierExpression
 }
 
 export type ParsedExpression =
@@ -117,14 +117,21 @@ const PARSERS = {
   },
   not: (node: SExpressionNode): ParsedNotExpression => {
     assert(Array.isArray(node))
-    const [type, qualifier] = node
+    const [type, inner] = node
     assertEquals(type, 'not')
-    if (!Array.isArray(qualifier)) {
-      throw new Error(`Expected array, got: ${JSON.stringify(qualifier)}`)
+    if (!Array.isArray(inner)) {
+      throw new Error(`Expected array, got: ${JSON.stringify(inner)}`)
+    }
+    const inner_type = inner[0]
+    if (inner_type === 'finding') {
+      return {
+        type: 'not',
+        expression: PARSERS.finding(inner),
+      }
     }
     return {
       type: 'not',
-      qualifier: PARSERS.qualifier(qualifier),
+      expression: PARSERS.qualifier(inner),
     }
   },
 }
@@ -143,7 +150,7 @@ const FROM_PARSERS = {
       : `(${parsed.type} ${parsed.snomed_concept_id})`
   },
   not: (parsed: ParsedNotExpression): string => {
-    return `(not ${fromParsedExpression(parsed.qualifier)})`
+    return `(not ${fromParsedExpression(parsed.expression)})`
   },
 }
 
@@ -156,17 +163,37 @@ function parseArrayNode(node: SExpressionNode): ParsedExpression {
   return parser(node)
 }
 
-export function parseFindingExpression(
+export function parseExpression(
   expression: string,
-): ParsedFindingExpression {
+): ParsedExpression {
   const parsed = s_expression(expression)
   if (parsed instanceof Error) {
     throw parsed
   }
-  const result = parseArrayNode(parsed)
+  return parseArrayNode(parsed)
+}
+
+export function parseFindingExpression(
+  expression: string,
+): ParsedFindingExpression {
+  const result = parseExpression(expression)
   if (result.type !== 'finding') {
     throw new Error(
       `Expected top-level node to be "finding", got: ${
+        JSON.stringify(result.type)
+      }`,
+    )
+  }
+  return result
+}
+
+export function parseQualifierExpression(
+  expression: string,
+): ParsedQualifierExpression {
+  const result = parseExpression(expression)
+  if (result.type !== 'qualifier') {
+    throw new Error(
+      `Expected top-level node to be "qualifier", got: ${
         JSON.stringify(result.type)
       }`,
     )

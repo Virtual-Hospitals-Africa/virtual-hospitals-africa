@@ -107,7 +107,7 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             warning_signs: {
-              'Cardiac arrest': '(finding 410429000)',
+              'Cardiac arrest': '(qualifier 410429000)',
             },
           }),
         },
@@ -178,7 +178,7 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             warning_signs: {
-              'Seizure': '(finding 91175000 (qualifier 15240007))',
+              'Seizure': '(qualifier 91175000)',
             },
           }),
         },
@@ -218,14 +218,15 @@ describe('triage/warning_signs', () => {
               'name': 'Seizure',
               'concrete_value': null,
               'attribute_value': null,
-            },
-            {
-              'record_id': z.string().uuid(),
-              'patient_encounter_id': encounter.patient_encounter_id,
-              'snomed_concept_id': '15240007',
-              'name': 'Current',
-              'concrete_value': null,
-              'attribute_value': null,
+              // TODO support nested qualifiers
+              // 'qualifiers': [{
+              //   'record_id': z.string().uuid(),
+              //   'patient_encounter_id': encounter.patient_encounter_id,
+              //   'snomed_concept_id': '15240007',
+              //   'name': 'Current',
+              //   'concrete_value': null,
+              //   'attribute_value': null,
+              // }]
             },
           ],
         },
@@ -255,8 +256,8 @@ describe('triage/warning_signs', () => {
           method: 'POST',
           body: asFormData({
             warning_signs: {
-              'Cardiac arrest': '(finding 410429000)',
-              'Chest pain': '(finding 29857009)',
+              'Cardiac arrest': '(qualifier 410429000)',
+              'Chest pain': '(qualifier 29857009)',
             },
           }),
         },

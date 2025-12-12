@@ -1,9 +1,11 @@
 import { TrxOrDb } from '../../types.ts'
-import s_expression from 's-expression'
-import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-
-type SExpressionNode = string | SExpressionNode[]
+import {
+  ParsedExpression,
+  ParsedFindingExpression,
+  ParsedQualifierExpression,
+  parseExpression,
+} from './simple_record_language.ts'
 
 type SatisfyingResult = {
   satisfies: boolean
@@ -20,63 +22,46 @@ type SatisfyingResult = {
  */
 export function satisfyingSExpression(
   trx: TrxOrDb,
-  { patient_id, s_expression: s_expression_str }: {
+  { patient_id, s_expression }: {
     patient_id: string
     s_expression: string
   },
 ): Promise<SatisfyingResult> {
-  const parsed = s_expression(s_expression_str)
-  if (parsed instanceof Error) {
-    throw parsed
-  }
-
+  const parsed = parseExpression(s_expression)
   return evaluateExpression(trx, patient_id, parsed)
 }
 
 function evaluateExpression(
   trx: TrxOrDb,
   patient_id: string,
-  node: SExpressionNode,
+  parsed: ParsedExpression,
 ): Promise<SatisfyingResult> {
-  assert(Array.isArray(node), 'Expected array node')
-  const [type, ...rest] = node
-
-  switch (type) {
+  switch (parsed.type) {
     case 'finding':
-      return evaluateFinding(trx, patient_id, rest)
+      return evaluateFinding(trx, patient_id, parsed)
     case 'not':
-      return evaluateNot(trx, patient_id, rest)
-    default:
-      throw new Error(`Unknown expression type: ${type}`)
+      return evaluateNot(trx, patient_id, parsed.expression)
+    case 'qualifier':
+      throw new Error('Top-level qualifier expressions are not supported')
   }
 }
 
 async function evaluateFinding(
   trx: TrxOrDb,
   patient_id: string,
-  args: SExpressionNode[],
+  parsed: ParsedFindingExpression,
 ): Promise<SatisfyingResult> {
-  const [snomed_concept_id, ...qualifier_nodes] = args
-  assert(
-    typeof snomed_concept_id === 'string',
-    'Expected snomed_concept_id to be a string',
-  )
+  const { snomed_concept_id, qualifiers } = parsed
 
-  // Extract qualifier snomed_concept_ids from (qualifier <id>) nodes
+  // Extract qualifier snomed_concept_ids (only positive qualifiers, not 'not' expressions)
   const qualifier_snomed_concept_ids: string[] = []
-  for (const node of qualifier_nodes) {
-    if (Array.isArray(node) && node[0] === 'qualifier') {
-      const qualifier_id = node[1]
-      assert(
-        typeof qualifier_id === 'string',
-        'Expected qualifier snomed_concept_id to be a string',
-      )
-      qualifier_snomed_concept_ids.push(qualifier_id)
+  for (const q of qualifiers) {
+    if (q.type === 'qualifier') {
+      qualifier_snomed_concept_ids.push(q.snomed_concept_id)
     }
   }
 
   // Build query to find matching patient findings
-  // Use raw SQL for the dynamic qualifier joins to avoid type issues
   if (qualifier_snomed_concept_ids.length === 0) {
     // Simple case: no qualifiers
     const results = await trx
@@ -103,6 +88,7 @@ async function evaluateFinding(
     .innerJoin('patient_records', 'patient_findings.id', 'patient_records.id')
     .where('patient_records.patient_id', '=', patient_id)
     .where('patient_records.snomed_concept_id', '=', snomed_concept_id)
+    .select('patient_records.id as record_id')
 
   for (const qualifier_id of qualifier_snomed_concept_ids) {
     query = query.where((eb) =>
@@ -124,9 +110,7 @@ async function evaluateFinding(
     )
   }
 
-  const results = await query
-    .select('patient_records.id as record_id')
-    .execute()
+  const results = await query.execute()
 
   return {
     satisfies: results.length > 0,
@@ -137,13 +121,13 @@ async function evaluateFinding(
 async function evaluateNot(
   trx: TrxOrDb,
   patient_id: string,
-  args: SExpressionNode[],
+  inner: ParsedFindingExpression | ParsedQualifierExpression,
 ): Promise<SatisfyingResult> {
-  assert(args.length === 1, 'Expected exactly one argument to (not ...)')
-  const inner = args[0]
-  assert(Array.isArray(inner), 'Expected array inside (not ...)')
+  if (inner.type === 'qualifier') {
+    throw new Error('(not (qualifier ...)) is not supported at top level')
+  }
 
-  const inner_result = await evaluateExpression(trx, patient_id, inner)
+  const inner_result = await evaluateFinding(trx, patient_id, inner)
 
   return {
     satisfies: !inner_result.satisfies,

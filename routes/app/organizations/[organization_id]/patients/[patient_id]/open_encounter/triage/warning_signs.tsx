@@ -6,22 +6,30 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
-import { parseFindingExpression } from '../../../../../../../../db/models/simple_record_language.ts'
+import { parseQualifierExpression } from '../../../../../../../../db/models/simple_record_language.ts'
 import entries from '../../../../../../../../util/entries.ts'
-import { insertOne } from '../../../../../../../../db/models/warning_signs.ts'
+import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  insertOne,
+} from '../../../../../../../../db/models/warning_signs.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
+import compact from '../../../../../../../../util/compact.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    z.string().transform((value) => parseFindingExpression(value)),
+    z.string().transform((value) => parseQualifierExpression(value)),
   ).optional().default({}).transform((signs) =>
-    entries(signs).map(([key, finding]) => ({
+    entries(signs).map(([key, qualifier]) => ({
       key,
-      finding,
+      finding: {
+        type: 'finding' as const,
+        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+        qualifiers: [qualifier],
+      },
     }))
   ),
 })
@@ -72,9 +80,7 @@ export async function TriageWarningSignsPage(
     }),
   )
 
-  const warning_signs = filtered_warning_signs.filter(
-    (sign): sign is NonNullable<typeof sign> => sign !== null,
-  )
+  const warning_signs = compact(filtered_warning_signs)
 
   return <WarningSigns warning_signs={warning_signs} />
 }

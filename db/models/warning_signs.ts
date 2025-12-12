@@ -75,24 +75,12 @@ export function insertOne(
 
   const finding_id = generateUUID()
 
-  // Build qualifiers from the parsed s_expression
-  // First, the finding concept itself becomes a qualifier
-  const finding_qualifier: QualifierInsert = {
-    id: generateUUID(),
-    snomed_concept_id: finding.snomed_concept_id,
-  }
-
   // Flatten any nested qualifiers from the s_expression (excluding 'not' expressions)
-  const expression_qualifiers = qualifersForInsertion(
+  const qualifiers = qualifersForInsertion(
     finding.qualifiers.filter(
       (q): q is ParsedQualifierExpression => q.type === 'qualifier',
     ),
   )
-
-  const all_qualifiers = [
-    finding_qualifier,
-    ...expression_qualifiers,
-  ]
 
   return trx.with(
     'inserting_procedure_record',
@@ -123,7 +111,7 @@ export function insertOne(
         id: finding_id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+        snomed_concept_id: finding.snomed_concept_id,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
@@ -134,7 +122,7 @@ export function insertOne(
       'inserting_qualifier_records',
       (qb) =>
         qb.insertInto('patient_records')
-          .values(all_qualifiers.map((q) => ({
+          .values(qualifiers.map((q) => ({
             id: q.id,
             snomed_concept_id: q.snomed_concept_id,
             patient_id,
@@ -144,7 +132,7 @@ export function insertOne(
       'inserting_qualifiers',
       (qb) =>
         qb.insertInto('patient_record_qualifiers')
-          .values(all_qualifiers.map((q) => ({
+          .values(qualifiers.map((q) => ({
             id: q.id,
             qualifies_record_id: finding_id,
             snomed_concept_id_value: q.snomed_concept_id_value,
