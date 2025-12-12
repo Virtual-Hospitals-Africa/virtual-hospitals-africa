@@ -23,7 +23,6 @@ const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
 if (FAKE_GOOGLE_AUTH) {
   assert(!onProduction(), 'Cannot fake google authentication on production')
 }
-console.log({ FAKE_GOOGLE_AUTH })
 
 export const loginHref = memoize(() => {
   const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')

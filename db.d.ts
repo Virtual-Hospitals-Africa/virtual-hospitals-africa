@@ -1241,7 +1241,6 @@ export interface PatientProcedures {
 }
 
 export interface PatientRecordQualifiers {
-  concrete_value: Json | null
   id: string
   qualifies_record_id: string
   snomed_concept_id_value: Int8 | null

@@ -71,8 +71,6 @@ export default function Menu(
   const show_menu = useSignal(false)
   const menu_ref = useRef<HTMLDivElement>(null)
 
-  console.log('Wlkelkwe', show_menu.value)
-
   useEffect(() => {
     if (!show_menu) return
 

@@ -1,7 +1,7 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import { KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { parseExpression } from '../../db/models/simple_record_language.ts'
 
 describe('db/models/warning_signs.ts', () => {
@@ -9,7 +9,7 @@ describe('db/models/warning_signs.ts', () => {
 
   describe('parsing signs', () => {
     it('works', () => {
-      const warning_signs = WARNING_SIGNS.map((
+      const warning_signs = KEYED_WARNING_SIGNS.map((
         { clinical_finding_s_expression, prompt_when_s_expression, ...sign },
       ) => ({
         ...sign,
@@ -40,7 +40,11 @@ describe('db/models/warning_signs.ts', () => {
           'clinical_finding': {
             'type': 'qualifier',
             'snomed_concept_id': '91175000',
-            'qualifiers': [],
+            'qualifiers': [{
+              'type': 'qualifier',
+              'snomed_concept_id': '15240007',
+              'qualifiers': [],
+            }],
           },
           'prompt_when': null,
         },
@@ -100,18 +104,6 @@ describe('db/models/warning_signs.ts', () => {
           'clinical_finding': {
             'type': 'qualifier',
             'snomed_concept_id': '230690007',
-            'qualifiers': [],
-          },
-          'prompt_when': null,
-        },
-        {
-          'key': 'Fracture',
-          'sats_primary_name': 'Fracture',
-          'sats_secondary_text': 'Closed (no break in the skin)',
-          'sats_priority_snomed_concept_id': '1356878002',
-          'clinical_finding': {
-            'type': 'qualifier',
-            'snomed_concept_id': '706886007',
             'qualifiers': [],
           },
           'prompt_when': null,

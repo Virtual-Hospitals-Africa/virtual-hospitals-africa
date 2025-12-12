@@ -2,6 +2,7 @@ import {
   IdSelection,
   Maybe,
   PreviouslyCompletedProcedures,
+  RenderedFindingQualifierRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -9,7 +10,6 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
-  // orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -18,7 +18,7 @@ import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
-// import { ParsedFindingExpression } from './simple_record_language.ts'
+import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -30,8 +30,6 @@ export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self r
 
 type FindingQualifier = {
   snomed_concept_id: string
-  // deno-lint-ignore no-explicit-any
-  concrete_value?: any
   snomed_concept_id_value?: Maybe<string>
 }
 
@@ -133,7 +131,6 @@ function doInsertOne(
             .values(qualifiers_insert.map((q) => ({
               id: q.id,
               qualifies_record_id: finding_id,
-              concrete_value: q.concrete_value,
               snomed_concept_id_value: q.snomed_concept_id_value,
             })))
           : blankSelection(qb),
@@ -213,57 +210,32 @@ export function baseQuery(
         ),
       }).as('as_part_of_procedure'),
       jsonArrayFrom(
-        eb.selectFrom('patient_record_qualifiers')
-          .innerJoin(
-            'patient_records as qualifier_patient_records',
-            'patient_record_qualifiers.id',
-            'qualifier_patient_records.id',
-          )
-          .innerJoin(
-            'snomed_inferred_canonical_name_and_category as qualifier_snomed_inferred_canonical_name_and_category',
-            'qualifier_patient_records.snomed_concept_id',
-            'qualifier_snomed_inferred_canonical_name_and_category.id',
-          )
-          .leftJoin(
-            'snomed_inferred_canonical_name_and_category as qualifier_snomed_inferred_canonical_name_and_category_value',
-            'patient_record_qualifiers.snomed_concept_id_value',
-            'qualifier_snomed_inferred_canonical_name_and_category_value.id',
-          )
-          .whereRef(
-            'patient_record_qualifiers.qualifies_record_id',
+        patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
+          .where(
+            'qualifiers_1.qualifies_record_id',
             '=',
-            'patient_records.id',
+            eb.ref('patient_records.id'),
           )
-          .select((eb_qualifiers) => [
-            'qualifier_patient_records.id as record_id',
-            'qualifier_patient_records.patient_encounter_id',
-            asText(
-              eb_qualifiers,
-              'qualifier_patient_records.snomed_concept_id',
-            ).as('snomed_concept_id'),
-            'qualifier_snomed_inferred_canonical_name_and_category.name',
-            'patient_record_qualifiers.concrete_value',
-            sql<string | null>`coalesce(
-              patient_record_qualifiers.concrete_value::text,
-              qualifier_snomed_inferred_canonical_name_and_category_value.name
-            )`.as('attribute_value'),
+          .select((eb_qualifiers1) => [
+            jsonArrayFrom(
+              patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
+                .where(
+                  'qualifiers_2.qualifies_record_id',
+                  '=',
+                  eb_qualifiers1.ref('qualifiers_1.record_id'),
+                )
+                .select((_eb_qualifiers2) => [
+                  // At max depth, just return an empty array
+                  sql<
+                    RenderedFindingQualifierRelativeToHealthWorker[]
+                  >`ARRAY[]::int[]`.as(
+                    'qualifiers',
+                  ),
+                ]),
+            ).as('qualifiers'),
           ]),
-        // .orderBy((eb_qualifier_order) =>
-        // {
-        //   const x = eb_qualifier_order.ref('qualifier_snomed_inferred_canonical_name_and_category.category')
-        //   const y: ExtractTypeFromReferenceExpression<>
-        //   orderByArrayPosition(
-        //     eb_qualifier_order,
-        //     'qualifier_snomed_inferred_canonical_name_and_category.category',
-        //     ['qualifier value'] as NonEmptyArray<string>
-        //   )
-        // }
-        //   ,
-        //   'desc'
-        // )
       ).as('qualifiers'),
     ])
-    //
     .where(
       (eb) =>
         eb(

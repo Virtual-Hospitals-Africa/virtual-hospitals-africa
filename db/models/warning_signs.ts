@@ -1,47 +1,13 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection, success_true } from '../helpers.ts'
+import { blankSelection, debugLog, success_true } from '../helpers.ts'
 import {
+  ParsedExpression,
   ParsedFindingExpression,
-  ParsedQualifierExpression,
 } from './simple_record_language.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
-
-type QualifierInsert = {
-  id: string
-  snomed_concept_id: string
-  snomed_concept_id_value?: string
-}
-
-function qualifersForInsertion(
-  qualifiers: ParsedQualifierExpression[],
-): QualifierInsert[] {
-  const result: QualifierInsert[] = []
-
-  for (const qualifier of qualifiers) {
-    if (qualifier.type !== 'qualifier') {
-      assertEquals(
-        qualifier.type,
-        'not',
-        `Unsupported qualifier type: ${qualifier.type}`,
-      )
-      continue
-    }
-
-    result.push({
-      id: generateUUID(),
-      snomed_concept_id: qualifier.snomed_concept_id,
-      snomed_concept_id_value: qualifier.snomed_concept_id_value,
-    })
-
-    assert(!qualifier.qualifiers.length, 'Unsupported nested qualifiers')
-  }
-
-  return result
-}
 
 type WarningSignInsert = {
   patient_id: string
@@ -75,14 +41,7 @@ export function insertOne(
 
   const finding_id = generateUUID()
 
-  // Flatten any nested qualifiers from the s_expression (excluding 'not' expressions)
-  const qualifiers = qualifersForInsertion(
-    finding.qualifiers.filter(
-      (q): q is ParsedQualifierExpression => q.type === 'qualifier',
-    ),
-  )
-
-  return trx.with(
+  let query = trx.with(
     'inserting_procedure_record',
     (qb) =>
       !previously_completed_procedure_record_id
@@ -118,26 +77,59 @@ export function insertOne(
           id: finding_id,
           procedure_id,
           patient_encounter_employee_id,
-        })).with(
-      'inserting_qualifier_records',
+        }))
+
+  function qualifierCte(
+    qb: typeof query,
+    qualifier: ParsedExpression,
+    qualifies_record_id: string,
+  ) {
+    assert(qualifier.type === 'qualifier')
+    const id = generateUUID()
+    const id_token = id.replaceAll('-', '_')
+
+    let next_query = qb.with(
+      `inserting_qualifier_record_${id_token}`,
       (qb) =>
         qb.insertInto('patient_records')
-          .values(qualifiers.map((q) => ({
-            id: q.id,
-            snomed_concept_id: q.snomed_concept_id,
+          .values({
+            id,
             patient_id,
             patient_encounter_id,
-          }))),
+            snomed_concept_id: qualifier.snomed_concept_id,
+          }),
     ).with(
-      'inserting_qualifiers',
+      `inserting_qualifiers_${id_token}`,
       (qb) =>
         qb.insertInto('patient_record_qualifiers')
-          .values(qualifiers.map((q) => ({
-            id: q.id,
-            qualifies_record_id: finding_id,
-            snomed_concept_id_value: q.snomed_concept_id_value,
-          }))),
-    )
+          .values({
+            id,
+            qualifies_record_id,
+            snomed_concept_id_value: qualifier.snomed_concept_id_value,
+          }),
+    ) as unknown as typeof query
+
+    for (const sub_qualifier of qualifier.qualifiers) {
+      next_query = qualifierCte(
+        next_query,
+        sub_qualifier,
+        id,
+      ) as unknown as typeof query
+    }
+
+    return next_query
+  }
+
+  for (const qualifier of finding.qualifiers) {
+    query = qualifierCte(query, qualifier, finding_id)
+  }
+
+  debugLog(query
+    .selectNoFrom([
+      success_true,
+    ]))
+
+  return query
     .selectNoFrom([
       success_true,
     ])
