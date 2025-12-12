@@ -22,7 +22,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'with_patient_id',
           'uuid',
-          (col) => col.references('patient_presence.id'),
+          (col) => col.references('patient_presence.id').onDelete('cascade'),
         )
         .addCheckConstraint(
           'not_seeing_a_patient_at_home',
