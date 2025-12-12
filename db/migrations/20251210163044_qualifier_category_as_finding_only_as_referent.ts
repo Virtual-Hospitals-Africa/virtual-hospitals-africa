@@ -2,15 +2,14 @@ import { assertOnInsert } from '../helpers.ts'
 
 const assertion = assertOnInsert({
   table: 'patient_findings',
-  function_name: 'qualifier_category_as_finding_only_as_referent',
+  function_name: 'qualifier_category_not_used_as_finding',
   assertion: `
-    NEW.referent_finding_id IS NOT NULL OR
-    EXISTS (
+    NOT EXISTS (
         SELECT 1
           FROM patient_records
     INNER JOIN snomed_inferred_canonical_name_and_category on patient_records.snomed_concept_id = snomed_inferred_canonical_name_and_category.id
          WHERE patient_records.id = NEW.id
-           AND snomed_inferred_canonical_name_and_category.category != 'qualifier value'
+           AND snomed_inferred_canonical_name_and_category.category = 'qualifier value'
     )
   `,
   error_message:

@@ -61,9 +61,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn('procedure_id', 'uuid', (col) =>
         col.notNull().references('patient_procedures.id').onDelete(
           'cascade',
-        ))
-      .addColumn('referent_finding_id', 'uuid', (col) =>
-        col.references('patient_findings.id').onDelete('cascade')))
+        )))
 
   await createPointerTable(db, 'patient_measurements', {
     references: 'patient_findings',
@@ -156,18 +154,10 @@ export async function up(db: Kysely<DB>) {
     (qb) =>
       qb
         .addColumn(
-          'patient_encounter_employee_id',
+          'employment_id',
           'uuid',
           (col) =>
-            col.references('patient_encounter_employees.id').onDelete(
-              'cascade',
-            ),
-        )
-        .addColumn(
-          'review_id',
-          'uuid',
-          (col) =>
-            col.references('doctor_reviews.id').onDelete(
+            col.references('employment.id').onDelete(
               'cascade',
             ),
         )
@@ -176,27 +166,52 @@ export async function up(db: Kysely<DB>) {
           'boolean',
           (col) => col.notNull(),
         )
+        // more such relations can be declared using patient_record_relations,
+        // but evaluations are always made because of at least one other record
         .addColumn(
           'evaluates_record_id',
           'uuid',
           (col) =>
-            col.notNull().references('patient_records.id').onDelete(
+            col.notNull().references('patient_records.id').onDelete('cascade'),
+        )
+        .addCheckConstraint(
+          'evaluation_is_either_by_system_or_by_person',
+          sql`(
+            by_system or employment_id is not null
+          )`,
+        ),
+  )
+
+  await createPointerTable(
+    db,
+    'patient_record_relations',
+    {
+      references: 'patient_records',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
+        .addColumn(
+          'source_id',
+          'uuid',
+          (col) =>
+            col.references('patient_records.id').onDelete(
               'cascade',
             ),
         )
-        .addColumn('note', 'text')
-        .addCheckConstraint(
-          'evaluation_is_either_by_system_or_encounter_provider_or_during_review',
-          sql`(
-            (by_system = true and (patient_encounter_employee_id is null) and (review_id is null)) or
-            (by_system = false and (patient_encounter_employee_id is not null) and (review_id is null)) or
-            (by_system = false and (patient_encounter_employee_id is null) and (review_id is not null))
-          )`,
+        .addColumn(
+          'destination_id',
+          'uuid',
+          (col) =>
+            col.references('patient_records.id').onDelete(
+              'cascade',
+            ),
         ),
   )
 }
 
 export async function down(db: Kysely<DB>) {
+  await db.schema.dropTable('patient_record_relations').execute()
   await db.schema.dropTable('patient_evaluations').execute()
   await db.schema.dropTable('patient_finding_media_speeches').execute()
   await db.schema.dropTable('patient_finding_media_images').execute()

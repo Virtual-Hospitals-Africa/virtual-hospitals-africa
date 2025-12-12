@@ -1096,11 +1096,9 @@ export interface PatientEncounters {
 
 export interface PatientEvaluations {
   by_system: boolean
+  employment_id: string | null
   evaluates_record_id: string
   id: string
-  note: string | null
-  patient_encounter_employee_id: string | null
-  review_id: string | null
 }
 
 export interface PatientExaminationFindingBodySites {
@@ -1160,7 +1158,6 @@ export interface PatientFindings {
   id: string
   patient_encounter_employee_id: string
   procedure_id: string
-  referent_finding_id: string | null
 }
 
 export interface PatientFindingValues {
@@ -1246,9 +1243,14 @@ export interface PatientProcedures {
 export interface PatientRecordQualifiers {
   concrete_value: Json | null
   id: string
-  patient_encounter_employee_id: string
   qualifies_record_id: string
   snomed_concept_id_value: Int8 | null
+}
+
+export interface PatientRecordRelations {
+  destination_id: string | null
+  id: string
+  source_id: string | null
 }
 
 export interface PatientRecords {
@@ -1942,6 +1944,7 @@ export interface DB {
   patient_presence: PatientPresence
   patient_procedures: PatientProcedures
   patient_record_qualifiers: PatientRecordQualifiers
+  patient_record_relations: PatientRecordRelations
   patient_records: PatientRecords
   patient_registration: PatientRegistration
   patient_symptoms: PatientSymptoms

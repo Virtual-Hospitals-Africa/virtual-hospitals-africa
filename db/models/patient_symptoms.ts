@@ -19,13 +19,19 @@ export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOME
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
-  { patient_id, patient_encounter_id, patient_encounter_employee_id, symptom }:
-    {
-      patient_id: string
-      patient_encounter_id: string
-      patient_encounter_employee_id: string
-      symptom: PatientSymptomUpsert
-    },
+  {
+    patient_id,
+    patient_encounter_id,
+    employment_id,
+    patient_encounter_employee_id,
+    symptom,
+  }: {
+    patient_id: string
+    patient_encounter_id: string
+    employment_id: string
+    patient_encounter_employee_id: string
+    symptom: PatientSymptomUpsert
+  },
 ) {
   const {
     altered_patient_symptom_id,
@@ -40,7 +46,7 @@ export async function upsertOne(
     await markAltered(trx, {
       patient_id,
       patient_encounter_id,
-      patient_encounter_employee_id,
+      employment_id,
       altered_record_id: altered_patient_symptom_id,
     })
   }

@@ -23,11 +23,13 @@ export async function upsertOne(
   {
     patient_id,
     patient_encounter_id,
+    employment_id,
     patient_encounter_employee_id,
     family_history,
   }: {
     patient_id: string
     patient_encounter_id: string
+    employment_id: string
     patient_encounter_employee_id: string
     family_history: PatientFamilyHistoryUpsert
   },
@@ -45,7 +47,7 @@ export async function upsertOne(
     await markAltered(trx, {
       patient_id,
       patient_encounter_id,
-      patient_encounter_employee_id,
+      employment_id,
       altered_record_id: altered_patient_family_history_id,
     })
   }
@@ -103,7 +105,6 @@ export async function upsertOne(
         snomed_concept_id,
         procedure_id,
         patient_encounter_employee_id,
-        referent_finding_id: family_history_id,
       }
     })
 
@@ -164,9 +165,18 @@ export async function upsertOne(
             'id',
             'procedure_id',
             'patient_encounter_employee_id',
-            'referent_finding_id',
           ]),
         )))
+    .with(
+      'inserting_family_member_relations',
+      (qb) =>
+        qb.insertInto('patient_record_relations')
+          .values(family_members_insert.map((member) => ({
+            id: member.id,
+            source_id: member.id,
+            destination_id: family_history_id,
+          }))),
+    )
     .selectNoFrom([
       success_true,
     ])
@@ -212,6 +222,11 @@ export async function getEncounter(
             'family_member_patient_records.id',
           )
           .innerJoin(
+            'patient_record_relations',
+            'patient_record_relations.source_id',
+            'family_member_patient_records.id',
+          )
+          .innerJoin(
             'snomed_inferred_canonical_name_and_category',
             'family_member_patient_records.snomed_concept_id',
             'snomed_inferred_canonical_name_and_category.id',
@@ -227,7 +242,7 @@ export async function getEncounter(
             'person',
           )
           .whereRef(
-            'family_member_patient_findings.referent_finding_id',
+            'patient_record_relations.destination_id',
             '=',
             'patient_records.id',
           ),

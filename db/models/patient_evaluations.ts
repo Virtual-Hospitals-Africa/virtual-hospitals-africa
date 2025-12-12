@@ -116,7 +116,6 @@ export async function getMostRecentManualVitalsWithEvaluations(
         .select([
           'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
-          'patient_findings.referent_finding_id',
           'patient_measurements.value',
           'patient_measurements.units',
         ])
@@ -165,7 +164,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
             sql<string>`evaluation_records.snomed_concept_id::text`.as(
               'snomed_concept_id',
             ),
-            'note',
+            sql<string | null>`null`.as('note'),
           ])
           .whereRef(
             'ranked_manual_findings.id',
@@ -215,9 +214,6 @@ export async function getMostRecentComputedVitalsWithEvaluations(
         .select([
           'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
-          sql<string | null>`patient_findings.referent_finding_id`.as(
-            'referent_finding_id',
-          ),
         ])
         .select([
           'patient_computed_findings.value',
@@ -260,7 +256,7 @@ export async function getMostRecentComputedVitalsWithEvaluations(
             sql<string>`evaluation_records.snomed_concept_id::text`.as(
               'snomed_concept_id',
             ),
-            'note',
+            sql<string | null>`null`.as('note'),
           ])
           .whereRef(
             'ranked_computed_findings.id',
