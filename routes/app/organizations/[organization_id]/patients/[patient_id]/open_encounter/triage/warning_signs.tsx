@@ -8,6 +8,9 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import { parseFindingExpression } from '../../../../../../../../db/models/simple_record_language.ts'
 import entries from '../../../../../../../../util/entries.ts'
+import { insertOne } from '../../../../../../../../db/models/warning_signs.ts'
+import { forEach } from '../../../../../../../../util/inParallel.ts'
+import { inBackground } from '../../../../../../../../util/inBackground.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -23,8 +26,28 @@ const WarningSignsSchema = z.object({
 
 export const handler = postHandler(
   WarningSignsSchema,
-  (ctx: OpenEncounterWorkflowContext, _form_values) => {
-    return completeAndProceedToNextStep(ctx)
+  (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const inserting_findings = forEach(
+      form_values.warning_signs,
+      ({ finding }) =>
+        insertOne(ctx.state.trx, {
+          patient_id: ctx.state.patient.id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id: ctx.state.encounter_employee_presence
+            .patient_encounter_employee_id,
+          workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
+          workflow_step_snomed_concept_id:
+            ctx.state.workflow_step_snomed_concept_id,
+          previously_completed_procedures:
+            ctx.state.previously_completed_procedures,
+          finding,
+        }),
+    )
+
+    return inBackground(
+      inserting_findings,
+      () => completeAndProceedToNextStep(ctx),
+    )
   },
 )
 

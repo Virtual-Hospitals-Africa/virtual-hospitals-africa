@@ -1,43 +1,162 @@
-// import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
-// import { PositiveFindingRecord, TrxOrDb } from '../../types.ts'
-// import { positiveFindingsQuery } from './patient_findings.ts'
-// import {
-//   ParsedFindingExpression,
-//   parseFindingExpression,
-// } from './simple_record_language.ts'
+import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
+import generateUUID from '../../util/uuid.ts'
+import { blankSelection, success_true } from '../helpers.ts'
+import {
+  ParsedFindingExpression,
+  ParsedQualifierExpression,
+} from './simple_record_language.ts'
+import { SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID } from './patient_findings.ts'
 
-// export function getForEncounter(
-//   trx: TrxOrDb,
-//   { patient_id, encounter_id }: { patient_id: string; encounter_id: string },
-// ): Promise<PositiveFindingRecord[]> {
-//   const warning_signs = WARNING_SIGNS.map((sign) => {
-//     const expression = parseFindingExpression(sign.finding_s_expression)
-//     return {
-//       ...sign,
-//       expression,
-//     }
-//   })
+export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 
-//   return positiveFindingsQuery(trx, { patient_id })
-//     .selectFrom('patient_positive_findings')
-//     .selectAll('patient_positive_findings')
-//     .execute()
-// }
+type QualifierInsert = {
+  id: string
+  snomed_concept_id: string
+  snomed_concept_id_value?: string
+}
 
-// export function insertForEncounter(
-//   trx: TrxOrDb,
-//   { patient_id, encounter_id }: { patient_id: string; encounter_id: string },
-// ): Promise<PositiveFindingRecord[]> {
-//   const warning_signs = WARNING_SIGNS.map((sign) => {
-//     const expression = parseFindingExpression(sign.finding_s_expression)
-//     return {
-//       ...sign,
-//       expression,
-//     }
-//   })
+function flattenQualifiers(
+  qualifiers: ParsedQualifierExpression[],
+): QualifierInsert[] {
+  const result: QualifierInsert[] = []
 
-//   return positiveFindingsQuery(trx, { patient_id })
-//     .selectFrom('patient_positive_findings')
-//     .selectAll('patient_positive_findings')
-//     .execute()
-// }
+  for (const qualifier of qualifiers) {
+    if (qualifier.type !== 'qualifier') continue
+
+    result.push({
+      id: generateUUID(),
+      snomed_concept_id: qualifier.snomed_concept_id,
+      snomed_concept_id_value: qualifier.snomed_concept_id_value,
+    })
+
+    // Recursively flatten nested qualifiers
+    if (qualifier.qualifiers.length > 0) {
+      const nested = qualifier.qualifiers.filter(
+        (q): q is ParsedQualifierExpression => q.type === 'qualifier',
+      )
+      result.push(...flattenQualifiers(nested))
+    }
+  }
+
+  return result
+}
+
+type WarningSignInsert = {
+  patient_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  workflow_snomed_concept_id: string
+  workflow_step_snomed_concept_id: string | null
+  previously_completed_procedures: PreviouslyCompletedProcedures
+  finding: ParsedFindingExpression
+}
+
+export function insertOne(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    patient_encounter_id,
+    patient_encounter_employee_id,
+    workflow_snomed_concept_id,
+    workflow_step_snomed_concept_id,
+    previously_completed_procedures,
+    finding,
+  }: WarningSignInsert,
+) {
+  const previously_completed_procedure_record_id =
+    workflow_step_snomed_concept_id
+      ? previously_completed_procedures.workflow_step_record_id
+      : previously_completed_procedures.workflow_record_id
+
+  const procedure_id = previously_completed_procedure_record_id ||
+    generateUUID()
+
+  const finding_id = generateUUID()
+
+  // Build qualifiers from the parsed s_expression
+  // First, the finding concept itself becomes a qualifier
+  const finding_qualifier: QualifierInsert = {
+    id: generateUUID(),
+    snomed_concept_id: finding.snomed_concept_id,
+  }
+
+  // Then add self-reported qualifier
+  const self_reported_qualifier: QualifierInsert = {
+    id: generateUUID(),
+    snomed_concept_id: SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
+  }
+
+  // Flatten any nested qualifiers from the s_expression (excluding 'not' expressions)
+  const expression_qualifiers = flattenQualifiers(
+    finding.qualifiers.filter(
+      (q): q is ParsedQualifierExpression => q.type === 'qualifier',
+    ),
+  )
+
+  const all_qualifiers = [
+    finding_qualifier,
+    self_reported_qualifier,
+    ...expression_qualifiers,
+  ]
+
+  return trx.with(
+    'inserting_procedure_record',
+    (qb) =>
+      !previously_completed_procedure_record_id
+        ? qb.insertInto('patient_records')
+          .values({
+            id: procedure_id,
+            patient_id,
+            patient_encounter_id,
+            snomed_concept_id: workflow_step_snomed_concept_id ||
+              workflow_snomed_concept_id,
+          })
+        : blankSelection(qb),
+  ).with(
+    'inserting_procedure',
+    (qb) =>
+      !previously_completed_procedure_record_id
+        ? qb.insertInto('patient_procedures')
+          .values({
+            id: procedure_id,
+            patient_encounter_employee_id,
+          })
+        : blankSelection(qb),
+  ).with('inserting_finding_records', (qb) =>
+    qb.insertInto('patient_records')
+      .values({
+        id: finding_id,
+        patient_id,
+        patient_encounter_id,
+        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+      })).with('inserting_findings', (qb) =>
+      qb.insertInto('patient_findings')
+        .values({
+          id: finding_id,
+          procedure_id,
+          patient_encounter_employee_id,
+        })).with(
+      'inserting_qualifier_records',
+      (qb) =>
+        qb.insertInto('patient_records')
+          .values(all_qualifiers.map((q) => ({
+            id: q.id,
+            snomed_concept_id: q.snomed_concept_id,
+            patient_id,
+            patient_encounter_id,
+          }))),
+    ).with(
+      'inserting_qualifiers',
+      (qb) =>
+        qb.insertInto('patient_record_qualifiers')
+          .values(all_qualifiers.map((q) => ({
+            id: q.id,
+            qualifies_record_id: finding_id,
+            snomed_concept_id_value: q.snomed_concept_id_value,
+          }))),
+    )
+    .selectNoFrom([
+      success_true,
+    ])
+    .executeTakeFirstOrThrow()
+}
