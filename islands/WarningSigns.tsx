@@ -1,6 +1,6 @@
 import { WARNING_SIGNS } from '../shared/warning_signs.ts'
 
-type WarningSign = (typeof WARNING_SIGNS)[number]
+export type WarningSign = (typeof WARNING_SIGNS)[number]
 
 // SNOMED concept IDs for priority levels
 const PRIORITY = {
@@ -133,8 +133,12 @@ function WarningSignsTable({
   )
 }
 
-export default function WarningSigns() {
-  const grouped = groupByPriority(WARNING_SIGNS)
+export default function WarningSigns({
+  warning_signs,
+}: {
+  warning_signs: readonly WarningSign[]
+}) {
+  const grouped = groupByPriority(warning_signs)
 
   return (
     <div class='flex flex-col gap-4 w-full'>
