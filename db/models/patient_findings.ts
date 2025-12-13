@@ -30,7 +30,7 @@ export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self r
 
 type FindingQualifier = {
   snomed_concept_id: string
-  snomed_concept_id_value?: Maybe<string>
+  value_snomed_concept_id?: Maybe<string>
 }
 
 type FindingInsert = {
@@ -131,7 +131,7 @@ function doInsertOne(
             .values(qualifiers_insert.map((q) => ({
               id: q.id,
               qualifies_record_id: finding_id,
-              snomed_concept_id_value: q.snomed_concept_id_value,
+              value_snomed_concept_id: q.value_snomed_concept_id,
             })))
           : blankSelection(qb),
     )

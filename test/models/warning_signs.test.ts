@@ -254,7 +254,7 @@ describe('db/models/warning_signs.ts', () => {
                 'expression': {
                   'type': 'qualifier',
                   'snomed_concept_id': '363698007',
-                  'snomed_concept_id_value': '7569003',
+                  'value_snomed_concept_id': '7569003',
                   'qualifiers': [],
                 },
               },
@@ -263,7 +263,7 @@ describe('db/models/warning_signs.ts', () => {
                 'expression': {
                   'type': 'qualifier',
                   'snomed_concept_id': '363698007',
-                  'snomed_concept_id_value': '29707007',
+                  'value_snomed_concept_id': '29707007',
                   'qualifiers': [],
                 },
               },

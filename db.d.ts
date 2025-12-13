@@ -1243,7 +1243,7 @@ export interface PatientProcedures {
 export interface PatientRecordQualifiers {
   id: string
   qualifies_record_id: string
-  snomed_concept_id_value: Int8 | null
+  value_snomed_concept_id: Int8 | null
 }
 
 export interface PatientRecordRelations {

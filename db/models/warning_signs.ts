@@ -105,7 +105,7 @@ export function insertOne(
           .values({
             id,
             qualifies_record_id,
-            snomed_concept_id_value: qualifier.snomed_concept_id_value,
+            value_snomed_concept_id: qualifier.value_snomed_concept_id,
           }),
     ) as unknown as typeof query
 

@@ -1,7 +1,10 @@
 import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest, insertReturningSeekingTreatmentWithEmployeeForTest } from '../../../../_helpers/workflows.ts'
+import {
+  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
+  insertReturningSeekingTreatmentWithEmployeeForTest,
+} from '../../../../_helpers/workflows.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
@@ -102,24 +105,24 @@ describe('triage/warning_signs', () => {
 
       const patient_id = initial_encounter.patient.id
 
-       await fetchOk(
-          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/triage/brief_history`,
-          {
-            method: 'POST',
-            body: asFormData({
-              diabetes: {
-                existence: 'No',
-              },
-              pregnancy: {
-                existence: 'Yes',
-              },
-            }),
-          },
-          {
-            cancel_response_body: true,
-          },
-        )
-      
+      await fetchOk(
+        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/triage/brief_history`,
+        {
+          method: 'POST',
+          body: asFormData({
+            diabetes: {
+              existence: 'No',
+            },
+            pregnancy: {
+              existence: 'Yes',
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
       const most_recent_findings = await renderedMostRecentFindings(db, {
         patient_id: initial_encounter.patient.id,
         encounter: initial_encounter,
@@ -130,7 +133,7 @@ describe('triage/warning_signs', () => {
       await patient_encounters.close(db, {
         patient_encounter_id: initial_encounter.patient_encounter_id,
       })
-  
+
       const _subsequent_encounter =
         await insertReturningSeekingTreatmentWithEmployeeForTest(
           db,
