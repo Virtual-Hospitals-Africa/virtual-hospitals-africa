@@ -2,12 +2,14 @@ import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import {
   fromFindingDescription,
-  fromParsedExpression,
-  parseFindingExpression,
 } from '../../db/models/simple_record_language.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { asResult } from '../../util/asResult.ts'
 import { assert } from 'std/assert/assert.ts'
+import {
+  fromParsedExpression,
+  parseFindingExpression,
+} from '../../shared/s_expression.ts'
 
 describe('db/models/simple_record_language.ts', () => {
   afterAll(() => db.destroy())
@@ -23,11 +25,12 @@ describe('db/models/simple_record_language.ts', () => {
       assertEquals(parsed, {
         type: 'finding',
         snomed_concept_id: '131148009',
-        value_snomed_concept_id: undefined,
+        value_snomed_concept_id: null,
         qualifiers: [
           {
             type: 'qualifier',
             snomed_concept_id: '19032002',
+            value_snomed_concept_id: null,
             qualifiers: [],
           },
         ],
@@ -71,6 +74,7 @@ describe('db/models/simple_record_language.ts', () => {
         type: 'finding',
         snomed_category: 'finding',
         snomed_concept_id: '131148009',
+        value_snomed_concept_id: null,
         description: {
           id: '3035867011',
           term: 'Hemorrhage',
@@ -80,6 +84,7 @@ describe('db/models/simple_record_language.ts', () => {
             type: 'qualifier',
             snomed_category: 'qualifier value',
             snomed_concept_id: '19032002',
+            value_snomed_concept_id: null,
             description: {
               id: '32082016',
               term: 'Uncontrolled',

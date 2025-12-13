@@ -8,7 +8,7 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormLabels } from '../../../../_helpers/form.ts'
+import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
@@ -19,6 +19,8 @@ import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../db/models/war
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
+import entries from '../../../../../util/entries.ts'
+import { WarningSign } from '../../../../../types.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -77,7 +79,7 @@ describe('triage/warning_signs', () => {
           'Severe pain': 'Severe pain',
           'Burn Moderate severity': 'BurnModerate severity',
           'Haemorrhage Controlled': 'HaemorrhageControlled',
-          'Dislocation of finge': 'Dislocation of finge',
+          'Dislocation of finger': 'Dislocation of finger',
           'Dislocation of toe joint': 'Dislocation of toe joint',
           'Burn Other': 'BurnOther',
           'Abdominal pain': 'Abdominal pain',
@@ -180,7 +182,7 @@ describe('triage/warning_signs', () => {
           'Severe pain': 'Severe pain',
           'Burn Moderate severity': 'BurnModerate severity',
           'Haemorrhage Controlled': 'HaemorrhageControlled',
-          'Dislocation of finge': 'Dislocation of finge',
+          'Dislocation of finger': 'Dislocation of finger',
           'Dislocation of toe joint': 'Dislocation of toe joint',
           'Burn Other': 'BurnOther',
           'Pregnancy and abdominal trauma': 'Pregnancy and abdominal trauma',
@@ -451,5 +453,71 @@ describe('triage/warning_signs', () => {
 
       assertEquals(this_patient_findings.length, 0)
     })
+
+    function testRoundTrip(key: string, sign: WarningSign) {
+      it(`renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`, async () => {
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                [key]: sign.clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const $ = await fetchCheerio(
+          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
+
+        const form_values = getFormValues($)
+        assertEquals(form_values, {
+          warning_signs: {
+            [key]: sign.clinical_finding_s_expression,
+          },
+        })
+      })
+    }
+
+    // testRoundTrip('Dislocation of larger joint', WARNING_SIGNS['Dislocation of larger joint'])
+
+    // TODO Get this working across the board
+    // For the pregnancy test we'll need to set up that the patient is pregnant
+    // Overdose is loading as a type of poisoning
+    // Similarly Burn Chemical is showing up as Burn Other
+    // Something is not working with the not qualifiers
+    for (const [key, sign] of entries(WARNING_SIGNS)) {
+      const skip = [
+        'Pregnancy and abdominal pain',
+        'Pregnancy and abdominal trauma',
+        'Overdose',
+        'Burn Chemical',
+        'Burn Circumferential',
+        'Burn Facial',
+        'Burn Inhalation',
+      ].includes(key)
+      if (skip) continue
+      testRoundTrip(key, sign)
+    }
   })
 })

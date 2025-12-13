@@ -3501,3 +3501,15 @@ export type IntermediateFindingRecord<PertainingToKey extends string = string> =
 export type MostRecentBriefHistoryFindings = {
   [c in CommonConditionKey]: null | RenderedFindingRelativeToHealthWorker
 }
+
+export type WarningSign = {
+  clinical_finding_s_expression: string
+  sats_primary_name: string
+  sats_secondary_text: string | null
+  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency'
+  prompt_when_s_expression?: string
+}
+
+export type KeyedWarningSign = {
+  key: string
+} & WarningSign

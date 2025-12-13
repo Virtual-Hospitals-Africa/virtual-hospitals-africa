@@ -4,7 +4,7 @@ import {
   ParsedExpression,
   ParsedExpressionNodeType,
   parseExpression,
-} from './simple_record_language.ts'
+} from '../../shared/s_expression.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -13,6 +13,7 @@ import {
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
+import isString from '../../util/isString.ts'
 
 type SatisfyingResult = {
   satisfies: boolean
@@ -23,10 +24,12 @@ export function satisfyingSExpression(
   trx: TrxOrDb,
   { patient_id, s_expression }: {
     patient_id: string
-    s_expression: string
+    s_expression: string | ParsedExpression
   },
 ): Promise<SatisfyingResult> {
-  const parsed = parseExpression(s_expression)
+  const parsed = isString(s_expression)
+    ? parseExpression(s_expression)
+    : s_expression
   return evaluateExpression(trx, patient_id, parsed)
 }
 
@@ -58,7 +61,7 @@ const EXPRESSION_BUILDERS = {
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier)
+          buildExpression(trx, patient_id, qualifier.expression)
             .clearSelect()
             .select('patient_records.id'),
         )
@@ -81,11 +84,6 @@ const EXPRESSION_BUILDERS = {
     patient_id,
     { snomed_concept_id, value_snomed_concept_id, qualifiers },
   ) {
-    assert(
-      !value_snomed_concept_id,
-      'This is more used for insert. Maybe this is a valid use case, but need to think through it',
-    )
-
     let query = trx.selectFrom('patient_records')
       .innerJoin(
         'patient_record_qualifiers',
@@ -106,12 +104,20 @@ const EXPRESSION_BUILDERS = {
       )
       .select('patient_records.id')
 
+    if (value_snomed_concept_id) {
+      query = query.where(
+        'patient_record_qualifiers.value_snomed_concept_id',
+        '=',
+        value_snomed_concept_id,
+      )
+    }
+
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier)
+          buildExpression(trx, patient_id, qualifier.expression)
             .clearSelect()
             .select('patient_records.id'),
         )

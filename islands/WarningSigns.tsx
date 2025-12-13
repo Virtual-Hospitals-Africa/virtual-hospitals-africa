@@ -1,57 +1,31 @@
-import { KeyedWarningSign } from '../shared/warning_signs.ts'
+import { KeyedWarningSign } from '../types.ts'
+import { groupBy } from '../util/groupBy.ts'
 
-// SNOMED concept IDs for priority levels
-const PRIORITY = {
-  EMERGENCY: '25876001',
-  VERY_URGENT: '1356878002',
-  URGENT: '103391001',
-} as const
-
-type PriorityLevel = (typeof PRIORITY)[keyof typeof PRIORITY]
-
-const PRIORITY_CONFIG: Record<
-  PriorityLevel,
-  { label: string; headerBg: string; headerText: string }
-> = {
-  [PRIORITY.EMERGENCY]: {
-    label: 'EMERGENCY',
-    headerBg: '#fee2e2', // error-bg
-    headerText: '#991b1b', // error-textIcon
-  },
-  [PRIORITY.VERY_URGENT]: {
-    label: 'VERY URGENT',
-    headerBg: '#ffedd5', // accent-orange-bg
-    headerText: '#c2410c', // accent-orange-textIcon
-  },
-  [PRIORITY.URGENT]: {
-    label: 'URGENT',
-    headerBg: '#fef9c3', // warning-bg
-    headerText: '#854d0e', // warning-textIcon
-  },
+type CheckedWarningSign = KeyedWarningSign & {
+  checked: boolean
 }
 
-const PRIORITIES_IN_ORDER: PriorityLevel[] = [
-  PRIORITY.EMERGENCY,
-  PRIORITY.VERY_URGENT,
-  PRIORITY.URGENT,
+const PRIORITIES = [
+  {
+    priority: 'Emergency' as const,
+    header_bg: '#fee2e2', // error-bg
+    header_text: '#991b1b', // error-textIcon
+  },
+  {
+    priority: 'Very urgent' as const,
+    header_bg: '#ffedd5', // accent-orange-bg
+    header_text: '#c2410c', // accent-orange-textIcon
+  },
+  {
+    priority: 'Urgent' as const,
+    header_bg: '#fef9c3', // warning-bg
+    header_text: '#854d0e', // warning-textIcon
+  },
 ]
 
-function groupByPriority(signs: readonly KeyedWarningSign[]) {
-  const grouped: Record<PriorityLevel, KeyedWarningSign[]> = {
-    [PRIORITY.EMERGENCY]: [],
-    [PRIORITY.VERY_URGENT]: [],
-    [PRIORITY.URGENT]: [],
-  }
-  for (const sign of signs) {
-    const priority = sign.sats_priority_snomed_concept_id as PriorityLevel
-    if (grouped[priority]) {
-      grouped[priority].push(sign)
-    }
-  }
-  return grouped
-}
+type PriorityConfig = typeof PRIORITIES[number]
 
-function KeyedWarningSignCheckbox({ sign }: { sign: KeyedWarningSign }) {
+function KeyedWarningSignCheckbox({ sign }: { sign: CheckedWarningSign }) {
   const name = `warning_signs.${sign.key}`
   return (
     <label class='flex gap-3 items-start cursor-pointer'>
@@ -61,6 +35,7 @@ function KeyedWarningSignCheckbox({ sign }: { sign: KeyedWarningSign }) {
           type='checkbox'
           name={name}
           value={sign.clinical_finding_s_expression}
+          checked={sign.checked}
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
         />
       </div>
@@ -79,15 +54,14 @@ function KeyedWarningSignCheckbox({ sign }: { sign: KeyedWarningSign }) {
 }
 
 function KeyedWarningSignsTable({
-  priority,
+  priority_config,
   signs,
 }: {
-  priority: PriorityLevel
-  signs: KeyedWarningSign[]
+  priority_config: PriorityConfig
+  signs: CheckedWarningSign[]
 }) {
-  const config = PRIORITY_CONFIG[priority]
   const columns = 5
-  const rows: KeyedWarningSign[][] = []
+  const rows: CheckedWarningSign[][] = []
 
   for (let i = 0; i < signs.length; i += columns) {
     rows.push(signs.slice(i, i + columns))
@@ -98,13 +72,13 @@ function KeyedWarningSignsTable({
       {/* Header */}
       <div
         class='py-3 flex items-center justify-center'
-        style={{ backgroundColor: config.headerBg }}
+        style={{ backgroundColor: priority_config.header_bg }}
       >
         <span
           class='text-xl font-semibold uppercase'
-          style={{ color: config.headerText }}
+          style={{ color: priority_config.header_text }}
         >
-          {config.label}
+          {priority_config.priority}
         </span>
       </div>
       {/* Content rows */}
@@ -112,12 +86,15 @@ function KeyedWarningSignsTable({
         {rows.map((row, rowIndex) => (
           <div key={rowIndex} class='flex'>
             {row.map((sign) => (
-              <div
-                key={sign.key}
-                class='flex-1 p-3 min-w-0'
-              >
-                <KeyedWarningSignCheckbox sign={sign} />
-              </div>
+              console.log(sign),
+                (
+                  <div
+                    key={sign.key}
+                    class='flex-1 p-3 min-w-0'
+                  >
+                    <KeyedWarningSignCheckbox sign={sign} />
+                  </div>
+                )
             ))}
             {/* Fill remaining columns with empty cells */}
             {row.length < columns &&
@@ -134,19 +111,19 @@ function KeyedWarningSignsTable({
 export default function KeyedWarningSigns({
   warning_signs,
 }: {
-  warning_signs: readonly KeyedWarningSign[]
+  warning_signs: CheckedWarningSign[]
 }) {
-  const grouped = groupByPriority(warning_signs)
+  const grouped = groupBy(warning_signs, 'sats_priority')
 
   return (
     <div class='flex flex-col gap-4 w-full'>
-      {PRIORITIES_IN_ORDER.map((priority) => {
-        const signs = grouped[priority]
-        if (!signs.length) return null
+      {PRIORITIES.map((priority_config) => {
+        const signs = grouped.get(priority_config.priority)
+        if (!signs?.length) return null
         return (
           <KeyedWarningSignsTable
-            key={priority}
-            priority={priority}
+            key={priority_config.priority}
+            priority_config={priority_config}
             signs={signs}
           />
         )

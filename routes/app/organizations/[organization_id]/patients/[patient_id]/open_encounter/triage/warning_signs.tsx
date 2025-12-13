@@ -6,30 +6,24 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
-import { parseQualifierExpression } from '../../../../../../../../db/models/simple_record_language.ts'
 import entries from '../../../../../../../../util/entries.ts'
-import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  insertOne,
-} from '../../../../../../../../db/models/warning_signs.ts'
+import { insertOne } from '../../../../../../../../db/models/warning_signs.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import { KEYED_WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import compact from '../../../../../../../../util/compact.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import { parseFindingExpression } from '../../../../../../../../shared/s_expression.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    z.string().transform((value) => parseQualifierExpression(value)),
+    z.string().transform((value) => parseFindingExpression(value)),
   ).optional().default({}).transform((signs) =>
-    entries(signs).map(([key, qualifier]) => ({
+    entries(signs).map(([key, finding]) => ({
       key,
-      finding: {
-        type: 'finding' as const,
-        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-        qualifiers: [qualifier],
-      },
+      finding,
     }))
   ),
 })
@@ -37,6 +31,7 @@ const WarningSignsSchema = z.object({
 export const handler = postHandler(
   WarningSignsSchema,
   (ctx: OpenEncounterWorkflowContext, form_values) => {
+    console.log({ form_values })
     const inserting_findings = forEach(
       form_values.warning_signs,
       ({ finding }) =>
@@ -65,20 +60,36 @@ export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const { trx, patient } = ctx.state
+  const patient_id = patient.id
 
   // Filter warning signs based on prompt_when_s_expression
   const filtered_warning_signs = await Promise.all(
     KEYED_WARNING_SIGNS.map(async (sign) => {
-      if (!sign.prompt_when_s_expression) {
-        return sign
-      }
-      const { satisfies } = await satisfyingSExpression(trx, {
-        patient_id: patient.id,
-        s_expression: sign.prompt_when_s_expression,
+      const { prompt_when, clinical_finding } = await promiseProps({
+        prompt_when: sign.prompt_when_s_expression
+          ? satisfyingSExpression(trx, {
+            patient_id,
+            s_expression: sign.prompt_when_s_expression,
+          })
+          : Promise.resolve({ satisfies: true }),
+        clinical_finding: satisfyingSExpression(trx, {
+          patient_id,
+          s_expression: sign.clinical_finding_s_expression,
+        }),
       })
-      return satisfies ? sign : null
+
+      if (!prompt_when.satisfies) {
+        return null
+      }
+
+      return {
+        ...sign,
+        checked: clinical_finding.satisfies,
+      }
     }),
   )
+
+  console.log({ filtered_warning_signs })
 
   const warning_signs = compact(filtered_warning_signs)
 

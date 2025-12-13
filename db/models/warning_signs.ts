@@ -1,11 +1,11 @@
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import {
   ParsedExpression,
   ParsedFindingExpression,
-} from './simple_record_language.ts'
-import { assert } from 'std/assert/assert.ts'
+} from '../../shared/s_expression.ts'
 
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 
@@ -94,7 +94,14 @@ export function insertOne(
     qualifier: ParsedExpression,
     qualifies_record_id: string,
   ) {
-    assert(qualifier.type === 'qualifier')
+    if (qualifier.type !== 'qualifier') {
+      assertEquals(
+        qualifier.type,
+        'not',
+        'we can omit not expressions upon insert, but not sure what is going on here',
+      )
+      return qb
+    }
     const id = generateUUID()
     const id_token = id.replaceAll('-', '_')
 
