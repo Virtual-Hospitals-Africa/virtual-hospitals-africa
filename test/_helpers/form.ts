@@ -9,11 +9,15 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
   $('form input,textarea').each((_i, el) => {
     if (!el.attribs.name) return
     if (el.attribs.type === 'checkbox') {
-      return set(
-        form_values,
-        el.attribs.name,
-        'checked' in el.attribs,
-      )
+      if ('checked' in el.attribs) {
+        const value = el.attribs.value || true
+        set(
+          form_values,
+          el.attribs.name,
+          value,
+        )
+      }
+      return
     }
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
       const key = el.attribs.name && last(el.attribs.name.split('.'))
