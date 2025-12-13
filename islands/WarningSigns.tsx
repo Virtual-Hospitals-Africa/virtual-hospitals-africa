@@ -60,7 +60,7 @@ function KeyedWarningSignCheckbox({ sign }: { sign: KeyedWarningSign }) {
           id={name}
           type='checkbox'
           name={name}
-          value='true'
+          value={sign.clinical_finding_s_expression}
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
         />
       </div>
