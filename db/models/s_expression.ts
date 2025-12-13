@@ -1,12 +1,11 @@
 import { TrxOrDb } from '../../types.ts'
-import { SelectQueryBuilder, sql, SqlBool } from 'kysely'
+import { SelectQueryBuilder, sql } from 'kysely'
 import {
   ParsedExpression,
   ParsedExpressionNodeType,
   parseExpression,
 } from './simple_record_language.ts'
 import { nowInvalidRecords } from './patient_records.ts'
-import { jsonArrayFrom } from '../helpers.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './warning_signs.ts'
@@ -16,18 +15,10 @@ import {
 } from './patient_findings.ts'
 
 type SatisfyingResult = {
-  satisfies: SqlBool
+  satisfies: boolean
   record_ids: string[]
 }
 
-/**
- * Evaluates an s_expression against patient findings to determine if the condition is satisfied.
- *
- * Supported expressions:
- * - (finding <snomed_concept_id>) - checks if a finding with this concept exists
- * - (finding <snomed_concept_id> (qualifier <qualifier_snomed_concept_id>)) - checks if a finding with qualifier exists
- * - (not <expression>) - negates the result
- */
 export function satisfyingSExpression(
   trx: TrxOrDb,
   { patient_id, s_expression }: {
@@ -60,10 +51,7 @@ const EXPRESSION_BUILDERS = {
         'not in',
         nowInvalidRecords(trx, { patient_id }),
       )
-      .select((eb) => [
-        jsonArrayFrom(eb.ref('patient_records.id')).as('record_ids'),
-        eb.exists('patient_records.id').as('satisfies'),
-      ])
+      .select('patient_records.id')
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
@@ -116,10 +104,7 @@ const EXPRESSION_BUILDERS = {
         'not in',
         nowInvalidRecords(trx, { patient_id }),
       )
-      .select((eb) => [
-        jsonArrayFrom(eb.ref('patient_records.id')).as('record_ids'),
-        eb.exists('patient_records.id').as('satisfies'),
-      ])
+      .select('patient_records.id')
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
@@ -144,26 +129,12 @@ const EXPRESSION_BUILDERS = {
 
     return query
   },
-  not(trx, patient_id, { expression }) {
-    return trx.selectFrom('patient_records')
-      .where('patient_id', '=', patient_id)
-      .where(
-        'patient_records.id',
-        'not in',
-        nowInvalidRecords(trx, { patient_id }),
-      )
-      .where(
-        'patient_records.id',
-        'not in',
-        buildExpression(trx, patient_id, expression)
-          .clearSelect()
-          .select('patient_records.id'),
-      )
-      .select((eb) => [
-        sql<string[]>`ARRAY[]::varchar(255)[]`.as('record_ids'),
-        eb.exists('patient_records.id').as('satisfies'),
-      ])
+  not() {
+    throw new Error('not is handled by parent nodes')
   },
+  // not(trx, patient_id, { expression }) {
+  //   return buildExpression(trx, patient_id, expression)
+  // },
   or(trx, patient_id, { expressions }) {
     return trx.selectFrom('patient_records')
       .innerJoin(
@@ -189,19 +160,16 @@ const EXPRESSION_BUILDERS = {
             )
           )),
       )
-      .select((eb) => [
-        jsonArrayFrom(eb.ref('patient_records.id')).as('record_ids'),
-        eb.exists('patient_records.id').as('satisfies'),
-      ])
+      .select('patient_records.id')
   },
   active_condition(trx, patient_id, { snomed_concept_id }) {
     return buildExpression(
       trx,
       patient_id,
       parseExpression(`
-      (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
-          (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
-    `),
+        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
+            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
+      `),
     )
   },
 } satisfies {
@@ -209,28 +177,35 @@ const EXPRESSION_BUILDERS = {
     trx: TrxOrDb,
     patient_id: string,
     node: ParsedExpression & { type: T },
-  ) => SelectQueryBuilder<DB, 'patient_records', {
-    record_ids: string[]
-    satisfies: SqlBool
-  }>
+  ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
 function buildExpression(
   trx: TrxOrDb,
   patient_id: string,
   node: ParsedExpression,
-): SelectQueryBuilder<DB, 'patient_records', {
-  record_ids: string[]
-  satisfies: SqlBool
-}> {
+): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   const builder = EXPRESSION_BUILDERS[node.type]
+  // deno-lint-ignore no-explicit-any
   return builder(trx, patient_id, node as any)
 }
 
-function evaluateExpression(
+async function evaluateExpression(
   trx: TrxOrDb,
   patient_id: string,
   node: ParsedExpression,
 ): Promise<SatisfyingResult> {
-  return buildExpression(trx, patient_id, node).executeTakeFirstOrThrow()
+  if (node.type === 'not') {
+    const any_matching = await buildExpression(trx, patient_id, node.expression)
+      .limit(1).executeTakeFirst()
+    return {
+      record_ids: [],
+      satisfies: !any_matching,
+    }
+  }
+  const rows = await buildExpression(trx, patient_id, node).execute()
+  return {
+    record_ids: rows.map((row) => row.id),
+    satisfies: rows.length > 0,
+  }
 }

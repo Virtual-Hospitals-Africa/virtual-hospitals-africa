@@ -3,13 +3,11 @@ import db from '../../db/db.ts'
 import {
   fromFindingDescription,
   fromParsedExpression,
-  parseExpression,
   parseFindingExpression,
 } from '../../db/models/simple_record_language.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { asResult } from '../../util/asResult.ts'
 import { assert } from 'std/assert/assert.ts'
-import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 
 describe('db/models/simple_record_language.ts', () => {
   afterAll(() => db.destroy())
@@ -25,6 +23,7 @@ describe('db/models/simple_record_language.ts', () => {
       assertEquals(parsed, {
         type: 'finding',
         snomed_concept_id: '131148009',
+        value_snomed_concept_id: undefined,
         qualifiers: [
           {
             type: 'qualifier',
@@ -54,15 +53,6 @@ describe('db/models/simple_record_language.ts', () => {
         result.error.message,
         'Expected top-level node to be "finding", got: "qualifier"',
       )
-    })
-
-    it('can parse all the expressions for warning signs', () => {
-      for (const sign of Object.values(WARNING_SIGNS)) {
-        const parsed = parseExpression(
-          sign.clinical_finding_s_expression,
-        )
-        assertEquals(parsed.type, 'qualifier')
-      }
     })
   })
 

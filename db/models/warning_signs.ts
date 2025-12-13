@@ -1,6 +1,6 @@
 import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection, debugLog, success_true } from '../helpers.ts'
+import { blankSelection, success_true } from '../helpers.ts'
 import {
   ParsedExpression,
   ParsedFindingExpression,
@@ -71,7 +71,17 @@ export function insertOne(
         patient_id,
         patient_encounter_id,
         snomed_concept_id: finding.snomed_concept_id,
-      })).with('inserting_findings', (qb) =>
+      })).with(
+      'inserting_patient_finding_values',
+      (qb) =>
+        finding.value_snomed_concept_id
+          ? qb.insertInto('patient_finding_values')
+            .values({
+              id: finding_id,
+              value_snomed_concept_id: finding.value_snomed_concept_id,
+            })
+          : blankSelection(qb),
+    ).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: finding_id,
@@ -124,14 +134,7 @@ export function insertOne(
     query = qualifierCte(query, qualifier, finding_id)
   }
 
-  debugLog(query
-    .selectNoFrom([
-      success_true,
-    ]))
-
   return query
-    .selectNoFrom([
-      success_true,
-    ])
+    .selectNoFrom([success_true])
     .executeTakeFirstOrThrow()
 }

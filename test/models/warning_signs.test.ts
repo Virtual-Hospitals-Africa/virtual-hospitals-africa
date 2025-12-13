@@ -40,11 +40,13 @@ describe('db/models/warning_signs.ts', () => {
           'clinical_finding': {
             'type': 'qualifier',
             'snomed_concept_id': '91175000',
-            'qualifiers': [{
-              'type': 'qualifier',
-              'snomed_concept_id': '15240007',
-              'qualifiers': [],
-            }],
+            'qualifiers': [
+              {
+                'type': 'qualifier',
+                'snomed_concept_id': '15240007',
+                'qualifiers': [],
+              },
+            ],
           },
           'prompt_when': null,
         },
@@ -318,15 +320,8 @@ describe('db/models/warning_signs.ts', () => {
             'qualifiers': [],
           },
           'prompt_when': {
-            'type': 'finding',
-            'snomed_concept_id': '404684003',
-            'qualifiers': [
-              {
-                'type': 'qualifier',
-                'snomed_concept_id': '77386006',
-                'qualifiers': [],
-              },
-            ],
+            'type': 'active_condition',
+            'snomed_concept_id': '77386006',
           },
         },
         {
@@ -340,15 +335,8 @@ describe('db/models/warning_signs.ts', () => {
             'qualifiers': [],
           },
           'prompt_when': {
-            'type': 'finding',
-            'snomed_concept_id': '404684003',
-            'qualifiers': [
-              {
-                'type': 'qualifier',
-                'snomed_concept_id': '77386006',
-                'qualifiers': [],
-              },
-            ],
+            'type': 'active_condition',
+            'snomed_concept_id': '77386006',
           },
         },
         {
@@ -490,15 +478,8 @@ describe('db/models/warning_signs.ts', () => {
           'prompt_when': {
             'type': 'not',
             'expression': {
-              'type': 'finding',
-              'snomed_concept_id': '404684003',
-              'qualifiers': [
-                {
-                  'type': 'qualifier',
-                  'snomed_concept_id': '77386006',
-                  'qualifiers': [],
-                },
-              ],
+              'type': 'active_condition',
+              'snomed_concept_id': '77386006',
             },
           },
         },

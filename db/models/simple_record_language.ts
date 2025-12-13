@@ -8,7 +8,6 @@ import { arrayIsEmpty, assertArrayEmpty } from '../../util/arraySize.ts'
 import { orderByArrayPosition } from '../helpers.ts'
 import { TrxOrDb } from '../../types.ts'
 import { getAllNgrams } from '../../util/ngrams.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './warning_signs.ts'
 import isString from '../../util/isString.ts'
 
 export type ParsedFindingExpression = {
