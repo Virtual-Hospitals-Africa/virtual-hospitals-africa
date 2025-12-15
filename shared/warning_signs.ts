@@ -227,7 +227,7 @@ export const WARNING_SIGNS = {
   },
   'Burn Other': {
     'clinical_finding_s_expression':
-      '(finding 404684003 (qualifier 125666000) (not (qualifier 262582004)) (not (qualifier 425082000)) (not (qualifier 255593009)))',
+      '(finding 404684003 (qualifier 125666000 (not (qualifier 262582004)) (not (qualifier 425082000)) (not (qualifier 255593009))))',
     'sats_primary_name': 'Burn',
     'sats_secondary_text': 'Other',
     'sats_priority': 'Urgent',

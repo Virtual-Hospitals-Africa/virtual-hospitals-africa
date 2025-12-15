@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import entries from '../../../../../../../../util/entries.ts'
-import { insertOne } from '../../../../../../../../db/models/warning_signs.ts'
+import { warning_signs } from '../../../../../../../../db/models/warning_signs.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import { KEYED_WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
@@ -35,7 +35,7 @@ export const handler = postHandler(
     const inserting_findings = forEach(
       form_values.warning_signs,
       ({ finding }) =>
-        insertOne(ctx.state.trx, {
+        warning_signs.insertOne(ctx.state.trx, {
           patient_id: ctx.state.patient.id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           patient_encounter_employee_id: ctx.state.encounter_employee_presence

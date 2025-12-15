@@ -3430,7 +3430,6 @@ export type AsPartOfProcedure = {
 
 export type RenderedFindingQualifierRelativeToHealthWorker = {
   record_id: string
-  patient_encounter_id: string
   snomed_concept_id: string
   name: string
   attribute_value: string | null

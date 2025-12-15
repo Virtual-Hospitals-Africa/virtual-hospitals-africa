@@ -174,7 +174,8 @@ const EXPRESSION_BUILDERS = {
       patient_id,
       parseExpression(`
         (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
-            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
+            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
+            (evaluation ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
       `),
     )
   },
@@ -186,7 +187,7 @@ const EXPRESSION_BUILDERS = {
   ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
-function buildExpression(
+export function buildExpression(
   trx: TrxOrDb,
   patient_id: string,
   node: ParsedExpression,
@@ -204,6 +205,7 @@ async function evaluateExpression(
   if (node.type === 'not') {
     const any_matching = await buildExpression(trx, patient_id, node.expression)
       .limit(1).executeTakeFirst()
+
     return {
       record_ids: [],
       satisfies: !any_matching,
