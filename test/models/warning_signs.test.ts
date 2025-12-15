@@ -297,6 +297,15 @@ describe('db/models/warning_signs.ts', () => {
                 'value_snomed_concept_id': null,
                 'qualifiers': [],
               },
+              {
+                'type': 'not',
+                'expression': {
+                  'type': 'qualifier',
+                  'snomed_concept_id': '1149222004',
+                  'value_snomed_concept_id': null,
+                  'qualifiers': [],
+                },
+              },
             ],
           },
           'prompt_when': null,
@@ -720,16 +729,17 @@ describe('db/models/warning_signs.ts', () => {
                 'type': 'qualifier',
                 'snomed_concept_id': '125666000',
                 'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-              {
-                'type': 'not',
-                'expression': {
-                  'type': 'qualifier',
-                  'snomed_concept_id': '262582004',
-                  'value_snomed_concept_id': null,
-                  'qualifiers': [],
-                },
+                'qualifiers': [
+                  {
+                    'type': 'not',
+                    'expression': {
+                      'type': 'qualifier',
+                      'snomed_concept_id': '255593009',
+                      'value_snomed_concept_id': null,
+                      'qualifiers': [],
+                    },
+                  },
+                ],
               },
               {
                 'type': 'not',
@@ -744,7 +754,16 @@ describe('db/models/warning_signs.ts', () => {
                 'type': 'not',
                 'expression': {
                   'type': 'qualifier',
-                  'snomed_concept_id': '255593009',
+                  'snomed_concept_id': '426284001',
+                  'value_snomed_concept_id': null,
+                  'qualifiers': [],
+                },
+              },
+              {
+                'type': 'not',
+                'expression': {
+                  'type': 'qualifier',
+                  'snomed_concept_id': '262582004',
                   'value_snomed_concept_id': null,
                   'qualifiers': [],
                 },

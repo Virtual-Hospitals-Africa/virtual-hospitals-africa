@@ -93,7 +93,7 @@ export function nowInvalidRecords(
     .innerJoin(
       'patient_evaluations as now_invalid_patient_evaluations',
       'now_invalid_patient_evaluations.id',
-      'now_invalid_patient_evaluations.id',
+      'now_invalid_patient_records.id',
     )
     .where('now_invalid_patient_records.patient_id', '=', patient_id)
     .where(

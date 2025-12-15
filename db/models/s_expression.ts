@@ -58,12 +58,13 @@ const EXPRESSION_BUILDERS = {
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
+        assert(qualifier.expression.type === 'qualifier')
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
             .clearSelect()
-            .select('patient_records.id'),
+            .select('patient_record_qualifiers.qualifies_record_id'),
         )
       } else {
         assert(qualifier.type === 'qualifier')
@@ -114,12 +115,13 @@ const EXPRESSION_BUILDERS = {
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
+        assert(qualifier.expression.type === 'qualifier')
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
             .clearSelect()
-            .select('patient_records.id'),
+            .select('patient_record_qualifiers.qualifies_record_id'),
         )
       } else {
         assert(qualifier.type === 'qualifier')
@@ -174,8 +176,7 @@ const EXPRESSION_BUILDERS = {
       patient_id,
       parseExpression(`
         (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
-            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
-            (evaluation ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
+            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
       `),
     )
   },

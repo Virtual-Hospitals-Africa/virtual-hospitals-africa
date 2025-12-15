@@ -1,11 +1,8 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
 import { parseExpression } from '../../shared/s_expression.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
-import { debugLog } from '../../db/helpers.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { warning_signs } from '../../db/models/warning_signs.ts'
@@ -19,19 +16,7 @@ import { assertArrayEmpty } from '../../util/arraySize.ts'
 describe('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
 
-  it.skip('creates a query for burns', () => {
-    const patient_id = generateUUID()
-    const x = buildExpression(
-      db,
-      patient_id,
-      parseExpression(
-        WARNING_SIGNS['Burn Other'].clinical_finding_s_expression,
-      ),
-    )
-    debugLog(x)
-  })
-
-  it('can insert a burn finding', async () => {
+  it("can insert a Burn Circumferential finding which isn't later then considered a Burn Other finding", async () => {
     const nurse = await addTestEmployee(db, {
       profession: 'nurse',
       registration_status: 'approved',
@@ -105,7 +90,7 @@ describe('db/models/s_expression.ts', () => {
       },
     ])
 
-    const x = buildExpression(
+    const query = buildExpression(
       db,
       encounter.patient.id,
       parseExpression(
@@ -113,9 +98,7 @@ describe('db/models/s_expression.ts', () => {
       ),
     )
 
-    debugLog(x)
-
-    const result = await x.execute()
+    const result = await query.execute()
     assertArrayEmpty(result)
   })
 })

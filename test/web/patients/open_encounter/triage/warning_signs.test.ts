@@ -255,7 +255,6 @@ describe('triage/warning_signs', () => {
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': encounter.patient_encounter_id,
               'snomed_concept_id': '410429000',
               'name': 'Cardiac arrest',
               'attribute_value': null,
@@ -325,13 +324,11 @@ describe('triage/warning_signs', () => {
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': encounter.patient_encounter_id,
               'snomed_concept_id': '91175000',
               'name': 'Seizure',
               'attribute_value': null,
               'qualifiers': [{
                 'record_id': z.string().uuid(),
-                'patient_encounter_id': encounter.patient_encounter_id,
                 'snomed_concept_id': '15240007',
                 'name': 'Current',
                 'attribute_value': null,
@@ -454,7 +451,7 @@ describe('triage/warning_signs', () => {
       assertEquals(this_patient_findings.length, 0)
     })
 
-    function testRoundTrip(key: string, sign: WarningSign) {
+    function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {
       it(`renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`, async () => {
         const { health_worker: nurse, fetchOk, fetchCheerio } =
           await addTestEmployeeWithSession(db, {
@@ -470,6 +467,26 @@ describe('triage/warning_signs', () => {
               employment_id: nurse.employee_id,
             },
           )
+
+        if (pregnant) {
+          await fetchOk(
+            `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+            {
+              method: 'POST',
+              body: asFormData({
+                diabetes: {
+                  existence: 'No',
+                },
+                pregnancy: {
+                  existence: 'Yes',
+                },
+              }),
+            },
+            {
+              cancel_response_body: true,
+            },
+          )
+        }
 
         await fetchOk(
           `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -499,25 +516,12 @@ describe('triage/warning_signs', () => {
       })
     }
 
-    // testRoundTrip('Dislocation of larger joint', WARNING_SIGNS['Dislocation of larger joint'])
-
-    // TODO Get this working across the board
-    // For the pregnancy test we'll need to set up that the patient is pregnant
-    // Overdose is loading as a type of poisoning
-    // Similarly Burn Chemical is showing up as Burn Other
-    // Something is not working with the not qualifiers
     for (const [key, sign] of entries(WARNING_SIGNS)) {
-      const skip = [
+      const pregnant = [
         'Pregnancy and abdominal pain',
         'Pregnancy and abdominal trauma',
-        'Overdose',
-        'Burn Chemical',
-        'Burn Circumferential',
-        'Burn Facial',
-        'Burn Inhalation',
       ].includes(key)
-      if (skip) continue
-      testRoundTrip(key, sign)
+      testRoundTrip(key, sign, pregnant)
     }
   })
 })

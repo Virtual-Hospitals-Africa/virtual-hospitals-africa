@@ -189,7 +189,6 @@ export async function renderedMostRecentFindings(
       finding,
     ) => [
       finding.patient_encounter_id,
-      ...finding.qualifiers.map((qualifier) => qualifier.patient_encounter_id),
     ]),
   )
   const other_encounter_ids = encounter_ids.filter((encounter_id) =>
