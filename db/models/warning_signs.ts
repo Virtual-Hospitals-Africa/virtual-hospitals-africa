@@ -19,129 +19,131 @@ type WarningSignInsert = {
   finding: ParsedFindingExpression
 }
 
-export function insertOne(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    patient_encounter_id,
-    patient_encounter_employee_id,
-    workflow_snomed_concept_id,
-    workflow_step_snomed_concept_id,
-    previously_completed_procedures,
-    finding,
-  }: WarningSignInsert,
-) {
-  const previously_completed_procedure_record_id =
-    workflow_step_snomed_concept_id
-      ? previously_completed_procedures.workflow_step_record_id
-      : previously_completed_procedures.workflow_record_id
+export const warning_signs = {
+  insertOne(
+    trx: TrxOrDb,
+    {
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      workflow_snomed_concept_id,
+      workflow_step_snomed_concept_id,
+      previously_completed_procedures,
+      finding,
+    }: WarningSignInsert,
+  ) {
+    const previously_completed_procedure_record_id =
+      workflow_step_snomed_concept_id
+        ? previously_completed_procedures.workflow_step_record_id
+        : previously_completed_procedures.workflow_record_id
 
-  const procedure_id = previously_completed_procedure_record_id ||
-    generateUUID()
+    const procedure_id = previously_completed_procedure_record_id ||
+      generateUUID()
 
-  const finding_id = generateUUID()
+    const finding_id = generateUUID()
 
-  let query = trx.with(
-    'inserting_procedure_record',
-    (qb) =>
-      !previously_completed_procedure_record_id
-        ? qb.insertInto('patient_records')
-          .values({
-            id: procedure_id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: workflow_step_snomed_concept_id ||
-              workflow_snomed_concept_id,
-          })
-        : blankSelection(qb),
-  ).with(
-    'inserting_procedure',
-    (qb) =>
-      !previously_completed_procedure_record_id
-        ? qb.insertInto('patient_procedures')
-          .values({
-            id: procedure_id,
-            patient_encounter_employee_id,
-          })
-        : blankSelection(qb),
-  ).with('inserting_finding_records', (qb) =>
-    qb.insertInto('patient_records')
-      .values({
-        id: finding_id,
-        patient_id,
-        patient_encounter_id,
-        snomed_concept_id: finding.snomed_concept_id,
-      })).with(
-      'inserting_patient_finding_values',
+    let query = trx.with(
+      'inserting_procedure_record',
       (qb) =>
-        finding.value_snomed_concept_id
-          ? qb.insertInto('patient_finding_values')
+        !previously_completed_procedure_record_id
+          ? qb.insertInto('patient_records')
             .values({
-              id: finding_id,
-              value_snomed_concept_id: finding.value_snomed_concept_id,
+              id: procedure_id,
+              patient_id,
+              patient_encounter_id,
+              snomed_concept_id: workflow_step_snomed_concept_id ||
+                workflow_snomed_concept_id,
             })
           : blankSelection(qb),
-    ).with('inserting_findings', (qb) =>
-      qb.insertInto('patient_findings')
+    ).with(
+      'inserting_procedure',
+      (qb) =>
+        !previously_completed_procedure_record_id
+          ? qb.insertInto('patient_procedures')
+            .values({
+              id: procedure_id,
+              patient_encounter_employee_id,
+            })
+          : blankSelection(qb),
+    ).with('inserting_finding_records', (qb) =>
+      qb.insertInto('patient_records')
         .values({
           id: finding_id,
-          procedure_id,
-          patient_encounter_employee_id,
-        }))
-
-  function qualifierCte(
-    qb: typeof query,
-    qualifier: ParsedExpression,
-    qualifies_record_id: string,
-  ) {
-    if (qualifier.type !== 'qualifier') {
-      assertEquals(
-        qualifier.type,
-        'not',
-        'we can omit not expressions upon insert, but not sure what is going on here',
-      )
-      return qb
-    }
-    const id = generateUUID()
-    const id_token = id.replaceAll('-', '_')
-
-    let next_query = qb.with(
-      `inserting_qualifier_record_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_records')
+          patient_id,
+          patient_encounter_id,
+          snomed_concept_id: finding.snomed_concept_id,
+        })).with(
+        'inserting_patient_finding_values',
+        (qb) =>
+          finding.value_snomed_concept_id
+            ? qb.insertInto('patient_finding_values')
+              .values({
+                id: finding_id,
+                value_snomed_concept_id: finding.value_snomed_concept_id,
+              })
+            : blankSelection(qb),
+      ).with('inserting_findings', (qb) =>
+        qb.insertInto('patient_findings')
           .values({
-            id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: qualifier.snomed_concept_id,
-          }),
-    ).with(
-      `inserting_qualifiers_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_record_qualifiers')
-          .values({
-            id,
-            qualifies_record_id,
-            value_snomed_concept_id: qualifier.value_snomed_concept_id,
-          }),
-    ) as unknown as typeof query
+            id: finding_id,
+            procedure_id,
+            patient_encounter_employee_id,
+          }))
 
-    for (const sub_qualifier of qualifier.qualifiers) {
-      next_query = qualifierCte(
-        next_query,
-        sub_qualifier,
-        id,
+    function qualifierCte(
+      qb: typeof query,
+      qualifier: ParsedExpression,
+      qualifies_record_id: string,
+    ) {
+      if (qualifier.type !== 'qualifier') {
+        assertEquals(
+          qualifier.type,
+          'not',
+          'we can omit not expressions upon insert, but not sure what is going on here',
+        )
+        return qb
+      }
+      const id = generateUUID()
+      const id_token = id.replaceAll('-', '_')
+
+      let next_query = qb.with(
+        `inserting_qualifier_record_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_records')
+            .values({
+              id,
+              patient_id,
+              patient_encounter_id,
+              snomed_concept_id: qualifier.snomed_concept_id,
+            }),
+      ).with(
+        `inserting_qualifiers_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_record_qualifiers')
+            .values({
+              id,
+              qualifies_record_id,
+              value_snomed_concept_id: qualifier.value_snomed_concept_id,
+            }),
       ) as unknown as typeof query
+
+      for (const sub_qualifier of qualifier.qualifiers) {
+        next_query = qualifierCte(
+          next_query,
+          sub_qualifier,
+          id,
+        ) as unknown as typeof query
+      }
+
+      return next_query
     }
 
-    return next_query
-  }
+    for (const qualifier of finding.qualifiers) {
+      query = qualifierCte(query, qualifier, finding_id)
+    }
 
-  for (const qualifier of finding.qualifiers) {
-    query = qualifierCte(query, qualifier, finding_id)
-  }
-
-  return query
-    .selectNoFrom([success_true])
-    .executeTakeFirstOrThrow()
+    return query
+      .selectNoFrom([success_true])
+      .executeTakeFirstOrThrow()
+  },
 }

@@ -58,12 +58,13 @@ const EXPRESSION_BUILDERS = {
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
+        assert(qualifier.expression.type === 'qualifier')
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
             .clearSelect()
-            .select('patient_records.id'),
+            .select('patient_record_qualifiers.qualifies_record_id'),
         )
       } else {
         assert(qualifier.type === 'qualifier')
@@ -114,12 +115,13 @@ const EXPRESSION_BUILDERS = {
 
     for (const qualifier of qualifiers) {
       if (qualifier.type === 'not') {
+        assert(qualifier.expression.type === 'qualifier')
         query = query.where(
           'patient_records.id',
           'not in',
-          buildExpression(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
             .clearSelect()
-            .select('patient_records.id'),
+            .select('patient_record_qualifiers.qualifies_record_id'),
         )
       } else {
         assert(qualifier.type === 'qualifier')
@@ -186,7 +188,7 @@ const EXPRESSION_BUILDERS = {
   ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
-function buildExpression(
+export function buildExpression(
   trx: TrxOrDb,
   patient_id: string,
   node: ParsedExpression,
@@ -204,6 +206,7 @@ async function evaluateExpression(
   if (node.type === 'not') {
     const any_matching = await buildExpression(trx, patient_id, node.expression)
       .limit(1).executeTakeFirst()
+
     return {
       record_ids: [],
       satisfies: !any_matching,

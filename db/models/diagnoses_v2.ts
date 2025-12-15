@@ -10,7 +10,7 @@ type DiagnosisInsert = {
   evaluates_record_id: string
 }
 
-const DIAGNOSIS_SNOMED_CONCEPT_ID = '439401001' // |Diagnosis (observable entity)|
+export const DIAGNOSIS_SNOMED_CONCEPT_ID = '439401001' // |Diagnosis (observable entity)|
 
 export function insertOne(
   trx: TrxOrDb,

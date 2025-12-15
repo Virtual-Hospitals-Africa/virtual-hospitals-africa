@@ -95,9 +95,9 @@ export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
 } = {
   triage: {
     'brief_history': '203421005', // |History taking, limited (procedure)|'
-    'warning_signs': '', // chief complaint + emergency signs + urgent signs
+    // 'warning_signs': '', // chief complaint + emergency signs + urgent signs
     'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
-    'assign_priority': '',
+    // 'assign_priority': '',
   },
 }
 

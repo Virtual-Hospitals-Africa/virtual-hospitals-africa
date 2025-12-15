@@ -86,7 +86,8 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Very urgent',
   },
   'Poisoning': {
-    'clinical_finding_s_expression': '(finding 404684003 (qualifier 75478009))',
+    'clinical_finding_s_expression':
+      '(finding 404684003 (qualifier 75478009) (not (qualifier 1149222004)))',
     'sats_primary_name': 'Poisoning',
     'sats_secondary_text': null,
     'sats_priority': 'Very urgent',
@@ -226,8 +227,11 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Urgent',
   },
   'Burn Other': {
-    'clinical_finding_s_expression':
-      '(finding 404684003 (qualifier 125666000) (not (qualifier 262582004)) (not (qualifier 425082000)) (not (qualifier 255593009)))',
+    'clinical_finding_s_expression': `(finding 404684003 
+          (qualifier 125666000 (not (qualifier 255593009)))
+          (not (qualifier 425082000))
+          (not (qualifier 426284001))
+          (not (qualifier 262582004)))`,
     'sats_primary_name': 'Burn',
     'sats_secondary_text': 'Other',
     'sats_priority': 'Urgent',

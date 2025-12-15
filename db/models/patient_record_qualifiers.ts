@@ -48,7 +48,6 @@ export const patient_record_qualifiers = {
     )
       .select([
         `${alias}.record_id`,
-        `${alias}.patient_encounter_id`,
         `${alias}.snomed_concept_id`,
         `${alias}.name`,
         `${alias}.attribute_value`,

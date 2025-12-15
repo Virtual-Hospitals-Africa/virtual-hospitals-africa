@@ -246,14 +246,12 @@ describe('triage/brief_history', () => {
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '1156040003',
               'name': 'Self reported',
               'attribute_value': null,
             },
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '73211009',
               'name': 'Diabetes mellitus',
               'attribute_value': null,
@@ -276,14 +274,12 @@ describe('triage/brief_history', () => {
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '1156040003',
               'name': 'Self reported',
               'attribute_value': null,
             },
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '77386006',
               'name': 'Pregnancy',
               'attribute_value': null,
@@ -306,14 +302,12 @@ describe('triage/brief_history', () => {
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '1156040003',
               'name': 'Self reported',
               'attribute_value': null,
             },
             {
               'record_id': z.string().uuid(),
-              'patient_encounter_id': initial_encounter.patient_encounter_id,
               'snomed_concept_id': '363346000',
               'name': 'Malignant neoplastic disease',
               'attribute_value': null,
@@ -355,13 +349,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '363346000',
             'name': 'Malignant neoplastic disease',
           },
@@ -394,13 +386,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
           },
@@ -777,13 +767,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': encounter.patient_encounter_id,
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
           },
@@ -909,13 +897,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
             'snomed_concept_id': '363346000',
             'name': 'Malignant neoplastic disease',
           },
@@ -950,13 +936,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': subsequent_encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': subsequent_encounter.patient_encounter_id,
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
           },
@@ -1035,13 +1019,11 @@ describe('triage/brief_history', () => {
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': encounter.patient_encounter_id,
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
           },
           {
             'record_id': z.string().uuid(),
-            'patient_encounter_id': encounter.patient_encounter_id,
             'snomed_concept_id': '77386006',
             'name': 'Pregnancy',
           },
