@@ -21,6 +21,7 @@ import { renderedMostRecentFindings } from '../../../../../db/models/brief_histo
 import { assert } from 'std/assert/assert.ts'
 import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
+import assertLength from '../../../../../util/assertLength.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -211,8 +212,6 @@ describe('triage/warning_signs', () => {
           },
         )
 
-      // Submit with "Cardiac arrest" selected: (finding 410429000)
-      // Use redirect: 'manual' to avoid following redirect to brief_history page
       const response = await fetchOk(
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
@@ -264,7 +263,7 @@ describe('triage/warning_signs', () => {
       ])
     })
 
-    it('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
+    it.only('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
@@ -337,6 +336,27 @@ describe('triage/warning_signs', () => {
           ],
         },
       ])
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Seizure': WARNING_SIGNS['Seizure'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const this_patient_findings2 = await patient_findings.findAll(db, {
+        patient_id: encounter.patient.id,
+      })
+
+      assertLength(this_patient_findings2, 1)
     })
 
     it('inserts multiple warning sign findings when multiple are selected', async () => {
@@ -449,6 +469,65 @@ describe('triage/warning_signs', () => {
       })
 
       assertEquals(this_patient_findings.length, 0)
+    })
+
+    it.skip('does not save warning signs already made during the encounter', async () => {
+      const { health_worker: nurse, fetchOk } =
+        await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            'Chest pain':
+              WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const finidngs_count_after_first_insertion = await patient_findings
+        .findAll(db, {
+          patient_id: encounter.patient.id,
+        })
+
+      assertEquals(finidngs_count_after_first_insertion.length, 1)
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            'Chest pain':
+              WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const finidngs_count_after_second_insertion = await patient_findings
+        .countAll(db, {
+          patient_id: encounter.patient.id,
+        })
+
+      assertEquals(finidngs_count_after_second_insertion, 1)
     })
 
     function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {

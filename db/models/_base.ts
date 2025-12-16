@@ -82,6 +82,7 @@ type BaseModel<
   ): Promise<RenderedResult | null>
   getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
   distinctIds(trx: TrxOrDb, search_terms: SearchTerms): IdSelection
+  countAll(trx: TrxOrDb, search_terms: SearchTerms): Promise<number>
 }
 type StandardTables = {
   [Table in keyof DB]: DB[Table] extends
@@ -319,6 +320,20 @@ export function base<
         // deno-lint-ignore no-explicit-any
         .select(`${top_level_table}.id` as any)
         .distinct() as unknown as IdSelection
+    },
+    async countAll(
+      trx: TrxOrDb,
+      search_terms: SearchTerms,
+    ): Promise<number> {
+      const { count } = await this.searchQuery(
+        trx,
+        search_terms || {} as SearchTerms,
+      )
+        .clearSelect()
+        .select((eb) => eb.fn.countAll().as('count'))
+        .executeTakeFirstOrThrow() as { count: number }
+
+      return count
     },
   })
 }
