@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   ParsedExpression,
@@ -15,6 +15,10 @@ import {
 } from './patient_findings.ts'
 import isString from '../../util/isString.ts'
 
+type PatientIdentifiers = {
+  patient_id: string
+  patient_encounter_id?: Maybe<string>
+}
 type SatisfyingResult = {
   satisfies: boolean
   record_ids: string[]
@@ -22,19 +26,20 @@ type SatisfyingResult = {
 
 export function satisfyingSExpression(
   trx: TrxOrDb,
-  { patient_id, s_expression }: {
-    patient_id: string
+  { s_expression, ...patient }: {
     s_expression: string | ParsedExpression
+    patient_id: string
+    patient_encounter_id?: Maybe<string>
   },
 ): Promise<SatisfyingResult> {
   const parsed = isString(s_expression)
     ? parseExpression(s_expression)
     : s_expression
-  return evaluateExpression(trx, patient_id, parsed)
+  return evaluateExpression(trx, patient, parsed)
 }
 
 const EXPRESSION_BUILDERS = {
-  finding(trx, patient_id, { snomed_concept_id, qualifiers }) {
+  finding(trx, { patient_id, patient_encounter_id }, { snomed_concept_id, qualifiers }) {
     let query = trx.selectFrom('patient_records')
       .innerJoin(
         'patient_findings',
@@ -42,13 +47,8 @@ const EXPRESSION_BUILDERS = {
         'patient_findings.id',
       )
       .where('patient_id', '=', patient_id)
+      .$if(!!patient_encounter_id, qb => qb.where('patient_encounter_id', '=', patient_encounter_id!))
       .where('snomed_concept_id', '=', snomed_concept_id)
-      // Top-level findings do not have arbitrary snomed_concept_id codes (I think)
-      // .where(eb =>
-      //   sql<boolean>`is_descendant(${
-      //     eb.ref('patient_records.snomed_concept_id')
-      //   }, ${snomed_concept_id}::bigint)`
-      // )
       .where(
         'patient_records.id',
         'not in',
@@ -62,7 +62,7 @@ const EXPRESSION_BUILDERS = {
         query = query.where(
           'patient_records.id',
           'not in',
-          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, { patient_id, patient_encounter_id }, qualifier.expression)
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         )
@@ -71,7 +71,7 @@ const EXPRESSION_BUILDERS = {
         query = query.where(
           'patient_records.id',
           'in',
-          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier)
+          EXPRESSION_BUILDERS.qualifier(trx, { patient_id, patient_encounter_id }, qualifier)
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         )
@@ -82,7 +82,7 @@ const EXPRESSION_BUILDERS = {
   },
   qualifier(
     trx,
-    patient_id,
+    { patient_id, patient_encounter_id },
     { snomed_concept_id, value_snomed_concept_id, qualifiers },
   ) {
     let query = trx.selectFrom('patient_records')
@@ -92,6 +92,7 @@ const EXPRESSION_BUILDERS = {
         'patient_record_qualifiers.id',
       )
       .where('patient_id', '=', patient_id)
+      .$if(!!patient_encounter_id, qb => qb.where('patient_encounter_id', '=', patient_encounter_id!))
       // When looking for qualifiers I think we're always counting descendants
       .where((eb) =>
         sql<boolean>`is_descendant(${
@@ -119,7 +120,7 @@ const EXPRESSION_BUILDERS = {
         query = query.where(
           'patient_records.id',
           'not in',
-          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier.expression)
+          EXPRESSION_BUILDERS.qualifier(trx, { patient_id, patient_encounter_id }, qualifier.expression)
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         )
@@ -128,7 +129,7 @@ const EXPRESSION_BUILDERS = {
         query = query.where(
           'patient_records.id',
           'in',
-          EXPRESSION_BUILDERS.qualifier(trx, patient_id, qualifier)
+          EXPRESSION_BUILDERS.qualifier(trx, { patient_id, patient_encounter_id }, qualifier)
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         )
@@ -140,10 +141,7 @@ const EXPRESSION_BUILDERS = {
   not() {
     throw new Error('not is handled by parent nodes')
   },
-  // not(trx, patient_id, { expression }) {
-  //   return buildExpression(trx, patient_id, expression)
-  // },
-  or(trx, patient_id, { expressions }) {
+  or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return trx.selectFrom('patient_records')
       .innerJoin(
         'patient_findings',
@@ -151,6 +149,7 @@ const EXPRESSION_BUILDERS = {
         'patient_findings.id',
       )
       .where('patient_id', '=', patient_id)
+      .$if(!!patient_encounter_id, qb => qb.where('patient_encounter_id', '=', patient_encounter_id!))
       .where(
         'patient_records.id',
         'not in',
@@ -162,7 +161,7 @@ const EXPRESSION_BUILDERS = {
             eb(
               'patient_records.id',
               'in',
-              buildExpression(trx, patient_id, expression)
+              buildExpression(trx, { patient_id, patient_encounter_id }, expression)
                 .clearSelect()
                 .select('patient_records.id'),
             )
@@ -170,10 +169,10 @@ const EXPRESSION_BUILDERS = {
       )
       .select('patient_records.id')
   },
-  active_condition(trx, patient_id, { snomed_concept_id }) {
+  active_condition(trx, patient, { snomed_concept_id }) {
     return buildExpression(
       trx,
-      patient_id,
+      patient,
       parseExpression(`
         (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
             (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
@@ -183,28 +182,28 @@ const EXPRESSION_BUILDERS = {
 } satisfies {
   [T in ParsedExpressionNodeType]: (
     trx: TrxOrDb,
-    patient_id: string,
+    patient: PatientIdentifiers,
     node: ParsedExpression & { type: T },
   ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
 export function buildExpression(
   trx: TrxOrDb,
-  patient_id: string,
+  patient: PatientIdentifiers,
   node: ParsedExpression,
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   const builder = EXPRESSION_BUILDERS[node.type]
   // deno-lint-ignore no-explicit-any
-  return builder(trx, patient_id, node as any)
+  return builder(trx, patient, node as any)
 }
 
 async function evaluateExpression(
   trx: TrxOrDb,
-  patient_id: string,
+  patient: PatientIdentifiers,
   node: ParsedExpression,
 ): Promise<SatisfyingResult> {
   if (node.type === 'not') {
-    const any_matching = await buildExpression(trx, patient_id, node.expression)
+    const any_matching = await buildExpression(trx, patient, node.expression)
       .limit(1).executeTakeFirst()
 
     return {
@@ -212,7 +211,7 @@ async function evaluateExpression(
       satisfies: !any_matching,
     }
   }
-  const rows = await buildExpression(trx, patient_id, node).execute()
+  const rows = await buildExpression(trx, patient, node).execute()
   return {
     record_ids: rows.map((row) => row.id),
     satisfies: rows.length > 0,

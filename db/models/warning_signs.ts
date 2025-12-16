@@ -32,6 +32,7 @@ export const warning_signs = {
       finding,
     }: WarningSignInsert,
   ) {
+
     const previously_completed_procedure_record_id =
       workflow_step_snomed_concept_id
         ? previously_completed_procedures.workflow_step_record_id
