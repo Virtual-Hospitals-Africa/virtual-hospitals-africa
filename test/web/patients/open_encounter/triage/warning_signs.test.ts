@@ -21,6 +21,7 @@ import { renderedMostRecentFindings } from '../../../../../db/models/brief_histo
 import { assert } from 'std/assert/assert.ts'
 import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
+import assertLength from '../../../../../util/assertLength.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -136,15 +137,14 @@ describe('triage/warning_signs', () => {
         patient_encounter_id: initial_encounter.patient_encounter_id,
       })
 
-      const _subsequent_encounter =
-        await insertReturningSeekingTreatmentWithEmployeeForTest(
-          db,
-          nurse.organization_id,
-          {
-            patient_id: patient_id,
-            employment_id: nurse.employee_id,
-          },
-        )
+      await insertReturningSeekingTreatmentWithEmployeeForTest(
+        db,
+        nurse.organization_id,
+        {
+          patient_id: patient_id,
+          employment_id: nurse.employee_id,
+        },
+      )
 
       const $warning_signs = await fetchCheerio(
         `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/triage/warning_signs`,
@@ -211,8 +211,6 @@ describe('triage/warning_signs', () => {
           },
         )
 
-      // Submit with "Cardiac arrest" selected: (finding 410429000)
-      // Use redirect: 'manual' to avoid following redirect to brief_history page
       const response = await fetchOk(
         `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
@@ -337,6 +335,27 @@ describe('triage/warning_signs', () => {
           ],
         },
       ])
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Seizure': WARNING_SIGNS['Seizure'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const this_patient_findings2 = await patient_findings.findAll(db, {
+        patient_id: encounter.patient.id,
+      })
+
+      assertLength(this_patient_findings2, 1)
     })
 
     it('inserts multiple warning sign findings when multiple are selected', async () => {
@@ -449,6 +468,146 @@ describe('triage/warning_signs', () => {
       })
 
       assertEquals(this_patient_findings.length, 0)
+    })
+
+    it('does not save warning signs already made during the encounter', async () => {
+      const { health_worker: nurse, fetchOk } =
+        await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const findings_count_after_first_insertion = await patient_findings
+        .findAll(db, {
+          patient_id: encounter.patient.id,
+        })
+
+      assertEquals(findings_count_after_first_insertion.length, 1)
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const findings_count_after_second_insertion = await patient_findings
+        .countAll(db, {
+          patient_id: encounter.patient.id,
+        })
+
+      assertEquals(findings_count_after_second_insertion, 1)
+    })
+
+    it('does save identical warning concepts made during different encounters', async () => {
+      const { health_worker: nurse, fetchOk } =
+        await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+      const initial_encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const findings_count_after_first_insertion = await patient_findings
+        .findAll(db, {
+          patient_id: initial_encounter.patient.id,
+        })
+
+      assertEquals(findings_count_after_first_insertion.length, 1)
+
+      await patient_encounters.close(db, {
+        patient_encounter_id: initial_encounter.patient_encounter_id,
+      })
+
+      const subsequent_encounter =
+        await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_id: initial_encounter.patient.id,
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const findings_count_after_second_insertion = await patient_findings
+        .countAll(db, {
+          patient_id: initial_encounter.patient.id,
+        })
+
+      assertEquals(findings_count_after_second_insertion, 2)
     })
 
     function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {

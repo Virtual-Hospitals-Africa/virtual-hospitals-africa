@@ -19,34 +19,38 @@ import { parseFindingExpression } from '../../../../../../../../shared/s_express
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    z.string().transform((value) => parseFindingExpression(value)),
+    z.string().transform((
+      value,
+    ) => (console.log(value), parseFindingExpression(value))),
   ).optional().default({}).transform((signs) =>
     entries(signs).map(([key, finding]) => ({
       key,
       finding,
     }))
   ),
-})
+}).strict()
 
 export const handler = postHandler(
   WarningSignsSchema,
   (ctx: OpenEncounterWorkflowContext, form_values) => {
-    console.log({ form_values })
     const inserting_findings = forEach(
       form_values.warning_signs,
       ({ finding }) =>
-        warning_signs.insertOne(ctx.state.trx, {
-          patient_id: ctx.state.patient.id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id: ctx.state.encounter_employee_presence
-            .patient_encounter_employee_id,
-          workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
-          workflow_step_snomed_concept_id:
-            ctx.state.workflow_step_snomed_concept_id,
-          previously_completed_procedures:
-            ctx.state.previously_completed_procedures,
-          finding,
-        }),
+        warning_signs.insertOneIfNotAlreadyExistsForThisEncounter(
+          ctx.state.trx,
+          {
+            patient_id: ctx.state.patient.id,
+            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+            patient_encounter_employee_id: ctx.state.encounter_employee_presence
+              .patient_encounter_employee_id,
+            workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
+            workflow_step_snomed_concept_id:
+              ctx.state.workflow_step_snomed_concept_id,
+            previously_completed_procedures:
+              ctx.state.previously_completed_procedures,
+            finding,
+          },
+        ),
     )
 
     return inBackground(

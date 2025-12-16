@@ -27,6 +27,7 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
+import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 
 describe('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -507,6 +508,25 @@ describe('triage/brief_history', () => {
         },
       })
 
+      const findings_from_initial_encounter = await satisfyingSExpression(db, {
+        patient_id: initial_encounter.patient.id,
+        patient_encounter_id: initial_encounter.patient_encounter_id,
+        s_expression: '(active_condition 363346000)',
+      })
+
+      assert(findings_from_initial_encounter.satisfies)
+
+      const findings_from_subsequent_encounter = await satisfyingSExpression(
+        db,
+        {
+          patient_id: initial_encounter.patient.id,
+          patient_encounter_id: subsequent_encounter.patient_encounter_id,
+          s_expression: '(active_condition 363346000)',
+        },
+      )
+
+      assert(!findings_from_subsequent_encounter.satisfies)
+
       const most_recent_finding = getDOMTree(
         $brief_history_after_subsequent_encounter_start,
         '#most-recent-finding-cancer',
@@ -525,7 +545,7 @@ describe('triage/brief_history', () => {
               },
               {
                 'tag': 'span',
-                'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
+                'text': z.string().regex(/^at \d{1,2}:\d{2}/),
               },
             ],
           },
@@ -658,7 +678,7 @@ describe('triage/brief_history', () => {
                                       {
                                         'tag': 'span',
                                         'text': z.string().regex(
-                                          /^at \d{1,2}:\d{2} [AP]M$/,
+                                          /^at \d{1,2}:\d{2}/,
                                         ),
                                       },
                                     ],

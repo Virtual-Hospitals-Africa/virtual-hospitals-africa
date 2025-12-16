@@ -144,8 +144,6 @@ function mostRecentFinding(
       [],
   )
 
-  console.log({ findings_of_condition })
-
   const first_positive_finding_not_invalidated_by_a_later_negative_finding =
     findings_of_condition_with_existence.find((finding) => {
       if (finding.existence !== 'Yes') return

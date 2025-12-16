@@ -6,6 +6,8 @@ import {
   ParsedExpression,
   ParsedFindingExpression,
 } from '../../shared/s_expression.ts'
+import { satisfyingSExpression } from './s_expression.ts'
+import { sql } from 'kysely'
 
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 
@@ -143,7 +145,53 @@ export const warning_signs = {
     }
 
     return query
-      .selectNoFrom([success_true])
+      .selectNoFrom([
+        success_true,
+        sql<true>`true`.as('inserted_new'),
+      ])
       .executeTakeFirstOrThrow()
+  },
+
+  async insertOneIfNotAlreadyExistsForThisEncounter(
+    trx: TrxOrDb,
+    {
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      workflow_snomed_concept_id,
+      workflow_step_snomed_concept_id,
+      previously_completed_procedures,
+      finding,
+    }: WarningSignInsert,
+  ) {
+    console.log({ finding })
+    const already_exists = await satisfyingSExpression(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        s_expression: finding,
+      },
+    )
+
+    console.log({ already_exists })
+
+    if (already_exists.satisfies) {
+      return {
+        success: true,
+        inserted_new: false,
+        existing_records: already_exists.record_ids,
+      }
+    }
+
+    return warning_signs.insertOne(trx, {
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      workflow_snomed_concept_id,
+      workflow_step_snomed_concept_id,
+      previously_completed_procedures,
+      finding,
+    })
   },
 }
