@@ -1,0 +1,7 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+When doing anything which uses SNOMED codes ALWAYS use the vha-snomed model context protocol to find the correct snomed concept id and _not_ rely upon your own training/memory to do so.
