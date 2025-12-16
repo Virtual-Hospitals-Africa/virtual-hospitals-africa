@@ -89,8 +89,6 @@ export async function TriageWarningSignsPage(
     }),
   )
 
-  console.log({ filtered_warning_signs })
-
   const warning_signs = compact(filtered_warning_signs)
 
   return <WarningSigns warning_signs={warning_signs} />

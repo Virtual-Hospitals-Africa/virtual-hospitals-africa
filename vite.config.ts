@@ -7,7 +7,7 @@ const PORT = Deno.env.get('PORT') || '8001'
 export default defineConfig({
   plugins: [
     fresh() as PluginOption,
-    tailwindcss(),
+    tailwindcss() as PluginOption,
   ],
   server: {
     port: parseInt(PORT, 10),
