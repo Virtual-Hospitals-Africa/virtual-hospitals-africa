@@ -21,9 +21,9 @@ export const patient_record_qualifiers = {
           'snomed_inferred_canonical_name_and_category.id',
         )
         .leftJoin(
-          'snomed_inferred_canonical_name_and_category as attribute_value_snomed',
+          'snomed_inferred_canonical_name_and_category as value_name_snomed',
           'patient_records.value_snomed_concept_id',
-          'attribute_value_snomed.id',
+          'value_name_snomed.id',
         )
         .select([
           'patient_records.id as record_id',
@@ -33,7 +33,7 @@ export const patient_record_qualifiers = {
           ),
           'patient_record_qualifiers.qualifies_record_id',
           'snomed_inferred_canonical_name_and_category.name',
-          'attribute_value_snomed.name as attribute_value',
+          'value_name_snomed.name as value_name',
         ])
         .orderBy(
           (eb) =>
@@ -50,7 +50,7 @@ export const patient_record_qualifiers = {
         `${alias}.record_id`,
         `${alias}.snomed_concept_id`,
         `${alias}.name`,
-        `${alias}.attribute_value`,
+        `${alias}.value_name`,
       ])
   },
 }

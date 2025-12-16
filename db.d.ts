@@ -1231,6 +1231,8 @@ export interface PatientPresence {
 
 export interface PatientProcedures {
   as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
   id: string
 }
 

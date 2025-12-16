@@ -41,6 +41,7 @@ describe('db/models/s_expression.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       patient_encounter_employee_id:
         encounter.employee.patient_encounter_employee_id,
+      employment_id: encounter.employee.employee_id,
       workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
       workflow_step_snomed_concept_id: null,
       previously_completed_procedures: {
@@ -75,13 +76,13 @@ describe('db/models/s_expression.ts', () => {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '125666000',
             'name': 'Burn',
-            'attribute_value': null,
+            'value_name': null,
             'qualifiers': [
               {
                 'record_id': z.string().uuid(),
                 'snomed_concept_id': '255593009',
                 'name': 'Circumferential',
-                'attribute_value': null,
+                'value_name': null,
                 'qualifiers': [],
               },
             ],
