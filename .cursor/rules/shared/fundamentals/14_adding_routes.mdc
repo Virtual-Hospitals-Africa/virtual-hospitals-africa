@@ -1,0 +1,10 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+When asked to make a web page, generally speaking don't create the components in the routes/*.tsx file itself.
+Instead make a .tsx file with a component and import it from there.
+
+The top-level component should almost always be in components/ , not /islands.

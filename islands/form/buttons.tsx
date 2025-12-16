@@ -1,6 +1,7 @@
 import { ComponentChildren, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import { Button } from '../../components/library/Button.tsx'
+import { ArrowRightIcon } from '../../components/library/icons/heroicons/mini.tsx'
 
 type FormButtonsProps = {
   className?: string
@@ -20,7 +21,10 @@ export function ButtonsContainer(
 ) {
   return (
     <div
-      className={cls('flex gap-x-2 w-full justify-center', className)}
+      className={cls(
+        'sticky bottom-0 bg-white flex gap-6 w-full justify-end px-12 py-5 border-t border-gray-200',
+        className,
+      )}
     >
       {children}
     </div>
@@ -30,7 +34,7 @@ export function ButtonsContainer(
 export default function FormButtons(
   {
     className,
-    submitText = 'Submit',
+    submitText = 'Next',
     cancel,
     name,
     value,
@@ -45,7 +49,6 @@ export default function FormButtons(
           type='button'
           variant='secondary'
           href={cancel.href}
-          className='flex-1 max-w-xl'
         >
           {cancel.text || 'Cancel'}
         </Button>
@@ -54,9 +57,9 @@ export default function FormButtons(
         type={onClick ? 'button' : 'submit'}
         name={name}
         value={value}
-        className='flex-1 max-w-xl'
         onSubmit={onSubmit}
         onClick={onClick}
+        right_icon={<ArrowRightIcon className='size-5' />}
       >
         {submitText}
       </Button>

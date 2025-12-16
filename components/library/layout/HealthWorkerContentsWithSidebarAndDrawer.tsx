@@ -20,19 +20,21 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
   }: HealthWorkerContentsWithSidebarAndDrawerProps<T>,
 ) {
   return (
-    <div className='max-w-screen flex flex-col'>
+    <div className='max-w-screen h-screen flex flex-col overflow-hidden'>
       <AlertListener initial_url={url} />
       {sidebar}
-      <div className='flex flex-row min-h-screen grow'>
-        <section className='flex flex-col flex-1 md:pl-48'>
+      <div className='flex flex-row flex-1 overflow-hidden'>
+        <section className='flex flex-col flex-1 md:pl-48 overflow-hidden'>
           <Header
             title={title}
             variant='home page'
           />
-          <div className='pl-6 grow'>{children}</div>
+          <div className='pl-6 flex-1 flex flex-col overflow-y-auto'>
+            {children}
+          </div>
         </section>
         {drawer && (
-          <div className='h-full w-[400px] border-l border-gray-200'>
+          <div className='h-full w-[400px] border-l border-gray-200 overflow-y-auto'>
             {drawer}
           </div>
         )}
