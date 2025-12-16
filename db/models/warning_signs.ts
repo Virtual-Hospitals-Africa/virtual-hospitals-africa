@@ -6,6 +6,7 @@ import {
   ParsedExpression,
   ParsedFindingExpression,
 } from '../../shared/s_expression.ts'
+import { buildExpression } from './s_expression.ts'
 
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 
@@ -32,6 +33,11 @@ export const warning_signs = {
       finding,
     }: WarningSignInsert,
   ) {
+
+    const record_already_exists_select = buildExpression(trx, {
+      patient_id,
+      patient_encounter_id,
+    }, finding)
 
     const previously_completed_procedure_record_id =
       workflow_step_snomed_concept_id

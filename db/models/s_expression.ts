@@ -24,7 +24,7 @@ type SatisfyingResult = {
   record_ids: string[]
 }
 
-export function satisfyingSExpression(
+export async function satisfyingSExpression(
   trx: TrxOrDb,
   { s_expression, ...patient }: {
     s_expression: string | ParsedExpression
@@ -32,10 +32,23 @@ export function satisfyingSExpression(
     patient_encounter_id?: Maybe<string>
   },
 ): Promise<SatisfyingResult> {
-  const parsed = isString(s_expression)
+  const node = isString(s_expression)
     ? parseExpression(s_expression)
     : s_expression
-  return evaluateExpression(trx, patient, parsed)
+  if (node.type === 'not') {
+    const any_matching = await buildExpression(trx, patient, node.expression)
+      .limit(1).executeTakeFirst()
+
+    return {
+      record_ids: [],
+      satisfies: !any_matching,
+    }
+  }
+  const rows = await buildExpression(trx, patient, node).execute()
+  return {
+    record_ids: rows.map((row) => row.id),
+    satisfies: rows.length > 0,
+  }
 }
 
 const EXPRESSION_BUILDERS = {
@@ -190,30 +203,9 @@ const EXPRESSION_BUILDERS = {
 export function buildExpression(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  node: ParsedExpression,
+  node: ParsedExpression
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   const builder = EXPRESSION_BUILDERS[node.type]
   // deno-lint-ignore no-explicit-any
   return builder(trx, patient, node as any)
-}
-
-async function evaluateExpression(
-  trx: TrxOrDb,
-  patient: PatientIdentifiers,
-  node: ParsedExpression,
-): Promise<SatisfyingResult> {
-  if (node.type === 'not') {
-    const any_matching = await buildExpression(trx, patient, node.expression)
-      .limit(1).executeTakeFirst()
-
-    return {
-      record_ids: [],
-      satisfies: !any_matching,
-    }
-  }
-  const rows = await buildExpression(trx, patient, node).execute()
-  return {
-    record_ids: rows.map((row) => row.id),
-    satisfies: rows.length > 0,
-  }
 }
