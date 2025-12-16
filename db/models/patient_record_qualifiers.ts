@@ -22,7 +22,7 @@ export const patient_record_qualifiers = {
         )
         .leftJoin(
           'snomed_inferred_canonical_name_and_category as attribute_value_snomed',
-          'patient_record_qualifiers.value_snomed_concept_id',
+          'patient_records.value_snomed_concept_id',
           'attribute_value_snomed.id',
         )
         .select([

@@ -1,4 +1,5 @@
 import {
+  assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
@@ -197,6 +198,7 @@ function BriefHistorySection(
 export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
+  assertAllPriorStepsCompleted(ctx)
   const { trx, encounter, health_worker, organization_employment } = ctx.state
   const { patient } = encounter
   const patient_id = patient.id

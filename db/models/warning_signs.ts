@@ -74,17 +74,8 @@ export const warning_signs = {
           patient_id,
           patient_encounter_id,
           snomed_concept_id: finding.snomed_concept_id,
-        })).with(
-        'inserting_patient_finding_values',
-        (qb) =>
-          finding.value_snomed_concept_id
-            ? qb.insertInto('patient_finding_values')
-              .values({
-                id: finding_id,
-                value_snomed_concept_id: finding.value_snomed_concept_id,
-              })
-            : blankSelection(qb),
-      ).with('inserting_findings', (qb) =>
+          value_snomed_concept_id: finding.value_snomed_concept_id,
+        })).with('inserting_findings', (qb) =>
         qb.insertInto('patient_findings')
           .values({
             id: finding_id,
@@ -117,6 +108,7 @@ export const warning_signs = {
               patient_id,
               patient_encounter_id,
               snomed_concept_id: qualifier.snomed_concept_id,
+              value_snomed_concept_id: qualifier.value_snomed_concept_id,
             }),
       ).with(
         `inserting_qualifiers_${id_token}`,
@@ -125,7 +117,6 @@ export const warning_signs = {
             .values({
               id,
               qualifies_record_id,
-              value_snomed_concept_id: qualifier.value_snomed_concept_id,
             }),
       ) as unknown as typeof query
 

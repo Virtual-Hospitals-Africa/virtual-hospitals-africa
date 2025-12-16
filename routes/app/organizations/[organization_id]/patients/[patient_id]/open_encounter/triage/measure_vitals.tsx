@@ -1,4 +1,5 @@
 import {
+  assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
@@ -436,6 +437,8 @@ export const handler = postHandler(
 export async function TriageMeasureVitalsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
+  assertAllPriorStepsCompleted(ctx)
+
   // TODO: Ask Will if during triage we care about active conditions as far as measurements are concerned
   const active_condition_snomed_codes =
     getActiveConditionsSnomedCodesFromContext(

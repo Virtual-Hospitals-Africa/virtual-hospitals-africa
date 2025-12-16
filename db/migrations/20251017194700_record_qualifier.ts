@@ -15,12 +15,7 @@ export async function up(db: Kysely<DB>) {
         'qualifies_record_id',
         'uuid',
         (col) => col.references('patient_records.id').notNull(),
-      )
-        .addColumn(
-          'value_snomed_concept_id',
-          'bigint',
-          (col) => col.references('snomed_concept.id'),
-        ),
+      ),
   )
 }
 
