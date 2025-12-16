@@ -24,6 +24,14 @@ export async function up(db: Kysely<DB>) {
           'snomed_concept_id',
           'bigint',
           (col) => col.notNull().references('snomed_concept.id'),
+        )
+        .addColumn(
+          'value_snomed_concept_id',
+          'bigint',
+          (col) =>
+            col.references('snomed_concept.id').onDelete(
+              'cascade',
+            ),
         ),
   )
 

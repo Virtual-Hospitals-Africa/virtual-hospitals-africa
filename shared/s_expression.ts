@@ -3,9 +3,23 @@ import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { arrayIsEmpty, assertArrayEmpty } from '../util/arraySize.ts'
+import compact from '../util/compact.ts'
 
 export type ParsedFindingExpression = {
   type: 'finding'
+  snomed_concept_id: string
+  value_snomed_concept_id: string | null
+  qualifiers: ParsedQualifierOrNotExpression[]
+}
+
+export type ParsedProcedureExpression = {
+  type: 'procedure'
+  snomed_concept_id: string
+  qualifiers: ParsedQualifierOrNotExpression[]
+}
+
+export type ParsedEvaluationExpression = {
+  type: 'evaluation'
   snomed_concept_id: string
   value_snomed_concept_id: string | null
   qualifiers: ParsedQualifierOrNotExpression[]
@@ -39,6 +53,7 @@ export type ParsedActiveConditionExpression = {
 
 export type ParsedExpression =
   | ParsedFindingExpression
+  | ParsedProcedureExpression
   | ParsedQualifierExpression
   | ParsedNotExpression
   | ParsedOrExpression
@@ -49,6 +64,7 @@ export type ParsedExpressionNodeType = ParsedExpression['type']
 export type SExpressionNode = string | SExpressionNode[]
 
 const PARSERS = {
+  // TODO "qualifier" can be that a finding was done as part of a particular procedure?
   finding: (node: SExpressionNode): ParsedFindingExpression => {
     assert(Array.isArray(node))
     const [type, snomed_concept_id, ...qualifiers] = node
@@ -68,6 +84,31 @@ const PARSERS = {
       type: 'finding',
       snomed_concept_id,
       value_snomed_concept_id: value_snomed_concept_id ?? null,
+      qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
+        assert(
+          parsed.type === 'qualifier' || parsed.type === 'not',
+          `Expected parsed to be a qualifier or not expression, got: ${
+            JSON.stringify(parsed.type)
+          }`,
+        )
+        return parsed
+      }),
+    }
+  },
+  procedure: (node: SExpressionNode): ParsedProcedureExpression => {
+    assert(Array.isArray(node))
+    const [type, snomed_concept_id, ...qualifiers] = node
+    assertEquals(type, 'procedure')
+    if (typeof snomed_concept_id !== 'string') {
+      throw new Error(
+        `Expected snomed_concept_id to be a string, got: ${
+          JSON.stringify(snomed_concept_id)
+        }`,
+      )
+    }
+    return {
+      type: 'procedure',
+      snomed_concept_id,
       qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
         assert(
           parsed.type === 'qualifier' || parsed.type === 'not',
@@ -172,15 +213,29 @@ const PARSERS = {
 const FROM_PARSERS = {
   finding: (parsed: ParsedFindingExpression): string => {
     const qualifiers = parsed.qualifiers.map(fromParsedExpression).join(' ')
-    return qualifiers
-      ? `(${parsed.type} ${parsed.snomed_concept_id} ${qualifiers})`
-      : `(${parsed.type} ${parsed.snomed_concept_id})`
+    return compact([
+      parsed.type,
+      parsed.snomed_concept_id,
+      parsed.value_snomed_concept_id,
+      ...qualifiers,
+    ]).join(' ')
   },
   qualifier: (parsed: ParsedQualifierExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression).join(' ')
-    return qualifiers
-      ? `(${parsed.type} ${parsed.snomed_concept_id} ${qualifiers})`
-      : `(${parsed.type} ${parsed.snomed_concept_id})`
+    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+    return compact([
+      parsed.type,
+      parsed.snomed_concept_id,
+      parsed.value_snomed_concept_id,
+      ...qualifiers,
+    ]).join(' ')
+  },
+  procedure: (parsed: ParsedProcedureExpression): string => {
+    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+    return compact([
+      parsed.type,
+      parsed.snomed_concept_id,
+      ...qualifiers,
+    ]).join(' ')
   },
   not: (parsed: ParsedNotExpression): string =>
     `(not ${fromParsedExpression(parsed.expression)})`,
