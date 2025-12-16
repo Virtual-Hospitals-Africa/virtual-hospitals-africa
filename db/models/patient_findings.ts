@@ -37,6 +37,7 @@ type FindingInsert = {
   patient_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
+  employment_id: string
   workflow_snomed_concept_id: string
   workflow_step_snomed_concept_id: string | null
   previously_completed_procedures: PreviouslyCompletedProcedures
@@ -52,6 +53,7 @@ function doInsertOne(
     patient_id,
     patient_encounter_id,
     patient_encounter_employee_id,
+    employment_id,
     workflow_snomed_concept_id,
     workflow_step_snomed_concept_id,
     previously_completed_procedures,
@@ -95,7 +97,8 @@ function doInsertOne(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            patient_encounter_employee_id,
+            employment_id,
+            by_system: false,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>
@@ -172,9 +175,9 @@ export function baseQuery(
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
     .leftJoin(
-      'snomed_inferred_canonical_name_and_category as finding_value_snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category as value_snomed_inferred_canonical_name_and_category',
       'patient_records.value_snomed_concept_id',
-      'finding_value_snomed_inferred_canonical_name_and_category.id',
+      'value_snomed_inferred_canonical_name_and_category.id',
     )
     .select((eb) => [
       'patient_records.id as record_id',
@@ -185,7 +188,7 @@ export function baseQuery(
       'snomed_inferred_canonical_name_and_category.name',
 
       'patient_records.value_snomed_concept_id',
-      'finding_value_snomed_inferred_canonical_name_and_category.name as value_name',
+      'value_snomed_inferred_canonical_name_and_category.name as value_name',
 
       jsonBuildObject({
         record_id: eb.ref('patient_procedure_records.id'),

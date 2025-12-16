@@ -36,6 +36,7 @@ describe(
             patient_encounter_id: encounter.patient_encounter_id,
             patient_encounter_employee_id:
               encounter.employee.patient_encounter_employee_id,
+            employment_id: encounter.employee.employee_id,
             input_measurements: [
               {
                 finding_id: generateUUID(),

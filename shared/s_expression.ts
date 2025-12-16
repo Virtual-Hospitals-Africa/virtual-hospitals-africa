@@ -337,32 +337,33 @@ export function parseExpression(
   return parseArrayNode(parsed)
 }
 
+export function parseExpressionExpectingType<
+  T extends ParsedExpression['type'],
+>(
+  expression: string,
+  type: T,
+): ParsedExpression & { type: T } {
+  const result = parseExpression(expression)
+  if (result.type === type) {
+    return result as ParsedExpression & { type: T }
+  }
+  throw new Error(
+    `Expected top-level node to be "${type}", got: ${
+      JSON.stringify(result.type)
+    }`,
+  )
+}
+
 export function parseFindingExpression(
   expression: string,
 ): ParsedFindingExpression {
-  const result = parseExpression(expression)
-  if (result.type !== 'finding') {
-    throw new Error(
-      `Expected top-level node to be "finding", got: ${
-        JSON.stringify(result.type)
-      }`,
-    )
-  }
-  return result
+  return parseExpressionExpectingType(expression, 'finding')
 }
 
 export function parseQualifierExpression(
   expression: string,
 ): ParsedQualifierExpression {
-  const result = parseExpression(expression)
-  if (result.type !== 'qualifier') {
-    throw new Error(
-      `Expected top-level node to be "qualifier", got: ${
-        JSON.stringify(result.type)
-      }`,
-    )
-  }
-  return result
+  return parseExpressionExpectingType(expression, 'qualifier')
 }
 
 export function fromParsedExpression(parsed: ParsedExpression): string {

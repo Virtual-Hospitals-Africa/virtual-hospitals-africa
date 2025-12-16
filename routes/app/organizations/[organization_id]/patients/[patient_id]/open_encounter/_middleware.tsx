@@ -58,9 +58,7 @@ import words from '../../../../../../../util/words.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { ComponentChild } from 'preact'
-import {
-  previouslyCompleted,
-} from '../../../../../../../db/models/patient_procedures.ts'
+import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
 import { exists } from '../../../../../../../util/exists.ts'
@@ -264,7 +262,7 @@ export async function workflowHandler(
       patient_encounter_employee_id:
         encounter_employee_presence.patient_encounter_employee_id,
     }),
-    previously_completed_procedures: previouslyCompleted(
+    previously_completed_procedures: patient_procedures.previouslyCompleted(
       trx,
       {
         patient_encounter_id,

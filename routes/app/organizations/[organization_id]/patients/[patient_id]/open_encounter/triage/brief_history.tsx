@@ -111,6 +111,7 @@ export const handler = postHandler(
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             patient_encounter_employee_id: ctx.state.encounter_employee_presence
               .patient_encounter_employee_id,
+            employment_id: ctx.state.encounter_employee_presence.employee_id,
             workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
             workflow_step_snomed_concept_id:
               ctx.state.workflow_step_snomed_concept_id,

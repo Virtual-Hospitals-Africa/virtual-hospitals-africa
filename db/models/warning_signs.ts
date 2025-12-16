@@ -15,6 +15,7 @@ type WarningSignInsert = {
   patient_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
+  employment_id: string
   workflow_snomed_concept_id: string
   workflow_step_snomed_concept_id: string | null
   previously_completed_procedures: PreviouslyCompletedProcedures
@@ -28,6 +29,7 @@ export const warning_signs = {
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      employment_id,
       workflow_snomed_concept_id,
       workflow_step_snomed_concept_id,
       previously_completed_procedures,
@@ -64,7 +66,8 @@ export const warning_signs = {
           ? qb.insertInto('patient_procedures')
             .values({
               id: procedure_id,
-              patient_encounter_employee_id,
+              employment_id,
+              by_system: false,
             })
           : blankSelection(qb),
     ).with('inserting_finding_records', (qb) =>
@@ -149,6 +152,7 @@ export const warning_signs = {
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      employment_id,
       workflow_snomed_concept_id,
       workflow_step_snomed_concept_id,
       previously_completed_procedures,
@@ -179,6 +183,7 @@ export const warning_signs = {
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      employment_id,
       workflow_snomed_concept_id,
       workflow_step_snomed_concept_id,
       previously_completed_procedures,

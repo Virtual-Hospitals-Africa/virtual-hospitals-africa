@@ -41,6 +41,7 @@ export async function insertMeasurementsAndAssessments(
     patient_id: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
+    employment_id: string
     input_measurements: Measurement[]
     input_assessments: CategoricalAssessment[]
   },
@@ -68,7 +69,8 @@ export async function insertMeasurementsAndAssessments(
       (qb) =>
         qb.insertInto('patient_procedures').values({
           id: procedure_id,
-          patient_encounter_employee_id: opts.patient_encounter_employee_id,
+          employment_id: opts.employment_id,
+          by_system: false,
         }),
     )
     .with(

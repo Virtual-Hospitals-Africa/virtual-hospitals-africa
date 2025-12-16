@@ -3432,7 +3432,7 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   record_id: string
   snomed_concept_id: string
   name: string
-  attribute_value: string | null
+  value_name: string | null
   qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
 }
 
@@ -3477,7 +3477,7 @@ type QualifierIntermediate =
     'provider' | 'value_display'
   >
   & {
-    attribute_value: string | null
+    value_name: string | null
   }
 
 export type Existence = 'Yes' | 'No' | 'Unknown'
@@ -3512,3 +3512,17 @@ export type WarningSign = {
 export type KeyedWarningSign = {
   key: string
 } & WarningSign
+
+export type IntermediateProcedureRecord = {
+  created_at: Date
+  record_id: string
+  snomed_concept_id: string
+  name: string
+  patient_encounter_id: string
+  // patient_encounter_employee_id: string
+  // pertaining_to_key: PertainingToKey
+  // as_part_of_procedure: AsPartOfProcedure
+  // qualifiers: QualifierIntermediate[]
+  value_snomed_concept_id: null | string
+  // value_name: null | string
+}

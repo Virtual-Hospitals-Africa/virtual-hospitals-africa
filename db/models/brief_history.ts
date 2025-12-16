@@ -22,9 +22,9 @@ import {
   commonConditionSnomedConceptId,
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
-import partition from '../../util/partition.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 export function mostRecentFindings(
   trx: TrxOrDb,
@@ -218,8 +218,7 @@ export async function renderedMostRecentFindings(
     (most_recent_finding) => {
       if (!most_recent_finding) return null
 
-      const { qualifiers, patient_encounter_employee_id, ...finding } =
-        most_recent_finding
+      const { patient_encounter_employee_id, ...finding } = most_recent_finding
 
       const matching_encounter = encounter_id_to_encounter.get(
         finding.patient_encounter_id,
@@ -240,33 +239,13 @@ export async function renderedMostRecentFindings(
         `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
       )
 
-      const [attribute_qualifiers, prefix_qualifiers] = partition(
-        qualifiers,
-        (q) => !!q.attribute_value,
-      )
-
-      let value_display = finding.name
-      prefix_qualifiers.forEach((prefix_qualifier) => {
-        assert(!prefix_qualifier.attribute_value)
-        value_display = `${prefix_qualifier.name} ${value_display}`
-      })
-      attribute_qualifiers.forEach((attribute_qualifier) => {
-        assert(attribute_qualifier.attribute_value)
-        value_display +=
-          ` ${attribute_qualifier.name} ${attribute_qualifier.attribute_value}`
-      })
-      if (finding.value_name) {
-        value_display += `: ${finding.value_name}`
-      }
-
       return {
         ...finding,
-        value_display,
+        value_display: buildValueDisplay(finding),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,
         },
-        qualifiers,
       } satisfies RenderedFindingRelativeToHealthWorker
     },
   )

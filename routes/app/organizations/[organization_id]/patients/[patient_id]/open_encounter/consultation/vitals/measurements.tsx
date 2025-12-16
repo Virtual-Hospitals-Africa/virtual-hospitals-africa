@@ -52,6 +52,7 @@ export const handler = postHandler(
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             patient_encounter_employee_id: ctx.state.encounter_employee_presence
               .patient_encounter_employee_id,
+            employment_id: ctx.state.encounter_employee_presence.employee_id,
             input_measurements,
             input_assessments: [],
           },
