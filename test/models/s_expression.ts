@@ -92,7 +92,7 @@ describe('db/models/s_expression.ts', () => {
 
     const query = buildExpression(
       db,
-      encounter.patient.id,
+      { patient_id: encounter.patient.id },
       parseExpression(
         WARNING_SIGNS['Burn Other'].clinical_finding_s_expression,
       ),

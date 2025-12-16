@@ -6,6 +6,7 @@ import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
 import { asCompiledSql } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import isString from '../../util/isString.ts'
 
 export type SearchResults<SearchTerms, RenderedResult> = {
   page: number
@@ -331,9 +332,9 @@ export function base<
       )
         .clearSelect()
         .select((eb) => eb.fn.countAll().as('count'))
-        .executeTakeFirstOrThrow() as { count: number }
+        .executeTakeFirstOrThrow() as { count: number | string }
 
-      return count
+      return isString(count) ? parseInt(count) : count
     },
   })
 }

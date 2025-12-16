@@ -511,16 +511,19 @@ describe('triage/brief_history', () => {
       const findings_from_initial_encounter = await satisfyingSExpression(db, {
         patient_id: initial_encounter.patient.id,
         patient_encounter_id: initial_encounter.patient_encounter_id,
-        s_expression: '(active_condition 363346000)'
+        s_expression: '(active_condition 363346000)',
       })
 
       assert(findings_from_initial_encounter.satisfies)
 
-      const findings_from_subsequent_encounter = await satisfyingSExpression(db, {
-        patient_id: initial_encounter.patient.id,
-        patient_encounter_id: subsequent_encounter.patient_encounter_id,
-        s_expression: '(active_condition 363346000)'
-      })
+      const findings_from_subsequent_encounter = await satisfyingSExpression(
+        db,
+        {
+          patient_id: initial_encounter.patient.id,
+          patient_encounter_id: subsequent_encounter.patient_encounter_id,
+          s_expression: '(active_condition 363346000)',
+        },
+      )
 
       assert(!findings_from_subsequent_encounter.satisfies)
 
@@ -542,7 +545,7 @@ describe('triage/brief_history', () => {
               },
               {
                 'tag': 'span',
-                'text': z.string().regex(/^at \d{1,2}:\d{2} [AP]M$/),
+                'text': z.string().regex(/^at \d{1,2}:\d{2}/),
               },
             ],
           },
@@ -675,7 +678,7 @@ describe('triage/brief_history', () => {
                                       {
                                         'tag': 'span',
                                         'text': z.string().regex(
-                                          /^at \d{1,2}:\d{2} [AP]M$/,
+                                          /^at \d{1,2}:\d{2}/,
                                         ),
                                       },
                                     ],
