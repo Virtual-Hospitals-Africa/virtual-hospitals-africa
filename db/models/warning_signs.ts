@@ -64,7 +64,8 @@ export const warning_signs = {
           ? qb.insertInto('patient_procedures')
             .values({
               id: procedure_id,
-              patient_encounter_employee_id,
+              // TODO evaluate how to store action status for procedures
+              // patient_encounter_employee_id,
             })
           : blankSelection(qb),
     ).with('inserting_finding_records', (qb) =>

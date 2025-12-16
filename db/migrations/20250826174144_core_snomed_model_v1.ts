@@ -42,16 +42,16 @@ export async function up(db: Kysely<DB>) {
       references: 'patient_records',
       primary_key_type: 'uuid',
     },
-    (qb) =>
-      qb
-        .addColumn(
-          'patient_encounter_employee_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('patient_encounter_employees.id').onDelete(
-              'cascade',
-            ),
-        ),
+    // (qb) =>
+    //   qb
+    //     .addColumn(
+    //       'patient_encounter_employee_id',
+    //       'uuid',
+    //       (col) =>
+    //         col.notNull().references('patient_encounter_employees.id').onDelete(
+    //           'cascade',
+    //         ),
+    //     ),
   )
 
   await createPointerTable(db, 'patient_findings', {

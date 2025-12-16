@@ -68,7 +68,8 @@ export async function insertMeasurementsAndAssessments(
       (qb) =>
         qb.insertInto('patient_procedures').values({
           id: procedure_id,
-          patient_encounter_employee_id: opts.patient_encounter_employee_id,
+          // TODO probably insert this into a separate table that relates patient_records to employees
+          // patient_encounter_employee_id: opts.patient_encounter_employee_id,
         }),
     )
     .with(

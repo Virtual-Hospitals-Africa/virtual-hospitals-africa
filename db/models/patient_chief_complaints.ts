@@ -66,11 +66,6 @@ export async function upsertOne(
       patient_encounter_id,
     )
     .where(
-      'patient_procedures.patient_encounter_employee_id',
-      '=',
-      patient_encounter_employee_id,
-    )
-    .where(
       'patient_records.snomed_concept_id',
       '=',
       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
@@ -103,7 +98,8 @@ export async function upsertOne(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            patient_encounter_employee_id,
+            // TODO probably insert this into a separate table that relates patient_records to employees
+            // patient_encounter_employee_id,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>

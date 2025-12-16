@@ -65,7 +65,8 @@ export function insertMany(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            patient_encounter_employee_id,
+            // TODO probably insert this into a separate table that relates patient_records to employees
+            // patient_encounter_employee_id,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>

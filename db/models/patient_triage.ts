@@ -14,7 +14,7 @@ export function insertProcedure(
   {
     patient_id,
     patient_encounter_id,
-    patient_encounter_employee_id,
+    // patient_encounter_employee_id,
   }: {
     patient_id: string
     patient_encounter_id: string
@@ -37,7 +37,8 @@ export function insertProcedure(
     qb.insertInto('patient_procedures')
       .values({
         id: triage_procedure_id,
-        patient_encounter_employee_id,
+        // TODO probably insert this into a separate table that relates patient_records to employees
+        // patient_encounter_employee_id,
       })
       .returning('id'))
     .selectFrom('inserting_procedure')
