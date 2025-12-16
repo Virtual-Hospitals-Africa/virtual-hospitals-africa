@@ -14,11 +14,11 @@ export function insertProcedure(
   {
     patient_id,
     patient_encounter_id,
-    // patient_encounter_employee_id,
+    employment_id,
   }: {
     patient_id: string
     patient_encounter_id: string
-    patient_encounter_employee_id: string
+    employment_id: string
   },
 ) {
   const triage_procedure_id = generateUUID()
@@ -37,8 +37,8 @@ export function insertProcedure(
     qb.insertInto('patient_procedures')
       .values({
         id: triage_procedure_id,
-        // TODO probably insert this into a separate table that relates patient_records to employees
-        // patient_encounter_employee_id,
+        employment_id,
+        by_system: false,
       })
       .returning('id'))
     .selectFrom('inserting_procedure')

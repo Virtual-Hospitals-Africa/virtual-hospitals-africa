@@ -29,12 +29,14 @@ export function insertMany(
     input_measurements,
     patient_id,
     patient_encounter_id,
+    employment_id,
     procedure,
     patient_encounter_employee_id,
   }: {
     patient_id: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
+    employment_id: string
     procedure: ExtantProcedureOrCreationIntent
     input_measurements: Measurement[]
   },
@@ -65,8 +67,8 @@ export function insertMany(
         ? qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
-            // TODO probably insert this into a separate table that relates patient_records to employees
-            // patient_encounter_employee_id,
+            employment_id,
+            by_system: false,
           })
         : blankSelection(qb),
   ).with('inserting_finding_records', (qb) =>

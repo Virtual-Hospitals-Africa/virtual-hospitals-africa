@@ -21,11 +21,6 @@
 //   `
 // }
 
-// 118292001 |Removal (procedure)|
-// 260378005 |Excessive (qualifier value)|
-// 272180002 |Garment (physical object)|
-;`(procedure 118292001 (qualifier 272180002 (qualifier 260378005)))`
-
 // `remove`
 
 // apply pressure

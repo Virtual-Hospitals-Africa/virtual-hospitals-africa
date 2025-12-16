@@ -6,15 +6,30 @@ import {
 } from '../../shared/s_expression.ts'
 import { PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { success_true } from '../helpers.ts'
+import { literalString, success_true } from '../helpers.ts'
+import { base } from './_base.ts'
 
-type ProcedureInsert = {
-  patient_id: string
-  patient_encounter_id: string
-  procedure: ParsedProcedureExpression
-}
+type ProcedureInsert =
+  & {
+    patient_id: string
+    patient_encounter_id: string
+    procedure: ParsedProcedureExpression
+  }
+  & (
+    {
+      employment_id: string
+      by_system?: never
+    } | {
+      employment_id?: never
+      by_system: true
+    }
+  )
 
-export const patient_procedures = {
+export const patient_procedures = base({
+  top_level_table: 'patient_records',
+  baseQuery(trx) {
+
+  },
   async previouslyCompleted(
     trx: TrxOrDb,
     {
@@ -58,12 +73,14 @@ export const patient_procedures = {
     }
   },
 
-  insertOne(
+  insertOneNested(
     trx: TrxOrDb,
     {
       patient_id,
       patient_encounter_id,
       procedure,
+      employment_id,
+      by_system,
     }: ProcedureInsert,
   ) {
     const procedure_id = generateUUID()
@@ -85,6 +102,8 @@ export const patient_procedures = {
         qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
+            employment_id,
+            by_system: by_system || false,
           }),
     )
 
@@ -144,7 +163,9 @@ export const patient_procedures = {
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
+        literalString(procedure_id).as('record_id'),
       ])
       .executeTakeFirstOrThrow()
   },
 }
+)
