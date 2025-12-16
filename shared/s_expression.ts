@@ -15,6 +15,7 @@ export type ParsedFindingExpression = {
 export type ParsedProcedureExpression = {
   type: 'procedure'
   snomed_concept_id: string
+  value_snomed_concept_id: string | null
   qualifiers: ParsedQualifierOrNotExpression[]
 }
 
@@ -22,7 +23,13 @@ export type ParsedEvaluationExpression = {
   type: 'evaluation'
   snomed_concept_id: string
   value_snomed_concept_id: string | null
+  evaluates: ParsedEvaluatesExpression
   qualifiers: ParsedQualifierOrNotExpression[]
+}
+
+export type ParsedEvaluatesExpression = {
+  type: 'evaluates'
+  expression: ParsedExpression
 }
 
 export type ParsedQualifierOrNotExpression =
@@ -54,6 +61,8 @@ export type ParsedActiveConditionExpression = {
 export type ParsedExpression =
   | ParsedFindingExpression
   | ParsedProcedureExpression
+  | ParsedEvaluationExpression
+  | ParsedEvaluatesExpression
   | ParsedQualifierExpression
   | ParsedNotExpression
   | ParsedOrExpression
@@ -106,9 +115,14 @@ const PARSERS = {
         }`,
       )
     }
+    let value_snomed_concept_id: string | undefined
+    if (isString(qualifiers[0])) {
+      value_snomed_concept_id = qualifiers.shift() as string
+    }
     return {
       type: 'procedure',
       snomed_concept_id,
+      value_snomed_concept_id: value_snomed_concept_id ?? null,
       qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
         assert(
           parsed.type === 'qualifier' || parsed.type === 'not',
@@ -118,6 +132,50 @@ const PARSERS = {
         )
         return parsed
       }),
+    }
+  },
+  evaluation: (node: SExpressionNode): ParsedEvaluationExpression => {
+    assert(Array.isArray(node))
+    const [type, snomed_concept_id, ...qualifiers] = node
+    assertEquals(type, 'evaluation')
+    if (typeof snomed_concept_id !== 'string') {
+      throw new Error(
+        `Expected snomed_concept_id to be a string, got: ${
+          JSON.stringify(snomed_concept_id)
+        }`,
+      )
+    }
+    let value_snomed_concept_id: string | undefined
+    if (isString(qualifiers[0])) {
+      value_snomed_concept_id = qualifiers.shift() as string
+    }
+    const evaluates_expression = qualifiers.shift()
+    assert(evaluates_expression)
+    assert(Array.isArray(evaluates_expression))
+    return {
+      type: 'evaluation',
+      snomed_concept_id,
+      value_snomed_concept_id: value_snomed_concept_id ?? null,
+      evaluates: PARSERS.evaluates(evaluates_expression),
+      qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
+        assert(
+          parsed.type === 'qualifier' || parsed.type === 'not',
+          `Expected parsed to be a qualifier or not expression, got: ${
+            JSON.stringify(parsed.type)
+          }`,
+        )
+        return parsed
+      }),
+    }
+  },
+  evaluates: (node: SExpressionNode): ParsedEvaluatesExpression => {
+    assert(Array.isArray(node))
+    const [type, expression] = node
+    assertEquals(type, 'evaluates')
+    assert(Array.isArray(expression))
+    return {
+      type: 'evaluates',
+      expression: parseArrayNode(expression),
     }
   },
   qualifier: (node: SExpressionNode): ParsedQualifierExpression => {
@@ -212,31 +270,46 @@ const PARSERS = {
 
 const FROM_PARSERS = {
   finding: (parsed: ParsedFindingExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression).join(' ')
-    return compact([
+    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+
+    return '(' + compact([
       parsed.type,
       parsed.snomed_concept_id,
       parsed.value_snomed_concept_id,
       ...qualifiers,
-    ]).join(' ')
+    ]).join(' ') + ')'
   },
   qualifier: (parsed: ParsedQualifierExpression): string => {
     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
-    return compact([
+
+    return '(' + compact([
       parsed.type,
       parsed.snomed_concept_id,
       parsed.value_snomed_concept_id,
       ...qualifiers,
-    ]).join(' ')
+    ]).join(' ') + ')'
   },
   procedure: (parsed: ParsedProcedureExpression): string => {
     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
-    return compact([
+    return '(' + compact([
       parsed.type,
       parsed.snomed_concept_id,
+      parsed.value_snomed_concept_id,
       ...qualifiers,
-    ]).join(' ')
+    ]).join(' ') + ')'
   },
+  evaluation: (parsed: ParsedEvaluationExpression): string => {
+    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+    return '(' + compact([
+      parsed.type,
+      parsed.snomed_concept_id,
+      parsed.value_snomed_concept_id,
+      FROM_PARSERS.evaluates(parsed.evaluates),
+      ...qualifiers,
+    ]).join(' ') + ')'
+  },
+  evaluates: (parsed: ParsedEvaluatesExpression): string =>
+    `(evaluates ${fromParsedExpression(parsed.expression)})`,
   not: (parsed: ParsedNotExpression): string =>
     `(not ${fromParsedExpression(parsed.expression)})`,
   or: (parsed: ParsedOrExpression): string =>

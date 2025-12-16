@@ -154,7 +154,12 @@ export async function getMostRecent(
           'patient_measurements.id',
         )
         .where('patient_records.patient_id', '=', patient_id)
-        .where('patient_records.snomed_concept_id', 'in', snomed_concept_ids)
+        .$if(!!snomed_concept_ids.length, (qb) =>
+          qb.where(
+            'patient_records.snomed_concept_id',
+            'in',
+            snomed_concept_ids,
+          ))
         .orderBy('patient_records.created_at', 'desc')
         .selectAll('patient_records')
         .select([

@@ -358,16 +358,16 @@ export function assertAllPriorStepsCompleted(
 ) {
   const { workflow, workflow_status } = ctx.state
   const workflow_steps = WORKFLOW_STEPS[workflow]
-  const last_step = last(workflow_steps)
-  assertEquals(
-    ctx.state.step,
-    last_step,
-    `Only call this function on the very last step of ${workflow}, which is ${last_step}`,
-  )
+  const this_workflow_step_index = workflow_steps.indexOf(ctx.state.step)
+  assert(this_workflow_step_index !== -1)
+
+  const prior_workflow_steps = workflow_steps.slice(0, this_workflow_step_index)
   const steps_completed = new Set(workflow_status.steps_completed)
-  const incomplete_step = workflow_steps.find((step) =>
-    step !== last_step && !steps_completed.has(step)
+
+  const incomplete_step = prior_workflow_steps.find((step) =>
+    !steps_completed.has(step)
   )
+
   if (!incomplete_step) return
   const is_plural = incomplete_step.endsWith('s')
   const pretty_name = is_plural

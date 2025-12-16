@@ -106,7 +106,7 @@ describe('triage/brief_history', () => {
     })
 
     it('renders the brief history page for a male patient', async () => {
-      const { health_worker: nurse, fetchCheerio } =
+      const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
@@ -122,6 +122,12 @@ describe('triage/brief_history', () => {
           },
         )
 
+      await fetchOk(
+        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+        },
+      )
       const $ = await fetchCheerio(
         `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )

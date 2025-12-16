@@ -104,6 +104,7 @@ function doInsertOne(
         id: finding_id,
         patient_id,
         patient_encounter_id,
+        value_snomed_concept_id: value_snomed_concept_id ?? null,
         snomed_concept_id: finding_snomed_concept_id,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
@@ -118,9 +119,10 @@ function doInsertOne(
           ? qb.insertInto('patient_records')
             .values(qualifiers_insert.map((q) => ({
               id: q.id,
-              snomed_concept_id: q.snomed_concept_id,
               patient_id,
               patient_encounter_id,
+              snomed_concept_id: q.snomed_concept_id,
+              value_snomed_concept_id: q.value_snomed_concept_id,
             })))
           : blankSelection(qb),
     ).with(
@@ -131,16 +133,7 @@ function doInsertOne(
             .values(qualifiers_insert.map((q) => ({
               id: q.id,
               qualifies_record_id: finding_id,
-              value_snomed_concept_id: q.value_snomed_concept_id,
             })))
-          : blankSelection(qb),
-    )
-    .with(
-      'inserting_value_snomed_concept_id',
-      (qb) =>
-        value_snomed_concept_id
-          ? qb.insertInto('patient_finding_values')
-            .values({ id: finding_id, value_snomed_concept_id })
           : blankSelection(qb),
     )
     .selectNoFrom([
@@ -179,13 +172,8 @@ export function baseQuery(
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
     .leftJoin(
-      'patient_finding_values',
-      'patient_finding_values.id',
-      'patient_findings.id',
-    )
-    .leftJoin(
       'snomed_inferred_canonical_name_and_category as finding_value_snomed_inferred_canonical_name_and_category',
-      'patient_finding_values.value_snomed_concept_id',
+      'patient_records.value_snomed_concept_id',
       'finding_value_snomed_inferred_canonical_name_and_category.id',
     )
     .select((eb) => [
@@ -196,7 +184,7 @@ export function baseQuery(
       'patient_findings.patient_encounter_employee_id',
       'snomed_inferred_canonical_name_and_category.name',
 
-      'patient_finding_values.value_snomed_concept_id',
+      'patient_records.value_snomed_concept_id',
       'finding_value_snomed_inferred_canonical_name_and_category.name as value_name',
 
       jsonBuildObject({
