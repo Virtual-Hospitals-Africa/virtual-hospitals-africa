@@ -11,7 +11,7 @@ import { TO_COUNTRY_ISO_3601_2 } from '../../models/addresses.ts'
 import { getLocationAddress } from '../../../external-clients/google-maps.ts'
 
 export default define(
-  ['addresses', 'organizations', 'organization_departments'],
+  ['addresses', 'organizations'],
   async (trx) => {
     await addTestOrganizations(trx)
     await importDataFromCSV(trx)
@@ -144,9 +144,18 @@ async function importDataFromCSV(trx: TrxOrDb) {
       }
 
       // Map Zanzibar to Tanzania as it's a semi-autonomous region, not a country
-      const lookup_country = row.Country === 'Zanzibar'
-        ? 'Tanzania'
-        : row.Country
+      const special_country_map: {
+        [s in string]?: string
+      } = {
+        "Cote d'Ivoire": "Côte d'Ivoire",
+        'Democratic Republic of the Congo': 'Congo, Democratic Republic of the',
+        'eSwatini': 'Eswatini',
+        'Guinea Bissau': 'Guinea-Bissau',
+        'Tanzania': 'Tanzania, United Republic of',
+        'Zanzibar': 'Tanzania, United Republic of',
+      }
+
+      const lookup_country = special_country_map[row.Country] || row.Country
       const country = TO_COUNTRY_ISO_3601_2.get(lookup_country)
 
       assert(country, `No country found for ${row.Country}`)

@@ -17,7 +17,7 @@ describe(
         db,
         {
           profession: 'nurse',
-          specialty: 'primary care',
+          specialty: 'Primary care',
           registration_status: 'approved',
         },
       )

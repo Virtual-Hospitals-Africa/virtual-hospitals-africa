@@ -36,7 +36,7 @@
 //       },
 //     )
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 //     const response = await fetch(
 //       `${route}/app/patients/${patient_id}`,
@@ -63,7 +63,7 @@
 //       },
 //     )
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 //     const national_id_number = randomNationalId()
 //     const phone_number = randomPhoneNumber()
@@ -140,7 +140,7 @@
 //     )
 //     const test_doctor =await addTestEmployee(db, { profession: 'doctor' })
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 //     const country_info =await addresses.getCountryAddressTree(db)
 //     const zimbabwe = country_info[0]
@@ -227,7 +227,7 @@
 //       },
 //     )
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const tablet = await db.selectFrom('medications')
@@ -369,7 +369,7 @@
 //       },
 //     )
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const body = new FormData()
@@ -433,7 +433,7 @@
 //       },
 //     )
 //     const { fetch, health_worker } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     await patient_conditions.upsertPreExisting(db, {
@@ -479,7 +479,7 @@
 //       },
 //     )
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const tablet = await db.selectFrom('medications')
@@ -583,7 +583,7 @@
 //       date_of_birth: '2020-01-01',
 //     })
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 //     const guardian_phone = randomPhoneNumber()
 //     console.log('guardian_phone', guardian_phone)
@@ -663,7 +663,7 @@
 //     )
 
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const get_response =await fetch(
@@ -692,7 +692,7 @@
 //     })
 
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const body = new FormData()
@@ -787,7 +787,7 @@
 //     })
 
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const body = new FormData()
@@ -892,7 +892,7 @@
 //     })
 
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const body = new FormData()
@@ -1129,7 +1129,7 @@
 //     })
 
 //     const { fetch } = await addTestEmployeeWithSession(db, {
-//       profession: 'nurse', specialty: 'primary care', registration_status: 'approved',
+//       profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
 //     })
 
 //     const body = new FormData()

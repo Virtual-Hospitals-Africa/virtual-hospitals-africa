@@ -115,7 +115,7 @@ describe('/login', () => {
     it.skip('redirects unapproved nurse to /app/pending_approval', async () => {
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
-        specialty: 'primary care',
+        specialty: 'Primary care',
         registration_status: 'awaiting approval',
       })
       const response = await mock.fetch(`/app`)
@@ -127,7 +127,7 @@ describe('/login', () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
-        specialty: 'primary care',
+        specialty: 'Primary care',
         registration_status: 'approved',
         organization_id: organization.id,
       })
@@ -139,7 +139,7 @@ describe('/login', () => {
       withTestOrganization(db, async (organization_id) => {
         const mock = await addTestEmployeeWithSession(db, {
           profession: 'nurse',
-          specialty: 'primary care',
+          specialty: 'Primary care',
           registration_status: 'approved',
           organization_id,
         })

@@ -15,7 +15,7 @@ describe('/app/organizations/[organization_id]/patients/start-registration', () 
   it('creates a patient, starting the registration process at the personal page', async () => {
     const { fetchOk } = await addTestEmployeeWithSession(db, {
       profession: 'nurse',
-      specialty: 'primary care',
+      specialty: 'Primary care',
       registration_status: 'approved',
     })
 

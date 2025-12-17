@@ -44,9 +44,9 @@ export async function up(db: Kysely<DB>) {
         ).addCheckConstraint(
           'in_waiting_room_or_current_workflow',
           sql`(
-            (department_name = 'waiting room' AND current_workflow IS NULL AND next_workflow IS NOT NULL)
+            (department_name = 'Waiting room' AND current_workflow IS NULL AND next_workflow IS NOT NULL)
             OR
-            (department_name != 'waiting room' AND current_workflow IS NOT NULL)
+            (department_name != 'Waiting room' AND current_workflow IS NOT NULL)
           )`,
         ),
   )

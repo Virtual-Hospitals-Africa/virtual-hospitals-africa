@@ -528,7 +528,7 @@ export function nextRouteAfterCompletingWorkflow(
 
   assertEquals(
     next_patient_presence.department_name,
-    'waiting room',
+    'Waiting room',
   )
   assert(
     next_patient_presence.next_workflow,

@@ -85,7 +85,7 @@ export type PersonalFormFields = z.infer<typeof PersonalFormFields>
 
 const ProfessionalInformationFields = z.object({
   specialty: z.enum([
-    'primary care',
+    'Primary care',
     'registered general',
     'midwife',
     'intensive and coronary care',

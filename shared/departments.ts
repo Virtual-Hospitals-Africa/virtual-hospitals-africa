@@ -15,19 +15,19 @@ import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
 
 export const DEPARTMENTS = [
-  'primary care' as const,
-  'maternity' as const,
-  'immunizations' as const,
-  'chronic diseases' as const,
-  'reception' as const,
-  'waiting room' as const,
-  'triage' as const,
-  'administration' as const,
-  'pharmacy' as const,
-  'oncology' as const,
-  'burns' as const,
-  'remote care' as const,
-  'emergency' as const,
+  'Primary care' as const,
+  'Maternity' as const,
+  'Immunizations' as const,
+  'Chronic diseases' as const,
+  'Reception' as const,
+  'Waiting room' as const,
+  'Triage' as const,
+  'Administration' as const,
+  'Pharmacy' as const,
+  'Oncology' as const,
+  'Burns' as const,
+  'Remote care' as const,
+  'Emergency' as const,
 ]
 
 export type Department = (typeof DEPARTMENTS)[number]
@@ -45,13 +45,13 @@ export function assertDepartmentName(
 }
 
 export const WORKFLOW_DEPARTMENTS = {
-  consultation: 'primary care',
-  maternity: 'maternity',
-  registration: 'reception',
-  triage: 'triage',
-  prescription_refill: 'pharmacy',
-  doctor_review: 'remote care',
-  stabilization: 'emergency',
+  consultation: 'Primary care',
+  maternity: 'Maternity',
+  registration: 'Reception',
+  triage: 'Triage',
+  prescription_refill: 'Pharmacy',
+  doctor_review: 'Remote care',
+  stabilization: 'Emergency',
 } satisfies {
   [w in Workflow]: Department
 }
@@ -67,13 +67,13 @@ function workflowsOfDepartment(department: Department): Workflow[] {
 }
 
 export const DEPARTMENTS_REQUIRING_TRIAGE = new Set<Department>([
-  'primary care',
-  'maternity',
-  'immunizations',
-  'chronic diseases',
-  'oncology',
-  'burns',
-  'remote care',
+  'Primary care',
+  'Maternity',
+  'Immunizations',
+  'Chronic diseases',
+  'Oncology',
+  'Burns',
+  'Remote care',
 ])
 
 export const DEPARTMENT_DEFS: {
@@ -108,9 +108,9 @@ export function departmentsOfProfession(
       assert(specialty)
       switch (specialty) {
         case 'triage':
-          return ['triage', 'reception']
-        case 'primary care':
-          return ['primary care', 'triage', 'reception']
+          return ['Triage', 'Reception']
+        case 'Primary care':
+          return ['Primary care', 'Triage', 'Reception']
         default: {
           throw new StatusError(`${specialty} not yet supported`, 400)
         }
@@ -119,18 +119,18 @@ export function departmentsOfProfession(
     case 'doctor': {
       assert(specialty)
       switch (specialty) {
-        case 'primary care':
-          return ['primary care', 'triage', 'reception']
+        case 'Primary care':
+          return ['Primary care', 'Triage', 'Reception']
         default: {
           throw new StatusError(`${specialty} not yet supported`, 400)
         }
       }
     }
     case 'receptionist': {
-      return ['reception']
+      return ['Reception']
     }
     case 'admin': {
-      return ['administration']
+      return ['Administration']
     }
     default: {
       throw new Error(`Unreachable, profession ${profession}`)

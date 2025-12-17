@@ -30,7 +30,7 @@ export async function start(
 ) {
   assert(location)
   assertOr403(
-    isEmployedInDepartment(organization_employment, 'reception'),
+    isEmployedInDepartment(organization_employment, 'Reception'),
     'Must work in the reception department to register patients',
   )
 
@@ -76,7 +76,7 @@ export async function start(
             id: patient_id,
             patient_encounter_id,
             organization_id,
-            department_name: 'reception',
+            department_name: 'Reception',
             current_workflow: 'registration',
           }),
     )

@@ -48,20 +48,20 @@
 // // deno-fmt-ignore-start
 // const wm_scenarios: WaitingRoomScenario[] = [
 //   // sex, reason for visit, department, current workflow, workflow status, triage priority
-//   ['female', 'seeking treatment', 'waiting room', 'triage', 'not started', 'Undetermined', 10],
-//   ['male', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 55],
-//   ['female', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 48],
-//   ['male', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 42],
-//   ['female', 'seeking treatment', 'waiting room', 'consultation', 'not started', 'Non-urgent', 30],
+//   ['female', 'seeking treatment', 'Waiting room', 'triage', 'not started', 'Undetermined', 10],
+//   ['male', 'seeking treatment', 'Waiting room', 'consultation', 'not started', 'Non-urgent', 55],
+//   ['female', 'seeking treatment', 'Waiting room', 'consultation', 'not started', 'Non-urgent', 48],
+//   ['male', 'seeking treatment', 'Waiting room', 'consultation', 'not started', 'Non-urgent', 42],
+//   ['female', 'seeking treatment', 'Waiting room', 'consultation', 'not started', 'Non-urgent', 30],
 //   ['female', 'seeking treatment', 'resus', 'stabilization', 'in progress', 'Emergency', 28],
-//   ['female', 'seeking treatment', 'reception', 'registration', 'in progress', 'Undetermined', 4],
+//   ['female', 'seeking treatment', 'Reception', 'registration', 'in progress', 'Undetermined', 4],
 //   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 39],
 //   ['male', 'seeking treatment', 'triage', 'triage', 'in progress', 'Undetermined', 7],
-//   ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Very urgent', 58],
-//   ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Urgent', 30],
-//   ['male', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 93],
-//   ['female', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 78],
-//   ['male', 'seeking treatment', 'primary care', 'consultation', 'in progress', 'Non-urgent', 28],
+//   ['female', 'seeking treatment', 'Primary care', 'consultation', 'in progress', 'Very urgent', 58],
+//   ['female', 'seeking treatment', 'Primary care', 'consultation', 'in progress', 'Urgent', 30],
+//   ['male', 'seeking treatment', 'Primary care', 'consultation', 'in progress', 'Non-urgent', 93],
+//   ['female', 'seeking treatment', 'Primary care', 'consultation', 'in progress', 'Non-urgent', 78],
+//   ['male', 'seeking treatment', 'Primary care', 'consultation', 'in progress', 'Non-urgent', 28],
 // ]
 
 // // deno-fmt-ignore-end
@@ -132,7 +132,7 @@
 //       const demo = randomNamesAndSex()
 //       return addTestEmployee(db, {
 //         profession: 'nurse',
-//         specialty: 'primary care',
+//         specialty: 'Primary care',
 //         registration_status: 'not started',
 //         health_worker_attrs: {
 //           name: demo.name,
@@ -532,7 +532,7 @@
 // //     if (workflow_status === 'in progress') {
 // //       let specialty = department
 // //       if (department === 'resus') {
-// //         specialty = 'primary care'
+// //         specialty = 'Primary care'
 // //       }
 // //       provider = `${randomPatientMandatoryRegistrationInformation('ZA').name} (${specialty})`
 // //     }

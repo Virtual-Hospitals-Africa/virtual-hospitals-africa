@@ -60,7 +60,7 @@ export async function addTestEmployee(
   }: TestHealthWorkerOpts = {},
 ): Promise<TestEmployee> {
   if (!specialty && ['nurse', 'doctor'].includes(profession)) {
-    specialty = 'primary care'
+    specialty = 'Primary care'
   }
   if (profession !== 'nurse') {
     assertEquals(
