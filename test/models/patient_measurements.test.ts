@@ -9,6 +9,7 @@ import {
   WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
 } from '../../shared/workflow.ts'
+import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 
 describe('db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
@@ -28,9 +29,18 @@ describe('db/models/patient_measurements.ts', () => {
             employment_id: nurse.employee_id,
           },
         )
+      const patient_id = encounter.patient.id
+
+      const measurement_equality = parseExpressionExpectingType(
+        `(=
+          (measurement 103228002)
+          (units 91.3 %)
+        )`,
+        '=',
+      )
 
       const { record_id } = await patient_measurements.insertOneNested(db, {
-        patient_id: encounter.patient.id,
+        patient_id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id:
           encounter.employee.patient_encounter_employee_id,
@@ -42,13 +52,7 @@ describe('db/models/patient_measurements.ts', () => {
           workflow_record_id: null,
           workflow_step_record_id: null,
         },
-        measurement_equality: parseExpressionExpectingType(
-          `(=
-            (measurement 103228002)
-            (units 91.3 %)
-          )`,
-          '=',
-        ),
+        measurement_equality,
       })
 
       const measurement = await patient_measurements.getById(db, record_id)
@@ -56,6 +60,46 @@ describe('db/models/patient_measurements.ts', () => {
       assertEquals(
         measurement.value_display,
         'Hemoglobin saturation with oxygen Measurement finding: 91.3%',
+      )
+
+      const records = await satisfyingSExpression(
+        db,
+        {
+          patient_id,
+          s_expression: measurement_equality,
+        },
+      )
+
+      assertEquals(records, {
+        satisfies: true,
+        record_ids: [record_id],
+      })
+
+      const records_slightly_off = await satisfyingSExpression(
+        db,
+        {
+          patient_id,
+          s_expression: `(= (measurement 103228002) (units 91.2 %))`,
+        },
+      )
+
+      assertEquals(records_slightly_off, {
+        satisfies: false,
+        record_ids: [],
+      })
+
+      assertEquals(
+        await satisfyingSExpression(
+          db,
+          {
+            patient_id,
+            s_expression: `(> (measurement 103228002) (units 91.2 %))`,
+          },
+        ),
+        {
+          satisfies: true,
+          record_ids: [record_id],
+        },
       )
     })
   })
