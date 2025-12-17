@@ -916,6 +916,14 @@ export interface OrganizationConsumables {
   updated_at: Generated<Timestamp>
 }
 
+export interface OrganizationDepartmentRooms {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  organization_department_id: string
+  organization_room_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface OrganizationDepartments {
   address_id: string | null
   created_at: Generated<Timestamp>
@@ -936,6 +944,14 @@ export interface OrganizationDevices {
   serial_number: string | null
   updated_at: Generated<Timestamp>
   updated_by: string | null
+}
+
+export interface OrganizationRooms {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  name: string
+  organization_id: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface Organizations {
@@ -1909,8 +1925,10 @@ export interface DB {
   nurses: Nurses
   organization_admins: OrganizationAdmins
   organization_consumables: OrganizationConsumables
+  organization_department_rooms: OrganizationDepartmentRooms
   organization_departments: OrganizationDepartments
   organization_devices: OrganizationDevices
+  organization_rooms: OrganizationRooms
   organizations: Organizations
   patient_age: PatientAge
   patient_allergies: PatientAllergies

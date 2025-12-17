@@ -1,0 +1,36 @@
+workflow_step	workflow	step	snomed_concept_id	order
+registration:primary_care	registration	primary_care		3
+registration:contacts	registration	contacts		4
+registration:this_visit	registration	this_visit		2
+registration:confirm_details	registration	confirm_details		5
+registration:terms_and_conditions	registration	terms_and_conditions		6
+registration:personal	registration	personal		1
+registration:route_patient	registration	route_patient		7
+triage:warning_signs	triage	warning_signs		8
+triage:brief_history	triage	brief_history	203421005	9
+triage:measure_vitals	triage	measure_vitals	410188000	10
+triage:route_patient	triage	route_patient		13
+triage:assign_priority	triage	assign_priority		12
+stabilization:monitor_patient	stabilization	monitor_patient		14
+consultation:vitals	consultation	vitals		16
+triage:additional_tasks_and_investigations	triage	additional_tasks_and_investigations		11
+consultation:chief_complaint	consultation	chief_complaint		15
+consultation:symptoms	consultation	symptoms		17
+consultation:history	consultation	history		18
+consultation:general_assessments	consultation	general_assessments		19
+consultation:examinations	consultation	examinations		20
+consultation:diagnostic_tests	consultation	diagnostic_tests		21
+consultation:diagnoses	consultation	diagnoses		22
+consultation:prescriptions	consultation	prescriptions		23
+consultation:orders	consultation	orders		24
+consultation:clinical_notes	consultation	clinical_notes		25
+consultation:request_review	consultation	request_review		26
+consultation:close_visit	consultation	close_visit		27
+prescription_refill:dispense	prescription_refill	dispense		29
+maternity:checkup	maternity	checkup		28
+doctor_review:diagnosis	doctor_review	diagnosis		31
+doctor_review:clinical_notes	doctor_review	clinical_notes		30
+doctor_review:prescriptions	doctor_review	prescriptions		32
+doctor_review:orders	doctor_review	orders		33
+doctor_review:referral	doctor_review	referral		34
+doctor_review:revert	doctor_review	revert		35

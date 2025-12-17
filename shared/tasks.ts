@@ -9,6 +9,10 @@ type Task = {
   task_s_expression: ParsedTaskExpression
 }
 
+// const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
+// const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
+// (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (department "Emergency"))
+
 export const TASKS: Task[] = [
   {
     if_description: 'If oxygen saturation below 92%',
