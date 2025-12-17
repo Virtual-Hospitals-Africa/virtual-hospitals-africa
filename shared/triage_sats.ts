@@ -4,7 +4,7 @@
  */
 export const TEWS_PRIORITY_LEVELS = {
   emergency: {
-    key: 'emergency',
+    key: 'Emergency',
     label: 'Emergency',
     min_score: 7,
     colors: { bg: 'bg-error-bg', text: 'text-error-text' },

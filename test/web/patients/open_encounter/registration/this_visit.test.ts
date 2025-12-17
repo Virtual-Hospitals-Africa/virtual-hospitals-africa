@@ -117,7 +117,7 @@ describe(
       const receptionist_departments = employeeOrganizationDepartmentNames(
         receptionist_employee,
       )
-      assertEquals(receptionist_departments, ['reception'])
+      assertEquals(receptionist_departments, ['Reception'])
 
       const $personal = await receptionist.fetchCheerio(
         `/app/organizations/${organization.id}/patients/start-registration`,
@@ -232,7 +232,7 @@ describe(
         health_worker.employee_id,
       )
       const departments = employeeOrganizationDepartmentNames(nurse)
-      assertEquals(departments, ['primary care', 'reception', 'triage'])
+      assertEquals(departments, ['Primary care', 'Reception', 'Triage'])
 
       const $personal = await fetchCheerio(
         `/app/organizations/${organization.id}/patients/start-registration`,

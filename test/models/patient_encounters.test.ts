@@ -104,7 +104,7 @@ describe(
               status: {
                 open: true,
                 patient_presence: {
-                  department_name: 'reception',
+                  department_name: 'Reception',
                   current_workflow: 'registration',
                   next_workflow: null,
                   present_with_patient_encounter_employee_ids: [
@@ -164,7 +164,7 @@ describe(
               reason: null,
               priority_level: null,
               target_treatment_time: null,
-              department_name: 'reception',
+              department_name: 'Reception',
               arrived_timestamp: open_encounter.arrived_timestamp,
             })
           }),
@@ -256,7 +256,7 @@ describe(
             status: {
               open: true,
               patient_presence: {
-                department_name: 'waiting room',
+                department_name: 'Waiting room',
                 current_workflow: null,
                 next_workflow: 'triage',
                 present_with_patient_encounter_employee_ids: [],
@@ -312,7 +312,7 @@ describe(
             reason: 'seeking treatment',
             priority_level: null,
             target_treatment_time: null,
-            department_name: 'waiting room',
+            department_name: 'Waiting room',
             arrived_timestamp: open_encounter.arrived_timestamp,
           })
         },

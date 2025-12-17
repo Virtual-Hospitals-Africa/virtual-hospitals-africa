@@ -47,31 +47,66 @@ export function withTestOrganization(
   )
 }
 
+export function testOrganizationRoomNames(department: Department): string[] {
+  switch (department) {
+    case 'Primary care':
+      return ['Primary care room 101', 'Primary care room 102']
+    case 'Maternity':
+      return ['Maternity room 1']
+    case 'Immunizations':
+      return ['Immunizations room 1']
+    case 'Chronic diseases':
+      return ['Chronic diseases room 1']
+    case 'Reception':
+      return ['Reception']
+    case 'Oncology':
+      return ['Oncology room 1']
+    case 'Burns':
+      return ['Burns room 1']
+    case 'Remote care':
+      return ['Remote care room 1']
+    case 'Waiting room':
+      return ['Waiting room']
+    case 'Triage':
+      return ['Triage room 1', 'Triage room 2']
+    case 'Administration':
+      return ['Administration']
+    case 'Pharmacy':
+      return ['Pharmacy']
+    case 'Emergency':
+      return ['Resuscitation area']
+    default:
+      throw new Error(`Unrecognized department ${department}`)
+  }
+}
+
 export function testOrganizationDepartments(
   category: string,
 ): Department[] {
   return category === 'Clinic'
     ? [
-      'primary care' as const,
-      'maternity' as const,
-      'immunizations' as const,
-      'chronic diseases' as const,
-      'reception' as const,
-      'waiting room' as const,
-      'triage' as const,
-      'administration' as const,
-      'pharmacy' as const,
+      'Primary care' as const,
+      'Maternity' as const,
+      'Immunizations' as const,
+      'Chronic diseases' as const,
+      'Reception' as const,
+      'Waiting room' as const,
+      'Triage' as const,
+      'Administration' as const,
+      'Pharmacy' as const,
+      'Emergency' as const,
     ]
     : [
-      'primary care' as const,
-      'oncology' as const,
-      'burns' as const,
-      'reception' as const,
-      'waiting room' as const,
-      'triage' as const,
-      'administration' as const,
-      'pharmacy' as const,
-      'remote care' as const,
+      'Primary care' as const,
+      'Oncology' as const,
+      'Burns' as const,
+      'Reception' as const,
+      'Waiting room' as const,
+      'Triage' as const,
+      'Administration' as const,
+      'Pharmacy' as const,
+      'Remote care' as const,
+      'Emergency' as const,
     ]
 }
 
@@ -87,7 +122,10 @@ export function createTestOrganization(
     category,
     name: `Test ${generateUUID()} ${category}`,
     country: 'ZA',
-    departments: testOrganizationDepartments(category),
+    departments: testOrganizationDepartments(category).map((name) => ({
+      name,
+      room_names: testOrganizationRoomNames(name),
+    })),
     address: {
       street: '123 Test St',
       locality: 'Test City',
@@ -120,7 +158,10 @@ export async function withTestOrganizations(
     category,
     name: `Test ${generateUUID()} ${category}`,
     country: 'US',
-    departments: testOrganizationDepartments(category),
+    departments: testOrganizationDepartments(category).map((name) => ({
+      name,
+      room_names: testOrganizationRoomNames(name),
+    })),
     address: {
       street: '123 Test St',
       locality: 'Test City',

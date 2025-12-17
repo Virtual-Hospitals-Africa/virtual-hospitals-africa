@@ -96,7 +96,7 @@ describe('db/models/health_workers.ts', () => {
               profession: 'nurse',
               is_admin: false,
               employment_id: health_worker.employee_id,
-              specialty: 'primary care',
+              specialty: 'Primary care',
               department_ids: result.organizations[0].department_ids,
             },
           ],
@@ -107,19 +107,19 @@ describe('db/models/health_workers.ts', () => {
           result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'primary care',
+              ?.name === 'Primary care',
         )
         assertSome(
           result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'triage',
+              ?.name === 'Triage',
         )
         assertSome(
           result.organizations[0].department_ids,
           (department_id) =>
             test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'reception',
+              ?.name === 'Reception',
         )
       },
     )
@@ -144,10 +144,10 @@ describe('db/models/health_workers.ts', () => {
           result.organizations[0].id,
         )
         assertEquals(department_names, [
-          'primary care',
-          'reception',
-          'triage',
-          'administration',
+          'Primary care',
+          'Reception',
+          'Triage',
+          'Administration',
         ])
       },
     )
@@ -169,7 +169,7 @@ describe('db/models/health_workers.ts', () => {
         const test_clinic = await getting_test_clinic
 
         const reception_department_id = exists(
-          test_clinic.departments.find((d) => d.name === 'administration'),
+          test_clinic.departments.find((d) => d.name === 'Administration'),
         ).id
         await employment.addOne(db, {
           health_worker_id: health_worker.id,

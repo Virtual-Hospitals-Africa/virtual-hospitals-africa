@@ -26,7 +26,7 @@ export const handler = postHandler(
         organization_id: organization.id,
         current_workflow: null,
         next_workflow: encounter.status.patient_presence.current_workflow,
-        department_name: 'waiting room',
+        department_name: 'Waiting room',
       }
 
       await ctx.state.trx.insertInto('patient_presence').values(

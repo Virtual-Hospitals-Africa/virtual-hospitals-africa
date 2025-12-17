@@ -23,7 +23,7 @@ describe('db/models/doctor_reviews.ts', () => {
 
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
-          specialty: 'primary care',
+          specialty: 'Primary care',
           registration_status: 'approved',
           organization_id: clinic.id,
         })

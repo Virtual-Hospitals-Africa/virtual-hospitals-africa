@@ -1,6 +1,9 @@
 import { define } from '../define.ts'
 import * as organizations from '../../models/organizations.ts'
-import { testOrganizationDepartments } from '../../../test/_helpers/organizations.ts'
+import {
+  testOrganizationDepartments,
+  testOrganizationRoomNames,
+} from '../../../test/_helpers/organizations.ts'
 
 export default define(
   [
@@ -17,13 +20,17 @@ export default define(
     for (
       const organization of test_organizations
     ) {
-      const departments = testOrganizationDepartments(
+      const department_names = testOrganizationDepartments(
         organization.category || 'Unknown',
       )
+
       await organizations.addDepartments(
         trx,
         organization.id,
-        departments,
+        department_names.map((name) => ({
+          name,
+          room_names: testOrganizationRoomNames(name),
+        })),
       )
     }
   },

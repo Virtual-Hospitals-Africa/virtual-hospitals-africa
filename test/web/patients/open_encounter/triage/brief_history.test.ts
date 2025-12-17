@@ -350,7 +350,7 @@ describe('triage/brief_history', () => {
         'provider': {
           'is_me': true,
           'profession': 'nurse',
-          'specialty': 'primary care',
+          'specialty': 'Primary care',
           'is_admin': false,
           'seen_at': z.string().datetime({ offset: true }),
         },
@@ -387,7 +387,7 @@ describe('triage/brief_history', () => {
         'provider': {
           'is_me': true,
           'profession': 'nurse',
-          'specialty': 'primary care',
+          'specialty': 'Primary care',
           'is_admin': false,
           'seen_at': z.string().datetime({ offset: true }),
         },
@@ -422,9 +422,9 @@ describe('triage/brief_history', () => {
               prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
             }`,
           'Reason for visit': 'Seeking Treatment',
-          Department: 'triage',
+          Department: 'Triage',
           Status: 'Triage In Progress',
-          Employees: `${nurse1.health_worker.name}primary care nurse`,
+          Employees: `${nurse1.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
           Actions: 'triage',
         },
@@ -481,9 +481,9 @@ describe('triage/brief_history', () => {
               prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
             }`,
           'Reason for visit': 'Seeking Treatment',
-          Department: 'triage',
+          Department: 'Triage',
           Status: 'Triage In Progress',
-          Employees: `${nurse2.health_worker.name}primary care nurse`,
+          Employees: `${nurse2.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
           Actions: 'triage',
         },

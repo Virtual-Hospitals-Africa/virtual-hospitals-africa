@@ -45,7 +45,7 @@ describe('db/models/employees.ts', () => {
           'organization_id': '00000000-0000-0000-0000-000000000001',
           'profession': 'nurse',
           'is_admin': false,
-          'specialty': 'primary care',
+          'specialty': 'Primary care',
           'href':
             `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${result.id}`,
           'organizations': [
@@ -57,7 +57,7 @@ describe('db/models/employees.ts', () => {
               'employment_id': health_worker.employee_id,
               'profession': 'nurse',
               'is_admin': false,
-              'specialty': 'primary care',
+              'specialty': 'Primary care',
               'department_ids': result.organizations[0].department_ids,
             },
           ],

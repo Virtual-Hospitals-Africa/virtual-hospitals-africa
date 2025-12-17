@@ -18,7 +18,7 @@
 //     it('renders a page on GET', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
-//         specialty: 'primary care',
+//         specialty: 'Primary care',
 //         registration_status: 'approved',
 //       })
 
@@ -51,7 +51,7 @@
 //       })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
-//         specialty: 'primary care',
+//         specialty: 'Primary care',
 //         registration_status: 'approved',
 //       })
 
@@ -105,7 +105,7 @@
 //     it.skip('can create a patient encounter for a new patient on POST', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
-//         specialty: 'primary care',
+//         specialty: 'Primary care',
 //         registration_status: 'approved',
 //       })
 

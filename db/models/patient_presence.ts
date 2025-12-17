@@ -42,7 +42,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
       next_workflow: null,
     }
     : {
-      department_name: 'waiting room',
+      department_name: 'Waiting room',
       current_workflow: null,
       next_workflow,
     }

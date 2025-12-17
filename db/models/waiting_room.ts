@@ -75,13 +75,13 @@ export function asWaitingRoom(
 
   let workflow_status_display: string
   if (current_workflow_status) {
-    assertNotEquals(department_name, 'waiting room')
+    assertNotEquals(department_name, 'Waiting room')
     assertEquals(current_workflow_status.workflow, current_workflow)
     assertNotEquals(current_workflow_status.status, 'completed')
     workflow_status_display =
       `${current_workflow_status.workflow} ${current_workflow_status.status}`
   } else {
-    assertEquals(department_name, 'waiting room')
+    assertEquals(department_name, 'Waiting room')
     assert(next_workflow_status)
     assertArrayEmpty(present_with_patient_encounter_employee_ids)
     workflow_status_display = `Awaiting ${next_workflow_status.workflow}`

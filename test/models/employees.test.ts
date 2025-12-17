@@ -31,7 +31,7 @@ describe('db/models/employees.ts ', () => {
       const test_clinic = await getting_test_clinic
 
       const reception_department_id = exists(
-        test_clinic.departments.find((d) => d.name === 'administration'),
+        test_clinic.departments.find((d) => d.name === 'Administration'),
       ).id
       const receptionist_employment = await employment.addOne(db, {
         health_worker_id: health_worker.id,

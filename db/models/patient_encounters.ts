@@ -139,7 +139,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   if (!employed_in_workflow_department) {
     patient_presence.next_workflow = patient_presence.current_workflow
     patient_presence.current_workflow = null
-    patient_presence.department_name = 'waiting room'
+    patient_presence.department_name = 'Waiting room'
   }
 
   const employment_presence: InsertShape<EmploymentPresence> = {
@@ -505,7 +505,7 @@ function asPatientPresence(
 ): RenderedPatientPresence {
   assertDepartment(department_name)
 
-  if (department_name === 'waiting room') {
+  if (department_name === 'Waiting room') {
     assert(!current_workflow)
     assert(next_workflow)
     assertArrayEmpty(present_with_patient_encounter_employee_ids)

@@ -15,7 +15,7 @@ describe(
     it('can search for organizations by name', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
-        specialty: 'primary care',
+        specialty: 'Primary care',
         registration_status: 'approved',
       })
       const response = await fetch(

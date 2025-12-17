@@ -1327,7 +1327,7 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
 export type Profession = 'doctor' | 'nurse' | 'receptionist'
 
 export type NurseSpecialty =
-  | 'primary care'
+  | 'Primary care'
   | 'triage'
   | 'registered general'
   | 'midwife'
@@ -1347,7 +1347,7 @@ export type NurseSpecialty =
   | 'dental'
 
 export const NURSE_SPECIALTIES: NurseSpecialty[] = [
-  'primary care',
+  'Primary care',
   'triage',
   'registered general',
   'midwife',
@@ -2260,14 +2260,14 @@ export type RenderedOrganization = HasStringId<
 >
 
 export type RenderedPatientPresenceWaitingRoom = {
-  department_name: 'waiting room'
+  department_name: 'Waiting room'
   current_workflow: null
   next_workflow: Workflow
   present_with_patient_encounter_employee_ids: []
 }
 
 export type RenderedPatientPresenceActiveDepartment = {
-  department_name: Exclude<Department, 'waiting room'>
+  department_name: Exclude<Department, 'Waiting room'>
   current_workflow: Workflow
   next_workflow: null | Workflow
   present_with_patient_encounter_employee_ids: string[]

@@ -7,7 +7,7 @@ export const ENCOUNTER_REASONS: EncounterReason[] = [
   'follow up',
   'referral',
   'checkup',
-  'administration',
+  'Administration',
 ]
 
 const REASON_WORKFLOW_MAP: Partial<Record<EncounterReason, Workflow>> = {

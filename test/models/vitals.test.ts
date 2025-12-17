@@ -19,7 +19,7 @@ describe(
         async (trx) => {
           const health_worker = await addTestEmployee(trx, {
             profession: 'nurse',
-            specialty: 'primary care',
+            specialty: 'Primary care',
             registration_status: 'approved',
           })
           const encounter =
