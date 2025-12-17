@@ -61,6 +61,7 @@ export function testOrganizationDepartments(
       'triage' as const,
       'administration' as const,
       'pharmacy' as const,
+      'emergency' as const,
     ]
     : [
       'primary care' as const,
@@ -72,6 +73,7 @@ export function testOrganizationDepartments(
       'administration' as const,
       'pharmacy' as const,
       'remote care' as const,
+      'emergency' as const,
     ]
 }
 

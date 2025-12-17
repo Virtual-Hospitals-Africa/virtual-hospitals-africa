@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   Coordinates,
+  InsertShape,
   Maybe,
   NonEmptyArray,
   RenderedOrganization,
@@ -20,6 +21,8 @@ import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 import { SERVER_COUNTRY } from './countries.ts'
+import { DB } from '../../db.d.ts'
+import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -127,50 +130,68 @@ export type OrganizationInsert = {
   address?: Maybe<addresses.AddressInsert>
   location?: Coordinates
   is_test?: boolean
-  departments?: Department[]
+  departments?: {
+    name: Department
+    room_names: string[]
+  }[]
   most_common_language_code?: string
 }
 
 export async function addDepartments(
   trx: TrxOrDb,
   organization_id: string,
-  departments: Department[],
+  departments: {
+    name: Department
+    room_names: string[]
+  }[],
 ) {
   if (!departments.length) return
 
-  // Insert departments
-  const inserted_departments = await trx
-    .insertInto('organization_departments')
-    .values(departments.map((name) => ({
-      organization_id,
-      name,
-    })))
-    .returning(['id', 'name'])
-    .execute()
+  const departments_insert: InsertShape<DB['organization_departments']>[] = []
+  const organization_rooms_insert: InsertShape<DB['organization_rooms']>[] = []
+  const organization_department_rooms_insert: InsertShape<
+    DB['organization_department_rooms']
+  >[] = []
 
-  // Insert rooms with same names as departments
-  const inserted_rooms = await trx
-    .insertInto('organization_rooms')
-    .values(departments.map((name) => ({
+  for (const dept of departments) {
+    const organization_department_id = generateUUID()
+    departments_insert.push({
+      id: organization_department_id,
       organization_id,
-      name,
-    })))
-    .returning(['id', 'name'])
-    .execute()
+      name: dept.name,
+    })
 
-  // Link departments to their corresponding rooms
-  const department_room_links = inserted_departments.map((dept) => {
-    const room = inserted_rooms.find((r) => r.name === dept.name)!
-    return {
-      organization_department_id: dept.id,
-      organization_room_id: room.id,
+    assertArrayNonEmpty(dept.room_names)
+
+    for (const room_name of dept.room_names) {
+      const organization_room_id = generateUUID()
+      organization_rooms_insert.push({
+        id: organization_room_id,
+        organization_id,
+        name: room_name,
+      })
+      organization_department_rooms_insert.push({
+        organization_room_id,
+        organization_department_id,
+      })
     }
-  })
+  }
 
-  await trx
-    .insertInto('organization_department_rooms')
-    .values(department_room_links)
-    .execute()
+  await trx.with(
+    'inserting_departments',
+    (qb) =>
+      qb.insertInto('organization_departments')
+        .values(departments_insert),
+  ).with('inserting_rooms', (qb) =>
+    qb.insertInto('organization_rooms')
+      .values(organization_rooms_insert)).with(
+      'inserting_department_rooms',
+      (qb) =>
+        qb.insertInto('organization_department_rooms')
+          .values(organization_department_rooms_insert),
+    ).selectNoFrom([
+      success_true,
+    ]).executeTakeFirstOrThrow()
 }
 
 export async function add(
