@@ -9,6 +9,7 @@ import {
   blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
+  literalString,
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -294,6 +295,7 @@ export const patient_findings = base({
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
+        literalString(finding_id).as('record_id'),
       ])
       .executeTakeFirstOrThrow()
   },
@@ -323,7 +325,7 @@ export const patient_findings = base({
       return {
         success: true,
         inserted_new: false,
-        existing_records: already_exists.record_ids,
+        record_id: already_exists.record_ids[0],
       }
     }
 
