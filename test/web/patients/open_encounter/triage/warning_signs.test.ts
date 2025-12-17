@@ -10,12 +10,14 @@ import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
 import asFormData from '../../../../../util/asFormData.ts'
-import { patient_findings } from '../../../../../db/models/patient_findings.ts'
+import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  patient_findings,
+} from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { route } from '../../../../route.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../db/models/warning_signs.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'

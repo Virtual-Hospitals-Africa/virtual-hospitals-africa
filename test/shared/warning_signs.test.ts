@@ -1,12 +1,9 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import db from '../../db/db.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { parseExpression } from '../../shared/s_expression.ts'
 
-describe('db/models/warning_signs.ts', () => {
-  afterAll(() => db.destroy())
-
+describe('shared/warning_signs.ts', () => {
   describe('parsing signs', () => {
     it('works', () => {
       const warning_signs = KEYED_WARNING_SIGNS.map((

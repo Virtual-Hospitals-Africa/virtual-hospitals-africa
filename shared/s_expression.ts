@@ -4,6 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { arrayIsEmpty, assertArrayEmpty } from '../util/arraySize.ts'
 import compact from '../util/compact.ts'
+import assertOneOf from '../util/assertOneOf.ts'
 
 export type ParsedFindingExpression = {
   type: 'finding'
@@ -32,6 +33,17 @@ export type ParsedEvaluatesExpression = {
   expression: ParsedExpression
 }
 
+export type ParsedMeasurementExpression = {
+  type: 'measurement'
+  snomed_concept_id: string
+  // units?: ParsedUnitsExpression
+}
+
+export type ParsedUnitsExpression = {
+  type: 'units'
+  value: number
+  units: string
+}
 export type ParsedQualifierOrNotExpression =
   | ParsedQualifierExpression
   | ParsedNotExpression
@@ -41,6 +53,11 @@ export type ParsedQualifierExpression = {
   snomed_concept_id: string
   value_snomed_concept_id: string | null
   qualifiers: ParsedQualifierOrNotExpression[]
+}
+export type ParsedTaskExpression = {
+  type: 'task'
+  if_expression: ParsedExpression
+  tasks: ParsedProcedureExpression[]
 }
 
 export type ParsedNotExpression = {
@@ -53,10 +70,28 @@ export type ParsedOrExpression = {
   expressions: ParsedExpression[]
 }
 
+export type ParsedAndExpression = {
+  type: 'and'
+  expressions: ParsedExpression[]
+}
+
 export type ParsedActiveConditionExpression = {
   type: 'active_condition'
   snomed_concept_id: string
 }
+
+export type ParsedComparatorExpression<Comparator extends string> = {
+  type: Comparator
+  left: ParsedMeasurementExpression
+  right: ParsedUnitsExpression | ParsedMeasurementExpression
+}
+
+export type ParsedComparatorExpressions =
+  | ParsedComparatorExpression<'>'>
+  | ParsedComparatorExpression<'<'>
+  | ParsedComparatorExpression<'>='>
+  | ParsedComparatorExpression<'<='>
+  | ParsedComparatorExpression<'='>
 
 export type ParsedExpression =
   | ParsedFindingExpression
@@ -64,9 +99,14 @@ export type ParsedExpression =
   | ParsedEvaluationExpression
   | ParsedEvaluatesExpression
   | ParsedQualifierExpression
+  | ParsedTaskExpression
+  | ParsedMeasurementExpression
+  | ParsedUnitsExpression
   | ParsedNotExpression
   | ParsedOrExpression
+  | ParsedAndExpression
   | ParsedActiveConditionExpression
+  | ParsedComparatorExpressions
 
 export type ParsedExpressionNodeType = ParsedExpression['type']
 
@@ -246,6 +286,22 @@ const PARSERS = {
       expressions: expressions.map(parseArrayNode),
     }
   },
+  and: (node: SExpressionNode): ParsedAndExpression => {
+    assert(Array.isArray(node))
+    const [type, ...expressions] = node
+    assertEquals(type, 'and')
+    assert(expressions.length >= 2)
+    expressions.forEach((expression) => {
+      if (!Array.isArray(expression)) {
+        throw new Error(`Expected array, got: ${JSON.stringify(expression)}`)
+      }
+    })
+
+    return {
+      type: 'and',
+      expressions: expressions.map(parseArrayNode),
+    }
+  },
   active_condition: (
     node: SExpressionNode,
   ): ParsedActiveConditionExpression => {
@@ -266,6 +322,146 @@ const PARSERS = {
       snomed_concept_id,
     }
   },
+  task: (
+    node: SExpressionNode,
+  ): ParsedTaskExpression => {
+    assert(Array.isArray(node))
+    const [type, if_expression, ...tasks] = node
+    assertEquals(type, 'task')
+    assert(Array.isArray(if_expression))
+    assert(Array.isArray(tasks))
+
+    return {
+      type: 'task',
+      if_expression: parseArrayNode(if_expression),
+      tasks: tasks.map(PARSERS.procedure),
+    }
+  },
+  measurement: (
+    node: SExpressionNode,
+  ): ParsedMeasurementExpression => {
+    assert(Array.isArray(node))
+    const [type, snomed_concept_id, ...rest] = node
+    assertEquals(type, 'measurement')
+    assert(isString(snomed_concept_id))
+    assertArrayEmpty(rest)
+
+    return {
+      type: 'measurement',
+      snomed_concept_id,
+    }
+  },
+  units: (
+    node: SExpressionNode,
+  ): ParsedUnitsExpression => {
+    assert(Array.isArray(node))
+    const [type, value_string, units, ...rest] = node
+    assertEquals(type, 'units')
+    assert(isString(value_string))
+    const value = parseFloat(value_string)
+    assert(!isNaN(value))
+    assert(isString(units))
+
+    assertArrayEmpty(rest)
+
+    return {
+      type: 'units',
+      value,
+      units,
+    }
+  },
+  '>': (
+    node: SExpressionNode,
+  ): ParsedComparatorExpression<'>'> => {
+    assert(Array.isArray(node))
+    const [type, left, right_expr, ...rest] = node
+    assertEquals(type, '>')
+    assert(Array.isArray(left))
+    assert(Array.isArray(right_expr))
+    assertArrayEmpty(rest)
+    const right = parseArrayNode(right_expr)
+    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+
+    return {
+      type: '>',
+      left: PARSERS.measurement(left),
+      right,
+    }
+  },
+  '<': (
+    node: SExpressionNode,
+  ): ParsedComparatorExpression<'<'> => {
+    assert(Array.isArray(node))
+    const [type, left, right_expr, ...rest] = node
+    assertEquals(type, '<')
+    assert(Array.isArray(left))
+    assert(Array.isArray(right_expr))
+    assertArrayEmpty(rest)
+    const right = parseArrayNode(right_expr)
+    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+
+    return {
+      type: '<',
+      left: PARSERS.measurement(left),
+      right,
+    }
+  },
+  '>=': (
+    node: SExpressionNode,
+  ): ParsedComparatorExpression<'>='> => {
+    assert(Array.isArray(node))
+    const [type, left, right_expr, ...rest] = node
+    assertEquals(type, '>=')
+    assert(Array.isArray(left))
+    assert(Array.isArray(right_expr))
+    assertArrayEmpty(rest)
+    const right = parseArrayNode(right_expr)
+    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+
+    return {
+      type: '>=',
+      left: PARSERS.measurement(left),
+      right,
+    }
+  },
+  '<=': (
+    node: SExpressionNode,
+  ): ParsedComparatorExpression<'<='> => {
+    assert(Array.isArray(node))
+    const [type, left, right_expr, ...rest] = node
+    assertEquals(type, '<=')
+    assert(Array.isArray(left))
+    assert(Array.isArray(right_expr))
+    assertArrayEmpty(rest)
+    const right = parseArrayNode(right_expr)
+    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+
+    return {
+      type: '<=',
+      left: PARSERS.measurement(left),
+      right,
+    }
+  },
+  '=': (
+    node: SExpressionNode,
+  ): ParsedComparatorExpression<'='> => {
+    assert(Array.isArray(node))
+    const [type, left, right_expr, ...rest] = node
+    assertEquals(type, '=')
+    assert(Array.isArray(left))
+    assert(Array.isArray(right_expr))
+    assertArrayEmpty(rest)
+    const right = parseArrayNode(right_expr)
+    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+
+    return {
+      type: '=',
+      left: PARSERS.measurement(left),
+      right,
+    }
+  },
+} satisfies {
+  [T in ParsedExpression['type']]: unknown
 }
 
 const FROM_PARSERS = {
@@ -314,8 +510,38 @@ const FROM_PARSERS = {
     `(not ${fromParsedExpression(parsed.expression)})`,
   or: (parsed: ParsedOrExpression): string =>
     `(or  ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
+  and: (parsed: ParsedAndExpression): string =>
+    `(and ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
+  task: (parsed: ParsedTaskExpression): string =>
+    `(task ${fromParsedExpression(parsed.if_expression)} ${
+      parsed.tasks.map(fromParsedExpression).join(' ')
+    })`,
+  measurement: (parsed: ParsedMeasurementExpression): string =>
+    `(measurement ${parsed.snomed_concept_id})`,
+  units: (parsed: ParsedUnitsExpression): string =>
+    `(units ${parsed.value} ${parsed.units})`,
   active_condition: (parsed: ParsedActiveConditionExpression): string =>
     `(active_condition  ${parsed.snomed_concept_id})`,
+  '>': (parsed: ParsedComparatorExpression<'>'>): string =>
+    `(> ${fromParsedExpression(parsed.left)} ${
+      fromParsedExpression(parsed.right)
+    })`,
+  '<': (parsed: ParsedComparatorExpression<'<'>): string =>
+    `(< ${fromParsedExpression(parsed.left)} ${
+      fromParsedExpression(parsed.right)
+    })`,
+  '>=': (parsed: ParsedComparatorExpression<'>='>): string =>
+    `(>= ${fromParsedExpression(parsed.left)} ${
+      fromParsedExpression(parsed.right)
+    })`,
+  '<=': (parsed: ParsedComparatorExpression<'<='>): string =>
+    `(<= ${fromParsedExpression(parsed.left)} ${
+      fromParsedExpression(parsed.right)
+    })`,
+  '=': (parsed: ParsedComparatorExpression<'='>): string =>
+    `(= ${fromParsedExpression(parsed.left)} ${
+      fromParsedExpression(parsed.right)
+    })`,
 }
 
 function parseArrayNode(node: SExpressionNode): ParsedExpression {

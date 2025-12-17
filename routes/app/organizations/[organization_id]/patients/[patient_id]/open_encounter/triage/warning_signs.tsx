@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import entries from '../../../../../../../../util/entries.ts'
-import { warning_signs } from '../../../../../../../../db/models/warning_signs.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import { KEYED_WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
@@ -21,7 +21,7 @@ const WarningSignsSchema = z.object({
     z.string(),
     z.string().transform((
       value,
-    ) => (console.log(value), parseFindingExpression(value))),
+    ) => parseFindingExpression(value)),
   ).optional().default({}).transform((signs) =>
     entries(signs).map(([key, finding]) => ({
       key,
@@ -36,7 +36,7 @@ export const handler = postHandler(
     const inserting_findings = forEach(
       form_values.warning_signs,
       ({ finding }) =>
-        warning_signs.insertOneIfNotAlreadyExistsForThisEncounter(
+        patient_findings.insertOneIfNotAlreadyExistsForThisEncounter(
           ctx.state.trx,
           {
             patient_id: ctx.state.patient.id,
