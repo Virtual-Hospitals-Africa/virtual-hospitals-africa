@@ -157,7 +157,7 @@ describe('db/models/patient_measurements.ts', () => {
       assertEquals(first_insert.record_id, second_insert.record_id)
     })
 
-    it('only inserts a measurement once if the value did not change', async () => {
+    it('inserts a new measurement once if the value did change', async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
         registration_status: 'approved',
