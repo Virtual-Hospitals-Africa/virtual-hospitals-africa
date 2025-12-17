@@ -5,6 +5,7 @@ import {
   ParsedExpressionNodeType,
   ParsedQualifierOrNotExpression,
   parseExpression,
+  parseQualifierExpression,
 } from '../../shared/s_expression.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import { DB } from '../../db.d.ts'
@@ -225,6 +226,9 @@ const EXPRESSION_BUILDERS = {
   evaluates() {
     throw new Error('evalutes is handled by parent nodes')
   },
+  task() {
+    throw new Error('task is not directly queryable')
+  },
   or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return baseQuery(trx, { patient_id, patient_encounter_id })
       .where(
@@ -242,6 +246,45 @@ const EXPRESSION_BUILDERS = {
           )),
       )
   },
+  and(trx, { patient_id, patient_encounter_id }, { expressions }) {
+    return baseQuery(trx, { patient_id, patient_encounter_id })
+      .where(
+        (eb) =>
+          eb.and(expressions.map((expression) =>
+            eb(
+              'patient_records.id',
+              'in',
+              buildExpression(
+                trx,
+                { patient_id, patient_encounter_id },
+                expression,
+              ),
+            )
+          )),
+      )
+  },
+  measurement(trx, patient, { snomed_concept_id }) {
+    return baseQuery(trx, {
+      ...patient,
+      snomed_concept_id: '118245000',
+      qualifiers: [
+        parseQualifierExpression(`(qualifier ${snomed_concept_id})`),
+      ],
+    })
+      .innerJoin(
+        'patient_findings',
+        'patient_records.id',
+        'patient_findings.id',
+      )
+      .innerJoin(
+        'patient_measurements',
+        'patient_records.id',
+        'patient_measurements.id',
+      )
+  },
+  units() {
+    throw new Error('units is handled by parent nodes')
+  },
   active_condition(trx, patient, { snomed_concept_id }) {
     return buildExpression(
       trx,
@@ -251,6 +294,21 @@ const EXPRESSION_BUILDERS = {
             (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
       `),
     )
+  },
+  '>'() {
+    throw new Error('> is handled by parent nodes')
+  },
+  '<'() {
+    throw new Error('> is handled by parent nodes')
+  },
+  '>='() {
+    throw new Error('> is handled by parent nodes')
+  },
+  '<='() {
+    throw new Error('> is handled by parent nodes')
+  },
+  '='() {
+    throw new Error('> is handled by parent nodes')
   },
 } satisfies {
   [T in ParsedExpressionNodeType]: (

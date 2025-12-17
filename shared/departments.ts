@@ -27,7 +27,7 @@ export const DEPARTMENTS = [
   'oncology' as const,
   'burns' as const,
   'remote care' as const,
-  'resus' as const,
+  'emergency' as const,
 ]
 
 export type Department = (typeof DEPARTMENTS)[number]
@@ -51,7 +51,7 @@ export const WORKFLOW_DEPARTMENTS = {
   triage: 'triage',
   prescription_refill: 'pharmacy',
   doctor_review: 'remote care',
-  stabilization: 'resus',
+  stabilization: 'emergency',
 } satisfies {
   [w in Workflow]: Department
 }

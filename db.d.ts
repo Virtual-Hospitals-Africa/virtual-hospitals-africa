@@ -1257,6 +1257,13 @@ export interface PatientRecords {
   value_snomed_concept_id: Int8 | null
 }
 
+export interface PatientReferrals {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+}
+
 export interface PatientRegistration {
   being_taken_by: string
   created_at: Generated<Timestamp>
@@ -1940,6 +1947,7 @@ export interface DB {
   patient_record_qualifiers: PatientRecordQualifiers
   patient_record_relations: PatientRecordRelations
   patient_records: PatientRecords
+  patient_referrals: PatientReferrals
   patient_registration: PatientRegistration
   patient_symptoms: PatientSymptoms
   patient_triage_level: PatientTriageLevel
