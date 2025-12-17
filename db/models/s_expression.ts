@@ -10,8 +10,8 @@ import {
 import { nowInvalidRecords } from './patient_records.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './warning_signs.ts'
 import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'

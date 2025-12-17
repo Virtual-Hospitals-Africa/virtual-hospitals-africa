@@ -5,10 +5,9 @@ import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
-import { warning_signs } from '../../db/models/warning_signs.ts'
+import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assert } from 'std/assert/assert.ts'
 import { WORKFLOW_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
-import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
@@ -36,7 +35,7 @@ describe('db/models/s_expression.ts', () => {
     )
     assert(finding.type === 'finding')
 
-    await warning_signs.insertOne(db, {
+    await patient_findings.insertOneNested(db, {
       patient_id: encounter.patient.id,
       patient_encounter_id: encounter.patient_encounter_id,
       patient_encounter_employee_id:
