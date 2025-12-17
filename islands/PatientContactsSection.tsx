@@ -1,8 +1,9 @@
 import FormRow from '../components/library/FormRow.tsx'
 import FormSection from '../components/library/FormSection.tsx'
 import CountrySelect from './CountrySelect.tsx'
-import { PhoneNumberInput, TextInput } from './form/Inputs.tsx'
 import { Address } from '../types.ts'
+import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
+import { TextInput } from './form/inputs/text.tsx'
 
 export default function PatientContactInformationSection( {address}: {address?: Address}) {
   return (

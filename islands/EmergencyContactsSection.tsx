@@ -1,8 +1,10 @@
 import { useSignal } from '@preact/signals'
 import FormRow from '../components/library/FormRow.tsx'
 import FormSection from '../components/library/FormSection.tsx'
-import { PhoneNumberInput, TextInput, SelectWithOptions } from './form/Inputs.tsx'
 import { Button } from '../components/library/Button.tsx'
+import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
+import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
+import { TextInput } from './form/inputs/text.tsx'
 
 const RELATIONSHIP_OPTIONS = [
   'Parent',
@@ -77,7 +79,7 @@ export default function EmergencyContactSection({
               <Button
                 type="button"
                 onClick={() => removeContact(index)}
-                variant='solid'
+                variant='primary'
               >
                 Remove Contact
               </Button>
@@ -90,7 +92,7 @@ export default function EmergencyContactSection({
           <Button
             type="button"
             onClick={addContact}
-            variant="solid"
+            variant="primary"
           >
             + Add Contact
           </Button>

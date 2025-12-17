@@ -19,8 +19,14 @@ export type DoctorReviewStep =
   | 'referral'
   | 'revert'
 
+export type EmergencyContactRelationship =
+  | 'Friend'
+  | 'Other'
+  | 'Parent'
+  | 'Sibling'
+
 export type EncounterReason =
-  | 'administration'
+  | 'Administration'
   | 'checkup'
   | 'follow up'
   | 'maternity'
@@ -1089,6 +1095,17 @@ export interface PatientConditions {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientEmergencyContacts {
+  contact_order: Generated<number>
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  name: string
+  patient_id: string
+  phone_number: string
+  relationship: EmergencyContactRelationship
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientEncounterEmployees {
   created_at: Generated<Timestamp>
   employment_id: string
@@ -1953,6 +1970,7 @@ export interface DB {
   patient_computed_findings_inputs: PatientComputedFindingsInputs
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
+  patient_emergency_contacts: PatientEmergencyContacts
   patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
   patient_evaluation_scores: PatientEvaluationScores
