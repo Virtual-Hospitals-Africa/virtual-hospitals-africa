@@ -83,7 +83,7 @@ export type ParsedActiveConditionExpression = {
 export type ParsedComparatorExpression<Comparator extends string> = {
   type: Comparator
   left: ParsedMeasurementExpression
-  right: ParsedUnitsExpression | ParsedMeasurementExpression
+  right: ParsedUnitsExpression /*| ParsedMeasurementExpression */
 }
 
 export type ParsedComparatorExpressions =
@@ -380,7 +380,7 @@ const PARSERS = {
     assert(Array.isArray(right_expr))
     assertArrayEmpty(rest)
     const right = parseArrayNode(right_expr)
-    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+    assertOneOf(right.type, ['units' as const])
 
     return {
       type: '>',
@@ -398,7 +398,7 @@ const PARSERS = {
     assert(Array.isArray(right_expr))
     assertArrayEmpty(rest)
     const right = parseArrayNode(right_expr)
-    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+    assertOneOf(right.type, ['units' as const])
 
     return {
       type: '<',
@@ -416,7 +416,7 @@ const PARSERS = {
     assert(Array.isArray(right_expr))
     assertArrayEmpty(rest)
     const right = parseArrayNode(right_expr)
-    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+    assertOneOf(right.type, ['units' as const])
 
     return {
       type: '>=',
@@ -434,7 +434,7 @@ const PARSERS = {
     assert(Array.isArray(right_expr))
     assertArrayEmpty(rest)
     const right = parseArrayNode(right_expr)
-    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+    assertOneOf(right.type, ['units' as const])
 
     return {
       type: '<=',
@@ -452,7 +452,7 @@ const PARSERS = {
     assert(Array.isArray(right_expr))
     assertArrayEmpty(rest)
     const right = parseArrayNode(right_expr)
-    assertOneOf(right.type, ['measurement' as const, 'units' as const])
+    assertOneOf(right.type, ['units' as const])
 
     return {
       type: '=',

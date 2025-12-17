@@ -138,6 +138,30 @@ export async function satisfyingSExpression(
   }
 }
 
+function measurement(
+  trx: TrxOrDb,
+  patient: PatientIdentifiers,
+  { snomed_concept_id }: ParsedExpression & { type: 'measurement' },
+) {
+  return baseQuery(trx, {
+    ...patient,
+    snomed_concept_id: '118245000',
+    qualifiers: [
+      parseQualifierExpression(`(qualifier ${snomed_concept_id})`),
+    ],
+  })
+    .innerJoin(
+      'patient_findings',
+      'patient_records.id',
+      'patient_findings.id',
+    )
+    .innerJoin(
+      'patient_measurements',
+      'patient_records.id',
+      'patient_measurements.id',
+    )
+}
+
 const EXPRESSION_BUILDERS = {
   finding(
     trx,
@@ -263,25 +287,7 @@ const EXPRESSION_BUILDERS = {
           )),
       )
   },
-  measurement(trx, patient, { snomed_concept_id }) {
-    return baseQuery(trx, {
-      ...patient,
-      snomed_concept_id: '118245000',
-      qualifiers: [
-        parseQualifierExpression(`(qualifier ${snomed_concept_id})`),
-      ],
-    })
-      .innerJoin(
-        'patient_findings',
-        'patient_records.id',
-        'patient_findings.id',
-      )
-      .innerJoin(
-        'patient_measurements',
-        'patient_records.id',
-        'patient_measurements.id',
-      )
-  },
+  measurement,
   units() {
     throw new Error('units is handled by parent nodes')
   },
@@ -295,20 +301,30 @@ const EXPRESSION_BUILDERS = {
       `),
     )
   },
-  '>'() {
-    throw new Error('> is handled by parent nodes')
+  '>'(trx, patient, { left, right }) {
+    return measurement(trx, patient, left)
+      .where('patient_measurements.units', '=', right.units)
+      .where('patient_measurements.value', '>', String(right.value))
   },
-  '<'() {
-    throw new Error('> is handled by parent nodes')
+  '<'(trx, patient, { left, right }) {
+    return measurement(trx, patient, left)
+      .where('patient_measurements.units', '=', right.units)
+      .where('patient_measurements.value', '<', String(right.value))
   },
-  '>='() {
-    throw new Error('> is handled by parent nodes')
+  '>='(trx, patient, { left, right }) {
+    return measurement(trx, patient, left)
+      .where('patient_measurements.units', '=', right.units)
+      .where('patient_measurements.value', '>=', String(right.value))
   },
-  '<='() {
-    throw new Error('> is handled by parent nodes')
+  '<='(trx, patient, { left, right }) {
+    return measurement(trx, patient, left)
+      .where('patient_measurements.units', '=', right.units)
+      .where('patient_measurements.value', '<=', String(right.value))
   },
-  '='() {
-    throw new Error('> is handled by parent nodes')
+  '='(trx, patient, { left, right }) {
+    return measurement(trx, patient, left)
+      .where('patient_measurements.units', '=', right.units)
+      .where('patient_measurements.value', '=', String(right.value))
   },
 } satisfies {
   [T in ParsedExpressionNodeType]: (
