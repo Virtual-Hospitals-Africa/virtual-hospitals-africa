@@ -131,24 +131,46 @@ export type OrganizationInsert = {
   most_common_language_code?: string
 }
 
-export function addDepartments(
+export async function addDepartments(
   trx: TrxOrDb,
   organization_id: string,
   departments: Department[],
 ) {
-  return trx.with(
-    'inserting_departments',
-    (qb) =>
-      departments.length
-        ? qb.insertInto('organization_departments')
-          .values(departments.map((name) => ({
-            organization_id,
-            name,
-          })))
-        : blankSelection(qb),
-  )
-    .selectNoFrom(success_true)
-    .executeTakeFirstOrThrow()
+  if (!departments.length) return
+
+  // Insert departments
+  const inserted_departments = await trx
+    .insertInto('organization_departments')
+    .values(departments.map((name) => ({
+      organization_id,
+      name,
+    })))
+    .returning(['id', 'name'])
+    .execute()
+
+  // Insert rooms with same names as departments
+  const inserted_rooms = await trx
+    .insertInto('organization_rooms')
+    .values(departments.map((name) => ({
+      organization_id,
+      name,
+    })))
+    .returning(['id', 'name'])
+    .execute()
+
+  // Link departments to their corresponding rooms
+  const department_room_links = inserted_departments.map((dept) => {
+    const room = inserted_rooms.find((r) => r.name === dept.name)!
+    return {
+      organization_department_id: dept.id,
+      organization_room_id: room.id,
+    }
+  })
+
+  await trx
+    .insertInto('organization_department_rooms')
+    .values(department_room_links)
+    .execute()
 }
 
 export async function add(
@@ -183,21 +205,13 @@ export async function add(
         id: organization_id,
         address_id,
         location: location && literalLocation(location),
-      })).with(
-      'inserting_departments',
-      (qb) =>
-        departments?.length
-          ? qb.insertInto('organization_departments')
-            .values(
-              departments.map((name) => ({
-                organization_id,
-                name,
-              })),
-            )
-          : blankSelection(qb),
-    )
+      }))
     .selectNoFrom(success_true)
     .executeTakeFirstOrThrow()
+
+  if (departments?.length) {
+    await addDepartments(trx, organization_id, departments)
+  }
 
   return { id: organization_id, address_id }
 }

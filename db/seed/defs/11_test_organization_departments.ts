@@ -3,7 +3,11 @@ import * as organizations from '../../models/organizations.ts'
 import { testOrganizationDepartments } from '../../../test/_helpers/organizations.ts'
 
 export default define(
-  ['organization_departments'],
+  [
+    'organization_departments',
+    'organization_rooms',
+    'organization_department_rooms',
+  ],
   async (trx) => {
     const test_organizations = await trx.selectFrom('organizations').where(
       'is_test',
