@@ -6,7 +6,7 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import * as vitals from '../../../../../../../../db/models/vitals.ts'
-import * as patient_measurements from '../../../../../../../../db/models/patient_measurements.ts'
+import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'

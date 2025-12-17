@@ -1,5 +1,5 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as patient_measurements from '../../db/models/patient_measurements.ts'
+import { patient_measurements } from '../../db/models/patient_measurements.ts'
 import * as vitals from '../../db/models/vitals.ts'
 import db from '../../db/db.ts'
 import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'

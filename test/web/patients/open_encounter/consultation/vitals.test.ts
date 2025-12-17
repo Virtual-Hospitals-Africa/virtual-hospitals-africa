@@ -8,7 +8,7 @@
 // } from '../utilities.ts'
 // import * as patients from '../../../db/models/patients.ts'
 // import * as patient_encounters from '../../../db/models/patient_encounters.ts'
-// import * as patient_measurements from '../../../db/models/patient_measurements.ts'
+// import { patient_measurements } from '../../../db/models/patient_measurements.ts'
 // import db from '../../../db/db.ts'
 // import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../../shared/vitals.ts'
 // import generateUUID from '../../../util/uuid.ts'
