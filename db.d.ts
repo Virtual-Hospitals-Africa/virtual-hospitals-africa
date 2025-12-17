@@ -20,7 +20,7 @@ export type DoctorReviewStep =
   | 'revert'
 
 export type EncounterReason =
-  | 'Administration'
+  | 'administration'
   | 'checkup'
   | 'follow up'
   | 'maternity'

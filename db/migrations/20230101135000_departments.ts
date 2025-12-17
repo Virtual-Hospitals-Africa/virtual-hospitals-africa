@@ -1,6 +1,4 @@
 import { Kysely, sql } from 'kysely'
-import { DEPARTMENT_DEFS } from '../../shared/departments.ts'
-import entries from '../../util/entries.ts'
 import { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
@@ -15,14 +13,6 @@ export async function up(db: Kysely<DB>) {
       'workflows',
       sql`workflow[]`,
       (col) => col.notNull(),
-    )
-    .execute()
-
-  await db.insertInto('departments')
-    .values(
-      entries(DEPARTMENT_DEFS).map((
-        [name, { requires_triage, workflows }],
-      ) => ({ name, requires_triage, workflows })),
     )
     .execute()
 }
