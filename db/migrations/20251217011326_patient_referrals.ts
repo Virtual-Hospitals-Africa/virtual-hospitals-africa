@@ -31,7 +31,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'organization_room_id',
           'uuid',
-          (col) => col.references('organizations_rooms.id').onDelete('cascade'),
+          (col) => col.references('organization_rooms.id').onDelete('cascade'),
         )
         .addCheckConstraint(
           'referral_to_exactly_one_entity',

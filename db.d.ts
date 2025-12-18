@@ -20,7 +20,7 @@ export type DoctorReviewStep =
   | 'revert'
 
 export type EncounterReason =
-  | 'administration'
+  | 'Administration'
   | 'checkup'
   | 'follow up'
   | 'maternity'
@@ -1241,6 +1241,7 @@ export interface PatientPresence {
   id: string
   next_workflow: Workflow | null
   organization_id: string
+  organization_room_id: string
   patient_encounter_id: string
   updated_at: Generated<Timestamp>
 }
@@ -1278,6 +1279,7 @@ export interface PatientReferrals {
   id: string
   organization_department_id: string | null
   organization_id: string | null
+  organization_room_id: string | null
 }
 
 export interface PatientRegistration {

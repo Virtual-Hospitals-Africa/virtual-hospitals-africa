@@ -2256,6 +2256,7 @@ export type RenderedOrganization = HasStringId<
       requires_triage: boolean
       workflows: Workflow[]
     }[]
+    waiting_room_id: string | null
   }
 >
 
@@ -3525,4 +3526,15 @@ export type IntermediateProcedureRecord = {
   // qualifiers: QualifierIntermediate[]
   value_snomed_concept_id: null | string
   // value_name: null | string
+}
+
+export type RenderedRoom = {
+  id: string
+  name: string
+  departments: string[]
+  occupied_by_patient: null | {
+    id: string
+    name: string | null
+  }
+  // employees: RenderedEmployee[]
 }
