@@ -21,9 +21,15 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     },
   },
   {
-    label: 'Department',
-    data: 'department_name',
+    label: 'Location',
+    data(row) {
+      return row.room.name
+    },
   },
+  // {
+  //   label: 'Department',
+  //   data: 'department_name',
+  // },
   {
     label: 'Status',
     data: 'workflow_status_display',

@@ -61,6 +61,7 @@ export function asWaitingRoom(
     current_workflow,
     next_workflow,
     present_with_patient_encounter_employee_ids,
+    room,
   } = status.patient_presence
 
   const present_employees = all_employees_seen.filter((employee) =>
@@ -118,6 +119,7 @@ export function asWaitingRoom(
       description: patient.description,
       name: patient.name || '[Unregistered patient]',
     },
+    room,
     reason,
     priority_level,
     department_name,

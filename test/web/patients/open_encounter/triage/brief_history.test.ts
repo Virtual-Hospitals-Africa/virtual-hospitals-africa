@@ -426,7 +426,8 @@ describe('triage/brief_history', () => {
               prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
             }`,
           'Reason for visit': 'Seeking Treatment',
-          Department: 'Triage',
+          // Department: 'Triage',
+          Location: 'Triage room 1',
           Status: 'Triage In Progress',
           Employees: `${nurse1.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
@@ -485,7 +486,8 @@ describe('triage/brief_history', () => {
               prettyPatientDateOfBirth(initial_encounter.patient.date_of_birth!)
             }`,
           'Reason for visit': 'Seeking Treatment',
-          Department: 'Triage',
+          // Department: 'Triage',
+          Location: 'Triage room 1',
           Status: 'Triage In Progress',
           Employees: `${nurse2.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
