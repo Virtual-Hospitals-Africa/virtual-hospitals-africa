@@ -11,6 +11,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
+import { exists } from '../../../../../../../util/exists.ts'
 
 const MoveToWaitingRoomSchema = z.object({})
 
@@ -27,6 +28,7 @@ export const handler = postHandler(
         current_workflow: null,
         next_workflow: encounter.status.patient_presence.current_workflow,
         department_name: 'Waiting room',
+        organization_room_id: exists(organization.waiting_room_id),
       }
 
       await ctx.state.trx.insertInto('patient_presence').values(

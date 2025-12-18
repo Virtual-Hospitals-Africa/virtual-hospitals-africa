@@ -28,12 +28,18 @@ export async function up(db: Kysely<DB>) {
           'uuid',
           (col) => col.references('organizations.id').onDelete('cascade'),
         )
+        .addColumn(
+          'organization_room_id',
+          'uuid',
+          (col) => col.references('organization_rooms.id').onDelete('cascade'),
+        )
         .addCheckConstraint(
           'referral_to_exactly_one_entity',
           sql`(
-            (employment_id IS NOT NULL AND organization_department_id IS NULL AND organization_id IS NULL) OR
-            (employment_id IS NULL AND organization_department_id IS NOT NULL AND organization_id IS NULL) OR
-            (employment_id IS NULL AND organization_department_id IS NULL AND organization_id IS NOT NULL)
+            (employment_id IS NOT NULL AND organization_department_id IS NULL AND organization_id IS NULL AND organization_room_id IS NULL) OR
+            (employment_id IS NULL AND organization_department_id IS NOT NULL AND organization_id IS NULL AND organization_room_id IS NULL) OR
+            (employment_id IS NULL AND organization_department_id IS NULL AND organization_id IS NOT NULL AND organization_room_id IS NULL) OR
+            (employment_id IS NULL AND organization_department_id IS NULL AND organization_id IS NULL AND organization_room_id IS NOT NULL)
           )`,
         ),
   )

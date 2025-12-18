@@ -58,6 +58,7 @@ import { isEmployed } from './health_workers.ts'
 import makeAssertion from '../../util/makeAssertion.ts'
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
+import { organization_rooms } from './organization_rooms.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -88,7 +89,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
   const { patient_encounter_id } = encounter
   assert(isUUID(patient_encounter_id), 'Caller must supply uuid upon creation')
 
-  const { location } = organization
+  const { location, id: organization_id } = organization
   assert(
     location,
     'Can only add encounters for organizations with a location',
@@ -113,8 +114,6 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     'Only seeking treatment supported for now!',
   )
 
-  const non_admin_employment_id = organization_employment.employment_id
-  assert(non_admin_employment_id)
   const workflows: Workflow[] = ['triage', 'consultation']
   const patient_workflows = workflows.map((workflow) => ({
     id: generateUUID(),
@@ -122,30 +121,48 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     workflow,
   }))
 
-  const patient_presence: InsertShape<PatientPresence> = {
-    id: patient_id,
-    patient_encounter_id,
-    organization_id: organization.id,
-    current_workflow: workflows[0],
-    next_workflow: workflows[1],
-    department_name: WORKFLOW_DEPARTMENTS[workflows[0]],
-  }
+  const department_name = WORKFLOW_DEPARTMENTS[workflows[0]]
+
   const employed_in_workflow_department = organization_employment.department_ids
     .some((department_id) =>
       organization_employment.departments.find((d) => d.id === department_id)
-        ?.name === patient_presence.department_name
+        ?.name === department_name
     )
 
-  if (!employed_in_workflow_department) {
-    patient_presence.next_workflow = patient_presence.current_workflow
-    patient_presence.current_workflow = null
-    patient_presence.department_name = 'Waiting room'
+  let with_patient_id: string | null = null
+  let patient_presence: InsertShape<PatientPresence> = {
+    id: patient_id,
+    organization_id,
+    patient_encounter_id,
+    current_workflow: null,
+    next_workflow: workflows[0],
+    department_name: 'Waiting room',
+    organization_room_id: exists(organization.waiting_room_id),
+  }
+
+  if (employed_in_workflow_department) {
+    const first_available_room = await organization_rooms.findFirstOptional(
+      trx,
+      { organization_id, department_name, is_available: true },
+    )
+    if (first_available_room) {
+      with_patient_id = patient_id
+      patient_presence = {
+        id: patient_id,
+        organization_id,
+        patient_encounter_id,
+        current_workflow: workflows[0],
+        next_workflow: workflows[1],
+        department_name,
+        organization_room_id: first_available_room.id,
+      }
+    }
   }
 
   const employment_presence: InsertShape<EmploymentPresence> = {
-    id: non_admin_employment_id,
+    id: organization_employment.employment_id,
     at_work: true,
-    with_patient_id: employed_in_workflow_department ? patient_id : null,
+    with_patient_id,
   }
 
   const { completed_registration, ...inserted_patient_presence } = await trx
@@ -172,7 +189,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
             .values({
               patient_encounter_id,
               id: patient_encounter_employee_id,
-              employment_id: non_admin_employment_id,
+              employment_id: organization_employment.employment_id,
             })
           : blankSelection(qb),
     ).with(
@@ -214,6 +231,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     .select(['patients.completed_registration'])
     .executeTakeFirstOrThrow()
 
+  // Optimistic update rather than check for this up front
   assert(
     completed_registration,
     "Supplied patient_id for patient that hasn't completed registration",

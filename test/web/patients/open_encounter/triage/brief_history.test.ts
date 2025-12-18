@@ -8,10 +8,7 @@ import {
 } from '../../../../_helpers/workflows.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  createTestOrganization,
-  TEST_ORGANIZATION_UUIDS,
-} from '../../../../_helpers/organizations.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import { route } from '../../../../route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
@@ -35,10 +32,12 @@ describe('triage/brief_history', () => {
 
   describe('GET', () => {
     it('renders the brief history page for a female patient', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -52,13 +51,13 @@ describe('triage/brief_history', () => {
         )
 
       await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         { method: 'POST' },
         { cancel_response_body: true },
       )
 
       const $ = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const form_values = getFormValues($)
@@ -106,10 +105,12 @@ describe('triage/brief_history', () => {
     })
 
     it('renders the brief history page for a male patient', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -123,14 +124,14 @@ describe('triage/brief_history', () => {
         )
 
       await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
         },
         { cancel_response_body: true },
       )
       const $ = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       // const form_labels = getFormLabels($)
@@ -243,6 +244,7 @@ describe('triage/brief_history', () => {
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
+          'patient_encounter_employee_id': z.string().uuid(),
           'name': 'Status',
           'value_snomed_concept_id': '373067005',
           'value_name': 'No',
@@ -271,6 +273,7 @@ describe('triage/brief_history', () => {
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
+          'patient_encounter_employee_id': z.string().uuid(),
           'name': 'Status',
           'value_snomed_concept_id': '373067005',
           'value_name': 'No',
@@ -299,6 +302,7 @@ describe('triage/brief_history', () => {
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
+          'patient_encounter_employee_id': z.string().uuid(),
           'name': 'Status',
           'value_snomed_concept_id': '373066001',
           'value_name': 'Yes',
@@ -322,7 +326,7 @@ describe('triage/brief_history', () => {
             },
           ],
         },
-      ])
+      ], { strict: true })
 
       const most_recent_findings = await renderedMostRecentFindings(db, {
         patient_id: initial_encounter.patient.id,
@@ -366,7 +370,7 @@ describe('triage/brief_history', () => {
             'name': 'Malignant neoplastic disease',
           },
         ],
-      })
+      }, { strict: true })
 
       assertMatches(most_recent_findings.diabetes, {
         'record_id': z.string().uuid(),
@@ -403,7 +407,7 @@ describe('triage/brief_history', () => {
             'name': 'Diabetes mellitus',
           },
         ],
-      })
+      }, { strict: true })
 
       assertEquals(most_recent_findings.copd, null)
 
@@ -727,10 +731,12 @@ describe('triage/brief_history', () => {
 
   describe('POST', () => {
     it('inserts positive & negative findings, redirecting to the measure_vitals page', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -743,13 +749,13 @@ describe('triage/brief_history', () => {
         )
 
       await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         { method: 'POST' },
         { cancel_response_body: true },
       )
 
       const response = await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
         {
           method: 'POST',
           body: asFormData({
@@ -768,7 +774,7 @@ describe('triage/brief_history', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
       )
 
       const most_recent_findings = await renderedMostRecentFindings(db, {
@@ -806,7 +812,12 @@ describe('triage/brief_history', () => {
         'pertaining_to_key': 'diabetes',
         'value_display': 'Diabetes mellitus Self reported Status: Yes',
         'existence': 'Yes',
-      })
+        'provider': {
+          'is_me': true,
+          'id': nurse.id,
+          'employee_id': nurse.employee_id,
+        },
+      }, { strict: true })
     })
 
     it('does not insert the same positive finding again if a condition is already known, but does insert negative records each time', async () => {
@@ -942,7 +953,7 @@ describe('triage/brief_history', () => {
           'id': nurse1.health_worker.id,
           'employee_id': nurse1.health_worker.employee_id,
         },
-      })
+      }, { strict: true })
 
       assertMatches(most_recent_findings.diabetes, {
         'record_id': z.string().uuid(),
@@ -977,7 +988,7 @@ describe('triage/brief_history', () => {
           'id': nurse2.health_worker.id,
           'employee_id': nurse2.health_worker.employee_id,
         },
-      })
+      }, { strict: true })
     })
 
     it('has a value_display of Status Not Known for unknown answers', async () => {
@@ -1061,7 +1072,7 @@ describe('triage/brief_history', () => {
           'id': nurse.health_worker.id,
           'employee_id': nurse.health_worker.employee_id,
         },
-      })
+      }, { strict: true })
     })
   })
 })
