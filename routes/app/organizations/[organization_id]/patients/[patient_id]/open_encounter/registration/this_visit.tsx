@@ -69,11 +69,16 @@ export const handler = postHandler(
 
         const first_available_room = await organization_rooms.findFirstOptional(
           trx,
-          { organization_id: organization.id, department_name: 'Triage', is_available: true },
+          {
+            organization_id: organization.id,
+            department_name: 'Triage',
+            is_available: true,
+          },
         )
         if (first_available_room) {
           assert(!first_available_room.occupied_by_patient)
-          patient_presence_updates.organization_room_id = first_available_room.id
+          patient_presence_updates.organization_room_id =
+            first_available_room.id
         }
 
         await Promise.all([
@@ -120,7 +125,7 @@ export const handler = postHandler(
 
         const redirect_success_message = first_available_room
           ? `Please move ${patient.names.preferred_name} to ${first_available_room.name}. ${senior_health_worker_name} has been notified.`
-          : `No rooms yet available for triage. ${senior_health_worker_name} has been notified to come as soon as possible.`
+          : `No rooms yet available for triage. Please stay with ${patient.names.preferred_name}. ${senior_health_worker_name} has been notified to come as soon as possible.`
 
         // TODO notify senior_health_worker_name
         return redirect(success(
