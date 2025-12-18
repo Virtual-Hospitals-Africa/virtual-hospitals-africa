@@ -178,9 +178,9 @@ describe(
       const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
       assertEquals(
         waiting_room_url.searchParams.get('success'),
-        `${
+        `Please move ${
           patient.names!.preferred_name
-        } has been moved to triage and ${hardcoded_senior_health_care_professional_name} has been notified.`,
+        } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
       )
 
       // const notification = await received_notification.promise
@@ -252,7 +252,7 @@ describe(
         },
       )
 
-      const $triage_brief_history = await fetchCheerio(
+      const $triage_warning_signs = await fetchCheerio(
         $this_visit.url,
         {
           method: 'POST',
@@ -262,10 +262,10 @@ describe(
         },
       )
 
-      const triage_brief_history_url = new URL($triage_brief_history.url)
+      const triage_warning_signs_url = new URL($triage_warning_signs.url)
       assertEquals(
-        triage_brief_history_url.pathname,
-        `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/triage/brief_history`,
+        triage_warning_signs_url.pathname,
+        `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/triage/warning_signs`,
       )
     })
   },

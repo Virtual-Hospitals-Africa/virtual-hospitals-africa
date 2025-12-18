@@ -19,6 +19,10 @@ import { canPerform } from '../../../../../../../../shared/workflow.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { startWorkflow } from '../start-workflow.tsx'
 import generateUUID from '../../../../../../../../util/uuid.ts'
+import { organization_rooms } from '../../../../../../../../db/models/organization_rooms.ts'
+import { UpdateShape } from '../../../../../../../../types.ts'
+import { DB } from '../../../../../../../../db.d.ts'
+import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 
 // TODO not hard code this
 const senior_health_worker_name = 'Nomsa Moyo'
@@ -53,13 +57,23 @@ export const handler = postHandler(
       }
       case 'immediate_triage': {
         assert(!encounter.workflows.triage)
+        assert(completedPersonal(patient))
 
         const patient_workflow_id = generateUUID()
 
-        const patient_presence_updates = {
+        const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
           current_workflow: 'triage' as const,
           department_name: 'Triage' as const,
           next_workflow: 'registration' as const,
+        }
+
+        const first_available_room = await organization_rooms.findFirstOptional(
+          trx,
+          { organization_id: organization.id, department_name: 'Triage', is_available: true },
+        )
+        if (first_available_room) {
+          assert(!first_available_room.occupied_by_patient)
+          patient_presence_updates.organization_room_id = first_available_room.id
         }
 
         await Promise.all([
@@ -104,11 +118,13 @@ export const handler = postHandler(
           },
         })
 
+        const redirect_success_message = first_available_room
+          ? `Please move ${patient.names.preferred_name} to ${first_available_room.name}. ${senior_health_worker_name} has been notified.`
+          : `No rooms yet available for triage. ${senior_health_worker_name} has been notified to come as soon as possible.`
+
         // TODO notify senior_health_worker_name
         return redirect(success(
-          `${
-            patient.names!.preferred_name
-          } has been moved to triage and ${senior_health_worker_name} has been notified.`,
+          redirect_success_message,
           `/app/organizations/${organization.id}/waiting_room`,
         ))
       }
