@@ -145,8 +145,8 @@ export async function insertSeekingTreatmentForRegisteredPatient(
       trx,
       { organization_id, department_name, is_available: true },
     )
-    console.log({ first_available_room })
     if (first_available_room) {
+      with_patient_id = patient_id
       patient_presence = {
         id: patient_id,
         organization_id,
@@ -156,13 +156,13 @@ export async function insertSeekingTreatmentForRegisteredPatient(
         department_name,
         organization_room_id: first_available_room.id,
       }
-      with_patient_id = patient_id
     }
   }
+
   const employment_presence: InsertShape<EmploymentPresence> = {
     id: organization_employment.employment_id,
     at_work: true,
-    with_patient_id
+    with_patient_id,
   }
 
   const { completed_registration, ...inserted_patient_presence } = await trx
@@ -231,6 +231,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
     .select(['patients.completed_registration'])
     .executeTakeFirstOrThrow()
 
+  // Optimistic update rather than check for this up front
   assert(
     completed_registration,
     "Supplied patient_id for patient that hasn't completed registration",

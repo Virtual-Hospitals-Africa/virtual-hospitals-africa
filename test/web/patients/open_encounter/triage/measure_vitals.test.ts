@@ -3,7 +3,7 @@ import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../../../../_helpers/workflows.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
@@ -15,10 +15,12 @@ describe('triage/measure_vitals', () => {
 
   describe('GET', () => {
     it('loads a page ', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -31,7 +33,7 @@ describe('triage/measure_vitals', () => {
         )
 
       await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
         {
           method: 'POST',
           body: asFormData({
@@ -49,7 +51,7 @@ describe('triage/measure_vitals', () => {
       )
 
       const $ = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
         },
@@ -57,7 +59,7 @@ describe('triage/measure_vitals', () => {
 
       assertEquals(
         $.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
       )
 
       // @Ettore as it stands these are hard to test. I want to be able to POST

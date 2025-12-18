@@ -32,6 +32,5 @@ export function buildValueDisplay(
   if (record.value_name) {
     value_display += `: ${record.value_name}`
   }
-  console.log({ record, value_display })
   return value_display
 }

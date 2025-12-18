@@ -34,7 +34,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -98,7 +98,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const initial_encounter =
@@ -205,7 +205,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -274,7 +274,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -372,7 +372,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -446,7 +446,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -488,7 +488,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const encounter =
@@ -553,7 +553,7 @@ describe('triage/warning_signs', () => {
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id
+          organization_id: clinic.id,
         })
 
       const initial_encounter =
@@ -633,7 +633,7 @@ describe('triage/warning_signs', () => {
           await addTestEmployeeWithSession(db, {
             profession: 'nurse',
             registration_status: 'approved',
-            organization_id: clinic.id
+            organization_id: clinic.id,
           })
 
         const encounter =
@@ -692,7 +692,6 @@ describe('triage/warning_signs', () => {
         })
       })
     }
-    
 
     for (const [key, sign] of entries(WARNING_SIGNS)) {
       const pregnant = [

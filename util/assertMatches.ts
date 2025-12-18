@@ -8,7 +8,7 @@ function isZodType(value: unknown): value is z.ZodType {
     typeof value.safeParse === 'function'
 }
 
-function zodify(value: unknown): z.ZodType {
+function zodify(value: unknown, opts: { strict?: boolean } = {}): z.ZodType {
   // Already a Zod type, return as-is
   if (isZodType(value)) {
     return value
@@ -16,7 +16,7 @@ function zodify(value: unknown): z.ZodType {
 
   // Arrays become tuples with each element zodified
   if (Array.isArray(value)) {
-    const elements = value.map(zodify)
+    const elements = value.map((item) => zodify(item, opts))
     return elements.length
       ? z.tuple(elements as [z.ZodType, ...z.ZodType[]])
       : z.tuple([])
@@ -32,7 +32,8 @@ function zodify(value: unknown): z.ZodType {
     for (const key of Object.keys(value)) {
       shape[key] = zodify((value as Record<string, unknown>)[key])
     }
-    return z.object(shape)
+    const schema = z.object(shape)
+    return opts.strict ? schema.strict() : schema
   }
 
   // Primitives become literals
@@ -54,8 +55,9 @@ function getAtPath(obj: unknown, path: (string | number)[]): unknown {
 export function assertMatches(
   object: unknown,
   test: unknown,
+  opts: { strict?: boolean } = {},
 ): void {
-  const result = zodify(test).safeParse(object)
+  const result = zodify(test, opts).safeParse(object)
   if (!result.success) {
     const issues = result.error.issues.map((issue) => (
       console.log(issue.path), console.log(getAtPath(object, issue.path)), {

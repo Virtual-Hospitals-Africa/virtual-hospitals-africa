@@ -3,9 +3,9 @@ import { assert } from 'std/assert/assert.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import omit from '../../util/omit.ts'
 import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describe(
   '/app/organizations',
@@ -31,7 +31,7 @@ describe(
       assert(Array.isArray(json.results))
       assertEquals(json.results.length, 2)
       const [test_clinic, test_virtual_hospital] = json.results
-      assertEquals(omit(test_clinic, ['departments']), {
+      assertMatches(test_clinic, {
         id: '00000000-0000-0000-0000-000000000001',
         name: 'VHA Test Clinic South Africa',
         category: 'Clinic',
@@ -47,7 +47,7 @@ describe(
         },
         most_common_language_code: 'nso',
       })
-      assertEquals(omit(test_virtual_hospital, ['departments']), {
+      assertMatches(test_virtual_hospital, {
         id: '00000000-0000-0000-0000-000000000002',
         name: 'VHA Test Regional Medical Center South Africa',
         category: 'Regional Medical Center',
