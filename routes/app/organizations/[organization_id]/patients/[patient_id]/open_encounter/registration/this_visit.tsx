@@ -58,7 +58,7 @@ export const handler = postHandler(
 
         const patient_presence_updates = {
           current_workflow: 'triage' as const,
-          department_name: 'triage' as const,
+          department_name: 'Triage' as const,
           next_workflow: 'registration' as const,
         }
 
