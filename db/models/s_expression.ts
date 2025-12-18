@@ -202,7 +202,7 @@ const EXPRESSION_BUILDERS = {
   evaluation(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept_id, value_snomed_concept_id, evaluates, qualifiers },
+    { snomed_concept_id, value_snomed_concept_id, /*, evaluates*/ qualifiers },
   ) {
     return baseQuery(trx, {
       patient_id,
@@ -216,15 +216,15 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_evaluations.id',
       )
-      .where(
-        'evaluates_record_id',
-        'in',
-        buildExpression(
-          trx,
-          { patient_id, patient_encounter_id },
-          evaluates.expression,
-        ),
-      )
+    // .where(
+    //   'evaluates_record_id',
+    //   'in',
+    //   buildExpression(
+    //     trx,
+    //     { patient_id, patient_encounter_id },
+    //     evaluates.expression,
+    //   ),
+    // )
   },
   qualifier(
     trx,
@@ -247,9 +247,9 @@ const EXPRESSION_BUILDERS = {
   not() {
     throw new Error('not is handled by parent nodes')
   },
-  evaluates() {
-    throw new Error('evalutes is handled by parent nodes')
-  },
+  // evaluates() {
+  //   throw new Error('evalutes is handled by parent nodes')
+  // },
   task() {
     throw new Error('task is not directly queryable')
   },

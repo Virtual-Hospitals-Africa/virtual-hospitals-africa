@@ -184,6 +184,7 @@ export const patient_procedures = base({
       workflow_step_record_id: workflow_step_procedure?.id || null,
     }
   },
+
   insertOneNested(
     trx: TrxOrDb,
     {
@@ -270,12 +271,11 @@ export const patient_procedures = base({
       query = qualifierCte(query, qualifier, procedure_id)
     }
 
-    return query
-      .selectNoFrom([
-        success_true,
-        sql<true>`true`.as('inserted_new'),
-        literalString(procedure_id).as('record_id'),
-      ])
+    return query.selectNoFrom([
+      success_true,
+      sql<true>`true`.as('inserted_new'),
+      literalString(procedure_id).as('procedure_id'),
+    ])
       .executeTakeFirstOrThrow()
   },
 })

@@ -1,12 +1,10 @@
 import {
   IdSelection,
-  PreviouslyCompletedProcedures,
   RenderedFindingQualifierRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
   asText,
-  blankSelection,
   jsonArrayFrom,
   jsonBuildObject,
   literalString,
@@ -39,10 +37,7 @@ type FindingInsert = {
   patient_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
-  employment_id: string
-  workflow_snomed_concept_id: string
-  workflow_step_snomed_concept_id: string | null
-  previously_completed_procedures: PreviouslyCompletedProcedures
+  procedure_id: string
   finding: ParsedFindingExpression
 }
 
@@ -182,62 +177,30 @@ export const patient_findings = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       finding,
     }: FindingInsert,
   ) {
-    const previously_completed_procedure_record_id =
-      workflow_step_snomed_concept_id
-        ? previously_completed_procedures.workflow_step_record_id
-        : previously_completed_procedures.workflow_record_id
-
-    const procedure_id = previously_completed_procedure_record_id ||
-      generateUUID()
-
     const finding_id = generateUUID()
 
     let query = trx.with(
-      'inserting_procedure_record',
+      'inserting_finding_records',
       (qb) =>
-        !previously_completed_procedure_record_id
-          ? qb.insertInto('patient_records')
-            .values({
-              id: procedure_id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id: workflow_step_snomed_concept_id ||
-                workflow_snomed_concept_id,
-            })
-          : blankSelection(qb),
-    ).with(
-      'inserting_procedure',
-      (qb) =>
-        !previously_completed_procedure_record_id
-          ? qb.insertInto('patient_procedures')
-            .values({
-              id: procedure_id,
-              employment_id,
-              by_system: false,
-            })
-          : blankSelection(qb),
-    ).with('inserting_finding_records', (qb) =>
-      qb.insertInto('patient_records')
-        .values({
-          id: finding_id,
-          patient_id,
-          patient_encounter_id,
-          snomed_concept_id: finding.snomed_concept_id,
-          value_snomed_concept_id: finding.value_snomed_concept_id,
-        })).with('inserting_findings', (qb) =>
-        qb.insertInto('patient_findings')
+        qb.insertInto('patient_records')
           .values({
             id: finding_id,
-            procedure_id,
-            patient_encounter_employee_id,
-          }))
+            patient_id,
+            patient_encounter_id,
+            snomed_concept_id: finding.snomed_concept_id,
+            value_snomed_concept_id: finding.value_snomed_concept_id,
+          }),
+    ).with('inserting_findings', (qb) =>
+      qb.insertInto('patient_findings')
+        .values({
+          id: finding_id,
+          procedure_id,
+          patient_encounter_employee_id,
+        }))
 
     function qualifierCte(
       qb: typeof query,
@@ -305,10 +268,7 @@ export const patient_findings = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       finding,
     }: FindingInsert,
   ) {
@@ -333,10 +293,7 @@ export const patient_findings = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       finding,
     })
   },

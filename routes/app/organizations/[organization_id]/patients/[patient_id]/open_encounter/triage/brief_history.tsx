@@ -1,6 +1,7 @@
 import {
   assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
+  createProcedureIfNotAlreadyCompleted,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
@@ -73,6 +74,8 @@ export const handler = postHandler(
     const { patient } = encounter
     const patient_id = patient.id
 
+    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+
     const most_recent_findings = await renderedMostRecentFindings(
       trx,
       { patient_id, encounter, health_worker_id: health_worker.id },
@@ -112,12 +115,7 @@ export const handler = postHandler(
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             patient_encounter_employee_id: ctx.state.encounter_employee_presence
               .patient_encounter_employee_id,
-            employment_id: ctx.state.encounter_employee_presence.employee_id,
-            workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
-            workflow_step_snomed_concept_id:
-              ctx.state.workflow_step_snomed_concept_id,
-            previously_completed_procedures:
-              ctx.state.previously_completed_procedures,
+            procedure_id,
             finding: parseFindingExpression(`
               (finding ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${
               patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]

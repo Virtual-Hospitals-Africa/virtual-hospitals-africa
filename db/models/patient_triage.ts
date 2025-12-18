@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_triage.ts'
 import {
   PRIORITY_SNOMED_CODES,
+  PRIORITY_SNOMED_CONCEPT_ID,
   TARGET_TIME_TO_TREATMENT_MINUTES,
   TriageLevel,
   TrxOrDb,
@@ -55,18 +56,18 @@ export function insertLevel(
     patient_id,
     patient_encounter_id,
     employment_id,
-    triage_procedure_id,
+    evaluates_record_id,
     triage_level,
   }: {
     patient_id: string
     patient_encounter_id: string
     employment_id: string
-    triage_procedure_id: string
+    evaluates_record_id: string
     triage_level: TriageLevel
   },
 ) {
   const triage_level_evaluation_id = generateUUID()
-  const snomed_concept_id = PRIORITY_SNOMED_CODES[triage_level]
+  const value_snomed_concept_id = PRIORITY_SNOMED_CODES[triage_level]
   const target_treatment_minutes =
     TARGET_TIME_TO_TREATMENT_MINUTES[triage_level]
 
@@ -78,7 +79,8 @@ export function insertLevel(
           id: triage_level_evaluation_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id,
+          snomed_concept_id: PRIORITY_SNOMED_CONCEPT_ID,
+          value_snomed_concept_id,
         }),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')
@@ -86,7 +88,7 @@ export function insertLevel(
         id: triage_level_evaluation_id,
         employment_id,
         by_system: false,
-        evaluates_record_id: triage_procedure_id,
+        evaluates_record_id,
       })
       .returning('id'))
     .with(

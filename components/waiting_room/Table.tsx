@@ -1,6 +1,8 @@
-import { RenderedWaitingRoom } from '../../types.ts'
+import { PRIORITY_COLORS, RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
+import cls from '../../util/cls.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
+import Badge from '../library/Badge.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
@@ -33,6 +35,19 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Status',
     data: 'workflow_status_display',
+  },
+  {
+    label: 'Priority',
+    data(row) {
+      if (!row.priority_level) return null
+      const colors = PRIORITY_COLORS[row.priority_level]
+      return (
+        <Badge
+          content={row.priority_level}
+          classNames={cls(colors.bg, colors.text)}
+        />
+      )
+    },
   },
   {
     label: 'Employees',

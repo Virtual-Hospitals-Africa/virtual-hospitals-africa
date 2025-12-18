@@ -24,14 +24,14 @@ export type ParsedEvaluationExpression = {
   type: 'evaluation'
   snomed_concept_id: string
   value_snomed_concept_id: string | null
-  evaluates: ParsedEvaluatesExpression
+  // evaluates: ParsedEvaluatesExpression
   qualifiers: ParsedQualifierOrNotExpression[]
 }
 
-export type ParsedEvaluatesExpression = {
-  type: 'evaluates'
-  expression: ParsedExpression
-}
+// export type ParsedEvaluatesExpression = {
+//   type: 'evaluates'
+//   expression: ParsedExpression
+// }
 
 export type ParsedMeasurementExpression = {
   type: 'measurement'
@@ -97,7 +97,7 @@ export type ParsedExpression =
   | ParsedFindingExpression
   | ParsedProcedureExpression
   | ParsedEvaluationExpression
-  | ParsedEvaluatesExpression
+  // | ParsedEvaluatesExpression
   | ParsedQualifierExpression
   | ParsedTaskExpression
   | ParsedMeasurementExpression
@@ -189,14 +189,13 @@ const PARSERS = {
     if (isString(qualifiers[0])) {
       value_snomed_concept_id = qualifiers.shift() as string
     }
-    const evaluates_expression = qualifiers.shift()
-    assert(evaluates_expression)
-    assert(Array.isArray(evaluates_expression))
+    // const evaluates_expression = qualifiers.shift()
+    // assert(evaluates_expression)
+    // assert(Array.isArray(evaluates_expression))
     return {
       type: 'evaluation',
       snomed_concept_id,
       value_snomed_concept_id: value_snomed_concept_id ?? null,
-      evaluates: PARSERS.evaluates(evaluates_expression),
       qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
         assert(
           parsed.type === 'qualifier' || parsed.type === 'not',
@@ -208,16 +207,16 @@ const PARSERS = {
       }),
     }
   },
-  evaluates: (node: SExpressionNode): ParsedEvaluatesExpression => {
-    assert(Array.isArray(node))
-    const [type, expression] = node
-    assertEquals(type, 'evaluates')
-    assert(Array.isArray(expression))
-    return {
-      type: 'evaluates',
-      expression: parseArrayNode(expression),
-    }
-  },
+  // evaluates: (node: SExpressionNode): ParsedEvaluatesExpression => {
+  //   assert(Array.isArray(node))
+  //   const [type, expression] = node
+  //   assertEquals(type, 'evaluates')
+  //   assert(Array.isArray(expression))
+  //   return {
+  //     type: 'evaluates',
+  //     expression: parseArrayNode(expression),
+  //   }
+  // },
   qualifier: (node: SExpressionNode): ParsedQualifierExpression => {
     assert(Array.isArray(node))
     const [type, snomed_concept_id, ...rest] = node
@@ -500,12 +499,12 @@ const FROM_PARSERS = {
       parsed.type,
       parsed.snomed_concept_id,
       parsed.value_snomed_concept_id,
-      FROM_PARSERS.evaluates(parsed.evaluates),
+      // FROM_PARSERS.evaluates(parsed.evaluates),
       ...qualifiers,
     ]).join(' ') + ')'
   },
-  evaluates: (parsed: ParsedEvaluatesExpression): string =>
-    `(evaluates ${fromParsedExpression(parsed.expression)})`,
+  // evaluates: (parsed: ParsedEvaluatesExpression): string =>
+  //   `(evaluates ${fromParsedExpression(parsed.expression)})`,
   not: (parsed: ParsedNotExpression): string =>
     `(not ${fromParsedExpression(parsed.expression)})`,
   or: (parsed: ParsedOrExpression): string =>

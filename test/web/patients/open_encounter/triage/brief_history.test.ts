@@ -429,6 +429,7 @@ describe('triage/brief_history', () => {
           // Department: 'Triage',
           Location: 'Triage room 1',
           Status: 'Triage In Progress',
+          Priority: 'Non-urgent',
           Employees: `${nurse1.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
           Actions: 'triage',

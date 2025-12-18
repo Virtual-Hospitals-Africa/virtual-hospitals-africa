@@ -1,6 +1,9 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpression } from '../../shared/s_expression.ts'
+import {
+  parseExpression,
+  parseExpressionExpectingType,
+} from '../../shared/s_expression.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
@@ -11,6 +14,7 @@ import { WORKFLOW_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
+import { patient_procedures } from '../../db/models/patient_procedures.ts'
 
 describe('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
@@ -35,18 +39,22 @@ describe('db/models/s_expression.ts', () => {
     )
     assert(finding.type === 'finding')
 
+    const { procedure_id } = await patient_procedures.insertOneNested(db, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      employment_id: encounter.employee.employee_id,
+      procedure: parseExpressionExpectingType(
+        `(procedure ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+        'procedure',
+      ),
+    })
+
     await patient_findings.insertOneNested(db, {
       patient_id: encounter.patient.id,
       patient_encounter_id: encounter.patient_encounter_id,
       patient_encounter_employee_id:
         encounter.employee.patient_encounter_employee_id,
-      employment_id: encounter.employee.employee_id,
-      workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
-      workflow_step_snomed_concept_id: null,
-      previously_completed_procedures: {
-        workflow_record_id: null,
-        workflow_step_record_id: null,
-      },
+      procedure_id,
       finding,
     })
 

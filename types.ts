@@ -2325,8 +2325,8 @@ export type RenderedPatientEncounter = {
     }
   >
   priority: null | {
-    snomed_concept_id: string
     name: Priority
+    value_snomed_concept_id: string
     target_treatment_time: Date | null
   }
   arrived_timestamp: Date
