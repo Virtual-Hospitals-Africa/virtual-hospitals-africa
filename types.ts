@@ -2257,6 +2257,7 @@ export type RenderedOrganization = HasStringId<
       workflows: Workflow[]
     }[]
     waiting_room_id: string | null
+    reception_id: string | null
   }
 >
 

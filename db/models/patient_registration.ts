@@ -25,17 +25,15 @@ import isEmployedInDepartment from '../../shared/isEmployedInDepartment.ts'
 
 export async function start(
   trx: TrxOrDb,
-  { id: organization_id, location }: RenderedOrganization,
+  { id: organization_id, location, reception_id }: RenderedOrganization,
   organization_employment: HealthWorkerOrganization,
 ) {
   assert(location)
+  assert(reception_id)
   assertOr403(
     isEmployedInDepartment(organization_employment, 'Reception'),
     'Must work in the reception department to register patients',
   )
-
-  const non_admin_id = organization_employment.employment_id
-  assertOr403(non_admin_id)
 
   const patient_id = generateUUID()
   const patient_encounter_id = generateUUID()
@@ -78,6 +76,7 @@ export async function start(
             organization_id,
             department_name: 'Reception',
             current_workflow: 'registration',
+            organization_room_id: reception_id,
           }),
     )
     .with(
@@ -87,7 +86,7 @@ export async function start(
           .values({
             id: patient_encounter_employee_id,
             patient_encounter_id,
-            employment_id: non_admin_id,
+            employment_id: organization_employment.employment_id,
           }),
     )
     .with(
@@ -95,7 +94,7 @@ export async function start(
       (qb) =>
         qb.insertInto('employment_presence')
           .values({
-            id: non_admin_id,
+            id: organization_employment.employment_id,
             at_work: true,
             with_patient_id: patient_id,
           }).onConflict((oc) =>

@@ -34,6 +34,12 @@ export function baseQuery(trx: TrxOrDb) {
         join.onRef('waiting_rooms.organization_id', '=', 'organizations.id')
           .on('waiting_rooms.name', '=', 'Waiting room'),
     )
+    .leftJoin(
+      'organization_rooms as receptions',
+      (join) =>
+        join.onRef('receptions.organization_id', '=', 'organizations.id')
+          .on('receptions.name', '=', 'Waiting room'),
+    )
     .select((eb) => [
       'organizations.id',
       'organizations.name',
@@ -46,6 +52,7 @@ export function baseQuery(trx: TrxOrDb) {
       'addresses.formatted as formatted_address',
       'addresses.formatted as description',
       'waiting_rooms.id as waiting_room_id',
+      'receptions.id as reception_id',
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
