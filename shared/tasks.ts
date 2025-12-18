@@ -10,20 +10,18 @@ type Task = {
 }
 
 // const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
-// const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
-// (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (department "Emergency"))
+const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
+
 
 export const TASKS: Task[] = [
   {
     if_description: 'If oxygen saturation below 92%',
     tasks_description: 'give oxygen and move to resuscitation area',
-    task_s_expression: parseExpressionExpectingType(
-      `(
+    task_s_expression: parseExpressionExpectingType(`(
       task
-      (<
-        (measurement 103228002)
-        (units 92 %))
-      (procedure 57485005)
+        (< (measurement 103228002) (units 92 %))
+        (procedure 57485005)
+        (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))
     )`,
       'task',
     ),

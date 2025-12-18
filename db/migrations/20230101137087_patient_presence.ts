@@ -35,6 +35,12 @@ export async function up(db: Kysely<DB>) {
             col.notNull().references('departments.name').onDelete('cascade'),
         )
         .addColumn(
+          'organization_room_id',
+          'uuid',
+          (col) =>
+            col.notNull().references('organization_rooms.id').onDelete('cascade'),
+        )
+        .addColumn(
           'current_workflow',
           sql`workflow`,
         )
