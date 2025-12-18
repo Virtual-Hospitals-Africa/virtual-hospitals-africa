@@ -33,6 +33,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - name: Deno install
         run: deno install --allow-scripts
@@ -81,6 +82,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - uses: actions/cache/restore@v4
         name: Restore git lfs cache
@@ -88,6 +90,7 @@ jobs:
         with:
           path: .git/lfs/objects
           key: git-lfs
+          restore-keys: git-lfs
 
       - name: Git lfs pull
         run: git lfs pull
@@ -114,20 +117,6 @@ jobs:
       - name: Run tests
         run: deno task test --use-build
 
-      # The test_web step owns the cache, so only overwrite the cache if test_web passes
-      - name: Cache deno-modules
-        id: cache-deno-modules-save
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/deno
-          key: deno-modules
-
-      - name: Cache git-lfs
-        id: cache-git-lfs-save
-        uses: actions/cache/save@v4
-        with:
-          path: .git/lfs/objects
-          key: git-lfs
 
   test_chatbot:
     runs-on: ubuntu-latest
@@ -170,6 +159,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - uses: actions/cache/restore@v4
         name: Restore git lfs cache
@@ -177,6 +167,7 @@ jobs:
         with:
           path: .git/lfs/objects
           key: git-lfs
+          restore-keys: git-lfs
 
       - name: Git lfs pull
         run: git lfs pull
@@ -240,6 +231,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - uses: actions/cache/restore@v4
         name: Restore git lfs cache
@@ -247,6 +239,7 @@ jobs:
         with:
           path: .git/lfs/objects
           key: git-lfs
+          restore-keys: git-lfs
 
       - name: Git lfs pull
         run: git lfs pull
@@ -302,6 +295,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -326,6 +320,7 @@ jobs:
         with:
           path: ~/.cache/deno
           key: deno-modules
+          restore-keys: deno-modules
 
       - name: Build web
         run: deno task build
