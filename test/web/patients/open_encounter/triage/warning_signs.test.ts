@@ -6,7 +6,7 @@ import {
   insertReturningSeekingTreatmentWithEmployeeForTest,
 } from '../../../../_helpers/workflows.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
 import asFormData from '../../../../../util/asFormData.ts'
@@ -29,10 +29,12 @@ describe('triage/warning_signs', () => {
 
   describe('GET', () => {
     it('renders a warning signs page when patient not known to be pregnant', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -45,7 +47,7 @@ describe('triage/warning_signs', () => {
         )
 
       const $warning_signs = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
       )
 
       const form_labels = getFormLabels($warning_signs)
@@ -91,10 +93,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('renders the pregnancy-specific signs when the patient is pregnant', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const initial_encounter =
@@ -109,7 +113,7 @@ describe('triage/warning_signs', () => {
       const patient_id = initial_encounter.patient.id
 
       await fetchOk(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/triage/brief_history`,
+        `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/triage/brief_history`,
         {
           method: 'POST',
           body: asFormData({
@@ -147,7 +151,7 @@ describe('triage/warning_signs', () => {
       )
 
       const $warning_signs = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/triage/warning_signs`,
+        `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/triage/warning_signs`,
       )
 
       const form_labels = getFormLabels($warning_signs)
@@ -196,10 +200,12 @@ describe('triage/warning_signs', () => {
 
   describe('POST', () => {
     it('inserts a simple warning sign finding without qualifiers', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -212,7 +218,7 @@ describe('triage/warning_signs', () => {
         )
 
       const response = await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -229,7 +235,7 @@ describe('triage/warning_signs', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const this_patient_findings = await patient_findings.findAll(db, {
@@ -263,10 +269,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -282,7 +290,7 @@ describe('triage/warning_signs', () => {
       // 91175000 = Seizure (canonical name in SNOMED)
       // 15240007 = Current
       const response = await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -298,7 +306,7 @@ describe('triage/warning_signs', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const this_patient_findings = await patient_findings.findAll(db, {
@@ -337,7 +345,7 @@ describe('triage/warning_signs', () => {
       ])
 
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -359,10 +367,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('inserts multiple warning sign findings when multiple are selected', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -376,7 +386,7 @@ describe('triage/warning_signs', () => {
 
       // Submit with both "Cardiac arrest" and "Chest pain" selected
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -431,10 +441,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('does not insert any findings when no warning signs are selected', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -448,7 +460,7 @@ describe('triage/warning_signs', () => {
 
       // Submit with no warning signs selected
       const response = await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({}),
@@ -460,7 +472,7 @@ describe('triage/warning_signs', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       )
 
       const this_patient_findings = await patient_findings.findAll(db, {
@@ -471,10 +483,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('does not save warning signs already made during the encounter', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const encounter =
@@ -487,7 +501,7 @@ describe('triage/warning_signs', () => {
         )
 
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -510,7 +524,7 @@ describe('triage/warning_signs', () => {
       assertEquals(findings_count_after_first_insertion.length, 1)
 
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -534,10 +548,12 @@ describe('triage/warning_signs', () => {
     })
 
     it('does save identical warning concepts made during different encounters', async () => {
+      const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           registration_status: 'approved',
+          organization_id: clinic.id
         })
 
       const initial_encounter =
@@ -550,7 +566,7 @@ describe('triage/warning_signs', () => {
         )
 
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -587,7 +603,7 @@ describe('triage/warning_signs', () => {
         )
 
       await fetchOk(
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        `${route}/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
           body: asFormData({
@@ -612,10 +628,12 @@ describe('triage/warning_signs', () => {
 
     function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {
       it(`renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`, async () => {
+        const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchOk, fetchCheerio } =
           await addTestEmployeeWithSession(db, {
             profession: 'nurse',
             registration_status: 'approved',
+            organization_id: clinic.id
           })
 
         const encounter =
@@ -629,7 +647,7 @@ describe('triage/warning_signs', () => {
 
         if (pregnant) {
           await fetchOk(
-            `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+            `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
             {
               method: 'POST',
               body: asFormData({
@@ -648,7 +666,7 @@ describe('triage/warning_signs', () => {
         }
 
         await fetchOk(
-          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
           {
             method: 'POST',
             body: asFormData({
@@ -663,7 +681,7 @@ describe('triage/warning_signs', () => {
         )
 
         const $ = await fetchCheerio(
-          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         )
 
         const form_values = getFormValues($)
@@ -674,12 +692,14 @@ describe('triage/warning_signs', () => {
         })
       })
     }
+    
 
     for (const [key, sign] of entries(WARNING_SIGNS)) {
       const pregnant = [
         'Pregnancy and abdominal pain',
         'Pregnancy and abdominal trauma',
       ].includes(key)
+
       testRoundTrip(key, sign, pregnant)
     }
   })

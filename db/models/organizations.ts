@@ -38,7 +38,7 @@ export function baseQuery(trx: TrxOrDb) {
       'organization_rooms as receptions',
       (join) =>
         join.onRef('receptions.organization_id', '=', 'organizations.id')
-          .on('receptions.name', '=', 'Waiting room'),
+          .on('receptions.name', '=', 'Reception'),
     )
     .select((eb) => [
       'organizations.id',

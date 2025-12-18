@@ -129,6 +129,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
         ?.name === department_name
     )
 
+  let with_patient_id: string | null = null
   let patient_presence: InsertShape<PatientPresence> = {
     id: patient_id,
     organization_id,
@@ -144,6 +145,7 @@ export async function insertSeekingTreatmentForRegisteredPatient(
       trx,
       { organization_id, department_name, is_available: true },
     )
+    console.log({ first_available_room })
     if (first_available_room) {
       patient_presence = {
         id: patient_id,
@@ -154,12 +156,13 @@ export async function insertSeekingTreatmentForRegisteredPatient(
         department_name,
         organization_room_id: first_available_room.id,
       }
+      with_patient_id = patient_id
     }
   }
   const employment_presence: InsertShape<EmploymentPresence> = {
     id: organization_employment.employment_id,
     at_work: true,
-    with_patient_id: employed_in_workflow_department ? patient_id : null,
+    with_patient_id
   }
 
   const { completed_registration, ...inserted_patient_presence } = await trx
