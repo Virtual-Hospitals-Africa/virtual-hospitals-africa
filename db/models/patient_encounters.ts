@@ -317,6 +317,11 @@ export function baseQuery(trx: TrxOrDb) {
       ).as('priority'),
       jsonObjectFrom(
         eb_encounters.selectFrom('patient_presence')
+          .innerJoin(
+            'organization_rooms',
+            'organization_rooms.id',
+            'patient_presence.organization_room_id',
+          )
           .where('patient_encounters.closed_at', 'is', null)
           .whereRef('patient_encounters.patient_id', '=', 'patient_presence.id')
           .select((eb_patient_presence) => [
@@ -346,6 +351,15 @@ export function baseQuery(trx: TrxOrDb) {
                   'patient_encounter_employees.id as patient_encounter_employee_id',
                 ),
             ).as('present_with_patient_encounter_employee_ids'),
+            jsonObjectFrom(
+              eb_patient_presence.selectFrom('organization_rooms as room')
+                .whereRef(
+                  'room.id',
+                  '=',
+                  'patient_presence.organization_room_id',
+                )
+                .select(['room.id', 'room.name']),
+            ).$notNull().as('room'),
           ])
           .limit(1),
       ).as('patient_presence'),
@@ -517,6 +531,7 @@ function asPatientPresence(
     current_workflow,
     next_workflow,
     present_with_patient_encounter_employee_ids,
+    room,
   }: NonNullable<
     IntermediatePatientEncounterResult['patient_presence']
   >,
@@ -532,6 +547,7 @@ function asPatientPresence(
       current_workflow,
       next_workflow,
       present_with_patient_encounter_employee_ids,
+      room,
     }
   }
 
@@ -541,6 +557,7 @@ function asPatientPresence(
     current_workflow,
     next_workflow,
     present_with_patient_encounter_employee_ids,
+    room,
   }
 }
 

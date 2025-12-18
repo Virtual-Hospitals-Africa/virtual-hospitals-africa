@@ -56,6 +56,8 @@ function baseQuery(trx: TrxOrDb) {
           ]),
       ).as('occupied_by_patient'),
     ])
+    .orderBy('organization_rooms.organization_id', 'asc')
+    .orderBy('organization_rooms.name', 'asc')
 }
 
 export const organization_rooms = base({

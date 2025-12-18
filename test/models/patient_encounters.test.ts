@@ -110,6 +110,7 @@ describe(
                   present_with_patient_encounter_employee_ids: [
                     patient_encounter_employee_id,
                   ],
+                  room: open_encounter.status.patient_presence!.room,
                 },
               },
               patient,
@@ -149,6 +150,7 @@ describe(
                 description: patient.description,
                 name: '[Unregistered patient]',
               },
+              room: open_encounter.status.patient_presence!.room,
               arrived_ago_display: 'Just now',
               workflow_status_display: 'Registration In Progress',
               actions: [{
@@ -260,6 +262,7 @@ describe(
                 current_workflow: null,
                 next_workflow: 'triage',
                 present_with_patient_encounter_employee_ids: [],
+                room: open_encounter.status.patient_presence!.room,
               },
             },
             patient,
@@ -299,6 +302,7 @@ describe(
               avatar_url: patient.avatar_url,
               description: patient.description,
             },
+            room: open_encounter.status.patient_presence!.room,
             arrived_ago_display: 'Just now',
             workflow_status_display: 'Awaiting Triage',
             actions: [{

@@ -2266,6 +2266,10 @@ export type RenderedPatientPresenceWaitingRoom = {
   current_workflow: null
   next_workflow: Workflow
   present_with_patient_encounter_employee_ids: []
+  room: {
+    id: string
+    name: string
+  }
 }
 
 export type RenderedPatientPresenceActiveDepartment = {
@@ -2273,6 +2277,10 @@ export type RenderedPatientPresenceActiveDepartment = {
   current_workflow: Workflow
   next_workflow: null | Workflow
   present_with_patient_encounter_employee_ids: string[]
+  room: {
+    id: string
+    name: string
+  }
 }
 
 export type RenderedPatientPresence =
@@ -2387,6 +2395,10 @@ export type RenderedWaitingRoom = {
     name: string
     avatar_url: string | null
     description: string | null
+  }
+  room: {
+    id: string
+    name: string
   }
   actions: [ExtendedActionData]
   reason: EncounterReason | null
