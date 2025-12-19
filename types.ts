@@ -1674,6 +1674,7 @@ export type ParsedDate = {
   day: string
   month: string
   year: string
+  timezone: string
 }
 
 export type ParsedDateTime = {
@@ -1684,7 +1685,8 @@ export type ParsedDateTime = {
   hour: string
   minute: string
   second: string
-  format: 'numeric' /*| 'two_digit'*/
+  timezone: string
+  format: 'numeric'
 }
 
 export type ISODateString = string & {
@@ -2407,7 +2409,7 @@ export type RenderedWaitingRoom = {
   arrived_ago_display: string
   target_treatment_time: Date | null
   department_name: Department
-  priority_level: Priority | null
+  priority: RenderedPatientOpenEncounter['priority']
   present_employees: RenderedPatientEncounterEmployee[]
   // appointment: null | {
   //   id: string

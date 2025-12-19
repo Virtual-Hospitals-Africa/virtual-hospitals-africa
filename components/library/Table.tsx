@@ -8,11 +8,14 @@ import { assertPersonLike, Person, PersonData } from './Person.tsx'
 import Pagination from './Pagination.tsx'
 import entries from '../../util/entries.ts'
 import { ActionButton } from './ActionButton.tsx'
+import isDate from '../../util/isDate.ts'
+import { LocalTime } from '../../islands/LocalTime.tsx'
+import { rfc3339_regex } from '../../util/date.ts'
 
 type Showable =
+  | string[]
   | string
   | number
-  | string[]
   | null
   | undefined
   | ComponentChildren
@@ -30,6 +33,7 @@ export type TableColumn<T extends Row> =
   }
   & (
     | { type?: 'content'; data: keyof T | ((row: T) => Showable) }
+    | { type: 'date'; data: keyof T | ((row: T) => Maybe<string | Date>) }
     | {
       type: 'person'
       data: keyof T | ((row: T) => Maybe<PersonData> | PersonData[])
@@ -69,10 +73,14 @@ function TableCellInnerContents<T extends Row>(
     mapped_column: MappedColumn<T>
   },
 ) {
+  const value = mapped_column.cell_contents[row_index]
+  const is_date = isDate(value) ||
+    (isString(value) && rfc3339_regex.test(value))
   if (
     mapped_column.column.type === 'content' ||
     mapped_column.column.type === undefined
   ) {
+    assert(!is_date, 'Use the "date" column type for dates')
     return (
       <div
         className={cls(
@@ -80,13 +88,30 @@ function TableCellInnerContents<T extends Row>(
           mapped_column.column.cellClassName,
         )}
       >
-        {mapped_column.cell_contents[row_index]}
+        {value}
+      </div>
+    )
+  }
+
+  if (
+    mapped_column.column.type === 'date'
+  ) {
+    assert(!value || is_date)
+
+    return (
+      <div
+        className={cls(
+          'text-gray-600 text-sm whitespace-nowrap',
+          mapped_column.column.cellClassName,
+        )}
+      >
+        <LocalTime timestamp={value} expected_time_range='any' />
       </div>
     )
   }
 
   if (mapped_column.column.type === 'person') {
-    const person = mapped_column.cell_contents[row_index]
+    const person = value
     if (person == null || (Array.isArray(person) && person.length === 0)) {
       return null
     }

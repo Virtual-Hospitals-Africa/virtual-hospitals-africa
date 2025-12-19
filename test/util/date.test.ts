@@ -28,6 +28,7 @@ describe('date', () => {
         year: '2025',
         month: '11',
         day: '7',
+        timezone: 'Africa/Johannesburg',
       })
       assertEquals(formatted, '2025-11-07T00:00:00+02:00')
     })

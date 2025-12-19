@@ -1,9 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
 
 export default function assertLength<
-  T,
+  T extends {
+    length: number
+  },
 >(
-  array: T[],
+  array: T,
   length: number,
 ) {
   assert(

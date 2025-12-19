@@ -53,13 +53,10 @@ export function Person(
       {!no_avatar && (
         <Avatar
           src={person.avatar_url}
-          className={cls(
-            'flex-shrink-0 rounded-full',
-            size === 'md' ? 'h-8 w-8' : size === 'sm' ? 'h-6 w-6' : 'h-10 w-10',
-          )}
+          size={size}
+          className='mr-1'
         />
       )}
-
       <div className={cls('flex flex-col', bold && 'font-bold')}>
         <div className='person-name text-xs'>
           {person.display_name || person.name}

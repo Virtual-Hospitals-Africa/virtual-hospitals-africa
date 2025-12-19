@@ -31,7 +31,7 @@ export function MostRecentFinding(
           {finding.value_display}
         </a>
         &nbsp;recorded&nbsp;
-        <LocalTime timestamp={finding.created_at} />
+        <LocalTime timestamp={finding.created_at} expected_time_range='past' />
       </span>
 
       <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block hover:block'>

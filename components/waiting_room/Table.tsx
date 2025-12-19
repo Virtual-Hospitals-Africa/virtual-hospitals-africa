@@ -38,12 +38,12 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   },
   {
     label: 'Priority',
-    data(row) {
-      if (!row.priority_level) return null
-      const colors = PRIORITY_COLORS[row.priority_level]
+    data({ priority }) {
+      if (!priority) return null
+      const colors = PRIORITY_COLORS[priority.name]
       return (
         <Badge
-          content={row.priority_level}
+          content={priority.name}
           classNames={cls(colors.bg, colors.text)}
         />
       )
@@ -84,6 +84,11 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Arrived',
     data: 'arrived_ago_display',
+  },
+  {
+    label: 'Target time',
+    type: 'date',
+    data: ({ priority }) => priority?.target_treatment_time,
   },
   {
     label: 'Actions',

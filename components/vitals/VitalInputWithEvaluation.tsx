@@ -66,7 +66,10 @@ export default function VitalInputWithEvaluation({
             }
           />
           <div className='flex text-gray-500'>
-            <LocalTime timestamp={measurement.created_at} />
+            <LocalTime
+              timestamp={measurement.created_at}
+              expected_time_range='past'
+            />
           </div>
         </div>
         <div className='flex items-center gap-2 min-w-30 max-w-30'>
