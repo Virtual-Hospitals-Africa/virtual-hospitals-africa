@@ -8,8 +8,8 @@ import * as patient_evaluations from '../../../../../../../../../db/models/patie
 import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../../util/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
-import { PRIORITIES } from '../../../../../../../../../types.ts'
 import { VitalsEvaluationsForm } from '../../../../../../../../../components/vitals/EvaluationsForm.tsx'
+import { PRIORITIES } from '../../../../../../../../../shared/priorities.ts'
 
 const VitalsEvaluationSchema = z.object({
   findings: z.record(

@@ -21,9 +21,10 @@ import {
   parseFindingExpression,
 } from '../../../../../../../../shared/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
-import { ORDERED_PRIORITIES, Priority } from '../../../../../../../../types.ts'
+import { Priority } from '../../../../../../../../types.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
+import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(

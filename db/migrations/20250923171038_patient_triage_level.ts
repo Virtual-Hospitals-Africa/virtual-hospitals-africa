@@ -1,8 +1,8 @@
 import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createPointerTable } from '../createTable.ts'
-import { TRIAGE_LEVELS } from '../../types.ts'
 import { assertOnInsert } from '../helpers.ts'
+import { TRIAGE_LEVELS } from '../../shared/priorities.ts'
 
 const check_priority = assertOnInsert({
   table: 'patient_triage_level',

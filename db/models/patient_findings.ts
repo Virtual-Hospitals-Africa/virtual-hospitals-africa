@@ -22,7 +22,7 @@ import {
   ParsedFindingExpression,
 } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { satisfyingSExpression } from './s_expression.ts'
+import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -145,27 +145,51 @@ export function baseQuery(
     )
 }
 
+type PatientFindingsSearch = {
+  patient_id: string | IdSelection
+  s_expression?: string | ParsedFindingExpression
+  search?: string
+}
+
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
   formatResult: (x) => x,
   handleSearch(
     qb,
-    opts: { search?: string; patient_id: string | IdSelection },
+    opts: PatientFindingsSearch,
+    trx,
   ) {
     assert(!opts.search, 'TODO support')
-    if (opts.search) {
-      qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.name',
-        'ilike',
-        `%${opts.search}%`,
-      )
-    }
+    assert(
+      opts.patient_id,
+      'For now, you must always provide a patient_id as part of a query',
+    )
+    // if (opts.search) {
+    //   qb = qb.where(
+    //     'snomed_inferred_canonical_name_and_category.name',
+    //     'ilike',
+    //     `%${opts.search}%`,
+    //   )
+    // }
     if (opts.patient_id) {
       qb = qb.where(
         'patient_records.patient_id',
         '=',
         opts.patient_id,
+      )
+    }
+    if (opts.s_expression) {
+      qb = qb.where(
+        'patient_records.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+          },
+          opts.s_expression,
+        ),
       )
     }
 

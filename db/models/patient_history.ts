@@ -1,9 +1,16 @@
-// deno-lint-ignore-file no-unused-vars
 import { RenderedPatientHistory, TrxOrDb } from '../../types.ts'
+// import { patient_findings } from './patient_findings.ts'
+
+// Diagnoses
+// Yes self reported statuses
+// Anything else that's a descendant of chronic disease
+// function getPreExistingConditions(): Promise<RenderedFindingRelativeToHealthWorker[]> {
+
+// }
 
 export function get(
-  trx: TrxOrDb,
-  { patient_encounter_id, patient_encounter_employee_id }: {
+  _trx: TrxOrDb,
+  {/* patient_encounter_id, patient_encounter_employee_id */}: {
     patient_encounter_id: string
     patient_encounter_employee_id: string
   },

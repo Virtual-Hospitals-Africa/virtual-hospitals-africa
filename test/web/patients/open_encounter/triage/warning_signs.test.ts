@@ -690,6 +690,11 @@ describe('triage/warning_signs', () => {
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         )
 
+        assertEquals(
+          $warning_signs('#patient-drawer-priority').text(),
+          sign.sats_priority,
+        )
+
         const form_values = getFormValues($warning_signs)
         assertEquals(form_values, {
           warning_signs: {

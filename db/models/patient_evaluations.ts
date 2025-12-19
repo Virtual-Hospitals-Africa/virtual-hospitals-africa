@@ -1,9 +1,5 @@
 import { sql } from 'kysely'
-import {
-  MostRecentVitalMeasurement,
-  PRIORITY_SNOMED_CODES,
-  TrxOrDb,
-} from '../../types.ts'
+import { MostRecentVitalMeasurement, Priority, TrxOrDb } from '../../types.ts'
 import {
   jsonArrayFrom,
   jsonObjectFrom,
@@ -21,20 +17,22 @@ import {
   ParsedExpression,
 } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
+import entries from '../../util/entries.ts'
 
 export interface VitalsEvaluation {
   finding_id: string
   snomed_concept_id: string
-  priority?: keyof typeof PRIORITY_SNOMED_CODES
+  priority?: Priority
   note?: string
 }
 
 export function mapPriorityFromSnomedCode(
   snomed_code: string,
-): keyof typeof PRIORITY_SNOMED_CODES | undefined {
-  return Object.entries(PRIORITY_SNOMED_CODES).find(([_, code]) =>
+): Priority | undefined {
+  return entries(PRIORITY_SNOMED_CODES).find(([_, code]) =>
     code === snomed_code
-  )?.[0] as keyof typeof PRIORITY_SNOMED_CODES | undefined
+  )?.[0]
 }
 
 type PatientEvaluationInsert =

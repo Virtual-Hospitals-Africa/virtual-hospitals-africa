@@ -3,9 +3,10 @@ import { useSignal } from '@preact/signals'
 import { useRef } from 'preact/hooks'
 import { FlagIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { PRIORITIES, Priority } from '../../types.ts'
+import { Priority } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import { Fragment } from 'preact'
+import { PRIORITIES } from '../../shared/priorities.ts'
 
 const PRIORITY_COLORS: Record<
   Priority | 'Normal',

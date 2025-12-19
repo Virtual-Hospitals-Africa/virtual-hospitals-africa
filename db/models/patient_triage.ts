@@ -1,14 +1,14 @@
 import { sql } from 'kysely'
 import { TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_triage.ts'
+import { TrxOrDb } from '../../types.ts'
+import generateUUID from '../../util/uuid.ts'
+import { success_true } from '../helpers.ts'
 import {
   PRIORITY_SNOMED_CODES,
   PRIORITY_SNOMED_CONCEPT_ID,
   TARGET_TIME_TO_TREATMENT_MINUTES,
   TriageLevel,
-  TrxOrDb,
-} from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import { success_true } from '../helpers.ts'
+} from '../../shared/priorities.ts'
 
 export function insertProcedure(
   trx: TrxOrDb,

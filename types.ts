@@ -21,14 +21,17 @@ import {
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
-import { Department } from './shared/departments.ts'
-import { DietFrequency } from './shared/diet.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
+import { type Department } from './shared/departments.ts'
+import { type DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
-import { MessageTargetCategory } from './shared/message_targets.ts'
-import { CommonConditionKey } from './shared/brief_history.ts'
-
-export * from './shared/priorities.ts'
+import { type MessageTargetCategory } from './shared/message_targets.ts'
+import { type CommonConditionKey } from './shared/brief_history.ts'
+export { type Department } from './shared/departments.ts'
+export { type DietFrequency } from './shared/diet.ts'
+export { type Priority } from './shared/priorities.ts'
+export { type MessageTargetCategory } from './shared/message_targets.ts'
+export { type CommonConditionKey } from './shared/brief_history.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -3357,12 +3360,12 @@ export type ThisVisitRecords = {
 }
 
 export type RenderedPatientHistory = {
-  pre_existing_conditions: PatientDrawerRecordDisplay[]
-  allergies: PatientDrawerRecordDisplay[]
-  family_history: PatientDrawerRecordDisplay[]
-  major_surgeries: PatientDrawerRecordDisplay[]
-  medications: PatientDrawerRecordDisplay[]
-  lifestyle: PatientDrawerRecordDisplay[]
+  pre_existing_conditions: RenderedFindingRelativeToHealthWorker[]
+  allergies: RenderedFindingRelativeToHealthWorker[]
+  family_history: RenderedFindingRelativeToHealthWorker[]
+  major_surgeries: RenderedFindingRelativeToHealthWorker[]
+  medications: RenderedFindingRelativeToHealthWorker[]
+  lifestyle: RenderedFindingRelativeToHealthWorker[]
 }
 
 export type PatientDrawerV3Props = {

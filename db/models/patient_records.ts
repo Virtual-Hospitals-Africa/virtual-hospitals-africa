@@ -1,5 +1,5 @@
 import { ExpressionWrapper } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 
@@ -84,8 +84,10 @@ export function markEnteredInError(
 
 export function nowInvalidRecords(
   trx: TrxOrDb,
-  // deno-lint-ignore no-explicit-any
-  { patient_id }: { patient_id: string | ExpressionWrapper<any, any, string> },
+  { patient_id }: {
+    // deno-lint-ignore no-explicit-any
+    patient_id: string | ExpressionWrapper<any, any, string> | IdSelection
+  },
 ) {
   return trx.selectFrom(
     'patient_records as now_invalid_patient_records',
