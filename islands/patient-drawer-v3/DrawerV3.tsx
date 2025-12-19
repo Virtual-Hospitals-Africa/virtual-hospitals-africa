@@ -1,10 +1,13 @@
+import { Priority, PRIORITY_COLORS } from '../../shared/priorities.ts'
 import {
+  Maybe,
   PatientDrawerRecordDisplay,
   PatientDrawerV3Props,
   RenderedCareTeamHealthWorker,
   RenderedPatient,
   RenderedPatientHistory,
 } from '../../types.ts'
+import cls from '../../util/cls.ts'
 
 // Individual chip component for triage levels
 function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
@@ -32,19 +35,20 @@ function TriageChip({ record }: { record: PatientDrawerRecordDisplay }) {
 }
 
 // Patient's drawer card component with avatar, name, DOB, and triage
-function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
-  const avatar_url = patient.avatar_url || '/static/images/default-avatar.png'
+function PatientDrawerCard(
+  { patient, priority }: {
+    patient: RenderedPatient
+    priority: Maybe<Priority>
+  },
+) {
+  const priority_color = priority
+    ? PRIORITY_COLORS[priority]
+    : { bg: 'bg-gray-100', text: 'gray-800' }
 
   return (
-    <div className='bg-red-100 relative rounded-[8px] shrink-0'>
+    <div className={cls('relative rounded-[8px] shrink-0', priority_color.bg)}>
       <div className='box-border content-stretch flex flex-col gap-[12px] items-center justify-start overflow-clip p-[16px] relative'>
         <div className='content-stretch flex gap-[12px] h-[56px] items-center justify-start relative shrink-0 w-[336px]'>
-          <div
-            className='bg-center bg-cover bg-no-repeat relative rounded-[200px] shrink-0 size-[56px]'
-            style={{ backgroundImage: `url('${avatar_url}')` }}
-          >
-            <div className='absolute border border-gray-200 border-solid inset-0 pointer-events-none rounded-[200px]' />
-          </div>
           <div className='basis-0 content-stretch flex flex-col gap-[4px] grow items-start justify-start min-h-px min-w-px relative shrink-0'>
             <div className='content-stretch flex gap-[8px] items-center justify-start relative shrink-0 w-full'>
               <div className="basis-0 flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold grow justify-center leading-[0] min-h-px min-w-px not-italic overflow-ellipsis overflow-hidden relative shrink-0 text-[18px] text-gray-800 text-nowrap">
@@ -100,15 +104,15 @@ function PatientDrawerCard({ patient }: { patient: RenderedPatient }) {
         </div>
         <div className='relative flex items-center justify-between w-full content-stretch shrink-0'>
           <div className='relative flex flex-col items-start justify-start content-stretch shrink-0'>
-            <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-red-800 whitespace-pre">
-              Emergency
+            <p
+              id='patient-drawer-priority'
+              className={cls(
+                "font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] text-center text-nowrap whitespace-pre",
+                priority_color.text,
+              )}
+            >
+              {priority || 'Priority to be determined'}
             </p>
-          </div>
-          <div className='bg-gray-100 box-border content-stretch flex gap-[8px] h-[32px] items-center justify-start px-[16px] py-[8px] relative rounded-[6px] shrink-0'>
-            <div className='absolute border border-gray-200 border-solid inset-0 pointer-events-none rounded-[6px]' />
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[14px] text-center text-gray-600 text-nowrap">
-              <p className='leading-[20px] whitespace-pre'>Change</p>
-            </div>
           </div>
         </div>
       </div>
@@ -233,7 +237,10 @@ function History({ history }: { history: RenderedPatientHistory }) {
   ]
 
   return (
-    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-[368px]'>
+    <div
+      id='patient-drawer-history'
+      className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-[368px]'
+    >
       <div className='content-stretch flex h-[46px] items-start justify-between relative shrink-0 w-full'>
         <div className='basis-0 box-border content-stretch flex gap-[16px] grow h-[46px] isolate items-center justify-start min-h-px min-w-px px-[16px] py-[8px] relative shrink-0'>
           <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[22px] not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[2]">
@@ -283,7 +290,10 @@ function CareTeam(
   { care_team }: { care_team: RenderedCareTeamHealthWorker[] },
 ) {
   return (
-    <div className='content-stretch flex flex-col gap-[8px] items-center justify-start relative shrink-0 w-full'>
+    <div
+      id='patient-drawer-care-team'
+      className='content-stretch flex flex-col gap-[8px] items-center justify-start relative shrink-0 w-full'
+    >
       <div className='relative flex flex-col items-start justify-start w-full content-stretch shrink-0'>
         <div className='box-border content-stretch flex gap-[4px] isolate items-center justify-start px-[16px] py-0 relative shrink-0 w-full'>
           <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[22px] not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[3]">
@@ -422,17 +432,24 @@ function CareTeam(
 
 export default function PatientDrawerV3({
   patient,
+  encounter,
   this_visit_records,
   current_consultation_step,
   patient_history,
   care_team,
 }: PatientDrawerV3Props) {
   return (
-    <div className='bg-white box-border content-stretch flex flex-col gap-[10px] items-center justify-start p-[16px] relative size-full'>
+    <div
+      id='patient-drawer'
+      className='bg-white box-border content-stretch flex flex-col gap-[10px] items-center justify-start p-[16px] relative size-full'
+    >
       <div className='absolute border-[0px_0px_0px_1.5px] border-gray-200 border-solid inset-0 pointer-events-none shadow-[0px_60px_90px_0px_rgba(75,85,99,0.1)]' />
       <div className='box-border content-stretch flex flex-col gap-[24px] items-center justify-start pb-[80px] pt-0 px-0 relative shrink-0'>
         <div className='content-stretch flex flex-col gap-[24px] items-start justify-start relative shrink-0'>
-          <PatientDrawerCard patient={patient} />
+          <PatientDrawerCard
+            patient={patient}
+            priority={encounter.priority?.name}
+          />
           <ThisVisit
             records={this_visit_records}
             current_consultation_step={current_consultation_step}

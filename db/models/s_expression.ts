@@ -1,4 +1,4 @@
-import { Maybe, TrxOrDb } from '../../types.ts'
+import { IdSelection, Maybe, TrxOrDb } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
   ParsedExpression,
@@ -18,7 +18,7 @@ import {
 import isString from '../../util/isString.ts'
 
 type PatientIdentifiers = {
-  patient_id: string
+  patient_id: string | IdSelection
   patient_encounter_id?: Maybe<string>
 }
 type SatisfyingResult = {
@@ -35,9 +35,7 @@ function baseQuery(
     value_snomed_concept_id,
     descendent_of_snomed_concept_id,
     qualifiers = [],
-  }: {
-    patient_id: string
-    patient_encounter_id?: Maybe<string>
+  }: PatientIdentifiers & {
     snomed_concept_id?: Maybe<string>
     value_snomed_concept_id?: Maybe<string>
     descendent_of_snomed_concept_id?: Maybe<string>
@@ -337,8 +335,11 @@ const EXPRESSION_BUILDERS = {
 export function buildExpression(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  node: ParsedExpression,
+  node: ParsedExpression | string,
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
+  if (typeof node === 'string') {
+    node = parseExpression(node)
+  }
   // deno-lint-ignore ban-types
   const builder = EXPRESSION_BUILDERS[node.type] as Function
   // deno-lint-ignore no-explicit-any

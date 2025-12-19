@@ -56,9 +56,9 @@ export const PRIORITY_COLORS: Record<
     border: 'border-green-200',
   },
   'Non-urgent': {
-    bg: 'bg-blue-100',
-    text: 'text-blue-800',
-    border: 'border-blue-200',
+    bg: 'bg-green-100',
+    text: 'text-green-800',
+    border: 'border-green-200',
   },
   Urgent: {
     bg: 'bg-yellow-100',

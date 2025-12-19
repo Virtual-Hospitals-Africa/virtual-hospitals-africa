@@ -5,10 +5,8 @@ import {
   HealthWorkerOrganization,
   IdSelection,
   InsertShape,
-  isPriority,
   Maybe,
   PostgresInterval,
-  PRIORITY_SNOMED_CONCEPT_ID,
   RenderedOrganization,
   RenderedPatientEncounter,
   RenderedPatientEncounterEmployee,
@@ -61,6 +59,10 @@ import makeAssertion from '../../util/makeAssertion.ts'
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
+import {
+  isPriority,
+  PRIORITY_SNOMED_CONCEPT_ID,
+} from '../../shared/priorities.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
