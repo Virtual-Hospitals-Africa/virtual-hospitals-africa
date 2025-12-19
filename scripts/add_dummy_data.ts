@@ -524,7 +524,7 @@
 
 // //         const d = new Date('2025-10-09T09:39:07.940Z')
 // //         d.setMinutes(d.getMinutes() + target_minutes)
-// //         target_time_to_treatment = timeInSimpleAmPm(parseDateTime(d, 'numeric'))
+// //         target_time_to_treatment = timeInSimpleAmPm(parseDateTime(d))
 // //       }
 // //     }
 

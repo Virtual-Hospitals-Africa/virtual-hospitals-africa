@@ -4,13 +4,23 @@ import {
   PRIORITY_SNOMED_CODES,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonObjectFrom, success_true } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonObjectFrom,
+  literalString,
+  success_true,
+} from '../helpers.ts'
 import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 import z from 'zod'
 import flatten from '../../util/flatten.ts'
 import { decimal } from '../../util/validators.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
+import {
+  ParsedEvaluationExpression,
+  ParsedExpression,
+} from '../../shared/s_expression.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export interface VitalsEvaluation {
   finding_id: string
@@ -25,6 +35,119 @@ export function mapPriorityFromSnomedCode(
   return Object.entries(PRIORITY_SNOMED_CODES).find(([_, code]) =>
     code === snomed_code
   )?.[0] as keyof typeof PRIORITY_SNOMED_CODES | undefined
+}
+
+type PatientEvaluationInsert =
+  & {
+    patient_id: string
+    patient_encounter_id: string
+    evaluation: ParsedEvaluationExpression
+    evaluates_record_id: string
+  }
+  & (
+    {
+      employment_id: string
+      by_system?: never
+    } | {
+      employment_id?: never
+      by_system: true
+    }
+  )
+
+export function insertOne(
+  trx: TrxOrDb,
+  {
+    patient_id,
+    patient_encounter_id,
+    evaluates_record_id,
+    evaluation,
+    employment_id,
+    by_system,
+  }: PatientEvaluationInsert,
+) {
+  const evaluation_id = generateUUID()
+
+  let query = trx.with(
+    'inserting_evaluation_record',
+    (qb) =>
+      qb.insertInto('patient_records')
+        .values({
+          id: evaluation_id,
+          patient_id,
+          patient_encounter_id,
+          snomed_concept_id: evaluation.snomed_concept_id,
+          value_snomed_concept_id: evaluation.value_snomed_concept_id,
+        }),
+  ).with(
+    'inserting_evaluation',
+    (qb) =>
+      qb.insertInto('patient_evaluations')
+        .values({
+          id: evaluation_id,
+          employment_id,
+          evaluates_record_id,
+          by_system: by_system || false,
+        }),
+  )
+
+  function qualifierCte(
+    qb: typeof query,
+    qualifier: ParsedExpression,
+    qualifies_record_id: string,
+  ) {
+    if (qualifier.type !== 'qualifier') {
+      assertEquals(
+        qualifier.type,
+        'not',
+        'we can omit not expressions upon insert, but not sure what is going on here',
+      )
+      return qb
+    }
+    const id = generateUUID()
+    const id_token = id.replaceAll('-', '_')
+
+    let next_query = qb.with(
+      `inserting_qualifier_record_${id_token}`,
+      (qb) =>
+        qb.insertInto('patient_records')
+          .values({
+            id,
+            patient_id,
+            patient_encounter_id,
+            snomed_concept_id: qualifier.snomed_concept_id,
+            value_snomed_concept_id: qualifier.value_snomed_concept_id,
+          }),
+    ).with(
+      `inserting_qualifiers_${id_token}`,
+      (qb) =>
+        qb.insertInto('patient_record_qualifiers')
+          .values({
+            id,
+            qualifies_record_id,
+          }),
+    ) as unknown as typeof query
+
+    for (const sub_qualifier of qualifier.qualifiers) {
+      next_query = qualifierCte(
+        next_query,
+        sub_qualifier,
+        id,
+      ) as unknown as typeof query
+    }
+
+    return next_query
+  }
+
+  for (const qualifier of evaluation.qualifiers) {
+    query = qualifierCte(query, qualifier, evaluation_id)
+  }
+
+  return query.selectNoFrom([
+    success_true,
+    sql<true>`true`.as('inserted_new'),
+    literalString(evaluation_id).as('evaluation_id'),
+  ])
+    .executeTakeFirstOrThrow()
 }
 
 export function insertMany(

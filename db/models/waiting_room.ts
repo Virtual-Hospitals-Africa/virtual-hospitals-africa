@@ -55,7 +55,6 @@ export function asWaitingRoom(
   //   )
 
   const target_treatment_time = priority?.target_treatment_time || null
-  const priority_level = priority?.name || null
   const {
     department_name,
     current_workflow,
@@ -121,7 +120,7 @@ export function asWaitingRoom(
     },
     room,
     reason,
-    priority_level,
+    priority,
     department_name,
     arrived_timestamp,
     target_treatment_time,

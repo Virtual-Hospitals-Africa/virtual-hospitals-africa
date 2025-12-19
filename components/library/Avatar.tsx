@@ -21,17 +21,28 @@ function EmptyAvatar({ className }: { className?: string }) {
   )
 }
 
+const size_styles = {
+  lg: 'h-10 w-10',
+  md: 'h-8 w-8',
+  sm: 'h-6 w-6',
+}
+
 export default function Avatar(
-  { src, className, initials, plus_count, hide_when_empty }: {
+  { src, size = 'md', className, initials, plus_count, hide_when_empty }: {
     src?: Maybe<string>
     icon?: string
     initials?: string
     plus_count?: number
     className?: string
+    size?: 'md' | 'lg' | 'sm'
     hide_when_empty?: boolean
   },
 ) {
-  const full_class_name = twMerge('flex-none rounded-full w-10 h-10', className)
+  const full_class_name = twMerge(
+    'flex-none rounded-full',
+    size_styles[size],
+    className,
+  )
   if (src) {
     return (
       <img
@@ -48,7 +59,8 @@ export default function Avatar(
     return (
       <div
         className={cls(
-          'flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 text-indigo-700 flex-shrink-0',
+          'flex items-center justify-center rounded-full bg-gray-100 text-indigo-700 flex-shrink-0',
+          size_styles[size],
           className,
         )}
       >
@@ -60,7 +72,8 @@ export default function Avatar(
     return (
       <div
         className={cls(
-          'flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0',
+          'flex items-center justify-center rounded-full bg-indigo-500 flex-shrink-0',
+          size_styles[size],
           className,
         )}
       >

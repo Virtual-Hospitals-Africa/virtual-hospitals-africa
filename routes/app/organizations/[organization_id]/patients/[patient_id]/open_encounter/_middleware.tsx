@@ -64,6 +64,7 @@ import { presentWithPatient } from '../../../../../../../shared/patient_encounte
 import { exists } from '../../../../../../../util/exists.ts'
 import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
+import { parseExpressionExpectingType } from '../../../../../../../shared/s_expression.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -541,4 +542,31 @@ export function nextRouteAfterCompletingWorkflow(
   const next_route =
     `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${patient.id}`
   return success(success_message, next_route)
+}
+
+export function createProcedureIfNotAlreadyCompleted(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const previously_completed_procedure_record_id =
+    ctx.state.workflow_step_snomed_concept_id
+      ? ctx.state.previously_completed_procedures.workflow_step_record_id
+      : ctx.state.previously_completed_procedures.workflow_record_id
+  if (previously_completed_procedure_record_id) {
+    return Promise.resolve({
+      procedure_id: previously_completed_procedure_record_id,
+    })
+  }
+
+  const procedure_snomed_concept_id =
+    ctx.state.workflow_step_snomed_concept_id ||
+    ctx.state.workflow_snomed_concept_id
+  return patient_procedures.insertOneNested(ctx.state.trx, {
+    patient_id: ctx.state.patient.id,
+    patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+    employment_id: ctx.state.encounter_employee_presence.employee_id,
+    procedure: parseExpressionExpectingType(
+      `(procedure ${procedure_snomed_concept_id})`,
+      'procedure',
+    ),
+  })
 }

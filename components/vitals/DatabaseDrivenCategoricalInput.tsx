@@ -30,7 +30,10 @@ export default function DatabaseDrivenCategoricalInput({
               {most_recent_patient_finding.value_display}
             </a>
             &nbsp;
-            <LocalTime timestamp={most_recent_patient_finding.created_at} />
+            <LocalTime
+              timestamp={most_recent_patient_finding.created_at}
+              expected_time_range='past'
+            />
           </div>
         )}
       </div>

@@ -94,7 +94,10 @@ export function FindingPanel(
             <div className='flex gap-1.5 items-center'>
               <CalendarIcon className='w-4 h-4 text-indigo-700' />
               <p className='text-sm font-medium text-gray-900'>
-                <LocalTime timestamp={finding.created_at} />
+                <LocalTime
+                  timestamp={finding.created_at}
+                  expected_time_range='past'
+                />
               </p>
             </div>
 
@@ -124,7 +127,10 @@ export function FindingPanel(
                       {note.note}
                     </p>
                     <p className='text-xs leading-4 text-gray-600 truncate'>
-                      <LocalTime timestamp={note.created_at} />
+                      <LocalTime
+                        timestamp={note.created_at}
+                        expected_time_range='past'
+                      />
                     </p>
                   </div>
                 ))}

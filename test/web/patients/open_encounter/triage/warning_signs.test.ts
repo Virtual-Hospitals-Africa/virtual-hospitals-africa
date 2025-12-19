@@ -22,6 +22,7 @@ import { assert } from 'std/assert/assert.ts'
 import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
+import { getTableDisplay } from '../../../../_helpers/table.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -629,24 +630,29 @@ describe('triage/warning_signs', () => {
     function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {
       it(`renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`, async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchOk, fetchCheerio } =
-          await addTestEmployeeWithSession(db, {
-            profession: 'nurse',
-            registration_status: 'approved',
-            organization_id: clinic.id,
-          })
+        const nurse = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
+
+        const receptionist = await addTestEmployeeWithSession(db, {
+          profession: 'receptionist',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
 
         const encounter =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
             db,
-            nurse.organization_id,
+            nurse.health_worker.organization_id,
             {
-              employment_id: nurse.employee_id,
+              employment_id: nurse.health_worker.employee_id,
             },
           )
 
         if (pregnant) {
-          await fetchOk(
+          await nurse.fetchOk(
             `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
             {
               method: 'POST',
@@ -665,7 +671,7 @@ describe('triage/warning_signs', () => {
           )
         }
 
-        await fetchOk(
+        await nurse.fetchOk(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
           {
             method: 'POST',
@@ -680,16 +686,25 @@ describe('triage/warning_signs', () => {
           },
         )
 
-        const $ = await fetchCheerio(
+        const $warning_signs = await nurse.fetchCheerio(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         )
 
-        const form_values = getFormValues($)
+        const form_values = getFormValues($warning_signs)
         assertEquals(form_values, {
           warning_signs: {
             [key]: sign.clinical_finding_s_expression,
           },
         })
+
+        const $waiting_room = await receptionist.fetchCheerio(
+          `/app/organizations/${clinic.id}/waiting_room`,
+        )
+
+        const waiting_room_table = getTableDisplay($waiting_room)
+        assertMatches(waiting_room_table, [{
+          Priority: sign.sats_priority,
+        }])
       })
     }
 

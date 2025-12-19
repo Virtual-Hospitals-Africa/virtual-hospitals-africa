@@ -419,7 +419,7 @@ describe('triage/brief_history', () => {
       const waiting_room_table_before_initial_encounter_close = getTableDisplay(
         $waiting_room_before_initial_encounter_close,
       )
-      assertEquals(waiting_room_table_before_initial_encounter_close, [
+      assertMatches(waiting_room_table_before_initial_encounter_close, [
         {
           Patient:
             `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
@@ -427,8 +427,10 @@ describe('triage/brief_history', () => {
             }`,
           'Reason for visit': 'Seeking Treatment',
           // Department: 'Triage',
+          'Target time': z.string().regex(/^\d{1,2}:\d{2} [AP]M( tomorrow)?/),
           Location: 'Triage room 1',
           Status: 'Triage In Progress',
+          Priority: 'Non-urgent',
           Employees: `${nurse1.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
           Actions: 'triage',

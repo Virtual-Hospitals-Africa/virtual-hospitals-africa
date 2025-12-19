@@ -1,40 +1,36 @@
-type LocalTimeProps = { timestamp: string | Date }
+import { formatDateTime } from '../util/date.ts'
 
-export function LocalTime({ timestamp }: LocalTimeProps) {
-  return <span>{formatDateTime(timestamp)}</span>
+type LocalTimeProps = {
+  timestamp: string | Date
+  expected_time_range: 'past' | 'any' /* | 'future' */
 }
 
-function formatDateTime(date: string | Date) {
-  const today = new Date()
-  const input_date = new Date(date)
-
-  // Reset time to compare just dates
-  const today_date = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-  )
-  const compare_date = new Date(
-    input_date.getFullYear(),
-    input_date.getMonth(),
-    input_date.getDate(),
-  )
-
-  if (compare_date.getTime() === today_date.getTime()) {
-    // Today - show time only
-    const time_string = new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }).format(input_date)
-    return `at ${time_string}`
-  } else {
-    // Yesterday or earlier - show date only
-    const date_string = new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(input_date)
-    return `on ${date_string}`
+export function LocalTime({ timestamp, expected_time_range }: LocalTimeProps) {
+  const formatted = formatDateTime(timestamp)
+  function display(): string {
+    if (expected_time_range === 'past') {
+      switch (formatted.type) {
+        case 'today':
+          return `at ${formatted.time_display}`
+        case 'yesterday':
+          return `at ${formatted.time_display} yesterday`
+        case 'past':
+          return `on ${formatted.date_display}`
+        default:
+          throw new Error(`Unexpected ${formatted.type}`)
+      }
+    }
+    switch (formatted.type) {
+      case 'today':
+        return `${formatted.time_display}`
+      case 'yesterday':
+        return `${formatted.time_display} yesterday`
+      case 'tomorrow':
+        return `${formatted.time_display} tomorrow`
+      default:
+        return `${formatted.time_display} ${formatted.date_display}`
+    }
   }
+
+  return <span>{display()}</span>
 }

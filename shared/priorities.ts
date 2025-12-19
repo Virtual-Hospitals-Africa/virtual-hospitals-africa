@@ -1,4 +1,8 @@
+import entries from '../util/entries.ts'
 import keys from '../util/keys.ts'
+import sortBy from '../util/sortBy.ts'
+
+export const PRIORITY_SNOMED_CONCEPT_ID = '260870009' // |Priority (attribute)|
 
 export const PRIORITY_SNOMED_CODES = {
   'Non-urgent': '1357728000',
@@ -8,9 +12,9 @@ export const PRIORITY_SNOMED_CODES = {
   'Deceased': '419620001', // Death (event)
 }
 
-export const PRIORITIES = keys(PRIORITY_SNOMED_CODES)
+export type Priority = keyof typeof PRIORITY_SNOMED_CODES
 
-export type Priority = (typeof PRIORITIES)[number]
+export const PRIORITIES = keys(PRIORITY_SNOMED_CODES)
 
 export function isPriority(priority: string): priority is Priority {
   return priority in PRIORITY_SNOMED_CODES
@@ -30,6 +34,11 @@ export const TARGET_TIME_TO_TREATMENT_MINUTES = {
   'Emergency': 0,
   'Deceased': 120,
 }
+
+export const ORDERED_PRIORITIES = sortBy(
+  entries(TARGET_TIME_TO_TREATMENT_MINUTES),
+  ([, minutes]) => minutes,
+).map(([priority]) => priority)
 
 export const TRIAGE_LEVELS = keys(TARGET_TIME_TO_TREATMENT_MINUTES)
 
@@ -57,9 +66,9 @@ export const PRIORITY_COLORS: Record<
     border: 'border-yellow-200',
   },
   'Very urgent': {
-    bg: 'bg-red-100',
-    text: 'text-red-800',
-    border: 'border-red-200',
+    bg: 'bg-orange-100',
+    text: 'text-orange-800',
+    border: 'border-orange-200',
   },
   Emergency: {
     bg: 'bg-red-200',

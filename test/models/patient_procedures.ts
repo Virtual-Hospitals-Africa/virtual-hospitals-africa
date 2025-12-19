@@ -25,7 +25,7 @@ describe('db/models/patient_procedures.ts', () => {
           },
         )
 
-      const { record_id } = await patient_procedures.insertOneNested(db, {
+      const { procedure_id } = await patient_procedures.insertOneNested(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: encounter.employee.employee_id,
@@ -35,7 +35,7 @@ describe('db/models/patient_procedures.ts', () => {
         ),
       })
 
-      const procedure = await patient_procedures.getById(db, record_id)
+      const procedure = await patient_procedures.getById(db, procedure_id)
 
       assertEquals(procedure.value_display, 'Excessive Garment Removal')
     })

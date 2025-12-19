@@ -78,8 +78,8 @@ export default HealthWorkerHomePageLayout(
         patient,
         id: `${slot.provider.employee_id}-${slot.start}`,
         duration_minutes: slot.duration_minutes,
-        start: parseDateTime(new Date(slot.start), 'numeric'),
-        end: parseDateTime(new Date(slot.end), 'numeric'),
+        start: parseDateTime(new Date(slot.start)),
+        end: parseDateTime(new Date(slot.end)),
         providers: [slot.provider],
       }))
       : []

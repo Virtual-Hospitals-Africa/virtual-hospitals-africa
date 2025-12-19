@@ -71,8 +71,8 @@ export default PatientProfilePage(
           id: appt.id,
           patient: ctx.state.patient,
           duration_minutes: appt.duration_minutes,
-          start: parseDateTime(appt.start, 'numeric'),
-          end: parseDateTime(appt.end, 'numeric'),
+          start: parseDateTime(appt.start),
+          end: parseDateTime(appt.end),
           providers: appt.providers,
           physicalLocation: organizations_with_addresses.length
             ? {

@@ -8,6 +8,7 @@ import {
   isPriority,
   Maybe,
   PostgresInterval,
+  PRIORITY_SNOMED_CONCEPT_ID,
   RenderedOrganization,
   RenderedPatientEncounter,
   RenderedPatientEncounterEmployee,
@@ -24,6 +25,7 @@ import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import * as organizations from './organizations.ts'
 
 import {
+  asText,
   blankSelection,
   jsonArrayFrom,
   jsonArrayFromColumn,
@@ -299,7 +301,7 @@ export function baseQuery(trx: TrxOrDb) {
           )
           .innerJoin(
             'snomed_inferred_canonical_name_and_category',
-            'patient_records.snomed_concept_id',
+            'patient_records.value_snomed_concept_id',
             'snomed_inferred_canonical_name_and_category.id',
           )
           .whereRef(
@@ -308,8 +310,15 @@ export function baseQuery(trx: TrxOrDb) {
             'patient_encounters.id',
           )
           .orderBy('patient_records.created_at', 'desc')
-          .select([
-            'patient_records.snomed_concept_id',
+          .select((eb_patient_triage_level) => [
+            asText(
+              eb_patient_triage_level,
+              'patient_records.snomed_concept_id',
+            ).as('snomed_concept_id'),
+            asText(
+              eb_patient_triage_level,
+              'patient_records.value_snomed_concept_id',
+            ).as('value_snomed_concept_id'),
             'snomed_inferred_canonical_name_and_category.name',
             'patient_triage_level.target_treatment_time',
           ])
@@ -427,9 +436,12 @@ function asPriority(
   priority: IntermediatePatientEncounterResult['priority'],
 ): RenderedPatientEncounter['priority'] {
   if (!priority) return priority
-  const { name, ...rest } = priority
+  console.log({ priority })
+  const { name, snomed_concept_id, value_snomed_concept_id, ...rest } = priority
   assert(isPriority(name))
-  return { name, ...rest }
+  assertEquals(snomed_concept_id, PRIORITY_SNOMED_CONCEPT_ID)
+  assert(value_snomed_concept_id)
+  return { name, value_snomed_concept_id, ...rest }
 }
 
 function asWorkflowStatus(

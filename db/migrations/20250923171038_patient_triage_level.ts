@@ -11,13 +11,14 @@ const check_priority = assertOnInsert({
     SELECT 1 
       FROM sats_priority_levels
      WHERE sats_priority_levels.id IN (
-      SELECT snomed_concept_id
+      SELECT value_snomed_concept_id
         FROM patient_records
        WHERE patient_records.id = NEW.id
      )
   )`,
   error_message:
     `format('The patient_triage_level.id %s points to a row in patient_records whose snomed_concept_id is not a valid SATS priority level', NEW.id)`,
+  after: true,
 })
 
 export async function up(db: Kysely<DB>) {

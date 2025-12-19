@@ -1,5 +1,6 @@
 import {
   completeAndProceedToNextStep,
+  createProcedureIfNotAlreadyCompleted,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
@@ -9,12 +10,20 @@ import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import entries from '../../../../../../../../util/entries.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
-import { inBackground } from '../../../../../../../../util/inBackground.ts'
-import { KEYED_WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
+import {
+  KEYED_WARNING_SIGNS,
+  WARNING_SIGNS,
+} from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { parseFindingExpression } from '../../../../../../../../shared/s_expression.ts'
+import {
+  parseFindingExpression,
+} from '../../../../../../../../shared/s_expression.ts'
+import { assert } from 'std/assert/assert.ts'
+import { ORDERED_PRIORITIES, Priority } from '../../../../../../../../types.ts'
+import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
+import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -32,32 +41,57 @@ const WarningSignsSchema = z.object({
 
 export const handler = postHandler(
   WarningSignsSchema,
-  (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const inserting_findings = forEach(
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+
+    let max_priority: Priority = 'Non-urgent'
+    let prioritized_based_on_record_id = procedure_id
+
+    await forEach(
       form_values.warning_signs,
-      ({ finding }) =>
-        patient_findings.insertOneIfNotAlreadyExistsForThisEncounter(
-          ctx.state.trx,
-          {
-            patient_id: ctx.state.patient.id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            patient_encounter_employee_id: ctx.state.encounter_employee_presence
-              .patient_encounter_employee_id,
-            employment_id: ctx.state.encounter_employee_presence.employee_id,
-            workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
-            workflow_step_snomed_concept_id:
-              ctx.state.workflow_step_snomed_concept_id,
-            previously_completed_procedures:
-              ctx.state.previously_completed_procedures,
-            finding,
-          },
-        ),
+      async ({ key, finding }) => {
+        const finding_insert = await patient_findings
+          .insertOneIfNotAlreadyExistsForThisEncounter(
+            ctx.state.trx,
+            {
+              patient_id: ctx.state.patient.id,
+              patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+              patient_encounter_employee_id:
+                ctx.state.encounter_employee_presence
+                  .patient_encounter_employee_id,
+              procedure_id,
+              finding,
+            },
+          )
+        assert(finding_insert.success)
+        assert(isKeyOf(key, WARNING_SIGNS))
+        const sign = WARNING_SIGNS[key]
+        const max_priority_index = ORDERED_PRIORITIES.indexOf(max_priority)
+        assert(max_priority_index !== -1)
+
+        const this_sign_priority_index = ORDERED_PRIORITIES.indexOf(
+          sign.sats_priority,
+        )
+        assert(this_sign_priority_index !== -1)
+        if (this_sign_priority_index < max_priority_index) {
+          max_priority = sign.sats_priority
+          prioritized_based_on_record_id = finding_insert.record_id
+        }
+      },
     )
 
-    return inBackground(
-      inserting_findings,
-      () => completeAndProceedToNextStep(ctx),
+    await insertLevel(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+        employment_id: ctx.state.encounter_employee_presence.employee_id,
+        evaluates_record_id: prioritized_based_on_record_id,
+        triage_level: max_priority,
+      },
     )
+
+    return completeAndProceedToNextStep(ctx)
   },
 )
 
