@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../../db.d.ts'
 import {
+  prettyStepName,
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEPS,
   WORKFLOWS,
@@ -12,13 +13,17 @@ import {
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { RecordChip } from './RecordChip.tsx'
+import { RecordChip, RecordChips } from './RecordChip.tsx'
 
 type DrawerThisVisitProps = Pick<
   PatientDrawerV4Props,
-  'this_visit_records' | 'encounter' | 'current_workflow_state'
+  | 'this_visit_records'
+  | 'encounter'
+  | 'current_workflow_state'
+  | 'organization_id'
 >
 
+// TODO: move to models?
 function groupRecordsByWorkflows(
   { this_visit_records, encounter, current_workflow_state }:
     DrawerThisVisitProps,
@@ -27,53 +32,53 @@ function groupRecordsByWorkflows(
   status: 'not started' | 'incomplete' | 'in progress' | 'completed'
   steps: {
     workflow_step: string
+    title: string
     status: 'not started' | 'in progress' | 'completed'
     records: RenderedRecordRelativeToHealthWorker[]
   }[]
 }[] {
-  
   const records_by_procedure = groupBy(
     this_visit_records,
     (record) => record.as_part_of_procedure.snomed_concept_id,
   )
-  
+
   const grouped_records = compact(WORKFLOWS.map((workflow) => {
     const workflow_status = encounter.workflows[workflow]
     if (!workflow_status) return null
     if (workflow === 'registration') return null
-    
+
     const workflow_steps = WORKFLOW_STEPS[workflow]
-    
+
     return {
       workflow,
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
         const workflow_step_snomed_concept_id =
-        WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
-        
+          WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
+
         const records_of_concept = (workflow_step_snomed_concept_id &&
           records_by_procedure.get(workflow_step_snomed_concept_id)) || []
-          
-          
-          const completed = arrayIsNonEmpty(workflow_status.steps_completed)
+
+        const completed = arrayIsNonEmpty(workflow_status.steps_completed)
           ? workflow_status.steps_completed.includes(workflow_step)
           : false
-          
-          const in_progress = current_workflow_state?.workflow === workflow &&
+
+        const in_progress = current_workflow_state?.workflow === workflow &&
           current_workflow_state?.step === workflow_step
-          
-          return {
-            workflow_step,
-            status: completed
+
+        return {
+          workflow_step,
+          title: prettyStepName(workflow_step),
+          status: completed
             ? 'completed' as const
             : in_progress
             ? 'in progress' as const
             : 'not started' as const,
-            records: records_of_concept,
-          }
-        }),
-      }
-    }))
+          records: records_of_concept,
+        }
+      }),
+    }
+  }))
 
   const remaining_records = new Set(this_visit_records)
   for (const workflow of grouped_records) {
@@ -96,13 +101,14 @@ function groupRecordsByWorkflows(
 
 // This Visit component showing encounter steps
 export function DrawerThisVisit(
-  { this_visit_records, encounter, current_workflow_state }:
+  { this_visit_records, encounter, current_workflow_state, organization_id }:
     DrawerThisVisitProps,
 ) {
   const grouped_records = groupRecordsByWorkflows({
     this_visit_records,
     encounter,
     current_workflow_state,
+    organization_id,
   })
 
   return (
@@ -114,24 +120,24 @@ export function DrawerThisVisit(
           </h2>
         </div>
       </div>
-
       {grouped_records.map((workflow_group) => (
         <div>
+          <h3 className='capitalize'>{workflow_group.workflow}</h3>
           {workflow_group.steps.map((step) => (
             <div
               key={step.workflow_step}
               className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'
             >
-              <div className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start overflow-clip pb-[16px] pt-0 px-0 relative shrink-0 w-[342px]'>
+              <div className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start pb-[16px] pt-0 px-0 relative shrink-0 w-[342px]'>
                 <div className='content-stretch flex gap-[8px] items-center justify-center relative shrink-0'>
                   <p
                     className={`font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
-                      step.records.length === 0
-                        ? 'text-[#959ca9]'
-                        : 'text-gray-600'
+                      step.status === 'completed'
+                        ? 'text-gray-600'
+                        : 'text-[#959ca9]'
                     }`}
                   >
-                    {step.workflow_step}
+                    {step.title}
                   </p>
                   {step.status === 'in progress' && (
                     <div className='relative flex items-start justify-start content-stretch shrink-0'>
@@ -143,13 +149,10 @@ export function DrawerThisVisit(
                     </div>
                   )}
                 </div>
-                {step.records.length > 0 && (
-                  <div className='box-border content-center flex flex-wrap gap-[8px] items-center justify-start px-px py-0 relative shrink-0 w-full'>
-                    {step.records.map((record) => (
-                      <RecordChip key={record.record_id} record={record} />
-                    ))}
-                  </div>
-                )}
+                <RecordChips
+                  records={step.records}
+                  organization_id={organization_id}
+                />
               </div>
             </div>
           ))}

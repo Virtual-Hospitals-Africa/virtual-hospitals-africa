@@ -137,16 +137,19 @@ export function GenericSidebar(
         <nav className='flex flex-col flex-1 px-5'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
-              <NavItem
-                href={replaceParams(link.route, all_params)}
-                active={link === active_link}
-                title={link.title ||
-                  capitalize(link.route.split('/').pop()!).replace(
-                    ' And ',
-                    ' & ',
-                  )}
-                Icon={link.Icon}
-              />
+              console.log(link),
+                (
+                  <NavItem
+                    href={replaceParams(link.route, all_params)}
+                    active={link === active_link}
+                    title={link.title ||
+                      capitalize(link.route.split('/').pop()!).replace(
+                        ' And ',
+                        ' & ',
+                      )}
+                    Icon={link.Icon}
+                  />
+                )
             ))}
           </ul>
         </nav>

@@ -40,6 +40,7 @@ import {
   firstStep,
   isWorkflow,
   lastStep,
+  prettyStepName,
   WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEPS,
   workflowStepSnomedConceptId,
@@ -101,12 +102,14 @@ const nav_links: {
   [w in Workflow]: {
     step: string
     route: string
+    title: string
   }[]
 } = mapEntries(WORKFLOW_STEPS, (steps, workflow) =>
   steps.map((step) => ({
     step,
     route:
       `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${step}`,
+    title: prettyStepName(step),
   })))
 
 export function completeLastStep(
@@ -411,6 +414,7 @@ export function OpenEncounterWorkflowLayout({
           <PatientDrawerV4
             patient={ctx.state.patient}
             encounter={ctx.state.encounter}
+            organization_id={ctx.state.organization.id}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
             current_workflow_state={{

@@ -1829,7 +1829,7 @@ export type LinkProps = {
 
 export type LinkDef = {
   route: string
-  title?: string
+  title: string
   Icon?: (
     props: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & {
       active: boolean
@@ -3366,6 +3366,7 @@ export type RenderedPatientHistory = {
 export type PatientDrawerV4Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
+  organization_id: string
   this_visit_records: RenderedRecordRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]

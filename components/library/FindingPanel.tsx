@@ -19,7 +19,7 @@ export function FindingPanel(
   },
 ) {
   return (
-    <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 w-full max-w-[296px]'>
+    <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 min-w-[296px] max-w-[296px]'>
       <div className='flex flex-col gap-2'>
         {/* Title with close button */}
         <div className='flex items-start justify-between'>
@@ -102,15 +102,17 @@ export function FindingPanel(
             </div>
 
             {/* Message */}
-            <Button
-              variant='secondary'
-              href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${finding.provider.employee_id}=true`}
-              left_icon={
-                <ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />
-              }
-            >
-              Message
-            </Button>
+            {!finding.provider.is_me && (
+              <Button
+                variant='secondary'
+                href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${finding.provider.employee_id}=true`}
+                left_icon={
+                  <ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />
+                }
+              >
+                Message
+              </Button>
+            )}
           </div>
 
           {/* Notes section */}

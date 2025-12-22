@@ -21,10 +21,8 @@ import {
   parseFindingExpression,
 } from '../../../../../../../../shared/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
-import { Priority } from '../../../../../../../../types.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
-import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -46,9 +44,6 @@ export const handler = postHandler(
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
-    // let max_priority: Priority = 'Non-urgent'
-    // let prioritized_based_on_record_id = procedure_id
-
     await forEach(
       form_values.warning_signs,
       async ({ key, finding }) => {
@@ -68,18 +63,7 @@ export const handler = postHandler(
         assert(finding_insert.success)
         assert(isKeyOf(key, WARNING_SIGNS))
         const sign = WARNING_SIGNS[key]
-        // const max_priority_index = ORDERED_PRIORITIES.indexOf(max_priority)
-        // assert(max_priority_index !== -1)
 
-        // const this_sign_priority_index = ORDERED_PRIORITIES.indexOf(
-        //   sign.sats_priority,
-        // )
-        // assert(this_sign_priority_index !== -1)
-        // if (this_sign_priority_index < max_priority_index) {
-        //   max_priority = sign.sats_priority
-        //   prioritized_based_on_record_id = finding_insert.record_id
-        // }
-        
         await insertLevel(
           ctx.state.trx,
           {
@@ -93,7 +77,6 @@ export const handler = postHandler(
         )
       },
     )
-
 
     return completeAndProceedToNextStep(ctx)
   },

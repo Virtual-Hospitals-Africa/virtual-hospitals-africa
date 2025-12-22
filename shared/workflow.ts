@@ -6,6 +6,7 @@ import {
   departmentNames,
   departmentResponsibleForWorkflow,
 } from './departments.ts'
+import capitalize from '../util/capitalize.ts'
 
 export const WORKFLOWS = [
   'registration' as const,
@@ -159,4 +160,8 @@ export function canPerform(
   return departmentNames(organization_employment).some((dept) =>
     departmentResponsibleForWorkflow(dept, workflow)
   )
+}
+
+export function prettyStepName(step: string) {
+  return capitalize(step).replace(' And ', ' & ')
 }

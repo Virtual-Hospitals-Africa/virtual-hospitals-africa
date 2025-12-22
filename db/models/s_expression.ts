@@ -90,7 +90,9 @@ function baseQuery(
           .clearSelect()
           .select('patient_record_qualifiers.qualifies_record_id'),
       )
-    } else if (qualifier.type === 'not' && qualifier.expression.type === 'finding') {
+    } else if (
+      qualifier.type === 'not' && qualifier.expression.type === 'finding'
+    ) {
       query = query.where(
         'patient_records.id',
         'not in',
