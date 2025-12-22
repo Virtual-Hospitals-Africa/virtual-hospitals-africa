@@ -10,7 +10,7 @@ import {
 } from '../../shared/s_expression.ts'
 
 type ParsedQualifierExpressionWithDescription = ParsedQualifierExpression & {
-  snomed_category: SnomedCategory
+  category: SnomedCategory
   description: {
     id: string
     term: string
@@ -19,7 +19,7 @@ type ParsedQualifierExpressionWithDescription = ParsedQualifierExpression & {
 }
 
 type ParsedFindingExpressionWithDescription = ParsedFindingExpression & {
-  snomed_category: SnomedCategory
+  category: SnomedCategory
   description: {
     id: string
     term: string
@@ -82,7 +82,7 @@ export async function fromFindingDescription(
   ) {
     return {
       type: 'finding',
-      snomed_category: whole_match.category,
+      category: whole_match.category,
       snomed_concept_id: String(whole_match.concept_id),
       value_snomed_concept_id: null,
       description: {
@@ -125,7 +125,7 @@ export async function fromFindingDescription(
     if (match) {
       qualifiers.push({
         type: 'qualifier',
-        snomed_category: match.category,
+        category: match.category,
         snomed_concept_id: String(match.concept_id),
         value_snomed_concept_id: null,
         description: {
@@ -139,7 +139,7 @@ export async function fromFindingDescription(
 
   return {
     type: 'finding',
-    snomed_category: main_finding.match.category,
+    category: main_finding.match.category,
     snomed_concept_id: String(main_finding.match.concept_id),
     value_snomed_concept_id: null,
     description: {

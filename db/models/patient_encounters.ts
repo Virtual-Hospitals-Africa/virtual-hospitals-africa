@@ -30,6 +30,7 @@ import {
   jsonObjectFrom,
   literalLocation,
   now,
+  orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
 import {
@@ -61,6 +62,7 @@ import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
 import {
   isPriority,
+  PRIORITY_SNOMED_CODES,
   PRIORITY_SNOMED_CONCEPT_ID,
 } from '../../shared/priorities.ts'
 
@@ -311,7 +313,6 @@ export function baseQuery(trx: TrxOrDb) {
             '=',
             'patient_encounters.id',
           )
-          .orderBy('patient_records.created_at', 'desc')
           .select((eb_patient_triage_level) => [
             asText(
               eb_patient_triage_level,
@@ -324,6 +325,18 @@ export function baseQuery(trx: TrxOrDb) {
             'snomed_inferred_canonical_name_and_category.name',
             'patient_triage_level.target_treatment_time',
           ])
+          .orderBy(eb_triage_level =>
+            orderByArrayPosition(
+              eb_triage_level,
+              'patient_records.snomed_concept_id',
+              [
+                PRIORITY_SNOMED_CODES['Emergency'],
+                PRIORITY_SNOMED_CODES['Very urgent'],
+                PRIORITY_SNOMED_CODES['Urgent'],
+                PRIORITY_SNOMED_CODES['Non-urgent'],
+              ]
+            )
+          , 'desc')
           .limit(1),
       ).as('priority'),
       jsonObjectFrom(

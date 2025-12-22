@@ -10,6 +10,9 @@ import {
   TriageLevel,
 } from '../../shared/priorities.ts'
 
+export const NATIONAL_EARLY_WARNING_SCORE_SNOMED_CONCEPT_ID = '1287358002' // |National Early Warning Score (assessment scale)|
+export const SOUTH_AFRICA_SNOMED_CONCEPT_ID = '223549008' // |South Africa (geographic location)|
+
 export function insertProcedure(
   trx: TrxOrDb,
   {
@@ -56,12 +59,14 @@ export function insertLevel(
     patient_id,
     patient_encounter_id,
     employment_id,
+    procedure_id,
     evaluates_record_id,
     triage_level,
   }: {
     patient_id: string
     patient_encounter_id: string
     employment_id: string
+    procedure_id: string
     evaluates_record_id: string
     triage_level: TriageLevel
   },
@@ -86,9 +91,10 @@ export function insertLevel(
     qb.insertInto('patient_evaluations')
       .values({
         id: triage_level_evaluation_id,
-        employment_id,
         by_system: false,
         evaluates_record_id,
+        employment_id,
+        procedure_id,
       })
       .returning('id'))
     .with(

@@ -72,7 +72,7 @@ describe('db/models/simple_record_language.ts', () => {
       const result = await fromFindingDescription('Uncontrolled Hemorrhage')
       assertEquals(result, {
         type: 'finding',
-        snomed_category: 'finding',
+        category: 'finding',
         snomed_concept_id: '131148009',
         value_snomed_concept_id: null,
         description: {
@@ -82,7 +82,7 @@ describe('db/models/simple_record_language.ts', () => {
         qualifiers: [
           {
             type: 'qualifier',
-            snomed_category: 'qualifier value',
+            category: 'qualifier value',
             snomed_concept_id: '19032002',
             value_snomed_concept_id: null,
             description: {

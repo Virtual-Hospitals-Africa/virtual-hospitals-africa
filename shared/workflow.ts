@@ -95,7 +95,11 @@ export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
 } = {
   triage: {
     'brief_history': '203421005', // |History taking, limited (procedure)|'
-    // 'warning_signs': '', // chief complaint + emergency signs + urgent signs
+    // The warning_sides code isn't quite right, but it's the closest match and having a single code per step streamlines things
+    // TODO: become a member organization for SNOMED and request that all the codes we need be added
+    // https://www.snomed.org/change-or-add
+    // https://www.snomed.org/members
+    'warning_signs': '245581009', // chief complaint + emergency signs + urgent signs |Emergency examination for triage (procedure)|
     'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
     // 'assign_priority': '',
   },

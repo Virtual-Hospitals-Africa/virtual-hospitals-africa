@@ -76,13 +76,14 @@ export function baseQuery(
       'value_snomed_inferred_canonical_name_and_category.id',
     )
     .select((eb) => [
+      literalString('finding').$castTo<'finding'>().as('type'),
       'patient_records.id as record_id',
       'patient_records.created_at',
       'patient_records.snomed_concept_id',
       'patient_records.patient_encounter_id',
       'patient_findings.patient_encounter_employee_id',
       'snomed_inferred_canonical_name_and_category.name',
-
+      'snomed_inferred_canonical_name_and_category.category',
       'patient_records.value_snomed_concept_id',
       'value_snomed_inferred_canonical_name_and_category.name as value_name',
 
@@ -147,6 +148,7 @@ export function baseQuery(
 
 type PatientFindingsSearch = {
   patient_id: string | IdSelection
+  patient_encounter_id?: string | IdSelection
   s_expression?: string | ParsedFindingExpression
   search?: string
 }
@@ -179,6 +181,13 @@ export const patient_findings = base({
         opts.patient_id,
       )
     }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
+      )
+    }
     if (opts.s_expression) {
       qb = qb.where(
         'patient_records.id',
@@ -187,6 +196,7 @@ export const patient_findings = base({
           trx,
           {
             patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
           },
           opts.s_expression,
         ),

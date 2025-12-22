@@ -19,7 +19,7 @@ import isString from '../../util/isString.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
-  patient_encounter_id?: Maybe<string>
+  patient_encounter_id?: Maybe<string | IdSelection>
 }
 type SatisfyingResult = {
   satisfies: boolean
@@ -79,8 +79,7 @@ function baseQuery(
     .select('patient_records.id')
 
   for (const qualifier of qualifiers) {
-    if (qualifier.type === 'not') {
-      assert(qualifier.expression.type === 'qualifier')
+    if (qualifier.type === 'not' && qualifier.expression.type === 'qualifier') {
       query = query.where(
         'patient_records.id',
         'not in',
@@ -90,6 +89,17 @@ function baseQuery(
         }, qualifier.expression)
           .clearSelect()
           .select('patient_record_qualifiers.qualifies_record_id'),
+      )
+    } else if (qualifier.type === 'not' && qualifier.expression.type === 'finding') {
+      query = query.where(
+        'patient_records.id',
+        'not in',
+        EXPRESSION_BUILDERS.finding(trx, {
+          patient_id,
+          patient_encounter_id,
+        }, qualifier.expression)
+          .clearSelect()
+          .select('patient_records.id'),
       )
     } else {
       assert(qualifier.type === 'qualifier')

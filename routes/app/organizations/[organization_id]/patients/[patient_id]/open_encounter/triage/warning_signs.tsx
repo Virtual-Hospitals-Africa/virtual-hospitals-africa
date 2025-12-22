@@ -44,9 +44,10 @@ export const handler = postHandler(
   WarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+    assert(procedure_id)
 
-    let max_priority: Priority = 'Non-urgent'
-    let prioritized_based_on_record_id = procedure_id
+    // let max_priority: Priority = 'Non-urgent'
+    // let prioritized_based_on_record_id = procedure_id
 
     await forEach(
       form_values.warning_signs,
@@ -67,30 +68,32 @@ export const handler = postHandler(
         assert(finding_insert.success)
         assert(isKeyOf(key, WARNING_SIGNS))
         const sign = WARNING_SIGNS[key]
-        const max_priority_index = ORDERED_PRIORITIES.indexOf(max_priority)
-        assert(max_priority_index !== -1)
+        // const max_priority_index = ORDERED_PRIORITIES.indexOf(max_priority)
+        // assert(max_priority_index !== -1)
 
-        const this_sign_priority_index = ORDERED_PRIORITIES.indexOf(
-          sign.sats_priority,
+        // const this_sign_priority_index = ORDERED_PRIORITIES.indexOf(
+        //   sign.sats_priority,
+        // )
+        // assert(this_sign_priority_index !== -1)
+        // if (this_sign_priority_index < max_priority_index) {
+        //   max_priority = sign.sats_priority
+        //   prioritized_based_on_record_id = finding_insert.record_id
+        // }
+        
+        await insertLevel(
+          ctx.state.trx,
+          {
+            patient_id: ctx.state.patient.id,
+            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+            employment_id: ctx.state.encounter_employee_presence.employee_id,
+            procedure_id,
+            evaluates_record_id: finding_insert.record_id,
+            triage_level: sign.sats_priority,
+          },
         )
-        assert(this_sign_priority_index !== -1)
-        if (this_sign_priority_index < max_priority_index) {
-          max_priority = sign.sats_priority
-          prioritized_based_on_record_id = finding_insert.record_id
-        }
       },
     )
 
-    await insertLevel(
-      ctx.state.trx,
-      {
-        patient_id: ctx.state.patient.id,
-        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-        employment_id: ctx.state.encounter_employee_presence.employee_id,
-        evaluates_record_id: prioritized_based_on_record_id,
-        triage_level: max_priority,
-      },
-    )
 
     return completeAndProceedToNextStep(ctx)
   },

@@ -8,7 +8,7 @@ import {
   RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
   RenderedPatientOpenEncounter,
-  ThisVisitRecords,
+  RenderedRecordRelativeToHealthWorker,
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
@@ -33,7 +33,6 @@ import {
   assertOrRedirect,
 } from '../../../../../../../util/assertOr.ts'
 
-import PatientDrawerV3 from '../../../../../../../islands/patient-drawer-v3/DrawerV3.tsx'
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
   firstIncompleteStep,
@@ -65,6 +64,7 @@ import { exists } from '../../../../../../../util/exists.ts'
 import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingType } from '../../../../../../../shared/s_expression.ts'
+import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -81,7 +81,7 @@ type WorkflowState = {
   previously_completed_step: boolean
   previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: RenderedPatientEncounterEmployee
-  this_visit_records: ThisVisitRecords
+  this_visit_records: RenderedRecordRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
 }
 
@@ -254,9 +254,8 @@ export async function workflowHandler(
     previously_completed_procedures,
   } = await promiseProps({
     this_visit_records: getThisVisitRecords(trx, {
-      patient_encounter_id,
-      patient_encounter_employee_id:
-        encounter_employee_presence.patient_encounter_employee_id,
+      encounter,
+      health_worker_id: ctx.state.health_worker.id,
     }),
     patient_history: getPatientHistory(trx, {
       patient_encounter_id,
@@ -409,12 +408,19 @@ export function OpenEncounterWorkflowLayout({
       }
       drawer={ctx.state.workflow !== 'registration'
         ? (
-          <PatientDrawerV3
+          <PatientDrawerV4
             patient={ctx.state.patient}
             encounter={ctx.state.encounter}
-            current_consultation_step={ctx.state.step}
             this_visit_records={ctx.state.this_visit_records}
             patient_history={ctx.state.patient_history}
+            current_workflow_state={{
+              workflow: ctx.state.workflow,
+              step: ctx.state.step,
+              workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
+              workflow_step_snomed_concept_id:
+                ctx.state.workflow_step_snomed_concept_id,
+              workflow_status: ctx.state.workflow_status,
+            }}
             care_team={[]}
             // care_team={ctx.state.patient.primary_doctor
             //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
