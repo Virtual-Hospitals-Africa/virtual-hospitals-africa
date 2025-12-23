@@ -13,7 +13,7 @@ import {
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { RecordChip, RecordChips } from './RecordChip.tsx'
+import { RecordChips } from '../../islands/RecordChip.tsx'
 
 type DrawerThisVisitProps = Pick<
   PatientDrawerV4Props,

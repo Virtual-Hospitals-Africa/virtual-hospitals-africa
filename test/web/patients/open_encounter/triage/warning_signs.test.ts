@@ -254,8 +254,8 @@ describe('triage/warning_signs', () => {
           'value_name': null,
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '225390008',
-            'name': 'Triage',
+            'snomed_concept_id': '245581009',
+            'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {
@@ -325,8 +325,8 @@ describe('triage/warning_signs', () => {
           'value_name': null,
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '225390008',
-            'name': 'Triage',
+            'snomed_concept_id': '245581009',
+            'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {

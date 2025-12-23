@@ -23,6 +23,7 @@ import {
 } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
+import { exists } from '../../util/exists.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -225,7 +226,7 @@ export const patient_findings = base({
             id: finding_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: finding.snomed_concept_id,
+            snomed_concept_id: exists(finding.snomed_concept_id),
             value_snomed_concept_id: finding.value_snomed_concept_id,
           }),
     ).with('inserting_findings', (qb) =>

@@ -21,6 +21,7 @@ import { MedicineIcon } from './icons/Medicines.tsx'
 import { PharmaciesIcon } from './icons/Pharmacies.tsx'
 import { UsersIcon } from './icons/heroicons/outline.tsx'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
+import { prettyStepName } from '../../shared/workflow.ts'
 
 export type SidebarProps = {
   top: {
@@ -249,6 +250,7 @@ export function StepsSidebar(
       urlSearchParams={ctx.url.searchParams}
       nav_links={nav_links.map((link) => ({
         ...link,
+        title: prettyStepName(link.step),
         Icon: steps_completed.includes(link.step)
           ? ProgressIcons.Check
           : ProgressIcons.Dot,
