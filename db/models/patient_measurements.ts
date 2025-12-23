@@ -16,7 +16,11 @@ import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
-import { ParsedComparatorExpression } from '../../shared/s_expression.ts'
+import {
+  ParsedComparatorExpression,
+  ParsedFindingExpression,
+  ParsedMeasurementExpression,
+} from '../../shared/s_expression.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
@@ -198,10 +202,12 @@ export const patient_measurements = base({
               id: qualifier_id,
               qualifies_record_id: measurement_id,
             }),
-      ).selectNoFrom([
+      )
+      .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
         literalString(measurement_id).as('record_id'),
+        literalString(procedure_id).as('procedure_id'),
       ])
       .executeTakeFirstOrThrow()
   },

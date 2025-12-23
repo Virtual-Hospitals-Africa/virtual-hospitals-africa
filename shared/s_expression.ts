@@ -36,7 +36,7 @@ export type ParsedEvaluationExpression = {
 export type ParsedMeasurementExpression = {
   type: 'measurement'
   snomed_concept_id: string
-  // units?: ParsedUnitsExpression
+  units?: ParsedUnitsExpression
 }
 
 export type ParsedUnitsExpression = {
@@ -343,11 +343,24 @@ const PARSERS = {
     const [type, snomed_concept_id, ...rest] = node
     assertEquals(type, 'measurement')
     assert(isString(snomed_concept_id))
-    assertArrayEmpty(rest)
+
+    let units: ParsedUnitsExpression | undefined
+    if (rest.length > 0) {
+      const parsed = parseArrayNode(rest[0])
+      assert(
+        parsed.type === 'units',
+        `measurement can only have units child, got: ${parsed.type}`,
+      )
+      units = parsed
+      assertArrayEmpty(rest.slice(1))
+    } else {
+      assertArrayEmpty(rest)
+    }
 
     return {
       type: 'measurement',
       snomed_concept_id,
+      units,
     }
   },
   units: (
@@ -516,7 +529,11 @@ const FROM_PARSERS = {
       parsed.tasks.map(fromParsedExpression).join(' ')
     })`,
   measurement: (parsed: ParsedMeasurementExpression): string =>
-    `(measurement ${parsed.snomed_concept_id})`,
+    parsed.units
+      ? `(measurement ${parsed.snomed_concept_id} ${
+        FROM_PARSERS.units(parsed.units)
+      })`
+      : `(measurement ${parsed.snomed_concept_id})`,
   units: (parsed: ParsedUnitsExpression): string =>
     `(units ${parsed.value} ${parsed.units})`,
   active_condition: (parsed: ParsedActiveConditionExpression): string =>

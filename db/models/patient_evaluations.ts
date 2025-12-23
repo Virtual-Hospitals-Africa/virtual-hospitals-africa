@@ -226,14 +226,40 @@ export async function getMostRecentManualVitalsWithEvaluations(
           'patient_findings.id',
           'patient_measurements.id',
         )
+        // Join to qualifiers to get specific vital type
+        .innerJoin(
+          'patient_record_qualifiers',
+          'patient_records.id',
+          'patient_record_qualifiers.qualifies_record_id',
+        )
+        .innerJoin(
+          'patient_records as qualifier_records',
+          'patient_record_qualifiers.id',
+          'qualifier_records.id',
+        )
         .where('patient_records.patient_id', '=', patient_id)
+        // Filter by base measurement finding SNOMED
         .where(
           'patient_records.snomed_concept_id',
+          '=',
+          '118245000',
+        )
+        // Filter qualifiers by specific vital SNOMEDs
+        .where(
+          'qualifier_records.snomed_concept_id',
           'in',
           VITAL_SNOMED_CONCEPT_IDS,
         )
         .orderBy('patient_records.created_at', 'desc')
-        .selectAll('patient_records')
+        .select([
+          'patient_records.id',
+          'patient_records.patient_id',
+          'patient_records.patient_encounter_id',
+          'patient_records.created_at',
+          'patient_records.updated_at',
+          // Use qualifier's SNOMED as the measurement type (keep as bigint for join)
+          'qualifier_records.snomed_concept_id',
+        ])
         .select([
           'patient_findings.patient_encounter_employee_id',
           'patient_findings.procedure_id',
@@ -242,7 +268,7 @@ export async function getMostRecentManualVitalsWithEvaluations(
         ])
         .select(sql<'manual'>`'manual'`.as('finding_type'))
         .select(
-          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+          sql`ROW_NUMBER() OVER (PARTITION BY qualifier_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
             .as('rank'),
         ),
   ).selectFrom('ranked_manual_findings')
@@ -254,7 +280,10 @@ export async function getMostRecentManualVitalsWithEvaluations(
     .where('ranked_manual_findings.rank', '=', 1)
     .select([
       'ranked_manual_findings.id as finding_id',
-      'ranked_manual_findings.snomed_concept_id',
+      // Cast to text only in final output
+      sql<string>`ranked_manual_findings.snomed_concept_id::text`.as(
+        'snomed_concept_id',
+      ),
       'ranked_manual_findings.value',
       'ranked_manual_findings.units',
       'ranked_manual_findings.created_at',
@@ -461,19 +490,16 @@ export async function getPreviousVitalMeasurements(
           'patient_findings.id',
         )
         .innerJoin(
-          'patient_categorical_findings',
-          'patient_findings.id',
-          'patient_categorical_findings.id',
+          'sats_triage_assessments as assessment',
+          'patient_records.snomed_concept_id',
+          'assessment.assessment_snomed_id',
         )
         .innerJoin(
           'sats_triage_assessment_options as opt',
-          'patient_records.snomed_concept_id',
-          'opt.option_snomed_concept_id',
-        )
-        .innerJoin(
-          'sats_triage_assessments as assessment',
-          'opt.assessment_snomed_id',
-          'assessment.assessment_snomed_id',
+          (join) =>
+            join
+              .onRef('opt.assessment_snomed_id', '=', 'assessment.assessment_snomed_id')
+              .onRef('patient_records.value_snomed_concept_id', '=', 'opt.option_snomed_concept_id'),
         )
         .where('patient_records.patient_id', '=', patient_id)
         .where('assessment.category', 'in', [
@@ -517,30 +543,48 @@ export async function getPreviousVitalMeasurements(
           'patient_findings.id',
           'patient_measurements.id',
         )
+        // Join to qualifiers to get specific vital type
+        .innerJoin(
+          'patient_record_qualifiers',
+          'patient_records.id',
+          'patient_record_qualifiers.qualifies_record_id',
+        )
+        .innerJoin(
+          'patient_records as qualifier_records',
+          'patient_record_qualifiers.id',
+          'qualifier_records.id',
+        )
         .where('patient_records.patient_id', '=', patient_id)
+        // Filter by base measurement finding
+        .where('patient_records.snomed_concept_id', '=', '118245000')
+        // Filter qualifiers by specific vital SNOMEDs (excluding categorical)
         .where(
-          'patient_records.snomed_concept_id',
+          'qualifier_records.snomed_concept_id',
           'in',
           VITAL_SNOMED_CONCEPT_IDS,
         )
         .where(
-          'patient_records.snomed_concept_id',
+          'qualifier_records.snomed_concept_id',
           'not in',
           CATEGORICAL_ASSESSMENT_SNOMED_CODES,
         )
         .select([
-          'patient_records.snomed_concept_id',
+          'qualifier_records.snomed_concept_id',
           'patient_measurements.value',
           'patient_measurements.units',
           'patient_records.created_at',
         ])
         .select(
-          sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+          sql`ROW_NUMBER() OVER (PARTITION BY qualifier_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
             .as('rank'),
         ),
   ).selectFrom('ranked_manual_findings')
     .where('rank', '=', 2)
-    .select(['snomed_concept_id', 'value', 'units'])
+    .select([
+      sql<string>`snomed_concept_id::text`.as('snomed_concept_id'),
+      'value',
+      'units',
+    ])
     .execute()
 
   for (const measurement of manual_measurements) {

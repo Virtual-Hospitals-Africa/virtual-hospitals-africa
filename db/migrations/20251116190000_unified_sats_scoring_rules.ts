@@ -65,16 +65,17 @@ export async function up(db: Kysely<unknown>) {
     BEGIN
         WITH recent_categorical_findings AS (
             SELECT DISTINCT ON (assessment.category)
-                records.snomed_concept_id,
+                records.value_snomed_concept_id AS snomed_concept_id,
                 assessment.category
             FROM patient_records AS records
             JOIN patient_findings AS findings ON records.id = findings.id
-            JOIN patient_categorical_findings AS cat_findings ON findings.id = cat_findings.id
-            JOIN sats_triage_assessment_options AS opt ON records.snomed_concept_id = opt.option_snomed_concept_id
-            JOIN sats_triage_assessments AS assessment ON opt.assessment_snomed_id = assessment.assessment_snomed_id
+            JOIN sats_triage_assessments AS assessment ON records.snomed_concept_id = assessment.assessment_snomed_id
+            JOIN sats_triage_assessment_options AS opt
+                ON opt.assessment_snomed_id = assessment.assessment_snomed_id
+                AND records.value_snomed_concept_id = opt.option_snomed_concept_id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND assessment.category IN ('avpu_consciousness', 'mobility_assessment', 'trauma_presence')
+              AND assessment.category IN ('consciousness', 'mobility', 'trauma')
             ORDER BY assessment.category, records.created_at DESC
         ),
         categorical_scores AS (
@@ -109,16 +110,19 @@ export async function up(db: Kysely<unknown>) {
             ORDER BY rcf.category, rule.score_value DESC
         ),
         recent_quantitative_measurements AS (
-            SELECT DISTINCT ON (records.snomed_concept_id)
-                records.snomed_concept_id,
+            SELECT DISTINCT ON (qualifier_records.snomed_concept_id)
+                qualifier_records.snomed_concept_id,
                 meas.value::float
             FROM patient_records AS records
             JOIN patient_findings AS findings ON records.id = findings.id
             JOIN patient_measurements AS meas ON findings.id = meas.id
+            JOIN patient_record_qualifiers ON records.id = patient_record_qualifiers.qualifies_record_id
+            JOIN patient_records AS qualifier_records ON patient_record_qualifiers.id = qualifier_records.id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND records.snomed_concept_id IN ('8499008', '86290005', '271649006', '386725007') -- pulse, resp_rate, blood_pressure_systolic, temp
-            ORDER BY records.snomed_concept_id, records.created_at DESC
+              AND records.snomed_concept_id = '118245000' -- measurement finding base
+              AND qualifier_records.snomed_concept_id IN ('8499008', '86290005', '271649006', '386725007') -- pulse, resp_rate, blood_pressure_systolic, temp
+            ORDER BY qualifier_records.snomed_concept_id, records.created_at DESC
         ),
         quantitative_scores AS (
             SELECT DISTINCT ON (rqm.snomed_concept_id)
@@ -151,11 +155,11 @@ export async function up(db: Kysely<unknown>) {
             ORDER BY rqm.snomed_concept_id, rule.score_value DESC
         ),
         all_components AS (
-            SELECT 'avpu_consciousness' as component, score_value FROM categorical_scores WHERE category = 'avpu_consciousness'
+            SELECT 'avpu_consciousness' as component, score_value FROM categorical_scores WHERE category = 'consciousness'
             UNION ALL
-            SELECT 'mobility_assessment' as component, score_value FROM categorical_scores WHERE category = 'mobility_assessment'
+            SELECT 'mobility_assessment' as component, score_value FROM categorical_scores WHERE category = 'mobility'
             UNION ALL
-            SELECT 'trauma_presence' as component, score_value FROM categorical_scores WHERE category = 'trauma_presence'
+            SELECT 'trauma_presence' as component, score_value FROM categorical_scores WHERE category = 'trauma'
             UNION ALL
             SELECT 'heart_rate' as component, score_value FROM quantitative_scores WHERE snomed_concept_id = '8499008'
             UNION ALL

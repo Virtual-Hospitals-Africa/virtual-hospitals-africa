@@ -1015,10 +1015,6 @@ export interface PatientAppointmentRequests {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientCategoricalFindings {
-  id: string
-}
-
 export interface PatientChatbotUsers {
   conversation_state: string
   created_at: Generated<Timestamp>
@@ -1937,7 +1933,6 @@ export interface DB {
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
-  patient_categorical_findings: PatientCategoricalFindings
   patient_chatbot_user_whatsapp_messages_received:
     PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers

@@ -140,17 +140,6 @@ export async function insertMeasurementsAndAssessments(
           )
           : blankSelection(qb),
     )
-    .with(
-      'inserting_categorical_findings',
-      (qb) =>
-        opts.input_assessments.length
-          ? qb.insertInto('patient_categorical_findings').values(
-            opts.input_assessments.map((a) => ({
-              id: a.finding_id,
-            })),
-          )
-          : blankSelection(qb),
-    )
     .selectNoFrom([literalString(procedure_id).as('procedure_id')])
     .executeTakeFirst()
 
