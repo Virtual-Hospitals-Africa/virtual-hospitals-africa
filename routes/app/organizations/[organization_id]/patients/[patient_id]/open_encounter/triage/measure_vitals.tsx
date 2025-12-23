@@ -23,9 +23,9 @@ import {
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/workflow.ts'
 import {
+  ParsedComparatorExpression,
   parseExpression,
   parseFindingExpression,
-  ParsedComparatorExpression,
 } from '../../../../../../../../shared/s_expression.ts'
 import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'

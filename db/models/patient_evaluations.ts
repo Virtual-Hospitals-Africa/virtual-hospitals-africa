@@ -498,8 +498,16 @@ export async function getPreviousVitalMeasurements(
           'sats_triage_assessment_options as opt',
           (join) =>
             join
-              .onRef('opt.assessment_snomed_id', '=', 'assessment.assessment_snomed_id')
-              .onRef('patient_records.value_snomed_concept_id', '=', 'opt.option_snomed_concept_id'),
+              .onRef(
+                'opt.assessment_snomed_id',
+                '=',
+                'assessment.assessment_snomed_id',
+              )
+              .onRef(
+                'patient_records.value_snomed_concept_id',
+                '=',
+                'opt.option_snomed_concept_id',
+              ),
         )
         .where('patient_records.patient_id', '=', patient_id)
         .where('assessment.category', 'in', [
