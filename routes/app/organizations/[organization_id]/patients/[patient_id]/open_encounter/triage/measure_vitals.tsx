@@ -24,8 +24,7 @@ import {
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/workflow.ts'
 import {
-  ParsedComparatorExpression,
-  parseExpression,
+  parseExpressionExpectingType,
   parseFindingExpression,
 } from '../../../../../../../../shared/s_expression.ts'
 import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
@@ -41,8 +40,8 @@ const TriageMeasureVitalsSchema = z.object({
     }).strict().transform((finding) => {
       // Build DSL expression: (= (measurement <snomed>) (units <value> "<units>"))
       const expression =
-        `(= (measurement ${finding.snomed_concept_id}) (units ${finding.value} "${finding.units}"))`
-      return parseExpression(expression) as ParsedComparatorExpression<'='>
+        `(= (measurement ${finding.snomed_concept_id}) (units ${finding.value} ${finding.units}))`
+      return parseExpressionExpectingType(expression, '=')
     }),
   ).transform((findings) =>
     Object.entries(findings).map((
@@ -91,7 +90,7 @@ export const handler = postHandler(
     // Insert measurements using DSL (pMap to collect results)
     const measurement_results = await pMap(
       form_values.findings,
-      ({ finding_id, measurement_equality }) =>
+      ({ /* finding_id, */ measurement_equality }) =>
         patient_measurements.insertOneNested(ctx.state.trx, {
           patient_id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
@@ -117,7 +116,7 @@ export const handler = postHandler(
     // Insert assessments using DSL
     const inserting_assessments = forEach(
       form_values.assessments,
-      ({ finding_id, finding }) =>
+      ({ finding }) =>
         patient_findings.insertOneNested(ctx.state.trx, {
           patient_id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
