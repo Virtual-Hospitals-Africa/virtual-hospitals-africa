@@ -1,6 +1,7 @@
 import {
   assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
+  createProcedureIfNotAlreadyCompleted,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
@@ -78,6 +79,15 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
+    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+    if (ctx.state.workflow_step_snomed_concept_id) {
+      ctx.state.previously_completed_procedures.workflow_step_record_id =
+        procedure_id
+    } else {
+      ctx.state.previously_completed_procedures.workflow_record_id =
+        procedure_id
+    }
+
     // Insert measurements using DSL (pMap to collect results)
     const measurement_results = await pMap(
       form_values.findings,
@@ -113,12 +123,7 @@ export const handler = postHandler(
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           patient_encounter_employee_id:
             ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          employment_id: ctx.state.encounter_employee_presence.employee_id,
-          workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
-          workflow_step_snomed_concept_id:
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals,
-          previously_completed_procedures:
-            ctx.state.previously_completed_procedures,
+          procedure_id,
           finding,
         }),
     )
