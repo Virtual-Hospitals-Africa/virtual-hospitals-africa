@@ -441,6 +441,56 @@ describe('triage/warning_signs', () => {
       })
     })
 
+    it.only('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
+      const clinic = await createTestOrganization(db)
+      const { health_worker: nurse, fetchOk } =
+        await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+            await fetchOk(
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      const this_patient_findings = await patient_findings.findAll(db, {
+        patient_id: encounter.patient.id,
+      })
+
+      assertLength(this_patient_findings, 0)
+    })
+
     it('does not insert any findings when no warning signs are selected', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =

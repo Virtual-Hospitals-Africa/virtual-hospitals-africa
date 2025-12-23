@@ -23,6 +23,8 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
+import { CheckedWarningSign } from '../../../../../../../../types.ts'
+import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -38,9 +40,18 @@ const WarningSignsSchema = z.object({
   ),
 }).strict()
 
+// Not preload, but if there's already measurements for that measurement category that
+// _would_ have been required the first time you are on the page - it's not required
+// this time (because you already have it)
+
 export const handler = postHandler(
   WarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const warning_signs_previously_entered = groupByUniq(
+      await getWarningSignsFromThisEncounter(ctx),
+      sign => sign.key
+    )
+
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
@@ -61,6 +72,12 @@ export const handler = postHandler(
     await forEach(
       form_values.warning_signs,
       async ({ key, finding }) => {
+        const previously_entered = warning_signs_previously_entered.get(key)
+        warning_signs_previously_entered.delete(key)
+        
+        assert(previously_entered)
+        if (previously_entered.checked) return
+        
         const finding_insert = await patient_findings
           .insertOneIfNotAlreadyExistsForThisEncounter(
             ctx.state.trx,
@@ -92,28 +109,37 @@ export const handler = postHandler(
       },
     )
 
+    // const now_invalid = 
+
     return completeAndProceedToNextStep(ctx)
   },
 )
 
-export async function TriageWarningSignsPage(
-  ctx: OpenEncounterWorkflowContext,
-) {
-  const { trx, patient } = ctx.state
+
+async function getWarningSignsFromThisEncounter(ctx: OpenEncounterWorkflowContext): Promise<CheckedWarningSign[]> {
+  const { trx, patient, encounter, previously_completed_procedures } = ctx.state
+  const { patient_encounter_id } = encounter
   const patient_id = patient.id
 
-  // Filter warning signs based on prompt_when_s_expression
-  const filtered_warning_signs = await Promise.all(
+  if (!previously_completed_procedures.workflow_step_record_id) {
+    return []
+  }
+
+  return compact(await Promise.all(
     KEYED_WARNING_SIGNS.map(async (sign) => {
       const { prompt_when, clinical_finding } = await promiseProps({
         prompt_when: sign.prompt_when_s_expression
           ? satisfyingSExpression(trx, {
             patient_id,
+            patient_encounter_id,
+            procedure_id: previously_completed_procedures.workflow_step_record_id,
             s_expression: sign.prompt_when_s_expression,
           })
           : Promise.resolve({ satisfies: true }),
         clinical_finding: satisfyingSExpression(trx, {
           patient_id,
+          patient_encounter_id,
+          procedure_id: previously_completed_procedures.workflow_step_record_id,
           s_expression: sign.clinical_finding_s_expression,
         }),
       })
@@ -127,13 +153,13 @@ export async function TriageWarningSignsPage(
         checked: clinical_finding.satisfies,
       }
     }),
-  )
+  ))
+}
 
-  console.log({ filtered_warning_signs })
-
-  const warning_signs = compact(filtered_warning_signs)
-
-  return <WarningSigns warning_signs={warning_signs} />
+export async function TriageWarningSignsPage(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  return <WarningSigns warning_signs={await getWarningSignsFromThisEncounter(ctx)} />
 }
 
 export default OpenEncounterWorkflowPage(TriageWarningSignsPage)

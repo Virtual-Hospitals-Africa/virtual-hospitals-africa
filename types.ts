@@ -3569,6 +3569,10 @@ export type IntermediateProcedureRecord = {
   // value_name: null | string
 }
 
+export type CheckedWarningSign = KeyedWarningSign & {
+  checked: boolean
+}
+
 export type RenderedRoom = {
   id: string
   name: string

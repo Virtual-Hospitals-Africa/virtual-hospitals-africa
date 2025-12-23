@@ -561,6 +561,7 @@ export function createProcedureIfNotAlreadyCompleted(
     ctx.state.workflow_step_snomed_concept_id
       ? ctx.state.previously_completed_procedures.workflow_step_record_id
       : ctx.state.previously_completed_procedures.workflow_record_id
+  
   if (previously_completed_procedure_record_id) {
     return Promise.resolve({
       procedure_id: previously_completed_procedure_record_id,

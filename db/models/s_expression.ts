@@ -20,6 +20,7 @@ import isString from '../../util/isString.ts'
 type PatientIdentifiers = {
   patient_id: string | IdSelection
   patient_encounter_id?: Maybe<string | IdSelection>
+  procedure_id?: Maybe<string | IdSelection>
 }
 type SatisfyingResult = {
   satisfies: boolean
@@ -125,9 +126,7 @@ export async function satisfyingSExpression(
   trx: TrxOrDb,
   { s_expression, ...patient }: {
     s_expression: string | ParsedExpression
-    patient_id: string
-    patient_encounter_id?: Maybe<string>
-  },
+  } & PatientIdentifiers,
 ): Promise<SatisfyingResult> {
   const node = isString(s_expression)
     ? parseExpression(s_expression)
@@ -175,7 +174,7 @@ function measurement(
 const EXPRESSION_BUILDERS = {
   finding(
     trx,
-    { patient_id, patient_encounter_id },
+    { patient_id, patient_encounter_id, procedure_id },
     { snomed_concept_id, value_snomed_concept_id, qualifiers },
   ) {
     return baseQuery(trx, {
@@ -190,6 +189,7 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_findings.id',
       )
+      .$if(!!procedure_id, qb => qb.where('patient_findings.procedure_id', '=', procedure_id!))
   },
   procedure(
     trx,

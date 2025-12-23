@@ -1,9 +1,6 @@
-import { KeyedWarningSign } from '../types.ts'
-import { groupBy } from '../util/groupBy.ts'
 
-type CheckedWarningSign = KeyedWarningSign & {
-  checked: boolean
-}
+import { CheckedWarningSign } from '../types.ts'
+import { groupBy } from '../util/groupBy.ts'
 
 const PRIORITIES = [
   {
