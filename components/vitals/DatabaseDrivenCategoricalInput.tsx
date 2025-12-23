@@ -50,6 +50,10 @@ export default function DatabaseDrivenCategoricalInput({
           name={`${name}.finding_id`}
           value={assessment.finding_id}
         />
+        <HiddenInput
+          name={`${name}.assessment_snomed_concept_id`}
+          value={assessment.assessment_snomed_id}
+        />
       </div>
     </div>
   )

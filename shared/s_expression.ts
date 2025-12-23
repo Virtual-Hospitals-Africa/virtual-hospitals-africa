@@ -36,7 +36,6 @@ export type ParsedEvaluationExpression = {
 export type ParsedMeasurementExpression = {
   type: 'measurement'
   snomed_concept_id: string
-  // units?: ParsedUnitsExpression
 }
 
 export type ParsedUnitsExpression = {
@@ -79,6 +78,7 @@ export type ParsedActiveConditionExpression = {
   type: 'active_condition'
   snomed_concept_id: string
 }
+;`(= (measurement 18218921) (units 50 "cm"))`
 
 export type ParsedComparatorExpression<Comparator extends string> = {
   type: Comparator
@@ -343,11 +343,24 @@ const PARSERS = {
     const [type, snomed_concept_id, ...rest] = node
     assertEquals(type, 'measurement')
     assert(isString(snomed_concept_id))
+
+    // let units: ParsedUnitsExpression | undefined
+    // if (rest.length > 0) {
+    //   const parsed = parseArrayNode(rest[0])
+    //   assert(
+    //     parsed.type === 'units',
+    //     `measurement can only have units child, got: ${parsed.type}`,
+    //   )
+    //   units = parsed
+    //   assertArrayEmpty(rest.slice(1))
+    // } else {
+    // }
     assertArrayEmpty(rest)
 
     return {
       type: 'measurement',
       snomed_concept_id,
+      // units,
     }
   },
   units: (

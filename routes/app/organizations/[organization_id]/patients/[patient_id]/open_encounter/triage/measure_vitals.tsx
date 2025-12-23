@@ -1,6 +1,7 @@
 import {
   assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
+  createProcedureIfNotAlreadyCompleted,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
@@ -8,16 +9,26 @@ import { z } from 'zod'
 import * as vitals from '../../../../../../../../db/models/vitals.ts'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
+import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
   positive_number,
   snomed_concept_id,
 } from '../../../../../../../../util/validators.ts'
-import filterOfType from '../../../../../../../../util/filterOfType.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { getActiveConditionsSnomedCodesFromContext } from '../../../../../../../../shared/vitals.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import {
+  WORKFLOW_SNOMED_CONCEPT_IDS,
+  WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
+} from '../../../../../../../../shared/workflow.ts'
+import {
+  parseExpressionExpectingType,
+  parseFindingExpression,
+} from '../../../../../../../../shared/s_expression.ts'
+import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   findings: z.record(
@@ -26,61 +37,120 @@ const TriageMeasureVitalsSchema = z.object({
       snomed_concept_id,
       value: positive_number,
       units: z.string().min(1),
-    }).strict(),
+    }).strict().transform((finding) => {
+      // Build DSL expression: (= (measurement <snomed>) (units <value> "<units>"))
+      const expression =
+        `(= (measurement ${finding.snomed_concept_id}) (units ${finding.value} ${finding.units}))`
+      return parseExpressionExpectingType(expression, '=')
+    }),
   ).transform((findings) =>
     Object.entries(findings).map((
-      [finding_id, finding],
+      [finding_id, measurement_equality],
     ) => ({
       finding_id,
-      ...finding,
-      evaluation: null,
+      measurement_equality,
     }))
   ),
   assessments: z.record(
     z.string().uuid(), // finding_id (generated server-side)
     z.object({
       finding_id: z.string().uuid(),
+      assessment_snomed_concept_id: snomed_concept_id,
       option_snomed_concept_id: snomed_concept_id,
-    }).strict(),
+    }).strict().transform((assessment) => {
+      // Build DSL expression for assessment
+      return parseFindingExpression(
+        `(finding ${assessment.assessment_snomed_concept_id} ${assessment.option_snomed_concept_id})`,
+      )
+    }),
   ).transform((assessments) =>
     Object.entries(assessments).map((
-      [finding_id, assessment],
+      [finding_id, finding],
     ) => ({
       finding_id,
-      option_snomed_concept_id: assessment.option_snomed_concept_id,
+      finding,
     }))
   ),
 }).strict()
-
-// TODO: this is way too duplicated around the codebase, ask will if we have an abstraction for it
-function hasValue(
-  finding: { value?: number },
-): finding is { value: number } {
-  return typeof finding.value === 'number' && finding.value >= 0
-}
 
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-    const input_measurements = filterOfType(form_values.findings, hasValue)
-    const input_assessments = form_values.assessments
+
+    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+    if (ctx.state.workflow_step_snomed_concept_id) {
+      ctx.state.previously_completed_procedures.workflow_step_record_id =
+        procedure_id
+    } else {
+      ctx.state.previously_completed_procedures.workflow_record_id =
+        procedure_id
+    }
+
+    // Insert measurements using DSL (pMap to collect results)
+    const measurement_results = await pMap(
+      form_values.findings,
+      ({ /* finding_id, */ measurement_equality }) =>
+        patient_measurements.insertOneNested(ctx.state.trx, {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id:
+            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+          employment_id: ctx.state.encounter_employee_presence.employee_id,
+          workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
+          workflow_step_snomed_concept_id:
+            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals,
+          previously_completed_procedures:
+            ctx.state.previously_completed_procedures,
+          measurement_equality,
+        }).then((result) => ({
+          finding_id: result.record_id,
+          snomed_concept_id: measurement_equality.left.snomed_concept_id,
+          value: measurement_equality.right.value,
+          units: measurement_equality.right.units,
+          record_id: result.record_id,
+          procedure_id: result.procedure_id,
+        })),
+    )
+
+    // Insert assessments using DSL
+    const inserting_assessments = forEach(
+      form_values.assessments,
+      ({ finding }) =>
+        patient_findings.insertOneNested(ctx.state.trx, {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id:
+            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+          procedure_id,
+          finding,
+        }),
+    )
 
     const { response } = await promiseProps({
-      inserting_vitals: vitals.insertMeasurementsAndAssessments(
+      inserting_assessments,
+      response: completeAndProceedToNextStep(ctx),
+    })
+
+    // Compute derived measurements (BMI, MAP, etc.) if we have measurements
+    if (measurement_results.length > 0) {
+      // Get procedure_id from first measurement result (all share same procedure)
+      const procedure_id =
+        ctx.state.previously_completed_procedures.workflow_step_record_id ||
+        measurement_results[0].procedure_id // Fallback if new procedure was created
+
+      await patient_computed_findings.computeAndInsertDerivedMeasurements(
         ctx.state.trx,
         {
           patient_id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           patient_encounter_employee_id:
             ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          employment_id: ctx.state.encounter_employee_presence.employee_id,
-          input_measurements,
-          input_assessments,
+          source_measurements: measurement_results,
+          source_procedure_id: procedure_id,
         },
-      ),
-      response: completeAndProceedToNextStep(ctx),
-    })
+      )
+    }
 
     return response
   },

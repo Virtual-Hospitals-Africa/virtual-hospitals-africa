@@ -198,10 +198,12 @@ export const patient_measurements = base({
               id: qualifier_id,
               qualifies_record_id: measurement_id,
             }),
-      ).selectNoFrom([
+      )
+      .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
         literalString(measurement_id).as('record_id'),
+        literalString(procedure_id).as('procedure_id'),
       ])
       .executeTakeFirstOrThrow()
   },
