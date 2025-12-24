@@ -18,7 +18,7 @@ export const e164_phone_number = z.string().or(z.number())
       message: 'Invalid phone number',
     },
   )
-  .transform((data) => data.number.e164)
+  .transform((data) => data.number!.e164)
 
 export const international_phone_number = z.string().or(z.number())
   .transform((data) => String(data))
@@ -30,7 +30,7 @@ export const international_phone_number = z.string().or(z.number())
       message: 'Invalid phone number',
     },
   )
-  .transform((data) => data.number.international)
+  .transform((data) => data.number!.international)
 
 export const sex = z.enum(['male', 'female', 'other', 'prefer not to say'])
 

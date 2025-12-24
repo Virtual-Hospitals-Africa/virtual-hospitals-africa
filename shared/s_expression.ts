@@ -78,7 +78,6 @@ export type ParsedActiveConditionExpression = {
   type: 'active_condition'
   snomed_concept_id: string
 }
-;`(= (measurement 18218921) (units 50 "cm"))`
 
 export type ParsedComparatorExpression<Comparator extends string> = {
   type: Comparator
@@ -473,85 +472,85 @@ const PARSERS = {
   [T in ParsedExpression['type']]: unknown
 }
 
-const FROM_PARSERS = {
-  finding: (parsed: ParsedFindingExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+// const FROM_PARSERS = {
+//   finding: (parsed: ParsedFindingExpression): string => {
+//     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
 
-    return '(' + compact([
-      parsed.type,
-      parsed.snomed_concept_id,
-      parsed.value_snomed_concept_id,
-      ...qualifiers,
-    ]).join(' ') + ')'
-  },
-  qualifier: (parsed: ParsedQualifierExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+//     return '(' + compact([
+//       parsed.type,
+//       parsed.snomed_concept_id,
+//       parsed.value_snomed_concept_id,
+//       ...qualifiers,
+//     ]).join(' ') + ')'
+//   },
+//   qualifier: (parsed: ParsedQualifierExpression): string => {
+//     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
 
-    return '(' + compact([
-      parsed.type,
-      parsed.snomed_concept_id,
-      parsed.value_snomed_concept_id,
-      ...qualifiers,
-    ]).join(' ') + ')'
-  },
-  procedure: (parsed: ParsedProcedureExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
-    return '(' + compact([
-      parsed.type,
-      parsed.snomed_concept_id,
-      parsed.value_snomed_concept_id,
-      ...qualifiers,
-    ]).join(' ') + ')'
-  },
-  evaluation: (parsed: ParsedEvaluationExpression): string => {
-    const qualifiers = parsed.qualifiers.map(fromParsedExpression)
-    return '(' + compact([
-      parsed.type,
-      parsed.snomed_concept_id,
-      parsed.value_snomed_concept_id,
-      // FROM_PARSERS.evaluates(parsed.evaluates),
-      ...qualifiers,
-    ]).join(' ') + ')'
-  },
-  // evaluates: (parsed: ParsedEvaluatesExpression): string =>
-  //   `(evaluates ${fromParsedExpression(parsed.expression)})`,
-  not: (parsed: ParsedNotExpression): string =>
-    `(not ${fromParsedExpression(parsed.expression)})`,
-  or: (parsed: ParsedOrExpression): string =>
-    `(or  ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
-  and: (parsed: ParsedAndExpression): string =>
-    `(and ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
-  task: (parsed: ParsedTaskExpression): string =>
-    `(task ${fromParsedExpression(parsed.if_expression)} ${
-      parsed.tasks.map(fromParsedExpression).join(' ')
-    })`,
-  measurement: (parsed: ParsedMeasurementExpression): string =>
-    `(measurement ${parsed.snomed_concept_id})`,
-  units: (parsed: ParsedUnitsExpression): string =>
-    `(units ${parsed.value} ${parsed.units})`,
-  active_condition: (parsed: ParsedActiveConditionExpression): string =>
-    `(active_condition  ${parsed.snomed_concept_id})`,
-  '>': (parsed: ParsedComparatorExpression<'>'>): string =>
-    `(> ${fromParsedExpression(parsed.left)} ${
-      fromParsedExpression(parsed.right)
-    })`,
-  '<': (parsed: ParsedComparatorExpression<'<'>): string =>
-    `(< ${fromParsedExpression(parsed.left)} ${
-      fromParsedExpression(parsed.right)
-    })`,
-  '>=': (parsed: ParsedComparatorExpression<'>='>): string =>
-    `(>= ${fromParsedExpression(parsed.left)} ${
-      fromParsedExpression(parsed.right)
-    })`,
-  '<=': (parsed: ParsedComparatorExpression<'<='>): string =>
-    `(<= ${fromParsedExpression(parsed.left)} ${
-      fromParsedExpression(parsed.right)
-    })`,
-  '=': (parsed: ParsedComparatorExpression<'='>): string =>
-    `(= ${fromParsedExpression(parsed.left)} ${
-      fromParsedExpression(parsed.right)
-    })`,
-}
+//     return '(' + compact([
+//       parsed.type,
+//       parsed.snomed_concept_id,
+//       parsed.value_snomed_concept_id,
+//       ...qualifiers,
+//     ]).join(' ') + ')'
+//   },
+//   procedure: (parsed: ParsedProcedureExpression): string => {
+//     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+//     return '(' + compact([
+//       parsed.type,
+//       parsed.snomed_concept_id,
+//       parsed.value_snomed_concept_id,
+//       ...qualifiers,
+//     ]).join(' ') + ')'
+//   },
+//   evaluation: (parsed: ParsedEvaluationExpression): string => {
+//     const qualifiers = parsed.qualifiers.map(fromParsedExpression)
+//     return '(' + compact([
+//       parsed.type,
+//       parsed.snomed_concept_id,
+//       parsed.value_snomed_concept_id,
+//       // FROM_PARSERS.evaluates(parsed.evaluates),
+//       ...qualifiers,
+//     ]).join(' ') + ')'
+//   },
+//   // evaluates: (parsed: ParsedEvaluatesExpression): string =>
+//   //   `(evaluates ${fromParsedExpression(parsed.expression)})`,
+//   not: (parsed: ParsedNotExpression): string =>
+//     `(not ${fromParsedExpression(parsed.expression)})`,
+//   or: (parsed: ParsedOrExpression): string =>
+//     `(or  ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
+//   and: (parsed: ParsedAndExpression): string =>
+//     `(and ${parsed.expressions.map(fromParsedExpression).join(' ')})`,
+//   task: (parsed: ParsedTaskExpression): string =>
+//     `(task ${fromParsedExpression(parsed.if_expression)} ${
+//       parsed.tasks.map(fromParsedExpression).join(' ')
+//     })`,
+//   measurement: (parsed: ParsedMeasurementExpression): string =>
+//     `(measurement ${parsed.snomed_concept_id})`,
+//   units: (parsed: ParsedUnitsExpression): string =>
+//     `(units ${parsed.value} ${parsed.units})`,
+//   active_condition: (parsed: ParsedActiveConditionExpression): string =>
+//     `(active_condition  ${parsed.snomed_concept_id})`,
+//   '>': (parsed: ParsedComparatorExpression<'>'>): string =>
+//     `(> ${fromParsedExpression(parsed.left)} ${
+//       fromParsedExpression(parsed.right)
+//     })`,
+//   '<': (parsed: ParsedComparatorExpression<'<'>): string =>
+//     `(< ${fromParsedExpression(parsed.left)} ${
+//       fromParsedExpression(parsed.right)
+//     })`,
+//   '>=': (parsed: ParsedComparatorExpression<'>='>): string =>
+//     `(>= ${fromParsedExpression(parsed.left)} ${
+//       fromParsedExpression(parsed.right)
+//     })`,
+//   '<=': (parsed: ParsedComparatorExpression<'<='>): string =>
+//     `(<= ${fromParsedExpression(parsed.left)} ${
+//       fromParsedExpression(parsed.right)
+//     })`,
+//   '=': (parsed: ParsedComparatorExpression<'='>): string =>
+//     `(= ${fromParsedExpression(parsed.left)} ${
+//       fromParsedExpression(parsed.right)
+//     })`,
+// }
 
 function parseArrayNode(node: SExpressionNode): ParsedExpression {
   assert(Array.isArray(node))
@@ -601,7 +600,7 @@ export function parseQualifierExpression(
   return parseExpressionExpectingType(expression, 'qualifier')
 }
 
-export function fromParsedExpression(parsed: ParsedExpression): string {
-  // deno-lint-ignore no-explicit-any
-  return FROM_PARSERS[parsed.type](parsed as any)
-}
+// export function fromParsedExpression(parsed: ParsedExpression): string {
+//   // deno-lint-ignore no-explicit-any
+//   return FROM_PARSERS[parsed.type](parsed as any)
+// }
