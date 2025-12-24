@@ -1111,6 +1111,7 @@ export interface PatientEvaluations {
   employment_id: string | null
   evaluates_record_id: string
   id: string
+  procedure_id: string | null
 }
 
 export interface PatientExaminationFindingBodySites {

@@ -1,23 +1,56 @@
-// deno-lint-ignore-file no-unused-vars
-import { ThisVisitRecords, TrxOrDb } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
+import {
+  RenderedPatientEncounter,
+  RenderedRecordRelativeToHealthWorker,
+  TrxOrDb,
+} from '../../types.ts'
+import {
+  patient_findings,
+  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+} from './patient_findings.ts'
 
-export function get(
+export async function get(
   trx: TrxOrDb,
-  { patient_encounter_id, patient_encounter_employee_id }: {
-    patient_encounter_id: string
-    patient_encounter_employee_id: string
+  { health_worker_id, encounter }: {
+    health_worker_id: string
+    encounter: RenderedPatientEncounter
   },
-): Promise<ThisVisitRecords> {
-  return Promise.resolve({
-    chief_complaint: [],
-    vitals: [],
-    symptoms: [],
-    history: [],
-    general_assessments: [],
-    examinations: [],
-    diagnostic_tests: [],
-    diagnoses: [],
-    prescriptions: [],
-    orders: [],
+): Promise<RenderedRecordRelativeToHealthWorker[]> {
+  // TODO also pull evaluations?
+  const records = await patient_findings.findAll(trx, {
+    patient_id: encounter.patient.id,
+    patient_encounter_id: encounter.patient_encounter_id,
+    s_expression:
+      `(finding (not (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID})))`,
   })
+
+  return records.map(
+    (record) => {
+      const { patient_encounter_employee_id, ...finding } = record
+
+      const matching_employee = encounter.all_employees_seen.find((
+        employee,
+      ) =>
+        employee.patient_encounter_employee_id ===
+          patient_encounter_employee_id
+      )
+      assert(
+        matching_employee,
+        `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
+      )
+
+      return {
+        ...finding,
+        value_display: buildValueDisplay(finding),
+        provider: {
+          is_me: matching_employee.id === health_worker_id,
+          ...matching_employee,
+        },
+        related_records: [],
+        pertaining_to_key: finding.name,
+        existence: 'Yes',
+      } satisfies RenderedRecordRelativeToHealthWorker
+    },
+  )
 }

@@ -1,0 +1,163 @@
+import { assert } from 'std/assert/assert.ts'
+import { Workflow } from '../../db.d.ts'
+import {
+  prettyStepName,
+  WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
+  WORKFLOW_STEPS,
+  WORKFLOWS,
+} from '../../shared/workflow.ts'
+import {
+  PatientDrawerV4Props,
+  RenderedRecordRelativeToHealthWorker,
+} from '../../types.ts'
+import { arrayIsNonEmpty } from '../../util/arraySize.ts'
+import compact from '../../util/compact.ts'
+import { groupBy } from '../../util/groupBy.ts'
+import { RecordChips } from '../../islands/RecordChip.tsx'
+
+type DrawerThisVisitProps = Pick<
+  PatientDrawerV4Props,
+  | 'this_visit_records'
+  | 'encounter'
+  | 'current_workflow_state'
+  | 'organization_id'
+>
+
+// TODO: move to models?
+function groupRecordsByWorkflows(
+  { this_visit_records, encounter, current_workflow_state }:
+    DrawerThisVisitProps,
+): {
+  workflow: Workflow
+  status: 'not started' | 'incomplete' | 'in progress' | 'completed'
+  steps: {
+    workflow_step: string
+    title: string
+    status: 'not started' | 'in progress' | 'completed'
+    records: RenderedRecordRelativeToHealthWorker[]
+  }[]
+}[] {
+  const records_by_procedure = groupBy(
+    this_visit_records,
+    (record) => record.as_part_of_procedure.snomed_concept_id,
+  )
+
+  const grouped_records = compact(WORKFLOWS.map((workflow) => {
+    const workflow_status = encounter.workflows[workflow]
+    if (!workflow_status) return null
+    if (workflow === 'registration') return null
+
+    const workflow_steps = WORKFLOW_STEPS[workflow]
+
+    return {
+      workflow,
+      status: workflow_status.status,
+      steps: workflow_steps.map((workflow_step) => {
+        const workflow_step_snomed_concept_id =
+          WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
+
+        const records_of_concept = (workflow_step_snomed_concept_id &&
+          records_by_procedure.get(workflow_step_snomed_concept_id)) || []
+
+        const completed = arrayIsNonEmpty(workflow_status.steps_completed)
+          ? workflow_status.steps_completed.includes(workflow_step)
+          : false
+
+        const in_progress = current_workflow_state?.workflow === workflow &&
+          current_workflow_state?.step === workflow_step
+
+        return {
+          workflow_step,
+          title: prettyStepName(workflow_step),
+          status: completed
+            ? 'completed' as const
+            : in_progress
+            ? 'in progress' as const
+            : 'not started' as const,
+          records: records_of_concept,
+        }
+      }),
+    }
+  }))
+
+  const remaining_records = new Set(this_visit_records)
+  for (const workflow of grouped_records) {
+    for (const step of workflow.steps) {
+      for (const record of step.records) {
+        remaining_records.delete(record)
+      }
+    }
+  }
+
+  assert(
+    !remaining_records.size,
+    `Expected all records to be accounted for ${
+      JSON.stringify(Array.from(remaining_records))
+    }`,
+  )
+
+  return grouped_records
+}
+
+// This Visit component showing encounter steps
+export function DrawerThisVisit(
+  { this_visit_records, encounter, current_workflow_state, organization_id }:
+    DrawerThisVisitProps,
+) {
+  const grouped_records = groupRecordsByWorkflows({
+    this_visit_records,
+    encounter,
+    current_workflow_state,
+    organization_id,
+  })
+
+  return (
+    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-[368px]'>
+      <div className='content-stretch flex flex-col h-[46px] items-start justify-start relative shrink-0 w-full'>
+        <div className='box-border content-stretch flex gap-[16px] h-[46px] isolate items-center justify-start px-[16px] py-[8px] relative shrink-0 w-full'>
+          <h2 className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[22px] not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[2]">
+            This Visit
+          </h2>
+        </div>
+      </div>
+      {grouped_records.map((workflow_group) => (
+        <div>
+          <h3 className='capitalize'>{workflow_group.workflow}</h3>
+          {workflow_group.steps.map((step) => (
+            <div
+              key={step.workflow_step}
+              className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'
+            >
+              <div className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start pb-[16px] pt-0 px-0 relative shrink-0 w-[342px]'>
+                <div className='content-stretch flex gap-[8px] items-center justify-center relative shrink-0'>
+                  <p
+                    className={`font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
+                      step.status === 'completed'
+                        ? 'text-gray-600'
+                        : 'text-[#959ca9]'
+                    }`}
+                  >
+                    {step.title}
+                  </p>
+                  {step.status === 'in progress' && (
+                    <div className='relative flex items-start justify-start content-stretch shrink-0'>
+                      <div className='box-border content-stretch flex gap-[8px] items-center justify-start px-0 py-[2px] relative rounded-[60px] shrink-0 w-[93px]'>
+                        <p className="font-['Inter:Medium_Italic',_sans-serif] font-medium italic leading-[16px] relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
+                          In Progress
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <RecordChips
+                  records={step.records}
+                  organization_id={organization_id}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}

@@ -21,6 +21,7 @@ import { MedicineIcon } from './icons/Medicines.tsx'
 import { PharmaciesIcon } from './icons/Pharmacies.tsx'
 import { UsersIcon } from './icons/heroicons/outline.tsx'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
+import { prettyStepName } from '../../shared/workflow.ts'
 
 export type SidebarProps = {
   top: {
@@ -137,16 +138,19 @@ export function GenericSidebar(
         <nav className='flex flex-col flex-1 px-5'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
-              <NavItem
-                href={replaceParams(link.route, all_params)}
-                active={link === active_link}
-                title={link.title ||
-                  capitalize(link.route.split('/').pop()!).replace(
-                    ' And ',
-                    ' & ',
-                  )}
-                Icon={link.Icon}
-              />
+              console.log(link),
+                (
+                  <NavItem
+                    href={replaceParams(link.route, all_params)}
+                    active={link === active_link}
+                    title={link.title ||
+                      capitalize(link.route.split('/').pop()!).replace(
+                        ' And ',
+                        ' & ',
+                      )}
+                    Icon={link.Icon}
+                  />
+                )
             ))}
           </ul>
         </nav>
@@ -246,6 +250,7 @@ export function StepsSidebar(
       urlSearchParams={ctx.url.searchParams}
       nav_links={nav_links.map((link) => ({
         ...link,
+        title: prettyStepName(link.step),
         Icon: steps_completed.includes(link.step)
           ? ProgressIcons.Check
           : ProgressIcons.Dot,

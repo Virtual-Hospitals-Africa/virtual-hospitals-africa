@@ -8,7 +8,7 @@ import assertOneOf from '../util/assertOneOf.ts'
 
 export type ParsedFindingExpression = {
   type: 'finding'
-  snomed_concept_id: string
+  snomed_concept_id: string | null
   value_snomed_concept_id: string | null
   qualifiers: ParsedQualifierOrNotExpression[]
 }
@@ -116,14 +116,11 @@ const PARSERS = {
   // TODO "qualifier" can be that a finding was done as part of a particular procedure?
   finding: (node: SExpressionNode): ParsedFindingExpression => {
     assert(Array.isArray(node))
-    const [type, snomed_concept_id, ...qualifiers] = node
+    const [type, ...qualifiers] = node
     assertEquals(type, 'finding')
-    if (typeof snomed_concept_id !== 'string') {
-      throw new Error(
-        `Expected snomed_concept_id to be a string, got: ${
-          JSON.stringify(snomed_concept_id)
-        }`,
-      )
+    let snomed_concept_id: string | undefined
+    if (isString(qualifiers[0])) {
+      snomed_concept_id = qualifiers.shift() as string
     }
     let value_snomed_concept_id: string | undefined
     if (isString(qualifiers[0])) {
@@ -131,7 +128,7 @@ const PARSERS = {
     }
     return {
       type: 'finding',
-      snomed_concept_id,
+      snomed_concept_id: snomed_concept_id ?? null,
       value_snomed_concept_id: value_snomed_concept_id ?? null,
       qualifiers: qualifiers.map(parseArrayNode).map((parsed) => {
         assert(

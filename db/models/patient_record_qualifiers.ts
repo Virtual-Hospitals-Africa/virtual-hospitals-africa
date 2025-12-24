@@ -28,6 +28,7 @@ export const patient_record_qualifiers = {
         .select([
           'patient_records.id as record_id',
           'patient_records.patient_encounter_id',
+          'snomed_inferred_canonical_name_and_category.category',
           sql<string>`patient_records.snomed_concept_id::text`.as(
             'snomed_concept_id',
           ),
@@ -49,6 +50,7 @@ export const patient_record_qualifiers = {
       .select([
         `${alias}.record_id`,
         `${alias}.snomed_concept_id`,
+        `${alias}.category`,
         `${alias}.name`,
         `${alias}.value_name`,
       ])

@@ -180,10 +180,15 @@ export async function up(db: Kysely<DB>) {
               'cascade',
             ),
         )
+        .addColumn('procedure_id', 'uuid', (col) =>
+          col.references('patient_procedures.id').onDelete(
+            'cascade',
+          ))
         .addColumn(
           'by_system',
           'boolean',
-          (col) => col.notNull(),
+          (col) =>
+            col.notNull(),
         )
         // more such relations can be declared using patient_record_relations,
         // but evaluations are always made because of at least one other record
@@ -196,7 +201,7 @@ export async function up(db: Kysely<DB>) {
         .addCheckConstraint(
           'evaluation_is_either_by_system_or_by_person',
           sql`(
-            by_system or employment_id is not null
+            by_system or (employment_id is not null and procedure_id is not null)
           )`,
         ),
   )

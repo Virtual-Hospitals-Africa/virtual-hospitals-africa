@@ -1,9 +1,5 @@
-import { KeyedWarningSign } from '../types.ts'
+import { CheckedWarningSign } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
-
-type CheckedWarningSign = KeyedWarningSign & {
-  checked: boolean
-}
 
 const PRIORITIES = [
   {
@@ -35,7 +31,7 @@ function KeyedWarningSignCheckbox({ sign }: { sign: CheckedWarningSign }) {
           type='checkbox'
           name={name}
           value={sign.clinical_finding_s_expression}
-          checked={sign.checked}
+          checked={!!sign.satisfied_by_record_id}
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
         />
       </div>

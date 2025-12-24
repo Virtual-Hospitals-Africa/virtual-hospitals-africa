@@ -18,6 +18,7 @@ import {
   MaritalStatus,
   MessagePriority,
   PatientCohabitation,
+  SnomedCategory,
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
@@ -1828,7 +1829,7 @@ export type LinkProps = {
 
 export type LinkDef = {
   route: string
-  title?: string
+  title: string
   Icon?: (
     props: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & {
       active: boolean
@@ -3338,25 +3339,19 @@ export type RenderedChiefComplaint = {
   }
 }
 
-export type PatientDrawerRecordDisplay = {
-  record_id: string
-  priority: Priority
-  display: string
-}
-
 // Type definition based on user requirements
 
 export type ThisVisitRecords = {
-  chief_complaint: PatientDrawerRecordDisplay[]
-  vitals: PatientDrawerRecordDisplay[]
-  symptoms: PatientDrawerRecordDisplay[]
-  history: PatientDrawerRecordDisplay[]
-  general_assessments: PatientDrawerRecordDisplay[]
-  examinations: PatientDrawerRecordDisplay[]
-  diagnostic_tests: PatientDrawerRecordDisplay[]
-  diagnoses: PatientDrawerRecordDisplay[]
-  prescriptions: PatientDrawerRecordDisplay[]
-  orders: PatientDrawerRecordDisplay[]
+  chief_complaint: RenderedFindingRelativeToHealthWorker[]
+  vitals: RenderedFindingRelativeToHealthWorker[]
+  symptoms: RenderedFindingRelativeToHealthWorker[]
+  history: RenderedFindingRelativeToHealthWorker[]
+  general_assessments: RenderedFindingRelativeToHealthWorker[]
+  examinations: RenderedFindingRelativeToHealthWorker[]
+  diagnostic_tests: RenderedFindingRelativeToHealthWorker[]
+  diagnoses: RenderedFindingRelativeToHealthWorker[]
+  prescriptions: RenderedFindingRelativeToHealthWorker[]
+  orders: RenderedFindingRelativeToHealthWorker[]
 }
 
 export type RenderedPatientHistory = {
@@ -3368,13 +3363,20 @@ export type RenderedPatientHistory = {
   lifestyle: RenderedFindingRelativeToHealthWorker[]
 }
 
-export type PatientDrawerV3Props = {
+export type PatientDrawerV4Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
-  current_consultation_step: string
-  this_visit_records: ThisVisitRecords
+  organization_id: string
+  this_visit_records: RenderedRecordRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
+  current_workflow_state: null | {
+    workflow: Workflow
+    step: string
+    workflow_snomed_concept_id: string
+    workflow_step_snomed_concept_id: string | null
+    workflow_status: WorkflowStatus
+  }
 }
 
 export type RenderedCareTeamHealthWorker = {
@@ -3437,8 +3439,8 @@ export type PreviouslyCompletedProcedures = {
   workflow_step_record_id: string | null
 }
 
-export type RenderedFindingProvider = RenderedPatientEncounterEmployee & {
-  is_me: boolean
+export type RenderedFindingProvider = RenderedEmployee & {
+  is_me: SqlBool
 }
 
 export type AsPartOfProcedure = {
@@ -3452,7 +3454,28 @@ export type RenderedFindingQualifierRelativeToHealthWorker = {
   snomed_concept_id: string
   name: string
   value_name: string | null
+  category: SnomedCategory
   qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+}
+
+export type RenderedRecordRelativeToHealthWorker<
+  PertainingToKey extends string = string,
+> = {
+  type: 'finding' | 'evaluation' | 'procedure'
+  record_id: string
+  patient_encounter_id: string
+  snomed_concept_id: string
+  name: string
+  priority: Priority | null
+  value_display: string
+  pertaining_to_key: PertainingToKey
+  created_at: Date | string
+  provider: RenderedFindingProvider
+  category: SnomedCategory
+  as_part_of_procedure: AsPartOfProcedure
+  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  existence: Existence
+  related_records: RenderedRecordRelativeToHealthWorker[]
 }
 
 export type RenderedFindingRelativeToHealthWorker<
@@ -3506,6 +3529,7 @@ export type IntermediateFindingRecord<PertainingToKey extends string = string> =
     created_at: Date
     record_id: string
     snomed_concept_id: string
+    category: SnomedCategory
     name: string
     patient_encounter_id: string
     patient_encounter_employee_id: string
@@ -3544,6 +3568,10 @@ export type IntermediateProcedureRecord = {
   // qualifiers: QualifierIntermediate[]
   value_snomed_concept_id: null | string
   // value_name: null | string
+}
+
+export type CheckedWarningSign = KeyedWarningSign & {
+  satisfied_by_record_id: string | null
 }
 
 export type RenderedRoom = {

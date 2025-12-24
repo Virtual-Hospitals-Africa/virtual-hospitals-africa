@@ -23,6 +23,7 @@ import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
+import { debugLog } from '../../../../../db/helpers.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -254,8 +255,8 @@ describe('triage/warning_signs', () => {
           'value_name': null,
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '225390008',
-            'name': 'Triage',
+            'snomed_concept_id': '245581009',
+            'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {
@@ -325,8 +326,8 @@ describe('triage/warning_signs', () => {
           'value_name': null,
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '225390008',
-            'name': 'Triage',
+            'snomed_concept_id': '245581009',
+            'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {
@@ -439,6 +440,65 @@ describe('triage/warning_signs', () => {
           },
         ],
       })
+    })
+
+    it('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
+      const clinic = await createTestOrganization(db)
+      const { health_worker: nurse, fetchOk } =
+        await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+
+      await fetchOk(
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+          body: asFormData({
+            warning_signs: {
+              'Chest pain':
+                WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+            },
+          }),
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      assertLength(
+        await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        }),
+        1,
+      )
+
+      await fetchOk(
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        {
+          method: 'POST',
+        },
+        {
+          cancel_response_body: true,
+        },
+      )
+
+      assertLength(
+        await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        }),
+        0,
+      )
     })
 
     it('does not insert any findings when no warning signs are selected', async () => {
@@ -582,6 +642,10 @@ describe('triage/warning_signs', () => {
         },
       )
 
+      debugLog(patient_findings
+        .searchQuery(db, {
+          patient_id: initial_encounter.patient.id,
+        }))
       const findings_count_after_first_insertion = await patient_findings
         .findAll(db, {
           patient_id: initial_encounter.patient.id,

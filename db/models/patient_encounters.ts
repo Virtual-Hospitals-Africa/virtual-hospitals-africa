@@ -30,6 +30,7 @@ import {
   jsonObjectFrom,
   literalLocation,
   now,
+  orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
 import {
@@ -61,8 +62,10 @@ import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
 import {
   isPriority,
+  PRIORITY_SNOMED_CODES,
   PRIORITY_SNOMED_CONCEPT_ID,
 } from '../../shared/priorities.ts'
+import { RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -311,7 +314,26 @@ export function baseQuery(trx: TrxOrDb) {
             '=',
             'patient_encounters.id',
           )
-          .orderBy('patient_records.created_at', 'desc')
+          .where(
+            (eb_patient_triage_level) =>
+              eb_patient_triage_level(
+                'patient_records.id',
+                'not in',
+                eb_patient_triage_level.selectFrom(
+                  'patient_records as now_invalid_patient_records',
+                ).innerJoin(
+                  'patient_evaluations as now_invalid_patient_evaluations',
+                  'now_invalid_patient_records.id',
+                  'now_invalid_patient_evaluations.id',
+                ).where(
+                  'now_invalid_patient_records.snomed_concept_id',
+                  'in',
+                  RECORD_NOW_INVALID_CONCEPT_ID,
+                )
+                  .select('now_invalid_patient_evaluations.evaluates_record_id')
+                  .distinct(),
+              ),
+          )
           .select((eb_patient_triage_level) => [
             asText(
               eb_patient_triage_level,
@@ -324,6 +346,17 @@ export function baseQuery(trx: TrxOrDb) {
             'snomed_inferred_canonical_name_and_category.name',
             'patient_triage_level.target_treatment_time',
           ])
+          .orderBy((eb_triage_level) =>
+            orderByArrayPosition(
+              eb_triage_level,
+              'patient_records.snomed_concept_id',
+              [
+                PRIORITY_SNOMED_CODES['Emergency'],
+                PRIORITY_SNOMED_CODES['Very urgent'],
+                PRIORITY_SNOMED_CODES['Urgent'],
+                PRIORITY_SNOMED_CODES['Non-urgent'],
+              ],
+            ), 'desc')
           .limit(1),
       ).as('priority'),
       jsonObjectFrom(

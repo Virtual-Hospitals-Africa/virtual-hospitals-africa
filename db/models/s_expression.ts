@@ -16,10 +16,12 @@ import {
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
 import isString from '../../util/isString.ts'
+import { deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
-  patient_encounter_id?: Maybe<string>
+  patient_encounter_id?: Maybe<string | IdSelection>
+  procedure_id?: Maybe<string | IdSelection>
 }
 type SatisfyingResult = {
   satisfies: boolean
@@ -79,8 +81,7 @@ function baseQuery(
     .select('patient_records.id')
 
   for (const qualifier of qualifiers) {
-    if (qualifier.type === 'not') {
-      assert(qualifier.expression.type === 'qualifier')
+    if (qualifier.type === 'not' && qualifier.expression.type === 'qualifier') {
       query = query.where(
         'patient_records.id',
         'not in',
@@ -90,6 +91,19 @@ function baseQuery(
         }, qualifier.expression)
           .clearSelect()
           .select('patient_record_qualifiers.qualifies_record_id'),
+      )
+    } else if (
+      qualifier.type === 'not' && qualifier.expression.type === 'finding'
+    ) {
+      query = query.where(
+        'patient_records.id',
+        'not in',
+        EXPRESSION_BUILDERS.finding(trx, {
+          patient_id,
+          patient_encounter_id,
+        }, qualifier.expression)
+          .clearSelect()
+          .select('patient_records.id'),
       )
     } else {
       assert(qualifier.type === 'qualifier')
@@ -109,32 +123,32 @@ function baseQuery(
   return query
 }
 
-export async function satisfyingSExpression(
-  trx: TrxOrDb,
-  { s_expression, ...patient }: {
-    s_expression: string | ParsedExpression
-    patient_id: string
-    patient_encounter_id?: Maybe<string>
-  },
-): Promise<SatisfyingResult> {
-  const node = isString(s_expression)
-    ? parseExpression(s_expression)
-    : s_expression
-  if (node.type === 'not') {
-    const any_matching = await buildExpression(trx, patient, node.expression)
-      .limit(1).executeTakeFirst()
+export const satisfyingSExpression = deduplicate(
+  async function satisfyingSExpression(
+    trx: TrxOrDb,
+    { s_expression, ...patient }: {
+      s_expression: string | ParsedExpression
+    } & PatientIdentifiers,
+  ): Promise<SatisfyingResult> {
+    const node = isString(s_expression)
+      ? parseExpression(s_expression)
+      : s_expression
+    if (node.type === 'not') {
+      const any_matching = await buildExpression(trx, patient, node.expression)
+        .limit(1).executeTakeFirst()
 
-    return {
-      record_ids: [],
-      satisfies: !any_matching,
+      return {
+        record_ids: [],
+        satisfies: !any_matching,
+      }
     }
-  }
-  const rows = await buildExpression(trx, patient, node).execute()
-  return {
-    record_ids: rows.map((row) => row.id),
-    satisfies: rows.length > 0,
-  }
-}
+    const rows = await buildExpression(trx, patient, node).execute()
+    return {
+      record_ids: rows.map((row) => row.id),
+      satisfies: rows.length > 0,
+    }
+  },
+)
 
 function measurement(
   trx: TrxOrDb,
@@ -163,7 +177,7 @@ function measurement(
 const EXPRESSION_BUILDERS = {
   finding(
     trx,
-    { patient_id, patient_encounter_id },
+    { patient_id, patient_encounter_id, procedure_id },
     { snomed_concept_id, value_snomed_concept_id, qualifiers },
   ) {
     return baseQuery(trx, {
@@ -177,6 +191,10 @@ const EXPRESSION_BUILDERS = {
         'patient_findings',
         'patient_records.id',
         'patient_findings.id',
+      )
+      .$if(
+        !!procedure_id,
+        (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
       )
   },
   procedure(

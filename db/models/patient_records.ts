@@ -19,12 +19,14 @@ function markInvalid(
     patient_id,
     patient_encounter_id,
     employment_id,
+    procedure_id,
     altered_record_id,
     snomed_concept_id,
   }: {
     patient_id: string
     patient_encounter_id: string
     employment_id: string
+    procedure_id: string
     altered_record_id: string
     snomed_concept_id: RecordNowInvalidConceptId
   },
@@ -45,6 +47,7 @@ function markInvalid(
           .values({
             id,
             employment_id,
+            procedure_id,
             evaluates_record_id: altered_record_id,
             by_system: false,
           }),
@@ -58,6 +61,7 @@ export function markAltered(
     patient_id: string
     patient_encounter_id: string
     employment_id: string
+    procedure_id: string
     altered_record_id: string
   },
 ) {
@@ -73,6 +77,7 @@ export function markEnteredInError(
     patient_id: string
     patient_encounter_id: string
     employment_id: string
+    procedure_id: string
     altered_record_id: string
   },
 ) {
@@ -94,7 +99,7 @@ export function nowInvalidRecords(
   )
     .innerJoin(
       'patient_evaluations as now_invalid_patient_evaluations',
-      'now_invalid_patient_evaluations.id',
+      'now_invalid_patient_records.id',
       'now_invalid_patient_records.id',
     )
     .where('now_invalid_patient_records.patient_id', '=', patient_id)
