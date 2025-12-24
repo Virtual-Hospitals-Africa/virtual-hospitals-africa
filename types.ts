@@ -3570,7 +3570,7 @@ export type IntermediateProcedureRecord = {
 }
 
 export type CheckedWarningSign = KeyedWarningSign & {
-  checked: boolean
+  satisfied_by_record_id: string | null
 }
 
 export type RenderedRoom = {

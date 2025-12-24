@@ -23,6 +23,7 @@ import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
+import { debugLog } from '../../../../../db/helpers.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -441,7 +442,7 @@ describe('triage/warning_signs', () => {
       })
     })
 
-    it.only('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
+    it('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -474,7 +475,15 @@ describe('triage/warning_signs', () => {
           cancel_response_body: true,
         },
       )
-            await fetchOk(
+
+      assertLength(
+        await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        }),
+        1,
+      )
+
+      await fetchOk(
         `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         {
           method: 'POST',
@@ -484,11 +493,12 @@ describe('triage/warning_signs', () => {
         },
       )
 
-      const this_patient_findings = await patient_findings.findAll(db, {
-        patient_id: encounter.patient.id,
-      })
-
-      assertLength(this_patient_findings, 0)
+      assertLength(
+        await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        }),
+        0,
+      )
     })
 
     it('does not insert any findings when no warning signs are selected', async () => {
@@ -632,6 +642,10 @@ describe('triage/warning_signs', () => {
         },
       )
 
+      debugLog(patient_findings
+        .searchQuery(db, {
+          patient_id: initial_encounter.patient.id,
+        }))
       const findings_count_after_first_insertion = await patient_findings
         .findAll(db, {
           patient_id: initial_encounter.patient.id,

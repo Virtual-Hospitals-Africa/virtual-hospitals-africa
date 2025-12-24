@@ -525,3 +525,39 @@ export function orderByArrayPosition<
     case_statement,
   ).else(0).end()
 }
+
+export function deduplicate<T extends Array<any>, U>(
+  func: (trx: TrxOrDb, ...parameters: T) => Promise<U>,
+): (trx: TrxOrDb, ...parameters: T) => Promise<U> {
+  let pending: Map<string, Promise<U>> | null = null
+
+  return (trx: TrxOrDb, ...parameters: T): Promise<U> => {
+    // Validate parameters are JSON-serializable
+    let key: string
+    try {
+      key = JSON.stringify(parameters)
+    } catch {
+      throw new Error('Parameters must be JSON-serializable')
+    }
+
+    // Initialize pending map for this tick if needed
+    if (pending === null) {
+      pending = new Map()
+      // Clear the map on the next tick
+      queueMicrotask(() => {
+        pending = null
+      })
+    }
+
+    // Return existing promise if we already have one for these parameters
+    const existing = pending.get(key)
+    if (existing) {
+      return existing
+    }
+
+    // Create and cache the promise
+    const promise = func(trx, ...parameters)
+    pending.set(key, promise)
+    return promise
+  }
+}

@@ -134,7 +134,7 @@ export function baseQuery(
             'patient_records as now_invalid_patient_records',
           ).innerJoin(
             'patient_evaluations as now_invalid_patient_evaluations',
-            'now_invalid_patient_evaluations.id',
+            'now_invalid_patient_records.id',
             'now_invalid_patient_evaluations.id',
           ).where(
             'now_invalid_patient_records.snomed_concept_id',

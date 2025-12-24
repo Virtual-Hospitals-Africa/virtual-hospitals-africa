@@ -16,6 +16,7 @@ import {
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
 import isString from '../../util/isString.ts'
+import { deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -147,6 +148,33 @@ export async function satisfyingSExpression(
   }
 }
 
+// export const satisfyingSExpression = deduplicate(
+//   async function satisfyingSExpression(
+//     trx: TrxOrDb,
+//     { s_expression, ...patient }: {
+//       s_expression: string | ParsedExpression
+//     } & PatientIdentifiers,
+//   ): Promise<SatisfyingResult> {
+//     const node = isString(s_expression)
+//       ? parseExpression(s_expression)
+//       : s_expression
+//     if (node.type === 'not') {
+//       const any_matching = await buildExpression(trx, patient, node.expression)
+//         .limit(1).executeTakeFirst()
+
+//       return {
+//         record_ids: [],
+//         satisfies: !any_matching,
+//       }
+//     }
+//     const rows = await buildExpression(trx, patient, node).execute()
+//     return {
+//       record_ids: rows.map((row) => row.id),
+//       satisfies: rows.length > 0,
+//     }
+//   },
+// )
+
 function measurement(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
@@ -189,7 +217,10 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_findings.id',
       )
-      .$if(!!procedure_id, qb => qb.where('patient_findings.procedure_id', '=', procedure_id!))
+      .$if(
+        !!procedure_id,
+        (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
+      )
   },
   procedure(
     trx,
