@@ -1,13 +1,21 @@
-import { ComponentChildren } from 'preact'
+import { ComponentChild, ComponentChildren } from 'preact'
 import cls from '../../util/cls.ts'
 import { Maybe } from '../../types.ts'
 
-type LabelProps = {
-  className?: string
-  label?: Maybe<ComponentChildren>
-  children?: Maybe<ComponentChildren>
-  htmlFor?: string
-}
+type LabelProps =
+  & {
+    className?: string
+    htmlFor?: string
+  }
+  & (
+    {
+      label?: Maybe<ComponentChild>
+      children: ComponentChildren
+    } | {
+      label: ComponentChild
+      children?: Maybe<ComponentChildren>
+    }
+  )
 
 export function Label({
   label,
