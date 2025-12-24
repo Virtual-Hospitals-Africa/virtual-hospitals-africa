@@ -15,8 +15,9 @@ import {
   computeBMI,
   computeMeanArterialPressure,
   formatBloodPressureDisplay,
-  VITALS_SNOMED_CODE,
-  VITALS_UNITS,
+  VITAL_COMPUTED_UNITS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
 } from '../../shared/vitals.ts'
 
 export type PatientComputedFinding = Selectable<DB['patient_computed_findings']>
@@ -328,8 +329,12 @@ export async function computeAndInsertDerivedMeasurements(
     return { success: true as const, computed_findings, computed_measurements }
   }
 
-  const height_measurement = measurements.get(VITALS_SNOMED_CODE.height)
-  const weight_measurement = measurements.get(VITALS_SNOMED_CODE.weight)
+  const height_measurement = measurements.get(
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+  )
+  const weight_measurement = measurements.get(
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+  )
 
   if (
     height_measurement &&
@@ -349,9 +354,9 @@ export async function computeAndInsertDerivedMeasurements(
       patient_encounter_id,
       patient_encounter_employee_id,
       procedure_id: source_procedure_id,
-      snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
+      snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
       value: bmi_value,
-      units: VITALS_UNITS.body_mass_index,
+      units: VITAL_COMPUTED_UNITS.body_mass_index,
       algorithm_version: 'BMI_v1.0',
       computation_metadata: {
         formula: 'weight_kg / (height_m^2)',
@@ -366,17 +371,17 @@ export async function computeAndInsertDerivedMeasurements(
     computed_findings.push(body_mass_index_result.computed_finding_id)
     computed_measurements.push({
       finding_id: body_mass_index_result.computed_finding_id,
-      snomed_concept_id: VITALS_SNOMED_CODE.body_mass_index,
+      snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
       value: bmi_value,
-      units: VITALS_UNITS.body_mass_index,
+      units: VITAL_COMPUTED_UNITS.body_mass_index,
     })
   }
 
   const systolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_systolic,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_systolic,
   )
   const diastolic_measurement = measurements.get(
-    VITALS_SNOMED_CODE.blood_pressure_diastolic,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic,
   )
 
   if (
@@ -400,9 +405,10 @@ export async function computeAndInsertDerivedMeasurements(
         patient_encounter_id,
         patient_encounter_employee_id,
         procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
+        snomed_concept_id:
+          VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
         value: map_value,
-        units: VITALS_UNITS.mean_arterial_pressure,
+        units: VITAL_COMPUTED_UNITS.mean_arterial_pressure,
         algorithm_version: 'MAP_v1.0',
         computation_metadata: {
           formula: 'diastolic + (systolic - diastolic) / 3',
@@ -422,9 +428,10 @@ export async function computeAndInsertDerivedMeasurements(
     computed_findings.push(map_result.computed_finding_id)
     computed_measurements.push({
       finding_id: map_result.computed_finding_id,
-      snomed_concept_id: VITALS_SNOMED_CODE.mean_arterial_pressure,
+      snomed_concept_id:
+        VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
       value: map_value,
-      units: VITALS_UNITS.mean_arterial_pressure,
+      units: VITAL_COMPUTED_UNITS.mean_arterial_pressure,
     })
   }
 
@@ -448,7 +455,7 @@ export async function computeAndInsertDerivedMeasurements(
         patient_encounter_id,
         patient_encounter_employee_id,
         procedure_id: source_procedure_id,
-        snomed_concept_id: VITALS_SNOMED_CODE.blood_pressure,
+        snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.blood_pressure,
         value_display: bp_display,
         algorithm_version: 'BP_v1.0',
         computation_metadata: {

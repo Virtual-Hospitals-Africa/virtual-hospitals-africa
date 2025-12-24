@@ -214,6 +214,11 @@ export type SnomedCategory =
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
+export type VitalAssessment =
+  | 'consciousness'
+  | 'mobility_assessment'
+  | 'trauma_presence'
+
 export type Workflow =
   | 'consultation'
   | 'doctor_review'
@@ -1497,7 +1502,7 @@ export interface SatsPriorityLevels {
 }
 
 export interface SatsTriageAssessmentOptions {
-  assessment_snomed_id: Int8
+  assessment_snomed_concept_id: Int8
   created_at: Generated<Timestamp>
   display_label: string
   display_order: number
@@ -1508,13 +1513,13 @@ export interface SatsTriageAssessmentOptions {
 }
 
 export interface SatsTriageAssessments {
-  assessment_snomed_id: Int8
+  assessment_snomed_concept_id: Int8
   category: string
   created_at: Generated<Timestamp>
   display_order: number
-  name: string
   required_for_triage: Generated<boolean>
   updated_at: Generated<Timestamp>
+  vital: VitalAssessment
 }
 
 export interface SatsTriageScoringRules {

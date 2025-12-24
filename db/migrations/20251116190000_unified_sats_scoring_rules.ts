@@ -69,9 +69,9 @@ export async function up(db: Kysely<unknown>) {
                 assessment.category
             FROM patient_records AS records
             JOIN patient_findings AS findings ON records.id = findings.id
-            JOIN sats_triage_assessments AS assessment ON records.snomed_concept_id = assessment.assessment_snomed_id
+            JOIN sats_triage_assessments AS assessment ON records.snomed_concept_id = assessment.assessment_snomed_concept_id
             JOIN sats_triage_assessment_options AS opt
-                ON opt.assessment_snomed_id = assessment.assessment_snomed_id
+                ON opt.assessment_snomed_concept_id = assessment.assessment_snomed_concept_id
                 AND records.value_snomed_concept_id = opt.option_snomed_concept_id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
@@ -155,7 +155,7 @@ export async function up(db: Kysely<unknown>) {
             ORDER BY rqm.snomed_concept_id, rule.score_value DESC
         ),
         all_components AS (
-            SELECT 'avpu_consciousness' as component, score_value FROM categorical_scores WHERE category = 'consciousness'
+            SELECT 'consciousness' as component, score_value FROM categorical_scores WHERE category = 'consciousness'
             UNION ALL
             SELECT 'mobility_assessment' as component, score_value FROM categorical_scores WHERE category = 'mobility'
             UNION ALL

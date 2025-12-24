@@ -15,12 +15,12 @@ export default function VitalsMeasurementsInput(
     most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
   },
 ) {
-  const name = `findings.${vital.finding_id}`
+  const name = `measurements.${vital.vital}`
 
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-col'>
-        <Label label={capitalize(vital.label)} htmlFor={name} />
+        <Label label={capitalize(vital.vital)} htmlFor={name} />
         {most_recent_patient_finding && (
           <div className='flex text-gray-500'>
             <a href='#' className='text-blue-500'>
@@ -45,10 +45,6 @@ export default function VitalsMeasurementsInput(
           className='justify-end !min-w-0'
           min={0}
           suffix={vital.units}
-        />
-        <HiddenInput
-          name={`${name}.snomed_concept_id`}
-          value={vital.snomed_concept_id}
         />
         <HiddenInput
           name={`${name}.units`}

@@ -6,7 +6,10 @@ import {
   literalString,
   success_true,
 } from '../helpers.ts'
-import { VITALS_SNOMED_CODE } from '../../shared/vitals.ts'
+import {
+  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+} from '../../shared/vitals.ts'
 import generateUUID from '../../util/uuid.ts'
 import z from 'zod'
 import flatten from '../../util/flatten.ts'
@@ -204,7 +207,9 @@ export function insertMany(
     .executeTakeFirstOrThrow()
 }
 
-const VITAL_SNOMED_CONCEPT_IDS = Object.values(VITALS_SNOMED_CODE)
+const VITAL_SNOMED_CONCEPT_IDS = Object.values(
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+)
 
 export async function getMostRecentManualVitalsWithEvaluations(
   trx: TrxOrDb,
@@ -468,9 +473,9 @@ export async function getMostRecentVitalsWithEvaluations(
 }
 
 const CATEGORICAL_ASSESSMENT_SNOMED_CODES = [
-  VITALS_SNOMED_CODE.avpu_consciousness,
-  VITALS_SNOMED_CODE.mobility_assessment,
-  VITALS_SNOMED_CODE.trauma_presence,
+  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
+  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
+  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
 ]
 
 export async function getPreviousVitalMeasurements(
@@ -492,16 +497,16 @@ export async function getPreviousVitalMeasurements(
         .innerJoin(
           'sats_triage_assessments as assessment',
           'patient_records.snomed_concept_id',
-          'assessment.assessment_snomed_id',
+          'assessment.assessment_snomed_concept_id',
         )
         .innerJoin(
           'sats_triage_assessment_options as opt',
           (join) =>
             join
               .onRef(
-                'opt.assessment_snomed_id',
+                'opt.assessment_snomed_concept_id',
                 '=',
-                'assessment.assessment_snomed_id',
+                'assessment.assessment_snomed_concept_id',
               )
               .onRef(
                 'patient_records.value_snomed_concept_id',
@@ -516,22 +521,22 @@ export async function getPreviousVitalMeasurements(
           'trauma',
         ])
         .select([
-          'assessment.assessment_snomed_id',
+          'assessment.assessment_snomed_concept_id',
           'opt.display_label',
           'patient_records.created_at',
         ])
         .select(
-          sql`ROW_NUMBER() OVER (PARTITION BY assessment.assessment_snomed_id ORDER BY patient_records.created_at DESC)`
+          sql`ROW_NUMBER() OVER (PARTITION BY assessment.assessment_snomed_concept_id ORDER BY patient_records.created_at DESC)`
             .as('rank'),
         ),
   ).selectFrom('ranked_categorical_findings')
     .where('rank', '=', 2)
-    .select(['assessment_snomed_id', 'display_label'])
+    .select(['assessment_snomed_concept_id', 'display_label'])
     .execute()
 
   for (const assessment of categorical_assessments) {
     previous_measurements.set(
-      assessment.assessment_snomed_id,
+      assessment.assessment_snomed_concept_id,
       assessment.display_label,
     )
   }

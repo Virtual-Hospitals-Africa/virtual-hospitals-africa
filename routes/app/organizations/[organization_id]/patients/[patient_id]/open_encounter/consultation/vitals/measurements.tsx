@@ -5,12 +5,12 @@ import {
 import { z } from 'zod'
 import * as vitals from '../../../../../../../../../db/models/vitals.ts'
 import { patient_measurements } from '../../../../../../../../../db/models/patient_measurements.ts'
-import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
+// import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../../util/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
-import filterOfType from '../../../../../../../../../util/filterOfType.ts'
+// import filterOfType from '../../../../../../../../../util/filterOfType.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../../components/vitals/MeasurementsForm.tsx'
-import redirect from '../../../../../../../../../util/redirect.ts'
+// import redirect from '../../../../../../../../../util/redirect.ts'
 
 const VitalsMeasurementSchema = z.object({
   findings: z.record(
@@ -31,50 +31,54 @@ const VitalsMeasurementSchema = z.object({
   ),
 }).strict()
 
-function hasValue(
-  finding: { value?: number },
-): finding is { value: number } {
-  return typeof finding.value === 'number' && finding.value > 0
-}
+// function hasValue(
+//   finding: { value?: number },
+// ): finding is { value: number } {
+//   return typeof finding.value === 'number' && finding.value > 0
+// }
 
 export const handler = postHandler(
   VitalsMeasurementSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-    const input_measurements = filterOfType(form_values.findings, hasValue)
+  // deno-lint-ignore require-await
+  async (_ctx: OpenEncounterWorkflowContext, _form_values) => {
+    throw new Error('TODO: consultation/vitals')
 
-    if (input_measurements.length) {
-      /* const manual_insertion_result = */ await vitals
-        .insertMeasurementsAndAssessments(
-          ctx.state.trx,
-          {
-            patient_id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            patient_encounter_employee_id: ctx.state.encounter_employee_presence
-              .patient_encounter_employee_id,
-            employment_id: ctx.state.encounter_employee_presence.employee_id,
-            input_measurements,
-            input_assessments: [],
-          },
-        )
+    // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+    // const input_measurements = filterOfType(form_values.findings, hasValue)
 
-      // await vitals.computeAndInsertDerivedMeasurements(
-      //   ctx.state.trx,
-      //   {
-      //     patient_id,
-      //     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      //     patient_encounter_employee_id:
-      //       ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-      //     source_measurements: input_measurements,
-      //     source_procedure_id: manual_insertion_result.procedure_id,
-      //   },
-      // )
-    }
+    // if (input_measurements.length) {
 
-    const url = new URL(ctx.url)
-    url.pathname = url.pathname.replace('/measurements', '/evaluations')
+    // /* const manual_insertion_result = */ await vitals
+    //   .insertMeasurementsAndAssessments(
+    //     ctx.state.trx,
+    //     {
+    //       patient_id,
+    //       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+    //       patient_encounter_employee_id: ctx.state.encounter_employee_presence
+    //         .patient_encounter_employee_id,
+    //       employment_id: ctx.state.encounter_employee_presence.employee_id,
+    //       input_measurements,
+    //       input_assessments: [],
+    //     },
+    //   )
 
-    return redirect(url)
+    // await vitals.computeAndInsertDerivedMeasurements(
+    //   ctx.state.trx,
+    //   {
+    //     patient_id,
+    //     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+    //     patient_encounter_employee_id:
+    //       ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+    //     source_measurements: input_measurements,
+    //     source_procedure_id: manual_insertion_result.procedure_id,
+    //   },
+    // )
+    // }
+
+    // const url = new URL(ctx.url)
+    // url.pathname = url.pathname.replace('/measurements', '/evaluations')
+
+    // return redirect(url)
   },
 )
 
@@ -82,7 +86,7 @@ export async function VitalsMeasurementsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const vital_measurements_for_this_encounter = await vitals
-    .measurementsNeededForEncounter(
+    .measurementsNeededForTriageEncounter(
       ctx.state.trx,
       ctx.state.patient,
       // TODO actually get these

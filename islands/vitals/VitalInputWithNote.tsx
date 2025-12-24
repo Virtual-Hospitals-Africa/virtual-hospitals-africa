@@ -23,14 +23,15 @@ export default function VitalInputWithNote(
     most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
   },
 ) {
-  const name = `findings.${vital.finding_id}`
+  const name = `measurements.${vital.vital}`
   const show_note = useSignal(false)
+  const label = capitalize(vital.vital)
 
   return (
     <div className='flex flex-col w-full'>
       <div className='flex justify-between w-full'>
         <div className='flex flex-col'>
-          <Label label={capitalize(vital.label)} />
+          <Label label={label} />
           {most_recent_patient_finding && (
             <div className='flex text-gray-500'>
               <a href='#' className='text-blue-500'>
@@ -60,7 +61,7 @@ export default function VitalInputWithNote(
             color='slate'
             type='button'
             disabled
-            title={`Flag ${vital.label}`}
+            title={`Flag ${label}`}
             className='w-8 h-8 p-1'
           >
             <FlagIcon className='w-4 h-4' />
@@ -69,7 +70,7 @@ export default function VitalInputWithNote(
             variant='secondary'
             color='blue'
             type='button'
-            title={`Add note for ${vital.label}`}
+            title={`Add note for ${label}`}
             className='w-8 h-8 p-1'
             onClick={() => show_note.value = !show_note.value}
           >
@@ -105,7 +106,7 @@ export default function VitalInputWithNote(
             <TextArea
               name={`${name}.note`}
               label={`Notes`}
-              placeholder={`Add a note for ${vital.label}...`}
+              placeholder={`Add a note for ${label}...`}
               rows={3}
             />
           </div>
