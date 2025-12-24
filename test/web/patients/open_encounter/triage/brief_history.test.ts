@@ -255,6 +255,7 @@ describe('triage/brief_history', () => {
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
+          'priority': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -288,6 +289,7 @@ describe('triage/brief_history', () => {
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
+          'priority': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -321,6 +323,7 @@ describe('triage/brief_history', () => {
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
+          'priority': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -361,6 +364,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'pertaining_to_key': 'cancer',
         'value_display':
           'Malignant neoplastic disease Self reported Status: Yes',
@@ -403,6 +407,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'pertaining_to_key': 'diabetes',
         'value_display': 'Diabetes mellitus Self reported Status: No',
         'existence': 'No',
@@ -823,6 +828,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
@@ -962,6 +968,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
@@ -1003,6 +1010,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'pertaining_to_key': 'diabetes',
         'value_display': 'Diabetes mellitus Self reported Status: No',
         'qualifiers': [
@@ -1090,6 +1098,7 @@ describe('triage/brief_history', () => {
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
+        'priority': null,
         'value_display': 'Pregnancy Self reported Status: Unknown',
         'existence': 'Unknown',
         'qualifiers': [

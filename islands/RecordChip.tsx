@@ -3,6 +3,7 @@ import { RenderedRecordRelativeToHealthWorker } from '../types.ts'
 import { FindingPanel } from '../components/library/FindingPanel.tsx'
 import { useSignal } from '@preact/signals'
 import cls from '../util/cls.ts'
+import { PRIORITY_COLORS } from '../shared/priorities.ts'
 
 export function RecordChips(
   { records, organization_id }: {
@@ -30,13 +31,16 @@ export function RecordChip(
     organization_id: string
   },
 ) {
+  console.log({ record })
   const chip_ref = useRef<HTMLDivElement>(null)
   const panel_ref = useRef<HTMLDivElement>(null)
   const is_hovered = useSignal(false)
   const align_right = useSignal(false)
 
-  // TODO: colors
-  const style_class = 'bg-gray-100 text-gray-600'
+  const colors = record.priority
+    ? PRIORITY_COLORS[record.priority]
+    : PRIORITY_COLORS.Normal
+  const style_class = `${colors.bg} ${colors.text}`
 
   const handleMouseEnter = () => {
     is_hovered.value = true

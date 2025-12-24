@@ -123,57 +123,32 @@ function baseQuery(
   return query
 }
 
-export async function satisfyingSExpression(
-  trx: TrxOrDb,
-  { s_expression, ...patient }: {
-    s_expression: string | ParsedExpression
-  } & PatientIdentifiers,
-): Promise<SatisfyingResult> {
-  const node = isString(s_expression)
-    ? parseExpression(s_expression)
-    : s_expression
-  if (node.type === 'not') {
-    const any_matching = await buildExpression(trx, patient, node.expression)
-      .limit(1).executeTakeFirst()
+export const satisfyingSExpression = deduplicate(
+  async function satisfyingSExpression(
+    trx: TrxOrDb,
+    { s_expression, ...patient }: {
+      s_expression: string | ParsedExpression
+    } & PatientIdentifiers,
+  ): Promise<SatisfyingResult> {
+    const node = isString(s_expression)
+      ? parseExpression(s_expression)
+      : s_expression
+    if (node.type === 'not') {
+      const any_matching = await buildExpression(trx, patient, node.expression)
+        .limit(1).executeTakeFirst()
 
-    return {
-      record_ids: [],
-      satisfies: !any_matching,
+      return {
+        record_ids: [],
+        satisfies: !any_matching,
+      }
     }
-  }
-  const rows = await buildExpression(trx, patient, node).execute()
-  return {
-    record_ids: rows.map((row) => row.id),
-    satisfies: rows.length > 0,
-  }
-}
-
-// export const satisfyingSExpression = deduplicate(
-//   async function satisfyingSExpression(
-//     trx: TrxOrDb,
-//     { s_expression, ...patient }: {
-//       s_expression: string | ParsedExpression
-//     } & PatientIdentifiers,
-//   ): Promise<SatisfyingResult> {
-//     const node = isString(s_expression)
-//       ? parseExpression(s_expression)
-//       : s_expression
-//     if (node.type === 'not') {
-//       const any_matching = await buildExpression(trx, patient, node.expression)
-//         .limit(1).executeTakeFirst()
-
-//       return {
-//         record_ids: [],
-//         satisfies: !any_matching,
-//       }
-//     }
-//     const rows = await buildExpression(trx, patient, node).execute()
-//     return {
-//       record_ids: rows.map((row) => row.id),
-//       satisfies: rows.length > 0,
-//     }
-//   },
-// )
+    const rows = await buildExpression(trx, patient, node).execute()
+    return {
+      record_ids: rows.map((row) => row.id),
+      satisfies: rows.length > 0,
+    }
+  },
+)
 
 function measurement(
   trx: TrxOrDb,

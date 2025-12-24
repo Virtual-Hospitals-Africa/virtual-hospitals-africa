@@ -3466,6 +3466,7 @@ export type RenderedRecordRelativeToHealthWorker<
   patient_encounter_id: string
   snomed_concept_id: string
   name: string
+  priority: Priority | null
   value_display: string
   pertaining_to_key: PertainingToKey
   created_at: Date | string

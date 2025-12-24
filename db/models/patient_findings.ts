@@ -24,6 +24,7 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { exists } from '../../util/exists.ts'
+import { Priority } from '../../shared/priorities.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -98,6 +99,52 @@ export function baseQuery(
           'patient_procedure_snomed_inferred_canonical_name_and_category.name',
         ),
       }).as('as_part_of_procedure'),
+
+      eb.selectFrom('patient_triage_level')
+        .innerJoin(
+          'patient_records as triage_patient_records',
+          'patient_triage_level.id',
+          'triage_patient_records.id',
+        )
+        .innerJoin(
+          'patient_evaluations as triage_evaluations',
+          'patient_triage_level.id',
+          'triage_evaluations.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category as triage_snomed_inferred_canonical_name_and_category',
+          'triage_patient_records.value_snomed_concept_id',
+          'triage_snomed_inferred_canonical_name_and_category.id',
+        )
+        .whereRef(
+          'triage_evaluations.evaluates_record_id',
+          '=',
+          'patient_records.id',
+        )
+        .where(
+          (eb_patient_triage_level) =>
+            eb_patient_triage_level(
+              'triage_patient_records.id',
+              'not in',
+              eb_patient_triage_level.selectFrom(
+                'patient_records as now_invalid_patient_records',
+              ).innerJoin(
+                'patient_evaluations as now_invalid_patient_evaluations',
+                'now_invalid_patient_records.id',
+                'now_invalid_patient_evaluations.id',
+              ).where(
+                'now_invalid_patient_records.snomed_concept_id',
+                'in',
+                RECORD_NOW_INVALID_CONCEPT_ID,
+              )
+                .select('now_invalid_patient_evaluations.evaluates_record_id')
+                .distinct(),
+            ),
+        )
+        .select('triage_snomed_inferred_canonical_name_and_category.name')
+        .$castTo<Priority | null>()
+        .as('priority'),
+
       jsonArrayFrom(
         patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
           .where(

@@ -158,8 +158,6 @@ async function getWarningSignsFromThisEncounter(
               }),
         })
 
-        console.log({ sign, prompt_when, clinical_finding })
-
         if (!prompt_when.satisfies) {
           return null
         }
