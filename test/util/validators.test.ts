@@ -4,6 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertThrows } from 'std/assert/assert_throws.ts'
 import * as validators from '../../util/validators.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describe('validators', () => {
   describe('national_id_number', () => {
@@ -26,12 +27,15 @@ describe('validators', () => {
         validators.zimbabwe_national_id_number.parse('63-8312 A 56')
       )
       assert(error instanceof ZodError)
-      assertEquals(error.issues, [
+      assertMatches(error.issues, [
         {
-          validation: 'regex',
-          code: 'invalid_string',
-          message: 'Invalid',
-          path: [],
+          'origin': 'string',
+          'code': 'invalid_format',
+          'format': 'regex',
+          'pattern': '/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i',
+          'path': [],
+          'message':
+            'Invalid string: must match pattern /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i',
         },
       ])
     })

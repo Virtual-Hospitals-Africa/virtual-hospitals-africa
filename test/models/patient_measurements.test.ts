@@ -1,6 +1,6 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpressionExpectingType } from '../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_measurements } from '../../db/models/patient_measurements.ts'
@@ -33,7 +33,7 @@ describe('db/models/patient_measurements.ts', () => {
         )
       const patient_id = encounter.patient.id
 
-      const measurement_equality = parseExpressionExpectingType(
+      const measurement_equality = parseExpressionExpectingAtom(
         `(=
           (measurement 103228002)
           (units 91.3 %)
@@ -123,7 +123,7 @@ describe('db/models/patient_measurements.ts', () => {
         )
       const patient_id = encounter.patient.id
 
-      const measurement_equality = parseExpressionExpectingType(
+      const measurement_equality = parseExpressionExpectingAtom(
         `(=
           (measurement 103228002)
           (units 91.3 %)
@@ -191,7 +191,7 @@ describe('db/models/patient_measurements.ts', () => {
       const first_insert = await patient_measurements
         .insertOneIfNotAlreadyExistsForThisEncounter(db, {
           ...to_insert,
-          measurement_equality: parseExpressionExpectingType(
+          measurement_equality: parseExpressionExpectingAtom(
             `(=
               (measurement 103228002)
               (units 91.2 %)
@@ -203,7 +203,7 @@ describe('db/models/patient_measurements.ts', () => {
       const second_insert = await patient_measurements
         .insertOneIfNotAlreadyExistsForThisEncounter(db, {
           ...to_insert,
-          measurement_equality: parseExpressionExpectingType(
+          measurement_equality: parseExpressionExpectingAtom(
             `(=
               (measurement 103228002)
               (units 91.3 %)

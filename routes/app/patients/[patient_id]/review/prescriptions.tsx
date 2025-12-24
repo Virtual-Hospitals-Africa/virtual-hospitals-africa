@@ -13,6 +13,7 @@ import { z } from 'zod'
 
 const PrescriptionsSchema = z.object({
   prescriptions: z.record(
+    z.string(),
     z.object({
       patient_condition_id: z.string().uuid(),
       route: z.string(),

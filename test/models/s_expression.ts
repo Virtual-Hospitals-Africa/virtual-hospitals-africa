@@ -2,7 +2,7 @@ import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import {
   parseExpression,
-  parseExpressionExpectingType,
+  parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
@@ -37,13 +37,13 @@ describe('db/models/s_expression.ts', () => {
     const finding = parseExpression(
       WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
     )
-    assert(finding.type === 'finding')
+    assert(finding.atom === 'finding')
 
     const { procedure_id } = await patient_procedures.insertOneNested(db, {
       patient_id: encounter.patient.id,
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: encounter.employee.employee_id,
-      procedure: parseExpressionExpectingType(
+      procedure: parseExpressionExpectingAtom(
         `(procedure ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
         'procedure',
       ),

@@ -17,10 +17,7 @@ import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
-import {
-  ParsedExpression,
-  ParsedFindingExpression,
-} from '../../shared/s_expression.ts'
+import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { exists } from '../../util/exists.ts'
@@ -40,7 +37,7 @@ type FindingInsert = {
   patient_encounter_id: string
   patient_encounter_employee_id: string
   procedure_id: string
-  finding: ParsedFindingExpression
+  finding: ParsedExpressionOf<'finding'>
 }
 
 export function baseQuery(
@@ -197,7 +194,7 @@ export function baseQuery(
 type PatientFindingsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
-  s_expression?: string | ParsedFindingExpression
+  s_expression?: string | ParsedExpressionOf<'finding'>
   search?: string
 }
 
@@ -286,14 +283,16 @@ export const patient_findings = base({
 
     function qualifierCte(
       qb: typeof query,
-      qualifier: ParsedExpression,
+      qualifier:
+        | ParsedExpressionOf<'qualifier'>
+        | ParsedExpressionOf<'not_qualifier'>,
       qualifies_record_id: string,
     ) {
-      if (qualifier.type !== 'qualifier') {
+      if (qualifier.atom !== 'qualifier') {
         assertEquals(
-          qualifier.type,
-          'not',
-          'we can omit not expressions upon insert, but not sure what is going on here',
+          qualifier.atom,
+          'not_qualifier',
+          'we can omit not_qualifier expressions upon insert, but not sure what is going on here',
         )
         return qb
       }

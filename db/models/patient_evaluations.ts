@@ -15,10 +15,7 @@ import z from 'zod'
 import flatten from '../../util/flatten.ts'
 import { decimal } from '../../util/validators.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import {
-  ParsedEvaluationExpression,
-  ParsedExpression,
-} from '../../shared/s_expression.ts'
+import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
 import entries from '../../util/entries.ts'
@@ -42,7 +39,7 @@ type PatientEvaluationInsert =
   & {
     patient_id: string
     patient_encounter_id: string
-    evaluation: ParsedEvaluationExpression
+    evaluation: ParsedExpressionOf<'evaluation'>
     evaluates_record_id: string
   }
   & (
@@ -93,14 +90,16 @@ export function insertOne(
 
   function qualifierCte(
     qb: typeof query,
-    qualifier: ParsedExpression,
+    qualifier:
+      | ParsedExpressionOf<'qualifier'>
+      | ParsedExpressionOf<'not_qualifier'>,
     qualifies_record_id: string,
   ) {
-    if (qualifier.type !== 'qualifier') {
+    if (qualifier.atom !== 'qualifier') {
       assertEquals(
-        qualifier.type,
-        'not',
-        'we can omit not expressions upon insert, but not sure what is going on here',
+        qualifier.atom,
+        'not_qualifier',
+        'we can omit not_qualifier expressions upon insert, but not sure what is going on here',
       )
       return qb
     }

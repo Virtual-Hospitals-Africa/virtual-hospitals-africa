@@ -1,10 +1,10 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpressionExpectingType } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 
 describe('db/models/patient_procedures.ts', () => {
   afterAll(() => db.destroy())
@@ -29,7 +29,7 @@ describe('db/models/patient_procedures.ts', () => {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: encounter.employee.employee_id,
-        procedure: parseExpressionExpectingType(
+        procedure: parseExpressionExpectingAtom(
           `(procedure 118292001 (qualifier 272180002 (qualifier 260378005)))`,
           'procedure',
         ),

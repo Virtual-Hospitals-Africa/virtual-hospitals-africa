@@ -12,7 +12,7 @@ import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
 import {
   ParsedExpression,
-  ParsedProcedureExpression,
+  ParsedExpressionOf,
 } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -22,7 +22,7 @@ type ProcedureInsert =
   & {
     patient_id: string
     patient_encounter_id: string
-    procedure: ParsedProcedureExpression
+    procedure: ParsedExpressionOf<'procedure'>
   }
   & (
     {
@@ -224,10 +224,10 @@ export const patient_procedures = base({
       qualifier: ParsedExpression,
       qualifies_record_id: string,
     ) {
-      if (qualifier.type !== 'qualifier') {
+      if (qualifier.atom !== 'qualifier') {
         assertEquals(
-          qualifier.type,
-          'not',
+          qualifier.atom,
+          'not_qualifier',
           'we can omit not expressions upon insert, but not sure what is going on here',
         )
         return qb

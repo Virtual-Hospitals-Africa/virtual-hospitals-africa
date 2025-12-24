@@ -34,7 +34,7 @@ import {
   CommonConditionKey,
   commonConditionSnomedConceptId,
 } from '../../../../../../../../shared/brief_history.ts'
-import { parseFindingExpression } from '../../../../../../../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -116,13 +116,16 @@ export const handler = postHandler(
             patient_encounter_employee_id: ctx.state.encounter_employee_presence
               .patient_encounter_employee_id,
             procedure_id,
-            finding: parseFindingExpression(`
+            finding: parseExpressionExpectingAtom(
+              `
               (finding ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${
-              patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
-            }
+                patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
+              }
                 (qualifier ${patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})
                 (qualifier ${condition_snomed_concept_id}))
-            `),
+            `,
+              'finding',
+            ),
           },
         )
       },
