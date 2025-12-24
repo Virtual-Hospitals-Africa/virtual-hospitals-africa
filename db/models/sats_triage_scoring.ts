@@ -6,7 +6,7 @@ export type TEWSScoreComponents = {
   respiratory_rate: number
   blood_pressure_systolic: number
   temperature: number
-  avpu_consciousness: number
+  consciousness: number
   mobility_assessment: number
   trauma_presence: number
 }
@@ -62,7 +62,7 @@ export async function calculateTEWSFromDatabase(
       respiratory_rate: 0,
       blood_pressure_systolic: 0,
       temperature: 0,
-      avpu_consciousness: 0,
+      consciousness: 0,
       mobility_assessment: 0,
       trauma_presence: 0,
     },

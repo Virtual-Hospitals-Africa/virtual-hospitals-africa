@@ -1,6 +1,7 @@
 import z from 'zod'
 import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import { define } from '../define.ts'
+import { collect } from '../../../util/inParallel.ts'
 
 const SatsTriageScoringRuleSchema = z.object({
   id: z.string(),
@@ -29,28 +30,13 @@ const SatsTriageScoringRuleSchema = z.object({
 })
 
 export default define(['sats_triage_scoring_rules'], async (trx) => {
-  for await (
-    const row of parseTsvTyped(
-      './db/seed/dumps/sats_triage_scoring_rules.tsv',
-      SatsTriageScoringRuleSchema,
-      { convert_to_snake_case: true },
-    )
-  ) {
-    await trx
-      .insertInto('sats_triage_scoring_rules')
-      .values({
-        id: row.id,
-        scoring_system: row.scoring_system,
-        assessment_option_id: row.assessment_option_id,
-        finding_snomed_concept_id: row.finding_snomed_concept_id,
-        value_min: row.value_min,
-        value_max: row.value_max,
-        age_min_days: row.age_min_days,
-        age_max_days: row.age_max_days,
-        height_min_cm: row.height_min_cm,
-        height_max_cm: row.height_max_cm,
-        score_value: row.score_value,
-      })
-      .execute()
-  }
+  const rows = await collect(parseTsvTyped(
+    './db/resources/sats_triage_scoring_rules.tsv',
+    SatsTriageScoringRuleSchema,
+    { convert_to_snake_case: true },
+  ))
+  await trx
+    .insertInto('sats_triage_scoring_rules')
+    .values(rows)
+    .execute()
 })

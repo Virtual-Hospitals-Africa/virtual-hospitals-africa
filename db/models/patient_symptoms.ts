@@ -42,15 +42,6 @@ export async function upsertOne(
     notes,
   } = symptom
 
-  if (altered_patient_symptom_id) {
-    await markAltered(trx, {
-      patient_id,
-      patient_encounter_id,
-      employment_id,
-      altered_record_id: altered_patient_symptom_id,
-    })
-  }
-
   const existing_procedure = await trx.selectFrom('patient_records')
     .innerJoin(
       'patient_procedures',
@@ -76,6 +67,16 @@ export async function upsertOne(
     .executeTakeFirst()
 
   const procedure_id = existing_procedure?.id || generateUUID()
+
+  if (altered_patient_symptom_id) {
+    await markAltered(trx, {
+      patient_id,
+      patient_encounter_id,
+      employment_id,
+      procedure_id,
+      altered_record_id: altered_patient_symptom_id,
+    })
+  }
 
   const symptom_id = generateUUID()
 

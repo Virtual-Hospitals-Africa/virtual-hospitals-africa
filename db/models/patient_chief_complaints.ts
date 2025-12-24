@@ -40,15 +40,6 @@ export async function upsertOne(
     media_speech_id,
   } = chief_complaint
 
-  if (altered_patient_chief_complaint_id) {
-    await markAltered(trx, {
-      patient_id,
-      patient_encounter_id,
-      employment_id,
-      altered_record_id: altered_patient_chief_complaint_id,
-    })
-  }
-
   const existing_procedure = await trx.selectFrom('patient_records')
     .innerJoin(
       'patient_procedures',
@@ -77,6 +68,16 @@ export async function upsertOne(
   const speech_record_id = media_speech_id && generateUUID()
 
   const chief_complaint_id = generateUUID()
+
+  if (altered_patient_chief_complaint_id) {
+    await markAltered(trx, {
+      patient_id,
+      patient_encounter_id,
+      employment_id,
+      procedure_id,
+      altered_record_id: altered_patient_chief_complaint_id,
+    })
+  }
 
   return trx.with(
     'inserting_procedure_record',

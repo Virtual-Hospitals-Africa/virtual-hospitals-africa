@@ -43,15 +43,6 @@ export async function upsertOne(
 
   assert(family_history.family_members.length)
 
-  if (altered_patient_family_history_id) {
-    await markAltered(trx, {
-      patient_id,
-      patient_encounter_id,
-      employment_id,
-      altered_record_id: altered_patient_family_history_id,
-    })
-  }
-
   const existing_procedure = await trx.selectFrom('patient_records')
     .innerJoin(
       'patient_procedures',
@@ -77,6 +68,16 @@ export async function upsertOne(
     .executeTakeFirst()
 
   const procedure_id = existing_procedure?.id || generateUUID()
+
+  if (altered_patient_family_history_id) {
+    await markAltered(trx, {
+      patient_id,
+      patient_encounter_id,
+      procedure_id,
+      employment_id,
+      altered_record_id: altered_patient_family_history_id,
+    })
+  }
 
   const family_history_id = generateUUID()
   const { family_members } = family_history

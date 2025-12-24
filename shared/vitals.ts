@@ -1,6 +1,9 @@
+import entries from '../util/entries.ts'
+import memoize from '../util/memoize.ts'
+
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
 
-export const VITALS_SNOMED_CODE = {
+export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   height: '1153637007',
   weight: '363808001',
   temperature: '386725007',
@@ -13,17 +16,44 @@ export const VITALS_SNOMED_CODE = {
   midarm_circumference: '284473002',
   triceps_skinfold: '301851003',
   head_circumference: '363812007',
-  // Computed vitals
+}
+
+export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
   body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
   blood_pressure: '75367002',
-  // Triage assessments
-  avpu_consciousness: '1104441000000107',
+}
+// // Computed vitals
+
+export const vitalMeasurementFromSnomedConceptId = memoize(
+  (snomed_concept_id: string) => {
+    for (
+      const [vital, concept_id] of entries(
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+      )
+    ) {
+      if (concept_id === snomed_concept_id) {
+        return vital
+      }
+    }
+    throw new Error(
+      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+    )
+  },
+)
+
+// Triage assessments
+export const VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS = {
+  consciousness: '1104441000000107',
   mobility_assessment: '301438001',
   trauma_presence: '417746004',
 }
 
-export type Vital = keyof typeof VITALS_SNOMED_CODE
+export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
+export type VitalMeasurement =
+  keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
+export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS
+export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
   'mobility_assessment' as const,
@@ -31,13 +61,28 @@ export const ADULT_TEWS_COMPONENTS = [
   'heart_rate' as const,
   'blood_pressure_systolic' as const,
   'temperature' as const,
-  'avpu_consciousness' as const,
+  'consciousness' as const,
   'trauma_presence' as const,
 ] satisfies Vital[]
 
 export type AdultTEWSComponent = (typeof ADULT_TEWS_COMPONENTS)[number]
 
-export const VITALS_UNITS = {
+export const vitalAssessmentFromSnomedConceptId = memoize(
+  (snomed_concept_id: string) => {
+    for (
+      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)
+    ) {
+      if (concept_id === snomed_concept_id) {
+        return vital
+      }
+    }
+    throw new Error(
+      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+    )
+  },
+)
+
+export const VITAL_MEASUREMENTS_UNITS = {
   height: 'cm',
   weight: 'kg',
   temperature: '°C',
@@ -50,15 +95,16 @@ export const VITALS_UNITS = {
   midarm_circumference: 'cm',
   head_circumference: 'cm',
   triceps_skinfold: 'cm',
-  // Computed vitals
+} satisfies {
+  [v in VitalMeasurement]: string
+}
+
+// // Computed vitals
+export const VITAL_COMPUTED_UNITS = {
   body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
-  // Triage assessments
-  avpu_consciousness: 'score',
-  mobility_assessment: 'score',
-  trauma_presence: 'score',
 } satisfies {
-  [v in Vital]?: string
+  [v in ComputedVital]?: string
 }
 
 /**

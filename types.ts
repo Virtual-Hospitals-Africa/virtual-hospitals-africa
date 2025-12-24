@@ -28,6 +28,7 @@ import { type DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
 import { type MessageTargetCategory } from './shared/message_targets.ts'
 import { type CommonConditionKey } from './shared/brief_history.ts'
+import { VitalMeasurement } from './shared/vitals.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -3267,10 +3268,9 @@ export type PostgresInterval = {
 }
 
 export type VitalMeasurementFormInputDefition = {
-  finding_id: string
+  vital: VitalMeasurement
   snomed_concept_id: string
-  required: true
-  label: string
+  required: boolean
   units: string
 }
 

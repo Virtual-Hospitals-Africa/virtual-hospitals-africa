@@ -9,7 +9,6 @@ import * as automated_evaluation from '../../../../../../../../db/models/automat
 import * as sats_triage_scoring from '../../../../../../../../db/models/sats_triage_scoring.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { VITALS_SNOMED_CODE } from '../../../../../../../../shared/vitals.ts'
 import { getPriorityFromTEWSScore } from '../../../../../../../../shared/triage_sats.ts'
 import { ReferenceRangeIndicator } from '../../../../../../../../components/vitals/SimpleReferenceRangeIndicator.tsx'
 import Table, {
@@ -21,6 +20,11 @@ import entries from '../../../../../../../../util/entries.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { ReferenceRange } from '../../../../../../../../db/models/automated_evaluation.ts'
 import { MostRecentVitalMeasurement } from '../../../../../../../../types.ts'
+import {
+  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
+} from '../../../../../../../../shared/vitals.ts'
 
 // Extended measurement type with snomed_canonical_name (included in DB query results)
 type VitalMeasurementWithCanonicalName = MostRecentVitalMeasurement & {
@@ -64,12 +68,7 @@ export async function TriageAssignPriorityPage(
     m.snomed_concept_id
   )
 
-  const height_measurement = recent_measurements.find(
-    (m) => m.snomed_concept_id === VITALS_SNOMED_CODE.height,
-  )
-  const height_cm = height_measurement
-    ? parseFloat(height_measurement.value_display)
-    : null
+  const height_measurement = ctx.state.patient.most_recent_height_cm_measurement
 
   // Fetch data in parallel for optimal performance
   const { previous_measurements, reference_ranges, tews_result } =
@@ -96,7 +95,7 @@ export async function TriageAssignPriorityPage(
           patient_id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           age_days: ctx.state.patient.age_days ?? null,
-          height_cm,
+          height_cm: height_measurement ? parseFloat(height_measurement) : null,
         },
       ),
     })
@@ -105,16 +104,23 @@ export async function TriageAssignPriorityPage(
     ...(recent_measurements as VitalMeasurementWithCanonicalName[]),
   ]
 
-  const category_map: Record<string, { code: string; name: string }> = {
+  const category_map: Record<
+    string,
+    { snomed_concept_id: string; name: string }
+  > = {
     consciousness: {
-      code: VITALS_SNOMED_CODE.avpu_consciousness,
-      name: 'Consciousness (AVPU)',
+      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
+      name: 'Consciousness',
     },
     mobility: {
-      code: VITALS_SNOMED_CODE.mobility_assessment,
+      snomed_concept_id:
+        VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
       name: 'Mobility',
     },
-    trauma: { code: VITALS_SNOMED_CODE.trauma_presence, name: 'Trauma' },
+    trauma: {
+      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
+      name: 'Trauma',
+    },
   }
 
   if (tews_result && tews_result.categorical_findings) {
@@ -124,13 +130,13 @@ export async function TriageAssignPriorityPage(
       if (
         assessment_info &&
         !all_findings_for_table.some(
-          (m) => m.snomed_concept_id === assessment_info.code,
+          (m) => m.snomed_concept_id === assessment_info.snomed_concept_id,
         )
       ) {
         all_findings_for_table.push({
-          finding_id: assessment_info.code, // Use a stable ID
+          finding_id: assessment_info.snomed_concept_id, // Use a stable ID
           snomed_canonical_name: assessment_info.name,
-          snomed_concept_id: assessment_info.code,
+          snomed_concept_id: assessment_info.snomed_concept_id,
           value_display: finding.display_label,
         })
       }
@@ -171,11 +177,15 @@ interface TriageVitalsTableProps {
 
 // Helper to map SNOMED codes to categorical assessment categories
 function getCategoryFromSnomedCode(snomedCode: string): string | null {
-  if (snomedCode === VITALS_SNOMED_CODE.avpu_consciousness) {
+  if (snomedCode === VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness) {
     return 'consciousness'
   }
-  if (snomedCode === VITALS_SNOMED_CODE.mobility_assessment) return 'mobility'
-  if (snomedCode === VITALS_SNOMED_CODE.trauma_presence) return 'trauma'
+  if (snomedCode === VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment) {
+    return 'mobility'
+  }
+  if (snomedCode === VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence) {
+    return 'trauma'
+  }
   return null
 }
 
@@ -223,9 +233,12 @@ function TriageVitalsTable({
         : undefined
 
       // Get individual TEWS score for this measurement
-
       let tews_score: number | null = null
-      for (const [vital, snomed_concept_id] of entries(VITALS_SNOMED_CODE)) {
+      for (
+        const [vital, snomed_concept_id] of entries(
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+        )
+      ) {
         if (measurement.snomed_concept_id === snomed_concept_id) {
           if (isKeyOf(vital, tews.components)) {
             tews_score = tews.components[vital]
@@ -344,9 +357,9 @@ function TriageVitalsTable({
 
 function isComputedVital(snomed_concept_id: string): boolean {
   return [
-    VITALS_SNOMED_CODE.body_mass_index,
-    VITALS_SNOMED_CODE.mean_arterial_pressure,
-    VITALS_SNOMED_CODE.blood_pressure,
+    VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
+    VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
+    VITALS_COMPUTED_SNOMED_CONCEPT_IDS.blood_pressure,
   ].includes(snomed_concept_id)
 }
 
@@ -355,16 +368,21 @@ function isComponentOfComputedVital(
   snomed_concept_id: string,
   all_measurements: TableFinding[],
 ): boolean {
-  const bmi_components = [VITALS_SNOMED_CODE.height, VITALS_SNOMED_CODE.weight]
+  const bmi_components = [
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+  ]
   const bp_components = [
-    VITALS_SNOMED_CODE.blood_pressure_systolic,
-    VITALS_SNOMED_CODE.blood_pressure_diastolic,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_systolic,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic,
   ]
 
   // Check if this is a BMI component and BMI exists in measurements
   if (bmi_components.includes(snomed_concept_id)) {
     return all_measurements.some(
-      (m) => m.snomed_concept_id === VITALS_SNOMED_CODE.body_mass_index,
+      (m) =>
+        m.snomed_concept_id ===
+          VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
     )
   }
 
@@ -372,8 +390,8 @@ function isComponentOfComputedVital(
   if (bp_components.includes(snomed_concept_id)) {
     return all_measurements.some((m) =>
       [
-        VITALS_SNOMED_CODE.blood_pressure,
-        VITALS_SNOMED_CODE.mean_arterial_pressure,
+        VITALS_COMPUTED_SNOMED_CONCEPT_IDS.blood_pressure,
+        VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
       ].includes(m.snomed_concept_id)
     )
   }
@@ -389,32 +407,35 @@ function getOrderedMeasurementsForDisplay(
   const used_measurements = new Set<string>()
 
   const display_order = [
-    VITALS_SNOMED_CODE.avpu_consciousness,
-    VITALS_SNOMED_CODE.mobility_assessment,
-    VITALS_SNOMED_CODE.trauma_presence,
+    VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
+    VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
+    VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
     {
-      computed: VITALS_SNOMED_CODE.body_mass_index,
-      components: [VITALS_SNOMED_CODE.height, VITALS_SNOMED_CODE.weight],
-    },
-    {
-      computed: VITALS_SNOMED_CODE.blood_pressure,
+      computed: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
       components: [
-        VITALS_SNOMED_CODE.blood_pressure_systolic,
-        VITALS_SNOMED_CODE.blood_pressure_diastolic,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
       ],
     },
     {
-      computed: VITALS_SNOMED_CODE.mean_arterial_pressure,
+      computed: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.blood_pressure,
+      components: [
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_systolic,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic,
+      ],
+    },
+    {
+      computed: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
       components: [],
     },
-    VITALS_SNOMED_CODE.temperature,
-    VITALS_SNOMED_CODE.heart_rate,
-    VITALS_SNOMED_CODE.respiratory_rate,
-    VITALS_SNOMED_CODE.blood_oxygen_saturation,
-    VITALS_SNOMED_CODE.blood_glucose,
-    // VITALS_SNOMED_CODE.head_circumference,
-    VITALS_SNOMED_CODE.midarm_circumference,
-    VITALS_SNOMED_CODE.triceps_skinfold,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.temperature,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.heart_rate,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_oxygen_saturation,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose,
+    // VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.head_circumference,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.midarm_circumference,
+    VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.triceps_skinfold,
   ]
 
   for (const item of display_order) {

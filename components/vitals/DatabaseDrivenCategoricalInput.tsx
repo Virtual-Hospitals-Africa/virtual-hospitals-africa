@@ -4,7 +4,6 @@ import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
 import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
-import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 export default function DatabaseDrivenCategoricalInput({
   assessment,
@@ -13,7 +12,7 @@ export default function DatabaseDrivenCategoricalInput({
   assessment: AssessmentForForm
   most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
 }) {
-  const name = `assessments.${assessment.finding_id}`
+  const name = `assessments.${assessment.vital}`
 
   const options = assessment.options.map((opt) => ({
     value: opt.option_snomed_concept_id,
@@ -23,7 +22,7 @@ export default function DatabaseDrivenCategoricalInput({
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-col'>
-        <Label label={capitalize(assessment.name)} htmlFor={name} />
+        <Label label={capitalize(assessment.vital)} htmlFor={name} />
         {most_recent_patient_finding && (
           <div className='flex text-gray-500'>
             <a href='#' className='text-blue-500'>
@@ -40,19 +39,11 @@ export default function DatabaseDrivenCategoricalInput({
       <div className='min-w-60 max-w-60 flex items-center'>
         <SelectWithOptions
           id={name}
-          name={`${name}.option_snomed_concept_id`}
+          name={`${name}.value_snomed_concept_id`}
           label={null}
           required={assessment.required_for_triage}
           options={options}
           blank_option='Select...'
-        />
-        <HiddenInput
-          name={`${name}.finding_id`}
-          value={assessment.finding_id}
-        />
-        <HiddenInput
-          name={`${name}.assessment_snomed_concept_id`}
-          value={assessment.assessment_snomed_id}
         />
       </div>
     </div>

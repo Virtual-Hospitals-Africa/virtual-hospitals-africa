@@ -1,6 +1,9 @@
 import { Sex, TrxOrDb, VitalMeasurementFormInputDefition } from '../../types.ts'
-import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../shared/vitals.ts'
-import generateUUID from '../../util/uuid.ts'
+import {
+  VITAL_MEASUREMENTS_UNITS,
+  vitalMeasurementFromSnomedConceptId,
+} from '../../shared/vitals.ts'
+import { asText } from '../helpers.ts'
 
 export interface MeasurementRequirement {
   readonly snomed_concept_id: string
@@ -67,8 +70,10 @@ async function getAgeMeasurementRequirements(
 ): Promise<readonly MeasurementRequirement[]> {
   const requirements = await trx
     .selectFrom('age_measurement_requirements')
-    .select([
-      'required_measurement_snomed_concept_id as snomed_concept_id',
+    .select((eb) => [
+      asText(eb, 'required_measurement_snomed_concept_id').as(
+        'snomed_concept_id',
+      ),
       'is_required',
       'clinical_rationale',
       'medical_standard',
@@ -95,11 +100,9 @@ async function getAgeMeasurementRequirements(
     )
     .execute()
 
-  return requirements.map((req) => ({
-    snomed_concept_id: req.snomed_concept_id.toString(),
-    is_required: req.is_required,
-    clinical_rationale: req.clinical_rationale,
-    medical_standard: req.medical_standard,
+  return requirements.map((requirement) => ({
+    vital: vitalMeasurementFromSnomedConceptId(requirement.snomed_concept_id),
+    ...requirement,
   }))
 }
 
@@ -113,8 +116,10 @@ async function getConditionMeasurementRequirements(
 
   const requirements = await trx
     .selectFrom('condition_measurement_requirements')
-    .select([
-      'required_measurement_snomed_concept_id as snomed_concept_id',
+    .select((eb) => [
+      asText(eb, 'required_measurement_snomed_concept_id').as(
+        'snomed_concept_id',
+      ),
       'is_required',
       'clinical_rationale',
       'medical_standard',
@@ -136,7 +141,7 @@ async function getConditionMeasurementRequirements(
     .execute()
 
   return requirements.map((req) => ({
-    snomed_concept_id: req.snomed_concept_id.toString(),
+    snomed_concept_id: req.snomed_concept_id,
     is_required: req.is_required,
     clinical_rationale: req.clinical_rationale,
     medical_standard: req.medical_standard,
@@ -166,53 +171,15 @@ function mergeMeasurementRequirements(
     }
   }
 
-  return Array.from(requirements_map.values()).map((req) => ({
-    finding_id: generateUUID(),
-    snomed_concept_id: req.snomed_concept_id,
-    required: true as const,
-    label: getVitalLabelFromSnomedCode(req.snomed_concept_id),
-    units: getVitalUnitsFromSnomedCode(req.snomed_concept_id),
-  }))
-}
-
-function getVitalLabelFromSnomedCode(snomed_concept_id: string): string {
-  const label_map: Record<string, string> = {
-    [VITALS_SNOMED_CODE.temperature]: 'temperature',
-    [VITALS_SNOMED_CODE.heart_rate]: 'heart_rate',
-    [VITALS_SNOMED_CODE.respiratory_rate]: 'respiratory_rate',
-    [VITALS_SNOMED_CODE.height]: 'height',
-    [VITALS_SNOMED_CODE.weight]: 'weight',
-    [VITALS_SNOMED_CODE.blood_pressure_systolic]: 'blood_pressure_systolic',
-    [VITALS_SNOMED_CODE.blood_pressure_diastolic]: 'blood_pressure_diastolic',
-    [VITALS_SNOMED_CODE.blood_oxygen_saturation]: 'blood_oxygen_saturation',
-    [VITALS_SNOMED_CODE.blood_glucose]: 'blood_glucose',
-    [VITALS_SNOMED_CODE.head_circumference]: 'head_circumference',
-    [VITALS_SNOMED_CODE.midarm_circumference]: 'midarm_circumference',
-    [VITALS_SNOMED_CODE.triceps_skinfold]: 'triceps_skinfold',
-  }
-
-  return label_map[snomed_concept_id] || `measurement_${snomed_concept_id}`
-}
-
-function getVitalUnitsFromSnomedCode(snomed_concept_id: string): string {
-  const units_map: Record<string, string> = {
-    [VITALS_SNOMED_CODE.temperature]: VITALS_UNITS.temperature,
-    [VITALS_SNOMED_CODE.heart_rate]: VITALS_UNITS.heart_rate,
-    [VITALS_SNOMED_CODE.respiratory_rate]: VITALS_UNITS.respiratory_rate,
-    [VITALS_SNOMED_CODE.height]: VITALS_UNITS.height,
-    [VITALS_SNOMED_CODE.weight]: VITALS_UNITS.weight,
-    [VITALS_SNOMED_CODE.blood_pressure_systolic]:
-      VITALS_UNITS.blood_pressure_systolic,
-    [VITALS_SNOMED_CODE.blood_pressure_diastolic]:
-      VITALS_UNITS.blood_pressure_diastolic,
-    [VITALS_SNOMED_CODE.blood_oxygen_saturation]:
-      VITALS_UNITS.blood_oxygen_saturation,
-    [VITALS_SNOMED_CODE.blood_glucose]: VITALS_UNITS.blood_glucose,
-    [VITALS_SNOMED_CODE.head_circumference]: VITALS_UNITS.head_circumference,
-    [VITALS_SNOMED_CODE.midarm_circumference]:
-      VITALS_UNITS.midarm_circumference,
-    [VITALS_SNOMED_CODE.triceps_skinfold]: VITALS_UNITS.triceps_skinfold,
-  }
-
-  return units_map[snomed_concept_id] || 'unit'
+  return Array.from(requirements_map.values()).map((requirement) => {
+    const vital = vitalMeasurementFromSnomedConceptId(
+      requirement.snomed_concept_id,
+    )
+    return {
+      vital,
+      snomed_concept_id: requirement.snomed_concept_id,
+      required: true as const,
+      units: VITAL_MEASUREMENTS_UNITS[vital],
+    }
+  })
 }

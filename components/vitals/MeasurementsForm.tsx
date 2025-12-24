@@ -34,12 +34,12 @@ export function VitalsMeasurementsForm({
           </div>
           {triage_assessments.map((assessment) => (
             <DatabaseDrivenCategoricalInput
-              key={assessment.assessment_snomed_id}
+              key={assessment.assessment_snomed_concept_id}
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
                   patient_vital.snomed_concept_id ===
-                    assessment.assessment_snomed_id,
+                    assessment.assessment_snomed_concept_id,
               )}
             />
           ))}
@@ -55,7 +55,7 @@ export function VitalsMeasurementsForm({
           </div>
           {regular_vitals.map((vital) => (
             <VitalsMeasurementsInput
-              key={vital.finding_id}
+              key={vital.vital}
               vital={vital}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
