@@ -3,7 +3,7 @@ import {
   VITAL_MEASUREMENTS_UNITS,
   vitalMeasurementFromSnomedConceptId,
 } from '../../shared/vitals.ts'
-import { asText } from '../helpers.ts'
+import { asText, now } from '../helpers.ts'
 
 export interface MeasurementRequirement {
   readonly snomed_concept_id: string
@@ -91,11 +91,11 @@ async function getAgeMeasurementRequirements(
         eb('age_max_days', '>=', age_days),
       ])
     )
-    .where('effective_date', '<=', new Date())
+    .where('effective_date', '<=', now)
     .where((eb) =>
       eb.or([
         eb('expiration_date', 'is', null),
-        eb('expiration_date', '>', new Date()),
+        eb('expiration_date', '>', now),
       ])
     )
     .execute()
@@ -131,11 +131,11 @@ async function getConditionMeasurementRequirements(
       condition_snomed_codes.map((code) => code),
     )
     .where('active', '=', true)
-    .where('effective_date', '<=', new Date())
+    .where('effective_date', '<=', now)
     .where((eb) =>
       eb.or([
         eb('expiration_date', 'is', null),
-        eb('expiration_date', '>', new Date()),
+        eb('expiration_date', '>', now),
       ])
     )
     .execute()

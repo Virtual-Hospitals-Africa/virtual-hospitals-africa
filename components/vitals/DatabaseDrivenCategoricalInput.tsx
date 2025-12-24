@@ -4,6 +4,7 @@ import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
 import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
+import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
 
 export default function DatabaseDrivenCategoricalInput({
   assessment,
@@ -22,7 +23,12 @@ export default function DatabaseDrivenCategoricalInput({
   return (
     <div className='flex justify-between w-full'>
       <div className='flex flex-col'>
-        <Label label={capitalize(assessment.vital)} htmlFor={name} />
+        <Label htmlFor={name}>
+          <LabelSpan
+            required={assessment.required_for_triage}
+            label={capitalize(assessment.vital)}
+          />
+        </Label>
         {most_recent_patient_finding && (
           <div className='flex text-gray-500'>
             <a href='#' className='text-blue-500'>

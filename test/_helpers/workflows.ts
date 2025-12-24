@@ -69,17 +69,19 @@ export function completeAllStepsForTest(
     .execute()
 }
 
+export type PartialPatientDemographics = {
+  name?: string
+  date_of_birth?: string
+  sex?: Sex
+  gender?: string
+}
+
 export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
   trx: TrxOrDb,
   organization_id: string,
   { employment_id, patient_demographics }: {
     employment_id: string
-    patient_demographics?: {
-      name?: string
-      date_of_birth?: string
-      sex?: Sex
-      gender?: string
-    }
+    patient_demographics?: PartialPatientDemographics
   },
 ) {
   const {
