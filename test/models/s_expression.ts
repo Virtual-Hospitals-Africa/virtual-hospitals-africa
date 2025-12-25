@@ -64,7 +64,7 @@ describe('db/models/s_expression.ts', () => {
 
     assertMatches(findings, [
       {
-        'record_id': z.string().uuid(),
+        'record_id': z.uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '404684003',
         'patient_encounter_id': encounter.patient_encounter_id,
@@ -74,19 +74,19 @@ describe('db/models/s_expression.ts', () => {
         'value_snomed_concept_id': null,
         'value_name': null,
         'as_part_of_procedure': {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'snomed_concept_id': '225390008',
           'name': 'Triage',
         },
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '125666000',
             'name': 'Burn',
             'value_name': null,
             'qualifiers': [
               {
-                'record_id': z.string().uuid(),
+                'record_id': z.uuid(),
                 'snomed_concept_id': '255593009',
                 'name': 'Circumferential',
                 'value_name': null,

@@ -246,7 +246,7 @@ describe('triage/warning_signs', () => {
 
       assertMatches(this_patient_findings, [
         {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'created_at': z.date(),
           'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           'patient_encounter_id': encounter.patient_encounter_id,
@@ -254,13 +254,13 @@ describe('triage/warning_signs', () => {
           'value_snomed_concept_id': null,
           'value_name': null,
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '245581009',
             'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '410429000',
               'name': 'Cardiac arrest',
               'value_name': null,
@@ -317,7 +317,7 @@ describe('triage/warning_signs', () => {
 
       assertMatches(this_patient_findings, [
         {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'created_at': z.date(),
           'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           'patient_encounter_id': encounter.patient_encounter_id,
@@ -325,18 +325,18 @@ describe('triage/warning_signs', () => {
           'value_snomed_concept_id': null,
           'value_name': null,
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '245581009',
             'name': 'Emergency examination for triage',
           },
           'qualifiers': [
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '91175000',
               'name': 'Seizure',
               'value_name': null,
               'qualifiers': [{
-                'record_id': z.string().uuid(),
+                'record_id': z.uuid(),
                 'snomed_concept_id': '15240007',
                 'name': 'Current',
                 'value_name': null,

@@ -159,10 +159,10 @@ export const handler = postHandler(
 
     await insertTasksIfNotAlreadyIdentified(
       ctx.state.trx,
-        {
-          patient_id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id
-        },
+      {
+        patient_id,
+        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+      },
     )
 
     return completeAndProceedToNextStep(ctx)

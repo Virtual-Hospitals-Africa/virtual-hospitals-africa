@@ -14,7 +14,7 @@ import { VitalsMeasurementsForm } from '../../../../../../../../../components/vi
 
 const VitalsMeasurementSchema = z.object({
   findings: z.record(
-    z.string().uuid(),
+    z.uuid(),
     z.object({
       snomed_concept_id,
       value: z.number().positive().optional(),

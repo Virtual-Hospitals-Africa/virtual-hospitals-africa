@@ -16,7 +16,7 @@ import { snomed_concept_id } from '../../../../../../../../../util/validators.ts
 export const ConditionsSchema = z.object({
   allergies: z.array(
     z.object({
-      patient_allergy_id: z.string().uuid().optional().transform((value) =>
+      patient_allergy_id: z.uuid().optional().transform((value) =>
         value || generateUUID()
       ),
       snomed_concept_id,
@@ -33,9 +33,9 @@ export const ConditionsSchema = z.object({
       start_date: z.string().date(),
       medications: z.array(
         z.object({
-          id: z.string().uuid().optional(),
+          id: z.uuid().optional(),
           name: z.string().optional(),
-          medication_id: z.string().uuid().optional(),
+          medication_id: z.uuid().optional(),
           manufactured_medication_id: z.string().optional(),
           strength: z.number(),
           route: z.string(),

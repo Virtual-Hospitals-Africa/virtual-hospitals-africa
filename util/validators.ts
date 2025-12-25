@@ -64,7 +64,7 @@ export const nonnegative_integer = z.number().or(
     message: 'Expected a nonnegative integer',
   })
 
-export const generated_uuid = z.string().uuid().optional().transform((v) =>
+export const generated_uuid = z.uuid().optional().transform((v) =>
   v || generateUUID()
 )
 

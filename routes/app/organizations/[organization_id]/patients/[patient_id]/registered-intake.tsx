@@ -24,7 +24,7 @@ export const InsertForRegisteredPatientSchema = z.object({
     'seeking treatment',
   ]),
   notes: z.string().optional(),
-  appointment_id: z.string().uuid().nullable().optional(),
+  appointment_id: z.uuid().nullable().optional(),
 })
 
 export const handler = postHandler(

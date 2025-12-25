@@ -5,7 +5,11 @@ import { patient_evaluations } from './patient_evaluations.ts'
 
 import { satisfyingSExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
-import { RenderedFindingRelativeToHealthWorker, RenderedRecordRelativeToHealthWorker, TrxOrDb } from '../../types.ts'
+import {
+  RenderedFindingRelativeToHealthWorker,
+  RenderedRecordRelativeToHealthWorker,
+  TrxOrDb,
+} from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import first from '../../util/first.ts'
 import { success_true } from '../helpers.ts'
@@ -15,9 +19,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { patient_findings } from './patient_findings.ts'
 import matching from '../../util/matching.ts'
-import { toRecord } from '../../util/toRecord.ts'
-import { groupBy, groupByMapped } from '../../util/groupBy.ts'
-import entries from '../../util/entries.ts'
+import { groupBy } from '../../util/groupBy.ts'
 
 export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
 export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
@@ -115,22 +117,26 @@ export async function getTasksGroups(
     patient_id: string
     patient_encounter_id: string
   },
-): TaskGroup[] {
+): Promise<TaskGroup[]> {
   const evaluations = await patient_evaluations.findAll(trx, {
-    patient_id, 
+    patient_id,
     patient_encounter_id,
-    s_expression: `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
+    s_expression:
+      `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
   })
 
   if (arrayIsEmpty(evaluations)) {
     return []
   }
 
-  const procedure_ids = evaluations.map(e => e.evaluates_record_id)
+  const procedure_ids = evaluations.map((e) => e.evaluates_record_id)
 
-  const finding_ids = evaluations.map(evaluation => {
+  const finding_ids = evaluations.map((evaluation) => {
     assertLength(evaluation.destination_relations, 1)
-    assertEquals(evaluation.destination_relations[0].snomed_concept_id, DUE_TO_SNOMED_CONCEPT_ID)
+    assertEquals(
+      evaluation.destination_relations[0].snomed_concept_id,
+      DUE_TO_SNOMED_CONCEPT_ID,
+    )
     return evaluation.destination_relations[0].destination_id
   })
 
@@ -138,21 +144,26 @@ export async function getTasksGroups(
     procedures: patient_procedures.getByIds(trx, procedure_ids),
     findings: patient_findings.getByIds(trx, finding_ids),
   })
-  
+
   const task_group_map = groupBy(
-    evaluations, 
-    evaluation => evaluation.destination_relations[0].destination_id,
+    evaluations,
+    (evaluation) => evaluation.destination_relations[0].destination_id,
   )
 
-  return task_group_map.entries().map(([finding_id, evaluations]): TaskGroup => {
-    const due_to = exists(findings.find(matching({ record_id: finding_id })))
-    const tasks = evaluations.map(evaluation => ({
-      task: exists(procedures.find(matching({ record_id: evaluation.evaluates_record_id }))),
-      completed: false
-    }))
-    return { due_to, tasks }
-  })
-
+  return Array.from(
+    task_group_map.entries().map(([finding_id, evaluations]): TaskGroup => {
+      const due_to = exists(findings.find(matching({ record_id: finding_id })))
+      const tasks = evaluations.map((evaluation) => ({
+        task: exists(
+          procedures.find(
+            matching({ record_id: evaluation.evaluates_record_id }),
+          ),
+        ),
+        completed: false,
+      }))
+      return { due_to, tasks } as unknown as TaskGroup
+    }),
+  )
 
   // return { evaluations, procedures }
 }

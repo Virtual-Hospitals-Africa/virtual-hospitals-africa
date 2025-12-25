@@ -13,17 +13,17 @@ describe('triage/additional_tasks_and_investigations', () => {
   it('loads on the page', async () => {
     const { $, clinic, encounter } = await setupTriage({
       patient_demographics: { date_of_birth: '2023-01-01' },
-        conditions: ['diabetes'],
-        warning_signs: [],
-        vitals: {
-          measurements: {
-            blood_oxygen_saturation: {
-              value: 91,
-              units: '%',
-            },
+      conditions: ['diabetes'],
+      warning_signs: [],
+      vitals: {
+        measurements: {
+          blood_oxygen_saturation: {
+            value: 91,
+            units: '%',
           },
-          assessments: {},
-        }
+        },
+        assessments: {},
+      },
     })
 
     assertEquals(
