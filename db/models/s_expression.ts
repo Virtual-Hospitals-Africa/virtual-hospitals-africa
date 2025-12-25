@@ -9,7 +9,6 @@ import {
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
 import isString from '../../util/isString.ts'
-import { deduplicate } from '../helpers.ts'
 import {
   Atom,
   isAtom,
@@ -18,6 +17,7 @@ import {
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
+import { deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -28,8 +28,6 @@ type SatisfyingResult = {
   satisfies: boolean
   record_ids: string[]
 }
-
-type X = ParsedExpressionOf<'not'>
 
 function baseQuery(
   trx: TrxOrDb,
@@ -141,7 +139,8 @@ export const satisfyingSExpression = deduplicate(
         satisfies: !any_matching,
       }
     }
-    const rows = await buildExpression(trx, patient, node).execute()
+    const qb = buildExpression(trx, patient, node)
+    const rows = await qb.execute()
     return {
       record_ids: rows.map((row) => row.id),
       satisfies: rows.length > 0,
@@ -271,9 +270,9 @@ const EXPRESSION_BUILDERS = {
   // evaluates() {
   //   throw new Error('evalutes is handled by parent nodes')
   // },
-  // task() {
-  //   throw new Error('task is not directly queryable')
-  // },
+  task() {
+    throw new Error('task is not directly queryable')
+  },
   or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return baseQuery(trx, { patient_id, patient_encounter_id })
       .where(

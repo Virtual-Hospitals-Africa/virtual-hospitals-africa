@@ -1,5 +1,96 @@
-// const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
-// const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
+import { TASKS } from '../../shared/tasks.ts'
+import { pMap } from '../../util/inParallel.ts'
+import { patient_procedures } from './patient_procedures.ts'
+import * as patient_evaluations from './patient_evaluations.ts'
+
+import { satisfyingSExpression } from './s_expression.ts'
+import generateUUID from '../../util/uuid.ts'
+import { TrxOrDb } from '../../types.ts'
+import { exists } from '../../util/exists.ts'
+import first from '../../util/first.ts'
+import { success_true } from '../helpers.ts'
+
+export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
+export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
+export const DUE_TO_SNOMED_CONCEPT_ID = '42752001' // |Due to (attribute)|
+
+export async function insertTasksIfNotAlreadyIdentified(
+  trx: TrxOrDb,
+  { patient_id, patient_encounter_id }: {
+    patient_id: string
+    patient_encounter_id: string
+  },
+) {
+  await pMap(TASKS, async (task) => {
+    const records_for_which_task_should_be_done = await satisfyingSExpression(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        s_expression: task.task_s_expression.left,
+      },
+    )
+
+    if (!records_for_which_task_should_be_done.satisfies) {
+      return null
+    }
+
+    const first_record = exists(
+      first(records_for_which_task_should_be_done.record_ids),
+    )
+
+    const procedure = await patient_procedures
+      .insertOneIfNotAlreadyExistsForThisEncounter(
+        trx,
+        {
+          patient_id,
+          patient_encounter_id,
+          by_system: true,
+          procedure: task.task_s_expression.right,
+        },
+      )
+
+    if (procedure.inserted_new) {
+      const evaluation = await patient_evaluations.insertOne(
+        trx,
+        {
+          patient_id,
+          patient_encounter_id,
+          by_system: true,
+          evaluates_record_id: procedure.procedure_id,
+          evaluation: {
+            atom: 'evaluation',
+            snomed_concept_id: ACTION_STATUS_SNOMED_CONCEPT_ID,
+            value_snomed_concept_id: TO_BE_DONE_SNOMED_CONCEPT_ID,
+            qualifiers: [],
+          },
+        },
+      )
+
+      const relation_id = generateUUID()
+      await trx.with(
+        'inserting_relation_patient_records',
+        (qb) =>
+          qb.insertInto('patient_records').values({
+            id: relation_id,
+            snomed_concept_id: DUE_TO_SNOMED_CONCEPT_ID,
+            patient_id,
+            patient_encounter_id,
+          }),
+      ).with(
+        'inserting_relations',
+        (qb) =>
+          qb.insertInto('patient_record_relations').values({
+            id: relation_id,
+            source_id: evaluation.evaluation_id,
+            destination_id: first_record,
+          }),
+      ).selectNoFrom([
+        success_true,
+      ]).execute()
+    }
+  })
+}
 
 // Being organized (qualifier value)
 // Not to be done (qualifier value)
@@ -26,3 +117,7 @@
 // apply pressure
 // to the site of trauma and
 // cover open wounds
+
+// const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
+// const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
+// (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))

@@ -15,6 +15,7 @@ import {
 import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
 import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_records.ts'
 import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
+import * as events from '../../../../../../../db/models/events.ts'
 
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../../components/library/Sidebar.tsx'
@@ -172,6 +173,16 @@ export async function completeStep(
 
   const first_incomplete_step = firstIncompleteStep(workflow, steps_completed)
   assert(first_incomplete_step)
+
+  await events.insert(ctx.state.trx, {
+    type: 'OpenEncounterWorkflowStepCompleted',
+    data: {
+      patient_id: ctx.state.patient.id,
+      patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+      workflow: ctx.state.workflow,
+      workflow_step: ctx.state.step,
+    },
+  })
 
   return {
     steps_completed,

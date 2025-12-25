@@ -22,7 +22,6 @@ import {
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import {
   WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
@@ -44,9 +43,9 @@ const TriageMeasureVitalsSchema = z.object({
       value: positive_number,
       units: z.string().min(1),
     }).strict(),
-  ).transform((measurements) =>
+  ).optional().transform((measurements) =>
     fromEntries(
-      entries(measurements).map((
+      entries(measurements || {}).map((
         [vital, measurement],
       ) => {
         assert(measurement)
@@ -65,9 +64,9 @@ const TriageMeasureVitalsSchema = z.object({
     z.object({
       value_snomed_concept_id: snomed_concept_id,
     }).strict(),
-  ).transform((assessments) =>
+  ).optional().transform((assessments) =>
     fromEntries(
-      entries(assessments).map((
+      entries(assessments || {}).map((
         [vital, assessment],
       ) => {
         assert(assessment)
@@ -124,7 +123,7 @@ export const handler = postHandler(
     )
 
     // Insert assessments using DSL
-    const inserting_assessments = forEach(
+    await forEach(
       entries(form_values.assessments),
       ([/* vital */, finding]) =>
         patient_findings.insertOneNested(ctx.state.trx, {
@@ -136,11 +135,6 @@ export const handler = postHandler(
           finding,
         }),
     )
-
-    const { response } = await promiseProps({
-      inserting_assessments,
-      response: completeAndProceedToNextStep(ctx),
-    })
 
     // Compute derived measurements (BMI, MAP, etc.) if we have measurements
     if (measurement_results.length > 0) {
@@ -162,7 +156,7 @@ export const handler = postHandler(
       )
     }
 
-    return response
+    return completeAndProceedToNextStep(ctx)
   },
 )
 

@@ -3,7 +3,7 @@ import { sql } from 'kysely'
 import {
   IdSelection,
   PreviouslyCompletedProcedures,
-  RenderedFindingQualifierRelativeToHealthWorker,
+  RenderedQualifierRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, literalString, success_true } from '../helpers.ts'
@@ -17,6 +17,7 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import generateUUID from '../../util/uuid.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { satisfyingSExpression } from './s_expression.ts'
 
 type ProcedureInsert =
   & {
@@ -82,7 +83,7 @@ export function baseQuery(
                 .select((_eb_qualifiers2) => [
                   // At max depth, just return an empty array
                   sql<
-                    RenderedFindingQualifierRelativeToHealthWorker[]
+                    RenderedQualifierRelativeToHealthWorker[]
                   >`ARRAY[]::int[]`.as(
                     'qualifiers',
                   ),
@@ -277,5 +278,28 @@ export const patient_procedures = base({
       literalString(procedure_id).as('procedure_id'),
     ])
       .executeTakeFirstOrThrow()
+  },
+  async insertOneIfNotAlreadyExistsForThisEncounter(
+    trx: TrxOrDb,
+    to_insert: ProcedureInsert,
+  ) {
+    const already_exists = await satisfyingSExpression(
+      trx,
+      {
+        patient_id: to_insert.patient_id,
+        patient_encounter_id: to_insert.patient_encounter_id,
+        s_expression: to_insert.procedure,
+      },
+    )
+
+    if (already_exists.satisfies) {
+      return {
+        success: true,
+        inserted_new: false,
+        procedure_id: already_exists.record_ids[0],
+      }
+    }
+
+    return patient_procedures.insertOneNested(trx, to_insert)
   },
 })

@@ -2,11 +2,8 @@ import { z } from 'zod'
 import * as validators from '../util/validators.ts'
 import compact from '../util/compact.ts'
 
-console.log('mmmmmmmm', z)
-
 type Qualifier = RecordSchema & {
   atom: 'qualifier'
-  snomed_concept_id: string
 }
 
 type NotQualifier = {
@@ -16,7 +13,7 @@ type NotQualifier = {
 }
 
 type RecordSchema = {
-  snomed_concept_id: string | null
+  snomed_concept_id: string
   value_snomed_concept_id: string | null
   qualifiers: Array<Qualifier | NotQualifier>
 }
@@ -62,30 +59,6 @@ const required_snomed_concept_record_schema: z.ZodType<
   )
 )
 
-// Marginally hacky, but we just support a limited number of qualifiers
-const record_schema: z.ZodType<RecordSchema> = z.lazy(() =>
-  z.union(
-    [
-      required_snomed_concept_record_schema,
-      z.tuple([
-        qualifier,
-        optional_qualifier,
-        optional_qualifier,
-        optional_qualifier,
-        optional_qualifier,
-        optional_qualifier,
-        optional_qualifier,
-        optional_qualifier,
-      ])
-        .transform((qualifiers) => ({
-          snomed_concept_id: null,
-          value_snomed_concept_id: null,
-          qualifiers: compact(qualifiers),
-        })),
-    ],
-  )
-)
-
 export const qualifier = z.lazy((): z.ZodType<Qualifier> =>
   z.object({
     atom: z.literal('qualifier'),
@@ -122,7 +95,7 @@ export const optional_qualifier = z.lazy(() =>
 export const finding = z.lazy(() =>
   z.object({
     atom: z.literal('finding'),
-    args: record_schema,
+    args: required_snomed_concept_record_schema,
   }).transform(({ atom, args }) => ({
     atom,
     ...args,
@@ -197,6 +170,20 @@ export const comparator = z.lazy(() =>
   }))
 )
 
+export const task = z.lazy(() =>
+  z.object({
+    atom: z.literal('task'),
+    args: z.tuple([
+      any_top_level_expression,
+      procedure,
+    ]),
+  }).transform(({ atom, args: [left, right] }) => ({
+    atom,
+    left,
+    right,
+  }))
+)
+
 export const any_top_level_expression = z.lazy(() =>
   z.union([
     finding,
@@ -209,6 +196,7 @@ export const any_top_level_expression = z.lazy(() =>
     not_qualifier,
   ])
 )
+
 export const not = z.lazy(() =>
   z.object({
     atom: z.literal('not'),
@@ -249,6 +237,7 @@ export const and = z.lazy(() =>
 export const any_expression = z.lazy(() =>
   z.union([
     any_top_level_expression,
+    task,
     or,
     and,
     not,

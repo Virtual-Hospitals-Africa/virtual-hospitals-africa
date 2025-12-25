@@ -1,6 +1,6 @@
 import {
   IdSelection,
-  RenderedFindingQualifierRelativeToHealthWorker,
+  RenderedQualifierRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -160,7 +160,7 @@ export function baseQuery(
                 .select((_eb_qualifiers2) => [
                   // At max depth, just return an empty array
                   sql<
-                    RenderedFindingQualifierRelativeToHealthWorker[]
+                    RenderedQualifierRelativeToHealthWorker[]
                   >`ARRAY[]::int[]`.as(
                     'qualifiers',
                   ),

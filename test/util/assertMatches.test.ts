@@ -23,11 +23,10 @@ describe('assertMatches', () => {
       {
         'code': 'invalid_type',
         'expected': 'number',
-        'received': 'string',
         'path': [
           'baz',
         ],
-        'message': 'Expected number, received string',
+        'message': 'Invalid input: expected number, received string',
         'actual_value': 'bing',
       },
     ])
@@ -53,18 +52,13 @@ describe('assertMatches', () => {
       {
         'code': 'invalid_type',
         'expected': 'number',
-        'received': 'string',
         'path': [
           0,
           'baz',
         ],
-        'message': 'Expected number, received string',
+        'message': 'Invalid input: expected number, received string',
         'actual_value': 'bing',
       },
     ])
   })
 })
-/*
-  assertMatches({ foo: 'bar', baz: 'bing' }, { foo: 'bar', baz: z.string() }) // passes
-  assertMatches({ foo: 'bar', baz: 'bing' }, { foo: 'bar', baz: z.number() }) // fails
-*/

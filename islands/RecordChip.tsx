@@ -31,7 +31,6 @@ export function RecordChip(
     organization_id: string
   },
 ) {
-  console.log({ record })
   const chip_ref = useRef<HTMLDivElement>(null)
   const panel_ref = useRef<HTMLDivElement>(null)
   const is_hovered = useSignal(false)
