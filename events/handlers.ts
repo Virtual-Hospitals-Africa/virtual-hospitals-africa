@@ -61,7 +61,7 @@ export const EVENTS = {
     }),
     {
       async insertTasksIfNotAlreadyIdentified(trx, payload) {
-        await insertTasksIfNotAlreadyIdentified(trx, payload.data)
+        // await insertTasksIfNotAlreadyIdentified(trx, payload.data)
       },
     },
   ),

@@ -7,7 +7,9 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import {
+asText,
   jsonArrayFrom,
+  jsonArrayFromColumn,
   jsonObjectFrom,
   literalString,
   success_true,
@@ -63,7 +65,7 @@ type PatientEvaluationInsert =
     }
   )
 
-export function insertOne(
+export function insertOneNested(
   trx: TrxOrDb,
   {
     patient_id,
@@ -702,6 +704,24 @@ export function baseQuery(
       'snomed_inferred_canonical_name_and_category.category',
       'patient_records.value_snomed_concept_id',
       'value_snomed_inferred_canonical_name_and_category.name as value_name',
+      jsonArrayFrom(
+        eb.selectFrom('patient_record_relations')
+          .innerJoin('patient_records as relation_records', 'relation_records.id', 'patient_record_relations.id')
+          .whereRef('patient_record_relations.source_id', '=', 'patient_records.id')
+          .select(eb_destination => [
+            'patient_record_relations.destination_id',
+            asText(eb_destination, 'relation_records.snomed_concept_id').as('snomed_concept_id')
+          ])
+      ).as('destination_relations'),
+      jsonArrayFrom(
+        eb.selectFrom('patient_record_relations')
+          .innerJoin('patient_records as relation_records', 'relation_records.id', 'patient_record_relations.id')
+          .whereRef('patient_record_relations.destination_id', '=', 'patient_records.id')
+          .select(eb_source => [
+            'patient_record_relations.source_id',
+            asText(eb_source, 'relation_records.snomed_concept_id').as('snomed_concept_id')
+          ])
+      ).as('source_relations'),
 
       jsonArrayFrom(
         patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
@@ -811,4 +831,5 @@ export const patient_evaluations = base({
 
     return qb
   },
+  insertOneNested,
 })

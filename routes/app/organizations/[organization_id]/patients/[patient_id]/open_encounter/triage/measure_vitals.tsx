@@ -35,6 +35,7 @@ import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { assert } from 'std/assert/assert.ts'
 import fromEntries from '../../../../../../../../util/fromEntries.ts'
+import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -155,6 +156,14 @@ export const handler = postHandler(
         },
       )
     }
+
+    await insertTasksIfNotAlreadyIdentified(
+      ctx.state.trx,
+        {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id
+        },
+    )
 
     return completeAndProceedToNextStep(ctx)
   },

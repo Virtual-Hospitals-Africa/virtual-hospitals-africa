@@ -1,94 +1,33 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
-import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import {
-  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
-  PartialPatientDemographics,
-} from '../../../../_helpers/workflows.ts'
 
-import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
-import { route } from '../../../../route.ts'
-import { CommonConditionKey, Existence } from '../../../../../types.ts'
+
+
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { delay } from '../../../../../util/delay.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import z from 'zod'
 import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
+import { setupTriage } from './_setup.ts'
+
 
 describe('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  async function setupMeasureVitals(
-    patient_demographics: PartialPatientDemographics,
-    conditions: {
-      [c in CommonConditionKey]?: {
-        existence: Existence
-      }
-    },
-  ) {
-    const clinic = await createTestOrganization(db)
-    const nurse = await addTestEmployeeWithSession(db, {
-      profession: 'nurse',
-      registration_status: 'approved',
-      organization_id: clinic.id,
-    })
-
-    const encounter =
-      await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-        db,
-        nurse.health_worker.organization_id,
-        {
-          patient_demographics,
-          employment_id: nurse.health_worker.employee_id,
-        },
-      )
-
-    await nurse.fetchOk(
-      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-      {
-        method: 'POST',
-      },
-      {
-        cancel_response_body: true,
-      },
-    )
-
-    const $ = await nurse.fetchCheerio(
-      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
-      {
-        method: 'POST',
-        body: asFormData(conditions),
-      },
-    )
-
-    assertEquals(
-      $.url,
-      `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
-    )
-
-    return { $, clinic, nurse, encounter }
-  }
-
   // TODO: unskip, the required measurements aren't correct yet
   describe.skip('GET', () => {
     it('loads a page for the first visit for an adult non-diabetic patient ', async () => {
-      const { $ } = await setupMeasureVitals(
-        { date_of_birth: '1990-01-01' },
-        {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
-          },
-        },
-      )
+      const { $ } = await setupTriage({
+        patient_demographics: { date_of_birth: '1990-01-01' },
+        conditions: [],
+        warning_signs: [],
+      })
 
       const form_values = getFormValues($)
       const form_labels = getFormLabels($)
@@ -135,17 +74,11 @@ describe('triage/measure_vitals', () => {
     })
 
     it('loads a page for the first visit for an adult diabetic patient ', async () => {
-      const { $ } = await setupMeasureVitals(
-        { date_of_birth: '1990-01-01' },
-        {
-          diabetes: {
-            existence: 'Yes',
-          },
-          pregnancy: {
-            existence: 'No',
-          },
-        },
-      )
+      const { $ } = await setupTriage({
+        patient_demographics: { date_of_birth: '1990-01-01' },
+        conditions: ['diabetes'],
+        warning_signs: [],
+      })
 
       assertEquals(getFormLabels($), {
         assessments: {
@@ -172,21 +105,11 @@ describe('triage/measure_vitals', () => {
 
   describe('POST', () => {
     it('creates an additional task if oxygen saturation is below 92%', async () => {
-      const { $, nurse, encounter } = await setupMeasureVitals(
-        { date_of_birth: '2023-01-01' },
-        {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
-          },
-        },
-      )
-
-      await nurse.fetchOk($.url, {
-        method: 'POST',
-        body: asFormData({
+      const { encounter } = await setupTriage({
+        patient_demographics: { date_of_birth: '2023-01-01' },
+        conditions: ['diabetes'],
+        warning_signs: [],
+        vitals: {
           measurements: {
             blood_oxygen_saturation: {
               value: 91,
@@ -194,9 +117,7 @@ describe('triage/measure_vitals', () => {
             },
           },
           assessments: {},
-        }),
-      }, {
-        cancel_response_body: true,
+        }
       })
 
       const measurements = await patient_measurements.findAll(
@@ -238,8 +159,6 @@ describe('triage/measure_vitals', () => {
         },
       ], { strict: true })
 
-      // TODO have a function that confirms that all events are fully processed for a given entity
-      await delay(150)
       const evaluations = await patient_evaluations.findAll(
         db,
         {

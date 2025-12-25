@@ -219,7 +219,7 @@ export async function up(db: Kysely<DB>) {
           'source_id',
           'uuid',
           (col) =>
-            col.references('patient_records.id').onDelete(
+            col.notNull().references('patient_records.id').onDelete(
               'cascade',
             ),
         )
@@ -227,7 +227,7 @@ export async function up(db: Kysely<DB>) {
           'destination_id',
           'uuid',
           (col) =>
-            col.references('patient_records.id').onDelete(
+            col.notNull().references('patient_records.id').onDelete(
               'cascade',
             ),
         ),

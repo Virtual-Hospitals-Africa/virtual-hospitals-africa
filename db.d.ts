@@ -1261,9 +1261,9 @@ export interface PatientRecordQualifiers {
 }
 
 export interface PatientRecordRelations {
-  destination_id: string | null
+  destination_id: string
   id: string
-  source_id: string | null
+  source_id: string
 }
 
 export interface PatientRecords {

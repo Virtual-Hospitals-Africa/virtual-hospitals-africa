@@ -15,11 +15,11 @@ import compact from '../../../../../../../../util/compact.ts'
 
 const TriageAdditionalTasksAndInvestigationsSchema = z.object({
   tasks: z.record(
-    z.string(), // group_key
-    z.record(
-      z.string(), // task_key
-      z.string().optional(), // 'true' if checked
-    ),
+    z.uuid(), // procedure_id
+    z.object({
+      action_status_evaluation_id: z.uuid(),
+      done: z.boolean(),
+    }),
   ).optional().default({}),
 })
 
