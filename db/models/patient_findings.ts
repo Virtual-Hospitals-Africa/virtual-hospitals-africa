@@ -11,7 +11,7 @@ import {
   RECORD_NOW_INVALID_CONCEPT_ID,
 } from './patient_records.ts'
 import { QueryCreator, sql } from 'kysely'
-import { base } from './_base.ts'
+import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
@@ -122,6 +122,8 @@ export function baseQuery(
         .as('priority'),
     ])
 }
+
+export type IntermediateFinding = QueryResult<typeof baseQuery>
 
 type PatientFindingsSearch = {
   patient_id: string | IdSelection
