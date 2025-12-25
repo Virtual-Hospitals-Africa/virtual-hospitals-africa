@@ -7,7 +7,7 @@ import {
 } from '../../types.ts'
 import {
   patient_findings,
-  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+  // STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
 
 export async function get(
@@ -21,8 +21,8 @@ export async function get(
   const records = await patient_findings.findAll(trx, {
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
-    s_expression:
-      `(finding (not (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID})))`,
+    // s_expression:
+    //   `(finding (not (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID})))`,
   })
 
   return records.map(

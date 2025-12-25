@@ -3449,13 +3449,13 @@ export type AsPartOfProcedure = {
   name: string
 }
 
-export type RenderedFindingQualifierRelativeToHealthWorker = {
+export type RenderedQualifierRelativeToHealthWorker = {
   record_id: string
   snomed_concept_id: string
   name: string
   value_name: string | null
   category: SnomedCategory
-  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
 export type RenderedRecordRelativeToHealthWorker<
@@ -3473,7 +3473,7 @@ export type RenderedRecordRelativeToHealthWorker<
   provider: RenderedFindingProvider
   category: SnomedCategory
   as_part_of_procedure: AsPartOfProcedure
-  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  qualifiers: RenderedQualifierRelativeToHealthWorker[]
   existence: Existence
   related_records: RenderedRecordRelativeToHealthWorker[]
 }
@@ -3490,7 +3490,7 @@ export type RenderedFindingRelativeToHealthWorker<
   created_at: Date | string
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
-  qualifiers: RenderedFindingQualifierRelativeToHealthWorker[]
+  qualifiers: RenderedQualifierRelativeToHealthWorker[]
   existence: Existence
   notes?: {
     note: string
@@ -3515,7 +3515,7 @@ export type Alert = {
 
 type QualifierIntermediate =
   & Omit<
-    RenderedFindingQualifierRelativeToHealthWorker,
+    RenderedQualifierRelativeToHealthWorker,
     'provider' | 'value_display'
   >
   & {

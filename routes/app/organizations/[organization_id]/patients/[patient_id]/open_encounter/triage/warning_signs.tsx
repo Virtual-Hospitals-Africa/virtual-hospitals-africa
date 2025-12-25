@@ -17,9 +17,7 @@ import {
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import {
-  parseFindingExpression,
-} from '../../../../../../../../shared/s_expression.ts'
+
 import { assert } from 'std/assert/assert.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
@@ -28,14 +26,15 @@ import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records.ts'
 import keys from '../../../../../../../../util/keys.ts'
+import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 
 const WarningSignsSchema = z.object({
-  warning_signs: z.record(
+  warning_signs: z.partialRecord(
     z.enum(keys(WARNING_SIGNS)),
     z.string().transform((
       value,
-    ) => parseFindingExpression(value)),
-  ).optional().default({}).transform((signs) =>
+    ) => parseExpressionExpectingAtom(value, 'finding')),
+  ).default({}).transform((signs) =>
     entries(signs).map(([key, finding]) => ({
       key,
       finding: exists(finding),

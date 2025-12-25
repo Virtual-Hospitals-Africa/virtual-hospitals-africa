@@ -8,7 +8,7 @@ export type TrxContext = Context<
     trx: TrxOrDb
   }
 >
-export function attachTrx(
+export async function attachTrx(
   ctx: TrxContext,
 ) {
   // Semi-hacky, just attach the db for websocket routes as we
@@ -26,11 +26,15 @@ export function attachTrx(
   //   return ctx.next()
   // }
 
-  return db
+  const response = await db
     .transaction()
     .setIsolationLevel('read committed')
     .execute((trx) => {
       ctx.state.trx = trx
       return ctx.next()
     })
+
+  console.log('xresponse')
+
+  return response
 }

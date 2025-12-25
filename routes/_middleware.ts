@@ -21,7 +21,7 @@ export const handler = (ctx: Context<unknown>) => { // deno-lint-ignore no-expli
       console.error(err)
     }
     if (err instanceof ZodError) {
-      console.error(err)
+      // console.error(err)
       return new Response(JSON.stringify(err), {
         status: 400,
         headers: {

@@ -1,27 +1,23 @@
 import {
-  ParsedTaskExpression,
-  parseExpressionExpectingType,
+  ParsedExpressionOf,
+  parseExpressionExpectingAtom,
 } from './s_expression.ts'
 
 type Task = {
   if_description: string
   tasks_description: string
-  task_s_expression: ParsedTaskExpression
+  task_s_expression: ParsedExpressionOf<'task'>
 }
-
-// const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
-const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
 
 export const TASKS: Task[] = [
   {
     if_description: 'If oxygen saturation below 92%',
     tasks_description: 'give oxygen and move to resuscitation area',
-    task_s_expression: parseExpressionExpectingType(
+    task_s_expression: parseExpressionExpectingAtom(
       `(
       task
         (< (measurement 103228002) (units 92 %))
         (procedure 57485005)
-        (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))
     )`,
       'task',
     ),

@@ -5,7 +5,7 @@ import { LoggedInHealthWorkerContext } from '../types.ts'
 export function postHandler<
   // deno-lint-ignore no-explicit-any
   Ctx extends LoggedInHealthWorkerContext<any>,
-  Schema extends z.ZodTypeAny,
+  Schema extends z.ZodType<Record<string, unknown>>,
 >(
   schema: Schema,
   callback: (

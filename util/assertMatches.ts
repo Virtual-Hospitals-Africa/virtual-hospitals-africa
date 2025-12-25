@@ -36,15 +36,15 @@ function zodify(value: unknown, opts: { strict?: boolean } = {}): z.ZodType {
     return opts.strict ? schema.strict() : schema
   }
 
-  // Primitives become literals
-  return z.literal(value as z.Primitive)
+  // deno-lint-ignore no-explicit-any
+  return z.literal(value as any)
 }
 
-function getAtPath(obj: unknown, path: (string | number)[]): unknown {
+export function getAtPath(obj: unknown, path: PropertyKey[]): unknown {
   let value: unknown = obj
   for (const key of path) {
     if (value && typeof value === 'object') {
-      value = (value as Record<string | number, unknown>)[key]
+      value = (value as Record<PropertyKey, unknown>)[key]
     } else {
       return undefined
     }
@@ -60,7 +60,7 @@ export function assertMatches(
   const result = zodify(test, opts).safeParse(object)
   if (!result.success) {
     const issues = result.error.issues.map((issue) => (
-      console.log(issue.path), console.log(getAtPath(object, issue.path)), {
+      {
         ...issue,
         actual_value: getAtPath(object, issue.path),
       }

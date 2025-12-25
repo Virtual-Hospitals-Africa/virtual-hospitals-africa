@@ -17,6 +17,8 @@ import * as whatsapp from '../external-clients/whatsapp.ts'
 import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
+import { insertTasksIfNotAlreadyIdentified } from '../db/models/additional_tasks.ts'
+import { WORKFLOWS } from '../shared/workflow.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -49,6 +51,19 @@ export const EVENTS = {
       patient_encounter_id: z.string().uuid(),
     }),
     {},
+  ),
+  OpenEncounterWorkflowStepCompleted: defineEvent(
+    z.object({
+      patient_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
+      workflow: z.enum(WORKFLOWS),
+      workflow_step: z.string(),
+    }),
+    {
+      async insertTasksIfNotAlreadyIdentified(trx, payload) {
+        await insertTasksIfNotAlreadyIdentified(trx, payload.data)
+      },
+    },
   ),
   PatientNextOfKinSet: defineEvent(
     z.object({

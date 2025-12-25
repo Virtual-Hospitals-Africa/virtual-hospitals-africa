@@ -22,14 +22,12 @@ import {
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import {
   WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/workflow.ts'
 import {
-  parseExpressionExpectingType,
-  parseFindingExpression,
+  parseExpressionExpectingAtom,
 } from '../../../../../../../../shared/s_expression.ts'
 import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
@@ -39,21 +37,21 @@ import { assert } from 'std/assert/assert.ts'
 import fromEntries from '../../../../../../../../util/fromEntries.ts'
 
 const TriageMeasureVitalsSchema = z.object({
-  measurements: z.record(
+  measurements: z.partialRecord(
     z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
       value: positive_number,
       units: z.string().min(1),
     }).strict(),
-  ).transform((measurements) =>
+  ).optional().transform((measurements) =>
     fromEntries(
-      entries(measurements).map((
+      entries(measurements || {}).map((
         [vital, measurement],
       ) => {
         assert(measurement)
         const { value, units } = measurement
         const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
-        const measurement_equality_expression = parseExpressionExpectingType(
+        const measurement_equality_expression = parseExpressionExpectingAtom(
           `(= (measurement ${snomed_concept_id}) (units ${value} ${units}))`,
           '=',
         )
@@ -61,21 +59,22 @@ const TriageMeasureVitalsSchema = z.object({
       }),
     )
   ),
-  assessments: z.record(
+  assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
       value_snomed_concept_id: snomed_concept_id,
     }).strict(),
-  ).transform((assessments) =>
+  ).optional().transform((assessments) =>
     fromEntries(
-      entries(assessments).map((
+      entries(assessments || {}).map((
         [vital, assessment],
       ) => {
         assert(assessment)
         const { value_snomed_concept_id } = assessment
         const snomed_concept_id = VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
-        const finding_expression = parseFindingExpression(
+        const finding_expression = parseExpressionExpectingAtom(
           `(finding ${snomed_concept_id} ${value_snomed_concept_id})`,
+          'finding',
         )
         return [vital, finding_expression]
       }),
@@ -124,7 +123,7 @@ export const handler = postHandler(
     )
 
     // Insert assessments using DSL
-    const inserting_assessments = forEach(
+    await forEach(
       entries(form_values.assessments),
       ([/* vital */, finding]) =>
         patient_findings.insertOneNested(ctx.state.trx, {
@@ -136,11 +135,6 @@ export const handler = postHandler(
           finding,
         }),
     )
-
-    const { response } = await promiseProps({
-      inserting_assessments,
-      response: completeAndProceedToNextStep(ctx),
-    })
 
     // Compute derived measurements (BMI, MAP, etc.) if we have measurements
     if (measurement_results.length > 0) {
@@ -162,7 +156,7 @@ export const handler = postHandler(
       )
     }
 
-    return response
+    return completeAndProceedToNextStep(ctx)
   },
 )
 

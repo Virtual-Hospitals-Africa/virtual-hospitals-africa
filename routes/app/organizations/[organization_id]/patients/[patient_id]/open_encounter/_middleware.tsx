@@ -15,6 +15,7 @@ import {
 import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
 import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_records.ts'
 import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
+import * as events from '../../../../../../../db/models/events.ts'
 
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../../components/library/Sidebar.tsx'
@@ -64,7 +65,7 @@ import { presentWithPatient } from '../../../../../../../shared/patient_encounte
 import { exists } from '../../../../../../../util/exists.ts'
 import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
-import { parseExpressionExpectingType } from '../../../../../../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
 
 type OpenEncounterState = OrganizationState & {
@@ -172,6 +173,16 @@ export async function completeStep(
 
   const first_incomplete_step = firstIncompleteStep(workflow, steps_completed)
   assert(first_incomplete_step)
+
+  await events.insert(ctx.state.trx, {
+    type: 'OpenEncounterWorkflowStepCompleted',
+    data: {
+      patient_id: ctx.state.patient.id,
+      patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+      workflow: ctx.state.workflow,
+      workflow_step: ctx.state.step,
+    },
+  })
 
   return {
     steps_completed,
@@ -575,7 +586,7 @@ export function createProcedureIfNotAlreadyCompleted(
     patient_id: ctx.state.patient.id,
     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
     employment_id: ctx.state.encounter_employee_presence.employee_id,
-    procedure: parseExpressionExpectingType(
+    procedure: parseExpressionExpectingAtom(
       `(procedure ${procedure_snomed_concept_id})`,
       'procedure',
     ),

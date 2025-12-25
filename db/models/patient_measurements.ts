@@ -16,12 +16,12 @@ import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
-import { ParsedComparatorExpression } from '../../shared/s_expression.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import assertLength from '../../util/assertLength.ts'
+import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 
 export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement finding (finding)|
 
@@ -33,7 +33,7 @@ type MeasurementInsert = {
   workflow_snomed_concept_id: string
   workflow_step_snomed_concept_id: string | null
   previously_completed_procedures: PreviouslyCompletedProcedures
-  measurement_equality: ParsedComparatorExpression<'='>
+  measurement_equality: ParsedExpressionOf<'='>
 }
 
 export function baseQuery(
@@ -119,7 +119,7 @@ export const patient_measurements = base({
       },
     }: MeasurementInsert,
   ) {
-    assert(units.type === 'units')
+    assert(units.atom === 'units')
 
     const previously_completed_procedure_record_id =
       workflow_step_snomed_concept_id
