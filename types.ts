@@ -29,6 +29,7 @@ import { type Priority } from './shared/priorities.ts'
 import { type MessageTargetCategory } from './shared/message_targets.ts'
 import { type CommonConditionKey } from './shared/brief_history.ts'
 import { VitalMeasurement } from './shared/vitals.ts'
+import { WARNING_SIGNS } from './shared/warning_signs.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -3339,21 +3340,6 @@ export type RenderedChiefComplaint = {
   }
 }
 
-// Type definition based on user requirements
-
-export type ThisVisitRecords = {
-  chief_complaint: RenderedFindingRelativeToHealthWorker[]
-  vitals: RenderedFindingRelativeToHealthWorker[]
-  symptoms: RenderedFindingRelativeToHealthWorker[]
-  history: RenderedFindingRelativeToHealthWorker[]
-  general_assessments: RenderedFindingRelativeToHealthWorker[]
-  examinations: RenderedFindingRelativeToHealthWorker[]
-  diagnostic_tests: RenderedFindingRelativeToHealthWorker[]
-  diagnoses: RenderedFindingRelativeToHealthWorker[]
-  prescriptions: RenderedFindingRelativeToHealthWorker[]
-  orders: RenderedFindingRelativeToHealthWorker[]
-}
-
 export type RenderedPatientHistory = {
   pre_existing_conditions: RenderedFindingRelativeToHealthWorker[]
   allergies: RenderedFindingRelativeToHealthWorker[]
@@ -3552,8 +3538,10 @@ export type WarningSign = {
   prompt_when_s_expression?: string
 }
 
+export type WarningSignKey = keyof typeof WARNING_SIGNS
+
 export type KeyedWarningSign = {
-  key: string
+  key: WarningSignKey
 } & WarningSign
 
 export type IntermediateProcedureRecord = {

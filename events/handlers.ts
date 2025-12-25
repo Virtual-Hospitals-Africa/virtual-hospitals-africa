@@ -17,13 +17,13 @@ import * as whatsapp from '../external-clients/whatsapp.ts'
 import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
-import { insertTasksIfNotAlreadyIdentified } from '../db/models/additional_tasks.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
+// import { insertTasksIfNotAlreadyIdentified } from '../db/models/additional_tasks.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
     z.object({
-      health_worker_id: z.string().uuid(),
+      health_worker_id: z.uuid(),
     }),
     {
       async notifySlack(trx, payload) {
@@ -41,39 +41,40 @@ export const EVENTS = {
   ),
   PatientRegistration: defineEvent(
     z.object({
-      patient_id: z.string().uuid(),
+      patient_id: z.uuid(),
     }),
     {},
   ),
   AddToWaitingRoom: defineEvent(
     z.object({
-      organization_id: z.string().uuid(),
-      patient_encounter_id: z.string().uuid(),
+      organization_id: z.uuid(),
+      patient_encounter_id: z.uuid(),
     }),
     {},
   ),
   OpenEncounterWorkflowStepCompleted: defineEvent(
     z.object({
-      patient_id: z.string().uuid(),
-      patient_encounter_id: z.string().uuid(),
+      patient_id: z.uuid(),
+      patient_encounter_id: z.uuid(),
       workflow: z.enum(WORKFLOWS),
       workflow_step: z.string(),
     }),
     {
-      async insertTasksIfNotAlreadyIdentified(trx, payload) {
-        await insertTasksIfNotAlreadyIdentified(trx, payload.data)
+      async insertTasksIfNotAlreadyIdentified(_trx, _payload) {
+        // TODO: decide whether to do this as part of handling the request or in the background via events
+        // await insertTasksIfNotAlreadyIdentified(trx, payload.data)
       },
     },
   ),
   PatientNextOfKinSet: defineEvent(
     z.object({
-      patient_id: z.string().uuid(),
+      patient_id: z.uuid(),
     }),
     {},
   ),
   ReviewRequested: defineEvent(
     z.object({
-      review_request_id: z.string().uuid(),
+      review_request_id: z.uuid(),
     }),
     {
       async notifyRequestedDoctor(trx, payload) {
@@ -138,7 +139,7 @@ export const EVENTS = {
   ),
   MessageSend: defineEvent(
     z.object({
-      message_id: z.string().uuid(),
+      message_id: z.uuid(),
     }),
     {
       async sendPharmacistWhatsApp(trx, payload) {
@@ -202,8 +203,8 @@ export const EVENTS = {
   ),
   ImmediateTriage: defineEvent(
     z.object({
-      patient_encounter_id: z.string().uuid(),
-      requested_by_employee_id: z.string().uuid(),
+      patient_encounter_id: z.uuid(),
+      requested_by_employee_id: z.uuid(),
     }),
     {
       async notifyHealthWorker(trx, payload) {
@@ -251,7 +252,7 @@ export const EVENTS = {
   ),
   TEST_WORKS_ON_SECOND_TRY: defineEvent(
     z.object({
-      foo: z.string().uuid(),
+      foo: z.uuid(),
     }),
     {
       // deno-lint-ignore require-await
@@ -265,7 +266,7 @@ export const EVENTS = {
   ),
   TEST_NEVER_WORKS: defineEvent(
     z.object({
-      bar: z.string().uuid(),
+      bar: z.uuid(),
     }),
     {
       neverWorks(_trx, _payload) {
@@ -275,7 +276,7 @@ export const EVENTS = {
   ),
   DoctorReviewCompleted: defineEvent(
     z.object({
-      review_id: z.string().uuid(),
+      review_id: z.uuid(),
     }),
     {
       async notifyOriginalRequester(trx, payload) {
@@ -302,7 +303,7 @@ export const EVENTS = {
   ),
   HealthWorkerMessageSent: defineEvent(
     z.object({
-      message_id: z.string().uuid(),
+      message_id: z.uuid(),
     }),
     {
       // deno-lint-ignore no-unused-vars require-await

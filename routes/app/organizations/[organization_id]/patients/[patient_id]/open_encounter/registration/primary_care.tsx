@@ -18,7 +18,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { string_or_number_as_string } from '../../../../../../../../util/validators.ts'
 
 const PatientRegistrationPrimaryCareSchema = z.object({
-  primary_doctor_id: z.string().uuid().optional(),
+  primary_doctor_id: z.uuid().optional(),
   primary_doctor_name: z.string(),
   nearest_organization_id: z.string(),
   insurance: z.object({

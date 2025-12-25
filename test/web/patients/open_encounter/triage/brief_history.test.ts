@@ -241,31 +241,33 @@ describe('triage/brief_history', () => {
       assertMatches(this_patient_findings, [
         {
           'type': 'finding',
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
-          'patient_encounter_employee_id': z.string().uuid(),
+          'patient_encounter_employee_id': z.uuid(),
           'name': 'Status',
           'category': 'attribute',
           'value_snomed_concept_id': '373067005',
           'value_name': 'No',
+          'destination_relations': [],
+          'source_relations': [],
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
           'priority': null,
           'qualifiers': [
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
               'value_name': null,
             },
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '73211009',
               'category': 'disorder',
               'name': 'Diabetes mellitus',
@@ -275,31 +277,33 @@ describe('triage/brief_history', () => {
         },
         {
           'type': 'finding',
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
-          'patient_encounter_employee_id': z.string().uuid(),
+          'patient_encounter_employee_id': z.uuid(),
           'name': 'Status',
           'category': 'attribute',
           'value_snomed_concept_id': '373067005',
           'value_name': 'No',
+          'destination_relations': [],
+          'source_relations': [],
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
           'priority': null,
           'qualifiers': [
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
               'value_name': null,
             },
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '77386006',
               'category': 'finding',
               'name': 'Pregnancy',
@@ -309,31 +313,33 @@ describe('triage/brief_history', () => {
         },
         {
           'type': 'finding',
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'created_at': z.date(),
           'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
-          'patient_encounter_employee_id': z.string().uuid(),
+          'patient_encounter_employee_id': z.uuid(),
           'name': 'Status',
           'category': 'attribute',
           'value_snomed_concept_id': '373066001',
           'value_name': 'Yes',
+          'destination_relations': [],
+          'source_relations': [],
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '203421005',
             'name': 'History taking, limited',
           },
           'priority': null,
           'qualifiers': [
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
               'value_name': null,
             },
             {
-              'record_id': z.string().uuid(),
+              'record_id': z.uuid(),
               'snomed_concept_id': '363346000',
               'category': 'disorder',
               'name': 'Malignant neoplastic disease',
@@ -351,7 +357,7 @@ describe('triage/brief_history', () => {
 
       assertMatches(most_recent_findings.cancer, {
         'type': 'finding',
-        'record_id': z.string().uuid(),
+        'record_id': z.uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '263490005',
         'patient_encounter_id': initial_encounter.patient_encounter_id,
@@ -360,7 +366,7 @@ describe('triage/brief_history', () => {
         'value_name': 'Yes',
         'category': 'attribute',
         'as_part_of_procedure': {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
@@ -378,23 +384,25 @@ describe('triage/brief_history', () => {
         },
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '363346000',
             'name': 'Malignant neoplastic disease',
             'category': 'disorder',
           },
         ],
+        'source_relations': [],
+        'destination_relations': [],
       }, { strict: true })
 
       assertMatches(most_recent_findings.diabetes, {
         'type': 'finding',
-        'record_id': z.string().uuid(),
+        'record_id': z.uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '263490005',
         'patient_encounter_id': initial_encounter.patient_encounter_id,
@@ -403,7 +411,7 @@ describe('triage/brief_history', () => {
         'value_name': 'No',
         'category': 'attribute',
         'as_part_of_procedure': {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
@@ -420,18 +428,20 @@ describe('triage/brief_history', () => {
         },
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
             'category': 'disorder',
           },
         ],
+        'source_relations': [],
+        'destination_relations': [],
       }, { strict: true })
 
       assertEquals(most_recent_findings.copd, null)
@@ -822,6 +832,8 @@ describe('triage/brief_history', () => {
         'category': 'attribute',
         'value_snomed_concept_id': '373066001',
         'value_name': 'Yes',
+        'destination_relations': [],
+        'source_relations': [],
         'as_part_of_procedure': {
           'record_id':
             most_recent_findings.diabetes!.as_part_of_procedure.record_id,
@@ -831,13 +843,13 @@ describe('triage/brief_history', () => {
         'priority': null,
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'category': 'qualifier value',
             'name': 'Self reported',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '73211009',
             'category': 'disorder',
             'name': 'Diabetes mellitus',
@@ -962,6 +974,8 @@ describe('triage/brief_history', () => {
         'category': 'attribute',
         'value_snomed_concept_id': '373066001',
         'value_name': 'Yes',
+        'destination_relations': [],
+        'source_relations': [],
         'as_part_of_procedure': {
           'record_id':
             most_recent_findings.cancer!.as_part_of_procedure.record_id,
@@ -971,13 +985,13 @@ describe('triage/brief_history', () => {
         'priority': null,
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'category': 'qualifier value',
             'name': 'Self reported',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '363346000',
             'category': 'disorder',
             'name': 'Malignant neoplastic disease',
@@ -996,7 +1010,7 @@ describe('triage/brief_history', () => {
 
       assertMatches(most_recent_findings.diabetes, {
         'type': 'finding',
-        'record_id': z.string().uuid(),
+        'record_id': z.uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '263490005',
         'patient_encounter_id': subsequent_encounter.patient_encounter_id,
@@ -1006,7 +1020,7 @@ describe('triage/brief_history', () => {
         'value_name': 'No',
         'existence': 'No',
         'as_part_of_procedure': {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
@@ -1015,13 +1029,13 @@ describe('triage/brief_history', () => {
         'value_display': 'Diabetes mellitus Self reported Status: No',
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'category': 'qualifier value',
             'name': 'Self reported',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '73211009',
             'category': 'disorder',
             'name': 'Diabetes mellitus',
@@ -1032,6 +1046,8 @@ describe('triage/brief_history', () => {
           'id': nurse2.health_worker.id,
           'employee_id': nurse2.health_worker.employee_id,
         },
+        'source_relations': [],
+        'destination_relations': [],
       }, { strict: true })
     })
 
@@ -1085,7 +1101,7 @@ describe('triage/brief_history', () => {
 
       assertMatches(most_recent_findings.pregnancy, {
         'type': 'finding',
-        'record_id': z.string().uuid(),
+        'record_id': z.uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '263490005',
         'patient_encounter_id': encounter.patient_encounter_id,
@@ -1093,8 +1109,10 @@ describe('triage/brief_history', () => {
         'value_snomed_concept_id': '261665006',
         'value_name': 'Unknown',
         'category': 'attribute',
+        'destination_relations': [],
+        'source_relations': [],
         'as_part_of_procedure': {
-          'record_id': z.string().uuid(),
+          'record_id': z.uuid(),
           'snomed_concept_id': '203421005',
           'name': 'History taking, limited',
         },
@@ -1103,13 +1121,13 @@ describe('triage/brief_history', () => {
         'existence': 'Unknown',
         'qualifiers': [
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
           },
           {
-            'record_id': z.string().uuid(),
+            'record_id': z.uuid(),
             'snomed_concept_id': '77386006',
             'name': 'Pregnancy',
             'category': 'finding',

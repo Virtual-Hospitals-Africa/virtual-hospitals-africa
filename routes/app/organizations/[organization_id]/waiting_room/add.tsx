@@ -12,7 +12,7 @@ import { postHandler } from '../../../../../util/postHandler.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 const AddPatientFormSchema = z.object({
-  patient_id: z.string().uuid(),
+  patient_id: z.uuid(),
   reason: z.enum([
     'seeking treatment',
     'maternity',

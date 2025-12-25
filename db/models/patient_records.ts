@@ -1,7 +1,17 @@
-import { ExpressionWrapper } from 'kysely'
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { ExpressionWrapper, QueryCreator, sql } from 'kysely'
+import {
+  IdSelection,
+  RenderedQualifierRelativeToHealthWorker,
+  TrxOrDb,
+} from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { success_true } from '../helpers.ts'
+import { asText, jsonArrayFrom, success_true } from '../helpers.ts'
+import { base } from './_base.ts'
+import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
+import { buildExpression } from './s_expression.ts'
+import { ParsedExpression } from '../../shared/s_expression.ts'
+import { DB } from '../../db.d.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const ALTERED_SNOMED_CONCEPT_ID = '18307000' as const
 export const ENTERED_IN_ERROR_SNOMED_CONCEPT_ID = '723510000' as const
@@ -110,3 +120,177 @@ export function nowInvalidRecords(
     )
     .select('now_invalid_patient_evaluations.evaluates_record_id')
 }
+
+export function baseQuery(
+  trx: TrxOrDb | QueryCreator<DB>,
+) {
+  return trx.selectFrom('patient_records')
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category',
+      'patient_records.snomed_concept_id',
+      'snomed_inferred_canonical_name_and_category.id',
+    )
+    .leftJoin(
+      'snomed_inferred_canonical_name_and_category as value_snomed_inferred_canonical_name_and_category',
+      'patient_records.value_snomed_concept_id',
+      'value_snomed_inferred_canonical_name_and_category.id',
+    )
+    .select((eb) => [
+      'patient_records.id as record_id',
+      'patient_records.created_at',
+      'patient_records.snomed_concept_id',
+      'patient_records.patient_encounter_id',
+      'snomed_inferred_canonical_name_and_category.name',
+      'snomed_inferred_canonical_name_and_category.category',
+      'patient_records.value_snomed_concept_id',
+      'value_snomed_inferred_canonical_name_and_category.name as value_name',
+
+      jsonArrayFrom(
+        eb.selectFrom('patient_record_relations')
+          .innerJoin(
+            'patient_records as relation_records',
+            'relation_records.id',
+            'patient_record_relations.id',
+          )
+          .whereRef(
+            'patient_record_relations.source_id',
+            '=',
+            'patient_records.id',
+          )
+          .select((eb_destination) => [
+            'patient_record_relations.destination_id',
+            asText(eb_destination, 'relation_records.snomed_concept_id').as(
+              'snomed_concept_id',
+            ),
+          ]),
+      ).as('destination_relations'),
+
+      jsonArrayFrom(
+        eb.selectFrom('patient_record_relations')
+          .innerJoin(
+            'patient_records as relation_records',
+            'relation_records.id',
+            'patient_record_relations.id',
+          )
+          .whereRef(
+            'patient_record_relations.destination_id',
+            '=',
+            'patient_records.id',
+          )
+          .select((eb_source) => [
+            'patient_record_relations.source_id',
+            asText(eb_source, 'relation_records.snomed_concept_id').as(
+              'snomed_concept_id',
+            ),
+          ]),
+      ).as('source_relations'),
+
+      jsonArrayFrom(
+        patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
+          .where(
+            'qualifiers_1.qualifies_record_id',
+            '=',
+            eb.ref('patient_records.id'),
+          )
+          .select((eb_qualifiers1) => [
+            jsonArrayFrom(
+              patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
+                .where(
+                  'qualifiers_2.qualifies_record_id',
+                  '=',
+                  eb_qualifiers1.ref('qualifiers_1.record_id'),
+                )
+                .select((_eb_qualifiers2) => [
+                  // At max depth, just return an empty array
+                  sql<
+                    RenderedQualifierRelativeToHealthWorker[]
+                  >`ARRAY[]::int[]`.as(
+                    'qualifiers',
+                  ),
+                ]),
+            ).as('qualifiers'),
+          ]),
+      ).as('qualifiers'),
+    ])
+    .where(
+      (eb) =>
+        eb(
+          'patient_records.id',
+          'not in',
+          eb.selectFrom(
+            'patient_records as now_invalid_patient_records',
+          ).innerJoin(
+            'patient_evaluations as now_invalid_patient_evaluations',
+            'now_invalid_patient_records.id',
+            'now_invalid_patient_evaluations.id',
+          ).where(
+            'now_invalid_patient_records.snomed_concept_id',
+            'in',
+            RECORD_NOW_INVALID_CONCEPT_ID,
+          )
+            .select('now_invalid_patient_evaluations.evaluates_record_id')
+            .distinct(),
+        ),
+    )
+}
+
+type PatientRecordsSearch = {
+  patient_id: string | IdSelection
+  patient_encounter_id?: string | IdSelection
+  s_expression?: string | ParsedExpression
+  search?: string
+}
+
+export const patient_records = base({
+  top_level_table: 'patient_records',
+  baseQuery,
+  formatResult: (x) => x,
+  handleSearch(
+    qb,
+    opts: PatientRecordsSearch,
+    trx,
+  ) {
+    assert(!opts.search, 'TODO support')
+    assert(
+      opts.patient_id,
+      'For now, you must always provide a patient_id as part of a query',
+    )
+    // if (opts.search) {
+    //   qb = qb.where(
+    //     'snomed_inferred_canonical_name_and_category.name',
+    //     'ilike',
+    //     `%${opts.search}%`,
+    //   )
+    // }
+    if (opts.patient_id) {
+      qb = qb.where(
+        'patient_records.patient_id',
+        '=',
+        opts.patient_id,
+      )
+    }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
+      )
+    }
+    if (opts.s_expression) {
+      qb = qb.where(
+        'patient_records.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
+          },
+          opts.s_expression,
+        ),
+      )
+    }
+
+    return qb
+  },
+})

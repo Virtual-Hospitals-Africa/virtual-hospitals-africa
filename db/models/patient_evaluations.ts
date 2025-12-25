@@ -3,7 +3,6 @@ import {
   IdSelection,
   MostRecentVitalMeasurement,
   Priority,
-  RenderedQualifierRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -25,8 +24,7 @@ import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
 import entries from '../../util/entries.ts'
-import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
-import { RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
+import { patient_records } from './patient_records.ts'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
@@ -63,7 +61,7 @@ type PatientEvaluationInsert =
     }
   )
 
-export function insertOne(
+export function insertOneNested(
   trx: TrxOrDb,
   {
     patient_id,
@@ -673,83 +671,17 @@ export async function getPreviousVitalMeasurements(
 export function baseQuery(
   trx: TrxOrDb,
 ) {
-  return trx.selectFrom('patient_evaluations')
-    .innerJoin(
-      'patient_records',
-      'patient_evaluations.id',
-      'patient_records.id',
-    )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'patient_records.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
-    )
-    .leftJoin(
-      'snomed_inferred_canonical_name_and_category as value_snomed_inferred_canonical_name_and_category',
-      'patient_records.value_snomed_concept_id',
-      'value_snomed_inferred_canonical_name_and_category.id',
-    )
-    .select((eb) => [
+  return patient_records.baseQuery(trx).innerJoin(
+    'patient_evaluations',
+    'patient_evaluations.id',
+    'patient_records.id',
+  )
+    .select([
       literalString('evaluation').$castTo<'evaluation'>().as('type'),
-      'patient_records.id as record_id',
-      'patient_records.created_at',
-      'patient_records.snomed_concept_id',
-      'patient_records.patient_encounter_id',
       'patient_evaluations.employment_id',
       'patient_evaluations.by_system',
       'patient_evaluations.evaluates_record_id',
-      'snomed_inferred_canonical_name_and_category.name',
-      'snomed_inferred_canonical_name_and_category.category',
-      'patient_records.value_snomed_concept_id',
-      'value_snomed_inferred_canonical_name_and_category.name as value_name',
-
-      jsonArrayFrom(
-        patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
-          .where(
-            'qualifiers_1.qualifies_record_id',
-            '=',
-            eb.ref('patient_records.id'),
-          )
-          .select((eb_qualifiers1) => [
-            jsonArrayFrom(
-              patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
-                .where(
-                  'qualifiers_2.qualifies_record_id',
-                  '=',
-                  eb_qualifiers1.ref('qualifiers_1.record_id'),
-                )
-                .select((_eb_qualifiers2) => [
-                  // At max depth, just return an empty array
-                  sql<
-                    RenderedQualifierRelativeToHealthWorker[]
-                  >`ARRAY[]::int[]`.as(
-                    'qualifiers',
-                  ),
-                ]),
-            ).as('qualifiers'),
-          ]),
-      ).as('qualifiers'),
     ])
-    .where(
-      (eb) =>
-        eb(
-          'patient_records.id',
-          'not in',
-          eb.selectFrom(
-            'patient_records as now_invalid_patient_records',
-          ).innerJoin(
-            'patient_evaluations as now_invalid_patient_evaluations',
-            'now_invalid_patient_records.id',
-            'now_invalid_patient_evaluations.id',
-          ).where(
-            'now_invalid_patient_records.snomed_concept_id',
-            'in',
-            RECORD_NOW_INVALID_CONCEPT_ID,
-          )
-            .select('now_invalid_patient_evaluations.evaluates_record_id')
-            .distinct(),
-        ),
-    )
 }
 
 type PatientEvaluationsSearch = {
@@ -811,4 +743,5 @@ export const patient_evaluations = base({
 
     return qb
   },
+  insertOneNested,
 })

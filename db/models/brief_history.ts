@@ -189,6 +189,7 @@ export async function renderedMostRecentFindings(
       finding.patient_encounter_id,
     ]),
   )
+
   const other_encounter_ids = encounter_ids.filter((encounter_id) =>
     encounter_id !== encounter.patient_encounter_id
   )

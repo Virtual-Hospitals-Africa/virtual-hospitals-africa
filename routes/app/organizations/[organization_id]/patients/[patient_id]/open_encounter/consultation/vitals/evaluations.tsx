@@ -13,9 +13,9 @@ import { PRIORITIES } from '../../../../../../../../../shared/priorities.ts'
 
 const VitalsEvaluationSchema = z.object({
   findings: z.record(
-    z.string().uuid(),
+    z.uuid(),
     z.object({
-      finding_id: z.string().uuid(),
+      finding_id: z.uuid(),
       snomed_concept_id,
       priority: z.enum(PRIORITIES).optional(),
       note: z.string().trim().optional(),
