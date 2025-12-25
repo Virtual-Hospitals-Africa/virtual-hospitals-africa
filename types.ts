@@ -3510,22 +3510,6 @@ type QualifierIntermediate =
 
 export type Existence = 'Yes' | 'No' | 'Unknown'
 
-export type IntermediateFindingRecord<PertainingToKey extends string = string> =
-  {
-    created_at: Date
-    record_id: string
-    snomed_concept_id: string
-    category: SnomedCategory
-    name: string
-    patient_encounter_id: string
-    patient_encounter_employee_id: string
-    pertaining_to_key: PertainingToKey
-    as_part_of_procedure: AsPartOfProcedure
-    qualifiers: QualifierIntermediate[]
-    value_snomed_concept_id: null | string
-    value_name: null | string
-  }
-
 export type MostRecentBriefHistoryFindings = {
   [c in CommonConditionKey]: null | RenderedFindingRelativeToHealthWorker
 }

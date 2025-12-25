@@ -2,17 +2,13 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
   Existence,
-  IntermediateFindingRecord,
   MostRecentBriefHistoryFindings,
-  RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
   TrxOrDb,
 } from '../../types.ts'
-import * as patient_encounters from './patient_encounters.ts'
 import { temporaryTable } from '../helpers.ts'
-import { patient_findings } from './patient_findings.ts'
-import uniq from '../../util/uniq.ts'
-import { groupBy, groupByUniq } from '../../util/groupBy.ts'
+import { IntermediateFinding, patient_findings } from './patient_findings.ts'
+import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
 import mapEntries from '../../util/mapEntries.ts'
 import {
@@ -25,11 +21,16 @@ import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { hydrateIntermediateRecords } from './patient_record_providers.ts'
+
+type IntermediateBriefHistory = IntermediateFinding & {
+  pertaining_to_key: CommonConditionKey
+}
 
 export function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id }: { patient_id: string },
-): Promise<IntermediateFindingRecord<CommonConditionKey>[]> {
+): Promise<IntermediateBriefHistory[]> {
   return trx
     .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
     .with(
@@ -92,7 +93,7 @@ export function mostRecentFindings(
     .execute()
 }
 
-function findingExistence(finding: IntermediateFindingRecord): Existence {
+function findingExistence(finding: IntermediateBriefHistory): Existence {
   assertOneOf(
     finding.name,
     ['Status' as const, 'Clinical finding' as const],
@@ -113,17 +114,12 @@ function findingExistence(finding: IntermediateFindingRecord): Existence {
 }
 
 function mostRecentFinding(
-  findings_of_condition: IntermediateFindingRecord[],
+  findings_of_condition: Array<
+    IntermediateBriefHistory & { existence: Existence }
+  >,
   pertaining_to_key: CommonConditionKey,
 ) {
-  const findings_of_condition_with_existence = findings_of_condition.map(
-    (finding) => ({
-      ...finding,
-      existence: findingExistence(finding),
-    }),
-  )
-
-  if (findings_of_condition_with_existence.length > 1) {
+  if (findings_of_condition.length > 1) {
     assert(
       findings_of_condition[0].created_at >=
         findings_of_condition[1].created_at,
@@ -136,7 +132,7 @@ function mostRecentFinding(
   assert(parent_snomed_concept_id)
 
   const findings_of_condition_grouped_by_concept = groupBy(
-    findings_of_condition_with_existence,
+    findings_of_condition,
     'snomed_concept_id',
   )
   const most_recent_parent_concept_finding = first(
@@ -145,7 +141,7 @@ function mostRecentFinding(
   )
 
   const first_positive_finding_not_invalidated_by_a_later_negative_finding =
-    findings_of_condition_with_existence.find((finding) => {
+    findings_of_condition.find((finding) => {
       if (finding.existence !== 'Yes') return
 
       const most_recent_finding_of_concept = first(
@@ -164,7 +160,7 @@ function mostRecentFinding(
     })
 
   return first_positive_finding_not_invalidated_by_a_later_negative_finding ||
-    findings_of_condition_with_existence[0]
+    findings_of_condition[0]
 }
 
 export async function renderedMostRecentFindings(
@@ -177,77 +173,37 @@ export async function renderedMostRecentFindings(
 ): Promise<MostRecentBriefHistoryFindings> {
   const most_recent_findings = await mostRecentFindings(trx, { patient_id })
 
+  const most_recent_findings_with_existence = most_recent_findings.map(
+    (finding) => ({
+      ...finding,
+      existence: findingExistence(finding),
+    }),
+  )
+
   const most_recent_findings_by_common_condition_key = mapEntries(
-    groupBy(most_recent_findings, 'pertaining_to_key'),
+    groupBy(most_recent_findings_with_existence, 'pertaining_to_key'),
     mostRecentFinding,
   )
 
-  const encounter_ids = uniq(
-    Object.values(most_recent_findings_by_common_condition_key).flatMap((
-      finding,
-    ) => [
-      finding.patient_encounter_id,
-    ]),
-  )
+  const with_providers = await hydrateIntermediateRecords(trx, {
+    records: Object.values(most_recent_findings_by_common_condition_key),
+    health_worker_id,
+    encounter,
+  })
 
-  const other_encounter_ids = encounter_ids.filter((encounter_id) =>
-    encounter_id !== encounter.patient_encounter_id
-  )
+  const with_value_display = with_providers.map((finding) => ({
+    ...finding,
+    value_display: buildValueDisplay(finding),
+  }))
 
-  const other_encounters: RenderedPatientEncounter[] =
-    other_encounter_ids.length
-      ? await patient_encounters.getByIds(trx, other_encounter_ids)
-      : []
-
-  const encounters = [encounter, ...other_encounters]
-  const encounter_id_to_encounter = groupByUniq(
-    encounters,
-    'patient_encounter_id',
-  )
-
-  const most_recent_all_conditions_raw = fromEntries(
+  return fromEntries(
     COMMON_CONDITION_KEYS.map(
       (condition) => [
         condition,
-        most_recent_findings_by_common_condition_key[condition],
+        with_value_display.find((finding) =>
+          finding.pertaining_to_key === condition
+        ) ?? null,
       ],
     ),
-  )
-
-  return mapEntries(
-    most_recent_all_conditions_raw,
-    (most_recent_finding) => {
-      if (!most_recent_finding) return null
-
-      const { patient_encounter_employee_id, ...finding } = most_recent_finding
-
-      const matching_encounter = encounter_id_to_encounter.get(
-        finding.patient_encounter_id,
-      )
-      assert(
-        matching_encounter,
-        `Matching encounter not found ${finding.patient_encounter_id} ${finding.record_id}`,
-      )
-
-      const matching_employee = matching_encounter.all_employees_seen.find((
-        employee,
-      ) =>
-        employee.patient_encounter_employee_id ===
-          patient_encounter_employee_id
-      )
-      assert(
-        matching_employee,
-        `Matching employee not found ${patient_encounter_employee_id} ${finding.record_id}`,
-      )
-
-      return {
-        ...finding,
-        value_display: buildValueDisplay(finding),
-        provider: {
-          is_me: matching_employee.id === health_worker_id,
-          ...matching_employee,
-        },
-      } satisfies RenderedFindingRelativeToHealthWorker
-    },
   )
 }
