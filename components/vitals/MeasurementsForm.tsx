@@ -1,5 +1,5 @@
 import {
-  MostRecentVitalMeasurement,
+  RenderedFindingRelativeToHealthWorker,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
@@ -10,12 +10,16 @@ export function VitalsMeasurementsForm({
   vital_measurements_for_this_encounter,
   triage_assessments,
   most_recent_patient_vitals,
+  organization_id,
 }: {
   vital_measurements_for_this_encounter: VitalMeasurementFormInputDefition[]
   triage_assessments: AssessmentForForm[]
-  most_recent_patient_vitals: MostRecentVitalMeasurement[]
+  most_recent_patient_vitals: RenderedFindingRelativeToHealthWorker[]
+  organization_id: string
 }) {
   const regular_vitals = vital_measurements_for_this_encounter
+
+  console.log({ most_recent_patient_vitals })
 
   return (
     <div className='flex flex-col gap-4'>
@@ -38,9 +42,10 @@ export function VitalsMeasurementsForm({
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.snomed_concept_id ===
+                  patient_vital.finding_snomed_concept_id ===
                     assessment.assessment_snomed_concept_id,
               )}
+              organization_id={organization_id}
             />
           ))}
         </>
@@ -59,8 +64,10 @@ export function VitalsMeasurementsForm({
               vital={vital}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.snomed_concept_id === vital.snomed_concept_id,
+                  patient_vital.finding_snomed_concept_id ===
+                    vital.snomed_concept_id,
               )}
+              organization_id={organization_id}
             />
           ))}
         </>

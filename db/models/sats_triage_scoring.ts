@@ -19,7 +19,7 @@ export type CategoricalFinding = {
 }
 
 export type MeasurementScore = {
-  snomed_concept_id: string
+  finding_snomed_concept_id: string
   score_value: number
 }
 

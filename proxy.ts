@@ -168,8 +168,8 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
   }
 
   // Handle client error
-  client_socket.onerror = (event) => {
-    console.error('Client WebSocket error:', event)
+  client_socket.onerror = (/* event */) => {
+    // console.error('Client WebSocket error:', event)
     if (
       backend_socket.readyState === WebSocket.OPEN ||
       backend_socket.readyState === WebSocket.CONNECTING
@@ -179,8 +179,8 @@ function handleWebSocketUpgrade(request: Request, url: URL): Response {
   }
 
   // Handle backend error
-  backend_socket.onerror = (event) => {
-    console.error('Backend WebSocket error:', event)
+  backend_socket.onerror = (/* event */) => {
+    // console.error('Backend WebSocket error:', event)
     if (
       client_socket.readyState === WebSocket.OPEN ||
       client_socket.readyState === WebSocket.CONNECTING

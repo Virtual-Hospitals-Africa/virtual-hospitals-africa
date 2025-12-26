@@ -42,12 +42,12 @@ describe('db/models/employees.ts', () => {
           'email': result.email,
           'avatar_url': `/health_workers/${result.id}/avatar`,
           'employee_id': result.employee_id,
-          'organization_id': '00000000-0000-0000-0000-000000000001',
+          'organization_id': '00000000-0000-1000-8000-000000000001',
           'profession': 'nurse',
           'is_admin': false,
           'specialty': 'Primary care',
           'href':
-            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${result.id}`,
+            `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${result.id}`,
           'organizations': [
             {
               ...await organizations.getById(
@@ -93,14 +93,14 @@ describe('db/models/employees.ts', () => {
         await Promise.all([
           addTestEmployee(trx, {
             profession: 'doctor',
-            organization_id: '00000000-0000-0000-0000-000000000001',
+            organization_id: '00000000-0000-1000-8000-000000000001',
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
             },
           }),
           addTestEmployee(trx, {
             profession: 'doctor',
-            organization_id: '00000000-0000-0000-0000-000000000002',
+            organization_id: '00000000-0000-1000-8000-000000000002',
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
             },
@@ -109,7 +109,7 @@ describe('db/models/employees.ts', () => {
 
         const { results } = await employees.search(trx, {
           search: name_base,
-          prioritize_organization_id: '00000000-0000-0000-0000-000000000002',
+          prioritize_organization_id: '00000000-0000-1000-8000-000000000002',
         })
         assertArrayNonEmpty(results)
         const first_result = first(results)
@@ -117,11 +117,11 @@ describe('db/models/employees.ts', () => {
 
         assertEquals(
           first_result.organization_id,
-          '00000000-0000-0000-0000-000000000002',
+          '00000000-0000-1000-8000-000000000002',
         )
         assertNotEquals(
           last_result.organization_id,
-          '00000000-0000-0000-0000-000000000002',
+          '00000000-0000-1000-8000-000000000002',
         )
       },
     )
@@ -135,13 +135,13 @@ describe('db/models/employees.ts', () => {
       await employment.addOne(trx, {
         health_worker_id: health_worker.id,
         profession: 'nurse',
-        organization_id: '00000000-0000-0000-0000-000000000002',
+        organization_id: '00000000-0000-1000-8000-000000000002',
         is_admin: false,
       })
 
       const same_organization_search = await employees.search(trx, {
         search: health_worker.name,
-        organization_id: '00000000-0000-0000-0000-000000000001',
+        organization_id: '00000000-0000-1000-8000-000000000001',
       })
       assertLength(same_organization_search.results, 1)
       assertEquals(

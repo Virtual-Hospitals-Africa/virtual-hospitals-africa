@@ -1049,10 +1049,10 @@ export interface PatientComputedFindings {
   computation_algorithm_version: string
   computation_metadata: Generated<Json>
   created_at: Generated<Timestamp>
+  full_display: string | null
   id: string
   units: string | null
   value: Numeric | null
-  value_display: string | null
 }
 
 export interface PatientComputedFindingsInputs {
@@ -1173,6 +1173,7 @@ export interface PatientFindingMediaSpeeches {
 }
 
 export interface PatientFindings {
+  finding_snomed_concept_id: Int8
   id: string
   patient_encounter_employee_id: string
   procedure_id: string

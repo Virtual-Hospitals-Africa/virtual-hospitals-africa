@@ -1,5 +1,5 @@
 import { useRef } from 'preact/hooks'
-import { RenderedRecordRelativeToHealthWorker } from '../types.ts'
+import { RenderedFindingRelativeToHealthWorker } from '../types.ts'
 import { FindingPanel } from '../components/library/FindingPanel.tsx'
 import { useSignal } from '@preact/signals'
 import cls from '../util/cls.ts'
@@ -7,7 +7,7 @@ import { PRIORITY_COLORS } from '../shared/priorities.ts'
 
 export function RecordChips(
   { records, organization_id }: {
-    records: RenderedRecordRelativeToHealthWorker[]
+    records: RenderedFindingRelativeToHealthWorker[]
     organization_id: string
   },
 ) {
@@ -27,7 +27,7 @@ export function RecordChips(
 
 export function RecordChip(
   { record, organization_id }: {
-    record: RenderedRecordRelativeToHealthWorker
+    record: RenderedFindingRelativeToHealthWorker
     organization_id: string
   },
 ) {
@@ -66,7 +66,7 @@ export function RecordChip(
       onMouseLeave={handleMouseLeave}
     >
       <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
-        {record.value_display}
+        {record.full_display}
       </p>
       <div
         ref={panel_ref}

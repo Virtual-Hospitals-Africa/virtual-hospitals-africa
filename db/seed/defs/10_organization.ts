@@ -20,7 +20,7 @@ export default define(
 
 export async function addTestOrganizations(trx: TrxOrDb) {
   await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000001',
+    id: '00000000-0000-1000-8000-000000000001',
     name: 'VHA Test Clinic South Africa',
     category: 'Clinic',
     is_test: true,
@@ -41,7 +41,7 @@ export async function addTestOrganizations(trx: TrxOrDb) {
   })
 
   await organizations.add(trx, {
-    id: '00000000-0000-0000-0000-000000000002',
+    id: '00000000-0000-1000-8000-000000000002',
     name: 'VHA Test Regional Medical Center South Africa',
     category: 'Regional Medical Center',
     is_test: true,

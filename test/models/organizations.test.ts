@@ -318,7 +318,7 @@
 //         await employment.add(trx, [
 //           {
 //             health_worker_id: hw_at_organization1.id,
-//             organization_id: '00000000-0000-0000-0000-000000000001',
+//             organization_id: '00000000-0000-1000-8000-000000000001',
 //             profession: 'nurse',
 //           },
 //         ])
@@ -349,7 +349,7 @@
 
 //         const with_invitees = await organizations.getEmployeesAndInvitees(
 //           trx,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             emails: [hw_at_organization1.email],
 //           },
@@ -365,7 +365,7 @@
 //           registration_status: 'pending_approval',
 //           actions: {
 //             view:
-//               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${hw_at_organization1.id}`,
+//               `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${hw_at_organization1.id}`,
 //           },
 //           avatar_url: null,
 //           online: null,
@@ -393,12 +393,12 @@
 //         await employment.add(trx, [
 //           {
 //             health_worker_id: nurse.id,
-//             organization_id: '00000000-0000-0000-0000-000000000001',
+//             organization_id: '00000000-0000-1000-8000-000000000001',
 //             profession: 'nurse',
 //           },
 //           {
 //             health_worker_id: admin.id,
-//             organization_id: '00000000-0000-0000-0000-000000000001',
+//             organization_id: '00000000-0000-1000-8000-000000000001',
 //             profession: 'admin',
 //           },
 //         ])
@@ -429,7 +429,7 @@
 
 //         const with_invitees = await organizations.getEmployeesAndInvitees(
 //           trx,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             emails: [nurse.email, admin.email],
 //           },
@@ -451,7 +451,7 @@
 //           registration_status: 'approved',
 //           actions: {
 //             view:
-//               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+//               `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${nurse.id}`,
 //           },
 //           avatar_url: null,
 //           online: null,
@@ -467,7 +467,7 @@
 //           registration_status: 'approved',
 //           actions: {
 //             view:
-//               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
+//               `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${admin.id}`,
 //           },
 //           avatar_url: null,
 //           online: null,
@@ -486,7 +486,7 @@
 //   //       const email = `${generateUUID()}@example.com`
 //   //       await organizations.invite(
 //   //         trx,
-//   //         '00000000-0000-0000-0000-000000000001',
+//   //         '00000000-0000-1000-8000-000000000001',
 //   //         [
 //   //           { email, profession: 'nurse' },
 //   //         ],
@@ -517,14 +517,14 @@
 //   //       await employment.add(trx, [
 //   //         {
 //   //           health_worker_id: hw_at_organization1.id,
-//   //           organization_id: '00000000-0000-0000-0000-000000000001',
+//   //           organization_id: '00000000-0000-1000-8000-000000000001',
 //   //           profession: 'admin',
 //   //         },
 //   //       ])
 
 //   //       await organizations.invite(
 //   //         trx,
-//   //         '00000000-0000-0000-0000-000000000001',
+//   //         '00000000-0000-1000-8000-000000000001',
 //   //         [
 //   //           { email: hw_at_organization1.email, profession: 'doctor' },
 //   //         ],
@@ -567,14 +567,14 @@
 //   //       await employment.add(trx, [
 //   //         {
 //   //           health_worker_id: hw_at_organization1.id,
-//   //           organization_id: '00000000-0000-0000-0000-000000000001',
+//   //           organization_id: '00000000-0000-1000-8000-000000000001',
 //   //           profession: 'admin',
 //   //         },
 //   //       ])
 
 //   //       await assertRejects(
 //   //         () =>
-//   //           organizations.invite(trx, '00000000-0000-0000-0000-000000000001', [
+//   //           organizations.invite(trx, '00000000-0000-1000-8000-000000000001', [
 //   //             { email: same_email, profession: 'admin' },
 //   //           ]),
 //   //         StatusError,
@@ -596,14 +596,14 @@
 //   //       await employment.add(trx, [
 //   //         {
 //   //           health_worker_id: hw_at_organization1.id,
-//   //           organization_id: '00000000-0000-0000-0000-000000000001',
+//   //           organization_id: '00000000-0000-1000-8000-000000000001',
 //   //           profession: 'nurse',
 //   //         },
 //   //       ])
 
 //   //       await assertRejects(
 //   //         () =>
-//   //           organizations.invite(trx, '00000000-0000-0000-0000-000000000001', [
+//   //           organizations.invite(trx, '00000000-0000-1000-8000-000000000001', [
 //   //             { email: same_email, profession: 'doctor' },
 //   //           ]),
 //   //         StatusError,

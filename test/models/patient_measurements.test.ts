@@ -60,8 +60,8 @@ describe('db/models/patient_measurements.ts', () => {
       const measurement = await patient_measurements.getById(db, record_id)
 
       assertEquals(
-        measurement.value_display,
-        'Hemoglobin saturation with oxygen Measurement finding: 91.3%',
+        measurement.full_display,
+        'Hemoglobin saturation with oxygen: 91.3%',
       )
 
       const records = await satisfyingSExpression(

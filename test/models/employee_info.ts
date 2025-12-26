@@ -25,14 +25,14 @@ describe('getEmployeeInfo', () => {
         profession: 'doctor',
         is_admin: false,
 
-        organization_id: '00000000-0000-0000-0000-000000000002',
+        organization_id: '00000000-0000-1000-8000-000000000002',
       }])
 
       const result = await getEmployeeInfo(
         trx,
         {
           health_worker_id: health_worker.id,
-          organization_id: '00000000-0000-0000-0000-000000000001',
+          organization_id: '00000000-0000-1000-8000-000000000001',
         },
       )
 
@@ -53,7 +53,7 @@ describe('getEmployeeInfo', () => {
       assertEquals(result.registration_pending_approval, false)
       assertEquals(
         result.organization_id,
-        '00000000-0000-0000-0000-000000000001',
+        '00000000-0000-1000-8000-000000000001',
       )
       assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
       assertEquals(
@@ -77,7 +77,7 @@ describe('getEmployeeInfo', () => {
         profession: 'nurse',
         is_admin: false,
 
-        organization_id: '00000000-0000-0000-0000-000000000002',
+        organization_id: '00000000-0000-1000-8000-000000000002',
       }])
 
       await employment.updateSpecialty(trx, {
@@ -102,7 +102,7 @@ describe('getEmployeeInfo', () => {
         trx,
         {
           health_worker_id: health_worker.id,
-          organization_id: '00000000-0000-0000-0000-000000000001',
+          organization_id: '00000000-0000-1000-8000-000000000001',
         },
       )
 
@@ -131,7 +131,7 @@ describe('getEmployeeInfo', () => {
       assertEquals(result.documents, [])
       assertEquals(
         result.organization_id,
-        '00000000-0000-0000-0000-000000000001',
+        '00000000-0000-1000-8000-000000000001',
       )
       assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
       assertEquals(
@@ -152,7 +152,7 @@ describe('getEmployeeInfo', () => {
       health_worker_id: health_worker.id,
       profession: 'nurse',
       is_admin: false,
-      organization_id: '00000000-0000-0000-0000-000000000002',
+      organization_id: '00000000-0000-1000-8000-000000000002',
     }])
 
     await employment.updateSpecialty(trx, {
@@ -194,7 +194,7 @@ describe('getEmployeeInfo', () => {
       trx,
       {
         health_worker_id: health_worker.id,
-        organization_id: '00000000-0000-0000-0000-000000000001',
+        organization_id: '00000000-0000-1000-8000-000000000001',
       },
     )
 
@@ -224,27 +224,27 @@ describe('getEmployeeInfo', () => {
       {
         name: 'Face Picture',
         href:
-          `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
       },
       {
         name: 'National ID',
         href:
-          `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
       },
       {
         name: 'Nurse Practicing Certificate',
         href:
-          `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
       },
       {
         name: 'Registration Card',
         href:
-          `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
       },
     ])
     assertEquals(
       result.organization_id,
-      '00000000-0000-0000-0000-000000000001',
+      '00000000-0000-1000-8000-000000000001',
     )
     assertEquals(result.organization_name, 'VHA Test Clinic South Africa')
     assertEquals(

@@ -18,8 +18,60 @@ type RecordSchema = {
   qualifiers: Array<Qualifier | NotQualifier>
 }
 
+const finding_snomed_concept_record_schema: z.ZodType<
+  RecordSchema & { finding_snomed_concept_id: string }
+> = z.lazy(() =>
+  z.union(
+    [
+      z.tuple([
+        validators.snomed_concept_id,
+        validators.snomed_concept_id,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+      ]).transform((
+        [snomed_concept_id, finding_snomed_concept_id, ...rest],
+      ) => ({
+        snomed_concept_id,
+        finding_snomed_concept_id,
+        value_snomed_concept_id: null,
+        qualifiers: compact(rest),
+      })),
+      z.tuple([
+        validators.snomed_concept_id,
+        validators.snomed_concept_id,
+        validators.snomed_concept_id,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+        optional_qualifier,
+      ])
+        .transform((
+          [
+            snomed_concept_id,
+            finding_snomed_concept_id,
+            value_snomed_concept_id,
+            ...rest
+          ],
+        ) => ({
+          snomed_concept_id,
+          finding_snomed_concept_id,
+          value_snomed_concept_id,
+          qualifiers: compact(rest),
+        })),
+    ],
+  )
+)
+
 const required_snomed_concept_record_schema: z.ZodType<
-  RecordSchema & { snomed_concept_id: string }
+  RecordSchema
 > = z.lazy(() =>
   z.union(
     [
@@ -95,7 +147,7 @@ export const optional_qualifier = z.lazy(() =>
 export const finding = z.lazy(() =>
   z.object({
     atom: z.literal('finding'),
-    args: required_snomed_concept_record_schema,
+    args: finding_snomed_concept_record_schema,
   }).transform(({ atom, args }) => ({
     atom,
     ...args,

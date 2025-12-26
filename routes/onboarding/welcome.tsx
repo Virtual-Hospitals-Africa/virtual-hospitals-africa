@@ -12,11 +12,11 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 
 const OnboardingSchema = z.object({
-  organization_id: z.uuid(),
+  organization_id: z.string().uuid(),
   profession: z.enum(['nurse', 'doctor']),
   specialty: z.string(),
 }).or(z.object({
-  organization_id: z.uuid(),
+  organization_id: z.string().uuid(),
   profession: z.enum(['receptionist']),
 })).or(z.object({
   profession: z.enum(['regulator']),

@@ -25,13 +25,13 @@ describe.skip(
       })
 
       const response = await fetch(
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+        `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
       )
 
       assert(response.ok, 'should have returned ok')
       assert(
         response.url ===
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
       )
       const page_contents = await response.text()
 
@@ -94,7 +94,7 @@ describe.skip(
         body.set('address.street', address.street)
 
         const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
           {
             method: 'POST',
             body,
@@ -107,7 +107,7 @@ describe.skip(
 
         assertEquals(
           post_response.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
         )
 
         await post_response.body?.cancel()
@@ -130,7 +130,7 @@ describe.skip(
         })
 
         const get_personal_response = await fetch(
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
         )
 
         const page_contents = await get_personal_response.text()
@@ -181,7 +181,7 @@ describe.skip(
         body.set('specialty', 'oncology and palliative care')
 
         const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
           {
             method: 'POST',
             body,
@@ -194,7 +194,7 @@ describe.skip(
 
         assertEquals(
           post_response.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
         )
 
         await post_response.body?.cancel()
@@ -220,7 +220,7 @@ describe.skip(
         })
 
         const get_professional_response = await fetch(
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
         )
 
         const page_contents = await get_professional_response.text()
@@ -244,7 +244,7 @@ describe.skip(
         const body = new FormData()
 
         const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
           {
             method: 'POST',
             body,
@@ -257,7 +257,7 @@ describe.skip(
 
         assertEquals(
           post_response.url,
-          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room`,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room`,
         )
 
         await post_response.body?.cancel()

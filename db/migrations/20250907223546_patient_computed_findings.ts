@@ -25,10 +25,10 @@ export async function up(db: Kysely<DB>) {
         )
         .addColumn('value', 'decimal')
         .addColumn('units', 'varchar(255)')
-        .addColumn('value_display', 'varchar(255)')
+        .addColumn('full_display', 'varchar(255)')
         .addCheckConstraint(
           'valid_value_format',
-          sql`(value_display IS NOT NULL AND value IS NULL AND units IS NULL) OR (value_display IS NULL AND value IS NOT NULL AND units IS NOT NULL)`,
+          sql`(full_display IS NOT NULL AND value IS NULL AND units IS NULL) OR (full_display IS NULL AND value IS NOT NULL AND units IS NOT NULL)`,
         ),
   )
 

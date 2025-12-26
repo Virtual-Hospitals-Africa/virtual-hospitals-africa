@@ -20,7 +20,6 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
@@ -34,26 +33,31 @@ export function mostRecentFindings(
   return trx
     .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
     .with(
-      'patient_records_having_anything_to_do_with_common_conditions',
+      'patient_findings_matching_common_conditions',
       (qb) =>
-        qb.selectFrom('patient_records')
-          .where('patient_id', '=', patient_id)
+        qb.selectFrom('patient_findings')
           .innerJoin(
-            'common_conditions',
-            (join) =>
-              join.on((eb) =>
-                sql<boolean>`is_descendant(${
-                  eb.ref('patient_records.snomed_concept_id')
-                }, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
-              ),
+            'patient_records',
+            'patient_findings.id',
+            'patient_records.id',
           )
+          .where('patient_records.patient_id', '=', patient_id)
           .where(
             'patient_records.id',
             'not in',
             nowInvalidRecords(trx, { patient_id }),
           )
+          .innerJoin(
+            'common_conditions',
+            (join) =>
+              join.on((eb) =>
+                sql<boolean>`is_descendant(${
+                  eb.ref('patient_findings.finding_snomed_concept_id')
+                }, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
+              ),
+          )
           .select((eb) => [
-            'patient_records.id',
+            'patient_findings.id',
             eb.ref('common_conditions.key').$castTo<CommonConditionKey>()
               .as('pertaining_to_key'),
           ]),
@@ -62,30 +66,13 @@ export function mostRecentFindings(
       patient_findings.baseQuery(trx)
         .where('patient_records.patient_id', '=', patient_id)
         .innerJoin(
-          qb.selectFrom(
-            'patient_records_having_anything_to_do_with_common_conditions',
-          )
-            .selectAll(
-              'patient_records_having_anything_to_do_with_common_conditions',
-            )
-            .as('prcc'),
-          (join) =>
-            join.on((eb) =>
-              eb.or([
-                eb('patient_records.id', '=', eb.ref('prcc.id')),
-                eb(
-                  'patient_records.id',
-                  'in',
-                  eb.selectFrom('patient_record_qualifiers')
-                    .whereRef('patient_record_qualifiers.id', '=', 'prcc.id')
-                    .select('qualifies_record_id')
-                    .distinct(),
-                ),
-              ])
-            ),
+          qb.selectFrom('patient_findings_matching_common_conditions')
+            .selectAll('patient_findings_matching_common_conditions')
+            .as('pfmcc'),
+          (join) => join.onRef('patient_records.id', '=', 'pfmcc.id'),
         )
         .select([
-          'prcc.pertaining_to_key',
+          'pfmcc.pertaining_to_key',
         ]))
     .selectFrom('this_patient_findings')
     .selectAll('this_patient_findings')
@@ -191,16 +178,11 @@ export async function renderedMostRecentFindings(
     encounter,
   })
 
-  const with_value_display = with_providers.map((finding) => ({
-    ...finding,
-    value_display: buildValueDisplay(finding),
-  }))
-
   return fromEntries(
     COMMON_CONDITION_KEYS.map(
       (condition) => [
         condition,
-        with_value_display.find((finding) =>
+        with_providers.find((finding) =>
           finding.pertaining_to_key === condition
         ) ?? null,
       ],

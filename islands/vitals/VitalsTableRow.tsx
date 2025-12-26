@@ -9,7 +9,7 @@
 //   measurement: {
 //     finding_id: string
 //     snomed_concept_id: string
-//     value_display: string | null
+//     full_display: string | null
 //     evaluation: null | {
 //       note: string | null
 
@@ -34,10 +34,10 @@
 //   is_component_of_computed,
 //   vitalDisplayName,
 // }: VitalsTableRowProps) {
-//   const name = `findings.${measurement.finding_id}`
+//   const name = `findings.${measurement.record_id}`
 //   const has_existing_note = !!measurement.evaluation?.note
 //   const show_note = useSignal(has_existing_note)
-//   const value = measurement.value_display ? parseFloat(measurement.value_display) : NaN
+//   const value = measurement.full_display ? parseFloat(measurement.full_display) : NaN
 
 //   return (
 //     <>
@@ -50,7 +50,7 @@
 //           {vitalDisplayName}
 //         </td>
 //         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
-//           {measurement.value_display}
+//           {measurement.full_display}
 //         </td>
 //         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
 //           {previous_display || '-'}
@@ -120,7 +120,7 @@
 //             />
 //             <HiddenInput
 //               name={`${name}.finding_id`}
-//               value={measurement.finding_id}
+//               value={measurement.record_id}
 //             />
 //           </div>
 //         </td>

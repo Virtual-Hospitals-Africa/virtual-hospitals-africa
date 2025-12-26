@@ -19,18 +19,18 @@ const ScheduleFormSchema = z.object({
   end: z.string().datetime(),
   duration_minutes: positive_integer,
   reason: z.string(),
-  patient_id: z.uuid(),
-  provider_ids: z.uuid().array(),
+  patient_id: z.string().uuid(),
+  provider_ids: z.string().uuid().array(),
 })
 
 const SearchSchema = z.object({
-  provider_id: z.uuid().optional(),
-  organization_id: z.uuid().optional(),
-  provider_name: z.uuid().optional(),
-  patient_id: z.uuid().optional(),
-  patient_name: z.uuid().optional(),
-  date: z.uuid().optional(),
-  reason: z.uuid().optional(),
+  provider_id: z.string().uuid().optional(),
+  organization_id: z.string().uuid().optional(),
+  provider_name: z.string().uuid().optional(),
+  patient_id: z.string().uuid().optional(),
+  patient_name: z.string().uuid().optional(),
+  date: z.string().uuid().optional(),
+  reason: z.string().uuid().optional(),
 })
 
 export const handler = postHandler(

@@ -165,7 +165,7 @@
 //           const encounter = await patient_encounters
 //             .insertSeekingTreatmentWithEmployeeForTest(
 //               trx,
-//               '00000000-0000-0000-0000-000000000001',
+//               '00000000-0000-1000-8000-000000000001',
 //               {
 //                 patient_id: patient.id,
 //                 reason: 'seeking treatment',
@@ -1025,7 +1025,7 @@
 //           const encounter = await patient_encounters
 //             .insertSeekingTreatmentWithEmployeeForTest(
 //               trx,
-//               '00000000-0000-0000-0000-000000000001',
+//               '00000000-0000-1000-8000-000000000001',
 //               {
 //                 patient_id: patient.id,
 //                 reason: 'seeking treatment',

@@ -16,6 +16,9 @@ import { markAltered, nowInvalidRecords } from './patient_records.ts'
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
 
+export const FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER_SNOMED_CONCEPT_ID =
+  '418799008' // |Finding reported by subject or history provider (finding)|
+
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
   trx: TrxOrDb,
@@ -110,13 +113,15 @@ export async function upsertOne(
         id: symptom_id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id,
+        snomed_concept_id:
+          FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER_SNOMED_CONCEPT_ID,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: symptom_id,
           procedure_id,
           patient_encounter_employee_id,
+          finding_snomed_concept_id: snomed_concept_id,
         })).with(
       'inserting_symptoms',
       (qb) =>

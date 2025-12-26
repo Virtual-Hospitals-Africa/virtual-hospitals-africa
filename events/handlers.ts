@@ -23,7 +23,7 @@ import { WORKFLOWS } from '../shared/workflow.ts'
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
     z.object({
-      health_worker_id: z.uuid(),
+      health_worker_id: z.string().uuid(),
     }),
     {
       async notifySlack(trx, payload) {
@@ -41,21 +41,21 @@ export const EVENTS = {
   ),
   PatientRegistration: defineEvent(
     z.object({
-      patient_id: z.uuid(),
+      patient_id: z.string().uuid(),
     }),
     {},
   ),
   AddToWaitingRoom: defineEvent(
     z.object({
-      organization_id: z.uuid(),
-      patient_encounter_id: z.uuid(),
+      organization_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
     }),
     {},
   ),
   OpenEncounterWorkflowStepCompleted: defineEvent(
     z.object({
-      patient_id: z.uuid(),
-      patient_encounter_id: z.uuid(),
+      patient_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
       workflow: z.enum(WORKFLOWS),
       workflow_step: z.string(),
     }),
@@ -68,13 +68,13 @@ export const EVENTS = {
   ),
   PatientNextOfKinSet: defineEvent(
     z.object({
-      patient_id: z.uuid(),
+      patient_id: z.string().uuid(),
     }),
     {},
   ),
   ReviewRequested: defineEvent(
     z.object({
-      review_request_id: z.uuid(),
+      review_request_id: z.string().uuid(),
     }),
     {
       async notifyRequestedDoctor(trx, payload) {
@@ -139,7 +139,7 @@ export const EVENTS = {
   ),
   MessageSend: defineEvent(
     z.object({
-      message_id: z.uuid(),
+      message_id: z.string().uuid(),
     }),
     {
       async sendPharmacistWhatsApp(trx, payload) {
@@ -203,8 +203,8 @@ export const EVENTS = {
   ),
   ImmediateTriage: defineEvent(
     z.object({
-      patient_encounter_id: z.uuid(),
-      requested_by_employee_id: z.uuid(),
+      patient_encounter_id: z.string().uuid(),
+      requested_by_employee_id: z.string().uuid(),
     }),
     {
       async notifyHealthWorker(trx, payload) {
@@ -252,7 +252,7 @@ export const EVENTS = {
   ),
   TEST_WORKS_ON_SECOND_TRY: defineEvent(
     z.object({
-      foo: z.uuid(),
+      foo: z.string().uuid(),
     }),
     {
       // deno-lint-ignore require-await
@@ -266,7 +266,7 @@ export const EVENTS = {
   ),
   TEST_NEVER_WORKS: defineEvent(
     z.object({
-      bar: z.uuid(),
+      bar: z.string().uuid(),
     }),
     {
       neverWorks(_trx, _payload) {
@@ -276,7 +276,7 @@ export const EVENTS = {
   ),
   DoctorReviewCompleted: defineEvent(
     z.object({
-      review_id: z.uuid(),
+      review_id: z.string().uuid(),
     }),
     {
       async notifyOriginalRequester(trx, payload) {
@@ -303,7 +303,7 @@ export const EVENTS = {
   ),
   HealthWorkerMessageSent: defineEvent(
     z.object({
-      message_id: z.uuid(),
+      message_id: z.string().uuid(),
     }),
     {
       // deno-lint-ignore no-unused-vars require-await

@@ -6,15 +6,27 @@ import { parseExpression } from '../../shared/s_expression.ts'
 describe('shared/warning_signs.ts', () => {
   describe('parsing signs', () => {
     it('works', () => {
-      const warning_signs = KEYED_WARNING_SIGNS.map((
-        { clinical_finding_s_expression, prompt_when_s_expression, ...sign },
-      ) => ({
-        ...sign,
-        clinical_finding: parseExpression(clinical_finding_s_expression),
-        prompt_when: prompt_when_s_expression
-          ? parseExpression(prompt_when_s_expression)
-          : null,
-      }))
+      const warning_signs = []
+      for (
+        const {
+          clinical_finding_s_expression,
+          prompt_when_s_expression,
+          ...sign
+        } of KEYED_WARNING_SIGNS
+      ) {
+        try {
+          warning_signs.push({
+            ...sign,
+            clinical_finding: parseExpression(clinical_finding_s_expression),
+            prompt_when: prompt_when_s_expression
+              ? parseExpression(prompt_when_s_expression)
+              : null,
+          })
+        } catch (err) {
+          console.log(sign)
+          throw err
+        }
+      }
 
       assertEquals(warning_signs, [
         {
@@ -25,15 +37,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '79688008',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '79688008',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -45,20 +51,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '91175000',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '91175000',
+                'snomed_concept_id': '15240007',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '15240007',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -72,15 +72,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '262582004',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '262582004',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -92,15 +86,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '425082000',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '425082000',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -112,15 +100,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '410429000',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '410429000',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -132,15 +114,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '400209005',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '400209005',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -152,15 +128,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '230690007',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '230690007',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -172,20 +142,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '125666000',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '125666000',
+                'snomed_concept_id': '255593009',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '255593009',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -199,20 +163,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '267036007',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '267036007',
+                'snomed_concept_id': '24484000',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '24484000',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -226,15 +184,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '61372001',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '61372001',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -246,15 +198,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '426284001',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '426284001',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -266,15 +212,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '21631000119105',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '21631000119105',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -286,14 +226,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '75478009',
             'value_snomed_concept_id': null,
             'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '75478009',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
               {
                 'atom': 'not_qualifier',
                 'snomed_concept_id': '1149222004',
@@ -311,15 +246,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '1149222004',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '1149222004',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -331,15 +260,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '66857006',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '66857006',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -351,15 +274,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '231794000',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '231794000',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -371,15 +288,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '29857009',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '29857009',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -391,14 +302,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '87642003',
             'value_snomed_concept_id': null,
             'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '87642003',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
               {
                 'atom': 'not_qualifier',
                 'snomed_concept_id': '363698007',
@@ -421,15 +327,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '267051003',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '267051003',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -441,15 +341,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '283457003',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '283457003',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -461,15 +355,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '52329006',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '52329006',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -481,15 +369,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '417746004',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '417746004',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': {
             'atom': 'active_condition',
@@ -504,15 +386,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '21522001',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '21522001',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': {
             'atom': 'active_condition',
@@ -527,20 +403,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '131148009',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '131148009',
+                'snomed_concept_id': '19032002',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '19032002',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -554,15 +424,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '31758001',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '31758001',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -574,15 +438,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '76948002',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '76948002',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -594,20 +452,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '284549007',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '284549007',
+                'snomed_concept_id': '6736007',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '6736007',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -621,20 +473,14 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '131148009',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept_id': '131148009',
+                'snomed_concept_id': '31509003',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'qualifier',
-                    'snomed_concept_id': '31509003',
-                    'value_snomed_concept_id': null,
-                    'qualifiers': [],
-                  },
-                ],
+                'qualifiers': [],
               },
             ],
           },
@@ -648,15 +494,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '827108008',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '827108008',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -668,15 +508,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '263030002',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '263030002',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -688,15 +522,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '423125000',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '423125000',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -708,19 +536,13 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '125666000',
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
-                'atom': 'qualifier',
-                'snomed_concept_id': '125666000',
+                'atom': 'not_qualifier',
+                'snomed_concept_id': '255593009',
                 'value_snomed_concept_id': null,
-                'qualifiers': [
-                  {
-                    'atom': 'not_qualifier',
-                    'snomed_concept_id': '255593009',
-                    'value_snomed_concept_id': null,
-                  },
-                ],
               },
               {
                 'atom': 'not_qualifier',
@@ -749,15 +571,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '21522001',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '21522001',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': {
             'atom': 'not',
@@ -775,15 +591,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '196746003',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '196746003',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },
@@ -795,15 +605,9 @@ describe('shared/warning_signs.ts', () => {
           'clinical_finding': {
             'atom': 'finding',
             'snomed_concept_id': '404684003',
+            'finding_snomed_concept_id': '50415004',
             'value_snomed_concept_id': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'snomed_concept_id': '50415004',
-                'value_snomed_concept_id': null,
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
           },
           'prompt_when': null,
         },

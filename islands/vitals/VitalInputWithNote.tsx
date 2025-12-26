@@ -1,6 +1,6 @@
 import {
   Maybe,
-  MostRecentVitalMeasurement,
+  RenderedVitalMeasurement,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
@@ -20,7 +20,7 @@ import { TextArea } from '../form/inputs/textarea.tsx'
 export default function VitalInputWithNote(
   { vital, most_recent_patient_finding }: {
     vital: VitalMeasurementFormInputDefition
-    most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
+    most_recent_patient_finding: Maybe<RenderedVitalMeasurement>
   },
 ) {
   const name = `measurements.${vital.vital}`
@@ -35,7 +35,7 @@ export default function VitalInputWithNote(
           {most_recent_patient_finding && (
             <div className='flex text-gray-500'>
               <a href='#' className='text-blue-500'>
-                {most_recent_patient_finding.value_display}
+                {most_recent_patient_finding.full_display}
               </a>
               &nbsp;
               <LocalTime

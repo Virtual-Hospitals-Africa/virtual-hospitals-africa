@@ -27,7 +27,7 @@
 //       })
 
 //       const response = await fetch(
-//         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add?patient_id=${test_patient.id}`,
+//         `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room/add?patient_id=${test_patient.id}`,
 //         {},
 //       )
 
@@ -65,7 +65,7 @@
 //       body.set('waiting_room', 'true')
 
 //       const response = await fetch(
-//         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add`,
+//         `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room/add`,
 //         {
 //           method: 'POST',
 //           body,
@@ -97,7 +97,7 @@
 
 //       assertEquals(
 //         waiting_room.organization_id,
-//         '00000000-0000-0000-0000-000000000001',
+//         '00000000-0000-1000-8000-000000000001',
 //       )
 //       assertEquals(waiting_room.patient_encounter_id, patient_encounter.id)
 //     })
@@ -118,7 +118,7 @@
 //       body.set('reason', 'seeking treatment')
 
 //       const response = await fetch(
-//         `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add`,
+//         `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room/add`,
 //         {
 //           method: 'POST',
 //           body,
@@ -157,7 +157,7 @@
 
 //       assertEquals(
 //         waiting_room.organization_id,
-//         '00000000-0000-0000-0000-000000000001',
+//         '00000000-0000-1000-8000-000000000001',
 //       )
 //       assertEquals(waiting_room.patient_encounter_id, patient_encounter.id)
 

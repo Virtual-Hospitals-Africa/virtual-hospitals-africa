@@ -54,7 +54,7 @@ export const patient_procedures = base({
   baseQuery,
   formatResult: (procedure) => ({
     ...procedure,
-    value_display: buildValueDisplay(procedure),
+    ...buildValueDisplay(procedure),
   }),
   handleSearch(
     qb,

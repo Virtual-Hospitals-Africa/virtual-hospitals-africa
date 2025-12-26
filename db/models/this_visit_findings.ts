@@ -1,14 +1,16 @@
 import { assert } from 'std/assert/assert.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import {
+  RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
-  RenderedRecordRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
   patient_findings,
   // STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
+import { patient_measurements } from './patient_measurements.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export async function get(
   trx: TrxOrDb,
@@ -16,14 +18,21 @@ export async function get(
     health_worker_id: string
     encounter: RenderedPatientEncounter
   },
-): Promise<RenderedRecordRelativeToHealthWorker[]> {
-  // TODO also pull evaluations?
-  const records = await patient_findings.findAll(trx, {
-    patient_id: encounter.patient.id,
-    patient_encounter_id: encounter.patient_encounter_id,
-    // s_expression:
-    //   `(finding (not (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID})))`,
+): Promise<RenderedFindingRelativeToHealthWorker[]> {
+  const { findings, measurements } = await promiseProps({
+    findings: patient_findings.findAll(trx, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      not_measurements: true,
+    }),
+
+    measurements: patient_measurements.findAll(trx, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+    }),
   })
+
+  const records = [...findings, ...measurements]
 
   return records.map(
     (record) => {
@@ -42,15 +51,12 @@ export async function get(
 
       return {
         ...finding,
-        value_display: buildValueDisplay(finding),
+        ...buildValueDisplay(finding),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,
         },
-        related_records: [],
-        pertaining_to_key: finding.name,
-        existence: 'Yes',
-      } satisfies RenderedRecordRelativeToHealthWorker
+      }
     },
   )
 }

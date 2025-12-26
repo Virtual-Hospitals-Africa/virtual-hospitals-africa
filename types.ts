@@ -3275,33 +3275,20 @@ export type VitalMeasurementFormInputDefition = {
   units: string
 }
 
-export type MostRecentVitalMeasurement =
+export type RenderedVitalMeasurement =
+  & RenderedFindingRelativeToHealthWorker
   & {
-    finding_id: string
-    snomed_concept_id: string
-    value_display: string
-    patient_encounter_id: string
-    created_at: Date
-    // TODO include who made the evaluation
-    evaluations: {
-      snomed_concept_id: string
-      note: string | null
-    }[]
+    value: string | number
+    units: string
+    finding_type: 'manual' | 'computed'
   }
-  & ({
-    finding_type: 'manual'
-    provider: RenderedPatientEncounterEmployee
-  } | {
-    finding_type: 'computed'
-    provider: null
-  })
 
 export type Evaluation = {
   priority: Priority
   note?: string | undefined
 }
 export type Measurement = {
-  finding_id: string
+  record_id: string
   snomed_concept_id: string
   value: number
   units: string
@@ -3353,7 +3340,7 @@ export type PatientDrawerV4Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
   organization_id: string
-  this_visit_records: RenderedRecordRelativeToHealthWorker[]
+  this_visit_findings: RenderedFindingRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
   current_workflow_state: null | {
@@ -3444,48 +3431,27 @@ export type RenderedQualifierRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
-export type RenderedRecordRelativeToHealthWorker<
-  PertainingToKey extends string = string,
-> = {
-  type: 'finding' | 'evaluation' | 'procedure'
+export type RenderedFindingRelativeToHealthWorker = {
   record_id: string
   patient_encounter_id: string
   snomed_concept_id: string
+  finding_snomed_concept_id: string
   name: string
-  priority: Priority | null
+  full_display: string
   value_display: string
-  pertaining_to_key: PertainingToKey
   created_at: Date | string
+  priority: Priority | null
   provider: RenderedFindingProvider
-  category: SnomedCategory
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  existence: Existence
-  related_records: RenderedRecordRelativeToHealthWorker[]
 }
 
-export type RenderedFindingRelativeToHealthWorker<
-  PertainingToKey extends string = string,
-> = {
-  record_id: string
-  patient_encounter_id: string
-  snomed_concept_id: string
-  name: string
-  value_display: string
-  pertaining_to_key: PertainingToKey
-  created_at: Date | string
-  provider: RenderedFindingProvider
-  as_part_of_procedure: AsPartOfProcedure
-  qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  existence: Existence
-  notes?: {
-    note: string
-    created_at: Date
-    provider: RenderedFindingProvider & {
-      is_same_person_who_made_originally_noted_finding: boolean
-    }
-  }[]
-}
+export type RenderedBriefHistoryRelativeToHealthWorker =
+  & RenderedFindingRelativeToHealthWorker
+  & {
+    pertaining_to_key: CommonConditionKey
+    existence: Existence
+  }
 
 export type AppUser = Profession | 'admin' | 'regulator'
 
@@ -3499,19 +3465,12 @@ export type Alert = {
   }[]
 }
 
-type QualifierIntermediate =
-  & Omit<
-    RenderedQualifierRelativeToHealthWorker,
-    'provider' | 'value_display'
-  >
-  & {
-    value_name: string | null
-  }
-
 export type Existence = 'Yes' | 'No' | 'Unknown'
 
 export type MostRecentBriefHistoryFindings = {
-  [c in CommonConditionKey]: null | RenderedFindingRelativeToHealthWorker
+  [c in CommonConditionKey]:
+    | null
+    | RenderedBriefHistoryRelativeToHealthWorker
 }
 
 export type WarningSign = {
@@ -3555,4 +3514,12 @@ export type RenderedRoom = {
     name: string | null
   }
   // employees: RenderedEmployee[]
+}
+
+export type TaskGroup = {
+  due_to: RenderedFindingRelativeToHealthWorker[]
+  tasks: {
+    task: IntermediateProcedureRecord
+    completed: boolean
+  }[]
 }

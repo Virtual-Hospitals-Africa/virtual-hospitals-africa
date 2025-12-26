@@ -1,10 +1,10 @@
-import { MostRecentVitalMeasurement, Priority } from '../../types.ts'
+import { Priority, RenderedVitalMeasurement } from '../../types.ts'
 import VitalInputWithEvaluation from './VitalInputWithEvaluation.tsx'
 
 export function VitalsEvaluationsForm({
   measurements,
 }: {
-  measurements: (MostRecentVitalMeasurement & {
+  measurements: (RenderedVitalMeasurement & {
     finding_type: 'manual' | 'computed'
     evaluation?: {
       evaluation_id: string
@@ -40,7 +40,7 @@ export function VitalsEvaluationsForm({
             <div className='space-y-4'>
               {computed_measurements.map((measurement) => (
                 <VitalInputWithEvaluation
-                  key={measurement.finding_id}
+                  key={measurement.record_id}
                   measurement={measurement}
                   computed
                   existingEvaluation={measurement.evaluation}
@@ -52,7 +52,7 @@ export function VitalsEvaluationsForm({
             <div className='space-y-4'>
               {manual_measurements.map((measurement) => (
                 <VitalInputWithEvaluation
-                  key={measurement.finding_id}
+                  key={measurement.record_id}
                   measurement={measurement}
                   computed={false}
                   existingEvaluation={measurement.evaluation}

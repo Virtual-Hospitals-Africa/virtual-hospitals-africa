@@ -17,7 +17,6 @@ import { DB } from '../../db.d.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
-import { exists } from '../../util/exists.ts'
 import { Priority } from '../../shared/priorities.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
@@ -61,9 +60,16 @@ export function baseQuery(
       'patient_procedure_records.snomed_concept_id',
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category as finding_procedure_snomed_inferred_canonical_name_and_category',
+      'patient_findings.finding_snomed_concept_id',
+      'finding_procedure_snomed_inferred_canonical_name_and_category.id',
+    )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
+      'patient_findings.finding_snomed_concept_id',
       'patient_findings.patient_encounter_employee_id',
+      'finding_procedure_snomed_inferred_canonical_name_and_category.name as finding_name',
 
       jsonBuildObject({
         record_id: eb.ref('patient_procedure_records.id'),
@@ -124,18 +130,18 @@ export function baseQuery(
 }
 
 export type IntermediateFinding = QueryResult<typeof baseQuery>
-
 type PatientFindingsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
   s_expression?: string | ParsedExpressionOf<'finding'>
   search?: string
+  not_measurements?: boolean
 }
 
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (x) => x,
+  formatResult: (finding) => finding,
   handleSearch(
     qb,
     opts: PatientFindingsSearch,
@@ -166,6 +172,13 @@ export const patient_findings = base({
         '=',
         opts.patient_encounter_id,
       )
+    }
+    if (opts.not_measurements) {
+      qb = qb.leftJoin(
+        'patient_measurements',
+        'patient_findings.id',
+        'patient_measurements.id',
+      ).where('patient_measurements.id', 'is', null)
     }
     if (opts.s_expression) {
       qb = qb.where(
@@ -204,7 +217,7 @@ export const patient_findings = base({
             id: finding_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: exists(finding.snomed_concept_id),
+            snomed_concept_id: finding.snomed_concept_id,
             value_snomed_concept_id: finding.value_snomed_concept_id,
           }),
     ).with('inserting_findings', (qb) =>
@@ -212,6 +225,7 @@ export const patient_findings = base({
         .values({
           id: finding_id,
           procedure_id,
+          finding_snomed_concept_id: finding.finding_snomed_concept_id,
           patient_encounter_employee_id,
         }))
 

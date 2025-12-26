@@ -20,7 +20,7 @@ const MediaSchema = z.object({
 const PatientSymptomSchema = z.object({
   done: z.boolean(),
 }).or(z.object({
-  altered_patient_symptom_id: z.uuid().optional(),
+  altered_patient_symptom_id: z.string().uuid().optional(),
   snomed_concept_id,
   severity: z.number().min(1).max(10),
   start_date: z.string().date(),

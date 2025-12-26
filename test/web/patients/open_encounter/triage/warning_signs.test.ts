@@ -246,7 +246,7 @@ describe('triage/warning_signs', () => {
 
       assertMatches(this_patient_findings, [
         {
-          'record_id': z.uuid(),
+          'record_id': z.string().uuid(),
           'created_at': z.date(),
           'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           'patient_encounter_id': encounter.patient_encounter_id,
@@ -254,18 +254,11 @@ describe('triage/warning_signs', () => {
           'value_snomed_concept_id': null,
           'value_name': null,
           'as_part_of_procedure': {
-            'record_id': z.uuid(),
+            'record_id': z.string().uuid(),
             'snomed_concept_id': '245581009',
             'name': 'Emergency examination for triage',
           },
-          'qualifiers': [
-            {
-              'record_id': z.uuid(),
-              'snomed_concept_id': '410429000',
-              'name': 'Cardiac arrest',
-              'value_name': null,
-            },
-          ],
+          'finding_snomed_concept_id': '410429000',
         },
       ])
     })
@@ -317,7 +310,7 @@ describe('triage/warning_signs', () => {
 
       assertMatches(this_patient_findings, [
         {
-          'record_id': z.uuid(),
+          'record_id': z.string().uuid(),
           'created_at': z.date(),
           'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           'patient_encounter_id': encounter.patient_encounter_id,
@@ -325,24 +318,17 @@ describe('triage/warning_signs', () => {
           'value_snomed_concept_id': null,
           'value_name': null,
           'as_part_of_procedure': {
-            'record_id': z.uuid(),
+            'record_id': z.string().uuid(),
             'snomed_concept_id': '245581009',
             'name': 'Emergency examination for triage',
           },
-          'qualifiers': [
-            {
-              'record_id': z.uuid(),
-              'snomed_concept_id': '91175000',
-              'name': 'Seizure',
-              'value_name': null,
-              'qualifiers': [{
-                'record_id': z.uuid(),
-                'snomed_concept_id': '15240007',
-                'name': 'Current',
-                'value_name': null,
-              }],
-            },
-          ],
+          'finding_snomed_concept_id': '91175000',
+          'qualifiers': [{
+            'record_id': z.string().uuid(),
+            'snomed_concept_id': '15240007',
+            'name': 'Current',
+            'value_name': null,
+          }],
         },
       ])
 
@@ -413,32 +399,24 @@ describe('triage/warning_signs', () => {
 
       // Both should be Clinical findings with the appropriate qualifiers
       const cardiac_arrest_finding = this_patient_findings.find((f) =>
-        f.qualifiers.some((q) => q.snomed_concept_id === '410429000')
+        f.finding_snomed_concept_id === '410429000'
       )
       const chest_pain_finding = this_patient_findings.find((f) =>
-        f.qualifiers.some((q) => q.snomed_concept_id === '29857009')
+        f.finding_snomed_concept_id === '29857009'
       )
 
       assertMatches(cardiac_arrest_finding, {
         'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
         'name': 'Clinical finding',
-        'qualifiers': [
-          {
-            'snomed_concept_id': '410429000',
-            'name': 'Cardiac arrest',
-          },
-        ],
+        'finding_snomed_concept_id': '410429000',
+        'qualifiers': [],
       })
 
       assertMatches(chest_pain_finding, {
         'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
         'name': 'Clinical finding',
-        'qualifiers': [
-          {
-            'snomed_concept_id': '29857009',
-            'name': 'Chest pain',
-          },
-        ],
+        'finding_snomed_concept_id': '29857009',
+        'qualifiers': [],
       })
     })
 

@@ -7,7 +7,7 @@ import { DrawerThisVisit } from './ThisVisit.tsx'
 export default function PatientDrawerV4({
   patient,
   encounter,
-  this_visit_records,
+  this_visit_findings,
   patient_history,
   care_team,
   current_workflow_state,
@@ -26,7 +26,7 @@ export default function PatientDrawerV4({
             priority={encounter.priority?.name}
           />
           <DrawerThisVisit
-            this_visit_records={this_visit_records}
+            this_visit_findings={this_visit_findings}
             encounter={encounter}
             current_workflow_state={current_workflow_state}
             organization_id={organization_id}

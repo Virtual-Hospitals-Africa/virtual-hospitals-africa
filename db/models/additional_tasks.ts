@@ -5,11 +5,7 @@ import { patient_evaluations } from './patient_evaluations.ts'
 
 import { satisfyingSExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  RenderedFindingRelativeToHealthWorker,
-  RenderedRecordRelativeToHealthWorker,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import first from '../../util/first.ts'
 import { success_true } from '../helpers.ts'
@@ -20,6 +16,7 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import { patient_findings } from './patient_findings.ts'
 import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
+import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 
 export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
 export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
@@ -103,24 +100,17 @@ export async function insertTasksIfNotAlreadyIdentified(
   })
 }
 
-type TaskGroup = {
-  due_to: RenderedFindingRelativeToHealthWorker[]
-  tasks: {
-    task: RenderedRecordRelativeToHealthWorker & { type: 'procedure' }
-    completed: boolean
-  }[]
-}
-
 export async function getTasksGroups(
   trx: TrxOrDb,
-  { patient_id, patient_encounter_id }: {
-    patient_id: string
-    patient_encounter_id: string
+  { health_worker_id, encounter }: {
+    health_worker_id: string
+    encounter: RenderedPatientEncounter
   },
 ): Promise<TaskGroup[]> {
+  const patient_id = encounter.patient.id
   const evaluations = await patient_evaluations.findAll(trx, {
     patient_id,
-    patient_encounter_id,
+    patient_encounter_id: encounter.patient_encounter_id,
     s_expression:
       `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
   })
@@ -142,7 +132,13 @@ export async function getTasksGroups(
 
   const { procedures, findings } = await promiseProps({
     procedures: patient_procedures.getByIds(trx, procedure_ids),
-    findings: patient_findings.getByIds(trx, finding_ids),
+    findings: patient_findings.getByIds(trx, finding_ids).then((findings) =>
+      hydrateIntermediateRecords(trx, {
+        records: findings,
+        encounter,
+        health_worker_id,
+      })
+    ),
   })
 
   const task_group_map = groupBy(
@@ -161,7 +157,7 @@ export async function getTasksGroups(
         ),
         completed: false,
       }))
-      return { due_to, tasks } as unknown as TaskGroup
+      return { due_to: [due_to], tasks }
     }),
   )
 

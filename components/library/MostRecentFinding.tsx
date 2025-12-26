@@ -1,11 +1,20 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
-import { Maybe, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import {
+  Existence,
+  Maybe,
+  RenderedFindingRelativeToHealthWorker,
+} from '../../types.ts'
 import { cls } from '../../util/cls.ts'
 import { FindingPanel } from './FindingPanel.tsx'
 
 export function MostRecentFinding(
   { finding, organization_id }: {
-    finding: Maybe<RenderedFindingRelativeToHealthWorker>
+    finding: Maybe<
+      RenderedFindingRelativeToHealthWorker & {
+        pertaining_to_key?: string
+        existence?: Existence
+      }
+    >
     organization_id: string
   },
 ) {
@@ -19,7 +28,8 @@ export function MostRecentFinding(
     >
       <span
         className={cls({
-          'opacity-50': finding.existence !== 'Yes',
+          'opacity-50': finding.existence === 'No' ||
+            finding.existence === 'Unknown',
         })}
       >
         <a
@@ -28,7 +38,7 @@ export function MostRecentFinding(
           }`}
           className='text-blue-500'
         >
-          {finding.value_display}
+          {finding.full_display}
         </a>
         &nbsp;recorded&nbsp;
         <LocalTime timestamp={finding.created_at} expected_time_range='past' />
