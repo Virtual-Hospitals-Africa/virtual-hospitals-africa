@@ -34,7 +34,6 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const task_groups = await getTasksGroups(ctx.state.trx, {
-    patient_id: ctx.state.patient.id,
     health_worker_id: ctx.state.health_worker.id,
     encounter: ctx.state.encounter,
   })

@@ -20,7 +20,6 @@ import { satisfyingSExpression } from './s_expression.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
-import assertLength from '../../util/assertLength.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 

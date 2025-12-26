@@ -66,6 +66,7 @@ export async function up(db: Kysely<unknown>) {
         WITH recent_categorical_findings AS (
             SELECT DISTINCT ON (assessment.category)
                 records.value_snomed_concept_id AS snomed_concept_id,
+                assessment.assessment_snomed_concept_id,
                 assessment.category
             FROM patient_records AS records
             JOIN patient_findings AS findings ON records.id = findings.id
@@ -85,7 +86,9 @@ export async function up(db: Kysely<unknown>) {
                 opt.display_label,
                 COALESCE(rule.score_value, 0) AS score_value
             FROM recent_categorical_findings AS rcf
-            JOIN sats_triage_assessment_options AS opt ON rcf.snomed_concept_id = opt.option_snomed_concept_id
+            JOIN sats_triage_assessment_options AS opt
+                ON rcf.snomed_concept_id = opt.option_snomed_concept_id
+                AND rcf.assessment_snomed_concept_id = opt.assessment_snomed_concept_id
             LEFT JOIN sats_triage_scoring_rules AS rule
                 ON opt.id = rule.assessment_option_id
                 AND rule.scoring_system = 'TEWS'

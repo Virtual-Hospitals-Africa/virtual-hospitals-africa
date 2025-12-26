@@ -17,7 +17,6 @@ import { DB } from '../../db.d.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
-import { exists } from '../../util/exists.ts'
 import { Priority } from '../../shared/priorities.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|

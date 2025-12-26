@@ -10,12 +10,12 @@ import {
   RenderedPatientFamilyHistory,
   TrxOrDb,
 } from '../../types.ts'
-import pick from '../../util/pick.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
 
 export const PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID = '410551005'
+export const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID = '57177007' // |Family history with explicit context (situation)|
 
 // TODO: get this into a single round trip with the DB
 export async function upsertOne(
@@ -85,20 +85,19 @@ export async function upsertOne(
     {
       patient_id: string
       patient_encounter_id: string
-      snomed_concept_id: string
     } & InsertShape<PatientFindings>
   > = family_members
     .map((member) => {
       const id = generateUUID()
       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
-      const snomed_concept_id =
+      const finding_snomed_concept_id =
         SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
 
       return {
         id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id,
+        finding_snomed_concept_id,
         procedure_id,
         patient_encounter_employee_id,
       }
@@ -133,37 +132,40 @@ export async function upsertOne(
         id: family_history_id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id,
+        snomed_concept_id:
+          FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: family_history_id,
           procedure_id,
           patient_encounter_employee_id,
+          finding_snomed_concept_id: snomed_concept_id,
         }))
-    .with(
-      'inserting_family_member_records',
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values(
-            family_members_insert.map(
-              pick([
-                'id',
-                'patient_id',
-                'patient_encounter_id',
-                'snomed_concept_id',
-              ]),
-            ),
-          ),
-    ).with('inserting_family_members', (qb) =>
-      qb.insertInto('patient_findings')
-        .values(family_members_insert.map(
-          pick([
-            'id',
-            'procedure_id',
-            'patient_encounter_employee_id',
-          ]),
-        )))
+    // TODO get this working again?
+    // .with(
+    //   'inserting_family_member_records',
+    //   (qb) =>
+    //     qb.insertInto('patient_records')
+    //       .values(
+    //         family_members_insert.map(
+    //           pick([
+    //             'id',
+    //             'patient_id',
+    //             'patient_encounter_id',
+    //             'snomed_concept_id',
+    //           ]),
+    //         ),
+    //       ),
+    // ).with('inserting_family_members', (qb) =>
+    //   qb.insertInto('patient_findings')
+    //     .values(family_members_insert.map(
+    //       pick([
+    //         'id',
+    //         'procedure_id',
+    //         'patient_encounter_employee_id',
+    //       ]),
+    //     )))
     .with(
       'inserting_family_member_relations',
       (qb) =>

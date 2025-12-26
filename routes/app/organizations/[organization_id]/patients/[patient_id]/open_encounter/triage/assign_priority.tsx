@@ -17,9 +17,9 @@ import { JSX } from 'preact/jsx-runtime'
 import entries from '../../../../../../../../util/entries.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { ReferenceRange } from '../../../../../../../../db/models/automated_evaluation.ts'
-import { RenderedFindingRelativeToHealthWorker, RenderedVitalMeasurement } from '../../../../../../../../types.ts'
+import { RenderedFindingRelativeToHealthWorker } from '../../../../../../../../types.ts'
 import {
-ALL_VITAL_SNOMED_CONCEPT_IDS,
+  ALL_VITAL_SNOMED_CONCEPT_IDS,
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   vitalFromSnomedConceptId,
@@ -50,9 +50,9 @@ export async function TriageAssignPriorityPage(
 ) {
   const recent_measurements = await patient_vitals
     .getMostRecent(ctx.state.trx, {
-        health_worker_id: ctx.state.health_worker.id,
-        patient_id: ctx.state.patient.id,
-        snomed_concept_ids: ALL_VITAL_SNOMED_CONCEPT_IDS,
+      health_worker_id: ctx.state.health_worker.id,
+      patient_id: ctx.state.patient.id,
+      snomed_concept_ids: ALL_VITAL_SNOMED_CONCEPT_IDS,
     })
 
   const measurement_snomed_codes = recent_measurements.map((m) =>
@@ -86,8 +86,6 @@ export async function TriageAssignPriorityPage(
         },
       ),
     })
-
-  console.log({ tews_result })
 
   return (
     <TriageVitalsTable
@@ -215,7 +213,9 @@ function TriageVitalsTable({
 
       return {
         id: measurement.record_id,
-        vital_name: vitalFromSnomedConceptId(measurement.finding_snomed_concept_id),
+        vital_name: vitalFromSnomedConceptId(
+          measurement.finding_snomed_concept_id,
+        ),
         vital_value: full_display,
         previous: previous_display || '-',
         vital_range_visualized,

@@ -55,7 +55,6 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
   },
 )
 
-
 export const vitalFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (

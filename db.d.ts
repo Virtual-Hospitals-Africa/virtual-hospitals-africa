@@ -1049,10 +1049,10 @@ export interface PatientComputedFindings {
   computation_algorithm_version: string
   computation_metadata: Generated<Json>
   created_at: Generated<Timestamp>
+  full_display: string | null
   id: string
   units: string | null
   value: Numeric | null
-  full_display: string | null
 }
 
 export interface PatientComputedFindingsInputs {

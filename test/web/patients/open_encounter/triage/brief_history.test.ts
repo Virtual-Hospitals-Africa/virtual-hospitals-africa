@@ -1105,6 +1105,8 @@ describe('triage/brief_history', () => {
         health_worker_id: nurse.health_worker.id,
       })
 
+      console.log({ most_recent_findings })
+
       assertMatches(most_recent_findings.pregnancy, {
         'type': 'finding',
         'record_id': z.string().uuid(),

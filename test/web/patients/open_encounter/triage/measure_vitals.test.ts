@@ -157,7 +157,7 @@ describe('triage/measure_vitals', () => {
           'value': '91',
           'units': '%',
           'full_display':
-            'Hemoglobin saturation with oxygen Measurement finding: 91%',
+            'Hemoglobin saturation with oxygen: 91%',
         },
       ], { strict: true })
 

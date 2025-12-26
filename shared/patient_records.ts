@@ -47,7 +47,7 @@ export function buildValueDisplay(
     const value_display = measurementValueDisplay({ value, units })
     return {
       value_display,
-      full_display: `${finding_name}: ${value_display}`
+      full_display: `${finding_name}: ${value_display}`,
     }
   }
 
@@ -64,6 +64,7 @@ export function buildValueDisplay(
   assert(!value)
   assert(!units)
   return {
-    full_display: `${finding_display}: ${value_name}`, value_display: value_name
+    full_display: `${finding_display}: ${value_name}`,
+    value_display: value_name,
   }
 }

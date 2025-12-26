@@ -2,6 +2,7 @@ import { Maybe, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './patient_findings.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
@@ -109,13 +110,15 @@ export async function upsertOne(
         id: chief_complaint_id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+        // TODO: pick a better concept?
+        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: chief_complaint_id,
           procedure_id,
           patient_encounter_employee_id,
+          finding_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
         }))
     .with(
       'inserting_chief_complaint',
@@ -150,6 +153,8 @@ export async function upsertOne(
               id: speech_record_id,
               patient_encounter_employee_id,
               procedure_id,
+              // TODO pick a better concept?
+              finding_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
             })
           : blankSelection(qb),
     )
