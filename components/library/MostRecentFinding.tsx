@@ -38,7 +38,7 @@ export function MostRecentFinding(
           }`}
           className='text-blue-500'
         >
-          {finding.value_display}
+          {finding.full_display}
         </a>
         &nbsp;recorded&nbsp;
         <LocalTime timestamp={finding.created_at} expected_time_range='past' />

@@ -77,7 +77,7 @@ export default function VitalInputWithEvaluation({
           <TextInput
             name={`${name}.display_value`}
             label={null}
-            value={measurement.value_display}
+            value={measurement.full_display}
             inputClassName='outline-slate-300 bg-slate-100 text-slate-600'
             readonly
             disabled

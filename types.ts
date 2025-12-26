@@ -3437,6 +3437,7 @@ export type RenderedFindingRelativeToHealthWorker = {
   snomed_concept_id: string
   finding_snomed_concept_id: string
   name: string
+  full_display: string
   value_display: string
   created_at: Date | string
   priority: Priority | null

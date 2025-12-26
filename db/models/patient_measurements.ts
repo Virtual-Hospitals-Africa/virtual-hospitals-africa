@@ -57,7 +57,7 @@ export const patient_measurements = base({
   baseQuery,
   formatResult: (measurement) => ({
     ...measurement,
-    value_display: buildValueDisplay(measurement),
+    ...buildValueDisplay(measurement),
   }),
   handleSearch(
     qb,
@@ -282,7 +282,7 @@ export const patient_measurements = base({
 
     return findings.map((finding) => ({
       ...finding,
-      value_display: buildValueDisplay(finding),
+      ...buildValueDisplay(finding),
     }))
   },
 })

@@ -33,17 +33,17 @@ export type NewPatientComputedFindingInput = Insertable<
 >
 
 function valueDisplay(
-  { value, units, value_display }: {
+  { value, units, full_display }: {
     value: number | null
     units: string | null
-    value_display: string | null
+    full_display: string | null
   },
 ): string {
-  if (value_display) {
-    return value_display
+  if (full_display) {
+    return full_display
   }
 
-  if (value !== null && units !== null && value_display === null) {
+  if (value !== null && units !== null && full_display === null) {
     switch (units) {
       case '°C':
       case '%':
@@ -66,7 +66,7 @@ export function insertComputedFinding(
     snomed_concept_id,
     value,
     units,
-    value_display,
+    full_display,
     algorithm_version,
     computation_metadata = {},
     input_measurements = [],
@@ -78,22 +78,22 @@ export function insertComputedFinding(
     snomed_concept_id: string
     value?: number
     units?: string
-    value_display?: string
+    full_display?: string
     algorithm_version: string
     computation_metadata?: Record<string, unknown>
     input_measurements?: Array<{ record_id: string }>
   },
 ) {
   const has_structured = value !== undefined && units !== undefined &&
-    value_display === undefined
+    full_display === undefined
   const has_display = !has_structured
 
   if (!has_structured && !has_display) {
-    throw new Error('Must provide either value + units OR value_display')
+    throw new Error('Must provide either value + units OR full_display')
   }
 
   if (has_structured && has_display) {
-    throw new Error('Cannot provide both structured values and value_display')
+    throw new Error('Cannot provide both structured values and full_display')
   }
 
   if (has_structured && (typeof value !== 'number' || isNaN(value))) {
@@ -132,7 +132,7 @@ export function insertComputedFinding(
           computation_metadata: JSON.stringify(computation_metadata),
           value: value ?? null,
           units: units ?? null,
-          value_display: value_display ?? null,
+          full_display: full_display ?? null,
         }),
   ).with(
     'inserting_computed_finding_inputs',
@@ -167,7 +167,7 @@ export async function getComputedFindingsByEncounter(
       'pcf.created_at',
       'pcf.value',
       'pcf.units',
-      'pcf.value_display',
+      'pcf.full_display',
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
     ])
     .where('pr.patient_encounter_id', '=', patient_encounter_id)
@@ -177,10 +177,10 @@ export async function getComputedFindingsByEncounter(
   return results.map((result) => ({
     ...result,
     value: result.value ? Number(result.value) : null,
-    value_display: valueDisplay({
+    full_display: valueDisplay({
       value: result.value ? Number(result.value) : null,
       units: result.units,
-      value_display: result.value_display,
+      full_display: result.full_display,
     }),
   }))
 }
@@ -215,10 +215,10 @@ export async function getComputedFindingInputs(
   return results.map((result) => ({
     ...result,
     value: Number(result.value),
-    value_display: valueDisplay({
+    full_display: valueDisplay({
       value: Number(result.value),
       units: result.units,
-      value_display: null, // Input measurements don't have display values
+      full_display: null, // Input measurements don't have display values
     }),
   }))
 }
@@ -237,7 +237,7 @@ export async function getComputedFindingWithInputs(
       'pcf.created_at',
       'pcf.value',
       'pcf.units',
-      'pcf.value_display',
+      'pcf.full_display',
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
     ])
     .where('pcf.id', '=', computed_finding_id)
@@ -248,10 +248,10 @@ export async function getComputedFindingWithInputs(
   const finding = {
     ...result,
     value: result.value ? Number(result.value) : null,
-    value_display: valueDisplay({
+    full_display: valueDisplay({
       value: result.value ? Number(result.value) : null,
       units: result.units,
-      value_display: result.value_display,
+      full_display: result.full_display,
     }),
   }
 
@@ -274,7 +274,7 @@ export async function getComputedFindingWithProvider(
       'pcf.created_at',
       'pcf.value',
       'pcf.units',
-      'pcf.value_display',
+      'pcf.full_display',
       sql<string>`pr.snomed_concept_id::text`.as('snomed_concept_id'),
       'pr.patient_id',
       'pr.patient_encounter_id',
@@ -289,10 +289,10 @@ export async function getComputedFindingWithProvider(
   return {
     ...result,
     value: result.value ? Number(result.value) : null,
-    value_display: valueDisplay({
+    full_display: valueDisplay({
       value: result.value ? Number(result.value) : null,
       units: result.units,
-      value_display: result.value_display,
+      full_display: result.full_display,
     }),
     inputs,
   }
@@ -458,7 +458,7 @@ export async function computeAndInsertDerivedMeasurements(
         patient_encounter_employee_id,
         procedure_id: source_procedure_id,
         snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.blood_pressure,
-        value_display: bp_display,
+        full_display: bp_display,
         algorithm_version: 'BP_v1.0',
         computation_metadata: {
           format: 'systolic/diastolic mmHg',

@@ -1052,7 +1052,7 @@ export interface PatientComputedFindings {
   id: string
   units: string | null
   value: Numeric | null
-  value_display: string | null
+  full_display: string | null
 }
 
 export interface PatientComputedFindingsInputs {

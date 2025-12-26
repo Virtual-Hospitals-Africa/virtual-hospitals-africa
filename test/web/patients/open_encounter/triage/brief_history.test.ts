@@ -373,7 +373,7 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'pertaining_to_key': 'cancer',
-        'value_display':
+        'full_display':
           'Malignant neoplastic disease Self reported Status: Yes',
         'existence': 'Yes',
         'provider': {
@@ -419,7 +419,7 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'pertaining_to_key': 'diabetes',
-        'value_display': 'Diabetes mellitus Self reported Status: No',
+        'full_display': 'Diabetes mellitus Self reported Status: No',
         'existence': 'No',
         'provider': {
           'is_me': true,
@@ -860,7 +860,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'pertaining_to_key': 'diabetes',
-        'value_display': 'Diabetes mellitus Self reported Status: Yes',
+        'full_display': 'Diabetes mellitus Self reported Status: Yes',
         'existence': 'Yes',
         'provider': {
           'is_me': true,
@@ -1003,7 +1003,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'pertaining_to_key': 'cancer',
-        'value_display':
+        'full_display':
           'Malignant neoplastic disease Self reported Status: Yes',
         'existence': 'Yes',
         'provider': {
@@ -1032,7 +1032,7 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'pertaining_to_key': 'diabetes',
-        'value_display': 'Diabetes mellitus Self reported Status: No',
+        'full_display': 'Diabetes mellitus Self reported Status: No',
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
@@ -1057,7 +1057,7 @@ describe('triage/brief_history', () => {
       }, { strict: true })
     })
 
-    it('has a value_display of Status Not Known for unknown answers', async () => {
+    it('has a full_display of Status Not Known for unknown answers', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -1124,7 +1124,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
-        'value_display': 'Pregnancy Self reported Status: Unknown',
+        'full_display': 'Pregnancy Self reported Status: Unknown',
         'existence': 'Unknown',
         'qualifiers': [
           {

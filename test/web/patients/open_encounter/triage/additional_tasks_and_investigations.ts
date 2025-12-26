@@ -75,7 +75,7 @@ describe('triage/additional_tasks_and_investigations', () => {
               'name': 'Taking patient vital signs assessment',
             },
             'priority': null,
-            'value_display':
+            'full_display':
               'Hemoglobin saturation with oxygen Measurement finding',
             'provider': {
               'is_me': true,
@@ -214,7 +214,7 @@ describe('triage/additional_tasks_and_investigations', () => {
               'type': 'procedure',
               'by_system': true,
               'employment_id': null,
-              'value_display': 'Oxygen therapy',
+              'full_display': 'Oxygen therapy',
             },
             'completed': false,
           },

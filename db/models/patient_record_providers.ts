@@ -22,7 +22,7 @@ export async function hydrateIntermediateRecords<
 ): Promise<
   Array<
     IntermediateRecord & {
-      value_display: string
+      full_display: string
       provider: RenderedFindingProvider
     }
   >
@@ -71,7 +71,7 @@ export async function hydrateIntermediateRecords<
 
       return {
         ...record,
-        value_display: buildValueDisplay(record),
+        ...buildValueDisplay(record),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

@@ -66,7 +66,7 @@ export function RecordChip(
       onMouseLeave={handleMouseLeave}
     >
       <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
-        {record.value_display}
+        {record.full_display}
       </p>
       <div
         ref={panel_ref}

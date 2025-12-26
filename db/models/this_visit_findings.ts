@@ -51,7 +51,7 @@ export async function get(
 
       return {
         ...finding,
-        value_display: buildValueDisplay(finding),
+        ...buildValueDisplay(finding),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

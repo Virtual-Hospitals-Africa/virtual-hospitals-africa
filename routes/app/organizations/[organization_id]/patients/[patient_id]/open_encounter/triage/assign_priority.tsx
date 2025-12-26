@@ -32,7 +32,7 @@ type CategoricalAssessmentFinding = {
   record_id: string
   snomed_canonical_name: string
   snomed_concept_id: string
-  value_display: string
+  full_display: string
 }
 
 const TriageAssignPrioritySchema = z.object({})
@@ -87,24 +87,7 @@ export async function TriageAssignPriorityPage(
       ),
     })
 
-  const category_map: Record<
-    string,
-    { snomed_concept_id: string; name: string }
-  > = {
-    consciousness: {
-      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
-      name: 'Consciousness',
-    },
-    mobility: {
-      snomed_concept_id:
-        VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
-      name: 'Mobility',
-    },
-    trauma: {
-      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
-      name: 'Trauma',
-    },
-  }
+  console.log({ tews_result })
 
   return (
     <TriageVitalsTable
@@ -166,7 +149,7 @@ function TriageVitalsTable({
         (r) =>
           r.measurement_snomed_concept_id === measurement.snomed_concept_id,
       )
-      const value = parseFloat(measurement.value_display)
+      const value = parseFloat(measurement.full_display)
 
       const is_computed = isComputedVital(measurement.snomed_concept_id)
       const is_component_of_computed = isComponentOfComputedVital(
@@ -182,9 +165,9 @@ function TriageVitalsTable({
       )
 
       // Get display value - use categorical finding label if available
-      let { value_display } = measurement
+      let { full_display } = measurement
       if (categorical_finding) {
-        value_display = categorical_finding.display_label
+        full_display = categorical_finding.display_label
       }
 
       const previous_display = previous_measurements.get(
@@ -233,7 +216,7 @@ function TriageVitalsTable({
       return {
         id: measurement.record_id,
         vital_name: vitalFromSnomedConceptId(measurement.finding_snomed_concept_id),
-        vital_value: value_display,
+        vital_value: full_display,
         previous: previous_display || '-',
         vital_range_visualized,
         tews_score: tews_score !== null ? tews_score.toString() : '',

@@ -166,7 +166,7 @@
 //         {
 //           finding_type: 'manual',
 //           snomed_concept_id: VITALS_SNOMED_CODE.height,
-//           value_display: '123 cm',
+//           full_display: '123 cm',
 //           patient_encounter_id: encounter.patient_encounter_id,
 //           finding_id,
 //           created_at: vitals[0].created_at,

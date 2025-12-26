@@ -28,7 +28,10 @@ function measurementValueDisplay(
 export function buildValueDisplay(
   { name, qualifiers, finding_name, value_name, value, units }:
     DisplayableRecord,
-): string {
+): {
+  full_display: string
+  value_display: string
+} {
   const [attribute_qualifiers, prefix_qualifiers] = partition(
     qualifiers || [],
     (q) => !!q.value_name,
@@ -41,20 +44,26 @@ export function buildValueDisplay(
     assert(finding_name)
     assert(units)
     assertArrayEmpty(prefix_qualifiers)
-    return `${finding_name}: ${measurementValueDisplay({ value, units })}`
+    const value_display = measurementValueDisplay({ value, units })
+    return {
+      value_display,
+      full_display: `${finding_name}: ${value_display}`
+    }
   }
 
-  const value_display = compact([
+  const finding_display = compact([
     ...prefix_qualifiers.map(buildValueDisplay),
     finding_name,
     name,
   ]).join(' ')
 
   if (!value_name) {
-    return value_display
+    return { full_display: finding_display, value_display: finding_display }
   }
 
   assert(!value)
   assert(!units)
-  return `${value_display}: ${value_name}`
+  return {
+    full_display: `${finding_display}: ${value_name}`, value_display: value_name
+  }
 }

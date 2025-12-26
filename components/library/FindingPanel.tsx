@@ -25,7 +25,7 @@ export function FindingPanel(
         <div className='flex items-start justify-between'>
           <div className='flex-1'>
             <h3 className='text-lg font-semibold leading-6 text-red-800'>
-              {finding.value_display}
+              {finding.full_display}
             </h3>
           </div>
           <div className='flex gap-2'>
@@ -151,14 +151,14 @@ export function FindingPanel(
               <div className='flex flex-col gap-1'>
                 {finding.qualifiers.map((qualifier, idx) => (
                   <div key={idx} className='flex items-center gap-1'>
-                    {qualifier.value_display
+                    {qualifier.full_display
                       ? (
                         <>
                           <p className='text-sm text-gray-600'>
                             {qualifier.name}:
                           </p>
                           <p className='text-sm font-medium text-gray-900'>
-                            {qualifier.value_display}
+                            {qualifier.full_display}
                           </p>
                         </>
                       )

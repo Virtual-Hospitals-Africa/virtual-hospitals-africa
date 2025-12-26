@@ -37,7 +37,7 @@ export const patient_vitals = base({
   baseQuery,
   formatResult: (finding) => ({
     ...finding,
-    value_display: buildValueDisplay(finding),
+    ...buildValueDisplay(finding),
   }),
   handleSearch(
     qb,
@@ -111,7 +111,7 @@ export const patient_vitals = base({
 
     return findings.map((finding) => ({
       ...finding,
-      value_display: buildValueDisplay(finding),
+      ...buildValueDisplay(finding),
     }))
   },
 })

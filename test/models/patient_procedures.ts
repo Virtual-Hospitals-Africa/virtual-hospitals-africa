@@ -37,7 +37,7 @@ describe('db/models/patient_procedures.ts', () => {
 
       const procedure = await patient_procedures.getById(db, procedure_id)
 
-      assertEquals(procedure.value_display, 'Excessive Garment Removal')
+      assertEquals(procedure.full_display, 'Excessive Garment Removal')
     })
   })
 })
