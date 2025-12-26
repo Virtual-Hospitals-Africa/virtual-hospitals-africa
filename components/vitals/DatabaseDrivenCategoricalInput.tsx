@@ -1,17 +1,19 @@
-import { Maybe, RenderedVitalMeasurement } from '../../types.ts'
+import { Maybe, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Label } from '../../components/library/Label.tsx'
-import { LocalTime } from '../../islands/LocalTime.tsx'
 import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
 import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
 import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
+import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 
 export default function DatabaseDrivenCategoricalInput({
   assessment,
   most_recent_patient_finding,
+  organization_id
 }: {
   assessment: AssessmentForForm
-  most_recent_patient_finding: Maybe<RenderedVitalMeasurement>
+  most_recent_patient_finding: Maybe<RenderedFindingRelativeToHealthWorker>
+  organization_id: string
 }) {
   const name = `assessments.${assessment.vital}`
 
@@ -29,18 +31,10 @@ export default function DatabaseDrivenCategoricalInput({
             label={capitalize(assessment.vital)}
           />
         </Label>
-        {most_recent_patient_finding && (
-          <div className='flex text-gray-500'>
-            <a href='#' className='text-blue-500'>
-              {most_recent_patient_finding.value_display}
-            </a>
-            &nbsp;
-            <LocalTime
-              timestamp={most_recent_patient_finding.created_at}
-              expected_time_range='past'
-            />
-          </div>
-        )}
+        <MostRecentFinding
+          finding={most_recent_patient_finding}
+          organization_id={organization_id}
+        />
       </div>
       <div className='min-w-60 max-w-60 flex items-center'>
         <SelectWithOptions

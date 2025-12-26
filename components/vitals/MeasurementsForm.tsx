@@ -1,5 +1,5 @@
 import {
-  RenderedVitalMeasurement,
+  RenderedFindingRelativeToHealthWorker,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
@@ -14,7 +14,7 @@ export function VitalsMeasurementsForm({
 }: {
   vital_measurements_for_this_encounter: VitalMeasurementFormInputDefition[]
   triage_assessments: AssessmentForForm[]
-  most_recent_patient_vitals: RenderedVitalMeasurement[]
+  most_recent_patient_vitals: RenderedFindingRelativeToHealthWorker[]
   organization_id: string
 }) {
   const regular_vitals = vital_measurements_for_this_encounter
@@ -43,6 +43,7 @@ export function VitalsMeasurementsForm({
                   patient_vital.snomed_concept_id ===
                     assessment.assessment_snomed_concept_id,
               )}
+              organization_id={organization_id}
             />
           ))}
         </>

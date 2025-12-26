@@ -6,7 +6,6 @@ import {
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { Label } from '../../components/library/Label.tsx'
-import { LocalTime } from '../../islands/LocalTime.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
 import { MostRecentFinding } from '../library/MostRecentFinding.tsx'

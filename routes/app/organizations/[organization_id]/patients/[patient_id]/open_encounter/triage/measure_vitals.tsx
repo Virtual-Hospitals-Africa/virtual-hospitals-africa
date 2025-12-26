@@ -6,7 +6,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as vitals from '../../../../../../../../db/models/vitals.ts'
+import * as vitals from '../../../../../../../../db/models/patient_vitals.ts'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
 import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
@@ -36,6 +36,7 @@ import entries from '../../../../../../../../util/entries.ts'
 import { assert } from 'std/assert/assert.ts'
 import fromEntries from '../../../../../../../../util/fromEntries.ts'
 import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
+import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -192,15 +193,18 @@ export async function TriageMeasureVitalsPage(
       ),
     ])
 
-  const most_recent_patient_vitals = await patient_measurements
+  const snomed_concept_ids = [
+    ...vital_measurements_for_this_encounter.map((o) => o.snomed_concept_id),
+    ...triage_assessments.map(a => a.assessment_snomed_concept_id),
+  ]
+
+  const most_recent_patient_vitals = await patient_vitals
     .getMostRecent(
       ctx.state.trx,
       {
         health_worker_id: ctx.state.health_worker.id,
         patient_id: ctx.state.patient.id,
-        snomed_concept_ids: vital_measurements_for_this_encounter.map((o) =>
-          o.snomed_concept_id
-        ),
+        snomed_concept_ids
       },
     )
 
