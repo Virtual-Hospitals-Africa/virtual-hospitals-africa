@@ -130,7 +130,7 @@ export function baseQuery(
 }
 
 export type IntermediateFinding = QueryResult<typeof baseQuery>
-type PatientFindingsSearch = {
+export type PatientFindingsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
   s_expression?: string | ParsedExpressionOf<'finding'>

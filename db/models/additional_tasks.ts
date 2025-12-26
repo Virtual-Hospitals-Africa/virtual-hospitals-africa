@@ -13,10 +13,10 @@ import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
-import { patient_findings } from './patient_findings.ts'
 import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
+import { patient_vitals } from './patient_vitals.ts'
 
 export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
 export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
@@ -132,7 +132,7 @@ export async function getTasksGroups(
 
   const { procedures, findings } = await promiseProps({
     procedures: patient_procedures.getByIds(trx, procedure_ids),
-    findings: patient_findings.getByIds(trx, finding_ids).then((findings) =>
+    findings: patient_vitals.getByIds(trx, finding_ids).then((findings) =>
       hydrateIntermediateRecords(trx, {
         records: findings,
         encounter,

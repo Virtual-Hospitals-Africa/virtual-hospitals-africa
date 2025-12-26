@@ -1,3 +1,4 @@
+// Perhaps a misnomer, this is a more general way of getting findings whether they be measurements or not
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
   RenderedFindingRelativeToHealthWorker,
@@ -16,6 +17,8 @@ import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { ParsedExpression } from '../../shared/s_expression.ts'
+import { buildExpression } from './s_expression.ts'
 
 export function baseQuery(
   trx: TrxOrDb | QueryCreator<DB>,
@@ -32,6 +35,14 @@ export function baseQuery(
     ])
 }
 
+type VitalsSearch = {
+  patient_id: string | IdSelection
+  patient_encounter_id?: string | IdSelection
+  s_expression?: string | ParsedExpression
+  search?: string
+  not_measurements?: boolean
+}
+
 export const patient_vitals = base({
   top_level_table: 'patient_findings',
   baseQuery,
@@ -41,7 +52,8 @@ export const patient_vitals = base({
   }),
   handleSearch(
     qb,
-    opts: { search?: string; patient_id: string | IdSelection },
+    opts: VitalsSearch,
+    trx,
   ) {
     assert(!opts.search, 'TODO support')
     if (opts.search) {
@@ -56,6 +68,27 @@ export const patient_vitals = base({
         'patient_records.patient_id',
         '=',
         opts.patient_id,
+      )
+    }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
+      )
+    }
+    if (opts.s_expression) {
+      qb = qb.where(
+        'patient_records.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
+          },
+          opts.s_expression,
+        ),
       )
     }
 

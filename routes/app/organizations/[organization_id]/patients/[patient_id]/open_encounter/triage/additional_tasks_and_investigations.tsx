@@ -38,7 +38,12 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
     encounter: ctx.state.encounter,
   })
 
-  return <AdditionalTasks task_groups={task_groups} />
+  return (
+    <AdditionalTasks
+      task_groups={task_groups}
+      organization_id={ctx.state.organization.id}
+    />
+  )
 }
 
 export default OpenEncounterWorkflowPage(

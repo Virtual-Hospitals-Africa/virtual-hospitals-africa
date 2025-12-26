@@ -1,4 +1,6 @@
+import { MostRecentFinding } from '../components/library/MostRecentFinding.tsx'
 import type { TaskGroup } from '../types.ts'
+import assertLength from '../util/assertLength.ts'
 
 function TaskCheckbox({
   group_index,
@@ -35,11 +37,13 @@ function TaskCheckbox({
 function TaskGroupCard({
   group,
   group_index,
+  organization_id,
 }: {
   group: TaskGroup
   group_index: number
+  organization_id: string
 }) {
-  const due_to_label = group.due_to.map((f) => f.name).join(', ')
+  assertLength(group.due_to, 1)
 
   return (
     <div class='flex flex-col gap-4 p-4 md:p-6 rounded-xl border border-gray-200 bg-white'>
@@ -47,10 +51,11 @@ function TaskGroupCard({
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to:</span>
-            <span class='font-normal text-indigo-700'>
-              {due_to_label}
-            </span>
+            <span class='font-semibold text-gray-600'>Due to: </span>
+            <MostRecentFinding
+              finding={group.due_to[0]}
+              organization_id={organization_id}
+            />
           </p>
         </div>
       </div>
@@ -111,8 +116,10 @@ function ProgressHeader({
 
 export default function AdditionalTasks({
   task_groups,
+  organization_id,
 }: {
   task_groups: TaskGroup[]
+  organization_id: string
 }) {
   // Calculate totals
   const total_tasks = task_groups.reduce(
@@ -162,6 +169,7 @@ export default function AdditionalTasks({
             key={index}
             group={group}
             group_index={index}
+            organization_id={organization_id}
           />
         ))}
       </div>
