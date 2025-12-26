@@ -70,13 +70,21 @@ export async function up(db: Kysely<DB>) {
     primary_key_type: 'uuid',
   }, (qb) =>
     qb.addColumn(
-      'patient_encounter_employee_id',
-      'uuid',
+      'finding_snomed_concept_id',
+      'bigint',
       (col) =>
-        col.notNull().references('patient_encounter_employees.id').onDelete(
+        col.notNull().references('snomed_concept.id').onDelete(
           'cascade',
         ),
     )
+      .addColumn(
+        'patient_encounter_employee_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('patient_encounter_employees.id').onDelete(
+            'cascade',
+          ),
+      )
       .addColumn('procedure_id', 'uuid', (col) =>
         col.notNull().references('patient_procedures.id').onDelete(
           'cascade',

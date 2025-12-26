@@ -116,7 +116,6 @@ export const patient_measurements = base({
       generateUUID()
 
     const measurement_id = generateUUID()
-    const qualifier_id = generateUUID()
 
     return trx.with(
       'inserting_procedure_record',
@@ -156,6 +155,7 @@ export const patient_measurements = base({
             id: measurement_id,
             procedure_id,
             patient_encounter_employee_id,
+            finding_snomed_concept_id: snomed_concept_id,
           }))
       .with(
         'inserting_measurements',
@@ -165,24 +165,6 @@ export const patient_measurements = base({
               id: measurement_id,
               value: units.value,
               units: units.units,
-            }),
-      ).with(
-        `inserting_qualifier_record`,
-        (qb) =>
-          qb.insertInto('patient_records')
-            .values({
-              id: qualifier_id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id,
-            }),
-      ).with(
-        `inserting_qualifier`,
-        (qb) =>
-          qb.insertInto('patient_record_qualifiers')
-            .values({
-              id: qualifier_id,
-              qualifies_record_id: measurement_id,
             }),
       )
       .selectNoFrom([
@@ -288,7 +270,7 @@ export const patient_measurements = base({
             ]),
         ).$notNull().as('provider'),
       ])
-    
+
     debugLog(query)
 
     const findings = await query.execute()

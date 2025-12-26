@@ -15,7 +15,6 @@ import {
   ParsedExpression,
   ParsedExpressionOf,
   parseExpression,
-  parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
 
@@ -126,9 +125,10 @@ export const satisfyingSExpression = deduplicate(
       s_expression: string | ParsedExpression
     } & PatientIdentifiers,
   ): Promise<SatisfyingResult> {
+
     const node = isString(s_expression)
-      ? parseExpression(s_expression)
-      : s_expression
+        ? parseExpression(s_expression)
+        : s_expression
 
     if (isAtom(node, 'not')) {
       const any_matching = await buildExpression(trx, patient, node.expression)
@@ -156,12 +156,6 @@ function measurement(
   return baseQuery(trx, {
     ...patient,
     snomed_concept_id: '118245000',
-    qualifiers: [
-      parseExpressionExpectingAtom(
-        `(qualifier ${snomed_concept_id})`,
-        'qualifier',
-      ),
-    ],
   })
     .innerJoin(
       'patient_findings',
@@ -173,25 +167,41 @@ function measurement(
       'patient_records.id',
       'patient_measurements.id',
     )
+    .where(
+      'patient_findings.finding_snomed_concept_id',
+      '=',
+      snomed_concept_id,
+    )
 }
 
 const EXPRESSION_BUILDERS = {
   finding(
     trx,
     { patient_id, patient_encounter_id, procedure_id },
-    { snomed_concept_id, value_snomed_concept_id, qualifiers },
+    {
+      snomed_concept_id,
+      value_snomed_concept_id,
+      finding_snomed_concept_id,
+      qualifiers,
+    },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
       snomed_concept_id,
       value_snomed_concept_id,
+
       qualifiers,
     })
       .innerJoin(
         'patient_findings',
         'patient_records.id',
         'patient_findings.id',
+      )
+      .where(
+        'patient_findings.finding_snomed_concept_id',
+        '=',
+        finding_snomed_concept_id,
       )
       .$if(
         !!procedure_id,
@@ -313,8 +323,8 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id}))
-            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${YES_QUALIFIER_SNOMED_CONCEPT_ID} (qualifier ${snomed_concept_id})))
+        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${snomed_concept_id})
+            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${snomed_concept_id} ${YES_QUALIFIER_SNOMED_CONCEPT_ID}))
       `),
     )
   },

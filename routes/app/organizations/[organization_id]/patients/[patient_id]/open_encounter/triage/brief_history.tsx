@@ -117,13 +117,12 @@ export const handler = postHandler(
               .patient_encounter_employee_id,
             procedure_id,
             finding: parseExpressionExpectingAtom(
-              `
-              (finding ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${
-                patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
-              }
-                (qualifier ${patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})
-                (qualifier ${condition_snomed_concept_id}))
-            `,
+              `(finding
+                 ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID}
+                 ${condition_snomed_concept_id}
+                 ${patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]}
+                  (qualifier ${patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})
+              )`,
               'finding',
             ),
           },

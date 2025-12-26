@@ -195,7 +195,7 @@ export async function TriageMeasureVitalsPage(
 
   const snomed_concept_ids = [
     ...vital_measurements_for_this_encounter.map((o) => o.snomed_concept_id),
-    ...triage_assessments.map(a => a.assessment_snomed_concept_id),
+    ...triage_assessments.map((a) => a.assessment_snomed_concept_id),
   ]
 
   const most_recent_patient_vitals = await patient_vitals
@@ -204,7 +204,7 @@ export async function TriageMeasureVitalsPage(
       {
         health_worker_id: ctx.state.health_worker.id,
         patient_id: ctx.state.patient.id,
-        snomed_concept_ids
+        snomed_concept_ids,
       },
     )
 

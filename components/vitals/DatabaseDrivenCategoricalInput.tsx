@@ -9,7 +9,7 @@ import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 export default function DatabaseDrivenCategoricalInput({
   assessment,
   most_recent_patient_finding,
-  organization_id
+  organization_id,
 }: {
   assessment: AssessmentForForm
   most_recent_patient_finding: Maybe<RenderedFindingRelativeToHealthWorker>

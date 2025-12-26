@@ -104,7 +104,7 @@ export const VITAL_MEASUREMENTS_UNITS = {
 export const VITAL_COMPUTED_UNITS = {
   body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
-  blood_pressure: 'mmHg'
+  blood_pressure: 'mmHg',
 } satisfies {
   [v in ComputedVital]: string
 }

@@ -3275,7 +3275,8 @@ export type VitalMeasurementFormInputDefition = {
   units: string
 }
 
-export type RenderedVitalMeasurement = RenderedFindingRelativeToHealthWorker
+export type RenderedVitalMeasurement =
+  & RenderedFindingRelativeToHealthWorker
   & {
     value: string | number
     units: string

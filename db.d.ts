@@ -1173,6 +1173,7 @@ export interface PatientFindingMediaSpeeches {
 }
 
 export interface PatientFindings {
+  finding_snomed_concept_id: Int8
   id: string
   patient_encounter_employee_id: string
   procedure_id: string

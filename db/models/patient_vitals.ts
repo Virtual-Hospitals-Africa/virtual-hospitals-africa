@@ -1,18 +1,13 @@
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
-RenderedFindingRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
   TrxOrDb,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
-import {
-  IdSelection,
-} from '../../types.ts'
-import {
-  debugLog,
-  jsonObjectFrom,
-} from '../helpers.ts'
+import { IdSelection } from '../../types.ts'
+import { debugLog, jsonObjectFrom } from '../helpers.ts'
 import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -21,7 +16,6 @@ import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-
 
 export function baseQuery(
   trx: TrxOrDb | QueryCreator<DB>,
@@ -121,7 +115,7 @@ export const patient_vitals = base({
             ]),
         ).$notNull().as('provider'),
       ])
-    
+
     debugLog(query)
 
     const findings = await query.execute()

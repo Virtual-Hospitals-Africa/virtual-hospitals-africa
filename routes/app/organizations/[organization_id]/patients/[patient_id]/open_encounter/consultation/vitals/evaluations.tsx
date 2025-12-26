@@ -46,7 +46,9 @@ export const handler = postHandler(
 )
 
 // deno-lint-ignore require-await
-export async function VitalsEvaluationsPage(_ctx: OpenEncounterWorkflowContext) {
+export async function VitalsEvaluationsPage(
+  _ctx: OpenEncounterWorkflowContext,
+) {
   return <>TODO: reimplement</>
   // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 

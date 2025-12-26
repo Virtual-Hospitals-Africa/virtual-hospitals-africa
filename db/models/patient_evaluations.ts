@@ -1,13 +1,6 @@
 import { sql } from 'kysely'
-import {
-  IdSelection,
-  Priority,
-  TrxOrDb,
-} from '../../types.ts'
-import {
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { IdSelection, Priority, TrxOrDb } from '../../types.ts'
+import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'

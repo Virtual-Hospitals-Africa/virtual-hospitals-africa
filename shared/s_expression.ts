@@ -8,14 +8,14 @@ type SExpressionNode = {
   args: Array<string | SExpressionNode>
 }
 
-function recursiveFoo(parsed: SExpressionSimpleNode): SExpressionNode {
+function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
   assert(Array.isArray(parsed))
   const [atom, ...rest] = parsed
 
   assert(isString(atom))
   const args = rest.map((item) => {
     if (isString(item)) return item
-    if (Array.isArray(item)) return recursiveFoo(item)
+    if (Array.isArray(item)) return recursiveTreePass(item)
     throw new Error(`Unexpected ${item}`)
   })
 
@@ -32,8 +32,13 @@ export function parseExpression(
     throw parsed
   }
 
-  const first_pass = recursiveFoo(parsed)
-  return schemas.any_expression.parse(first_pass)
+  const first_pass = recursiveTreePass(parsed)
+  try {
+    return schemas.any_expression.parse(first_pass)
+  } catch (err) {
+    console.log(expression)
+    throw new Error('failure to parse')
+  }
 }
 
 export type ParsedExpression = ReturnType<typeof parseExpression>
@@ -49,19 +54,35 @@ export function isAtom<T extends Atom>(
   return obj.atom === atom
 }
 
+function schemaByAtom(atom: Atom) {
+  switch (atom) {
+      case '>':
+      case '<':
+      case '>=':
+      case '<=':
+      case '=':
+        return schemas.comparator
+      default:
+        return schemas[atom]
+  }
+}
+
 export function parseExpressionExpectingAtom<
   T extends Atom,
 >(
   expression: string,
   atom: T,
 ): ParsedExpression & { atom: T } {
-  const result = parseExpression(expression)
-  if (isAtom(result, atom)) {
-    return result
+  const parsed = s_expression(expression) as SExpressionSimpleNode
+  if (parsed instanceof Error) {
+    throw parsed
   }
-  throw new Error(
-    `Expected top-level node to be "${atom}", got: ${
-      JSON.stringify(result.atom)
-    }`,
-  )
+
+  const first_pass = recursiveTreePass(parsed)
+
+  const second_pass = schemaByAtom(atom).parse(first_pass)
+
+  assert(isAtom(second_pass, atom))
+  
+  return second_pass
 }

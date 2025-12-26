@@ -10,7 +10,7 @@ export function VitalsMeasurementsForm({
   vital_measurements_for_this_encounter,
   triage_assessments,
   most_recent_patient_vitals,
-  organization_id
+  organization_id,
 }: {
   vital_measurements_for_this_encounter: VitalMeasurementFormInputDefition[]
   triage_assessments: AssessmentForForm[]
@@ -62,7 +62,8 @@ export function VitalsMeasurementsForm({
               vital={vital}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.qualifiers[0].snomed_concept_id === vital.snomed_concept_id,
+                  patient_vital.qualifiers[0].snomed_concept_id ===
+                    vital.snomed_concept_id,
               )}
               organization_id={organization_id}
             />
