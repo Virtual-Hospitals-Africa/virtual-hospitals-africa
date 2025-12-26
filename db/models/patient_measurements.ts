@@ -1,11 +1,9 @@
 import {
   IdSelection,
-  PreviouslyCompletedProcedures,
   RenderedVitalMeasurement,
   TrxOrDb,
 } from '../../types.ts'
 import {
-  blankSelection,
   debugLog,
   jsonObjectFrom,
   literalString,
@@ -29,10 +27,7 @@ type MeasurementInsert = {
   patient_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
-  employment_id: string
-  workflow_snomed_concept_id: string
-  workflow_step_snomed_concept_id: string | null
-  previously_completed_procedures: PreviouslyCompletedProcedures
+  procedure_id: string
   measurement_equality: ParsedExpressionOf<'='>
 }
 
@@ -97,10 +92,7 @@ export const patient_measurements = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       measurement_equality: {
         left: { snomed_concept_id },
         right: units,
@@ -109,56 +101,27 @@ export const patient_measurements = base({
   ) {
     assert(units.atom === 'units')
 
-    const previously_completed_procedure_record_id =
-      workflow_step_snomed_concept_id
-        ? previously_completed_procedures.workflow_step_record_id
-        : previously_completed_procedures.workflow_record_id
-
-    const procedure_id = previously_completed_procedure_record_id ||
-      generateUUID()
-
     const measurement_id = generateUUID()
 
     return trx.with(
-      'inserting_procedure_record',
+      'inserting_finding_records',
       (qb) =>
-        !previously_completed_procedure_record_id
-          ? qb.insertInto('patient_records')
-            .values({
-              id: procedure_id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id: workflow_step_snomed_concept_id ||
-                workflow_snomed_concept_id,
-            })
-          : blankSelection(qb),
-    ).with(
-      'inserting_procedure',
-      (qb) =>
-        !previously_completed_procedure_record_id
-          ? qb.insertInto('patient_procedures')
-            .values({
-              id: procedure_id,
-              employment_id,
-              by_system: false,
-            })
-          : blankSelection(qb),
-    ).with('inserting_finding_records', (qb) =>
-      qb.insertInto('patient_records')
-        .values({
-          id: measurement_id,
-          patient_id,
-          patient_encounter_id,
-          snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
-          value_snomed_concept_id: null,
-        })).with('inserting_findings', (qb) =>
-        qb.insertInto('patient_findings')
+        qb.insertInto('patient_records')
           .values({
             id: measurement_id,
-            procedure_id,
-            patient_encounter_employee_id,
-            finding_snomed_concept_id: snomed_concept_id,
-          }))
+            patient_id,
+            patient_encounter_id,
+            snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+            value_snomed_concept_id: null,
+          }),
+    ).with('inserting_findings', (qb) =>
+      qb.insertInto('patient_findings')
+        .values({
+          id: measurement_id,
+          procedure_id,
+          patient_encounter_employee_id,
+          finding_snomed_concept_id: snomed_concept_id,
+        }))
       .with(
         'inserting_measurements',
         (qb) =>
@@ -183,10 +146,7 @@ export const patient_measurements = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       measurement_equality,
     }: MeasurementInsert,
   ) {
@@ -211,10 +171,7 @@ export const patient_measurements = base({
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      employment_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
-      previously_completed_procedures,
+      procedure_id,
       measurement_equality,
     })
   },

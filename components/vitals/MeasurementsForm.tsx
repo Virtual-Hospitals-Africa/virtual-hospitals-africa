@@ -23,14 +23,13 @@ export function VitalsMeasurementsForm({
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='mb-4'>
-        <h2 className='text-lg font-semibold text-gray-900'>
-          Triage Assessment
-        </h2>
-      </div>
-
-      {triage_assessments.length && (
-        <>
+      {!!triage_assessments.length && (
+        <div className='border-b'>
+          <div className='mb-4'>
+            <h2 className='text-lg font-semibold text-gray-900'>
+              Assessments
+            </h2>
+          </div>
           <div className='mb-2'>
             <h3 className='text-base font-semibold text-gray-900'>
               Triage Assessment (Required for TEWS Score)
@@ -48,14 +47,14 @@ export function VitalsMeasurementsForm({
               organization_id={organization_id}
             />
           ))}
-        </>
+        </div>
       )}
 
       {regular_vitals.length && (
         <>
-          <div className='mt-6 mb-2 border-t pt-4'>
+          <div className='mt-6 mb-2 pt-4'>
             <h3 className='text-base font-semibold text-gray-900'>
-              Vital Signs
+              Measurements
             </h3>
           </div>
           {regular_vitals.map((vital) => (

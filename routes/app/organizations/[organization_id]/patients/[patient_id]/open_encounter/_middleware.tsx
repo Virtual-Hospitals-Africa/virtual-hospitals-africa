@@ -367,6 +367,7 @@ export async function handler(
 
 export function assertAllPriorStepsCompleted(
   ctx: OpenEncounterWorkflowContext,
+  { attempting_to_complete_workflow }: { attempting_to_complete_workflow: boolean }
 ) {
   const { workflow, workflow_status } = ctx.state
   const workflow_steps = WORKFLOW_STEPS[workflow]
@@ -381,17 +382,19 @@ export function assertAllPriorStepsCompleted(
   )
 
   if (!incomplete_step) return
-  const is_plural = incomplete_step.endsWith('s')
-  const pretty_name = is_plural
-    ? incomplete_step
-    : incomplete_step + ' information'
+  // const is_plural = incomplete_step.endsWith('s')
+  // const pretty_name = is_plural
+  //   ? incomplete_step
+  //   : incomplete_step + ' information'
+  const pretty_name = incomplete_step.replaceAll('_', ' ').replace(' and ', ' & ')
+  const next_step = attempting_to_complete_workflow
+    ? `completing ${words(workflow).join(' ')}`
+    : 'continuing'
   const warning = encodeURIComponent(
-    `Please fill out the ${
-      pretty_name.replace('_', ' ')
-    } form before completing ${words(workflow).join(' ')}.`,
+    `Please fill out the ${pretty_name} form before ${next_step}.`,
   )
   const url = replaceParams(
-    `/app/organizations/:organization_id/patients/:patient_id/${workflow}/${incomplete_step}`,
+    `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${incomplete_step}`,
     ctx.params,
   )
   assertOrRedirect(false, `${url}?warning=${warning}`)

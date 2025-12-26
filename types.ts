@@ -3523,3 +3523,8 @@ export type TaskGroup = {
     completed: boolean
   }[]
 }
+
+export type AgeDetermination =
+  | 'adult'
+  | 'older child'
+  | 'younger child'
