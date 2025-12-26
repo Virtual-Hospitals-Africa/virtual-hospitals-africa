@@ -26,6 +26,18 @@ export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
   blood_pressure: '75367002',
 }
 
+export const VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS = {
+  consciousness: '1104441000000107',
+  mobility_assessment: '301438001',
+  trauma_presence: '417746004',
+}
+
+export const ALL_VITALS_SNOMED_CONCEPT_IDS = {
+  ...VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  ...VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
+  ...VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+}
+
 export const vitalMeasurementFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
@@ -43,12 +55,29 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
   },
 )
 
-// Triage assessments
-export const VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS = {
-  consciousness: '1104441000000107',
-  mobility_assessment: '301438001',
-  trauma_presence: '417746004',
-}
+
+export const vitalFromSnomedConceptId = memoize(
+  (snomed_concept_id: string) => {
+    for (
+      const [vital, concept_id] of entries(
+        ALL_VITALS_SNOMED_CONCEPT_IDS,
+      )
+    ) {
+      if (concept_id === snomed_concept_id) {
+        return vital
+      }
+    }
+    throw new Error(
+      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+    )
+  },
+)
+
+export const ALL_VITAL_SNOMED_CONCEPT_IDS = Object.values({
+  ...VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  ...VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
+  ...VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+})
 
 export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
 export type VitalMeasurement =

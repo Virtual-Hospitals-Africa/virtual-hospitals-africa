@@ -79,7 +79,7 @@ export const patient_vitals = base({
           .where(
             'patient_findings.finding_snomed_concept_id',
             'in',
-            snomed_concept_ids
+            snomed_concept_ids,
           )
           .select(
             sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`

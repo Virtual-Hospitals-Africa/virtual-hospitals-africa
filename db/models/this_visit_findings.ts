@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import {
-  RenderedPatientEncounter,
   RenderedFindingRelativeToHealthWorker,
+  RenderedPatientEncounter,
   TrxOrDb,
 } from '../../types.ts'
 import {

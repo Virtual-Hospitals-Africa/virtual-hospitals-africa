@@ -9,7 +9,7 @@ import { z } from 'zod'
 import * as vitals from '../../../../../../../../db/models/patient_vitals.ts'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
-// import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
+import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
@@ -76,9 +76,10 @@ const TriageMeasureVitalsSchema = z.object({
       ) => {
         assert(assessment)
         const { value_snomed_concept_id } = assessment
-        const snomed_concept_id = VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
+        const finding_snomed_concept_id =
+          VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
         const finding_expression = parseExpressionExpectingAtom(
-          `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${snomed_concept_id} ${value_snomed_concept_id})`,
+          `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding_snomed_concept_id} ${value_snomed_concept_id})`,
           'finding',
         )
         return [vital, finding_expression]
@@ -141,25 +142,25 @@ export const handler = postHandler(
         }),
     )
 
-    // // Compute derived measurements (BMI, MAP, etc.) if we have measurements
-    // if (measurement_results.length > 0) {
-    //   // Get procedure_id from first measurement result (all share same procedure)
-    //   const procedure_id =
-    //     ctx.state.previously_completed_procedures.workflow_step_record_id ||
-    //     measurement_results[0].procedure_id // Fallback if new procedure was created
+    // Compute derived measurements (BMI, MAP, etc.) if we have measurements
+    if (measurement_results.length > 0) {
+      // Get procedure_id from first measurement result (all share same procedure)
+      const procedure_id =
+        ctx.state.previously_completed_procedures.workflow_step_record_id ||
+        measurement_results[0].procedure_id // Fallback if new procedure was created
 
-    //   await patient_computed_findings.computeAndInsertDerivedMeasurements(
-    //     ctx.state.trx,
-    //     {
-    //       patient_id,
-    //       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-    //       patient_encounter_employee_id:
-    //         ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-    //       source_measurements: measurement_results,
-    //       source_procedure_id: procedure_id,
-    //     },
-    //   )
-    // }
+      await patient_computed_findings.computeAndInsertDerivedMeasurements(
+        ctx.state.trx,
+        {
+          patient_id,
+          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+          patient_encounter_employee_id:
+            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+          source_measurements: measurement_results,
+          source_procedure_id: procedure_id,
+        },
+      )
+    }
 
     await insertTasksIfNotAlreadyIdentified(
       ctx.state.trx,
