@@ -51,7 +51,7 @@ function TaskGroupCard({
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to: </span>
+            <span class='font-semibold text-gray-600'>Due to:</span>
             <MostRecentFinding
               finding={group.due_to[0]}
               organization_id={organization_id}
