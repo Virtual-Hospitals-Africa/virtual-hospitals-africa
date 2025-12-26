@@ -6,19 +6,13 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import AdditionalTasks from '../../../../../../../../islands/AdditionalTasks.tsx'
-import {
-  KEYED_ADDITIONAL_TASK_GROUPS,
-  KeyedTriggeredTaskGroup,
-} from '../../../../../../../../shared/additional_tasks.ts'
-import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
-import compact from '../../../../../../../../util/compact.ts'
 import { getTasksGroups } from '../../../../../../../../db/models/additional_tasks.ts'
 
 const TriageAdditionalTasksAndInvestigationsSchema = z.object({
   tasks: z.record(
-    z.uuid(), // procedure_id
+    z.string().uuid(), // procedure_id
     z.object({
-      action_status_evaluation_id: z.uuid(),
+      action_status_evaluation_id: z.string().uuid(),
       done: z.boolean(),
     }),
   ).optional().default({}),
@@ -45,9 +39,7 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
     encounter: ctx.state.encounter,
   })
 
-  return (
-    <AdditionalTasks task_groups={task_groups} />
-  )
+  return <AdditionalTasks task_groups={task_groups} />
 }
 
 export default OpenEncounterWorkflowPage(

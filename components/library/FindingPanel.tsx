@@ -116,7 +116,8 @@ export function FindingPanel(
           </div>
 
           {/* Notes section */}
-          {(finding.notes || []).length > 0 && (
+          {
+            /* {(finding.notes || []).length > 0 && (
             <>
               <hr className='border-gray-200' />
               <div className='flex flex-col gap-1'>
@@ -138,7 +139,8 @@ export function FindingPanel(
                 ))}
               </div>
             </>
-          )}
+          )} */
+          }
 
           {/* TODO: switch this to a referent findings section */}
           {/* Qualifiers section */}

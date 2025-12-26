@@ -16,7 +16,7 @@ describe(
           await employment.addOne(trx, {
             profession: 'nurse',
             is_admin: false,
-            organization_id: '00000000-0000-0000-0000-000000000001',
+            organization_id: '00000000-0000-1000-8000-000000000001',
             health_worker_id: health_worker.id,
           })
         },

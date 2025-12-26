@@ -411,7 +411,7 @@
 // export const SendToSchema = z.object({
 //   action: z.string().optional(),
 //   entity: z.object({
-//     id: z.uuid(),
+//     id: z.string().uuid(),
 //     type: z.string(),
 //   }).optional(),
 // }).refine(

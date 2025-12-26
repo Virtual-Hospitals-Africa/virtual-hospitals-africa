@@ -31,7 +31,7 @@
 //       const encounter = await patient_encounters
 //         .insertReturningSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_id: patient.id,
 //             employment_id: health_worker.employee_id,
@@ -122,7 +122,7 @@
 //       const encounter = await patient_encounters
 //         .insertReturningSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
 //             employment_id: health_worker.employee_id,
@@ -174,7 +174,7 @@
 //             patient_encounter_employee_id: encounter.employee.id,
 //             employee_id: health_worker.employee_id,
 //             organization: {
-//               id: '00000000-0000-0000-0000-000000000001',
+//               id: '00000000-0000-1000-8000-000000000001',
 //               name: 'VHA Test Clinic South Africa',
 //             },
 //             health_worker_id: health_worker.id,

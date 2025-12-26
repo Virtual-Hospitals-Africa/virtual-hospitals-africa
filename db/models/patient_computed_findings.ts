@@ -364,13 +364,13 @@ export async function computeAndInsertDerivedMeasurements(
         weight_kg: weight_measurement.value,
       },
       input_measurements: [
-        { record_id: height_measurement.finding_id },
-        { record_id: weight_measurement.finding_id },
+        { record_id: height_measurement.record_id },
+        { record_id: weight_measurement.record_id },
       ],
     })
     computed_findings.push(body_mass_index_result.computed_finding_id)
     computed_measurements.push({
-      finding_id: body_mass_index_result.computed_finding_id,
+      record_id: body_mass_index_result.computed_finding_id,
       snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.body_mass_index,
       value: bmi_value,
       units: VITAL_COMPUTED_UNITS.body_mass_index,
@@ -417,17 +417,17 @@ export async function computeAndInsertDerivedMeasurements(
         },
         input_measurements: [
           {
-            record_id: systolic_measurement.finding_id,
+            record_id: systolic_measurement.record_id,
           },
           {
-            record_id: diastolic_measurement.finding_id,
+            record_id: diastolic_measurement.record_id,
           },
         ],
       },
     )
     computed_findings.push(map_result.computed_finding_id)
     computed_measurements.push({
-      finding_id: map_result.computed_finding_id,
+      record_id: map_result.computed_finding_id,
       snomed_concept_id:
         VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
       value: map_value,
@@ -465,10 +465,10 @@ export async function computeAndInsertDerivedMeasurements(
         },
         input_measurements: [
           {
-            record_id: systolic_measurement.finding_id,
+            record_id: systolic_measurement.record_id,
           },
           {
-            record_id: diastolic_measurement.finding_id,
+            record_id: diastolic_measurement.record_id,
           },
         ],
       },

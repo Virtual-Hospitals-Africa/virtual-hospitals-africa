@@ -22,13 +22,13 @@ describe('db/models/prescriptions.ts', () => {
         })
         const doctor = await addTestEmployee(trx, {
           profession: 'doctor',
-          organization_id: '00000000-0000-0000-0000-000000000002',
+          organization_id: '00000000-0000-1000-8000-000000000002',
         })
 
         const { patient, ...encounter } =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
             trx,
-            '00000000-0000-0000-0000-000000000001',
+            '00000000-0000-1000-8000-000000000001',
             {
               employment_id: nurse.employee_id,
             },

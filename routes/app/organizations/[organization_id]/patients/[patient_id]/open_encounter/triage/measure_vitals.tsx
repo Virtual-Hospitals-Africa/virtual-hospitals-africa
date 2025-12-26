@@ -196,6 +196,7 @@ export async function TriageMeasureVitalsPage(
     .getMostRecent(
       ctx.state.trx,
       {
+        health_worker_id: ctx.state.health_worker.id,
         patient_id: ctx.state.patient.id,
         snomed_concept_ids: vital_measurements_for_this_encounter.map((o) =>
           o.snomed_concept_id
@@ -208,6 +209,7 @@ export async function TriageMeasureVitalsPage(
       vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
       triage_assessments={triage_assessments}
       most_recent_patient_vitals={most_recent_patient_vitals}
+      organization_id={ctx.state.organization.id}
     />
   )
 }

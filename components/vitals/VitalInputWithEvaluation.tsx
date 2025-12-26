@@ -1,4 +1,4 @@
-import { MostRecentVitalMeasurement, Priority } from '../../types.ts'
+import { Priority, RenderedVitalMeasurement } from '../../types.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
 
 import { LocalTime } from '../../islands/LocalTime.tsx'
@@ -14,7 +14,7 @@ export default function VitalInputWithEvaluation({
   computed,
   existingEvaluation,
 }: {
-  measurement: MostRecentVitalMeasurement & {
+  measurement: RenderedVitalMeasurement & {
     finding_type: 'manual' | 'computed'
   }
   computed?: boolean
@@ -26,7 +26,7 @@ export default function VitalInputWithEvaluation({
     snomed_concept_id: string
   }
 }) {
-  const name = `findings.${measurement.finding_id}`
+  const name = `findings.${measurement.record_id}`
   const has_existing_note = !!existingEvaluation?.note
 
   const getVitalName = (snomedCode: string) => {
@@ -104,7 +104,7 @@ export default function VitalInputWithEvaluation({
           />
           <HiddenInput
             name={`${name}.finding_id`}
-            value={measurement.finding_id}
+            value={measurement.record_id}
           />
         </div>
       </div>

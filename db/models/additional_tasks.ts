@@ -5,14 +5,7 @@ import { patient_evaluations } from './patient_evaluations.ts'
 
 import { satisfyingSExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-IntermediateProcedureRecord,
-  RenderedFindingRelativeToHealthWorker,
-  RenderedPatientEncounter,
-  RenderedRecordRelativeToHealthWorker,
-  TaskGroup,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import first from '../../util/first.ts'
 import { success_true } from '../helpers.ts'
@@ -109,12 +102,12 @@ export async function insertTasksIfNotAlreadyIdentified(
 
 export async function getTasksGroups(
   trx: TrxOrDb,
-  { patient_id, health_worker_id, encounter }: {
-    patient_id: string
+  { health_worker_id, encounter }: {
     health_worker_id: string
     encounter: RenderedPatientEncounter
   },
 ): Promise<TaskGroup[]> {
+  const patient_id = encounter.patient.id
   const evaluations = await patient_evaluations.findAll(trx, {
     patient_id,
     patient_encounter_id: encounter.patient_encounter_id,
@@ -139,7 +132,7 @@ export async function getTasksGroups(
 
   const { procedures, findings } = await promiseProps({
     procedures: patient_procedures.getByIds(trx, procedure_ids),
-    findings: patient_findings.getByIds(trx, finding_ids).then(findings => 
+    findings: patient_findings.getByIds(trx, finding_ids).then((findings) =>
       hydrateIntermediateRecords(trx, {
         records: findings,
         encounter,

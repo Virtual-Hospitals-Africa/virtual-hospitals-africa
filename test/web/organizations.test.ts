@@ -32,7 +32,7 @@ describe(
       assertEquals(json.results.length, 2)
       const [test_clinic, test_virtual_hospital] = json.results
       assertMatches(test_clinic, {
-        id: '00000000-0000-0000-0000-000000000001',
+        id: '00000000-0000-1000-8000-000000000001',
         name: 'VHA Test Clinic South Africa',
         category: 'Clinic',
         is_test: true,
@@ -48,7 +48,7 @@ describe(
         most_common_language_code: 'nso',
       })
       assertMatches(test_virtual_hospital, {
-        id: '00000000-0000-0000-0000-000000000002',
+        id: '00000000-0000-1000-8000-000000000002',
         name: 'VHA Test Regional Medical Center South Africa',
         category: 'Regional Medical Center',
         is_test: true,

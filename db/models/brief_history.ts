@@ -20,7 +20,6 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {

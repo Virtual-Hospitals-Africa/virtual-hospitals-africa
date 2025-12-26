@@ -23,7 +23,7 @@ import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import {
   Existence,
   MostRecentBriefHistoryFindings,
-  RenderedFindingRelativeToHealthWorker,
+  RenderedBriefHistoryRelativeToHealthWorker,
   Sex,
 } from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
@@ -141,7 +141,7 @@ export const handler = postHandler(
 function CommonConditionRow(
   { condition, most_recent_finding, sex, organization_id }: {
     condition: (typeof COMMON_CONDITIONS)[number]
-    most_recent_finding: RenderedFindingRelativeToHealthWorker | null
+    most_recent_finding: RenderedBriefHistoryRelativeToHealthWorker | null
     sex: Sex
     organization_id: string
   },

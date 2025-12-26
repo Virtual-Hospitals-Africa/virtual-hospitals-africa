@@ -8,8 +8,8 @@ import * as organizations from '../../db/models/organizations.ts'
 
 export const TEST_ORGANIZATION_UUIDS = {
   ZA: {
-    clinic: '00000000-0000-0000-0000-000000000001',
-    hospital: '00000000-0000-0000-0000-000000000002',
+    clinic: '00000000-0000-1000-8000-000000000001',
+    hospital: '00000000-0000-1000-8000-000000000002',
   },
 }
 

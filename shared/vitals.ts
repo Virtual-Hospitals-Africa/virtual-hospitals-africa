@@ -20,11 +20,6 @@ export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   head_circumference: '363812007',
 }
 
-// export const VITAL_MEASUREMENTS_PROMPT_WHEN = mapEntries({
-//   height: `(or (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
-//                (> (days_ago (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height})) (units 365 days)))`,
-// }, ([, expression]) => parseExpression(expression))
-
 export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
   body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
@@ -109,8 +104,9 @@ export const VITAL_MEASUREMENTS_UNITS = {
 export const VITAL_COMPUTED_UNITS = {
   body_mass_index: 'kg/m²',
   mean_arterial_pressure: 'mmHg',
+  blood_pressure: 'mmHg'
 } satisfies {
-  [v in ComputedVital]?: string
+  [v in ComputedVital]: string
 }
 
 /**

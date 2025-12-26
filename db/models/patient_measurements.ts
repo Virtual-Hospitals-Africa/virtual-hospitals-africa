@@ -1,12 +1,12 @@
 import {
   IdSelection,
-  MostRecentVitalMeasurement,
   PreviouslyCompletedProcedures,
+  RenderedVitalMeasurement,
   TrxOrDb,
 } from '../../types.ts'
 import {
   blankSelection,
-  jsonArrayFrom,
+  debugLog,
   jsonObjectFrom,
   literalString,
   success_true,
@@ -22,6 +22,7 @@ import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import assertLength from '../../util/assertLength.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
+import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement finding (finding)|
 
@@ -51,18 +52,6 @@ export function baseQuery(
     ])
 }
 
-function valueDisplay(
-  { value, units }: { value: string | number; units: string },
-): string {
-  switch (units) {
-    case '°C':
-    case '%':
-      return `${value}${units}`
-    default:
-      return `${value} ${units}`
-  }
-}
-
 export const patient_measurements = base({
   top_level_table: 'patient_findings',
   baseQuery,
@@ -75,10 +64,7 @@ export const patient_measurements = base({
 
     return {
       ...measurement_intermediate,
-      value_display: buildValueDisplay({
-        ...measurement_intermediate,
-        value_name: valueDisplay(measurement_intermediate),
-      }),
+      value_display: buildValueDisplay(measurement_intermediate),
     }
   },
   handleSearch(
@@ -250,56 +236,43 @@ export const patient_measurements = base({
   },
   async getMostRecent(
     trx: TrxOrDb,
-    { patient_id, snomed_concept_ids }: {
+    { health_worker_id, patient_id, snomed_concept_ids }: {
+      health_worker_id: string
       patient_id: string
       snomed_concept_ids: string[]
     },
-  ): Promise<MostRecentVitalMeasurement[]> {
-    const findings = await trx.with(
+  ): Promise<RenderedVitalMeasurement[]> {
+    assertArrayNonEmpty(snomed_concept_ids)
+
+    const query = trx.with(
       'ranked_findings',
       (qb) =>
-        qb.selectFrom('patient_records')
-          .innerJoin(
-            'patient_findings',
-            'patient_records.id',
-            'patient_findings.id',
-          )
-          .innerJoin(
-            'patient_measurements',
-            'patient_findings.id',
-            'patient_measurements.id',
-          )
+        baseQuery(qb)
           .where('patient_records.patient_id', '=', patient_id)
-          .$if(!!snomed_concept_ids.length, (qb) =>
-            qb.where(
-              'patient_records.snomed_concept_id',
-              'in',
-              snomed_concept_ids,
-            ))
-          .orderBy('patient_records.created_at', 'desc')
-          .selectAll('patient_records')
-          .select([
-            'patient_findings.patient_encounter_employee_id',
-            'patient_findings.procedure_id',
-          ])
-          .select([
-            'patient_measurements.value',
-            'patient_measurements.units',
-          ])
+          .where(
+            'patient_measurements.id',
+            'in',
+            trx.selectFrom('patient_record_qualifiers')
+              .innerJoin(
+                'patient_records',
+                'patient_records.id',
+                'patient_record_qualifiers.id',
+              )
+              .where(
+                'patient_records.snomed_concept_id',
+                'in',
+                snomed_concept_ids,
+              )
+              .select('patient_record_qualifiers.qualifies_record_id'),
+          )
           .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY snomed_concept_id ORDER BY created_at DESC)`
+            sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),
-          ),
+          )
+          .orderBy('patient_records.created_at', 'desc'),
     ).selectFrom('ranked_findings')
       .where('ranked_findings.rank', '=', 1)
-      .select([
-        'ranked_findings.id as finding_id',
-        'ranked_findings.snomed_concept_id',
-        'ranked_findings.value',
-        'ranked_findings.units',
-        'ranked_findings.created_at',
-        'ranked_findings.patient_encounter_id',
-      ])
+      .selectAll('ranked_findings')
       .select(sql<'manual'>`'manual'`.as('finding_type'))
       .select((eb) => [
         jsonObjectFrom(
@@ -308,38 +281,23 @@ export const patient_measurements = base({
               'patient_encounter_employees.id',
               '=',
               eb.ref('ranked_findings.patient_encounter_employee_id'),
-            ),
-        ).$notNull().as('provider'),
-        jsonArrayFrom(
-          eb
-            .selectFrom('patient_evaluations')
-            .innerJoin(
-              'patient_records as evaluation_records',
-              'evaluation_records.id',
-              'patient_evaluations.id',
-            )
-            .select([
-              // json_agg casts bigint to number, but when selected as a column by itself
-              // kysely reads as a string so we replicate kysely's behavior here
-              sql<string>`evaluation_records.snomed_concept_id::text`.as(
-                'snomed_concept_id',
+            ).select((eb_employees) => [
+              eb_employees('health_workers.id', '=', health_worker_id).as(
+                'is_me',
               ),
-              sql<string | null>`null`.as('note'),
-            ])
-            .whereRef(
-              'ranked_findings.id',
-              '=',
-              'patient_evaluations.evaluates_record_id',
-            ),
-        ).as('evaluations'),
+            ]),
+        ).$notNull().as('provider'),
       ])
-      .execute()
+    
+    debugLog(query)
 
-    return findings.map(({ value, units, ...finding }) => ({
+    const findings = await query.execute()
+
+    console.log({ z: 'welkwlekklewlkew', findings })
+
+    return findings.map((finding) => ({
       ...finding,
-      value_display: valueDisplay(
-        { value, units },
-      ),
+      value_display: buildValueDisplay(finding),
     }))
   },
 })

@@ -2,21 +2,46 @@ import { assert } from 'std/assert/assert.ts'
 import { Maybe } from '../types.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import partition from '../util/partition.ts'
+import assertLength from '../util/assertLength.ts'
 
 type DisplayableRecord = {
   name: string
   value_name?: Maybe<string>
+  value?: Maybe<number | string>
+  units?: Maybe<string>
   qualifiers: DisplayableRecord[]
 }
 
+function measurementValueDisplay(
+  { value, units }: { value: string | number; units: string },
+): string {
+  switch (units) {
+    case '°C':
+    case '%':
+      return `${value}${units}`
+    default:
+      return `${value} ${units}`
+  }
+}
+
 export function buildValueDisplay(
-  record: DisplayableRecord,
+  { name, qualifiers, value_name, value, units }: DisplayableRecord,
 ): string {
   const [attribute_qualifiers, prefix_qualifiers] = partition(
-    record.qualifiers || [],
+    qualifiers || [],
     (q) => !!q.value_name,
   )
-  let value_display = record.name
+
+  // For measurements skip the "Measurement finding" bit
+  if (value != null) {
+    assert(units)
+    assertLength(prefix_qualifiers, 1)
+    return `${buildValueDisplay(prefix_qualifiers[0])}: ${
+      measurementValueDisplay({ value, units })
+    }`
+  }
+
+  let value_display = name
   prefix_qualifiers.forEach((prefix_qualifier) => {
     assert(!prefix_qualifier.value_name)
     const qualifier_value_display = buildValueDisplay(prefix_qualifier)
@@ -29,8 +54,10 @@ export function buildValueDisplay(
   //   value_display +=
   //     ` ${attribute_qualifier.name} ${attribute_qualifier.value_name}`
   // })
-  if (record.value_name) {
-    value_display += `: ${record.value_name}`
+  if (value_name) {
+    assert(!value)
+    assert(!units)
+    value_display += `: ${value_name}`
   }
   return value_display
 }

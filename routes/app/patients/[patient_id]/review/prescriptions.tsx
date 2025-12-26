@@ -15,7 +15,7 @@ const PrescriptionsSchema = z.object({
   prescriptions: z.record(
     z.string(),
     z.object({
-      patient_condition_id: z.uuid(),
+      patient_condition_id: z.string().uuid(),
       route: z.string(),
       strength: z.number(),
       special_instructions: z.string().optional(),

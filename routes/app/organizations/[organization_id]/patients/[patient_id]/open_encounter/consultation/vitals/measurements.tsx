@@ -14,7 +14,7 @@ import { VitalsMeasurementsForm } from '../../../../../../../../../components/vi
 
 const VitalsMeasurementSchema = z.object({
   findings: z.record(
-    z.uuid(),
+    z.string().uuid(),
     z.object({
       snomed_concept_id,
       value: z.number().positive().optional(),
@@ -82,35 +82,39 @@ export const handler = postHandler(
   },
 )
 
+// deno-lint-ignore require-await
 export async function VitalsMeasurementsPage(
-  ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowContext,
 ) {
-  const vital_measurements_for_this_encounter = await vitals
-    .measurementsNeededForTriageEncounter(
-      ctx.state.trx,
-      ctx.state.patient,
-      // TODO actually get these
-      [],
-    )
+  return <>TODO: reimplement, maybe</>
+  // const vital_measurements_for_this_encounter = await vitals
+  //   .measurementsNeededForTriageEncounter(
+  //     ctx.state.trx,
+  //     ctx.state.patient,
+  //     // TODO actually get these
+  //     [],
+  //   )
 
-  const most_recent_patient_vitals = await patient_measurements
-    .getMostRecent(
-      ctx.state.trx,
-      {
-        patient_id: ctx.state.patient.id,
-        snomed_concept_ids: vital_measurements_for_this_encounter.map((o) =>
-          o.snomed_concept_id
-        ),
-      },
-    )
+  // const most_recent_patient_vitals = await patient_measurements
+  //   .getMostRecent(
+  //     ctx.state.trx,
+  //     {
+  //       patient_id: ctx.state.patient.id,
+  //       health_worker_id: ctx.state.health_worker.id,
+  //       snomed_concept_ids: vital_measurements_for_this_encounter.map((o) =>
+  //         o.snomed_concept_id
+  //       ),
+  //     },
+  //   )
 
-  return (
-    <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
-      most_recent_patient_vitals={most_recent_patient_vitals}
-      triage_assessments={[]}
-    />
-  )
+  // return (
+  //   <VitalsMeasurementsForm
+  //     vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
+  //     most_recent_patient_vitals={most_recent_patient_vitals}
+  //     triage_assessments={[]}
+  //     organization_id={ctx.state.organization_employment.id}
+  //   />
+  // )
 }
 
 export default OpenEncounterWorkflowPage(VitalsMeasurementsPage)

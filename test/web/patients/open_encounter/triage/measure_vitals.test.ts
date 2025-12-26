@@ -124,29 +124,29 @@ describe('triage/measure_vitals', () => {
       assertMatches(measurements, [
         {
           'type': 'finding',
-          'record_id': z.uuid(),
+          'record_id': z.string().uuid(),
           'created_at': z.date(),
           'snomed_concept_id': '118245000',
-          'patient_encounter_id': z.uuid(),
-          'patient_encounter_employee_id': z.uuid(),
+          'patient_encounter_id': z.string().uuid(),
+          'patient_encounter_employee_id': z.string().uuid(),
           'name': 'Measurement finding',
           'category': 'finding',
           'destination_relations': [],
           'source_relations': [
             {
-              'source_id': z.uuid(),
+              'source_id': z.string().uuid(),
               'snomed_concept_id': '42752001',
             },
           ],
           'as_part_of_procedure': {
-            'record_id': z.uuid(),
+            'record_id': z.string().uuid(),
             'snomed_concept_id': '410188000',
             'name': 'Taking patient vital signs assessment',
           },
           'priority': null,
           'qualifiers': [
             {
-              'record_id': z.uuid(),
+              'record_id': z.string().uuid(),
               'snomed_concept_id': '103228002',
               'category': 'observable entity',
               'name': 'Hemoglobin saturation with oxygen',
@@ -174,11 +174,11 @@ describe('triage/measure_vitals', () => {
 
       assertMatches(action_status, {
         'type': 'evaluation',
-        'record_id': z.uuid(),
+        'record_id': z.string().uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '385641008',
-        'patient_encounter_id': z.uuid(),
-        'evaluates_record_id': z.uuid(),
+        'patient_encounter_id': z.string().uuid(),
+        'evaluates_record_id': z.string().uuid(),
         'employment_id': null,
         'by_system': true,
         'name': 'Action status',
@@ -188,7 +188,7 @@ describe('triage/measure_vitals', () => {
         'qualifiers': [],
         'source_relations': [],
         'destination_relations': [{
-          'destination_id': z.uuid(),
+          'destination_id': z.string().uuid(),
           'snomed_concept_id': '42752001',
         }],
       }, { strict: true })
@@ -199,10 +199,10 @@ describe('triage/measure_vitals', () => {
       )
 
       assertMatches(planned_procedure, {
-        'record_id': z.uuid(),
+        'record_id': z.string().uuid(),
         'created_at': z.date(),
         'snomed_concept_id': '57485005',
-        'patient_encounter_id': z.uuid(),
+        'patient_encounter_id': z.string().uuid(),
         'name': 'Oxygen therapy',
         'value_snomed_concept_id': null,
         'value_name': null,

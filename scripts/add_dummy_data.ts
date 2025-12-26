@@ -478,7 +478,7 @@
 
 //   //   await inventory.addOrganizationMedicine(
 //   //     db,
-//   //     '00000000-0000-0000-0000-000000000001',
+//   //     '00000000-0000-1000-8000-000000000001',
 //   //     {
 //   //       created_by: admin.employee_id!,
 //   //       manufactured_medication_id: manufactured_medication.id,
@@ -498,13 +498,13 @@
 // async function addDummyData() {
 //   /*const { admin, nurses } = */
 //   await addPatientsToWaitingRoom({
-//     rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+//     rural_clinic_organization_id: '00000000-0000-1000-8000-000000000001',
 //     _requesting_review_of_organization_id:
-//       '00000000-0000-0000-0000-000000000002',
+//       '00000000-0000-1000-8000-000000000002',
 //   })
 
 //   // await addPatientsToWaitingRoom({
-//   //   rural_clinic_organization_id: '00000000-0000-0000-0000-000000000001',
+//   //   rural_clinic_organization_id: '00000000-0000-1000-8000-000000000001',
 //   //   requesting_review_of_organization_id:
 //   //     '94f25f33-a472-4743-959d-403796ee9ad4',
 //   // })

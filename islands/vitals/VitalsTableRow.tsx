@@ -34,7 +34,7 @@
 //   is_component_of_computed,
 //   vitalDisplayName,
 // }: VitalsTableRowProps) {
-//   const name = `findings.${measurement.finding_id}`
+//   const name = `findings.${measurement.record_id}`
 //   const has_existing_note = !!measurement.evaluation?.note
 //   const show_note = useSignal(has_existing_note)
 //   const value = measurement.value_display ? parseFloat(measurement.value_display) : NaN
@@ -120,7 +120,7 @@
 //             />
 //             <HiddenInput
 //               name={`${name}.finding_id`}
-//               value={measurement.finding_id}
+//               value={measurement.record_id}
 //             />
 //           </div>
 //         </td>

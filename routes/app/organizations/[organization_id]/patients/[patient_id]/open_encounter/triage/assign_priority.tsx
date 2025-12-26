@@ -19,7 +19,7 @@ import { JSX } from 'preact/jsx-runtime'
 import entries from '../../../../../../../../util/entries.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { ReferenceRange } from '../../../../../../../../db/models/automated_evaluation.ts'
-import { MostRecentVitalMeasurement } from '../../../../../../../../types.ts'
+import { RenderedVitalMeasurement } from '../../../../../../../../types.ts'
 import {
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
@@ -27,13 +27,13 @@ import {
 } from '../../../../../../../../shared/vitals.ts'
 
 // Extended measurement type with snomed_canonical_name (included in DB query results)
-type VitalMeasurementWithCanonicalName = MostRecentVitalMeasurement & {
+type VitalMeasurementWithCanonicalName = RenderedVitalMeasurement & {
   snomed_canonical_name: string
 }
 
 // Synthetic finding created for categorical assessments not in recent_measurements
 type CategoricalAssessmentFinding = {
-  finding_id: string
+  record_id: string
   snomed_canonical_name: string
   snomed_concept_id: string
   value_display: string
@@ -57,100 +57,101 @@ export const handler = postHandler(
 export async function TriageAssignPriorityPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
+  return null
+  // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const recent_measurements = await patient_evaluations
-    .getMostRecentVitalsWithEvaluations(ctx.state.trx, {
-      patient_id,
-    })
+  // const recent_measurements = await patient_evaluations
+  //   .getMostRecentVitalsWithEvaluations(ctx.state.trx, {
+  //     patient_id,
+  //   })
 
-  const measurement_snomed_codes = recent_measurements.map((m) =>
-    m.snomed_concept_id
-  )
+  // const measurement_snomed_codes = recent_measurements.map((m) =>
+  //   m.snomed_concept_id
+  // )
 
-  const height_measurement = ctx.state.patient.most_recent_height_cm_measurement
+  // const height_measurement = ctx.state.patient.most_recent_height_cm_measurement
 
-  // Fetch data in parallel for optimal performance
-  const { previous_measurements, reference_ranges, tews_result } =
-    await promiseProps({
-      previous_measurements: patient_evaluations.getPreviousVitalMeasurements(
-        ctx.state.trx,
-        {
-          patient_id,
-        },
-      ),
-      reference_ranges: automated_evaluation.getApplicableReferenceRanges(
-        ctx.state.trx,
-        {
-          measurement_snomed_codes,
-          patient_context: {
-            age_days: ctx.state.patient.age_days ?? 0,
-            gender: ctx.state.patient.gender,
-          },
-        },
-      ),
-      tews_result: sats_triage_scoring.calculateTEWSFromDatabase(
-        ctx.state.trx,
-        {
-          patient_id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          age_days: ctx.state.patient.age_days ?? null,
-          height_cm: height_measurement ? parseFloat(height_measurement) : null,
-        },
-      ),
-    })
+  // // Fetch data in parallel for optimal performance
+  // const { previous_measurements, reference_ranges, tews_result } =
+  //   await promiseProps({
+  //     previous_measurements: patient_evaluations.getPreviousVitalMeasurements(
+  //       ctx.state.trx,
+  //       {
+  //         patient_id,
+  //       },
+  //     ),
+  //     reference_ranges: automated_evaluation.getApplicableReferenceRanges(
+  //       ctx.state.trx,
+  //       {
+  //         measurement_snomed_codes,
+  //         patient_context: {
+  //           age_days: ctx.state.patient.age_days ?? 0,
+  //           gender: ctx.state.patient.gender,
+  //         },
+  //       },
+  //     ),
+  //     tews_result: sats_triage_scoring.calculateTEWSFromDatabase(
+  //       ctx.state.trx,
+  //       {
+  //         patient_id,
+  //         patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+  //         age_days: ctx.state.patient.age_days ?? null,
+  //         height_cm: height_measurement ? parseFloat(height_measurement) : null,
+  //       },
+  //     ),
+  //   })
 
-  const all_findings_for_table: TableFinding[] = [
-    ...(recent_measurements as VitalMeasurementWithCanonicalName[]),
-  ]
+  // const all_findings_for_table: TableFinding[] = [
+  //   ...(recent_measurements as VitalMeasurementWithCanonicalName[]),
+  // ]
 
-  const category_map: Record<
-    string,
-    { snomed_concept_id: string; name: string }
-  > = {
-    consciousness: {
-      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
-      name: 'Consciousness',
-    },
-    mobility: {
-      snomed_concept_id:
-        VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
-      name: 'Mobility',
-    },
-    trauma: {
-      snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
-      name: 'Trauma',
-    },
-  }
+  // const category_map: Record<
+  //   string,
+  //   { snomed_concept_id: string; name: string }
+  // > = {
+  //   consciousness: {
+  //     snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.consciousness,
+  //     name: 'Consciousness',
+  //   },
+  //   mobility: {
+  //     snomed_concept_id:
+  //       VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.mobility_assessment,
+  //     name: 'Mobility',
+  //   },
+  //   trauma: {
+  //     snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS.trauma_presence,
+  //     name: 'Trauma',
+  //   },
+  // }
 
-  if (tews_result && tews_result.categorical_findings) {
-    tews_result.categorical_findings.forEach((finding) => {
-      const assessment_info = category_map[finding.category]
-      // Ensure we have info for the category and that it's not already in the measurements list
-      if (
-        assessment_info &&
-        !all_findings_for_table.some(
-          (m) => m.snomed_concept_id === assessment_info.snomed_concept_id,
-        )
-      ) {
-        all_findings_for_table.push({
-          finding_id: assessment_info.snomed_concept_id, // Use a stable ID
-          snomed_canonical_name: assessment_info.name,
-          snomed_concept_id: assessment_info.snomed_concept_id,
-          value_display: finding.display_label,
-        })
-      }
-    })
-  }
+  // if (tews_result && tews_result.categorical_findings) {
+  //   tews_result.categorical_findings.forEach((finding) => {
+  //     const assessment_info = category_map[finding.category]
+  //     // Ensure we have info for the category and that it's not already in the measurements list
+  //     if (
+  //       assessment_info &&
+  //       !all_findings_for_table.some(
+  //         (m) => m.snomed_concept_id === assessment_info.snomed_concept_id,
+  //       )
+  //     ) {
+  //       all_findings_for_table.push({
+  //         record_id: assessment_info.snomed_concept_id, // Use a stable ID
+  //         snomed_canonical_name: assessment_info.name,
+  //         snomed_concept_id: assessment_info.snomed_concept_id,
+  //         value_display: finding.display_label,
+  //       })
+  //     }
+  //   })
+  // }
 
-  return (
-    <TriageVitalsTable
-      measurements={all_findings_for_table}
-      reference_ranges={reference_ranges}
-      previous_measurements={previous_measurements}
-      tews={tews_result}
-    />
-  )
+  // return (
+  //   <TriageVitalsTable
+  //     measurements={all_findings_for_table}
+  //     reference_ranges={reference_ranges}
+  //     previous_measurements={previous_measurements}
+  //     tews={tews_result}
+  //   />
+  // )
 }
 
 // Row type for triage vitals table
@@ -268,7 +269,7 @@ function TriageVitalsTable({
       }
 
       return {
-        id: measurement.finding_id,
+        id: measurement.record_id,
         vital_name: measurement.snomed_canonical_name,
         vital_value: value_display,
         previous: previous_display || '-',
@@ -446,7 +447,7 @@ function getOrderedMeasurementsForDisplay(
 
       if (computed_measurement) {
         ordered.push(computed_measurement)
-        used_measurements.add(computed_measurement.finding_id)
+        used_measurements.add(computed_measurement.record_id)
 
         for (const component_code of item.components) {
           const component_measurement = measurements.find(
@@ -454,7 +455,7 @@ function getOrderedMeasurementsForDisplay(
           )
           if (component_measurement) {
             ordered.push(component_measurement)
-            used_measurements.add(component_measurement.finding_id)
+            used_measurements.add(component_measurement.record_id)
           }
         }
       }
@@ -462,15 +463,15 @@ function getOrderedMeasurementsForDisplay(
       const measurement = measurements.find(
         (m) => m.snomed_concept_id === item,
       )
-      if (measurement && !used_measurements.has(measurement.finding_id)) {
+      if (measurement && !used_measurements.has(measurement.record_id)) {
         ordered.push(measurement)
-        used_measurements.add(measurement.finding_id)
+        used_measurements.add(measurement.record_id)
       }
     }
   }
 
   for (const measurement of measurements) {
-    if (!used_measurements.has(measurement.finding_id)) {
+    if (!used_measurements.has(measurement.record_id)) {
       ordered.push(measurement)
     }
   }

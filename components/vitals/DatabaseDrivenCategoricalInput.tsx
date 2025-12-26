@@ -1,4 +1,4 @@
-import { Maybe, MostRecentVitalMeasurement } from '../../types.ts'
+import { Maybe, RenderedVitalMeasurement } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
@@ -11,7 +11,7 @@ export default function DatabaseDrivenCategoricalInput({
   most_recent_patient_finding,
 }: {
   assessment: AssessmentForForm
-  most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
+  most_recent_patient_finding: Maybe<RenderedVitalMeasurement>
 }) {
   const name = `assessments.${assessment.vital}`
 

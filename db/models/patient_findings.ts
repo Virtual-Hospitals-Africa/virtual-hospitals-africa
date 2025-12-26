@@ -19,7 +19,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { exists } from '../../util/exists.ts'
 import { Priority } from '../../shared/priorities.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -130,6 +129,7 @@ type PatientFindingsSearch = {
   patient_encounter_id?: string | IdSelection
   s_expression?: string | ParsedExpressionOf<'finding'>
   search?: string
+  not_measurements?: boolean
 }
 
 export const patient_findings = base({
@@ -166,6 +166,13 @@ export const patient_findings = base({
         '=',
         opts.patient_encounter_id,
       )
+    }
+    if (opts.not_measurements) {
+      qb = qb.leftJoin(
+        'patient_measurements',
+        'patient_findings.id',
+        'patient_measurements.id',
+      ).where('patient_measurements.id', 'is', null)
     }
     if (opts.s_expression) {
       qb = qb.where(

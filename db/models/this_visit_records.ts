@@ -17,12 +17,10 @@ export async function get(
     encounter: RenderedPatientEncounter
   },
 ): Promise<RenderedRecordRelativeToHealthWorker[]> {
-  // TODO also pull evaluations?
   const records = await patient_findings.findAll(trx, {
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
-    // s_expression:
-    //   `(finding (not (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID})))`,
+    not_measurements: true,
   })
 
   return records.map(
@@ -48,8 +46,6 @@ export async function get(
           ...matching_employee,
         },
         related_records: [],
-        pertaining_to_key: finding.name,
-        existence: 'Yes',
       } satisfies RenderedRecordRelativeToHealthWorker
     },
   )

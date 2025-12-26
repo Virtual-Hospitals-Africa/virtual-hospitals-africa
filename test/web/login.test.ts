@@ -105,7 +105,7 @@ describe('/login', () => {
       const response = await mock.fetch(`/app`)
       assertEquals(
         response.url,
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+        `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
       )
       const page_contents = await response.text()
       assert(page_contents.includes('First Name'))
@@ -199,7 +199,7 @@ describe('/login', () => {
         profession: 'doctor',
       })
       const response = await mock.fetch(
-        `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees?expectedTestError=1`,
+        `${route}/app/organizations/00000000-0000-1000-8000-000000000002/employees?expectedTestError=1`,
       )
       assertEquals(response.status, 403)
       await response.body?.cancel()

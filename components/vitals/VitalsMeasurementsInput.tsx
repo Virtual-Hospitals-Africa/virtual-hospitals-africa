@@ -1,6 +1,6 @@
 import {
   Maybe,
-  MostRecentVitalMeasurement,
+  RenderedVitalMeasurement,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
@@ -9,11 +9,13 @@ import { Label } from '../../components/library/Label.tsx'
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
+import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 
 export default function VitalsMeasurementsInput(
-  { vital, most_recent_patient_finding }: {
+  { vital, most_recent_patient_finding, organization_id }: {
     vital: VitalMeasurementFormInputDefition
-    most_recent_patient_finding: Maybe<MostRecentVitalMeasurement>
+    most_recent_patient_finding: Maybe<RenderedVitalMeasurement>
+    organization_id: string
   },
 ) {
   const name = `measurements.${vital.vital}`
@@ -27,18 +29,10 @@ export default function VitalsMeasurementsInput(
             label={capitalize(vital.vital)}
           />
         </Label>
-        {most_recent_patient_finding && (
-          <div className='flex text-gray-500'>
-            <a href='#' className='text-blue-500'>
-              {most_recent_patient_finding.value_display}
-            </a>
-            &nbsp;
-            <LocalTime
-              timestamp={most_recent_patient_finding.created_at}
-              expected_time_range='past'
-            />
-          </div>
-        )}
+        <MostRecentFinding
+          finding={most_recent_patient_finding}
+          organization_id={organization_id}
+        />
       </div>
       <div className='flex items-center w-32'>
         <TextInput

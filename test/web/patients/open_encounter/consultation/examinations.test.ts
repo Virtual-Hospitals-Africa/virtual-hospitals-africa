@@ -25,7 +25,7 @@
 //         )
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
 //             provider_id: health_worker.employee_id,
@@ -88,7 +88,7 @@
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
 //             provider_id: health_worker.employee_id,
@@ -178,7 +178,7 @@
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
 //             provider_id: health_worker.employee_id,
@@ -292,7 +292,7 @@
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
-//           '00000000-0000-0000-0000-000000000001',
+//           '00000000-0000-1000-8000-000000000001',
 //           {
 //             patient_name: 'Test Patient',
 //             provider_id: health_worker.employee_id,
@@ -339,7 +339,7 @@
 //             })
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
-//             '00000000-0000-0000-0000-000000000001',
+//             '00000000-0000-1000-8000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
@@ -364,7 +364,7 @@
 //             })
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
-//             '00000000-0000-0000-0000-000000000001',
+//             '00000000-0000-1000-8000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
@@ -393,7 +393,7 @@
 //           )
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
-//             '00000000-0000-0000-0000-000000000001',
+//             '00000000-0000-1000-8000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',
@@ -466,7 +466,7 @@
 //           )
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
-//             '00000000-0000-0000-0000-000000000001',
+//             '00000000-0000-1000-8000-000000000001',
 //             {
 //               patient_name: 'Test Patient',
 //               reason: 'seeking treatment',

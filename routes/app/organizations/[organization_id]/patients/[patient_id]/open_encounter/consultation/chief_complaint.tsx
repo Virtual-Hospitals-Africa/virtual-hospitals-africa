@@ -10,7 +10,7 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { ChiefComplaintSection } from '../../../../../../../../islands/chief-complaint/Section.tsx'
 
 const PatientChiefComplaintSchema = z.object({
-  altered_patient_chief_complaint_id: z.uuid().optional(),
+  altered_patient_chief_complaint_id: z.string().uuid().optional(),
   language_code: z.string().length(3),
   media_speech_id: z.string().optional(),
   note: z.string(),

@@ -52,8 +52,8 @@ function getView(ctx: OpenEncounterWorkflowContext) {
 }
 
 const ReviewRequestSchema = z.object({
-  organization_id: z.uuid().optional(),
-  doctor_id: z.uuid().optional(),
+  organization_id: z.string().uuid().optional(),
+  doctor_id: z.string().uuid().optional(),
   requester_notes: z.string().optional(),
 }).refine(
   (data) => data.organization_id || data.doctor_id,
