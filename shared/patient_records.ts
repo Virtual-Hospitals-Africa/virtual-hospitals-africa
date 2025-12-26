@@ -26,7 +26,8 @@ function measurementValueDisplay(
 }
 
 export function buildValueDisplay(
-  { name, qualifiers, finding_name, value_name, value, units }: DisplayableRecord,
+  { name, qualifiers, finding_name, value_name, value, units }:
+    DisplayableRecord,
 ): string {
   const [attribute_qualifiers, prefix_qualifiers] = partition(
     qualifiers || [],

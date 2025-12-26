@@ -4,16 +4,16 @@ import Form from '../../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   PreviouslyCompletedProcedures,
+  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
   RenderedPatientOpenEncounter,
-  RenderedRecordRelativeToHealthWorker,
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
 import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
-import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_records.ts'
+import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_findings.ts'
 import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
 import * as events from '../../../../../../../db/models/events.ts'
 
@@ -83,7 +83,7 @@ type WorkflowState = {
   previously_completed_step: boolean
   previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: RenderedPatientEncounterEmployee
-  this_visit_records: RenderedRecordRelativeToHealthWorker[]
+  this_visit_findings: RenderedFindingRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
 }
 
@@ -263,11 +263,11 @@ export async function workflowHandler(
   )
 
   const {
-    this_visit_records,
+    this_visit_findings,
     patient_history,
     previously_completed_procedures,
   } = await promiseProps({
-    this_visit_records: getThisVisitRecords(trx, {
+    this_visit_findings: getThisVisitRecords(trx, {
       encounter,
       health_worker_id: ctx.state.health_worker.id,
     }),
@@ -295,7 +295,7 @@ export async function workflowHandler(
     step,
     workflow_status,
     patient_history,
-    this_visit_records,
+    this_visit_findings,
     previously_completed_step,
     encounter_employee_presence,
     workflow_step_snomed_concept_id,
@@ -426,7 +426,7 @@ export function OpenEncounterWorkflowLayout({
             patient={ctx.state.patient}
             encounter={ctx.state.encounter}
             organization_id={ctx.state.organization.id}
-            this_visit_records={ctx.state.this_visit_records}
+            this_visit_findings={ctx.state.this_visit_findings}
             patient_history={ctx.state.patient_history}
             current_workflow_state={{
               workflow: ctx.state.workflow,

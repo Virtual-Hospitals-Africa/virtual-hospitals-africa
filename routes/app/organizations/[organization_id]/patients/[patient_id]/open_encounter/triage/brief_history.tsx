@@ -120,7 +120,9 @@ export const handler = postHandler(
               `(finding
                  ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID}
                  ${condition_snomed_concept_id}
-                 ${patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]}
+                 ${
+                patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
+              }
                   (qualifier ${patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})
               )`,
               'finding',

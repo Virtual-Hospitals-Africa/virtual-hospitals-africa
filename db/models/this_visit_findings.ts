@@ -2,13 +2,15 @@ import { assert } from 'std/assert/assert.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import {
   RenderedPatientEncounter,
-  RenderedRecordRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
   patient_findings,
   // STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
+import { patient_measurements } from './patient_measurements.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export async function get(
   trx: TrxOrDb,
@@ -16,12 +18,21 @@ export async function get(
     health_worker_id: string
     encounter: RenderedPatientEncounter
   },
-): Promise<RenderedRecordRelativeToHealthWorker[]> {
-  const records = await patient_findings.findAll(trx, {
-    patient_id: encounter.patient.id,
-    patient_encounter_id: encounter.patient_encounter_id,
-    not_measurements: true,
+): Promise<RenderedFindingRelativeToHealthWorker[]> {
+  const { findings, measurements } = await promiseProps({
+    findings: patient_findings.findAll(trx, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      not_measurements: true,
+    }),
+
+    measurements: patient_measurements.findAll(trx, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+    }),
   })
+
+  const records = [...findings, ...measurements]
 
   return records.map(
     (record) => {
@@ -45,8 +56,7 @@ export async function get(
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,
         },
-        related_records: [],
-      } satisfies RenderedRecordRelativeToHealthWorker
+      }
     },
   )
 }

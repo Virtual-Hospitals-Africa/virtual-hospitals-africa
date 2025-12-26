@@ -68,6 +68,7 @@ export function baseQuery(
     )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
+      'patient_findings.finding_snomed_concept_id',
       'patient_findings.patient_encounter_employee_id',
       'finding_procedure_snomed_inferred_canonical_name_and_category.name as finding_name',
 

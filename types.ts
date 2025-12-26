@@ -3340,7 +3340,7 @@ export type PatientDrawerV4Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
   organization_id: string
-  this_visit_records: RenderedRecordRelativeToHealthWorker[]
+  this_visit_findings: RenderedFindingRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
   current_workflow_state: null | {
@@ -3431,39 +3431,18 @@ export type RenderedQualifierRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
-export type RenderedRecordRelativeToHealthWorker = {
-  type: 'finding' | 'evaluation' | 'procedure'
-  record_id: string
-  patient_encounter_id: string
-  snomed_concept_id: string
-  name: string
-  priority: Priority | null
-  value_display: string
-  created_at: Date | string
-  provider: RenderedFindingProvider
-  category: SnomedCategory
-  as_part_of_procedure: AsPartOfProcedure
-  qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  related_records: RenderedRecordRelativeToHealthWorker[]
-}
-
 export type RenderedFindingRelativeToHealthWorker = {
   record_id: string
   patient_encounter_id: string
   snomed_concept_id: string
+  finding_snomed_concept_id: string
   name: string
   value_display: string
   created_at: Date | string
+  priority: Priority | null
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  // notes?: {
-  //   note: string
-  //   created_at: Date
-  //   provider: RenderedFindingProvider & {
-  //     is_same_person_who_made_originally_noted_finding: boolean
-  //   }
-  // }[]
 }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =

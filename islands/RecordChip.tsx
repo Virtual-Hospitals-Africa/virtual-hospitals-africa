@@ -1,5 +1,5 @@
 import { useRef } from 'preact/hooks'
-import { RenderedRecordRelativeToHealthWorker } from '../types.ts'
+import { RenderedFindingRelativeToHealthWorker } from '../types.ts'
 import { FindingPanel } from '../components/library/FindingPanel.tsx'
 import { useSignal } from '@preact/signals'
 import cls from '../util/cls.ts'
@@ -7,7 +7,7 @@ import { PRIORITY_COLORS } from '../shared/priorities.ts'
 
 export function RecordChips(
   { records, organization_id }: {
-    records: RenderedRecordRelativeToHealthWorker[]
+    records: RenderedFindingRelativeToHealthWorker[]
     organization_id: string
   },
 ) {
@@ -27,7 +27,7 @@ export function RecordChips(
 
 export function RecordChip(
   { record, organization_id }: {
-    record: RenderedRecordRelativeToHealthWorker
+    record: RenderedFindingRelativeToHealthWorker
     organization_id: string
   },
 ) {

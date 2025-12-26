@@ -8,7 +8,7 @@ import {
 } from '../../shared/workflow.ts'
 import {
   PatientDrawerV4Props,
-  RenderedRecordRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
 } from '../../types.ts'
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
@@ -17,7 +17,7 @@ import { RecordChips } from '../../islands/RecordChip.tsx'
 
 type DrawerThisVisitProps = Pick<
   PatientDrawerV4Props,
-  | 'this_visit_records'
+  | 'this_visit_findings'
   | 'encounter'
   | 'current_workflow_state'
   | 'organization_id'
@@ -25,7 +25,7 @@ type DrawerThisVisitProps = Pick<
 
 // TODO: move to models?
 function groupRecordsByWorkflows(
-  { this_visit_records, encounter, current_workflow_state }:
+  { this_visit_findings, encounter, current_workflow_state }:
     DrawerThisVisitProps,
 ): {
   workflow: Workflow
@@ -34,11 +34,11 @@ function groupRecordsByWorkflows(
     workflow_step: string
     title: string
     status: 'not started' | 'in progress' | 'completed'
-    records: RenderedRecordRelativeToHealthWorker[]
+    records: RenderedFindingRelativeToHealthWorker[]
   }[]
 }[] {
   const records_by_procedure = groupBy(
-    this_visit_records,
+    this_visit_findings,
     (record) => record.as_part_of_procedure.snomed_concept_id,
   )
 
@@ -80,7 +80,7 @@ function groupRecordsByWorkflows(
     }
   }))
 
-  const remaining_records = new Set(this_visit_records)
+  const remaining_records = new Set(this_visit_findings)
   for (const workflow of grouped_records) {
     for (const step of workflow.steps) {
       for (const record of step.records) {
@@ -101,11 +101,11 @@ function groupRecordsByWorkflows(
 
 // This Visit component showing encounter steps
 export function DrawerThisVisit(
-  { this_visit_records, encounter, current_workflow_state, organization_id }:
+  { this_visit_findings, encounter, current_workflow_state, organization_id }:
     DrawerThisVisitProps,
 ) {
   const grouped_records = groupRecordsByWorkflows({
-    this_visit_records,
+    this_visit_findings,
     encounter,
     current_workflow_state,
     organization_id,

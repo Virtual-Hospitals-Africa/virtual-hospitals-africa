@@ -19,6 +19,8 @@ export function VitalsMeasurementsForm({
 }) {
   const regular_vitals = vital_measurements_for_this_encounter
 
+  console.log({ most_recent_patient_vitals })
+
   return (
     <div className='flex flex-col gap-4'>
       <div className='mb-4'>
@@ -40,7 +42,7 @@ export function VitalsMeasurementsForm({
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.snomed_concept_id ===
+                  patient_vital.finding_snomed_concept_id ===
                     assessment.assessment_snomed_concept_id,
               )}
               organization_id={organization_id}
@@ -62,7 +64,7 @@ export function VitalsMeasurementsForm({
               vital={vital}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.qualifiers[0].snomed_concept_id ===
+                  patient_vital.finding_snomed_concept_id ===
                     vital.snomed_concept_id,
               )}
               organization_id={organization_id}

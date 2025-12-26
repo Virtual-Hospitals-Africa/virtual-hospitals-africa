@@ -125,10 +125,9 @@ export const satisfyingSExpression = deduplicate(
       s_expression: string | ParsedExpression
     } & PatientIdentifiers,
   ): Promise<SatisfyingResult> {
-
     const node = isString(s_expression)
-        ? parseExpression(s_expression)
-        : s_expression
+      ? parseExpression(s_expression)
+      : s_expression
 
     if (isAtom(node, 'not')) {
       const any_matching = await buildExpression(trx, patient, node.expression)

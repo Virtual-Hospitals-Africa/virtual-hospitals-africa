@@ -77,23 +77,12 @@ export const patient_vitals = base({
         baseQuery(qb)
           .where('patient_records.patient_id', '=', patient_id)
           .where(
-            'patient_measurements.id',
+            'patient_findings.finding_snomed_concept_id',
             'in',
-            trx.selectFrom('patient_record_qualifiers')
-              .innerJoin(
-                'patient_records',
-                'patient_records.id',
-                'patient_record_qualifiers.id',
-              )
-              .where(
-                'patient_records.snomed_concept_id',
-                'in',
-                snomed_concept_ids,
-              )
-              .select('patient_record_qualifiers.qualifies_record_id'),
+            snomed_concept_ids
           )
           .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),
           )
           .orderBy('patient_records.created_at', 'desc'),

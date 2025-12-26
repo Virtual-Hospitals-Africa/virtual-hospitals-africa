@@ -35,7 +35,7 @@ export function parseExpression(
   const first_pass = recursiveTreePass(parsed)
   try {
     return schemas.any_expression.parse(first_pass)
-  } catch (err) {
+  } catch (_err) {
     console.log(expression)
     throw new Error('failure to parse')
   }
@@ -56,14 +56,14 @@ export function isAtom<T extends Atom>(
 
 function schemaByAtom(atom: Atom) {
   switch (atom) {
-      case '>':
-      case '<':
-      case '>=':
-      case '<=':
-      case '=':
-        return schemas.comparator
-      default:
-        return schemas[atom]
+    case '>':
+    case '<':
+    case '>=':
+    case '<=':
+    case '=':
+      return schemas.comparator
+    default:
+      return schemas[atom]
   }
 }
 
@@ -83,6 +83,6 @@ export function parseExpressionExpectingAtom<
   const second_pass = schemaByAtom(atom).parse(first_pass)
 
   assert(isAtom(second_pass, atom))
-  
+
   return second_pass
 }

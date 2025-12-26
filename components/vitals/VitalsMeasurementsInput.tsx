@@ -1,6 +1,6 @@
 import {
   Maybe,
-  RenderedVitalMeasurement,
+  RenderedFindingRelativeToHealthWorker,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
@@ -13,7 +13,7 @@ import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 export default function VitalsMeasurementsInput(
   { vital, most_recent_patient_finding, organization_id }: {
     vital: VitalMeasurementFormInputDefition
-    most_recent_patient_finding: Maybe<RenderedVitalMeasurement>
+    most_recent_patient_finding: Maybe<RenderedFindingRelativeToHealthWorker>
     organization_id: string
   },
 ) {

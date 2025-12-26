@@ -36,8 +36,9 @@ export default upgradeWebsocket((
     await loop()
   }
   socket.onclose = () => clearTimeout(timeout)
-  socket.onerror = (error) => {
-    console.error('SOCKET ERROR:', error)
+  socket.onerror = (/* error */) => {
+    // TODO: distinguish between different socket errors?
+    // console.error('SOCKET ERROR:', error)
     clearTimeout(timeout)
   }
 })

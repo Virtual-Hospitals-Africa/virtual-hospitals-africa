@@ -55,21 +55,17 @@ export function baseQuery(
 export const patient_measurements = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (
-    { value_name, value_snomed_concept_id, ...measurement_intermediate },
-  ) => {
-    assert(!value_name)
-    assert(!value_snomed_concept_id)
-    assertLength(measurement_intermediate.qualifiers, 1)
-
-    return {
-      ...measurement_intermediate,
-      value_display: buildValueDisplay(measurement_intermediate),
-    }
-  },
+  formatResult: (measurement) => ({
+    ...measurement,
+    value_display: buildValueDisplay(measurement),
+  }),
   handleSearch(
     qb,
-    opts: { search?: string; patient_id: string | IdSelection },
+    opts: {
+      search?: string
+      patient_id?: string | IdSelection
+      patient_encounter_id?: string | IdSelection
+    },
   ) {
     assert(!opts.search, 'TODO support')
     if (opts.search) {
@@ -84,6 +80,13 @@ export const patient_measurements = base({
         'patient_records.patient_id',
         '=',
         opts.patient_id,
+      )
+    }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
       )
     }
 
