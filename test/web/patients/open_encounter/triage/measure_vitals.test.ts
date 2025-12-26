@@ -132,6 +132,11 @@ describe('triage/measure_vitals', () => {
           'name': 'Measurement finding',
           'category': 'finding',
           'destination_relations': [],
+          'value_snomed_concept_id': null,
+          'value_name': null,
+          'finding_snomed_concept_id': '103228002',
+          'finding_name': 'Hemoglobin saturation with oxygen',
+          'value_display': '91%',
           'source_relations': [
             {
               'source_id': z.string().uuid(),
@@ -144,20 +149,10 @@ describe('triage/measure_vitals', () => {
             'name': 'Taking patient vital signs assessment',
           },
           'priority': null,
-          'qualifiers': [
-            {
-              'record_id': z.string().uuid(),
-              'snomed_concept_id': '103228002',
-              'category': 'observable entity',
-              'name': 'Hemoglobin saturation with oxygen',
-              'value_name': null,
-              'qualifiers': [],
-            },
-          ],
+          'qualifiers': [],
           'value': '91',
           'units': '%',
-          'full_display':
-            'Hemoglobin saturation with oxygen: 91%',
+          'full_display': 'Hemoglobin saturation with oxygen: 91%',
         },
       ], { strict: true })
 
@@ -195,7 +190,7 @@ describe('triage/measure_vitals', () => {
 
       const planned_procedure = await patient_procedures.getById(
         db,
-        evaluations[1].evaluates_record_id,
+        action_status.evaluates_record_id,
       )
 
       assertMatches(planned_procedure, {
@@ -210,6 +205,7 @@ describe('triage/measure_vitals', () => {
         'source_relations': [],
         'destination_relations': [],
         'full_display': 'Oxygen therapy',
+        'value_display': 'Oxygen therapy',
         'category': 'procedure',
         'type': 'procedure',
         'by_system': true,

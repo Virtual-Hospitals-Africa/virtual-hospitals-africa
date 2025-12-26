@@ -52,7 +52,9 @@ export function buildValueDisplay(
   }
 
   const finding_display = compact([
-    ...prefix_qualifiers.map(buildValueDisplay),
+    ...prefix_qualifiers.map((qualifier) =>
+      buildValueDisplay(qualifier).full_display
+    ),
     finding_name,
     name,
   ]).join(' ')
