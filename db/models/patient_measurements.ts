@@ -1,8 +1,4 @@
-import {
-  IdSelection,
-  RenderedVitalMeasurement,
-  TrxOrDb,
-} from '../../types.ts'
+import { IdSelection, RenderedVitalMeasurement, TrxOrDb } from '../../types.ts'
 import {
   debugLog,
   jsonObjectFrom,

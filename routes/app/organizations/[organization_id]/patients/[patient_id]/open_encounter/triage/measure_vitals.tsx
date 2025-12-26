@@ -6,9 +6,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as vitals from '../../../../../../../../db/models/patient_vitals.ts'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
-import * as patient_categorical_findings from '../../../../../../../../db/models/patient_categorical_findings.ts'
 import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
@@ -17,7 +15,7 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
-  getActiveConditionsSnomedCodesFromContext,
+  measureVitalsInputDefinitions,
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
@@ -35,6 +33,10 @@ import { assert } from 'std/assert/assert.ts'
 import fromEntries from '../../../../../../../../util/fromEntries.ts'
 import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
+import { renderedMostRecentFindings } from '../../../../../../../../db/models/brief_history.ts'
+import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
+import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
+import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -86,7 +88,12 @@ const TriageMeasureVitalsSchema = z.object({
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { trx, patient, encounter: { patient_encounter_id }, encounter_employee_presence: { patient_encounter_employee_id } } = ctx.state
+    const {
+      trx,
+      patient,
+      encounter: { patient_encounter_id },
+      encounter_employee_presence: { patient_encounter_employee_id },
+    } = ctx.state
     const patient_id = patient.id
 
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
@@ -126,7 +133,6 @@ export const handler = postHandler(
 
     // Compute derived measurements (BMI, MAP, etc.) if we have measurements
     if (measurement_results.length > 0) {
-
       await patient_computed_findings.computeAndInsertDerivedMeasurements(
         trx,
         {
@@ -139,7 +145,10 @@ export const handler = postHandler(
       )
     }
 
-    await insertTasksIfNotAlreadyIdentified(trx, { patient_id, patient_encounter_id })
+    await insertTasksIfNotAlreadyIdentified(trx, {
+      patient_id,
+      patient_encounter_id,
+    })
 
     return completeAndProceedToNextStep(ctx)
   },
@@ -149,46 +158,47 @@ export async function TriageMeasureVitalsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   assertAllPriorStepsCompleted(ctx, {
-    attempting_to_complete_workflow: false
+    attempting_to_complete_workflow: false,
   })
 
-  // TODO: Ask Will if during triage we care about active conditions as far as measurements are concerned
-  const active_condition_snomed_codes =
-    getActiveConditionsSnomedCodesFromContext(
-      ctx.state.patient_history,
-    )
-
-  const [vital_measurements_for_this_encounter, triage_assessments] =
-    await Promise.all([
-      vitals.measurementsNeededForTriageEncounter(
-        ctx.state.trx,
-        ctx.state.patient,
-        active_condition_snomed_codes,
+  const { trx, health_worker, patient, encounter } = ctx.state
+  assert(completedPersonal(patient))
+  const age_determination = patientAgeDetermination(patient)
+  const patient_id = patient.id
+  const { diabetes } = await renderedMostRecentFindings(
+    trx,
+    {
+      patient_id,
+      encounter,
+      health_worker_id: health_worker.id,
+      conditions: COMMON_CONDITIONS.filter((condition) =>
+        condition.key === 'diabetes'
       ),
-      patient_categorical_findings.getTriageAssessmentsWithOptions(
-        ctx.state.trx,
-      ),
-    ])
+    },
+  )
 
-  const snomed_concept_ids = [
-    ...vital_measurements_for_this_encounter.map((o) => o.snomed_concept_id),
-    ...triage_assessments.map((a) => a.assessment_snomed_concept_id),
-  ]
+  const definitions = measureVitalsInputDefinitions({
+    age_determination,
+    has_diabetes: diabetes?.existence === 'Yes',
+  })
 
   const most_recent_patient_vitals = await patient_vitals
     .getMostRecent(
-      ctx.state.trx,
+      trx,
       {
-        health_worker_id: ctx.state.health_worker.id,
-        patient_id: ctx.state.patient.id,
-        snomed_concept_ids,
+        patient_id,
+        health_worker_id: health_worker.id,
+        snomed_concept_ids: [
+          ...definitions.measurements.map((m) => m.snomed_concept_id),
+          ...definitions.assessments.map((m) => m.snomed_concept_id),
+        ],
       },
     )
 
   return (
     <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={vital_measurements_for_this_encounter}
-      triage_assessments={triage_assessments}
+      vital_measurements_for_this_encounter={definitions.measurements}
+      triage_assessments={definitions.assessments}
       most_recent_patient_vitals={most_recent_patient_vitals}
       organization_id={ctx.state.organization.id}
     />

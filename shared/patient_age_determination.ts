@@ -4,6 +4,7 @@ import { AgeDetermination, RenderedPatientCompletedPersonal } from '../types.ts'
 export function patientAgeDetermination(
   patient: RenderedPatientCompletedPersonal,
 ): AgeDetermination {
+  console.log({ patient })
   assert(typeof patient.age_years === 'number')
   assert(patient.age_years >= 0)
   assert(patient.most_recent_height_cm_measurement != null)

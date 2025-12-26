@@ -89,7 +89,7 @@ export function baseQuery(trx: TrxOrDb) {
           eb.ref('patients.id'),
         )
         .where(
-          'patient_records.snomed_concept_id',
+          'patient_findings.finding_snomed_concept_id',
           '=',
           VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
         )

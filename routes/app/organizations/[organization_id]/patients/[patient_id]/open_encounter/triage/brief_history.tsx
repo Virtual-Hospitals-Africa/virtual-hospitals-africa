@@ -22,6 +22,7 @@ import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import {
   Existence,
+  Maybe,
   MostRecentBriefHistoryFindings,
   RenderedBriefHistoryRelativeToHealthWorker,
   Sex,
@@ -31,6 +32,7 @@ import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import {
   COMMON_CONDITIONS,
+  CommonCondition,
   CommonConditionKey,
   commonConditionSnomedConceptId,
 } from '../../../../../../../../shared/brief_history.ts'
@@ -141,8 +143,8 @@ export const handler = postHandler(
 
 function CommonConditionRow(
   { condition, most_recent_finding, sex, organization_id }: {
-    condition: (typeof COMMON_CONDITIONS)[number]
-    most_recent_finding: RenderedBriefHistoryRelativeToHealthWorker | null
+    condition: CommonCondition
+    most_recent_finding: Maybe<RenderedBriefHistoryRelativeToHealthWorker>
     sex: Sex
     organization_id: string
   },
@@ -196,7 +198,7 @@ export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   assertAllPriorStepsCompleted(ctx, {
-    attempting_to_complete_workflow: false
+    attempting_to_complete_workflow: false,
   })
   const { trx, encounter, health_worker, organization_employment } = ctx.state
   const { patient } = encounter
@@ -204,7 +206,12 @@ export async function TriageBriefHistoryPage(
 
   const most_recent_findings = await renderedMostRecentFindings(
     trx,
-    { patient_id, encounter, health_worker_id: health_worker.id },
+    {
+      patient_id,
+      encounter,
+      health_worker_id: health_worker.id,
+      conditions: COMMON_CONDITIONS,
+    },
   )
 
   assert(completedPersonal(patient))

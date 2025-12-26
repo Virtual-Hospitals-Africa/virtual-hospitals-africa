@@ -1,10 +1,10 @@
 import {
   RenderedFindingRelativeToHealthWorker,
+  VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
 import DatabaseDrivenCategoricalInput from './DatabaseDrivenCategoricalInput.tsx'
-import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
 
 export function VitalsMeasurementsForm({
   vital_measurements_for_this_encounter,
@@ -13,7 +13,7 @@ export function VitalsMeasurementsForm({
   organization_id,
 }: {
   vital_measurements_for_this_encounter: VitalMeasurementFormInputDefition[]
-  triage_assessments: AssessmentForForm[]
+  triage_assessments: VitalAssessmentFormInputDefition[]
   most_recent_patient_vitals: RenderedFindingRelativeToHealthWorker[]
   organization_id: string
 }) {
@@ -37,12 +37,12 @@ export function VitalsMeasurementsForm({
           </div>
           {triage_assessments.map((assessment) => (
             <DatabaseDrivenCategoricalInput
-              key={assessment.assessment_snomed_concept_id}
+              key={assessment.snomed_concept_id}
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
                   patient_vital.finding_snomed_concept_id ===
-                    assessment.assessment_snomed_concept_id,
+                    assessment.snomed_concept_id,
               )}
               organization_id={organization_id}
             />

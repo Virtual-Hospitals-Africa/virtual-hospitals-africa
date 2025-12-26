@@ -508,7 +508,7 @@ function asWorkflowStatus(
 
   if (!status.open) {
     if (arrayIsEmpty(seen_patient_encounter_employee_ids)) {
-      assertArrayEmpty(steps_completed)
+      assertArrayEmpty(steps_completed, 'steps_completed')
       return {
         patient_workflow_id,
         workflow,
@@ -541,7 +541,7 @@ function asWorkflowStatus(
   }
 
   if (arrayIsEmpty(seen_patient_encounter_employee_ids)) {
-    assertArrayEmpty(steps_completed)
+    assertArrayEmpty(steps_completed, 'steps_completed')
     return {
       patient_workflow_id,
       workflow,
@@ -588,7 +588,10 @@ function asPatientPresence(
   if (department_name === 'Waiting room') {
     assert(!current_workflow)
     assert(next_workflow)
-    assertArrayEmpty(present_with_patient_encounter_employee_ids)
+    assertArrayEmpty(
+      present_with_patient_encounter_employee_ids,
+      'present_with_patient_encounter_employee_ids',
+    )
     return {
       department_name,
       current_workflow,

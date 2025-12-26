@@ -1,9 +1,18 @@
+import {
+  AgeDetermination,
+  NonEmptyArray,
+  VitalAssessmentFormInputDefition,
+  VitalMeasurementFormInputDefition,
+} from '../types.ts'
 import entries from '../util/entries.ts'
+import keys from '../util/keys.ts'
 // import mapEntries from '../util/mapEntries.ts'
 import memoize from '../util/memoize.ts'
 // import { parseExpression } from './s_expression.ts'
 
-export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CODE = '61746007'
+export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
+
+export const SEVERITY_SCORE_SNOMED_CONCEPT_ID = '278305009' // |Severity score (qualifier value)|
 
 export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   height: '1153637007',
@@ -172,4 +181,156 @@ export function formatBloodPressureDisplay(
   diastolic: number,
 ): string {
   return `${systolic}/${diastolic}`
+}
+
+type TEWSScore = 0 | 1 | 2 | 3
+
+// deno-fmt-ignore
+const ASESSMENT_OPTIONS: {
+  [a in VitalAssessment]: {
+    label: string
+    score: TEWSScore
+    snomed_concept_id: string
+    available_to_ages: NonEmptyArray<AgeDetermination>
+  }[]
+} = {
+  consciousness: [
+    { label: 'Alert' as const, score: 0, snomed_concept_id: '248234008', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Reacts to voice' as const, score: 1, snomed_concept_id: '422768004', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Confused' as const, score: 2, snomed_concept_id: '40917007', available_to_ages: ['adult', 'older child'] },
+    { label: 'Reacts to pain' as const, score: 2, snomed_concept_id: '450847001', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Unresponsive' as const, score: 3, snomed_concept_id: '422107003', available_to_ages: ['adult', 'older child', 'younger child'] },
+  ],
+  mobility_assessment: [
+    { label: 'Walking' as const, score: 0, snomed_concept_id: '282144007', available_to_ages: ['adult'] },
+    { label: 'Difficulty walking' as const, score: 1, snomed_concept_id: '719232003', available_to_ages: ['adult'] },
+    { label: 'Stretcher/Immobile' as const, score: 2, snomed_concept_id: '282145008', available_to_ages: ['adult'] },
+    // TODO: get correct snomed_concept_id for these younger child
+    { label: 'Normal for age' as const, score: 0, snomed_concept_id: '1149217004', available_to_ages: ['older child', 'younger child'] },
+    { label: 'Unable to move as normal' as const, score: 2, snomed_concept_id: '1149217004', available_to_ages: ['younger child'] },
+    { label: 'Unable to walk as normal' as const, score: 2, snomed_concept_id: '1149217004', available_to_ages: ['older child'] },
+  ],
+  trauma_presence: [
+    { label: 'No' as const, score: 0, snomed_concept_id: '1149217004', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Yes' as const, score: 1, snomed_concept_id: '417746004', available_to_ages: ['adult', 'older child', 'younger child'] },
+  ],
+}
+// deno-fmt-ignore-end
+
+// deno-fmt-ignore
+const MEASUREMENT_RANGES: {
+  [a in AgeDetermination]: {
+    [v in VitalMeasurement]?: {
+      max: number
+      score: TEWSScore
+    }[]
+  }
+} = {
+  adult: {
+    respiratory_rate: [
+      { max: 9, score: 3 },
+      { max: 15, score: 0 },
+      { max: 21, score: 1 },
+      { max: 30, score: 2 },
+      { max: Infinity, score: 3 },
+    ],
+    heart_rate: [
+      { max: 41, score: 3 },
+      { max: 51, score: 1 },
+      { max: 101, score: 0 },
+      { max: 111, score: 1 },
+      { max: 130, score: 2 },
+      { max: Infinity, score: 3 },
+    ],
+    blood_pressure_systolic: [
+      { max: 71, score: 3 },
+      { max: 81, score: 2 },
+      { max: 101, score: 1 },
+      { max: 200, score: 0 },
+      { max: Infinity, score: 2 },
+    ],
+    temperature: [
+      { max: 35, score: 2 },
+      { max: 38.5, score: 0 },
+      { max: Infinity, score: 2 },
+    ],
+  },
+  'older child': {
+    respiratory_rate: [
+      { max: 15, score: 3 },
+      { max: 17, score: 2 },
+      { max: 22, score: 0 },
+      { max: 27, score: 1 },
+      { max: Infinity, score: 2 },
+    ],
+    heart_rate: [
+      { max: 60, score: 3 },
+      { max: 80, score: 2 },
+      { max: 100, score: 0 },
+      { max: 130, score: 1 },
+      { max: Infinity, score: 2 },
+    ],
+    temperature: [
+      { max: 35, score: 2 },
+      { max: 38.5, score: 0 },
+      { max: Infinity, score: 2 },
+    ],
+  },
+  'younger child': {
+    respiratory_rate: [
+      { max: 20, score: 3 },
+      { max: 26, score: 2 },
+      { max: 40, score: 0 },
+      { max: 50, score: 2 },
+      { max: Infinity, score: 3 },
+    ],
+    heart_rate: [
+      { max: 70, score: 3 },
+      { max: 80, score: 2 },
+      { max: 131, score: 0 },
+      { max: 160, score: 2 },
+      { max: Infinity, score: 3 },
+    ],
+    temperature: [
+      { max: 35, score: 2 },
+      { max: 38.5, score: 0 },
+      { max: Infinity, score: 2 },
+    ],
+  },
+}
+
+export function measureVitalsInputDefinitions(
+  { age_determination, has_diabetes }: {
+    age_determination: AgeDetermination
+    has_diabetes: boolean
+  },
+): {
+  measurements: VitalMeasurementFormInputDefition[]
+  assessments: VitalAssessmentFormInputDefition[]
+} {
+  const measurement_vitals = keys(MEASUREMENT_RANGES[age_determination])
+  if (has_diabetes) {
+    measurement_vitals.push('blood_glucose')
+  }
+
+  const measurements: VitalMeasurementFormInputDefition[] = measurement_vitals
+    .map((vital) => ({
+      vital,
+      required: true,
+      units: VITAL_MEASUREMENTS_UNITS[vital],
+      snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital],
+    }))
+
+  const assessments: VitalAssessmentFormInputDefition[] = entries(
+    ASESSMENT_OPTIONS,
+  ).map(([vital, options]) => ({
+    vital,
+    required: true,
+    snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital],
+    options: options.filter((option) =>
+      option.available_to_ages.includes(age_determination)
+    ),
+  }))
+
+  return { measurements, assessments }
 }

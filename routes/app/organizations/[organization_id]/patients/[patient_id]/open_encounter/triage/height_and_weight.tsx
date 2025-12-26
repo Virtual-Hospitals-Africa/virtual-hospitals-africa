@@ -69,7 +69,7 @@ export async function TriageHeightAndWeightPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   assertAllPriorStepsCompleted(ctx, {
-    attempting_to_complete_workflow: false
+    attempting_to_complete_workflow: false,
   })
 
   const most_recent_patient_vitals = await patient_vitals

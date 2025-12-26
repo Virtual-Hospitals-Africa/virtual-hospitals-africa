@@ -62,7 +62,6 @@ import { ComponentChild } from 'preact'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
-import { exists } from '../../../../../../../util/exists.ts'
 import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
@@ -338,13 +337,11 @@ export async function handler(
   const encounter = await findPatientOpenEncounter(ctx)
 
   const present_with_patient = presentWithPatient(encounter)
-  const encounter_employee_presence = exists(
-    present_with_patient.find(
-      matching({
-        employee_id: organization_employment.employment_id,
-      }),
-    ),
-  )
+  const encounter_employee_presence = present_with_patient.find(
+    matching({
+      employee_id: organization_employment.employment_id,
+    }),
+  ) ?? null
 
   const encounter_props: OpenEncounterState = {
     ...ctx.state,
@@ -367,7 +364,9 @@ export async function handler(
 
 export function assertAllPriorStepsCompleted(
   ctx: OpenEncounterWorkflowContext,
-  { attempting_to_complete_workflow }: { attempting_to_complete_workflow: boolean }
+  { attempting_to_complete_workflow }: {
+    attempting_to_complete_workflow: boolean
+  },
 ) {
   const { workflow, workflow_status } = ctx.state
   const workflow_steps = WORKFLOW_STEPS[workflow]
@@ -386,7 +385,10 @@ export function assertAllPriorStepsCompleted(
   // const pretty_name = is_plural
   //   ? incomplete_step
   //   : incomplete_step + ' information'
-  const pretty_name = incomplete_step.replaceAll('_', ' ').replace(' and ', ' & ')
+  const pretty_name = incomplete_step.replaceAll('_', ' ').replace(
+    ' and ',
+    ' & ',
+  )
   const next_step = attempting_to_complete_workflow
     ? `completing ${words(workflow).join(' ')}`
     : 'continuing'

@@ -76,6 +76,8 @@ export const COMMON_CONDITIONS = [
   },
 ]
 
+export type CommonCondition = typeof COMMON_CONDITIONS[number]
+
 export type CommonConditionKey = (typeof COMMON_CONDITIONS)[number]['key']
 
 export const COMMON_CONDITION_KEYS: CommonConditionKey[] = COMMON_CONDITIONS
