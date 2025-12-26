@@ -509,6 +509,7 @@ describe('triage/brief_history', () => {
         subsequent_encounter.patient_encounter_id,
         initial_encounter.patient_encounter_id,
       )
+
       assertLength(subsequent_encounter.all_employees_seen, 1)
 
       const $waiting_room_after_subsequent_encounter_start = await nurse2

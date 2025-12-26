@@ -19,6 +19,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { exists } from '../../util/exists.ts'
 import { Priority } from '../../shared/priorities.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -124,7 +125,6 @@ export function baseQuery(
 }
 
 export type IntermediateFinding = QueryResult<typeof baseQuery>
-
 type PatientFindingsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
@@ -135,7 +135,7 @@ type PatientFindingsSearch = {
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (x) => x,
+  formatResult: (finding) => finding,
   handleSearch(
     qb,
     opts: PatientFindingsSearch,

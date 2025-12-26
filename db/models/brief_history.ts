@@ -191,16 +191,11 @@ export async function renderedMostRecentFindings(
     encounter,
   })
 
-  const with_value_display = with_providers.map((finding) => ({
-    ...finding,
-    value_display: buildValueDisplay(finding),
-  }))
-
   return fromEntries(
     COMMON_CONDITION_KEYS.map(
       (condition) => [
         condition,
-        with_value_display.find((finding) =>
+        with_providers.find((finding) =>
           finding.pertaining_to_key === condition
         ) ?? null,
       ],

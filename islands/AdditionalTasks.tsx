@@ -218,11 +218,9 @@ function ProgressHeader({
 }
 
 export default function AdditionalTasks({
-  active_task_groups,
-  task_completions,
+  task_groups
 }: {
-  active_task_groups: KeyedTriggeredTaskGroup[]
-  task_completions: TaskCompletion[]
+  task_groups: TaskGroup[]
 }) {
   // Build completion map for quick lookup
   const completion_map = new Map<string, Map<string, boolean>>()

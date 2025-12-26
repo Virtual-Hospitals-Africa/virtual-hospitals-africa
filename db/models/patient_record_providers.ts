@@ -8,6 +8,7 @@ import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import { IntermediateFinding } from './patient_findings.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 export async function hydrateIntermediateRecords<
   IntermediateRecord extends IntermediateFinding,
@@ -21,6 +22,7 @@ export async function hydrateIntermediateRecords<
 ): Promise<
   Array<
     IntermediateRecord & {
+      value_display: string
       provider: RenderedFindingProvider
     }
   >
@@ -69,6 +71,7 @@ export async function hydrateIntermediateRecords<
 
       return {
         ...record,
+        value_display: buildValueDisplay(record),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

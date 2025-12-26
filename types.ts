@@ -3444,9 +3444,7 @@ export type RenderedQualifierRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
-export type RenderedRecordRelativeToHealthWorker<
-  PertainingToKey extends string = string,
-> = {
+export type RenderedRecordRelativeToHealthWorker = {
   type: 'finding' | 'evaluation' | 'procedure'
   record_id: string
   patient_encounter_id: string
@@ -3454,30 +3452,24 @@ export type RenderedRecordRelativeToHealthWorker<
   name: string
   priority: Priority | null
   value_display: string
-  pertaining_to_key: PertainingToKey
   created_at: Date | string
   provider: RenderedFindingProvider
   category: SnomedCategory
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  existence: Existence
   related_records: RenderedRecordRelativeToHealthWorker[]
 }
 
-export type RenderedFindingRelativeToHealthWorker<
-  PertainingToKey extends string = string,
-> = {
+export type RenderedFindingRelativeToHealthWorker = {
   record_id: string
   patient_encounter_id: string
   snomed_concept_id: string
   name: string
   value_display: string
-  pertaining_to_key: PertainingToKey
   created_at: Date | string
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  existence: Existence
   notes?: {
     note: string
     created_at: Date
@@ -3485,6 +3477,11 @@ export type RenderedFindingRelativeToHealthWorker<
       is_same_person_who_made_originally_noted_finding: boolean
     }
   }[]
+}
+
+export type RenderedBriefHistoryRelativeToHealthWorker<PertainingToKey extends string> = RenderedFindingRelativeToHealthWorker & {
+  pertaining_to_key: PertainingToKey
+  existence: Existence
 }
 
 export type AppUser = Profession | 'admin' | 'regulator'
@@ -3511,7 +3508,7 @@ type QualifierIntermediate =
 export type Existence = 'Yes' | 'No' | 'Unknown'
 
 export type MostRecentBriefHistoryFindings = {
-  [c in CommonConditionKey]: null | RenderedFindingRelativeToHealthWorker
+  [c in CommonConditionKey]: null | RenderedBriefHistoryRelativeToHealthWorker<CommonConditionKey>
 }
 
 export type WarningSign = {
@@ -3555,4 +3552,12 @@ export type RenderedRoom = {
     name: string | null
   }
   // employees: RenderedEmployee[]
+}
+
+export type TaskGroup = {
+  due_to: RenderedFindingRelativeToHealthWorker[]
+  tasks: {
+    task: IntermediateProcedureRecord
+    completed: boolean
+  }[]
 }
