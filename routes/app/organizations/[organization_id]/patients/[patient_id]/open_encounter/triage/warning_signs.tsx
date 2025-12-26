@@ -53,20 +53,6 @@ export const handler = postHandler(
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
-    if (!form_values.warning_signs.length) {
-      await insertLevel(
-        ctx.state.trx,
-        {
-          patient_id: ctx.state.patient.id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          employment_id: ctx.state.encounter_employee_presence.employee_id,
-          procedure_id,
-          evaluates_record_id: procedure_id,
-          triage_level: 'Non-urgent',
-        },
-      )
-    }
-
     await forEach(
       form_values.warning_signs,
       async ({ key, finding }) => {
