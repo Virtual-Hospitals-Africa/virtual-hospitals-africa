@@ -9,8 +9,10 @@ import { assertOr403 } from '../../../../util/assertOr.ts'
 
 export type OrganizationState = {
   organization: RenderedOrganization
+  organization_id: string
   organization_employment: HealthWorkerOrganization
   employee: RenderedEmployee
+  employment_id: string
   is_admin_at_organization: boolean
 }
 
@@ -52,6 +54,8 @@ export async function handler(
     organization_employment,
     employee,
     is_admin_at_organization: organization_employment.is_admin,
+    organization_id: organization.id,
+    employment_id: employee.employee_id,
   }
 
   Object.assign(ctx.state, organization_state)

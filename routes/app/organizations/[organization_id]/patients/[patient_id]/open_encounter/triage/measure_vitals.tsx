@@ -14,7 +14,7 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
-  ALL_VITALS_SNOMED_CONCEPT_IDS,
+ALL_VITAL_SNOMED_CONCEPT_IDS,
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
@@ -153,7 +153,7 @@ export const handler = postHandler(
             patient_id: ctx.state.patient.id,
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
-            snomed_concept_ids: Object.values(ALL_VITALS_SNOMED_CONCEPT_IDS),
+            snomed_concept_ids: ALL_VITAL_SNOMED_CONCEPT_IDS,
           },
         ),
     })

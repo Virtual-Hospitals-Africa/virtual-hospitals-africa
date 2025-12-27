@@ -1,18 +1,5 @@
-import { TrxOrDb } from '../../types.ts'
+import { ReferenceRange, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
-
-export interface ReferenceRange {
-  readonly measurement_snomed_concept_id: string
-  readonly condition_codes?: readonly string[]
-  readonly normal_min: number
-  readonly normal_max: number
-  readonly critical_min?: number
-  readonly critical_max?: number
-  readonly units: string
-  readonly reference_source: string
-  readonly evidence_level?: string
-  readonly clinical_context: string
-}
 
 // TODO: Add condition-based filtering once we define how pre-existing conditions will be modeled
 // For now, only matching by age and gender

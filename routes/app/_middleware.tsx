@@ -89,6 +89,7 @@ export function getLoggedInHealthWorker(
       )
     ) {
       ctx.state.health_worker = health_worker
+      ctx.state.health_worker_id = health_worker.id
       ctx.state.present_encounter = present_encounter
       return ctx.next()
     }

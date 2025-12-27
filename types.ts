@@ -1754,6 +1754,7 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   health_worker: EmployedHealthWorker
+  health_worker_id: string
   present_encounter: RenderedPatientOpenEncounter | null
 }
 
@@ -3542,3 +3543,16 @@ export type AgeDetermination =
   | 'adult'
   | 'older child'
   | 'younger child'
+
+export type ReferenceRange = {
+  measurement_snomed_concept_id: string
+  condition_codes?: readonly string[]
+  normal_min: number
+  normal_max: number
+  critical_min?: number
+  critical_max?: number
+  units: string
+  reference_source: string
+  evidence_level?: string
+  clinical_context: string
+}

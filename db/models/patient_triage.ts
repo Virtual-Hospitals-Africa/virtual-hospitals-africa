@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_triage.ts'
-import { TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import {
@@ -9,6 +9,10 @@ import {
   TARGET_TIME_TO_TREATMENT_MINUTES,
   TriageLevel,
 } from '../../shared/priorities.ts'
+import assert from 'assert'
+import { base } from './_base.ts'
+import { patient_evaluations } from './patient_evaluations.ts'
+import { buildExpression } from './s_expression.ts'
 
 export const NATIONAL_EARLY_WARNING_SCORE_SNOMED_CONCEPT_ID = '1287358002' // |National Early Warning Score (assessment scale)|
 export const SOUTH_AFRICA_SNOMED_CONCEPT_ID = '223549008' // |South Africa (geographic location)|
@@ -118,3 +122,78 @@ export function insertLevel(
     ])
     .executeTakeFirstOrThrow()
 }
+
+
+export function baseQuery(
+  trx: TrxOrDbOrQueryCreator,
+) {
+  return patient_evaluations.baseQuery(trx).innerJoin(
+    'patient_triage_level',
+    'patient_evaluations.id',
+    'patient_triage_level.id',
+  )
+    .select([
+      'patient_triage_level.target_treatment_time',
+    ])
+}
+
+type PatientEvaluationTriageSearch = {
+  patient_id: string | IdSelection
+  patient_encounter_id?: string | IdSelection
+  s_expression?: string
+  search?: string
+}
+
+export const patient_triage_level = base({
+  top_level_table: 'patient_triage_level',
+  baseQuery,
+  formatResult: (x) => x,
+  handleSearch(
+    qb,
+    opts: PatientEvaluationTriageSearch,
+    trx,
+  ) {
+    assert(!opts.search, 'TODO support')
+    assert(
+      opts.patient_id,
+      'For now, you must always provide a patient_id as part of a query',
+    )
+    // if (opts.search) {
+    //   qb = qb.where(
+    //     'snomed_inferred_canonical_name_and_category.name',
+    //     'ilike',
+    //     `%${opts.search}%`,
+    //   )
+    // }
+    if (opts.patient_id) {
+      qb = qb.where(
+        'patient_records.patient_id',
+        '=',
+        opts.patient_id,
+      )
+    }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
+      )
+    }
+    if (opts.s_expression) {
+      qb = qb.where(
+        'patient_records.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
+          },
+          opts.s_expression,
+        ),
+      )
+    }
+
+    return qb
+  },
+})
