@@ -44,6 +44,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import matching from '../../../../../../../../util/matching.ts'
+import { VitalMeasurementFormInputDefition, VitalAssessmentFormInputDefition } from '../../../../../../../../types.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -261,7 +262,6 @@ export const handler = postHandler(
 )
 
 
-
 export async function TriageMeasureVitalsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
@@ -280,10 +280,24 @@ export async function TriageMeasureVitalsPage(
       },
     )
 
+  function notRequiredIfAlreadyDoneThisEncounter<Def extends VitalMeasurementFormInputDefition | VitalAssessmentFormInputDefition>(
+    def: Def,
+  ): Def {
+    if (!def.required) return def
+    const already_done_this_encounter = most_recent_patient_vitals.some(matching({
+      finding_snomed_concept_id: def.snomed_concept_id,
+      patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+    }))
+    return {
+      ...def,
+      required: !already_done_this_encounter
+    }
+  }
+
   return (
     <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={measurements}
-      triage_assessments={assessments}
+      vital_measurements_for_this_encounter={measurements.map(notRequiredIfAlreadyDoneThisEncounter)}
+      triage_assessments={assessments.map(notRequiredIfAlreadyDoneThisEncounter)}
       most_recent_patient_vitals={most_recent_patient_vitals}
       organization_id={ctx.state.organization.id}
     />
