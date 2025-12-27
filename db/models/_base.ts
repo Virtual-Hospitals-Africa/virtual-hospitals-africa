@@ -1,4 +1,9 @@
-import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
+import type {
+  Generated,
+  QueryCreator,
+  ReferenceExpression,
+  SelectQueryBuilder,
+} from 'kysely'
 import type { IdSelection, InsertShape, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
@@ -32,7 +37,7 @@ export type BaseModelInput<
 > = {
   top_level_table: TopLevelTable & SelectingFrom
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDb | QueryCreator<DB>,
     terms: SearchTerms,
   ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
   handleSearch?: (

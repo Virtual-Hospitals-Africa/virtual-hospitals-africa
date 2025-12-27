@@ -10,12 +10,11 @@ import { ActionButton } from '../../components/library/ActionButton.tsx'
 import { Alert } from '../../types.ts'
 
 type AlertMessageProps = {
-  className?: string
   alert: Signal<null | Alert>
 }
 
 export default function AlertMessage(
-  { className, alert }: AlertMessageProps,
+  { alert }: AlertMessageProps,
 ): null | JSX.Element {
   if (!alert.value) return null
 
@@ -49,28 +48,32 @@ export default function AlertMessage(
   const Icon = style.Icon
 
   return (
-    <div className={cls('rounded-md p-4', style.bg, className)}>
-      <div className='flex justify-between'>
-        <div className='flex'>
-          <div className='flex-shrink-0'>
-            <Icon
-              className={cls('h-5 w-5', style.iconColor)}
-              aria-hidden='true'
-            />
-          </div>
-          <div className='ml-3'>
-            <h3 className={cls('text-sm font-medium', style.textColor)}>
+    <div className={cls('rounded-md p-4', style.bg)}>
+      <div className='flex relative'>
+        <div className='flex gap-3'>
+          <Icon
+            className={cls('h-5 w-5', style.iconColor)}
+            aria-hidden='true'
+          />
+        
+          <div className='flex flex-col gap-2 -mt-1'>
+            <h3 className={cls('text-md font-medium', style.textColor)}>
               {message}
             </h3>
+            {!!actions?.length && (
+              <div className='flex gap-3'>
+                {actions.map((action) => (
+                  <ActionButton
+                    action={action}
+                    variant='secondary'
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        {actions?.map((action) => (
-          <ActionButton
-            action={action}
-          />
-        ))}
         <button
-          className='ml-auto'
+          className='ml-auto absolute top-0 right-0 -mt-1 -mr-1'
           type='button'
           onClick={() => alert.value = null}
         >

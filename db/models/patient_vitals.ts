@@ -96,12 +96,13 @@ export const patient_vitals = base({
   },
   async getMostRecent(
     trx: TrxOrDb,
-    { health_worker_id, patient_id, patient_encounter_id, snomed_concept_ids }: {
-      health_worker_id: string
-      patient_id: string
-      patient_encounter_id?: string
-      snomed_concept_ids?: string[]
-    },
+    { health_worker_id, patient_id, patient_encounter_id, snomed_concept_ids }:
+      {
+        health_worker_id: string
+        patient_id: string
+        patient_encounter_id?: string
+        snomed_concept_ids?: string[]
+      },
   ): Promise<RenderedFindingRelativeToHealthWorker[]> {
     if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
@@ -110,12 +111,18 @@ export const patient_vitals = base({
       (qb) =>
         baseQuery(qb)
           .where('patient_records.patient_id', '=', patient_id)
-          .$if(!!patient_encounter_id, qb => qb.where('patient_records.patient_encounter_id', '=', patient_encounter_id!))
-          .$if(!!snomed_concept_ids, qb => qb.where(
-            'patient_findings.finding_snomed_concept_id',
-            'in',
-            snomed_concept_ids!,
-          ))
+          .$if(!!patient_encounter_id, (qb) =>
+            qb.where(
+              'patient_records.patient_encounter_id',
+              '=',
+              patient_encounter_id!,
+            ))
+          .$if(!!snomed_concept_ids, (qb) =>
+            qb.where(
+              'patient_findings.finding_snomed_concept_id',
+              'in',
+              snomed_concept_ids!,
+            ))
           .select(
             sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),

@@ -1,4 +1,4 @@
-import { sql } from 'kysely'
+import { QueryCreator, sql } from 'kysely'
 import { IdSelection, TrxOrDb } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -9,6 +9,7 @@ import {
   patient_evaluations,
   PatientEvaluationInsert,
 } from './patient_evaluations.ts'
+import { DB } from '../../db.d.ts'
 
 type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
   score: number
@@ -39,7 +40,7 @@ export function insertOneNested(
 }
 
 export function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDb | QueryCreator<DB>,
 ) {
   return patient_evaluations.baseQuery(trx).innerJoin(
     'patient_evaluation_scores',
@@ -111,4 +112,35 @@ export const patient_evaluation_scores = base({
     return qb
   },
   insertOneNested,
+  totalTEWSEncounterScore(
+    trx: TrxOrDb,
+    { patient_encounter_id }: {
+      patient_encounter_id: string
+    },
+  ) {
+    return trx.with(
+      'ranked',
+      (qb) =>
+        baseQuery(qb)
+          // The total score will be included also, so by joining with the findings we only get the score components
+          .innerJoin(
+            'patient_findings',
+            'patient_findings.id',
+            'patient_evaluations.evaluates_record_id',
+          )
+          .where(
+            'patient_records.patient_encounter_id',
+            '=',
+            patient_encounter_id,
+          )
+          .select(
+            sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              .as('rank'),
+          )
+          .orderBy('patient_records.created_at', 'desc'),
+    ).selectFrom('ranked')
+      .where('ranked.rank', '=', 1)
+      .select(sql<number>`sum(ranked.score)`.as('total_score'))
+      .executeTakeFirstOrThrow()
+  },
 })

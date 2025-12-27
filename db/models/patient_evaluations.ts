@@ -1,4 +1,4 @@
-import { sql } from 'kysely'
+import { QueryCreator, sql } from 'kysely'
 import { IdSelection, TrxOrDb } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -12,6 +12,7 @@ import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
 import isString from '../../util/isString.ts'
+import { DB } from '../../db.d.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -141,7 +142,7 @@ export function insertOneNested(
 }
 
 export function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDb | QueryCreator<DB>,
 ) {
   return patient_records.baseQuery(trx).innerJoin(
     'patient_evaluations',
