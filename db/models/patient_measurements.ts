@@ -175,7 +175,7 @@ export const patient_measurements = base({
       return {
         success: true,
         inserted_new: false,
-        record_id: already_exists.record_ids[0],
+        measurement_id: already_exists.record_ids[0],
       }
     }
 

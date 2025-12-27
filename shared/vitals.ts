@@ -206,9 +206,9 @@ const ASESSMENT_OPTIONS: {
     { label: 'Difficulty walking' as const, score: 1, snomed_concept_id: '719232003', available_to_ages: ['adult'] },
     { label: 'Stretcher/Immobile' as const, score: 2, snomed_concept_id: '282145008', available_to_ages: ['adult'] },
     // TODO: get correct snomed_concept_id for these younger child
-    { label: 'Normal for age' as const, score: 0, snomed_concept_id: '1149217004', available_to_ages: ['older child', 'younger child'] },
-    { label: 'Unable to move as normal' as const, score: 2, snomed_concept_id: '1149217004', available_to_ages: ['younger child'] },
-    { label: 'Unable to walk as normal' as const, score: 2, snomed_concept_id: '1149217004', available_to_ages: ['older child'] },
+    { label: 'Normal for age' as const, score: 0, snomed_concept_id: '17621005', available_to_ages: ['older child', 'younger child'] },
+    { label: 'Unable to move as normal' as const, score: 2, snomed_concept_id: '263654008', available_to_ages: ['younger child'] },
+    { label: 'Unable to walk as normal' as const, score: 2, snomed_concept_id: '263654008', available_to_ages: ['older child'] },
   ],
   trauma_presence: [
     { label: 'No' as const, score: 0, snomed_concept_id: '1149217004', available_to_ages: ['adult', 'older child', 'younger child'] },

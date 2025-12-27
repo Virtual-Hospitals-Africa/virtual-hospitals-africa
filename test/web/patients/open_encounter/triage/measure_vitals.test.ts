@@ -1014,5 +1014,671 @@ describe('triage/measure_vitals', () => {
       { ...default_assessments_adult, trauma_presence: 'Yes' },
       baseScores({ 'Traumatic injury': 1 }),
     )
+
+    // =========================================
+    // OLDER CHILD TEWS (3-12 years / 95-150cm)
+    // =========================================
+
+    // Helper for older child expected scores (no blood pressure)
+    const baseScoresOlderChild = (overrides: Record<string, number> = {}) => {
+      const defaults: Record<string, number> = {
+        'Ability to mobilize': 0,
+        'Alert Confusion Voice Pain Unresponsive scale score': 0,
+        'Body temperature': 0,
+        'Pulse, function': 0,
+        'Respiratory rate': 0,
+        'Traumatic injury': 0,
+      }
+      return Object.entries({ ...defaults, ...overrides })
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([finding_name, score]) => ({ finding_name, score }))
+    }
+
+    // Default values that score 0 for older child
+    const default_measurements_older_child = {
+      respiratory_rate: 19, // 17-21 -> score 0
+      heart_rate: 90, // 80-99 -> score 0
+      temperature: 36.6, // 35-38.4 -> score 0
+    }
+
+    const default_assessments_older_child = {
+      mobility_assessment: 'Normal for age', // Normal for age -> score 0
+      consciousness: 'Alert', // score 0
+      trauma_presence: 'No', // score 0
+    } as const
+
+    // =========================================
+    // OLDER CHILD - MOBILITY ASSESSMENT
+    // Normal for age -> 0, Unable to walk as normal -> 2
+    // =========================================
+
+    testCase(
+      'older child, mobility: Unable to walk as normal -> score: 2',
+      'older child',
+      default_measurements_older_child,
+      {
+        ...default_assessments_older_child,
+        mobility_assessment: 'Unable to walk as normal',
+      },
+      baseScoresOlderChild({ 'Ability to mobilize': 2 }),
+    )
+
+    // =========================================
+    // OLDER CHILD - RESPIRATORY RATE (RR)
+    // Ranges: <15 -> 3, 15-16 -> 2, 17-21 -> 0, 22-26 -> 1, >=27 -> 2
+    // =========================================
+
+    testCase(
+      'older child, respiratory_rate: 14 (less than 15) -> score: 3',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 14 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 3 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 15 (boundary, 15-16 range) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 15 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 16 (15-16 range) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 16 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 17 (boundary, 17-21 range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 17 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 0 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 21 (17-21 range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 21 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 0 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 22 (boundary, 22-26 range) -> score: 1',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 22 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 1 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 26 (22-26 range) -> score: 1',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 26 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 1 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 27 (boundary, >=27) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 27 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'older child, respiratory_rate: 35 (>=27) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, respiratory_rate: 35 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Respiratory rate': 2 }),
+    )
+
+    // =========================================
+    // OLDER CHILD - HEART RATE (HR)
+    // Ranges: <60 -> 3, 60-79 -> 2, 80-99 -> 0, 100-129 -> 1, >=130 -> 2
+    // =========================================
+
+    testCase(
+      'older child, heart_rate: 59 (less than 60) -> score: 3',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 59 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 3 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 60 (boundary, 60-79 range) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 60 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 79 (60-79 range) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 79 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 80 (boundary, 80-99 range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 80 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 0 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 99 (80-99 range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 99 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 0 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 100 (boundary, 100-129 range) -> score: 1',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 100 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 1 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 129 (100-129 range) -> score: 1',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 129 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 1 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 130 (boundary, >=130) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 130 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'older child, heart_rate: 150 (>=130) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, heart_rate: 150 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Pulse, function': 2 }),
+    )
+
+    // =========================================
+    // OLDER CHILD - TEMPERATURE
+    // Ranges: <35 -> 2, 35-38.4 -> 0, >38.4 -> 2
+    // =========================================
+
+    testCase(
+      'older child, temperature: 34 (Cold/Under 35) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, temperature: 34 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 2 }),
+    )
+
+    testCase(
+      'older child, temperature: 35 (boundary, normal range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, temperature: 35 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'older child, temperature: 37 (normal range) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, temperature: 37 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'older child, temperature: 38.4 (normal range upper) -> score: 0',
+      'older child',
+      { ...default_measurements_older_child, temperature: 38.4 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'older child, temperature: 38.5 (boundary, Hot/Over 38.4) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, temperature: 38.5 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 2 }),
+    )
+
+    testCase(
+      'older child, temperature: 40 (Hot/Over 38.4) -> score: 2',
+      'older child',
+      { ...default_measurements_older_child, temperature: 40 },
+      default_assessments_older_child,
+      baseScoresOlderChild({ 'Body temperature': 2 }),
+    )
+
+    // =========================================
+    // OLDER CHILD - CONSCIOUSNESS (AVPU)
+    // Alert -> 0, Reacts to voice -> 1, Confused -> 2, Reacts to pain -> 2, Unresponsive -> 3
+    // =========================================
+
+    testCase(
+      'older child, consciousness: Alert -> score: 0',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, consciousness: 'Alert' },
+      baseScoresOlderChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 0,
+      }),
+    )
+
+    testCase(
+      'older child, consciousness: Reacts to voice -> score: 1',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, consciousness: 'Reacts to voice' },
+      baseScoresOlderChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 1,
+      }),
+    )
+
+    testCase(
+      'older child, consciousness: Confused -> score: 2',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, consciousness: 'Confused' },
+      baseScoresOlderChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 2,
+      }),
+    )
+
+    testCase(
+      'older child, consciousness: Reacts to pain -> score: 2',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, consciousness: 'Reacts to pain' },
+      baseScoresOlderChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 2,
+      }),
+    )
+
+    testCase(
+      'older child, consciousness: Unresponsive -> score: 3',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, consciousness: 'Unresponsive' },
+      baseScoresOlderChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 3,
+      }),
+    )
+
+    // =========================================
+    // OLDER CHILD - TRAUMA PRESENCE
+    // No -> 0, Yes -> 1
+    // =========================================
+
+    testCase(
+      'older child, trauma: No -> score: 0',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, trauma_presence: 'No' },
+      baseScoresOlderChild({ 'Traumatic injury': 0 }),
+    )
+
+    testCase(
+      'older child, trauma: Yes -> score: 1',
+      'older child',
+      default_measurements_older_child,
+      { ...default_assessments_older_child, trauma_presence: 'Yes' },
+      baseScoresOlderChild({ 'Traumatic injury': 1 }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD TEWS (<3 years / <95cm)
+    // =========================================
+
+    // Helper for younger child expected scores (no blood pressure)
+    const baseScoresYoungerChild = (overrides: Record<string, number> = {}) => {
+      const defaults: Record<string, number> = {
+        'Ability to mobilize': 0,
+        'Alert Confusion Voice Pain Unresponsive scale score': 0,
+        'Body temperature': 0,
+        'Pulse, function': 0,
+        'Respiratory rate': 0,
+        'Traumatic injury': 0,
+      }
+      return Object.entries({ ...defaults, ...overrides })
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([finding_name, score]) => ({ finding_name, score }))
+    }
+
+    // Default values that score 0 for younger child
+    const default_measurements_younger_child = {
+      respiratory_rate: 30, // 26-39 -> score 0
+      heart_rate: 100, // 80-130 -> score 0
+      temperature: 36.6, // 35-38.4 -> score 0
+    }
+
+    const default_assessments_younger_child = {
+      mobility_assessment: 'Normal for age', // Normal for age -> score 0
+      consciousness: 'Alert', // score 0
+      trauma_presence: 'No', // score 0
+    } as const
+
+    // =========================================
+    // YOUNGER CHILD - MOBILITY ASSESSMENT
+    // Normal for age -> 0, Unable to move as normal -> 2
+    // =========================================
+
+    testCase(
+      'younger child, mobility: Normal for age -> score: 0',
+      'younger child',
+      default_measurements_younger_child,
+      {
+        ...default_assessments_younger_child,
+        mobility_assessment: 'Normal for age',
+      },
+      baseScoresYoungerChild({ 'Ability to mobilize': 0 }),
+    )
+
+    testCase(
+      'younger child, mobility: Unable to move as normal -> score: 2',
+      'younger child',
+      default_measurements_younger_child,
+      {
+        ...default_assessments_younger_child,
+        mobility_assessment: 'Unable to move as normal',
+      },
+      baseScoresYoungerChild({ 'Ability to mobilize': 2 }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD - RESPIRATORY RATE (RR)
+    // Ranges: <20 -> 3, 20-25 -> 2, 26-39 -> 0, 40-49 -> 2, >=50 -> 3
+    // =========================================
+
+    testCase(
+      'younger child, respiratory_rate: 19 (less than 20) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 19 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 3 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 20 (boundary, 20-25 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 20 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 25 (20-25 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 25 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 26 (boundary, 26-39 range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 26 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 0 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 39 (26-39 range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 39 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 0 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 40 (boundary, 40-49 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 40 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 49 (40-49 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 49 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 2 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 50 (boundary, >=50) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 50 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 3 }),
+    )
+
+    testCase(
+      'younger child, respiratory_rate: 60 (>=50) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, respiratory_rate: 60 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Respiratory rate': 3 }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD - HEART RATE (HR)
+    // Ranges: <70 -> 3, 70-79 -> 2, 80-130 -> 0, 131-159 -> 2, >=160 -> 3
+    // =========================================
+
+    testCase(
+      'younger child, heart_rate: 69 (less than 70) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 69 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 3 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 70 (boundary, 70-79 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 70 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 79 (70-79 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 79 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 80 (boundary, 80-130 range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 80 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 0 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 130 (80-130 range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 130 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 0 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 131 (boundary, 131-159 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 131 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 159 (131-159 range) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 159 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 2 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 160 (boundary, >=160) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 160 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 3 }),
+    )
+
+    testCase(
+      'younger child, heart_rate: 180 (>=160) -> score: 3',
+      'younger child',
+      { ...default_measurements_younger_child, heart_rate: 180 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Pulse, function': 3 }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD - TEMPERATURE
+    // Ranges: <35 -> 2, 35-38.4 -> 0, >38.4 -> 2
+    // =========================================
+
+    testCase(
+      'younger child, temperature: 34 (Cold/Under 35) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 34 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 2 }),
+    )
+
+    testCase(
+      'younger child, temperature: 35 (boundary, normal range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 35 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'younger child, temperature: 37 (normal range) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 37 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'younger child, temperature: 38.4 (normal range upper) -> score: 0',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 38.4 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 0 }),
+    )
+
+    testCase(
+      'younger child, temperature: 38.5 (boundary, Hot/Over 38.4) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 38.5 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 2 }),
+    )
+
+    testCase(
+      'younger child, temperature: 40 (Hot/Over 38.4) -> score: 2',
+      'younger child',
+      { ...default_measurements_younger_child, temperature: 40 },
+      default_assessments_younger_child,
+      baseScoresYoungerChild({ 'Body temperature': 2 }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD - CONSCIOUSNESS (AVPU)
+    // Alert -> 0, Reacts to voice -> 1, Reacts to pain -> 2, Unresponsive -> 3
+    // =========================================
+
+    testCase(
+      'younger child, consciousness: Alert -> score: 0',
+      'younger child',
+      default_measurements_younger_child,
+      { ...default_assessments_younger_child, consciousness: 'Alert' },
+      baseScoresYoungerChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 0,
+      }),
+    )
+
+    testCase(
+      'younger child, consciousness: Reacts to voice -> score: 1',
+      'younger child',
+      default_measurements_younger_child,
+      {
+        ...default_assessments_younger_child,
+        consciousness: 'Reacts to voice',
+      },
+      baseScoresYoungerChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 1,
+      }),
+    )
+
+    testCase(
+      'younger child, consciousness: Reacts to pain -> score: 2',
+      'younger child',
+      default_measurements_younger_child,
+      { ...default_assessments_younger_child, consciousness: 'Reacts to pain' },
+      baseScoresYoungerChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 2,
+      }),
+    )
+
+    testCase(
+      'younger child, consciousness: Unresponsive -> score: 3',
+      'younger child',
+      default_measurements_younger_child,
+      { ...default_assessments_younger_child, consciousness: 'Unresponsive' },
+      baseScoresYoungerChild({
+        'Alert Confusion Voice Pain Unresponsive scale score': 3,
+      }),
+    )
+
+    // =========================================
+    // YOUNGER CHILD - TRAUMA PRESENCE
+    // No -> 0, Yes -> 1
+    // =========================================
+
+    testCase(
+      'younger child, trauma: No -> score: 0',
+      'younger child',
+      default_measurements_younger_child,
+      { ...default_assessments_younger_child, trauma_presence: 'No' },
+      baseScoresYoungerChild({ 'Traumatic injury': 0 }),
+    )
+
+    testCase(
+      'younger child, trauma: Yes -> score: 1',
+      'younger child',
+      default_measurements_younger_child,
+      { ...default_assessments_younger_child, trauma_presence: 'Yes' },
+      baseScoresYoungerChild({ 'Traumatic injury': 1 }),
+    )
   })
 })
