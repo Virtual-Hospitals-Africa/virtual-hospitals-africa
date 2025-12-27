@@ -50,16 +50,19 @@ describe('db/models/patient_measurements.ts', () => {
         ),
       })
 
-      const { record_id } = await patient_measurements.insertOneNested(db, {
-        patient_id,
-        patient_encounter_id: encounter.patient_encounter_id,
-        patient_encounter_employee_id:
-          encounter.employee.patient_encounter_employee_id,
-        procedure_id: procedure.procedure_id,
-        measurement_equality,
-      })
+      const { measurement_id } = await patient_measurements.insertOneNested(
+        db,
+        {
+          patient_id,
+          patient_encounter_id: encounter.patient_encounter_id,
+          patient_encounter_employee_id:
+            encounter.employee.patient_encounter_employee_id,
+          procedure_id: procedure.procedure_id,
+          measurement_equality,
+        },
+      )
 
-      const measurement = await patient_measurements.getById(db, record_id)
+      const measurement = await patient_measurements.getById(db, measurement_id)
 
       assertEquals(
         measurement.full_display,
@@ -76,7 +79,7 @@ describe('db/models/patient_measurements.ts', () => {
 
       assertEquals(records, {
         satisfies: true,
-        record_ids: [record_id],
+        record_ids: [measurement_id],
       })
 
       const records_slightly_off = await satisfyingSExpression(
@@ -102,7 +105,7 @@ describe('db/models/patient_measurements.ts', () => {
         ),
         {
           satisfies: true,
-          record_ids: [record_id],
+          record_ids: [measurement_id],
         },
       )
     })
@@ -160,7 +163,7 @@ describe('db/models/patient_measurements.ts', () => {
 
       assert(first_insert.inserted_new)
       assert(!second_insert.inserted_new)
-      assertEquals(first_insert.record_id, second_insert.record_id)
+      assertEquals(first_insert.measurement_id, second_insert.measurement_id)
     })
 
     it('inserts a new measurement once if the value did change', async () => {
@@ -225,7 +228,7 @@ describe('db/models/patient_measurements.ts', () => {
 
       assert(first_insert.inserted_new)
       assert(second_insert.inserted_new)
-      assertNotEquals(first_insert.record_id, second_insert.record_id)
+      assertNotEquals(first_insert.measurement_id, second_insert.measurement_id)
     })
   })
 })

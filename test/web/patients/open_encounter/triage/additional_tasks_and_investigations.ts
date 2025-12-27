@@ -223,3 +223,134 @@ describe('triage/additional_tasks_and_investigations', () => {
     ])
   })
 })
+
+// TODO: moving this
+// describe('POST', () => {
+//   it('creates an additional task if oxygen saturation is below 92%', async () => {
+//     const { encounter } = await setupTriage({
+//       patient_demographics: { date_of_birth: '2023-01-01' },
+//       warning_signs: [],
+//       conditions: ['diabetes'],
+//       height_and_weight: {
+//         height: {
+//           value: 160,
+//           units: 'cm',
+//         },
+//         weight: {
+//           value: 80,
+//           units: 'kg',
+//         },
+//       },
+//       vitals: {
+//         measurements: {
+//           blood_oxygen_saturation: {
+//             value: 91,
+//             units: '%',
+//           },
+//         },
+//         assessments: {},
+//       },
+//     })
+
+//     const measurements = await patient_measurements.findAll(
+//       db,
+//       {
+//         patient_id: encounter.patient.id,
+//         s_expression: `
+//           (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
+//                (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
+//         `,
+//       },
+//     )
+
+//     assertMatches(measurements, [
+//       {
+//         'type': 'finding',
+//         'record_id': z.string().uuid(),
+//         'created_at': z.date(),
+//         'snomed_concept_id': '118245000',
+//         'patient_encounter_id': z.string().uuid(),
+//         'patient_encounter_employee_id': z.string().uuid(),
+//         'name': 'Measurement finding',
+//         'category': 'finding',
+//         'destination_relations': [],
+//         'value_snomed_concept_id': null,
+//         'value_name': null,
+//         'finding_snomed_concept_id': '103228002',
+//         'finding_name': 'Hemoglobin saturation with oxygen',
+//         'value_display': '91%',
+//         'source_relations': [
+//           {
+//             'source_id': z.string().uuid(),
+//             'snomed_concept_id': '42752001',
+//           },
+//         ],
+//         'as_part_of_procedure': {
+//           'record_id': z.string().uuid(),
+//           'snomed_concept_id': '410188000',
+//           'name': 'Taking patient vital signs assessment',
+//         },
+//         'priority': null,
+//         'qualifiers': [],
+//         'value': '91',
+//         'units': '%',
+//         'full_display': 'Hemoglobin saturation with oxygen: 91%',
+//       },
+//     ], { strict: true })
+
+//     const evaluations = await patient_evaluations.findAll(
+//       db,
+//       {
+//         patient_id: encounter.patient.id,
+//       },
+//     )
+
+//     const action_status = findMatching(evaluations, {
+//       name: 'Action status',
+//     })
+
+//     assertMatches(action_status, {
+//       'type': 'evaluation',
+//       'record_id': z.string().uuid(),
+//       'created_at': z.date(),
+//       'snomed_concept_id': '385641008',
+//       'patient_encounter_id': z.string().uuid(),
+//       'evaluates_record_id': z.string().uuid(),
+//       'employment_id': null,
+//       'by_system': true,
+//       'name': 'Action status',
+//       'category': 'attribute',
+//       'value_snomed_concept_id': '385643006',
+//       'value_name': 'To be done',
+//       'qualifiers': [],
+//       'source_relations': [],
+//       'destination_relations': [{
+//         'destination_id': z.string().uuid(),
+//         'snomed_concept_id': '42752001',
+//       }],
+//     }, { strict: true })
+
+//     const planned_procedure = await patient_procedures.getById(
+//       db,
+//       action_status.evaluates_record_id,
+//     )
+
+//     assertMatches(planned_procedure, {
+//       'record_id': z.string().uuid(),
+//       'created_at': z.date(),
+//       'snomed_concept_id': '57485005',
+//       'patient_encounter_id': z.string().uuid(),
+//       'name': 'Oxygen therapy',
+//       'value_snomed_concept_id': null,
+//       'value_name': null,
+//       'qualifiers': [],
+//       'source_relations': [],
+//       'destination_relations': [],
+//       'full_display': 'Oxygen therapy',
+//       'value_display': 'Oxygen therapy',
+//       'category': 'procedure',
+//       'type': 'procedure',
+//       'by_system': true,
+//       'employment_id': null,
+//     }, { strict: true })
+//   })
