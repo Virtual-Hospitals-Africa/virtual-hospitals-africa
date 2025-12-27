@@ -30,8 +30,8 @@ function scoreOrPriorityColors(record: {
   priority: Priority | null
 }): Values<typeof PRIORITY_COLORS> {
   switch (record.score) {
-    // TODO is this Non-urgent or normal color
     case 0:
+      // Non-urgent is green. Appears to be better to the eye
       return PRIORITY_COLORS['Non-urgent']
     case 1:
       return PRIORITY_COLORS['Urgent']
