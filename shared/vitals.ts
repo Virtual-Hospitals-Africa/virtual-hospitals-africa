@@ -6,6 +6,7 @@ import {
 } from '../types.ts'
 import compact from '../util/compact.ts'
 import entries from '../util/entries.ts'
+import findMatching from '../util/findMatching.ts'
 import keys from '../util/keys.ts'
 import memoize from '../util/memoize.ts'
 
@@ -216,6 +217,13 @@ const ASESSMENT_OPTIONS: {
 }
 // deno-fmt-ignore-end
 
+export function assessmentOptionSnomedConceptId(
+  vital: VitalAssessment,
+  label: string
+) {
+  return findMatching(ASESSMENT_OPTIONS[vital], { label }).snomed_concept_id
+}
+
 // deno-fmt-ignore
 const MEASUREMENT_RANGES: {
   [a in AgeDetermination]: {
@@ -296,6 +304,35 @@ const MEASUREMENT_RANGES: {
       { max: Infinity, score: 2 },
     ],
   },
+}
+
+export function getScoreForMeasurement(
+  age_determination: AgeDetermination,
+  vital: VitalMeasurement,
+  value: number,
+): TEWSScore | null {
+  const ranges = MEASUREMENT_RANGES[age_determination][vital]
+  if (!ranges) return null
+  for (const range of ranges) {
+    if (value < range.max) {
+      return range.score
+    }
+  }
+  return null
+}
+
+export function getScoreForAssessment(
+  age_determination: AgeDetermination,
+  vital: VitalAssessment,
+  value_snomed_concept_id: string,
+): TEWSScore | null {
+  const options = ASESSMENT_OPTIONS[vital]
+  const option = options.find(
+    (o) =>
+      o.snomed_concept_id === value_snomed_concept_id &&
+      o.available_to_ages.includes(age_determination),
+  )
+  return option?.score ?? null
 }
 
 export function measureVitalsInputDefinitions(

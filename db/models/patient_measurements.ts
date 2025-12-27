@@ -21,9 +21,10 @@ export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement
 
 type MeasurementInsert = {
   patient_id: string
+  procedure_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
-  procedure_id: string
+  measurement_id?: string
   measurement_equality: ParsedExpressionOf<'='>
 }
 
@@ -103,9 +104,10 @@ export const patient_measurements = base({
     trx: TrxOrDb,
     {
       patient_id,
+      procedure_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      procedure_id,
+      measurement_id = generateUUID(),
       measurement_equality: {
         left: { snomed_concept_id },
         right: units,
@@ -113,8 +115,6 @@ export const patient_measurements = base({
     }: MeasurementInsert,
   ) {
     assert(units.atom === 'units')
-
-    const measurement_id = generateUUID()
 
     return trx.with(
       'inserting_finding_records',
@@ -148,8 +148,7 @@ export const patient_measurements = base({
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
-        literalString(measurement_id).as('record_id'),
-        literalString(procedure_id).as('procedure_id'),
+        literalString(measurement_id).as('measurement_id'),
       ])
       .executeTakeFirstOrThrow()
   },
@@ -161,7 +160,7 @@ export const patient_measurements = base({
       patient_encounter_employee_id,
       procedure_id,
       measurement_equality,
-    }: MeasurementInsert,
+    }: Omit<MeasurementInsert, 'measurement_id'>,
   ) {
     const already_exists = await satisfyingSExpression(
       trx,

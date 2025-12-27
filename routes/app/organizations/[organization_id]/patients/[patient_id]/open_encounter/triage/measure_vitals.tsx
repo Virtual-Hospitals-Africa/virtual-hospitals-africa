@@ -15,9 +15,14 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
+  getScoreForAssessment,
+  getScoreForMeasurement,
   measureVitalsInputDefinitions,
+  SEVERITY_SCORE_SNOMED_CONCEPT_ID,
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VitalAssessment,
+  VitalMeasurement,
 } from '../../../../../../../../shared/vitals.ts'
 import {
   parseExpressionExpectingAtom,
@@ -37,6 +42,10 @@ import { renderedMostRecentFindings } from '../../../../../../../../db/models/br
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
+import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
+import matching from '../../../../../../../../util/matching.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -85,78 +94,7 @@ const TriageMeasureVitalsSchema = z.object({
   ),
 }).strict()
 
-export const handler = postHandler(
-  TriageMeasureVitalsSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const {
-      trx,
-      patient,
-      encounter: { patient_encounter_id },
-      encounter_employee_presence: { patient_encounter_employee_id },
-    } = ctx.state
-    const patient_id = patient.id
-
-    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
-
-    // Insert measurements using DSL (pMap to collect results)
-    const measurement_results = await pMap(
-      entries(form_values.measurements),
-      ([/* vital */, measurement_equality]) =>
-        patient_measurements.insertOneNested(trx, {
-          procedure_id,
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          measurement_equality,
-        }).then((result) => ({
-          finding_id: result.record_id,
-          snomed_concept_id: measurement_equality.left.snomed_concept_id,
-          value: measurement_equality.right.value,
-          units: measurement_equality.right.units,
-          record_id: result.record_id,
-          procedure_id: result.procedure_id,
-        })),
-    )
-
-    // Insert assessments using DSL
-    await forEach(
-      entries(form_values.assessments),
-      ([/* vital */, finding]) =>
-        patient_findings.insertOneNested(trx, {
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          procedure_id,
-          finding,
-        }),
-    )
-
-    // Compute derived measurements (BMI, MAP, etc.) if we have measurements
-    if (measurement_results.length > 0) {
-      await patient_computed_findings.computeAndInsertDerivedMeasurements(
-        trx,
-        {
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          source_measurements: measurement_results,
-          source_procedure_id: procedure_id,
-        },
-      )
-    }
-
-    await insertTasksIfNotAlreadyIdentified(trx, {
-      patient_id,
-      patient_encounter_id,
-    })
-
-    return completeAndProceedToNextStep(ctx)
-  },
-)
-
-export async function TriageMeasureVitalsPage(
-  ctx: OpenEncounterWorkflowContext,
-) {
+async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,
   })
@@ -182,11 +120,136 @@ export async function TriageMeasureVitalsPage(
     has_diabetes: diabetes?.existence === 'Yes',
   })
 
+  return { age_determination, definitions }
+}
+
+export const handler = postHandler(
+  TriageMeasureVitalsSchema,
+  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const {
+      trx,
+      patient,
+      encounter: { patient_encounter_id },
+      encounter_employee_presence: { patient_encounter_employee_id },
+    } = ctx.state
+    const patient_id = patient.id
+
+    const {
+      procedure: { procedure_id },
+      shared: { age_determination, definitions },
+    } = await promiseProps({
+      procedure: createProcedureIfNotAlreadyCompleted(ctx),
+      shared: sharedVitalsDeterminations(ctx),
+    })
+
+    // Assert all required measurements are present
+    for (const { vital, units } of definitions.measurements) {
+      const form_input = form_values.measurements[vital]
+      assertOr400(
+        form_input,
+        `Missing required measurement: ${vital}`,
+      )
+      assertOr400(
+        form_input.right.units === units,
+        `Expected units to be ${units}. Received ${form_input.right.units}.`,
+      )
+    }
+
+    // Assert all required assessments are present
+    for (const { vital, options } of definitions.assessments) {
+      const form_input = form_values.assessments[vital]
+      assertOr400(
+        form_input,
+        `Missing required assessment: ${vital}`,
+      )
+      const option_snomed_concept_ids = options.map((o) => o.snomed_concept_id)
+      assert(form_input.value_snomed_concept_id)
+      assertOr400(
+        option_snomed_concept_ids.includes(form_input.value_snomed_concept_id),
+        `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.value_snomed_concept_id}.`,
+      )
+    }
+
+    await Promise.all([
+      forEach(
+        entries(form_values.measurements),
+        async ([vital, measurement_equality]) => {
+          const result = await patient_measurements.insertOneNested(trx, {
+            patient_id,
+            patient_encounter_id,
+            patient_encounter_employee_id,
+            measurement_equality,
+            procedure_id,
+          })
+
+          const score = getScoreForMeasurement(
+            age_determination,
+            vital,
+            measurement_equality.right.value,
+          )
+          if (score != null) {
+            await patient_evaluation_scores.insertOneNested(trx, {
+              score,
+              patient_id,
+              patient_encounter_id,
+              by_system: true,
+              evaluates_record_id: result.measurement_id,
+              evaluation: `(evaluation ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+            })
+          }
+        },
+      ),
+      forEach(
+        entries(form_values.assessments),
+        async ([vital, finding]) => {
+          assert(finding.value_snomed_concept_id)
+
+          const result = await patient_findings.insertOneNested(trx, {
+            patient_id,
+            patient_encounter_id,
+            patient_encounter_employee_id,
+            procedure_id,
+            finding,
+          })
+
+          const score = getScoreForAssessment(
+            age_determination,
+            vital,
+            finding.value_snomed_concept_id!,
+          )
+          if (score != null) {
+            await patient_evaluation_scores.insertOneNested(trx, {
+              score,
+              patient_id,
+              patient_encounter_id,
+              by_system: true,
+              evaluates_record_id: result.record_id,
+              evaluation: `(evaluation ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+            })
+          }
+        },
+      ),
+    ])
+
+    await insertTasksIfNotAlreadyIdentified(trx, {
+      patient_id,
+      patient_encounter_id,
+    })
+
+    return completeAndProceedToNextStep(ctx)
+  },
+)
+
+export async function TriageMeasureVitalsPage(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const { trx, health_worker, patient } = ctx.state
+  const { definitions } = await sharedVitalsDeterminations(ctx)
   const most_recent_patient_vitals = await patient_vitals
     .getMostRecent(
       trx,
       {
-        patient_id,
+        patient_id: patient.id,
         health_worker_id: health_worker.id,
         snomed_concept_ids: [
           ...definitions.measurements.map((m) => m.snomed_concept_id),

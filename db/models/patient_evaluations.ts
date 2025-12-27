@@ -1,37 +1,25 @@
 import { sql } from 'kysely'
-import { IdSelection, Priority, TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { ParsedExpressionOf } from '../../shared/s_expression.ts'
+import {
+  ParsedExpressionOf,
+  parseExpressionExpectingAtom,
+} from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
-import entries from '../../util/entries.ts'
 import { patient_records } from './patient_records.ts'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
+import isString from '../../util/isString.ts'
 
-export interface VitalsEvaluation {
-  finding_id: string
-  snomed_concept_id: string
-  priority?: Priority
-  note?: string
-}
-
-export function mapPriorityFromSnomedCode(
-  snomed_code: string,
-): Priority | undefined {
-  return entries(PRIORITY_SNOMED_CODES).find(([_, code]) =>
-    code === snomed_code
-  )?.[0]
-}
-
-type PatientEvaluationInsert =
+export type PatientEvaluationInsert =
   & {
+    evaluation_id?: string
     patient_id: string
     patient_encounter_id: string
-    evaluation: ParsedExpressionOf<'evaluation'>
     evaluates_record_id: string
+    evaluation: string | ParsedExpressionOf<'evaluation'>
   }
   & (
     {
@@ -43,9 +31,10 @@ type PatientEvaluationInsert =
     }
   )
 
-export function insertOneNested(
+export function insertOneNestedQuery(
   trx: TrxOrDb,
   {
+    evaluation_id = generateUUID(),
     patient_id,
     patient_encounter_id,
     evaluates_record_id,
@@ -54,19 +43,22 @@ export function insertOneNested(
     by_system,
   }: PatientEvaluationInsert,
 ) {
-  const evaluation_id = generateUUID()
+  const { snomed_concept_id, value_snomed_concept_id, qualifiers } =
+    isString(evaluation)
+      ? parseExpressionExpectingAtom(evaluation, 'evaluation')
+      : evaluation
 
   let query = trx.with(
-    'inserting_evaluation_record',
+    'inserting_record',
     (qb) =>
       qb.insertInto('patient_records')
         .values({
           id: evaluation_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: evaluation.snomed_concept_id,
-          value_snomed_concept_id: evaluation.value_snomed_concept_id,
-        }),
+          snomed_concept_id,
+          value_snomed_concept_id,
+        }).returning('id'),
   ).with(
     'inserting_evaluation',
     (qb) =>
@@ -129,16 +121,23 @@ export function insertOneNested(
     return next_query
   }
 
-  for (const qualifier of evaluation.qualifiers) {
+  for (const qualifier of qualifiers) {
     query = qualifierCte(query, qualifier, evaluation_id)
   }
 
-  return query.selectNoFrom([
-    success_true,
-    sql<true>`true`.as('inserted_new'),
-    literalString(evaluation_id).as('evaluation_id'),
-  ])
-    .executeTakeFirstOrThrow()
+  return query
+}
+
+export function insertOneNested(
+  trx: TrxOrDb,
+  to_insert: PatientEvaluationInsert,
+) {
+  return insertOneNestedQuery(trx, to_insert).selectFrom('inserting_record')
+    .select([
+      success_true,
+      sql<true>`true`.as('inserted_new'),
+      'inserting_record.id as evaluation_id',
+    ])
 }
 
 export function baseQuery(
@@ -217,4 +216,5 @@ export const patient_evaluations = base({
     return qb
   },
   insertOneNested,
+  insertOneNestedQuery,
 })

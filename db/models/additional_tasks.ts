@@ -59,43 +59,40 @@ export async function insertTasksIfNotAlreadyIdentified(
       )
 
     if (procedure.inserted_new) {
-      const evaluation = await patient_evaluations.insertOneNested(
+      const evaluation_id = generateUUID()
+      const relation_id = generateUUID()
+
+      await patient_evaluations.insertOneNestedQuery(
         trx,
         {
+          evaluation_id,
           patient_id,
           patient_encounter_id,
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
-          evaluation: {
-            atom: 'evaluation',
-            snomed_concept_id: ACTION_STATUS_SNOMED_CONCEPT_ID,
-            value_snomed_concept_id: TO_BE_DONE_SNOMED_CONCEPT_ID,
-            qualifiers: [],
-          },
+          evaluation:
+            `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID}) ${TO_BE_DONE_SNOMED_CONCEPT_ID}`,
         },
-      )
-
-      const relation_id = generateUUID()
-      await trx.with(
+      ).with(
         'inserting_relation_patient_records',
         (qb) =>
           qb.insertInto('patient_records').values({
-            id: relation_id,
-            snomed_concept_id: DUE_TO_SNOMED_CONCEPT_ID,
             patient_id,
             patient_encounter_id,
+            id: relation_id,
+            snomed_concept_id: DUE_TO_SNOMED_CONCEPT_ID,
           }),
       ).with(
         'inserting_relations',
         (qb) =>
           qb.insertInto('patient_record_relations').values({
             id: relation_id,
-            source_id: evaluation.evaluation_id,
+            source_id: evaluation_id,
             destination_id: first_record,
           }),
       ).selectNoFrom([
         success_true,
-      ]).execute()
+      ]).executeTakeFirstOrThrow()
     }
   })
 }

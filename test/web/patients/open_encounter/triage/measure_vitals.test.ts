@@ -14,7 +14,22 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
 import { setupTriage } from './_setup.ts'
 import findMatching from '../../../../../util/findMatching.ts'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../../../../shared/vitals.ts'
+import {
+  assessmentOptionSnomedConceptId,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_UNITS,
+  VitalAssessment,
+  VitalMeasurement,
+} from '../../../../../shared/vitals.ts'
+import { patient_evaluation_scores } from '../../../../../db/models/patient_evaluation_scores.ts'
+import { asResultAsync } from '../../../../../util/asResult.ts'
+import { assert } from 'std/assert/assert.ts'
+import { pMap } from '../../../../../util/inParallel.ts'
+import sortBy from '../../../../../util/sortBy.ts'
+import mapEntries from '../../../../../util/mapEntries.ts'
+import { patient_findings } from '../../../../../db/models/patient_findings.ts'
+import { TEWSScore } from '../../../../../db/models/sats_triage_scoring.ts'
+
 
 describe('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -262,11 +277,81 @@ describe('triage/measure_vitals', () => {
   })
 
   describe('POST', () => {
-    it('creates an additional task if oxygen saturation is below 92%', async () => {
+    it('400s if missing blood_glucose measurement for a diabetic patient', async () => {
+      const result = await asResultAsync(() =>
+        setupTriage({
+          patient_demographics: { date_of_birth: '2023-01-01' },
+          warning_signs: [],
+          conditions: ['diabetes'],
+          height_and_weight: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+          vitals: {
+            measurements: {
+              respiratory_rate: {
+                value: 12,
+                units: VITAL_MEASUREMENTS_UNITS.respiratory_rate,
+              },
+              heart_rate: {
+                value: 60,
+                units: VITAL_MEASUREMENTS_UNITS.heart_rate,
+              },
+              blood_pressure_systolic: {
+                value: 120,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_systolic,
+              },
+              blood_pressure_diastolic: {
+                value: 80,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_diastolic,
+              },
+              temperature: {
+                value: 36.6,
+                units: VITAL_MEASUREMENTS_UNITS.temperature,
+              },
+            },
+            assessments: {
+              mobility_assessment: {
+                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  'mobility_assessment',
+                  'Walking',
+                ),
+              },
+              consciousness: {
+                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  'consciousness',
+                  'Alert',
+                ),
+              },
+              trauma_presence: {
+                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  'trauma_presence',
+                  'No',
+                ),
+              },
+            },
+          },
+        })
+      )
+
+      assert(result.success === false)
+      assertEquals(
+        result.error.message,
+        '[400]: Missing required measurement: blood_glucose',
+      )
+    })
+
+    it('inserts all zero TEWS scores for an an adult patient fully in the normal range', async () => {
       const { encounter } = await setupTriage({
         patient_demographics: { date_of_birth: '2023-01-01' },
         warning_signs: [],
-        conditions: ['diabetes'],
+        conditions: [],
         height_and_weight: {
           height: {
             value: 160,
@@ -279,12 +364,47 @@ describe('triage/measure_vitals', () => {
         },
         vitals: {
           measurements: {
-            blood_oxygen_saturation: {
-              value: 91,
-              units: '%',
+            respiratory_rate: {
+              value: 12,
+              units: VITAL_MEASUREMENTS_UNITS.respiratory_rate,
+            },
+            heart_rate: {
+              value: 60,
+              units: VITAL_MEASUREMENTS_UNITS.heart_rate,
+            },
+            blood_pressure_systolic: {
+              value: 120,
+              units: VITAL_MEASUREMENTS_UNITS.blood_pressure_systolic,
+            },
+            blood_pressure_diastolic: {
+              value: 80,
+              units: VITAL_MEASUREMENTS_UNITS.blood_pressure_diastolic,
+            },
+            temperature: {
+              value: 36.6,
+              units: VITAL_MEASUREMENTS_UNITS.temperature,
             },
           },
-          assessments: {},
+          assessments: {
+            mobility_assessment: {
+              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                'mobility_assessment',
+                'Walking',
+              ),
+            },
+            consciousness: {
+              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                'consciousness',
+                'Alert',
+              ),
+            },
+            trauma_presence: {
+              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                'trauma_presence',
+                'No',
+              ),
+            },
+          },
         },
       })
 
@@ -299,96 +419,161 @@ describe('triage/measure_vitals', () => {
         },
       )
 
-      assertMatches(measurements, [
-        {
-          'type': 'finding',
-          'record_id': z.string().uuid(),
-          'created_at': z.date(),
-          'snomed_concept_id': '118245000',
-          'patient_encounter_id': z.string().uuid(),
-          'patient_encounter_employee_id': z.string().uuid(),
-          'name': 'Measurement finding',
-          'category': 'finding',
-          'destination_relations': [],
-          'value_snomed_concept_id': null,
-          'value_name': null,
-          'finding_snomed_concept_id': '103228002',
-          'finding_name': 'Hemoglobin saturation with oxygen',
-          'value_display': '91%',
-          'source_relations': [
-            {
-              'source_id': z.string().uuid(),
-              'snomed_concept_id': '42752001',
-            },
-          ],
-          'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
-            'snomed_concept_id': '410188000',
-            'name': 'Taking patient vital signs assessment',
-          },
-          'priority': null,
-          'qualifiers': [],
-          'value': '91',
-          'units': '%',
-          'full_display': 'Hemoglobin saturation with oxygen: 91%',
-        },
-      ], { strict: true })
+      const respiratory_rate_measurement = findMatching(measurements, {
+        finding_snomed_concept_id:
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate,
+      })
 
-      const evaluations = await patient_evaluations.findAll(
+      assertMatches(respiratory_rate_measurement, {
+        'type': 'finding',
+        'record_id': z.string().uuid(),
+        'created_at': z.date(),
+        'snomed_concept_id': '118245000',
+        'patient_encounter_id': z.string().uuid(),
+        'patient_encounter_employee_id': z.string().uuid(),
+        'name': 'Measurement finding',
+        'category': 'finding',
+        'value_snomed_concept_id': null,
+        'value_name': null,
+        'finding_snomed_concept_id': '86290005',
+        'finding_name': 'Respiratory rate',
+        'value_display': '12 bpm',
+        'destination_relations': [],
+        'source_relations': [],
+        'as_part_of_procedure': {
+          'record_id': z.string().uuid(),
+          'snomed_concept_id': '410188000',
+          'name': 'Taking patient vital signs assessment',
+        },
+        'priority': null,
+        'qualifiers': [],
+        'value': '12',
+        'units': 'bpm',
+        'full_display': 'Respiratory rate: 12 bpm',
+      }, { strict: true })
+
+      const scores = await patient_evaluation_scores.findAll(
         db,
         {
           patient_id: encounter.patient.id,
         },
       )
 
-      const action_status = findMatching(evaluations, {
-        name: 'Action status',
-      })
-
-      assertMatches(action_status, {
-        'type': 'evaluation',
-        'record_id': z.string().uuid(),
-        'created_at': z.date(),
-        'snomed_concept_id': '385641008',
-        'patient_encounter_id': z.string().uuid(),
-        'evaluates_record_id': z.string().uuid(),
-        'employment_id': null,
-        'by_system': true,
-        'name': 'Action status',
-        'category': 'attribute',
-        'value_snomed_concept_id': '385643006',
-        'value_name': 'To be done',
-        'qualifiers': [],
-        'source_relations': [],
-        'destination_relations': [{
-          'destination_id': z.string().uuid(),
-          'snomed_concept_id': '42752001',
-        }],
-      }, { strict: true })
-
-      const planned_procedure = await patient_procedures.getById(
-        db,
-        action_status.evaluates_record_id,
+      const finding_scores = await pMap(
+        scores,
+        async ({ score, evaluates_record_id }) => {
+          const { finding_name } = await patient_findings.getById(
+            db,
+            evaluates_record_id,
+          )
+          return { finding_name, score }
+        },
       )
 
-      assertMatches(planned_procedure, {
-        'record_id': z.string().uuid(),
-        'created_at': z.date(),
-        'snomed_concept_id': '57485005',
-        'patient_encounter_id': z.string().uuid(),
-        'name': 'Oxygen therapy',
-        'value_snomed_concept_id': null,
-        'value_name': null,
-        'qualifiers': [],
-        'source_relations': [],
-        'destination_relations': [],
-        'full_display': 'Oxygen therapy',
-        'value_display': 'Oxygen therapy',
-        'category': 'procedure',
-        'type': 'procedure',
-        'by_system': true,
-        'employment_id': null,
-      }, { strict: true })
+      const sorted_finding_scores = sortBy(finding_scores, 'finding_name')
+
+      // deno-fmt-ignore
+      assertEquals(sorted_finding_scores, [
+        { "finding_name": "Ability to mobilize", "score": 0 },
+        { "finding_name": "Alert Confusion Voice Pain Unresponsive scale score", "score": 0 },
+        { "finding_name": "Body temperature", "score": 0 },
+        { "finding_name": "Pulse, function", "score": 0 },
+        { "finding_name": "Respiratory rate", "score": 0 },
+        { "finding_name": "Systolic blood pressure", "score": 0 },
+        { "finding_name": "Traumatic injury", "score": 0 },
+      ])
+      // deno-fmt-ignore-end
     })
+
+    function testAdultCase(
+      description: string,
+      measurement_values: {
+        [v in VitalMeasurement]?: number
+      },
+      assessment_values: {
+        [v in VitalAssessment]: string
+      },
+      expected_scores: {
+        finding_name: string
+        score: number
+      }[]
+    ) {
+      it(description, async () => {
+        const { encounter } = await setupTriage({
+          patient_demographics: { date_of_birth: '2023-01-01' },
+          warning_signs: [],
+          conditions: [],
+          height_and_weight: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+          vitals: {
+            measurements: mapEntries(measurement_values, (value, vital) => ({
+              value, 
+              units: VITAL_MEASUREMENTS_UNITS[vital],
+            })),
+            assessments: mapEntries(assessment_values, (value, vital) => ({
+              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                vital,
+                value
+              ),
+            }))
+          },
+        })
+
+        const scores = await patient_evaluation_scores.findAll(
+          db,
+          {
+            patient_id: encounter.patient.id,
+          },
+        )
+
+        const finding_scores = await pMap(
+          scores,
+          async ({ score, evaluates_record_id }) => {
+            const { finding_name } = await patient_findings.getById(
+              db,
+              evaluates_record_id,
+            )
+            return { finding_name, score }
+          },
+        )
+
+        const sorted_finding_scores = sortBy(finding_scores, 'finding_name')
+
+        assertEquals(sorted_finding_scores, expected_scores)
+      })
+    }
+
+    testAdultCase(
+      'respiratory_rate: 15 -> 1',
+      {
+        respiratory_rate: 15,
+        heart_rate:  60,
+        blood_pressure_systolic:  120,
+        blood_pressure_diastolic:  80,
+        temperature:  36.6,
+      },
+      {
+        'mobility_assessment': 'Walking',
+        'consciousness': 'Alert',
+        'trauma_presence': 'No',
+      },
+      [
+        { "finding_name": "Ability to mobilize", "score": 0 },
+        { "finding_name": "Alert Confusion Voice Pain Unresponsive scale score", "score": 0 },
+        { "finding_name": "Body temperature", "score": 0 },
+        { "finding_name": "Pulse, function", "score": 0 },
+        { "finding_name": "Respiratory rate", "score": 1 },
+        { "finding_name": "Systolic blood pressure", "score": 0 },
+        { "finding_name": "Traumatic injury", "score": 0 },
+      ]
+    )
   })
 })
