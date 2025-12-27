@@ -14,6 +14,7 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
+ALL_VITALS_SNOMED_CONCEPT_IDS,
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
@@ -42,6 +43,7 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
+import matching from '../../../../../../../../util/matching.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -97,6 +99,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
 
   const { trx, health_worker, patient, encounter } = ctx.state
   assert(completedPersonal(patient))
+
   const age_determination = patientAgeDetermination(patient)
   const patient_id = patient.id
   const { diabetes } = await renderedMostRecentFindings(
@@ -111,12 +114,12 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
     },
   )
 
-  const definitions = measureVitalsInputDefinitions({
+  const { measurements, assessments } = measureVitalsInputDefinitions({
     age_determination,
     has_diabetes: diabetes?.existence === 'Yes',
   })
 
-  return { age_determination, definitions }
+  return { age_determination, measurements, assessments }
 }
 
 export const handler = postHandler(
@@ -132,37 +135,58 @@ export const handler = postHandler(
 
     const {
       procedure: { procedure_id },
-      shared: { age_determination, definitions },
+      shared: { age_determination, measurements, assessments },
+      previous_vitals_this_encounter
     } = await promiseProps({
       procedure: createProcedureIfNotAlreadyCompleted(ctx),
       shared: sharedVitalsDeterminations(ctx),
+      previous_vitals_this_encounter: patient_vitals
+        .getMostRecent(
+          ctx.state.trx,
+          {
+            patient_id: ctx.state.patient.id,
+            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+            health_worker_id: ctx.state.health_worker.id,
+            snomed_concept_ids: Object.values(ALL_VITALS_SNOMED_CONCEPT_IDS),
+          },
+        )
     })
 
-    // Assert all required measurements are present
-    for (const { vital, units } of definitions.measurements) {
+    // Assert all required measurements are present or were already measured this encounter
+    for (const { vital, units, snomed_concept_id } of measurements) {
       const form_input = form_values.measurements[vital]
+      if (form_input) {
+        assertOr400(
+          form_input.right.units === units,
+          `Expected units to be ${units}. Received ${form_input.right.units}.`,
+        )
+        continue
+      }
+
+      const measured_previously = previous_vitals_this_encounter.some(matching({ finding_snomed_concept_id: snomed_concept_id }))
       assertOr400(
-        form_input,
+        measured_previously,
         `Missing required measurement: ${vital}`,
-      )
-      assertOr400(
-        form_input.right.units === units,
-        `Expected units to be ${units}. Received ${form_input.right.units}.`,
       )
     }
 
-    // Assert all required assessments are present
-    for (const { vital, options } of definitions.assessments) {
+    // Assert all required assessments are present or were already measured this encounter
+    for (const { vital, options, snomed_concept_id } of assessments) {
       const form_input = form_values.assessments[vital]
+      if (form_input) {
+        const option_snomed_concept_ids = options.map((o) => o.snomed_concept_id)
+        assert(form_input.value_snomed_concept_id)
+        assertOr400(
+          option_snomed_concept_ids.includes(form_input.value_snomed_concept_id),
+          `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.value_snomed_concept_id}.`,
+        )
+        continue
+      }
+
+      const assessed_previously = previous_vitals_this_encounter.some(matching({ finding_snomed_concept_id: snomed_concept_id }))
       assertOr400(
-        form_input,
+        assessed_previously,
         `Missing required assessment: ${vital}`,
-      )
-      const option_snomed_concept_ids = options.map((o) => o.snomed_concept_id)
-      assert(form_input.value_snomed_concept_id)
-      assertOr400(
-        option_snomed_concept_ids.includes(form_input.value_snomed_concept_id),
-        `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.value_snomed_concept_id}.`,
       )
     }
 
@@ -236,28 +260,30 @@ export const handler = postHandler(
   },
 )
 
+
+
 export async function TriageMeasureVitalsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, health_worker, patient } = ctx.state
-  const { definitions } = await sharedVitalsDeterminations(ctx)
+  const { measurements, assessments } = await sharedVitalsDeterminations(ctx)
+
   const most_recent_patient_vitals = await patient_vitals
     .getMostRecent(
-      trx,
+      ctx.state.trx,
       {
-        patient_id: patient.id,
-        health_worker_id: health_worker.id,
+        patient_id: ctx.state.patient.id,
+        health_worker_id: ctx.state.health_worker.id,
         snomed_concept_ids: [
-          ...definitions.measurements.map((m) => m.snomed_concept_id),
-          ...definitions.assessments.map((m) => m.snomed_concept_id),
+          ...measurements.map((m) => m.snomed_concept_id),
+          ...assessments.map((m) => m.snomed_concept_id),
         ],
       },
     )
 
   return (
     <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={definitions.measurements}
-      triage_assessments={definitions.assessments}
+      vital_measurements_for_this_encounter={measurements}
+      triage_assessments={assessments}
       most_recent_patient_vitals={most_recent_patient_vitals}
       organization_id={ctx.state.organization.id}
     />
