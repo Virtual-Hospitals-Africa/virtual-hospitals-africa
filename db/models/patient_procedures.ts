@@ -156,7 +156,7 @@ export const patient_procedures = base({
 
     function qualifierCte(
       qb: typeof query,
-      qualifier: Lang['qualifier'] | Lang['not_finding'],
+      qualifier: Lang['qualifier'],
       qualifies_record_id: string,
     ) {
       assertHasProperty(qualifier, 'snomed_concept_id')

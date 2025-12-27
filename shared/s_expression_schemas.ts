@@ -35,7 +35,7 @@ type BaseLang =
     not_finding: {
       finding_snomed_concept_id: string
       value_snomed_concept_id: string | null
-      
+      qualifiers: Lang['qualifier'][]
     }
     measurement: {
       snomed_concept_id: string
@@ -74,12 +74,13 @@ export type Lang = {
 
 export type AnyNode = Lang[keyof Lang]
 
-const snomed_concept_id_or_qualifier: z.ZodType<string | Lang['qualifier']> = z.lazy(() =>
-  z.union([
-    validators.snomed_concept_id,
-    qualifier,
-  ])
-)
+const snomed_concept_id_or_qualifier: z.ZodType<string | Lang['qualifier']> = z
+  .lazy(() =>
+    z.union([
+      validators.snomed_concept_id,
+      qualifier,
+    ])
+  )
 
 const required_snomed_concept_record_schema: z.ZodType<
   RecordSchema
@@ -93,26 +94,28 @@ const required_snomed_concept_record_schema: z.ZodType<
     qualifier.optional(),
     qualifier.optional(),
   ])
-    .transform(([snomed_concept_id = null, value_snomed_concept_id = null, ...rest]) => {
-    const nodes = compact(rest)
+    .transform(
+      ([snomed_concept_id = null, value_snomed_concept_id = null, ...rest]) => {
+        const nodes = compact(rest)
 
-    if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-      assert(!isString(snomed_concept_id))
-      nodes.unshift(value_snomed_concept_id)
-      value_snomed_concept_id = null
-    }
+        if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
+          assert(!isString(snomed_concept_id))
+          nodes.unshift(value_snomed_concept_id)
+          value_snomed_concept_id = null
+        }
 
-    if (snomed_concept_id && !isString(snomed_concept_id)) {
-      nodes.unshift(snomed_concept_id)
-      snomed_concept_id = null
-    }
+        if (snomed_concept_id && !isString(snomed_concept_id)) {
+          nodes.unshift(snomed_concept_id)
+          snomed_concept_id = null
+        }
 
-    return {
-      snomed_concept_id,
-      value_snomed_concept_id,
-      qualifiers: compact(rest),
-    }
-  })
+        return {
+          snomed_concept_id,
+          value_snomed_concept_id,
+          qualifiers: compact(rest),
+        }
+      },
+    )
 )
 
 export const qualifier: z.ZodType<Lang['qualifier']> = z.lazy(() =>
@@ -130,29 +133,55 @@ export const not_finding: z.ZodType<Lang['not_finding']> = z.lazy(() =>
     atom: z.literal('not_finding'),
     args: z.tuple([
       validators.snomed_concept_id,
-      validators.snomed_concept_id.optional(),
+      snomed_concept_id_or_qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
     ]),
   }).transform((
-    { atom, args: [finding_snomed_concept_id, value_snomed_concept_id = null] },
-  ) => ({
-    atom,
-    finding_snomed_concept_id,
-    value_snomed_concept_id,
-  }))
+    {
+      atom,
+      args: [
+        finding_snomed_concept_id,
+        value_snomed_concept_id = null,
+        ...rest
+      ],
+    },
+  ) => {
+    const qualifiers = compact(rest)
+
+    if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
+      qualifiers.unshift(value_snomed_concept_id)
+      value_snomed_concept_id = null
+    }
+
+    return {
+      atom,
+      finding_snomed_concept_id,
+      value_snomed_concept_id,
+      qualifiers,
+    }
+  })
 )
 
-const qualifier_or_not_finding: z.ZodType<Lang['qualifier'] | Lang['not_finding']> = z.lazy(() =>
+const qualifier_or_not_finding: z.ZodType<
+  Lang['qualifier'] | Lang['not_finding']
+> = z.lazy(() =>
   z.union([
     qualifier,
-    not_finding
+    not_finding,
   ])
 )
 
-const snomed_concept_id_or_qualifier_or_not_finding: z.ZodType<string | Lang['qualifier'] | Lang['not_finding']> = z.lazy(() =>
+const snomed_concept_id_or_qualifier_or_not_finding: z.ZodType<
+  string | Lang['qualifier'] | Lang['not_finding']
+> = z.lazy(() =>
   z.union([
     validators.snomed_concept_id,
     qualifier,
-    not_finding
+    not_finding,
   ])
 )
 
@@ -174,38 +203,50 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
       qualifier_or_not_finding.optional(),
       qualifier_or_not_finding.optional(),
     ]),
-  }).transform(({ atom, args: [snomed_concept_id = null, finding_snomed_concept_id = null, value_snomed_concept_id = null, ...rest] }) => {
-    const nodes = compact(rest)
+  }).transform(
+    (
+      {
+        atom,
+        args: [
+          snomed_concept_id = null,
+          finding_snomed_concept_id = null,
+          value_snomed_concept_id = null,
+          ...rest
+        ],
+      },
+    ) => {
+      const nodes = compact(rest)
 
-    if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-      assert(!isString(finding_snomed_concept_id))
-      assert(!isString(snomed_concept_id))
-      nodes.unshift(value_snomed_concept_id)
-      value_snomed_concept_id = null
-    }
+      if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
+        assert(!isString(finding_snomed_concept_id))
+        assert(!isString(snomed_concept_id))
+        nodes.unshift(value_snomed_concept_id)
+        value_snomed_concept_id = null
+      }
 
-    if (finding_snomed_concept_id && !isString(finding_snomed_concept_id)) {
-      assert(!isString(snomed_concept_id))
-      nodes.unshift(finding_snomed_concept_id)
-      finding_snomed_concept_id = null
-    }
+      if (finding_snomed_concept_id && !isString(finding_snomed_concept_id)) {
+        assert(!isString(snomed_concept_id))
+        nodes.unshift(finding_snomed_concept_id)
+        finding_snomed_concept_id = null
+      }
 
-    if (snomed_concept_id && !isString(snomed_concept_id)) {
-      nodes.unshift(snomed_concept_id)
-      snomed_concept_id = null
-    }
+      if (snomed_concept_id && !isString(snomed_concept_id)) {
+        nodes.unshift(snomed_concept_id)
+        snomed_concept_id = null
+      }
 
-    const [qualifiers, not_findings] = partition(nodes, isQualifier)
+      const [qualifiers, not_findings] = partition(nodes, isQualifier)
 
-    return {
-      atom,
-      snomed_concept_id,
-      finding_snomed_concept_id,
-      value_snomed_concept_id,
-      qualifiers, 
-      not_findings,
-    }
-  })
+      return {
+        atom,
+        snomed_concept_id,
+        finding_snomed_concept_id,
+        value_snomed_concept_id,
+        qualifiers,
+        not_findings,
+      }
+    },
+  )
 )
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
@@ -218,7 +259,9 @@ export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   }))
 )
 
-const snomed_concept_id_or_qualifier_or_evaluates: z.ZodType<string | Lang['qualifier'] | Lang['evaluates']> = z.lazy(() =>
+const snomed_concept_id_or_qualifier_or_evaluates: z.ZodType<
+  string | Lang['qualifier'] | Lang['evaluates']
+> = z.lazy(() =>
   z.union([
     validators.snomed_concept_id,
     qualifier,
@@ -226,12 +269,13 @@ const snomed_concept_id_or_qualifier_or_evaluates: z.ZodType<string | Lang['qual
   ])
 )
 
-const qualifier_or_evaluates: z.ZodType<Lang['qualifier'] | Lang['evaluates']> = z.lazy(() =>
-  z.union([
-    qualifier,
-    evaluates,
-  ])
-)
+const qualifier_or_evaluates: z.ZodType<Lang['qualifier'] | Lang['evaluates']> =
+  z.lazy(() =>
+    z.union([
+      qualifier,
+      evaluates,
+    ])
+  )
 
 export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
   z.object({
@@ -244,32 +288,46 @@ export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
       qualifier_or_evaluates.optional(),
       qualifier_or_evaluates.optional(),
       qualifier_or_evaluates.optional(),
-    ])
-  }).transform(({ atom, args: [snomed_concept_id = null, value_snomed_concept_id = null, ...rest] }) => {
-    const nodes = compact(rest)
+    ]),
+  }).transform(
+    (
+      {
+        atom,
+        args: [
+          snomed_concept_id = null,
+          value_snomed_concept_id = null,
+          ...rest
+        ],
+      },
+    ) => {
+      const nodes = compact(rest)
 
-    if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-      assert(!isString(snomed_concept_id))
-      nodes.unshift(value_snomed_concept_id)
-      value_snomed_concept_id = null
-    }
+      if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
+        assert(!isString(snomed_concept_id))
+        nodes.unshift(value_snomed_concept_id)
+        value_snomed_concept_id = null
+      }
 
-    if (snomed_concept_id && !isString(snomed_concept_id)) {
-      nodes.unshift(snomed_concept_id)
-      snomed_concept_id = null
-    }
+      if (snomed_concept_id && !isString(snomed_concept_id)) {
+        nodes.unshift(snomed_concept_id)
+        snomed_concept_id = null
+      }
 
-    const [qualifiers, [evaluates = null, ...more_evaluates]] = partition(nodes, isQualifier)
-    assertArrayEmpty(more_evaluates)
+      const [qualifiers, [evaluates = null, ...more_evaluates]] = partition(
+        nodes,
+        isQualifier,
+      )
+      assertArrayEmpty(more_evaluates)
 
-    return {
-      atom,
-      snomed_concept_id,
-      value_snomed_concept_id,
-      qualifiers, 
-      evaluates,
-    }
-  })
+      return {
+        atom,
+        snomed_concept_id,
+        value_snomed_concept_id,
+        qualifiers,
+        evaluates,
+      }
+    },
+  )
 )
 
 export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>

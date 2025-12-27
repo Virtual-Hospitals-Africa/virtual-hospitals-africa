@@ -212,11 +212,13 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Urgent',
   },
   'Burn Other': {
-    'clinical_finding_s_expression': `(finding 404684003 125666000 
-          (not_finding 255593009)
-          (not_finding 425082000)
-          (not_finding 426284001)
-          (not_finding 262582004))`,
+    'clinical_finding_s_expression': `
+      (finding 404684003 125666000 
+        (not_finding 125666000 (qualifier 255593009))
+        (not_finding 425082000)
+        (not_finding 426284001)
+        (not_finding 262582004))
+    `,
     'sats_primary_name': 'Burn',
     'sats_secondary_text': 'Other',
     'sats_priority': 'Urgent',

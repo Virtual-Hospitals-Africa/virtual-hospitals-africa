@@ -27,7 +27,6 @@ type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 export function parseExpression(
   expression: string,
 ) {
-  console.log(expression)
   const parsed = s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw parsed

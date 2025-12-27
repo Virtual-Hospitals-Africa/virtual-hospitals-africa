@@ -444,23 +444,31 @@ describe('triage/measure_vitals', () => {
           'name': 'Taking patient vital signs assessment',
         },
         'priority': null,
+        'score': 0,
         'qualifiers': [],
         'value': '12',
         'units': 'bpm',
         'full_display': 'Respiratory rate: 12 bpm',
       }, { strict: true })
 
-      const scores = await patient_evaluation_scores.findAll(
+      const component_scores = await patient_evaluation_scores.findAll(
         db,
         {
           patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (finding)))',
         },
       )
 
-      console.log({ scores })
+      const total_score = await patient_evaluation_scores.findOne(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
+        },
+      )
 
       const finding_scores = await pMap(
-        scores,
+        component_scores,
         async ({ score, evaluates_record_id }) => {
           const { finding_name } = await patient_findings.getById(
             db,
@@ -483,6 +491,8 @@ describe('triage/measure_vitals', () => {
         { "finding_name": "Traumatic injury", "score": 0 },
       ])
       // deno-fmt-ignore-end
+
+      assertEquals(total_score.score, 0)
     })
 
     function dateOfBirth(age_determination: AgeDetermination): string {

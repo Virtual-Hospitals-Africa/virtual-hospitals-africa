@@ -74,9 +74,7 @@ export function insertOneNestedQuery(
 
   function qualifierCte(
     qb: typeof query,
-    qualifier:
-      | ParsedExpressionOf<'qualifier'>
-      | ParsedExpressionOf<'not_finding'>,
+    qualifier: ParsedExpressionOf<'qualifier'>,
     qualifies_record_id: string,
   ) {
     assertHasProperty(qualifier, 'snomed_concept_id')

@@ -16,7 +16,7 @@ import {
   ParsedExpressionOf,
   parseExpression,
 } from '../../shared/s_expression.ts'
-import { deduplicate } from '../helpers.ts'
+import { debugLog, deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -151,7 +151,7 @@ const EXPRESSION_BUILDERS = {
       value_snomed_concept_id,
       finding_snomed_concept_id,
       qualifiers,
-      not_findings
+      not_findings,
     },
   ) {
     let query = baseQuery(trx, {
@@ -179,7 +179,7 @@ const EXPRESSION_BUILDERS = {
         !!procedure_id,
         (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
       )
-    
+
     for (const not_finding of not_findings) {
       assert(snomed_concept_id)
       query = query.where(
@@ -192,10 +192,12 @@ const EXPRESSION_BUILDERS = {
           ...not_finding,
           atom: 'finding' as const,
           snomed_concept_id,
-          qualifiers: [],
           not_findings: [],
-        })
+        }),
       )
+    }
+    if (not_findings.length) {
+      debugLog(query)
     }
 
     return query

@@ -11,7 +11,11 @@ export function monkeyPatchConsole() {
   if (console.log !== original_log) return
   if (NO_MONKEY_PATCH_CONSOLE) return
   console.log = (...args: unknown[]) => {
-    const line_number = getFileLineNumber(2)
+    let line_number = getFileLineNumber(2)
+    // Total hack (but this whole thing is a hack!) if debugLog is called print the line debugLog was called from
+    if (line_number.includes('db/helpers.ts')) {
+      line_number = getFileLineNumber(3)
+    }
     const timestamp = new Date().toISOString()
     original_log(timestamp, line_number, ...args)
   }
