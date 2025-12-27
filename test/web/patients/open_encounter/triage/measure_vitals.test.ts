@@ -27,6 +27,7 @@ import mapEntries from '../../../../../util/mapEntries.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
+import sumBy from '../../../../../util/sumBy.ts'
 
 describe('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -443,21 +444,31 @@ describe('triage/measure_vitals', () => {
           'name': 'Taking patient vital signs assessment',
         },
         'priority': null,
+        'score': 0,
         'qualifiers': [],
         'value': '12',
         'units': 'bpm',
         'full_display': 'Respiratory rate: 12 bpm',
       }, { strict: true })
 
-      const scores = await patient_evaluation_scores.findAll(
+      const component_scores = await patient_evaluation_scores.findAll(
         db,
         {
           patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (finding)))',
+        },
+      )
+
+      const total_score = await patient_evaluation_scores.findOne(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
         },
       )
 
       const finding_scores = await pMap(
-        scores,
+        component_scores,
         async ({ score, evaluates_record_id }) => {
           const { finding_name } = await patient_findings.getById(
             db,
@@ -480,6 +491,8 @@ describe('triage/measure_vitals', () => {
         { "finding_name": "Traumatic injury", "score": 0 },
       ])
       // deno-fmt-ignore-end
+
+      assertEquals(total_score.score, 0)
     })
 
     function dateOfBirth(age_determination: AgeDetermination): string {
@@ -528,8 +541,10 @@ describe('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
+      { only }: { only?: boolean } = {},
     ) {
-      it(description, async () => {
+      const run = only ? it.only : it
+      run(description, async () => {
         const { encounter } = await setupTriage({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
@@ -560,15 +575,24 @@ describe('triage/measure_vitals', () => {
           },
         })
 
-        const scores = await patient_evaluation_scores.findAll(
+        const component_scores = await patient_evaluation_scores.findAll(
           db,
           {
             patient_id: encounter.patient.id,
+            s_expression: '(evaluation (evaluates (finding)))',
+          },
+        )
+
+        const total_score = await patient_evaluation_scores.findOne(
+          db,
+          {
+            patient_id: encounter.patient.id,
+            s_expression: '(evaluation (evaluates (procedure)))',
           },
         )
 
         const finding_scores = await pMap(
-          scores,
+          component_scores,
           async ({ score, evaluates_record_id }) => {
             const { finding_name } = await patient_findings.getById(
               db,
@@ -581,6 +605,7 @@ describe('triage/measure_vitals', () => {
         const sorted_finding_scores = sortBy(finding_scores, 'finding_name')
 
         assertEquals(sorted_finding_scores, expected_scores)
+        assertEquals(total_score.score, sumBy(expected_scores, 'score'))
       })
     }
 

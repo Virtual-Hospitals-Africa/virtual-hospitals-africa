@@ -54,9 +54,8 @@ export function AlertListener({
   }, [])
 
   return (
-    <AlertMessage
-      alert={alert}
-      className='fixed top-0 left-0 right-0 z-50 m-12'
-    />
+    <div className='fixed top-12 z-50 w-full place-items-center'>
+      <AlertMessage alert={alert} />
+    </div>
   )
 }

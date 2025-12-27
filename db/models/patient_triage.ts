@@ -59,13 +59,15 @@ export function insertLevel(
     patient_id,
     patient_encounter_id,
     employment_id,
+    by_system = false,
     procedure_id,
     evaluates_record_id,
     triage_level,
   }: {
     patient_id: string
     patient_encounter_id: string
-    employment_id: string
+    employment_id?: string
+    by_system?: boolean
     procedure_id: string
     evaluates_record_id: string
     triage_level: TriageLevel
@@ -91,9 +93,9 @@ export function insertLevel(
     qb.insertInto('patient_evaluations')
       .values({
         id: triage_level_evaluation_id,
-        by_system: false,
         evaluates_record_id,
         employment_id,
+        by_system,
         procedure_id,
       })
       .returning('id'))

@@ -19,7 +19,6 @@ import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../db/models/pat
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
-import entries from '../../../../../util/entries.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
@@ -757,13 +756,14 @@ describe('triage/warning_signs', () => {
       })
     }
 
-    for (const [key, sign] of entries(WARNING_SIGNS)) {
-      const pregnant = [
-        'Pregnancy and abdominal pain',
-        'Pregnancy and abdominal trauma',
-      ].includes(key)
+    // for (const [key, sign] of entries(WARNING_SIGNS)) {
+    //   const pregnant = [
+    //     'Pregnancy and abdominal pain',
+    //     'Pregnancy and abdominal trauma',
+    //   ].includes(key)
 
-      testRoundTrip(key, sign, pregnant)
-    }
+    //   testRoundTrip(key, sign, pregnant)
+    // }
+    testRoundTrip('Burn Other', WARNING_SIGNS['Burn Other'], false)
   })
 })

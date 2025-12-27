@@ -3,6 +3,7 @@ import { Context } from 'fresh'
 import {
   ColumnType,
   Generated,
+  QueryCreator,
   RawBuilder,
   SelectQueryBuilder,
   SqlBool,
@@ -1619,6 +1620,8 @@ export type WhatsAppMessageOption = {
 }
 
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
+
+export type TrxOrDbOrQueryCreator = TrxOrDb | QueryCreator<DB>
 
 export type WhatsAppSingleSendable =
   | WhatsAppSendableString

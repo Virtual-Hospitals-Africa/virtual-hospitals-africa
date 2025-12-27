@@ -10,12 +10,11 @@ import { ActionButton } from '../../components/library/ActionButton.tsx'
 import { Alert } from '../../types.ts'
 
 type AlertMessageProps = {
-  className?: string
   alert: Signal<null | Alert>
 }
 
 export default function AlertMessage(
-  { className, alert }: AlertMessageProps,
+  { alert }: AlertMessageProps,
 ): null | JSX.Element {
   if (!alert.value) return null
 
@@ -49,36 +48,35 @@ export default function AlertMessage(
   const Icon = style.Icon
 
   return (
-    <div className={cls('rounded-md p-4', style.bg, className)}>
-      <div className='flex justify-between'>
-        <div className='flex'>
-          <div className='flex-shrink-0'>
-            <Icon
-              className={cls('h-5 w-5', style.iconColor)}
-              aria-hidden='true'
-            />
-          </div>
-          <div className='ml-3'>
-            <h3 className={cls('text-sm font-medium', style.textColor)}>
-              {message}
-            </h3>
-          </div>
-        </div>
-        {actions?.map((action) => (
-          <ActionButton
-            action={action}
+    <div className={cls('rounded-md p-4', style.bg)}>
+      <div className='grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-2'>
+        <div className='grid place-items-center'>
+          <Icon
+            className={cls('h-5 w-5', style.iconColor)}
+            aria-hidden='true'
           />
-        ))}
+        </div>
+        <h3 className={cls('text-md font-medium', style.textColor)}>
+          {message}
+        </h3>
         <button
-          className='ml-auto'
           type='button'
           onClick={() => alert.value = null}
         >
           <XMarkIcon
-            type='button'
             className={cls('h-5 w-5', style.iconColor, style.hoverColor)}
           />
         </button>
+        {!!actions?.length && (
+          <div className='col-start-2 col-span-2 flex gap-3'>
+            {actions.map((action) => (
+              <ActionButton
+                action={action}
+                variant='secondary'
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

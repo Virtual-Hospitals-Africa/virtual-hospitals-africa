@@ -261,6 +261,7 @@ describe('triage/brief_history', () => {
             'name': 'History taking, limited',
           },
           'priority': null,
+          'score': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -293,6 +294,7 @@ describe('triage/brief_history', () => {
             'name': 'History taking, limited',
           },
           'priority': null,
+          'score': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -325,6 +327,7 @@ describe('triage/brief_history', () => {
             'name': 'History taking, limited',
           },
           'priority': null,
+          'score': null,
           'qualifiers': [
             {
               'record_id': z.string().uuid(),
@@ -364,6 +367,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'pertaining_to_key': 'cancer',
         'full_display':
           'Self reported Malignant neoplastic disease Status: Yes',
@@ -409,6 +413,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'pertaining_to_key': 'diabetes',
         'full_display': 'Self reported Diabetes mellitus Status: No',
         'value_display': 'No',
@@ -836,6 +841,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
@@ -978,6 +984,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'qualifiers': [
           {
             'record_id': z.string().uuid(),
@@ -1020,6 +1027,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'pertaining_to_key': 'diabetes',
         'full_display': 'Self reported Diabetes mellitus Status: No',
         'value_display': 'No',
@@ -1115,6 +1123,7 @@ describe('triage/brief_history', () => {
           'name': 'History taking, limited',
         },
         'priority': null,
+        'score': null,
         'full_display': 'Self reported Pregnancy Status: Unknown',
         'value_display': 'Unknown',
         'existence': 'Unknown',

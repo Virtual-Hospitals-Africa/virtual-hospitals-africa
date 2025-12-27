@@ -4,15 +4,15 @@ import {
   RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
   TrxOrDb,
+  TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
 import { debugLog, jsonObjectFrom } from '../helpers.ts'
-import { QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { DB } from '../../db.d.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
@@ -21,7 +21,7 @@ import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return patient_findings.baseQuery(trx)
     .leftJoin(
@@ -96,24 +96,33 @@ export const patient_vitals = base({
   },
   async getMostRecent(
     trx: TrxOrDb,
-    { health_worker_id, patient_id, snomed_concept_ids }: {
-      health_worker_id: string
-      patient_id: string
-      snomed_concept_ids: string[]
-    },
+    { health_worker_id, patient_id, patient_encounter_id, snomed_concept_ids }:
+      {
+        health_worker_id: string
+        patient_id: string
+        patient_encounter_id?: string
+        snomed_concept_ids?: string[]
+      },
   ): Promise<RenderedFindingRelativeToHealthWorker[]> {
-    assertArrayNonEmpty(snomed_concept_ids)
+    if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
     const query = trx.with(
       'ranked_findings',
       (qb) =>
         baseQuery(qb)
           .where('patient_records.patient_id', '=', patient_id)
-          .where(
-            'patient_findings.finding_snomed_concept_id',
-            'in',
-            snomed_concept_ids,
-          )
+          .$if(!!patient_encounter_id, (qb) =>
+            qb.where(
+              'patient_records.patient_encounter_id',
+              '=',
+              patient_encounter_id!,
+            ))
+          .$if(!!snomed_concept_ids, (qb) =>
+            qb.where(
+              'patient_findings.finding_snomed_concept_id',
+              'in',
+              snomed_concept_ids!,
+            ))
           .select(
             sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),

@@ -45,6 +45,7 @@ const WarningSignsSchema = z.object({
 export const handler = postHandler(
   WarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const { trx, patient, encounter, encounter_employee_presence } = ctx.state
     const warning_signs_previously_entered = groupByUniq(
       await getWarningSignsFromThisEncounter(ctx),
       (sign) => sign.key,
@@ -65,13 +66,12 @@ export const handler = postHandler(
 
         const finding_insert = await patient_findings
           .insertOneIfNotAlreadyExistsForThisEncounter(
-            ctx.state.trx,
+            trx,
             {
-              patient_id: ctx.state.patient.id,
-              patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                ctx.state.encounter_employee_presence
-                  .patient_encounter_employee_id,
+              patient_id: patient.id,
+              patient_encounter_id: encounter.patient_encounter_id,
+              patient_encounter_employee_id: encounter_employee_presence
+                .patient_encounter_employee_id,
               procedure_id,
               finding,
             },
@@ -82,14 +82,14 @@ export const handler = postHandler(
         const sign = WARNING_SIGNS[key]
 
         await insertLevel(
-          ctx.state.trx,
+          trx,
           {
-            patient_id: ctx.state.patient.id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            employment_id: ctx.state.encounter_employee_presence.employee_id,
+            patient_id: patient.id,
+            patient_encounter_id: encounter.patient_encounter_id,
             procedure_id,
             evaluates_record_id: finding_insert.record_id,
             triage_level: sign.sats_priority,
+            by_system: true,
           },
         )
       },

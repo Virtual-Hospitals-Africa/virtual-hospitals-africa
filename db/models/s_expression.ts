@@ -16,7 +16,7 @@ import {
   ParsedExpressionOf,
   parseExpression,
 } from '../../shared/s_expression.ts'
-import { deduplicate } from '../helpers.ts'
+import { debugLog, deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -35,15 +35,12 @@ function baseQuery(
     patient_encounter_id,
     snomed_concept_id,
     value_snomed_concept_id,
-    descendent_of_snomed_concept_id,
     qualifiers = [],
   }: PatientIdentifiers & {
     snomed_concept_id?: Maybe<string>
     value_snomed_concept_id?: Maybe<string>
-    descendent_of_snomed_concept_id?: Maybe<string>
     qualifiers?: Array<
-      | ParsedExpressionOf<'qualifier'>
-      | ParsedExpressionOf<'not_qualifier'>
+      ParsedExpressionOf<'qualifier'>
     >
   },
 ) {
@@ -72,47 +69,19 @@ function baseQuery(
           value_snomed_concept_id!,
         ),
     )
-    .$if(
-      !!descendent_of_snomed_concept_id,
-      (qb) =>
-        qb.where((eb) =>
-          sql<boolean>`is_descendant(${
-            eb.ref('patient_records.snomed_concept_id')
-          }, ${descendent_of_snomed_concept_id!}::bigint)`
-        ),
-    )
     .select('patient_records.id')
 
   for (const qualifier of qualifiers) {
-    if (qualifier.atom === 'qualifier') {
-      query = query.where(
-        'patient_records.id',
-        'in',
-        EXPRESSION_BUILDERS.qualifier(trx, {
-          patient_id,
-          patient_encounter_id,
-        }, qualifier)
-          .clearSelect()
-          .select('patient_record_qualifiers.qualifies_record_id'),
-      )
-    } else {
-      assert(qualifier.atom === 'not_qualifier')
-      query = query.where(
-        'patient_records.id',
-        'not in',
-        EXPRESSION_BUILDERS.qualifier(trx, {
-          patient_id,
-          patient_encounter_id,
-        }, {
-          atom: 'qualifier',
-          snomed_concept_id: qualifier.snomed_concept_id,
-          value_snomed_concept_id: null,
-          qualifiers: [],
-        })
-          .clearSelect()
-          .select('patient_record_qualifiers.qualifies_record_id'),
-      )
-    }
+    query = query.where(
+      'patient_records.id',
+      'in',
+      EXPRESSION_BUILDERS.qualifier(trx, {
+        patient_id,
+        patient_encounter_id,
+      }, qualifier)
+        .clearSelect()
+        .select('patient_record_qualifiers.qualifies_record_id'),
+    )
   }
 
   return query
@@ -182,14 +151,14 @@ const EXPRESSION_BUILDERS = {
       value_snomed_concept_id,
       finding_snomed_concept_id,
       qualifiers,
+      not_findings,
     },
   ) {
-    return baseQuery(trx, {
+    let query = baseQuery(trx, {
       patient_id,
       patient_encounter_id,
       snomed_concept_id,
       value_snomed_concept_id,
-
       qualifiers,
     })
       .innerJoin(
@@ -197,15 +166,41 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_findings.id',
       )
-      .where(
-        'patient_findings.finding_snomed_concept_id',
-        '=',
-        finding_snomed_concept_id,
+      .$if(
+        !!finding_snomed_concept_id,
+        (qb) =>
+          qb.where((eb) =>
+            sql<boolean>`is_descendant(${
+              eb.ref('patient_findings.finding_snomed_concept_id')
+            }, ${finding_snomed_concept_id!}::bigint)`
+          ),
       )
       .$if(
         !!procedure_id,
         (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
       )
+
+    for (const not_finding of not_findings) {
+      assert(snomed_concept_id)
+      query = query.where(
+        'patient_records.id',
+        'not in',
+        EXPRESSION_BUILDERS.finding(trx, {
+          patient_id,
+          patient_encounter_id,
+        }, {
+          ...not_finding,
+          atom: 'finding' as const,
+          snomed_concept_id,
+          not_findings: [],
+        }),
+      )
+    }
+    if (not_findings.length) {
+      debugLog(query)
+    }
+
+    return query
   },
   procedure(
     trx,
@@ -228,7 +223,7 @@ const EXPRESSION_BUILDERS = {
   evaluation(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept_id, value_snomed_concept_id, /*, evaluates*/ qualifiers },
+    { snomed_concept_id, value_snomed_concept_id, evaluates, qualifiers },
   ) {
     return baseQuery(trx, {
       patient_id,
@@ -242,15 +237,16 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_evaluations.id',
       )
-    // .where(
-    //   'evaluates_record_id',
-    //   'in',
-    //   buildExpression(
-    //     trx,
-    //     { patient_id, patient_encounter_id },
-    //     evaluates.expression,
-    //   ),
-    // )
+      .$if(!!evaluates, (qb) =>
+        qb.where(
+          'patient_evaluations.evaluates_record_id',
+          'in',
+          buildExpression(
+            trx,
+            { patient_id, patient_encounter_id },
+            evaluates!.expression,
+          ),
+        ))
   },
   qualifier(
     trx,
@@ -262,7 +258,7 @@ const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       value_snomed_concept_id,
       qualifiers,
-      descendent_of_snomed_concept_id: snomed_concept_id,
+      snomed_concept_id,
     })
       .innerJoin(
         'patient_record_qualifiers',
@@ -284,14 +280,17 @@ const EXPRESSION_BUILDERS = {
       ),
     )
   },
-  not_qualifier() {
-    throw new Error('not_qualifier is handled by parent nodes')
+  not_finding() {
+    throw new Error('not_finding is handled by parent nodes')
   },
-  // evaluates() {
-  //   throw new Error('evalutes is handled by parent nodes')
-  // },
+  evaluates() {
+    throw new Error('evalutes is handled by parent nodes')
+  },
   task() {
     throw new Error('task is not directly queryable')
+  },
+  units() {
+    throw new Error('units is handled by parent nodes')
   },
   or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return baseQuery(trx, { patient_id, patient_encounter_id })
@@ -379,6 +378,7 @@ export function buildExpression(
   if (typeof node === 'string') {
     node = parseExpression(node)
   }
+
   // deno-lint-ignore ban-types
   const builder = EXPRESSION_BUILDERS[node.atom] as Function
   // deno-lint-ignore no-explicit-any

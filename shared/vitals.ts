@@ -9,6 +9,7 @@ import entries from '../util/entries.ts'
 import findMatching from '../util/findMatching.ts'
 import keys from '../util/keys.ts'
 import memoize from '../util/memoize.ts'
+import { TriageLevel } from './priorities.ts'
 
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
 
@@ -378,4 +379,26 @@ export function measureVitalsInputDefinitions(
   }))
 
   return { measurements, assessments }
+}
+
+export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
+  switch (total_score) {
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+      return 'Emergency'
+    case 5:
+    case 6:
+      return 'Very urgent'
+    case 3:
+    case 4:
+      return 'Urgent'
+    case 0:
+    case 1:
+    case 2:
+      return 'Non-urgent'
+    default:
+      throw new Error(`Unexpected total TEWS score ${total_score}`)
+  }
 }

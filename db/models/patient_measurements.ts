@@ -1,4 +1,9 @@
-import { IdSelection, RenderedVitalMeasurement, TrxOrDb } from '../../types.ts'
+import {
+  IdSelection,
+  RenderedVitalMeasurement,
+  TrxOrDb,
+  TrxOrDbOrQueryCreator,
+} from '../../types.ts'
 import {
   debugLog,
   jsonObjectFrom,
@@ -6,12 +11,11 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { DB } from '../../db.d.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
-import { patient_findings } from './patient_findings.ts'
+import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
@@ -29,9 +33,9 @@ type MeasurementInsert = {
 }
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
-  return patient_findings.baseQuery(trx)
+  return findingsBaseQuery(trx)
     .innerJoin(
       'patient_measurements',
       'patient_findings.id',

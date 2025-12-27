@@ -65,7 +65,7 @@ import {
   PRIORITY_SNOMED_CODES,
   PRIORITY_SNOMED_CONCEPT_ID,
 } from '../../shared/priorities.ts'
-import { RECORD_NOW_INVALID_CONCEPT_ID } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -315,24 +315,9 @@ export function baseQuery(trx: TrxOrDb) {
             'patient_encounters.id',
           )
           .where(
-            (eb_patient_triage_level) =>
-              eb_patient_triage_level(
-                'patient_records.id',
-                'not in',
-                eb_patient_triage_level.selectFrom(
-                  'patient_records as now_invalid_patient_records',
-                ).innerJoin(
-                  'patient_evaluations as now_invalid_patient_evaluations',
-                  'now_invalid_patient_records.id',
-                  'now_invalid_patient_evaluations.id',
-                ).where(
-                  'now_invalid_patient_records.snomed_concept_id',
-                  'in',
-                  RECORD_NOW_INVALID_CONCEPT_ID,
-                )
-                  .select('now_invalid_patient_evaluations.evaluates_record_id')
-                  .distinct(),
-              ),
+            'patient_triage_level.id',
+            'not in',
+            nowInvalidRecords(trx),
           )
           .select((eb_patient_triage_level) => [
             asText(
