@@ -71,7 +71,7 @@ export async function insertTasksIfNotAlreadyIdentified(
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
           evaluation:
-            `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID}) ${TO_BE_DONE_SNOMED_CONCEPT_ID}`,
+            `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
         },
       ).with(
         'inserting_relation_patient_records',

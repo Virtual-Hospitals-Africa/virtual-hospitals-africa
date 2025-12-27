@@ -8,20 +8,18 @@ import {
 import { literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
-import {
-  ParsedExpression,
-  ParsedExpressionOf,
-} from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import generateUUID from '../../util/uuid.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
 
 type ProcedureInsert =
   & {
     patient_id: string
     patient_encounter_id: string
-    procedure: ParsedExpressionOf<'procedure'>
+    procedure: Lang['procedure']
   }
   & (
     {
@@ -131,6 +129,7 @@ export const patient_procedures = base({
       by_system,
     }: ProcedureInsert,
   ) {
+    assertHasProperty(procedure, 'snomed_concept_id')
     const procedure_id = generateUUID()
 
     let query = trx.with(
@@ -157,13 +156,14 @@ export const patient_procedures = base({
 
     function qualifierCte(
       qb: typeof query,
-      qualifier: ParsedExpression,
+      qualifier: Lang['qualifier'] | Lang['not_finding'],
       qualifies_record_id: string,
     ) {
+      assertHasProperty(qualifier, 'snomed_concept_id')
       if (qualifier.atom !== 'qualifier') {
         assertEquals(
           qualifier.atom,
-          'not_qualifier',
+          'not_finding',
           'we can omit not expressions upon insert, but not sure what is going on here',
         )
         return qb

@@ -12,6 +12,7 @@ import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
 import isString from '../../util/isString.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -43,10 +44,10 @@ export function insertOneNestedQuery(
     by_system,
   }: PatientEvaluationInsert,
 ) {
-  const { snomed_concept_id, value_snomed_concept_id, qualifiers } =
-    isString(evaluation)
-      ? parseExpressionExpectingAtom(evaluation, 'evaluation')
-      : evaluation
+  const evaluation_node = isString(evaluation)
+    ? parseExpressionExpectingAtom(evaluation, 'evaluation')
+    : evaluation
+  assertHasProperty(evaluation_node, 'snomed_concept_id')
 
   let query = trx.with(
     'inserting_record',
@@ -56,8 +57,8 @@ export function insertOneNestedQuery(
           id: evaluation_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id,
-          value_snomed_concept_id,
+          snomed_concept_id: evaluation_node.snomed_concept_id,
+          value_snomed_concept_id: evaluation_node.value_snomed_concept_id,
         }).returning('id'),
   ).with(
     'inserting_evaluation',
@@ -75,14 +76,16 @@ export function insertOneNestedQuery(
     qb: typeof query,
     qualifier:
       | ParsedExpressionOf<'qualifier'>
-      | ParsedExpressionOf<'not_qualifier'>,
+      | ParsedExpressionOf<'not_finding'>,
     qualifies_record_id: string,
   ) {
+    assertHasProperty(qualifier, 'snomed_concept_id')
+
     if (qualifier.atom !== 'qualifier') {
       assertEquals(
         qualifier.atom,
-        'not_qualifier',
-        'we can omit not_qualifier expressions upon insert, but not sure what is going on here',
+        'not_finding',
+        'we can omit not_finding expressions upon insert, but not sure what is going on here',
       )
       return qb
     }
@@ -121,7 +124,7 @@ export function insertOneNestedQuery(
     return next_query
   }
 
-  for (const qualifier of qualifiers) {
+  for (const qualifier of evaluation_node.qualifiers) {
     query = qualifierCte(query, qualifier, evaluation_id)
   }
 

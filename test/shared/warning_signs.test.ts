@@ -230,7 +230,7 @@ describe('shared/warning_signs.ts', () => {
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '1149222004',
                 'value_snomed_concept_id': null,
               },
@@ -306,12 +306,12 @@ describe('shared/warning_signs.ts', () => {
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '363698007',
                 'value_snomed_concept_id': '7569003',
               },
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '363698007',
                 'value_snomed_concept_id': '29707007',
               },
@@ -540,22 +540,22 @@ describe('shared/warning_signs.ts', () => {
             'value_snomed_concept_id': null,
             'qualifiers': [
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '255593009',
                 'value_snomed_concept_id': null,
               },
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '425082000',
                 'value_snomed_concept_id': null,
               },
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '426284001',
                 'value_snomed_concept_id': null,
               },
               {
-                'atom': 'not_qualifier',
+                'atom': 'not_finding',
                 'snomed_concept_id': '262582004',
                 'value_snomed_concept_id': null,
               },

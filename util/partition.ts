@@ -1,15 +1,22 @@
-export default function partition<T, U = T>(
-  array: (T | U)[],
-  predicate: U extends T ? (item: T) => boolean : (item: T | U) => item is T,
-): [T[], U[]] {
-  const passes = [] as T[]
-  const fails = [] as U[]
+export default function partition<T, P extends T>(
+  array: T[],
+  predicate: (item: T) => item is P,
+): [P[], Exclude<T, P>[]]
+export default function partition<T>(
+  array: T[],
+  predicate: (item: T) => boolean,
+): [T[], T[]]
+export default function partition<T>(
+  array: T[],
+  predicate: (item: T) => boolean,
+): [T[], T[]] {
+  const passes: T[] = []
+  const fails: T[] = []
   for (const item of array) {
-    // deno-lint-ignore no-explicit-any
-    if (predicate(item as any)) {
-      passes.push(item as T)
+    if (predicate(item)) {
+      passes.push(item)
     } else {
-      fails.push(item as U)
+      fails.push(item)
     }
   }
   return [passes, fails]

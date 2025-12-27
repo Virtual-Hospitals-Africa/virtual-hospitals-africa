@@ -15,6 +15,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { Priority } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -221,6 +222,9 @@ export const patient_findings = base({
       finding,
     }: FindingInsert,
   ) {
+    assertHasProperty(finding, 'snomed_concept_id')
+    assertHasProperty(finding, 'finding_snomed_concept_id')
+
     const finding_id = generateUUID()
 
     let query = trx.with(
@@ -247,17 +251,19 @@ export const patient_findings = base({
       qb: typeof query,
       qualifier:
         | ParsedExpressionOf<'qualifier'>
-        | ParsedExpressionOf<'not_qualifier'>,
+        | ParsedExpressionOf<'not_finding'>,
       qualifies_record_id: string,
     ) {
       if (qualifier.atom !== 'qualifier') {
         assertEquals(
           qualifier.atom,
-          'not_qualifier',
-          'we can omit not_qualifier expressions upon insert, but not sure what is going on here',
+          'not_finding',
+          'we can omit not_finding expressions upon insert, but not sure what is going on here',
         )
         return qb
       }
+
+      assertHasProperty(qualifier, 'snomed_concept_id')
       const id = generateUUID()
       const id_token = id.replaceAll('-', '_')
 
