@@ -7,7 +7,6 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
-import * as patient_computed_findings from '../../../../../../../../db/models/patient_computed_findings.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
   positive_number,
@@ -21,13 +20,11 @@ import {
   SEVERITY_SCORE_SNOMED_CONCEPT_ID,
   VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
-  VitalAssessment,
-  VitalMeasurement,
 } from '../../../../../../../../shared/vitals.ts'
 import {
   parseExpressionExpectingAtom,
 } from '../../../../../../../../shared/s_expression.ts'
-import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
+import { forEach } from '../../../../../../../../util/inParallel.ts'
 import {
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   patient_findings,
@@ -45,7 +42,6 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
-import matching from '../../../../../../../../util/matching.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
