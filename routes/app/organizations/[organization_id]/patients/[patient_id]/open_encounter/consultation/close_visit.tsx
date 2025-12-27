@@ -29,7 +29,9 @@ export default OpenEncounterWorkflowPage(
   function CloseVisitPage(
     ctx,
   ) {
-    assertAllPriorStepsCompleted(ctx)
+    assertAllPriorStepsCompleted(ctx, {
+      attempting_to_complete_workflow: true,
+    })
     return <p>TODO</p>
   },
 )

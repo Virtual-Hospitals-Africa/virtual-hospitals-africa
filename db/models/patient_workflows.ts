@@ -1,4 +1,3 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PatientWorkflows, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
 import {
@@ -6,7 +5,6 @@ import {
   RenderedPatientEncounter,
   RenderedPatientOpenEncounter,
   TrxOrDb,
-  WorkflowStatus,
 } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'

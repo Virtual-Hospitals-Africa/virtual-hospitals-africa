@@ -10,7 +10,7 @@ import { QueryCreator, sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../db.d.ts'
-import { satisfyingSExpression } from './s_expression.ts'
+import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
@@ -55,7 +55,9 @@ export const patient_measurements = base({
       search?: string
       patient_id?: string | IdSelection
       patient_encounter_id?: string | IdSelection
+      s_expression?: string
     },
+    trx,
   ) {
     assert(!opts.search, 'TODO support')
     if (opts.search) {
@@ -77,6 +79,21 @@ export const patient_measurements = base({
         'patient_records.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
+      )
+    }
+    if (opts.s_expression) {
+      assert(opts.patient_id)
+      qb = qb.where(
+        'patient_records.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
+          },
+          opts.s_expression,
+        ),
       )
     }
 

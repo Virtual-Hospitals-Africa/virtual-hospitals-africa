@@ -63,3 +63,24 @@ export function getFormLabels($: cheerio.CheerioAPI): unknown {
   })
   return form_labels
 }
+
+export function getFormOptions($: cheerio.CheerioAPI): unknown {
+  const form_options: Record<
+    string,
+    Array<{ label: string; value: string; selected: boolean }>
+  > = {}
+  $('form select').each((_i, el) => {
+    if (!el.attribs.name) return
+    const options: Array<{ label: string; value: string; selected: boolean }> =
+      []
+    $(el).find('option').each((_i, option) => {
+      options.push({
+        label: option.attribs.label ?? $(option).text(),
+        value: option.attribs.value ?? '',
+        selected: 'selected' in option.attribs,
+      })
+    })
+    set(form_options, el.attribs.name, options)
+  })
+  return form_options
+}

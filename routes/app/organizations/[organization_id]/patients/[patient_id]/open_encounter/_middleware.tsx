@@ -587,6 +587,7 @@ export function createProcedureIfNotAlreadyCompleted(
   const procedure_snomed_concept_id =
     ctx.state.workflow_step_snomed_concept_id ||
     ctx.state.workflow_snomed_concept_id
+
   return patient_procedures.insertOneNested(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
     patient_encounter_id: ctx.state.encounter.patient_encounter_id,

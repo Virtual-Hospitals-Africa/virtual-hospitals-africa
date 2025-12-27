@@ -4,11 +4,10 @@ import {
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../types.ts'
+import compact from '../util/compact.ts'
 import entries from '../util/entries.ts'
 import keys from '../util/keys.ts'
-// import mapEntries from '../util/mapEntries.ts'
 import memoize from '../util/memoize.ts'
-// import { parseExpression } from './s_expression.ts'
 
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
 
@@ -36,8 +35,8 @@ export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
 }
 
 export const VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS = {
-  consciousness: '1104441000000107',
   mobility_assessment: '301438001',
+  consciousness: '1104441000000107',
   trauma_presence: '417746004',
 }
 
@@ -309,17 +308,26 @@ export function measureVitalsInputDefinitions(
   assessments: VitalAssessmentFormInputDefition[]
 } {
   const measurement_vitals = keys(MEASUREMENT_RANGES[age_determination])
+
+  // While there's no reference range for diastolic, these are taken together
+  if (measurement_vitals.includes('blood_pressure_systolic')) {
+    measurement_vitals.push('blood_pressure_diastolic')
+  }
+
   if (has_diabetes) {
     measurement_vitals.push('blood_glucose')
   }
 
-  const measurements: VitalMeasurementFormInputDefition[] = measurement_vitals
-    .map((vital) => ({
-      vital,
-      required: true,
-      units: VITAL_MEASUREMENTS_UNITS[vital],
-      snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital],
-    }))
+  const measurements: VitalMeasurementFormInputDefition[] = compact(
+    // iterate over measurements for the sort order
+    keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)
+      .map((vital) => (measurement_vitals.includes(vital) && {
+        vital,
+        required: true,
+        units: VITAL_MEASUREMENTS_UNITS[vital],
+        snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital],
+      })),
+  )
 
   const assessments: VitalAssessmentFormInputDefition[] = entries(
     ASESSMENT_OPTIONS,

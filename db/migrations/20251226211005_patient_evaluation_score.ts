@@ -9,7 +9,7 @@ export function up(db: Kysely<DB>) {
   }, (qb) =>
     qb.addColumn(
       'score',
-      'integer',
+      'smallint',
       (col) => col.notNull().check(sql`score >= 0`),
     ))
 }
