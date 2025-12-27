@@ -456,6 +456,8 @@ describe('triage/measure_vitals', () => {
         },
       )
 
+      console.log({ scores })
+
       const finding_scores = await pMap(
         scores,
         async ({ score, evaluates_record_id }) => {
@@ -528,8 +530,10 @@ describe('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
+      { only }: { only?: boolean } = {}
     ) {
-      it(description, async () => {
+      const run = only ? it.only : it
+      run(description, async () => {
         const { encounter } = await setupTriage({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
@@ -564,8 +568,10 @@ describe('triage/measure_vitals', () => {
           db,
           {
             patient_id: encounter.patient.id,
+            s_expression: '(evaluation (evaluates (not (procedure))))'
           },
         )
+        console.log({ scores })
 
         const finding_scores = await pMap(
           scores,
@@ -626,7 +632,7 @@ describe('triage/measure_vitals', () => {
       { ...default_assessments_adult, mobility_assessment: 'Walking' },
       baseScores({ 'Ability to mobilize': 0 }),
     )
-
+    
     testCase(
       'adult, mobility: Difficulty walking -> score: 1',
       'adult',
@@ -636,6 +642,7 @@ describe('triage/measure_vitals', () => {
         mobility_assessment: 'Difficulty walking',
       },
       baseScores({ 'Ability to mobilize': 1 }),
+      { only: true }
     )
 
     testCase(

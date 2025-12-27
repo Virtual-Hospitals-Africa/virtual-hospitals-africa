@@ -264,7 +264,7 @@ export function base<
       id: string | IdSelection,
     ): Promise<RenderedResult> {
       const result = await this.getByIdOptional(trx, id)
-      assertOr404(result)
+      assertOr404(result, `Not found: (${input.top_level_table}.id = '${id}')`)
       return result
     },
     async getByIdOptional(
