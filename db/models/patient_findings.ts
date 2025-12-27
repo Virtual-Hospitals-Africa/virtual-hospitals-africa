@@ -6,10 +6,7 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  patient_records,
-  RECORD_NOW_INVALID_CONCEPT_ID,
-} from './patient_records.ts'
+import { nowInvalidRecords, patient_records } from './patient_records.ts'
 import { QueryCreator, sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -18,6 +15,7 @@ import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { Priority } from '../../shared/priorities.ts'
+import { tews_component } from '../../util/validators.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -104,28 +102,37 @@ export function baseQuery(
           'patient_records.id',
         )
         .where(
-          (eb_patient_triage_level) =>
-            eb_patient_triage_level(
-              'triage_patient_records.id',
-              'not in',
-              eb_patient_triage_level.selectFrom(
-                'patient_records as now_invalid_patient_records',
-              ).innerJoin(
-                'patient_evaluations as now_invalid_patient_evaluations',
-                'now_invalid_patient_records.id',
-                'now_invalid_patient_evaluations.id',
-              ).where(
-                'now_invalid_patient_records.snomed_concept_id',
-                'in',
-                RECORD_NOW_INVALID_CONCEPT_ID,
-              )
-                .select('now_invalid_patient_evaluations.evaluates_record_id')
-                .distinct(),
-            ),
+          'triage_patient_records.id',
+          'not in',
+          nowInvalidRecords(trx),
         )
         .select('triage_snomed_inferred_canonical_name_and_category.name')
         .$castTo<Priority | null>()
         .as('priority'),
+
+      eb.selectFrom('patient_evaluation_scores')
+        .innerJoin(
+          'patient_records as score_patient_records',
+          'patient_evaluation_scores.id',
+          'score_patient_records.id',
+        )
+        .innerJoin(
+          'patient_evaluations as score_evaluations',
+          'patient_evaluation_scores.id',
+          'score_evaluations.id',
+        )
+        .whereRef(
+          'score_evaluations.evaluates_record_id',
+          '=',
+          'patient_records.id',
+        )
+        .where(
+          'score_patient_records.id',
+          'not in',
+          nowInvalidRecords(trx),
+        )
+        .select('patient_evaluation_scores.score')
+        .as('score'),
     ])
 }
 
@@ -141,7 +148,15 @@ export type PatientFindingsSearch = {
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (finding) => finding,
+  formatResult: (finding) => {
+    if (finding.priority) {
+      assert(finding.score == null, 'Use score or priority, but not both')
+    }
+    if (finding.score != null) {
+      tews_component.parse(finding.score)
+    }
+    return finding
+  },
   handleSearch(
     qb,
     opts: PatientFindingsSearch,

@@ -44,6 +44,8 @@ export type Falsy = false | 0 | '' | null | undefined
 
 export type BlankRecord = Record<string, never>
 
+export type Values<R> = R extends Record<any, infer V> ? V : never
+
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
@@ -3451,6 +3453,7 @@ export type RenderedFindingRelativeToHealthWorker = {
   value_display: string
   created_at: Date | string
   priority: Priority | null
+  score: number | null
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]

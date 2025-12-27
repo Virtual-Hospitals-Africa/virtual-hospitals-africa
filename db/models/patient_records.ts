@@ -1,4 +1,4 @@
-import { ExpressionWrapper, QueryCreator, sql } from 'kysely'
+import { QueryCreator, sql } from 'kysely'
 import {
   IdSelection,
   RenderedQualifierRelativeToHealthWorker,
@@ -98,11 +98,7 @@ export function markEnteredInError(
 }
 
 export function nowInvalidRecords(
-  trx: TrxOrDb,
-  { patient_id }: {
-    // deno-lint-ignore no-explicit-any
-    patient_id: string | ExpressionWrapper<any, any, string> | IdSelection
-  },
+  trx: TrxOrDb | QueryCreator<DB>,
 ) {
   return trx.selectFrom(
     'patient_records as now_invalid_patient_records',
@@ -112,7 +108,6 @@ export function nowInvalidRecords(
       'now_invalid_patient_records.id',
       'now_invalid_patient_records.id',
     )
-    .where('now_invalid_patient_records.patient_id', '=', patient_id)
     .where(
       'now_invalid_patient_records.snomed_concept_id',
       'in',

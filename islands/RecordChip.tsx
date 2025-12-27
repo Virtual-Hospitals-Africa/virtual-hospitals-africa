@@ -1,9 +1,9 @@
 import { useRef } from 'preact/hooks'
-import { RenderedFindingRelativeToHealthWorker } from '../types.ts'
+import { RenderedFindingRelativeToHealthWorker, Values } from '../types.ts'
 import { FindingPanel } from '../components/library/FindingPanel.tsx'
 import { useSignal } from '@preact/signals'
 import cls from '../util/cls.ts'
-import { PRIORITY_COLORS } from '../shared/priorities.ts'
+import { Priority, PRIORITY_COLORS } from '../shared/priorities.ts'
 
 export function RecordChips(
   { records, organization_id }: {
@@ -25,6 +25,31 @@ export function RecordChips(
   )
 }
 
+function scoreOrPriorityColors(record: {
+  score: number | null
+  priority: Priority | null
+}): Values<typeof PRIORITY_COLORS> {
+  switch (record.score) {
+    // TODO is this Non-urgent or normal color
+    case 0:
+      return PRIORITY_COLORS['Non-urgent']
+    case 1:
+      return PRIORITY_COLORS['Urgent']
+    case 2:
+      return PRIORITY_COLORS['Very urgent']
+    case 3:
+      return PRIORITY_COLORS['Emergency']
+    case null:
+      break
+    default:
+      throw new Error(`Unexpected score ${record.score}`)
+  }
+
+  return record.priority
+    ? PRIORITY_COLORS[record.priority]
+    : PRIORITY_COLORS.Normal
+}
+
 export function RecordChip(
   { record, organization_id }: {
     record: RenderedFindingRelativeToHealthWorker
@@ -36,9 +61,8 @@ export function RecordChip(
   const is_hovered = useSignal(false)
   const align_right = useSignal(false)
 
-  const colors = record.priority
-    ? PRIORITY_COLORS[record.priority]
-    : PRIORITY_COLORS.Normal
+  const colors = scoreOrPriorityColors(record)
+
   const style_class = `${colors.bg} ${colors.text}`
 
   const handleMouseEnter = () => {

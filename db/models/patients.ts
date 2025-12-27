@@ -96,7 +96,7 @@ export function baseQuery(trx: TrxOrDb) {
         .where(
           'patient_records.id',
           'not in',
-          nowInvalidRecords(trx, { patient_id: eb.ref('patients.id') }),
+          nowInvalidRecords(trx),
         )
         .orderBy('patient_records.created_at', 'desc')
         .select('patient_measurements.value')
