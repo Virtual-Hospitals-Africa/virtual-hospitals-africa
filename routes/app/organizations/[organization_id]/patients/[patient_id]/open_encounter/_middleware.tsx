@@ -69,7 +69,9 @@ import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
+  patient_id: string
   encounter: RenderedPatientOpenEncounter
+  patient_encounter_id: string
   encounter_employee_presence: RenderedPatientEncounterEmployee | null
 }
 
@@ -348,6 +350,8 @@ export async function handler(
     encounter,
     encounter_employee_presence,
     patient: encounter.patient,
+    patient_id: encounter.patient.id,
+    patient_encounter_id: encounter.patient_encounter_id,
   }
 
   Object.assign(ctx.state, encounter_props)

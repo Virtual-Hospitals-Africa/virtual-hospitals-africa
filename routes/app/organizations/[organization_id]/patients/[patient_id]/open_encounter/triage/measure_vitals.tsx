@@ -14,7 +14,7 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
-ALL_VITAL_SNOMED_CONCEPT_IDS,
+  ALL_VITAL_SNOMED_CONCEPT_IDS,
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,

@@ -123,7 +123,6 @@ export function insertLevel(
     .executeTakeFirstOrThrow()
 }
 
-
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {

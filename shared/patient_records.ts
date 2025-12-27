@@ -29,8 +29,9 @@ export function buildValueDisplay(
   { name, qualifiers, finding_name, value_name, value, units }:
     DisplayableRecord,
 ): {
+  finding_display: string
   full_display: string
-  value_display: string
+  value_display: string | null
 } {
   const [attribute_qualifiers, prefix_qualifiers] = partition(
     qualifiers || [],
@@ -47,6 +48,7 @@ export function buildValueDisplay(
     const value_display = measurementValueDisplay({ value, units })
     return {
       value_display,
+      finding_display: finding_name,
       full_display: `${finding_name}: ${value_display}`,
     }
   }
@@ -60,13 +62,18 @@ export function buildValueDisplay(
   ]).join(' ')
 
   if (!value_name) {
-    return { full_display: finding_display, value_display: finding_display }
+    return {
+      finding_display,
+      full_display: finding_display, 
+      value_display: null
+    }
   }
 
   assert(!value)
   assert(!units)
   return {
-    full_display: `${finding_display}: ${value_name}`,
+    finding_display,
     value_display: value_name,
+    full_display: `${finding_display}: ${value_name}`,
   }
 }

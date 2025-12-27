@@ -3452,9 +3452,11 @@ export type RenderedFindingRelativeToHealthWorker = {
   patient_encounter_id: string
   snomed_concept_id: string
   finding_snomed_concept_id: string
+  finding_name: string
+  finding_display: string
   name: string
   full_display: string
-  value_display: string
+  value_display: string | null
   created_at: Date | string
   priority: Priority | null
   score: number | null
@@ -3462,6 +3464,13 @@ export type RenderedFindingRelativeToHealthWorker = {
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
+
+export type RenderedVitalRelativeToHealthWorker =
+  & RenderedFindingRelativeToHealthWorker
+  & {
+    value: string | number | null
+    units: string | null
+  }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
@@ -3555,4 +3564,10 @@ export type ReferenceRange = {
   reference_source: string
   evidence_level?: string
   clinical_context: string
+}
+
+export type TriageAssignPriorityTableVital = {
+  current: RenderedVitalRelativeToHealthWorker
+  previous: RenderedVitalRelativeToHealthWorker | null
+  reference_range: ReferenceRange | null
 }

@@ -1,8 +1,8 @@
 // Perhaps a misnomer, this is a more general way of getting findings whether they be measurements or not
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
-  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
+  RenderedVitalRelativeToHealthWorker,
   TrxOrDb,
   TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
@@ -104,15 +104,20 @@ export const patient_vitals = base({
   },
   async getMostRecent(
     trx: TrxOrDb,
-    { health_worker_id, patient_id, patient_encounter_id, excluding_patient_encounter_id, snomed_concept_ids }:
-      {
-        health_worker_id: string
-        patient_id: string
-        patient_encounter_id?: string
-        excluding_patient_encounter_id?: string
-        snomed_concept_ids?: string[]
-      },
-  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
+    {
+      health_worker_id,
+      patient_id,
+      patient_encounter_id,
+      excluding_patient_encounter_id,
+      snomed_concept_ids,
+    }: {
+      health_worker_id: string
+      patient_id: string
+      patient_encounter_id?: string
+      excluding_patient_encounter_id?: string
+      snomed_concept_ids?: string[]
+    },
+  ): Promise<RenderedVitalRelativeToHealthWorker[]> {
     if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
     const query = trx.with(
