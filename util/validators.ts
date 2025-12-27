@@ -80,3 +80,7 @@ export const string_or_number_as_string = z.string().or(z.number()).transform(
 export const south_african_national_id = string_or_number_as_string
 
 export const yes_no_unknown = z.enum(['Yes', 'No', 'Unknown'])
+
+export const tews_component = z.number().int().min(0).max(3)
+
+export const tews_total = z.number().int().min(0).max(10)

@@ -52,7 +52,7 @@ function baseQuery(
     .where(
       'patient_records.id',
       'not in',
-      nowInvalidRecords(trx, { patient_id }),
+      nowInvalidRecords(trx),
     )
     .$if(
       !!patient_encounter_id,

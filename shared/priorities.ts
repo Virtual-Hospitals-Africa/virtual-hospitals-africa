@@ -51,9 +51,9 @@ export const PRIORITY_COLORS: Record<
   { bg: string; text: string; border: string }
 > = {
   Normal: {
-    bg: 'bg-green-100',
-    text: 'text-green-800',
-    border: 'border-green-200',
+    bg: 'bg-gray-100',
+    text: 'text-gray-800',
+    border: 'border-gray-200',
   },
   'Non-urgent': {
     bg: 'bg-green-100',

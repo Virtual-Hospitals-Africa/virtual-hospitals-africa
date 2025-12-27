@@ -205,7 +205,7 @@ export function getEncounter(
     .where(
       'patient_records.id',
       'not in',
-      nowInvalidRecords(trx, { patient_id }),
+      nowInvalidRecords(trx),
     )
     .leftJoin(
       'patient_finding_media_speeches',

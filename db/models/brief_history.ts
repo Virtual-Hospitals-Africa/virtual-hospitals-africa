@@ -47,7 +47,7 @@ export function mostRecentFindings(
           .where(
             'patient_records.id',
             'not in',
-            nowInvalidRecords(trx, { patient_id }),
+            nowInvalidRecords(trx),
           )
           .innerJoin(
             'common_conditions',

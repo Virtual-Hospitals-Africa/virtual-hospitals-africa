@@ -206,7 +206,7 @@ export async function getEncounter(
     .where(
       'patient_records.id',
       'not in',
-      nowInvalidRecords(trx, { patient_id }),
+      nowInvalidRecords(trx),
     )
     .selectAll('patient_records')
     .select((eb) => [
