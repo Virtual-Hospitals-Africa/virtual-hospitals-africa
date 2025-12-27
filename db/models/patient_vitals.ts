@@ -4,15 +4,15 @@ import {
   RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
   TrxOrDb,
+  TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
 import { debugLog, jsonObjectFrom } from '../helpers.ts'
-import { QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { DB } from '../../db.d.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
@@ -21,7 +21,7 @@ import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return patient_findings.baseQuery(trx)
     .leftJoin(

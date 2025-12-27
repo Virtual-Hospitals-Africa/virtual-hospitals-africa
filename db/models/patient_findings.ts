@@ -1,4 +1,4 @@
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   asText,
   jsonBuildObject,
@@ -7,10 +7,9 @@ import {
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { nowInvalidRecords, patient_records } from './patient_records.ts'
-import { QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { DB } from '../../db.d.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { buildExpression, satisfyingSExpression } from './s_expression.ts'
@@ -35,7 +34,7 @@ type FindingInsert = {
 }
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return patient_records.baseQuery(trx)
     .innerJoin(

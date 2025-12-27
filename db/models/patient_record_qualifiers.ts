@@ -1,11 +1,10 @@
-import { QueryCreator, sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { orderByArrayPosition } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
 
 export const patient_record_qualifiers = {
   baseQuery<Alias extends string>(
-    trx: TrxOrDb | QueryCreator<DB>,
+    trx: TrxOrDbOrQueryCreator,
     alias: Alias,
   ) {
     return trx.selectFrom(

@@ -1,8 +1,9 @@
-import { QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import {
   IdSelection,
   RenderedQualifierRelativeToHealthWorker,
   TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { asText, jsonArrayFrom, success_true } from '../helpers.ts'
@@ -10,7 +11,6 @@ import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression } from './s_expression.ts'
 import { ParsedExpression } from '../../shared/s_expression.ts'
-import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export const ALTERED_SNOMED_CONCEPT_ID = '18307000' as const
@@ -98,14 +98,14 @@ export function markEnteredInError(
 }
 
 export function nowInvalidRecords(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return trx.selectFrom(
     'patient_records as now_invalid_patient_records',
   )
     .innerJoin(
       'patient_evaluations as now_invalid_patient_evaluations',
-      'now_invalid_patient_records.id',
+      'now_invalid_patient_evaluations.id',
       'now_invalid_patient_records.id',
     )
     .where(
@@ -117,7 +117,7 @@ export function nowInvalidRecords(
 }
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return trx.selectFrom('patient_records')
     .innerJoin(
@@ -208,24 +208,9 @@ export function baseQuery(
       ).as('qualifiers'),
     ])
     .where(
-      (eb) =>
-        eb(
-          'patient_records.id',
-          'not in',
-          eb.selectFrom(
-            'patient_records as now_invalid_patient_records',
-          ).innerJoin(
-            'patient_evaluations as now_invalid_patient_evaluations',
-            'now_invalid_patient_records.id',
-            'now_invalid_patient_evaluations.id',
-          ).where(
-            'now_invalid_patient_records.snomed_concept_id',
-            'in',
-            RECORD_NOW_INVALID_CONCEPT_ID,
-          )
-            .select('now_invalid_patient_evaluations.evaluates_record_id')
-            .distinct(),
-        ),
+      'patient_records.id',
+      'not in',
+      nowInvalidRecords(trx),
     )
 }
 

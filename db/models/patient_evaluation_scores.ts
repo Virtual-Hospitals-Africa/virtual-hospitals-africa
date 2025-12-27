@@ -1,5 +1,5 @@
-import { QueryCreator, sql } from 'kysely'
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { base } from './_base.ts'
@@ -9,7 +9,6 @@ import {
   patient_evaluations,
   PatientEvaluationInsert,
 } from './patient_evaluations.ts'
-import { DB } from '../../db.d.ts'
 
 type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
   score: number
@@ -40,7 +39,7 @@ export function insertOneNested(
 }
 
 export function baseQuery(
-  trx: TrxOrDb | QueryCreator<DB>,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return patient_evaluations.baseQuery(trx).innerJoin(
     'patient_evaluation_scores',
@@ -140,7 +139,7 @@ export const patient_evaluation_scores = base({
           .orderBy('patient_records.created_at', 'desc'),
     ).selectFrom('ranked')
       .where('ranked.rank', '=', 1)
-      .select(sql<number>`sum(ranked.score)`.as('total_score'))
+      .select(sql<number>`sum(ranked.score)::integer`.as('total_score'))
       .executeTakeFirstOrThrow()
   },
 })

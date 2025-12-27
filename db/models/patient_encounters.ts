@@ -65,10 +65,7 @@ import {
   PRIORITY_SNOMED_CODES,
   PRIORITY_SNOMED_CONCEPT_ID,
 } from '../../shared/priorities.ts'
-import {
-  nowInvalidRecords,
-  RECORD_NOW_INVALID_CONCEPT_ID,
-} from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records.ts'
 
 type EncounterExistingOrToCreate = {
   create: false

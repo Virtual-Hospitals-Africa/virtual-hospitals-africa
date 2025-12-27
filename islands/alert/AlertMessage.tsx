@@ -49,39 +49,34 @@ export default function AlertMessage(
 
   return (
     <div className={cls('rounded-md p-4', style.bg)}>
-      <div className='flex relative'>
-        <div className='flex gap-3'>
+      <div className='grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-2'>
+        <div className='grid place-items-center'>
           <Icon
             className={cls('h-5 w-5', style.iconColor)}
             aria-hidden='true'
           />
-        
-          <div className='flex flex-col gap-2 -mt-1'>
-            <h3 className={cls('text-md font-medium', style.textColor)}>
-              {message}
-            </h3>
-            {!!actions?.length && (
-              <div className='flex gap-3'>
-                {actions.map((action) => (
-                  <ActionButton
-                    action={action}
-                    variant='secondary'
-                  />
-                ))}
-              </div>
-            )}
-          </div>
         </div>
+        <h3 className={cls('text-md font-medium', style.textColor)}>
+          {message}
+        </h3>
         <button
-          className='ml-auto absolute top-0 right-0 -mt-1 -mr-1'
           type='button'
           onClick={() => alert.value = null}
         >
           <XMarkIcon
-            type='button'
             className={cls('h-5 w-5', style.iconColor, style.hoverColor)}
           />
         </button>
+        {!!actions?.length && (
+          <div className='col-start-2 col-span-2 flex gap-3'>
+            {actions.map((action) => (
+              <ActionButton
+                action={action}
+                variant='secondary'
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
