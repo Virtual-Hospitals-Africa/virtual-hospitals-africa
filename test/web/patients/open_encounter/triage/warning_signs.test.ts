@@ -24,6 +24,7 @@ import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { debugLog } from '../../../../../db/helpers.ts'
+import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -136,6 +137,7 @@ describe('triage/warning_signs', () => {
         patient_id: initial_encounter.patient.id,
         encounter: initial_encounter,
         health_worker_id: nurse.id,
+        conditions: COMMON_CONDITIONS,
       })
       assert(most_recent_findings.pregnancy)
 

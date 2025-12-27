@@ -270,8 +270,19 @@ const EXPRESSION_BUILDERS = {
         'patient_record_qualifiers.id',
       )
   },
-  not() {
-    throw new Error('not is handled by parent nodes')
+  not(trx, { patient_id, patient_encounter_id }, { expression }) {
+    return baseQuery(trx, {
+      patient_id,
+      patient_encounter_id,
+    }).where(
+      'patient_records.id',
+      'not in',
+      buildExpression(
+        trx,
+        { patient_id, patient_encounter_id },
+        expression,
+      ),
+    )
   },
   not_qualifier() {
     throw new Error('not_qualifier is handled by parent nodes')

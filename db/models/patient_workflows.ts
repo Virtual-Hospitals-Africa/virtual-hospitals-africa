@@ -1,4 +1,3 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PatientWorkflows, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
 import {
@@ -6,7 +5,6 @@ import {
   RenderedPatientEncounter,
   RenderedPatientOpenEncounter,
   TrxOrDb,
-  WorkflowStatus,
 } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
@@ -50,25 +48,19 @@ export function start(
   trx: TrxOrDb,
   {
     encounter,
-    existing_patient_encounter_employee_id,
     employment_id,
-    workflow_status,
+    patient_workflow_id,
+    existing_patient_encounter_employee_id,
   }: {
     encounter: RenderedPatientEncounter
-    existing_patient_encounter_employee_id: string | null
     employment_id: string
-    workflow_status: WorkflowStatus
+    patient_workflow_id: string
+    existing_patient_encounter_employee_id: string | null
   },
 ) {
   const patient_encounter_employee_id =
     existing_patient_encounter_employee_id ||
     generateUUID()
-
-  assertEquals(
-    workflow_status.status,
-    'not started',
-    'TODO support restarting workflows or joining those in progress?',
-  )
 
   return trx.with(
     'inserting_patient_encounter_employee',
@@ -81,12 +73,29 @@ export function start(
             employment_id: employment_id,
           })
         : blankSelection(qb),
+  ).with(
+    'inserting_employment_presence',
+    (qb) =>
+      qb.insertInto('employment_presence')
+        .values({
+          id: employment_id,
+          at_work: true,
+          with_patient_id: encounter.patient.id,
+        }).onConflict((oc) =>
+          oc.column('id').doUpdateSet({
+            at_work: true,
+            with_patient_id: encounter.patient.id,
+          })
+        ),
   )
     .insertInto('patient_workflows_started')
     .values({
       patient_encounter_employee_id,
-      patient_workflow_id: workflow_status.patient_workflow_id,
+      patient_workflow_id,
     })
+    .onConflict((oc) =>
+      oc.constraint('patient_workflows_started_once').doNothing()
+    )
     .execute()
 }
 

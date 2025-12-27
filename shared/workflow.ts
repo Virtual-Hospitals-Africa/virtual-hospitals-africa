@@ -47,6 +47,7 @@ export const WORKFLOW_STEPS = {
   triage: [
     'warning_signs', // chief complaint + emergency signs + urgent signs
     'brief_history',
+    'height_and_weight',
     'measure_vitals',
     'additional_tasks_and_investigations',
     'assign_priority',
@@ -101,6 +102,7 @@ export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
     // https://www.snomed.org/change-or-add
     // https://www.snomed.org/members
     'warning_signs': '245581009', // chief complaint + emergency signs + urgent signs |Emergency examination for triage (procedure)|
+    'height_and_weight': '54709006', // |Body measurement (procedure)|'
     'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
     // 'assign_priority': '',
   },

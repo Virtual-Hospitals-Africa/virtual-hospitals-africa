@@ -1119,6 +1119,11 @@ export interface PatientEvaluations {
   procedure_id: string | null
 }
 
+export interface PatientEvaluationScores {
+  id: string
+  score: number
+}
+
 export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1950,6 +1955,7 @@ export interface DB {
   patient_conditions: PatientConditions
   patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
+  patient_evaluation_scores: PatientEvaluationScores
   patient_evaluations: PatientEvaluations
   patient_examination_finding_body_sites: PatientExaminationFindingBodySites
   patient_examination_findings: PatientExaminationFindings

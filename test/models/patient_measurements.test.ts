@@ -5,13 +5,11 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_measurements } from '../../db/models/patient_measurements.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  WORKFLOW_SNOMED_CONCEPT_IDS,
-  WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
-} from '../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
 import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { patient_procedures } from '../../db/models/patient_procedures.ts'
 
 describe('db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
@@ -40,20 +38,24 @@ describe('db/models/patient_measurements.ts', () => {
         )`,
         '=',
       )
+      const procedure = await patient_procedures.insertOneNested(db, {
+        patient_id: encounter.patient.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        procedure: parseExpressionExpectingAtom(
+          `(procedure ${
+            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+          })`,
+          'procedure',
+        ),
+      })
 
       const { record_id } = await patient_measurements.insertOneNested(db, {
         patient_id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id:
           encounter.employee.patient_encounter_employee_id,
-        employment_id: encounter.employee.employee_id,
-        workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
-        workflow_step_snomed_concept_id:
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals,
-        previously_completed_procedures: {
-          workflow_record_id: null,
-          workflow_step_record_id: null,
-        },
+        procedure_id: procedure.procedure_id,
         measurement_equality,
       })
 
@@ -130,20 +132,24 @@ describe('db/models/patient_measurements.ts', () => {
         )`,
         '=',
       )
+      const procedure = await patient_procedures.insertOneNested(db, {
+        patient_id: encounter.patient.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        procedure: parseExpressionExpectingAtom(
+          `(procedure ${
+            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+          })`,
+          'procedure',
+        ),
+      })
 
       const to_insert = {
         patient_id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id:
           encounter.employee.patient_encounter_employee_id,
-        employment_id: encounter.employee.employee_id,
-        workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
-        workflow_step_snomed_concept_id:
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals,
-        previously_completed_procedures: {
-          workflow_record_id: null,
-          workflow_step_record_id: null,
-        },
+        procedure_id: procedure.procedure_id,
         measurement_equality,
       }
 
@@ -173,19 +179,24 @@ describe('db/models/patient_measurements.ts', () => {
         )
       const patient_id = encounter.patient.id
 
+      const procedure = await patient_procedures.insertOneNested(db, {
+        patient_id: encounter.patient.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        procedure: parseExpressionExpectingAtom(
+          `(procedure ${
+            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+          })`,
+          'procedure',
+        ),
+      })
+
       const to_insert = {
         patient_id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id:
           encounter.employee.patient_encounter_employee_id,
-        employment_id: encounter.employee.employee_id,
-        workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS.triage,
-        workflow_step_snomed_concept_id:
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals,
-        previously_completed_procedures: {
-          workflow_record_id: null,
-          workflow_step_record_id: null,
-        },
+        procedure_id: procedure.procedure_id,
       }
 
       const first_insert = await patient_measurements

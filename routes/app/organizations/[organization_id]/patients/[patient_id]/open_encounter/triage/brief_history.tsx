@@ -22,6 +22,7 @@ import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import {
   Existence,
+  Maybe,
   MostRecentBriefHistoryFindings,
   RenderedBriefHistoryRelativeToHealthWorker,
   Sex,
@@ -31,6 +32,7 @@ import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import {
   COMMON_CONDITIONS,
+  CommonCondition,
   CommonConditionKey,
   commonConditionSnomedConceptId,
 } from '../../../../../../../../shared/brief_history.ts'
@@ -67,19 +69,32 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
+function mostRecentFindings(ctx: OpenEncounterWorkflowContext) {
+  const { trx, encounter, health_worker } = ctx.state
+  const { patient } = encounter
+  const patient_id = patient.id
+
+  return renderedMostRecentFindings(
+    trx,
+    {
+      patient_id,
+      encounter,
+      health_worker_id: health_worker.id,
+      conditions: COMMON_CONDITIONS,
+    },
+  )
+}
+
 export const handler = postHandler(
   TriageBriefHistorySchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { trx, encounter, health_worker } = ctx.state
+    const { trx, encounter, encounter_employee_presence } = ctx.state
     const { patient } = encounter
     const patient_id = patient.id
 
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
 
-    const most_recent_findings = await renderedMostRecentFindings(
-      trx,
-      { patient_id, encounter, health_worker_id: health_worker.id },
-    )
+    const most_recent_findings = await mostRecentFindings(ctx)
 
     const inserting_findings = forEach(
       entries(form_values),
@@ -109,12 +124,12 @@ export const handler = postHandler(
         }
 
         return patient_findings.insertOneNested(
-          ctx.state.trx,
+          trx,
           {
-            patient_id: ctx.state.patient.id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            patient_encounter_employee_id: ctx.state.encounter_employee_presence
-              .patient_encounter_employee_id,
+            patient_id,
+            patient_encounter_id: encounter.patient_encounter_id,
+            patient_encounter_employee_id:
+              encounter_employee_presence.patient_encounter_employee_id,
             procedure_id,
             finding: parseExpressionExpectingAtom(
               `(finding
@@ -141,8 +156,8 @@ export const handler = postHandler(
 
 function CommonConditionRow(
   { condition, most_recent_finding, sex, organization_id }: {
-    condition: (typeof COMMON_CONDITIONS)[number]
-    most_recent_finding: RenderedBriefHistoryRelativeToHealthWorker | null
+    condition: CommonCondition
+    most_recent_finding: Maybe<RenderedBriefHistoryRelativeToHealthWorker>
     sex: Sex
     organization_id: string
   },
@@ -195,21 +210,18 @@ function BriefHistorySection(
 export async function TriageBriefHistoryPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  assertAllPriorStepsCompleted(ctx)
-  const { trx, encounter, health_worker, organization_employment } = ctx.state
-  const { patient } = encounter
-  const patient_id = patient.id
+  assertAllPriorStepsCompleted(ctx, {
+    attempting_to_complete_workflow: false,
+  })
 
-  const most_recent_findings = await renderedMostRecentFindings(
-    trx,
-    { patient_id, encounter, health_worker_id: health_worker.id },
-  )
+  const { encounter, organization_employment } = ctx.state
+  const { patient } = encounter
 
   assert(completedPersonal(patient))
 
   return (
     <BriefHistorySection
-      most_recent_findings={most_recent_findings}
+      most_recent_findings={await mostRecentFindings(ctx)}
       sex={patient.sex}
       organization_id={organization_employment.id}
     />

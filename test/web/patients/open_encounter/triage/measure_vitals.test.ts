@@ -1,48 +1,59 @@
+import z from 'zod'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
+import {
+  getFormLabels,
+  getFormOptions,
+  getFormValues,
+} from '../../../../_helpers/form.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
-import z from 'zod'
 import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
 import { setupTriage } from './_setup.ts'
 import findMatching from '../../../../../util/findMatching.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../../../../shared/vitals.ts'
 
 describe('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  // TODO: unskip, the required measurements aren't correct yet
-  describe.skip('GET', () => {
+  describe('GET', () => {
     it('loads a page for the first visit for an adult non-diabetic patient ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '1990-01-01' },
-        conditions: [],
         warning_signs: [],
+        conditions: [],
+        height_and_weight: {
+          height: {
+            value: 160,
+            units: 'cm',
+          },
+          weight: {
+            value: 80,
+            units: 'kg',
+          },
+        },
       })
 
       const form_values = getFormValues($)
       const form_labels = getFormLabels($)
+      const form_options = getFormOptions($)
 
       assertEquals(form_values, {
-        measurements: {
-          height: { value: null, units: 'cm' },
-          weight: { value: null, units: 'kg' },
-          temperature: { value: null, units: '°C' },
-          blood_pressure_systolic: { value: null, units: 'mmHg' },
-          blood_pressure_diastolic: { value: null, units: 'mmHg' },
-          blood_oxygen_saturation: { value: null, units: '%' },
-          blood_glucose: { value: null, units: 'mg/dL' },
-          heart_rate: { value: null, units: 'bpm' },
-          respiratory_rate: { value: null, units: 'bpm' },
-        },
         assessments: {
           consciousness: { value_snomed_concept_id: null },
           mobility_assessment: { value_snomed_concept_id: null },
           trauma_presence: { value_snomed_concept_id: null },
+        },
+        measurements: {
+          temperature: { value: null, units: '°C' },
+          blood_pressure_systolic: { value: null, units: 'mmHg' },
+          blood_pressure_diastolic: { value: null, units: 'mmHg' },
+          heart_rate: { value: null, units: 'bpm' },
+          respiratory_rate: { value: null, units: 'bpm' },
         },
       })
 
@@ -55,15 +66,93 @@ describe('triage/measure_vitals', () => {
           trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
         },
         measurements: {
-          height: { value: 'Height*' },
-          weight: { value: 'Weight*' },
           temperature: { value: 'Temperature*' },
           blood_pressure_systolic: { value: 'Blood Pressure Systolic*' },
           blood_pressure_diastolic: { value: 'Blood Pressure Diastolic*' },
           heart_rate: { value: 'Heart Rate*' },
           respiratory_rate: { value: 'Respiratory Rate*' },
-          blood_glucose: { value: 'Blood Glucose' },
-          blood_oxygen_saturation: { value: 'Blood Oxygen Saturation' },
+        },
+      })
+
+      assertEquals(form_options, {
+        'assessments': {
+          'consciousness': {
+            'value_snomed_concept_id': [
+              {
+                'label': 'Select...',
+                'value': '',
+                'selected': false,
+              },
+              {
+                'label': 'Alert',
+                'value': '248234008',
+                'selected': false,
+              },
+              {
+                'label': 'Reacts to voice',
+                'value': '422768004',
+                'selected': false,
+              },
+              {
+                'label': 'Confused',
+                'value': '40917007',
+                'selected': false,
+              },
+              {
+                'label': 'Reacts to pain',
+                'value': '450847001',
+                'selected': false,
+              },
+              {
+                'label': 'Unresponsive',
+                'value': '422107003',
+                'selected': false,
+              },
+            ],
+          },
+          'mobility_assessment': {
+            'value_snomed_concept_id': [
+              {
+                'label': 'Select...',
+                'value': '',
+                'selected': false,
+              },
+              {
+                'label': 'Walking',
+                'value': '282144007',
+                'selected': false,
+              },
+              {
+                'label': 'Difficulty walking',
+                'value': '719232003',
+                'selected': false,
+              },
+              {
+                'label': 'Stretcher/Immobile',
+                'value': '282145008',
+                'selected': false,
+              },
+            ],
+          },
+          'trauma_presence': {
+            'value_snomed_concept_id': [
+              {
+                'label': 'Select...',
+                'value': '',
+                'selected': false,
+              },
+              {
+                'label': 'No',
+                'value': '1149217004',
+                'selected': false,
+              },
+              {
+                'label': 'Yes',
+                'value': '417746004',
+                'selected': false,
+              },
+            ],
+          },
         },
       })
     })
@@ -71,8 +160,18 @@ describe('triage/measure_vitals', () => {
     it('loads a page for the first visit for an adult diabetic patient ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '1990-01-01' },
-        conditions: ['diabetes'],
         warning_signs: [],
+        conditions: ['diabetes'],
+        height_and_weight: {
+          height: {
+            value: 160,
+            units: 'cm',
+          },
+          weight: {
+            value: 80,
+            units: 'kg',
+          },
+        },
       })
 
       assertEquals(getFormLabels($), {
@@ -84,15 +183,79 @@ describe('triage/measure_vitals', () => {
           trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
         },
         measurements: {
-          height: { value: 'Height*' },
-          weight: { value: 'Weight*' },
           temperature: { value: 'Temperature*' },
           blood_pressure_systolic: { value: 'Blood Pressure Systolic*' },
           blood_pressure_diastolic: { value: 'Blood Pressure Diastolic*' },
           heart_rate: { value: 'Heart Rate*' },
           respiratory_rate: { value: 'Respiratory Rate*' },
           blood_glucose: { value: 'Blood Glucose*' },
-          blood_oxygen_saturation: { value: 'Blood Oxygen Saturation' },
+        },
+      })
+    })
+
+    it('loads a page for the first visit for a non-diabetic older child ', async () => {
+      const { $ } = await setupTriage({
+        patient_demographics: { date_of_birth: '2020-01-01' },
+        warning_signs: [],
+        conditions: [],
+        height_and_weight: {
+          height: {
+            value: 100,
+            units: 'cm',
+          },
+          weight: {
+            value: 40,
+            units: 'kg',
+          },
+        },
+      })
+
+      assertEquals(getFormLabels($), {
+        assessments: {
+          consciousness: { value_snomed_concept_id: 'Consciousness*' },
+          mobility_assessment: {
+            value_snomed_concept_id: 'Mobility Assessment*',
+          },
+          trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+        },
+        measurements: {
+          temperature: { value: 'Temperature*' },
+          heart_rate: { value: 'Heart Rate*' },
+          respiratory_rate: { value: 'Respiratory Rate*' },
+        },
+      })
+    })
+
+    it('loads a page for the first visit for a non-diabetic older child ', async () => {
+      const { $ } = await setupTriage({
+        patient_demographics: { date_of_birth: '2020-01-01' },
+        warning_signs: [],
+        conditions: ['diabetes'],
+        height_and_weight: {
+          height: {
+            value: 100,
+            units: 'cm',
+          },
+          weight: {
+            value: 40,
+            units: 'kg',
+          },
+        },
+      })
+
+      assertEquals(getFormLabels($), {
+        assessments: {
+          consciousness: { value_snomed_concept_id: 'Consciousness*' },
+          mobility_assessment: {
+            value_snomed_concept_id: 'Mobility Assessment*',
+          },
+          trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+        },
+        measurements: {
+          temperature: { value: 'Temperature*' },
+          heart_rate: { value: 'Heart Rate*' },
+          respiratory_rate: { value: 'Respiratory Rate*' },
+          blood_glucose: { value: 'Blood Glucose*' },
         },
       })
     })
@@ -102,8 +265,18 @@ describe('triage/measure_vitals', () => {
     it('creates an additional task if oxygen saturation is below 92%', async () => {
       const { encounter } = await setupTriage({
         patient_demographics: { date_of_birth: '2023-01-01' },
-        conditions: ['diabetes'],
         warning_signs: [],
+        conditions: ['diabetes'],
+        height_and_weight: {
+          height: {
+            value: 160,
+            units: 'cm',
+          },
+          weight: {
+            value: 80,
+            units: 'kg',
+          },
+        },
         vitals: {
           measurements: {
             blood_oxygen_saturation: {
@@ -119,8 +292,13 @@ describe('triage/measure_vitals', () => {
         db,
         {
           patient_id: encounter.patient.id,
+          s_expression: `
+            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
+                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
+          `,
         },
       )
+
       assertMatches(measurements, [
         {
           'type': 'finding',

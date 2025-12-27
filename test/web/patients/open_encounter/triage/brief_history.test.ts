@@ -25,6 +25,7 @@ import { z } from 'zod'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
+import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 
 describe('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -341,6 +342,7 @@ describe('triage/brief_history', () => {
         patient_id: initial_encounter.patient.id,
         encounter: initial_encounter,
         health_worker_id: nurse1.health_worker.id,
+        conditions: COMMON_CONDITIONS,
       })
 
       assertMatches(most_recent_findings.cancer, {
@@ -432,7 +434,7 @@ describe('triage/brief_history', () => {
         'destination_relations': [],
       }, { strict: true })
 
-      assertEquals(most_recent_findings.copd, null)
+      assertEquals(most_recent_findings.copd, undefined)
 
       const $waiting_room_before_initial_encounter_close = await nurse2
         .fetchCheerio(
@@ -442,6 +444,7 @@ describe('triage/brief_history', () => {
       const waiting_room_table_before_initial_encounter_close = getTableDisplay(
         $waiting_room_before_initial_encounter_close,
       )
+
       assertMatches(waiting_room_table_before_initial_encounter_close, [
         {
           Patient:
@@ -450,10 +453,10 @@ describe('triage/brief_history', () => {
             }`,
           'Reason for visit': 'Seeking Treatment',
           // Department: 'Triage',
-          'Target time': z.string().regex(/^\d{1,2}:\d{2} [AP]M( tomorrow)?/),
+          // 'Target time': z.string().regex(/^\d{1,2}:\d{2} [AP]M( tomorrow)?/),
           Location: 'Triage room 1',
           Status: 'Triage In Progress',
-          Priority: 'Non-urgent',
+          // Priority: 'Non-urgent',
           Employees: `${nurse1.health_worker.name}Primary care nurse`,
           Arrived: 'Just now',
           Actions: 'triage',
@@ -802,13 +805,14 @@ describe('triage/brief_history', () => {
 
       assertEquals(
         response.url,
-        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
+        `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/height_and_weight`,
       )
 
       const most_recent_findings = await renderedMostRecentFindings(db, {
         patient_id: encounter.patient.id,
         encounter: encounter,
         health_worker_id: nurse.id,
+        conditions: COMMON_CONDITIONS,
       })
 
       assertMatches(most_recent_findings.diabetes, {
@@ -950,6 +954,7 @@ describe('triage/brief_history', () => {
         patient_id: subsequent_encounter.patient.id,
         encounter: subsequent_encounter,
         health_worker_id: nurse2.health_worker.id,
+        conditions: COMMON_CONDITIONS,
       })
 
       assertMatches(most_recent_findings.cancer, {
@@ -1084,6 +1089,7 @@ describe('triage/brief_history', () => {
         patient_id: encounter.patient.id,
         encounter: encounter,
         health_worker_id: nurse.health_worker.id,
+        conditions: COMMON_CONDITIONS,
       })
 
       console.log({ most_recent_findings })

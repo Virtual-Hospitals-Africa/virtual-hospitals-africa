@@ -92,7 +92,16 @@ export function InternalInput({
         required={required}
         className={cls('w-full flex-1', className)}
       >
-        <div className='grid grid-cols-1'>
+        <div
+          className={cls(
+            'grid h-12 rounded-md bg-white outline-1 -outline-offset-1 focus-within:outline-2 focus-within:-outline-offset-2 dark:bg-white/5',
+            errorText
+              ? 'outline-red-300 focus-within:outline-red-600 dark:outline-red-500/50 dark:focus-within:outline-red-400'
+              : '',
+            { 'bg-gray-300': !!disabled },
+          )}
+          style={{ gridTemplateColumns: suffix ? '1fr auto' : '1fr' }}
+        >
           {leftIcon && (
             <div
               aria-hidden='true'
@@ -106,13 +115,15 @@ export function InternalInput({
             id={id}
             {...(name && { name })}
             className={cls(
-              'col-start-1 row-start-1 h-12 block w-full rounded-md bg-white py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:pr-9 sm:text-sm/6 dark:bg-white/5',
+              'h-full block w-full bg-transparent py-1.5 outline-none placeholder:text-gray-400 sm:text-sm/6',
               inputClassName,
-              disabled && 'bg-gray-300',
-              !!leftIcon && 'pl-3',
-              !!rightIcon && 'pr-3',
+              {
+                'pl-3': !!leftIcon,
+                'pr-3': !!rightIcon && !suffix,
+                'text-right': !!suffix,
+              },
               errorText
-                ? 'text-red-900 outline-red-300 focus:outline-red-600  dark:outline-red-500/50 dark:text-red-400 dark:placeholder:text-red-400/70 dark:focus:outline-red-400'
+                ? 'text-red-900 dark:text-red-400 dark:placeholder:text-red-400/70'
                 : 'text-black-900 dark:focus:text-black-900', // TODO
             )}
             inputmode={inputmode}
@@ -135,10 +146,7 @@ export function InternalInput({
             max={max ?? undefined}
           />
           {suffix && (
-            <div
-              id='price-currency'
-              className='self-center col-start-1 row-start-1 mr-3 text-base text-gray-500 pointer-events-none select-none justify-self-end sm:text-sm/6 dark:text-gray-400'
-            >
+            <div className='self-center pr-3 pl-1 text-base text-gray-500 select-none sm:text-sm/6 dark:text-gray-400'>
               {suffix}
             </div>
           )}

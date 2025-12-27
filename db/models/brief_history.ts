@@ -12,8 +12,7 @@ import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
 import mapEntries from '../../util/mapEntries.ts'
 import {
-  COMMON_CONDITION_KEYS,
-  COMMON_CONDITIONS,
+  CommonCondition,
   CommonConditionKey,
   commonConditionSnomedConceptId,
 } from '../../shared/brief_history.ts'
@@ -28,10 +27,13 @@ type IntermediateBriefHistory = IntermediateFinding & {
 
 export function mostRecentFindings(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: string },
+  { patient_id, conditions }: {
+    patient_id: string
+    conditions: CommonCondition[]
+  },
 ): Promise<IntermediateBriefHistory[]> {
   return trx
-    .with('common_conditions', () => temporaryTable(trx, COMMON_CONDITIONS))
+    .with('common_conditions', () => temporaryTable(trx, conditions))
     .with(
       'patient_findings_matching_common_conditions',
       (qb) =>
@@ -152,13 +154,17 @@ function mostRecentFinding(
 
 export async function renderedMostRecentFindings(
   trx: TrxOrDb,
-  { patient_id, encounter, health_worker_id }: {
+  { patient_id, encounter, health_worker_id, conditions }: {
     patient_id: string
     encounter: RenderedPatientEncounter
     health_worker_id: string
+    conditions: CommonCondition[]
   },
 ): Promise<MostRecentBriefHistoryFindings> {
-  const most_recent_findings = await mostRecentFindings(trx, { patient_id })
+  const most_recent_findings = await mostRecentFindings(trx, {
+    patient_id,
+    conditions,
+  })
 
   const most_recent_findings_with_existence = most_recent_findings.map(
     (finding) => ({
@@ -179,12 +185,12 @@ export async function renderedMostRecentFindings(
   })
 
   return fromEntries(
-    COMMON_CONDITION_KEYS.map(
+    conditions.map(
       (condition) => [
-        condition,
+        condition.key,
         with_providers.find((finding) =>
-          finding.pertaining_to_key === condition
-        ) ?? null,
+          finding.pertaining_to_key === condition.key
+        ),
       ],
     ),
   )

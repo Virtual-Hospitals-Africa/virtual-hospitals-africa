@@ -11,7 +11,7 @@ import {
 import * as patient_workflows from '../../../../../../../db/models/patient_workflows.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
-import { assert } from 'node:console'
+import { assert } from 'std/assert/assert.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -28,6 +28,7 @@ export async function startWorkflow<T>(
   ctx: OpenEncounterContext<T>,
   workflow: Workflow,
 ) {
+  console.log('kk startWorkflow')
   const { trx, organization_employment, encounter } = ctx.state
 
   const department_handling_workflow = WORKFLOW_DEPARTMENTS[workflow]
@@ -57,28 +58,15 @@ export async function startWorkflow<T>(
       (employee) => employee.employee_id === employment_id,
     )?.patient_encounter_employee_id || null
 
-  const do_start_workflow = workflow_status.status === 'not started' ||
-    (existing_patient_encounter_employee_id !== null &&
-      !workflow_status.seen_patient_encounter_employee_ids.includes(
-        existing_patient_encounter_employee_id,
-      ))
-  console.log({
-    do_start_workflow,
-    existing_patient_encounter_employee_id,
-    workflow_status,
-    workflow,
-  })
-  if (do_start_workflow) {
-    await patient_workflows.start(
-      trx,
-      {
-        encounter,
-        existing_patient_encounter_employee_id,
-        employment_id,
-        workflow_status,
-      },
-    )
-  }
+  await patient_workflows.start(
+    trx,
+    {
+      encounter,
+      employment_id,
+      existing_patient_encounter_employee_id,
+      patient_workflow_id: workflow_status.patient_workflow_id,
+    },
+  )
 
   const first_incomplete_step = WORKFLOW_STEPS[workflow].find((s) => {
     if (arrayIsEmpty(workflow_status.steps_completed)) return true

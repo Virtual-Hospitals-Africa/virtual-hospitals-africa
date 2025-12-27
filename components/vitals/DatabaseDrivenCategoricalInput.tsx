@@ -1,8 +1,11 @@
-import { Maybe, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import {
+  Maybe,
+  RenderedFindingRelativeToHealthWorker,
+  VitalAssessmentFormInputDefition,
+} from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Label } from '../../components/library/Label.tsx'
 import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
-import { AssessmentForForm } from '../../db/models/patient_categorical_findings.ts'
 import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
 import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 
@@ -11,15 +14,15 @@ export default function DatabaseDrivenCategoricalInput({
   most_recent_patient_finding,
   organization_id,
 }: {
-  assessment: AssessmentForForm
+  assessment: VitalAssessmentFormInputDefition
   most_recent_patient_finding: Maybe<RenderedFindingRelativeToHealthWorker>
   organization_id: string
 }) {
   const name = `assessments.${assessment.vital}`
 
-  const options = assessment.options.map((opt) => ({
-    value: opt.option_snomed_concept_id,
-    label: opt.display_label,
+  const options = assessment.options.map(({ label, snomed_concept_id }) => ({
+    label,
+    value: snomed_concept_id,
   }))
 
   return (
@@ -27,7 +30,7 @@ export default function DatabaseDrivenCategoricalInput({
       <div className='flex flex-col'>
         <Label htmlFor={name}>
           <LabelSpan
-            required={assessment.required_for_triage}
+            required={assessment.required}
             label={capitalize(assessment.vital)}
           />
         </Label>
@@ -41,7 +44,7 @@ export default function DatabaseDrivenCategoricalInput({
           id={name}
           name={`${name}.value_snomed_concept_id`}
           label={null}
-          required={assessment.required_for_triage}
+          required={assessment.required}
           options={options}
           blank_option='Select...'
         />

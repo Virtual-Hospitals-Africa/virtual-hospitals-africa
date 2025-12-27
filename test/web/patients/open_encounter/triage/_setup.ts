@@ -1,4 +1,3 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import { CommonConditionKey, WarningSignKey } from '../../../../../types.ts'
 import asFormData from '../../../../../util/asFormData.ts'
@@ -8,7 +7,6 @@ import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   PartialPatientDemographics,
 } from '../../../../_helpers/workflows.ts'
-import { route } from '../../../../route.ts'
 import fromEntries from '../../../../../util/fromEntries.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import {
@@ -21,6 +19,16 @@ export type TriageScenario = {
   patient_demographics: PartialPatientDemographics
   warning_signs: WarningSignKey[]
   conditions?: CommonConditionKey[]
+  height_and_weight?: {
+    height: {
+      value: number
+      units: string
+    }
+    weight: {
+      value: number
+      units: string
+    }
+  }
   vitals?: {
     measurements: {
       [v in VitalMeasurement]?: {
@@ -40,7 +48,13 @@ export type TriageScenario = {
  * Sets up a triage scenario, going as far into the workflow as data provided
  */
 export async function setupTriage(
-  { patient_demographics, warning_signs, conditions, vitals }: TriageScenario,
+  {
+    patient_demographics,
+    warning_signs,
+    conditions,
+    height_and_weight,
+    vitals,
+  }: TriageScenario,
 ) {
   const clinic = await createTestOrganization(db)
 
@@ -89,8 +103,6 @@ export async function setupTriage(
     if (!conditions_post_data.diabetes) {
       conditions_post_data.diabetes = { existence: 'No' }
     }
-
-    console.log(conditions_post_data)
     $ = await nurse.fetchCheerio(
       `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       {
@@ -98,10 +110,20 @@ export async function setupTriage(
         body: asFormData(conditions_post_data),
       },
     )
+  } else {
+    assert(!height_and_weight)
+    assert(!vitals)
+  }
 
-    assertEquals(
-      $.url,
-      `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
+  if (height_and_weight) {
+    $ = await nurse.fetchCheerio(
+      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/height_and_weight`,
+      {
+        method: 'POST',
+        body: asFormData({
+          measurements: height_and_weight,
+        }),
+      },
     )
   } else {
     assert(!vitals)
