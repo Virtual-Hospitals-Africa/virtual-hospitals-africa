@@ -568,7 +568,7 @@ describe('triage/measure_vitals', () => {
           db,
           {
             patient_id: encounter.patient.id,
-            s_expression: '(evaluation (evaluates (not (procedure))))'
+            s_expression: '(evaluation (evaluates (finding))))'
           },
         )
         console.log({ scores })

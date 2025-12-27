@@ -104,7 +104,7 @@ function baseQuery(
           patient_id,
           patient_encounter_id,
         }, {
-          atom: 'qualifier',
+          atom: 'qualifier' as const,
           snomed_concept_id: qualifier.snomed_concept_id,
           value_snomed_concept_id: null,
           qualifiers: [],
@@ -293,6 +293,9 @@ const EXPRESSION_BUILDERS = {
   task() {
     throw new Error('task is not directly queryable')
   },
+  units() {
+    throw new Error('units is handled by parent nodes')
+  },
   or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return baseQuery(trx, { patient_id, patient_encounter_id })
       .where(
@@ -379,6 +382,7 @@ export function buildExpression(
   if (typeof node === 'string') {
     node = parseExpression(node)
   }
+
   // deno-lint-ignore ban-types
   const builder = EXPRESSION_BUILDERS[node.atom] as Function
   // deno-lint-ignore no-explicit-any
