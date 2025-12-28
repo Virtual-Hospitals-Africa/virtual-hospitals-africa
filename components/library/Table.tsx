@@ -60,6 +60,7 @@ type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
   rows: T[]
   className?: string
+  tableClassName?: string
   pagination?: {
     page: number
     has_next_page: boolean
@@ -294,7 +295,8 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { columns, rows, className, EmptyState, pagination }: TableProps<T>,
+  { columns, rows, className, EmptyState, pagination, tableClassName }:
+    TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />
@@ -306,25 +308,28 @@ export default function Table<T extends Row>(
     <div
       className={cls(
         className,
-        '-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8',
+        'overflow-x-auto w-full',
       )}
     >
-      <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
-        <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg'>
-          <table className='min-w-full divide-y divide-gray-300'>
-            <TableHeader mapped_columns={mapped_columns} />
-            <tbody className='divide-y divide-gray-200 bg-white'>
-              {rows.map((row, row_index) => (
-                <TableRow
-                  key={row.id}
-                  row={row}
-                  row_index={row_index}
-                  mapped_columns={mapped_columns}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className='inline-block min-w-full pt-2 align-middle'>
+        <table
+          className={cls(
+            'min-w-full divide-y divide-gray-300 overflow-hidden shadow outline-1 -outline-offset-1 outline-gray-200 sm:rounded-lg',
+            tableClassName,
+          )}
+        >
+          <TableHeader mapped_columns={mapped_columns} />
+          <tbody className='divide-y divide-gray-200 bg-white'>
+            {rows.map((row, row_index) => (
+              <TableRow
+                key={row.id}
+                row={row}
+                row_index={row_index}
+                mapped_columns={mapped_columns}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

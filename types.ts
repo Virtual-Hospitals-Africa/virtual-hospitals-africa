@@ -3469,6 +3469,11 @@ export type RenderedFindingRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
+export type WithTriageLevelFinding = NonNullableProperty<
+  RenderedFindingRelativeToHealthWorker,
+  'priority'
+>
+
 export type RenderedVitalRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {

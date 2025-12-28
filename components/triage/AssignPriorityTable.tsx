@@ -1,19 +1,22 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  NonNullableProperty,
-  RenderedFindingRelativeToHealthWorker,
+  Priority,
   TriageAssignPriorityTableVital,
+  WithTriageLevelFinding,
 } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { colorFromPriorityOrScoreComponent } from '../../shared/vitals.ts'
+import { PRIORITY_COLORS } from '../../shared/priorities.ts'
 
-type WithTriageLevelFinding = NonNullableProperty<
-  RenderedFindingRelativeToHealthWorker,
-  'priority'
->
+type TriageAssignPriorityTableProps = {
+  vitals: TriageAssignPriorityTableVital[]
+  with_triage_level_findings: WithTriageLevelFinding[]
+  total_score: number
+  priority: Priority
+}
 
 type Row =
   | ({
@@ -105,11 +108,36 @@ const columns: TableColumn<Row>[] = [
   },
 ]
 
+function ConclusionRow(
+  { total_score, priority }: Pick<
+    TriageAssignPriorityTableProps,
+    'total_score' | 'priority'
+  >,
+) {
+  const colors = PRIORITY_COLORS[priority]
+  return (
+    <div
+      className={`${colors.bg} py-4 px-3 flex justify-between items-center border border-t-0 border-gray-200 rounded-b-lg`}
+    >
+      <div className='flex-1 text-center'>
+        <span
+          className={`text-xl ${colors.text} font-bold uppercase`}
+        >
+          {priority}
+        </span>
+      </div>
+      <div className='text-center'>
+        <span className={`text-lg font-bold ${colors.text}`}>
+          Total: {total_score}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function TriageAssignPriorityTable(
-  { vitals, with_triage_level_findings }: {
-    vitals: TriageAssignPriorityTableVital[]
-    with_triage_level_findings: WithTriageLevelFinding[]
-  },
+  { vitals, with_triage_level_findings, total_score, priority }:
+    TriageAssignPriorityTableProps,
 ) {
   return (
     <div className='relative'>
@@ -125,26 +153,10 @@ export function TriageAssignPriorityTable(
             ...vital,
           })),
         ]}
+        tableClassName='border-b-0 !rounded-b-none'
         EmptyState={() => <div>No measurements available</div>}
       />
-      {
-        /* <div
-        className={`${priority.colors.bg} pt-7 pb-4 px-3 flex justify-between items-center -mt-4 -mx-[1px] -z-10 relative sm:rounded-b-lg`}
-      >
-        <div className='flex-1 text-center'>
-          <span
-            className={`text-xl ${priority.colors.text} font-bold uppercase`}
-          >
-            {priority.label}
-          </span>
-        </div>
-        <div className='text-center'>
-          <span className={`text-lg font-bold ${priority.colors.text}`}>
-            Total: {tews.total_score}
-          </span>
-        </div>
-      </div> */
-      }
+      <ConclusionRow {...{ total_score, priority }} />
     </div>
   )
 }

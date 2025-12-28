@@ -11,6 +11,7 @@ import {
   ASESSMENTS_ORDERED,
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,
+  triageLevelFromTEWSTotal,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   vitalAssessmentFromSnomedConceptId,
   vitalMeasurementFromSnomedConceptId,
@@ -18,8 +19,8 @@ import {
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import matching from '../../../../../../../../util/matching.ts'
 import {
-  RenderedFindingRelativeToHealthWorker,
   TriageAssignPriorityTableVital,
+  WithTriageLevelFinding,
 } from '../../../../../../../../types.ts'
 import { TriageAssignPriorityTable } from '../../../../../../../../components/triage/AssignPriorityTable.tsx'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
@@ -33,6 +34,12 @@ import { patient_findings } from '../../../../../../../../db/models/patient_find
 import { hydrateIntermediateRecords } from '../../../../../../../../db/models/patient_record_providers.ts'
 import { patient_triage_level } from '../../../../../../../../db/models/patient_triage.ts'
 import { assertAllNotNull } from '../../../../../../../../util/assertAll.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import { exists } from '../../../../../../../../util/exists.ts'
+import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
+import sumBy from '../../../../../../../../util/sumBy.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -44,44 +51,69 @@ export const handler = postHandler(
   },
 )
 
-export async function TriageAssignPriorityPage(
-  ctx: OpenEncounterWorkflowContext,
-) {
-  const {
-    trx,
-    encounter,
-    health_worker_id,
-    patient,
-    patient_id,
-    patient_encounter_id,
-  } = ctx.state
-
-  assertAllPriorStepsCompleted(ctx, {
-    attempting_to_complete_workflow: false,
-  })
-
-  assert(completedPersonal(patient))
-  const with_triage_level_findings: RenderedFindingRelativeToHealthWorker[] =
-    await patient_findings.getByIds(
+async function withTriageLevelFindings(
+  {
+    state: {
       trx,
-      patient_triage_level.distinctIds(
-        trx,
-        {
-          patient_id: ctx.state.patient.id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          s_expression: '(evaluation (evaluates (finding)))',
-        },
-        'evaluates_record_id',
-      ),
-    ).then((findings) =>
-      hydrateIntermediateRecords(trx, {
-        records: findings,
-        health_worker_id,
-        encounter,
-      })
-    )
+      encounter,
+      patient_id,
+      patient_encounter_id,
+      health_worker_id,
+    },
+  }: OpenEncounterWorkflowContext,
+): Promise<WithTriageLevelFinding[]> {
+  const findings = await patient_findings.getByIds(
+    trx,
+    patient_triage_level.distinctIds(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        s_expression: '(evaluation (evaluates (finding)))',
+      },
+      'evaluates_record_id',
+    ),
+  )
 
-  assertAllNotNull(with_triage_level_findings, 'priority')
+  assertAllNotNull(findings, 'priority')
+
+  return hydrateIntermediateRecords(trx, {
+    records: findings,
+    health_worker_id,
+    encounter,
+  })
+}
+
+async function totalScore(
+  {
+    state: {
+      trx,
+      patient_id,
+      patient_encounter_id,
+    },
+  }: OpenEncounterWorkflowContext,
+) {
+  const { score } = await patient_evaluation_scores.findOne(
+    trx,
+    {
+      patient_id,
+      patient_encounter_id,
+      s_expression: '(evaluation (evaluates (procedure)))',
+    },
+  )
+
+  return {
+    score,
+    priority: triageLevelFromTEWSTotal(score),
+  }
+}
+
+async function sortedVitals(
+  {
+    state: { trx, patient, patient_id, patient_encounter_id, health_worker_id },
+  }: OpenEncounterWorkflowContext,
+): Promise<TriageAssignPriorityTableVital[]> {
+  assert(completedPersonal(patient))
 
   const age_determination = patientAgeDetermination(patient)
 
@@ -132,6 +164,7 @@ export async function TriageAssignPriorityPage(
 
   const assessments = sortBy(
     assessments_unsorted,
+    (a) => -exists(a.finding.score),
     (a) =>
       ASESSMENTS_ORDERED.indexOf(
         vitalAssessmentFromSnomedConceptId(a.finding.finding_snomed_concept_id),
@@ -164,16 +197,44 @@ export async function TriageAssignPriorityPage(
     (m) => m.finding.finding_display,
   )
 
-  const vitals = [
+  return [
     ...assessments,
     ...tews_measurements,
     ...other_measurements,
   ]
+}
+
+export async function TriageAssignPriorityPage(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  assertAllPriorStepsCompleted(ctx, {
+    attempting_to_complete_workflow: false,
+  })
+
+  const priority = exists(ctx.state.encounter.priority).name
+
+  const { vitals, total_score, with_triage_level_findings } =
+    await promiseProps({
+      vitals: sortedVitals(ctx),
+      total_score: totalScore(ctx),
+      with_triage_level_findings: withTriageLevelFindings(ctx),
+    })
+
+  assertEquals(
+    total_score.score,
+    sumBy(vitals, (vital) => vital.finding.score || 0),
+  )
+  assert(
+    ORDERED_PRIORITIES.indexOf(priority) <=
+      ORDERED_PRIORITIES.indexOf(total_score.priority),
+  )
 
   return (
     <TriageAssignPriorityTable
-      vitals={vitals}
       with_triage_level_findings={with_triage_level_findings}
+      vitals={vitals}
+      priority={priority}
+      total_score={total_score.score}
     />
   )
 }
