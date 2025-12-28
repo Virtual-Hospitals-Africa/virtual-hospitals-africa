@@ -49,6 +49,7 @@ export function baseQuery(
     .select([
       'patient_evaluation_scores.score',
     ])
+    .orderBy('patient_records.created_at', 'desc')
 }
 
 type PatientEvaluationScoresSearch = {
