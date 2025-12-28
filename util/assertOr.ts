@@ -9,6 +9,8 @@ export class StatusError extends Error {
 }
 
 export class AlertWithActionsError extends StatusError {
+  expected = true
+
   constructor(
     message: string,
     actions: NonEmptyArray<ExtendedActionData>,

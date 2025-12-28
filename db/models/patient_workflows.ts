@@ -116,7 +116,7 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
           `/app/organizations/${encounter.organization.id}/patients/${encounter.patient.id}/open_encounter/${encounter.status.patient_presence.current_workflow}`,
       },
       {
-        text: `${encounter.patient.name} is in the waiting room`,
+        text: `Move ${encounter.patient.name} to the waiting room`,
         href:
           `/app/organizations/${encounter.organization.id}/patients/${encounter.patient.id}/open_encounter/move-to-waiting-room`,
         method: 'POST',

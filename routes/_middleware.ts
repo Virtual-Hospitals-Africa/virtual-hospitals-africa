@@ -11,26 +11,27 @@ export function grokPostgresError(err: Error) {
 }
 
 export const handler = (ctx: Context<unknown>) => { // deno-lint-ignore no-explicit-any
-  return ctx.next().catch(function handleError(err: any) {
-    if (err.status === 302) {
-      assert(err.location, '302 redirect must have a location')
-      return redirect(err.location)
+  return ctx.next().catch(function handleError(error: any) {
+    if (error.status === 302) {
+      assert(error.location, '302 redirect must have a location')
+      return redirect(error.location)
     }
-    // Don't gum up the logs for tests which expect an error
-    if (!ctx.url.searchParams.has('expectedTestError')) {
-      console.error(err)
-    }
-    if (err instanceof ZodError) {
-      // console.error(err)
-      return new Response(JSON.stringify(err), {
+    if (error instanceof ZodError) {
+      console.error(error)
+      return new Response(JSON.stringify(error), {
         status: 400,
         headers: {
           'Content-Type': 'application/json',
         },
       })
     }
-    const status = err.status || 500
-    const message: string = grokPostgresError(err) || err.message ||
+    const is_expected = error.expected ||
+      ctx.url.searchParams.has('expectedTestError')
+    if (!is_expected) {
+      console.error(error)
+    }
+    const status = error.status || 500
+    const message: string = grokPostgresError(error) || error.message ||
       'Internal Server Error'
     return new Response(message, { status })
   })
