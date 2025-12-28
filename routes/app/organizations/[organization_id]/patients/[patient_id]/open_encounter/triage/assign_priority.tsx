@@ -93,7 +93,7 @@ async function totalScore(
     },
   }: OpenEncounterWorkflowContext,
 ) {
-  const { score } = await patient_evaluation_scores.findOne(
+  const { score } = await patient_evaluation_scores.findFirst(
     trx,
     {
       patient_id,

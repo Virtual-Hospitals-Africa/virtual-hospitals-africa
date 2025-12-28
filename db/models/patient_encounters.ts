@@ -334,7 +334,7 @@ export function baseQuery(trx: TrxOrDb) {
           .orderBy((eb_triage_level) =>
             orderByArrayPosition(
               eb_triage_level,
-              'patient_records.snomed_concept_id',
+              'patient_records.value_snomed_concept_id',
               [
                 PRIORITY_SNOMED_CODES['Emergency'],
                 PRIORITY_SNOMED_CODES['Very urgent'],
