@@ -82,7 +82,13 @@ type BaseModel<
     id: string | IdSelection,
   ): Promise<RenderedResult | null>
   getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
-  distinctIds(trx: TrxOrDb, search_terms: SearchTerms): IdSelection
+  distinctIds(
+    trx: TrxOrDb,
+    search_terms: SearchTerms,
+    ref?: Parameters<
+      SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>['select']
+    >[0],
+  ): IdSelection
   countAll(trx: TrxOrDb, search_terms: SearchTerms): Promise<number>
 }
 type StandardTables = {
@@ -314,12 +320,15 @@ export function base<
     },
     distinctIds(
       trx: TrxOrDb,
-      search_terms?: SearchTerms,
+      search_terms: SearchTerms,
+      ref?: Parameters<
+        SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>['select']
+      >[0],
     ): IdSelection {
       return this.searchQuery(trx, search_terms || {} as SearchTerms)
         .clearSelect()
         // deno-lint-ignore no-explicit-any
-        .select(`${top_level_table}.id` as any)
+        .select(ref || `${top_level_table}.id` as any)
         .distinct() as unknown as IdSelection
     },
     async countAll(

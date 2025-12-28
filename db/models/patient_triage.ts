@@ -1,4 +1,5 @@
 import { sql } from 'kysely'
+import { assert } from 'std/assert/assert.ts'
 import { TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_triage.ts'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -9,7 +10,6 @@ import {
   TARGET_TIME_TO_TREATMENT_MINUTES,
   TriageLevel,
 } from '../../shared/priorities.ts'
-import assert from 'assert'
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'

@@ -16,6 +16,7 @@ import { buildExpression, satisfyingSExpression } from './s_expression.ts'
 import { Priority } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -155,7 +156,10 @@ export const patient_findings = base({
     if (finding.score != null) {
       tews_component.parse(finding.score)
     }
-    return finding
+    return {
+      ...finding,
+      ...buildValueDisplay(finding),
+    }
   },
   handleSearch(
     qb,

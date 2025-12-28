@@ -47,6 +47,10 @@ export type BlankRecord = Record<string, never>
 
 export type Values<R> = R extends Record<any, infer V> ? V : never
 
+export type NonNullableProperty<R, K extends keyof R> =
+  & R
+  & { [P in K]: NonNullable<R[P]> }
+
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
@@ -3465,6 +3469,11 @@ export type RenderedFindingRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
+export type WithTriageLevelFinding = NonNullableProperty<
+  RenderedFindingRelativeToHealthWorker,
+  'priority'
+>
+
 export type RenderedVitalRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
@@ -3573,7 +3582,7 @@ export type ReferenceRangeX = {
 }
 
 export type TriageAssignPriorityTableVital = {
-  current: RenderedVitalRelativeToHealthWorker
+  finding: RenderedVitalRelativeToHealthWorker
   previous: RenderedVitalRelativeToHealthWorker | null
   reference_ranges: ReferenceRangeX[] | null
 }

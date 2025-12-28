@@ -1,7 +1,9 @@
 import {
   AgeDetermination,
   NonEmptyArray,
+  Priority,
   ReferenceRangeX,
+  Values,
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../types.ts'
@@ -13,7 +15,7 @@ import findMatching from '../util/findMatching.ts'
 import isKeyOf from '../util/isKeyOf.ts'
 import keys from '../util/keys.ts'
 import memoize from '../util/memoize.ts'
-import { TriageLevel } from './priorities.ts'
+import { PRIORITY_COLORS, TriageLevel } from './priorities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { arrayIsEmpty, assertArrayNonEmpty } from '../util/arraySize.ts'
 import last from '../util/last.ts'
@@ -430,6 +432,28 @@ export function colorFromScoreComponent(
       return 'orange'
     case 3:
       return 'red'
+    default:
+      throw new Error(`Unexpected TEWS score component ${score}`)
+  }
+}
+
+export function colorFromPriorityOrScoreComponent(
+  score: number | null,
+  priority: Priority | null,
+): Values<typeof PRIORITY_COLORS> {
+  if (priority != null) {
+    return PRIORITY_COLORS[priority]
+  }
+  assert(score != null, 'Must call with score or priority not null')
+  switch (score) {
+    case 0:
+      return PRIORITY_COLORS['Non-urgent']
+    case 1:
+      return PRIORITY_COLORS['Urgent']
+    case 2:
+      return PRIORITY_COLORS['Very urgent']
+    case 3:
+      return PRIORITY_COLORS['Emergency']
     default:
       throw new Error(`Unexpected TEWS score component ${score}`)
   }

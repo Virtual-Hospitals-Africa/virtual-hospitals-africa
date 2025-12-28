@@ -9,6 +9,6 @@ which rg > /dev/null || {
 
 # Note that we can ignore specific variable names like onClick at the front
 # and we can ignore functions/pattenrs that return functions at the back like const getById = model.getById
-camel_case_const_pattern='const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s'
+camel_case_const_pattern='const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s'
 
 ! rg --pcre2 "$camel_case_const_pattern"

@@ -10,6 +10,11 @@ import * as patient_encounters from './patient_encounters.ts'
 import { IntermediateFinding } from './patient_findings.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
 
+/**
+ * Adds provider and value display, which aren't populated on initial selection from the DB.
+ * Fetches the corresponding encounters to do so, which can be skipped if the caller provides
+ * an encounter and all the findings are from that encounter.
+ */
 export async function hydrateIntermediateRecords<
   IntermediateRecord extends IntermediateFinding,
 >(
