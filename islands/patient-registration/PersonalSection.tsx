@@ -1,10 +1,10 @@
-import FormRow from '../../components/library/FormRow.tsx'
+import FormGrid from '../../components/library/FormGrid.tsx'
 import { RenderedPatient } from '../../types.ts'
 import { SouthAfricanNationalIdFormGroup } from '../SouthAfricanNationalId.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
 import { DateInput } from '../form/inputs/date.tsx'
 import { LanguageSelect } from '../form/inputs/language.tsx'
-import { NamesFormRow } from './NamesFormRow.tsx'
+import { NamesInputs } from './NamesInputs.tsx'
 import { SexAndGenderInputs } from './SexAndGenderInputs.tsx'
 
 export default function PatientRegistrationPersonalSection(
@@ -23,8 +23,8 @@ export default function PatientRegistrationPersonalSection(
   return (
     <>
       <FormSection header='Patient Information'>
-        <NamesFormRow names={patient.names || {}} />
-        <FormRow>
+        <FormGrid columns={3}>
+          <NamesInputs names={patient.names || {}} />
           <DateInput
             name='date_of_birth'
             value={patient.date_of_birth}
@@ -34,8 +34,9 @@ export default function PatientRegistrationPersonalSection(
             sex={patient.sex ?? null}
             gender={patient.gender ?? null}
           />
-        </FormRow>
-        <FormRow>
+        </FormGrid>
+        <hr className='border-gray-300' />
+        <FormGrid columns={2}>
           <LanguageSelect
             value={patient.preferred_language_code_iso_639_2_b}
             default_language_code={organization_default_language_code}
@@ -45,7 +46,7 @@ export default function PatientRegistrationPersonalSection(
             national_id_number={patient.national_id_number}
             previously_completed_step={previously_completed_step}
           />
-        </FormRow>
+        </FormGrid>
       </FormSection>
     </>
   )

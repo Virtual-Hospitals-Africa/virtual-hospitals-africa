@@ -29,9 +29,9 @@ export function LabelSpan({ label, required }: {
   required?: Maybe<boolean>
 }) {
   return (
-    <span className='mb-1 ml-0.5'>
+    <span className='mb-2 text-sm font-semibold leading-5 text-gray-600'>
       {label}
-      {label && required && <sup>*</sup>}
+      {label && required && <span className='text-gray-600'>*</span>}
     </span>
   )
 }

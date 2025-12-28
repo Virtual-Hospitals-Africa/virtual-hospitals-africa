@@ -27,7 +27,7 @@ export function Label({
     <label
       htmlFor={htmlFor}
       className={cls(
-        'block text-sm font-medium leading-6 text-black-900 relative min-w-max text-left',
+        'block text-sm font-medium leading-6 text-black-900 relative text-left',
         className,
       )}
     >

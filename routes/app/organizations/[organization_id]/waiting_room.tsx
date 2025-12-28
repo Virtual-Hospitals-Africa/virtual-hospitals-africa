@@ -11,11 +11,13 @@ export default HealthWorkerHomePageLayout(
     console.log('mmmm')
     const { trx, organization, organization_employment } = ctx.state
     const can_register_patients = !!organization.location
+    const open_encounters = await waiting_room.get(trx, organization_employment)
+    console.log({ open_encounters })
 
     return (
       <WaitingRoomView
         organization_id={organization.id}
-        waiting_room={await waiting_room.get(trx, organization_employment)}
+        waiting_room={open_encounters}
         can_register_patients={can_register_patients}
       />
     )

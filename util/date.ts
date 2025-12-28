@@ -15,6 +15,7 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { exists } from './exists.ts'
 import { padMonth, padMonthDay } from './pad.ts'
 import assertLength from './assertLength.ts'
+import { logArgsOnError } from './decorators.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -99,6 +100,7 @@ export function parseDate(
   date: string | Date,
   timezone: string = 'Africa/Johannesburg',
 ): ParsedDate {
+  console.log(date)
   if (typeof date === 'string') {
     assert(
       /^\d{4}-\d{2}-\d{2}$/.test(date),
@@ -530,12 +532,20 @@ export function isISODateTimeString(datetime: unknown): datetime is string {
 }
 
 type FormattedDateTime = {
-  type: 'today' | 'yesterday' | 'tomorrow' | 'past' | 'future'
-  time_display: string
   date_display: string
+  time_display: string
+  type: 'today' | 'yesterday' | 'tomorrow' | 'past' | 'future'
 }
 
-export function formatDateTime(date: string | Date): FormattedDateTime {
+export function isDateLike(value: unknown): value is Date | string {
+  return isDate(value) || (
+    isString(value) && rfc3339_regex.test(value)
+  )
+}
+
+export function formatDateTime(
+  date: string | Date,
+): FormattedDateTime {
   date = new Date(date)
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const today = parseDate(new Date(), timezone)
@@ -553,26 +563,25 @@ export function formatDateTime(date: string | Date): FormattedDateTime {
     year: 'numeric',
   }).format(date)
 
-  const today_str = `${today.year}-${today.month}-${today.day}`
-  const input_str = `${input_date.year}-${input_date.month}-${input_date.day}`
-  const diff = differenceInDays(input_str, today_str)
-
-  let type: FormattedDateTime['type']
-  if (diff === 0) {
-    type = 'today'
-  } else if (diff === 1) {
-    type = 'tomorrow'
-  } else if (diff === -1) {
-    type = 'yesterday'
-  } else if (diff > 1) {
-    type = 'future'
-  } else {
-    type = 'past'
+  return {
+    date_display,
+    time_display,
+    type: getType(),
   }
 
-  return {
-    type,
-    time_display,
-    date_display,
+  function getType(): FormattedDateTime['type'] {
+    const today_str = `${today.year}-${today.month}-${today.day}`
+    const input_str = `${input_date.year}-${input_date.month}-${input_date.day}`
+    const diff = differenceInDays(input_str, today_str)
+    switch (diff) {
+      case 0:
+        return 'today'
+      case 1:
+        return 'tomorrow'
+      case -1:
+        return 'yesterday'
+      default:
+        return diff > 1 ? 'future' : 'past'
+    }
   }
 }
