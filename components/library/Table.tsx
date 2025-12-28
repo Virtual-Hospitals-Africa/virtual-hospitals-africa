@@ -28,6 +28,7 @@ export type TableColumn<T extends Row> =
   & {
     label?: Maybe<string>
     cellClassName?: string
+    tdClassName?: string | ((row: T) => string)
     headerClassName?: string
     data?: unknown
   }
@@ -190,9 +191,12 @@ function TableCell<T extends Row>(
     row_index: number
   },
 ) {
+  const tdClassName = typeof mapped_column.column.tdClassName === 'function'
+    ? mapped_column.column.tdClassName(row)
+    : mapped_column.column.tdClassName
   return (
     <td
-      className={cls(mapped_column.column.label ? 'p-3' : 'p-2')}
+      className={cls(tdClassName, mapped_column.column.label ? 'p-3' : 'p-2')}
       key={mapped_column.column.label}
     >
       <TableCellInnerContents
