@@ -369,6 +369,7 @@ describe('triage/brief_history', () => {
         'priority': null,
         'score': null,
         'pertaining_to_key': 'cancer',
+        'finding_display': 'Self reported Malignant neoplastic disease Status',
         'full_display':
           'Self reported Malignant neoplastic disease Status: Yes',
         'value_display': 'Yes',
@@ -415,6 +416,7 @@ describe('triage/brief_history', () => {
         'priority': null,
         'score': null,
         'pertaining_to_key': 'diabetes',
+        'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: No',
         'value_display': 'No',
         'existence': 'No',
@@ -853,6 +855,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'pertaining_to_key': 'diabetes',
+        'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: Yes',
         'value_display': 'Yes',
         'existence': 'Yes',
@@ -996,6 +999,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'pertaining_to_key': 'cancer',
+        'finding_display': 'Self reported Malignant neoplastic disease Status',
         'full_display':
           'Self reported Malignant neoplastic disease Status: Yes',
         'value_display': 'Yes',
@@ -1029,6 +1033,7 @@ describe('triage/brief_history', () => {
         'priority': null,
         'score': null,
         'pertaining_to_key': 'diabetes',
+        'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: No',
         'value_display': 'No',
         'qualifiers': [
@@ -1124,6 +1129,7 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'score': null,
+        'finding_display': 'Self reported Pregnancy Status',
         'full_display': 'Self reported Pregnancy Status: Unknown',
         'value_display': 'Unknown',
         'existence': 'Unknown',

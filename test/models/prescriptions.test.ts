@@ -88,7 +88,7 @@ describe('db/models/prescriptions.ts', () => {
             '=',
             'TABLET',
           )
-          .orderBy('drugs.generic_name desc')
+          .orderBy('drugs.generic_name', 'desc')
           .executeTakeFirstOrThrow()
 
         const result = await prescriptions.upsert(trx, {

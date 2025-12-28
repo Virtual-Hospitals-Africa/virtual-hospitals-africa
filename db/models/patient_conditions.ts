@@ -115,16 +115,20 @@ async function upsertPreExistingCondition(
     condition: PreExistingConditionUpsert
   },
 ) {
+  const upsert = {
+    patient_id,
+    patient_examination_id,
+    condition_id: condition.id,
+    start_date: condition.start_date,
+    comorbidity_of_condition_id: null,
+  }
   const parent_condition = await trx
     .insertInto('patient_conditions')
-    .values({
-      patient_id,
-      patient_examination_id,
-      condition_id: condition.id,
-      start_date: condition.start_date,
-      comorbidity_of_condition_id: null,
-    })
+    .values(upsert)
     .returning('id')
+    .onConflict((oc) =>
+      oc.constraint('patient_condition_start_date').doUpdateSet(upsert)
+    )
     .executeTakeFirstOrThrow()
 
   const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
@@ -170,6 +174,7 @@ async function upsertPreExistingCondition(
   const inserting_medications = medications.length && trx
     .insertInto('patient_condition_medications')
     .values(medications)
+    // .onConflict(oc => oc.constraint('patient_condition_medications_patient_condition_id_fkey').doNothing())
     .execute()
 
   await Promise.all([inserting_comorbidities, inserting_medications])

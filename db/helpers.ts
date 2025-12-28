@@ -506,6 +506,13 @@ export function asText<EB extends ExpressionBuilder<DB, any>>(
   return sql<string>`${eb.ref(ref)}::text`
 }
 
+export function asTextArray<EB extends ExpressionBuilder<DB, any>>(
+  eb: EB,
+  ref: Parameters<EB['ref']>[0],
+) {
+  return sql<string[]>`${eb.ref(ref)}::text[]`
+}
+
 export function orderByArrayPosition<
   EB extends ExpressionBuilder<any, any>,
   Ref extends Parameters<EB['ref']>[0],

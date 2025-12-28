@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { afterAll, describe } from 'std/testing/bdd.ts'
+import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as examinations from '../../db/models/examinations.ts'
@@ -8,25 +8,29 @@ import { StatusError } from '../../util/assertOr.ts'
 import permutations from '../../util/permutations.ts'
 import db from '../../db/db.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
+import { asTextArray } from '../../db/helpers.ts'
+import { createTestOrganization } from 'test/_helpers/organizations.ts'
+import { itUsesTrxAnd } from 'test/_helpers/transaction.ts'
 
 describe(
   'db/models/patient_conditions.ts',
   () => {
     afterAll(() => db.destroy())
     describe('upsertPreExisting', () => {
-      itUsesTrxAnd(
+      it(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -35,7 +39,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -46,7 +50,7 @@ describe(
             },
           )
 
-          const tablet = await trx
+          const tablet = await db
             .selectFrom('manufactured_medications')
             .innerJoin(
               'medications',
@@ -54,22 +58,23 @@ describe(
               'medications.id',
             )
             .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
-            .select([
+            .select((eb) => [
+              'routes',
+              'drugs.generic_name',
               'manufactured_medications.id',
               'manufactured_medications.medication_id',
-              'manufactured_medications.strength_numerators',
-              'drugs.generic_name',
-              'routes',
+              asTextArray(eb, 'manufactured_medications.strength_numerators')
+                .as('strength_numerators'),
             ])
             .where(
               'form',
               '=',
               'TABLET',
             )
-            .orderBy('drugs.generic_name desc')
+            .orderBy('drugs.generic_name', 'desc')
             .executeTakeFirstOrThrow()
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -90,7 +95,7 @@ describe(
             ],
           })
           const pre_existing_conditions = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
           assertEquals(pre_existing_conditions.length, 1)
@@ -130,7 +135,7 @@ describe(
             null,
           )
 
-          const patient_medication = await trx
+          const patient_medication = await db
             .selectFrom('patient_condition_medications')
             .where('manufactured_medication_id', '=', tablet.id)
             .select(sql`TO_JSON(schedules)`.as('schedules'))
@@ -145,16 +150,18 @@ describe(
         },
       )
 
-      itUsesTrxAnd(
+      it(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -163,7 +170,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -174,14 +181,16 @@ describe(
             },
           )
 
-          const tablet = await trx
+          const tablet = await db
             .selectFrom('medications')
             .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
-            .select([
+            .select((eb) => [
+              'routes',
+              'drugs.generic_name',
               'medications.id',
               'medications.strength_numerators',
-              'drugs.generic_name',
-              'routes',
+              asTextArray(eb, 'medications.strength_numerators')
+                .as('strength_numerators'),
             ])
             .where(
               'form',
@@ -189,7 +198,7 @@ describe(
               'TABLET',
             ).executeTakeFirstOrThrow()
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -210,7 +219,7 @@ describe(
             ],
           })
           const pre_existing_conditions = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
           assertEquals(pre_existing_conditions.length, 1)
@@ -250,7 +259,7 @@ describe(
             null,
           )
 
-          const patient_medication = await trx
+          const patient_medication = await db
             .selectFrom('patient_condition_medications')
             .where('medication_id', '=', tablet.id)
             .select(sql`TO_JSON(schedules)`.as('schedules'))
@@ -265,16 +274,18 @@ describe(
         },
       )
 
-      itUsesTrxAnd(
+      it(
         'converts a medication with an end_date into schedule with a duration in days',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -283,7 +294,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -294,14 +305,15 @@ describe(
             },
           )
 
-          const tablet = await trx
+          const tablet = await db
             .selectFrom('medications')
             .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
-            .select([
-              'medications.id',
-              'medications.strength_numerators',
-              'drugs.generic_name',
+            .select((eb) => [
               'routes',
+              'drugs.generic_name',
+              'medications.id',
+              asTextArray(eb, 'medications.strength_numerators')
+                .as('strength_numerators'),
             ])
             .where(
               'form',
@@ -309,7 +321,7 @@ describe(
               'TABLET',
             ).executeTakeFirstOrThrow()
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -332,7 +344,7 @@ describe(
             ],
           })
           const pre_existing_conditions = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
           assertEquals(pre_existing_conditions.length, 1)
@@ -372,7 +384,7 @@ describe(
             '2021-01-16',
           )
 
-          const patient_medication = await trx
+          const patient_medication = await db
             .selectFrom('patient_condition_medications')
             .innerJoin(
               'patient_conditions',
@@ -393,14 +405,16 @@ describe(
         },
       )
 
-      itUsesTrxAnd('handles comorbidities', async (trx) => {
-        const nurse = await addTestEmployee(trx, {
+      it('handles comorbidities', async () => {
+        const clinic = await createTestOrganization(db)
+        const nurse = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'not started',
+          organization_id: clinic.id,
         })
         const encounter =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            trx,
+            db,
             nurse.organization_id,
             {
               patient_demographics: randomDemographics(),
@@ -409,7 +423,7 @@ describe(
           )
 
         const patient_examination = await examinations.upsert(
-          trx,
+          db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
@@ -420,7 +434,7 @@ describe(
           },
         )
 
-        await patient_conditions.upsertPreExisting(trx, {
+        await patient_conditions.upsertPreExisting(db, {
           patient_id: encounter.patient.id,
           patient_examination_id: patient_examination.id,
           patient_conditions: [
@@ -432,7 +446,7 @@ describe(
           ],
         })
         const pre_existing_conditions = await patient_conditions
-          .getPreExistingConditions(trx, {
+          .getPreExistingConditions(db, {
             patient_id: encounter.patient.id,
           })
         assertEquals(pre_existing_conditions.length, 1)
@@ -450,16 +464,18 @@ describe(
         })
       })
 
-      itUsesTrxAnd(
+      it(
         'removes comorbidities if not present by their id, while editing others',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -468,7 +484,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -479,7 +495,7 @@ describe(
             },
           )
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -491,11 +507,11 @@ describe(
             ],
           })
           const [pre_existing_condition_before] = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [{
@@ -508,7 +524,7 @@ describe(
           })
 
           const [preExistingConditionAfter] = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
 
@@ -529,16 +545,19 @@ describe(
         },
       )
 
+      // TODO: this is doing something quite funky. Obviously this will need to be refactored when porting to append-only logic
       itUsesTrxAnd(
         'removes medications if not present by their id, while editing others',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -547,7 +566,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -558,7 +577,7 @@ describe(
             },
           )
 
-          const injection = await trx
+          const injection = await db
             .selectFrom('medications')
             .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
             .select([
@@ -571,9 +590,9 @@ describe(
               'form',
               '=',
               'INJECTABLE',
-            ).orderBy('drugs.generic_name desc').executeTakeFirstOrThrow()
+            ).orderBy('drugs.generic_name', 'desc').executeTakeFirstOrThrow()
 
-          const capsule = await trx
+          const capsule = await db
             .selectFrom('medications')
             .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
             .select([
@@ -586,10 +605,10 @@ describe(
               'form',
               '=',
               'CAPSULE',
-            ).orderBy('drugs.generic_name desc')
+            ).orderBy('drugs.generic_name', 'desc')
             .executeTakeFirstOrThrow()
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -618,7 +637,7 @@ describe(
             ],
           })
           const [pre_existing_condition_before] = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
 
@@ -626,7 +645,7 @@ describe(
             .find(
               (m) => m.medication_id === capsule.id,
             )!
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [{
@@ -643,7 +662,7 @@ describe(
           })
 
           const [preExistingConditionAfter] = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
 
@@ -669,16 +688,18 @@ describe(
         },
       )
 
-      itUsesTrxAnd(
+      it(
         'removes pre-existing conditions no longer present',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -687,7 +708,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -698,7 +719,7 @@ describe(
             },
           )
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -709,7 +730,7 @@ describe(
             ],
           })
 
-          await patient_conditions.upsertPreExisting(trx, {
+          await patient_conditions.upsertPreExisting(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -721,7 +742,7 @@ describe(
           })
 
           const pre_existing_conditions = await patient_conditions
-            .getPreExistingConditions(trx, {
+            .getPreExistingConditions(db, {
               patient_id: encounter.patient.id,
             })
           assertEquals(pre_existing_conditions.length, 1)
@@ -729,16 +750,18 @@ describe(
         },
       )
 
-      itUsesTrxAnd(
+      it(
         '400s if the condition is a procedure or surgery',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -747,7 +770,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -760,7 +783,7 @@ describe(
 
           await assertRejects(
             () =>
-              patient_conditions.upsertPreExisting(trx, {
+              patient_conditions.upsertPreExisting(db, {
                 patient_id: encounter.patient.id,
                 patient_examination_id: patient_examination.id,
                 patient_conditions: [
@@ -778,16 +801,18 @@ describe(
     })
 
     describe('upsertPastMedical', () => {
-      itUsesTrxAnd(
+      it(
         'upserts past conditions, those with an end_date',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -796,7 +821,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -807,7 +832,7 @@ describe(
             },
           )
 
-          await patient_conditions.upsertPastMedical(trx, {
+          await patient_conditions.upsertPastMedical(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [
@@ -819,7 +844,7 @@ describe(
             ],
           })
           const past_conditions = await patient_conditions
-            .getPastMedicalConditions(trx, {
+            .getPastMedicalConditions(db, {
               patient_id: encounter.patient.id,
             })
           assertEquals(past_conditions.length, 1)
@@ -830,14 +855,16 @@ describe(
           assertEquals(preExistingCondition.end_date, '2021-03-01')
         },
       )
-      itUsesTrxAnd('400s if no end date is provided', async (trx) => {
-        const nurse = await addTestEmployee(trx, {
+      it('400s if no end date is provided', async () => {
+        const clinic = await createTestOrganization(db)
+        const nurse = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'not started',
+          organization_id: clinic.id,
         })
         const encounter =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            trx,
+            db,
             nurse.organization_id,
             {
               patient_demographics: randomDemographics(),
@@ -846,7 +873,7 @@ describe(
           )
 
         const patient_examination = await examinations.upsert(
-          trx,
+          db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
@@ -859,7 +886,7 @@ describe(
 
         await assertRejects(
           () =>
-            patient_conditions.upsertPastMedical(trx, {
+            patient_conditions.upsertPastMedical(db, {
               patient_id: encounter.patient.id,
               patient_examination_id: patient_examination.id,
               patient_conditions: [
@@ -877,16 +904,18 @@ describe(
     })
 
     describe('upsertMajorSurgeries', () => {
-      itUsesTrxAnd(
+      it(
         'upserts major surgery, those condition with is_procedure = true',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -895,7 +924,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -906,7 +935,7 @@ describe(
             },
           )
 
-          await patient_conditions.upsertMajorSurgeries(trx, {
+          await patient_conditions.upsertMajorSurgeries(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             major_surgeries: [
@@ -915,7 +944,7 @@ describe(
           })
 
           const major_surgeries = await patient_conditions.getMajorSurgeries(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
             },
@@ -928,14 +957,16 @@ describe(
         },
       )
 
-      itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
-        const nurse = await addTestEmployee(trx, {
+      it('400s if the condition is not a procedure', async () => {
+        const clinic = await createTestOrganization(db)
+        const nurse = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'not started',
+          organization_id: clinic.id,
         })
         const encounter =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            trx,
+            db,
             nurse.organization_id,
             {
               patient_demographics: randomDemographics(),
@@ -944,7 +975,7 @@ describe(
           )
 
         const patient_examination = await examinations.upsert(
-          trx,
+          db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
@@ -957,7 +988,7 @@ describe(
 
         await assertRejects(
           () =>
-            patient_conditions.upsertMajorSurgeries(trx, {
+            patient_conditions.upsertMajorSurgeries(db, {
               patient_id: encounter.patient.id,
               patient_examination_id: patient_examination.id,
               major_surgeries: [
@@ -972,16 +1003,18 @@ describe(
         )
       })
 
-      itUsesTrxAnd(
+      it(
         'allows 2 surgeries if the dates are distinct',
-        async (trx) => {
-          const nurse = await addTestEmployee(trx, {
+        async () => {
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployee(db, {
             profession: 'nurse',
             registration_status: 'not started',
+            organization_id: clinic.id,
           })
           const encounter =
             await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              trx,
+              db,
               nurse.organization_id,
               {
                 patient_demographics: randomDemographics(),
@@ -990,7 +1023,7 @@ describe(
             )
 
           const patient_examination = await examinations.upsert(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
@@ -1001,7 +1034,7 @@ describe(
             },
           )
 
-          await patient_conditions.upsertMajorSurgeries(trx, {
+          await patient_conditions.upsertMajorSurgeries(db, {
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             major_surgeries: [
@@ -1011,7 +1044,7 @@ describe(
           })
 
           const major_surgeries = await patient_conditions.getMajorSurgeries(
-            trx,
+            db,
             {
               patient_id: encounter.patient.id,
             },
@@ -1020,14 +1053,16 @@ describe(
         },
       )
 
-      itUsesTrxAnd('400s if 2 surgeries have the same date', async (trx) => {
-        const nurse = await addTestEmployee(trx, {
+      it('400s if 2 surgeries have the same date', async () => {
+        const clinic = await createTestOrganization(db)
+        const nurse = await addTestEmployee(db, {
           profession: 'nurse',
           registration_status: 'not started',
+          organization_id: clinic.id,
         })
         const encounter =
           await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            trx,
+            db,
             nurse.organization_id,
             {
               patient_demographics: randomDemographics(),
@@ -1036,7 +1071,7 @@ describe(
           )
 
         const patient_examination = await examinations.upsert(
-          trx,
+          db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
@@ -1049,7 +1084,7 @@ describe(
 
         const error = await assertRejects(
           () =>
-            patient_conditions.upsertMajorSurgeries(trx, {
+            patient_conditions.upsertMajorSurgeries(db, {
               patient_id: encounter.patient.id,
               patient_examination_id: patient_examination.id,
               major_surgeries: [
@@ -1065,9 +1100,9 @@ describe(
     })
 
     describe('onboarding', () => {
-      itUsesTrxAnd(
+      it(
         'can add conditions and surgeries in any order, with all being preserved',
-        async (trx) => {
+        async () => {
           // let patient: { id: string }
 
           const insertions = [
@@ -1090,7 +1125,7 @@ describe(
                 skipped: boolean
               }
             }) =>
-              patient_conditions.upsertPreExisting(trx, {
+              patient_conditions.upsertPreExisting(db, {
                 patient_id: encounter.patient.id,
                 patient_examination_id: patient_examination.id,
                 patient_conditions: [
@@ -1119,7 +1154,7 @@ describe(
                 skipped: boolean
               }
             }) =>
-              patient_conditions.upsertPastMedical(trx, {
+              patient_conditions.upsertPastMedical(db, {
                 patient_id: encounter.patient.id,
                 patient_examination_id: patient_examination.id,
                 patient_conditions: [
@@ -1149,7 +1184,7 @@ describe(
                 skipped: boolean
               }
             }) =>
-              patient_conditions.upsertMajorSurgeries(trx, {
+              patient_conditions.upsertMajorSurgeries(db, {
                 patient_id: encounter.patient.id,
                 patient_examination_id: patient_examination.id,
                 major_surgeries: [
@@ -1160,13 +1195,15 @@ describe(
 
           const insertion_orders = permutations(insertions)
           for (const insertion_order of insertion_orders) {
-            const nurse = await addTestEmployee(trx, {
+            const clinic = await createTestOrganization(db)
+            const nurse = await addTestEmployee(db, {
               profession: 'nurse',
               registration_status: 'not started',
+              organization_id: clinic.id,
             })
             const encounter =
               await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-                trx,
+                db,
                 nurse.organization_id,
                 {
                   patient_demographics: randomDemographics(),
@@ -1175,7 +1212,7 @@ describe(
               )
 
             const patient_examination = await examinations.upsert(
-              trx,
+              db,
               {
                 patient_id: encounter.patient.id,
                 patient_encounter_id: encounter.patient_encounter_id,
@@ -1190,20 +1227,20 @@ describe(
             }
             const pre_existing_conditions = await patient_conditions
               .getPreExistingConditions(
-                trx,
+                db,
                 {
                   patient_id: encounter.patient.id,
                 },
               )
             const past_conditions = await patient_conditions
               .getPastMedicalConditions(
-                trx,
+                db,
                 {
                   patient_id: encounter.patient.id,
                 },
               )
             const major_surgeries = await patient_conditions.getMajorSurgeries(
-              trx,
+              db,
               {
                 patient_id: encounter.patient.id,
               },

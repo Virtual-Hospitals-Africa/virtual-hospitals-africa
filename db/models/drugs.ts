@@ -1,6 +1,6 @@
 import { type SelectQueryBuilder, sql } from 'kysely'
 import { DrugSearchResult, TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { asText, asTextArray, jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
 import {
   collectSortedUniqDecimals,
@@ -24,7 +24,9 @@ function baseQuery(opts: { include_recalled: boolean }) {
             'medications.form_route',
             'medications.routes',
             'medications.strength_numerator_unit',
-            'medications.strength_denominator',
+            asText(eb_medications, 'medications.strength_denominator').as(
+              'strength_denominator',
+            ),
             'medications.strength_denominator_unit',
             'medications.strength_denominator_is_units',
             jsonArrayFrom(
@@ -35,12 +37,15 @@ function baseQuery(opts: { include_recalled: boolean }) {
                   'manufactured_medication_recalls.manufactured_medication_id',
                   'manufactured_medications.id',
                 )
-                .select([
+                .select((eb_mm) => [
                   'manufactured_medications.id as manufactured_medication_id',
-                  'manufactured_medications.strength_numerators',
                   'manufactured_medications.trade_name',
                   'manufactured_medications.applicant_name',
                   'manufactured_medication_recalls.recalled_at',
+                  asTextArray(
+                    eb_mm,
+                    'manufactured_medications.strength_numerators',
+                  ).as('strength_numerators'),
                 ])
                 .whereRef(
                   'manufactured_medications.medication_id',
@@ -130,6 +135,7 @@ const model = base({
   top_level_table: 'drugs',
   baseQuery: baseQuery({ include_recalled: false }),
   formatResult({ medications, ...rest }): DrugSearchResult {
+    console.log({ medications, ...rest })
     return {
       all_recalled: medications.every((m) =>
         m.manufacturers.every((m) => m.recalled_at)

@@ -21,8 +21,6 @@ import { assert } from 'std/assert/assert.ts'
 import { positive_decimal } from '../util/validators.ts'
 import { collectSortedUniqDecimals } from '../util/collectSorted.ts'
 
-console.log({ Decimal })
-
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
 
 export const SEVERITY_SCORE_SNOMED_CONCEPT_ID = '278305009' // |Severity score (qualifier value)|

@@ -25,7 +25,7 @@ export function getById(
 ): Promise<RenderedPatientInsurance[]> {
   return baseQuery(trx)
     .where('patient_insurance.patient_id', '=', patient_id)
-    .orderBy('expire_date desc')
+    .orderBy('expire_date', 'desc')
     .execute()
 }
 

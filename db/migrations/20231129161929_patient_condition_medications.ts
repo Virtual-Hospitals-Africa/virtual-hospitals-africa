@@ -21,7 +21,7 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await sql`
-    CREATE DOMAIN decimal_text AS text CHECK (VALUE ~ '^\d+(\.\d+)?$');
+    CREATE DOMAIN decimal_text AS text CHECK (VALUE ~ '^[0-9]+(\.[0-9]+)?$');
 
     CREATE TYPE medication_schedule AS (
       dosage decimal_text,
