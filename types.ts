@@ -3468,7 +3468,7 @@ export type RenderedFindingRelativeToHealthWorker = {
 export type RenderedVitalRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
-    value: string | number | null
+    value: number | null
     units: string | null
   }
 
@@ -3566,8 +3566,14 @@ export type ReferenceRange = {
   clinical_context: string
 }
 
+export type ReferenceRangeX = {
+    low: number
+    high: number
+    color: 'green' | 'yellow' | 'orange' | 'red'
+  }
+
 export type TriageAssignPriorityTableVital = {
   current: RenderedVitalRelativeToHealthWorker
   previous: RenderedVitalRelativeToHealthWorker | null
-  reference_range: ReferenceRange | null
+  reference_ranges: ReferenceRangeX[] | null
 }

@@ -19,6 +19,7 @@ import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
+import isString from '../../util/isString.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -174,6 +175,8 @@ export const patient_vitals = base({
     return findings.map((finding) => ({
       ...finding,
       ...buildValueDisplay(finding),
+      // TODO are we losing precision here for decimals?
+      value: isString(finding.value) ? parseFloat(finding.value) : finding.value
     }))
   },
 })

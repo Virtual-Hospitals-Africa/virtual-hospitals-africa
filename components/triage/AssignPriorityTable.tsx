@@ -38,18 +38,18 @@ export function TriageAssignPriorityTable({ vitals }: {
       label: 'Previous',
       type: 'content',
       data: (row) => (
-        <div className='whitespace-nowrap text-sm text-gray-500'>
+        row.previous?.value != null && <div className='whitespace-nowrap text-sm text-gray-500'>
           {row.previous?.value}
         </div>
       ),
     },
     {
-      label: 'Vital Range Visualized',
+      label: 'Reference Range',
       type: 'content',
-      data: ({ current, previous, reference_range }) => {
-        if (!reference_range) return null
+      data: ({ current, previous, reference_ranges }) => {
+        if (!reference_ranges) return null
         assert(
-          current.value,
+          typeof current.value === 'number',
           `If there's a reference range there must be a value`,
         )
         assert(
@@ -58,19 +58,10 @@ export function TriageAssignPriorityTable({ vitals }: {
         )
         return (
           <ReferenceRangeIndicator
-            value={isString(current.value)
-              ? parseFloat(current.value)
-              : current.value}
-            previous_value={previous?.value == null ? undefined : (
-              isString(previous.value)
-                ? parseFloat(previous.value)
-                : previous.value
-            )}
-            normal_min={reference_range.normal_min}
-            normal_max={reference_range.normal_max}
-            critical_min={reference_range.critical_min}
-            critical_max={reference_range.critical_max}
             units={current.units}
+            value={current.value}
+            previous_value={previous?.value}
+            reference_ranges={reference_ranges}
           />
         )
       },
