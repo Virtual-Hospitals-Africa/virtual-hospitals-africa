@@ -1,15 +1,22 @@
 import {
   AgeDetermination,
   NonEmptyArray,
+  ReferenceRangeX,
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../types.ts'
 import compact from '../util/compact.ts'
 import entries from '../util/entries.ts'
+import { exists } from '../util/exists.ts'
 import findMatching from '../util/findMatching.ts'
+import isKeyOf from '../util/isKeyOf.ts'
 import keys from '../util/keys.ts'
 import memoize from '../util/memoize.ts'
 import { TriageLevel } from './priorities.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertArrayNonEmpty } from '../util/arraySize.ts'
+import last from '../util/last.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
 
@@ -65,6 +72,20 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
   },
 )
 
+export const vitalAssessmentFromSnomedConceptId = memoize(
+  (snomed_concept_id: string) => {
+    for (
+      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)
+    ) {
+      if (concept_id === snomed_concept_id) {
+        return vital
+      }
+    }
+    throw new Error(
+      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+    )
+  },
+)
 export const vitalFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
@@ -106,20 +127,6 @@ export const ADULT_TEWS_COMPONENTS = [
 
 export type AdultTEWSComponent = (typeof ADULT_TEWS_COMPONENTS)[number]
 
-export const vitalAssessmentFromSnomedConceptId = memoize(
-  (snomed_concept_id: string) => {
-    for (
-      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)
-    ) {
-      if (concept_id === snomed_concept_id) {
-        return vital
-      }
-    }
-    throw new Error(
-      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
-    )
-  },
-)
 
 export const VITAL_MEASUREMENTS_UNITS = {
   height: 'cm',
@@ -195,13 +202,6 @@ const ASESSMENT_OPTIONS: {
     available_to_ages: NonEmptyArray<AgeDetermination>
   }[]
 } = {
-  consciousness: [
-    { label: 'Alert' as const, score: 0, snomed_concept_id: '248234008', available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Reacts to voice' as const, score: 1, snomed_concept_id: '422768004', available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Confused' as const, score: 2, snomed_concept_id: '40917007', available_to_ages: ['adult', 'older child'] },
-    { label: 'Reacts to pain' as const, score: 2, snomed_concept_id: '450847001', available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Unresponsive' as const, score: 3, snomed_concept_id: '422107003', available_to_ages: ['adult', 'older child', 'younger child'] },
-  ],
   mobility_assessment: [
     { label: 'Walking' as const, score: 0, snomed_concept_id: '282144007', available_to_ages: ['adult'] },
     { label: 'Difficulty walking' as const, score: 1, snomed_concept_id: '719232003', available_to_ages: ['adult'] },
@@ -211,12 +211,21 @@ const ASESSMENT_OPTIONS: {
     { label: 'Unable to move as normal' as const, score: 2, snomed_concept_id: '263654008', available_to_ages: ['younger child'] },
     { label: 'Unable to walk as normal' as const, score: 2, snomed_concept_id: '263654008', available_to_ages: ['older child'] },
   ],
+  consciousness: [
+    { label: 'Alert' as const, score: 0, snomed_concept_id: '248234008', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Reacts to voice' as const, score: 1, snomed_concept_id: '422768004', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Confused' as const, score: 2, snomed_concept_id: '40917007', available_to_ages: ['adult', 'older child'] },
+    { label: 'Reacts to pain' as const, score: 2, snomed_concept_id: '450847001', available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Unresponsive' as const, score: 3, snomed_concept_id: '422107003', available_to_ages: ['adult', 'older child', 'younger child'] },
+  ],
   trauma_presence: [
     { label: 'No' as const, score: 0, snomed_concept_id: '1149217004', available_to_ages: ['adult', 'older child', 'younger child'] },
     { label: 'Yes' as const, score: 1, snomed_concept_id: '417746004', available_to_ages: ['adult', 'older child', 'younger child'] },
   ],
 }
 // deno-fmt-ignore-end
+
+export const ASESSMENTS_ORDERED = keys(ASESSMENT_OPTIONS)
 
 export function assessmentOptionSnomedConceptId(
   vital: VitalAssessment,
@@ -250,16 +259,16 @@ const MEASUREMENT_RANGES: {
       { max: 130, score: 2 },
       { max: Infinity, score: 3 },
     ],
+    temperature: [
+      { max: 35, score: 2 },
+      { max: 38.5, score: 0 },
+      { max: Infinity, score: 2 },
+    ],
     blood_pressure_systolic: [
       { max: 71, score: 3 },
       { max: 81, score: 2 },
       { max: 101, score: 1 },
       { max: 200, score: 0 },
-      { max: Infinity, score: 2 },
-    ],
-    temperature: [
-      { max: 35, score: 2 },
-      { max: 38.5, score: 0 },
       { max: Infinity, score: 2 },
     ],
   },
@@ -307,6 +316,8 @@ const MEASUREMENT_RANGES: {
   },
 }
 
+export const MEASUREMENTS_ORDERED = keys(MEASUREMENT_RANGES.adult)
+
 export function getScoreForMeasurement(
   age_determination: AgeDetermination,
   vital: VitalMeasurement,
@@ -319,21 +330,21 @@ export function getScoreForMeasurement(
       return range.score
     }
   }
-  return null
+  throw new Error(`Given ranges exist for ${vital}, we have to have a max. value: ${value}`)
 }
 
 export function getScoreForAssessment(
   age_determination: AgeDetermination,
   vital: VitalAssessment,
   value_snomed_concept_id: string,
-): TEWSScore | null {
+): TEWSScore {
   const options = ASESSMENT_OPTIONS[vital]
   const option = options.find(
     (o) =>
       o.snomed_concept_id === value_snomed_concept_id &&
       o.available_to_ages.includes(age_determination),
   )
-  return option?.score ?? null
+  return exists(option).score
 }
 
 export function measureVitalsInputDefinitions(
@@ -383,22 +394,75 @@ export function measureVitalsInputDefinitions(
 
 export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
   switch (total_score) {
+    case 0:
+    case 1:
+    case 2:
+      return 'Non-urgent'
+    case 3:
+    case 4:
+      return 'Urgent'
+    case 5:
+    case 6:
+      return 'Very urgent'
     case 7:
     case 8:
     case 9:
     case 10:
       return 'Emergency'
-    case 5:
-    case 6:
-      return 'Very urgent'
-    case 3:
-    case 4:
-      return 'Urgent'
-    case 0:
-    case 1:
-    case 2:
-      return 'Non-urgent'
     default:
       throw new Error(`Unexpected total TEWS score ${total_score}`)
   }
+}
+
+export function colorFromScoreComponent(score: number): ReferenceRangeX['color'] {
+switch (score) {
+    case 0:
+      return 'green'
+    case 1:
+      return 'yellow'
+    case 2:
+      return 'orange'
+    case 3:
+      return 'red'
+    default:
+      throw new Error(`Unexpected TEWS score component ${score}`)
+  }
+}
+
+export function buildReferenceRanges(
+  snomed_concept_id: string,
+  age_determination: AgeDetermination,
+  values_to_be_sure_to_include: NonEmptyArray<number>
+): ReferenceRangeX[] | null {
+  const vital = vitalFromSnomedConceptId(snomed_concept_id)
+
+  if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)) {
+    return null
+  }
+
+  const raw_ranges = MEASUREMENT_RANGES[age_determination][vital]
+  if (!raw_ranges) return null
+
+  assertArrayNonEmpty(raw_ranges)
+  assert(raw_ranges.length >= 3)
+  assertEquals(last(raw_ranges).max, Infinity)
+
+  const min_value_to_be_sure_to_include = Math.min(...values_to_be_sure_to_include)
+  const max_value_to_be_sure_to_include = Math.max(...values_to_be_sure_to_include)
+
+  const distance_low = raw_ranges[1].max - raw_ranges[0].max
+  const half_distance_low = distance_low / 2
+  const first_min_base = raw_ranges[0].max - distance_low
+  const first_min = Math.floor(Math.min(min_value_to_be_sure_to_include - half_distance_low, first_min_base))
+  
+  const distance_high = raw_ranges.at(-2)!.max - raw_ranges.at(-3)!.max
+  const half_distance_high = distance_high / 2
+  const last_max_base = raw_ranges.at(-2)!.max + distance_high
+  const last_max = Math.ceil(Math.max(max_value_to_be_sure_to_include + half_distance_high, last_max_base))
+
+  return raw_ranges.map((range, i) => ({
+    low: i ? raw_ranges[i - 1].max : first_min,
+    high: range.max === Infinity ? last_max : range.max,
+    color: colorFromScoreComponent(range.score)
+  }))
 }

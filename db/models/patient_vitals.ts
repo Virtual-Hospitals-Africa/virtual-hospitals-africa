@@ -1,8 +1,8 @@
 // Perhaps a misnomer, this is a more general way of getting findings whether they be measurements or not
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
-  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
+  RenderedVitalRelativeToHealthWorker,
   TrxOrDb,
   TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
@@ -19,6 +19,7 @@ import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
+import isString from '../../util/isString.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -38,6 +39,7 @@ export function baseQuery(
 type VitalsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
+  excluding_patient_encounter_id?: string | IdSelection
   s_expression?: string | ParsedExpression
   search?: string
   not_measurements?: boolean
@@ -77,6 +79,13 @@ export const patient_vitals = base({
         opts.patient_encounter_id,
       )
     }
+    if (opts.excluding_patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '!=',
+        opts.excluding_patient_encounter_id,
+      )
+    }
     if (opts.s_expression) {
       qb = qb.where(
         'patient_records.id',
@@ -96,14 +105,20 @@ export const patient_vitals = base({
   },
   async getMostRecent(
     trx: TrxOrDb,
-    { health_worker_id, patient_id, patient_encounter_id, snomed_concept_ids }:
-      {
-        health_worker_id: string
-        patient_id: string
-        patient_encounter_id?: string
-        snomed_concept_ids?: string[]
-      },
-  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
+    {
+      health_worker_id,
+      patient_id,
+      patient_encounter_id,
+      excluding_patient_encounter_id,
+      snomed_concept_ids,
+    }: {
+      health_worker_id: string
+      patient_id: string
+      patient_encounter_id?: string
+      excluding_patient_encounter_id?: string
+      snomed_concept_ids?: string[]
+    },
+  ): Promise<RenderedVitalRelativeToHealthWorker[]> {
     if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
     const query = trx.with(
@@ -116,6 +131,12 @@ export const patient_vitals = base({
               'patient_records.patient_encounter_id',
               '=',
               patient_encounter_id!,
+            ))
+          .$if(!!excluding_patient_encounter_id, (qb) =>
+            qb.where(
+              'patient_records.patient_encounter_id',
+              '!=',
+              excluding_patient_encounter_id!,
             ))
           .$if(!!snomed_concept_ids, (qb) =>
             qb.where(
@@ -154,6 +175,8 @@ export const patient_vitals = base({
     return findings.map((finding) => ({
       ...finding,
       ...buildValueDisplay(finding),
+      // TODO are we losing precision here for decimals?
+      value: isString(finding.value) ? parseFloat(finding.value) : finding.value
     }))
   },
 })

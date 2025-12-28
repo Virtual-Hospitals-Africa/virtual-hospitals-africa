@@ -1754,6 +1754,7 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   health_worker: EmployedHealthWorker
+  health_worker_id: string
   present_encounter: RenderedPatientOpenEncounter | null
 }
 
@@ -3451,9 +3452,11 @@ export type RenderedFindingRelativeToHealthWorker = {
   patient_encounter_id: string
   snomed_concept_id: string
   finding_snomed_concept_id: string
+  finding_name: string
+  finding_display: string
   name: string
   full_display: string
-  value_display: string
+  value_display: string | null
   created_at: Date | string
   priority: Priority | null
   score: number | null
@@ -3461,6 +3464,13 @@ export type RenderedFindingRelativeToHealthWorker = {
   as_part_of_procedure: AsPartOfProcedure
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
+
+export type RenderedVitalRelativeToHealthWorker =
+  & RenderedFindingRelativeToHealthWorker
+  & {
+    value: number | null
+    units: string | null
+  }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
@@ -3542,3 +3552,28 @@ export type AgeDetermination =
   | 'adult'
   | 'older child'
   | 'younger child'
+
+export type ReferenceRange = {
+  measurement_snomed_concept_id: string
+  condition_codes?: readonly string[]
+  normal_min: number
+  normal_max: number
+  critical_min?: number
+  critical_max?: number
+  units: string
+  reference_source: string
+  evidence_level?: string
+  clinical_context: string
+}
+
+export type ReferenceRangeX = {
+    low: number
+    high: number
+    color: 'green' | 'yellow' | 'orange' | 'red'
+  }
+
+export type TriageAssignPriorityTableVital = {
+  current: RenderedVitalRelativeToHealthWorker
+  previous: RenderedVitalRelativeToHealthWorker | null
+  reference_ranges: ReferenceRangeX[] | null
+}
