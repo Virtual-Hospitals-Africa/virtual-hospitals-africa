@@ -3,6 +3,8 @@ import { sql } from 'kysely'
 import {
   Existence,
   MostRecentBriefHistoryFindings,
+  NonEmptyArray,
+  RenderedBriefHistoryRelativeToHealthWorker,
   RenderedPatientEncounter,
   TrxOrDb,
 } from '../../types.ts'
@@ -10,7 +12,6 @@ import { temporaryTable } from '../helpers.ts'
 import { IntermediateFinding, patient_findings } from './patient_findings.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
-import mapEntries from '../../util/mapEntries.ts'
 import {
   CommonCondition,
   CommonConditionKey,
@@ -20,6 +21,7 @@ import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
+import { buildValueDisplay } from '../../shared/patient_records.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
@@ -102,18 +104,18 @@ function findingExistence(finding: IntermediateBriefHistory): Existence {
   return finding.value_name
 }
 
-function mostRecentFinding(
-  findings_of_condition: Array<
-    IntermediateBriefHistory & { existence: Existence }
-  >,
-  pertaining_to_key: CommonConditionKey,
-) {
+function mostRecentFinding<
+  Finding extends IntermediateBriefHistory & { existence: Existence },
+>(
+  findings_of_condition: NonEmptyArray<Finding>,
+): Finding {
   if (findings_of_condition.length > 1) {
     assert(
       findings_of_condition[0].created_at >=
         findings_of_condition[1].created_at,
     )
   }
+  const { pertaining_to_key } = first(findings_of_condition)
 
   const parent_snomed_concept_id = commonConditionSnomedConceptId(
     pertaining_to_key,
@@ -169,20 +171,25 @@ export async function renderedMostRecentFindings(
   const most_recent_findings_with_existence = most_recent_findings.map(
     (finding) => ({
       ...finding,
+      ...buildValueDisplay(finding),
       existence: findingExistence(finding),
     }),
   )
 
-  const most_recent_findings_by_common_condition_key = mapEntries(
-    groupBy(most_recent_findings_with_existence, 'pertaining_to_key'),
-    mostRecentFinding,
+  const records = groupBy(
+    most_recent_findings_with_existence,
+    'pertaining_to_key',
   )
+    .values()
+    .map(mostRecentFinding)
+    .toArray()
 
-  const with_providers = await hydrateIntermediateRecords(trx, {
-    records: Object.values(most_recent_findings_by_common_condition_key),
-    health_worker_id,
-    encounter,
-  })
+  const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] =
+    await hydrateIntermediateRecords(trx, {
+      records,
+      health_worker_id,
+      encounter,
+    })
 
   return fromEntries(
     conditions.map(

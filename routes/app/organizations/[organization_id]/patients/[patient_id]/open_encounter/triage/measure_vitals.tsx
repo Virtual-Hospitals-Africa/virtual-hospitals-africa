@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
-  positive_number,
+  positive_decimal,
   snomed_concept_id,
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
@@ -55,7 +55,7 @@ const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
     z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
-      value: positive_number,
+      value: positive_decimal,
       units: z.string().min(1),
     }).strict(),
   ).optional().transform((measurements) =>

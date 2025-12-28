@@ -29,14 +29,14 @@ export default function DrugInput({
     value?.medication_id || null,
   )
   const strength_numerator = useSignal<
-    number | null
+    string | null
   >(value?.strength ?? null)
 
   const registration_frequency = useSignal<
     string | null
   >(value?.registration_frequency ?? null)
 
-  const dosage = useSignal<number | null>(
+  const dosage = useSignal<string | null>(
     value?.dosage ?? null,
   )
   const route = useSignal<string | null>(
@@ -151,7 +151,7 @@ export default function DrugInput({
           disabled={!medication}
           onChange={(event) => {
             if (event.currentTarget.value) {
-              strength_numerator.value = Number(event.currentTarget.value)
+              strength_numerator.value = event.currentTarget.value
             } else {
               strength_numerator.value = null
             }
@@ -163,9 +163,9 @@ export default function DrugInput({
               strength_numerator_option,
             ) => (
               <option
-                value={strength_numerator_option}
-                selected={strength_numerator_option ===
-                  strength_numerator.value}
+                value={strength_numerator_option.toString()}
+                selected={strength_numerator.value ===
+                  strength_numerator_option}
               >
                 {strengthDisplay({
                   strength_numerator: strength_numerator_option,
@@ -187,20 +187,28 @@ export default function DrugInput({
         >
           <option value=''>Select Dosage</option>
           {medication.value && strength_numerator.value &&
-            Dosages.map(([dosage_text, dosage_value]) => (
-              <option
-                value={dosage_value * medication.value!.strength_denominator}
-                selected={dosage.value ===
-                  (dosage_value * medication.value!.strength_denominator)}
-              >
-                {dosageDisplay({
-                  dosage_text,
-                  dosage: dosage_value,
-                  strength_numerator: strength_numerator.value!,
-                  ...medication.value!,
-                })}
-              </option>
-            ))}
+            Dosages.map(([dosage_text, dosage_value]) => {
+              const option_value = String(parseFloat(medication.value!.strength_denominator) * parseFloat(dosage_value))
+      
+              // const option_value = new Decimal.Decimal(
+              //   medication.value!.strength_denominator,
+              // ).mul(
+              //   dosage_value,
+              // ).toFixed()
+              return (
+                <option
+                  value={option_value}
+                  selected={dosage.value === option_value}
+                >
+                  {dosageDisplay({
+                    dosage_text,
+                    dosage: dosage_value,
+                    strength_numerator: strength_numerator.value!,
+                    ...medication.value!,
+                  })}
+                </option>
+              )
+            })}
         </Select>
         <Select
           name={`${name}.registration_frequency`}

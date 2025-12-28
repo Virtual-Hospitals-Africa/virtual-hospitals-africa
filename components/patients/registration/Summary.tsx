@@ -421,9 +421,9 @@ export default function PatientRegistrationSummary(
   //         [
   //           {
   //             value: strengthDisplay({
-  //               strength_numerator: Number(medication.strength),
+  //               strength_numerator: Decimal(medication.strength),
   //               strength_numerator_unit: medication.strength_numerator_unit,
-  //               strength_denominator: Number(medication.strength_denominator),
+  //               strength_denominator: Decimal(medication.strength_denominator),
   //               strength_denominator_unit: medication.strength_denominator_unit,
   //               separator: ' ',
   //             }),
@@ -437,8 +437,8 @@ export default function PatientRegistrationSummary(
   //           {
   //             value: dosageDisplay({
   //               dosage: medication.schedules[0].dosage,
-  //               strength_numerator: Number(medication.strength),
-  //               strength_denominator: Number(medication.strength_denominator),
+  //               strength_numerator: Decimal(medication.strength),
+  //               strength_denominator: Decimal(medication.strength_denominator),
   //               strength_denominator_unit: medication.strength_denominator_unit,
   //               strength_denominator_is_units:
   //                 medication.strength_denominator_is_units,

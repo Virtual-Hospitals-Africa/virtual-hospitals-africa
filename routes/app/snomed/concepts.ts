@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { searchConcepts } from '../../../external-clients/snowstorm.ts'
 import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
 import type { ConceptMini } from '../../../external-clients/snowstorm/data-contracts.ts'
-import { positive_number } from '../../../util/validators.ts'
+import * as validators from '../../../util/validators.ts'
 import type { TrxOrDb } from '../../../types.ts'
 
 type SearchTerms = {
@@ -23,7 +23,7 @@ export function toInternalSnomedConcept(
   id: string
   name: string
 } {
-  const snomed_concept_id = positive_number.parse(conceptId)
+  const snomed_concept_id = validators.snomed_concept_id.parse(conceptId)
   assert(pt?.term)
   return {
     id: String(snomed_concept_id),

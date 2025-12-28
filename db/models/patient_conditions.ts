@@ -24,6 +24,7 @@ import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { RegistrationFrequencies } from '../../shared/medication.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -357,26 +358,26 @@ export async function getPreExistingConditions(
     patient_id: string
   },
 ): Promise<PreExistingCondition[]> {
-  const getting_patient_conditions = await trx
-    .selectFrom('patient_conditions')
-    .innerJoin(
-      'conditions',
-      'conditions.id',
-      'patient_conditions.condition_id',
-    )
-    .where('conditions.is_procedure', '=', false)
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .where('patient_conditions.end_date', 'is', null)
-    .select((eb) => [
-      'conditions.id',
-      'conditions.name',
-      'patient_conditions.id as patient_condition_id',
-      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-      'patient_conditions.comorbidity_of_condition_id',
-    ])
-    .execute()
-
-  const getting_patient_medications = await trx
+  const { patient_conditions, patient_medications } = await promiseProps({
+    patient_conditions:  trx
+      .selectFrom('patient_conditions')
+      .innerJoin(
+        'conditions',
+        'conditions.id',
+        'patient_conditions.condition_id',
+      )
+      .where('conditions.is_procedure', '=', false)
+      .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .where('patient_conditions.end_date', 'is', null)
+      .select((eb) => [
+        'conditions.id',
+        'conditions.name',
+        'patient_conditions.id as patient_condition_id',
+        isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+        'patient_conditions.comorbidity_of_condition_id',
+      ])
+      .execute(),
+    patient_medications: trx
     .selectFrom('patient_condition_medications')
     .leftJoin(
       'manufactured_medications',
@@ -414,9 +415,7 @@ export async function getPreExistingConditions(
       ),
     ])
     .execute()
-
-  const patient_conditions = await getting_patient_conditions
-  const patient_medications = await getting_patient_medications
+  })
 
   return patient_conditions
     .filter((condition) => !condition.comorbidity_of_condition_id)
@@ -454,7 +453,7 @@ export async function getPreExistingConditions(
               schedule,
             ),
             dosage: schedule.dosage,
-            strength: Number(medication.strength),
+            strength: medication.strength,
           }
         }),
     }))

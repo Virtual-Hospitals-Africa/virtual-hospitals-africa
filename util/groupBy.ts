@@ -1,4 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
+import { NonEmptyArray } from '../types.ts'
+
 export function groupBy<
   T extends Record<string, unknown>,
   KeyBy extends (
@@ -8,8 +10,8 @@ export function groupBy<
 >(
   array: T[],
   keyBy: KeyBy,
-): KeyBy extends keyof T ? Map<T[KeyBy], T[]>
-  : KeyBy extends (value: T, i: number) => infer K ? Map<K, T[]>
+): KeyBy extends keyof T ? Map<T[KeyBy], NonEmptyArray<T>>
+  : KeyBy extends (value: T, i: number) => infer K ? Map<K, NonEmptyArray<T>>
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {

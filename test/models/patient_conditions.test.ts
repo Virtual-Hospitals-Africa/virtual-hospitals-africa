@@ -80,7 +80,7 @@ describe(
                   {
                     manufactured_medication_id: tablet.id,
                     medication_id: null,
-                    dosage: 1,
+                    dosage: '1',
                     strength: tablet.strength_numerators[0],
                     registration_frequency: 'qw',
                     route: tablet.routes[0],
@@ -100,7 +100,7 @@ describe(
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
           assertEquals(preExistingCondition.start_date, '2020-01-01')
           assertEquals(preExistingCondition.medications.length, 1)
-          assertEquals(preExistingCondition.medications[0].dosage, 1)
+          assertEquals(preExistingCondition.medications[0].dosage, '1')
           assertEquals(
             preExistingCondition.medications[0].name,
             tablet.generic_name,
@@ -117,11 +117,9 @@ describe(
             preExistingCondition.medications[0].medication_id,
             tablet.medication_id,
           )
-          // TODO remove the Number cast
-          // https://github.com/kysely-org/kysely/issues/802
           assertEquals(
             preExistingCondition.medications[0].strength,
-            Number(tablet.strength_numerators[0]),
+            tablet.strength_numerators[0],
           )
           assertEquals(
             preExistingCondition.medications[0].start_date,
@@ -139,7 +137,7 @@ describe(
             .executeTakeFirstOrThrow()
 
           assertEquals(patient_medication.schedules, [{
-            dosage: 1,
+            dosage: '1',
             duration: 1,
             duration_unit: 'indefinitely',
             frequency: 'qw',
@@ -202,7 +200,7 @@ describe(
                   {
                     manufactured_medication_id: null,
                     medication_id: tablet.id,
-                    dosage: 1,
+                    dosage: '1',
                     strength: tablet.strength_numerators[0],
                     registration_frequency: 'qw',
                     route: tablet.routes[0],
@@ -222,7 +220,7 @@ describe(
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
           assertEquals(preExistingCondition.start_date, '2020-01-01')
           assertEquals(preExistingCondition.medications.length, 1)
-          assertEquals(preExistingCondition.medications[0].dosage, 1)
+          assertEquals(preExistingCondition.medications[0].dosage, '1')
           assertEquals(
             preExistingCondition.medications[0].name,
             tablet.generic_name,
@@ -239,11 +237,9 @@ describe(
             preExistingCondition.medications[0].medication_id,
             tablet.id,
           )
-          // TODO remove the Number cast
-          // https://github.com/kysely-org/kysely/issues/802
           assertEquals(
             preExistingCondition.medications[0].strength,
-            Number(tablet.strength_numerators[0]),
+            tablet.strength_numerators[0],
           )
           assertEquals(
             preExistingCondition.medications[0].start_date,
@@ -261,7 +257,7 @@ describe(
             .executeTakeFirstOrThrow()
 
           assertEquals(patient_medication.schedules, [{
-            dosage: 1,
+            dosage: '1',
             duration: 1,
             duration_unit: 'indefinitely',
             frequency: 'qw',
@@ -324,7 +320,7 @@ describe(
                   {
                     manufactured_medication_id: null,
                     medication_id: tablet.id,
-                    dosage: 1,
+                    dosage: '1',
                     strength: tablet.strength_numerators[0],
                     registration_frequency: 'qw',
                     start_date: '2021-01-01',
@@ -346,7 +342,7 @@ describe(
           assertEquals(preExistingCondition.name, 'Filtering bleb failed')
           assertEquals(preExistingCondition.start_date, '2020-01-01')
           assertEquals(preExistingCondition.medications.length, 1)
-          assertEquals(preExistingCondition.medications[0].dosage, 1)
+          assertEquals(preExistingCondition.medications[0].dosage, '1')
           assertEquals(
             preExistingCondition.medications[0].name,
             tablet.generic_name,
@@ -363,11 +359,9 @@ describe(
             preExistingCondition.medications[0].medication_id,
             tablet.id,
           )
-          // TODO remove the Number cast
-          // https://github.com/kysely-org/kysely/issues/802
           assertEquals(
             preExistingCondition.medications[0].strength,
-            Number(tablet.strength_numerators[0]),
+            tablet.strength_numerators[0],
           )
           assertEquals(
             preExistingCondition.medications[0].start_date,
@@ -391,7 +385,7 @@ describe(
             .executeTakeFirstOrThrow()
 
           assertEquals(patient_medication.schedules, [{
-            dosage: 1,
+            dosage: '1',
             duration: 15,
             duration_unit: 'days',
             frequency: 'qw',
@@ -496,7 +490,7 @@ describe(
               },
             ],
           })
-          const [preExistingConditionBefore] = await patient_conditions
+          const [pre_existing_condition_before] = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
@@ -505,7 +499,7 @@ describe(
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [{
-              ...preExistingConditionBefore,
+              ...pre_existing_condition_before,
               comorbidities: [{
                 id: 'c_8251',
                 start_date: '2020-01-03',
@@ -519,7 +513,7 @@ describe(
             })
 
           assertEquals(preExistingConditionAfter, {
-            ...preExistingConditionBefore,
+            ...pre_existing_condition_before,
             patient_condition_id:
               preExistingConditionAfter.patient_condition_id,
             comorbidities: [
@@ -607,7 +601,7 @@ describe(
                     medication_id: injection.id,
                     manufactured_medication_id: null,
                     strength: injection.strength_numerators[0],
-                    dosage: 1,
+                    dosage: '1',
                     registration_frequency: 'qw',
                     route: injection.routes[0],
                   },
@@ -615,7 +609,7 @@ describe(
                     medication_id: capsule.id,
                     manufactured_medication_id: null,
                     strength: capsule.strength_numerators[0],
-                    dosage: 2,
+                    dosage: '2',
                     registration_frequency: 'qw',
                     route: capsule.routes[0],
                   },
@@ -623,12 +617,12 @@ describe(
               },
             ],
           })
-          const [preExistingConditionBefore] = await patient_conditions
+          const [pre_existing_condition_before] = await patient_conditions
             .getPreExistingConditions(trx, {
               patient_id: encounter.patient.id,
             })
 
-          const medication_to_keep = preExistingConditionBefore.medications
+          const medication_to_keep = pre_existing_condition_before.medications
             .find(
               (m) => m.medication_id === capsule.id,
             )!
@@ -636,12 +630,12 @@ describe(
             patient_id: encounter.patient.id,
             patient_examination_id: patient_examination.id,
             patient_conditions: [{
-              ...preExistingConditionBefore,
+              ...pre_existing_condition_before,
               medications: [{
                 medication_id: capsule.id,
                 manufactured_medication_id: null,
                 registration_frequency: 'qid',
-                dosage: 3,
+                dosage: '3',
                 strength: capsule.strength_numerators[0],
                 route: capsule.routes[0],
               }],
@@ -656,7 +650,7 @@ describe(
           assertEquals(preExistingConditionAfter.medications.length, 1)
           const [medicationAfter] = preExistingConditionAfter.medications
 
-          assertEquals(medicationAfter.dosage, 3)
+          assertEquals(medicationAfter.dosage, '3')
           assertEquals(medicationAfter.end_date, null)
           assertEquals(
             medicationAfter.name,

@@ -145,8 +145,8 @@ export const patient_measurements = base({
           qb.insertInto('patient_measurements')
             .values({
               id: measurement_id,
-              value: units.value,
               units: units.units,
+              value: units.value.toFixed(),
             }),
       )
       .selectNoFrom([

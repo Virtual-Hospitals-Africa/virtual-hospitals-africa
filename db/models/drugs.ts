@@ -3,10 +3,11 @@ import { DrugSearchResult, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
 import {
-  collectSortedUniqNumbers,
+  collectSortedUniqDecimals,
   collectSortedUniqStrings,
 } from '../../util/collectSorted.ts'
 import { base } from './_base.ts'
+import { positive_decimal } from '../../util/validators.ts'
 
 // TODO: revisit this in light of _country_ recalling certain drugs
 function baseQuery(opts: { include_recalled: boolean }) {
@@ -100,7 +101,7 @@ function* distinctTradeNames(medications: BaseQueryReturn['medications']) {
 function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
   for (const manufacturer of medication.manufacturers) {
     for (const strength_numerator of manufacturer.strength_numerators) {
-      yield strength_numerator
+      yield positive_decimal.parse(strength_numerator)
     }
   }
 }
@@ -137,14 +138,12 @@ const model = base({
         distinctTradeNames(medications),
       ),
       medications: medications.map((m) => {
-        const strength_numerators = collectSortedUniqNumbers(
+        const strength_numerators = collectSortedUniqDecimals(
           strengthNumerators(m),
-        )
+        ).map((d) => d.toFixed())
         return {
           ...m,
           strength_numerators,
-          // TODO: do the float parsing in SQL?
-          strength_denominator: parseFloat(m.strength_denominator),
           strength_summary: formStrengthDisplay(
             strength_numerators.join(', '),
             m.strength_numerator_unit,

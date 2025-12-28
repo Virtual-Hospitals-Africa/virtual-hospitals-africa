@@ -81,7 +81,6 @@ export default base({
   formatResult(result): RenderedManufacturedMedication {
     return {
       ...result,
-      strength_denominator: parseFloat(result.strength_denominator),
       name: result.recalled_at
         ? `${result.generic_name} (recalled ${result.recalled_at})`
         : result.generic_name,

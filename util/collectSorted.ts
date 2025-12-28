@@ -1,3 +1,5 @@
+import { type Decimal } from 'decimal'
+
 export function collect<T>(generator: Generator<T, void, unknown>): T[] {
   const array: T[] = []
   for (const item of generator) {
@@ -84,6 +86,12 @@ export function collectSortedUniqNumbers(
   generator: Generator<number, void, unknown>,
 ): number[] {
   return collectSortedUniq(generator, (a, b) => a - b)
+}
+
+export function collectSortedUniqDecimals(
+  generator: Generator<Decimal, void, unknown>,
+): Decimal[] {
+  return collectSortedUniq(generator, (a, b) => a.cmp(b))
 }
 
 export function collectSortedUniqStrings(

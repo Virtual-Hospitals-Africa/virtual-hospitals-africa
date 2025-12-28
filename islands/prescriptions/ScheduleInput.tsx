@@ -22,7 +22,7 @@ export function ScheduleInput({
   name: string
   value: Partial<MedicationSchedule>
   medication: DrugSearchResultMedication | undefined
-  strength_numerator: number | undefined
+  strength_numerator: string | undefined
 }) {
   const dosage = useSignal(value.dosage ?? 1)
   const frequency = useSignal(value.frequency)

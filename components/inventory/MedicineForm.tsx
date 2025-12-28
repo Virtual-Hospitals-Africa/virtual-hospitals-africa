@@ -12,7 +12,7 @@ export default function InventoryMedicineForm(
     today: string
     manufactured_medication: null | RenderedManufacturedMedication
     last_procurement?: Maybe<{
-      strength: number
+      strength: string
       quantity: number
       container_size: number
       number_of_containers: number

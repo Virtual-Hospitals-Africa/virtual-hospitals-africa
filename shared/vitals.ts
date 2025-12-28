@@ -5,6 +5,7 @@ import {
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../types.ts'
+import { type Decimal } from 'decimal'
 import compact from '../util/compact.ts'
 import entries from '../util/entries.ts'
 import { exists } from '../util/exists.ts'
@@ -127,7 +128,6 @@ export const ADULT_TEWS_COMPONENTS = [
 
 export type AdultTEWSComponent = (typeof ADULT_TEWS_COMPONENTS)[number]
 
-
 export const VITAL_MEASUREMENTS_UNITS = {
   height: 'cm',
   weight: 'kg',
@@ -229,7 +229,7 @@ export const ASESSMENTS_ORDERED = keys(ASESSMENT_OPTIONS)
 
 export function assessmentOptionSnomedConceptId(
   vital: VitalAssessment,
-  label: string
+  label: string,
 ) {
   return findMatching(ASESSMENT_OPTIONS[vital], { label }).snomed_concept_id
 }
@@ -321,16 +321,18 @@ export const MEASUREMENTS_ORDERED = keys(MEASUREMENT_RANGES.adult)
 export function getScoreForMeasurement(
   age_determination: AgeDetermination,
   vital: VitalMeasurement,
-  value: number,
+  value: Decimal,
 ): TEWSScore | null {
   const ranges = MEASUREMENT_RANGES[age_determination][vital]
   if (!ranges) return null
   for (const range of ranges) {
-    if (value < range.max) {
+    if (value.lessThan(range.max)) {
       return range.score
     }
   }
-  throw new Error(`Given ranges exist for ${vital}, we have to have a max. value: ${value}`)
+  throw new Error(
+    `Given ranges exist for ${vital}, we have to have a max. value: ${value}`,
+  )
 }
 
 export function getScoreForAssessment(
@@ -414,8 +416,10 @@ export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
   }
 }
 
-export function colorFromScoreComponent(score: number): ReferenceRangeX['color'] {
-switch (score) {
+export function colorFromScoreComponent(
+  score: number,
+): ReferenceRangeX['color'] {
+  switch (score) {
     case 0:
       return 'green'
     case 1:
@@ -432,7 +436,7 @@ switch (score) {
 export function buildReferenceRanges(
   snomed_concept_id: string,
   age_determination: AgeDetermination,
-  values_to_be_sure_to_include: NonEmptyArray<number>
+  values_to_be_sure_to_include: NonEmptyArray<number>,
 ): ReferenceRangeX[] | null {
   const vital = vitalFromSnomedConceptId(snomed_concept_id)
 
@@ -447,22 +451,36 @@ export function buildReferenceRanges(
   assert(raw_ranges.length >= 3)
   assertEquals(last(raw_ranges).max, Infinity)
 
-  const min_value_to_be_sure_to_include = Math.min(...values_to_be_sure_to_include)
-  const max_value_to_be_sure_to_include = Math.max(...values_to_be_sure_to_include)
+  const min_value_to_be_sure_to_include = Math.min(
+    ...values_to_be_sure_to_include,
+  )
+  const max_value_to_be_sure_to_include = Math.max(
+    ...values_to_be_sure_to_include,
+  )
 
   const distance_low = raw_ranges[1].max - raw_ranges[0].max
   const half_distance_low = distance_low / 2
   const first_min_base = raw_ranges[0].max - distance_low
-  const first_min = Math.floor(Math.min(min_value_to_be_sure_to_include - half_distance_low, first_min_base))
-  
+  const first_min = Math.floor(
+    Math.min(
+      min_value_to_be_sure_to_include - half_distance_low,
+      first_min_base,
+    ),
+  )
+
   const distance_high = raw_ranges.at(-2)!.max - raw_ranges.at(-3)!.max
   const half_distance_high = distance_high / 2
   const last_max_base = raw_ranges.at(-2)!.max + distance_high
-  const last_max = Math.ceil(Math.max(max_value_to_be_sure_to_include + half_distance_high, last_max_base))
+  const last_max = Math.ceil(
+    Math.max(
+      max_value_to_be_sure_to_include + half_distance_high,
+      last_max_base,
+    ),
+  )
 
   return raw_ranges.map((range, i) => ({
     low: i ? raw_ranges[i - 1].max : first_min,
     high: range.max === Infinity ? last_max : range.max,
-    color: colorFromScoreComponent(range.score)
+    color: colorFromScoreComponent(range.score),
   }))
 }

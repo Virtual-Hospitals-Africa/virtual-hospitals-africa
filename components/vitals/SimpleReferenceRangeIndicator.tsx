@@ -1,8 +1,8 @@
 import { Maybe, ReferenceRangeX } from '../../types.ts'
 
 export type SimpleReferenceRangeIndicatorProps = {
-  value: number
-  previous_value?: Maybe<number>
+  value: string
+  previous_value?: Maybe<string>
   units: string
   reference_ranges: ReferenceRangeX[]
 }
@@ -23,16 +23,16 @@ export function ReferenceRangeIndicator({
   const overall_max = reference_ranges[reference_ranges.length - 1].high
   const total_range = overall_max - overall_min
 
-  const get_position = (val: number) => {
+  function getPosition(val: string | number) {
     return Math.max(
       0,
-      Math.min(100, ((val - overall_min) / total_range) * 100),
+      Math.min(100, ((Number(val) - overall_min) / total_range) * 100),
     )
   }
 
-  const value_position = get_position(value)
+  const value_position = getPosition(value)
   const previous_position = previous_value != null
-    ? get_position(previous_value)
+    ? getPosition(previous_value)
     : null
 
   const padding_x = 16
@@ -67,8 +67,8 @@ export function ReferenceRangeIndicator({
         </defs>
         <g clipPath={`url(#rounded-bar-${value})`}>
           {reference_ranges.map((range, i) => {
-            const start_position = get_position(range.low)
-            const end_position = get_position(range.high)
+            const start_position = getPosition(range.low)
+            const end_position = getPosition(range.high)
             const width_percent = end_position - start_position
             return (
               <rect
@@ -150,7 +150,7 @@ export function ReferenceRangeIndicator({
         {green_range && (
           <>
             <text
-              x={padding_x + (get_position(green_range.low) / 100) * bar_width}
+              x={padding_x + (getPosition(green_range.low) / 100) * bar_width}
               y={bar_y + bar_height + 14}
               textAnchor='middle'
               fontSize='12'
@@ -161,7 +161,7 @@ export function ReferenceRangeIndicator({
             </text>
 
             <text
-              x={padding_x + (get_position(green_range.high) / 100) * bar_width}
+              x={padding_x + (getPosition(green_range.high) / 100) * bar_width}
               y={bar_y + bar_height + 14}
               textAnchor='middle'
               fontSize='12'

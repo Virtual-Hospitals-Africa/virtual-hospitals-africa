@@ -12,7 +12,7 @@ export function ScheduleRow({
   name: string
   value: Partial<MedicationSchedule>
   medication: DrugSearchResultMedication | undefined
-  strength_numerator: number | undefined
+  strength_numerator: string | undefined
   remove?: () => void
 }) {
   if (!remove) {

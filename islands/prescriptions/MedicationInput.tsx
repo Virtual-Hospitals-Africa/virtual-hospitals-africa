@@ -58,7 +58,7 @@ export function PrescriptionMedicationInput({
   }
 
   const [strength_numerator, setStrengthNumerator] = useState<
-    number | undefined
+    string | undefined
   >(value.strength_numerator)
 
   const [route, setRoute] = useState<string | undefined>(
@@ -175,14 +175,14 @@ export function PrescriptionMedicationInput({
           disabled={!medication}
           onChange={(event) =>
             event.currentTarget.value &&
-            setStrengthNumerator(Number(event.currentTarget.value))}
+            setStrengthNumerator(event.currentTarget.value)}
         >
           <option value=''>Select Strength</option>
           {medication &&
             strength_options?.map((strength_numerator_option) => (
               <option
-                value={strength_numerator_option}
-                selected={strength_numerator_option === strength_numerator}
+                value={strength_numerator_option.toString()}
+                selected={strength_numerator === strength_numerator_option}
               >
                 {strengthDisplay({
                   strength_numerator: strength_numerator_option,

@@ -3,7 +3,6 @@ import { TriageAssignPriorityTableVital } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
-import isString from '../../util/isString.ts'
 import capitalize from '../../util/capitalize.ts'
 
 export function TriageAssignPriorityTable({ vitals }: {
@@ -38,9 +37,11 @@ export function TriageAssignPriorityTable({ vitals }: {
       label: 'Previous',
       type: 'content',
       data: (row) => (
-        row.previous?.value != null && <div className='whitespace-nowrap text-sm text-gray-500'>
-          {row.previous?.value}
-        </div>
+        row.previous?.value != null && (
+          <div className='whitespace-nowrap text-sm text-gray-500'>
+            {row.previous?.value}
+          </div>
+        )
       ),
     },
     {
@@ -49,7 +50,7 @@ export function TriageAssignPriorityTable({ vitals }: {
       data: ({ current, previous, reference_ranges }) => {
         if (!reference_ranges) return null
         assert(
-          typeof current.value === 'number',
+          current.value !== null,
           `If there's a reference range there must be a value`,
         )
         assert(

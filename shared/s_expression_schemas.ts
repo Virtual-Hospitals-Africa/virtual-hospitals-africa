@@ -1,10 +1,11 @@
 import { z } from 'zod'
+import { type Decimal } from 'decimal'
 import * as validators from '../util/validators.ts'
 import compact from '../util/compact.ts'
 import partition from '../util/partition.ts'
 import isString from '../util/isString.ts'
-import { assert } from 'node:console'
 import { assertArrayEmpty } from '../util/arraySize.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type Node<Atom, Rest> = {
   atom: Atom
@@ -44,7 +45,7 @@ type BaseLang =
       snomed_concept_id: string
     }
     units: {
-      value: number
+      value: Decimal
       units: string
     }
     not: {
@@ -364,7 +365,7 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
 export const units: z.ZodType<Lang['units']> = z.lazy(() =>
   z.object({
     atom: z.literal('units'),
-    args: z.tuple([validators.positive_number, z.string()]),
+    args: z.tuple([validators.positive_decimal, z.string()]),
   }).transform(({ atom, args: [value, units] }) => ({
     atom,
     value,

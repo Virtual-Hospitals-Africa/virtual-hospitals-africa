@@ -23,7 +23,7 @@ export async function hydrateIntermediateRecords<
   Array<
     IntermediateRecord & {
       full_display: string
-      value_display: string
+      value_display: string | null
       provider: RenderedFindingProvider
     }
   >

@@ -52,6 +52,8 @@
     "npm:@tailwindcss/vite@4.1.12": "4.1.12_vite@7.1.3__picomatch@4.0.3",
     "npm:awesome-phonenumber@7.2.0": "7.2.0",
     "npm:cheerio@1.1.2": "1.1.2",
+    "npm:decimal.js-light@2.5.1": "2.5.1",
+    "npm:decimal@*": "0.0.2",
     "npm:esbuild-wasm@~0.25.11": "0.25.12",
     "npm:esbuild@0.25.7": "0.25.7",
     "npm:esbuild@~0.25.5": "0.25.12",
@@ -1402,6 +1404,12 @@
         "ms"
       ]
     },
+    "decimal.js-light@2.5.1": {
+      "integrity": "sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg=="
+    },
+    "decimal@0.0.2": {
+      "integrity": "sha512-puX1+D5GlpXYH0kDejnu8F2jsGLKRePc7eOznNjqMbA2otl7AzvubrvvZVmOvRCHhsqeAPKNcAxHHbevsH/1qg=="
+    },
     "define-data-property@1.1.4": {
       "integrity": "sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==",
       "dependencies": [
@@ -2563,6 +2571,7 @@
       "npm:@tailwindcss/vite@4.1.12",
       "npm:awesome-phonenumber@7.2.0",
       "npm:cheerio@1.1.2",
+      "npm:decimal.js-light@2.5.1",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
       "npm:kysely@0.28.8",

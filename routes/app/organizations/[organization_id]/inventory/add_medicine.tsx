@@ -10,7 +10,8 @@ import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { postHandler } from '../../../../../util/postHandler.ts'
 import z from 'zod'
 import {
-  positive_number,
+  positive_decimal,
+  positive_integer,
   string_or_number_as_string,
 } from '../../../../../util/validators.ts'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
@@ -18,11 +19,11 @@ import roleByProfession from '../../../../../shared/roleByProfession.ts'
 const AddMedicineSchema = z.object({
   manufactured_medication_id: z.string(),
   manufactured_medication: z.object({
-    strength: positive_number,
+    strength: positive_decimal.transform((d) => d.toFixed()),
   }),
-  quantity: positive_number,
-  container_size: positive_number,
-  number_of_containers: positive_number,
+  quantity: positive_integer,
+  container_size: positive_integer,
+  number_of_containers: positive_integer,
   procured_from_id: z.string().optional(),
   procured_from_name: z.string().optional(),
   expiry_date: z.string().date().optional(),
@@ -62,11 +63,14 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Add Medicine',
   async function MedicineAdd(
-    { url, state: { trx, organization } }: OrganizationContext,
+    { url: { searchParams }, state: { trx, organization } }:
+      OrganizationContext,
   ) {
-    const strength = parseInt(url.searchParams.get('strength')!) || undefined
+    const strength = searchParams.has('strength')
+      ? positive_decimal.parse(searchParams.get('strength')).toFixed()
+      : null
 
-    const manufactured_medication_id = url.searchParams.get(
+    const manufactured_medication_id = searchParams.get(
       'manufactured_medication_id',
     )
 

@@ -299,7 +299,7 @@
 //     )
 //     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
 //     assertEquals(preExistingCondition.medications.length, 1)
-//     assertEquals(preExistingCondition.medications[0].dosage, 2)
+//     assertEquals(preExistingCondition.medications[0].dosage, '2')
 //     assertEquals(
 //       preExistingCondition.medications[0].name,
 //       drug.generic_name,
@@ -553,7 +553,7 @@
 //     )
 //     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
 //     assertEquals(preExistingCondition.medications.length, 1)
-//     assertEquals(preExistingCondition.medications[0].dosage, 2)
+//     assertEquals(preExistingCondition.medications[0].dosage, '2')
 //     assertEquals(
 //       preExistingCondition.medications[0].name,
 //       drug.generic_name,
