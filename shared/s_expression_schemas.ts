@@ -1,10 +1,11 @@
 import { z } from 'zod'
+import { type Decimal } from '../util/decimal.ts'
 import * as validators from '../util/validators.ts'
 import compact from '../util/compact.ts'
 import partition from '../util/partition.ts'
 import isString from '../util/isString.ts'
-import { assert } from 'node:console'
 import { assertArrayEmpty } from '../util/arraySize.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type Node<Atom, Rest> = {
   atom: Atom
@@ -44,7 +45,7 @@ type BaseLang =
       snomed_concept_id: string
     }
     units: {
-      value: number
+      value: Decimal
       units: string
     }
     not: {
@@ -99,12 +100,12 @@ const required_snomed_concept_record_schema: z.ZodType<
         const nodes = compact(rest)
 
         if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-          assert(!isString(snomed_concept_id))
           nodes.unshift(value_snomed_concept_id)
           value_snomed_concept_id = null
         }
 
         if (snomed_concept_id && !isString(snomed_concept_id)) {
+          assert(!isString(value_snomed_concept_id))
           nodes.unshift(snomed_concept_id)
           snomed_concept_id = null
         }
@@ -218,19 +219,19 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
       const nodes = compact(rest)
 
       if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-        assert(!isString(finding_snomed_concept_id))
-        assert(!isString(snomed_concept_id))
         nodes.unshift(value_snomed_concept_id)
         value_snomed_concept_id = null
       }
 
       if (finding_snomed_concept_id && !isString(finding_snomed_concept_id)) {
-        assert(!isString(snomed_concept_id))
+        assert(!isString(value_snomed_concept_id))
         nodes.unshift(finding_snomed_concept_id)
         finding_snomed_concept_id = null
       }
 
       if (snomed_concept_id && !isString(snomed_concept_id)) {
+        assert(!isString(value_snomed_concept_id))
+        assert(!isString(finding_snomed_concept_id))
         nodes.unshift(snomed_concept_id)
         snomed_concept_id = null
       }
@@ -303,12 +304,12 @@ export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
       const nodes = compact(rest)
 
       if (value_snomed_concept_id && !isString(value_snomed_concept_id)) {
-        assert(!isString(snomed_concept_id))
         nodes.unshift(value_snomed_concept_id)
         value_snomed_concept_id = null
       }
 
       if (snomed_concept_id && !isString(snomed_concept_id)) {
+        assert(!isString(value_snomed_concept_id))
         nodes.unshift(snomed_concept_id)
         snomed_concept_id = null
       }
@@ -364,7 +365,7 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
 export const units: z.ZodType<Lang['units']> = z.lazy(() =>
   z.object({
     atom: z.literal('units'),
-    args: z.tuple([validators.positive_number, z.string()]),
+    args: z.tuple([validators.positive_decimal, z.string()]),
   }).transform(({ atom, args: [value, units] }) => ({
     atom,
     value,

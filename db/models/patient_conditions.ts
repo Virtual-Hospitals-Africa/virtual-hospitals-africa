@@ -24,6 +24,7 @@ import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { RegistrationFrequencies } from '../../shared/medication.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -114,16 +115,20 @@ async function upsertPreExistingCondition(
     condition: PreExistingConditionUpsert
   },
 ) {
+  const upsert = {
+    patient_id,
+    patient_examination_id,
+    condition_id: condition.id,
+    start_date: condition.start_date,
+    comorbidity_of_condition_id: null,
+  }
   const parent_condition = await trx
     .insertInto('patient_conditions')
-    .values({
-      patient_id,
-      patient_examination_id,
-      condition_id: condition.id,
-      start_date: condition.start_date,
-      comorbidity_of_condition_id: null,
-    })
+    .values(upsert)
     .returning('id')
+    .onConflict((oc) =>
+      oc.constraint('patient_condition_start_date').doUpdateSet(upsert)
+    )
     .executeTakeFirstOrThrow()
 
   const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
@@ -169,6 +174,7 @@ async function upsertPreExistingCondition(
   const inserting_medications = medications.length && trx
     .insertInto('patient_condition_medications')
     .values(medications)
+    // .onConflict(oc => oc.constraint('patient_condition_medications_patient_condition_id_fkey').doNothing())
     .execute()
 
   await Promise.all([inserting_comorbidities, inserting_medications])
@@ -357,66 +363,64 @@ export async function getPreExistingConditions(
     patient_id: string
   },
 ): Promise<PreExistingCondition[]> {
-  const getting_patient_conditions = await trx
-    .selectFrom('patient_conditions')
-    .innerJoin(
-      'conditions',
-      'conditions.id',
-      'patient_conditions.condition_id',
-    )
-    .where('conditions.is_procedure', '=', false)
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .where('patient_conditions.end_date', 'is', null)
-    .select((eb) => [
-      'conditions.id',
-      'conditions.name',
-      'patient_conditions.id as patient_condition_id',
-      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-      'patient_conditions.comorbidity_of_condition_id',
-    ])
-    .execute()
-
-  const getting_patient_medications = await trx
-    .selectFrom('patient_condition_medications')
-    .leftJoin(
-      'manufactured_medications',
-      'manufactured_medications.id',
-      'patient_condition_medications.manufactured_medication_id',
-    )
-    .innerJoin('medications', (join) =>
-      join.on(
-        'medications.id',
-        '=',
-        sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
-      ))
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .innerJoin(
-      'patient_conditions',
-      'patient_conditions.id',
-      'patient_condition_medications.patient_condition_id',
-    )
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .select((eb) => [
-      'drugs.id',
-      'medications.id as medication_id',
-      'patient_condition_medications.manufactured_medication_id',
-      'patient_condition_medications.id as patient_condition_medication_id',
-      'patient_condition_medications.patient_condition_id',
-      'patient_condition_medications.strength',
-      'patient_condition_medications.route',
-      'patient_condition_medications.special_instructions',
-      sql<
-        MedicationSchedule[]
-      >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-      'drugs.generic_name as name',
-      isoDate(eb.ref('patient_condition_medications.start_date')).as(
-        'start_date',
-      ),
-    ])
-    .execute()
-
-  const patient_conditions = await getting_patient_conditions
-  const patient_medications = await getting_patient_medications
+  const { patient_conditions, patient_medications } = await promiseProps({
+    patient_conditions: trx
+      .selectFrom('patient_conditions')
+      .innerJoin(
+        'conditions',
+        'conditions.id',
+        'patient_conditions.condition_id',
+      )
+      .where('conditions.is_procedure', '=', false)
+      .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .where('patient_conditions.end_date', 'is', null)
+      .select((eb) => [
+        'conditions.id',
+        'conditions.name',
+        'patient_conditions.id as patient_condition_id',
+        isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+        'patient_conditions.comorbidity_of_condition_id',
+      ])
+      .execute(),
+    patient_medications: trx
+      .selectFrom('patient_condition_medications')
+      .leftJoin(
+        'manufactured_medications',
+        'manufactured_medications.id',
+        'patient_condition_medications.manufactured_medication_id',
+      )
+      .innerJoin('medications', (join) =>
+        join.on(
+          'medications.id',
+          '=',
+          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
+        ))
+      .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+      .innerJoin(
+        'patient_conditions',
+        'patient_conditions.id',
+        'patient_condition_medications.patient_condition_id',
+      )
+      .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .select((eb) => [
+        'drugs.id',
+        'medications.id as medication_id',
+        'patient_condition_medications.manufactured_medication_id',
+        'patient_condition_medications.id as patient_condition_medication_id',
+        'patient_condition_medications.patient_condition_id',
+        'patient_condition_medications.strength',
+        'patient_condition_medications.route',
+        'patient_condition_medications.special_instructions',
+        sql<
+          MedicationSchedule[]
+        >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
+        'drugs.generic_name as name',
+        isoDate(eb.ref('patient_condition_medications.start_date')).as(
+          'start_date',
+        ),
+      ])
+      .execute(),
+  })
 
   return patient_conditions
     .filter((condition) => !condition.comorbidity_of_condition_id)
@@ -454,7 +458,7 @@ export async function getPreExistingConditions(
               schedule,
             ),
             dosage: schedule.dosage,
-            strength: Number(medication.strength),
+            strength: medication.strength,
           }
         }),
     }))

@@ -1,12 +1,13 @@
 import { type SelectQueryBuilder, sql } from 'kysely'
 import { DrugSearchResult, TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { asText, asTextArray, jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
 import {
-  collectSortedUniqNumbers,
+  collectSortedUniqDecimals,
   collectSortedUniqStrings,
 } from '../../util/collectSorted.ts'
 import { base } from './_base.ts'
+import { positive_decimal } from '../../util/validators.ts'
 
 // TODO: revisit this in light of _country_ recalling certain drugs
 function baseQuery(opts: { include_recalled: boolean }) {
@@ -23,7 +24,9 @@ function baseQuery(opts: { include_recalled: boolean }) {
             'medications.form_route',
             'medications.routes',
             'medications.strength_numerator_unit',
-            'medications.strength_denominator',
+            asText(eb_medications, 'medications.strength_denominator').as(
+              'strength_denominator',
+            ),
             'medications.strength_denominator_unit',
             'medications.strength_denominator_is_units',
             jsonArrayFrom(
@@ -34,12 +37,15 @@ function baseQuery(opts: { include_recalled: boolean }) {
                   'manufactured_medication_recalls.manufactured_medication_id',
                   'manufactured_medications.id',
                 )
-                .select([
+                .select((eb_mm) => [
                   'manufactured_medications.id as manufactured_medication_id',
-                  'manufactured_medications.strength_numerators',
                   'manufactured_medications.trade_name',
                   'manufactured_medications.applicant_name',
                   'manufactured_medication_recalls.recalled_at',
+                  asTextArray(
+                    eb_mm,
+                    'manufactured_medications.strength_numerators',
+                  ).as('strength_numerators'),
                 ])
                 .whereRef(
                   'manufactured_medications.medication_id',
@@ -100,7 +106,7 @@ function* distinctTradeNames(medications: BaseQueryReturn['medications']) {
 function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
   for (const manufacturer of medication.manufacturers) {
     for (const strength_numerator of manufacturer.strength_numerators) {
-      yield strength_numerator
+      yield positive_decimal.parse(strength_numerator)
     }
   }
 }
@@ -129,6 +135,7 @@ const model = base({
   top_level_table: 'drugs',
   baseQuery: baseQuery({ include_recalled: false }),
   formatResult({ medications, ...rest }): DrugSearchResult {
+    console.log({ medications, ...rest })
     return {
       all_recalled: medications.every((m) =>
         m.manufacturers.every((m) => m.recalled_at)
@@ -137,14 +144,12 @@ const model = base({
         distinctTradeNames(medications),
       ),
       medications: medications.map((m) => {
-        const strength_numerators = collectSortedUniqNumbers(
+        const strength_numerators = collectSortedUniqDecimals(
           strengthNumerators(m),
-        )
+        ).map((d) => d.toFixed())
         return {
           ...m,
           strength_numerators,
-          // TODO: do the float parsing in SQL?
-          strength_denominator: parseFloat(m.strength_denominator),
           strength_summary: formStrengthDisplay(
             strength_numerators.join(', '),
             m.strength_numerator_unit,

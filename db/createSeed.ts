@@ -24,7 +24,7 @@ function asPrefix(int: number) {
 function orderOf(file: string) {
   assert(file.endsWith('.ts'))
   const numeric = file.slice(0, seed_integer_prefix_length)
-  const int = parseFloat(numeric)
+  const int = parseInt(numeric)
   assertIsInteger(int)
   return int
 }

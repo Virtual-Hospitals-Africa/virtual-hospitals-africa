@@ -340,8 +340,8 @@ export type PreExistingCondition = MedicalConditionBase & {
     medication_id: string
     manufactured_medication_id: string | null
     patient_condition_medication_id: string
-    strength: number
-    dosage: number
+    strength: string
+    dosage: string
     route: string
     special_instructions?: Maybe<string>
     registration_frequency: string
@@ -356,9 +356,9 @@ export type PatientConditionMedication = {
   drug: DrugSearchResult
   manufactured_medication_id: string | null
   medication_id: string | null
-  strength: number
+  strength: string
   route: string
-  dosage: number
+  dosage: string
   registration_frequency: string
   name: string
   start_date: string
@@ -1188,7 +1188,7 @@ export type OrganizationDevice = {
 
 export type OrganizationConsumableMedicineSpecefics = {
   medications_id?: string
-  strength: number
+  strength: string
 }
 
 export type RenderedDevice = {
@@ -1327,7 +1327,7 @@ export type RenderedInventoryHistory =
   | RenderedInventoryHistoryExpiry
 
 export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
-  strength: number
+  strength: string
   quantity: number
   container_size: number
   number_of_containers: number
@@ -1901,7 +1901,7 @@ export type ManufacturedMedication = {
 export type PatientMedication =
   & {
     patient_condition_id: string
-    strength: number
+    strength: string
     start_date: string
     schedules: MedicationSchedule[]
     route: string
@@ -1915,9 +1915,9 @@ export type PatientMedication =
 export type MedicationDetails = {
   form: string
   route: string
-  strength_numerator: number
+  strength_numerator: string
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
 }
@@ -1953,7 +1953,7 @@ export type DefiniteDuration = {
 }
 
 export type MedicationSchedule = Duration & {
-  dosage: number
+  dosage: string
   frequency: string
 }
 
@@ -1963,14 +1963,14 @@ export type DrugSearchResultMedication = {
   form_route: string
   strength_summary: string
   routes: string[]
-  strength_numerators: number[]
+  strength_numerators: string[]
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   manufacturers: {
     manufactured_medication_id: string
-    strength_numerators: number[]
+    strength_numerators: string[]
     applicant_name: string
     trade_name: string
   }[]
@@ -2444,8 +2444,8 @@ export type RenderedPatientEncounterExamination = {
 
 export type PatientMedicationUpsert = {
   id?: Maybe<string>
-  dosage: number
-  strength: number
+  dosage: string
+  strength: string
   registration_frequency: string
   route: string
   start_date?: Maybe<string>
@@ -3058,9 +3058,9 @@ export type RenderedManufacturedMedication = {
   applicant_name: string
   form: string
   strength_summary: string
-  strength_numerators: number[]
+  strength_numerators: string[]
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   actions: {
@@ -3468,7 +3468,7 @@ export type RenderedFindingRelativeToHealthWorker = {
 export type RenderedVitalRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
-    value: number | null
+    value: string | null
     units: string | null
   }
 
@@ -3567,10 +3567,10 @@ export type ReferenceRange = {
 }
 
 export type ReferenceRangeX = {
-    low: number
-    high: number
-    color: 'green' | 'yellow' | 'orange' | 'red'
-  }
+  low: number
+  high: number
+  color: 'green' | 'yellow' | 'orange' | 'red'
+}
 
 export type TriageAssignPriorityTableVital = {
   current: RenderedVitalRelativeToHealthWorker

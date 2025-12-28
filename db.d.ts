@@ -724,7 +724,7 @@ export interface ManufacturedMedications {
   id: Generated<string>
   manufacturer_name: string
   medication_id: string
-  strength_numerators: number[]
+  strength_numerators: ArrayType<Numeric>
   trade_name: string
   updated_at: Generated<Timestamp>
 }
@@ -734,7 +734,7 @@ export interface ManufacturedMedicationStrengths {
   created_at: Generated<Timestamp>
   id: Generated<string>
   manufactured_medication_id: string
-  strength_numerator: number
+  strength_numerator: Numeric
   updated_at: Generated<Timestamp>
 }
 
@@ -801,7 +801,7 @@ export interface Medications {
   strength_denominator_is_units: Generated<boolean>
   strength_denominator_unit: string
   strength_numerator_unit: string
-  strength_numerators: number[]
+  strength_numerators: ArrayType<Numeric>
   updated_at: Generated<Timestamp>
 }
 

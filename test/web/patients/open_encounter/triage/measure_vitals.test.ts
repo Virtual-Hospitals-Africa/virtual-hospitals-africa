@@ -435,7 +435,8 @@ describe('triage/measure_vitals', () => {
         'value_name': null,
         'finding_snomed_concept_id': '86290005',
         'finding_name': 'Respiratory rate',
-        'value_display': '12 bpm',
+        'finding_display': 'Respiratory rate',
+        'value_display': `12\u00A0bpm`,
         'destination_relations': [],
         'source_relations': [],
         'as_part_of_procedure': {
@@ -448,7 +449,7 @@ describe('triage/measure_vitals', () => {
         'qualifiers': [],
         'value': '12',
         'units': 'bpm',
-        'full_display': 'Respiratory rate: 12 bpm',
+        'full_display': `Respiratory rate: 12\u00A0bpm`,
       }, { strict: true })
 
       const component_scores = await patient_evaluation_scores.findAll(

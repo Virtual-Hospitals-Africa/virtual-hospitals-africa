@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
 import generateUUID from './uuid.ts'
+import { Decimal } from './decimal.ts'
 
 export const zimbabwe_national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
@@ -36,10 +37,10 @@ export const sex = z.enum(['male', 'female', 'other', 'prefer not to say'])
 
 export const varchar255 = z.string().min(1).max(255)
 
-export const positive_number = z.number().or(z.string())
-  .transform((n) => isNumber(n) ? n : parseFloat(n))
-  .refine((n) => isNumber(n) && n > 0, {
-    message: 'Expected a positive number',
+export const positive_decimal = z.number().or(z.string())
+  .transform((n) => new Decimal(n))
+  .refine((n) => n.greaterThan(0), {
+    message: 'Expected a positive decimal number',
   })
 
 export const positive_integer = z.number().or(

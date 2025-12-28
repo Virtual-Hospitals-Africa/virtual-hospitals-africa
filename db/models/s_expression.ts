@@ -16,7 +16,7 @@ import {
   ParsedExpressionOf,
   parseExpression,
 } from '../../shared/s_expression.ts'
-import { debugLog, deduplicate } from '../helpers.ts'
+import { deduplicate } from '../helpers.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -195,9 +195,6 @@ const EXPRESSION_BUILDERS = {
           not_findings: [],
         }),
       )
-    }
-    if (not_findings.length) {
-      debugLog(query)
     }
 
     return query

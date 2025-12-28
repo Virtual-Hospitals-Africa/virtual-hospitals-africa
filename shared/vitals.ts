@@ -5,6 +5,7 @@ import {
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../types.ts'
+import { Decimal } from '../util/decimal.ts'
 import compact from '../util/compact.ts'
 import entries from '../util/entries.ts'
 import { exists } from '../util/exists.ts'
@@ -14,9 +15,11 @@ import keys from '../util/keys.ts'
 import memoize from '../util/memoize.ts'
 import { TriageLevel } from './priorities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertArrayNonEmpty } from '../util/arraySize.ts'
+import { arrayIsEmpty, assertArrayNonEmpty } from '../util/arraySize.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
+import { positive_decimal } from '../util/validators.ts'
+import { collectSortedUniqDecimals } from '../util/collectSorted.ts'
 
 export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
 
@@ -67,7 +70,7 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
       }
     }
     throw new Error(
-      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+      `No vital measurement found for snomed_concept_id: ${snomed_concept_id}`,
     )
   },
 )
@@ -82,7 +85,7 @@ export const vitalAssessmentFromSnomedConceptId = memoize(
       }
     }
     throw new Error(
-      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
+      `No vital assessment found for snomed_concept_id: ${snomed_concept_id}`,
     )
   },
 )
@@ -126,7 +129,6 @@ export const ADULT_TEWS_COMPONENTS = [
 ] satisfies Vital[]
 
 export type AdultTEWSComponent = (typeof ADULT_TEWS_COMPONENTS)[number]
-
 
 export const VITAL_MEASUREMENTS_UNITS = {
   height: 'cm',
@@ -229,7 +231,7 @@ export const ASESSMENTS_ORDERED = keys(ASESSMENT_OPTIONS)
 
 export function assessmentOptionSnomedConceptId(
   vital: VitalAssessment,
-  label: string
+  label: string,
 ) {
   return findMatching(ASESSMENT_OPTIONS[vital], { label }).snomed_concept_id
 }
@@ -321,16 +323,18 @@ export const MEASUREMENTS_ORDERED = keys(MEASUREMENT_RANGES.adult)
 export function getScoreForMeasurement(
   age_determination: AgeDetermination,
   vital: VitalMeasurement,
-  value: number,
+  value: Decimal,
 ): TEWSScore | null {
   const ranges = MEASUREMENT_RANGES[age_determination][vital]
   if (!ranges) return null
   for (const range of ranges) {
-    if (value < range.max) {
+    if (range.max === Infinity || value.lessThan(range.max)) {
       return range.score
     }
   }
-  throw new Error(`Given ranges exist for ${vital}, we have to have a max. value: ${value}`)
+  throw new Error(
+    `Given ranges exist for ${vital}, we have to have a max. value: ${value}`,
+  )
 }
 
 export function getScoreForAssessment(
@@ -414,8 +418,10 @@ export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
   }
 }
 
-export function colorFromScoreComponent(score: number): ReferenceRangeX['color'] {
-switch (score) {
+export function colorFromScoreComponent(
+  score: number,
+): ReferenceRangeX['color'] {
+  switch (score) {
     case 0:
       return 'green'
     case 1:
@@ -432,37 +438,63 @@ switch (score) {
 export function buildReferenceRanges(
   snomed_concept_id: string,
   age_determination: AgeDetermination,
-  values_to_be_sure_to_include: NonEmptyArray<number>
+  values_to_be_sure_to_include: string[],
 ): ReferenceRangeX[] | null {
-  const vital = vitalFromSnomedConceptId(snomed_concept_id)
+  if (arrayIsEmpty(values_to_be_sure_to_include)) {
+    return null
+  }
 
+  const vital = vitalFromSnomedConceptId(snomed_concept_id)
   if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)) {
     return null
   }
 
-  const raw_ranges = MEASUREMENT_RANGES[age_determination][vital]
-  if (!raw_ranges) return null
+  const decimal_values = collectSortedUniqDecimals(
+    values_to_be_sure_to_include.map((v) => positive_decimal.parse(v)),
+  )
 
-  assertArrayNonEmpty(raw_ranges)
-  assert(raw_ranges.length >= 3)
-  assertEquals(last(raw_ranges).max, Infinity)
+  const ranges = MEASUREMENT_RANGES[age_determination][vital]
+  if (!ranges) return null
 
-  const min_value_to_be_sure_to_include = Math.min(...values_to_be_sure_to_include)
-  const max_value_to_be_sure_to_include = Math.max(...values_to_be_sure_to_include)
+  assertArrayNonEmpty(ranges)
+  assert(ranges.length >= 3)
+  assertEquals(last(ranges).max, Infinity)
 
-  const distance_low = raw_ranges[1].max - raw_ranges[0].max
-  const half_distance_low = distance_low / 2
-  const first_min_base = raw_ranges[0].max - distance_low
-  const first_min = Math.floor(Math.min(min_value_to_be_sure_to_include - half_distance_low, first_min_base))
-  
-  const distance_high = raw_ranges.at(-2)!.max - raw_ranges.at(-3)!.max
-  const half_distance_high = distance_high / 2
-  const last_max_base = raw_ranges.at(-2)!.max + distance_high
-  const last_max = Math.ceil(Math.max(max_value_to_be_sure_to_include + half_distance_high, last_max_base))
+  const min_value_to_be_sure_to_include = decimal_values[0]
+  const max_value_to_be_sure_to_include = exists(last(decimal_values))
 
-  return raw_ranges.map((range, i) => ({
-    low: i ? raw_ranges[i - 1].max : first_min,
-    high: range.max === Infinity ? last_max : range.max,
-    color: colorFromScoreComponent(range.score)
+  // For the lowest fixed range, find the interval
+  const interval_low = ranges[1].max - ranges[0].max
+  // For the half-open low range one possible value is that interval distance below
+  const low_range_base = Math.floor(ranges[0].max - interval_low)
+  // We want to include the lowest observed value with some padding.
+  const lowest_observed_minus_padding = Number(
+    min_value_to_be_sure_to_include
+      .minus(interval_low / 2)
+      .toDecimalPlaces(0, Decimal.ROUND_FLOOR),
+  )
+  // Take whichever is lower
+  const low_range_min = Math.min(
+    low_range_base,
+    lowest_observed_minus_padding,
+  )
+
+  // Do the same on the high end
+  const interval_high = ranges.at(-2)!.max - ranges.at(-3)!.max
+  const high_range_base = Math.ceil(ranges.at(-2)!.max + interval_high)
+  const highest_observed_plus_padding = Number(
+    max_value_to_be_sure_to_include
+      .plus(interval_high / 2)
+      .toDecimalPlaces(0, Decimal.ROUND_CEIL),
+  )
+  const high_range_max = Math.max(
+    high_range_base,
+    highest_observed_plus_padding,
+  )
+
+  return ranges.map((range, i) => ({
+    low: i ? ranges[i - 1].max : low_range_min,
+    high: range.max === Infinity ? high_range_max : range.max,
+    color: colorFromScoreComponent(range.score),
   }))
 }

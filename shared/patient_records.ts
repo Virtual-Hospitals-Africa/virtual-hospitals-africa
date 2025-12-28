@@ -21,7 +21,7 @@ function measurementValueDisplay(
     case '%':
       return `${value}${units}`
     default:
-      return `${value} ${units}`
+      return `${value} ${units}`
   }
 }
 
@@ -64,8 +64,8 @@ export function buildValueDisplay(
   if (!value_name) {
     return {
       finding_display,
-      full_display: finding_display, 
-      value_display: null
+      full_display: finding_display,
+      value_display: null,
     }
   }
 

@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
-import { debugLog, jsonObjectFrom } from '../helpers.ts'
+import { jsonObjectFrom } from '../helpers.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -19,7 +19,6 @@ import { buildValueDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
-import isString from '../../util/isString.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -168,15 +167,11 @@ export const patient_vitals = base({
         ).$notNull().as('provider'),
       ])
 
-    debugLog(query)
-
     const findings = await query.execute()
 
     return findings.map((finding) => ({
       ...finding,
       ...buildValueDisplay(finding),
-      // TODO are we losing precision here for decimals?
-      value: isString(finding.value) ? parseFloat(finding.value) : finding.value
     }))
   },
 })

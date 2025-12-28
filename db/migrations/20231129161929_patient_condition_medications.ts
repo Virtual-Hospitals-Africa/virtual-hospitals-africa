@@ -21,8 +21,10 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await sql`
+    CREATE DOMAIN decimal_text AS text CHECK (VALUE ~ '^[0-9]+(\.[0-9]+)?$');
+
     CREATE TYPE medication_schedule AS (
-      dosage numeric,
+      dosage decimal_text,
       frequency registration_frequency,
       duration integer,
       duration_unit duration_units
@@ -50,7 +52,7 @@ export async function up(db: Kysely<DB>) {
           (col) =>
             col.references('manufactured_medications.id').onDelete('cascade'),
         )
-        .addColumn('strength', 'numeric', (col) => col.notNull())
+        .addColumn('strength', 'decimal', (col) => col.notNull())
         .addColumn('route', 'varchar(255)', (col) => col.notNull())
         .addColumn('special_instructions', 'text')
         .addColumn('start_date', 'date')
@@ -75,6 +77,7 @@ export async function up(db: Kysely<DB>) {
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_condition_medications').execute()
   await db.schema.dropType('medication_schedule').execute()
+  await sql`DROP DOMAIN decimal_text`.execute(db)
   await db.schema.dropType('duration_units').execute()
   await db.schema.dropType('registration_frequency').execute()
 }

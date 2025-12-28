@@ -11,7 +11,10 @@ import {
   HistoryContext,
   HistoryPage,
 } from './_middleware.tsx'
-import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
+import {
+  positive_decimal,
+  snomed_concept_id,
+} from '../../../../../../../../../util/validators.ts'
 
 export const ConditionsSchema = z.object({
   allergies: z.array(
@@ -37,9 +40,9 @@ export const ConditionsSchema = z.object({
           name: z.string().optional(),
           medication_id: z.string().uuid().optional(),
           manufactured_medication_id: z.string().optional(),
-          strength: z.number(),
           route: z.string(),
-          dosage: z.number(),
+          strength: positive_decimal.transform((d) => d.toFixed()),
+          dosage: positive_decimal.transform((d) => d.toFixed()),
           registration_frequency: z.string(),
           start_date: z.string().date(),
           end_date: z.string().date().optional(),

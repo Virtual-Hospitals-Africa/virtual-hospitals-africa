@@ -63,7 +63,7 @@ function baseSelect(trx: TrxOrDb) {
     .orderBy('drugs.generic_name', 'asc')
 }
 
-export async function getByPrescriptionId(
+export function getByPrescriptionId(
   trx: TrxOrDb,
   prescription_id: string,
   options?: {
@@ -90,38 +90,16 @@ export async function getByPrescriptionId(
     )
   }
 
-  const patient_medications = await query.execute()
-
-  return patient_medications.map(massageStrengths)
+  return query.execute()
 }
 
-function massageStrengths(
-  medication:
-    & Omit<
-      PrescriptionMedication,
-      'strength_numerator' | 'strength_denominator'
-    >
-    & {
-      strength_numerator: string
-      strength_denominator: string
-    },
-) {
-  return {
-    ...medication,
-    strength_numerator: Number(medication.strength_numerator),
-    strength_denominator: Number(medication.strength_denominator),
-  }
-}
-
-export async function getById(
+export function getById(
   trx: TrxOrDb,
   prescription_medication_id: string,
 ): Promise<PrescriptionMedication> {
-  return massageStrengths(
-    await baseSelect(trx)
-      .where('prescription_medications.id', '=', prescription_medication_id)
-      .executeTakeFirstOrThrow(),
-  )
+  return baseSelect(trx)
+    .where('prescription_medications.id', '=', prescription_medication_id)
+    .executeTakeFirstOrThrow()
 }
 
 export function fill(

@@ -70,6 +70,7 @@
     "awesome-phonenumber": "npm:awesome-phonenumber@7.2.0",
     "cheerio": "npm:cheerio@1.1.2",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
+    "decimal": "npm:decimal.js-light@2.5.1",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
     "kysely": "npm:kysely@0.28.8",

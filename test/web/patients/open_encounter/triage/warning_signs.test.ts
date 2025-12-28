@@ -22,8 +22,8 @@ import { assert } from 'std/assert/assert.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
-import { debugLog } from '../../../../../db/helpers.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
+import entries from '../../../../../util/entries.ts'
 
 describe('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -621,10 +621,6 @@ describe('triage/warning_signs', () => {
         },
       )
 
-      debugLog(patient_findings
-        .searchQuery(db, {
-          patient_id: initial_encounter.patient.id,
-        }))
       const findings_count_after_first_insertion = await patient_findings
         .findAll(db, {
           patient_id: initial_encounter.patient.id,
@@ -756,14 +752,16 @@ describe('triage/warning_signs', () => {
       })
     }
 
-    // for (const [key, sign] of entries(WARNING_SIGNS)) {
-    //   const pregnant = [
-    //     'Pregnancy and abdominal pain',
-    //     'Pregnancy and abdominal trauma',
-    //   ].includes(key)
+    for (const [key, sign] of entries(WARNING_SIGNS)) {
+      const pregnant = [
+        'Pregnancy and abdominal pain',
+        'Pregnancy and abdominal trauma',
+      ].includes(key)
 
-    //   testRoundTrip(key, sign, pregnant)
-    // }
-    testRoundTrip('Burn Other', WARNING_SIGNS['Burn Other'], false)
+      testRoundTrip(key, sign, pregnant)
+    }
+
+    // When you just want to test one. This is a good test to exercise s_expression
+    // testRoundTrip('Burn Other', WARNING_SIGNS['Burn Other'], false)
   })
 })

@@ -10,6 +10,7 @@ import { parseRequest } from '../../../../../util/parseForm.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { z } from 'zod'
+import { positive_decimal } from '../../../../../util/validators.ts'
 
 const PrescriptionsSchema = z.object({
   prescriptions: z.record(
@@ -17,10 +18,10 @@ const PrescriptionsSchema = z.object({
     z.object({
       patient_condition_id: z.string().uuid(),
       route: z.string(),
-      strength: z.number(),
+      strength: positive_decimal.transform((d) => d.toFixed()),
       special_instructions: z.string().optional(),
       schedules: z.object({
-        dosage: z.number(),
+        dosage: positive_decimal.transform((d) => d.toFixed()),
         frequency: z.enum([
           'ac',
           'am',

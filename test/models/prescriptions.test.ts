@@ -88,7 +88,7 @@ describe('db/models/prescriptions.ts', () => {
             '=',
             'TABLET',
           )
-          .orderBy('drugs.generic_name desc')
+          .orderBy('drugs.generic_name', 'desc')
           .executeTakeFirstOrThrow()
 
         const result = await prescriptions.upsert(trx, {
@@ -103,7 +103,7 @@ describe('db/models/prescriptions.ts', () => {
               strength: tablet.strength_numerators[0],
               route: tablet.routes[0],
               schedules: [{
-                dosage: 1,
+                dosage: '1',
                 frequency: 'qw',
                 duration: 1,
                 duration_unit: 'years',
@@ -136,7 +136,7 @@ describe('db/models/prescriptions.ts', () => {
           .executeTakeFirstOrThrow()
 
         assertEquals(patient_medication.schedules, [{
-          dosage: 1,
+          dosage: '1',
           duration: 1,
           duration_unit: 'years',
           frequency: 'qw',

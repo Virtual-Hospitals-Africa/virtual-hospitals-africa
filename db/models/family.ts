@@ -76,7 +76,7 @@ async function getGuardiansOfPatient(
         .end()
         .as('family_relation_sexed'),
     ])
-    .orderBy('family_relation_sexed desc')
+    .orderBy('family_relation_sexed', 'desc')
     .execute()
 
   assert(allHaveStringField(guardians, 'patient_name'))

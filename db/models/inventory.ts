@@ -302,7 +302,7 @@ export function getLatestProcurement(
   { organization_id, manufactured_medication_id, strength }: {
     organization_id: string
     manufactured_medication_id: string
-    strength?: number
+    strength: string | null
   },
 ): Promise<MedicationProcurement | undefined> {
   let query = procurementQuery(trx, { organization_id })
@@ -376,7 +376,7 @@ export async function addOrganizationMedicine(
     quantity: number
     number_of_containers: number
     container_size: number
-    strength: number
+    strength: string
     expiry_date?: string
     batch_number?: string
   },

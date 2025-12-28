@@ -8,7 +8,7 @@ import {
 import { z } from 'zod'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { positive_number } from '../../../../../../../../util/validators.ts'
+import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../../../../../../../shared/vitals.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
@@ -22,7 +22,7 @@ const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
     z.enum(['height', 'weight']),
     z.object({
-      value: positive_number,
+      value: positive_decimal,
       units: z.string().min(1),
     }).strict(),
   ).transform((measurements) =>

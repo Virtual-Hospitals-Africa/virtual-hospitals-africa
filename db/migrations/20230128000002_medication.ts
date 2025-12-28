@@ -24,7 +24,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
       .addColumn(
         'strength_numerators',
-        sql`real[]`,
+        sql`decimal[]`,
         (col) => col.notNull(),
       )
       .addColumn(
@@ -32,7 +32,7 @@ export async function up(db: Kysely<DB>) {
         'varchar(255)',
         (col) => col.notNull(),
       )
-      .addColumn('strength_denominator', 'numeric', (col) => col.notNull())
+      .addColumn('strength_denominator', 'decimal', (col) => col.notNull())
       .addColumn(
         'strength_denominator_unit',
         'varchar(255)',
@@ -82,7 +82,11 @@ export async function up(db: Kysely<DB>) {
           (col) =>
             col.notNull().references('medications.id').onDelete('cascade'),
         )
-        .addColumn('strength_numerators', sql`real[]`, (col) => col.notNull()),
+        .addColumn(
+          'strength_numerators',
+          sql`decimal[]`,
+          (col) => col.notNull(),
+        ),
   )
 
   await createStandardTable(
@@ -92,7 +96,7 @@ export async function up(db: Kysely<DB>) {
       qb
         .addColumn(
           'strength_numerator',
-          sql`real`,
+          'decimal',
           (col) => col.notNull(),
         )
         .addColumn(

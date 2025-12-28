@@ -1,5 +1,4 @@
 import { computed, effect, useSignal } from '@preact/signals'
-
 import { Maybe, RenderedManufacturedMedication } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import ManufacturedMedicationSearch from './Search.tsx'
@@ -14,7 +13,7 @@ export default function ManufacturedMedicationInput(props: {
   name: string
   manufactured_medication: null | RenderedManufacturedMedication
   last_procurement?: Maybe<{
-    strength: number
+    strength: string
     quantity: number
     container_size: number
     number_of_containers: number
@@ -27,7 +26,10 @@ export default function ManufacturedMedicationInput(props: {
   today: string
 }) {
   const manufactured_medication = useSignal(props.manufactured_medication)
-  const strength = useSignal(props.last_procurement?.strength ?? null)
+  const strength = useSignal<string | null>(
+    props.last_procurement?.strength ??
+      null,
+  )
   const container_size = useSignal(props.last_procurement?.container_size ?? 0)
   const number_of_containers = useSignal(
     props.last_procurement?.number_of_containers ?? 0,
@@ -77,7 +79,7 @@ export default function ManufacturedMedicationInput(props: {
           disabled={!manufactured_medication.value}
           onChange={(event) => {
             if (event.currentTarget.value) {
-              strength.value = Number(event.currentTarget.value)
+              strength.value = event.currentTarget.value
             }
           }}
         >
@@ -86,13 +88,13 @@ export default function ManufacturedMedicationInput(props: {
             numerator,
           ) => (
             <option
-              value={numerator}
+              value={numerator.toString()}
               selected={strength.value === numerator}
             >
-              {numerator}
+              {numerator.toString()}
               {manufactured_medication.value!
                 .strength_numerator_unit}/{manufactured_medication.value!
-                  .strength_denominator === 1
+                  .strength_denominator === '1'
                 ? ''
                 : manufactured_medication.value!.strength_denominator}
               {manufactured_medication.value!.strength_denominator_unit}

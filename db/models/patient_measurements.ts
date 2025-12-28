@@ -4,12 +4,7 @@ import {
   TrxOrDb,
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
-import {
-  debugLog,
-  jsonObjectFrom,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -145,8 +140,8 @@ export const patient_measurements = base({
           qb.insertInto('patient_measurements')
             .values({
               id: measurement_id,
-              value: units.value,
               units: units.units,
+              value: units.value.toFixed(),
             }),
       )
       .selectNoFrom([
@@ -246,12 +241,7 @@ export const patient_measurements = base({
         ).$notNull().as('provider'),
       ])
 
-    debugLog(query)
-
     const findings = await query.execute()
-
-    console.log({ z: 'welkwlekklewlkew', findings })
-
     return findings.map((finding) => ({
       ...finding,
       ...buildValueDisplay(finding),

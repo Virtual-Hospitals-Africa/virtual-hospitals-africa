@@ -1,18 +1,20 @@
-export function collect<T>(generator: Generator<T, void, unknown>): T[] {
+import { type Decimal } from '../util/decimal.ts'
+
+export function collect<T>(iterable: Iterable<T, void, unknown>): T[] {
   const array: T[] = []
-  for (const item of generator) {
+  for (const item of iterable) {
     array.push(item)
   }
   return array
 }
 
 export function collectSorted<T>(
-  generator: Generator<T, void, unknown>,
+  iterable: Iterable<T, void, unknown>,
   compareFn: (a: T, b: T) => number,
 ): T[] {
   const sorted_array: T[] = []
 
-  for (const item of generator) {
+  for (const item of iterable) {
     // Find the correct index to insert the item using binary search
     let left = 0
     let right = sorted_array.length
@@ -34,24 +36,24 @@ export function collectSorted<T>(
 }
 
 export function collectSortedNumbers(
-  generator: Generator<number, void, unknown>,
+  iterable: Iterable<number, void, unknown>,
 ): number[] {
-  return collectSorted(generator, (a, b) => a - b)
+  return collectSorted(iterable, (a, b) => a - b)
 }
 
 export function collectSortedStrings(
-  generator: Generator<string, void, unknown>,
+  iterable: Iterable<string, void, unknown>,
 ): string[] {
-  return collectSorted(generator, (a, b) => a.localeCompare(b))
+  return collectSorted(iterable, (a, b) => a.localeCompare(b))
 }
 
 export function collectSortedUniq<T>(
-  generator: Generator<T, void, unknown>,
+  iterable: Iterable<T, void, unknown>,
   compareFn: (a: T, b: T) => number,
 ): T[] {
   const sorted_array: T[] = []
 
-  for (const item of generator) {
+  for (const item of iterable) {
     // Find the correct index to insert the item using binary search
     let left = 0
     let right = sorted_array.length
@@ -81,13 +83,19 @@ export function collectSortedUniq<T>(
 }
 
 export function collectSortedUniqNumbers(
-  generator: Generator<number, void, unknown>,
+  iterable: Iterable<number, void, unknown>,
 ): number[] {
-  return collectSortedUniq(generator, (a, b) => a - b)
+  return collectSortedUniq(iterable, (a, b) => a - b)
+}
+
+export function collectSortedUniqDecimals(
+  iterable: Iterable<Decimal, void, unknown>,
+): Decimal[] {
+  return collectSortedUniq(iterable, (a, b) => a.cmp(b))
 }
 
 export function collectSortedUniqStrings(
-  generator: Generator<string, void, unknown>,
+  iterable: Iterable<string, void, unknown>,
 ): string[] {
-  return collectSortedUniq(generator, (a, b) => a.localeCompare(b))
+  return collectSortedUniq(iterable, (a, b) => a.localeCompare(b))
 }

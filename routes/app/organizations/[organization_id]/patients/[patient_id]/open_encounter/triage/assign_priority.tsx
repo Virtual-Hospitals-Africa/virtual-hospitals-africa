@@ -1,12 +1,20 @@
 import {
-assertAllPriorStepsCompleted,
+  assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import { ALL_VITAL_SNOMED_CONCEPT_IDS, ASESSMENTS_ORDERED, buildReferenceRanges, MEASUREMENTS_ORDERED, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS, vitalAssessmentFromSnomedConceptId, vitalMeasurementFromSnomedConceptId } from '../../../../../../../../shared/vitals.ts'
+import {
+  ALL_VITAL_SNOMED_CONCEPT_IDS,
+  ASESSMENTS_ORDERED,
+  buildReferenceRanges,
+  MEASUREMENTS_ORDERED,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  vitalAssessmentFromSnomedConceptId,
+  vitalMeasurementFromSnomedConceptId,
+} from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import matching from '../../../../../../../../util/matching.ts'
 import { TriageAssignPriorityTableVital } from '../../../../../../../../types.ts'
@@ -16,6 +24,8 @@ import assert from 'assert'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import sortBy from '../../../../../../../../util/sortBy.ts'
 import partition from '../../../../../../../../util/partition.ts'
+import { positive_decimal } from '../../../../../../../../util/validators.ts'
+import compact from '../../../../../../../../util/compact.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -30,8 +40,9 @@ export const handler = postHandler(
 export async function TriageAssignPriorityPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, health_worker_id, patient, patient_id, patient_encounter_id } = ctx.state
-  
+  const { trx, health_worker_id, patient, patient_id, patient_encounter_id } =
+    ctx.state
+
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,
   })
@@ -79,48 +90,69 @@ export async function TriageAssignPriorityPage(
       ),
     })
 
-  const unsorted_vitals: TriageAssignPriorityTableVital[] = vitals_this_encounter.map(
-    (current) => {
-      const previous = previous_vitals.find(matching({
-        finding_snomed_concept_id: current.finding_snomed_concept_id,
-      })) ?? null
-      const reference_ranges = typeof current.value === 'number'
-        ? buildReferenceRanges(
+  const unsorted_vitals: TriageAssignPriorityTableVital[] =
+    vitals_this_encounter.map(
+      (current) => {
+        const previous = previous_vitals.find(matching({
+          finding_snomed_concept_id: current.finding_snomed_concept_id,
+        })) ?? null
+        const reference_ranges = buildReferenceRanges(
           current.finding_snomed_concept_id,
           age_determination,
-          typeof previous?.value === 'number'
-            ? [current.value, previous.value]
-            : [current.value]
+          compact([current.value, previous?.value]),
         )
-        : null
 
-      return {
-        current,
-        previous,
-        reference_ranges
-      }
+        return {
+          current,
+          previous,
+          reference_ranges,
+        }
+      },
+    )
+
+  const [measurements_unsorted, assessments_unsorted] = partition(
+    unsorted_vitals,
+    function isMeasurement({ current }) {
+      return positive_decimal.safeParse(current.value).success
     },
   )
 
-  const [measurements_unsorted, assessments_unsorted] = partition(unsorted_vitals, function isMeasurement({ current }) {
-    return typeof current.value === 'number'
-  })
+  console.log({ measurements_unsorted, assessments_unsorted })
 
-  const assessments = sortBy(assessments_unsorted, 
-    a => ASESSMENTS_ORDERED.indexOf(vitalAssessmentFromSnomedConceptId(a.current.finding_snomed_concept_id)))
+  const assessments = sortBy(
+    assessments_unsorted,
+    (a) =>
+      ASESSMENTS_ORDERED.indexOf(
+        vitalAssessmentFromSnomedConceptId(a.current.finding_snomed_concept_id),
+      ),
+  )
 
-  const [tews_measurements_unsorted, other_measurements_unsorted] = partition(measurements_unsorted, m => m.current.score != null)
+  const [tews_measurements_unsorted, other_measurements_unsorted] = partition(
+    measurements_unsorted,
+    (m) => m.current.score != null,
+  )
 
-  const tews_measurements = sortBy(tews_measurements_unsorted, 
-    m => MEASUREMENTS_ORDERED.indexOf(vitalMeasurementFromSnomedConceptId(m.current.finding_snomed_concept_id)))
+  const tews_measurements = sortBy(
+    tews_measurements_unsorted,
+    (m) =>
+      MEASUREMENTS_ORDERED.indexOf(
+        vitalMeasurementFromSnomedConceptId(
+          m.current.finding_snomed_concept_id,
+        ),
+      ),
+  )
 
   const other_measurements = sortBy(
     other_measurements_unsorted,
-    m => m.current.finding_snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic ? 0 : 1,
-    m => m.current.created_at,
-    m => m.current.finding_display,
+    (m) =>
+      m.current.finding_snomed_concept_id ===
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic
+        ? 0
+        : 1,
+    (m) => m.current.created_at,
+    (m) => m.current.finding_display,
   )
-  
+
   const vitals = [
     ...assessments,
     ...tews_measurements,

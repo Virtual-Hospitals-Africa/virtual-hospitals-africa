@@ -8,6 +8,7 @@ import arraysEqual from '../../../util/arraysEqual.ts'
 import sortBy from '../../../util/sortBy.ts'
 import { define } from '../define.ts'
 import * as inParallel from '../../../util/inParallel.ts'
+import { positive_integer } from '../../../util/validators.ts'
 
 export default define([
   'drugs',
@@ -50,7 +51,7 @@ type ManufacturedMedicationCsvRow = {
 type ParsedStrengths = {
   strength_numerators: number[]
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
 }
 
@@ -265,7 +266,7 @@ function parseSingleStrength(part: string) {
   const [numerator, denominator] = part.split('/').map((s) => s.trim())
   assert(numerator, `Numerator is empty for ${part}`)
 
-  const numerator_value = parseFloat(numerator)
+  const numerator_value = positive_integer.parse(numerator)
 
   // Assume percentages are by weight
   if (part.endsWith('%') || part.endsWith('PERCENT') || part.endsWith('W/W')) {
@@ -296,7 +297,7 @@ function parseSingleStrength(part: string) {
   const numerator_unit = numerator.match(text_regex)?.[0]
   const denominator_unit = denominator && denominator.match(text_regex)?.[0]
 
-  const denominator_value = denominator && parseFloat(denominator)
+  const denominator_value = denominator && positive_integer.parse(denominator)
   return {
     numerator_value,
     numerator_unit,
@@ -369,7 +370,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
     return {
       strength_numerators: sortBy(values.map((v) => v.numerator_value)),
       strength_numerator_unit: numerator_units[0],
-      strength_denominator: denominator_values[0] || 1,
+      strength_denominator: String(denominator_values[0] || 1),
       strength_denominator_unit,
     }
   }
@@ -384,7 +385,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
         ),
       ),
       strength_numerator_unit: 'MG',
-      strength_denominator: denominator_values[0] || 1,
+      strength_denominator: String(denominator_values[0] || 1),
       strength_denominator_unit,
     }
   }
@@ -399,7 +400,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
         ),
       ),
       strength_numerator_unit: 'MCG',
-      strength_denominator: denominator_values[0] || 1,
+      strength_denominator: String(denominator_values[0] || 1),
       strength_denominator_unit,
     }
   }
@@ -409,7 +410,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
     return {
       strength_numerators: sortBy(values.map((v) => v.numerator_value)),
       strength_numerator_unit: 'MCG',
-      strength_denominator: denominator_values[0] || 1,
+      strength_denominator: String(denominator_values[0] || 1),
       strength_denominator_unit,
     }
   }

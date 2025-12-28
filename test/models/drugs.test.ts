@@ -115,64 +115,52 @@ const expected_results = [
           'ORAL',
         ],
         'strength_numerator_unit': 'MG',
-        'strength_denominator': 1,
+        'strength_denominator': '1',
         'strength_denominator_unit': 'TABLET',
         'strength_denominator_is_units': false,
         'manufacturers': [
           {
-            'strength_numerators': [
-              20,
-            ],
+            'strength_numerators': ['20'],
             'trade_name': 'ADALAT XL 20',
             'applicant_name': 'BAYER (PTY) LTD',
             'recalled_at': null,
           },
           {
-            'strength_numerators': [
-              30,
-            ],
+            'strength_numerators': ['30'],
             'trade_name': 'ADALAT XL 30',
             'applicant_name': 'BAYER (PTY) LTD',
             'recalled_at': null,
           },
           {
-            'strength_numerators': [
-              60,
-            ],
+            'strength_numerators': ['60'],
             'trade_name': 'ADALAT XL 60',
             'applicant_name': 'BAYER (PTY) LTD',
             'recalled_at': null,
           },
           {
-            'strength_numerators': [
-              20,
-            ],
+            'strength_numerators': ['20'],
             'trade_name': 'CALCIGARD RETARD',
             'applicant_name': 'TORRENT PHARMACEUTICALS',
             'recalled_at': null,
           },
           {
-            'strength_numerators': [
-              10,
-            ],
+            'strength_numerators': ['10'],
             'trade_name': 'NIFELAT',
             'applicant_name': 'REMEDICA LTD',
             'recalled_at': null,
           },
           {
-            'strength_numerators': [
-              20,
-            ],
+            'strength_numerators': ['20'],
             'trade_name': 'NIFELAT',
             'applicant_name': 'REMEDICA LTD',
             'recalled_at': null,
           },
         ],
         'strength_numerators': [
-          10,
-          20,
-          30,
-          60,
+          '10',
+          '20',
+          '30',
+          '60',
         ],
         'strength_summary': '10, 20, 30, 60MG',
       },

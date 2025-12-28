@@ -14,7 +14,7 @@ export type PrescriptionMedicationInsert = {
   route: string
   patient_condition_id: string
   medication_id: string
-  strength: number
+  strength: string
   special_instructions?: Maybe<string>
   schedules: MedicationSchedule[]
 }
@@ -135,7 +135,7 @@ export async function upsert(
           ARRAY[${
           sql.raw(
             schedules.map((schedule) =>
-              `ROW(${schedule.dosage}, '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
+              `ROW('${schedule.dosage}', '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
             ).join(','),
           )
         }]::medication_schedule[]

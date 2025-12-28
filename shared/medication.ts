@@ -1,25 +1,25 @@
 import { assert } from 'std/assert/assert.ts'
-import memoize from '../util/memoize.ts'
-import isNumber from '../util/isNumber.ts'
 import { MedicationDetails, MedicationSchedule } from '../types.ts'
+import memoize from '../util/memoize.ts'
+import { Decimal } from '../util/decimal.ts'
 import { unpluralize } from '../util/pluralize.ts'
 
-export const Dosages: [string, number][] = [
-  ['¼', 0.25],
-  ['½', 0.5],
-  ['1', 1],
-  ['2', 2],
-  ['3', 3],
-  ['4', 4],
-  ['5', 5],
-  ['6', 6],
-  ['7', 7],
-  ['8', 8],
-  ['9', 9],
-  ['10', 10],
+export const Dosages: [string, string][] = [
+  ['¼', '0.25'],
+  ['½', '0.5'],
+  ['1', '1'],
+  ['2', '2'],
+  ['3', '3'],
+  ['4', '4'],
+  ['5', '5'],
+  ['6', '6'],
+  ['7', '7'],
+  ['8', '8'],
+  ['9', '9'],
+  ['10', '10'],
 ]
 
-function dosageText(dosage: number): string {
+function dosageText(dosage: string): string {
   const matching = Dosages.find(([, value]) => value === dosage)
   assert(matching)
   return matching[0]
@@ -124,10 +124,9 @@ export const RegistrationDosesPerDay = {
 
 type DosageDisplayParams = {
   dosage_text?: string
-  dosage: number
-  totalDosageMultiplier?: number
-  strength_numerator: number
-  strength_denominator: number
+  dosage: string
+  strength_numerator: string
+  strength_denominator: string
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   strength_numerator_unit: string
@@ -149,42 +148,28 @@ export const denominatorPlural = memoize(
 
 export function dosageDisplay(params: DosageDisplayParams) {
   const {
-    strength_numerator,
-    strength_denominator,
     strength_numerator_unit,
     strength_denominator_unit,
     strength_denominator_is_units,
     dosage_text,
-    dosage,
-    totalDosageMultiplier,
   } = params
-  const numeric_strength = isNumber(strength_numerator)
-    ? strength_numerator
-    : parseFloat(strength_numerator)
-  assert(numeric_strength)
-  const numeric_strength_denominator = isNumber(strength_denominator)
-    ? strength_denominator
-    : parseFloat(strength_denominator)
-  assert(numeric_strength_denominator)
+  const strength_numerator = new Decimal(params.strength_numerator)
+  const strength_denominator = new Decimal(params.strength_denominator)
+  const dosage = new Decimal(params.dosage)
 
-  const single_dose = dosage * numeric_strength_denominator
-  const total_dosage = totalDosageMultiplier
-    ? Math.ceil(totalDosageMultiplier * single_dose)
-    : single_dose
+  const single_dose = strength_denominator.mul(dosage)
 
-  let display = totalDosageMultiplier
-    ? String(total_dosage)
-    : (strength_denominator === 1
-      ? (dosage_text ?? dosageText(dosage))
-      : String(single_dose))
+  let display = strength_denominator.equals(1)
+    ? (dosage_text ?? dosageText(params.dosage))
+    : String(single_dose)
+
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  const dose_to_compare = totalDosageMultiplier ? total_dosage : dosage
-  display += dose_to_compare > 1
-    ? denominatorPlural(params)
-    : strength_denominator_unit
-  display += ` (${numeric_strength * dosage}${strength_numerator_unit})`
+  display += dosage.equals(1)
+    ? strength_denominator_unit
+    : denominatorPlural(params)
+  display += ` (${strength_numerator.mul(dosage)}${strength_numerator_unit})`
 
   return display
 }
@@ -212,16 +197,16 @@ export function strengthDisplay({
   strength_denominator_unit,
   separator,
 }: {
-  strength_numerator: number
+  strength_numerator: string
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
   separator?: string
 }): string {
   let strength_display = `${strength_numerator}${strength_numerator_unit}${
     separator ?? '/'
   }`
-  if (strength_denominator !== 1) {
+  if (strength_denominator === '1') {
     strength_display += strength_denominator
   }
   return strength_display + strength_denominator_unit
@@ -262,7 +247,7 @@ export function scheduleDisplay(
 
 //   const total_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
-//     totalDosageMultiplier: duration * doses_per_day,
+//     total_dosage_multiplier: duration * doses_per_day,
 //     ...omit(medication, ['dosage']),
 //   })
 
