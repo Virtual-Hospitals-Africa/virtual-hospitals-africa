@@ -359,7 +359,7 @@ export async function getPreExistingConditions(
   },
 ): Promise<PreExistingCondition[]> {
   const { patient_conditions, patient_medications } = await promiseProps({
-    patient_conditions:  trx
+    patient_conditions: trx
       .selectFrom('patient_conditions')
       .innerJoin(
         'conditions',
@@ -378,43 +378,43 @@ export async function getPreExistingConditions(
       ])
       .execute(),
     patient_medications: trx
-    .selectFrom('patient_condition_medications')
-    .leftJoin(
-      'manufactured_medications',
-      'manufactured_medications.id',
-      'patient_condition_medications.manufactured_medication_id',
-    )
-    .innerJoin('medications', (join) =>
-      join.on(
-        'medications.id',
-        '=',
-        sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
-      ))
-    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .innerJoin(
-      'patient_conditions',
-      'patient_conditions.id',
-      'patient_condition_medications.patient_condition_id',
-    )
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .select((eb) => [
-      'drugs.id',
-      'medications.id as medication_id',
-      'patient_condition_medications.manufactured_medication_id',
-      'patient_condition_medications.id as patient_condition_medication_id',
-      'patient_condition_medications.patient_condition_id',
-      'patient_condition_medications.strength',
-      'patient_condition_medications.route',
-      'patient_condition_medications.special_instructions',
-      sql<
-        MedicationSchedule[]
-      >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-      'drugs.generic_name as name',
-      isoDate(eb.ref('patient_condition_medications.start_date')).as(
-        'start_date',
-      ),
-    ])
-    .execute()
+      .selectFrom('patient_condition_medications')
+      .leftJoin(
+        'manufactured_medications',
+        'manufactured_medications.id',
+        'patient_condition_medications.manufactured_medication_id',
+      )
+      .innerJoin('medications', (join) =>
+        join.on(
+          'medications.id',
+          '=',
+          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
+        ))
+      .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+      .innerJoin(
+        'patient_conditions',
+        'patient_conditions.id',
+        'patient_condition_medications.patient_condition_id',
+      )
+      .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .select((eb) => [
+        'drugs.id',
+        'medications.id as medication_id',
+        'patient_condition_medications.manufactured_medication_id',
+        'patient_condition_medications.id as patient_condition_medication_id',
+        'patient_condition_medications.patient_condition_id',
+        'patient_condition_medications.strength',
+        'patient_condition_medications.route',
+        'patient_condition_medications.special_instructions',
+        sql<
+          MedicationSchedule[]
+        >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
+        'drugs.generic_name as name',
+        isoDate(eb.ref('patient_condition_medications.start_date')).as(
+          'start_date',
+        ),
+      ])
+      .execute(),
   })
 
   return patient_conditions

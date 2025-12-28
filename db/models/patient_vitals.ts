@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
-import { debugLog, jsonObjectFrom } from '../helpers.ts'
+import { jsonObjectFrom } from '../helpers.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -166,8 +166,6 @@ export const patient_vitals = base({
             ]),
         ).$notNull().as('provider'),
       ])
-
-    debugLog(query)
 
     const findings = await query.execute()
 

@@ -5,7 +5,6 @@ import {
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
 import { nonEmptyRows } from '../registration/Summary.tsx'
-import { international_phone_number } from '../../../util/validators.ts'
 
 type RegistrationPatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
@@ -29,7 +28,7 @@ export default function PatientSummary(
       action: DescriptionListCellAction.View,
       name: 'first_names',
     }], [{
-      value: international_phone_number.nullable().parse(personal.phone_number),
+      value: personal.phone_number,
       href: `${registration_href}/personal#focus=phone_number`,
       action: DescriptionListCellAction.View,
       name: 'phone_number',

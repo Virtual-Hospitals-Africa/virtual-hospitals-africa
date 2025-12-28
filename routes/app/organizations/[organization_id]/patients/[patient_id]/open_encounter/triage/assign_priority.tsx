@@ -24,6 +24,8 @@ import assert from 'assert'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import sortBy from '../../../../../../../../util/sortBy.ts'
 import partition from '../../../../../../../../util/partition.ts'
+import { positive_decimal } from '../../../../../../../../util/validators.ts'
+import compact from '../../../../../../../../util/compact.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -94,15 +96,11 @@ export async function TriageAssignPriorityPage(
         const previous = previous_vitals.find(matching({
           finding_snomed_concept_id: current.finding_snomed_concept_id,
         })) ?? null
-        const reference_ranges = typeof current.value === 'number'
-          ? buildReferenceRanges(
-            current.finding_snomed_concept_id,
-            age_determination,
-            typeof previous?.value === 'number'
-              ? [current.value, previous.value]
-              : [current.value],
-          )
-          : null
+        const reference_ranges = buildReferenceRanges(
+          current.finding_snomed_concept_id,
+          age_determination,
+          compact([current.value, previous?.value]),
+        )
 
         return {
           current,
@@ -115,9 +113,11 @@ export async function TriageAssignPriorityPage(
   const [measurements_unsorted, assessments_unsorted] = partition(
     unsorted_vitals,
     function isMeasurement({ current }) {
-      return typeof current.value === 'number'
+      return positive_decimal.safeParse(current.value).success
     },
   )
+
+  console.log({ measurements_unsorted, assessments_unsorted })
 
   const assessments = sortBy(
     assessments_unsorted,

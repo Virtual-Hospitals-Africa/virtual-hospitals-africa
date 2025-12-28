@@ -188,8 +188,11 @@ export default function DrugInput({
           <option value=''>Select Dosage</option>
           {medication.value && strength_numerator.value &&
             Dosages.map(([dosage_text, dosage_value]) => {
-              const option_value = String(parseFloat(medication.value!.strength_denominator) * parseFloat(dosage_value))
-      
+              const option_value = String(
+                parseFloat(medication.value!.strength_denominator) *
+                  parseFloat(dosage_value),
+              )
+
               // const option_value = new Decimal.Decimal(
               //   medication.value!.strength_denominator,
               // ).mul(

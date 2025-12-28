@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
-import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
+// import { addFinding, removeFinding } from '../patient-drawer/FindingsList.tsx'
 
 import { ExaminationFindingDialog } from './Dialog.tsx'
 import type { ExaminationChecklistDefinition } from '../../types.ts'
@@ -27,7 +27,7 @@ const add_hash = '#add='
 
 // TODO handle body sites, href, and an interactive dialog
 export function ExaminationChecklistItem(
-  { edit_href, checklist_item, found }: ExaminationChecklistProps,
+  { /* edit_href, */ checklist_item, found }: ExaminationChecklistProps,
 ) {
   const item = useSignal(found)
   const editing = useSignal(false)
@@ -94,7 +94,7 @@ export function ExaminationChecklistItem(
             self.location.hash = add_hash + checklist_item.snomed_concept_id
           } else {
             item.value = undefined
-            removeFinding(checklist_item.snomed_concept_id)
+            // removeFinding(checklist_item.snomed_concept_id)
           }
         }}
       >
@@ -118,13 +118,13 @@ export function ExaminationChecklistItem(
               text += ` affecting ${finding.body_sites[0].snomed_english_term}`
             }
 
-            addFinding({
-              snomed_concept_id: checklist_item.snomed_concept_id,
-              text,
-              edit_href,
-              additional_notes: finding.additional_notes,
-              body_sites: finding.body_sites,
-            })
+            // addFinding({
+            //   snomed_concept_id: checklist_item.snomed_concept_id,
+            //   text,
+            //   edit_href,
+            //   additional_notes: finding.additional_notes,
+            //   body_sites: finding.body_sites,
+            // })
             self.location.hash = ''
           }}
         />

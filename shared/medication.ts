@@ -1,7 +1,7 @@
-import * as Decimal from 'decimal'
 import { assert } from 'std/assert/assert.ts'
-import memoize from '../util/memoize.ts'
 import { MedicationDetails, MedicationSchedule } from '../types.ts'
+import memoize from '../util/memoize.ts'
+import { Decimal } from '../util/decimal.ts'
 import { unpluralize } from '../util/pluralize.ts'
 
 export const Dosages: [string, string][] = [
@@ -153,9 +153,9 @@ export function dosageDisplay(params: DosageDisplayParams) {
     strength_denominator_is_units,
     dosage_text,
   } = params
-  const strength_numerator = new Decimal.Decimal(params.strength_numerator)
-  const strength_denominator = new Decimal.Decimal(params.strength_denominator)
-  const dosage = new Decimal.Decimal(params.dosage)
+  const strength_numerator = new Decimal(params.strength_numerator)
+  const strength_denominator = new Decimal(params.strength_denominator)
+  const dosage = new Decimal(params.dosage)
 
   const single_dose = strength_denominator.mul(dosage)
 
