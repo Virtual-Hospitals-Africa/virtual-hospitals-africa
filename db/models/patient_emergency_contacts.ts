@@ -61,7 +61,6 @@ export function getPrimaryContact(
     .executeTakeFirst()
 }
 
-
 export async function addContact(
   trx: TrxOrDb,
   {
@@ -109,7 +108,6 @@ export async function addContact(
     .returningAll()
     .executeTakeFirstOrThrow()
 }
-
 
 export async function updateContact(
   trx: TrxOrDb,
@@ -204,13 +202,13 @@ export async function setContacts(
   return trx
     .insertInto('patient_emergency_contacts')
     .values(
-      contacts.map(contact => ({
+      contacts.map((contact) => ({
         patient_id,
         name: contact.name.trim(),
         relationship: contact.relationship,
         phone_number: contact.phone_number,
         contact_order: contact.contact_order ?? 0,
-      }))
+      })),
     )
     .returningAll()
     .execute()

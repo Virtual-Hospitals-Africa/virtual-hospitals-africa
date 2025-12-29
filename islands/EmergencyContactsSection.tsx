@@ -29,10 +29,10 @@ export default function EmergencyContactSection({
   const addContact = () => {
     contacts.value = [
       ...contacts.value,
-      { name: '', relationship: '', phone_number: '' }
+      { name: '', relationship: '', phone_number: '' },
     ]
   }
-  
+
   const removeContact = (index: number) => {
     if (contacts.value.length > 1) {
       contacts.value = contacts.value.filter((_, i) => i !== index)
@@ -40,24 +40,24 @@ export default function EmergencyContactSection({
   }
 
   return (
-    <FormSection header="Emergency Contacts">
+    <FormSection header='Emergency Contacts'>
       {contacts.value.map((contact, index) => (
-        <div key={index} className="space-y-3">
-          {index > 0 && <div className="border-t border-gray-200 pt-4" />}
-          
+        <div key={index} className='space-y-3'>
+          {index > 0 && <div className='border-t border-gray-200 pt-4' />}
+
           <FormRow>
             <TextInput
               name={`emergency_contacts[${index}].name`}
-              label="Name"
-              placeholder="Name"
+              label='Name'
+              placeholder='Name'
               required
               value={contact.name}
             />
 
             <SelectWithOptions
               name={`emergency_contacts[${index}].relationship`}
-              label="Relationship"
-              blank_option="Select Relationship"
+              label='Relationship'
+              blank_option='Select Relationship'
               options={RELATIONSHIP_OPTIONS}
               required
               value={contact.relationship}
@@ -67,17 +67,17 @@ export default function EmergencyContactSection({
           <FormRow>
             <PhoneNumberInput
               name={`emergency_contacts[${index}].phone_number`}
-              label="Phone Number"
-              placeholder="(000)-000-0000"
+              label='Phone Number'
+              placeholder='(000)-000-0000'
               required
               value={contact.phone_number}
             />
           </FormRow>
 
           {contacts.value.length > 1 && (
-            <div className="flex justify-end">
+            <div className='flex justify-end'>
               <Button
-                type="button"
+                type='button'
                 onClick={() => removeContact(index)}
                 variant='primary'
               >
@@ -88,14 +88,14 @@ export default function EmergencyContactSection({
         </div>
       ))}
 
-        <div className="mt-4">
-          <Button
-            type="button"
-            onClick={addContact}
-            variant="primary"
-          >
-            + Add Contact
-          </Button>
+      <div className='mt-4'>
+        <Button
+          type='button'
+          onClick={addContact}
+          variant='primary'
+        >
+          + Add Contact
+        </Button>
       </div>
     </FormSection>
   )

@@ -9,19 +9,35 @@ export async function up(db: Kysely<DB>) {
     .asEnum(EMERGENCY_CONTACT_RELATIONSHIPS)
     .execute()
 
-    await createStandardTable(db, 'patient_emergency_contacts', (qb) =>
-      qb.addColumn('patient_id', 'uuid', (col) =>
-          col.notNull().references('patients.id').onDelete('cascade'))
+  await createStandardTable(
+    db,
+    'patient_emergency_contacts',
+    (qb) =>
+      qb.addColumn(
+        'patient_id',
+        'uuid',
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      )
         .addColumn('name', 'varchar(255)', (col) => col.notNull())
-        .addColumn('relationship', sql`emergency_contact_relationship`, (col) => col.notNull())
+        .addColumn(
+          'relationship',
+          sql`emergency_contact_relationship`,
+          (col) => col.notNull(),
+        )
         .addColumn('phone_number', 'varchar(50)', (col) => col.notNull())
-        .addColumn('contact_order', 'integer', (col) => col.notNull().defaultTo(0))
-        .addUniqueConstraint('only_one_emergency_contact_per_patient', ['patient_id', 'contact_order'])
-    )
+        .addColumn(
+          'contact_order',
+          'integer',
+          (col) => col.notNull().defaultTo(0),
+        )
+        .addUniqueConstraint('only_one_emergency_contact_per_patient', [
+          'patient_id',
+          'contact_order',
+        ]),
+  )
 }
 
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_emergency_contacts').execute()
   await db.schema.dropType('emergency_contact_relationship').execute()
 }
-

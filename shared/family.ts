@@ -168,9 +168,12 @@ export const EMERGENCY_CONTACT_RELATIONSHIPS = [
   'Other',
 ] as const
 
-export type EmergencyContactRelationship = (typeof EMERGENCY_CONTACT_RELATIONSHIPS)[number]
+export type EmergencyContactRelationship =
+  (typeof EMERGENCY_CONTACT_RELATIONSHIPS)[number]
 
-export const EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA = z.enum(EMERGENCY_CONTACT_RELATIONSHIPS)
+export const EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA = z.enum(
+  EMERGENCY_CONTACT_RELATIONSHIPS,
+)
 
 export const EmergencyContactSchema = z.object({
   name: z.string().min(1),
