@@ -237,7 +237,7 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Urgent',
   },
   'Moderate pain': {
-    'clinical_finding_s_expression': '(finding 404684003 50415004)',
+    'clinical_finding_s_expression': '(finding 404684003 (snomed_concept "Moderate pain" "finding"))',
     'sats_primary_name': 'Moderate pain',
     'sats_secondary_text': null,
     'sats_priority': 'Urgent',

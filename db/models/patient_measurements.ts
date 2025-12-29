@@ -9,7 +9,11 @@ import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { buildExpression, satisfyingSExpression } from './s_expression.ts'
+import {
+  buildExpression,
+  satisfyingSExpression,
+  snomedConceptBase,
+} from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { buildValueDisplay } from '../../shared/patient_records.ts'
@@ -108,7 +112,7 @@ export const patient_measurements = base({
       patient_encounter_employee_id,
       measurement_id = generateUUID(),
       measurement_equality: {
-        left: { snomed_concept_id },
+        left: { snomed_concept },
         right: units,
       },
     }: MeasurementInsert,
@@ -132,7 +136,7 @@ export const patient_measurements = base({
           id: measurement_id,
           procedure_id,
           patient_encounter_employee_id,
-          finding_snomed_concept_id: snomed_concept_id,
+          finding_snomed_concept_id: snomedConceptBase(trx, snomed_concept),
         }))
       .with(
         'inserting_measurements',

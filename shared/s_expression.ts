@@ -2,6 +2,7 @@ import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
+import { parseWithValues } from '../util/assertMatches.ts'
 
 type SExpressionNode = {
   atom: string
@@ -14,7 +15,8 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 
   assert(isString(atom))
   const args = rest.map((item) => {
-    if (isString(item)) return item
+    // Seems redundant, but it's not! The s_expression library returns new String instead of string values
+    if (isString(item)) return String(item)
     if (Array.isArray(item)) return recursiveTreePass(item)
     throw new Error(`Unexpected ${item}`)
   })
@@ -80,7 +82,9 @@ export function parseExpressionExpectingAtom<
 
   const first_pass = recursiveTreePass(parsed)
 
-  const second_pass = schemaByAtom(atom).parse(first_pass)
+  const schema = schemaByAtom(atom)
+
+  const second_pass = parseWithValues(schema, first_pass)
 
   assert(isAtom(second_pass, atom))
 
