@@ -3,6 +3,7 @@ import { parsePhoneNumber } from 'awesome-phonenumber'
 import isNumber from './isNumber.ts'
 import generateUUID from './uuid.ts'
 import { Decimal } from './decimal.ts'
+import { SnomedCategory } from '../db.d.ts'
 
 export const zimbabwe_national_id_number = z.string().regex(
   /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i,
@@ -86,3 +87,66 @@ export const yes_no_unknown = z.enum(['Yes', 'No', 'Unknown'])
 export const tews_component = z.number().int().min(0).max(3)
 
 export const tews_total = z.number().int().min(0).max(10)
+
+export const snomed_category: z.ZodEnum<{
+  [c in SnomedCategory]: SnomedCategory
+}> = z.enum([
+  'administration method',
+  'assessment scale',
+  'attribute',
+  'basic dose form',
+  'body structure',
+  'calculation',
+  'cell',
+  'cell structure',
+  'clinical drug',
+  'core metadata concept',
+  'disorder',
+  'disposition',
+  'dose form',
+  'environment',
+  'environment / location',
+  'ethnic group',
+  'event',
+  'finding',
+  'foundation metadata concept',
+  'geographic location',
+  'intended site',
+  'link assertion',
+  'linkage concept',
+  'medicinal product',
+  'medicinal product form',
+  'metadata',
+  'morphologic abnormality',
+  'namespace concept',
+  'navigational concept',
+  'observable entity',
+  'occupation',
+  'organism',
+  'OWL metadata concept',
+  'person',
+  'physical force',
+  'physical object',
+  'procedure',
+  'product',
+  'product name',
+  'qualifier value',
+  'racial group',
+  'record artifact',
+  'regime/therapy',
+  'release characteristic',
+  'religion/philosophy',
+  'role',
+  'situation',
+  'SNOMED RT+CTV3',
+  'social concept',
+  'special concept',
+  'specimen',
+  'staging scale',
+  'state of matter',
+  'substance',
+  'supplier',
+  'transformation',
+  'tumor staging',
+  'unit of presentation',
+])

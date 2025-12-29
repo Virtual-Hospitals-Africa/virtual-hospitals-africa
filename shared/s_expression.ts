@@ -15,7 +15,8 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 
   assert(isString(atom))
   const args = rest.map((item) => {
-    if (isString(item)) return item
+    // Seems redundant, but it's not! The s_expression library returns new String instead of string values
+    if (isString(item)) return String(item)
     if (Array.isArray(item)) return recursiveTreePass(item)
     throw new Error(`Unexpected ${item}`)
   })

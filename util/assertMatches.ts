@@ -52,24 +52,36 @@ export function getAtPath(obj: unknown, path: PropertyKey[]): unknown {
   return value
 }
 
-export function safeParseWithValues<Schema extends z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>(
+export function safeParseWithValues<
+  Schema extends z.ZodType<
+    unknown,
+    unknown,
+    z.core.$ZodTypeInternals<unknown, unknown>
+  >,
+>(
   schema: Schema,
-  object: unknown
+  object: unknown,
 ) {
   const result = schema.safeParse(object)
   if (!result.success) {
-    result.error.issues.forEach(issue => {
+    result.error.issues.forEach((issue) => {
       Object.assign(issue, {
-        actual_value: getAtPath(object, issue.path)
+        actual_value: getAtPath(object, issue.path),
       })
     })
   }
   return result
 }
 
-export function parseWithValues<Schema extends z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>(
+export function parseWithValues<
+  Schema extends z.ZodType<
+    unknown,
+    unknown,
+    z.core.$ZodTypeInternals<unknown, unknown>
+  >,
+>(
   schema: Schema,
-  object: unknown
+  object: unknown,
 ) {
   const result = safeParseWithValues(schema, object)
   if (result.success) return result.data

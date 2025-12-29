@@ -7,6 +7,8 @@ import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom } from './s_expression.ts'
 import { Maybe } from '../types.ts'
+import { snomed_category } from '../util/validators.ts'
+import { SnomedCategory } from '../db.d.ts'
 
 type Node<Atom, Rest> = {
   atom: Atom
@@ -20,10 +22,10 @@ type RecordSchema = {
 
 type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
-type SnomedConcept = 
-  | { type: 'id', id: string }
-  | { type: 'name_and_category', name: string, category: string }
-  // | { type: 'name', name: string }
+type SnomedConcept =
+  | { type: 'id'; id: string }
+  | { type: 'name_and_category'; name: string; category: SnomedCategory }
+// | { type: 'name', name: string }
 
 type BaseLang =
   & {
@@ -87,39 +89,32 @@ export type Lang = {
 
 export type AnyNode = Lang[keyof Lang]
 
-const snomed_concept_id: z.ZodType<Lang['snomed_concept']> = validators.snomed_concept_id.transform(id => ({
-  atom: 'snomed_concept',
-  type: 'id',
-  id
-}))
+const snomed_concept_id: z.ZodType<Lang['snomed_concept']> = validators
+  .snomed_concept_id.transform((id) => ({
+    atom: 'snomed_concept',
+    type: 'id',
+    id,
+  }))
 
-// const snomed_concept_name: z.ZodType<Lang['snomed_concept']> = z.object({
-//   atom: z.literal('snomed_concept'),
-//   args: z.tuple([z.string()])
-// }).transform(({ atom, args: [name] }) => ({
-//   atom,
-//   type: 'name',
-//   name
-// }))
-
-const quoted_string = z.string().regex(/^".*"$/).transform(s => s.slice(1, -1))
-
-const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z.object({
-  atom: z.literal('snomed_concept'),
-  args: z.tuple([quoted_string, quoted_string])
-}).transform(({ atom, args: [name, category] }) => ({
-  atom,
-  name,
-  category,
-  type: 'name_and_category',
-}))
+const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z
+  .object({
+    atom: z.literal('snomed_concept'),
+    args: z.tuple([z.string(), snomed_category]),
+  }).transform(({ atom, args: [name, category] }) => ({
+    atom,
+    name,
+    category,
+    type: 'name_and_category',
+  }))
 
 export const snomed_concept: z.ZodType<Lang['snomed_concept']> = z.union([
   snomed_concept_id,
   snomed_concept_name_and_category,
 ]).describe('snomed_concept_id | qualifier')
 
-const snomed_concept_or_qualifier: z.ZodType<Lang['snomed_concept'] | Lang['qualifier']> = z
+const snomed_concept_or_qualifier: z.ZodType<
+  Lang['snomed_concept'] | Lang['qualifier']
+> = z
   .lazy(() =>
     z.union([
       snomed_concept,
@@ -217,7 +212,7 @@ export const not_finding: z.ZodType<Lang['not_finding']> = z.lazy(() =>
 ).describe('not_finding')
 
 const attribute_or_qualifier_or_not_finding: z.ZodType<
-  |Lang['attribute'] | Lang['qualifier'] | Lang['not_finding']
+  Lang['attribute'] | Lang['qualifier'] | Lang['not_finding']
 > = z.lazy(() =>
   z.union([
     attribute,
@@ -227,7 +222,10 @@ const attribute_or_qualifier_or_not_finding: z.ZodType<
 ).describe('qualifier | not_finding')
 
 const snomed_concept_or_attribute_or_qualifier_or_not_finding: z.ZodType<
-  Lang['snomed_concept'] |Lang['attribute'] | Lang['qualifier'] | Lang['not_finding']
+  | Lang['snomed_concept']
+  | Lang['attribute']
+  | Lang['qualifier']
+  | Lang['not_finding']
 > = z.lazy(() =>
   z.union([
     snomed_concept,
@@ -392,10 +390,12 @@ export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
     atom: z.literal('attribute'),
     args: z.tuple([snomed_concept, snomed_concept]),
-  }).transform(({ atom, args: [relation_snomed_concept, finding_snomed_concept] }) => ({
+  }).transform((
+    { atom, args: [relation_snomed_concept, finding_snomed_concept] },
+  ) => ({
     atom,
     relation_snomed_concept,
-    finding_snomed_concept
+    finding_snomed_concept,
   }))
 ).describe('attribute')
 

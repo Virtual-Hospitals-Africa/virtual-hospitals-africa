@@ -17,6 +17,8 @@ import {
   parseExpression,
 } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
+import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -28,17 +30,31 @@ type SatisfyingResult = {
   record_ids: string[]
 }
 
+export function snomedConceptBase(
+  trx: TrxOrDb,
+  snomed_concept: Lang['snomed_concept']
+) {
+  assert(isAtom(snomed_concept, 'snomed_concept'))
+  if (snomed_concept.type === 'id') return snomed_concept.id
+
+  return trx
+    .selectFrom('snomed_inferred_canonical_name_and_category')
+    .where('name', '=', snomed_concept.name)
+    .where('category', '=', snomed_concept.category)
+    .select('id')
+}
+
 function baseQuery(
   trx: TrxOrDb,
   {
     patient_id,
     patient_encounter_id,
-    snomed_concept_id,
-    value_snomed_concept_id,
+    snomed_concept,
+    value_snomed_concept,
     qualifiers = [],
   }: PatientIdentifiers & {
-    snomed_concept_id?: Maybe<string>
-    value_snomed_concept_id?: Maybe<string>
+    snomed_concept?: Maybe<Lang['snomed_concept']>
+    value_snomed_concept?: Maybe<Lang['snomed_concept']>
     qualifiers?: Array<
       ParsedExpressionOf<'qualifier'>
     >
@@ -56,17 +72,17 @@ function baseQuery(
       (qb) => qb.where('patient_encounter_id', '=', patient_encounter_id!),
     )
     .$if(
-      !!snomed_concept_id,
+      !!snomed_concept,
       (qb) =>
-        qb.where('patient_records.snomed_concept_id', '=', snomed_concept_id!),
+        qb.where('patient_records.snomed_concept_id', '=', snomedConceptBase(trx, snomed_concept!)),
     )
     .$if(
-      !!value_snomed_concept_id,
+      !!value_snomed_concept,
       (qb) =>
         qb.where(
           'patient_records.value_snomed_concept_id',
           '=',
-          value_snomed_concept_id!,
+          snomedConceptBase(trx, value_snomed_concept!),
         ),
     )
     .select('patient_records.id')
@@ -119,11 +135,15 @@ export const satisfyingSExpression = deduplicate(
 function measurement(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  { snomed_concept_id }: ParsedExpressionOf<'measurement'>,
+  { snomed_concept }: ParsedExpressionOf<'measurement'>,
 ) {
   return baseQuery(trx, {
     ...patient,
-    snomed_concept_id: '118245000',
+    snomed_concept: {
+      atom: 'snomed_concept',
+      type: 'id',
+      id: '118245000',
+    }
   })
     .innerJoin(
       'patient_findings',
@@ -138,7 +158,7 @@ function measurement(
     .where(
       'patient_findings.finding_snomed_concept_id',
       '=',
-      snomed_concept_id,
+      snomedConceptBase(trx, snomed_concept),
     )
 }
 
@@ -147,9 +167,9 @@ const EXPRESSION_BUILDERS = {
     trx,
     { patient_id, patient_encounter_id, procedure_id },
     {
-      snomed_concept_id,
-      value_snomed_concept_id,
-      finding_snomed_concept_id,
+      snomed_concept,
+      value_snomed_concept,
+      finding_snomed_concept,
       qualifiers,
       not_findings,
     },
@@ -157,8 +177,8 @@ const EXPRESSION_BUILDERS = {
     let query = baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      snomed_concept_id,
-      value_snomed_concept_id,
+      snomed_concept,
+      value_snomed_concept,
       qualifiers,
     })
       .innerJoin(
@@ -167,12 +187,14 @@ const EXPRESSION_BUILDERS = {
         'patient_findings.id',
       )
       .$if(
-        !!finding_snomed_concept_id,
+        !!finding_snomed_concept,
         (qb) =>
           qb.where((eb) =>
             sql<boolean>`is_descendant(${
               eb.ref('patient_findings.finding_snomed_concept_id')
-            }, ${finding_snomed_concept_id!}::bigint)`
+            }, ${
+              snomedConceptBase(trx, finding_snomed_concept!)
+            }::bigint)`
           ),
       )
       .$if(
@@ -181,7 +203,7 @@ const EXPRESSION_BUILDERS = {
       )
 
     for (const not_finding of not_findings) {
-      assert(snomed_concept_id)
+      assert(snomed_concept)
       query = query.where(
         'patient_records.id',
         'not in',
@@ -191,8 +213,9 @@ const EXPRESSION_BUILDERS = {
         }, {
           ...not_finding,
           atom: 'finding' as const,
-          snomed_concept_id,
+          snomed_concept,
           not_findings: [],
+          attributes: [],
         }),
       )
     }
@@ -202,13 +225,13 @@ const EXPRESSION_BUILDERS = {
   procedure(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept_id, value_snomed_concept_id, qualifiers },
+    { snomed_concept, value_snomed_concept, qualifiers },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      snomed_concept_id,
-      value_snomed_concept_id,
+      snomed_concept,
+      value_snomed_concept,
       qualifiers,
     })
       .innerJoin(
@@ -220,13 +243,13 @@ const EXPRESSION_BUILDERS = {
   evaluation(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept_id, value_snomed_concept_id, evaluates, qualifiers },
+    { snomed_concept, value_snomed_concept, evaluates, qualifiers },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      snomed_concept_id,
-      value_snomed_concept_id,
+      snomed_concept,
+      value_snomed_concept,
       qualifiers,
     })
       .innerJoin(
@@ -248,14 +271,14 @@ const EXPRESSION_BUILDERS = {
   qualifier(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept_id, value_snomed_concept_id, qualifiers },
+    { snomed_concept, value_snomed_concept, qualifiers },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      value_snomed_concept_id,
+      snomed_concept,
+      value_snomed_concept,
       qualifiers,
-      snomed_concept_id,
     })
       .innerJoin(
         'patient_record_qualifiers',
@@ -276,18 +299,6 @@ const EXPRESSION_BUILDERS = {
         expression,
       ),
     )
-  },
-  not_finding() {
-    throw new Error('not_finding is handled by parent nodes')
-  },
-  evaluates() {
-    throw new Error('evalutes is handled by parent nodes')
-  },
-  task() {
-    throw new Error('task is not directly queryable')
-  },
-  units() {
-    throw new Error('units is handled by parent nodes')
   },
   or(trx, { patient_id, patient_encounter_id }, { expressions }) {
     return baseQuery(trx, { patient_id, patient_encounter_id })
@@ -324,13 +335,14 @@ const EXPRESSION_BUILDERS = {
       )
   },
   measurement,
-  active_condition(trx, patient, { snomed_concept_id }) {
+  active_condition(trx, patient, { snomed_concept }) {
+    const snomed_concept_s_expression = inverseSExpression(snomed_concept)
     return buildExpression(
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${snomed_concept_id})
-            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${snomed_concept_id} ${YES_QUALIFIER_SNOMED_CONCEPT_ID}))
+        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${snomed_concept_s_expression})
+            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${snomed_concept_s_expression} ${YES_QUALIFIER_SNOMED_CONCEPT_ID}))
       `),
     )
   },
@@ -358,6 +370,24 @@ const EXPRESSION_BUILDERS = {
     return measurement(trx, patient, left)
       .where('patient_measurements.units', '=', right.units)
       .where('patient_measurements.value', '=', String(right.value))
+  },
+  not_finding() {
+    throw new Error('not_finding is not directly queryable')
+  },
+  evaluates() {
+    throw new Error('evalutes is not directly queryable')
+  },
+  task() {
+    throw new Error('task is not directly queryable')
+  },
+  units() {
+    throw new Error('units is not directly queryable')
+  },
+  attribute() {
+    throw new Error('attribute is not directly queryable')
+  },
+  snomed_concept() {
+    throw new Error('snomed_concept is not directly queryable')
   },
 } satisfies {
   [T in Atom]: (
