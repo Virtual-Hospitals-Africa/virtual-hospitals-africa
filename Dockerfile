@@ -1,13 +1,13 @@
 FROM denoland/deno:2.6.1 AS build
 WORKDIR /app
 
-COPY deno.json deno.lock ./
-
 # Workaround for deno loader 0.3.10 failed reading lockfile during vite build
 # https://discord.com/channels/684898665143206084/1455023326555803821
-RUN rm -f /app/deno.lock
+# COPY deno.json deno.lock./
+COPY deno.json ./
 
-RUN deno install --frozen --allow-scripts
+# RUN deno install --frozen --allow-scripts
+RUN deno install --allow-scripts
 
 # Copy all application files (node_modules excluded via .dockerignore)
 COPY ./ ./
