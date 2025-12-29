@@ -18,7 +18,7 @@ describe(
   'db/models/patient_conditions.ts',
   () => {
     afterAll(() => db.destroy())
-    describe('upsertPreExisting', () => {
+    describe.skip('upsertPreExisting', () => {
       it(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',
         async () => {

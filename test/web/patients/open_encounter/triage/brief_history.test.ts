@@ -272,6 +272,9 @@ describe('triage/brief_history', () => {
               'qualifiers': [],
             },
           ],
+          'finding_display': 'Self reported Diabetes mellitus Status',
+          'value_display': 'No',
+          'full_display': 'Self reported Diabetes mellitus Status: No',
         },
         {
           'type': 'finding',
@@ -305,6 +308,9 @@ describe('triage/brief_history', () => {
               'qualifiers': [],
             },
           ],
+          'finding_display': 'Self reported Pregnancy Status',
+          'value_display': 'No',
+          'full_display': 'Self reported Pregnancy Status: No',
         },
         {
           'type': 'finding',
@@ -338,6 +344,11 @@ describe('triage/brief_history', () => {
               'qualifiers': [],
             },
           ],
+          'finding_display':
+            'Self reported Malignant neoplastic disease Status',
+          'value_display': 'Yes',
+          'full_display':
+            'Self reported Malignant neoplastic disease Status: Yes',
         },
       ], { strict: true })
 
