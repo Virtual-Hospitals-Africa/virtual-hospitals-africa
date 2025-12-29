@@ -15,7 +15,6 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { exists } from './exists.ts'
 import { padMonth, padMonthDay } from './pad.ts'
 import assertLength from './assertLength.ts'
-import { logArgsOnError } from './decorators.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 

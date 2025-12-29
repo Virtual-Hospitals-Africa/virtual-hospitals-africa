@@ -40,33 +40,35 @@ function extractUnusedVarName(message: string): string | null {
   return match ? match[1] : null
 }
 
-function removeImportFromLine(line: string, varName: string): string | null {
+function removeImportFromLine(line: string, var_name: string): string | null {
   // Check if this line is an import statement containing the var
   if (!line.trim().startsWith('import ')) return line
 
   // Default import: import foo from 'bar'
-  const defaultImportMatch = line.match(/^import\s+(\w+)\s+from\s+/)
-  if (defaultImportMatch && defaultImportMatch[1] === varName) {
+  const default_import_match = line.match(/^import\s+(\w+)\s+from\s+/)
+  if (default_import_match && default_import_match[1] === var_name) {
     return null // Remove entire line
   }
 
   // Named imports: import { foo, bar } from 'baz'
-  const namedImportMatch = line.match(/^(import\s*\{)([^}]+)(\}\s*from\s*.+)$/)
-  if (namedImportMatch) {
-    const [, prefix, imports, suffix] = namedImportMatch
-    const importItems = imports.split(',').map((s) => s.trim())
+  const named_import_match = line.match(
+    /^(import\s*\{)([^}]+)(\}\s*from\s*.+)$/,
+  )
+  if (named_import_match) {
+    const [, prefix, imports, suffix] = named_import_match
+    const import_items = imports.split(',').map((s) => s.trim())
 
     // Find and remove the var (handling 'as' aliases)
-    const filtered = importItems.filter((item) => {
+    const filtered = import_items.filter((item) => {
       const name = item.split(/\s+as\s+/)[0].trim()
-      return name !== varName
+      return name !== var_name
     })
 
     if (filtered.length === 0) {
       return null // Remove entire line
     }
 
-    if (filtered.length === importItems.length) {
+    if (filtered.length === import_items.length) {
       return line // Var not found in this import
     }
 
@@ -78,32 +80,32 @@ function removeImportFromLine(line: string, varName: string): string | null {
 
 async function processFile(
   filename: string,
-  unusedVars: Set<string>
+  unused_vars: Set<string>,
 ): Promise<boolean> {
   const content = await Deno.readTextFile(filename)
   const lines = content.split('\n')
-  const newLines: string[] = []
+  const new_lines: string[] = []
   let modified = false
 
   for (const line of lines) {
-    let currentLine: string | null = line
+    let current_line: string | null = line
 
-    for (const varName of unusedVars) {
-      if (currentLine === null) break
-      const result = removeImportFromLine(currentLine, varName)
-      if (result !== currentLine) {
+    for (const var_name of unused_vars) {
+      if (current_line === null) break
+      const result = removeImportFromLine(current_line, var_name)
+      if (result !== current_line) {
         modified = true
-        currentLine = result
+        current_line = result
       }
     }
 
-    if (currentLine !== null) {
-      newLines.push(currentLine)
+    if (current_line !== null) {
+      new_lines.push(current_line)
     }
   }
 
   if (modified) {
-    await Deno.writeTextFile(filename, newLines.join('\n'))
+    await Deno.writeTextFile(filename, new_lines.join('\n'))
     return true
   }
   return false
@@ -111,56 +113,56 @@ async function processFile(
 
 async function main() {
   console.log('Running deno lint...')
-  const lintOutput = await runLint()
+  const lint_output = await runLint()
 
   // Group unused vars by file
-  const unusedByFile = new Map<string, Set<string>>()
+  const unused_by_file = new Map<string, Set<string>>()
 
-  for (const diag of lintOutput.diagnostics) {
+  for (const diag of lint_output.diagnostics) {
     if (diag.code !== 'no-unused-vars') continue
 
-    const varName = extractUnusedVarName(diag.message)
-    if (!varName) continue
+    const var_name = extractUnusedVarName(diag.message)
+    if (!var_name) continue
 
     // Convert file:// URL to path
-    const filePath = diag.filename.replace('file://', '')
+    const file_path = diag.filename.replace('file://', '')
 
-    if (!unusedByFile.has(filePath)) {
-      unusedByFile.set(filePath, new Set())
+    if (!unused_by_file.has(file_path)) {
+      unused_by_file.set(file_path, new Set())
     }
-    unusedByFile.get(filePath)!.add(varName)
+    unused_by_file.get(file_path)!.add(var_name)
   }
 
-  if (unusedByFile.size === 0) {
+  if (unused_by_file.size === 0) {
     console.log('No unused imports found.')
     return
   }
 
-  console.log(`Found unused vars in ${unusedByFile.size} file(s)`)
+  console.log(`Found unused vars in ${unused_by_file.size} file(s)`)
 
-  let filesModified = 0
-  for (const [filePath, unusedVars] of unusedByFile) {
-    console.log(`Processing ${filePath}: ${[...unusedVars].join(', ')}`)
-    const modified = await processFile(filePath, unusedVars)
+  let files_modified = 0
+  for (const [file_path, unused_vars] of unused_by_file) {
+    console.log(`Processing ${file_path}: ${[...unused_vars].join(', ')}`)
+    const modified = await processFile(file_path, unused_vars)
     if (modified) {
-      filesModified++
+      files_modified++
     }
   }
 
-  console.log(`Modified ${filesModified} file(s)`)
+  console.log(`Modified ${files_modified} file(s)`)
 
   // Run lint again to verify
   console.log('\nRunning deno lint again to verify...')
-  const verifyOutput = await runLint()
-  const remainingUnused = verifyOutput.diagnostics.filter(
-    (d) => d.code === 'no-unused-vars'
+  const verify_output = await runLint()
+  const remaining_unused = verify_output.diagnostics.filter(
+    (d) => d.code === 'no-unused-vars',
   )
 
-  if (remainingUnused.length > 0) {
+  if (remaining_unused.length > 0) {
     console.log(
-      `\nNote: ${remainingUnused.length} unused var(s) remain (likely not imports):`
+      `\nNote: ${remaining_unused.length} unused var(s) remain (likely not imports):`,
     )
-    for (const d of remainingUnused) {
+    for (const d of remaining_unused) {
       console.log(`  ${d.filename}:${d.range.start.line} - ${d.message}`)
     }
   } else {

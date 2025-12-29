@@ -5,7 +5,6 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
-import AddressSection from '../../../../../../../../components/patient-registration/AddressSection.tsx'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
@@ -28,10 +27,10 @@ const PatientRegistrationContactsSchema = z.object({
 export const handler = postHandler(
   PatientRegistrationContactsSchema,
   async (
-    _req,
     ctx: OpenEncounterWorkflowContext,
     { address, emergency_contacts },
   ) => {
+    console.log('TODO use emergency_contacts', emergency_contacts)
     await patient_address.updateById(
       ctx.state.trx,
       { patient_id: ctx.state.patient.id, address },
