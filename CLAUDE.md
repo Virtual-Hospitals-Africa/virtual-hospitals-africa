@@ -36,7 +36,7 @@ deno task local <command>          # Run command against local env
 
 ## Key Points
 
-- **Runtime**: Deno 2.3.5 (not Node.js)
+- **Runtime**: Deno 2.6.1 (not Node.js)
 - **Frontend**: Preact + Signals, Tailwind
 - **Database**: PostgreSQL 16 + Kysely
 - **Naming**: `snake_case` for data, `camelCase` for functions, `PascalCase` for types
