@@ -10,7 +10,11 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { patient_records } from './patient_records.ts'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { buildExpression } from './s_expression.ts'
+import {
+  buildExpression,
+  maybeSnomedConceptBase,
+  snomedConceptBase,
+} from './s_expression.ts'
 import isString from '../../util/isString.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 
@@ -47,7 +51,7 @@ export function insertOneNestedQuery(
   const evaluation_node = isString(evaluation)
     ? parseExpressionExpectingAtom(evaluation, 'evaluation')
     : evaluation
-  assertHasProperty(evaluation_node, 'snomed_concept_id')
+  assertHasProperty(evaluation_node, 'snomed_concept')
 
   let query = trx.with(
     'inserting_record',
@@ -57,8 +61,14 @@ export function insertOneNestedQuery(
           id: evaluation_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: evaluation_node.snomed_concept_id,
-          value_snomed_concept_id: evaluation_node.value_snomed_concept_id,
+          snomed_concept_id: snomedConceptBase(
+            trx,
+            evaluation_node.snomed_concept,
+          ),
+          value_snomed_concept_id: maybeSnomedConceptBase(
+            trx,
+            evaluation_node.value_snomed_concept,
+          ),
         }).returning('id'),
   ).with(
     'inserting_evaluation',
@@ -77,7 +87,7 @@ export function insertOneNestedQuery(
     qualifier: ParsedExpressionOf<'qualifier'>,
     qualifies_record_id: string,
   ) {
-    assertHasProperty(qualifier, 'snomed_concept_id')
+    assertHasProperty(qualifier, 'snomed_concept')
 
     if (qualifier.atom !== 'qualifier') {
       assertEquals(
@@ -98,8 +108,11 @@ export function insertOneNestedQuery(
             id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: qualifier.snomed_concept_id,
-            value_snomed_concept_id: qualifier.value_snomed_concept_id,
+            snomed_concept_id: snomedConceptBase(trx, qualifier.snomed_concept),
+            value_snomed_concept_id: maybeSnomedConceptBase(
+              trx,
+              qualifier.value_snomed_concept,
+            ),
           }),
     ).with(
       `inserting_qualifiers_${id_token}`,

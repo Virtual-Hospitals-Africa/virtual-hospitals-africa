@@ -49,7 +49,6 @@ import {
   VitalMeasurementFormInputDefition,
 } from '../../../../../../../../types.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
-import mapEntries from '../../../../../../../../util/mapEntries.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -57,36 +56,16 @@ const TriageMeasureVitalsSchema = z.object({
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
-    }).strict(),
-  ).optional().transform((measurements) =>
-    mapEntries(measurements || {}, (measurement, vital) => {
-      assert(measurement)
-      const { value, units } = measurement
-      if (value == null) return
-      const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
-      return parseExpressionExpectingAtom(
-        `(= (measurement ${snomed_concept_id}) (units ${value} ${units}))`,
-        '=',
-      )
-    })
-  ),
+    }).strict().transform(({ value, units }) =>
+      value ? { value, units } : undefined
+    ),
+  ).default({}),
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
       value_snomed_concept_id: snomed_concept_id,
     }).strict(),
-  ).optional().transform((assessments) =>
-    mapEntries(assessments || {}, (assessment, vital) => {
-      assert(assessment)
-      const { value_snomed_concept_id } = assessment
-      const finding_snomed_concept_id =
-        VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
-      return parseExpressionExpectingAtom(
-        `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding_snomed_concept_id} ${value_snomed_concept_id})`,
-        'finding',
-      )
-    })
-  ),
+  ).default({}),
 }).strict()
 
 async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
@@ -154,8 +133,8 @@ export const handler = postHandler(
       const form_input = form_values.measurements[vital]
       if (form_input) {
         assertOr400(
-          form_input.right.units === units,
-          `Expected units to be ${units}. Received ${form_input.right.units}.`,
+          form_input.units === units,
+          `Expected units to be ${units}. Received ${form_input.units}.`,
         )
         continue
       }
@@ -198,14 +177,20 @@ export const handler = postHandler(
     await Promise.all([
       forEach(
         entries(form_values.measurements),
-        async ([vital, measurement_equality]) => {
-          if (!measurement_equality) return
+        async ([vital, measurement]) => {
+          if (!measurement) return
+
+          const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
+          const measurement_equality = parseExpressionExpectingAtom(
+            `(= (measurement ${snomed_concept_id}) (units ${measurement.value} ${measurement.units}))`,
+            '=',
+          )
           const result = await patient_measurements.insertOneNested(trx, {
             patient_id,
             patient_encounter_id,
             patient_encounter_employee_id,
-            measurement_equality,
             procedure_id,
+            measurement_equality,
           })
 
           const score = getScoreForMeasurement(
@@ -230,13 +215,18 @@ export const handler = postHandler(
         async ([vital, assessment]) => {
           if (!assessment) return
           assert(assessment.value_snomed_concept_id)
-
+          const finding_snomed_concept_id =
+            VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
+          const finding = parseExpressionExpectingAtom(
+            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding_snomed_concept_id} ${assessment.value_snomed_concept_id})`,
+            'finding',
+          )
           const result = await patient_findings.insertOneNested(trx, {
             patient_id,
             patient_encounter_id,
             patient_encounter_employee_id,
             procedure_id,
-            finding: assessment,
+            finding,
           })
 
           const score = getScoreForAssessment(

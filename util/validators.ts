@@ -88,9 +88,11 @@ export const tews_component = z.number().int().min(0).max(3)
 
 export const tews_total = z.number().int().min(0).max(10)
 
-export const snomed_category: z.ZodEnum<{
-  [c in SnomedCategory]: SnomedCategory
-}> = z.enum([
+export const snomed_category: z.ZodEnum<
+  {
+    [c in SnomedCategory]: SnomedCategory
+  }
+> = z.enum([
   'administration method',
   'assessment scale',
   'attribute',

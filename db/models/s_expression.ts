@@ -32,7 +32,7 @@ type SatisfyingResult = {
 
 export function snomedConceptBase(
   trx: TrxOrDb,
-  snomed_concept: Lang['snomed_concept']
+  snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
   if (snomed_concept.type === 'id') return snomed_concept.id
@@ -42,6 +42,13 @@ export function snomedConceptBase(
     .where('name', '=', snomed_concept.name)
     .where('category', '=', snomed_concept.category)
     .select('id')
+}
+
+export function maybeSnomedConceptBase(
+  trx: TrxOrDb,
+  snomed_concept: Lang['snomed_concept'] | null,
+) {
+  return snomed_concept && snomedConceptBase(trx, snomed_concept)
 }
 
 function baseQuery(
@@ -74,7 +81,11 @@ function baseQuery(
     .$if(
       !!snomed_concept,
       (qb) =>
-        qb.where('patient_records.snomed_concept_id', '=', snomedConceptBase(trx, snomed_concept!)),
+        qb.where(
+          'patient_records.snomed_concept_id',
+          '=',
+          snomedConceptBase(trx, snomed_concept!),
+        ),
     )
     .$if(
       !!value_snomed_concept,
@@ -143,7 +154,7 @@ function measurement(
       atom: 'snomed_concept',
       type: 'id',
       id: '118245000',
-    }
+    },
   })
     .innerJoin(
       'patient_findings',
@@ -192,9 +203,7 @@ const EXPRESSION_BUILDERS = {
           qb.where((eb) =>
             sql<boolean>`is_descendant(${
               eb.ref('patient_findings.finding_snomed_concept_id')
-            }, ${
-              snomedConceptBase(trx, finding_snomed_concept!)
-            }::bigint)`
+            }, ${snomedConceptBase(trx, finding_snomed_concept!)}::bigint)`
           ),
       )
       .$if(

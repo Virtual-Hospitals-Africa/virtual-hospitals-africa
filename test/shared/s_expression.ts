@@ -98,6 +98,9 @@ describe('shared/s_expression.ts', () => {
       'not_findings': [],
     })
 
-    assertEquals(inverseSExpression(parsed), `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`)
+    assertEquals(
+      inverseSExpression(parsed),
+      `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
+    )
   })
 })

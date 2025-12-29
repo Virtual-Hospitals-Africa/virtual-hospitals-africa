@@ -2,7 +2,7 @@ import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
-import { parseWithValues, safeParseWithValues } from '../util/assertMatches.ts'
+import { parseWithValues } from '../util/assertMatches.ts'
 
 type SExpressionNode = {
   atom: string

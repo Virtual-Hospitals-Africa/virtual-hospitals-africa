@@ -12,7 +12,12 @@ import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { ParsedExpressionOf } from '../../shared/s_expression.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { buildExpression, satisfyingSExpression } from './s_expression.ts'
+import {
+  buildExpression,
+  maybeSnomedConceptBase,
+  satisfyingSExpression,
+  snomedConceptBase,
+} from './s_expression.ts'
 import { Priority } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
@@ -227,8 +232,8 @@ export const patient_findings = base({
       finding,
     }: FindingInsert,
   ) {
-    assertHasProperty(finding, 'snomed_concept_id')
-    assertHasProperty(finding, 'finding_snomed_concept_id')
+    assertHasProperty(finding, 'snomed_concept')
+    assertHasProperty(finding, 'finding_snomed_concept')
 
     const finding_id = generateUUID()
 
@@ -240,15 +245,21 @@ export const patient_findings = base({
             id: finding_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: finding.snomed_concept_id,
-            value_snomed_concept_id: finding.value_snomed_concept_id,
+            snomed_concept_id: snomedConceptBase(trx, finding.snomed_concept),
+            value_snomed_concept_id: maybeSnomedConceptBase(
+              trx,
+              finding.value_snomed_concept,
+            ),
           }),
     ).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: finding_id,
           procedure_id,
-          finding_snomed_concept_id: finding.finding_snomed_concept_id,
+          finding_snomed_concept_id: snomedConceptBase(
+            trx,
+            finding.finding_snomed_concept,
+          ),
           patient_encounter_employee_id,
         }))
 
@@ -268,7 +279,7 @@ export const patient_findings = base({
         return qb
       }
 
-      assertHasProperty(qualifier, 'snomed_concept_id')
+      assertHasProperty(qualifier, 'snomed_concept')
       const id = generateUUID()
       const id_token = id.replaceAll('-', '_')
 
@@ -280,8 +291,14 @@ export const patient_findings = base({
               id,
               patient_id,
               patient_encounter_id,
-              snomed_concept_id: qualifier.snomed_concept_id,
-              value_snomed_concept_id: qualifier.value_snomed_concept_id,
+              snomed_concept_id: snomedConceptBase(
+                trx,
+                qualifier.snomed_concept,
+              ),
+              value_snomed_concept_id: maybeSnomedConceptBase(
+                trx,
+                qualifier.value_snomed_concept,
+              ),
             }),
       ).with(
         `inserting_qualifiers_${id_token}`,
