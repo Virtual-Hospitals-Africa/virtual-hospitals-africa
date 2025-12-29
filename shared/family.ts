@@ -160,3 +160,23 @@ export const relation_from_snomed_id = (snomed_id: string) => {
   )
   return SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS[snomed_id]
 }
+
+export const EMERGENCY_CONTACT_RELATIONSHIPS = [
+  'Parent',
+  'Sibling',
+  'Friend',
+  'Other',
+] as const
+
+export type EmergencyContactRelationship =
+  (typeof EMERGENCY_CONTACT_RELATIONSHIPS)[number]
+
+export const EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA = z.enum(
+  EMERGENCY_CONTACT_RELATIONSHIPS,
+)
+
+export const EmergencyContactSchema = z.object({
+  name: z.string().min(1),
+  relationship: EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA,
+  phone_number: z.string().min(1),
+})

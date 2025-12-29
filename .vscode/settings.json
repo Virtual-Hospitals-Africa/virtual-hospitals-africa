@@ -1,7 +1,9 @@
 {
   "deno.enable": true,
   "deno.lint": true,
-  "deno.testing.args": ["--allow-all"],
+  "deno.testing.args": [
+    "--allow-all"
+  ],
   "deno.codeLens.test": true,
   "deno.codeLens.testArgs": [
     "--allow-all"

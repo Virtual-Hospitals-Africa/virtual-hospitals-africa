@@ -5,8 +5,9 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
-import AddressSection from '../../../../../../../../components/patient-registration/AddressSection.tsx'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
+import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
 
 const PatientRegistrationContactsSchema = z.object({
   address: z.object({
@@ -16,11 +17,20 @@ const PatientRegistrationContactsSchema = z.object({
     administrative_area_level_1: z.string().optional(),
     country: z.string(),
   }),
+  emergency_contacts: z.array(z.object({
+    name: z.string(),
+    relationship: z.string(),
+    phone_number: z.string(),
+  })).min(1),
 })
 
 export const handler = postHandler(
   PatientRegistrationContactsSchema,
-  async (ctx: OpenEncounterWorkflowContext, { address }) => {
+  async (
+    ctx: OpenEncounterWorkflowContext,
+    { address, emergency_contacts },
+  ) => {
+    console.log('TODO use emergency_contacts', emergency_contacts)
     await patient_address.updateById(
       ctx.state.trx,
       { patient_id: ctx.state.patient.id, address },
@@ -36,7 +46,13 @@ export async function PatientRegistrationContactsPage(
   const address = await patient_address.getById(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
   })
-  return <AddressSection address={address} />
+  return (
+    <div>
+      {/* <AddressSection address={address} /> */}
+      <PatientContactInformationSection address={address} />
+      <EmergencyContactSection />
+    </div>
+  )
 }
 
 export default OpenEncounterWorkflowPage(PatientRegistrationContactsPage)

@@ -14,7 +14,7 @@ export function VerticalRadioButtons({ options, name, defaultValue }: {
       <div className='flex flex-col gap-[18px]'>
         {options.map((option) => (
           <div key={option.id} className='flex items-start gap-3'>
-            <div className='flex items-center pt-0.5'>
+            <div className='flex items-center pt-1'>
               <input
                 defaultChecked={option.id === defaultValue}
                 id={option.id}

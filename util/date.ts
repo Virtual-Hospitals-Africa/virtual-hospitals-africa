@@ -15,7 +15,6 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { exists } from './exists.ts'
 import { padMonth, padMonthDay } from './pad.ts'
 import assertLength from './assertLength.ts'
-import { logArgsOnError } from './decorators.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -100,7 +99,6 @@ export function parseDate(
   date: string | Date,
   timezone: string = 'Africa/Johannesburg',
 ): ParsedDate {
-  console.log(date)
   if (typeof date === 'string') {
     assert(
       /^\d{4}-\d{2}-\d{2}$/.test(date),
