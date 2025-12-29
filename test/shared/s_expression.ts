@@ -11,6 +11,7 @@ describe('shared/s_expression.ts', () => {
       snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812', },
       finding_snomed_concept: { atom: 'snomed_concept', type: 'id', id: '1219200912', },
       value_snomed_concept: null,
+      attributes: [],
       qualifiers: [],
       not_findings: [],
     })
@@ -25,6 +26,7 @@ describe('shared/s_expression.ts', () => {
       snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812', },
       finding_snomed_concept: { atom: 'snomed_concept', type: 'id', id: '1219200912', },
       value_snomed_concept: null,
+      attributes: [],
       qualifiers: [{
         atom: 'qualifier',
         snomed_concept: { atom: 'snomed_concept', type: 'id', id: '121277', },
@@ -35,6 +37,11 @@ describe('shared/s_expression.ts', () => {
     })
   })
 
+  /**
+   * finding: attribute
+    relation: finding site
+    finding_snomed_concept_id: the actual finding site
+   */
   it.skip('can parse a finding expression with attributes & snomed concepts', () => {
     const parsed = parseExpressionExpectingAtom(
       `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 

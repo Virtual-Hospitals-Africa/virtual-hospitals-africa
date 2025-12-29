@@ -31,6 +31,7 @@ type BaseLang =
     finding: RecordSchema & {
       finding_snomed_concept: Lang['snomed_concept'] | null
       not_findings: Lang['not_finding'][]
+      attributes: Lang['attribute'][]
     }
     procedure: RecordSchema
     evaluation: RecordSchema & {
@@ -38,6 +39,10 @@ type BaseLang =
     }
     evaluates: {
       expression: AnyNode
+    }
+    attribute: {
+      relation_snomed_concept: Lang['snomed_concept']
+      finding_snomed_concept: Lang['snomed_concept']
     }
     qualifier: RecordSchema
     not_finding: {
@@ -211,20 +216,22 @@ export const not_finding: z.ZodType<Lang['not_finding']> = z.lazy(() =>
   })
 ).describe('not_finding')
 
-const qualifier_or_not_finding: z.ZodType<
-  Lang['qualifier'] | Lang['not_finding']
+const attribute_or_qualifier_or_not_finding: z.ZodType<
+  |Lang['attribute'] | Lang['qualifier'] | Lang['not_finding']
 > = z.lazy(() =>
   z.union([
+    attribute,
     qualifier,
     not_finding,
   ])
 ).describe('qualifier | not_finding')
 
-const snomed_concept_or_qualifier_or_not_finding: z.ZodType<
-  Lang['snomed_concept'] | Lang['qualifier'] | Lang['not_finding']
+const snomed_concept_or_attribute_or_qualifier_or_not_finding: z.ZodType<
+  Lang['snomed_concept'] |Lang['attribute'] | Lang['qualifier'] | Lang['not_finding']
 > = z.lazy(() =>
   z.union([
     snomed_concept,
+    attribute,
     qualifier,
     not_finding,
   ])
@@ -234,19 +241,23 @@ function isQualifier(node: AnyNode): node is Lang['qualifier'] {
   return node.atom === 'qualifier'
 }
 
+function isAttribute(node: AnyNode): node is Lang['attribute'] {
+  return node.atom === 'attribute'
+}
+
 export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
   z.object({
     atom: z.literal('finding'),
     args: z.tuple([
-      snomed_concept_or_qualifier_or_not_finding.optional(),
-      snomed_concept_or_qualifier_or_not_finding.optional(),
-      snomed_concept_or_qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
-      qualifier_or_not_finding.optional(),
+      snomed_concept_or_attribute_or_qualifier_or_not_finding.optional(),
+      snomed_concept_or_attribute_or_qualifier_or_not_finding.optional(),
+      snomed_concept_or_attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
+      attribute_or_qualifier_or_not_finding.optional(),
     ]),
   }).transform(
     (
@@ -280,7 +291,8 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
         snomed_concept = null
       }
 
-      const [qualifiers, not_findings] = partition(nodes, isQualifier)
+      const [qualifiers, others] = partition(nodes, isQualifier)
+      const [attributes, not_findings] = partition(others, isAttribute)
 
       return {
         atom,
@@ -288,6 +300,7 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
         finding_snomed_concept,
         value_snomed_concept,
         qualifiers,
+        attributes,
         not_findings,
       }
     },
@@ -374,6 +387,17 @@ export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
     },
   )
 ).describe('evaluation')
+
+export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('attribute'),
+    args: z.tuple([snomed_concept, snomed_concept]),
+  }).transform(({ atom, args: [relation_snomed_concept, finding_snomed_concept] }) => ({
+    atom,
+    relation_snomed_concept,
+    finding_snomed_concept
+  }))
+).describe('attribute')
 
 export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
   z.object({
@@ -484,6 +508,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     finding,
     evaluation,
     procedure,
+    attribute,
     measurement,
     active_condition,
     comparator,
