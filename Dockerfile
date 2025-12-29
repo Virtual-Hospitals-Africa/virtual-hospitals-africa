@@ -6,11 +6,11 @@ WORKDIR /app
 # COPY deno.json deno.lock./
 COPY deno.json ./
 
-# RUN deno install --frozen --allow-scripts
-RUN deno install --allow-scripts
-
-# Copy all application files (node_modules excluded via .dockerignore)
+# Copy all application files (node_modules & deno.lock are excluded via .dockerignore)
 COPY ./ ./
+
+# RUN deno install --frozen --allow-scripts
+# RUN deno install --allow-scripts
 
 # Build the application
 RUN deno task build
