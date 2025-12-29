@@ -19,6 +19,18 @@ type RecordSchema = {
 
 type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
+type SnomedConcept = {
+  type: 'id'
+  id: string
+} | {
+  type: 'name'
+  name: string
+} | {
+  type: 'name_and_category'
+  name: string
+  category: string
+}
+
 type BaseLang =
   & {
     finding: RecordSchema & {
@@ -82,6 +94,7 @@ const snomed_concept_id_or_qualifier: z.ZodType<string | Lang['qualifier']> = z
       qualifier,
     ])
   )
+  .describe('snomed_concept_id | qualifier')
 
 const required_snomed_concept_record_schema: z.ZodType<
   RecordSchema
@@ -127,7 +140,7 @@ export const qualifier: z.ZodType<Lang['qualifier']> = z.lazy(() =>
     atom,
     ...args,
   }))
-)
+).describe('qualifier')
 
 export const not_finding: z.ZodType<Lang['not_finding']> = z.lazy(() =>
   z.object({
@@ -165,7 +178,7 @@ export const not_finding: z.ZodType<Lang['not_finding']> = z.lazy(() =>
       qualifiers,
     }
   })
-)
+).describe('not_finding')
 
 const qualifier_or_not_finding: z.ZodType<
   Lang['qualifier'] | Lang['not_finding']
@@ -174,7 +187,7 @@ const qualifier_or_not_finding: z.ZodType<
     qualifier,
     not_finding,
   ])
-)
+).describe('qualifier | not_finding')
 
 const snomed_concept_id_or_qualifier_or_not_finding: z.ZodType<
   string | Lang['qualifier'] | Lang['not_finding']
@@ -184,7 +197,7 @@ const snomed_concept_id_or_qualifier_or_not_finding: z.ZodType<
     qualifier,
     not_finding,
   ])
-)
+).describe('snomed_concept_id | qualifier | not_finding')
 
 function isQualifier(node: AnyNode): node is Lang['qualifier'] {
   return node.atom === 'qualifier'
@@ -248,7 +261,7 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
       }
     },
   )
-)
+).describe('finding')
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   z.object({
@@ -258,7 +271,7 @@ export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
     atom,
     expression,
   }))
-)
+).describe('evaluates')
 
 const snomed_concept_id_or_qualifier_or_evaluates: z.ZodType<
   string | Lang['qualifier'] | Lang['evaluates']
@@ -268,7 +281,7 @@ const snomed_concept_id_or_qualifier_or_evaluates: z.ZodType<
     qualifier,
     evaluates,
   ])
-)
+).describe('snomed_concept_id | qualifier | evaluates')
 
 const qualifier_or_evaluates: z.ZodType<Lang['qualifier'] | Lang['evaluates']> =
   z.lazy(() =>
@@ -276,7 +289,7 @@ const qualifier_or_evaluates: z.ZodType<Lang['qualifier'] | Lang['evaluates']> =
       qualifier,
       evaluates,
     ])
-  )
+  ).describe('qualifier | evaluates')
 
 export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
   z.object({
@@ -329,7 +342,7 @@ export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
       }
     },
   )
-)
+).describe('evaluation')
 
 export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
   z.object({
@@ -339,7 +352,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
     atom,
     ...args,
   }))
-)
+).describe('procedure')
 
 export const measurement: z.ZodType<Lang['measurement']> = z.lazy(() =>
   z.object({
@@ -349,7 +362,7 @@ export const measurement: z.ZodType<Lang['measurement']> = z.lazy(() =>
     atom,
     snomed_concept_id,
   }))
-)
+).describe('measurement')
 
 export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
   () =>
@@ -360,7 +373,7 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
       atom,
       snomed_concept_id,
     })),
-)
+).describe('active_condition')
 
 export const units: z.ZodType<Lang['units']> = z.lazy(() =>
   z.object({
@@ -370,7 +383,7 @@ export const units: z.ZodType<Lang['units']> = z.lazy(() =>
     atom,
     value,
     units,
-  }))
+  })).describe('units')
 )
 
 export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
@@ -388,7 +401,7 @@ export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
     left,
     right,
   }))
-)
+).describe('comparator')
 
 export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
@@ -402,7 +415,7 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
     left,
     right,
   }))
-)
+).describe('task')
 
 export const not: z.ZodType<Lang['not']> = z.lazy(() =>
   z.object({
@@ -412,7 +425,7 @@ export const not: z.ZodType<Lang['not']> = z.lazy(() =>
     atom,
     expression,
   }))
-)
+).describe('not')
 
 export const or: z.ZodType<Lang['or']> = z.lazy(() =>
   z.object({
@@ -422,7 +435,7 @@ export const or: z.ZodType<Lang['or']> = z.lazy(() =>
     atom,
     expressions: args,
   }))
-)
+).describe('or')
 
 export const and: z.ZodType<Lang['and']> = z.lazy(() =>
   z.object({
@@ -432,7 +445,7 @@ export const and: z.ZodType<Lang['and']> = z.lazy(() =>
     atom,
     expressions: args,
   }))
-)
+).describe('and')
 
 export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
   z.union([

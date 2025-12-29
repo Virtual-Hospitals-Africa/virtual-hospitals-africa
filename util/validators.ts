@@ -71,6 +71,7 @@ export const generated_uuid = z.string().uuid().optional().transform((v) =>
 
 export const snomed_concept_id = z.string().regex(/^\d+$/).or(z.number())
   .transform((concept_id) => String(concept_id))
+  .describe('snomed_concept_id')
 
 export const decimal = z.string().regex(/^-?\d+(\.\d+)?$/)
 

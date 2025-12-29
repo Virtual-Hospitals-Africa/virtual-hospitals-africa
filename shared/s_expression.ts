@@ -2,6 +2,7 @@ import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
+import { parseWithValues, safeParseWithValues } from '../util/assertMatches.ts'
 
 type SExpressionNode = {
   atom: string
@@ -80,7 +81,9 @@ export function parseExpressionExpectingAtom<
 
   const first_pass = recursiveTreePass(parsed)
 
-  const second_pass = schemaByAtom(atom).parse(first_pass)
+  const schema = schemaByAtom(atom)
+
+  const second_pass = parseWithValues(schema, first_pass)
 
   assert(isAtom(second_pass, atom))
 

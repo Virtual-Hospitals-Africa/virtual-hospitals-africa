@@ -52,19 +52,35 @@ export function getAtPath(obj: unknown, path: PropertyKey[]): unknown {
   return value
 }
 
+export function safeParseWithValues<Schema extends z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>(
+  schema: Schema,
+  object: unknown
+) {
+  const result = schema.safeParse(object)
+  if (!result.success) {
+    result.error.issues.forEach(issue => {
+      Object.assign(issue, {
+        actual_value: getAtPath(object, issue.path)
+      })
+    })
+  }
+  return result
+}
+
+export function parseWithValues<Schema extends z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>(
+  schema: Schema,
+  object: unknown
+) {
+  const result = safeParseWithValues(schema, object)
+  if (result.success) return result.data
+  throw new Error(JSON.stringify(result.error.issues, null, 2))
+}
+
 export function assertMatches(
   object: unknown,
   test: unknown,
   opts: { strict?: boolean } = {},
 ): void {
-  const result = zodify(test, opts).safeParse(object)
-  if (!result.success) {
-    const issues = result.error.issues.map((issue) => (
-      {
-        ...issue,
-        actual_value: getAtPath(object, issue.path),
-      }
-    ))
-    throw new Error(JSON.stringify(issues, null, 2))
-  }
+  const schema = zodify(test, opts)
+  parseWithValues(schema, object)
 }

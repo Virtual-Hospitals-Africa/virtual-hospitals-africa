@@ -1,6 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { parseExpression } from '../../shared/s_expression.ts'
+import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../db/models/patient_findings.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {
@@ -32,5 +33,17 @@ describe('shared/s_expression.ts', () => {
       }],
       not_findings: [],
     })
+  })
+
+  it('can parse a finding expression with attributes & snomed concepts', () => {
+    const parsed = parseExpressionExpectingAtom(
+      `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+          (snomed_concept "Burn" "disorder")
+          (attribute (snomed_concept "Finding site") (snomed_concept "Left upper arm structure"))
+      )`,
+      'finding',
+    )
+
+    console.log(parsed)
   })
 })
