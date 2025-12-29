@@ -8,6 +8,8 @@ RUN deno install --frozen --allow-scripts
 # Copy all application files (node_modules excluded via .dockerignore)
 COPY ./ ./
 
+RUN cat /app/deno.lock
+
 # # Build the application
 RUN deno task build
 EXPOSE 8000
