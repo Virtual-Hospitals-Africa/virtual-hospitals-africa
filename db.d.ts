@@ -26,7 +26,7 @@ export type EmergencyContactRelationship =
   | 'Sibling'
 
 export type EncounterReason =
-  | 'Administration'
+  | 'administration'
   | 'checkup'
   | 'follow up'
   | 'maternity'

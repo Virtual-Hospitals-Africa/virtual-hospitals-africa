@@ -99,7 +99,6 @@ export function parseDate(
   date: string | Date,
   timezone: string = 'Africa/Johannesburg',
 ): ParsedDate {
-  console.log(date)
   if (typeof date === 'string') {
     assert(
       /^\d{4}-\d{2}-\d{2}$/.test(date),
