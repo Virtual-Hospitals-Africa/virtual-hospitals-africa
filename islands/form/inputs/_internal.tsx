@@ -115,7 +115,7 @@ export function InternalInput({
             id={id}
             {...(name && { name })}
             className={cls(
-              'h-full block w-full bg-transparent py-1.5 outline-none placeholder:text-gray-400 sm:text-sm/6',
+              'h-full block w-full bg-transparent px-4 py-1.5 outline-none placeholder:text-gray-400 sm:text-sm/6',
               inputClassName,
               {
                 'pl-3': !!leftIcon,

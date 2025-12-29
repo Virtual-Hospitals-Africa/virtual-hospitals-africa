@@ -7,7 +7,7 @@ import { DateInput } from '../../../../islands/form/inputs/date.tsx'
 import { PhoneNumberInput } from '../../../../islands/form/inputs/phone_number.tsx'
 import { TextInput } from '../../../../islands/form/inputs/text.tsx'
 import { SexAndGenderInputs } from '../../../../islands/patient-registration/SexAndGenderInputs.tsx'
-import { NamesFormRow } from '../../../../islands/patient-registration/NamesFormRow.tsx'
+import { NamesInputs } from '../../../../islands/patient-registration/NamesInputs.tsx'
 
 export default function NursePersonalForm(
   { form_data }: {
@@ -16,7 +16,7 @@ export default function NursePersonalForm(
 ) {
   return (
     <>
-      <NamesFormRow
+      <NamesInputs
         names={form_data}
       />
       <FormRow>

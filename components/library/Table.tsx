@@ -8,9 +8,8 @@ import { assertPersonLike, Person, PersonData } from './Person.tsx'
 import Pagination from './Pagination.tsx'
 import entries from '../../util/entries.ts'
 import { ActionButton } from './ActionButton.tsx'
-import isDate from '../../util/isDate.ts'
 import { LocalTime } from '../../islands/LocalTime.tsx'
-import { rfc3339_regex } from '../../util/date.ts'
+import { isDateLike } from '../../util/date.ts'
 
 type Showable =
   | string[]
@@ -19,6 +18,18 @@ type Showable =
   | null
   | undefined
   | ComponentChildren
+
+function assertShowable(value: unknown): asserts value is Showable {
+  if (value == null) return
+  if (typeof value === 'string') return
+  if (typeof value === 'number') return
+  if (Array.isArray(value) && value.every(isString)) return
+  if (typeof value === 'boolean') return
+  if (isObjectLike(value) && 'type' in value) return // VNode/JSX element
+  throw new Error(
+    `Expected a showable value, got ${typeof value}: ${JSON.stringify(value)}`,
+  )
+}
 
 type Row = Record<string, unknown> & {
   id?: string
@@ -52,8 +63,7 @@ export type TableColumn<T extends Row> =
 
 type MappedColumn<T extends Row> = {
   column: TableColumn<T>
-  // deno-lint-ignore no-explicit-any
-  cell_contents: any[]
+  cell_contents: unknown[]
 }
 
 type TableProps<T extends Row> = {
@@ -76,13 +86,12 @@ function TableCellInnerContents<T extends Row>(
   },
 ) {
   const value = mapped_column.cell_contents[row_index]
-  const is_date = isDate(value) ||
-    (isString(value) && rfc3339_regex.test(value))
   if (
     mapped_column.column.type === 'content' ||
     mapped_column.column.type === undefined
   ) {
-    assert(!is_date, 'Use the "date" column type for dates')
+    assert(!isDateLike(value), 'Use the "date" column type for dates')
+    assertShowable(value)
     return (
       <div
         className={cls(
@@ -98,7 +107,8 @@ function TableCellInnerContents<T extends Row>(
   if (
     mapped_column.column.type === 'date'
   ) {
-    assert(!value || is_date)
+    if (!value) return null
+    assert(isDateLike(value))
 
     return (
       <div

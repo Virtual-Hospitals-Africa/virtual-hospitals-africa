@@ -1,6 +1,5 @@
 import { useSignal } from '@preact/signals'
 import { Maybe } from '../types.ts'
-import { CheckboxInput } from './form/inputs/checkbox.tsx'
 import { TextInput } from './form/inputs/text.tsx'
 
 export function SouthAfricanNationalIdFormGroup(
@@ -13,18 +12,24 @@ export function SouthAfricanNationalIdFormGroup(
     !national_id_number && previously_completed_step,
   )
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col gap-2'>
       <SouthAfricanNationalIdInput
         value={national_id_number}
         no_national_id_checked={no_national_id.value}
       />
-      <CheckboxInput
-        name='no_national_id'
-        label='Patient has no National ID'
-        checked={no_national_id.value}
-        onInput={({ currentTarget }) =>
-          no_national_id.value = currentTarget.checked}
-      />
+      <label className='flex items-center gap-2'>
+        <input
+          type='checkbox'
+          name='no_national_id'
+          className='h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          checked={no_national_id.value}
+          onInput={({ currentTarget }) =>
+            no_national_id.value = currentTarget.checked}
+        />
+        <span className='text-sm font-medium text-gray-600'>
+          Patient has no National ID
+        </span>
+      </label>
     </div>
   )
 }

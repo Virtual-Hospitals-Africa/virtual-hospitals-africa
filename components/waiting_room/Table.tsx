@@ -89,7 +89,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Target time',
     type: 'date',
-    data: ({ priority }) => priority?.target_treatment_time,
+    data: ({ priority }) => {
+      console.log(priority)
+      return priority?.target_treatment_time
+    },
   },
   {
     label: 'Actions',
