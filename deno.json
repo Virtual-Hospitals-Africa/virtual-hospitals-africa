@@ -91,7 +91,7 @@
     "sql-formatter": "npm:sql-formatter@15.6.9",
     "tailwind-merge": "npm:tailwind-merge@2.6.0",
     "zod": "npm:zod@4.2.1",
-    "fresh": "jsr:@fresh/core@2.1.4",
+    "fresh": "jsr:@fresh/core@2.2.0",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.0.7",
     "s-expression": "npm:s-expression@3.1.1",
     "vite": "npm:vite@7.1.3",
