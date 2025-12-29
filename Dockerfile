@@ -10,7 +10,7 @@ COPY deno.json ./
 COPY ./ ./
 
 # RUN deno install --frozen --allow-scripts
-# RUN deno install --allow-scripts
+RUN deno install --allow-scripts
 
 # Build the application
 RUN deno task build
