@@ -1,16 +1,16 @@
-import FormRow from '../components/library/FormRow.tsx'
 import FormSection from '../components/library/FormSection.tsx'
 import CountrySelect from './CountrySelect.tsx'
 import { Address } from '../types.ts'
 import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
 import { TextInput } from './form/inputs/text.tsx'
+import FormGrid from '../components/library/FormGrid.tsx'
 
 export default function PatientContactInformationSection(
   { address }: { address?: Address },
 ) {
   return (
     <FormSection header='Patient Contact Information'>
-      <FormRow>
+      <FormGrid columns={2}>
         <CountrySelect
           name='country'
           label='Country'
@@ -25,8 +25,6 @@ export default function PatientContactInformationSection(
           required
         >
         </PhoneNumberInput>
-      </FormRow>
-      <FormRow>
         <TextInput
           name='address'
           label='Street Address'
@@ -34,7 +32,7 @@ export default function PatientContactInformationSection(
           value={address?.street}
         >
         </TextInput>
-      </FormRow>
+      </FormGrid>
     </FormSection>
   )
 }
