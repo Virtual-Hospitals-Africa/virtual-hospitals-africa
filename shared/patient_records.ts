@@ -1,20 +1,18 @@
 import { assert } from 'std/assert/assert.ts'
 import { Maybe, RecordDisplays } from '../types.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
-import partition from '../util/partition.ts'
 import compact from '../util/compact.ts'
 import { SnomedCategory } from '../db.d.ts'
-import isNumber from '../util/isNumber.ts'
-import isKeyOf from '../util/isKeyOf.ts'
 import isObjectLike from '../util/isObjectLike.ts'
-import omit from '../util/omit.ts'
+import isString from '../util/isString.ts'
+import { positive_decimal } from '../util/validators.ts'
 
 type DisplayableRecord = {
   name: string
   category: SnomedCategory
   finding_name?: Maybe<string>
   value_name?: Maybe<string>
-  value?: Maybe<number | string | DisplayableRecord>
+  value?: Maybe<string | DisplayableRecord>
   units?: Maybe<string>
   prefixes?: DisplayableRecord[]
   // Attributes are not included as part of the display, but listed here for completeness
@@ -33,16 +31,14 @@ function measurementValueDisplay(
   }
 }
 
-export function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
-  assert(
-    !isKeyOf('attributes', record),
-    'If passing attributes use formatRecordDisplay instead',
-  )
+function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
   const { name, prefixes = [], finding_name, value_name, value, units } = record
   // For measurements skip the "Measurement finding" bit
-  if (isNumber(value)) {
+  if (isString(value)) {
+    positive_decimal.parse(value)
     assert(finding_name)
     assert(units)
+    assert(isString(units))
     assertArrayEmpty(prefixes)
     const value_display = measurementValueDisplay({ value, units })
     return {
@@ -59,7 +55,7 @@ export function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
   ]).join(' ')
 
   if (value) {
-    assert(isObjectLike(value))
+    assert(isObjectLike(value), `Unexpected value ${value}`)
     assert(!value_name)
     const value_display = buildValueDisplay(value).full_display
     return {
@@ -93,10 +89,9 @@ export function formatRecordDisplay<
 >(record: R): R & RecordDisplays & {
   attributes: Array<R['attributes'][number] & RecordDisplays>
 } {
-  console.log(record)
   return {
     ...record,
-    ...buildValueDisplay(omit(record, ['attributes'])),
+    ...buildValueDisplay(record),
     attributes: record.attributes.map((attribute) => ({
       ...attribute,
       ...buildValueDisplay(attribute),

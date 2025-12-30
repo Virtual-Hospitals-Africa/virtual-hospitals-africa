@@ -20,7 +20,6 @@ import {
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { hydrateIntermediateRecords } from '../../db/models/patient_record_providers.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
-import { SearchResult } from '../../db/models/_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'

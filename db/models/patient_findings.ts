@@ -1,10 +1,4 @@
-import {
-  IdSelection,
-  RenderedFindingProvider,
-  RenderedFindingRelativeToHealthWorker,
-  TrxOrDb,
-  TrxOrDbOrQueryCreator,
-} from '../../types.ts'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   asText,
   debugLog,
@@ -206,6 +200,7 @@ export const patient_findings = base({
       ).where('patient_measurements.id', 'is', null)
     }
     if (opts.s_expression) {
+      assert(opts.patient_id)
       qb = qb.where(
         'patient_records.id',
         'in',

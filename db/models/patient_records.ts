@@ -1,6 +1,6 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { asText, debugLog, jsonArrayFrom, success_true } from '../helpers.ts'
+import { asText, jsonArrayFrom, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import {

@@ -1,5 +1,5 @@
 import { TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, jsonBuildObject, orderByArrayPosition } from '../helpers.ts'
+import { asText, orderByArrayPosition } from '../helpers.ts'
 
 // TODO: qualifiers might be entered by someone other than the person who initially created the finding
 function baseInnerQuery(
