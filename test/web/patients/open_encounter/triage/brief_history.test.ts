@@ -262,16 +262,15 @@ describe('triage/brief_history', () => {
           },
           'priority': null,
           'score': null,
-          'qualifiers': [
+          'prefixes': [
             {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
-              'value_name': null,
-              'qualifiers': [],
             },
           ],
+          'attributes': [],
           'finding_display': 'Self reported Diabetes mellitus Status',
           'value_display': 'No',
           'full_display': 'Self reported Diabetes mellitus Status: No',
@@ -298,16 +297,15 @@ describe('triage/brief_history', () => {
           },
           'priority': null,
           'score': null,
-          'qualifiers': [
+          'prefixes': [
             {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
-              'value_name': null,
-              'qualifiers': [],
             },
           ],
+          'attributes': [],
           'finding_display': 'Self reported Pregnancy Status',
           'value_display': 'No',
           'full_display': 'Self reported Pregnancy Status: No',
@@ -334,16 +332,15 @@ describe('triage/brief_history', () => {
           },
           'priority': null,
           'score': null,
-          'qualifiers': [
+          'prefixes': [
             {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '1156040003',
               'category': 'qualifier value',
               'name': 'Self reported',
-              'value_name': null,
-              'qualifiers': [],
             },
           ],
+          'attributes': [],
           'finding_display':
             'Self reported Malignant neoplastic disease Status',
           'value_display': 'Yes',
@@ -392,16 +389,15 @@ describe('triage/brief_history', () => {
           'is_admin': false,
           'seen_at': z.string().datetime({ offset: true }),
         },
-        'qualifiers': [
+        'prefixes': [
           {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
-            'value_name': null,
-            'qualifiers': [],
           },
         ],
+        'attributes': [],
         'source_relations': [],
         'destination_relations': [],
       }, { strict: true })
@@ -438,16 +434,15 @@ describe('triage/brief_history', () => {
           'is_admin': false,
           'seen_at': z.string().datetime({ offset: true }),
         },
-        'qualifiers': [
+        'prefixes': [
           {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
-            'value_name': null,
-            'qualifiers': [],
           },
         ],
+        'attributes': [],
         'source_relations': [],
         'destination_relations': [],
       }, { strict: true })
@@ -855,16 +850,15 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'score': null,
-        'qualifiers': [
+        'prefixes': [
           {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '1156040003',
             'category': 'qualifier value',
             'name': 'Self reported',
-            'value_name': null,
-            'qualifiers': [],
           },
         ],
+        'attributes': [],
         'pertaining_to_key': 'diabetes',
         'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: Yes',
@@ -999,16 +993,6 @@ describe('triage/brief_history', () => {
         },
         'priority': null,
         'score': null,
-        'qualifiers': [
-          {
-            'record_id': z.string().uuid(),
-            'snomed_concept_id': '1156040003',
-            'category': 'qualifier value',
-            'name': 'Self reported',
-            'value_name': null,
-            'qualifiers': [],
-          },
-        ],
         'pertaining_to_key': 'cancer',
         'finding_display': 'Self reported Malignant neoplastic disease Status',
         'full_display':
@@ -1020,6 +1004,15 @@ describe('triage/brief_history', () => {
           'id': nurse1.health_worker.id,
           'employee_id': nurse1.health_worker.employee_id,
         },
+        'prefixes': [
+          {
+            'record_id': z.string().uuid(),
+            'snomed_concept_id': '1156040003',
+            'category': 'qualifier value',
+            'name': 'Self reported',
+          },
+        ],
+        'attributes': [],
       }, { strict: true })
 
       assertMatches(most_recent_findings.diabetes, {
@@ -1047,16 +1040,15 @@ describe('triage/brief_history', () => {
         'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: No',
         'value_display': 'No',
-        'qualifiers': [
+        'prefixes': [
           {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '1156040003',
             'category': 'qualifier value',
             'name': 'Self reported',
-            'value_name': null,
-            'qualifiers': [],
           },
         ],
+        'attributes': [],
         'provider': {
           'is_me': true,
           'id': nurse2.health_worker.id,
@@ -1144,16 +1136,15 @@ describe('triage/brief_history', () => {
         'full_display': 'Self reported Pregnancy Status: Unknown',
         'value_display': 'Unknown',
         'existence': 'Unknown',
-        'qualifiers': [
+        'prefixes': [
           {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '1156040003',
             'name': 'Self reported',
             'category': 'qualifier value',
-            'value_name': null,
-            'qualifiers': [],
           },
         ],
+        'attributes': [],
         'pertaining_to_key': 'pregnancy',
         'provider': {
           'is_me': true,

@@ -72,7 +72,7 @@ describe('db/models/s_expression.ts', () => {
           encounter.employee.patient_encounter_employee_id,
         'name': 'Clinical finding',
         'value_snomed_concept_id': null,
-        'value_name': null,
+
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
           'snomed_concept_id': '225390008',
@@ -83,13 +83,13 @@ describe('db/models/s_expression.ts', () => {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '125666000',
             'name': 'Burn',
-            'value_name': null,
+
             'qualifiers': [
               {
                 'record_id': z.string().uuid(),
                 'snomed_concept_id': '255593009',
                 'name': 'Circumferential',
-                'value_name': null,
+
                 'qualifiers': [],
               },
             ],

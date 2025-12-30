@@ -153,7 +153,6 @@ export type PatientFindingsSearch = {
 }
 
 export const patient_findings = base({
-  verbose: true,
   top_level_table: 'patient_findings',
   baseQuery,
   formatResult: (finding) => {

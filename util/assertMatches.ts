@@ -70,8 +70,6 @@ export function safeParseWithValues<
         actual_value: value === undefined ? '<undefined>' : value,
       })
     })
-    console.log(result.error.issues)
-    console.log(result.error.message)
   }
   return result
 }

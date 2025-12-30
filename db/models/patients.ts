@@ -221,6 +221,7 @@ export async function getPreferredLanguage(
 }
 
 const model = base({
+  verbose: true,
   top_level_table: 'patients',
   baseQuery,
   formatResult: (x: RenderedPatient): RenderedPatient => x,

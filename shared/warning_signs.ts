@@ -80,7 +80,7 @@ export const WARNING_SIGNS = {
   },
   'Poisoning': {
     'clinical_finding_s_expression': '(finding 404684003 75478009)',
-    'excluding_s_expression': '(not (finding 404684003 1149222004))',
+    'excluding_s_expression': '(finding 404684003 1149222004)',
     'sats_primary_name': 'Poisoning',
     'sats_secondary_text': null,
     'sats_priority': 'Very urgent',
@@ -112,8 +112,8 @@ export const WARNING_SIGNS = {
   'Dislocation of larger joint': {
     'clinical_finding_s_expression': '(finding 404684003 87642003)',
     'excluding_s_expression': `
-      (and (not (finding 363698007 7569003))
-           (not (finding 363698007 29707007))
+      (or (finding 363698007 7569003)
+           (finding 363698007 29707007))
     `,
     'sats_primary_name': 'Dislocation of larger joint',
     'sats_secondary_text': 'not finger or toe',
@@ -219,11 +219,11 @@ export const WARNING_SIGNS = {
       (finding 404684003 125666000)
     `,
     'excluding_s_expression': `
-      (and 
-        (not (finding 404684003 125666000 (qualifier 255593009)))
-        (not (finding 404684003 425082000))
-        (not (finding 404684003 426284001))
-        (not (finding 404684003 262582004)))
+      (or
+        (finding 404684003 125666000 (qualifier 255593009))
+        (finding 404684003 425082000)
+        (finding 404684003 426284001)
+        (finding 404684003 262582004))
     `,
     'sats_primary_name': 'Burn',
     'sats_secondary_text': 'Other',

@@ -41,6 +41,7 @@ export type BaseModelInput<
     trx: TrxOrDb,
   ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
   formatResult: (result: IntermediateResult) => RenderedResult
+  verbose?: boolean
 }
 
 type BaseModel<
@@ -147,42 +148,61 @@ export function base<
     IntermediateResult,
     RenderedResult
   >
-  & { verbose?: boolean }
   & Extra {
-  const { top_level_table, baseQuery, handleSearch, formatResult, verbose } =
-    input
+  const {
+    top_level_table,
+    baseQuery,
+    formatResult,
+    verbose,
+  } = input
 
   const base_query_consumes_search = baseQuery.length === 2
+  let handleSearch: NonNullable<typeof input.handleSearch>
+
   if (base_query_consumes_search) {
     assert(
-      !handleSearch,
+      !input.handleSearch,
       'handleSearch must not be provided if baseQuery consumes search terms',
     )
+    handleSearch = (qb) => qb
   } else {
     assert(
-      handleSearch,
+      input.handleSearch,
       'handleSearch must be provided if baseQuery does not consumes search terms',
     )
+    handleSearch = input.handleSearch
   }
 
   return bindAll({
     ...input,
-    searchQuery(
+    buildQuery(
       trx: TrxOrDb,
       search_terms: SearchTerms,
-      callback?: (
+      callback: (
         qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
       ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
     ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> {
-      const base = baseQuery(trx, search_terms as SearchTerms)
-      const with_search = handleSearch
-        ? handleSearch(base, search_terms, trx)
-        : base
-      const callback_applied = callback ? callback(with_search) : with_search
+      const query = callback(baseQuery(trx, search_terms))
+      // TODO: log up a level
       if (verbose) {
-        debugLog(callback_applied)
+        debugLog(query)
       }
-      return callback_applied
+      return query
+    },
+    searchQuery(
+      trx: TrxOrDb,
+      search_terms: SearchTerms,
+      callback: (
+        qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
+      ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> = (
+        qb,
+      ) => qb,
+    ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> {
+      return this.buildQuery(
+        trx,
+        search_terms,
+        (qb) => callback(handleSearch(qb, search_terms, trx)),
+      )
     },
     async findAll(
       trx: TrxOrDb,
@@ -289,7 +309,7 @@ export function base<
       trx: TrxOrDb,
       id: string | IdSelection,
     ): Promise<RenderedResult | null> {
-      const query = this.searchQuery(trx, {} as SearchTerms, (qb) =>
+      const query = this.buildQuery(trx, {} as SearchTerms, (qb) =>
         qb.where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
           '=',
@@ -312,7 +332,7 @@ export function base<
       if (Array.isArray(ids)) {
         assert(ids.length > 0)
       }
-      const intermediate_results = await this.searchQuery(
+      const intermediate_results = await this.buildQuery(
         trx,
         {} as SearchTerms,
         (qb) =>
@@ -345,11 +365,19 @@ export function base<
         SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>['select']
       >[0],
     ): IdSelection {
-      return this.searchQuery(trx, search_terms || {} as SearchTerms)
-        .clearSelect()
-        // deno-lint-ignore no-explicit-any
-        .select(ref || `${top_level_table}.id` as any)
-        .distinct() as unknown as IdSelection
+      return this.searchQuery(
+        trx,
+        search_terms,
+        (qb) =>
+          qb.clearSelect()
+            // deno-lint-ignore no-explicit-any
+            .select(ref || `${top_level_table}.id` as any)
+            .distinct() as unknown as SelectQueryBuilder<
+              Tables,
+              SelectingFrom,
+              IntermediateResult
+            >,
+      ) as unknown as IdSelection
     },
     async countAll(
       trx: TrxOrDb,
@@ -358,7 +386,7 @@ export function base<
       // Hack, but passing the callback through to .searchQuery enables verbose to work
       const { count } = await this.searchQuery(
         trx,
-        search_terms || {} as SearchTerms,
+        search_terms,
         (qb) =>
           qb.clearSelect()
             .select((eb) =>
