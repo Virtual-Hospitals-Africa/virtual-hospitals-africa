@@ -67,7 +67,7 @@ export function safeParseWithValues<
     result.error.issues.forEach((issue) => {
       const value = getAtPath(object, issue.path)
       Object.assign(issue, {
-        actual_value: value === undefined ? "<undefined>": value,
+        actual_value: value === undefined ? '<undefined>' : value,
       })
     })
     console.log(result.error.issues)

@@ -1,13 +1,13 @@
-import {
-  IdSelection,
-  TrxOrDb,
-  TrxOrDbOrQueryCreator,
-} from '../../types.ts'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { asText, debugLog, jsonArrayFrom, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
-import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
+import {
+  buildExpression,
+  maybeSnomedConceptBase,
+  snomedConceptBase,
+} from './s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
@@ -185,7 +185,7 @@ export function baseQuery(
             'patient_record_qualifiers.qualifies_record_id',
             '=',
             eb.ref('patient_records.id'),
-          )
+          ),
       ).as('prefixes'),
       jsonArrayFrom(
         patient_record_qualifiers.baseQueryAttribute(trx)
@@ -193,7 +193,7 @@ export function baseQuery(
             'patient_record_qualifiers.qualifies_record_id',
             '=',
             eb.ref('patient_records.id'),
-          )
+          ),
       ).as('attributes'),
       // Aliased base query idea
       // https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/blob/a94d120fc459824516c14931ea2f8b4abcf27d9b/db/models/patient_record_qualifiers.ts
@@ -235,15 +235,15 @@ type RecordInsert = {
   patient_id: string
   patient_encounter_id: string
   record_id?: string
-  snomed_concept: Lang['snomed_concept'],
-  value_snomed_concept: Lang['snomed_concept'] | null,
+  snomed_concept: Lang['snomed_concept']
+  value_snomed_concept: Lang['snomed_concept'] | null
   qualifiers?: Lang['qualifier'][]
   attributes?: Lang['attribute'][]
 }
 
 export function baseInsert(
   trx: TrxOrDb,
-  insert: RecordInsert
+  insert: RecordInsert,
 ) {
   console.log('zz', insert)
   const {
@@ -270,8 +270,7 @@ export function baseInsert(
             value_snomed_concept,
           ),
         }),
-    )
-
+  )
 
   function qualifierCte(
     qb: typeof query,

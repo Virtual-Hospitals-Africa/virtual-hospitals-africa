@@ -53,11 +53,15 @@ function baseQuery(
     snomed_concept,
     value_snomed_concept,
     qualifiers = [],
+    attributes = [],
   }: PatientIdentifiers & {
     snomed_concept?: Maybe<Lang['snomed_concept']>
     value_snomed_concept?: Maybe<Lang['snomed_concept']>
     qualifiers?: Array<
       Lang['qualifier']
+    >
+    attributes?: Array<
+      Lang['attribute']
     >
   },
 ) {
@@ -100,6 +104,19 @@ function baseQuery(
         patient_id,
         patient_encounter_id,
       }, qualifier)
+        .clearSelect()
+        .select('patient_record_qualifiers.qualifies_record_id'),
+    )
+  }
+
+  for (const attribute of attributes) {
+    query = query.where(
+      'patient_records.id',
+      'in',
+      EXPRESSION_BUILDERS.attribute(trx, {
+        patient_id,
+        patient_encounter_id,
+      }, attribute)
         .clearSelect()
         .select('patient_record_qualifiers.qualifies_record_id'),
     )
@@ -176,14 +193,16 @@ const EXPRESSION_BUILDERS = {
       value_snomed_concept,
       finding_snomed_concept,
       qualifiers,
+      attributes,
     },
   ) {
-    let query = baseQuery(trx, {
+    return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
       snomed_concept,
       value_snomed_concept,
       qualifiers,
+      attributes,
     })
       .innerJoin(
         'patient_findings',
@@ -203,13 +222,11 @@ const EXPRESSION_BUILDERS = {
         !!procedure_id,
         (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
       )
-
-    return query
   },
   procedure(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept, value_snomed_concept, qualifiers },
+    { snomed_concept, value_snomed_concept, qualifiers /* attributes */ },
   ) {
     return baseQuery(trx, {
       patient_id,
@@ -227,7 +244,13 @@ const EXPRESSION_BUILDERS = {
   evaluation(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept, value_snomed_concept, evaluates, qualifiers },
+    {
+      snomed_concept,
+      value_snomed_concept,
+      evaluates,
+      qualifiers,
+      /* attributes */
+    },
   ) {
     return baseQuery(trx, {
       patient_id,
@@ -263,6 +286,23 @@ const EXPRESSION_BUILDERS = {
       snomed_concept,
       value_snomed_concept,
       qualifiers,
+    })
+      .innerJoin(
+        'patient_record_qualifiers',
+        'patient_records.id',
+        'patient_record_qualifiers.id',
+      )
+  },
+  attribute(
+    trx,
+    { patient_id, patient_encounter_id },
+    { snomed_concept, value_snomed_concept },
+  ) {
+    return baseQuery(trx, {
+      patient_id,
+      patient_encounter_id,
+      snomed_concept,
+      value_snomed_concept,
     })
       .innerJoin(
         'patient_record_qualifiers',
@@ -363,9 +403,6 @@ const EXPRESSION_BUILDERS = {
   },
   units() {
     throw new Error('units is not directly queryable')
-  },
-  attribute() {
-    throw new Error('attribute is not directly queryable')
   },
   snomed_concept() {
     throw new Error('snomed_concept is not directly queryable')

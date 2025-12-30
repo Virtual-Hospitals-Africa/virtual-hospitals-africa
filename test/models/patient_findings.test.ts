@@ -1,6 +1,9 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import {
+  parseExpression,
+  parseExpressionExpectingAtom,
+} from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import {
@@ -10,13 +13,17 @@ import {
 } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
-import { satisfyingSExpression } from '../../db/models/s_expression.ts'
+import {
+  buildExpression,
+  satisfyingSExpression,
+} from '../../db/models/s_expression.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { hydrateIntermediateRecords } from '../../db/models/patient_record_providers.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import { SearchResult } from '../../db/models/_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
+import { debugLog } from '../../db/helpers.ts'
 
 describe('db/models/patient_findings.ts', () => {
   afterAll(() => db.destroy())
@@ -57,19 +64,20 @@ describe('db/models/patient_findings.ts', () => {
                      (snomed_concept "Left upper arm structure" "body structure")))
       `
 
-      const { finding_id, inserted_new } = await patient_findings.insertOneNested(
-        db,
-        {
-          patient_id,
-          patient_encounter_id: encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            encounter.employee.patient_encounter_employee_id,
-          procedure_id: procedure.procedure_id,
-          finding: burn_of_left_arm_by_attribute_s_expression,
-        },
-      )
+      const { finding_id, inserted_new } = await patient_findings
+        .insertOneNested(
+          db,
+          {
+            patient_id,
+            patient_encounter_id: encounter.patient_encounter_id,
+            patient_encounter_employee_id:
+              encounter.employee.patient_encounter_employee_id,
+            procedure_id: procedure.procedure_id,
+            finding: burn_of_left_arm_by_attribute_s_expression,
+          },
+        )
 
-      console.log({finding_id})
+      console.log({ finding_id })
       assert(inserted_new)
 
       const m = (await patient_findings.getById(
@@ -94,17 +102,17 @@ describe('db/models/patient_findings.ts', () => {
       )
       assertMatches(finding.attributes, [
         {
-          "record_id": z.string().uuid(),
-          "category": "attribute",
-          "snomed_concept_id": "363698007",
-          "name": "Finding site",
-          "value_snomed_concept_id": '368208006',
-          "value_name": "Left upper arm structure",
-          "value_category": "body structure",
-          "finding_display": "Finding site",
-          "value_display": "Left upper arm structure",
-          "full_display": "Finding site: Left upper arm structure"
-        }
+          'record_id': z.string().uuid(),
+          'category': 'attribute',
+          'snomed_concept_id': '363698007',
+          'name': 'Finding site',
+          'value_snomed_concept_id': '368208006',
+          'value_name': 'Left upper arm structure',
+          'value_category': 'body structure',
+          'finding_display': 'Finding site',
+          'value_display': 'Left upper arm structure',
+          'full_display': 'Finding site: Left upper arm structure',
+        },
       ], { strict: true })
 
       const records = await satisfyingSExpression(
@@ -119,6 +127,25 @@ describe('db/models/patient_findings.ts', () => {
         satisfies: true,
         record_ids: [finding_id],
       })
+
+      console.log(parseExpression(`
+            (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+              (snomed_concept "Burn" "disorder")
+              (attribute (snomed_concept "Finding site" "attribute") 
+                         (snomed_concept "Right upper arm structure" "body structure")))
+          `))
+      debugLog(
+        buildExpression(
+          db,
+          { patient_id },
+          `
+            (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+              (snomed_concept "Burn" "disorder")
+              (attribute (snomed_concept "Finding site" "attribute") 
+                         (snomed_concept "Right upper arm structure" "body structure")))
+          `,
+        ),
+      )
 
       const records_slightly_off = await satisfyingSExpression(
         db,

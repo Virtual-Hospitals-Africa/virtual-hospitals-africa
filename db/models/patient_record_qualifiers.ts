@@ -45,7 +45,7 @@ function baseQueryAttribute(
       'qualifier_records.value_snomed_concept_id',
       'value_snomed_concept.id',
     )
-    .select(eb => [
+    .select((eb) => [
       asText(eb, 'value_snomed_concept.id').as('value_snomed_concept_id'),
       'value_snomed_concept.name as value_name',
       'value_snomed_concept.category as value_category',
