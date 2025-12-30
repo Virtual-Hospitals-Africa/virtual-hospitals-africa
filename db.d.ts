@@ -19,10 +19,13 @@ export type DoctorReviewStep =
   | 'revert'
 
 export type EmergencyContactRelationship =
+  | 'Child'
   | 'Friend'
   | 'Other'
   | 'Parent'
+  | 'Partner'
   | 'Sibling'
+  | 'Spouse'
 
 export type EncounterReason =
   | 'administration'
