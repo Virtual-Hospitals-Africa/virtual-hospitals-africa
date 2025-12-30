@@ -5,16 +5,7 @@ import { Button } from '../components/library/Button.tsx'
 import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 import { TextInput } from './form/inputs/text.tsx'
-
-const RELATIONSHIP_OPTIONS = [
-  'Parent',
-  'Spouse',
-  'Sibling',
-  'Child',
-  'Friend',
-  'Partner',
-  'Other',
-]
+import { EMERGENCY_CONTACT_RELATIONSHIPS } from '../shared/family.ts'
 
 export default function EmergencyContactSection({
   existing_contacts = [{ name: '', relationship: '', phone_number: '' }],
@@ -58,7 +49,7 @@ export default function EmergencyContactSection({
               name={`emergency_contacts[${index}].relationship`}
               label='Relationship'
               blank_option='Select Relationship'
-              options={RELATIONSHIP_OPTIONS}
+              options={EMERGENCY_CONTACT_RELATIONSHIPS}
               required
               value={contact.relationship}
             />

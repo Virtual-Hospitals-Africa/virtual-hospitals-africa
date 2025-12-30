@@ -185,7 +185,6 @@ export async function setContacts(
       name: string
       relationship: EmergencyContactRelationship
       phone_number: string
-      contact_order?: number
     }>
   },
 ) {
@@ -202,12 +201,12 @@ export async function setContacts(
   return trx
     .insertInto('patient_emergency_contacts')
     .values(
-      contacts.map((contact) => ({
+      contacts.map((contact, index) => ({
         patient_id,
         name: contact.name.trim(),
         relationship: contact.relationship,
         phone_number: contact.phone_number,
-        contact_order: contact.contact_order ?? 0,
+        contact_order: index,
       })),
     )
     .returningAll()

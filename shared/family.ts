@@ -162,11 +162,14 @@ export const relation_from_snomed_id = (snomed_id: string) => {
 }
 
 export const EMERGENCY_CONTACT_RELATIONSHIPS = [
-  'Parent',
-  'Sibling',
-  'Friend',
-  'Other',
-] as const
+  'Parent' as const,
+  'Spouse' as const,
+  'Sibling' as const,
+  'Child' as const,
+  'Friend' as const,
+  'Partner' as const,
+  'Other' as const,
+]
 
 export type EmergencyContactRelationship =
   (typeof EMERGENCY_CONTACT_RELATIONSHIPS)[number]
