@@ -1,5 +1,6 @@
 import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, orderByArrayPosition } from '../helpers.ts'
+import { ATTRIBUTE_SNOMED_CONCEPT_ID } from './patient_findings.ts'
 
 // TODO: qualifiers might be entered by someone other than the person who initially created the finding
 function baseInnerQuery(
@@ -40,15 +41,35 @@ function baseQueryAttribute(
 ) {
   return baseInnerQuery(trx)
     .where('qualifier_records.value_snomed_concept_id', 'is not', null)
+    .where(
+      'qualifier_records.snomed_concept_id',
+      '=',
+      ATTRIBUTE_SNOMED_CONCEPT_ID,
+    )
     .innerJoin(
       'snomed_inferred_canonical_name_and_category as value_snomed_concept',
       'qualifier_records.value_snomed_concept_id',
       'value_snomed_concept.id',
     )
+    .innerJoin(
+      'patient_findings as attribute_patient_findings',
+      'qualifier_records.id',
+      'attribute_patient_findings.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category as finding_snomed_concept',
+      'attribute_patient_findings.finding_snomed_concept_id',
+      'finding_snomed_concept.id',
+    )
     .select((eb) => [
       asText(eb, 'value_snomed_concept.id').as('value_snomed_concept_id'),
       'value_snomed_concept.name as value_name',
       'value_snomed_concept.category as value_category',
+      asText(eb, 'finding_snomed_concept.id').as('finding_snomed_concept_id'),
+      'finding_snomed_concept.name as finding_name',
+      'finding_snomed_concept.category as finding_category',
+      'attribute_patient_findings.patient_encounter_employee_id',
+      'attribute_patient_findings.procedure_id',
     ])
 }
 

@@ -253,7 +253,6 @@ export function baseInsert(
     snomed_concept,
     value_snomed_concept,
     qualifiers = [],
-    attributes = [],
   } = insert
 
   let query = trx.with(
@@ -319,46 +318,8 @@ export function baseInsert(
     return next_query
   }
 
-  function attributeCte(
-    qb: typeof query,
-    attribute: Lang['attribute'],
-  ) {
-    const attribute_id = generateUUID()
-    const id_token = attribute_id.replaceAll('-', '_')
-
-    return qb.with(
-      `inserting_attribute_record_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id: attribute_id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(
-              trx,
-              attribute.snomed_concept,
-            ),
-            value_snomed_concept_id: snomedConceptBase(
-              trx,
-              attribute.value_snomed_concept,
-            ),
-          }),
-    ).with(
-      `inserting_attribute_qualifier_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_record_qualifiers')
-          .values({
-            id: attribute_id,
-            qualifies_record_id: record_id,
-          }),
-    ) as unknown as typeof query
-  }
-
   for (const qualifier of qualifiers) {
     query = qualifierCte(query, qualifier, record_id)
-  }
-  for (const attribute of attributes) {
-    query = attributeCte(query, attribute)
   }
 
   return query
