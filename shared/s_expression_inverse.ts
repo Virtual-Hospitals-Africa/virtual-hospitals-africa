@@ -25,14 +25,13 @@ export function inverseSExpression(node: AnyNode): string {
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
-      for (const nf of node.not_findings) parts.push(inverseSExpression(nf))
       return `(${parts.join(' ')})`
     }
 
     case 'attribute': {
-      return `(attribute ${
-        snomedConceptToString(node.relation_snomed_concept)
-      } ${snomedConceptToString(node.finding_snomed_concept)})`
+      return `(attribute ${snomedConceptToString(node.snomed_concept)} ${
+        snomedConceptToString(node.value_snomed_concept)
+      })`
     }
 
     case 'qualifier': {
@@ -40,16 +39,6 @@ export function inverseSExpression(node: AnyNode): string {
       if (node.snomed_concept) {
         parts.push(snomedConceptToString(node.snomed_concept))
       }
-      if (node.value_snomed_concept) {
-        parts.push(snomedConceptToString(node.value_snomed_concept))
-      }
-      for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
-      return `(${parts.join(' ')})`
-    }
-
-    case 'not_finding': {
-      const parts: string[] = ['not_finding']
-      parts.push(snomedConceptToString(node.finding_snomed_concept))
       if (node.value_snomed_concept) {
         parts.push(snomedConceptToString(node.value_snomed_concept))
       }

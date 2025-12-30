@@ -3463,22 +3463,41 @@ export type RenderedQualifierRelativeToHealthWorker = {
   qualifiers: RenderedQualifierRelativeToHealthWorker[]
 }
 
-export type RenderedFindingRelativeToHealthWorker = {
+export type RecordDisplays = {
+  finding_display: string
+  value_display: string | null
+  full_display: string
+}
+
+export type RenderedAttribute = RecordDisplays & {
+  record_id: string
+  // provider: RenderedFindingProvider
+  snomed_concept_id: string
+  name: string
+  category: SnomedCategory
+  value_snomed_concept_id: string
+  value_name: string
+  value_category: SnomedCategory
+}
+
+export type RenderedFindingRelativeToHealthWorker = RecordDisplays & {
   record_id: string
   patient_encounter_id: string
   snomed_concept_id: string
   finding_snomed_concept_id: string
   finding_name: string
-  finding_display: string
   name: string
-  full_display: string
+  finding_display: string
   value_display: string | null
+  full_display: string
   created_at: Date | string
   priority: Priority | null
   score: number | null
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
-  qualifiers: RenderedQualifierRelativeToHealthWorker[]
+  // These are now prefixes
+  // qualifiers: RenderedQualifierRelativeToHealthWorker[]
+  attributes: RenderedAttribute[]
 }
 
 export type WithTriageLevelFinding = NonNullableProperty<
@@ -3523,6 +3542,7 @@ export type WarningSign = {
   sats_primary_name: string
   sats_secondary_text: string | null
   sats_priority: 'Urgent' | 'Very urgent' | 'Emergency'
+  excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
 

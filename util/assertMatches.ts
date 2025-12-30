@@ -65,8 +65,9 @@ export function safeParseWithValues<
   const result = schema.safeParse(object)
   if (!result.success) {
     result.error.issues.forEach((issue) => {
+      const value = getAtPath(object, issue.path)
       Object.assign(issue, {
-        actual_value: getAtPath(object, issue.path),
+        actual_value: value === undefined ? '<undefined>' : value,
       })
     })
   }

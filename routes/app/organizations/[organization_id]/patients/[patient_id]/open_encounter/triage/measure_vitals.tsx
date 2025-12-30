@@ -240,7 +240,7 @@ export const handler = postHandler(
               patient_id,
               patient_encounter_id,
               by_system: true,
-              evaluates_record_id: result.record_id,
+              evaluates_record_id: result.finding_id,
               evaluation: `(evaluation ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
             })
           }

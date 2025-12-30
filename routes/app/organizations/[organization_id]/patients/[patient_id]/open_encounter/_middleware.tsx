@@ -84,6 +84,7 @@ type WorkflowState = {
   previously_completed_step: boolean
   previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: RenderedPatientEncounterEmployee
+  patient_encounter_employee_id: string
   this_visit_findings: RenderedFindingRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
 }
@@ -255,6 +256,7 @@ export async function workflowHandler(
   )
 
   const { patient_encounter_id } = encounter
+  const { patient_encounter_employee_id } = encounter_employee_presence
 
   const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_IDS[workflow]
 
@@ -299,6 +301,7 @@ export async function workflowHandler(
     this_visit_findings,
     previously_completed_step,
     encounter_employee_presence,
+    patient_encounter_employee_id,
     workflow_step_snomed_concept_id,
     previously_completed_procedures,
     workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],

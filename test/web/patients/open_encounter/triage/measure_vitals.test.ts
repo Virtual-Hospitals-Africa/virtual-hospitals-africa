@@ -446,10 +446,11 @@ describe('triage/measure_vitals', () => {
         },
         'priority': null,
         'score': 0,
-        'qualifiers': [],
         'value': '12',
         'units': 'bpm',
         'full_display': `Respiratory rate: 12\u00A0bpm`,
+        'prefixes': [],
+        'attributes': [],
       }, { strict: true })
 
       const component_scores = await patient_evaluation_scores.findAll(
