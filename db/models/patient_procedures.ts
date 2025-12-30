@@ -8,14 +8,9 @@ import {
 import { literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import generateUUID from '../../util/uuid.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
-import {
-  maybeSnomedConceptBase,
-  satisfyingSExpression,
-  snomedConceptBase,
-} from './s_expression.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 
@@ -56,7 +51,7 @@ export const patient_procedures = base({
   baseQuery,
   formatResult: (procedure) => ({
     ...procedure,
-    ...buildValueDisplay(procedure),
+    ...formatRecordDisplay(procedure),
   }),
   handleSearch(
     qb,
@@ -136,20 +131,14 @@ export const patient_procedures = base({
     assertHasProperty(procedure, 'snomed_concept')
     const procedure_id = generateUUID()
 
-    let query = trx.with(
-      'inserting_procedure_record',
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id: procedure_id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(trx, procedure.snomed_concept),
-            value_snomed_concept_id: maybeSnomedConceptBase(
-              trx,
-              procedure.value_snomed_concept,
-            ),
-          }),
+    return patient_records.baseInsert(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        record_id: procedure_id,
+        ...procedure,
+      },
     ).with(
       'inserting_procedure',
       (qb) =>
@@ -160,71 +149,11 @@ export const patient_procedures = base({
             by_system: by_system || false,
           }),
     )
-
-    function qualifierCte(
-      qb: typeof query,
-      qualifier: Lang['qualifier'],
-      qualifies_record_id: string,
-    ) {
-      assertHasProperty(qualifier, 'snomed_concept')
-      if (qualifier.atom !== 'qualifier') {
-        assertEquals(
-          qualifier.atom,
-          'not_finding',
-          'we can omit not expressions upon insert, but not sure what is going on here',
-        )
-        return qb
-      }
-      const id = generateUUID()
-      const id_token = id.replaceAll('-', '_')
-
-      let next_query = qb.with(
-        `inserting_qualifier_record_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_records')
-            .values({
-              id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id: snomedConceptBase(
-                trx,
-                qualifier.snomed_concept,
-              ),
-              value_snomed_concept_id: maybeSnomedConceptBase(
-                trx,
-                qualifier.value_snomed_concept,
-              ),
-            }),
-      ).with(
-        `inserting_qualifiers_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_record_qualifiers')
-            .values({
-              id,
-              qualifies_record_id,
-            }),
-      ) as unknown as typeof query
-
-      for (const sub_qualifier of qualifier.qualifiers) {
-        next_query = qualifierCte(
-          next_query,
-          sub_qualifier,
-          id,
-        ) as unknown as typeof query
-      }
-
-      return next_query
-    }
-
-    for (const qualifier of procedure.qualifiers) {
-      query = qualifierCte(query, qualifier, procedure_id)
-    }
-
-    return query.selectNoFrom([
-      success_true,
-      sql<true>`true`.as('inserted_new'),
-      literalString(procedure_id).as('procedure_id'),
-    ])
+      .selectNoFrom([
+        success_true,
+        sql<true>`true`.as('inserted_new'),
+        literalString(procedure_id).as('procedure_id'),
+      ])
       .executeTakeFirstOrThrow()
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(

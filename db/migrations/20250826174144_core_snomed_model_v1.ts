@@ -214,6 +214,8 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
+  //
+
   await createPointerTable(
     db,
     'patient_record_relations',

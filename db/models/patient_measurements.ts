@@ -16,9 +16,9 @@ import {
 } from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
-import { ParsedExpressionOf } from '../../shared/s_expression.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
 
 export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement finding (finding)|
 
@@ -28,7 +28,7 @@ type MeasurementInsert = {
   patient_encounter_id: string
   patient_encounter_employee_id: string
   measurement_id?: string
-  measurement_equality: ParsedExpressionOf<'='>
+  measurement_equality: Lang['=']
 }
 
 export function baseQuery(
@@ -49,10 +49,7 @@ export function baseQuery(
 export const patient_measurements = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (measurement) => ({
-    ...measurement,
-    ...buildValueDisplay(measurement),
-  }),
+  formatResult: formatRecordDisplay,
   handleSearch(
     qb,
     opts: {
@@ -246,9 +243,6 @@ export const patient_measurements = base({
       ])
 
     const findings = await query.execute()
-    return findings.map((finding) => ({
-      ...finding,
-      ...buildValueDisplay(finding),
-    }))
+    return findings.map(formatRecordDisplay)
   },
 })

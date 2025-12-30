@@ -1,12 +1,10 @@
-import {
-  ParsedExpressionOf,
-  parseExpressionExpectingAtom,
-} from './s_expression.ts'
+import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { Lang } from './s_expression_schemas.ts'
 
 type Task = {
   if_description: string
   tasks_description: string
-  task_s_expression: ParsedExpressionOf<'task'>
+  task_s_expression: Lang['task']
 }
 
 export const TASKS: Task[] = [

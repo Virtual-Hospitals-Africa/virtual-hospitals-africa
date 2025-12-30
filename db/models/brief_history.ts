@@ -21,7 +21,7 @@ import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
@@ -171,7 +171,7 @@ export async function renderedMostRecentFindings(
   const most_recent_findings_with_existence = most_recent_findings.map(
     (finding) => ({
       ...finding,
-      ...buildValueDisplay(finding),
+      ...formatRecordDisplay(finding),
       existence: findingExistence(finding),
     }),
   )

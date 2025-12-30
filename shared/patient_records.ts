@@ -1,16 +1,24 @@
 import { assert } from 'std/assert/assert.ts'
-import { Maybe } from '../types.ts'
+import { Maybe, RecordDisplays } from '../types.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import partition from '../util/partition.ts'
 import compact from '../util/compact.ts'
+import { SnomedCategory } from '../db.d.ts'
+import isNumber from '../util/isNumber.ts'
+import isKeyOf from '../util/isKeyOf.ts'
+import isObjectLike from '../util/isObjectLike.ts'
+import omit from '../util/omit.ts'
 
 type DisplayableRecord = {
   name: string
+  category: SnomedCategory
   finding_name?: Maybe<string>
   value_name?: Maybe<string>
-  value?: Maybe<number | string>
+  value?: Maybe<number | string | DisplayableRecord>
   units?: Maybe<string>
-  qualifiers: DisplayableRecord[]
+  prefixes?: DisplayableRecord[]
+  // Attributes are not included as part of the display, but listed here for completeness
+  attributes?: DisplayableRecord[]
 }
 
 function measurementValueDisplay(
@@ -25,26 +33,17 @@ function measurementValueDisplay(
   }
 }
 
-export function buildValueDisplay(
-  { name, qualifiers, finding_name, value_name, value, units }:
-    DisplayableRecord,
-): {
-  finding_display: string
-  full_display: string
-  value_display: string | null
-} {
-  const [attribute_qualifiers, prefix_qualifiers] = partition(
-    qualifiers || [],
-    (q) => !!q.value_name,
+export function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
+  assert(
+    !isKeyOf('attributes', record),
+    'If passing attributes use formatRecordDisplay instead',
   )
-
-  assertArrayEmpty(attribute_qualifiers)
-
+  const { name, prefixes = [], finding_name, value_name, value, units } = record
   // For measurements skip the "Measurement finding" bit
-  if (value != null) {
+  if (isNumber(value)) {
     assert(finding_name)
     assert(units)
-    assertArrayEmpty(prefix_qualifiers)
+    assertArrayEmpty(prefixes)
     const value_display = measurementValueDisplay({ value, units })
     return {
       value_display,
@@ -54,12 +53,21 @@ export function buildValueDisplay(
   }
 
   const finding_display = compact([
-    ...prefix_qualifiers.map((qualifier) =>
-      buildValueDisplay(qualifier).full_display
-    ),
+    ...prefixes.map((prefix) => buildValueDisplay(prefix).full_display),
     finding_name,
     name,
   ]).join(' ')
+
+  if (value) {
+    assert(isObjectLike(value))
+    assert(!value_name)
+    const value_display = buildValueDisplay(value).full_display
+    return {
+      finding_display,
+      value_display,
+      full_display: `${finding_display}: ${value_display}`,
+    }
+  }
 
   if (!value_name) {
     return {
@@ -75,5 +83,23 @@ export function buildValueDisplay(
     finding_display,
     value_display: value_name,
     full_display: `${finding_display}: ${value_name}`,
+  }
+}
+
+export function formatRecordDisplay<
+  R extends DisplayableRecord & {
+    attributes: DisplayableRecord[]
+  },
+>(record: R): R & RecordDisplays & {
+  attributes: Array<R['attributes'][number] & RecordDisplays>
+} {
+  console.log(record)
+  return {
+    ...record,
+    ...buildValueDisplay(omit(record, ['attributes'])),
+    attributes: record.attributes.map((attribute) => ({
+      ...attribute,
+      ...buildValueDisplay(attribute),
+    })),
   }
 }

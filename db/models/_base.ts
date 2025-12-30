@@ -4,7 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
-import { asCompiledSql } from '../helpers.ts'
+import { asCompiledSql, debugLog } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import isString from '../../util/isString.ts'
 
@@ -146,9 +146,9 @@ export function base<
     TopLevelTable,
     IntermediateResult,
     RenderedResult
-  >
+  > & { verbose?: boolean }
   & Extra {
-  const { top_level_table, baseQuery, handleSearch, formatResult } = input
+  const { top_level_table, baseQuery, handleSearch, formatResult, verbose } = input
 
   const base_query_consumes_search = baseQuery.length === 2
   if (base_query_consumes_search) {
@@ -168,9 +168,15 @@ export function base<
     searchQuery(
       trx: TrxOrDb,
       search_terms: SearchTerms,
+      callback?: (qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
     ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> {
-      const query = baseQuery(trx, search_terms as SearchTerms)
-      return handleSearch ? handleSearch(query, search_terms, trx) : query
+      const base = baseQuery(trx, search_terms as SearchTerms)
+      const with_search = handleSearch ? handleSearch(base, search_terms, trx) : base
+      const callback_applied = callback ? callback(with_search) : with_search
+      if (verbose) {
+        debugLog(callback_applied)
+      }
+      return callback_applied
     },
     async findAll(
       trx: TrxOrDb,
@@ -231,12 +237,12 @@ export function base<
       trx: TrxOrDb,
       terms: SearchTerms,
     ): Promise<null | RenderedResult> {
-      const result = await this.searchQuery(trx, terms).limit(1)
+      const result = await this.searchQuery(trx, terms, qb => qb.limit(1))
         .executeTakeFirst()
       return result ? formatResult(result) : null
     },
     async findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
-      const query = this.searchQuery(trx, terms).limit(2)
+      const query = this.searchQuery(trx, terms, qb => qb.limit(2))
       const results = await query.execute()
       if (results.length > 1) {
         console.error(asCompiledSql(query))
@@ -254,7 +260,7 @@ export function base<
       trx: TrxOrDb,
       terms: SearchTerms,
     ): Promise<RenderedResult | null> {
-      const query = this.searchQuery(trx, terms).limit(2)
+      const query = this.searchQuery(trx, terms, qb => qb.limit(2))
       const results = await query.execute()
       if (results.length === 0) return null
       if (results.length > 1) {
@@ -277,13 +283,13 @@ export function base<
       trx: TrxOrDb,
       id: string | IdSelection,
     ): Promise<RenderedResult | null> {
-      const query = baseQuery(trx, {} as SearchTerms)
-        .where(
+      const query = this.searchQuery(trx, {} as SearchTerms, qb => qb.where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
           '=',
           id,
         )
-        .limit(2)
+        .limit(2))
+        
       const results = await query.execute()
       if (results.length === 0) return null
       if (results.length > 1) {
@@ -299,12 +305,11 @@ export function base<
       if (Array.isArray(ids)) {
         assert(ids.length > 0)
       }
-      const intermediate_results = await baseQuery(trx, {} as SearchTerms)
-        .where(
+      const intermediate_results = await this.searchQuery(trx, {} as SearchTerms, qb => qb.where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
           'in',
           ids,
-        )
+        ))
         .execute()
       return intermediate_results.map(formatResult)
     },
@@ -335,13 +340,14 @@ export function base<
       trx: TrxOrDb,
       search_terms: SearchTerms,
     ): Promise<number> {
+      // Hack, but passing the callback through to .searchQuery enables verbose to work
       const { count } = await this.searchQuery(
         trx,
         search_terms || {} as SearchTerms,
+        qb => qb.clearSelect()
+          .select((eb) => eb.fn.countAll().as('count')) as unknown as SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
       )
-        .clearSelect()
-        .select((eb) => eb.fn.countAll().as('count'))
-        .executeTakeFirstOrThrow() as { count: number | string }
+        .executeTakeFirstOrThrow() as unknown as { count: number | string }
 
       return isString(count) ? parseInt(count) : count
     },

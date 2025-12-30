@@ -7,8 +7,9 @@ import {
 import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
 import * as patient_encounters from './patient_encounters.ts'
-import { IntermediateFinding } from './patient_findings.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { patient_findings } from './patient_findings.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { SearchResult } from './_base.ts'
 
 /**
  * Adds provider and value display, which aren't populated on initial selection from the DB.
@@ -16,7 +17,7 @@ import { buildValueDisplay } from '../../shared/patient_records.ts'
  * an encounter and all the findings are from that encounter.
  */
 export async function hydrateIntermediateRecords<
-  IntermediateRecord extends IntermediateFinding,
+  IntermediateRecord extends SearchResult<typeof patient_findings>,
 >(
   trx: TrxOrDb,
   { records, encounter, health_worker_id }: {
@@ -27,8 +28,6 @@ export async function hydrateIntermediateRecords<
 ): Promise<
   Array<
     IntermediateRecord & {
-      full_display: string
-      value_display: string | null
       provider: RenderedFindingProvider
     }
   >
@@ -77,7 +76,7 @@ export async function hydrateIntermediateRecords<
 
       return {
         ...record,
-        ...buildValueDisplay(record),
+        ...formatRecordDisplay(record),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

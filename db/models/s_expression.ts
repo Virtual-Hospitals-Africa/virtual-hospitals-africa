@@ -9,15 +9,9 @@ import {
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from './patient_findings.ts'
 import isString from '../../util/isString.ts'
-import {
-  Atom,
-  isAtom,
-  ParsedExpression,
-  ParsedExpressionOf,
-  parseExpression,
-} from '../../shared/s_expression.ts'
+import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
-import { Lang } from '../../shared/s_expression_schemas.ts'
+import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 type PatientIdentifiers = {
@@ -63,7 +57,7 @@ function baseQuery(
     snomed_concept?: Maybe<Lang['snomed_concept']>
     value_snomed_concept?: Maybe<Lang['snomed_concept']>
     qualifiers?: Array<
-      ParsedExpressionOf<'qualifier'>
+      Lang['qualifier']
     >
   },
 ) {
@@ -118,7 +112,7 @@ export const satisfyingSExpression = deduplicate(
   async function satisfyingSExpression(
     trx: TrxOrDb,
     { s_expression, ...patient }: {
-      s_expression: string | ParsedExpression
+      s_expression: string | AnyNode
     } & PatientIdentifiers,
   ): Promise<SatisfyingResult> {
     const node = isString(s_expression)
@@ -146,7 +140,7 @@ export const satisfyingSExpression = deduplicate(
 function measurement(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  { snomed_concept }: ParsedExpressionOf<'measurement'>,
+  { snomed_concept }: Lang['measurement'],
 ) {
   return baseQuery(trx, {
     ...patient,
@@ -182,7 +176,6 @@ const EXPRESSION_BUILDERS = {
       value_snomed_concept,
       finding_snomed_concept,
       qualifiers,
-      not_findings,
     },
   ) {
     let query = baseQuery(trx, {
@@ -210,24 +203,6 @@ const EXPRESSION_BUILDERS = {
         !!procedure_id,
         (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
       )
-
-    for (const not_finding of not_findings) {
-      assert(snomed_concept)
-      query = query.where(
-        'patient_records.id',
-        'not in',
-        EXPRESSION_BUILDERS.finding(trx, {
-          patient_id,
-          patient_encounter_id,
-        }, {
-          ...not_finding,
-          atom: 'finding' as const,
-          snomed_concept,
-          not_findings: [],
-          attributes: [],
-        }),
-      )
-    }
 
     return query
   },
@@ -380,9 +355,6 @@ const EXPRESSION_BUILDERS = {
       .where('patient_measurements.units', '=', right.units)
       .where('patient_measurements.value', '=', String(right.value))
   },
-  not_finding() {
-    throw new Error('not_finding is not directly queryable')
-  },
   evaluates() {
     throw new Error('evalutes is not directly queryable')
   },
@@ -402,14 +374,14 @@ const EXPRESSION_BUILDERS = {
   [T in Atom]: (
     trx: TrxOrDb,
     patient: PatientIdentifiers,
-    node: ParsedExpression & { atom: T },
+    node: AnyNode & { atom: T },
   ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
 export function buildExpression(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  node: ParsedExpression | string,
+  node: AnyNode | string,
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   if (typeof node === 'string') {
     node = parseExpression(node)

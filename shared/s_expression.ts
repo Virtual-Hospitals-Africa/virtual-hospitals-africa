@@ -3,6 +3,7 @@ import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
 import { parseWithValues } from '../util/assertMatches.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
 type SExpressionNode = {
   atom: string
@@ -43,16 +44,12 @@ export function parseExpression(
   }
 }
 
-export type ParsedExpression = ReturnType<typeof parseExpression>
-
-export type Atom = ParsedExpression['atom']
-
-export type ParsedExpressionOf<T extends Atom> = ParsedExpression & { atom: T }
+export type Atom = schemas.AnyNode['atom']
 
 export function isAtom<T extends Atom>(
-  obj: ParsedExpression,
+  obj: schemas.AnyNode,
   atom: T,
-): obj is ParsedExpressionOf<T> {
+): obj is schemas.Lang[T] {
   return obj.atom === atom
 }
 
@@ -74,7 +71,7 @@ export function parseExpressionExpectingAtom<
 >(
   expression: string,
   atom: T,
-): ParsedExpression & { atom: T } {
+): schemas.Lang[T] {
   const parsed = s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw parsed
@@ -89,4 +86,17 @@ export function parseExpressionExpectingAtom<
   assert(isAtom(second_pass, atom))
 
   return second_pass
+}
+
+export function asNode<
+  T extends Atom,
+>(
+  expression: string | schemas.AnyNode,
+  atom: T,
+): schemas.Lang[T] {
+  if (isObjectLike(expression)) {
+    assert(isAtom(expression, atom))
+    return expression
+  }
+  return parseExpressionExpectingAtom(expression, atom)
 }

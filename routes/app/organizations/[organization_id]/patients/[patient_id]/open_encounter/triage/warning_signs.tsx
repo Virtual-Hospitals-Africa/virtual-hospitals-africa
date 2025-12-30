@@ -45,7 +45,12 @@ const WarningSignsSchema = z.object({
 export const handler = postHandler(
   WarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { trx, patient, encounter, encounter_employee_presence } = ctx.state
+    const {
+      trx,
+      patient_id,
+      patient_encounter_id,
+      encounter_employee_presence,
+    } = ctx.state
     const warning_signs_previously_entered = groupByUniq(
       await getWarningSignsFromThisEncounter(ctx),
       (sign) => sign.key,
@@ -68,8 +73,8 @@ export const handler = postHandler(
           .insertOneIfNotAlreadyExistsForThisEncounter(
             trx,
             {
-              patient_id: patient.id,
-              patient_encounter_id: encounter.patient_encounter_id,
+              patient_id,
+              patient_encounter_id,
               patient_encounter_employee_id: encounter_employee_presence
                 .patient_encounter_employee_id,
               procedure_id,
@@ -84,12 +89,12 @@ export const handler = postHandler(
         await insertLevel(
           trx,
           {
-            patient_id: patient.id,
-            patient_encounter_id: encounter.patient_encounter_id,
+            patient_id,
+            patient_encounter_id,
             procedure_id,
-            evaluates_record_id: finding_insert.record_id,
-            triage_level: sign.sats_priority,
             by_system: true,
+            triage_level: sign.sats_priority,
+            evaluates_record_id: finding_insert.finding_id,
           },
         )
       },
@@ -102,10 +107,10 @@ export const handler = postHandler(
       await markEnteredInError(
         ctx.state.trx,
         {
-          patient_id: ctx.state.patient.id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          employment_id: ctx.state.encounter_employee_presence.employee_id,
+          patient_id,
+          patient_encounter_id,
           procedure_id,
+          employment_id: ctx.state.encounter_employee_presence.employee_id,
           altered_record_id: exists(record.satisfied_by_record_id),
         },
       )
