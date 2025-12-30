@@ -153,7 +153,6 @@ export function base<
     top_level_table,
     baseQuery,
     formatResult,
-    verbose,
   } = input
 
   const base_query_consumes_search = baseQuery.length === 2
@@ -184,7 +183,7 @@ export function base<
     ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult> {
       const query = callback(baseQuery(trx, search_terms))
       // TODO: log up a level
-      if (verbose) {
+      if (this.verbose) {
         debugLog(query)
       }
       return query

@@ -59,10 +59,11 @@ describe('db/models/patient_findings.ts', () => {
       const burn_of_left_arm_by_attribute_s_expression = `
         (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID}
           (snomed_concept "Burn" "disorder")
-          (qualifier (snomed_concept "Finding site" "attribute")
+          (attribute (snomed_concept "Finding site" "attribute")
                      (snomed_concept "Left upper arm structure" "body structure")))
       `
 
+      patient_findings.verbose = true
       const { finding_id, inserted_new } = await patient_findings
         .insertOneNested(
           db,
@@ -79,13 +80,6 @@ describe('db/models/patient_findings.ts', () => {
       console.log({ finding_id })
       assert(inserted_new)
 
-      const m = (await patient_findings.getById(
-        db,
-        finding_id,
-      )) satisfies IntermediateFinding
-
-      console.log(m)
-
       const [finding] = await patient_findings.getById(db, finding_id)
         .then((f) =>
           hydrateIntermediateRecords(db, {
@@ -99,18 +93,24 @@ describe('db/models/patient_findings.ts', () => {
         finding.full_display,
         'Burn Clinical finding',
       )
+
       assertMatches(finding.attributes, [
         {
           'record_id': z.string().uuid(),
           'category': 'attribute',
-          'snomed_concept_id': '363698007',
-          'name': 'Finding site',
+          'snomed_concept_id': '246061005',
+          'name': 'Attribute',
           'value_snomed_concept_id': '368208006',
           'value_name': 'Left upper arm structure',
           'value_category': 'body structure',
           'finding_display': 'Finding site',
           'value_display': 'Left upper arm structure',
           'full_display': 'Finding site: Left upper arm structure',
+          'finding_snomed_concept_id': '363698007',
+          'finding_name': 'Finding site',
+          'finding_category': 'attribute',
+          'patient_encounter_employee_id': z.string().uuid(),
+          'procedure_id': z.string().uuid(),
         },
       ], { strict: true })
 

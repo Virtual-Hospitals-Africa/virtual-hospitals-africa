@@ -153,6 +153,7 @@ export type PatientFindingsSearch = {
 }
 
 export const patient_findings = base({
+  verbose: true,
   top_level_table: 'patient_findings',
   baseQuery,
   formatResult: (finding) => {
@@ -232,7 +233,7 @@ export const patient_findings = base({
 
     const finding_id = generateUUID()
 
-    const query = patient_records.baseInsert(
+    let query = patient_records.baseInsert(
       trx,
       {
         patient_id,
@@ -251,32 +252,75 @@ export const patient_findings = base({
           ),
           patient_encounter_employee_id,
         }))
-      .selectNoFrom([
-        success_true,
-        sql<true>`true`.as('inserted_new'),
-        literalString(finding_id).as('finding_id'),
-      ])
 
-    debugLog(query)
-    return query
+    function attributeCte(
+      qb: typeof query,
+      attribute: Lang['attribute'],
+    ) {
+      const attribute_id = generateUUID()
+      const id_token = attribute_id.replaceAll('-', '_')
+
+      return qb.with(
+        `inserting_attribute_record_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_records')
+            .values({
+              id: attribute_id,
+              patient_id,
+              patient_encounter_id,
+              snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
+              value_snomed_concept_id: snomedConceptBase(
+                trx,
+                attribute.value_snomed_concept,
+              ),
+            }),
+      ).with(
+        `inserting_attribute_finding_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_findings')
+            .values({
+              id: attribute_id,
+              procedure_id,
+              patient_encounter_employee_id,
+              finding_snomed_concept_id: snomedConceptBase(
+                trx,
+                attribute.finding_snomed_concept,
+              ),
+            }),
+      ).with(
+        `inserting_attribute_qualifier_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_record_qualifiers')
+            .values({
+              id: attribute_id,
+              qualifies_record_id: finding_id,
+            }),
+      ) as unknown as typeof query
+    }
+    for (const attribute of finding_node.attributes) {
+      query = attributeCte(query, attribute)
+    }
+
+    const select_query = query.selectNoFrom([
+      success_true,
+      sql<true>`true`.as('inserted_new'),
+      literalString(finding_id).as('finding_id'),
+    ])
+
+    debugLog(select_query)
+    return select_query
       .executeTakeFirstOrThrow()
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(
     trx: TrxOrDb,
-    {
-      patient_id,
-      patient_encounter_id,
-      patient_encounter_employee_id,
-      procedure_id,
-      finding,
-    }: FindingInsert,
+    insert: FindingInsert,
   ) {
     const already_exists = await satisfyingSExpression(
       trx,
       {
-        patient_id,
-        patient_encounter_id,
-        s_expression: finding,
+        patient_id: insert.patient_id,
+        patient_encounter_id: insert.patient_encounter_id,
+        s_expression: insert.finding,
       },
     )
 
@@ -288,13 +332,7 @@ export const patient_findings = base({
       }
     }
 
-    return patient_findings.insertOneNested(trx, {
-      patient_id,
-      patient_encounter_id,
-      patient_encounter_employee_id,
-      procedure_id,
-      finding,
-    })
+    return patient_findings.insertOneNested(trx, insert)
   },
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,

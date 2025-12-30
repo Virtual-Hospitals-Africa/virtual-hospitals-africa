@@ -79,7 +79,7 @@ describe('shared/s_expression.ts', () => {
       'attributes': [
         {
           'atom': 'attribute',
-          'snomed_concept': {
+          'finding_snomed_concept': {
             'atom': 'snomed_concept',
             'name': 'Finding site',
             'category': 'attribute',

@@ -6,6 +6,7 @@ import { SnomedCategory } from '../db.d.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import isString from '../util/isString.ts'
 import { positive_decimal } from '../util/validators.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 type DisplayableRecord = {
   name: string
@@ -32,9 +33,19 @@ function measurementValueDisplay(
 }
 
 function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
-  const { name, prefixes = [], finding_name, value_name, value, units } = record
+  const {
+    name,
+    category,
+    prefixes = [],
+    finding_name,
+    value_name,
+    value,
+    units,
+  } = record
+
   // For measurements skip the "Measurement finding" bit
   if (isString(value)) {
+    assertEquals(finding_name, 'Measurement')
     positive_decimal.parse(value)
     assert(finding_name)
     assert(units)
@@ -48,8 +59,31 @@ function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
     }
   }
 
+  const prefix_displays = prefixes.map((prefix) =>
+    buildValueDisplay(prefix).full_display
+  )
+
+  // Omit the "Attribute" bit from displays. Attributes display underneath findings,
+  // not on their own so this is implied.
+  if (name === 'Attribute') {
+    assertEquals(category, 'attribute')
+    assert(finding_name)
+    assert(value_name)
+
+    const finding_display = compact([
+      ...prefix_displays,
+      finding_name,
+    ]).join(' ')
+
+    return {
+      finding_display,
+      value_display: value_name,
+      full_display: `${finding_display}: ${value_name}`,
+    }
+  }
+
   const finding_display = compact([
-    ...prefixes.map((prefix) => buildValueDisplay(prefix).full_display),
+    ...prefix_displays,
     finding_name,
     name,
   ]).join(' ')

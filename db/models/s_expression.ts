@@ -4,6 +4,7 @@ import { nowInvalidRecords } from './patient_records.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
+  ATTRIBUTE_SNOMED_CONCEPT_ID,
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
@@ -88,10 +89,13 @@ function baseQuery(
     .$if(
       !!value_snomed_concept,
       (qb) =>
-        qb.where(
-          'patient_records.value_snomed_concept_id',
-          '=',
-          snomedConceptBase(trx, value_snomed_concept!),
+        qb.where((eb) =>
+          eb.and([
+            eb('patient_records.value_snomed_concept_id', 'is not', null),
+            sql<boolean>`is_descendant(${
+              eb.ref('patient_records.value_snomed_concept_id')
+            }, ${snomedConceptBase(trx, value_snomed_concept!)}::bigint)`,
+          ])
         ),
     )
     .select('patient_records.id')
@@ -296,18 +300,31 @@ const EXPRESSION_BUILDERS = {
   attribute(
     trx,
     { patient_id, patient_encounter_id },
-    { snomed_concept, value_snomed_concept },
+    { finding_snomed_concept, value_snomed_concept },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      snomed_concept,
       value_snomed_concept,
+      snomed_concept: {
+        atom: 'snomed_concept',
+        type: 'id',
+        id: ATTRIBUTE_SNOMED_CONCEPT_ID,
+      },
     })
+      .innerJoin(
+        'patient_findings',
+        'patient_records.id',
+        'patient_findings.id',
+      )
       .innerJoin(
         'patient_record_qualifiers',
         'patient_records.id',
         'patient_record_qualifiers.id',
+      ).where((eb) =>
+        sql<boolean>`is_descendant(${
+          eb.ref('patient_findings.finding_snomed_concept_id')
+        }, ${snomedConceptBase(trx, finding_snomed_concept!)}::bigint)`
       )
   },
   not(trx, { patient_id, patient_encounter_id }, { expression }) {

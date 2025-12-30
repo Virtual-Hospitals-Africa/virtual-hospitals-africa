@@ -29,9 +29,9 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'attribute': {
-      return `(attribute ${snomedConceptToString(node.snomed_concept)} ${
-        snomedConceptToString(node.value_snomed_concept)
-      })`
+      return `(attribute ${
+        snomedConceptToString(node.finding_snomed_concept)
+      } ${snomedConceptToString(node.value_snomed_concept)})`
     }
 
     case 'qualifier': {
