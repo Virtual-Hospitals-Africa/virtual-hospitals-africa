@@ -708,7 +708,6 @@ export const search = model.search
 export const findAll = model.findAll
 export const findOne = model.findOne
 export const findOneOptional = model.findOneOptional
-export const searchQuery = model.searchQuery
 export const formatResult = model.formatResult
 
 /*

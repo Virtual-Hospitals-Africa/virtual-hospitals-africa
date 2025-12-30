@@ -2,21 +2,14 @@ import { sql } from 'kysely'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  ParsedExpressionOf,
-  parseExpressionExpectingAtom,
-} from '../../shared/s_expression.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records } from './patient_records.ts'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  buildExpression,
-  maybeSnomedConceptBase,
-  snomedConceptBase,
-} from './s_expression.ts'
+import { buildExpression } from './s_expression.ts'
 import isString from '../../util/isString.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -24,7 +17,7 @@ export type PatientEvaluationInsert =
     patient_id: string
     patient_encounter_id: string
     evaluates_record_id: string
-    evaluation: string | ParsedExpressionOf<'evaluation'>
+    evaluation: string | Lang['evaluation']
   }
   & (
     {
@@ -53,23 +46,14 @@ export function insertOneNestedQuery(
     : evaluation
   assertHasProperty(evaluation_node, 'snomed_concept')
 
-  let query = trx.with(
-    'inserting_record',
-    (qb) =>
-      qb.insertInto('patient_records')
-        .values({
-          id: evaluation_id,
-          patient_id,
-          patient_encounter_id,
-          snomed_concept_id: snomedConceptBase(
-            trx,
-            evaluation_node.snomed_concept,
-          ),
-          value_snomed_concept_id: maybeSnomedConceptBase(
-            trx,
-            evaluation_node.value_snomed_concept,
-          ),
-        }).returning('id'),
+  return patient_records.baseInsert(
+    trx,
+    {
+      patient_id,
+      patient_encounter_id,
+      record_id: evaluation_id,
+      ...evaluation_node,
+    },
   ).with(
     'inserting_evaluation',
     (qb) =>
@@ -79,78 +63,20 @@ export function insertOneNestedQuery(
           employment_id,
           evaluates_record_id,
           by_system: by_system || false,
-        }),
+        }).returning('id'),
   )
-
-  function qualifierCte(
-    qb: typeof query,
-    qualifier: ParsedExpressionOf<'qualifier'>,
-    qualifies_record_id: string,
-  ) {
-    assertHasProperty(qualifier, 'snomed_concept')
-
-    if (qualifier.atom !== 'qualifier') {
-      assertEquals(
-        qualifier.atom,
-        'not_finding',
-        'we can omit not_finding expressions upon insert, but not sure what is going on here',
-      )
-      return qb
-    }
-    const id = generateUUID()
-    const id_token = id.replaceAll('-', '_')
-
-    let next_query = qb.with(
-      `inserting_qualifier_record_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(trx, qualifier.snomed_concept),
-            value_snomed_concept_id: maybeSnomedConceptBase(
-              trx,
-              qualifier.value_snomed_concept,
-            ),
-          }),
-    ).with(
-      `inserting_qualifiers_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_record_qualifiers')
-          .values({
-            id,
-            qualifies_record_id,
-          }),
-    ) as unknown as typeof query
-
-    for (const sub_qualifier of qualifier.qualifiers) {
-      next_query = qualifierCte(
-        next_query,
-        sub_qualifier,
-        id,
-      ) as unknown as typeof query
-    }
-
-    return next_query
-  }
-
-  for (const qualifier of evaluation_node.qualifiers) {
-    query = qualifierCte(query, qualifier, evaluation_id)
-  }
-
-  return query
 }
 
 export function insertOneNested(
   trx: TrxOrDb,
   to_insert: PatientEvaluationInsert,
 ) {
-  return insertOneNestedQuery(trx, to_insert).selectFrom('inserting_record')
+  return insertOneNestedQuery(trx, to_insert)
+    .selectFrom('inserting_evaluation')
     .select([
       success_true,
       sql<true>`true`.as('inserted_new'),
-      'inserting_record.id as evaluation_id',
+      'inserting_evaluation.id as evaluation_id',
     ])
 }
 
@@ -173,7 +99,7 @@ export function baseQuery(
 type PatientEvaluationsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
-  s_expression?: string | ParsedExpressionOf<'evaluation'>
+  s_expression?: string | Lang['evaluation']
   search?: string
 }
 

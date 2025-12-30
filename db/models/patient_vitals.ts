@@ -15,10 +15,10 @@ import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-import { ParsedExpression } from '../../shared/s_expression.ts'
 import { buildExpression } from './s_expression.ts'
+import { AnyNode } from '../../shared/s_expression_schemas.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -39,7 +39,7 @@ type VitalsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
   excluding_patient_encounter_id?: string | IdSelection
-  s_expression?: string | ParsedExpression
+  s_expression?: string | AnyNode
   search?: string
   not_measurements?: boolean
 }
@@ -49,7 +49,7 @@ export const patient_vitals = base({
   baseQuery,
   formatResult: (finding) => ({
     ...finding,
-    ...buildValueDisplay(finding),
+    ...formatRecordDisplay(finding),
   }),
   handleSearch(
     qb,
@@ -171,7 +171,7 @@ export const patient_vitals = base({
 
     return findings.map((finding) => ({
       ...finding,
-      ...buildValueDisplay(finding),
+      ...formatRecordDisplay(finding),
     }))
   },
 })

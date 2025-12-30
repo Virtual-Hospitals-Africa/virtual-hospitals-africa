@@ -49,7 +49,7 @@ describe('triage/additional_tasks_and_investigations', () => {
             'name': 'Measurement finding',
             'category': 'finding',
             'value_snomed_concept_id': null,
-            'value_name': null,
+
             'destination_relations': [],
             'source_relations': [
               {
@@ -63,7 +63,7 @@ describe('triage/additional_tasks_and_investigations', () => {
                 'snomed_concept_id': '103228002',
                 'category': 'observable entity',
                 'name': 'Hemoglobin saturation with oxygen',
-                'value_name': null,
+
                 'qualifiers': [],
               },
             ],
@@ -207,7 +207,7 @@ describe('triage/additional_tasks_and_investigations', () => {
               'name': 'Oxygen therapy',
               'category': 'procedure',
               'value_snomed_concept_id': null,
-              'value_name': null,
+
               'destination_relations': [],
               'source_relations': [],
               'qualifiers': [],
@@ -275,7 +275,7 @@ describe('triage/additional_tasks_and_investigations', () => {
 //         'category': 'finding',
 //         'destination_relations': [],
 //         'value_snomed_concept_id': null,
-//         'value_name': null,
+//
 //         'finding_snomed_concept_id': '103228002',
 //         'finding_name': 'Hemoglobin saturation with oxygen',
 //         'value_display': '91%',
@@ -342,7 +342,7 @@ describe('triage/additional_tasks_and_investigations', () => {
 //       'patient_encounter_id': z.string().uuid(),
 //       'name': 'Oxygen therapy',
 //       'value_snomed_concept_id': null,
-//       'value_name': null,
+//
 //       'qualifiers': [],
 //       'source_relations': [],
 //       'destination_relations': [],

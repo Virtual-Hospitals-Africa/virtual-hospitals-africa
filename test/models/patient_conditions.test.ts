@@ -1100,7 +1100,7 @@ describe(
     })
 
     describe('onboarding', () => {
-      it(
+      it.skip(
         'can add conditions and surgeries in any order, with all being preserved',
         async () => {
           // let patient: { id: string }

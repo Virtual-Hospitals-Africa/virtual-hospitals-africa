@@ -253,7 +253,7 @@ describe('triage/warning_signs', () => {
           'patient_encounter_id': encounter.patient_encounter_id,
           'name': 'Clinical finding',
           'value_snomed_concept_id': null,
-          'value_name': null,
+
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '245581009',
@@ -282,7 +282,7 @@ describe('triage/warning_signs', () => {
           },
         )
 
-      // Submit with "Seizure" selected: (finding 91175000 (qualifier 15240007))
+      // Submit with "Seizure" selected
       // 91175000 = Seizure (canonical name in SNOMED)
       // 15240007 = Current
       const response = await fetchOk(
@@ -315,23 +315,37 @@ describe('triage/warning_signs', () => {
           'created_at': z.date(),
           'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           'patient_encounter_id': encounter.patient_encounter_id,
+          'patient_encounter_employee_id': z.string().uuid(),
+          'type': 'finding',
+          'category': 'finding',
           'name': 'Clinical finding',
-          'value_snomed_concept_id': null,
           'value_name': null,
+          'value_snomed_concept_id': null,
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '245581009',
             'name': 'Emergency examination for triage',
           },
           'finding_snomed_concept_id': '91175000',
-          'qualifiers': [{
-            'record_id': z.string().uuid(),
-            'snomed_concept_id': '15240007',
-            'name': 'Current',
-            'value_name': null,
-          }],
+          'priority': 'Emergency',
+          'score': null,
+          'finding_name': 'Seizure',
+          'finding_display': 'Current Seizure Clinical finding',
+          'full_display': 'Current Seizure Clinical finding',
+          'value_display': null,
+          'destination_relations': [],
+          'source_relations': [],
+          'prefixes': [
+            {
+              'record_id': z.string().uuid(),
+              'category': 'qualifier value',
+              'snomed_concept_id': '15240007',
+              'name': 'Current',
+            },
+          ],
+          'attributes': [],
         },
-      ])
+      ], { strict: true })
 
       await fetchOk(
         `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -410,14 +424,12 @@ describe('triage/warning_signs', () => {
         'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
         'name': 'Clinical finding',
         'finding_snomed_concept_id': '410429000',
-        'qualifiers': [],
       })
 
       assertMatches(chest_pain_finding, {
         'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
         'name': 'Clinical finding',
         'finding_snomed_concept_id': '29857009',
-        'qualifiers': [],
       })
     })
 

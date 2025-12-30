@@ -21,7 +21,6 @@ describe('shared/s_expression.ts', () => {
       value_snomed_concept: null,
       attributes: [],
       qualifiers: [],
-      not_findings: [],
     })
   })
 
@@ -45,7 +44,6 @@ describe('shared/s_expression.ts', () => {
         value_snomed_concept: null,
         qualifiers: [],
       }],
-      not_findings: [],
     })
   })
 
@@ -81,13 +79,13 @@ describe('shared/s_expression.ts', () => {
       'attributes': [
         {
           'atom': 'attribute',
-          'relation_snomed_concept': {
+          'snomed_concept': {
             'atom': 'snomed_concept',
             'name': 'Finding site',
             'category': 'attribute',
             'type': 'name_and_category',
           },
-          'finding_snomed_concept': {
+          'value_snomed_concept': {
             'atom': 'snomed_concept',
             'name': 'Left upper arm structure',
             'category': 'body structure',
@@ -95,7 +93,6 @@ describe('shared/s_expression.ts', () => {
           },
         },
       ],
-      'not_findings': [],
     })
 
     assertEquals(

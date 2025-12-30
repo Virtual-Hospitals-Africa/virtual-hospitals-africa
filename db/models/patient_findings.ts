@@ -1,6 +1,7 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   asText,
+  debugLog,
   jsonBuildObject,
   literalString,
   success_true,
@@ -10,18 +11,17 @@ import { nowInvalidRecords, patient_records } from './patient_records.ts'
 import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import { ParsedExpressionOf } from '../../shared/s_expression.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   buildExpression,
-  maybeSnomedConceptBase,
   satisfyingSExpression,
   snomedConceptBase,
 } from './s_expression.ts'
 import { Priority } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { buildValueDisplay } from '../../shared/patient_records.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
+import { asNode } from '../../shared/s_expression.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -38,7 +38,7 @@ type FindingInsert = {
   patient_encounter_id: string
   patient_encounter_employee_id: string
   procedure_id: string
-  finding: ParsedExpressionOf<'finding'>
+  finding: Lang['finding'] | string
 }
 
 export function baseQuery(
@@ -145,9 +145,9 @@ export function baseQuery(
 
 export type IntermediateFinding = QueryResult<typeof baseQuery>
 export type PatientFindingsSearch = {
-  patient_id: string | IdSelection
+  patient_id?: string | IdSelection
   patient_encounter_id?: string | IdSelection
-  s_expression?: string | ParsedExpressionOf<'finding'>
+  s_expression?: string | Lang['finding']
   search?: string
   not_measurements?: boolean
 }
@@ -162,10 +162,7 @@ export const patient_findings = base({
     if (finding.score != null) {
       tews_component.parse(finding.score)
     }
-    return {
-      ...finding,
-      ...buildValueDisplay(finding),
-    }
+    return formatRecordDisplay(finding)
   },
   handleSearch(
     qb,
@@ -173,10 +170,6 @@ export const patient_findings = base({
     trx,
   ) {
     assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
     // if (opts.search) {
     //   qb = qb.where(
     //     'snomed_inferred_canonical_name_and_category.name',
@@ -206,6 +199,7 @@ export const patient_findings = base({
       ).where('patient_measurements.id', 'is', null)
     }
     if (opts.s_expression) {
+      assert(opts.patient_id)
       qb = qb.where(
         'patient_records.id',
         'in',
@@ -232,25 +226,20 @@ export const patient_findings = base({
       finding,
     }: FindingInsert,
   ) {
-    assertHasProperty(finding, 'snomed_concept')
-    assertHasProperty(finding, 'finding_snomed_concept')
+    const finding_node = asNode(finding, 'finding')
+    assertHasProperty(finding_node, 'snomed_concept')
+    assertHasProperty(finding_node, 'finding_snomed_concept')
 
     const finding_id = generateUUID()
 
-    let query = trx.with(
-      'inserting_finding_records',
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id: finding_id,
-            patient_id,
-            patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(trx, finding.snomed_concept),
-            value_snomed_concept_id: maybeSnomedConceptBase(
-              trx,
-              finding.value_snomed_concept,
-            ),
-          }),
+    const query = patient_records.baseInsert(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        record_id: finding_id,
+        ...finding_node,
+      },
     ).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
@@ -258,79 +247,18 @@ export const patient_findings = base({
           procedure_id,
           finding_snomed_concept_id: snomedConceptBase(
             trx,
-            finding.finding_snomed_concept,
+            finding_node.finding_snomed_concept,
           ),
           patient_encounter_employee_id,
         }))
-
-    function qualifierCte(
-      qb: typeof query,
-      qualifier:
-        | ParsedExpressionOf<'qualifier'>
-        | ParsedExpressionOf<'not_finding'>,
-      qualifies_record_id: string,
-    ) {
-      if (qualifier.atom !== 'qualifier') {
-        assertEquals(
-          qualifier.atom,
-          'not_finding',
-          'we can omit not_finding expressions upon insert, but not sure what is going on here',
-        )
-        return qb
-      }
-
-      assertHasProperty(qualifier, 'snomed_concept')
-      const id = generateUUID()
-      const id_token = id.replaceAll('-', '_')
-
-      let next_query = qb.with(
-        `inserting_qualifier_record_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_records')
-            .values({
-              id,
-              patient_id,
-              patient_encounter_id,
-              snomed_concept_id: snomedConceptBase(
-                trx,
-                qualifier.snomed_concept,
-              ),
-              value_snomed_concept_id: maybeSnomedConceptBase(
-                trx,
-                qualifier.value_snomed_concept,
-              ),
-            }),
-      ).with(
-        `inserting_qualifiers_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_record_qualifiers')
-            .values({
-              id,
-              qualifies_record_id,
-            }),
-      ) as unknown as typeof query
-
-      for (const sub_qualifier of qualifier.qualifiers) {
-        next_query = qualifierCte(
-          next_query,
-          sub_qualifier,
-          id,
-        ) as unknown as typeof query
-      }
-
-      return next_query
-    }
-
-    for (const qualifier of finding.qualifiers) {
-      query = qualifierCte(query, qualifier, finding_id)
-    }
-
-    return query
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
-        literalString(finding_id).as('record_id'),
+        literalString(finding_id).as('finding_id'),
       ])
+
+    debugLog(query)
+    return query
       .executeTakeFirstOrThrow()
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(
@@ -356,7 +284,7 @@ export const patient_findings = base({
       return {
         success: true,
         inserted_new: false,
-        record_id: already_exists.record_ids[0],
+        finding_id: already_exists.record_ids[0],
       }
     }
 

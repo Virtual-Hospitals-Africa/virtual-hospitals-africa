@@ -79,8 +79,8 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Very urgent',
   },
   'Poisoning': {
-    'clinical_finding_s_expression':
-      '(finding 404684003 75478009 (not_finding 1149222004))',
+    'clinical_finding_s_expression': '(finding 404684003 75478009)',
+    'excluding_s_expression': '(finding 404684003 1149222004)',
     'sats_primary_name': 'Poisoning',
     'sats_secondary_text': null,
     'sats_priority': 'Very urgent',
@@ -110,8 +110,11 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Very urgent',
   },
   'Dislocation of larger joint': {
-    'clinical_finding_s_expression':
-      '(finding 404684003 87642003 (not_finding 363698007 7569003) (not_finding 363698007 29707007))',
+    'clinical_finding_s_expression': '(finding 404684003 87642003)',
+    'excluding_s_expression': `
+      (or (finding 363698007 7569003)
+           (finding 363698007 29707007))
+    `,
     'sats_primary_name': 'Dislocation of larger joint',
     'sats_secondary_text': 'not finger or toe',
     'sats_priority': 'Very urgent',
@@ -213,11 +216,14 @@ export const WARNING_SIGNS = {
   },
   'Burn Other': {
     'clinical_finding_s_expression': `
-      (finding 404684003 125666000 
-        (not_finding 125666000 (qualifier 255593009))
-        (not_finding 425082000)
-        (not_finding 426284001)
-        (not_finding 262582004))
+      (finding 404684003 125666000)
+    `,
+    'excluding_s_expression': `
+      (or
+        (finding 404684003 125666000 (qualifier 255593009))
+        (finding 404684003 425082000)
+        (finding 404684003 426284001)
+        (finding 404684003 262582004))
     `,
     'sats_primary_name': 'Burn',
     'sats_secondary_text': 'Other',
@@ -237,7 +243,8 @@ export const WARNING_SIGNS = {
     'sats_priority': 'Urgent',
   },
   'Moderate pain': {
-    'clinical_finding_s_expression': '(finding 404684003 (snomed_concept "Moderate pain" "finding"))',
+    'clinical_finding_s_expression':
+      '(finding 404684003 (snomed_concept "Moderate pain" "finding"))',
     'sats_primary_name': 'Moderate pain',
     'sats_secondary_text': null,
     'sats_priority': 'Urgent',
