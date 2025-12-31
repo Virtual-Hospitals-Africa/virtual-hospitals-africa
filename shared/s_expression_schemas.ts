@@ -42,7 +42,7 @@ type BaseLang =
       expression: AnyNode
     }
     attribute: {
-      snomed_concept: Lang['snomed_concept']
+      finding_snomed_concept: Lang['snomed_concept']
       value_snomed_concept: Lang['snomed_concept']
     }
     qualifier: RecordSchema
@@ -338,10 +338,10 @@ export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
     atom: z.literal('attribute'),
     args: z.tuple([snomed_concept, snomed_concept]),
   }).transform((
-    { atom, args: [snomed_concept, value_snomed_concept] },
+    { atom, args: [finding_snomed_concept, value_snomed_concept] },
   ) => ({
     atom,
-    snomed_concept,
+    finding_snomed_concept,
     value_snomed_concept,
   }))
 ).describe('attribute')
