@@ -47,10 +47,7 @@ type VitalsSearch = {
 export const patient_vitals = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: (finding) => ({
-    ...finding,
-    ...formatRecordDisplay(finding),
-  }),
+  formatResult: formatRecordDisplay,
   handleSearch(
     qb,
     opts: VitalsSearch,
@@ -169,10 +166,7 @@ export const patient_vitals = base({
 
     const findings = await query.execute()
 
-    return findings.map((finding) => ({
-      ...finding,
-      ...formatRecordDisplay(finding),
-    }))
+    return findings.map(formatRecordDisplay)
   },
 })
 

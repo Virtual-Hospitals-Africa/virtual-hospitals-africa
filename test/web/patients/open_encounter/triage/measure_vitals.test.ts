@@ -28,6 +28,7 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
+import { TestCase, testParallel } from 'test/_helpers/testParallel.ts'
 
 describe('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -451,6 +452,7 @@ describe('triage/measure_vitals', () => {
         'full_display': `Respiratory rate: 12\u00A0bpm`,
         'prefixes': [],
         'attributes': [],
+        'events': [],
       }, { strict: true })
 
       const component_scores = await patient_evaluation_scores.findAll(
@@ -530,6 +532,7 @@ describe('triage/measure_vitals', () => {
       }
     }
 
+    const test_cases: TestCase[] = []
     function testCase(
       description: string,
       age_determination: AgeDetermination,
@@ -543,10 +546,12 @@ describe('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
-      { only }: { only?: boolean } = {},
+      opts: { only?: boolean; skip?: boolean } = {},
     ) {
-      const run = only ? it.only : it
-      run(description, async () => {
+      return test_cases.push([description, runCase, opts])
+
+      async function runCase() {
+        console.log('starting ', description)
         const { encounter } = await setupTriage({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
@@ -608,7 +613,7 @@ describe('triage/measure_vitals', () => {
 
         assertEquals(sorted_finding_scores, expected_scores)
         assertEquals(total_score.score, sumBy(expected_scores, 'score'))
-      })
+      }
     }
 
     // Helper to create expected scores with one component changed
@@ -1707,5 +1712,7 @@ describe('triage/measure_vitals', () => {
       { ...default_assessments_younger_child, trauma_presence: 'Yes' },
       baseScoresYoungerChild({ 'Traumatic injury': 1 }),
     )
+
+    testParallel('Full sats chart', test_cases)
   })
 })

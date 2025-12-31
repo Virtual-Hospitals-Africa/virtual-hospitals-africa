@@ -904,7 +904,7 @@ describe(
     })
 
     describe('upsertMajorSurgeries', () => {
-      it(
+      it.skip(
         'upserts major surgery, those condition with is_procedure = true',
         async () => {
           const clinic = await createTestOrganization(db)

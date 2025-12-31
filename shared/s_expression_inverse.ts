@@ -1,3 +1,4 @@
+import { assert } from 'node:console'
 import { AnyNode, Lang } from './s_expression_schemas.ts'
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
@@ -31,7 +32,14 @@ export function inverseSExpression(node: AnyNode): string {
     case 'attribute': {
       return `(attribute ${
         snomedConceptToString(node.finding_snomed_concept)
-      } ${snomedConceptToString(node.value_snomed_concept)})`
+      } ${snomedConceptToString(node.value)})`
+    }
+
+    case 'event': {
+      assert(!node.value.location, 'TODO support location')
+      return `(event ${
+        snomedConceptToString(node.finding_snomed_concept)
+      } "${node.value.datetime}")`
     }
 
     case 'qualifier': {
