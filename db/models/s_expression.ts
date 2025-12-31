@@ -300,8 +300,10 @@ const EXPRESSION_BUILDERS = {
   attribute(
     trx,
     { patient_id, patient_encounter_id },
-    { finding_snomed_concept, value_snomed_concept },
+    { finding_snomed_concept, value },
   ) {
+    // Only snomed_concept values are queryable
+    const value_snomed_concept = value.atom === 'snomed_concept' ? value : null
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
@@ -423,6 +425,9 @@ const EXPRESSION_BUILDERS = {
   },
   snomed_concept() {
     throw new Error('snomed_concept is not directly queryable')
+  },
+  event() {
+    throw new Error('event is not directly queryable')
   },
 } satisfies {
   [T in Atom]: (

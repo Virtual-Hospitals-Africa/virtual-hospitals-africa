@@ -1144,6 +1144,13 @@ export interface PatientEvaluationScores {
   score: number
 }
 
+export interface PatientEvents {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+}
+
 export interface PatientExaminationFindingBodySites {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1978,6 +1985,7 @@ export interface DB {
   patient_encounters: PatientEncounters
   patient_evaluation_scores: PatientEvaluationScores
   patient_evaluations: PatientEvaluations
+  patient_events: PatientEvents
   patient_examination_finding_body_sites: PatientExaminationFindingBodySites
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations

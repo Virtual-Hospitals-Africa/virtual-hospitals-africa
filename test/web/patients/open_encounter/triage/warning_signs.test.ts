@@ -344,6 +344,7 @@ describe('triage/warning_signs', () => {
             },
           ],
           'attributes': [],
+          'events': [],
         },
       ], { strict: true })
 

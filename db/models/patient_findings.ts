@@ -153,7 +153,6 @@ export type PatientFindingsSearch = {
 }
 
 export const patient_findings = base({
-  verbose: true,
   top_level_table: 'patient_findings',
   baseQuery,
   formatResult: (finding) => {
@@ -253,12 +252,30 @@ export const patient_findings = base({
           patient_encounter_employee_id,
         }))
 
+    for (const attribute of finding_node.attributes) {
+      query = attributeCte(query, attribute)
+    }
+    for (const event of finding_node.events) {
+      query = eventCte(query, event)
+    }
+
+    const select_query = query.selectNoFrom([
+      success_true,
+      sql<true>`true`.as('inserted_new'),
+      literalString(finding_id).as('finding_id'),
+    ])
+
+    debugLog(select_query)
+    return select_query
+      .executeTakeFirstOrThrow()
+
     function attributeCte(
       qb: typeof query,
       attribute: Lang['attribute'],
     ) {
       const attribute_id = generateUUID()
       const id_token = attribute_id.replaceAll('-', '_')
+      const { value } = attribute
 
       return qb.with(
         `inserting_attribute_record_${id_token}`,
@@ -269,10 +286,7 @@ export const patient_findings = base({
               patient_id,
               patient_encounter_id,
               snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
-              value_snomed_concept_id: snomedConceptBase(
-                trx,
-                attribute.value_snomed_concept,
-              ),
+              value_snomed_concept_id: snomedConceptBase(trx, value),
             }),
       ).with(
         `inserting_attribute_finding_${id_token}`,
@@ -297,19 +311,57 @@ export const patient_findings = base({
             }),
       ) as unknown as typeof query
     }
-    for (const attribute of finding_node.attributes) {
-      query = attributeCte(query, attribute)
+
+    function eventCte(
+      qb: typeof query,
+      event: Lang['event'],
+    ) {
+      const event_id = generateUUID()
+      const id_token = event_id.replaceAll('-', '_')
+      const { value } = event
+
+      return qb.with(
+        `inserting_event_record_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_records')
+            .values({
+              id: event_id,
+              patient_id,
+              patient_encounter_id,
+              snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
+              value_snomed_concept_id: null,
+            }),
+      ).with(
+        `inserting_event_finding_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_findings')
+            .values({
+              id: event_id,
+              procedure_id,
+              patient_encounter_employee_id,
+              finding_snomed_concept_id: snomedConceptBase(
+                trx,
+                event.finding_snomed_concept,
+              ),
+            }),
+      ).with(
+        `inserting_event_qualifier_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_record_qualifiers')
+            .values({
+              id: event_id,
+              qualifies_record_id: finding_id,
+            }),
+      ).with(
+        `inserting_event_${id_token}`,
+        (qb) =>
+          qb.insertInto('patient_events')
+            .values({
+              id: event_id,
+              datetime: new Date(value.datetime),
+            }),
+      ) as unknown as typeof query
     }
-
-    const select_query = query.selectNoFrom([
-      success_true,
-      sql<true>`true`.as('inserted_new'),
-      literalString(finding_id).as('finding_id'),
-    ])
-
-    debugLog(select_query)
-    return select_query
-      .executeTakeFirstOrThrow()
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(
     trx: TrxOrDb,

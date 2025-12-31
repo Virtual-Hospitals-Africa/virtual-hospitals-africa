@@ -6,7 +6,7 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom } from './s_expression.ts'
-import { Maybe } from '../types.ts'
+import { Coordinates, Maybe } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
 
@@ -30,9 +30,17 @@ type SnomedConcept =
 type BaseLang =
   & {
     snomed_concept: SnomedConcept
+    event: {
+      finding_snomed_concept: Lang['snomed_concept']
+      value: {
+        datetime: string
+        location: null | Coordinates
+      }
+    }
     finding: RecordSchema & {
       finding_snomed_concept: Lang['snomed_concept'] | null
       attributes: Lang['attribute'][]
+      events: Lang['event'][]
     }
     procedure: RecordSchema
     evaluation: RecordSchema & {
@@ -43,7 +51,7 @@ type BaseLang =
     }
     attribute: {
       finding_snomed_concept: Lang['snomed_concept']
-      value_snomed_concept: Lang['snomed_concept']
+      value: Lang['snomed_concept']
     }
     qualifier: RecordSchema
     measurement: {
@@ -167,24 +175,25 @@ export const qualifier: z.ZodType<Lang['qualifier']> = z.lazy(() =>
   }))
 ).describe('qualifier')
 
-const attribute_or_qualifier: z.ZodType<
-  Lang['attribute'] | Lang['qualifier']
+const attribute_or_event_or_qualifier: z.ZodType<
+  Lang['attribute'] | Lang['event'] | Lang['qualifier']
 > = z.lazy(() =>
   z.union([
     attribute,
+    event,
     qualifier,
   ])
 ).describe('attribute | qualifier')
 
-const snomed_concept_or_attribute_or_qualifier: z.ZodType<
+const snomed_concept_or_attribute_or_event_or_qualifier: z.ZodType<
   | Lang['snomed_concept']
   | Lang['attribute']
+  | Lang['event']
   | Lang['qualifier']
 > = z.lazy(() =>
   z.union([
     snomed_concept,
-    attribute,
-    qualifier,
+    attribute_or_event_or_qualifier,
   ])
 ).describe('snomed_concept_id | qualifier')
 
@@ -192,19 +201,23 @@ function isQualifier(node: AnyNode): node is Lang['qualifier'] {
   return node.atom === 'qualifier'
 }
 
+function isAttribute(node: AnyNode): node is Lang['attribute'] {
+  return node.atom === 'attribute'
+}
+
 export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
   z.object({
     atom: z.literal('finding'),
     args: z.tuple([
-      snomed_concept_or_attribute_or_qualifier.optional(),
-      snomed_concept_or_attribute_or_qualifier.optional(),
-      snomed_concept_or_attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
-      attribute_or_qualifier.optional(),
+      snomed_concept_or_attribute_or_event_or_qualifier.optional(),
+      snomed_concept_or_attribute_or_event_or_qualifier.optional(),
+      snomed_concept_or_attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
+      attribute_or_event_or_qualifier.optional(),
     ]),
   }).transform(
     (
@@ -238,7 +251,8 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
         snomed_concept = null
       }
 
-      const [qualifiers, attributes] = partition(nodes, isQualifier)
+      const [qualifiers, others] = partition(nodes, isQualifier)
+      const [attributes, events] = partition(others, isAttribute)
 
       return {
         atom,
@@ -247,6 +261,7 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
         value_snomed_concept,
         qualifiers,
         attributes,
+        events,
       }
     },
   )
@@ -333,16 +348,27 @@ export const evaluation: z.ZodType<Lang['evaluation']> = z.lazy(() =>
   )
 ).describe('evaluation')
 
+export const event: z.ZodType<Lang['event']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('event'),
+    args: z.tuple([snomed_concept, z.string()]),
+  }).transform(({ atom, args: [finding_snomed_concept, datetime] }) => ({
+    atom,
+    finding_snomed_concept,
+    value: { datetime, location: null },
+  }))
+).describe('event')
+
 export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
     atom: z.literal('attribute'),
     args: z.tuple([snomed_concept, snomed_concept]),
   }).transform((
-    { atom, args: [finding_snomed_concept, value_snomed_concept] },
+    { atom, args: [finding_snomed_concept, value] },
   ) => ({
     atom,
     finding_snomed_concept,
-    value_snomed_concept,
+    value,
   }))
 ).describe('attribute')
 
@@ -452,6 +478,7 @@ export const and: z.ZodType<Lang['and']> = z.lazy(() =>
 export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
   z.union([
     snomed_concept,
+    event,
     finding,
     evaluation,
     procedure,
