@@ -326,9 +326,9 @@ export function literalNumber(value: number, as: string) {
   return sql.lit<number>(value).as(as)
 }
 
-export function literalString(value: string) {
+export function literalString<Value extends string>(value: Value) {
   assert(typeof value === 'string', 'Value must be a string')
-  return sql.lit<string>(value)
+  return sql.lit<Value>(value)
 }
 
 export function literalUUID(value: string) {

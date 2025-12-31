@@ -20,6 +20,7 @@ describe('shared/s_expression.ts', () => {
       },
       value_snomed_concept: null,
       attributes: [],
+      events: [],
       qualifiers: [],
     })
   })
@@ -38,6 +39,7 @@ describe('shared/s_expression.ts', () => {
       },
       value_snomed_concept: null,
       attributes: [],
+      events: [],
       qualifiers: [{
         atom: 'qualifier',
         snomed_concept: { atom: 'snomed_concept', type: 'id', id: '121277' },
@@ -76,6 +78,7 @@ describe('shared/s_expression.ts', () => {
       },
       'value_snomed_concept': null,
       'qualifiers': [],
+      'events': [],
       'attributes': [
         {
           'atom': 'attribute',
@@ -85,7 +88,7 @@ describe('shared/s_expression.ts', () => {
             'category': 'attribute',
             'type': 'name_and_category',
           },
-          'value_snomed_concept': {
+          'value': {
             'atom': 'snomed_concept',
             'name': 'Left upper arm structure',
             'category': 'body structure',

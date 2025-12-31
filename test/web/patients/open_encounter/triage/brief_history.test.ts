@@ -271,6 +271,7 @@ describe('triage/brief_history', () => {
             },
           ],
           'attributes': [],
+          'events': [],
           'finding_display': 'Self reported Diabetes mellitus Status',
           'value_display': 'No',
           'full_display': 'Self reported Diabetes mellitus Status: No',
@@ -306,6 +307,7 @@ describe('triage/brief_history', () => {
             },
           ],
           'attributes': [],
+          'events': [],
           'finding_display': 'Self reported Pregnancy Status',
           'value_display': 'No',
           'full_display': 'Self reported Pregnancy Status: No',
@@ -341,6 +343,7 @@ describe('triage/brief_history', () => {
             },
           ],
           'attributes': [],
+          'events': [],
           'finding_display':
             'Self reported Malignant neoplastic disease Status',
           'value_display': 'Yes',
@@ -398,6 +401,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
         'source_relations': [],
         'destination_relations': [],
       }, { strict: true })
@@ -443,6 +447,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
         'source_relations': [],
         'destination_relations': [],
       }, { strict: true })
@@ -859,6 +864,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
         'pertaining_to_key': 'diabetes',
         'finding_display': 'Self reported Diabetes mellitus Status',
         'full_display': 'Self reported Diabetes mellitus Status: Yes',
@@ -1013,6 +1019,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
       }, { strict: true })
 
       assertMatches(most_recent_findings.diabetes, {
@@ -1049,6 +1056,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
         'provider': {
           'is_me': true,
           'id': nurse2.health_worker.id,
@@ -1145,6 +1153,7 @@ describe('triage/brief_history', () => {
           },
         ],
         'attributes': [],
+        'events': [],
         'pertaining_to_key': 'pregnancy',
         'provider': {
           'is_me': true,

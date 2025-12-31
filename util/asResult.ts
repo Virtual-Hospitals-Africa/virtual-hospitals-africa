@@ -1,7 +1,11 @@
-export type Result<T> = { success: true; value: T } | {
+export type Success<T> = { success: true; value: T }
+
+export type Failure = {
   success: false
   error: Error
 }
+
+export type Result<T> = Success<T> | Failure
 
 export function asResult<T>(callback: () => T): Result<T> {
   try {
@@ -21,4 +25,16 @@ export async function asResultAsync<T>(
   } catch (error) {
     return { success: false, error: error as Error }
   }
+}
+
+export function isSuccess<T, R extends Result<T>>(
+  result: R,
+): result is R & Success<T> {
+  return result.success
+}
+
+export function isFailure<T, R extends Result<T>>(
+  result: R,
+): result is R & Failure {
+  return !result.success
 }

@@ -153,6 +153,9 @@ export type UpdateShape<T> = OptionalMaybeFields<
 
 export type IdSelection = SelectQueryBuilder<DB, any, { id: string }>
 
+export type Selecting<QB> = QB extends SelectQueryBuilder<any, any, infer S> ? S
+  : never
+
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
 > =
@@ -3469,15 +3472,18 @@ export type RecordDisplays = {
   full_display: string
 }
 
-export type RenderedAttribute = RecordDisplays & {
+export type RenderedAttribute<Value> = RecordDisplays & {
   record_id: string
   // provider: RenderedFindingProvider
   snomed_concept_id: string
   name: string
   category: SnomedCategory
-  value_snomed_concept_id: string
-  value_name: string
-  value_category: SnomedCategory
+  value: Value
+  finding_snomed_concept_id: string
+  finding_name: string
+  finding_category: SnomedCategory
+  patient_encounter_employee_id: string
+  procedure_id: string
 }
 
 export type RenderedFindingRelativeToHealthWorker = RecordDisplays & {
@@ -3497,7 +3503,16 @@ export type RenderedFindingRelativeToHealthWorker = RecordDisplays & {
   as_part_of_procedure: AsPartOfProcedure
   // These are now prefixes
   // qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  attributes: RenderedAttribute[]
+  attributes: RenderedAttribute<{
+    type: 'snomed_concept'
+    snomed_concept_id: string
+    name: string
+    category: SnomedCategory
+  }>[]
+  events: RenderedAttribute<{
+    type: 'event'
+    datetime: Date | string
+  }>[]
 }
 
 export type WithTriageLevelFinding = NonNullableProperty<

@@ -7,17 +7,19 @@ import isObjectLike from '../util/isObjectLike.ts'
 import isString from '../util/isString.ts'
 import { positive_decimal } from '../util/validators.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import isDate from '../util/isDate.ts'
+import type { AttributeValue } from '../db/models/patient_record_qualifiers.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
 type DisplayableRecord = {
   name: string
   category: SnomedCategory
   finding_name?: Maybe<string>
   value_name?: Maybe<string>
-  value?: Maybe<string | DisplayableRecord>
+  value?: Maybe<string | DisplayableRecord | AttributeValue>
   units?: Maybe<string>
   prefixes?: DisplayableRecord[]
   // Attributes are not included as part of the display, but listed here for completeness
-  attributes?: DisplayableRecord[]
 }
 
 function measurementValueDisplay(
@@ -32,10 +34,44 @@ function measurementValueDisplay(
   }
 }
 
-function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
+function formatEventDatetime(datetime: Date | string): string {
+  const date = isDate(datetime) ? datetime : new Date(datetime)
+  const time_formatter = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+    timeZone: 'Africa/Johannesburg',
+  })
+  const date_formatter = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'Africa/Johannesburg',
+  })
+  const time_str = time_formatter.format(date).toLowerCase()
+  const date_str = date_formatter.format(date)
+  return `${time_str} SAST | ${date_str}`
+}
+
+function isDisplayableRecord(value: unknown): value is DisplayableRecord {
+  return isObjectLike(value) && isString(value.name) && isString(value.category)
+}
+
+function valueDisplay(
+  value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
+): string {
+  if (isDisplayableRecord(value)) {
+    return buildDisplays(value).full_display
+  }
+  assert(value.type === 'event', 'type: snomed_concept is a DisplayableRecord')
+  return formatEventDatetime(value.datetime)
+}
+
+function buildDisplays(record: DisplayableRecord): RecordDisplays {
   const {
     name,
-    category,
     prefixes = [],
     finding_name,
     value_name,
@@ -45,9 +81,11 @@ function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
 
   // For measurements skip the "Measurement finding" bit
   if (isString(value)) {
-    assertEquals(finding_name, 'Measurement')
+    assertEquals(name, 'Measurement finding')
     positive_decimal.parse(value)
     assert(finding_name)
+    assertNotEquals(finding_name, 'Measurement')
+    assertNotEquals(finding_name, 'Measurement finding')
     assert(units)
     assert(isString(units))
     assertArrayEmpty(prefixes)
@@ -60,38 +98,20 @@ function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
   }
 
   const prefix_displays = prefixes.map((prefix) =>
-    buildValueDisplay(prefix).full_display
+    buildDisplays(prefix).full_display
   )
-
-  // Omit the "Attribute" bit from displays. Attributes display underneath findings,
-  // not on their own so this is implied.
-  if (name === 'Attribute') {
-    assertEquals(category, 'attribute')
-    assert(finding_name)
-    assert(value_name)
-
-    const finding_display = compact([
-      ...prefix_displays,
-      finding_name,
-    ]).join(' ')
-
-    return {
-      finding_display,
-      value_display: value_name,
-      full_display: `${finding_display}: ${value_name}`,
-    }
-  }
 
   const finding_display = compact([
     ...prefix_displays,
     finding_name,
-    name,
+    !['Attribute', 'Event'].includes(name) && name,
   ]).join(' ')
 
   if (value) {
     assert(isObjectLike(value), `Unexpected value ${value}`)
     assert(!value_name)
-    const value_display = buildValueDisplay(value).full_display
+
+    const value_display = valueDisplay(value)
     return {
       finding_display,
       value_display,
@@ -119,16 +139,22 @@ function buildValueDisplay(record: DisplayableRecord): RecordDisplays {
 export function formatRecordDisplay<
   R extends DisplayableRecord & {
     attributes: DisplayableRecord[]
+    events: DisplayableRecord[]
   },
 >(record: R): R & RecordDisplays & {
   attributes: Array<R['attributes'][number] & RecordDisplays>
+  events: Array<R['events'][number] & RecordDisplays>
 } {
   return {
     ...record,
-    ...buildValueDisplay(record),
+    ...buildDisplays(record),
     attributes: record.attributes.map((attribute) => ({
       ...attribute,
-      ...buildValueDisplay(attribute),
+      ...buildDisplays(attribute),
+    })),
+    events: record.events.map((event) => ({
+      ...event,
+      ...buildDisplays(event),
     })),
   }
 }

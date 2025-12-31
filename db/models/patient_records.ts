@@ -2,7 +2,7 @@ import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { asText, jsonArrayFrom, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
-import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
+import * as patient_record_qualifiers from './patient_record_qualifiers.ts'
 import {
   buildExpression,
   maybeSnomedConceptBase,
@@ -188,13 +188,21 @@ export function baseQuery(
           ),
       ).as('prefixes'),
       jsonArrayFrom(
-        patient_record_qualifiers.baseQueryAttribute(trx)
+        patient_record_qualifiers.baseQueryAttributeSnomedConcept(trx)
           .where(
             'patient_record_qualifiers.qualifies_record_id',
             '=',
             eb.ref('patient_records.id'),
           ),
       ).as('attributes'),
+      jsonArrayFrom(
+        patient_record_qualifiers.baseQueryAttributeEvent(trx)
+          .where(
+            'patient_record_qualifiers.qualifies_record_id',
+            '=',
+            eb.ref('patient_records.id'),
+          ),
+      ).as('events'),
       // Aliased base query idea
       // https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/blob/a94d120fc459824516c14931ea2f8b4abcf27d9b/db/models/patient_record_qualifiers.ts
       // jsonArrayFrom(

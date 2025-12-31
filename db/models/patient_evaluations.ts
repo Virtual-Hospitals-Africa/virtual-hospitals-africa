@@ -10,6 +10,7 @@ import { buildExpression } from './s_expression.ts'
 import isString from '../../util/isString.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
+import { formatRecordDisplay } from '../../shared/patient_records.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -106,7 +107,7 @@ type PatientEvaluationsSearch = {
 export const patient_evaluations = base({
   top_level_table: 'patient_evaluations',
   baseQuery,
-  formatResult: (x) => x,
+  formatResult: formatRecordDisplay,
   handleSearch(
     qb,
     opts: PatientEvaluationsSearch,
