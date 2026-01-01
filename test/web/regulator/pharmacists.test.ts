@@ -17,7 +17,7 @@ describe.skip(
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('renders a search input with GET', async () => {
+    itParallel('renders a search input with GET', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(
@@ -37,7 +37,7 @@ describe.skip(
       )
     })
 
-    it('renders a pharmacist table and a pharmacist with GET', async () => {
+    itParallel('renders a pharmacist table and a pharmacist with GET', async () => {
       const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 

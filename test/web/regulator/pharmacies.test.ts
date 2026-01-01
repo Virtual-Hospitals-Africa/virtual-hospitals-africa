@@ -11,7 +11,7 @@ describe.skip(
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     before(waitUntilTestServerUp)
-    it('renders a search input with GET', async () => {
+    itParallel('renders a search input with GET', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(`/regulator/${regulator.country}/pharmacies`)
@@ -30,7 +30,7 @@ describe.skip(
       )
     })
 
-    it('renders a pharmacy table with GET', async () => {
+    itParallel('renders a pharmacy table with GET', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       const response = await fetch(`/regulator/${regulator.country}/pharmacies`)

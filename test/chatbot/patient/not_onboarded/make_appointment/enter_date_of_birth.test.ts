@@ -10,9 +10,9 @@ import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('asks for national ID number after inquiring birthday', async () => {
+  itParallel('asks for national ID number after inquiring birthday', async () => {
     const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',

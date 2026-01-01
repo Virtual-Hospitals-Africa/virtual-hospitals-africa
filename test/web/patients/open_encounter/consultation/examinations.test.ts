@@ -16,7 +16,7 @@
 //   { sanitizeResources: false, sanitizeOps: false },
 //   () => {
 //     describe('Head-to-Toe Assessment', () => {
-//       it('saves on POST', async () => {
+//       itParallel('saves on POST', async () => {
 //         const { health_worker, fetch } = await addTestEmployeeWithSession(
 //           db,
 //           {
@@ -81,7 +81,7 @@
 //         ])
 //       })
 
-//       it('removes existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
+//       itParallel('removes existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
 //             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
@@ -171,7 +171,7 @@
 //         })
 //       })
 
-//       it('updates existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
+//       itParallel('updates existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
 //             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
@@ -285,7 +285,7 @@
 //         })
 //       })
 
-//       it('renders a blank form on initial GET, including "all normal"', async () => {
+//       itParallel('renders a blank form on initial GET, including "all normal"', async () => {
 //         const { health_worker, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
 //             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
@@ -332,7 +332,7 @@
 
 //     describe('?add=examinations', () => {
 //       describe('GET', () => {
-//         it('shows a form allowing orders to be placed for a doctor', async () => {
+//         itParallel('shows a form allowing orders to be placed for a doctor', async () => {
 //           const { health_worker, fetchCheerio } =
 //             await addTestEmployeeWithSession(db, {
 //               profession: 'doctor',
@@ -357,7 +357,7 @@
 //           assertEquals($('p:contains("Diagnostic Tests to Order")').length, 1)
 //         })
 
-//         it('shows a form without a an orders field for a nurse', async () => {
+//         itParallel('shows a form without a an orders field for a nurse', async () => {
 //           const { health_worker, fetchCheerio } =
 //             await addTestEmployeeWithSession(db, {
 //               profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
@@ -384,7 +384,7 @@
 //       })
 
 //       describe('POST', () => {
-//         it('allows orders to be placed for a doctor', async () => {
+//         itParallel('allows orders to be placed for a doctor', async () => {
 //           const { health_worker, fetch } = await addTestEmployeeWithSession(
 //             db,
 //             {
@@ -457,7 +457,7 @@
 //           ])
 //         })
 
-//         it('does not allow orders to be placed for a nurse', async () => {
+//         itParallel('does not allow orders to be placed for a nurse', async () => {
 //           const { health_worker, fetch } = await addTestEmployeeWithSession(
 //             db,
 //             {

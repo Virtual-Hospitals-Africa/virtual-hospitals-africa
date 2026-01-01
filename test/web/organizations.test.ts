@@ -7,12 +7,12 @@ import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 
-describe(
+describeParallel
   '/app/organizations',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('can search for organizations by name', async () => {
+    itParallel('can search for organizations by name', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
         specialty: 'Primary care',

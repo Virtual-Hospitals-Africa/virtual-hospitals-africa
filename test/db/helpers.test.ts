@@ -3,9 +3,9 @@ import db from '../../db/db.ts'
 import { temporaryTable } from '../../db/helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-describe('temporaryTable', () => {
+describeParallel'temporaryTable', () => {
   afterAll(() => db.destroy())
-  it('can insert values into a temporary table which may then be selected from', async () => {
+  itParallel('can insert values into a temporary table which may then be selected from', async () => {
     const results = await db.with('foo', () =>
       temporaryTable(db, [
         { x: 5, y: 7, z: 'bar' },

@@ -27,7 +27,7 @@
 //   sanitizeResources: false,
 //   sanitizeOps: false,
 // }, () => {
-//   it('loads the personal page', async () => {
+//   itParallel('loads the personal page', async () => {
 //     const { patient_id } = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //       db,
 //       '00000000-0000-1000-8000-000000000001',
@@ -54,7 +54,7 @@
 //     assert($('input[name="nonexistant"]').length === 0)
 //   })
 
-//   it('supports POST on the personal step, moving you to the registration/vitals step', async () => {
+//   itParallel('supports POST on the personal step, moving you to the registration/vitals step', async () => {
 //     const { patient_id, id: patient_encounter_id } = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //       db,
 //       '00000000-0000-1000-8000-000000000001',
@@ -1157,7 +1157,7 @@
 //   '/app/patients/[patient_id]/registration',
 //   { sanitizeResources: false, sanitizeOps: false },
 //   () => {
-//     it('has a .tsx file for every declared encounter step', async () => {
+//     itParallel('has a .tsx file for every declared encounter step', async () => {
 //       await Promise.all(INTAKE_STEPS.map(async (step) => {
 //         const path = `routes/app/patients/[patient_id]/registration/${step}.tsx`
 //         await Deno.readFile(path)

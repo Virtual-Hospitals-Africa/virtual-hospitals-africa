@@ -15,18 +15,18 @@ const expected_links = [
   // '/volunteer',
 ]
 
-describe(
+describeParallel
   'landing page',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('can be accessed', async () => {
+    itParallel('can be accessed', async () => {
       const response = await fetch(route)
       const text = await response.text()
       assert(text.includes('Virtual Hospitals Africa'), `${text}`)
     })
 
-    it('has links to various signup forms', async () => {
+    itParallel('has links to various signup forms', async () => {
       const response = await fetch(route)
       const $ = cheerio.load(await response.text())
 

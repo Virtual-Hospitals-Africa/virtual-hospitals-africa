@@ -8,12 +8,12 @@ import { addTestRegulatorWithSession } from '../../../_helpers/regulators.ts'
 import { route } from '../../../route.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
-describe(
+describeParallel
   '/regulator/[country]/pharmacists/invite',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     before(waitUntilTestServerUp)
-    it('renders an invite page on GET', async () => {
+    itParallel('renders an invite page on GET', async () => {
       const { regulator, fetchOk } = await addTestRegulatorWithSession(db)
 
       const response = await fetchOk(
@@ -38,7 +38,7 @@ describe(
       assert($('select[name="pharmacist_type"]').length === 1)
     })
 
-    it('can create a pharmacist via POST', async () => {
+    itParallel('can create a pharmacist via POST', async () => {
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
       {

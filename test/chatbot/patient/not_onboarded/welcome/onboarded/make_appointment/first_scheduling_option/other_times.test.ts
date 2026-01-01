@@ -29,7 +29,7 @@ import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
   beforeEach(resetInTest)
   let getFreeBusy: Stub
@@ -39,7 +39,7 @@ describe('patient chatbot', () => {
     if (insertEvent) insertEvent.restore()
   })
 
-  it('provides with other_appointment_time after rejecting first_option', async () => {
+  itParallel('provides with other_appointment_time after rejecting first_option', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',

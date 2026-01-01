@@ -16,7 +16,7 @@ describe.skip('inviting employees', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  it('allows a health worker employed at a organization to view/approve its employees', async () => {
+  itParallel('allows a health worker employed at a organization to view/approve its employees', async () => {
     const mock = await addTestEmployeeWithSession(db, {
       profession: 'admin',
     })

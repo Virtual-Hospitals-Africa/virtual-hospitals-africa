@@ -23,10 +23,10 @@ import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'
 
-describe('db/models/patient_findings.ts', () => {
+describeParallel'db/models/patient_findings.ts', () => {
   afterAll(() => db.destroy())
 
-  it('can insert/find records with snomed_concept attributes', async () => {
+  itParallel('can insert/find records with snomed_concept attributes', async () => {
     const nurse = await addTestEmployee(db, {
       profession: 'nurse',
       registration_status: 'approved',
@@ -166,7 +166,7 @@ describe('db/models/patient_findings.ts', () => {
     })
   })
 
-  it('can insert/find records with an event attribute', async () => {
+  itParallel('can insert/find records with an event attribute', async () => {
     const nurse = await addTestEmployee(db, {
       profession: 'nurse',
       registration_status: 'approved',

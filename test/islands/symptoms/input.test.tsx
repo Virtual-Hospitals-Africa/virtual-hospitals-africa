@@ -123,7 +123,7 @@
 //     assertEquals(duration_units?.value, 'weeks')
 //   })
 
-//   it('adjusts the onset when the duration is set for an ongoing symptom', async () => {
+//   itParallel('adjusts the onset when the duration is set for an ongoing symptom', async () => {
 //     const { container } = render(
 //       <SymptomsInput
 //         today='2021-03-01'

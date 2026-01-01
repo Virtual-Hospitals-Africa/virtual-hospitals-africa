@@ -15,7 +15,7 @@ describe.skip(
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('renders the edit page with correct pharmacist data on GET', async () => {
+    itParallel('renders the edit page with correct pharmacist data on GET', async () => {
       const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
@@ -72,7 +72,7 @@ describe.skip(
       )
     })
 
-    it('can update a pharmacist via POST', async () => {
+    itParallel('can update a pharmacist via POST', async () => {
       const new_pharmacist = await addTestPharmacist(db)
       const { fetch, regulator } = await addTestRegulatorWithSession(db)
 

@@ -18,7 +18,7 @@ describe.skip(
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('renders a registration page on GET', async () => {
+    itParallel('renders a registration page on GET', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
         registration_status: 'not started',
@@ -58,7 +58,7 @@ describe.skip(
       assert($('input[name="address.street"]').length === 1)
     })
 
-    it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
+    itParallel('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
       await addTestEmployee(db, { profession: 'admin' })
       const { fetch, health_worker: nurse } = await addTestEmployeeWithSession(
         db,

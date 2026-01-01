@@ -29,14 +29,14 @@ import { addTestEmployee } from '../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
 import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
   let getFreeBusy: Stub
   beforeEach(resetInTest)
   afterEach(() => {
     if (getFreeBusy) getFreeBusy.restore()
   })
-  it('provides with first_scheduling_option details after confirming details', async () => {
+  itParallel('provides with first_scheduling_option details after confirming details', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',

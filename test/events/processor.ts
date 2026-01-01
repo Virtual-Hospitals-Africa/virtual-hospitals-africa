@@ -6,12 +6,12 @@ import * as events_processor from '../../events/processor.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-describe(
+describeParallel
   'events/processor.ts',
   () => {
     afterAll(() => db.destroy())
-    describe('addListeners', () => {
-      it('adds a row for each event listener that we want to run', async () => {
+    describeParallel'addListeners', () => {
+      itParallel('adds a row for each event listener that we want to run', async () => {
         const bar = generateUUID()
         const event = await events.insert(db, {
           type: 'TEST_NEVER_WORKS',
@@ -41,8 +41,8 @@ describe(
       })
     })
 
-    describe('processListeners', () => {
-      it('marks the listener as having errored, when that is the case', async () => {
+    describeParallel'processListeners', () => {
+      itParallel('marks the listener as having errored, when that is the case', async () => {
         const bar = generateUUID()
         const event = await events.insert(db, {
           type: 'TEST_NEVER_WORKS',
@@ -74,7 +74,7 @@ describe(
         assertEquals(listener_after.processed_at, null)
       })
 
-      it('does not retry immediately, respecting the backoff_until. It will not retry after 3 errors', async () => {
+      itParallel('does not retry immediately, respecting the backoff_until. It will not retry after 3 errors', async () => {
         const bar = generateUUID()
         const event = await events.insert(db, {
           type: 'TEST_NEVER_WORKS',
@@ -141,7 +141,7 @@ describe(
         assertEquals(listener_take4.processed_at, null)
       })
 
-      it('can move into a successful state for a message that fails on the first try', async () => {
+      itParallel('can move into a successful state for a message that fails on the first try', async () => {
         const event = await events.insert(db, {
           type: 'TEST_WORKS_ON_SECOND_TRY',
           data: { foo: generateUUID() },

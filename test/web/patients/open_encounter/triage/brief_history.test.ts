@@ -27,12 +27,12 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 
-describe('triage/brief_history', () => {
+describeParallel'triage/brief_history', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  describe('GET', () => {
-    it('renders the brief history page for a female patient', async () => {
+  describeParallel'GET', () => {
+    itParallel('renders the brief history page for a female patient', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
@@ -105,7 +105,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it('renders the brief history page for a male patient', async () => {
+    itParallel('renders the brief history page for a male patient', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
@@ -184,7 +184,7 @@ describe('triage/brief_history', () => {
       })
     })
 
-    it('renders the brief history page for a patient with a pre-existing condition', async () => {
+    itParallel('renders the brief history page for a patient with a pre-existing condition', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse1 = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -778,8 +778,8 @@ describe('triage/brief_history', () => {
     })
   })
 
-  describe('POST', () => {
-    it('inserts positive & negative findings, redirecting to the measure_vitals page', async () => {
+  describeParallel'POST', () => {
+    itParallel('inserts positive & negative findings, redirecting to the measure_vitals page', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -878,7 +878,7 @@ describe('triage/brief_history', () => {
       }, { strict: true })
     })
 
-    it('does not insert the same positive finding again if a condition is already known, but does insert negative records each time', async () => {
+    itParallel('does not insert the same positive finding again if a condition is already known, but does insert negative records each time', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse1 = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,
@@ -1067,7 +1067,7 @@ describe('triage/brief_history', () => {
       }, { strict: true })
     })
 
-    it('has a full_display of Status Not Known for unknown answers', async () => {
+    itParallel('has a full_display of Status Not Known for unknown answers', async () => {
       const clinic = await createTestOrganization(db, { category: 'Clinic' })
       const nurse = await addTestEmployeeWithSession(db, {
         organization_id: clinic.id,

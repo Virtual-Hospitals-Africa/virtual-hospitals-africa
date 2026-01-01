@@ -12,7 +12,7 @@ import {
 import * as employees from '../../db/models/employees.ts'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 
-describe('db/models/employees.ts ', () => {
+describeParallel'db/models/employees.ts ', () => {
   afterAll(() => db.destroy())
   it(
     'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
@@ -112,7 +112,7 @@ describe('db/models/employees.ts ', () => {
     },
   )
 
-  it('can find employees who can do triage', async () => {
+  itParallel('can find employees who can do triage', async () => {
     const organization = await createTestOrganization(db)
     await Promise.all([
       addTestEmployee(db, {

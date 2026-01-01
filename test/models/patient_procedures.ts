@@ -6,11 +6,11 @@ import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 
-describe('db/models/patient_procedures.ts', () => {
+describeParallel'db/models/patient_procedures.ts', () => {
   afterAll(() => db.destroy())
 
-  describe('insertOne', () => {
-    it('can insert an action representing excessive garment removal', async () => {
+  describeParallel'insertOne', () => {
+    itParallel('can insert an action representing excessive garment removal', async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
         registration_status: 'approved',

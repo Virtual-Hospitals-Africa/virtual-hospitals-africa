@@ -11,11 +11,11 @@ import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 
-describe('db/models/patient_measurements.ts', () => {
+describeParallel'db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
 
-  describe('insertOneNested', () => {
-    it('can insert a measurement by equality and then find that measurement using comparator s expressions', async () => {
+  describeParallel'insertOneNested', () => {
+    itParallel('can insert a measurement by equality and then find that measurement using comparator s expressions', async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
         registration_status: 'approved',
@@ -111,8 +111,8 @@ describe('db/models/patient_measurements.ts', () => {
     })
   })
 
-  describe('insertOneIfNotAlreadyExistsForThisEncounter', () => {
-    it('only inserts a measurement once if the value did not change', async () => {
+  describeParallel'insertOneIfNotAlreadyExistsForThisEncounter', () => {
+    itParallel('only inserts a measurement once if the value did not change', async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
         registration_status: 'approved',
@@ -166,7 +166,7 @@ describe('db/models/patient_measurements.ts', () => {
       assertEquals(first_insert.measurement_id, second_insert.measurement_id)
     })
 
-    it('inserts a new measurement once if the value did change', async () => {
+    itParallel('inserts a new measurement once if the value did change', async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
         registration_status: 'approved',

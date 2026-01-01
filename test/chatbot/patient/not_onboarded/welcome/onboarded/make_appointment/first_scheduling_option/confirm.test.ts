@@ -19,14 +19,14 @@ import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.t
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
   let insertEvent: Stub
   afterEach(() => {
     if (insertEvent) insertEvent.restore()
   })
 
-  it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
+  itParallel('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',

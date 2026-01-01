@@ -12,11 +12,11 @@ import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
   const organizations = readSeedDump('organizations')
 
-  it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
+  itParallel('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     // Step 1: share location

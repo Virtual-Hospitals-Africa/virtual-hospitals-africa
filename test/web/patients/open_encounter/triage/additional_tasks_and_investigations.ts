@@ -8,11 +8,11 @@ import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 
-describe('triage/additional_tasks_and_investigations', () => {
+describeParallel'triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  it('loads on the page', async () => {
+  itParallel('loads on the page', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2023-01-01' },
       conditions: ['diabetes'],
@@ -225,8 +225,8 @@ describe('triage/additional_tasks_and_investigations', () => {
 })
 
 // TODO: moving this
-// describe('POST', () => {
-//   it('creates an additional task if oxygen saturation is below 92%', async () => {
+// describeParallel'POST', () => {
+//   itParallel('creates an additional task if oxygen saturation is below 92%', async () => {
 //     const { encounter } = await setupTriage({
 //       patient_demographics: { date_of_birth: '2023-01-01' },
 //       warning_signs: [],

@@ -8,9 +8,9 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { withTestOrganization } from '../_helpers/organizations.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
-describe('db/models/inventory.ts', () => {
+describeParallel'db/models/inventory.ts', () => {
   afterAll(() => db.destroy())
-  describe('getAvailableTests', () => {
+  describeParallel'getAvailableTests', () => {
     itUsesTrxAnd(
       'resolves with the available diagnostic tests in a organization',
       (trx) =>
@@ -70,7 +70,7 @@ describe('db/models/inventory.ts', () => {
         }),
     )
   })
-  describe('TestConsumption', () => {
+  describeParallel'TestConsumption', () => {
     itUsesTrxAnd(
       'Add consumable and check quantity',
       (trx) =>
@@ -148,7 +148,7 @@ describe('db/models/inventory.ts', () => {
         }),
     )
 
-    it('rejects when consuming more than the amount previously procured', async () => {
+    itParallel('rejects when consuming more than the amount previously procured', async () => {
       await withTestOrganization(db, async (organization_id) => {
         const admin = await addTestEmployee(db, {
           profession: 'admin',

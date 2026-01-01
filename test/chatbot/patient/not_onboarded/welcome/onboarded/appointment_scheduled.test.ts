@@ -13,9 +13,9 @@ import { addTestEmployee } from '../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../mockWhatsApp.ts'
 import { getRequestsToGoogle } from '../../../../../../external-clients/google.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('comes back to main menu after cancelling appointment', async () => {
+  itParallel('comes back to main menu after cancelling appointment', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const patient_before = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
