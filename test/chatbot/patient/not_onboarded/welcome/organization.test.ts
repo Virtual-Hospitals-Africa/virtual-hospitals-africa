@@ -12,9 +12,9 @@ import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../mockWhatsApp.ts'
 import { Sex } from '../../../../../types.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('sends invitation to share location after welcome message', async () => {
+  itParallel('sends invitation to share location after welcome message', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const sex: Sex = 'female'
     const date_of_birth = '2023-01-01'

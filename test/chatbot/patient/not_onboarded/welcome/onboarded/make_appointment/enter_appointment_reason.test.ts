@@ -13,9 +13,9 @@ import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
 import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('asks for media after inquiring appointment reason', async () => {
+  itParallel('asks for media after inquiring appointment reason', async () => {
     const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     await patients.insert(db, {

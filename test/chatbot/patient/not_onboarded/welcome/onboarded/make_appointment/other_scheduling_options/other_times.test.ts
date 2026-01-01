@@ -38,7 +38,7 @@ describe.skip('patient chatbot', () => {
     if (insertEvent) insertEvent.restore()
   })
 
-  it('provides with other_appointment_times after choosing other_time_option', async () => {
+  itParallel('provides with other_appointment_times after choosing other_time_option', async () => {
     const trx = db
 
     const phone_number = randomPhoneNumber('ZW')

@@ -16,7 +16,7 @@ import {
 } from '../../util/date.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 
-describe('patient_insurance', () => {
+describeParallel'patient_insurance', () => {
   let patient_id: string
   let today: string
   let thirty_days_ago: string
@@ -61,8 +61,8 @@ describe('patient_insurance', () => {
     }
   })
 
-  describe('getById', () => {
-    it('returns insurance for a patient with insurance', async () => {
+  describeParallel'getById', () => {
+    itParallel('returns insurance for a patient with insurance', async () => {
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Blue Cross',
@@ -87,12 +87,12 @@ describe('patient_insurance', () => {
       assertEquals(insurance.is_dependent, false)
     })
 
-    it('returns undefined for patient without insurance', async () => {
+    itParallel('returns undefined for patient without insurance', async () => {
       const [insurance] = await patient_insurance.getById(db, { patient_id })
       assertEquals(insurance, undefined)
     })
 
-    it('returns correct date formats', async () => {
+    itParallel('returns correct date formats', async () => {
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Provider',
@@ -113,7 +113,7 @@ describe('patient_insurance', () => {
       )
     })
 
-    it('handles null plan_name', async () => {
+    itParallel('handles null plan_name', async () => {
       await db.insertInto('patient_insurance').values({
         patient_id,
         insurance_provider: 'Provider',
@@ -130,8 +130,8 @@ describe('patient_insurance', () => {
     })
   })
 
-  describe('getCurrentInsurance', () => {
-    it('returns insurance that is currently valid', async () => {
+  describeParallel'getCurrentInsurance', () => {
+    itParallel('returns insurance that is currently valid', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: -30,
         duration_unit: 'days',
@@ -160,7 +160,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.plan_name, 'Current Plan')
     })
 
-    it('returns undefined for expired insurance', async () => {
+    itParallel('returns undefined for expired insurance', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: -60,
         duration_unit: 'days',
@@ -186,7 +186,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance, undefined)
     })
 
-    it('returns undefined for future insurance', async () => {
+    itParallel('returns undefined for future insurance', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: 1,
         duration_unit: 'days',
@@ -212,7 +212,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance, undefined)
     })
 
-    it('returns insurance valid from today', async () => {
+    itParallel('returns insurance valid from today', async () => {
       const expire_date = existingDurationEndDate(today, {
         duration: 365,
         duration_unit: 'days',
@@ -235,7 +235,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.insurance_provider, 'Today Provider')
     })
 
-    it('returns insurance expiring today', async () => {
+    itParallel('returns insurance expiring today', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: -1,
         duration_unit: 'years',
@@ -259,8 +259,8 @@ describe('patient_insurance', () => {
     })
   })
 
-  describe('setCurrentInsurance', () => {
-    it('creates new insurance record with all fields', async () => {
+  describeParallel'setCurrentInsurance', () => {
+    itParallel('creates new insurance record with all fields', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Test Provider',
@@ -280,7 +280,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.is_dependent, true)
     })
 
-    it('rejects insurance with future valid_from date', async () => {
+    itParallel('rejects insurance with future valid_from date', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: 1,
         duration_unit: 'days',
@@ -308,7 +308,7 @@ describe('patient_insurance', () => {
       )
     })
 
-    it('accepts insurance with today as valid_from', async () => {
+    itParallel('accepts insurance with today as valid_from', async () => {
       const expire_date = existingDurationEndDate(today, {
         duration: 365,
         duration_unit: 'days',
@@ -329,7 +329,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.valid_from, today)
     })
 
-    it('rejects insurance with past expire_date', async () => {
+    itParallel('rejects insurance with past expire_date', async () => {
       const valid_from = existingDurationEndDate(today, {
         duration: -365,
         duration_unit: 'days',
@@ -357,7 +357,7 @@ describe('patient_insurance', () => {
       )
     })
 
-    it('accepts insurance with today as expire_date', async () => {
+    itParallel('accepts insurance with today as expire_date', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Provider',
@@ -373,7 +373,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.expire_date, today)
     })
 
-    it('accepts valid date range', async () => {
+    itParallel('accepts valid date range', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Valid Provider',
@@ -389,7 +389,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.insurance_provider, 'Valid Provider')
     })
 
-    it('handles is_dependent field correctly', async () => {
+    itParallel('handles is_dependent field correctly', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Dependent Provider',
@@ -405,7 +405,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.is_dependent, true)
     })
 
-    it('handles optional plan_name field', async () => {
+    itParallel('handles optional plan_name field', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'Minimal Provider',
@@ -422,8 +422,8 @@ describe('patient_insurance', () => {
     })
   })
 
-  describe('edge cases', () => {
-    it('handles very long insurance fields', async () => {
+  describeParallel'edge cases', () => {
+    itParallel('handles very long insurance fields', async () => {
       const long_string = 'A'.repeat(255)
 
       await patient_insurance.setCurrent(db, {
@@ -442,7 +442,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.membership_number, long_string)
     })
 
-    it('handles special characters in insurance fields', async () => {
+    itParallel('handles special characters in insurance fields', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: "O'Brien's Insurance & Co.",
@@ -460,7 +460,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.membership_number, 'ABC-123-XYZ')
     })
 
-    it('validates date range spanning exactly one year', async () => {
+    itParallel('validates date range spanning exactly one year', async () => {
       const expire_date = existingDurationEndDate(today, {
         duration: 1,
         duration_unit: 'years',
@@ -481,7 +481,7 @@ describe('patient_insurance', () => {
       assertEquals(insurance.insurance_provider, 'One Year Provider')
     })
 
-    it('overwrites the existing current insurance if present', async () => {
+    itParallel('overwrites the existing current insurance if present', async () => {
       await patient_insurance.setCurrent(db, {
         patient_id,
         insurance_provider: 'One Year Provider',

@@ -12,7 +12,7 @@
 //   '/app/patients/[patient_id]/encounters/open/symptoms',
 //   { sanitizeResources: false, sanitizeOps: false },
 //   () => {
-//     it('renders a page on GET for an open encounter', async () => {
+//     itParallel('renders a page on GET for an open encounter', async () => {
 //       const { health_worker, fetchCheerio } =
 //         await addTestEmployeeWithSession(db, {
 //           profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',

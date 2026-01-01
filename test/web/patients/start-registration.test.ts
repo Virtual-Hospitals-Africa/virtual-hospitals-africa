@@ -9,10 +9,10 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import compact from '../../../util/compact.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
-describe('/app/organizations/[organization_id]/patients/start-registration', () => {
+describeParallel'/app/organizations/[organization_id]/patients/start-registration', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
-  it('creates a patient, starting the registration process at the personal page', async () => {
+  itParallel('creates a patient, starting the registration process at the personal page', async () => {
     const { fetchOk } = await addTestEmployeeWithSession(db, {
       profession: 'nurse',
       specialty: 'Primary care',

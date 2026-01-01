@@ -15,7 +15,7 @@
 //   '/app/organizations/[organization_id]/waiting_room/add',
 //   { sanitizeResources: false, sanitizeOps: false },
 //   () => {
-//     it('renders a page on GET', async () => {
+//     itParallel('renders a page on GET', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
 //         specialty: 'Primary care',
@@ -45,7 +45,7 @@
 //       })
 //     })
 
-//     it('creates a patient encounter on POST', async () => {
+//     itParallel('creates a patient encounter on POST', async () => {
 //       const test_patient =await patients.insert(db, {
 //         name: 'Test Patient',
 //       })

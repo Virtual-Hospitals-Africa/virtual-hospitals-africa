@@ -18,10 +18,10 @@ function* allSupportedWorkflowSteps() {
   }
 }
 
-describe(
+describeParallel
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounter',
   () => {
-    it('has a .tsx file for every supported workflow step', async () => {
+    itParallel('has a .tsx file for every supported workflow step', async () => {
       await forEach(allSupportedWorkflowSteps(), async ({ workflow, step }) => {
         const path =
           `routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/${workflow}/${step}.tsx`

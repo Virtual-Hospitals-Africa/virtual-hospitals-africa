@@ -16,13 +16,13 @@ import asFormData from '../../../../../util/asFormData.ts'
 import { employeeOrganizationDepartmentNames } from '../../../../../shared/departments.ts'
 // import { employeeDisplay } from '../../../../../util/healthWorkerDisplay.ts'
 
-describe(
+describeParallel
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/this_visit',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
 
-    it('is accessed immediately after the personal page and can continue with registration', async () => {
+    itParallel('is accessed immediately after the personal page and can continue with registration', async () => {
       const { fetchCheerio } = await addTestEmployeeWithSession(db, {
         profession: 'receptionist',
         registration_status: 'approved',
@@ -76,7 +76,7 @@ describe(
       )
     })
 
-    it('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
+    itParallel('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
       const organization = await createTestOrganization(db)
       const receptionist = await addTestEmployeeWithSession(
         db,
@@ -217,7 +217,7 @@ describe(
       // assertEquals(encounter.patient.id, patient_id)
     })
 
-    it('can route immediately to triage as a receptionist, keeping track of when all the rooms are filled', async () => {
+    itParallel('can route immediately to triage as a receptionist, keeping track of when all the rooms are filled', async () => {
       const organization = await createTestOrganization(db)
       const receptionist = await addTestEmployeeWithSession(
         db,
@@ -349,7 +349,7 @@ describe(
       )
     })
 
-    it('can route immediately to triage as a nurse', async () => {
+    itParallel('can route immediately to triage as a nurse', async () => {
       const organization = await createTestOrganization(db)
       const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
         db,

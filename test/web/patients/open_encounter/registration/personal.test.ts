@@ -11,7 +11,7 @@ import { route } from '../../../../route.ts'
 import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 
-describe(
+describeParallel
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
   () => {
     before(waitUntilTestServerUp)
@@ -31,7 +31,7 @@ describe(
       assertEquals(parsed, demographics)
     })
 
-    it('is accessed immediately after the start-registration process', async () => {
+    itParallel('is accessed immediately after the start-registration process', async () => {
       const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
         profession: 'receptionist',
         registration_status: 'approved',

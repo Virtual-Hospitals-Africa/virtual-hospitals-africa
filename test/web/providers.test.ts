@@ -7,12 +7,12 @@ import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 import matching from '../../util/matching.ts'
 
-describe(
+describeParallel
   '/app/providers',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('can return a provider', async () => {
+    itParallel('can return a provider', async () => {
       const { fetch, health_worker } = await addTestEmployeeWithSession(
         db,
         {

@@ -12,8 +12,8 @@ async function* eventually10() {
   yield* range(10)
 }
 
-describe('inParallel.forEach', () => {
-  it('processes items in parallel up to a concurrency limit', async () => {
+describeParallel'inParallel.forEach', () => {
+  itParallel('processes items in parallel up to a concurrency limit', async () => {
     const proccessedItems: number[] = []
     await inParallel.forEach(
       eventually100(),
@@ -129,7 +129,7 @@ describe('inParallel.forEach', () => {
     ])
   })
 
-  it('can set concurrency to 1', async () => {
+  itParallel('can set concurrency to 1', async () => {
     const proccessedItems: number[] = []
     await inParallel.forEach(
       eventually10(),
@@ -142,7 +142,7 @@ describe('inParallel.forEach', () => {
     assertEquals(proccessedItems, range(10))
   })
 
-  it('rejects with the first error and stops processing further', async () => {
+  itParallel('rejects with the first error and stops processing further', async () => {
     const proccessedItems: number[] = []
     await assertRejects(
       () =>
@@ -180,8 +180,8 @@ describe('inParallel.forEach', () => {
   })
 })
 
-describe('pMap', () => {
-  it('processes items in parallel up to a concurrency limit, but returns them in the order the source generator yields them were yielded', async () => {
+describeParallel'pMap', () => {
+  itParallel('processes items in parallel up to a concurrency limit, but returns them in the order the source generator yields them were yielded', async () => {
     const proccessedItems: number[] = []
     const results = await inParallel.pMap(
       eventually100(),
@@ -299,7 +299,7 @@ describe('pMap', () => {
     ])
   })
 
-  it('rejects with the first error and stops processing further', async () => {
+  itParallel('rejects with the first error and stops processing further', async () => {
     const proccessedItems: number[] = []
     await assertRejects(
       () =>

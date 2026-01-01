@@ -25,12 +25,12 @@ import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
 
-describe('triage/warning_signs', () => {
+describeParallel'triage/warning_signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  describe('GET', () => {
-    it('renders a warning signs page when patient not known to be pregnant', async () => {
+  describeParallel'GET', () => {
+    itParallel('renders a warning signs page when patient not known to be pregnant', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
@@ -94,7 +94,7 @@ describe('triage/warning_signs', () => {
       })
     })
 
-    it('renders the pregnancy-specific signs when the patient is pregnant', async () => {
+    itParallel('renders the pregnancy-specific signs when the patient is pregnant', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk, fetchCheerio } =
         await addTestEmployeeWithSession(db, {
@@ -201,8 +201,8 @@ describe('triage/warning_signs', () => {
     })
   })
 
-  describe('POST', () => {
-    it('inserts a simple warning sign finding without qualifiers', async () => {
+  describeParallel'POST', () => {
+    itParallel('inserts a simple warning sign finding without qualifiers', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -264,7 +264,7 @@ describe('triage/warning_signs', () => {
       ])
     })
 
-    it('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
+    itParallel('inserts a warning sign finding with nested qualifiers from the s_expression', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -370,7 +370,7 @@ describe('triage/warning_signs', () => {
       assertLength(this_patient_findings2, 1)
     })
 
-    it('inserts multiple warning sign findings when multiple are selected', async () => {
+    itParallel('inserts multiple warning sign findings when multiple are selected', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -434,7 +434,7 @@ describe('triage/warning_signs', () => {
       })
     })
 
-    it('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
+    itParallel('marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -493,7 +493,7 @@ describe('triage/warning_signs', () => {
       )
     })
 
-    it('does not insert any findings when no warning signs are selected', async () => {
+    itParallel('does not insert any findings when no warning signs are selected', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -535,7 +535,7 @@ describe('triage/warning_signs', () => {
       assertEquals(this_patient_findings.length, 0)
     })
 
-    it('does not save warning signs already made during the encounter', async () => {
+    itParallel('does not save warning signs already made during the encounter', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {
@@ -600,7 +600,7 @@ describe('triage/warning_signs', () => {
       assertEquals(findings_count_after_second_insertion, 1)
     })
 
-    it('does save identical warning concepts made during different encounters', async () => {
+    itParallel('does save identical warning concepts made during different encounters', async () => {
       const clinic = await createTestOrganization(db)
       const { health_worker: nurse, fetchOk } =
         await addTestEmployeeWithSession(db, {

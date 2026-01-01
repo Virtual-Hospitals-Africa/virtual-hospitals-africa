@@ -30,12 +30,12 @@ import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
 import { TestCase, testParallel } from 'test/_helpers/testParallel.ts'
 
-describe('triage/measure_vitals', () => {
+describeParallel'triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  describe('GET', () => {
-    it('loads a page for the first visit for an adult non-diabetic patient ', async () => {
+  describeParallel'GET', () => {
+    itParallel('loads a page for the first visit for an adult non-diabetic patient ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '1990-01-01' },
         warning_signs: [],
@@ -171,7 +171,7 @@ describe('triage/measure_vitals', () => {
       })
     })
 
-    it('loads a page for the first visit for an adult diabetic patient ', async () => {
+    itParallel('loads a page for the first visit for an adult diabetic patient ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '1990-01-01' },
         warning_signs: [],
@@ -207,7 +207,7 @@ describe('triage/measure_vitals', () => {
       })
     })
 
-    it('loads a page for the first visit for a non-diabetic older child ', async () => {
+    itParallel('loads a page for the first visit for a non-diabetic older child ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '2020-01-01' },
         warning_signs: [],
@@ -240,7 +240,7 @@ describe('triage/measure_vitals', () => {
       })
     })
 
-    it('loads a page for the first visit for a non-diabetic older child ', async () => {
+    itParallel('loads a page for the first visit for a non-diabetic older child ', async () => {
       const { $ } = await setupTriage({
         patient_demographics: { date_of_birth: '2020-01-01' },
         warning_signs: [],
@@ -275,8 +275,8 @@ describe('triage/measure_vitals', () => {
     })
   })
 
-  describe('POST', () => {
-    it('400s if missing blood_glucose measurement for a diabetic patient', async () => {
+  describeParallel'POST', () => {
+    itParallel('400s if missing blood_glucose measurement for a diabetic patient', async () => {
       const result = await asResultAsync(() =>
         setupTriage({
           patient_demographics: { date_of_birth: '2023-01-01' },
@@ -346,7 +346,7 @@ describe('triage/measure_vitals', () => {
       )
     })
 
-    it('inserts all zero TEWS scores for an an adult patient fully in the normal range', async () => {
+    itParallel('inserts all zero TEWS scores for an an adult patient fully in the normal range', async () => {
       const { encounter } = await setupTriage({
         patient_demographics: { date_of_birth: '2023-01-01' },
         warning_signs: [],

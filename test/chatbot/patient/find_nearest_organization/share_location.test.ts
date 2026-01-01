@@ -12,11 +12,11 @@ import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
 import { mockWhatsApp } from '../../../chatbot/mockWhatsApp.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
 
-describe('patient chatbot', () => {
+describeParallel'patient chatbot', () => {
   afterAll(() => db.destroy())
   const organizations = readSeedDump('organizations')
 
-  it('sends nearest organizations list after invitation', async () => {
+  itParallel('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'find_nearest_facilities:share_location',

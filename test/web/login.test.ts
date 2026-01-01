@@ -13,10 +13,10 @@ import { route } from '../route.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
-describe('/login', () => {
+describeParallel'/login', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
-  it('redirects to google if not already logged in', async () => {
+  itParallel('redirects to google if not already logged in', async () => {
     const response = await fetch(`${route}/login`, {
       redirect: 'manual',
     })
@@ -31,7 +31,7 @@ describe('/login', () => {
     await response.body?.cancel()
   })
 
-  describe('when logged in', () => {
+  describeParallel'when logged in', () => {
     it("doesn't allow unemployed access to /app", async () => {
       const mock = await addTestEmployeeWithSession(db, { profession: 'none' })
       const response = await mock.fetch(`/app`, {
@@ -49,7 +49,7 @@ describe('/login', () => {
       await response.body?.cancel()
     })
 
-    it('allows admin access to /app', async () => {
+    itParallel('allows admin access to /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'admin',
@@ -59,7 +59,7 @@ describe('/login', () => {
       assert($.html().includes('Open Encounters'))
     })
 
-    it('allows doctor access /app', async () => {
+    itParallel('allows doctor access /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'doctor',
@@ -77,13 +77,13 @@ describe('/login', () => {
       assert(page_contents.includes('Open Encounters'))
     })
 
-    it('allows regulator to access /regulator/[country]/pharmacies', async () => {
+    itParallel('allows regulator to access /regulator/[country]/pharmacies', async () => {
       const { fetchCheerio } = await addTestRegulatorWithSession(db)
       const $ = await fetchCheerio(`/regulator/ZW/pharmacies`)
       assertEquals($('h1').text(), 'Pharmacies')
     })
 
-    it('redirects from /login to /app', async () => {
+    itParallel('redirects from /login to /app', async () => {
       const mock = await addTestEmployeeWithSession(db, {
         profession: sample(['admin', 'doctor', 'nurse']),
       })
@@ -123,7 +123,7 @@ describe('/login', () => {
       await response.text()
     })
 
-    it('allows approved nurse access to /app', async () => {
+    itParallel('allows approved nurse access to /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
