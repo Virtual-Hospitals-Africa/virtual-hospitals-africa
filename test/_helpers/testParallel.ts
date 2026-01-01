@@ -1,12 +1,9 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import {
-  asResultAsync,
-  Failure,
-  isSuccess,
-} from '../../util/asResult.ts'
+import { asResultAsync, Failure, isSuccess } from '../../util/asResult.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { forEach } from '../../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
+import { pluralize } from '../../util/pluralize.ts'
 
 type TestFn = () => void | Promise<void>
 
@@ -18,37 +15,37 @@ export type TestCase =
     opts: { only?: boolean; skip?: boolean },
   ]
 
-  
 async function runTestCases(
   cases: TestCase[],
-{ fail_fast, concurrency = Infinity }: {
+  { fail_fast, concurrency = Infinity }: {
     fail_fast?: boolean
     concurrency?: number
-  } = {}) {
-    const any_only = cases.some((test_case) => test_case[2]?.only)
-    const run_test_cases = any_only
-      ? cases.filter((test_case) => test_case[2]?.only)
-      : cases.filter((test_case) => !test_case[2]?.skip)
+  } = {},
+) {
+  const any_only = cases.some((test_case) => test_case[2]?.only)
+  const run_test_cases = any_only
+    ? cases.filter((test_case) => test_case[2]?.only)
+    : cases.filter((test_case) => !test_case[2]?.skip)
 
-    const failures: Array<Failure & { name: string }> = []
+  const failures: Array<Failure & { name: string }> = []
 
-    await forEach(run_test_cases, async ([name, fn]) => {
-      const result = await asResultAsync(() => Promise.resolve().then(fn))
-      if (isSuccess(result)) return
-      if (fail_fast) throw result.error
-      failures.push({ name, ...result })
-    }, { concurrency })
+  await forEach(run_test_cases, async ([name, fn]) => {
+    const result = await asResultAsync(() => Promise.resolve().then(fn))
+    if (isSuccess(result)) return
+    if (fail_fast) throw result.error
+    failures.push({ name, ...result })
+  }, { concurrency })
 
-    if (arrayIsEmpty(failures)) {
-      return
-    }
-
-    const message = failures
-      .map((f) => `[${f.name}] ${f.error.message}`)
-      .join('\n\n')
-
-    throw new AggregateError(failures.map((f) => f.error), message)
+  if (arrayIsEmpty(failures)) {
+    return
   }
+
+  const message = failures
+    .map((f) => `[${f.name}] ${f.error.message}`)
+    .join('\n\n')
+
+  throw new AggregateError(failures.map((f) => f.error), message)
+}
 
 export function testParallel(
   description: string,
@@ -98,13 +95,12 @@ testParallel.skip = (
   cases: TestCase[],
 ) => testParallel(description, cases, { skip: true })
 
-
 let descriptions: string[] = []
 let test_cases: TestCase[] = []
 export function describeParallel(
   description: string,
   callback: () => void,
-  opts: { only?: boolean, skip?: boolean} = {}
+  opts: { only?: boolean; skip?: boolean } = {},
 ) {
   const this_descriptions = [...descriptions]
   descriptions = [...descriptions, description]
@@ -114,13 +110,14 @@ export function describeParallel(
     descriptions = this_descriptions
     return
   }
-  
+
   const run = opts.only ? describe.only : opts.skip ? describe.skip : describe
   run(description, () => {
     callback()
     assert(test_cases.length, 'No test cases supplied')
     const cases_to_run = test_cases
-    it('passes', () => runTestCases(cases_to_run))
+    it(`passes ${cases_to_run.length} test ${pluralize('case', cases_to_run.length)}`, () =>
+      runTestCases(cases_to_run))
   })
 
   descriptions = this_descriptions
@@ -129,18 +126,18 @@ export function describeParallel(
 
 describeParallel.only = (
   description: string,
-  callback: () => void
+  callback: () => void,
 ) => describeParallel(description, callback, { only: true })
 
 describeParallel.skip = (
   description: string,
-  callback: () => void
+  callback: () => void,
 ) => describeParallel(description, callback, { skip: true })
 
 export function itParallel(
   description: string,
   test: TestFn,
-  opts: { only?: boolean, skip?: boolean} = {}
+  opts: { only?: boolean; skip?: boolean } = {},
 ) {
   const x = [...descriptions.slice(1), description].join(' > ')
   console.log('mwekmwekl', x)
@@ -149,10 +146,10 @@ export function itParallel(
 
 itParallel.only = (
   description: string,
-  test: TestFn
+  test: TestFn,
 ) => itParallel(description, test, { only: true })
 
 itParallel.skip = (
   description: string,
-  test: TestFn
+  test: TestFn,
 ) => itParallel(description, test, { skip: true })
