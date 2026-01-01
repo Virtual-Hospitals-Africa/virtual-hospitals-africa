@@ -40,42 +40,63 @@ function extractUnusedVarName(message: string): string | null {
   return match ? match[1] : null
 }
 
-function removeImportFromLine(line: string, var_name: string): string | null {
-  // Check if this line is an import statement containing the var
-  if (!line.trim().startsWith('import ')) return line
+function removeUnusedImports(
+  content: string,
+  unused_vars: Set<string>,
+): string {
+  // Match import statements (single-line and multi-line)
+  const import_regex =
+    /import\s+(\w+\s+from\s+|)(\{[\s\S]*?\})\s*from\s*['"][^'"]+['"]/g
 
-  // Default import: import foo from 'bar'
-  const default_import_match = line.match(/^import\s+(\w+)\s+from\s+/)
-  if (default_import_match && default_import_match[1] === var_name) {
-    return null // Remove entire line
-  }
+  return content.replace(
+    import_regex,
+    (match, default_part, braces_content) => {
+      // Extract items from braces
+      const inner = braces_content.slice(1, -1) // Remove { and }
+      const items = inner.split(',').map((s: string) => s.trim()).filter((
+        s: string,
+      ) => s)
 
-  // Named imports: import { foo, bar } from 'baz'
-  const named_import_match = line.match(
-    /^(import\s*\{)([^}]+)(\}\s*from\s*.+)$/,
+      // Filter out unused vars
+      const filtered = items.filter((item: string) => {
+        const name = item.split(/\s+as\s+/)[0].trim()
+        return !unused_vars.has(name)
+      })
+
+      if (filtered.length === 0 && !default_part.trim()) {
+        return '' // Remove entire import
+      }
+
+      if (filtered.length === items.length) {
+        return match // No changes needed
+      }
+
+      // Rebuild the import - extract the from clause
+      const from_match = match.match(/from\s*(['"][^'"]+['"])/)
+      if (!from_match) return match
+
+      if (filtered.length === 0) {
+        return '' // Remove entire import if no named imports left
+      }
+
+      return `import { ${filtered.join(', ')} } from ${from_match[1]}`
+    },
   )
-  if (named_import_match) {
-    const [, prefix, imports, suffix] = named_import_match
-    const import_items = imports.split(',').map((s) => s.trim())
+}
 
-    // Find and remove the var (handling 'as' aliases)
-    const filtered = import_items.filter((item) => {
-      const name = item.split(/\s+as\s+/)[0].trim()
-      return name !== var_name
-    })
+function removeDefaultImports(
+  content: string,
+  unused_vars: Set<string>,
+): string {
+  // Match default imports: import foo from 'bar'
+  const default_import_regex = /import\s+(\w+)\s+from\s*['"][^'"]+['"]\s*\n?/g
 
-    if (filtered.length === 0) {
-      return null // Remove entire line
+  return content.replace(default_import_regex, (match, var_name) => {
+    if (unused_vars.has(var_name)) {
+      return '' // Remove entire import
     }
-
-    if (filtered.length === import_items.length) {
-      return line // Var not found in this import
-    }
-
-    return `${prefix} ${filtered.join(', ')} ${suffix}`
-  }
-
-  return line
+    return match
+  })
 }
 
 async function processFile(
@@ -83,29 +104,16 @@ async function processFile(
   unused_vars: Set<string>,
 ): Promise<boolean> {
   const content = await Deno.readTextFile(filename)
-  const lines = content.split('\n')
-  const new_lines: string[] = []
-  let modified = false
 
-  for (const line of lines) {
-    let current_line: string | null = line
+  // Apply both removal functions
+  let new_content = removeUnusedImports(content, unused_vars)
+  new_content = removeDefaultImports(new_content, unused_vars)
 
-    for (const var_name of unused_vars) {
-      if (current_line === null) break
-      const result = removeImportFromLine(current_line, var_name)
-      if (result !== current_line) {
-        modified = true
-        current_line = result
-      }
-    }
+  // Clean up empty lines left by removed imports
+  new_content = new_content.replace(/\n{3,}/g, '\n\n')
 
-    if (current_line !== null) {
-      new_lines.push(current_line)
-    }
-  }
-
-  if (modified) {
-    await Deno.writeTextFile(filename, new_lines.join('\n'))
+  if (new_content !== content) {
+    await Deno.writeTextFile(filename, new_content)
     return true
   }
   return false

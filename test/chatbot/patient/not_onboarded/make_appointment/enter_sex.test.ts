@@ -10,9 +10,9 @@ import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../mockWhatsApp.ts'
 import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
 
-describeParallel'patient chatbot', () => {
+describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  itParallel('asks for birthday after inquiring sex', async () => {
+  it('asks for birthday after inquiring sex', async () => {
     const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_sex',

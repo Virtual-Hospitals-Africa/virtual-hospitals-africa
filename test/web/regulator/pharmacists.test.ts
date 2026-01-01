@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
@@ -12,7 +13,7 @@ import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
 import { route } from '../../route.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
-describe.skip(
+describeParallel.skip(
   '/regulator/[country]/pharmacists',
   () => {
     before(waitUntilTestServerUp)
@@ -37,61 +38,65 @@ describe.skip(
       )
     })
 
-    itParallel('renders a pharmacist table and a pharmacist with GET', async () => {
-      const new_pharmacist = await addTestPharmacist(db)
-      const { fetch, regulator } = await addTestRegulatorWithSession(db)
+    itParallel(
+      'renders a pharmacist table and a pharmacist with GET',
+      async () => {
+        const new_pharmacist = await addTestPharmacist(db)
+        const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const pharmacist_name =
-        `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
+        const pharmacist_name =
+          `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
 
-      const response = await fetch(
-        path(`/regulator/${regulator.country}/pharmacists`, {
-          search: pharmacist_name,
-        }),
-      )
+        const response = await fetch(
+          path(`/regulator/${regulator.country}/pharmacists`, {
+            search: pharmacist_name,
+          }),
+        )
 
-      if (!response.ok) {
-        throw new Error(await response.text())
-      }
+        if (!response.ok) {
+          throw new Error(await response.text())
+        }
 
-      const page_contents = await response.text()
+        const page_contents = await response.text()
 
-      const $ = cheerio.load(page_contents)
+        const $ = cheerio.load(page_contents)
 
-      assertEquals($('table').length, 1)
+        assertEquals($('table').length, 1)
 
-      assert(
-        $(`td div:contains(${pharmacist_name})`).length === 1,
-        `should have one <td> with the pharmacist name"`,
-      )
+        assert(
+          $(`td div:contains(${pharmacist_name})`).length === 1,
+          `should have one <td> with the pharmacist name"`,
+        )
 
-      const table_row = $(`tr div:contains(${pharmacist_name})`).closest('tr')
+        const table_row = $(`tr div:contains(${pharmacist_name})`).closest('tr')
 
-      assert(
-        table_row.find(`td > div:contains(${new_pharmacist.prefix})`).length ===
-          1,
-        `should have one <td> with the text the pharmacist prefix"`,
-      )
+        assert(
+          table_row.find(`td > div:contains(${new_pharmacist.prefix})`)
+            .length ===
+            1,
+          `should have one <td> with the text the pharmacist prefix"`,
+        )
 
-      assert(
-        table_row.find(`td > div:contains(${new_pharmacist.pharmacist_type})`)
-          .length === 1,
-        `should have one <td> with the text the pharmacist type"`,
-      )
+        assert(
+          table_row.find(`td > div:contains(${new_pharmacist.pharmacist_type})`)
+            .length === 1,
+          `should have one <td> with the text the pharmacist type"`,
+        )
 
-      assert(
-        table_row.find(`td > div:contains(${new_pharmacist.licence_number})`)
-          .length === 1,
-        `should have one <td> with the text the pharmacist licence number`,
-      )
+        assert(
+          table_row.find(`td > div:contains(${new_pharmacist.licence_number})`)
+            .length === 1,
+          `should have one <td> with the text the pharmacist licence number`,
+        )
 
-      assert(
-        table_row.find(`td > div:contains(${new_pharmacist.expiry_date})`)
-          .length === 1,
-        `should have one <td> with the text the pharmacist expiry date`,
-      )
+        assert(
+          table_row.find(`td > div:contains(${new_pharmacist.expiry_date})`)
+            .length === 1,
+          `should have one <td> with the text the pharmacist expiry date`,
+        )
 
-      await removeTestPharmacist(db, new_pharmacist.id)
-    })
+        await removeTestPharmacist(db, new_pharmacist.id)
+      },
+    )
   },
 )

@@ -1,4 +1,5 @@
-import { describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+
 import { Workflow, WORKFLOW_STEPS } from '../shared/workflow.ts'
 import entries from '../util/entries.ts'
 import { forEach } from '../util/inParallel.ts'
@@ -18,15 +19,21 @@ function* allSupportedWorkflowSteps() {
   }
 }
 
-describeParallel
+describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounter',
   () => {
-    itParallel('has a .tsx file for every supported workflow step', async () => {
-      await forEach(allSupportedWorkflowSteps(), async ({ workflow, step }) => {
-        const path =
-          `routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/${workflow}/${step}.tsx`
-        await Deno.readFile(path)
-      })
-    })
+    itParallel(
+      'has a .tsx file for every supported workflow step',
+      async () => {
+        await forEach(
+          allSupportedWorkflowSteps(),
+          async ({ workflow, step }) => {
+            const path =
+              `routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/${workflow}/${step}.tsx`
+            await Deno.readFile(path)
+          },
+        )
+      },
+    )
   },
 )

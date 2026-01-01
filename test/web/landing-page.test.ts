@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { route } from '../route.ts'
 import * as cheerio from 'cheerio'
@@ -15,7 +16,7 @@ const expected_links = [
   // '/volunteer',
 ]
 
-describeParallel
+describeParallel(
   'landing page',
   () => {
     before(waitUntilTestServerUp)

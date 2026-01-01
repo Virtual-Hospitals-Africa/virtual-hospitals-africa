@@ -1,9 +1,10 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import range from '../../util/range.ts'
 
-describeParallel'workflows', () => {
+describeParallel('workflows', () => {
   afterAll(() => db.destroy())
 
   itParallel('have a unique ordering', async () => {
