@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
@@ -13,7 +14,7 @@ import { route } from '../route.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
-describeParallel'/login', () => {
+describeParallel('/login', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
   itParallel('redirects to google if not already logged in', async () => {
@@ -31,8 +32,8 @@ describeParallel'/login', () => {
     await response.body?.cancel()
   })
 
-  describeParallel'when logged in', () => {
-    it("doesn't allow unemployed access to /app", async () => {
+  describeParallel('when logged in', () => {
+    itParallel("doesn't allow unemployed access to /app", async () => {
       const mock = await addTestEmployeeWithSession(db, { profession: 'none' })
       const response = await mock.fetch(`/app`, {
         headers: {
@@ -77,11 +78,14 @@ describeParallel'/login', () => {
       assert(page_contents.includes('Open Encounters'))
     })
 
-    itParallel('allows regulator to access /regulator/[country]/pharmacies', async () => {
-      const { fetchCheerio } = await addTestRegulatorWithSession(db)
-      const $ = await fetchCheerio(`/regulator/ZW/pharmacies`)
-      assertEquals($('h1').text(), 'Pharmacies')
-    })
+    itParallel(
+      'allows regulator to access /regulator/[country]/pharmacies',
+      async () => {
+        const { fetchCheerio } = await addTestRegulatorWithSession(db)
+        const $ = await fetchCheerio(`/regulator/ZW/pharmacies`)
+        assertEquals($('h1').text(), 'Pharmacies')
+      },
+    )
 
     itParallel('redirects from /login to /app', async () => {
       const mock = await addTestEmployeeWithSession(db, {
@@ -97,31 +101,37 @@ describeParallel'/login', () => {
     })
 
     // TODO turn off SKIP_NURSE_REGISTRATION
-    it.skip('redirects unregistered nurse to registration', async () => {
-      const mock = await addTestEmployeeWithSession(db, {
-        profession: 'nurse',
-        registration_status: 'not started',
-      })
-      const response = await mock.fetch(`/app`)
-      assertEquals(
-        response.url,
-        `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
-      )
-      const page_contents = await response.text()
-      assert(page_contents.includes('First Name'))
-    })
+    itParallel.skip(
+      'redirects unregistered nurse to registration',
+      async () => {
+        const mock = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'not started',
+        })
+        const response = await mock.fetch(`/app`)
+        assertEquals(
+          response.url,
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
+        )
+        const page_contents = await response.text()
+        assert(page_contents.includes('First Name'))
+      },
+    )
 
     // TODO turn off SKIP_NURSE_REGISTRATION
-    it.skip('redirects unapproved nurse to /app/pending_approval', async () => {
-      const mock = await addTestEmployeeWithSession(db, {
-        profession: 'nurse',
-        specialty: 'Primary care',
-        registration_status: 'awaiting approval',
-      })
-      const response = await mock.fetch(`/app`)
-      assertEquals(response.url, `${route}/app/pending_approval`)
-      await response.text()
-    })
+    itParallel.skip(
+      'redirects unapproved nurse to /app/pending_approval',
+      async () => {
+        const mock = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          specialty: 'Primary care',
+          registration_status: 'awaiting approval',
+        })
+        const response = await mock.fetch(`/app`)
+        assertEquals(response.url, `${route}/app/pending_approval`)
+        await response.text()
+      },
+    )
 
     itParallel('allows approved nurse access to /app', async () => {
       const organization = await createTestOrganization(db)
@@ -135,74 +145,83 @@ describeParallel'/login', () => {
       assert($.html().includes('Open Encounters'))
     })
 
-    it('starts in an empty waiting room with sidebar links for a nurse', () =>
-      withTestOrganization(db, async (organization_id) => {
+    itParallel(
+      'starts in an empty waiting room with sidebar links for a nurse',
+      () =>
+        withTestOrganization(db, async (organization_id) => {
+          const mock = await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            specialty: 'Primary care',
+            registration_status: 'approved',
+            organization_id,
+          })
+
+          const $ = await mock.fetchCheerio(`${route}/app`)
+
+          const waiting_room_add_link = $(
+            `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
+          )
+          assertEquals(
+            waiting_room_add_link.first().text(),
+            'Register patient',
+          )
+
+          const patients_link = $(
+            `a[href="/app/organizations/${organization_id}/waiting_room"]`,
+          )
+          assert(patients_link.first().text().includes('Open Encounters'))
+
+          const employees_link = $('a[href="/app/employees"]')
+          assert(employees_link.first().text().includes('Employees'))
+
+          const calendar_link = $('a[href="/app/calendar"]')
+          assert(calendar_link.first().text().includes('Calendar'))
+
+          const inventory_link = $(
+            `a[href="/app/organizations/${organization_id}/inventory"]`,
+          )
+          assert(inventory_link.first().text().includes('Inventory'))
+
+          const logout_link = $('a[href="/app/logout"]')
+          assert(logout_link.first().text().includes('Log Out'))
+        }),
+    )
+
+    itParallel(
+      'starts in an empty waiting room with a start-registration link for a receptionist',
+      () =>
+        withTestOrganization(db, async (organization_id) => {
+          const mock = await addTestEmployeeWithSession(db, {
+            profession: 'receptionist',
+            registration_status: 'approved',
+            organization_id,
+          })
+
+          const $ = await mock.fetchCheerio(`${route}/app`)
+
+          console.log($.html())
+          const waiting_room_add_link = $(
+            `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
+          )
+          assertEquals(
+            waiting_room_add_link.first().text(),
+            'Register patient',
+          )
+        }),
+    )
+
+    itParallel(
+      "doesn't allow access to employees if you are employed at a different organization",
+      async () => {
         const mock = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          specialty: 'Primary care',
-          registration_status: 'approved',
-          organization_id,
+          profession: 'doctor',
         })
-
-        const $ = await mock.fetchCheerio(`${route}/app`)
-
-        const waiting_room_add_link = $(
-          `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
+        const response = await mock.fetch(
+          `${route}/app/organizations/00000000-0000-1000-8000-000000000002/employees?expectedTestError=1`,
         )
-        assertEquals(
-          waiting_room_add_link.first().text(),
-          'Register patient',
-        )
-
-        const patients_link = $(
-          `a[href="/app/organizations/${organization_id}/waiting_room"]`,
-        )
-        assert(patients_link.first().text().includes('Open Encounters'))
-
-        const employees_link = $('a[href="/app/employees"]')
-        assert(employees_link.first().text().includes('Employees'))
-
-        const calendar_link = $('a[href="/app/calendar"]')
-        assert(calendar_link.first().text().includes('Calendar'))
-
-        const inventory_link = $(
-          `a[href="/app/organizations/${organization_id}/inventory"]`,
-        )
-        assert(inventory_link.first().text().includes('Inventory'))
-
-        const logout_link = $('a[href="/app/logout"]')
-        assert(logout_link.first().text().includes('Log Out'))
-      }))
-
-    it('starts in an empty waiting room with a start-registration link for a receptionist', () =>
-      withTestOrganization(db, async (organization_id) => {
-        const mock = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
-          registration_status: 'approved',
-          organization_id,
-        })
-
-        const $ = await mock.fetchCheerio(`${route}/app`)
-
-        console.log($.html())
-        const waiting_room_add_link = $(
-          `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
-        )
-        assertEquals(
-          waiting_room_add_link.first().text(),
-          'Register patient',
-        )
-      }))
-
-    it("doesn't allow access to employees if you are employed at a different organization", async () => {
-      const mock = await addTestEmployeeWithSession(db, {
-        profession: 'doctor',
-      })
-      const response = await mock.fetch(
-        `${route}/app/organizations/00000000-0000-1000-8000-000000000002/employees?expectedTestError=1`,
-      )
-      assertEquals(response.status, 403)
-      await response.body?.cancel()
-    })
+        assertEquals(response.status, 403)
+        await response.body?.cancel()
+      },
+    )
   })
 })

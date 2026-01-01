@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -7,7 +8,7 @@ import { route } from '../route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 
-describeParallel
+describeParallel(
   '/app/organizations',
   () => {
     before(waitUntilTestServerUp)

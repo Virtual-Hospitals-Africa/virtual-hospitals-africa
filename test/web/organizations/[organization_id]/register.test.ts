@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -13,7 +14,7 @@ import randomDemographics from '../../../../mocks/randomDemographics.ts'
 import createTestAddress from '../../../../mocks/createTestAddress.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
-describe.skip(
+describeParallel.skip(
   '/app/organizations/[organization_id]/register',
   () => {
     before(waitUntilTestServerUp)
@@ -58,249 +59,262 @@ describe.skip(
       assert($('input[name="address.street"]').length === 1)
     })
 
-    itParallel('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
-      await addTestEmployee(db, { profession: 'admin' })
-      const { fetch, health_worker: nurse } = await addTestEmployeeWithSession(
-        db,
+    itParallel(
+      'supports POSTs on the personal, professional, and documents step, moving you into /pending_approval',
+      async () => {
+        await addTestEmployee(db, { profession: 'admin' })
+        const { fetch, health_worker: nurse } =
+          await addTestEmployeeWithSession(
+            db,
+            {
+              profession: 'nurse',
+              registration_status: 'not started',
+            },
+          )
+        const address = createTestAddress()
+
+        const demographics = randomDemographics('ZA')
         {
-          profession: 'nurse',
-          registration_status: 'not started',
-        },
-      )
-      const address = createTestAddress()
+          const body = new FormData()
+          body.set('first_names', demographics.first_names)
+          body.set('surname', demographics.surname)
+          body.set('preferred_name', demographics.preferred_name)
+          body.set('sex', demographics.sex)
+          body.set('gender', demographics.gender)
+          body.set('national_id_number', demographics.national_id_number)
+          body.set('date_of_birth', demographics.date_of_birth)
+          body.set('mobile_number', '+1 (203) 555-5555')
 
-      const demographics = randomDemographics('ZA')
-      {
-        const body = new FormData()
-        body.set('first_names', demographics.first_names)
-        body.set('surname', demographics.surname)
-        body.set('preferred_name', demographics.preferred_name)
-        body.set('sex', demographics.sex)
-        body.set('gender', demographics.gender)
-        body.set('national_id_number', demographics.national_id_number)
-        body.set('date_of_birth', demographics.date_of_birth)
-        body.set('mobile_number', '+1 (203) 555-5555')
+          body.set('address.country', address.country)
+          body.set(
+            'address.administrative_area_level_1',
+            address.administrative_area_level_1,
+          )
+          body.set(
+            'address.administrative_area_level_2',
+            address.administrative_area_level_2,
+          )
+          body.set('address.locality', address.locality)
+          body.set('address.street', address.street)
 
-        body.set('address.country', address.country)
-        body.set(
-          'address.administrative_area_level_1',
-          address.administrative_area_level_1,
-        )
-        body.set(
-          'address.administrative_area_level_2',
-          address.administrative_area_level_2,
-        )
-        body.set('address.locality', address.locality)
-        body.set('address.street', address.street)
+          const post_response = await fetch(
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
 
-        const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
+          if (!post_response.ok) {
+            throw new Error(await post_response.text())
+          }
 
-        if (!post_response.ok) {
-          throw new Error(await post_response.text())
-        }
+          assertEquals(
+            post_response.url,
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
+          )
 
-        assertEquals(
-          post_response.url,
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
-        )
+          await post_response.body?.cancel()
 
-        await post_response.body?.cancel()
+          const registration_form_state = await nurse_registration_details
+            .getInProgress(db, {
+              health_worker_id: nurse.id,
+            })
 
-        const registration_form_state = await nurse_registration_details
-          .getInProgress(db, {
-            health_worker_id: nurse.id,
+          assertEquals(registration_form_state, {
+            date_of_birth: demographics.date_of_birth,
+            first_names: demographics.first_names,
+            sex: demographics.sex,
+            gender: demographics.gender,
+            surname: demographics.surname,
+            preferred_name: demographics.preferred_name,
+            national_id_number: demographics.national_id_number,
+            mobile_number: '+12035555555',
+            address,
           })
 
-        assertEquals(registration_form_state, {
-          date_of_birth: demographics.date_of_birth,
-          first_names: demographics.first_names,
-          sex: demographics.sex,
-          gender: demographics.gender,
-          surname: demographics.surname,
-          preferred_name: demographics.preferred_name,
-          national_id_number: demographics.national_id_number,
-          mobile_number: '+12035555555',
-          address,
-        })
+          const get_personal_response = await fetch(
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
+          )
 
-        const get_personal_response = await fetch(
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
-        )
+          const page_contents = await get_personal_response.text()
+          const $ = cheerio.load(page_contents)
+          assertEquals(
+            $('input[name="first_names"]').val(),
+            demographics.first_names,
+          )
+          assertEquals($('input[name="surname"]').val(), demographics.surname)
+          assertEquals(
+            $('input[name="date_of_birth"]').val(),
+            demographics.date_of_birth,
+          )
+          assertEquals($('select[name="sex"]').val(), demographics.sex)
+          assertEquals(
+            $('input[name="national_id_number"]').val(),
+            demographics.national_id_number,
+          )
+          assertEquals($('input[name="mobile_number"]').val(), '+12035555555')
 
-        const page_contents = await get_personal_response.text()
-        const $ = cheerio.load(page_contents)
-        assertEquals(
-          $('input[name="first_names"]').val(),
-          demographics.first_names,
-        )
-        assertEquals($('input[name="surname"]').val(), demographics.surname)
-        assertEquals(
-          $('input[name="date_of_birth"]').val(),
-          demographics.date_of_birth,
-        )
-        assertEquals($('select[name="sex"]').val(), demographics.sex)
-        assertEquals(
-          $('input[name="national_id_number"]').val(),
-          demographics.national_id_number,
-        )
-        assertEquals($('input[name="mobile_number"]').val(), '+12035555555')
-
-        // TODO
-        // assertEquals(
-        //   $('input[name="address.country"]').val(),
-        //   address.country,
-        // )
-        assertEquals(
-          $('input[name="address.administrative_area_level_1"]').val(),
-          address.administrative_area_level_1,
-        )
-        assertEquals(
-          $('input[name="address.administrative_area_level_2"]').val(),
-          address.administrative_area_level_2,
-        )
-        assertEquals(
-          $('input[name="address.locality"]').val(),
-          address.locality,
-        )
-        assertEquals(
-          $('input[name="address.street"]').val(),
-          address.street!,
-        )
-      }
-
-      {
-        const body = new FormData()
-        body.set('date_of_first_practice', '2022-01-01')
-        body.set('ncz_registration_number', 'GN123456')
-        body.set('specialty', 'oncology and palliative care')
-
-        const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
-
-        if (!post_response.ok) {
-          throw new Error(await post_response.text())
+          // TODO
+          // assertEquals(
+          //   $('input[name="address.country"]').val(),
+          //   address.country,
+          // )
+          assertEquals(
+            $('input[name="address.administrative_area_level_1"]').val(),
+            address.administrative_area_level_1,
+          )
+          assertEquals(
+            $('input[name="address.administrative_area_level_2"]').val(),
+            address.administrative_area_level_2,
+          )
+          assertEquals(
+            $('input[name="address.locality"]').val(),
+            address.locality,
+          )
+          assertEquals(
+            $('input[name="address.street"]').val(),
+            address.street!,
+          )
         }
 
-        assertEquals(
-          post_response.url,
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
-        )
+        {
+          const body = new FormData()
+          body.set('date_of_first_practice', '2022-01-01')
+          body.set('ncz_registration_number', 'GN123456')
+          body.set('specialty', 'oncology and palliative care')
 
-        await post_response.body?.cancel()
+          const post_response = await fetch(
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
 
-        const registration_form_state = await nurse_registration_details
-          .getInProgress(db, {
-            health_worker_id: nurse.id,
+          if (!post_response.ok) {
+            throw new Error(await post_response.text())
+          }
+
+          assertEquals(
+            post_response.url,
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
+          )
+
+          await post_response.body?.cancel()
+
+          const registration_form_state = await nurse_registration_details
+            .getInProgress(db, {
+              health_worker_id: nurse.id,
+            })
+
+          assertEquals(registration_form_state, {
+            date_of_birth: demographics.date_of_birth,
+            first_names: demographics.first_names,
+            surname: demographics.surname,
+            preferred_name: demographics.preferred_name,
+            sex: demographics.sex,
+            gender: demographics.gender,
+            national_id_number: demographics.national_id_number,
+            mobile_number: '+12035555555',
+            date_of_first_practice: '2022-01-01',
+            ncz_registration_number: 'GN123456',
+            specialty: 'oncology and palliative care',
+            address,
           })
 
-        assertEquals(registration_form_state, {
-          date_of_birth: demographics.date_of_birth,
-          first_names: demographics.first_names,
-          surname: demographics.surname,
-          preferred_name: demographics.preferred_name,
-          sex: demographics.sex,
-          gender: demographics.gender,
-          national_id_number: demographics.national_id_number,
-          mobile_number: '+12035555555',
-          date_of_first_practice: '2022-01-01',
-          ncz_registration_number: 'GN123456',
-          specialty: 'oncology and palliative care',
-          address,
-        })
+          const get_professional_response = await fetch(
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
+          )
 
-        const get_professional_response = await fetch(
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/professional`,
-        )
-
-        const page_contents = await get_professional_response.text()
-        const $ = cheerio.load(page_contents)
-        assertEquals(
-          $('input[name="date_of_first_practice"]').val(),
-          '2022-01-01',
-        )
-        assertEquals(
-          $('input[name="ncz_registration_number"]').val(),
-          'GN123456',
-        )
-        assertEquals(
-          $('select[name="specialty"]').val(),
-          'oncology and palliative care',
-        )
-      }
-
-      {
-        // TODO: upload documents
-        const body = new FormData()
-
-        const post_response = await fetch(
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
-
-        if (!post_response.ok) {
-          throw new Error(await post_response.text())
+          const page_contents = await get_professional_response.text()
+          const $ = cheerio.load(page_contents)
+          assertEquals(
+            $('input[name="date_of_first_practice"]').val(),
+            '2022-01-01',
+          )
+          assertEquals(
+            $('input[name="ncz_registration_number"]').val(),
+            'GN123456',
+          )
+          assertEquals(
+            $('select[name="specialty"]').val(),
+            'oncology and palliative care',
+          )
         }
 
-        assertEquals(
-          post_response.url,
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room`,
-        )
+        {
+          // TODO: upload documents
+          const body = new FormData()
 
-        await post_response.body?.cancel()
+          const post_response = await fetch(
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/documents`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
 
-        const registration_details = await nurse_registration_details.get(db, {
-          health_worker_id: nurse.id,
-        })
+          if (!post_response.ok) {
+            throw new Error(await post_response.text())
+          }
 
-        const new_nurse = await db.selectFrom('health_workers').where(
-          'id',
-          '=',
-          nurse.id,
-        ).selectAll().executeTakeFirst()
-        const nurse_employment = await db.selectFrom('employment').where(
-          'health_worker_id',
-          '=',
-          nurse.id,
-        ).selectAll().executeTakeFirstOrThrow()
+          assertEquals(
+            post_response.url,
+            `${route}/app/organizations/00000000-0000-1000-8000-000000000001/waiting_room`,
+          )
 
-        assert(registration_details)
-        assert(new_nurse)
-        assert(nurse_employment)
+          await post_response.body?.cancel()
 
-        assertEquals(
-          registration_details.date_of_birth,
-          demographics.date_of_birth,
-        )
-        assertEquals(new_nurse.name, demographics.name)
-        assertEquals(registration_details.gender, demographics.gender)
-        assertEquals(registration_details.mobile_number, '+12035555555')
-        assertEquals(
-          registration_details.national_id_number,
-          demographics.national_id_number,
-        )
-        assertEquals(registration_details.date_of_first_practice, '2022-01-01')
-        assertEquals(registration_details.ncz_registration_number, 'GN123456')
-        assertEquals(nurse_employment.specialty, 'oncology and palliative care')
-        // TODO turn off SKIP_NURSE_REGISTRATION
-        // assertEquals(
-        //   post_response.url,
-        //   `${route}/app/pending_approval`,
-        // )
-      }
-    })
+          const registration_details = await nurse_registration_details.get(
+            db,
+            {
+              health_worker_id: nurse.id,
+            },
+          )
+
+          const new_nurse = await db.selectFrom('health_workers').where(
+            'id',
+            '=',
+            nurse.id,
+          ).selectAll().executeTakeFirst()
+          const nurse_employment = await db.selectFrom('employment').where(
+            'health_worker_id',
+            '=',
+            nurse.id,
+          ).selectAll().executeTakeFirstOrThrow()
+
+          assert(registration_details)
+          assert(new_nurse)
+          assert(nurse_employment)
+
+          assertEquals(
+            registration_details.date_of_birth,
+            demographics.date_of_birth,
+          )
+          assertEquals(new_nurse.name, demographics.name)
+          assertEquals(registration_details.gender, demographics.gender)
+          assertEquals(registration_details.mobile_number, '+12035555555')
+          assertEquals(
+            registration_details.national_id_number,
+            demographics.national_id_number,
+          )
+          assertEquals(
+            registration_details.date_of_first_practice,
+            '2022-01-01',
+          )
+          assertEquals(registration_details.ncz_registration_number, 'GN123456')
+          assertEquals(
+            nurse_employment.specialty,
+            'oncology and palliative care',
+          )
+          // TODO turn off SKIP_NURSE_REGISTRATION
+          // assertEquals(
+          //   post_response.url,
+          //   `${route}/app/pending_approval`,
+          // )
+        }
+      },
+    )
   },
 )

@@ -1,3 +1,4 @@
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { sql } from 'kysely'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -14,7 +15,7 @@ import { asTextArray } from '../../db/helpers.ts'
 import { createTestOrganization } from 'test/_helpers/organizations.ts'
 import { itUsesTrxAnd } from 'test/_helpers/transaction.ts'
 
-describeParallel
+describeParallel(
   'db/models/patient_conditions.ts',
   () => {
     afterAll(() => db.destroy())
@@ -800,7 +801,7 @@ describeParallel
       )
     })
 
-    describeParallel'upsertPastMedical', () => {
+    describeParallel('upsertPastMedical', () => {
       it(
         'upserts past conditions, those with an end_date',
         async () => {
@@ -903,7 +904,7 @@ describeParallel
       })
     })
 
-    describeParallel'upsertMajorSurgeries', () => {
+    describeParallel('upsertMajorSurgeries', () => {
       it.skip(
         'upserts major surgery, those condition with is_procedure = true',
         async () => {
@@ -1099,7 +1100,7 @@ describeParallel
       })
     })
 
-    describeParallel'onboarding', () => {
+    describeParallel('onboarding', () => {
       it.skip(
         'can add conditions and surgeries in any order, with all being preserved',
         async () => {

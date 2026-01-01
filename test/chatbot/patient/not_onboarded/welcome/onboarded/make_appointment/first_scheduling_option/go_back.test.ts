@@ -10,9 +10,9 @@ import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
-describeParallel'patient chatbot', () => {
+describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  itParallel('ends after not confriming first scheduling option ', async () => {
+  it('ends after not confriming first scheduling option ', async () => {
     const phone_number = randomPhoneNumber('ZW')
     await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',

@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 import * as cheerio from 'cheerio'
@@ -10,67 +11,71 @@ import { addTestRegulatorWithSession } from '../../../../_helpers/regulators.ts'
 import { route } from '../../../../route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 
-describe.skip(
+describeParallel.skip(
   '/regulator/[country]/pharmacists/[pharmacist_id]/edit',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    itParallel('renders the edit page with correct pharmacist data on GET', async () => {
-      const new_pharmacist = await addTestPharmacist(db)
-      const { fetch, regulator } = await addTestRegulatorWithSession(db)
+    itParallel(
+      'renders the edit page with correct pharmacist data on GET',
+      async () => {
+        const new_pharmacist = await addTestPharmacist(db)
+        const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(
-        `${route}/regulator/${regulator.country}/pharmacists/${new_pharmacist.id}/edit`,
-      )
-
-      assert(response.ok, 'should have returned ok')
-      assert(
-        response.url ===
+        const response = await fetch(
           `${route}/regulator/${regulator.country}/pharmacists/${new_pharmacist.id}/edit`,
-      )
-      const page_contents = await response.text()
+        )
 
-      const $ = cheerio.load(page_contents)
+        assert(response.ok, 'should have returned ok')
+        assert(
+          response.url ===
+            `${route}/regulator/${regulator.country}/pharmacists/${new_pharmacist.id}/edit`,
+        )
+        const page_contents = await response.text()
 
-      assert($('input[name="given_name"]').length === 1)
-      assert(
-        $('input[name="given_name"]').attr('value') ===
-          new_pharmacist.given_name,
-      )
-      assert($('input[name="family_name"]').length === 1)
-      assert(
-        $('input[name="family_name"]').attr('value') ===
-          new_pharmacist.family_name,
-      )
-      assert($('input[name="licence_number"]').length === 1)
-      assert(
-        $('input[name="licence_number"]').attr('value') ===
-          new_pharmacist.licence_number,
-      )
-      assert($('input[name="expiry_date"]').length === 1)
-      assert(
-        $('input[name="expiry_date"]').attr('value') ===
-          new_pharmacist.expiry_date,
-      )
-      assert($('input[name="town"]').length === 1)
-      assert($('input[name="town"]').attr('value') === new_pharmacist.town)
-      assert($('input[name="address"]').length === 1)
-      assert(
-        $('input[name="address"]').attr('value') === new_pharmacist.address,
-      )
-      assert($('select[name="prefix"]').length === 1)
-      assert(
-        $(`select[name="prefix"] option[value=${new_pharmacist.prefix}]`).attr(
-          'selected',
-        ) === 'selected',
-      )
-      assert($('select[name="pharmacist_type"]').length === 1)
-      assert(
-        $(
-          `select[name="pharmacist_type"] option[value=${new_pharmacist.pharmacist_type}]`,
-        ).attr('selected') === 'selected',
-      )
-    })
+        const $ = cheerio.load(page_contents)
+
+        assert($('input[name="given_name"]').length === 1)
+        assert(
+          $('input[name="given_name"]').attr('value') ===
+            new_pharmacist.given_name,
+        )
+        assert($('input[name="family_name"]').length === 1)
+        assert(
+          $('input[name="family_name"]').attr('value') ===
+            new_pharmacist.family_name,
+        )
+        assert($('input[name="licence_number"]').length === 1)
+        assert(
+          $('input[name="licence_number"]').attr('value') ===
+            new_pharmacist.licence_number,
+        )
+        assert($('input[name="expiry_date"]').length === 1)
+        assert(
+          $('input[name="expiry_date"]').attr('value') ===
+            new_pharmacist.expiry_date,
+        )
+        assert($('input[name="town"]').length === 1)
+        assert($('input[name="town"]').attr('value') === new_pharmacist.town)
+        assert($('input[name="address"]').length === 1)
+        assert(
+          $('input[name="address"]').attr('value') === new_pharmacist.address,
+        )
+        assert($('select[name="prefix"]').length === 1)
+        assert(
+          $(`select[name="prefix"] option[value=${new_pharmacist.prefix}]`)
+            .attr(
+              'selected',
+            ) === 'selected',
+        )
+        assert($('select[name="pharmacist_type"]').length === 1)
+        assert(
+          $(
+            `select[name="pharmacist_type"] option[value=${new_pharmacist.pharmacist_type}]`,
+          ).attr('selected') === 'selected',
+        )
+      },
+    )
 
     itParallel('can update a pharmacist via POST', async () => {
       const new_pharmacist = await addTestPharmacist(db)

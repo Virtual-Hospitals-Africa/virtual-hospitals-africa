@@ -26,106 +26,110 @@ describe.skip('patient chatbot', () => {
     if (insertEvent) insertEvent.restore()
   })
 
-  itParallel('provides with cancel_appointment_option after confirming another appointment', async () => {
-    const phone_number = randomPhoneNumber('ZW')
-    const patient_before = await patients.insert(db, {
-      conversation_state: 'onboarded:make_appointment:other_scheduling_options',
-      phone_number,
-      name: 'Test Patient',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: null,
-    })
-
-    // Insert patient_appointment_requests
-    assert(patient_before)
-    const scheduling_appointment_request = await appointments
-      .createNewRequest(db, {
-        patient_id: patient_before.id,
-      })
-    await appointments.upsertRequest(db, {
-      id: scheduling_appointment_request.id,
-      patient_id: patient_before.id,
-      reason: 'pain',
-    })
-
-    const health_worker = await addTestEmployee(db, { profession: 'doctor' })
-
-    assert(health_worker)
-
-    // Insert offered time
-    const first_time = new Date()
-    first_time.setDate(first_time.getDate() + 1)
-    first_time.setHours(9, 30, 0, 0)
-    const end = new Date(first_time)
-    end.setMinutes(end.getMinutes() + 30)
-    const duration_minutes = 30
-    const first_offered_time = await appointments.addOfferedTime(db, {
-      patient_appointment_request_id: scheduling_appointment_request.id,
-      provider_id: health_worker.employee_id,
-      start: first_time,
-      end,
-      duration_minutes,
-    })
-    await declineOfferedTimes(db, [first_offered_time.id])
-
-    const other_time = new Date(first_time)
-    other_time.setHours(10, 0, 0, 0)
-    const other_end = new Date(first_time)
-    end.setMinutes(end.getMinutes() + 30)
-    const other_duration_minutes = 30
-    const second_offered_time = await appointments.addOfferedTime(db, {
-      patient_appointment_request_id: scheduling_appointment_request.id,
-      provider_id: health_worker.employee_id,
-      start: other_time,
-      end: other_end,
-      duration_minutes: other_duration_minutes,
-    })
-
-    await conversations.insertMessageReceived(db, {
-      chatbot_name: 'patient',
-      received_by_phone_number: '263XXXXXX',
-      sent_by_phone_number: phone_number,
-      has_media: false,
-      body: String(second_offered_time.id),
-      media_id: null,
-      whatsapp_id: `wamid.${generateUUID()}`,
-    })
-
-    const whatsapp = mockWhatsApp()
-
-    insertEvent = stub(
-      google.GoogleClient.prototype,
-      'insertEvent',
-      () =>
-        Promise.resolve(
-          { id: 'insertEvent_id' } as GCalEvent,
-        ),
-    )
-
-    await respond(whatsapp, 'patient', phone_number)
-    assertEquals(whatsapp.sendMessages.calls[0].args, [
-      {
-        chatbot_name: 'patient',
-        messages: {
-          message_body:
-            `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
-            prettyAppointmentTime(other_time),
-          type: 'buttons',
-          buttonText: 'Menu',
-          options: [{ id: 'cancel', title: 'Cancel Appointment' }],
-        },
+  it(
+    'provides with cancel_appointment_option after confirming another appointment',
+    async () => {
+      const phone_number = randomPhoneNumber('ZW')
+      const patient_before = await patients.insert(db, {
+        conversation_state:
+          'onboarded:make_appointment:other_scheduling_options',
         phone_number,
-      },
-    ])
-    const patient = await getPatientLastConversationState(db, {
-      phone_number,
-    })
+        name: 'Test Patient',
+        gender: 'female',
+        date_of_birth: '2023-01-01',
+        national_id_number: null,
+      })
 
-    assert(patient)
-    assertEquals(
-      patient.conversation_state,
-      'onboarded:appointment_scheduled',
-    )
-  })
+      // Insert patient_appointment_requests
+      assert(patient_before)
+      const scheduling_appointment_request = await appointments
+        .createNewRequest(db, {
+          patient_id: patient_before.id,
+        })
+      await appointments.upsertRequest(db, {
+        id: scheduling_appointment_request.id,
+        patient_id: patient_before.id,
+        reason: 'pain',
+      })
+
+      const health_worker = await addTestEmployee(db, { profession: 'doctor' })
+
+      assert(health_worker)
+
+      // Insert offered time
+      const first_time = new Date()
+      first_time.setDate(first_time.getDate() + 1)
+      first_time.setHours(9, 30, 0, 0)
+      const end = new Date(first_time)
+      end.setMinutes(end.getMinutes() + 30)
+      const duration_minutes = 30
+      const first_offered_time = await appointments.addOfferedTime(db, {
+        patient_appointment_request_id: scheduling_appointment_request.id,
+        provider_id: health_worker.employee_id,
+        start: first_time,
+        end,
+        duration_minutes,
+      })
+      await declineOfferedTimes(db, [first_offered_time.id])
+
+      const other_time = new Date(first_time)
+      other_time.setHours(10, 0, 0, 0)
+      const other_end = new Date(first_time)
+      end.setMinutes(end.getMinutes() + 30)
+      const other_duration_minutes = 30
+      const second_offered_time = await appointments.addOfferedTime(db, {
+        patient_appointment_request_id: scheduling_appointment_request.id,
+        provider_id: health_worker.employee_id,
+        start: other_time,
+        end: other_end,
+        duration_minutes: other_duration_minutes,
+      })
+
+      await conversations.insertMessageReceived(db, {
+        chatbot_name: 'patient',
+        received_by_phone_number: '263XXXXXX',
+        sent_by_phone_number: phone_number,
+        has_media: false,
+        body: String(second_offered_time.id),
+        media_id: null,
+        whatsapp_id: `wamid.${generateUUID()}`,
+      })
+
+      const whatsapp = mockWhatsApp()
+
+      insertEvent = stub(
+        google.GoogleClient.prototype,
+        'insertEvent',
+        () =>
+          Promise.resolve(
+            { id: 'insertEvent_id' } as GCalEvent,
+          ),
+      )
+
+      await respond(whatsapp, 'patient', phone_number)
+      assertEquals(whatsapp.sendMessages.calls[0].args, [
+        {
+          chatbot_name: 'patient',
+          messages: {
+            message_body:
+              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+              prettyAppointmentTime(other_time),
+            type: 'buttons',
+            buttonText: 'Menu',
+            options: [{ id: 'cancel', title: 'Cancel Appointment' }],
+          },
+          phone_number,
+        },
+      ])
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
+
+      assert(patient)
+      assertEquals(
+        patient.conversation_state,
+        'onboarded:appointment_scheduled',
+      )
+    },
+  )
 })

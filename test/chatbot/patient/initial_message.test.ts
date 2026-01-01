@@ -9,9 +9,9 @@ import generateUUID from '../../../util/uuid.ts'
 import randomPhoneNumber from '../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from '../../chatbot/mockWhatsApp.ts'
 
-describeParallel'patient chatbot', () => {
+describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  itParallel('sends the main menu after the initial message', async () => {
+  it('sends the main menu after the initial message', async () => {
     const phone_number = randomPhoneNumber('ZW')
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',

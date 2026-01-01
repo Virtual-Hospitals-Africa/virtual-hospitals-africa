@@ -1,4 +1,5 @@
-import { before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import * as cheerio from 'cheerio'
@@ -8,11 +9,11 @@ import { addTestRegulatorWithSession } from '../../../_helpers/regulators.ts'
 import { route } from '../../../route.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
-describeParallel
+describeParallel(
   '/regulator/[country]/pharmacists/invite',
-  { sanitizeResources: false, sanitizeOps: false },
   () => {
     before(waitUntilTestServerUp)
+    afterAll(() => db.destroy())
     itParallel('renders an invite page on GET', async () => {
       const { regulator, fetchOk } = await addTestRegulatorWithSession(db)
 
@@ -39,7 +40,7 @@ describeParallel
     })
 
     itParallel('can create a pharmacist via POST', async () => {
-      const { fetch, regulator } = await addTestRegulatorWithSession(db)
+      const { fetchOk, regulator } = await addTestRegulatorWithSession(db)
 
       {
         const given_name = `Test Given Name ${generateUUID()}`
@@ -55,17 +56,16 @@ describeParallel
         body.set('prefix', 'Mrs')
         body.set('pharmacist_type', 'Pharmacist')
 
-        const post_response = await fetch(
+        const post_response = await fetchOk(
           `${route}/regulator/${regulator.country}/pharmacists/invite`,
           {
             method: 'POST',
             body,
           },
+          {
+            cancel_response_body: true,
+          },
         )
-
-        if (!post_response.ok) {
-          throw new Error(await post_response.text())
-        }
 
         assertEquals(
           post_response.url,

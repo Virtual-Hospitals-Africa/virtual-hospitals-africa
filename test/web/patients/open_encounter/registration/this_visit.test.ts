@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import * as employees from '../../../../../db/models/employees.ts'
 import * as patients from '../../../../../db/models/patients.ts'
@@ -16,338 +17,347 @@ import asFormData from '../../../../../util/asFormData.ts'
 import { employeeOrganizationDepartmentNames } from '../../../../../shared/departments.ts'
 // import { employeeDisplay } from '../../../../../util/healthWorkerDisplay.ts'
 
-describeParallel
+describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/this_visit',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
 
-    itParallel('is accessed immediately after the personal page and can continue with registration', async () => {
-      const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-        profession: 'receptionist',
-        registration_status: 'approved',
-      })
-
-      const $personal = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
-        {
-          method: 'POST',
-        },
-      )
-      const patient_id =
-        $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
-
-      const $this_visit = await fetchCheerio(
-        $personal.url,
-        {
-          method: 'POST',
-          body: asFormData(randomDemographics('ZA')),
-        },
-      )
-
-      assertEquals(
-        $this_visit.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
-      )
-
-      const values = $this_visit('[name=next_workflow]')
-        .map((_i, el) => $this_visit(el).attr('value'))
-        .get()
-
-      assertEquals(values, [
-        'continue_with_registration',
-        'immediate_triage',
-        'call_for_help',
-      ])
-
-      const $primary_care = await fetchCheerio(
-        $this_visit.url,
-        {
-          method: 'POST',
-          body: asFormData({
-            next_workflow: 'continue_with_registration',
-          }),
-        },
-      )
-
-      assertEquals(
-        $primary_care.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/primary_care`,
-      )
-    })
-
-    itParallel('can route immediately to triage as a receptionist, notifying the senior health care worker', async () => {
-      const organization = await createTestOrganization(db)
-      const receptionist = await addTestEmployeeWithSession(
-        db,
-        {
+    itParallel(
+      'is accessed immediately after the personal page and can continue with registration',
+      async () => {
+        const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
           registration_status: 'approved',
-          organization_id: organization.id,
-        },
-      )
-      // TODO turn back on websocket test
-      // const nurse = await addTestEmployeeWithSession(
-      //   db,
-      //   {
-      //     profession: 'nurse',
-      //     registration_status: 'approved',
-      //     organization_id: organization.id,
-      //   },
-      // )
+        })
 
-      // const received_notification = Promise.withResolvers<MessageEvent>()
+        const $personal = await fetchCheerio(
+          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id =
+          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
-      // const nurse_notifications_websocket = new WebSocket(
-      //   `${wss_route}/app/notifications-websocket?session_id=${nurse.session_id}`,
-      // )
+        const $this_visit = await fetchCheerio(
+          $personal.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
 
-      // nurse_notifications_websocket.onmessage = function (e) {
-      //   received_notification.resolve(e)
-      // }
+        assertEquals(
+          $this_visit.url,
+          `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
+        )
 
-      // nurse_notifications_websocket.onerror = function (e) {
-      //   received_notification.reject(e)
-      // }
+        const values = $this_visit('[name=next_workflow]')
+          .map((_i, el) => $this_visit(el).attr('value'))
+          .get()
 
-      const receptionist_employee = await employees.getById(
-        db,
-        receptionist.health_worker.employee_id,
-      )
+        assertEquals(values, [
+          'continue_with_registration',
+          'immediate_triage',
+          'call_for_help',
+        ])
 
-      const receptionist_departments = employeeOrganizationDepartmentNames(
-        receptionist_employee,
-      )
-      assertEquals(receptionist_departments, ['Reception'])
+        const $primary_care = await fetchCheerio(
+          $this_visit.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'continue_with_registration',
+            }),
+          },
+        )
 
-      const $personal = await receptionist.fetchCheerio(
-        `/app/organizations/${organization.id}/patients/start-registration`,
-        {
-          method: 'POST',
-        },
-      )
-      const patient_id =
-        $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+        assertEquals(
+          $primary_care.url,
+          `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/primary_care`,
+        )
+      },
+    )
 
-      const $this_visit = await receptionist.fetchCheerio(
-        $personal.url,
-        {
-          method: 'POST',
-          body: asFormData(randomDemographics('ZA')),
-        },
-      )
+    itParallel(
+      'can route immediately to triage as a receptionist, notifying the senior health care worker',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const receptionist = await addTestEmployeeWithSession(
+          db,
+          {
+            profession: 'receptionist',
+            registration_status: 'approved',
+            organization_id: organization.id,
+          },
+        )
+        // TODO turn back on websocket test
+        // const nurse = await addTestEmployeeWithSession(
+        //   db,
+        //   {
+        //     profession: 'nurse',
+        //     registration_status: 'approved',
+        //     organization_id: organization.id,
+        //   },
+        // )
 
-      assertEquals(
-        $this_visit.url,
-        `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/this_visit`,
-      )
+        // const received_notification = Promise.withResolvers<MessageEvent>()
 
-      const values = $this_visit('[name=next_workflow]')
-        .map((_i, el) => $this_visit(el).attr('value'))
-        .get()
+        // const nurse_notifications_websocket = new WebSocket(
+        //   `${wss_route}/app/notifications-websocket?session_id=${nurse.session_id}`,
+        // )
 
-      assertEquals(values, [
-        'continue_with_registration',
-        'immediate_triage',
-        'call_for_help',
-      ])
+        // nurse_notifications_websocket.onmessage = function (e) {
+        //   received_notification.resolve(e)
+        // }
 
-      const $waiting_room = await receptionist.fetchCheerio(
-        $this_visit.url,
-        {
-          method: 'POST',
-          body: asFormData({
-            next_workflow: 'immediate_triage',
-          }),
-        },
-      )
+        // nurse_notifications_websocket.onerror = function (e) {
+        //   received_notification.reject(e)
+        // }
 
-      const waiting_room_url = new URL($waiting_room.url)
-      assertEquals(
-        waiting_room_url.pathname,
-        `/app/organizations/${organization.id}/waiting_room`,
-      )
+        const receptionist_employee = await employees.getById(
+          db,
+          receptionist.health_worker.employee_id,
+        )
 
-      assertEquals(
-        Array.from(waiting_room_url.searchParams.keys()),
-        ['success'],
-      )
+        const receptionist_departments = employeeOrganizationDepartmentNames(
+          receptionist_employee,
+        )
+        assertEquals(receptionist_departments, ['Reception'])
 
-      const patient = await patients.getById(db, patient_id)
+        const $personal = await receptionist.fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id =
+          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
-      const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
-      assertEquals(
-        waiting_room_url.searchParams.get('success'),
-        `Please move ${
-          patient.names!.preferred_name
-        } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
-      )
+        const $this_visit = await receptionist.fetchCheerio(
+          $personal.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
 
-      // const notification = await received_notification.promise
+        assertEquals(
+          $this_visit.url,
+          `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/this_visit`,
+        )
 
-      // nurse_notifications_websocket.close()
+        const values = $this_visit('[name=next_workflow]')
+          .map((_i, el) => $this_visit(el).attr('value'))
+          .get()
 
-      // const notification_data = JSON.parse(notification.data)
-      // assertEquals(notification_data, {
-      //   'created_at': notification_data.created_at,
-      //   'updated_at': notification_data.updated_at,
-      //   'health_worker_id': nurse.health_worker.id,
-      //   'notification_type': 'patient_encounter_immediate_triage',
-      //   'title': 'Immediate Triage Requested',
-      //   'description': `${
-      //     employeeDisplay(receptionist_employee).display_name
-      //   } has requested immediate triage for a patient`,
-      //   'avatar_url': '/images/heroicons/24/solid/exclamation-triangle.svg',
-      //   'seen_at': null,
-      //   'notification_id': notification_data.notification_id,
-      //   'row_id': notification_data.row_id,
-      //   'table_name': 'patient_encounters',
-      //   'time_display': 'Just now',
-      //   'action': {
-      //     'title': 'View patient case',
-      //     'href':
-      //       `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`,
-      //   },
-      // })
+        assertEquals(values, [
+          'continue_with_registration',
+          'immediate_triage',
+          'call_for_help',
+        ])
 
-      // const encounter = await patient_encounters.getById(
-      //   db,
-      //   notification_data.row_id,
-      // )
-      // assertEquals(encounter.patient.id, patient_id)
-    })
+        const $waiting_room = await receptionist.fetchCheerio(
+          $this_visit.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'immediate_triage',
+            }),
+          },
+        )
 
-    itParallel('can route immediately to triage as a receptionist, keeping track of when all the rooms are filled', async () => {
-      const organization = await createTestOrganization(db)
-      const receptionist = await addTestEmployeeWithSession(
-        db,
-        {
-          profession: 'receptionist',
-          registration_status: 'approved',
-          organization_id: organization.id,
-        },
-      )
+        const waiting_room_url = new URL($waiting_room.url)
+        assertEquals(
+          waiting_room_url.pathname,
+          `/app/organizations/${organization.id}/waiting_room`,
+        )
 
-      const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
+        assertEquals(
+          Array.from(waiting_room_url.searchParams.keys()),
+          ['success'],
+        )
 
-      const receptionist_employee = await employees.getById(
-        db,
-        receptionist.health_worker.employee_id,
-      )
+        const patient = await patients.getById(db, patient_id)
 
-      const receptionist_departments = employeeOrganizationDepartmentNames(
-        receptionist_employee,
-      )
-      assertEquals(receptionist_departments, ['Reception'])
+        const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
+        assertEquals(
+          waiting_room_url.searchParams.get('success'),
+          `Please move ${
+            patient.names!.preferred_name
+          } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+        )
 
-      const $personal1 = await receptionist.fetchCheerio(
-        `/app/organizations/${organization.id}/patients/start-registration`,
-        {
-          method: 'POST',
-        },
-      )
-      const patient_id1 =
-        $personal1.url.match(/patients\/(.*)\/open_encounter/)![1]
+        // const notification = await received_notification.promise
 
-      const $this_visit1 = await receptionist.fetchCheerio(
-        $personal1.url,
-        {
-          method: 'POST',
-          body: asFormData(randomDemographics('ZA')),
-        },
-      )
+        // nurse_notifications_websocket.close()
 
-      const $waiting_room1 = await receptionist.fetchCheerio(
-        $this_visit1.url,
-        {
-          method: 'POST',
-          body: asFormData({
-            next_workflow: 'immediate_triage',
-          }),
-        },
-      )
+        // const notification_data = JSON.parse(notification.data)
+        // assertEquals(notification_data, {
+        //   'created_at': notification_data.created_at,
+        //   'updated_at': notification_data.updated_at,
+        //   'health_worker_id': nurse.health_worker.id,
+        //   'notification_type': 'patient_encounter_immediate_triage',
+        //   'title': 'Immediate Triage Requested',
+        //   'description': `${
+        //     employeeDisplay(receptionist_employee).display_name
+        //   } has requested immediate triage for a patient`,
+        //   'avatar_url': '/images/heroicons/24/solid/exclamation-triangle.svg',
+        //   'seen_at': null,
+        //   'notification_id': notification_data.notification_id,
+        //   'row_id': notification_data.row_id,
+        //   'table_name': 'patient_encounters',
+        //   'time_display': 'Just now',
+        //   'action': {
+        //     'title': 'View patient case',
+        //     'href':
+        //       `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`,
+        //   },
+        // })
 
-      const patient1 = await patients.getById(db, patient_id1)
+        // const encounter = await patient_encounters.getById(
+        //   db,
+        //   notification_data.row_id,
+        // )
+        // assertEquals(encounter.patient.id, patient_id)
+      },
+    )
 
-      assertEquals(
-        new URL($waiting_room1.url).searchParams.get('success'),
-        `Please move ${
-          patient1.names!.preferred_name
-        } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
-      )
+    itParallel(
+      'can route immediately to triage as a receptionist, keeping track of when all the rooms are filled',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const receptionist = await addTestEmployeeWithSession(
+          db,
+          {
+            profession: 'receptionist',
+            registration_status: 'approved',
+            organization_id: organization.id,
+          },
+        )
 
-      const $personal2 = await receptionist.fetchCheerio(
-        `/app/organizations/${organization.id}/patients/start-registration`,
-        {
-          method: 'POST',
-        },
-      )
-      const patient_id2 =
-        $personal2.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
 
-      const $this_visit2 = await receptionist.fetchCheerio(
-        $personal2.url,
-        {
-          method: 'POST',
-          body: asFormData(randomDemographics('ZA')),
-        },
-      )
+        const receptionist_employee = await employees.getById(
+          db,
+          receptionist.health_worker.employee_id,
+        )
 
-      const $waiting_room2 = await receptionist.fetchCheerio(
-        $this_visit2.url,
-        {
-          method: 'POST',
-          body: asFormData({
-            next_workflow: 'immediate_triage',
-          }),
-        },
-      )
+        const receptionist_departments = employeeOrganizationDepartmentNames(
+          receptionist_employee,
+        )
+        assertEquals(receptionist_departments, ['Reception'])
 
-      const patient2 = await patients.getById(db, patient_id2)
+        const $personal1 = await receptionist.fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id1 =
+          $personal1.url.match(/patients\/(.*)\/open_encounter/)![1]
 
-      assertEquals(
-        new URL($waiting_room2.url).searchParams.get('success'),
-        `Please move ${
-          patient2.names!.preferred_name
-        } to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
-      )
+        const $this_visit1 = await receptionist.fetchCheerio(
+          $personal1.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
 
-      const $personal3 = await receptionist.fetchCheerio(
-        `/app/organizations/${organization.id}/patients/start-registration`,
-        {
-          method: 'POST',
-        },
-      )
-      const patient_id3 =
-        $personal3.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const $waiting_room1 = await receptionist.fetchCheerio(
+          $this_visit1.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'immediate_triage',
+            }),
+          },
+        )
 
-      const $this_visit3 = await receptionist.fetchCheerio(
-        $personal3.url,
-        {
-          method: 'POST',
-          body: asFormData(randomDemographics('ZA')),
-        },
-      )
+        const patient1 = await patients.getById(db, patient_id1)
 
-      const $waiting_room3 = await receptionist.fetchCheerio(
-        $this_visit3.url,
-        {
-          method: 'POST',
-          body: asFormData({
-            next_workflow: 'immediate_triage',
-          }),
-        },
-      )
+        assertEquals(
+          new URL($waiting_room1.url).searchParams.get('success'),
+          `Please move ${
+            patient1.names!.preferred_name
+          } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+        )
 
-      const patient3 = await patients.getById(db, patient_id3)
+        const $personal2 = await receptionist.fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id2 =
+          $personal2.url.match(/patients\/(.*)\/open_encounter/)![1]
 
-      assertEquals(
-        new URL($waiting_room3.url).searchParams.get('success'),
-        `No rooms yet available for triage. Please stay with ${
-          patient3.names!.preferred_name
-        }. ${hardcoded_senior_health_care_professional_name} has been notified to come as soon as possible.`,
-      )
-    })
+        const $this_visit2 = await receptionist.fetchCheerio(
+          $personal2.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
+
+        const $waiting_room2 = await receptionist.fetchCheerio(
+          $this_visit2.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'immediate_triage',
+            }),
+          },
+        )
+
+        const patient2 = await patients.getById(db, patient_id2)
+
+        assertEquals(
+          new URL($waiting_room2.url).searchParams.get('success'),
+          `Please move ${
+            patient2.names!.preferred_name
+          } to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+        )
+
+        const $personal3 = await receptionist.fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id3 =
+          $personal3.url.match(/patients\/(.*)\/open_encounter/)![1]
+
+        const $this_visit3 = await receptionist.fetchCheerio(
+          $personal3.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
+
+        const $waiting_room3 = await receptionist.fetchCheerio(
+          $this_visit3.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'immediate_triage',
+            }),
+          },
+        )
+
+        const patient3 = await patients.getById(db, patient_id3)
+
+        assertEquals(
+          new URL($waiting_room3.url).searchParams.get('success'),
+          `No rooms yet available for triage. Please stay with ${
+            patient3.names!.preferred_name
+          }. ${hardcoded_senior_health_care_professional_name} has been notified to come as soon as possible.`,
+        )
+      },
+    )
 
     itParallel('can route immediately to triage as a nurse', async () => {
       const organization = await createTestOrganization(db)

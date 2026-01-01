@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
@@ -8,7 +9,7 @@ import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 
-describeParallel'triage/additional_tasks_and_investigations', () => {
+describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
@@ -225,7 +226,7 @@ describeParallel'triage/additional_tasks_and_investigations', () => {
 })
 
 // TODO: moving this
-// describeParallel'POST', () => {
+// describeParallel('POST', () => {
 //   itParallel('creates an additional task if oxygen saturation is below 92%', async () => {
 //     const { encounter } = await setupTriage({
 //       patient_demographics: { date_of_birth: '2023-01-01' },

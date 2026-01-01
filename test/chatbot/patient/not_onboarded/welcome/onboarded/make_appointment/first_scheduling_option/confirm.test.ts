@@ -19,99 +19,103 @@ import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.t
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
 
-describeParallel'patient chatbot', () => {
+describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   let insertEvent: Stub
   afterEach(() => {
     if (insertEvent) insertEvent.restore()
   })
 
-  itParallel('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
-    const phone_number = randomPhoneNumber('ZW')
-    const patient_before = await patients.insert(db, {
-      conversation_state: 'onboarded:make_appointment:first_scheduling_option',
-      phone_number,
-      name: 'Test Patient',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: null,
-    })
-
-    // Insert patient_appointment_requests
-    assert(patient_before)
-    const scheduling_appointment_request = await appointments
-      .createNewRequest(db, {
-        patient_id: patient_before.id,
-      })
-    await appointments.upsertRequest(db, {
-      id: scheduling_appointment_request.id,
-      patient_id: patient_before.id,
-      reason: 'pain',
-    })
-
-    const health_worker = await addTestEmployee(db, { profession: 'doctor' })
-
-    assert(health_worker)
-
-    // Insert offered time
-    const start = new Date()
-    start.setDate(start.getDate() + 1)
-    start.setHours(9, 30, 0, 0)
-    const end = new Date(start)
-    end.setMinutes(end.getMinutes() + 30)
-    const duration_minutes = 30
-    await appointments.addOfferedTime(db, {
-      patient_appointment_request_id: scheduling_appointment_request.id,
-      provider_id: health_worker.employee_id,
-      start,
-      end,
-      duration_minutes,
-    })
-
-    await conversations.insertMessageReceived(db, {
-      chatbot_name: 'patient',
-      received_by_phone_number: '263XXXXXX',
-      sent_by_phone_number: phone_number,
-      has_media: false,
-      body: 'confirm',
-      media_id: null,
-      whatsapp_id: `wamid.${generateUUID()}`,
-    })
-
-    const whatsapp = mockWhatsApp()
-
-    insertEvent = stub(
-      google.GoogleClient.prototype,
-      'insertEvent',
-      () => Promise.resolve({ id: 'insertEvent_id' } as GCalEvent),
-    )
-
-    await respond(whatsapp, 'patient', phone_number)
-    assertEquals(whatsapp.sendMessages.calls[0].args, [
-      {
-        chatbot_name: 'patient',
-        messages: {
-          message_body:
-            `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
-            prettyAppointmentTime(start),
-          type: 'buttons',
-          buttonText: 'Menu',
-          options: [
-            { id: 'cancel', title: 'Cancel Appointment' },
-            { id: 'main_menu', title: 'Main Menu' },
-          ],
-        },
+  it(
+    'provides with cancel_appointment_option after confirmirmation of a appointment',
+    async () => {
+      const phone_number = randomPhoneNumber('ZW')
+      const patient_before = await patients.insert(db, {
+        conversation_state:
+          'onboarded:make_appointment:first_scheduling_option',
         phone_number,
-      },
-    ])
-    const patient = await getPatientLastConversationState(db, {
-      phone_number,
-    })
+        name: 'Test Patient',
+        gender: 'female',
+        date_of_birth: '2023-01-01',
+        national_id_number: null,
+      })
 
-    assert(patient)
-    assertEquals(
-      patient.conversation_state,
-      'onboarded:appointment_scheduled',
-    )
-  })
+      // Insert patient_appointment_requests
+      assert(patient_before)
+      const scheduling_appointment_request = await appointments
+        .createNewRequest(db, {
+          patient_id: patient_before.id,
+        })
+      await appointments.upsertRequest(db, {
+        id: scheduling_appointment_request.id,
+        patient_id: patient_before.id,
+        reason: 'pain',
+      })
+
+      const health_worker = await addTestEmployee(db, { profession: 'doctor' })
+
+      assert(health_worker)
+
+      // Insert offered time
+      const start = new Date()
+      start.setDate(start.getDate() + 1)
+      start.setHours(9, 30, 0, 0)
+      const end = new Date(start)
+      end.setMinutes(end.getMinutes() + 30)
+      const duration_minutes = 30
+      await appointments.addOfferedTime(db, {
+        patient_appointment_request_id: scheduling_appointment_request.id,
+        provider_id: health_worker.employee_id,
+        start,
+        end,
+        duration_minutes,
+      })
+
+      await conversations.insertMessageReceived(db, {
+        chatbot_name: 'patient',
+        received_by_phone_number: '263XXXXXX',
+        sent_by_phone_number: phone_number,
+        has_media: false,
+        body: 'confirm',
+        media_id: null,
+        whatsapp_id: `wamid.${generateUUID()}`,
+      })
+
+      const whatsapp = mockWhatsApp()
+
+      insertEvent = stub(
+        google.GoogleClient.prototype,
+        'insertEvent',
+        () => Promise.resolve({ id: 'insertEvent_id' } as GCalEvent),
+      )
+
+      await respond(whatsapp, 'patient', phone_number)
+      assertEquals(whatsapp.sendMessages.calls[0].args, [
+        {
+          chatbot_name: 'patient',
+          messages: {
+            message_body:
+              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+              prettyAppointmentTime(start),
+            type: 'buttons',
+            buttonText: 'Menu',
+            options: [
+              { id: 'cancel', title: 'Cancel Appointment' },
+              { id: 'main_menu', title: 'Main Menu' },
+            ],
+          },
+          phone_number,
+        },
+      ])
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
+
+      assert(patient)
+      assertEquals(
+        patient.conversation_state,
+        'onboarded:appointment_scheduled',
+      )
+    },
+  )
 })

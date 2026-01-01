@@ -1,3 +1,4 @@
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
@@ -10,9 +11,9 @@ import {
   TEST_ORGANIZATION_UUIDS,
 } from '../_helpers/organizations.ts'
 import * as employees from '../../db/models/employees.ts'
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { afterAll, it } from 'std/testing/bdd.ts'
 
-describeParallel'db/models/employees.ts ', () => {
+describeParallel('db/models/employees.ts ', () => {
   afterAll(() => db.destroy())
   it(
     'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
