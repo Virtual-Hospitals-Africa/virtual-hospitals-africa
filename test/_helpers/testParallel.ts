@@ -6,7 +6,7 @@ import {
 } from '../../util/asResult.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { forEach } from '../../util/inParallel.ts'
-import { assert } from 'node:console'
+import { assert } from 'std/assert/assert.ts'
 
 type TestFn = () => void | Promise<void>
 
@@ -25,7 +25,6 @@ async function runTestCases(
     fail_fast?: boolean
     concurrency?: number
   } = {}) {
-    console.log('running cases, ', cases.length)
     const any_only = cases.some((test_case) => test_case[2]?.only)
     const run_test_cases = any_only
       ? cases.filter((test_case) => test_case[2]?.only)
@@ -107,32 +106,25 @@ export function describeParallel(
   callback: () => void,
   opts: { only?: boolean, skip?: boolean} = {}
 ) {
-  const run = opts.only ? describe.only : opts.skip ? describe.skip : describe
-  const is_top_level = !descriptions.length
   const this_descriptions = [...descriptions]
+  descriptions = [...descriptions, description]
+  const is_top_level = !this_descriptions.length
   if (!is_top_level) {
-    throw new Error('Try this for now')
-    descriptions = [...descriptions, description]
+    callback()
+    descriptions = this_descriptions
+    return
   }
   
+  const run = opts.only ? describe.only : opts.skip ? describe.skip : describe
   run(description, () => {
     callback()
-    console.log(test_cases)
-    assert(test_cases.length > 0)
+    assert(test_cases.length, 'No test cases supplied')
     const cases_to_run = test_cases
-    it('passes', async () => {
-      await runTestCases(cases_to_run)
-    })
+    it('passes', () => runTestCases(cases_to_run))
   })
 
+  descriptions = this_descriptions
   test_cases = []
-
-  // descriptions = this_descriptions
-  // if (is_top_level) {
-  //   console.log('here', description)
-  //   // testParallel(description, test_cases)
-  //   return
-  // }
 }
 
 describeParallel.only = (
@@ -150,7 +142,7 @@ export function itParallel(
   test: TestFn,
   opts: { only?: boolean, skip?: boolean} = {}
 ) {
-  const x = [...descriptions, description].join(' > ')
+  const x = [...descriptions.slice(1), description].join(' > ')
   console.log('mwekmwekl', x)
   test_cases.push([x, test, opts])
 }
