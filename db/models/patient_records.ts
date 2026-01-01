@@ -1,6 +1,6 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { asText, jsonArrayFrom, success_true } from '../helpers.ts'
+import { asText, jsonArrayFrom, jsonBuildNullableObject, jsonBuildObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import * as patient_record_qualifiers from './patient_record_qualifiers.ts'
 import {
@@ -9,7 +9,7 @@ import {
   snomedConceptBase,
 } from './s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
-import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
+import { AnyNode, Lang, snomed_concept } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecordDisplay } from '../../shared/patient_records.ts'
 
@@ -133,12 +133,24 @@ export function baseQuery(
     .select((eb) => [
       'patient_records.id as record_id',
       'patient_records.created_at',
-      'patient_records.snomed_concept_id',
       'patient_records.patient_encounter_id',
-      'snomed_inferred_canonical_name_and_category.name',
-      'snomed_inferred_canonical_name_and_category.category',
-      'patient_records.value_snomed_concept_id',
-      'value_snomed_inferred_canonical_name_and_category.name as value_name',
+
+      jsonBuildObject({
+        snomed_concept_id: asText(eb, 'snomed_inferred_canonical_name_and_category.id'),
+        name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
+        category: eb.ref('snomed_inferred_canonical_name_and_category.category'),
+      }).as('root_snomed_concept'),
+
+      jsonBuildNullableObject(
+        eb.ref('patient_records.value_snomed_concept_id'), {
+          type: literalString('snomed_concept' as const),
+          snomed_concept: jsonBuildObject({
+            snomed_concept_id: eb.ref('value_snomed_inferred_canonical_name_and_category.id').$notNull(),
+            name: eb.ref('value_snomed_inferred_canonical_name_and_category.name').$notNull(),
+            category: eb.ref('value_snomed_inferred_canonical_name_and_category.category').$notNull(),
+          })
+        }
+      ).as('value_snomed_concept'),
 
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')
@@ -343,7 +355,10 @@ type PatientRecordsSearch = {
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
-  formatResult: formatRecordDisplay,
+  formatResult: (intermediate_record) => {
+
+    return formatRecordDisplay(intermediate_record)
+  },
   baseInsert,
   handleSearch(
     qb,

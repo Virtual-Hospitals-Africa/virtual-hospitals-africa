@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { Maybe, RecordDisplays } from '../types.ts'
+import { Maybe, RecordDisplays, RenderedSnomedConcept } from '../types.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import compact from '../util/compact.ts'
 import { SnomedCategory } from '../db.d.ts'
@@ -12,10 +12,9 @@ import type { AttributeValue } from '../db/models/patient_record_qualifiers.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
 type DisplayableRecord = {
-  name: string
-  category: SnomedCategory
-  finding_name?: Maybe<string>
-  value_name?: Maybe<string>
+  root_snomed_concept: RenderedSnomedConcept
+  finding?: Maybe<RenderedSnomedConcept>
+  value: 
   value?: Maybe<string | DisplayableRecord | AttributeValue>
   units?: Maybe<string>
   prefixes?: DisplayableRecord[]
@@ -91,9 +90,9 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
     assertArrayEmpty(prefixes)
     const value_display = measurementValueDisplay({ value, units })
     return {
-      value_display,
-      finding_display: finding_name,
-      full_display: `${finding_name}: ${value_display}`,
+      value: value_display,
+      finding: finding_name,
+      full: `${finding_name}: ${value_display}`,
     }
   }
 
@@ -130,9 +129,9 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
   assert(!value)
   assert(!units)
   return {
-    finding_display,
-    value_display: value_name,
-    full_display: `${finding_display}: ${value_name}`,
+    finding,
+    value: value_name,
+    full: `${finding_display}: ${value_name}`,
   }
 }
 
@@ -141,9 +140,9 @@ export function formatRecordDisplay<
     attributes: DisplayableRecord[]
     events: DisplayableRecord[]
   },
->(record: R): R & RecordDisplays & {
-  attributes: Array<R['attributes'][number] & RecordDisplays>
-  events: Array<R['events'][number] & RecordDisplays>
+>(record: R): R & { displays: RecordDisplays } & {
+  attributes: Array<R['attributes'][number] & { displays: RecordDisplays }>
+  events: Array<R['events'][number] & { displays: RecordDisplays }>
 } {
   return {
     ...record,

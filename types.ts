@@ -3467,35 +3467,41 @@ export type RenderedQualifierRelativeToHealthWorker = {
 }
 
 export type RecordDisplays = {
-  finding_display: string
-  value_display: string | null
-  full_display: string
+  finding: string
+  value: string | null
+  full: string
 }
 
-export type RenderedAttribute<Value> = RecordDisplays & {
-  record_id: string
-  // provider: RenderedFindingProvider
+
+export type RenderedSnomedConcept = {
   snomed_concept_id: string
   name: string
   category: SnomedCategory
-  value: Value
-  finding_snomed_concept_id: string
-  finding_name: string
-  finding_category: SnomedCategory
+}
+export type RenderedAttribute<Value> = {
+  record_id: string
+  finding_snomed_concept: RenderedSnomedConcept,
   patient_encounter_employee_id: string
   procedure_id: string
+  displays: RecordDisplays
+  value: Value
 }
 
-export type RenderedFindingRelativeToHealthWorker = RecordDisplays & {
+export type RecordValueEvent = { type: 'event', datetime: Date | string}
+export type RecordValueSnomedConcept = { type: 'snomed_concept', snomed_concept: RenderedSnomedConcept }
+export type RecordValueMeasurement = { type: 'measurement', value: string, units: string }
+
+export type RecordValue = 
+  | RecordValueEvent
+  | RecordValueSnomedConcept
+  | RecordValueMeasurement
+
+export type RenderedFindingRelativeToHealthWorker = {
   record_id: string
   patient_encounter_id: string
-  snomed_concept_id: string
-  finding_snomed_concept_id: string
-  finding_name: string
-  name: string
-  finding_display: string
-  value_display: string | null
-  full_display: string
+  root_snomed_concept: RenderedSnomedConcept
+  finding_snomed_concept: RenderedSnomedConcept,
+  displays: RecordDisplays
   created_at: Date | string
   priority: Priority | null
   score: number | null
@@ -3503,16 +3509,9 @@ export type RenderedFindingRelativeToHealthWorker = RecordDisplays & {
   as_part_of_procedure: AsPartOfProcedure
   // These are now prefixes
   // qualifiers: RenderedQualifierRelativeToHealthWorker[]
-  attributes: RenderedAttribute<{
-    type: 'snomed_concept'
-    snomed_concept_id: string
-    name: string
-    category: SnomedCategory
-  }>[]
-  events: RenderedAttribute<{
-    type: 'event'
-    datetime: Date | string
-  }>[]
+  attributes: RenderedAttribute<RecordValueSnomedConcept>[]
+  events: RenderedAttribute<RecordValueEvent>[]
+  value: null | RecordValue
 }
 
 export type WithTriageLevelFinding = NonNullableProperty<
