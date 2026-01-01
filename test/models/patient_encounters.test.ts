@@ -23,6 +23,13 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 describeParallel('db/models/patient_encounters.ts', () => {
   afterAll(() => db.destroy())
   
+  describeParallel('bar', () => {
+    itParallel('foo', () => {
+      assertEquals(2, 3)
+      assertEquals(5, 5)
+    })
+  })
+
   itParallel('shows registration in progress', async () => {
     const organization_id = (await createTestOrganization(db)).id
     const receptionist = await addTestEmployee(db, {
@@ -169,6 +176,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
   })
 
   itParallel('is awaiting triage after after registration completed', async () => {
+    assertEquals(4, 5)
     const clinic = await createTestOrganization(db, {
       category: 'Clinic',
     })
