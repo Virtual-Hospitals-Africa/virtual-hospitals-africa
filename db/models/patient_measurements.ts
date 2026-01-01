@@ -4,7 +4,7 @@ import {
   TrxOrDb,
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
-import { jsonObjectFrom, literalString, success_true } from '../helpers.ts'
+import { jsonBuildObject, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -40,9 +40,12 @@ export function baseQuery(
       'patient_findings.id',
       'patient_measurements.id',
     )
-    .select([
-      'patient_measurements.value',
-      'patient_measurements.units',
+    .select(eb => [
+      jsonBuildObject({
+        type: literalString('measurement' as const),
+        value: eb.ref('patient_measurements.value'),
+        units: eb.ref('patient_measurements.units'),
+      }).as('value'),
     ])
 }
 

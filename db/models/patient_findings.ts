@@ -66,15 +66,20 @@ export function baseQuery(
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category as finding_procedure_snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category as finding_snomed_concept',
       'patient_findings.finding_snomed_concept_id',
-      'finding_procedure_snomed_inferred_canonical_name_and_category.id',
+      'finding_snomed_concept.id',
     )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
-      'patient_findings.finding_snomed_concept_id',
       'patient_findings.patient_encounter_employee_id',
-      'finding_procedure_snomed_inferred_canonical_name_and_category.name as finding_name',
+
+      jsonBuildObject({
+        type: literalString('snomed_concept' as const),
+        snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
+        name: eb.ref('finding_snomed_concept.name'),
+        category: eb.ref('finding_snomed_concept.category'),
+      }).as('finding'),
 
       jsonBuildObject({
         record_id: eb.ref('patient_procedure_records.id'),
