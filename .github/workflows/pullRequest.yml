@@ -114,6 +114,7 @@ jobs:
 
       - name: Run build
         run: |
+          sleep 2
           deno task build
 
       - name: Run tests
