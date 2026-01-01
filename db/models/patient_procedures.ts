@@ -9,7 +9,7 @@ import { literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
 import generateUUID from '../../util/uuid.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
@@ -51,7 +51,7 @@ export const patient_procedures = base({
   baseQuery,
   formatResult: (procedure) => ({
     ...procedure,
-    ...formatRecordDisplay(procedure),
+    ...formatRecord(procedure),
   }),
   handleSearch(
     qb,

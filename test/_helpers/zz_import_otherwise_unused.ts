@@ -6,7 +6,7 @@
  */
 import db from '../../db/db.ts'
 import { debugLog } from '../../db/helpers.ts'
-import { capture } from './capture.ts'
+import { capture } from 'test/_helpers/capture.ts'
 
 capture(null)
 debugLog(db.selectNoFrom([]))

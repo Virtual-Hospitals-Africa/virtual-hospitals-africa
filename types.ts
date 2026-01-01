@@ -3310,13 +3310,13 @@ export type VitalAssessmentFormInputDefition = {
   }[]
 }
 
-export type RenderedVitalMeasurement =
-  & RenderedFindingRelativeToHealthWorker
-  & {
-    value: string | number
-    units: string
-    finding_type: 'manual' | 'computed'
-  }
+export type RenderedVitalMeasurement = RenderedFindingRelativeToHealthWorker
+// &
+// & {
+//   value: string | number
+//   units: string
+//   finding_type: 'manual' | 'computed'
+// }
 
 export type Evaluation = {
   priority: Priority
@@ -3472,7 +3472,6 @@ export type RecordDisplays = {
   full: string
 }
 
-
 export type RenderedSnomedConcept = {
   snomed_concept_id: string
   name: string
@@ -3480,18 +3479,24 @@ export type RenderedSnomedConcept = {
 }
 export type RenderedAttribute<Value> = {
   record_id: string
-  finding_snomed_concept: RenderedSnomedConcept,
+  finding_snomed_concept: RenderedSnomedConcept
   patient_encounter_employee_id: string
   procedure_id: string
   displays: RecordDisplays
   value: Value
 }
 
-export type RecordValueEvent = { type: 'event', datetime: Date | string}
-export type RecordValueSnomedConcept = { type: 'snomed_concept', snomed_concept: RenderedSnomedConcept }
-export type RecordValueMeasurement = { type: 'measurement', value: string, units: string }
+export type RecordValueEvent = { type: 'event'; datetime: Date | string }
+export type RecordValueSnomedConcept = RenderedSnomedConcept & {
+  type: 'snomed_concept'
+}
+export type RecordValueMeasurement = {
+  type: 'measurement'
+  value: string
+  units: string
+}
 
-export type RecordValue = 
+export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
@@ -3500,7 +3505,7 @@ export type RenderedFindingRelativeToHealthWorker = {
   record_id: string
   patient_encounter_id: string
   root_snomed_concept: RenderedSnomedConcept
-  finding_snomed_concept: RenderedSnomedConcept,
+  finding_snomed_concept: RenderedSnomedConcept
   displays: RecordDisplays
   created_at: Date | string
   priority: Priority | null
@@ -3508,7 +3513,6 @@ export type RenderedFindingRelativeToHealthWorker = {
   provider: RenderedFindingProvider
   as_part_of_procedure: AsPartOfProcedure
   // These are now prefixes
-  // qualifiers: RenderedQualifierRelativeToHealthWorker[]
   attributes: RenderedAttribute<RecordValueSnomedConcept>[]
   events: RenderedAttribute<RecordValueEvent>[]
   value: null | RecordValue
@@ -3518,13 +3522,6 @@ export type WithTriageLevelFinding = NonNullableProperty<
   RenderedFindingRelativeToHealthWorker,
   'priority'
 >
-
-export type RenderedVitalRelativeToHealthWorker =
-  & RenderedFindingRelativeToHealthWorker
-  & {
-    value: string | null
-    units: string | null
-  }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
@@ -3628,7 +3625,7 @@ export type ReferenceRangeX = {
 }
 
 export type TriageAssignPriorityTableVital = {
-  finding: RenderedVitalRelativeToHealthWorker
-  previous: RenderedVitalRelativeToHealthWorker | null
-  reference_ranges: ReferenceRangeX[] | null
+  finding: RenderedFindingRelativeToHealthWorker
+  previous: RenderedFindingRelativeToHealthWorker | null
+  reference_ranges?: Maybe<ReferenceRangeX[]>
 }

@@ -250,20 +250,36 @@ describeParallel('triage/brief_history', () => {
 
         assertMatches(this_patient_findings, [
           {
-            'type': 'finding',
             'record_id': z.string().uuid(),
             'created_at': z.date(),
-            'snomed_concept_id': '263490005',
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
-            'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept_id': '73211009',
-            'finding_name': 'Diabetes mellitus',
-            'name': 'Status',
-            'category': 'attribute',
-            'value_snomed_concept_id': '373067005',
-            'value_name': 'No',
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '263490005',
+              'name': 'Status',
+              'category': 'attribute',
+            },
             'destination_relations': [],
             'source_relations': [],
+            'prefixes': [
+              {
+                'record_id': z.string().uuid(),
+                'root_snomed_concept': {
+                  'snomed_concept_id': '1156040003',
+                  'name': 'Self reported',
+                  'category': 'qualifier value',
+                },
+              },
+            ],
+            'attributes': [],
+            'events': [],
+            'type': 'finding',
+            'patient_encounter_employee_id': z.string().uuid(),
+            'finding_snomed_concept': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '73211009',
+              'name': 'Diabetes mellitus',
+              'category': 'disorder',
+            },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '203421005',
@@ -271,35 +287,49 @@ describeParallel('triage/brief_history', () => {
             },
             'priority': null,
             'score': null,
-            'prefixes': [
-              {
-                'record_id': z.string().uuid(),
-                'snomed_concept_id': '1156040003',
-                'category': 'qualifier value',
-                'name': 'Self reported',
-              },
-            ],
-            'attributes': [],
-            'events': [],
-            'finding_display': 'Self reported Diabetes mellitus Status',
-            'value_display': 'No',
-            'full_display': 'Self reported Diabetes mellitus Status: No',
+            'value': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '373067005',
+              'name': 'No',
+              'category': 'qualifier value',
+            },
+            'displays': {
+              'value': 'No',
+              'finding': 'Self reported Diabetes mellitus Status',
+              'full': 'Self reported Diabetes mellitus Status: No',
+            },
           },
           {
-            'type': 'finding',
             'record_id': z.string().uuid(),
             'created_at': z.date(),
-            'snomed_concept_id': '263490005',
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
-            'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept_id': '77386006',
-            'finding_name': 'Pregnancy',
-            'name': 'Status',
-            'category': 'attribute',
-            'value_snomed_concept_id': '373067005',
-            'value_name': 'No',
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '263490005',
+              'name': 'Status',
+              'category': 'attribute',
+            },
             'destination_relations': [],
             'source_relations': [],
+            'prefixes': [
+              {
+                'record_id': z.string().uuid(),
+                'root_snomed_concept': {
+                  'snomed_concept_id': '1156040003',
+                  'name': 'Self reported',
+                  'category': 'qualifier value',
+                },
+              },
+            ],
+            'attributes': [],
+            'events': [],
+            'type': 'finding',
+            'patient_encounter_employee_id': z.string().uuid(),
+            'finding_snomed_concept': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '77386006',
+              'name': 'Pregnancy',
+              'category': 'finding',
+            },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '203421005',
@@ -307,35 +337,49 @@ describeParallel('triage/brief_history', () => {
             },
             'priority': null,
             'score': null,
-            'prefixes': [
-              {
-                'record_id': z.string().uuid(),
-                'snomed_concept_id': '1156040003',
-                'category': 'qualifier value',
-                'name': 'Self reported',
-              },
-            ],
-            'attributes': [],
-            'events': [],
-            'finding_display': 'Self reported Pregnancy Status',
-            'value_display': 'No',
-            'full_display': 'Self reported Pregnancy Status: No',
+            'value': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '373067005',
+              'name': 'No',
+              'category': 'qualifier value',
+            },
+            'displays': {
+              'value': 'No',
+              'finding': 'Self reported Pregnancy Status',
+              'full': 'Self reported Pregnancy Status: No',
+            },
           },
           {
-            'type': 'finding',
             'record_id': z.string().uuid(),
             'created_at': z.date(),
-            'snomed_concept_id': '263490005',
-            'patient_encounter_id': initial_encounter.patient_encounter_id,
-            'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept_id': '363346000',
-            'finding_name': 'Malignant neoplastic disease',
-            'name': 'Status',
-            'category': 'attribute',
-            'value_snomed_concept_id': '373066001',
-            'value_name': 'Yes',
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '263490005',
+              'name': 'Status',
+              'category': 'attribute',
+            },
             'destination_relations': [],
             'source_relations': [],
+            'prefixes': [
+              {
+                'record_id': z.string().uuid(),
+                'root_snomed_concept': {
+                  'snomed_concept_id': '1156040003',
+                  'name': 'Self reported',
+                  'category': 'qualifier value',
+                },
+              },
+            ],
+            'attributes': [],
+            'events': [],
+            'type': 'finding',
+            'patient_encounter_employee_id': z.string().uuid(),
+            'finding_snomed_concept': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '363346000',
+              'name': 'Malignant neoplastic disease',
+              'category': 'disorder',
+            },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '203421005',
@@ -343,21 +387,17 @@ describeParallel('triage/brief_history', () => {
             },
             'priority': null,
             'score': null,
-            'prefixes': [
-              {
-                'record_id': z.string().uuid(),
-                'snomed_concept_id': '1156040003',
-                'category': 'qualifier value',
-                'name': 'Self reported',
-              },
-            ],
-            'attributes': [],
-            'events': [],
-            'finding_display':
-              'Self reported Malignant neoplastic disease Status',
-            'value_display': 'Yes',
-            'full_display':
-              'Self reported Malignant neoplastic disease Status: Yes',
+            'value': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '373066001',
+              'name': 'Yes',
+              'category': 'qualifier value',
+            },
+            'displays': {
+              'value': 'Yes',
+              'finding': 'Self reported Malignant neoplastic disease Status',
+              'full': 'Self reported Malignant neoplastic disease Status: Yes',
+            },
           },
         ], { strict: true })
 
@@ -372,15 +412,29 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '363346000',
-          'finding_name': 'Malignant neoplastic disease',
-          'name': 'Status',
-          'value_snomed_concept_id': '373066001',
-          'value_name': 'Yes',
-          'category': 'attribute',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '363346000',
+            'name': 'Malignant neoplastic disease',
+            'category': 'disorder',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '373066001',
+            'name': 'Yes',
+          },
+          'displays': {
+            'finding': 'Self reported Malignant neoplastic disease Status',
+            'full': 'Self reported Malignant neoplastic disease Status: Yes',
+            'value': 'Yes',
+          },
+
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '203421005',
@@ -389,11 +443,7 @@ describeParallel('triage/brief_history', () => {
           'priority': null,
           'score': null,
           'pertaining_to_key': 'cancer',
-          'finding_display':
-            'Self reported Malignant neoplastic disease Status',
-          'full_display':
-            'Self reported Malignant neoplastic disease Status: Yes',
-          'value_display': 'Yes',
+
           'existence': 'Yes',
           'provider': {
             'is_me': true,
@@ -405,9 +455,11 @@ describeParallel('triage/brief_history', () => {
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'name': 'Self reported',
-              'category': 'qualifier value',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'name': 'Self reported',
+                'category': 'qualifier value',
+              },
             },
           ],
           'attributes': [],
@@ -420,15 +472,23 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '73211009',
-          'finding_name': 'Diabetes mellitus',
-          'name': 'Status',
-          'value_snomed_concept_id': '373067005',
-          'value_name': 'No',
-          'category': 'attribute',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '373067005',
+            'name': 'No',
+          },
+
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
             'snomed_concept_id': '203421005',
@@ -437,9 +497,12 @@ describeParallel('triage/brief_history', () => {
           'priority': null,
           'score': null,
           'pertaining_to_key': 'diabetes',
-          'finding_display': 'Self reported Diabetes mellitus Status',
-          'full_display': 'Self reported Diabetes mellitus Status: No',
-          'value_display': 'No',
+          'displays': {
+            'finding': 'Self reported Diabetes mellitus Status',
+            'full': 'Self reported Diabetes mellitus Status: No',
+            'value': 'No',
+          },
+
           'existence': 'No',
           'provider': {
             'is_me': true,
@@ -451,9 +514,11 @@ describeParallel('triage/brief_history', () => {
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'name': 'Self reported',
-              'category': 'qualifier value',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'name': 'Self reported',
+                'category': 'qualifier value',
+              },
             },
           ],
           'attributes': [],
@@ -858,15 +923,22 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '73211009',
-          'finding_name': 'Diabetes mellitus',
-          'name': 'Status',
-          'category': 'attribute',
-          'value_snomed_concept_id': '373066001',
-          'value_name': 'Yes',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '373066001',
+            'name': 'Yes',
+          },
           'destination_relations': [],
           'source_relations': [],
           'as_part_of_procedure': {
@@ -879,17 +951,21 @@ describeParallel('triage/brief_history', () => {
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'category': 'qualifier value',
-              'name': 'Self reported',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'category': 'qualifier value',
+                'name': 'Self reported',
+              },
             },
           ],
           'attributes': [],
           'events': [],
           'pertaining_to_key': 'diabetes',
-          'finding_display': 'Self reported Diabetes mellitus Status',
-          'full_display': 'Self reported Diabetes mellitus Status: Yes',
-          'value_display': 'Yes',
+          'displays': {
+            'finding': 'Self reported Diabetes mellitus Status',
+            'full': 'Self reported Diabetes mellitus Status: Yes',
+            'value': 'Yes',
+          },
           'existence': 'Yes',
           'provider': {
             'is_me': true,
@@ -1005,15 +1081,24 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '363346000',
-          'finding_name': 'Malignant neoplastic disease',
-          'name': 'Status',
-          'category': 'attribute',
-          'value_snomed_concept_id': '373066001',
-          'value_name': 'Yes',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '363346000',
+            'name': 'Malignant neoplastic disease',
+            'category': 'disorder',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '373066001',
+            'name': 'Yes',
+            'category': 'qualifier value',
+          },
           'destination_relations': [],
           'source_relations': [],
           'as_part_of_procedure': {
@@ -1024,11 +1109,11 @@ describeParallel('triage/brief_history', () => {
           'priority': null,
           'score': null,
           'pertaining_to_key': 'cancer',
-          'finding_display':
-            'Self reported Malignant neoplastic disease Status',
-          'full_display':
-            'Self reported Malignant neoplastic disease Status: Yes',
-          'value_display': 'Yes',
+          'displays': {
+            'finding': 'Self reported Malignant neoplastic disease Status',
+            'full': 'Self reported Malignant neoplastic disease Status: Yes',
+            'value': 'Yes',
+          },
           'existence': 'Yes',
           'provider': {
             'is_me': false,
@@ -1038,9 +1123,11 @@ describeParallel('triage/brief_history', () => {
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'category': 'qualifier value',
-              'name': 'Self reported',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'category': 'qualifier value',
+                'name': 'Self reported',
+              },
             },
           ],
           'attributes': [],
@@ -1051,15 +1138,23 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': subsequent_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '73211009',
-          'finding_name': 'Diabetes mellitus',
-          'name': 'Status',
-          'category': 'attribute',
-          'value_snomed_concept_id': '373067005',
-          'value_name': 'No',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '73211009',
+            'name': 'Diabetes mellitus',
+            'category': 'disorder',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '373067005',
+            'name': 'No',
+          },
           'existence': 'No',
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
@@ -1069,15 +1164,19 @@ describeParallel('triage/brief_history', () => {
           'priority': null,
           'score': null,
           'pertaining_to_key': 'diabetes',
-          'finding_display': 'Self reported Diabetes mellitus Status',
-          'full_display': 'Self reported Diabetes mellitus Status: No',
-          'value_display': 'No',
+          'displays': {
+            'finding': 'Self reported Diabetes mellitus Status',
+            'full': 'Self reported Diabetes mellitus Status: No',
+            'value': 'No',
+          },
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'category': 'qualifier value',
-              'name': 'Self reported',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'category': 'qualifier value',
+                'name': 'Self reported',
+              },
             },
           ],
           'attributes': [],
@@ -1150,15 +1249,22 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '263490005',
           'patient_encounter_id': encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
-          'finding_snomed_concept_id': '77386006',
-          'finding_name': 'Pregnancy',
-          'name': 'Status',
-          'value_snomed_concept_id': '261665006',
-          'value_name': 'Unknown',
-          'category': 'attribute',
+          'root_snomed_concept': {
+            'snomed_concept_id': '263490005',
+            'name': 'Status',
+            'category': 'attribute',
+          },
+          'value': {
+            'type': 'snomed_concept',
+            'snomed_concept_id': '261665006',
+            'name': 'Unknown',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '77386006',
+            'name': 'Pregnancy',
+          },
           'destination_relations': [],
           'source_relations': [],
           'as_part_of_procedure': {
@@ -1168,16 +1274,20 @@ describeParallel('triage/brief_history', () => {
           },
           'priority': null,
           'score': null,
-          'finding_display': 'Self reported Pregnancy Status',
-          'full_display': 'Self reported Pregnancy Status: Unknown',
-          'value_display': 'Unknown',
+          'displays': {
+            'finding': 'Self reported Pregnancy Status',
+            'full': 'Self reported Pregnancy Status: Unknown',
+            'value': 'Unknown',
+          },
           'existence': 'Unknown',
           'prefixes': [
             {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '1156040003',
-              'name': 'Self reported',
-              'category': 'qualifier value',
+              'root_snomed_concept': {
+                'snomed_concept_id': '1156040003',
+                'name': 'Self reported',
+                'category': 'qualifier value',
+              },
             },
           ],
           'attributes': [],

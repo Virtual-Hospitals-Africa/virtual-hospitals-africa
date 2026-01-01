@@ -1,22 +1,21 @@
-import { assert } from 'std/assert/assert.ts'
-import { Maybe, RecordDisplays, RenderedSnomedConcept } from '../types.ts'
-import { assertArrayEmpty } from '../util/arraySize.ts'
+import {
+  Maybe,
+  RecordDisplays,
+  RecordValue,
+  RecordValueSnomedConcept,
+  RenderedSnomedConcept,
+} from '../types.ts'
 import compact from '../util/compact.ts'
-import { SnomedCategory } from '../db.d.ts'
-import isObjectLike from '../util/isObjectLike.ts'
-import isString from '../util/isString.ts'
 import { positive_decimal } from '../util/validators.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import isDate from '../util/isDate.ts'
-import type { AttributeValue } from '../db/models/patient_record_qualifiers.ts'
-import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { assert } from 'node:console'
+import omit from '../util/omit.ts'
 
 type DisplayableRecord = {
   root_snomed_concept: RenderedSnomedConcept
-  finding?: Maybe<RenderedSnomedConcept>
-  value: 
-  value?: Maybe<string | DisplayableRecord | AttributeValue>
-  units?: Maybe<string>
+  finding_snomed_concept?: Maybe<RenderedSnomedConcept>
+  value_snomed_concept?: Maybe<RecordValueSnomedConcept>
+  value?: Maybe<RecordValue>
   prefixes?: DisplayableRecord[]
   // Attributes are not included as part of the display, but listed here for completeness
 }
@@ -24,6 +23,7 @@ type DisplayableRecord = {
 function measurementValueDisplay(
   { value, units }: { value: string | number; units: string },
 ): string {
+  positive_decimal.parse(value)
   switch (units) {
     case '°C':
     case '%':
@@ -54,106 +54,104 @@ function formatEventDatetime(datetime: Date | string): string {
   return `${time_str} SAST | ${date_str}`
 }
 
-function isDisplayableRecord(value: unknown): value is DisplayableRecord {
-  return isObjectLike(value) && isString(value.name) && isString(value.category)
-}
-
 function valueDisplay(
   value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
 ): string {
-  if (isDisplayableRecord(value)) {
-    return buildDisplays(value).full_display
+  switch (value.type) {
+    case 'event':
+      return formatEventDatetime(value.datetime)
+    case 'snomed_concept':
+      return value.name
+    case 'measurement':
+      return measurementValueDisplay(value)
+    default: {
+      throw new Error(`Unexpected type in ${JSON.stringify(value)}`)
+    }
   }
-  assert(value.type === 'event', 'type: snomed_concept is a DisplayableRecord')
-  return formatEventDatetime(value.datetime)
+}
+
+function includeRootSnomedConceptName(
+  root_snomed_concept: RenderedSnomedConcept,
+): boolean {
+  switch (root_snomed_concept.name) {
+    case 'Attribute':
+    case 'Event':
+    case 'Measurement finding':
+      return false
+    default:
+      return true
+  }
 }
 
 function buildDisplays(record: DisplayableRecord): RecordDisplays {
   const {
-    name,
-    prefixes = [],
-    finding_name,
-    value_name,
+    root_snomed_concept,
+    finding_snomed_concept,
     value,
-    units,
+    prefixes = [],
   } = record
 
-  // For measurements skip the "Measurement finding" bit
-  if (isString(value)) {
-    assertEquals(name, 'Measurement finding')
-    positive_decimal.parse(value)
-    assert(finding_name)
-    assertNotEquals(finding_name, 'Measurement')
-    assertNotEquals(finding_name, 'Measurement finding')
-    assert(units)
-    assert(isString(units))
-    assertArrayEmpty(prefixes)
-    const value_display = measurementValueDisplay({ value, units })
-    return {
-      value: value_display,
-      finding: finding_name,
-      full: `${finding_name}: ${value_display}`,
-    }
-  }
-
-  const prefix_displays = prefixes.map((prefix) =>
-    buildDisplays(prefix).full_display
-  )
+  const prefix_displays = prefixes.map((prefix) => buildDisplays(prefix).full)
 
   const finding_display = compact([
     ...prefix_displays,
-    finding_name,
-    !['Attribute', 'Event'].includes(name) && name,
+    finding_snomed_concept?.name,
+    includeRootSnomedConceptName(root_snomed_concept) &&
+    root_snomed_concept.name,
   ]).join(' ')
 
-  if (value) {
-    assert(isObjectLike(value), `Unexpected value ${value}`)
-    assert(!value_name)
-
-    const value_display = valueDisplay(value)
+  if (!value) {
     return {
-      finding_display,
-      value_display,
-      full_display: `${finding_display}: ${value_display}`,
+      value: null,
+      finding: finding_display,
+      full: finding_display,
     }
   }
 
-  if (!value_name) {
-    return {
-      finding_display,
-      full_display: finding_display,
-      value_display: null,
-    }
-  }
+  const value_display = value && valueDisplay(value)
 
-  assert(!value)
-  assert(!units)
   return {
-    finding,
-    value: value_name,
-    full: `${finding_display}: ${value_name}`,
+    finding: finding_display,
+    value: value_display,
+    full: `${finding_display}: ${value_display}`,
   }
 }
 
-export function formatRecordDisplay<
-  R extends DisplayableRecord & {
+type RenderedDisplayableRecord<DR extends DisplayableRecord> =
+  & Omit<DR, 'value_snomed_concept'>
+  & { displays: RecordDisplays; value: RecordValue | null }
+
+function mergeValuesAddDisplay<DR extends DisplayableRecord>(
+  record: DR,
+): RenderedDisplayableRecord<DR> {
+  assert(
+    !record.value || !record.value_snomed_concept,
+    'Record can have a value or value_snomed_concept, but not both',
+  )
+  const unified_value = {
+    ...omit(record, ['value_snomed_concept']),
+    value: record.value || record.value_snomed_concept || null,
+  }
+  return {
+    ...unified_value,
+    displays: buildDisplays(unified_value),
+  }
+}
+
+export function formatRecord<
+  DR extends DisplayableRecord & {
+    value_snomed_concept?: null | RecordValueSnomedConcept
     attributes: DisplayableRecord[]
     events: DisplayableRecord[]
   },
->(record: R): R & { displays: RecordDisplays } & {
-  attributes: Array<R['attributes'][number] & { displays: RecordDisplays }>
-  events: Array<R['events'][number] & { displays: RecordDisplays }>
+>(record: DR): RenderedDisplayableRecord<DR> & {
+  value: RecordValue | null
+  attributes: RenderedDisplayableRecord<DR['attributes'][number]>[]
+  events: RenderedDisplayableRecord<DR['events'][number]>[]
 } {
   return {
-    ...record,
-    ...buildDisplays(record),
-    attributes: record.attributes.map((attribute) => ({
-      ...attribute,
-      ...buildDisplays(attribute),
-    })),
-    events: record.events.map((event) => ({
-      ...event,
-      ...buildDisplays(event),
-    })),
+    ...mergeValuesAddDisplay(record),
+    attributes: record.attributes.map(mergeValuesAddDisplay),
+    events: record.events.map(mergeValuesAddDisplay),
   }
 }

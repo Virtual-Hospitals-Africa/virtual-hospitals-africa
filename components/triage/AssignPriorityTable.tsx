@@ -39,7 +39,7 @@ const columns: TableColumn<Row>[] = [
           // 'pl-4': !!row.is_component_of_computed,
         })}
       >
-        {capitalize(row.finding.finding_display)}
+        {capitalize(row.finding.displays.finding)}
       </div>
     ),
   },
@@ -48,7 +48,7 @@ const columns: TableColumn<Row>[] = [
     type: 'content',
     data: (row) => (
       <div className='whitespace-nowrap text-sm text-gray-900'>
-        {row.finding.value_display}
+        {row.finding.displays.value}
       </div>
     ),
   },
@@ -71,18 +71,28 @@ const columns: TableColumn<Row>[] = [
       const { finding, previous, reference_ranges } = row
       if (!reference_ranges) return null
       assert(
-        finding.value !== null,
+        finding.value,
         `If there's a reference range there must be a value`,
       )
       assert(
-        finding.units,
+        finding.value.type === 'measurement',
+        `If there's a reference range there must be a value`,
+      )
+      assert(
+        finding.value.value !== null,
+        `If there's a reference range there must be a value`,
+      )
+      assert(
+        finding.value.units,
         `If there's a reference range there must be a units`,
       )
       return (
         <ReferenceRangeIndicator
-          units={finding.units}
-          value={finding.value}
-          previous_value={previous?.value}
+          units={finding.value.units}
+          value={finding.value.value}
+          previous_value={previous?.value?.type === 'measurement'
+            ? previous.value.value
+            : undefined}
           reference_ranges={reference_ranges}
         />
       )

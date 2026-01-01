@@ -35,7 +35,7 @@ export default function VitalInputWithNote(
           {most_recent_patient_finding && (
             <div className='flex text-gray-500'>
               <a href='#' className='text-blue-500'>
-                {most_recent_patient_finding.full_display}
+                {most_recent_patient_finding.displays.full}
               </a>
               &nbsp;
               <LocalTime
