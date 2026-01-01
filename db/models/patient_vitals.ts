@@ -1,24 +1,29 @@
 // Perhaps a misnomer, this is a more general way of getting findings whether they be measurements or not
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
+  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
-  RenderedVitalRelativeToHealthWorker,
   TrxOrDb,
   TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
-import { jsonObjectFrom } from '../helpers.ts'
+import {
+  asText,
+  jsonBuildNullableObject,
+  jsonObjectFrom,
+  literalString,
+} from '../helpers.ts'
 import { sql } from 'kysely'
-import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { formatRecord } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { buildExpression } from './s_expression.ts'
 import { AnyNode } from '../../shared/s_expression_schemas.ts'
+import { base } from './_base.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -29,9 +34,15 @@ export function baseQuery(
       'patient_findings.id',
       'patient_measurements.id',
     )
-    .select([
-      'patient_measurements.value',
-      'patient_measurements.units',
+    .select((eb) => [
+      jsonBuildNullableObject(
+        eb.ref('patient_measurements.id'),
+        {
+          type: literalString('measurement' as const),
+          value: asText(eb, 'patient_measurements.value').$notNull(),
+          units: eb.ref('patient_measurements.units').$notNull(),
+        },
+      ).as('value'),
     ])
 }
 
@@ -47,7 +58,7 @@ type VitalsSearch = {
 export const patient_vitals = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: formatRecordDisplay,
+  formatResult: formatRecord,
   handleSearch(
     qb,
     opts: VitalsSearch,
@@ -114,10 +125,10 @@ export const patient_vitals = base({
       excluding_patient_encounter_id?: string
       snomed_concept_ids?: string[]
     },
-  ): Promise<RenderedVitalRelativeToHealthWorker[]> {
+  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
     if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
-    const query = trx.with(
+    const findings = await trx.with(
       'ranked_findings',
       (qb) =>
         baseQuery(qb)
@@ -162,11 +173,9 @@ export const patient_vitals = base({
               ),
             ]),
         ).$notNull().as('provider'),
-      ])
+      ]).execute()
 
-    const findings = await query.execute()
-
-    return findings.map(formatRecordDisplay)
+    return findings.map(formatRecord)
   },
 })
 

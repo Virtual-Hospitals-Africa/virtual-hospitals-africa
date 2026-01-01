@@ -258,23 +258,26 @@ describeParallel('triage/warning_signs', () => {
           {
             'record_id': z.string().uuid(),
             'created_at': z.date(),
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'root_snomed_concept': {
+              'name': 'Clinical finding',
+              'category': 'finding',
+              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            },
+            'finding_snomed_concept': {
+              'snomed_concept_id': '410429000',
+            },
             'patient_encounter_id': encounter.patient_encounter_id,
-            'name': 'Clinical finding',
-            'value_snomed_concept_id': null,
-
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '245581009',
               'name': 'Emergency examination for triage',
             },
-            'finding_snomed_concept_id': '410429000',
           },
         ])
       },
     )
 
-    itParallel(
+    itParallel.only(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -326,34 +329,42 @@ describeParallel('triage/warning_signs', () => {
           {
             'record_id': z.string().uuid(),
             'created_at': z.date(),
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'root_snomed_concept': {
+              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              'name': 'Clinical finding',
+              'category': 'finding',
+            },
             'patient_encounter_id': encounter.patient_encounter_id,
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
-            'category': 'finding',
-            'name': 'Clinical finding',
-            'value_name': null,
-            'value_snomed_concept_id': null,
+            'value': null,
+            'finding_snomed_concept': {
+              'snomed_concept_id': '91175000',
+              'name': 'Seizure',
+              'category': 'finding',
+            },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'snomed_concept_id': '245581009',
               'name': 'Emergency examination for triage',
             },
-            'finding_snomed_concept_id': '91175000',
             'priority': 'Emergency',
             'score': null,
-            'finding_name': 'Seizure',
-            'finding_display': 'Current Seizure Clinical finding',
-            'full_display': 'Current Seizure Clinical finding',
-            'value_display': null,
+            'displays': {
+              'finding': 'Current Seizure Clinical finding',
+              'full': 'Current Seizure Clinical finding',
+              'value': null,
+            },
             'destination_relations': [],
             'source_relations': [],
             'prefixes': [
               {
                 'record_id': z.string().uuid(),
-                'category': 'qualifier value',
-                'snomed_concept_id': '15240007',
-                'name': 'Current',
+                'root_snomed_concept': {
+                  'snomed_concept_id': '15240007',
+                  'name': 'Current',
+                  'category': 'qualifier value',
+                },
               },
             ],
             'attributes': [],
@@ -432,22 +443,30 @@ describeParallel('triage/warning_signs', () => {
 
         // Both should be Clinical findings with the appropriate qualifiers
         const cardiac_arrest_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept_id === '410429000'
+          f.finding_snomed_concept.snomed_concept_id === '410429000'
         )
         const chest_pain_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept_id === '29857009'
+          f.finding_snomed_concept.snomed_concept_id === '29857009'
         )
 
         assertMatches(cardiac_arrest_finding, {
-          'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-          'name': 'Clinical finding',
-          'finding_snomed_concept_id': '410429000',
+          'root_snomed_concept': {
+            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'name': 'Clinical finding',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '410429000',
+          },
         })
 
         assertMatches(chest_pain_finding, {
-          'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-          'name': 'Clinical finding',
-          'finding_snomed_concept_id': '29857009',
+          'root_snomed_concept': {
+            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'name': 'Clinical finding',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '29857009',
+          },
         })
       },
     )

@@ -20,9 +20,14 @@ function baseInnerQuery(
     .select((eb) => [
       'qualifier_records.id as record_id',
       jsonBuildObject({
-        snomed_concept_id: asText(eb, 'snomed_inferred_canonical_name_and_category.id'),
+        snomed_concept_id: asText(
+          eb,
+          'snomed_inferred_canonical_name_and_category.id',
+        ),
         name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
-        category: eb.ref('snomed_inferred_canonical_name_and_category.category'),
+        category: eb.ref(
+          'snomed_inferred_canonical_name_and_category.category',
+        ),
       }).as('root_snomed_concept'),
     ])
     .orderBy(
@@ -57,7 +62,7 @@ function baseQueryAttributeCommon(
         snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
         name: eb.ref('finding_snomed_concept.name'),
         category: eb.ref('finding_snomed_concept.category'),
-      }).as('finding'),
+      }).as('finding_snomed_concept'),
     ])
 }
 

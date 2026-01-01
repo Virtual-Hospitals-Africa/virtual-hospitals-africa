@@ -4,7 +4,13 @@ import {
   TrxOrDb,
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
-import { jsonBuildObject, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
+import {
+  asText,
+  jsonBuildObject,
+  jsonObjectFrom,
+  literalString,
+  success_true,
+} from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -16,7 +22,7 @@ import {
 } from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { formatRecord } from '../../shared/patient_records.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 
@@ -40,10 +46,10 @@ export function baseQuery(
       'patient_findings.id',
       'patient_measurements.id',
     )
-    .select(eb => [
+    .select((eb) => [
       jsonBuildObject({
         type: literalString('measurement' as const),
-        value: eb.ref('patient_measurements.value'),
+        value: asText(eb, 'patient_measurements.value'),
         units: eb.ref('patient_measurements.units'),
       }).as('value'),
     ])
@@ -52,7 +58,7 @@ export function baseQuery(
 export const patient_measurements = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: formatRecordDisplay,
+  formatResult: formatRecord,
   handleSearch(
     qb,
     opts: {
@@ -246,6 +252,8 @@ export const patient_measurements = base({
       ])
 
     const findings = await query.execute()
-    return findings.map(formatRecordDisplay)
+
+    // findings[0].attributes
+    return findings.map(formatRecord)
   },
 })

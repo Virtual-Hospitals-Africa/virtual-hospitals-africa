@@ -11,7 +11,6 @@ import {
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { setupTriage } from './_setup.ts'
-import findMatching from '../../../../../util/findMatching.ts'
 import {
   assessmentOptionSnomedConceptId,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
@@ -435,26 +434,32 @@ describeParallel('triage/measure_vitals', () => {
           },
         )
 
-        const respiratory_rate_measurement = findMatching(measurements, {
-          finding_snomed_concept_id:
-            VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate,
-        })
+        const respiratory_rate_measurement = measurements.find((m) =>
+          m.finding_snomed_concept.snomed_concept_id ===
+            VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate
+        )!
 
         assertMatches(respiratory_rate_measurement, {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'snomed_concept_id': '118245000',
           'patient_encounter_id': z.string().uuid(),
           'patient_encounter_employee_id': z.string().uuid(),
-          'name': 'Measurement finding',
-          'category': 'finding',
-          'value_snomed_concept_id': null,
-          'value_name': null,
-          'finding_snomed_concept_id': '86290005',
-          'finding_name': 'Respiratory rate',
-          'finding_display': 'Respiratory rate',
-          'value_display': `12\u00A0bpm`,
+          'root_snomed_concept': {
+            'snomed_concept_id': '118245000',
+            'name': 'Measurement finding',
+            'category': 'finding',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '86290005',
+            'name': 'Respiratory rate',
+            'category': 'observable entity',
+          },
+          'displays': {
+            'finding': 'Respiratory rate',
+            'value': `12\u00A0bpm`,
+            'full': `Respiratory rate: 12\u00A0bpm`,
+          },
           'destination_relations': [],
           'source_relations': [],
           'as_part_of_procedure': {
@@ -464,9 +469,11 @@ describeParallel('triage/measure_vitals', () => {
           },
           'priority': null,
           'score': 0,
-          'value': '12',
-          'units': 'bpm',
-          'full_display': `Respiratory rate: 12\u00A0bpm`,
+          'value': {
+            'type': 'measurement',
+            'value': '12',
+            'units': 'bpm',
+          },
           'prefixes': [],
           'attributes': [],
           'events': [],
@@ -491,11 +498,11 @@ describeParallel('triage/measure_vitals', () => {
         const finding_scores = await pMap(
           component_scores,
           async ({ score, evaluates_record_id }) => {
-            const { finding_name } = await patient_findings.getById(
+            const finding = await patient_findings.getById(
               db,
               evaluates_record_id,
             )
-            return { finding_name, score }
+            return { finding_name: finding.finding_snomed_concept.name, score }
           },
         )
 
@@ -616,11 +623,11 @@ describeParallel('triage/measure_vitals', () => {
         const finding_scores = await pMap(
           component_scores,
           async ({ score, evaluates_record_id }) => {
-            const { finding_name } = await patient_findings.getById(
+            const finding = await patient_findings.getById(
               db,
               evaluates_record_id,
             )
-            return { finding_name, score }
+            return { finding_name: finding.finding_snomed_concept.name, score }
           },
         )
 

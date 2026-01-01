@@ -14,7 +14,9 @@ import {
 
 export function FindingPanel(
   { finding, organization_id }: {
-    finding: RenderedFindingRelativeToHealthWorker
+    finding:
+      | RenderedFindingRelativeToHealthWorker
+      | RenderedFindingRelativeToHealthWorker
     organization_id: string
   },
 ) {
@@ -25,7 +27,7 @@ export function FindingPanel(
         <div className='flex items-start justify-between'>
           <div className='flex-1'>
             <h3 className='text-lg font-semibold leading-6 text-red-800'>
-              {finding.full_display}
+              {finding.displays.full}
             </h3>
           </div>
           <div className='flex gap-2'>

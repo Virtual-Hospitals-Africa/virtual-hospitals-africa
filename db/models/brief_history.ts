@@ -21,7 +21,7 @@ import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { formatRecord } from '../../shared/patient_records.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
@@ -86,26 +86,28 @@ export function mostRecentFindings(
 
 function findingExistence(finding: IntermediateBriefHistory): Existence {
   assertOneOf(
-    finding.name,
+    finding.root_snomed_concept.name,
     ['Status' as const, 'Clinical finding' as const],
     "Revisit this function when considering how other types of findings interplay with what's shown for brief history",
   )
 
-  if (finding.name !== 'Status') {
+  if (finding.root_snomed_concept.name !== 'Status') {
     return 'Yes'
   }
 
-  assert(finding.value_name)
-  assertOneOf(finding.value_name, [
+  assert(finding.value_snomed_concept?.name)
+  assertOneOf(finding.value_snomed_concept.name, [
     'Yes' as const,
     'No' as const,
     'Unknown' as const,
   ])
-  return finding.value_name
+  return finding.value_snomed_concept.name
 }
 
 function mostRecentFinding<
-  Finding extends IntermediateBriefHistory & { existence: Existence },
+  Finding extends ReturnType<typeof formatRecord<IntermediateBriefHistory>> & {
+    existence: Existence
+  },
 >(
   findings_of_condition: NonEmptyArray<Finding>,
 ): Finding {
@@ -124,8 +126,8 @@ function mostRecentFinding<
 
   const findings_of_condition_grouped_by_concept = groupBy(
     findings_of_condition,
-    'snomed_concept_id',
-  )
+    (f) => f.finding_snomed_concept.snomed_concept_id,
+  ) as Map<string, NonEmptyArray<Finding>>
   const most_recent_parent_concept_finding = first(
     findings_of_condition_grouped_by_concept.get(parent_snomed_concept_id) ||
       [],
@@ -137,7 +139,7 @@ function mostRecentFinding<
 
       const most_recent_finding_of_concept = first(
         findings_of_condition_grouped_by_concept.get(
-          finding.snomed_concept_id,
+          finding.finding_snomed_concept.snomed_concept_id,
         )!,
       )
       assert(most_recent_finding_of_concept)
@@ -170,11 +172,12 @@ export async function renderedMostRecentFindings(
 
   const most_recent_findings_with_existence = most_recent_findings.map(
     (finding) => ({
-      ...finding,
-      ...formatRecordDisplay(finding),
+      ...formatRecord(finding),
       existence: findingExistence(finding),
     }),
   )
+
+  most_recent_findings_with_existence[0]
 
   const records = groupBy(
     most_recent_findings_with_existence,
