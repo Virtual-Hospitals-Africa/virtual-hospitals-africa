@@ -557,7 +557,7 @@
 // //     }
 // //   })
 
-// //   console.log(JSON.stringify(x, null, 2))
+// //   console.log(humanReadableJson(x))
 // // }
 
 // if (import.meta.main) {

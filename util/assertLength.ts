@@ -1,4 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
+import { humanReadableJson } from './humanReadableJson.ts'
 
 export default function assertLength<
   T extends {
@@ -11,7 +12,7 @@ export default function assertLength<
   assert(
     array.length === length,
     `Expected array to be length ${length}. Actual length ${array.length}. Actual value\n${
-      JSON.stringify(array, null, 2)
+      humanReadableJson(array)
     }`,
   )
 }

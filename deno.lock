@@ -58,6 +58,7 @@
     "npm:esbuild@~0.25.5": "0.25.12",
     "npm:fast-levenshtein@3.0.0": "3.0.0",
     "npm:fast-xml-parser@4.3.4": "4.3.4",
+    "npm:fracturedjsonjs@5.0.1": "5.0.1",
     "npm:kysely@0.28.8": "0.28.8",
     "npm:natural@6.10.4": "6.10.4",
     "npm:patch-package@latest": "8.0.1",
@@ -1634,6 +1635,9 @@
         "micromatch"
       ]
     },
+    "fracturedjsonjs@5.0.1": {
+      "integrity": "sha512-5951hSK5ROFgWU7KTxbgwvpFT56366NvkQTMeu/zvDTvI42Lf7rOHqJNSdk54Er+vOcYp3Y1+czVLarq+ryNFg=="
+    },
     "fs-extra@10.1.0": {
       "integrity": "sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==",
       "dependencies": [
@@ -2574,6 +2578,7 @@
       "npm:decimal.js-light@2.5.1",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
+      "npm:fracturedjsonjs@5.0.1",
       "npm:kysely@0.28.8",
       "npm:natural@6.10.4",
       "npm:patch-package@latest",
