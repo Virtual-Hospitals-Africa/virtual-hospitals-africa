@@ -35,4 +35,4 @@ for (const row of rows) {
   })
 }
 
-console.log('export const first_names = ' + JSON.stringify(r, null, 2))
+console.log('export const first_names = ' + humanReadableJson(r))

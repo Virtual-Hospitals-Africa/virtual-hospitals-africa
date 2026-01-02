@@ -75,6 +75,7 @@
     "decimal": "npm:decimal.js-light@2.5.1",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
+    "fracturedjsonjs": "npm:fracturedjsonjs@5.0.1",
     "kysely": "npm:kysely@0.28.8",
     "natural": "npm:natural@6.10.4",
     "pg": "npm:pg@8.16.0",

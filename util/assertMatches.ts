@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import isDate from './isDate.ts'
+import { humanReadableJson } from './humanReadableJson.ts'
+import { JsonSerializable } from '../types.ts'
 
 function isZodType(value: unknown): value is z.ZodType {
   return value !== null &&
@@ -86,7 +88,9 @@ export function parseWithValues<
 ) {
   const result = safeParseWithValues(schema, object)
   if (result.success) return result.data
-  throw new Error(JSON.stringify(result.error.issues, null, 2))
+  throw new Error(
+    humanReadableJson(result.error.issues as unknown as JsonSerializable),
+  )
 }
 
 export function assertMatches(

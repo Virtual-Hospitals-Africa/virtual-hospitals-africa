@@ -20,6 +20,7 @@ import memoize from '../util/memoize.ts'
 import selfUrl from '../util/selfUrl.ts'
 import { assertOr401 } from '../util/assertOr.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_worker_google_tokens.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 const google_apis_url = 'https://www.googleapis.com'
 
@@ -503,7 +504,7 @@ export async function getNewAccessTokenFromRefreshToken(
   assertEquals(
     typeof json.access_token,
     'string',
-    'No access token in: \n' + JSON.stringify(json, null, 2),
+    'No access token in: \n' + humanReadableJson(json),
   )
 
   return json.access_token

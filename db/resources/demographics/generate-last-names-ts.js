@@ -16,4 +16,4 @@ for (const row of rows) {
   })
 }
 
-console.log('export const surnames = ' + JSON.stringify(r, null, 2))
+console.log('export const surnames = ' + humanReadableJson(r))

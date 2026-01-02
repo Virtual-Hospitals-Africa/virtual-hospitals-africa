@@ -5,6 +5,7 @@ import { assert } from 'std/assert/assert.ts'
 import partition from '../util/partition.ts'
 import words from '../util/words.ts'
 import natural from 'natural'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 const parser = new XMLParser()
 
@@ -302,35 +303,35 @@ for (const term of other_without_codes) {
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024.json',
-  JSON.stringify(to_export, null, 2),
+  humanReadableJson(to_export),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-with-code.json',
-  JSON.stringify(with_codes, null, 2),
+  humanReadableJson(with_codes),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-no-code.json',
-  JSON.stringify(other_without_codes, null, 2),
+  humanReadableJson(other_without_codes),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-neoplasm.json',
-  JSON.stringify(neoplasms, null, 2),
+  humanReadableJson(neoplasms),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-drugs.json',
-  JSON.stringify(drugs, null, 2),
+  humanReadableJson(drugs),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-injury.json',
-  JSON.stringify(injury, null, 2),
+  humanReadableJson(injury),
 )
 
 await Deno.writeTextFile(
   'db/resources/icd10/icd10cm-index-April-2024-no-matching.json',
-  JSON.stringify(no_matching_could_be_found, null, 2),
+  humanReadableJson(no_matching_could_be_found),
 )

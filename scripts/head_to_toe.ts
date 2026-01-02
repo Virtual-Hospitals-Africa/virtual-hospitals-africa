@@ -6,6 +6,7 @@ import * as snowstorm from '../external-clients/snowstorm.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import uniq from '../util/uniq.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 const ExaminationSchema = z.object({
   examination_identifier: z.string(),
@@ -151,7 +152,7 @@ const general_assessments = groupBy(hands_examinations, (e) => e.category)
     },
   ).toArray()
 
-console.log(JSON.stringify(general_assessments, null, 2))
+console.log(humanReadableJson(general_assessments))
 
 // // const to_search = [
 // //   'koilonychia',

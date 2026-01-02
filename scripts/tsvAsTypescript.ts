@@ -2,6 +2,8 @@ import { parseTsvTyped } from '../util/parseCsv.ts'
 import { collect } from '../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
+import { JsonSerializable } from '../types.ts'
 
 export function tsvAsRows<Schema extends z.ZodTypeAny>(
   filepath: string,
@@ -24,7 +26,9 @@ export async function rewriteTsvAsTypescript<Schema extends z.ZodTypeAny>(
     } as unknown as z.ZodTypeAny,
   )
   const output_file_path = filepath.replace('.tsv', '.ts')
-  const content = `export default ${JSON.stringify(rows, null, 2)}\n`
+  const content = `export default ${
+    humanReadableJson(rows as JsonSerializable)
+  }\n`
   await Deno.writeTextFile(output_file_path, content, { create: true })
   console.log(`Written ${rows.length} rows to ${output_file_path}`)
 }

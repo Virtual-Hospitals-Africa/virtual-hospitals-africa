@@ -1,6 +1,7 @@
 import db from '../../db/db.ts'
 import type { Handlers } from 'fresh/compat'
 import type { SnomedCategory } from '../../db.d.ts'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 const MCP_VERSION = '2024-11-05'
 
@@ -143,7 +144,7 @@ async function handleRequest(
           content: [
             {
               type: 'text',
-              text: JSON.stringify(results, null, 2),
+              text: humanReadableJson(results),
             },
           ],
         })

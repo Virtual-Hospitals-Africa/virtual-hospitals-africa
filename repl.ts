@@ -43,10 +43,21 @@ async function loadAllModules(dir: string) {
     const [file_name, extension] = file.name.split('.')
     if (ignore_file_extensions.has(extension)) continue
     const importing_module = import(`${dir}/${file.name}`).then((module) => {
+      if (file_name === 'redis') {
+        return modules[file_name] = module
+      }
       let just_default_export = true
+      let just_single_export_of_same_name = true
       if (!module.default) {
         just_default_export = false
+        for (const key in module) {
+          if (key !== file_name) {
+            just_single_export_of_same_name = false
+            break
+          }
+        }
       } else {
+        just_single_export_of_same_name = false
         for (const key in module) {
           if (key !== 'default') {
             just_default_export = false
@@ -54,7 +65,11 @@ async function loadAllModules(dir: string) {
           }
         }
       }
-      return modules[file_name] = just_default_export ? module.default : module
+      return modules[file_name] = just_default_export
+        ? module.default
+        : just_single_export_of_same_name
+        ? module[file_name]
+        : module
     })
     importing.push(importing_module)
   }
