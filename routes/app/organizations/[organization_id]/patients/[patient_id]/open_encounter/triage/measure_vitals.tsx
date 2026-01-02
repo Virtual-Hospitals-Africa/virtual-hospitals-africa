@@ -43,7 +43,6 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
-import matching from '../../../../../../../../util/matching.ts'
 import {
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
@@ -140,7 +139,7 @@ export const handler = postHandler(
       }
 
       const measured_previously = previous_vitals_this_encounter.some(
-        matching({ finding_snomed_concept_id: snomed_concept_id }),
+        (v) => v.finding_snomed_concept.snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
         measured_previously,
@@ -166,7 +165,7 @@ export const handler = postHandler(
       }
 
       const assessed_previously = previous_vitals_this_encounter.some(
-        matching({ finding_snomed_concept_id: snomed_concept_id }),
+        (v) => v.finding_snomed_concept.snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
         assessed_previously,
@@ -308,10 +307,9 @@ export async function TriageMeasureVitalsPage(
   ): Def {
     if (!def.required) return def
     const already_done_this_encounter = most_recent_patient_vitals.some(
-      matching({
-        finding_snomed_concept_id: def.snomed_concept_id,
-        patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      }),
+      (v) =>
+        v.finding_snomed_concept.snomed_concept_id === def.snomed_concept_id &&
+        v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
     )
     return {
       ...def,

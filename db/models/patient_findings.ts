@@ -21,7 +21,7 @@ import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
+import { formatRecord } from '../../shared/patient_records.ts'
 
 export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
 export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
@@ -66,15 +66,20 @@ export function baseQuery(
       'patient_procedure_snomed_inferred_canonical_name_and_category.id',
     )
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category as finding_procedure_snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category as finding_snomed_concept',
       'patient_findings.finding_snomed_concept_id',
-      'finding_procedure_snomed_inferred_canonical_name_and_category.id',
+      'finding_snomed_concept.id',
     )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
-      'patient_findings.finding_snomed_concept_id',
       'patient_findings.patient_encounter_employee_id',
-      'finding_procedure_snomed_inferred_canonical_name_and_category.name as finding_name',
+
+      jsonBuildObject({
+        type: literalString('snomed_concept' as const),
+        snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
+        name: eb.ref('finding_snomed_concept.name'),
+        category: eb.ref('finding_snomed_concept.category'),
+      }).as('finding_snomed_concept'),
 
       jsonBuildObject({
         record_id: eb.ref('patient_procedure_records.id'),
@@ -162,7 +167,8 @@ export const patient_findings = base({
     if (finding.score != null) {
       tews_component.parse(finding.score)
     }
-    return formatRecordDisplay(finding)
+
+    return formatRecord(finding)
   },
   handleSearch(
     qb,

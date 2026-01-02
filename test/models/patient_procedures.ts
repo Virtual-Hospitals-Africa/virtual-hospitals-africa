@@ -40,7 +40,7 @@ describeParallel('db/models/patient_procedures.ts', () => {
 
         const procedure = await patient_procedures.getById(db, procedure_id)
 
-        assertEquals(procedure.full_display, 'Excessive Garment Removal')
+        assertEquals(procedure.displays.full, 'Excessive Garment Removal')
       },
     )
   })

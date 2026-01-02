@@ -1,5 +1,4 @@
 import { assert } from 'std/assert/assert.ts'
-import { formatRecordDisplay } from '../../shared/patient_records.ts'
 import {
   RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
@@ -51,7 +50,6 @@ export async function get(
 
       return {
         ...finding,
-        ...formatRecordDisplay(finding),
         provider: {
           is_me: matching_employee.id === health_worker_id,
           ...matching_employee,

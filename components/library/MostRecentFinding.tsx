@@ -10,7 +10,10 @@ import { FindingPanel } from './FindingPanel.tsx'
 export function MostRecentFinding(
   { finding, organization_id }: {
     finding: Maybe<
-      RenderedFindingRelativeToHealthWorker & {
+      (
+        | RenderedFindingRelativeToHealthWorker
+        | RenderedFindingRelativeToHealthWorker
+      ) & {
         pertaining_to_key?: string
         existence?: Existence
       }
@@ -38,7 +41,7 @@ export function MostRecentFinding(
           }`}
           className='text-blue-500'
         >
-          {finding.full_display}
+          {finding.displays.full}
         </a>
         &nbsp;recorded&nbsp;
         <LocalTime timestamp={finding.created_at} expected_time_range='past' />

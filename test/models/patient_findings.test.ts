@@ -90,28 +90,34 @@ describeParallel('db/models/patient_findings.ts', () => {
         )
 
       assertEquals(
-        finding.full_display,
+        finding.displays.full,
         'Burn Clinical finding',
       )
 
       assertMatches(finding.attributes, [
         {
           'record_id': z.string().uuid(),
-          'category': 'attribute',
-          'snomed_concept_id': '246061005',
-          'name': 'Attribute',
+          'root_snomed_concept': {
+            'category': 'attribute',
+            'snomed_concept_id': '246061005',
+            'name': 'Attribute',
+          },
+          'finding_snomed_concept': {
+            'snomed_concept_id': '363698007',
+            'name': 'Finding site',
+            'category': 'attribute',
+          },
           'value': {
             'type': 'snomed_concept',
             'snomed_concept_id': '368208006',
             'name': 'Left upper arm structure',
             'category': 'body structure',
           },
-          'finding_display': 'Finding site',
-          'value_display': 'Left upper arm structure',
-          'full_display': 'Finding site: Left upper arm structure',
-          'finding_snomed_concept_id': '363698007',
-          'finding_name': 'Finding site',
-          'finding_category': 'attribute',
+          'displays': {
+            'finding': 'Finding site',
+            'value': 'Left upper arm structure',
+            'full': 'Finding site: Left upper arm structure',
+          },
           'patient_encounter_employee_id': z.string().uuid(),
           'procedure_id': z.string().uuid(),
         },
@@ -230,23 +236,28 @@ describeParallel('db/models/patient_findings.ts', () => {
     })
 
     assertEquals(
-      finding.full_display,
+      finding.displays.full,
       'Common cold Clinical finding',
     )
 
     assertMatches(finding.events, [
       {
         'record_id': z.string().uuid(),
-        'category': 'attribute',
-        'snomed_concept_id': '246061005',
-        'name': 'Attribute',
-        'finding_display': 'Time of onset',
-        'value_display': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
-        'full_display':
-          'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
-        'finding_snomed_concept_id': '263501003',
-        'finding_name': 'Time of onset',
-        'finding_category': 'observable entity',
+        'root_snomed_concept': {
+          'category': 'attribute',
+          'snomed_concept_id': '246061005',
+          'name': 'Attribute',
+        },
+        'displays': {
+          'finding': 'Time of onset',
+          'value': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
+          'full': 'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
+        },
+        'finding_snomed_concept': {
+          'snomed_concept_id': '263501003',
+          'name': 'Time of onset',
+          'category': 'observable entity',
+        },
         'patient_encounter_employee_id': z.string().uuid(),
         'procedure_id': z.string().uuid(),
         'value': {

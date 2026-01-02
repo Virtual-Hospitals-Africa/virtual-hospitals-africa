@@ -71,7 +71,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
         )
 
         assertEquals(
-          measurement.full_display,
+          measurement.displays.full,
           'Hemoglobin saturation with oxygen: 91.3%',
         )
 

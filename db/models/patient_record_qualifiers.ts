@@ -19,11 +19,16 @@ function baseInnerQuery(
     )
     .select((eb) => [
       'qualifier_records.id as record_id',
-      'snomed_inferred_canonical_name_and_category.category',
-      asText(eb, 'qualifier_records.snomed_concept_id').as(
-        'snomed_concept_id',
-      ),
-      'snomed_inferred_canonical_name_and_category.name',
+      jsonBuildObject({
+        snomed_concept_id: asText(
+          eb,
+          'snomed_inferred_canonical_name_and_category.id',
+        ),
+        name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
+        category: eb.ref(
+          'snomed_inferred_canonical_name_and_category.category',
+        ),
+      }).as('root_snomed_concept'),
     ])
     .orderBy(
       'qualifier_records.created_at',
@@ -51,11 +56,13 @@ function baseQueryAttributeCommon(
       'finding_snomed_concept.id',
     )
     .select((eb) => [
-      asText(eb, 'finding_snomed_concept.id').as('finding_snomed_concept_id'),
-      'finding_snomed_concept.name as finding_name',
-      'finding_snomed_concept.category as finding_category',
       'attribute_patient_findings.patient_encounter_employee_id',
       'attribute_patient_findings.procedure_id',
+      jsonBuildObject({
+        snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
+        name: eb.ref('finding_snomed_concept.name'),
+        category: eb.ref('finding_snomed_concept.category'),
+      }).as('finding_snomed_concept'),
     ])
 }
 

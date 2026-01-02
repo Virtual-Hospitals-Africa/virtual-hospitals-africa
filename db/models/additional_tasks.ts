@@ -146,14 +146,26 @@ export async function getTasksGroups(
   return Array.from(
     task_group_map.entries().map(([finding_id, evaluations]): TaskGroup => {
       const due_to = exists(findings.find(matching({ record_id: finding_id })))
-      const tasks = evaluations.map((evaluation) => ({
-        task: exists(
+      const tasks = evaluations.map((evaluation) => {
+        const procedure = exists(
           procedures.find(
             matching({ record_id: evaluation.evaluates_record_id }),
           ),
-        ),
-        completed: false,
-      }))
+        )
+        // Convert to IntermediateProcedureRecord format
+        return {
+          task: {
+            created_at: procedure.created_at,
+            record_id: procedure.record_id,
+            snomed_concept_id: procedure.root_snomed_concept.snomed_concept_id,
+            name: procedure.root_snomed_concept.name,
+            patient_encounter_id: procedure.patient_encounter_id,
+            value_snomed_concept_id: procedure.value_snomed_concept
+              ?.snomed_concept_id ?? null,
+          },
+          completed: false,
+        }
+      })
       return { due_to: [due_to], tasks }
     }),
   )
