@@ -45,7 +45,8 @@ export function insertOneNestedQuery(
   const evaluation_node = isString(evaluation)
     ? parseExpressionExpectingAtom(evaluation, 'evaluation')
     : evaluation
-  assertHasProperty(evaluation_node, 'snomed_concept')
+  assertHasProperty(evaluation_node, 'root_snomed_concept')
+  assertHasProperty(evaluation_node, 'specific_snomed_concept')
 
   return patient_records.baseInsert(
     trx,

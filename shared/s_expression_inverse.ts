@@ -1,5 +1,9 @@
-import { assert } from 'node:console'
 import { AnyNode, Lang } from './s_expression_schemas.ts'
+
+// TODO: come back to this idea maybe.
+// As it stands two s_expressions could refer to the same snomed concept,
+// but if one uses id and the other uses name/category they won't match exactly
+// function lookupSnomedConceptById(node: Lang['snomed_concept'])
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
   if (node.type === 'id') {
@@ -15,65 +19,74 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'finding': {
       const parts: string[] = ['finding']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
+      if (node.root_snomed_concept) {
+        parts.push(snomedConceptToString(node.root_snomed_concept))
       }
-      if (node.finding_snomed_concept) {
-        parts.push(snomedConceptToString(node.finding_snomed_concept))
+      if (node.specific_snomed_concept) {
+        parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
       if (node.value_snomed_concept) {
         parts.push(snomedConceptToString(node.value_snomed_concept))
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
+      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
 
     case 'attribute': {
-      return `(attribute ${
-        snomedConceptToString(node.finding_snomed_concept)
-      } ${snomedConceptToString(node.value)})`
+      const parts: string[] = [
+        'attribute',
+        snomedConceptToString(node.specific_snomed_concept),
+      ]
+      if (node.value) {
+        parts.push(snomedConceptToString(node.value))
+      }
+      return `(${parts.join(' ')})`
     }
 
     case 'event': {
-      assert(!node.value.location, 'TODO support location')
       return `(event ${
-        snomedConceptToString(node.finding_snomed_concept)
+        snomedConceptToString(node.specific_snomed_concept)
       } "${node.value.datetime}")`
     }
 
     case 'qualifier': {
-      const parts: string[] = ['qualifier']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
-      }
-      if (node.value_snomed_concept) {
-        parts.push(snomedConceptToString(node.value_snomed_concept))
-      }
+      const parts: string[] = [
+        'qualifier',
+        snomedConceptToString(node.specific_snomed_concept),
+      ]
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
 
     case 'procedure': {
       const parts: string[] = ['procedure']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
+      if (node.root_snomed_concept) {
+        parts.push(snomedConceptToString(node.root_snomed_concept))
       }
-      if (node.value_snomed_concept) {
-        parts.push(snomedConceptToString(node.value_snomed_concept))
+      if (node.specific_snomed_concept) {
+        parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
+      for (const attr of node.attributes) parts.push(inverseSExpression(attr))
+      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
 
     case 'evaluation': {
       const parts: string[] = ['evaluation']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
+      if (node.root_snomed_concept) {
+        parts.push(snomedConceptToString(node.root_snomed_concept))
+      }
+      if (node.specific_snomed_concept) {
+        parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
       if (node.value_snomed_concept) {
         parts.push(snomedConceptToString(node.value_snomed_concept))
       }
+      for (const attr of node.attributes) parts.push(inverseSExpression(attr))
+      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       if (node.evaluates) parts.push(inverseSExpression(node.evaluates))
       return `(${parts.join(' ')})`

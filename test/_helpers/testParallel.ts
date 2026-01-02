@@ -4,6 +4,7 @@ import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { forEach } from '../../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
 import { pluralize } from '../../util/pluralize.ts'
+import partition from '../../util/partition.ts'
 
 type TestFn = () => void | Promise<void>
 
@@ -15,21 +16,26 @@ export type TestCase =
     opts: { only?: boolean; skip?: boolean },
   ]
 
-async function runTestCases(
+function casesToRun(
   cases: TestCase[],
+) {
+  const any_only = cases.some(([, , opts = {}]) => opts.only)
+  return partition(
+    cases,
+    ([, , opts = {}]) => any_only ? !!opts.only : !opts.skip,
+  )
+}
+
+async function runTestCases(
+  cases_to_run: TestCase[],
   { fail_fast, concurrency = Infinity }: {
     fail_fast?: boolean
     concurrency?: number
   } = {},
 ) {
-  const any_only = cases.some((test_case) => test_case[2]?.only)
-  const run_test_cases = any_only
-    ? cases.filter((test_case) => test_case[2]?.only)
-    : cases.filter((test_case) => !test_case[2]?.skip)
-
   const failures: Array<Failure & { name: string }> = []
 
-  await forEach(run_test_cases, async ([name, fn]) => {
+  await forEach(cases_to_run, async ([name, fn]) => {
     const result = await asResultAsync(() => Promise.resolve().then(fn))
     if (isSuccess(result)) return
     if (fail_fast) throw result.error
@@ -67,9 +73,15 @@ export function describeParallel(
   run(description, () => {
     callback()
     assert(test_cases.length, 'No test cases supplied')
-    const cases_to_run = test_cases
-    it(`passes ${cases_to_run.length} test ${pluralize('case', cases_to_run.length)}`, () =>
-      runTestCases(cases_to_run))
+    const [cases_to_run, skipped] = casesToRun(test_cases)
+    let it_description = `passes ${cases_to_run.length} test ${
+      pluralize('case', cases_to_run.length)
+    }`
+    if (skipped.length) {
+      const skipped_description = ` (${skipped.length} skipped)`
+      it_description += skipped_description
+    }
+    it(it_description, () => runTestCases(cases_to_run))
   })
 
   descriptions = this_descriptions

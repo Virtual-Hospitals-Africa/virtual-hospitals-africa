@@ -139,8 +139,6 @@ export const WARNING_SIGNS = {
   },
   'Pregnancy and abdominal trauma': {
     'clinical_finding_s_expression': '(finding 404684003 417746004)',
-    // TODO support multiple qualifiers
-    // '(qualifier 417746004 (qualifier 363698007 818983003))',
     'sats_primary_name': 'Pregnancy and abdominal trauma',
     'sats_secondary_text': null,
     'sats_priority': 'Very urgent',

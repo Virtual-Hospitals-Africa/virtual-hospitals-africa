@@ -21,7 +21,7 @@ export function FindingPanel(
   },
 ) {
   return (
-    <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 min-w-[296px] max-w-[296px]'>
+    <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 w-74'>
       <div className='flex flex-col gap-2'>
         {/* Title with close button */}
         <div className='flex items-start justify-between'>
@@ -79,7 +79,8 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  during {finding.as_part_of_procedure.name}
+                  during{' '}
+                  {finding.as_part_of_procedure.specific_snomed_concept.name}
                 </p>
               </div>
             )}
@@ -146,35 +147,45 @@ export function FindingPanel(
 
           {/* TODO: switch this to a referent findings section */}
           {/* Qualifiers section */}
-          {
-            /* {finding.qualifiers.length > 0 && (
+          {finding.attributes.length > 0 && (
             <>
               <hr className='border-gray-200' />
               <div className='flex flex-col gap-1'>
-                {finding.qualifiers.map((qualifier, idx) => (
+                {finding.attributes.map((attribute, idx) => (
                   <div key={idx} className='flex items-center gap-1'>
-                    {qualifier.full_display
-                      ? (
-                        <>
-                          <p className='text-sm text-gray-600'>
-                            {qualifier.name}:
-                          </p>
-                          <p className='text-sm font-medium text-gray-900'>
-                            {qualifier.full_display}
-                          </p>
-                        </>
-                      )
-                      : (
-                        <p className='text-sm text-gray-600'>
-                          {qualifier.name}
-                        </p>
-                      )}
+                    <span className='text-sm text-gray-600'>
+                      {attribute.displays.finding}:
+                    </span>
+                    <span className='text-sm font-medium text-gray-900'>
+                      {attribute.displays.value}
+                    </span>
                   </div>
                 ))}
               </div>
             </>
-          )} */
-          }
+          )}
+
+          {finding.evaluations.length > 0 && (
+            <>
+              <hr className='border-gray-200' />
+              <div className='flex flex-col gap-1'>
+                {finding.evaluations.map((evaluation) => (
+                  <p
+                    key={evaluation.record_id}
+                    className='text-sm text-gray-600'
+                  >
+                    <span className='text-sm text-gray-600'>
+                      {evaluation.displays.finding}:
+                    </span>
+                    &nbsp;
+                    <span className='text-sm font-medium text-gray-900'>
+                      {evaluation.displays.value}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

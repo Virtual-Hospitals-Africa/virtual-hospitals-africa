@@ -14,7 +14,7 @@ export async function up(db: Kysely<unknown>) {
         col.references('sats_triage_assessment_options.id').onDelete('cascade'),
     )
     // For quantitative measurements (HR, RR, BP, Temp)
-    .addColumn('finding_snomed_concept_id', 'bigint')
+    .addColumn('specific_snomed_concept_id', 'bigint')
     .addColumn('value_min', 'decimal(10, 2)')
     .addColumn('value_max', 'decimal(10, 2)')
     // Age/height stratification (applies to both types)
@@ -35,17 +35,17 @@ export async function up(db: Kysely<unknown>) {
     )
     // Check constraint: must be either categorical OR quantitative
     // Categorical: has assessment_option_id, no finding/values
-    // Quantitative: has finding_snomed_concept_id, at least one value bound (min or max)
+    // Quantitative: has specific_snomed_concept_id, at least one value bound (min or max)
     .addCheckConstraint(
       'scoring_rule_type_check',
       sql`(
         (assessment_option_id IS NOT NULL
-         AND finding_snomed_concept_id IS NULL
+         AND specific_snomed_concept_id IS NULL
          AND value_min IS NULL
          AND value_max IS NULL)
         OR
         (assessment_option_id IS NULL
-         AND finding_snomed_concept_id IS NOT NULL
+         AND specific_snomed_concept_id IS NOT NULL
          AND (value_min IS NOT NULL OR value_max IS NOT NULL))
       )`,
     )
@@ -113,24 +113,24 @@ export async function up(db: Kysely<unknown>) {
             ORDER BY rcf.category, rule.score_value DESC
         ),
         recent_quantitative_measurements AS (
-            SELECT DISTINCT ON (findings.finding_snomed_concept_id)
-                findings.finding_snomed_concept_id,
+            SELECT DISTINCT ON (findings.specific_snomed_concept_id)
+                findings.specific_snomed_concept_id,
                 meas.value::float
             FROM patient_records AS records
             JOIN patient_findings AS findings ON records.id = findings.id
             JOIN patient_measurements AS meas ON findings.id = meas.id
             WHERE records.patient_id = p_patient_id
               AND records.patient_encounter_id = p_patient_encounter_id
-              AND findings.finding_snomed_concept_id IN ('8499008', '86290005', '271649006', '386725007') -- heart_rate, resp_rate, blood_pressure_systolic, temp
-            ORDER BY findings.finding_snomed_concept_id, records.created_at DESC
+              AND findings.specific_snomed_concept_id IN ('8499008', '86290005', '271649006', '386725007') -- heart_rate, resp_rate, blood_pressure_systolic, temp
+            ORDER BY findings.specific_snomed_concept_id, records.created_at DESC
         ),
         quantitative_scores AS (
-            SELECT DISTINCT ON (rqm.finding_snomed_concept_id)
-                rqm.finding_snomed_concept_id,
+            SELECT DISTINCT ON (rqm.specific_snomed_concept_id)
+                rqm.specific_snomed_concept_id,
                 COALESCE(rule.score_value, 0) AS score_value
             FROM recent_quantitative_measurements AS rqm
             LEFT JOIN sats_triage_scoring_rules AS rule
-                ON rqm.finding_snomed_concept_id = rule.finding_snomed_concept_id
+                ON rqm.specific_snomed_concept_id = rule.specific_snomed_concept_id
                 AND rule.scoring_system = 'TEWS'
                 AND (rule.value_min IS NULL OR rqm.value >= rule.value_min)
                 AND (rule.value_max IS NULL OR rqm.value <= rule.value_max)
@@ -152,7 +152,7 @@ export async function up(db: Kysely<unknown>) {
                         (rule.height_min_cm <= p_height_cm AND (rule.height_max_cm IS NULL OR rule.height_max_cm >= p_height_cm))
                     ))
                 )
-            ORDER BY rqm.finding_snomed_concept_id, rule.score_value DESC
+            ORDER BY rqm.specific_snomed_concept_id, rule.score_value DESC
         ),
         all_components AS (
             SELECT 'consciousness' as component, score_value FROM categorical_scores WHERE category = 'consciousness'
@@ -161,19 +161,19 @@ export async function up(db: Kysely<unknown>) {
             UNION ALL
             SELECT 'trauma_presence' as component, score_value FROM categorical_scores WHERE category = 'trauma'
             UNION ALL
-            SELECT 'heart_rate' as component, score_value FROM quantitative_scores WHERE finding_snomed_concept_id = '8499008'
+            SELECT 'heart_rate' as component, score_value FROM quantitative_scores WHERE specific_snomed_concept_id = '8499008'
             UNION ALL
-            SELECT 'respiratory_rate' as component, score_value FROM quantitative_scores WHERE finding_snomed_concept_id = '86290005'
+            SELECT 'respiratory_rate' as component, score_value FROM quantitative_scores WHERE specific_snomed_concept_id = '86290005'
             UNION ALL
-            SELECT 'blood_pressure_systolic' as component, score_value FROM quantitative_scores WHERE finding_snomed_concept_id = '271649006'
+            SELECT 'blood_pressure_systolic' as component, score_value FROM quantitative_scores WHERE specific_snomed_concept_id = '271649006'
             UNION ALL
-            SELECT 'temperature' as component, score_value FROM quantitative_scores WHERE finding_snomed_concept_id = '386725007'
+            SELECT 'temperature' as component, score_value FROM quantitative_scores WHERE specific_snomed_concept_id = '386725007'
         )
         SELECT jsonb_build_object(
             'components', jsonb_object_agg(component, score_value),
             'total_score', SUM(score_value),
             'categorical_findings', (SELECT jsonb_agg(jsonb_build_object('snomed_concept_id', snomed_concept_id, 'category', category, 'display_label', display_label, 'score_value', score_value)) FROM categorical_scores),
-            'measurement_scores', (SELECT jsonb_agg(jsonb_build_object('finding_snomed_concept_id', finding_snomed_concept_id, 'score_value', score_value)) FROM quantitative_scores)
+            'measurement_scores', (SELECT jsonb_agg(jsonb_build_object('specific_snomed_concept_id', specific_snomed_concept_id, 'score_value', score_value)) FROM quantitative_scores)
         )
         INTO result
         FROM all_components;

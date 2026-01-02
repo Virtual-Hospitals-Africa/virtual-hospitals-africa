@@ -38,7 +38,7 @@ export type TriageScenario = {
     }
     assessments: {
       [v in VitalAssessment]?: {
-        value_snomed_concept_id: string
+        s_expression: string
       }
     }
   }
@@ -130,6 +130,7 @@ export async function setupTriage(
   }
 
   if (vitals) {
+    console.log({ vitals })
     $ = await nurse.fetchCheerio(
       `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
       {

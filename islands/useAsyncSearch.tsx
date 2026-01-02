@@ -8,6 +8,7 @@ export default function useAsyncSearch<
 >({
   search_route,
   value,
+  skip_blank_search,
   onSearchResults,
 }: AsyncSearchProps<T>) {
   const [search, setSearch] = useState({
@@ -21,6 +22,20 @@ export default function useAsyncSearch<
 
   // Make a cancellable request when the query changes
   useEffect(() => {
+    if (skip_blank_search && !search.query) {
+      if (search.active_request) {
+        search.active_request.abort()
+      }
+      return setSearch((search) => ({
+        ...search,
+        page: 1,
+        delay: null,
+        active_request: null,
+        pages: [],
+        has_next_page: false,
+      }))
+    }
+
     const url = new URL(`${location.origin}${search_route}`)
     url.searchParams.set('page', String(search.page))
     if (search.query) {

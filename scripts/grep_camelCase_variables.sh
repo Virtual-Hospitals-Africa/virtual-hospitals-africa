@@ -12,3 +12,6 @@ which rg > /dev/null || {
 camel_case_const_pattern='const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s'
 
 ! rg --pcre2 "$camel_case_const_pattern"
+
+# TODO: rename script and/or parallelize rules?
+! rg --pcre2 "node:console" --glob '!scripts/grep_camelCase_variables.sh'

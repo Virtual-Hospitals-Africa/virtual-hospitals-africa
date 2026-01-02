@@ -15,6 +15,7 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
+import { PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 describe('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
@@ -44,7 +45,7 @@ describe('db/models/s_expression.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: encounter.employee.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+        `(procedure ${PROCEDURE.id} ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
         'procedure',
       ),
     })

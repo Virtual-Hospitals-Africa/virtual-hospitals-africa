@@ -6,6 +6,7 @@ import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 describeParallel('db/models/patient_procedures.ts', () => {
   afterAll(() => db.destroy())
@@ -33,7 +34,7 @@ describeParallel('db/models/patient_procedures.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: encounter.employee.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure 118292001 (qualifier 272180002 (qualifier 260378005)))`,
+            `(procedure ${PROCEDURE.id} 118292001 (qualifier 272180002 (qualifier 260378005)))`,
             'procedure',
           ),
         })

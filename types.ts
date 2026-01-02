@@ -79,6 +79,12 @@ export type JsonSerializable =
   | JsonSerializable[]
   | { [key: string]: JsonSerializable }
 
+export type MostlyJsonSerializable =
+  | Date // eh, dates are fine
+  | JsonSerializable
+  | MostlyJsonSerializable[]
+  | { [key: string]: MostlyJsonSerializable }
+
 export type OptionalUndefinedFields<T> =
   & {
     [K in keyof T as undefined extends T[K] ? never : K]: T[K]
@@ -2475,7 +2481,6 @@ export type PatientMedicationUpsert = {
 }
 
 export type PatientSymptomInsertShared = {
-  snomed_concept_id: string
   severity: number
   start_date: string
   end_date?: Maybe<string>
@@ -2483,6 +2488,7 @@ export type PatientSymptomInsertShared = {
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
+  snomed_concept_id: string
   altered_patient_symptom_id?: string
   media?: {
     id: string
@@ -2493,8 +2499,10 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
-  & { id: string; name: string }
   & {
+    id: string
+    name: string
+    snomed_concept_id: string
     media: {
       mime_type: string
       url: string
@@ -3302,21 +3310,13 @@ export type VitalMeasurementFormInputDefition = {
 
 export type VitalAssessmentFormInputDefition = {
   vital: VitalAssessment
-  snomed_concept_id: string
+  evaluation_snomed_concept_id: string
   required: boolean
   options: {
-    snomed_concept_id: string
+    s_expression: string
     label: string
   }[]
 }
-
-export type RenderedVitalMeasurement = RenderedFindingRelativeToHealthWorker
-// &
-// & {
-//   value: string | number
-//   units: string
-//   finding_type: 'manual' | 'computed'
-// }
 
 export type Evaluation = {
   priority: Priority
@@ -3447,23 +3447,14 @@ export type PreviouslyCompletedProcedures = {
   workflow_step_record_id: string | null
 }
 
-export type RenderedFindingProvider = RenderedEmployee & {
+export type RenderedRecordProvider = RenderedEmployee & {
   is_me: SqlBool
 }
 
 export type AsPartOfProcedure = {
   record_id: string
-  snomed_concept_id: string
-  name: string
-}
-
-export type RenderedQualifierRelativeToHealthWorker = {
-  record_id: string
-  snomed_concept_id: string
-  name: string
-  value_name: string | null
-  category: SnomedCategory
-  qualifiers: RenderedQualifierRelativeToHealthWorker[]
+  root_snomed_concept: RenderedSnomedConcept
+  specific_snomed_concept: RenderedSnomedConcept
 }
 
 export type RecordDisplays = {
@@ -3477,13 +3468,9 @@ export type RenderedSnomedConcept = {
   name: string
   category: SnomedCategory
 }
-export type RenderedAttribute<Value> = {
-  record_id: string
-  finding_snomed_concept: RenderedSnomedConcept
-  patient_encounter_employee_id: string
-  procedure_id: string
+export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: Value
+  value: RecordValueSnomedConcept | RecordValueEvent | null
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }
@@ -3496,32 +3483,86 @@ export type RecordValueMeasurement = {
   units: string
 }
 
+export type RecordValueScore = {
+  type: 'score'
+  score: string
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
+  | RecordValueScore
 
-export type RenderedFindingRelativeToHealthWorker = {
+export type IntermediateBaseRecord = {
   record_id: string
+  created_at: Date | string
   patient_encounter_id: string
   root_snomed_concept: RenderedSnomedConcept
-  finding_snomed_concept: RenderedSnomedConcept
-  displays: RecordDisplays
-  created_at: Date | string
-  priority: Priority | null
-  score: number | null
-  provider: RenderedFindingProvider
-  as_part_of_procedure: AsPartOfProcedure
-  // These are now prefixes
-  attributes: RenderedAttribute<RecordValueSnomedConcept>[]
-  events: RenderedAttribute<RecordValueEvent>[]
+  specific_snomed_concept: RenderedSnomedConcept
   value: null | RecordValue
 }
+
+export type RenderedEvaluation = IntermediateBaseRecord & {
+  displays: RecordDisplays
+}
+
+export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
+  & Rest
+  & IntermediateBaseRecord
+  & {
+    type: Type
+    modifiers: IntermediateBaseRecord[]
+    attributes: RenderedAttribute[]
+    displays: RecordDisplays
+    evaluations: Array<
+      IntermediateBaseRecord & {
+        displays: RecordDisplays
+      }
+    >
+  }
+
+export type RenderedEvaluationEvaluatedBy =
+  | { system: true }
+  | ({
+    system: false
+    provider: RenderedRecordProvider
+    as_part_of_procedure: AsPartOfProcedure
+  })
+
+export type RenderedEvaluationRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
+    evaluated_by: RenderedEvaluationEvaluatedBy
+  }>
+
+export type RenderedFindingRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'finding', {
+    priority: Priority | null
+    score: number | null
+    provider: RenderedRecordProvider
+    as_part_of_procedure: AsPartOfProcedure
+  }>
+
+export type RenderedProcedureRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'procedure', {
+    provider: RenderedRecordProvider
+  }>
+
+export type RenderedRecordRelativeToHealthWorker =
+  | RenderedFindingRelativeToHealthWorker
+  | RenderedEvaluationRelativeToHealthWorker
+  | RenderedProcedureRelativeToHealthWorker
 
 export type WithTriageLevelFinding = NonNullableProperty<
   RenderedFindingRelativeToHealthWorker,
   'priority'
 >
+
+export type RenderedMeasurementRelativeToHealthWorker =
+  & RenderedFindingRelativeToHealthWorker
+  & {
+    value: RecordValueMeasurement
+  }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
@@ -3552,7 +3593,7 @@ export type WarningSign = {
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null
-  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency'
+  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency' | 'Non-urgent'
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
@@ -3560,8 +3601,18 @@ export type WarningSign = {
 export type WarningSignKey = keyof typeof WARNING_SIGNS
 
 export type KeyedWarningSign = {
-  key: WarningSignKey
+  key: string
 } & WarningSign
+
+export type WarningSignPresence = {
+  satisfied_by_record_id: string
+  checked: true
+} | {
+  satisfied_by_record_id: null
+  checked: false
+}
+
+export type CheckedWarningSign = KeyedWarningSign & WarningSignPresence
 
 export type IntermediateProcedureRecord = {
   created_at: Date
@@ -3569,16 +3620,7 @@ export type IntermediateProcedureRecord = {
   snomed_concept_id: string
   name: string
   patient_encounter_id: string
-  // patient_encounter_employee_id: string
-  // pertaining_to_key: PertainingToKey
-  // as_part_of_procedure: AsPartOfProcedure
-  // qualifiers: QualifierIntermediate[]
   value_snomed_concept_id: null | string
-  // value_name: null | string
-}
-
-export type CheckedWarningSign = KeyedWarningSign & {
-  satisfied_by_record_id: string | null
 }
 
 export type RenderedRoom = {

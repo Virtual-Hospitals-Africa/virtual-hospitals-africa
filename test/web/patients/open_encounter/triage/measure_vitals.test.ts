@@ -12,7 +12,7 @@ import { patient_measurements } from '../../../../../db/models/patient_measureme
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { setupTriage } from './_setup.ts'
 import {
-  assessmentOptionSnomedConceptId,
+  assessmentOptionSExpression,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_UNITS,
   VitalAssessment,
@@ -59,9 +59,9 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(form_values, {
           assessments: {
-            consciousness: { value_snomed_concept_id: null },
-            mobility_assessment: { value_snomed_concept_id: null },
-            trauma_presence: { value_snomed_concept_id: null },
+            consciousness: { s_expression: null },
+            mobility_assessment: { s_expression: null },
+            trauma_presence: { s_expression: null },
           },
           measurements: {
             temperature: { value: null, units: '°C' },
@@ -74,11 +74,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(form_labels, {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { s_expression: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              s_expression: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { s_expression: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -92,7 +92,7 @@ describeParallel('triage/measure_vitals', () => {
         assertEquals(form_options, {
           'assessments': {
             'consciousness': {
-              'value_snomed_concept_id': [
+              's_expression': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -100,33 +100,33 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Alert',
-                  'value': '248234008',
+                  'value': '(finding 404684003 248234008)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to voice',
-                  'value': '422768004',
+                  'value': '(finding 404684003 422768004)',
                   'selected': false,
                 },
                 {
                   'label': 'Confused',
-                  'value': '40917007',
+                  'value': '(finding 404684003 40917007)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to pain',
-                  'value': '450847001',
+                  'value': '(finding 404684003 450847001)',
                   'selected': false,
                 },
                 {
                   'label': 'Unresponsive',
-                  'value': '422107003',
+                  'value': '(finding 404684003 422107003)',
                   'selected': false,
                 },
               ],
             },
             'mobility_assessment': {
-              'value_snomed_concept_id': [
+              's_expression': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -134,23 +134,23 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Walking',
-                  'value': '282144007',
+                  'value': '(finding 404684003 282144007)',
                   'selected': false,
                 },
                 {
                   'label': 'Difficulty walking',
-                  'value': '719232003',
+                  'value': '(finding 404684003 719232003)',
                   'selected': false,
                 },
                 {
                   'label': 'Stretcher/Immobile',
-                  'value': '282145008',
+                  'value': '(finding 404684003 282145008)',
                   'selected': false,
                 },
               ],
             },
             'trauma_presence': {
-              'value_snomed_concept_id': [
+              's_expression': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -158,12 +158,12 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'No',
-                  'value': '1149217004',
+                  'value': '(finding 404684003 1149217004)',
                   'selected': false,
                 },
                 {
                   'label': 'Yes',
-                  'value': '417746004',
+                  'value': '(finding 404684003 417746004)',
                   'selected': false,
                 },
               ],
@@ -194,11 +194,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { s_expression: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              s_expression: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { s_expression: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -233,11 +233,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { s_expression: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              s_expression: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { s_expression: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -269,11 +269,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { s_expression: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              s_expression: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { s_expression: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -330,19 +330,19 @@ describeParallel('triage/measure_vitals', () => {
               },
               assessments: {
                 mobility_assessment: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  s_expression: assessmentOptionSExpression(
                     'mobility_assessment',
                     'Walking',
                   ),
                 },
                 consciousness: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  s_expression: assessmentOptionSExpression(
                     'consciousness',
                     'Alert',
                   ),
                 },
                 trauma_presence: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  s_expression: assessmentOptionSExpression(
                     'trauma_presence',
                     'No',
                   ),
@@ -402,19 +402,19 @@ describeParallel('triage/measure_vitals', () => {
             },
             assessments: {
               mobility_assessment: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                s_expression: assessmentOptionSExpression(
                   'mobility_assessment',
                   'Walking',
                 ),
               },
               consciousness: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                s_expression: assessmentOptionSExpression(
                   'consciousness',
                   'Alert',
                 ),
               },
               trauma_presence: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                s_expression: assessmentOptionSExpression(
                   'trauma_presence',
                   'No',
                 ),
@@ -435,7 +435,7 @@ describeParallel('triage/measure_vitals', () => {
         )
 
         const respiratory_rate_measurement = measurements.find((m) =>
-          m.finding_snomed_concept.snomed_concept_id ===
+          m.specific_snomed_concept.snomed_concept_id ===
             VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate
         )!
 
@@ -450,7 +450,7 @@ describeParallel('triage/measure_vitals', () => {
             'name': 'Measurement finding',
             'category': 'finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '86290005',
             'name': 'Respiratory rate',
             'category': 'observable entity',
@@ -464,8 +464,16 @@ describeParallel('triage/measure_vitals', () => {
           'source_relations': [],
           'as_part_of_procedure': {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '410188000',
-            'name': 'Taking patient vital signs assessment',
+            'root_snomed_concept': {
+              'snomed_concept_id': '71388002',
+              'name': 'Procedure',
+              'category': 'procedure',
+            },
+            'specific_snomed_concept': {
+              'snomed_concept_id': '410188000',
+              'name': 'Taking patient vital signs assessment',
+              'category': 'procedure',
+            },
           },
           'priority': null,
           'score': 0,
@@ -474,9 +482,29 @@ describeParallel('triage/measure_vitals', () => {
             'value': '12',
             'units': 'bpm',
           },
-          'prefixes': [],
+          'modifiers': [],
           'attributes': [],
-          'events': [],
+          'evaluations': [{
+            'record_id': z.string().uuid(),
+            'created_at': z.iso.datetime({ offset: true }),
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '129265001',
+              'name': 'Evaluation - action',
+              'category': 'qualifier value',
+            },
+            'specific_snomed_concept': {
+              'snomed_concept_id': '278305009',
+              'name': 'Severity score',
+              'category': 'qualifier value',
+            },
+            'value': { 'type': 'score', 'score': '0' },
+            'displays': {
+              'finding': 'Severity score',
+              'value': '0',
+              'full': 'Severity score: 0',
+            },
+          }],
         }, { strict: true })
 
         const component_scores = await patient_evaluation_scores.findAll(
@@ -497,12 +525,18 @@ describeParallel('triage/measure_vitals', () => {
 
         const finding_scores = await pMap(
           component_scores,
-          async ({ score, evaluates_record_id }) => {
+          async ({ score, evaluates_record_id, specific_snomed_concept }) => {
+            if (specific_snomed_concept.name !== 'Severity score') {
+              return {
+                finding_name: specific_snomed_concept.name,
+                score,
+              }
+            }
             const finding = await patient_findings.getById(
               db,
               evaluates_record_id,
             )
-            return { finding_name: finding.finding_snomed_concept.name, score }
+            return { finding_name: finding.specific_snomed_concept.name, score }
           },
         )
 
@@ -510,13 +544,13 @@ describeParallel('triage/measure_vitals', () => {
 
         // deno-fmt-ignore
         assertEquals(sorted_finding_scores, [
-        { "finding_name": "Ability to mobilize", "score": 0 },
         { "finding_name": "Alert Confusion Voice Pain Unresponsive scale score", "score": 0 },
+        { "finding_name": "Assessment of mobility", "score": 0 },
         { "finding_name": "Body temperature", "score": 0 },
         { "finding_name": "Pulse, function", "score": 0 },
         { "finding_name": "Respiratory rate", "score": 0 },
         { "finding_name": "Systolic blood pressure", "score": 0 },
-        { "finding_name": "Traumatic injury", "score": 0 },
+        { "finding_name": "Trauma score", "score": 0 },
       ])
         // deno-fmt-ignore-end
 
@@ -573,7 +607,6 @@ describeParallel('triage/measure_vitals', () => {
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
-        console.log('starting ', description)
         const { encounter } = await setupTriage({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
@@ -596,7 +629,7 @@ describeParallel('triage/measure_vitals', () => {
               units: VITAL_MEASUREMENTS_UNITS[vital],
             })),
             assessments: mapEntries(assessment_values, (value, vital) => ({
-              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+              s_expression: assessmentOptionSExpression(
                 vital,
                 value,
               ),
@@ -622,12 +655,21 @@ describeParallel('triage/measure_vitals', () => {
 
         const finding_scores = await pMap(
           component_scores,
-          async ({ score, evaluates_record_id }) => {
+          async ({ score, evaluates_record_id, specific_snomed_concept }) => {
+            if (specific_snomed_concept.name !== 'Severity score') {
+              return {
+                finding_name: specific_snomed_concept.name,
+                score,
+              }
+            }
             const finding = await patient_findings.getById(
               db,
               evaluates_record_id,
             )
-            return { finding_name: finding.finding_snomed_concept.name, score }
+            return {
+              finding_name: finding.specific_snomed_concept.name,
+              score,
+            }
           },
         )
 
@@ -641,13 +683,13 @@ describeParallel('triage/measure_vitals', () => {
     // Helper to create expected scores with one component changed
     const baseScores = (overrides: Record<string, number> = {}) => {
       const defaults: Record<string, number> = {
-        'Ability to mobilize': 0,
+        'Assessment of mobility': 0,
         'Alert Confusion Voice Pain Unresponsive scale score': 0,
         'Body temperature': 0,
         'Pulse, function': 0,
         'Respiratory rate': 0,
         'Systolic blood pressure': 0,
-        'Traumatic injury': 0,
+        'Trauma score': 0,
       }
       return Object.entries({ ...defaults, ...overrides })
         .sort(([a], [b]) => a.localeCompare(b))
@@ -678,7 +720,7 @@ describeParallel('triage/measure_vitals', () => {
       'adult',
       default_measurements_adult,
       { ...default_assessments_adult, mobility_assessment: 'Walking' },
-      baseScores({ 'Ability to mobilize': 0 }),
+      baseScores({ 'Assessment of mobility': 0 }),
     )
 
     testCase(
@@ -689,7 +731,7 @@ describeParallel('triage/measure_vitals', () => {
         ...default_assessments_adult,
         mobility_assessment: 'Difficulty walking',
       },
-      baseScores({ 'Ability to mobilize': 1 }),
+      baseScores({ 'Assessment of mobility': 1 }),
     )
 
     testCase(
@@ -700,7 +742,7 @@ describeParallel('triage/measure_vitals', () => {
         ...default_assessments_adult,
         mobility_assessment: 'Stretcher/Immobile',
       },
-      baseScores({ 'Ability to mobilize': 2 }),
+      baseScores({ 'Assessment of mobility': 2 }),
     )
 
     // =========================================
@@ -1058,7 +1100,7 @@ describeParallel('triage/measure_vitals', () => {
       'adult',
       default_measurements_adult,
       { ...default_assessments_adult, trauma_presence: 'No' },
-      baseScores({ 'Traumatic injury': 0 }),
+      baseScores({ 'Trauma score': 0 }),
     )
 
     testCase(
@@ -1066,7 +1108,7 @@ describeParallel('triage/measure_vitals', () => {
       'adult',
       default_measurements_adult,
       { ...default_assessments_adult, trauma_presence: 'Yes' },
-      baseScores({ 'Traumatic injury': 1 }),
+      baseScores({ 'Trauma score': 1 }),
     )
 
     // =========================================
@@ -1076,12 +1118,12 @@ describeParallel('triage/measure_vitals', () => {
     // Helper for older child expected scores (no blood pressure)
     const baseScoresOlderChild = (overrides: Record<string, number> = {}) => {
       const defaults: Record<string, number> = {
-        'Ability to mobilize': 0,
+        'Assessment of mobility': 0,
         'Alert Confusion Voice Pain Unresponsive scale score': 0,
         'Body temperature': 0,
         'Pulse, function': 0,
         'Respiratory rate': 0,
-        'Traumatic injury': 0,
+        'Trauma score': 0,
       }
       return Object.entries({ ...defaults, ...overrides })
         .sort(([a], [b]) => a.localeCompare(b))
@@ -1114,7 +1156,7 @@ describeParallel('triage/measure_vitals', () => {
         ...default_assessments_older_child,
         mobility_assessment: 'Unable to walk as normal',
       },
-      baseScoresOlderChild({ 'Ability to mobilize': 2 }),
+      baseScoresOlderChild({ 'Assessment of mobility': 2 }),
     )
 
     // =========================================
@@ -1389,7 +1431,7 @@ describeParallel('triage/measure_vitals', () => {
       'older child',
       default_measurements_older_child,
       { ...default_assessments_older_child, trauma_presence: 'No' },
-      baseScoresOlderChild({ 'Traumatic injury': 0 }),
+      baseScoresOlderChild({ 'Trauma score': 0 }),
     )
 
     testCase(
@@ -1397,7 +1439,7 @@ describeParallel('triage/measure_vitals', () => {
       'older child',
       default_measurements_older_child,
       { ...default_assessments_older_child, trauma_presence: 'Yes' },
-      baseScoresOlderChild({ 'Traumatic injury': 1 }),
+      baseScoresOlderChild({ 'Trauma score': 1 }),
     )
 
     // =========================================
@@ -1407,12 +1449,12 @@ describeParallel('triage/measure_vitals', () => {
     // Helper for younger child expected scores (no blood pressure)
     const baseScoresYoungerChild = (overrides: Record<string, number> = {}) => {
       const defaults: Record<string, number> = {
-        'Ability to mobilize': 0,
+        'Assessment of mobility': 0,
         'Alert Confusion Voice Pain Unresponsive scale score': 0,
         'Body temperature': 0,
         'Pulse, function': 0,
         'Respiratory rate': 0,
-        'Traumatic injury': 0,
+        'Trauma score': 0,
       }
       return Object.entries({ ...defaults, ...overrides })
         .sort(([a], [b]) => a.localeCompare(b))
@@ -1445,7 +1487,7 @@ describeParallel('triage/measure_vitals', () => {
         ...default_assessments_younger_child,
         mobility_assessment: 'Normal for age',
       },
-      baseScoresYoungerChild({ 'Ability to mobilize': 0 }),
+      baseScoresYoungerChild({ 'Assessment of mobility': 0 }),
     )
 
     testCase(
@@ -1456,7 +1498,7 @@ describeParallel('triage/measure_vitals', () => {
         ...default_assessments_younger_child,
         mobility_assessment: 'Unable to move as normal',
       },
-      baseScoresYoungerChild({ 'Ability to mobilize': 2 }),
+      baseScoresYoungerChild({ 'Assessment of mobility': 2 }),
     )
 
     // =========================================
@@ -1724,7 +1766,7 @@ describeParallel('triage/measure_vitals', () => {
       'younger child',
       default_measurements_younger_child,
       { ...default_assessments_younger_child, trauma_presence: 'No' },
-      baseScoresYoungerChild({ 'Traumatic injury': 0 }),
+      baseScoresYoungerChild({ 'Trauma score': 0 }),
     )
 
     testCase(
@@ -1732,7 +1774,7 @@ describeParallel('triage/measure_vitals', () => {
       'younger child',
       default_measurements_younger_child,
       { ...default_assessments_younger_child, trauma_presence: 'Yes' },
-      baseScoresYoungerChild({ 'Traumatic injury': 1 }),
+      baseScoresYoungerChild({ 'Trauma score': 1 }),
     )
   })
 })

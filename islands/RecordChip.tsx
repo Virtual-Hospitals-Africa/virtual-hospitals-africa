@@ -85,11 +85,11 @@ export function RecordChip(
   return (
     <div
       ref={chip_ref}
-      className={`group box-border content-stretch flex gap-[8px] items-center justify-center px-[16px] py-[2px] rounded-[60px] shrink-0 relative ${style_class}`}
+      className={`group box-border content-stretch flex gap-2 items-center justify-center px-4 py-0.5 rounded-[60px] shrink-0 relative ${style_class}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
+      <p className="font-['Inter:Medium',sans-serif] font-medium leading-5 not-italic relative shrink-0 text-[12px] text-nowrap whitespace-pre">
         {record.displays.full}
       </p>
       <div

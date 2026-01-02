@@ -21,9 +21,20 @@ export async function up(db: Kysely<DB>) {
             ),
         )
         .addColumn(
-          'snomed_concept_id',
+          'root_snomed_concept_id',
           'bigint',
-          (col) => col.notNull().references('snomed_concept.id'),
+          (col) =>
+            col.notNull().references('snomed_concept.id').onDelete(
+              'cascade',
+            ),
+        )
+        .addColumn(
+          'specific_snomed_concept_id',
+          'bigint',
+          (col) =>
+            col.notNull().references('snomed_concept.id').onDelete(
+              'cascade',
+            ),
         )
         .addColumn(
           'value_snomed_concept_id',
@@ -69,14 +80,7 @@ export async function up(db: Kysely<DB>) {
     references: 'patient_records',
     primary_key_type: 'uuid',
   }, (qb) =>
-    qb.addColumn(
-      'finding_snomed_concept_id',
-      'bigint',
-      (col) =>
-        col.notNull().references('snomed_concept.id').onDelete(
-          'cascade',
-        ),
-    )
+    qb
       .addColumn(
         'patient_encounter_employee_id',
         'uuid',

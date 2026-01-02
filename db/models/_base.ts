@@ -224,13 +224,14 @@ export function base<
       const page = opts?.page ?? 1
       const rows_per_page = opts?.rows_per_page ?? 10
 
-      let query = this.searchQuery(trx, search_terms as SearchTerms)
-      if (rows_per_page === Infinity) {
-        assertEquals(page, 1)
-      } else {
+      const query = this.searchQuery(trx, search_terms as SearchTerms, (qb) => {
+        if (rows_per_page === Infinity) {
+          assertEquals(page, 1)
+          return qb
+        }
         const offset = (page - 1) * rows_per_page
-        query = query.limit(rows_per_page + 1).offset(offset)
-      }
+        return qb.limit(rows_per_page + 1).offset(offset)
+      })
 
       if (opts?.verbose) {
         if (typeof opts.verbose === 'string') {

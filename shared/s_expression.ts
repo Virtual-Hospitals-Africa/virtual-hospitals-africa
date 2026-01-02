@@ -4,6 +4,8 @@ import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
 import { parseWithValues } from '../util/assertMatches.ts'
 import isObjectLike from '../util/isObjectLike.ts'
+import z from 'zod'
+import { inverseSExpression } from './s_expression_inverse.ts'
 
 type SExpressionNode = {
   atom: string
@@ -27,15 +29,20 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 
 type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 
-export function parseExpression(
+export function firstPass(
   expression: string,
 ) {
   const parsed = s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw parsed
   }
+  return recursiveTreePass(parsed)
+}
 
-  const first_pass = recursiveTreePass(parsed)
+export function parseExpression(
+  expression: string,
+) {
+  const first_pass = firstPass(expression)
   try {
     return schemas.any_expression.parse(first_pass)
   } catch (_err) {
@@ -99,4 +106,19 @@ export function asNode<
     return expression
   }
   return parseExpressionExpectingAtom(expression, atom)
+}
+
+export function sExpressionZodValidator<T extends Atom>(atom: T) {
+  return z.string()
+    .transform((expression) => {
+      const first_pass = firstPass(expression)
+      const schema = schemaByAtom(atom)
+      const second_pass = parseWithValues(schema, first_pass)
+      assert(isAtom(second_pass, atom))
+      return second_pass
+    })
+}
+
+export function normalForm(s_expression: string): string {
+  return inverseSExpression(parseExpression(s_expression))
 }

@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 
-export default function makeAssertion<T, U extends T>(
+export function makeAssertion<T, U extends T>(
   predicate: (item: T) => item is U,
 ): (item: T) => asserts item is U {
   return function (item: T) {

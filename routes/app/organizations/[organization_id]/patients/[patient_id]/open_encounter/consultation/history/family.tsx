@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
-import * as patient_family_history from '../../../../../../../../../db/models/patient_family_history.ts'
+// import * as patient_family_history from '../../../../../../../../../db/models/patient_family_history.ts'
 import { FamilyHistoryPage } from '../../../../../../../../../islands/FamilyHistoryPage.tsx'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from '../../../../../../../../../shared/family.ts'
 import keys from '../../../../../../../../../util/keys.ts'
@@ -13,6 +13,7 @@ import {
   HistoryContext,
   HistoryPage,
 } from './_middleware.tsx'
+import { RenderedPatientFamilyHistory } from '../../../../../../../../../types.ts'
 
 const FamilyMemberSchema = z.object({
   relation_sexed: z.enum(keys(SEXED_RELATION_SNOMED_CONCEPT_IDS)),
@@ -50,10 +51,10 @@ export const FamilyHistorySchema = z
 export const handler = postHandler(
   FamilyHistorySchema,
   async (ctx: HistoryContext, form_values) => {
-    const patient_id = ctx.state.patient.id
-    const patient_encounter_employee_id =
-      ctx.state.encounter_employee_presence.patient_encounter_employee_id
-    const patient_encounter_id = ctx.state.encounter.patient_encounter_id
+    // const patient_id = ctx.state.patient.id
+    // const patient_encounter_employee_id =
+    //   ctx.state.encounter_employee_presence.patient_encounter_employee_id
+    // const patient_encounter_id = ctx.state.encounter.patient_encounter_id
 
     if ('done' in form_values) {
       assert(form_values.done)
@@ -63,13 +64,13 @@ export const handler = postHandler(
     const family_history = form_values.family_history
     assert(family_history.family_members.length > 0)
 
-    await patient_family_history.upsertOne(ctx.state.trx, {
-      patient_id,
-      employment_id: ctx.state.organization_employment.employment_id,
-      patient_encounter_employee_id,
-      patient_encounter_id,
-      family_history,
-    })
+    // await patient_family_history.upsertOne(ctx.state.trx, {
+    //   patient_id,
+    //   employment_id: ctx.state.organization_employment.employment_id,
+    //   patient_encounter_employee_id,
+    //   patient_encounter_id,
+    //   family_history,
+    // })
 
     const { completing_assessment } = await promiseProps({
       completing_assessment: completeAssessment(ctx),
@@ -78,13 +79,14 @@ export const handler = postHandler(
   },
 )
 
-export default HistoryPage(async function FamilyPage(ctx) {
-  const patient_family_history_records = await patient_family_history
-    .getEncounter(ctx.state.trx, {
-      patient_id: ctx.state.patient.id,
-      patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-    })
-  console.log('weklkelw', patient_family_history_records)
+// deno-lint-ignore require-await
+export default HistoryPage(async function FamilyPage(_ctx) {
+  // const patient_family_history_records = await patient_family_history
+  //   .getEncounter(ctx.state.trx, {
+  //     patient_id: ctx.state.patient.id,
+  //     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+  //   })
+  const patient_family_history_records: RenderedPatientFamilyHistory[] = []
   return (
     <FamilyHistoryPage
       patient_family_history_records={patient_family_history_records}

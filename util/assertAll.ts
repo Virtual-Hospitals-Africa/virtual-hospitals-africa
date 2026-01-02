@@ -18,8 +18,7 @@ export function assertAllNotNull<
 
 export function assertAll<T, U extends T>(
   array: T[],
-  // deno-lint-ignore no-explicit-any
-  assert: (item: any) => asserts item is U,
+  assert: (item: T) => asserts item is U,
 ): asserts array is Array<U> {
   for (const item of array) {
     assert(item)

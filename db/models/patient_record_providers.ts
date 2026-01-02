@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  RenderedFindingProvider,
   RenderedPatientEncounter,
+  RenderedRecordProvider,
   TrxOrDb,
 } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'
@@ -27,7 +27,7 @@ export async function hydrateIntermediateRecords<
 ): Promise<
   Array<
     IntermediateRecord & {
-      provider: RenderedFindingProvider
+      provider: RenderedRecordProvider
     }
   >
 > {

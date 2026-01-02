@@ -18,7 +18,7 @@ import {
   commonConditionSnomedConceptId,
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
-import { nowInvalidRecords } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
@@ -56,7 +56,7 @@ export function mostRecentFindings(
             (join) =>
               join.on((eb) =>
                 sql<boolean>`is_descendant(${
-                  eb.ref('patient_findings.finding_snomed_concept_id')
+                  eb.ref('patient_records.specific_snomed_concept_id')
                 }, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
               ),
           )
@@ -95,13 +95,15 @@ function findingExistence(finding: IntermediateBriefHistory): Existence {
     return 'Yes'
   }
 
-  assert(finding.value_snomed_concept?.name)
-  assertOneOf(finding.value_snomed_concept.name, [
+  assert(finding.value)
+  assert(finding.value.type === 'snomed_concept')
+  assert(finding.value.name)
+  assertOneOf(finding.value.name, [
     'Yes' as const,
     'No' as const,
     'Unknown' as const,
   ])
-  return finding.value_snomed_concept.name
+  return finding.value.name
 }
 
 function mostRecentFinding<
@@ -126,7 +128,7 @@ function mostRecentFinding<
 
   const findings_of_condition_grouped_by_concept = groupBy(
     findings_of_condition,
-    (f) => f.finding_snomed_concept.snomed_concept_id,
+    (f) => f.specific_snomed_concept.snomed_concept_id,
   ) as Map<string, NonEmptyArray<Finding>>
   const most_recent_parent_concept_finding = first(
     findings_of_condition_grouped_by_concept.get(parent_snomed_concept_id) ||
@@ -139,7 +141,7 @@ function mostRecentFinding<
 
       const most_recent_finding_of_concept = first(
         findings_of_condition_grouped_by_concept.get(
-          finding.finding_snomed_concept.snomed_concept_id,
+          finding.specific_snomed_concept.snomed_concept_id,
         )!,
       )
       assert(most_recent_finding_of_concept)
