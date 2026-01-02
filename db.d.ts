@@ -1671,6 +1671,7 @@ export interface SnomedDescription {
   language_code: string
   module_id: Int8
   term: string
+  term_vector: string
   type_id: Int8
 }
 
@@ -1700,6 +1701,7 @@ export interface SnomedInferredCanonicalNameAndCategory {
   id: Int8
   language_code: string
   name: string
+  name_vector: string
 }
 
 export interface SnomedRefsetSimple {

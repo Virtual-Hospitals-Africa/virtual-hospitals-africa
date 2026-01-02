@@ -117,6 +117,7 @@ export default function KeyedWarningSigns({
 
   const x = useAsyncSearch({
     search_route: "/app/snomed/warning-signs",
+    skip_blank_search: true,
     value: search.value ? { name: search.value } : null,
     onSearchResults(results) {
       console.log(results)

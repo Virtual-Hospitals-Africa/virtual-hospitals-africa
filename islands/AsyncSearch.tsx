@@ -12,6 +12,7 @@ export type AsyncSearchProps<
   & SearchPropsCommon<T>
   & {
     search_route: string
+    skip_blank_search?: boolean
     onQuery?(query: string): void
     onSearchResults?(values: {
       query: string
@@ -44,12 +45,14 @@ export default function AsyncSearch<
 >({
   search_route,
   value,
+  skip_blank_search,
   onQuery,
   onSearchResults,
   ...rest
 }: AsyncSearchProps<T>) {
   const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
+    skip_blank_search,
     value,
     onSearchResults,
   })
