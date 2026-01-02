@@ -48,7 +48,7 @@ const columns: TableColumn<Row>[] = [
     type: 'content',
     data: (row) => (
       <div className='whitespace-nowrap text-sm text-gray-900'>
-        {row.finding.displays.value}
+        {row.finding.displays.value || row.finding.displays.finding}
       </div>
     ),
   },

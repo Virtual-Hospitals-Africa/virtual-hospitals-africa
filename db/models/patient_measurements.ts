@@ -1,16 +1,5 @@
-import {
-  IdSelection,
-  RenderedVitalMeasurement,
-  TrxOrDb,
-  TrxOrDbOrQueryCreator,
-} from '../../types.ts'
-import {
-  asText,
-  jsonBuildObject,
-  jsonObjectFrom,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -21,12 +10,10 @@ import {
   snomedConceptBase,
 } from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
-import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
-
-export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement finding (finding)|
+import { isMeasurement } from '../../shared/vitals.ts'
+import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
 
 type MeasurementInsert = {
   patient_id: string
@@ -46,19 +33,16 @@ export function baseQuery(
       'patient_findings.id',
       'patient_measurements.id',
     )
-    .select((eb) => [
-      jsonBuildObject({
-        type: literalString('measurement' as const),
-        value: asText(eb, 'patient_measurements.value'),
-        units: eb.ref('patient_measurements.units'),
-      }).as('value'),
-    ])
 }
 
 export const patient_measurements = base({
   top_level_table: 'patient_findings',
   baseQuery,
-  formatResult: formatRecord,
+  formatResult(measurement) {
+    const formatted = formatRecord(measurement)
+    assert(isMeasurement(formatted))
+    return formatted
+  },
   handleSearch(
     qb,
     opts: {
@@ -70,13 +54,6 @@ export const patient_measurements = base({
     trx,
   ) {
     assert(!opts.search, 'TODO support')
-    if (opts.search) {
-      qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.name',
-        'ilike',
-        `%${opts.search}%`,
-      )
-    }
     if (opts.patient_id) {
       qb = qb.where(
         'patient_records.patient_id',
@@ -133,7 +110,8 @@ export const patient_measurements = base({
             id: measurement_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+            root_snomed_concept_id: MEASUREMENT_FINDING.id,
+            specific_snomed_concept_id: snomedConceptBase(trx, snomed_concept),
             value_snomed_concept_id: null,
           }),
     ).with('inserting_findings', (qb) =>
@@ -142,7 +120,6 @@ export const patient_measurements = base({
           id: measurement_id,
           procedure_id,
           patient_encounter_employee_id,
-          finding_snomed_concept_id: snomedConceptBase(trx, snomed_concept),
         }))
       .with(
         'inserting_measurements',
@@ -196,64 +173,64 @@ export const patient_measurements = base({
       measurement_equality,
     })
   },
-  async getMostRecent(
-    trx: TrxOrDb,
-    { health_worker_id, patient_id, snomed_concept_ids }: {
-      health_worker_id: string
-      patient_id: string
-      snomed_concept_ids: string[]
-    },
-  ): Promise<RenderedVitalMeasurement[]> {
-    assertArrayNonEmpty(snomed_concept_ids)
+  // async getMostRecent(
+  //   trx: TrxOrDb,
+  //   { health_worker_id, patient_id, snomed_concept_ids }: {
+  //     health_worker_id: string
+  //     patient_id: string
+  //     snomed_concept_ids: string[]
+  //   },
+  // ): Promise<RenderedFindingRelativeToHealthWorker[]> {
+  //   assertArrayNonEmpty(snomed_concept_ids)
 
-    const query = trx.with(
-      'ranked_findings',
-      (qb) =>
-        baseQuery(qb)
-          .where('patient_records.patient_id', '=', patient_id)
-          .where(
-            'patient_measurements.id',
-            'in',
-            trx.selectFrom('patient_record_qualifiers')
-              .innerJoin(
-                'patient_records',
-                'patient_records.id',
-                'patient_record_qualifiers.id',
-              )
-              .where(
-                'patient_records.snomed_concept_id',
-                'in',
-                snomed_concept_ids,
-              )
-              .select('patient_record_qualifiers.qualifies_record_id'),
-          )
-          .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
-              .as('rank'),
-          )
-          .orderBy('patient_records.created_at', 'desc'),
-    ).selectFrom('ranked_findings')
-      .where('ranked_findings.rank', '=', 1)
-      .selectAll('ranked_findings')
-      .select(sql<'manual'>`'manual'`.as('finding_type'))
-      .select((eb) => [
-        jsonObjectFrom(
-          patient_encounter_employees.baseQuery(trx)
-            .where(
-              'patient_encounter_employees.id',
-              '=',
-              eb.ref('ranked_findings.patient_encounter_employee_id'),
-            ).select((eb_employees) => [
-              eb_employees('health_workers.id', '=', health_worker_id).as(
-                'is_me',
-              ),
-            ]),
-        ).$notNull().as('provider'),
-      ])
+  //   const query = trx.with(
+  //     'ranked_findings',
+  //     (qb) =>
+  //       baseQuery(qb)
+  //         .where('patient_records.patient_id', '=', patient_id)
+  //         .where(
+  //           'patient_measurements.id',
+  //           'in',
+  //           trx.selectFrom('patient_record_qualifiers')
+  //             .innerJoin(
+  //               'patient_records',
+  //               'patient_records.id',
+  //               'patient_record_qualifiers.id',
+  //             )
+  //             .where(
+  //               'patient_records.snomed_concept_id',
+  //               'in',
+  //               snomed_concept_ids,
+  //             )
+  //             .select('patient_record_qualifiers.qualifies_record_id'),
+  //         )
+  //         .select(
+  //           sql`ROW_NUMBER() OVER (PARTITION BY patient_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+  //             .as('rank'),
+  //         )
+  //         .orderBy('patient_records.created_at', 'desc'),
+  //   ).selectFrom('ranked_findings')
+  //     .where('ranked_findings.rank', '=', 1)
+  //     .selectAll('ranked_findings')
+  //     .select(sql<'manual'>`'manual'`.as('finding_type'))
+  //     .select((eb) => [
+  //       jsonObjectFrom(
+  //         patient_encounter_employees.baseQuery(trx)
+  //           .where(
+  //             'patient_encounter_employees.id',
+  //             '=',
+  //             eb.ref('ranked_findings.patient_encounter_employee_id'),
+  //           ).select((eb_employees) => [
+  //             eb_employees('health_workers.id', '=', health_worker_id).as(
+  //               'is_me',
+  //             ),
+  //           ]),
+  //       ).$notNull().as('provider'),
+  //     ])
 
-    const findings = await query.execute()
+  //   const findings = await query.execute()
 
-    // findings[0].attributes
-    return findings.map(formatRecord)
-  },
+  //   // findings[0].attributes
+  //   return findings.map(formatRecord)
+  // },
 })

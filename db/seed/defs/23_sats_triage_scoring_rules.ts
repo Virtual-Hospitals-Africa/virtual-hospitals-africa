@@ -7,7 +7,7 @@ const SatsTriageScoringRuleSchema = z.object({
   id: z.string(),
   scoring_system: z.string(),
   assessment_option_id: z.string().nullable(),
-  finding_snomed_concept_id: z.string().nullable(),
+  specific_snomed_concept_id: z.string().nullable(),
   value_min: z.string().nullable().transform((val) =>
     val ? parseFloat(val) : null
   ),

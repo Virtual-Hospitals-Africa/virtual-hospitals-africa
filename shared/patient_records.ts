@@ -1,23 +1,26 @@
 import {
+  IntermediateBaseRecord,
   Maybe,
   RecordDisplays,
-  RecordValue,
-  RecordValueSnomedConcept,
+  RenderedAttribute,
+  RenderedEvaluation,
+  RenderedRecordRelativeToHealthWorkerDef,
   RenderedSnomedConcept,
 } from '../types.ts'
 import compact from '../util/compact.ts'
 import { positive_decimal } from '../util/validators.ts'
 import isDate from '../util/isDate.ts'
-import { assert } from 'node:console'
+import partition from '../util/partition.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertAll } from '../util/assertAll.ts'
 import omit from '../util/omit.ts'
+import assertOneOf from '../util/assertOneOf.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
+import { inverseSExpression } from './s_expression_inverse.ts'
+import { Lang } from './s_expression_schemas.ts'
 
-type DisplayableRecord = {
-  root_snomed_concept: RenderedSnomedConcept
-  finding_snomed_concept?: Maybe<RenderedSnomedConcept>
-  value_snomed_concept?: Maybe<RecordValueSnomedConcept>
-  value?: Maybe<RecordValue>
-  prefixes?: DisplayableRecord[]
-  // Attributes are not included as part of the display, but listed here for completeness
+type DisplayableRecord = IntermediateBaseRecord & {
+  qualifiers?: DisplayableRecord[]
 }
 
 function measurementValueDisplay(
@@ -64,8 +67,10 @@ function valueDisplay(
       return value.name
     case 'measurement':
       return measurementValueDisplay(value)
+    case 'score':
+      return value.score
     default: {
-      throw new Error(`Unexpected type in ${JSON.stringify(value)}`)
+      throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
     }
   }
 }
@@ -77,28 +82,64 @@ function includeRootSnomedConceptName(
     case 'Attribute':
     case 'Event':
     case 'Measurement finding':
+    case 'Clinical finding':
+    case 'Qualifier value':
+    case 'Evaluation - action':
       return false
     default:
       return true
   }
 }
 
-function buildDisplays(record: DisplayableRecord): RecordDisplays {
+// In English, certain words connect things at the end
+function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
+  if (!qualifier) return false
+  switch (qualifier.specific_snomed_concept.name) {
+    case 'For':
+    case 'With':
+      return true
+    default:
+      return false
+  }
+}
+
+function buildDisplays(
+  record: DisplayableRecord,
+  postfix?: boolean,
+): RecordDisplays {
   const {
     root_snomed_concept,
-    finding_snomed_concept,
+    specific_snomed_concept,
     value,
-    prefixes = [],
+    qualifiers = [],
   } = record
 
-  const prefix_displays = prefixes.map((prefix) => buildDisplays(prefix).full)
+  assert(qualifiers.length <= 1)
+  for (const qualifier of qualifiers) {
+    assert(
+      !qualifier.value,
+      `Expected only prefixes (without value) saw ${
+        humanReadableJson(qualifier)
+      }`,
+    )
+  }
+  const use_postfix = postfix || qualifierIsPostfix(qualifiers[0])
 
-  const finding_display = compact([
-    ...prefix_displays,
-    finding_snomed_concept?.name,
+  const qualifier_displays = qualifiers.map((prefix) =>
+    buildDisplays(prefix, use_postfix).full
+  )
+
+  const finding_displays = compact([
+    specific_snomed_concept?.name,
     includeRootSnomedConceptName(root_snomed_concept) &&
     root_snomed_concept.name,
-  ]).join(' ')
+  ])
+
+  const finding_displays_qualified = use_postfix
+    ? [...finding_displays, ...qualifier_displays]
+    : [...qualifier_displays, ...finding_displays]
+
+  const finding_display = finding_displays_qualified.join(' ')
 
   if (!value) {
     return {
@@ -108,7 +149,7 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
     }
   }
 
-  const value_display = value && valueDisplay(value)
+  const value_display = valueDisplay(value)
 
   return {
     finding: finding_display,
@@ -117,41 +158,157 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
   }
 }
 
-type RenderedDisplayableRecord<DR extends DisplayableRecord> =
-  & Omit<DR, 'value_snomed_concept'>
-  & { displays: RecordDisplays; value: RecordValue | null }
-
-function mergeValuesAddDisplay<DR extends DisplayableRecord>(
+/**
+ * The idea here is that the qualifiers with values are attributes and have
+ * already been attached separately. The rest are prefixes which are consumed
+ * as part of building out the record's displays
+ */
+function addDisplay<DR extends DisplayableRecord>(
   record: DR,
-): RenderedDisplayableRecord<DR> {
-  assert(
-    !record.value || !record.value_snomed_concept,
-    'Record can have a value or value_snomed_concept, but not both',
-  )
-  const unified_value = {
-    ...omit(record, ['value_snomed_concept']),
-    value: record.value || record.value_snomed_concept || null,
-  }
+): Omit<DR, 'qualifiers'> & {
+  displays: RecordDisplays
+} {
   return {
-    ...unified_value,
-    displays: buildDisplays(unified_value),
+    ...omit(record, ['qualifiers']),
+    modifiers: record.qualifiers,
+    displays: buildDisplays(record),
   }
 }
 
 export function formatRecord<
   DR extends DisplayableRecord & {
-    value_snomed_concept?: null | RecordValueSnomedConcept
-    attributes: DisplayableRecord[]
-    events: DisplayableRecord[]
+    evaluations: DisplayableRecord[]
   },
->(record: DR): RenderedDisplayableRecord<DR> & {
-  value: RecordValue | null
-  attributes: RenderedDisplayableRecord<DR['attributes'][number]>[]
-  events: RenderedDisplayableRecord<DR['events'][number]>[]
+>(record: DR): Omit<DR, 'qualifiers'> & {
+  displays: RecordDisplays
+  modifiers: IntermediateBaseRecord[]
+  attributes: RenderedAttribute[]
+  evaluations: RenderedEvaluation[]
 } {
+  const [modifiers, unformatted_attributes] = partition(
+    record.qualifiers || [],
+    (qualifier) => qualifier.root_snomed_concept.name === 'Qualifier value',
+  )
+
+  const attributes = unformatted_attributes.map(addDisplay)
+  assertAll(attributes, (attribute): asserts attribute is RenderedAttribute => {
+    if (attribute.value) {
+      assertOneOf(attribute.value.type, [
+        'event' as const,
+        'snomed_concept' as const,
+      ])
+    }
+  })
+
+  const evaluations = record.evaluations.map(addDisplay)
+
   return {
-    ...mergeValuesAddDisplay(record),
-    attributes: record.attributes.map(mergeValuesAddDisplay),
-    events: record.events.map(mergeValuesAddDisplay),
+    ...addDisplay({ ...record, qualifiers: modifiers }),
+    modifiers,
+    attributes,
+    evaluations,
+  }
+}
+
+function toSnomedConcept(
+  rendered: RenderedSnomedConcept,
+): Lang['snomed_concept'] {
+  return {
+    atom: 'snomed_concept',
+    type: 'name_and_category',
+    name: rendered.name,
+    category: rendered.category,
+  }
+}
+
+function toQualifier(modifier: IntermediateBaseRecord): Lang['qualifier'] {
+  return {
+    atom: 'qualifier',
+    specific_snomed_concept: toSnomedConcept(modifier.specific_snomed_concept),
+    qualifiers: [],
+  }
+}
+
+export function asNormalFormSExpression<Rest>(
+  record: RenderedRecordRelativeToHealthWorkerDef<
+    'finding' | 'procedure' | 'evaluation',
+    Rest
+  >,
+): string {
+  const qualifiers = record.modifiers.map(toQualifier)
+
+  // Partition attributes into events and actual attributes
+  const [eventAttributes, nonEventAttributes] = partition(
+    record.attributes,
+    (attr) => attr.value?.type === 'event',
+  )
+
+  const events: Lang['event'][] = eventAttributes.map((attr) => {
+    const value = attr.value as { type: 'event'; datetime: Date | string }
+    return {
+      atom: 'event',
+      specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+      value: {
+        datetime: isDate(value.datetime)
+          ? value.datetime.toISOString()
+          : value.datetime,
+        location: null,
+      },
+    }
+  })
+
+  const attributes: Lang['attribute'][] = nonEventAttributes.map((attr) => ({
+    atom: 'attribute',
+    specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+    value: attr.value?.type === 'snomed_concept'
+      ? toSnomedConcept(attr.value)
+      : null,
+  }))
+
+  const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
+  const specific_snomed_concept = toSnomedConcept(
+    record.specific_snomed_concept,
+  )
+  const value_snomed_concept = record.value?.type === 'snomed_concept'
+    ? toSnomedConcept(record.value)
+    : null
+
+  switch (record.type) {
+    case 'finding': {
+      const node: Lang['finding'] = {
+        atom: 'finding',
+        root_snomed_concept,
+        specific_snomed_concept,
+        value_snomed_concept,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
+    case 'evaluation': {
+      const node: Lang['evaluation'] = {
+        atom: 'evaluation',
+        root_snomed_concept,
+        specific_snomed_concept,
+        value_snomed_concept,
+        evaluates: null,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
+    case 'procedure': {
+      const node: Lang['procedure'] = {
+        atom: 'procedure',
+        root_snomed_concept,
+        specific_snomed_concept,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
   }
 }

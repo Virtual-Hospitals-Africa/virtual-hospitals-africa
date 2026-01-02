@@ -7,7 +7,7 @@ const assertion = assertOnInsert({
     NEW.value_snomed_concept_id = 373066001 OR -- Yes
     NEW.value_snomed_concept_id = 373067005 OR -- No
     NEW.value_snomed_concept_id = 261665006 OR -- Unknown
-    NEW.snomed_concept_id != '263490005' -- Status
+    NEW.root_snomed_concept_id != '263490005' -- Status
   `,
   error_message:
     `format('Only Yes/No/Unknown are supported as status values. id: %s', NEW.id)`,

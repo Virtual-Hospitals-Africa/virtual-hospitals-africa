@@ -17,10 +17,13 @@ import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 import { patient_vitals } from './patient_vitals.ts'
-
-export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
-export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
-export const DUE_TO_SNOMED_CONCEPT_ID = '42752001' // |Due to (attribute)|
+import {
+  ACTION_STATUS,
+  DUE_TO,
+  EVALUATION_ACTION,
+  RELATIONSHIP,
+  TO_BE_DONE,
+} from '../../shared/snomed_concepts.ts'
 
 export async function insertTasksIfNotAlreadyIdentified(
   trx: TrxOrDb,
@@ -71,7 +74,7 @@ export async function insertTasksIfNotAlreadyIdentified(
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
           evaluation:
-            `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
+            `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
         },
       ).with(
         'inserting_relation_patient_records',
@@ -80,7 +83,8 @@ export async function insertTasksIfNotAlreadyIdentified(
             patient_id,
             patient_encounter_id,
             id: relation_id,
-            snomed_concept_id: DUE_TO_SNOMED_CONCEPT_ID,
+            root_snomed_concept_id: RELATIONSHIP.id,
+            specific_snomed_concept_id: DUE_TO.id,
           }),
       ).with(
         'inserting_relations',
@@ -109,7 +113,7 @@ export async function getTasksGroups(
     patient_id,
     patient_encounter_id: encounter.patient_encounter_id,
     s_expression:
-      `(evaluation ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
+      `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
   })
 
   if (arrayIsEmpty(evaluations)) {
@@ -121,8 +125,8 @@ export async function getTasksGroups(
   const finding_ids = evaluations.map((evaluation) => {
     assertLength(evaluation.destination_relations, 1)
     assertEquals(
-      evaluation.destination_relations[0].snomed_concept_id,
-      DUE_TO_SNOMED_CONCEPT_ID,
+      evaluation.destination_relations[0].specific_snomed_concept_id,
+      DUE_TO.id,
     )
     return evaluation.destination_relations[0].destination_id
   })
@@ -160,8 +164,9 @@ export async function getTasksGroups(
             snomed_concept_id: procedure.root_snomed_concept.snomed_concept_id,
             name: procedure.root_snomed_concept.name,
             patient_encounter_id: procedure.patient_encounter_id,
-            value_snomed_concept_id: procedure.value_snomed_concept
-              ?.snomed_concept_id ?? null,
+            value_snomed_concept_id: procedure.value?.type === 'snomed_concept'
+              ? procedure.value.snomed_concept_id
+              : null,
           },
           completed: false,
         }
@@ -185,8 +190,8 @@ export async function getTasksGroups(
 // function additionalTaskSExpression() {
 //   return `
 //     (evaluation
-//       ${ACTION_STATUS_SNOMED_CONCEPT_ID}
-//       ${TO_BE_DONE_SNOMED_CONCEPT_ID}
+//       ${ACTION_STATUS.id}
+//       ${TO_BE_DONE.id}
 //       (evaluates ...)
 //       (qualifier )
 //     )
@@ -199,6 +204,4 @@ export async function getTasksGroups(
 // to the site of trauma and
 // cover open wounds
 
-// const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
-// const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
-// (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))
+// (referral ${PATIENT_TRANSFER_PROCEDURE.id} (room (department "Emergency")))

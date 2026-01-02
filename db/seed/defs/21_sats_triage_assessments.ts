@@ -1,13 +1,13 @@
 import z from 'zod'
 import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import { define } from '../define.ts'
-import { VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS } from '../../../shared/vitals.ts'
+import { VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS } from '../../../shared/vitals.ts'
 import keys from '../../../util/keys.ts'
 import { collect } from '../../../util/inParallel.ts'
 
 const SatsTriageAssessmentSchema = z.object({
   assessment_snomed_concept_id: z.string(),
-  vital: z.enum(keys(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)),
+  vital: z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
   category: z.string(),
   display_order: z.string().transform((val) => parseInt(val, 10)),
   required_for_triage: z.string().transform((val) => val === 't'),

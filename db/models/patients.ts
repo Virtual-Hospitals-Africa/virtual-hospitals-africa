@@ -23,7 +23,7 @@ import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
-import { nowInvalidRecords } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -74,13 +74,8 @@ export function baseQuery(trx: TrxOrDb) {
       // TODO make its own function?
       eb.selectFrom('patient_records')
         .innerJoin(
-          'patient_findings',
-          'patient_records.id',
-          'patient_findings.id',
-        )
-        .innerJoin(
           'patient_measurements',
-          'patient_findings.id',
+          'patient_records.id',
           'patient_measurements.id',
         )
         .where(
@@ -89,7 +84,7 @@ export function baseQuery(trx: TrxOrDb) {
           eb.ref('patients.id'),
         )
         .where(
-          'patient_findings.finding_snomed_concept_id',
+          'patient_records.specific_snomed_concept_id',
           '=',
           VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
         )

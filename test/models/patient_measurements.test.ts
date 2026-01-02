@@ -11,6 +11,7 @@ import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
+import { PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 describeParallel('db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
@@ -46,7 +47,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${
+            `(procedure ${PROCEDURE.id} ${
               WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',
@@ -149,7 +150,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${
+            `(procedure ${PROCEDURE.id} ${
               WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',
@@ -199,7 +200,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${
+            `(procedure ${PROCEDURE.id} ${
               WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',

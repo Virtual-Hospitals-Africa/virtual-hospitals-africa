@@ -1202,7 +1202,6 @@ export interface PatientFindingMediaSpeeches {
 }
 
 export interface PatientFindings {
-  finding_snomed_concept_id: Int8
   id: string
   patient_encounter_employee_id: string
   procedure_id: string
@@ -1301,7 +1300,8 @@ export interface PatientRecords {
   id: Generated<string>
   patient_encounter_id: string
   patient_id: string
-  snomed_concept_id: Int8
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
   updated_at: Generated<Timestamp>
   value_snomed_concept_id: Int8 | null
 }
@@ -1557,12 +1557,12 @@ export interface SatsTriageScoringRules {
   age_min_days: number | null
   assessment_option_id: string | null
   created_at: Generated<Timestamp>
-  finding_snomed_concept_id: Int8 | null
   height_max_cm: number | null
   height_min_cm: number | null
   id: string
   score_value: number
   scoring_system: string
+  specific_snomed_concept_id: Int8 | null
   updated_at: Generated<Timestamp>
   value_max: Numeric | null
   value_min: Numeric | null

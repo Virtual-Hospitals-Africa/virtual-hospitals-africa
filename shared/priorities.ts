@@ -2,8 +2,6 @@ import entries from '../util/entries.ts'
 import keys from '../util/keys.ts'
 import sortBy from '../util/sortBy.ts'
 
-export const PRIORITY_SNOMED_CONCEPT_ID = '260870009' // |Priority (attribute)|
-
 export const PRIORITY_SNOMED_CODES = {
   'Non-urgent': '1357728000',
   'Urgent': '103391001',

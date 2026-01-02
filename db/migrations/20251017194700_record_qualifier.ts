@@ -14,7 +14,8 @@ export async function up(db: Kysely<DB>) {
       qb.addColumn(
         'qualifies_record_id',
         'uuid',
-        (col) => col.references('patient_records.id').notNull(),
+        (col) =>
+          col.references('patient_records.id').notNull().onDelete('cascade'),
       ),
   )
 }

@@ -7,7 +7,7 @@ const assertion = assertOnInsert({
     NOT EXISTS (
         SELECT 1
           FROM patient_records
-    INNER JOIN snomed_inferred_canonical_name_and_category on patient_records.snomed_concept_id = snomed_inferred_canonical_name_and_category.id
+    INNER JOIN snomed_inferred_canonical_name_and_category on patient_records.specific_snomed_concept_id = snomed_inferred_canonical_name_and_category.id
          WHERE patient_records.id = NEW.id
            AND snomed_inferred_canonical_name_and_category.category = 'qualifier value'
     )

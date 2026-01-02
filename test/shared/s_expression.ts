@@ -4,16 +4,20 @@ import {
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../db/models/patient_findings.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {
     const finding = parseExpression('(finding 182899812 1219200912)')
     assertEquals(finding, {
       atom: 'finding',
-      snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812' },
-      finding_snomed_concept: {
+      root_snomed_concept: {
+        atom: 'snomed_concept',
+        type: 'id',
+        id: '182899812',
+      },
+      specific_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
         id: '1219200912',
@@ -31,8 +35,12 @@ describe('shared/s_expression.ts', () => {
     )
     assertEquals(finding, {
       atom: 'finding',
-      snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812' },
-      finding_snomed_concept: {
+      root_snomed_concept: {
+        atom: 'snomed_concept',
+        type: 'id',
+        id: '182899812',
+      },
+      specific_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
         id: '1219200912',
@@ -42,8 +50,11 @@ describe('shared/s_expression.ts', () => {
       events: [],
       qualifiers: [{
         atom: 'qualifier',
-        snomed_concept: { atom: 'snomed_concept', type: 'id', id: '121277' },
-        value_snomed_concept: null,
+        specific_snomed_concept: {
+          atom: 'snomed_concept',
+          type: 'id',
+          id: '121277',
+        },
         qualifiers: [],
       }],
     })
@@ -52,11 +63,11 @@ describe('shared/s_expression.ts', () => {
   /**
    * finding: attribute
     relation: finding site
-    finding_snomed_concept_id: the actual finding site
+    specific_snomed_concept_id: the actual finding site
    */
   it('can parse a finding expression with attributes & snomed concepts', () => {
     const parsed = parseExpressionExpectingAtom(
-      `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+      `(finding ${CLINICAL_FINDING.id} 
           (snomed_concept "Burn" "disorder")
           (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure"))
       )`,
@@ -65,12 +76,12 @@ describe('shared/s_expression.ts', () => {
 
     assertEquals(parsed, {
       'atom': 'finding',
-      'snomed_concept': {
+      'root_snomed_concept': {
         'atom': 'snomed_concept',
         'type': 'id',
         'id': '404684003',
       },
-      'finding_snomed_concept': {
+      'specific_snomed_concept': {
         'atom': 'snomed_concept',
         'name': 'Burn',
         'category': 'disorder',
@@ -82,7 +93,7 @@ describe('shared/s_expression.ts', () => {
       'attributes': [
         {
           'atom': 'attribute',
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'atom': 'snomed_concept',
             'name': 'Finding site',
             'category': 'attribute',
@@ -100,7 +111,32 @@ describe('shared/s_expression.ts', () => {
 
     assertEquals(
       inverseSExpression(parsed),
-      `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
+      `(finding ${CLINICAL_FINDING.id} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
     )
+  })
+
+  it('can parse bare evaluations', () => {
+    const parsed = parseExpression('(evaluation (evaluates (finding)))')
+    assertEquals(parsed, {
+      'atom': 'evaluation',
+      'root_snomed_concept': null,
+      'specific_snomed_concept': null,
+      'value_snomed_concept': null,
+      'qualifiers': [],
+      'evaluates': {
+        'atom': 'evaluates',
+        'expression': {
+          'atom': 'finding',
+          'root_snomed_concept': null,
+          'specific_snomed_concept': null,
+          'value_snomed_concept': null,
+          'qualifiers': [],
+          'attributes': [],
+          'events': [],
+        },
+      },
+      'attributes': [],
+      'events': [],
+    })
   })
 })

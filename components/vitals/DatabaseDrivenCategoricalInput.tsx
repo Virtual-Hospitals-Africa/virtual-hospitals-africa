@@ -20,9 +20,11 @@ export default function DatabaseDrivenCategoricalInput({
 }) {
   const name = `assessments.${assessment.vital}`
 
-  const options = assessment.options.map(({ label, snomed_concept_id }) => ({
+  const options = assessment.options.map((
+    { label, s_expression },
+  ) => ({
     label,
-    value: snomed_concept_id,
+    value: s_expression,
   }))
 
   return (
@@ -42,7 +44,7 @@ export default function DatabaseDrivenCategoricalInput({
       <div className='min-w-60 max-w-60 flex items-center'>
         <SelectWithOptions
           id={name}
-          name={`${name}.value_snomed_concept_id`}
+          name={`${name}.s_expression`}
           label={null}
           required={assessment.required}
           options={options}

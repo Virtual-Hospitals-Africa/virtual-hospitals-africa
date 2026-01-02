@@ -5,10 +5,10 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'
-import * as patient_symptoms from '../../../../../db/models/patient_symptoms.ts'
+// import * as patient_symptoms from '../../../../../db/models/patient_symptoms.ts'
 import FormSection from '../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
-import { min } from '../../../../../util/min.ts'
+// import { min } from '../../../../../util/min.ts'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]
@@ -101,11 +101,12 @@ export default async function DiagnosisPage(
     patient_encounter_id: ctx.state.doctor_review.encounter.id,
   })
 
-  const symptoms = await patient_symptoms.getEncounter(trx, {
-    patient_encounter_id: ctx.state.doctor_review.encounter.id,
-    patient_id: ctx.state.doctor_review.patient.id,
-  })
-  const earliest_date = min(symptoms.map((s) => s.start_date))
+  // const symptoms = await patient_symptoms.getEncounter(trx, {
+  //   patient_encounter_id: ctx.state.doctor_review.encounter.id,
+  //   patient_id: ctx.state.doctor_review.patient.id,
+  // })
+  // const earliest_date = min(symptoms.map((s) => s.start_date))
+  const earliest_date = undefined
 
   return (
     <ReviewLayout ctx={ctx}>
