@@ -94,8 +94,8 @@ jobs:
 
       # TODO Turn this back on later. LFS expired 2025-12-18 because of a cache issue
       # Certainly we will need this if we update SNOMED
-      # - name: Git lfs pull
-      #   run: git lfs pull
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Deno install
         run: deno install --allow-scripts
@@ -114,6 +114,8 @@ jobs:
 
       - name: Run build
         run: |
+          lsof vite.config.ts || echo "No processes have vite.config.ts open"
+          ps aux | grep -E "(deno|node|vite)" || true
           deno task build
 
       - name: Run tests

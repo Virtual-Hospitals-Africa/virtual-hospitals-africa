@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
@@ -11,7 +12,7 @@ import { route } from '../../../../route.ts'
 import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 
-describe(
+describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
   () => {
     before(waitUntilTestServerUp)
@@ -31,50 +32,53 @@ describe(
       assertEquals(parsed, demographics)
     })
 
-    it('is accessed immediately after the start-registration process', async () => {
-      const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
-        profession: 'receptionist',
-        registration_status: 'approved',
-      })
+    itParallel(
+      'is accessed immediately after the start-registration process',
+      async () => {
+        const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
+          profession: 'receptionist',
+          registration_status: 'approved',
+        })
 
-      const $ = await fetchCheerio(
-        `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
-        {
+        const $ = await fetchCheerio(
+          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+
+        assert($('input[name="first_names"]').length === 1)
+        assert($('input[name="surname"]').length === 1)
+        assert($('input[name="nonexistant"]').length === 0)
+
+        const patient_id = $.url.match(
+          /patients\/(.*)\/open_encounter\/registration\/personal/,
+        )![1]
+        assert(isUUID(patient_id))
+        const demographics = randomDemographics('ZA')
+        const phone_number = randomPhoneNumber()
+        const body = new FormData()
+        body.set('first_names', demographics.first_names)
+        body.set('surname', demographics.surname)
+        body.set('preferred_name', demographics.preferred_name)
+        body.set('national_id_number', demographics.national_id_number)
+        body.set('date_of_birth', demographics.date_of_birth)
+        body.set('sex', demographics.sex)
+        body.set('gender', demographics.gender)
+        body.set('phone_number', phone_number)
+
+        const response = await fetchOk($.url, {
           method: 'POST',
-        },
-      )
+          body,
+        })
 
-      assert($('input[name="first_names"]').length === 1)
-      assert($('input[name="surname"]').length === 1)
-      assert($('input[name="nonexistant"]').length === 0)
+        assertEquals(
+          response.url,
+          `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
+        )
 
-      const patient_id = $.url.match(
-        /patients\/(.*)\/open_encounter\/registration\/personal/,
-      )![1]
-      assert(isUUID(patient_id))
-      const demographics = randomDemographics('ZA')
-      const phone_number = randomPhoneNumber()
-      const body = new FormData()
-      body.set('first_names', demographics.first_names)
-      body.set('surname', demographics.surname)
-      body.set('preferred_name', demographics.preferred_name)
-      body.set('national_id_number', demographics.national_id_number)
-      body.set('date_of_birth', demographics.date_of_birth)
-      body.set('sex', demographics.sex)
-      body.set('gender', demographics.gender)
-      body.set('phone_number', phone_number)
-
-      const response = await fetchOk($.url, {
-        method: 'POST',
-        body,
-      })
-
-      assertEquals(
-        response.url,
-        `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
-      )
-
-      return response.body?.cancel()
-    })
+        return response.body?.cancel()
+      },
+    )
   },
 )

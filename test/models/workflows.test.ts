@@ -1,12 +1,13 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import range from '../../util/range.ts'
 
-describe('workflows', () => {
+describeParallel('workflows', () => {
   afterAll(() => db.destroy())
 
-  it('have a unique ordering', async () => {
+  itParallel('have a unique ordering', async () => {
     const workflows = await db.selectFrom('workflows').select(['order'])
       .orderBy('order', 'asc').execute()
     const workflow_orders = workflows.map((workflow) =>
@@ -15,7 +16,7 @@ describe('workflows', () => {
     assertEquals(workflow_orders, range(1, workflows.length + 1))
   })
 
-  it('have a unique ordering for each step', async () => {
+  itParallel('have a unique ordering for each step', async () => {
     const steps = await db.selectFrom('workflow_steps').select(['order'])
       .orderBy('order', 'asc').execute()
     const step_orders = steps.map((step) => parseInt(step.order))

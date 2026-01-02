@@ -12,57 +12,61 @@ import { mockWhatsApp } from '../../../../chatbot/mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
-  it('asks for national ID number after inquiring birthday', async () => {
-    const phone_number = randomPhoneNumber('ZW')
-    await patients.insert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
-      phone_number,
-      name: 'Test Patient',
-      sex: 'female',
-      date_of_birth: null,
-      national_id_number: null,
-    })
-
-    await conversations.insertMessageReceived(db, {
-      chatbot_name: 'patient',
-      received_by_phone_number: '263XXXXXX',
-      sent_by_phone_number: phone_number,
-      has_media: false,
-      body: '01/01/2023',
-      media_id: null,
-      whatsapp_id: `wamid.${generateUUID()}`,
-    })
-
-    const whatsapp = mockWhatsApp()
-
-    await respond(whatsapp, 'patient', phone_number)
-    assertEquals(whatsapp.sendMessages.calls[0].args, [
-      {
-        chatbot_name: 'patient',
-        messages: {
-          message_body: 'Please enter your national ID number',
-          type: 'string',
-        },
+  it(
+    'asks for national ID number after inquiring birthday',
+    async () => {
+      const phone_number = randomPhoneNumber('ZW')
+      await patients.insert(db, {
+        conversation_state:
+          'not_onboarded:make_appointment:enter_date_of_birth',
         phone_number,
-      },
-    ])
-    const { conversation_state, patient_id } =
-      await getPatientLastConversationState(
-        db,
+        name: 'Test Patient',
+        sex: 'female',
+        date_of_birth: null,
+        national_id_number: null,
+      })
+
+      await conversations.insertMessageReceived(db, {
+        chatbot_name: 'patient',
+        received_by_phone_number: '263XXXXXX',
+        sent_by_phone_number: phone_number,
+        has_media: false,
+        body: '01/01/2023',
+        media_id: null,
+        whatsapp_id: `wamid.${generateUUID()}`,
+      })
+
+      const whatsapp = mockWhatsApp()
+
+      await respond(whatsapp, 'patient', phone_number)
+      assertEquals(whatsapp.sendMessages.calls[0].args, [
         {
+          chatbot_name: 'patient',
+          messages: {
+            message_body: 'Please enter your national ID number',
+            type: 'string',
+          },
           phone_number,
         },
+      ])
+      const { conversation_state, patient_id } =
+        await getPatientLastConversationState(
+          db,
+          {
+            phone_number,
+          },
+        )
+
+      assertEquals(
+        conversation_state,
+        'not_onboarded:make_appointment:enter_national_id_number',
       )
 
-    assertEquals(
-      conversation_state,
-      'not_onboarded:make_appointment:enter_national_id_number',
-    )
-
-    const patient = await patients.getById(db, patient_id)
-    assertEquals(
-      patient.dob_formatted,
-      '1 January 2023',
-    )
-  })
+      const patient = await patients.getById(db, patient_id)
+      assertEquals(
+        patient.dob_formatted,
+        '1 January 2023',
+      )
+    },
+  )
 })

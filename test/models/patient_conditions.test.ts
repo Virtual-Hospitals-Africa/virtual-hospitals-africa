@@ -1,3 +1,4 @@
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { sql } from 'kysely'
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -14,7 +15,7 @@ import { asTextArray } from '../../db/helpers.ts'
 import { createTestOrganization } from 'test/_helpers/organizations.ts'
 import { itUsesTrxAnd } from 'test/_helpers/transaction.ts'
 
-describe(
+describeParallel(
   'db/models/patient_conditions.ts',
   () => {
     afterAll(() => db.destroy())
@@ -405,7 +406,7 @@ describe(
         },
       )
 
-      it('handles comorbidities', async () => {
+      itParallel('handles comorbidities', async () => {
         const clinic = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
@@ -800,7 +801,7 @@ describe(
       )
     })
 
-    describe('upsertPastMedical', () => {
+    describeParallel('upsertPastMedical', () => {
       it(
         'upserts past conditions, those with an end_date',
         async () => {
@@ -855,7 +856,7 @@ describe(
           assertEquals(preExistingCondition.end_date, '2021-03-01')
         },
       )
-      it('400s if no end date is provided', async () => {
+      itParallel('400s if no end date is provided', async () => {
         const clinic = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
@@ -903,7 +904,7 @@ describe(
       })
     })
 
-    describe('upsertMajorSurgeries', () => {
+    describeParallel('upsertMajorSurgeries', () => {
       it.skip(
         'upserts major surgery, those condition with is_procedure = true',
         async () => {
@@ -957,7 +958,7 @@ describe(
         },
       )
 
-      it('400s if the condition is not a procedure', async () => {
+      itParallel('400s if the condition is not a procedure', async () => {
         const clinic = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
@@ -1053,7 +1054,7 @@ describe(
         },
       )
 
-      it('400s if 2 surgeries have the same date', async () => {
+      itParallel('400s if 2 surgeries have the same date', async () => {
         const clinic = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
@@ -1099,7 +1100,7 @@ describe(
       })
     })
 
-    describe('onboarding', () => {
+    describeParallel('onboarding', () => {
       it.skip(
         'can add conditions and surgeries in any order, with all being preserved',
         async () => {

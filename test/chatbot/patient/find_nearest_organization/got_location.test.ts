@@ -16,97 +16,100 @@ describe('patient chatbot', () => {
   afterAll(() => db.destroy())
   const organizations = readSeedDump('organizations')
 
-  it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
-    const phone_number = randomPhoneNumber('ZW')
-    const demographics = randomDemographics()
-    // Step 1: share location
-    await patients.insert(db, {
-      conversation_state: 'find_nearest_facilities:share_location',
-      phone_number,
-      ...demographics,
-    })
-
-    await conversations.insertMessageReceived(db, {
-      chatbot_name: 'patient',
-      received_by_phone_number: '263XXXXXX',
-      sent_by_phone_number: phone_number,
-      has_media: false,
-      body: JSON.stringify({
-        latitude: -33.3946,
-        longitude: 25.5463,
-      }),
-      media_id: null,
-      whatsapp_id: `wamid.${generateUUID()}`,
-    })
-
-    const whatsapp_one = mockWhatsApp()
-
-    await respond(whatsapp_one, 'patient')
-    const addo = organizations.value.find((o) =>
-      o.name === 'Addo Enon Satellite Clinic'
-    )!
-    const moses = organizations.value.find((o) =>
-      o.name === 'Moses Mabida Clinic'
-    )!
-
-    const message = whatsapp_one.sendMessages.calls[0].args[0].messages
-    assert(!Array.isArray(message))
-    assert(message.type === 'list')
-    assertEquals(
-      message.action.sections[0].rows[0].id,
-      addo.id,
-    )
-
-    // Step 2: select organization id
-    await conversations.insertMessageReceived(db, {
-      chatbot_name: 'patient',
-      received_by_phone_number: '263XXXXXX',
-      sent_by_phone_number: phone_number,
-      has_media: false,
-      body: moses.id,
-      media_id: null,
-      whatsapp_id: `wamid.${generateUUID()}`,
-    })
-
-    const whatsapp_two = mockWhatsApp()
-
-    await respond(whatsapp_two, 'patient')
-    assertEquals(whatsapp_two.sendMessages.calls[0].args, [
-      {
-        chatbot_name: 'patient',
-        messages: [
-          {
-            type: 'location',
-            message_body: 'Moses Mabida Clinic',
-            location: {
-              address:
-                'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
-              latitude: -33.3973,
-              longitude: 25.4808,
-              name: 'Moses Mabida Clinic',
-            },
-          },
-          {
-            type: 'buttons',
-            message_body: 'Click below to go back to main menu.',
-            buttonText: 'Back to main menu',
-            options: [{
-              id: 'back_to_menu',
-              title: 'Back to Menu',
-            }],
-          },
-        ],
+  it(
+    'sends a organization link and back_to_main_menu button after selecting a organization',
+    async () => {
+      const phone_number = randomPhoneNumber('ZW')
+      const demographics = randomDemographics()
+      // Step 1: share location
+      await patients.insert(db, {
+        conversation_state: 'find_nearest_facilities:share_location',
         phone_number,
-      },
-    ])
-    const patient = await getPatientLastConversationState(db, {
-      phone_number,
-    })
+        ...demographics,
+      })
 
-    assert(patient)
-    assertEquals(
-      patient.conversation_state,
-      'find_nearest_facilities:send_organization_location',
-    )
-  })
+      await conversations.insertMessageReceived(db, {
+        chatbot_name: 'patient',
+        received_by_phone_number: '263XXXXXX',
+        sent_by_phone_number: phone_number,
+        has_media: false,
+        body: JSON.stringify({
+          latitude: -33.3946,
+          longitude: 25.5463,
+        }),
+        media_id: null,
+        whatsapp_id: `wamid.${generateUUID()}`,
+      })
+
+      const whatsapp_one = mockWhatsApp()
+
+      await respond(whatsapp_one, 'patient')
+      const addo = organizations.value.find((o) =>
+        o.name === 'Addo Enon Satellite Clinic'
+      )!
+      const moses = organizations.value.find((o) =>
+        o.name === 'Moses Mabida Clinic'
+      )!
+
+      const message = whatsapp_one.sendMessages.calls[0].args[0].messages
+      assert(!Array.isArray(message))
+      assert(message.type === 'list')
+      assertEquals(
+        message.action.sections[0].rows[0].id,
+        addo.id,
+      )
+
+      // Step 2: select organization id
+      await conversations.insertMessageReceived(db, {
+        chatbot_name: 'patient',
+        received_by_phone_number: '263XXXXXX',
+        sent_by_phone_number: phone_number,
+        has_media: false,
+        body: moses.id,
+        media_id: null,
+        whatsapp_id: `wamid.${generateUUID()}`,
+      })
+
+      const whatsapp_two = mockWhatsApp()
+
+      await respond(whatsapp_two, 'patient')
+      assertEquals(whatsapp_two.sendMessages.calls[0].args, [
+        {
+          chatbot_name: 'patient',
+          messages: [
+            {
+              type: 'location',
+              message_body: 'Moses Mabida Clinic',
+              location: {
+                address:
+                  'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
+                latitude: -33.3973,
+                longitude: 25.4808,
+                name: 'Moses Mabida Clinic',
+              },
+            },
+            {
+              type: 'buttons',
+              message_body: 'Click below to go back to main menu.',
+              buttonText: 'Back to main menu',
+              options: [{
+                id: 'back_to_menu',
+                title: 'Back to Menu',
+              }],
+            },
+          ],
+          phone_number,
+        },
+      ])
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
+
+      assert(patient)
+      assertEquals(
+        patient.conversation_state,
+        'find_nearest_facilities:send_organization_location',
+      )
+    },
+  )
 })

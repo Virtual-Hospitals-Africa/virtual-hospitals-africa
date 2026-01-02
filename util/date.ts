@@ -215,6 +215,12 @@ export const rfc3339_regex =
   /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
 export function differenceInDays(date1: string, date2: string): number {
+  if (date1.endsWith('+02:00')) {
+    date1 = date1.slice(0, 10)
+  }
+  if (date2.endsWith('+02:00')) {
+    date2 = date2.slice(0, 10)
+  }
   assertLength(date1, 10)
   assertLength(date2, 10)
   assert(date_regex.test(date1), `Expected ISO format: ${date1}`)

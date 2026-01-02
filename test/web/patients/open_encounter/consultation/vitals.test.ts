@@ -20,7 +20,7 @@
 //   '/app/patients/[patient_id]/encounters/[patient_encounter_id]/vitals',
 //   { sanitizeResources: false, sanitizeOps: false },
 //   () => {
-//     it('renders a page on GET for an open encounter', async () => {
+//     itParallel('renders a page on GET for an open encounter', async () => {
 //       const patient = await patients.insert(db, { name: 'Test Patient' })
 //       const { health_worker, fetch } = await addTestEmployeeWithSession(
 //         db,
@@ -98,7 +98,7 @@
 //       }])
 //     })
 
-//     it('404s on a GET for a patient with no open encounter', async () => {
+//     itParallel('404s on a GET for a patient with no open encounter', async () => {
 //       const patient = await patients.insert(db, { name: 'Test Patient' })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
@@ -112,7 +112,7 @@
 //       assertEquals(await response.text(), 'No open visit with this patient')
 //     })
 
-//     it('can save vitals on POST', async () => {
+//     itParallel('can save vitals on POST', async () => {
 //       const { health_worker, fetch } = await addTestEmployeeWithSession(
 //         db,
 //         {

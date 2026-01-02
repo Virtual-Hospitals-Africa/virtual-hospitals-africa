@@ -1,4 +1,5 @@
-import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { route } from '../route.ts'
 import * as cheerio from 'cheerio'
@@ -15,18 +16,18 @@ const expected_links = [
   // '/volunteer',
 ]
 
-describe(
+describeParallel(
   'landing page',
   () => {
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
-    it('can be accessed', async () => {
+    itParallel('can be accessed', async () => {
       const response = await fetch(route)
       const text = await response.text()
       assert(text.includes('Virtual Hospitals Africa'), `${text}`)
     })
 
-    it('has links to various signup forms', async () => {
+    itParallel('has links to various signup forms', async () => {
       const response = await fetch(route)
       const $ = cheerio.load(await response.text())
 

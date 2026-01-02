@@ -1,4 +1,5 @@
-import { afterAll, describe, it } from 'std/testing/bdd.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as inventory from '../../db/models/inventory.ts'
 import db from '../../db/db.ts'
@@ -8,9 +9,9 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { withTestOrganization } from '../_helpers/organizations.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 
-describe('db/models/inventory.ts', () => {
+describeParallel('db/models/inventory.ts', () => {
   afterAll(() => db.destroy())
-  describe('getAvailableTests', () => {
+  describeParallel('getAvailableTests', () => {
     itUsesTrxAnd(
       'resolves with the available diagnostic tests in a organization',
       (trx) =>
@@ -70,7 +71,7 @@ describe('db/models/inventory.ts', () => {
         }),
     )
   })
-  describe('TestConsumption', () => {
+  describeParallel('TestConsumption', () => {
     itUsesTrxAnd(
       'Add consumable and check quantity',
       (trx) =>
@@ -148,68 +149,71 @@ describe('db/models/inventory.ts', () => {
         }),
     )
 
-    it('rejects when consuming more than the amount previously procured', async () => {
-      await withTestOrganization(db, async (organization_id) => {
-        const admin = await addTestEmployee(db, {
-          profession: 'admin',
-          organization_id,
-        })
+    itParallel(
+      'rejects when consuming more than the amount previously procured',
+      async () => {
+        await withTestOrganization(db, async (organization_id) => {
+          const admin = await addTestEmployee(db, {
+            profession: 'admin',
+            organization_id,
+          })
 
-        const consumable_name = generateUUID()
+          const consumable_name = generateUUID()
 
-        const consumable = await db
-          .insertInto('consumables')
-          .returning('id')
-          .values({ name: consumable_name })
-          .executeTakeFirstOrThrow()
+          const consumable = await db
+            .insertInto('consumables')
+            .returning('id')
+            .values({ name: consumable_name })
+            .executeTakeFirstOrThrow()
 
-        const procurer = await db
-          .insertInto('procurers')
-          .returning('id')
-          .values({ name: generateUUID() })
-          .executeTakeFirstOrThrow()
+          const procurer = await db
+            .insertInto('procurers')
+            .returning('id')
+            .values({ name: generateUUID() })
+            .executeTakeFirstOrThrow()
 
-        const first_added = await inventory.procureConsumable(
-          db,
-          organization_id,
-          {
+          const first_added = await inventory.procureConsumable(
+            db,
+            organization_id,
+            {
+              consumable_id: consumable.id,
+              created_by: admin.employee_id!,
+              quantity: 10,
+              container_size: 5,
+              number_of_containers: 2,
+              procured_from_id: procurer.id,
+              expiry_date: null,
+              batch_number: '',
+            },
+          )
+
+          await inventory.procureConsumable(db, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
-            quantity: 10,
-            container_size: 5,
-            number_of_containers: 2,
+            quantity: 5,
             procured_from_id: procurer.id,
             expiry_date: null,
             batch_number: '',
-          },
-        )
-
-        await inventory.procureConsumable(db, organization_id, {
-          consumable_id: consumable.id,
-          created_by: admin.employee_id!,
-          quantity: 5,
-          procured_from_id: procurer.id,
-          expiry_date: null,
-          batch_number: '',
-          container_size: 5,
-          number_of_containers: 1,
-        })
-
-        // deno-lint-ignore no-explicit-any
-        const error: any = await assertRejects(() =>
-          inventory.consumeConsumable(db, organization_id, {
-            consumable_id: consumable.id,
-            created_by: admin.employee_id!,
-            quantity: 12,
-            procurement_id: first_added.id,
+            container_size: 5,
+            number_of_containers: 1,
           })
-        )
 
-        assertEquals(
-          error.constraint,
-          'procurement_consumed_amount_less_than_quantity',
-        )
-      })
-    })
+          // deno-lint-ignore no-explicit-any
+          const error: any = await assertRejects(() =>
+            inventory.consumeConsumable(db, organization_id, {
+              consumable_id: consumable.id,
+              created_by: admin.employee_id!,
+              quantity: 12,
+              procurement_id: first_added.id,
+            })
+          )
+
+          assertEquals(
+            error.constraint,
+            'procurement_consumed_amount_less_than_quantity',
+          )
+        })
+      },
+    )
   })
 })
