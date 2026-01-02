@@ -1,5 +1,8 @@
+import { useSignal } from '@preact/signals'
 import { CheckedWarningSign } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
+import Search from './Search.tsx'
+import useAsyncSearch from './useAsyncSearch.tsx'
 
 const PRIORITIES = [
   {
@@ -109,10 +112,32 @@ export default function KeyedWarningSigns({
 }: {
   warning_signs: CheckedWarningSign[]
 }) {
+  console.log('blargh')
+  const search = useSignal<string>('')
+
+  const x = useAsyncSearch({
+    search_route: "/app/snomed/warning-signs",
+    value: search.value ? { name: search.value } : null,
+    onSearchResults(results) {
+      console.log(results)
+    },
+  })
+
   const grouped = groupBy(warning_signs, 'sats_priority')
 
   return (
     <div class='flex flex-col gap-4 w-full'>
+      <Search
+        do_not_render_built_in_options
+        options={x.results}
+        onQuery={(query) => {
+          console.log('mmm', query)
+          x.setQuery(query)
+          console.log('zzz', query)
+        }}
+        placeholder='Chief complaint'
+
+      />
       {PRIORITIES.map((priority_config) => {
         const signs = grouped.get(priority_config.priority)
         if (!signs?.length) return null
