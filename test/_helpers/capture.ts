@@ -1,6 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { getCaller } from '../../util/getFileLineNumber.ts'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { JsonSerializable } from '../../types.ts'
 
 /**
  * Replaces the line with an assertEquals()
@@ -33,7 +35,7 @@ export function capture(object: unknown) {
 
   const variable_being_capture = capture_line.split('(')[1].split(')')[0]
   assert(variable_being_capture, 'Variable being capture is not defined')
-  const stringified = JSON.stringify(object, null, 2)
+  const stringified = humanReadableJson(object as JsonSerializable)
   const new_line = leading_spaces +
     `assertEquals(${variable_being_capture}, ${stringified})`
 

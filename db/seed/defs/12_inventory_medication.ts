@@ -9,6 +9,7 @@ import sortBy from '../../../util/sortBy.ts'
 import { define } from '../define.ts'
 import * as inParallel from '../../../util/inParallel.ts'
 import { positive_integer } from '../../../util/validators.ts'
+import { humanReadableJson } from '../../../util/humanReadableJson.ts'
 
 export default define([
   'drugs',
@@ -93,7 +94,7 @@ async function seedDataFromJSON(trx: TrxOrDb) {
   if (skippedDrugs.length) {
     Deno.writeTextFileSync(
       './db/resources/skipped_drugs.json',
-      JSON.stringify(skippedDrugs, null, 2),
+      humanReadableJson(skippedDrugs),
     )
   }
 }
