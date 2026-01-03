@@ -13,7 +13,8 @@ type SExpressionNode = {
 function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
   assert(Array.isArray(parsed))
   const [atom, ...rest] = parsed
-
+  
+  console.log({ parsed, atom })
   assert(isString(atom))
   const args = rest.map((item) => {
     // Seems redundant, but it's not! The s_expression library returns new String instead of string values
@@ -83,6 +84,7 @@ export function parseExpressionExpectingAtom<
 
   const second_pass = parseWithValues(schema, first_pass)
 
+  console.log({ second_pass, atom })
   assert(isAtom(second_pass, atom))
 
   return second_pass

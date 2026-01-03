@@ -277,7 +277,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -725,6 +725,56 @@ describeParallel('triage/warning_signs', () => {
           })
 
         assertEquals(findings_count_after_second_insertion, 2)
+      },
+    )
+
+    itParallel.only(
+      'saves findings other than warning signs (found and selected via search)',
+      async () => {
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear': `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const [finding] = await patient_findings.findAll(db, { patient_id: encounter.patient.id })
+
+        assertMatches(finding, {
+          finding_snomed_concept: {
+            name: 'Pain of ear'
+          },
+          priority: 'Non-urgent',
+        })
+
+        const $ = await fetchCheerio(`${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`)
+
+        assertEquals($('#priority-grid-non-urgent').text(), 'Non-urgentPain of earfinding')
       },
     )
 

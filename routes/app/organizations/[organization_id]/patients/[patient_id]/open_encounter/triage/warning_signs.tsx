@@ -30,17 +30,19 @@ import { exists } from '../../../../../../../../util/exists.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../../../../shared/patient_findings.ts'
+import { assertArrayEmpty } from '../../../../../../../../util/arraySize.ts'
 
 const WarningSignsSchema = z.object({
-  warning_signs: z.partialRecord(
-    z.enum(keys(WARNING_SIGNS)),
+  warning_signs: z.record(
+    z.string(),
     z.string().transform((
       value,
     ) => parseExpressionExpectingAtom(value, 'finding')),
-  ).default({}).transform((signs) =>
+  ).default({}).transform(signs => 
     entries(signs).map(([key, finding]) => ({
       key,
-      finding: exists(finding),
+      finding,
     }))
   ),
 }).strict()
@@ -55,7 +57,7 @@ export const handler = postHandler(
       encounter_employee_presence,
     } = ctx.state
     const warning_signs_previously_entered = groupByUniq(
-      await getWarningSignsFromThisEncounter(ctx),
+      await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx),
       (sign) => sign.key,
     )
 
@@ -65,12 +67,7 @@ export const handler = postHandler(
     await forEach(
       form_values.warning_signs,
       async ({ key, finding }) => {
-        const previously_entered = exists(
-          warning_signs_previously_entered.get(key),
-        )
         warning_signs_previously_entered.delete(key)
-
-        if (previously_entered.satisfied_by_record_id) return
 
         const finding_insert = await patient_findings
           .insertOneIfNotAlreadyExistsForThisEncounter(
@@ -85,21 +82,27 @@ export const handler = postHandler(
             },
           )
         assert(finding_insert.success)
-        assert(finding_insert.inserted_new)
-        assert(isKeyOf(key, WARNING_SIGNS))
-        const sign = WARNING_SIGNS[key]
 
-        await insertLevel(
-          trx,
-          {
-            patient_id,
-            patient_encounter_id,
-            procedure_id,
-            by_system: true,
-            triage_level: sign.sats_priority,
-            evaluates_record_id: finding_insert.finding_id,
-          },
-        )
+        // TODO This is not quite right if/when snomed concepts we search for (descendants)
+        // Have priority levels. Those will need to be inserted as well
+        if (finding_insert.inserted_new) {
+          const triage_level = isKeyOf(key, WARNING_SIGNS)
+            ? WARNING_SIGNS[key].sats_priority
+            : 'Non-urgent'
+          
+          await insertLevel(
+            trx,
+            {
+              patient_id,
+              patient_encounter_id,
+              procedure_id,
+              triage_level,
+              by_system: true,
+              evaluates_record_id: finding_insert.finding_id,
+            },
+          )
+          
+        }
       },
     )
 
@@ -122,6 +125,36 @@ export const handler = postHandler(
     return completeAndProceedToNextStep(ctx)
   },
 )
+
+async function getAllOtherClinicalFindingsFromThisEncounter(
+  { state }: OpenEncounterWorkflowContext,
+): Promise<CheckedWarningSign[]> {
+  const { trx, patient_id, patient_encounter_id } = state
+  const not_expressions = KEYED_WARNING_SIGNS.map((sign) => 
+    `(not ${sign.clinical_finding_s_expression})`).join(' ')
+
+  const s_expression = `
+    (and (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})
+         ${not_expressions})
+  `
+
+  const other_clinical_findings = await patient_findings.findAll(trx, {patient_id, patient_encounter_id, s_expression })
+
+  return other_clinical_findings.map(finding => {
+    assert(finding.root_snomed_concept.snomed_concept_id === CLINICAL_FINDING_SNOMED_CONCEPT_ID)
+    assertArrayEmpty(finding.attributes)
+
+    return {
+      key: finding.finding_snomed_concept.name,
+      clinical_finding_s_expression: `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding.finding_snomed_concept.snomed_concept_id})`,
+      sats_primary_name: finding.finding_snomed_concept.name,
+      sats_secondary_text: finding.finding_snomed_concept.category,
+      sats_priority: finding.priority || 'Non-urgent',
+      satisfied_by_record_id: finding.record_id
+    }
+  })
+}
+
 
 function getWarningSignsFromThisEncounter(
   ctx: OpenEncounterWorkflowContext,
@@ -177,11 +210,21 @@ function getWarningSignsFromThisEncounter(
   ).then(compact)
 }
 
+async function getAllClinicalFindingsAsWarningSignsForThisEncounter(
+  ctx: OpenEncounterWorkflowContext,
+): Promise<CheckedWarningSign[]> {
+  const [other, base] = await Promise.all([
+    getAllOtherClinicalFindingsFromThisEncounter(ctx),
+    getWarningSignsFromThisEncounter(ctx)
+  ])
+  return [...other, ...base]
+}
+
 export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   return (
-    <WarningSigns warning_signs={await getWarningSignsFromThisEncounter(ctx)} />
+    <WarningSigns warning_signs={await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx)} />
   )
 }
 

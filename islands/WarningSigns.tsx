@@ -9,6 +9,7 @@ import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../shared/patient_findings.t
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
+import { hyphenate } from '../util/hyphenate.ts'
 
 const PRIORITIES = [
   {
@@ -43,7 +44,7 @@ function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign,
     <label class='flex gap-3 items-start cursor-pointer flex-1 p-3 min-w-0'>
       <div class='pt-0.5'>
         <input
-          id={name}
+          id={hyphenate(name)}
           type='checkbox'
           name={name}
           value={sign.clinical_finding_s_expression}
@@ -66,7 +67,7 @@ function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign,
   )
 }
 
-function KeyedWarningSignsTable({
+function KeyedWarningSignsPriorityGrid({
   priority_config,
   signs,
   onCheck
@@ -83,7 +84,7 @@ function KeyedWarningSignsTable({
   }
 
   return (
-    <div class='flex flex-col w-full overflow-hidden rounded-xl border border-gray-200'>
+    <div class='flex flex-col w-full overflow-hidden rounded-xl border border-gray-200' id={`priority-grid-${hyphenate(priority_config.priority)}`}>
       {/* Header */}
       <div
         class='py-3 flex items-center justify-center'
@@ -117,7 +118,7 @@ function KeyedWarningSignsTable({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default function KeyedWarningSigns({
@@ -210,7 +211,7 @@ export default function KeyedWarningSigns({
         const signs = grouped.value.get(priority_config.priority)
         if (!signs?.length) return null
         return (
-          <KeyedWarningSignsTable
+          <KeyedWarningSignsPriorityGrid
             key={priority_config.priority}
             priority_config={priority_config}
             signs={signs}

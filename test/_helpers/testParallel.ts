@@ -15,21 +15,25 @@ export type TestCase =
     opts: { only?: boolean; skip?: boolean },
   ]
 
-async function runTestCases(
+function casesToRun(
   cases: TestCase[],
+) {
+  const any_only = cases.some((test_case) => test_case[2]?.only)
+  return any_only
+    ? cases.filter((test_case) => test_case[2]?.only)
+    : cases.filter((test_case) => !test_case[2]?.skip)
+}
+
+async function runTestCases(
+  cases_to_run: TestCase[],
   { fail_fast, concurrency = Infinity }: {
     fail_fast?: boolean
     concurrency?: number
   } = {},
 ) {
-  const any_only = cases.some((test_case) => test_case[2]?.only)
-  const run_test_cases = any_only
-    ? cases.filter((test_case) => test_case[2]?.only)
-    : cases.filter((test_case) => !test_case[2]?.skip)
-
   const failures: Array<Failure & { name: string }> = []
 
-  await forEach(run_test_cases, async ([name, fn]) => {
+  await forEach(cases_to_run, async ([name, fn]) => {
     const result = await asResultAsync(() => Promise.resolve().then(fn))
     if (isSuccess(result)) return
     if (fail_fast) throw result.error
@@ -67,7 +71,7 @@ export function describeParallel(
   run(description, () => {
     callback()
     assert(test_cases.length, 'No test cases supplied')
-    const cases_to_run = test_cases
+    const cases_to_run = casesToRun(test_cases)
     it(`passes ${cases_to_run.length} test ${pluralize('case', cases_to_run.length)}`, () =>
       runTestCases(cases_to_run))
   })
