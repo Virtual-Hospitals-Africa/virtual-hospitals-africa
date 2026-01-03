@@ -7,7 +7,6 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
-  ALL_VITAL_SNOMED_CONCEPT_IDS,
   ASESSMENTS_ORDERED,
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,

@@ -3493,48 +3493,52 @@ export type RecordValue =
   | RecordValueSnomedConcept
   | RecordValueMeasurement
 
+export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
+  & Rest
+  & {
+    type: Type
+    record_id: string
+    patient_encounter_id: string
+    root_snomed_concept: RenderedSnomedConcept
+    displays: RecordDisplays
+    created_at: Date | string
+    attributes: RenderedAttribute<RecordValueSnomedConcept>[]
+    events: RenderedAttribute<RecordValueEvent>[]
+    value: null | RecordValue
+    evaluations: {
+      record_id: string
+      patient_encounter_id: string
+      root_snomed_concept: RenderedSnomedConcept
+    }[]
+  }
 
+export type RenderedEvaluationEvaluatedBy =
+  | { system: true }
+  | ({ system: false, provider: RenderedRecordProvider, as_part_of_procedure: AsPartOfProcedure })
 
-export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> = Rest & {
-  type: Type
-  record_id: string
-  patient_encounter_id: string
-  root_snomed_concept: RenderedSnomedConcept
-  displays: RecordDisplays
-  created_at: Date | string
-  attributes: RenderedAttribute<RecordValueSnomedConcept>[]
-  events: RenderedAttribute<RecordValueEvent>[]
-  value: null | RecordValue
-}
+export type RenderedEvaluationRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
+    evaluated_by: RenderedEvaluationEvaluatedBy
+  }>
 
+export type RenderedFindingRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'finding', {
+    finding_snomed_concept: RenderedSnomedConcept
+    priority: Priority | null
+    score: number | null
+    provider: RenderedRecordProvider
+    as_part_of_procedure: AsPartOfProcedure
+  }>
 
-export type RenderedEvaluationEvaluatedBy = 
-| { by_system: true }
-| ({ by_system: false } & RenderedRecordProvider)
+export type RenderedProcedureRelativeToHealthWorker =
+  RenderedRecordRelativeToHealthWorkerDef<'procedure', {
+    provider: RenderedRecordProvider
+  }>
 
-export type RenderedEvaluationRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
-  evaluated_by: RenderedEvaluationEvaluatedBy
-  evaluations: RenderedEvaluationRelativeToHealthWorker[]
-}>
-
-export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'finding', {
-  finding_snomed_concept: RenderedSnomedConcept
-  priority: Priority | null
-  score: number | null
-  provider: RenderedRecordProvider
-  as_part_of_procedure: AsPartOfProcedure
-  evaluations: RenderedEvaluationRelativeToHealthWorker[]
-}>
-
-export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-  provider: RenderedRecordProvider
-  evaluations: RenderedEvaluationRelativeToHealthWorker[]
-}>
-
-export type RenderedRecordRelativeToHealthWorker = 
-  | RenderedFindingRelativeToHealthWorker 
-  | RenderedEvaluationRelativeToHealthWorker 
-  | RenderedProcedureRelativeToHealthWorker 
+export type RenderedRecordRelativeToHealthWorker =
+  | RenderedFindingRelativeToHealthWorker
+  | RenderedEvaluationRelativeToHealthWorker
+  | RenderedProcedureRelativeToHealthWorker
 
 export type WithTriageLevelFinding = NonNullableProperty<
   RenderedFindingRelativeToHealthWorker,

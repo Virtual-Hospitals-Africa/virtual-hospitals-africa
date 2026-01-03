@@ -137,10 +137,43 @@ export function baseQuery(
       'patient_records.value_snomed_concept_id',
       'value_snomed_inferred_canonical_name_and_category.id',
     )
+    .leftJoin(
+      'patient_events as maybe_events',
+      'patient_records.id',
+      'maybe_events.id',
+    )
+    .leftJoin(
+      'patient_measurements as maybe_measurements',
+      'patient_records.id',
+      'maybe_measurements.id',
+    )
     .select((eb) => [
       'patient_records.id as record_id',
       'patient_records.created_at',
       'patient_records.patient_encounter_id',
+
+      // TODO: we likely need the values here...
+      // Probably worth extracting another baseQuery
+      jsonArrayFrom(
+        eb.selectFrom('patient_evaluations')
+          .innerJoin('patient_records as evaluation_records', 'evaluation_records.id', 'patient_evaluations.id')
+          .innerJoin('snomed_inferred_canonical_name_and_category as evaluation_snomed_inferred_canonical_name_and_category', 'evaluation_snomed_inferred_canonical_name_and_category.id', 'evaluation_records.snomed_concept_id')
+          .whereRef('patient_evaluations.evaluates_record_id', '=', 'patient_records.id')
+          .select(eb_evaluations => [
+            'evaluation_records.id as record_id',
+            'evaluation_records.patient_encounter_id',
+            jsonBuildObject({
+              snomed_concept_id: asText(
+                eb_evaluations,
+                'evaluation_snomed_inferred_canonical_name_and_category.id',
+              ),
+              name: eb_evaluations.ref('evaluation_snomed_inferred_canonical_name_and_category.name'),
+              category: eb_evaluations.ref(
+                'evaluation_snomed_inferred_canonical_name_and_category.category',
+              ),
+            }).as('root_snomed_concept'),
+          ])
+      ).as('evaluations'),
 
       jsonBuildObject({
         snomed_concept_id: asText(
@@ -153,21 +186,56 @@ export function baseQuery(
         ),
       }).as('root_snomed_concept'),
 
-      jsonBuildNullableObject(
-        eb.ref('patient_records.value_snomed_concept_id'),
-        {
-          type: literalString('snomed_concept' as const),
-          snomed_concept_id: asText(
-            eb,
-            'value_snomed_inferred_canonical_name_and_category.id',
-          ).$notNull(),
-          name: eb.ref('value_snomed_inferred_canonical_name_and_category.name')
-            .$notNull(),
-          category: eb.ref(
-            'value_snomed_inferred_canonical_name_and_category.category',
-          ).$notNull(),
-        },
-      ).as('value_snomed_concept'),
+      eb.fn.coalesce(
+        jsonBuildNullableObject(
+          eb.ref('patient_records.value_snomed_concept_id'),
+          {
+            type: literalString('snomed_concept' as const),
+            snomed_concept_id: asText(
+              eb,
+              'value_snomed_inferred_canonical_name_and_category.id',
+            ).$notNull(),
+            name: eb.ref(
+              'value_snomed_inferred_canonical_name_and_category.name',
+            )
+              .$notNull(),
+            category: eb.ref(
+              'value_snomed_inferred_canonical_name_and_category.category',
+            ).$notNull(),
+          },
+        ),
+        jsonBuildNullableObject(
+          eb.ref('maybe_events.id'),
+          {
+            type: literalString('event' as const),
+            datetime: eb.ref('maybe_events.datetime').$notNull(),
+          },
+        ),
+        jsonBuildNullableObject(
+          eb.ref('maybe_measurements.id'),
+          {
+            type: literalString('measurement' as const),
+            value: asText(eb, 'maybe_measurements.value').$notNull(),
+            units: eb.ref('maybe_measurements.units').$notNull(),
+          },
+        ),
+      ).as('value'),
+
+      // jsonBuildNullableObject(
+      //   eb.ref('patient_records.value_snomed_concept_id'),
+      //   {
+      //     type: literalString('snomed_concept' as const),
+      //     snomed_concept_id: asText(
+      //       eb,
+      //       'value_snomed_inferred_canonical_name_and_category.id',
+      //     ).$notNull(),
+      //     name: eb.ref('value_snomed_inferred_canonical_name_and_category.name')
+      //       .$notNull(),
+      //     category: eb.ref(
+      //       'value_snomed_inferred_canonical_name_and_category.category',
+      //     ).$notNull(),
+      //   },
+      // ).as('value_snomed_concept'),
 
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')

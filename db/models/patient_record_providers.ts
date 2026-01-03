@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  RenderedRecordProvider,
   RenderedPatientEncounter,
+  RenderedRecordProvider,
   TrxOrDb,
 } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'

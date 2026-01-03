@@ -14,7 +14,6 @@ import omit from '../util/omit.ts'
 type DisplayableRecord = {
   root_snomed_concept: RenderedSnomedConcept
   finding_snomed_concept?: Maybe<RenderedSnomedConcept>
-  value_snomed_concept?: Maybe<RecordValueSnomedConcept>
   value?: Maybe<RecordValue>
   prefixes?: DisplayableRecord[]
   // Attributes are not included as part of the display, but listed here for completeness
@@ -125,17 +124,10 @@ type RenderedDisplayableRecord<DR extends DisplayableRecord> =
 function mergeValuesAddDisplay<DR extends DisplayableRecord>(
   record: DR,
 ): RenderedDisplayableRecord<DR> {
-  assert(
-    !record.value || !record.value_snomed_concept,
-    'Record can have a value or value_snomed_concept, but not both',
-  )
-  const unified_value = {
-    ...omit(record, ['value_snomed_concept']),
-    value: record.value || record.value_snomed_concept || null,
-  }
   return {
-    ...unified_value,
-    displays: buildDisplays(unified_value),
+    ...record,
+    value: record.value || null,
+    displays: buildDisplays(record),
   }
 }
 

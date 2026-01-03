@@ -14,13 +14,12 @@ import {
 } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
-  ALL_VITAL_SNOMED_CONCEPT_IDS,
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
   SEVERITY_SCORE_SNOMED_CONCEPT_ID,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
 import {
@@ -60,7 +59,7 @@ const TriageMeasureVitalsSchema = z.object({
     ),
   ).default({}),
   assessments: z.partialRecord(
-    z.enum(keys(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)),
+    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
     z.object({
       finding_snomed_concept_id: snomed_concept_id,
     }).strict(),
@@ -111,18 +110,29 @@ export const handler = postHandler(
     const {
       procedure: { procedure_id },
       shared: { age_determination, measurements, assessments },
-      previous_vitals_this_encounter,
+      previous_measurements_this_encounter,
+      previous_assessments_this_encounter,
     } = await promiseProps({
       procedure: createProcedureIfNotAlreadyCompleted(ctx),
       shared: sharedVitalsDeterminations(ctx),
-      previous_vitals_this_encounter: patient_vitals
-        .getMostRecent(
+      previous_measurements_this_encounter: patient_vitals
+        .getMostRecentMeasurements(
           ctx.state.trx,
           {
             patient_id: ctx.state.patient.id,
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
-            snomed_concept_ids: ALL_VITAL_SNOMED_CONCEPT_IDS,
+            snomed_concept_ids: Object.values(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS),
+          },
+        ),
+      previous_assessments_this_encounter: patient_vitals
+        .getMostRecentAssessments(
+          ctx.state.trx,
+          {
+            patient_id: ctx.state.patient.id,
+            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+            health_worker_id: ctx.state.health_worker.id,
+            snomed_concept_ids: Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
           },
         ),
     })
@@ -138,7 +148,7 @@ export const handler = postHandler(
         continue
       }
 
-      const measured_previously = previous_vitals_this_encounter.some(
+      const measured_previously = previous_measurements_this_encounter.some(
         (v) => v.finding_snomed_concept.snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
@@ -148,7 +158,9 @@ export const handler = postHandler(
     }
 
     // Assert all required assessments are present or were already measured this encounter
-    for (const { vital, options, evaluation_snomed_concept_id } of assessments) {
+    for (
+      const { vital, options, evaluation_snomed_concept_id } of assessments
+    ) {
       const form_input = form_values.assessments[vital]
       if (form_input) {
         const option_snomed_concept_ids = options.map((o) =>
@@ -164,9 +176,12 @@ export const handler = postHandler(
         continue
       }
 
-      const assessed_previously = previous_vitals_this_encounter.some(
-        (finding) => finding.evaluations.some(evaluation => 
-          evaluation.root_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id),
+      const assessed_previously = previous_assessments_this_encounter.some(
+        (finding) =>
+          finding.evaluations.some((evaluation) =>
+            evaluation.root_snomed_concept.snomed_concept_id ===
+              evaluation_snomed_concept_id
+          ),
       )
       assertOr400(
         assessed_previously,
@@ -234,7 +249,7 @@ export const handler = postHandler(
           )
           if (score != null) {
             const evaluation_snomed_concept_id =
-              VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital]
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
 
             await patient_evaluation_scores.insertOneNested(trx, {
               score,
@@ -287,30 +302,54 @@ export async function TriageMeasureVitalsPage(
 ) {
   const { measurements, assessments } = await sharedVitalsDeterminations(ctx)
 
-  const most_recent_patient_vitals = await patient_vitals
-    .getMostRecent(
+  const most_recent_patient_measurements = await patient_vitals
+    .getMostRecentMeasurements(
       ctx.state.trx,
       {
         patient_id: ctx.state.patient.id,
         health_worker_id: ctx.state.health_worker.id,
-        snomed_concept_ids: [
-          ...measurements.map((m) => m.snomed_concept_id),
-          ...assessments.map((m) => m.evaluation_snomed_concept_id),
-        ],
+        snomed_concept_ids: measurements.map((m) => m.snomed_concept_id)
       },
     )
 
-  function notRequiredIfAlreadyDoneThisEncounter<
-    Def extends
-      | VitalMeasurementFormInputDefition
-      | VitalAssessmentFormInputDefition,
+  const most_recent_patient_assessments = await patient_vitals
+    .getMostRecentAssessments(
+      ctx.state.trx,
+      {
+        patient_id: ctx.state.patient.id,
+        health_worker_id: ctx.state.health_worker.id,
+        snomed_concept_ids: assessments.map((m) => m.evaluation_snomed_concept_id)
+      },
+    )
+
+
+
+  function notRequiredIfMeasurementAlreadyDoneThisEncounter<
+    Def extends VitalMeasurementFormInputDefition
   >(
     def: Def,
   ): Def {
     if (!def.required) return def
-    const already_done_this_encounter = most_recent_patient_vitals.some(
+    const already_done_this_encounter = most_recent_patient_measurements.some(
       (v) =>
         v.finding_snomed_concept.snomed_concept_id === def.snomed_concept_id &&
+        v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
+    )
+    return {
+      ...def,
+      required: !already_done_this_encounter,
+    }
+  }
+
+  function notRequiredIfAssessmentAlreadyDoneThisEncounter<
+    Def extends VitalAssessmentFormInputDefition
+  >(
+    def: Def,
+  ): Def {
+    if (!def.required) return def
+    const already_done_this_encounter = most_recent_patient_assessments.some(
+      (v) =>
+        v.evaluations.some(e => e.root_snomed_concept.snomed_concept_id === def.evaluation_snomed_concept_id) &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
     )
     return {
@@ -322,12 +361,15 @@ export async function TriageMeasureVitalsPage(
   return (
     <VitalsMeasurementsForm
       vital_measurements_for_this_encounter={measurements.map(
-        notRequiredIfAlreadyDoneThisEncounter,
+        notRequiredIfMeasurementAlreadyDoneThisEncounter,
       )}
       triage_assessments={assessments.map(
-        notRequiredIfAlreadyDoneThisEncounter,
+        notRequiredIfAssessmentAlreadyDoneThisEncounter,
       )}
-      most_recent_patient_vitals={most_recent_patient_vitals}
+      most_recent_patient_vitals={[
+        ...most_recent_patient_measurements,
+        ...most_recent_patient_assessments,
+      ]}
       organization_id={ctx.state.organization.id}
     />
   )

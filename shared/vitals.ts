@@ -48,16 +48,10 @@ export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
   blood_pressure: '75367002',
 }
 
-export const VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS = {
-  mobility_assessment: '301438001',
-  consciousness: '1104441000000107',
-  trauma_presence: '417746004',
-}
-
-export const ALL_VITALS_SNOMED_CONCEPT_IDS = {
-  ...VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
-  ...VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
-  ...VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
+export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS = {
+  mobility_assessment: '430481008', // |Assessment of mobility (procedure)|
+  consciousness: '1104441000000107', // |Alert Confusion Voice Pain Unresponsive scale score (observable entity)|
+  trauma_presence: '273884004' // |Trauma score (assessment scale)|',
 }
 
 export const vitalMeasurementFromSnomedConceptId = memoize(
@@ -80,7 +74,7 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
 export const vitalAssessmentFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
-      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS)
+      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)
     ) {
       if (concept_id === snomed_concept_id) {
         return vital
@@ -91,33 +85,11 @@ export const vitalAssessmentFromSnomedConceptId = memoize(
     )
   },
 )
-export const vitalFromSnomedConceptId = memoize(
-  (snomed_concept_id: string) => {
-    for (
-      const [vital, concept_id] of entries(
-        ALL_VITALS_SNOMED_CONCEPT_IDS,
-      )
-    ) {
-      if (concept_id === snomed_concept_id) {
-        return vital
-      }
-    }
-    throw new Error(
-      `No vital found for snomed_concept_id: ${snomed_concept_id}`,
-    )
-  },
-)
-
-export const ALL_VITAL_SNOMED_CONCEPT_IDS = Object.values({
-  ...VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
-  ...VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
-  ...VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS,
-})
 
 export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
 export type VitalMeasurement =
   keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
-export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS
+export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
@@ -389,7 +361,7 @@ export function measureVitalsInputDefinitions(
   ).map(([vital, options]) => ({
     vital,
     required: true,
-    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital],
+    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
     options: options.filter((option) =>
       option.available_to_ages.includes(age_determination)
     ),
@@ -468,7 +440,7 @@ export function buildReferenceRanges(
     return null
   }
 
-  const vital = vitalFromSnomedConceptId(snomed_concept_id)
+  const vital = vitalMeasurementFromSnomedConceptId(snomed_concept_id)
   if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)) {
     return null
   }

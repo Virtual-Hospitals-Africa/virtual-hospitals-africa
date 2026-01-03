@@ -110,7 +110,7 @@ export const patient_vitals = base({
 
     return qb
   },
-  async getMostRecent(
+  async getMostRecentMeasurements(
     trx: TrxOrDb,
     {
       health_worker_id,
@@ -123,72 +123,138 @@ export const patient_vitals = base({
       patient_id: string
       patient_encounter_id?: string
       excluding_patient_encounter_id?: string
-      snomed_concept_ids?: string[]
+      snomed_concept_ids: string[]
     },
   ): Promise<RenderedFindingRelativeToHealthWorker[]> {
-    if (snomed_concept_ids) assertArrayNonEmpty(snomed_concept_ids)
 
-    const findings = await trx.with(
-      'ranked_findings',
-      (qb) =>
-        baseQuery(qb)
-          .where('patient_records.patient_id', '=', patient_id)
-          .$if(!!patient_encounter_id, (qb) =>
-            qb.where(
-              'patient_records.patient_encounter_id',
-              '=',
-              patient_encounter_id!,
-            ))
-          .$if(!!excluding_patient_encounter_id, (qb) =>
-            qb.where(
-              'patient_records.patient_encounter_id',
-              '!=',
-              excluding_patient_encounter_id!,
-            ))
-          .$if(!!snomed_concept_ids, (qb) =>
-            // Maybe a hack, but 
-            qb.where(eb => eb.or([
-              eb(
-                'patient_findings.finding_snomed_concept_id',
-                'in',
-                snomed_concept_ids!,
-              ),
-               eb(
-                'patient_findings.id',
-                'in',
-                trx.selectFrom('patient_evaluations')
-                  .innerJoin('patient_records', 'patient_evaluations.id', 'patient_records.id')
-                  .where('patient_records.snomed_concept_id', 'in', snomed_concept_ids!)
-                  .select('patient_evaluations.evaluates_record_id')
-              ),
-            ]))
-          
-          )
-          .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
-              .as('rank'),
-          )
-          .orderBy('patient_records.created_at', 'desc'),
-    ).selectFrom('ranked_findings')
-      .where('ranked_findings.rank', '=', 1)
-      .selectAll('ranked_findings')
-      .select(sql<'manual'>`'manual'`.as('finding_type'))
-      .select((eb) => [
-        jsonObjectFrom(
-          patient_encounter_employees.baseQuery(trx)
+    return (await getMostRecent()).map(formatRecord)
+
+    function getMostRecent() {
+      return trx.with(
+        'ranked_findings',
+        (qb) =>
+          baseQuery(qb)
+            .where('patient_records.patient_id', '=', patient_id)
             .where(
-              'patient_encounter_employees.id',
-              '=',
-              eb.ref('ranked_findings.patient_encounter_employee_id'),
-            ).select((eb_employees) => [
-              eb_employees('health_workers.id', '=', health_worker_id).as(
-                'is_me',
-              ),
-            ]),
-        ).$notNull().as('provider'),
-      ]).execute()
+              'patient_findings.finding_snomed_concept_id',
+              'in',
+              snomed_concept_ids!,
+            )
+            .$if(!!patient_encounter_id, (qb) =>
+              qb.where(
+                'patient_records.patient_encounter_id',
+                '=',
+                patient_encounter_id!,
+              ))
+            .$if(!!excluding_patient_encounter_id, (qb) =>
+              qb.where(
+                'patient_records.patient_encounter_id',
+                '!=',
+                excluding_patient_encounter_id!,
+              ))
+            .select(
+              sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+                .as('rank'),
+            )
+            .orderBy('patient_records.created_at', 'desc'),
+      ).selectFrom('ranked_findings')
+        .where('ranked_findings.rank', '=', 1)
+        .selectAll('ranked_findings')
+        .select(sql<'manual'>`'manual'`.as('finding_type'))
+        .select((eb) => [
+          jsonObjectFrom(
+            patient_encounter_employees.baseQuery(trx)
+              .where(
+                'patient_encounter_employees.id',
+                '=',
+                eb.ref('ranked_findings.patient_encounter_employee_id'),
+              ).select((eb_employees) => [
+                eb_employees('health_workers.id', '=', health_worker_id).as(
+                  'is_me',
+                ),
+              ]),
+          ).$notNull().as('provider'),
+        ]).execute()
+    }
+  },
 
-    return findings.map(formatRecord)
+  async getMostRecentAssessments(
+    trx: TrxOrDb,
+    {
+      health_worker_id,
+      patient_id,
+      patient_encounter_id,
+      excluding_patient_encounter_id,
+      snomed_concept_ids,
+    }: {
+      health_worker_id: string
+      patient_id: string
+      patient_encounter_id?: string
+      excluding_patient_encounter_id?: string
+      snomed_concept_ids: string[]
+    },
+  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
+
+    return (await getMostRecent()).map(formatRecord)
+
+    function getMostRecent() {
+      return trx.with(
+        'ranked_findings',
+        (qb) =>
+          baseQuery(qb)
+            .where('patient_records.patient_id', '=', patient_id)
+            .where(
+              'patient_findings.id',
+              'in',
+              trx.selectFrom('patient_evaluations')
+              .innerJoin(
+                'patient_records',
+                'patient_evaluations.id',
+                'patient_records.id',
+              )
+              .where(
+                'patient_records.snomed_concept_id',
+                'in',
+                snomed_concept_ids,
+              )
+              .select('patient_evaluations.evaluates_record_id'),
+            )
+            .$if(!!patient_encounter_id, (qb) =>
+              qb.where(
+                'patient_records.patient_encounter_id',
+                '=',
+                patient_encounter_id!,
+              ))
+            .$if(!!excluding_patient_encounter_id, (qb) =>
+              qb.where(
+                'patient_records.patient_encounter_id',
+                '!=',
+                excluding_patient_encounter_id!,
+              ))
+            .select(
+              sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+                .as('rank'),
+            )
+            .orderBy('patient_records.created_at', 'desc'),
+      ).selectFrom('ranked_findings')
+        .where('ranked_findings.rank', '=', 1)
+        .selectAll('ranked_findings')
+        .select(sql<'manual'>`'manual'`.as('finding_type'))
+        .select((eb) => [
+          jsonObjectFrom(
+            patient_encounter_employees.baseQuery(trx)
+              .where(
+                'patient_encounter_employees.id',
+                '=',
+                eb.ref('ranked_findings.patient_encounter_employee_id'),
+              ).select((eb_employees) => [
+                eb_employees('health_workers.id', '=', health_worker_id).as(
+                  'is_me',
+                ),
+              ]),
+          ).$notNull().as('provider'),
+        ]).execute()
+    }
   },
 })
 

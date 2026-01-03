@@ -1,10 +1,10 @@
 import { Kysely, sql } from 'kysely'
 import keys from '../../util/keys.ts'
-import { VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
+import { VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema.createType('vital_assessment')
-    .asEnum(keys(VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS))
+    .asEnum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS))
     .execute()
 
   // 1. Create sats_triage_assessments table
