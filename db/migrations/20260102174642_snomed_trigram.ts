@@ -18,5 +18,6 @@ export async function up(db: Kysely<DB>) {
 
 export async function down(db: Kysely<DB>) {
   await sql`DROP INDEX trgm_snomed_description_term`.execute(db)
-  await sql`DROP INDEX trgm_snomed_inferred_canonical_name_and_category_name`.execute(db)
+  await sql`DROP INDEX trgm_snomed_inferred_canonical_name_and_category_name`
+    .execute(db)
 }

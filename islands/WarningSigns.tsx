@@ -1,15 +1,16 @@
-import { computed, Signal, useSignal } from '@preact/signals'
-import { CheckedWarningSign, NonEmptyArray } from '../types.ts'
+import { computed, useSignal } from '@preact/signals'
+import { CheckedWarningSign } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../util/isString.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../shared/patient_findings.ts'
+import { CHIEF_COMPLAINT_SNOMED_CONCEPT_ID } from '../shared/patient_findings.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
 import { hyphenate } from '../util/hyphenate.ts'
+import { uniqBy } from '../util/uniqBy.ts'
 
 const PRIORITIES = [
   {
@@ -36,9 +37,11 @@ const PRIORITIES = [
 
 type PriorityConfig = typeof PRIORITIES[number]
 
-type OnCheck = (sign: CheckedWarningSign) => void
+type OnToggle = (sign: CheckedWarningSign, checked: boolean) => void
 
-function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign, onCheck: OnCheck }) {
+function KeyedWarningSignCheckbox(
+  { sign, onToggle }: { sign: CheckedWarningSign; onToggle: OnToggle },
+) {
   const name = `warning_signs.${sign.key}`
   return (
     <label class='flex gap-3 items-start cursor-pointer flex-1 p-3 min-w-0'>
@@ -48,9 +51,9 @@ function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign,
           type='checkbox'
           name={name}
           value={sign.clinical_finding_s_expression}
-          checked={!!sign.satisfied_by_record_id}
+          checked={!!sign.checked}
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
-          onInput={event => event.currentTarget.checked && onCheck(sign)}
+          onInput={(event) => onToggle(sign, event.currentTarget.checked)}
         />
       </div>
       <label class='flex flex-col gap-1' for={name}>
@@ -70,11 +73,11 @@ function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign,
 function KeyedWarningSignsPriorityGrid({
   priority_config,
   signs,
-  onCheck
+  onToggle,
 }: {
   priority_config: PriorityConfig
   signs: CheckedWarningSign[]
-  onCheck: OnCheck
+  onToggle: OnToggle
 }) {
   const columns = 5
   const rows: CheckedWarningSign[][] = []
@@ -84,7 +87,10 @@ function KeyedWarningSignsPriorityGrid({
   }
 
   return (
-    <div class='flex flex-col w-full overflow-hidden rounded-xl border border-gray-200' id={`priority-grid-${hyphenate(priority_config.priority)}`}>
+    <div
+      class='flex flex-col w-full overflow-hidden rounded-xl border border-gray-200'
+      id={`priority-grid-${hyphenate(priority_config.priority)}`}
+    >
       {/* Header */}
       <div
         class='py-3 flex items-center justify-center'
@@ -106,7 +112,7 @@ function KeyedWarningSignsPriorityGrid({
                 key={sign.key}
                 class='flex-1 p-3 min-w-0'
               >
-                <KeyedWarningSignCheckbox sign={sign} onCheck={onCheck}/>
+                <KeyedWarningSignCheckbox sign={sign} onToggle={onToggle} />
               </div>
             ))}
             {/* Fill remaining columns with empty cells */}
@@ -118,7 +124,7 @@ function KeyedWarningSignsPriorityGrid({
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 export default function KeyedWarningSigns({
@@ -126,34 +132,35 @@ export default function KeyedWarningSigns({
 }: {
   warning_signs: CheckedWarningSign[]
 }) {
-  const non_base_checked = useSignal<CheckedWarningSign[]>([])
+  const checked_signs = useSignal<CheckedWarningSign[]>(
+    warning_signs.filter((sign) => sign.checked),
+  )
   const query = useSignal<string>('')
   const search_results_as_signs = useSignal<CheckedWarningSign[]>([])
-  
+
+  console.log(checked_signs.value)
+
   const grouped = computed(() => {
     console.log({
       'query.value': query.value,
       'search_results_as_signs.value': search_results_as_signs.value,
-      'non_base_checked.value': non_base_checked.value
+      'checked_signs.value': checked_signs.value,
     })
     if (!query.value) {
-      return groupBy([...non_base_checked.value, ...warning_signs], 'sats_priority')
+      return groupBy(
+        uniqBy(
+          [...checked_signs.value, ...warning_signs],
+          (sign) => sign.sats_primary_name,
+        ),
+        'sats_priority',
+      )
     }
 
     return groupBy([
       ...search_results_as_signs.value,
-      ...non_base_checked.value,
-      ...warning_signs.filter(sign => sign.satisfied_by_record_id)
+      ...checked_signs.value,
     ], 'sats_priority')
   })
-  
-  // : Signal<
-  //   Map<
-  //     'Emergency' | 'Very urgent' | 'Urgent' | 'Non-urgent',
-  //     NonEmptyArray<CheckedWarningSign>
-  //   >
-  // > = useSignal(base_warning_signs)
-
 
   const x = useAsyncSearch({
     search_route: '/app/snomed/warning-signs',
@@ -161,33 +168,38 @@ export default function KeyedWarningSigns({
     value: null,
     onSearchResults(results) {
       query.value = results.query
-      
 
       const all_results = results.pages.flatMap((page) => page.results)
 
-      search_results_as_signs.value = all_results.map((r): CheckedWarningSign => {
-        assert('id' in r)
-        assert(isString(r.id))
-        assert('category' in r)
-        assert(isString(r.category))
-        assert(r.name)
-        return {
-          satisfied_by_record_id: null,
-          key: r.id,
-          clinical_finding_s_expression:
-            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})`,
-          sats_primary_name: r.name,
-          sats_secondary_text: r.category + ' ' + (r.best_similarity),
-          sats_priority: 'Non-urgent',
-        }
-      })
+      search_results_as_signs.value = all_results.map(
+        (r): CheckedWarningSign => {
+          assert('id' in r)
+          assert(isString(r.id))
+          assert('category' in r)
+          assert(isString(r.category))
+          assert(r.name)
+          return {
+            satisfied_by_record_id: null,
+            checked: false,
+            key: r.id,
+            sats_priority: 'Non-urgent', // TODO actually get this from the server
+            clinical_finding_s_expression:
+              `(finding ${CHIEF_COMPLAINT_SNOMED_CONCEPT_ID} ${r.id})`,
+            sats_primary_name: r.name,
+            sats_secondary_text: r.category, /* + ' ' + (r.best_similarity), */
+          }
+        },
+      )
     },
   })
 
   const sorted_priorities = sortBy(
     PRIORITIES,
-    ({ priority }) => -(grouped.value.get(priority) || []).filter(sign => sign.satisfied_by_record_id).length,
-    (_config, index) => index
+    ({ priority }) =>
+      -(grouped.value.get(priority) || []).filter((sign) =>
+        sign.satisfied_by_record_id
+      ).length,
+    (_config, index) => index,
   )
 
   return (
@@ -201,10 +213,10 @@ export default function KeyedWarningSigns({
         placeholder='Chief complaint'
       />
       {grouped.value.size === 0 && (
-        <EmptyState 
+        <EmptyState
           header='No findings found matching that search or its aliases'
           explanation='Try a different search'
-          icon={<MagnifyingGlassCircleIcon  className='h-5 w-5'/>}
+          icon={<MagnifyingGlassCircleIcon className='h-5 w-5' />}
         />
       )}
       {sorted_priorities.map((priority_config) => {
@@ -215,13 +227,17 @@ export default function KeyedWarningSigns({
             key={priority_config.priority}
             priority_config={priority_config}
             signs={signs}
-            onCheck={(sign) => {
-              if (!warning_signs.includes(sign)) {
-                non_base_checked.value = [...non_base_checked.value, {
+            onToggle={(sign, checked) => {
+              checked_signs.value = checked
+                ? [...checked_signs.value, {
                   ...sign,
-                  satisfied_by_record_id: 'hm',
+                  checked,
+                  satisfied_by_record_id: 'meh',
                 }]
-              }
+                : checked_signs.value.filter((checked_sign) =>
+                  checked_sign.sats_primary_name !== sign.sats_primary_name
+                )
+
               query.value = ''
               x.setQuery('')
             }}

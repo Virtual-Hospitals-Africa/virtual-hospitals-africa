@@ -13,7 +13,7 @@ type SExpressionNode = {
 function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
   assert(Array.isArray(parsed))
   const [atom, ...rest] = parsed
-  
+
   console.log({ parsed, atom })
   assert(isString(atom))
   const args = rest.map((item) => {

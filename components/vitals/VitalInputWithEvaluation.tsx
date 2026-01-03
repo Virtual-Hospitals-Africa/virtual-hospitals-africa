@@ -1,4 +1,4 @@
-import { Priority, RenderedVitalMeasurement } from '../../types.ts'
+import { Priority, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
 
 import { LocalTime } from '../../islands/LocalTime.tsx'
@@ -14,7 +14,7 @@ export default function VitalInputWithEvaluation({
   computed,
   existingEvaluation,
 }: {
-  measurement: RenderedVitalMeasurement & {
+  measurement: RenderedFindingRelativeToHealthWorker & {
     finding_type: 'manual' | 'computed'
   }
   computed?: boolean

@@ -389,7 +389,7 @@ export function measureVitalsInputDefinitions(
   ).map(([vital, options]) => ({
     vital,
     required: true,
-    snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital],
+    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_SNOMED_CONCEPT_IDS[vital],
     options: options.filter((option) =>
       option.available_to_ages.includes(age_determination)
     ),

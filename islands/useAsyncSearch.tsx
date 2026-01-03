@@ -32,9 +32,8 @@ export default function useAsyncSearch<
         delay: null,
         active_request: null,
         pages: [],
-        has_next_page: false
+        has_next_page: false,
       }))
-
     }
 
     const url = new URL(`${location.origin}${search_route}`)

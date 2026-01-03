@@ -146,11 +146,24 @@ export const patient_vitals = base({
               excluding_patient_encounter_id!,
             ))
           .$if(!!snomed_concept_ids, (qb) =>
-            qb.where(
-              'patient_findings.finding_snomed_concept_id',
-              'in',
-              snomed_concept_ids!,
-            ))
+            // Maybe a hack, but 
+            qb.where(eb => eb.or([
+              eb(
+                'patient_findings.finding_snomed_concept_id',
+                'in',
+                snomed_concept_ids!,
+              ),
+               eb(
+                'patient_findings.id',
+                'in',
+                trx.selectFrom('patient_evaluations')
+                  .innerJoin('patient_records', 'patient_evaluations.id', 'patient_records.id')
+                  .where('patient_records.snomed_concept_id', 'in', snomed_concept_ids!)
+                  .select('patient_evaluations.evaluates_record_id')
+              ),
+            ]))
+          
+          )
           .select(
             sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),

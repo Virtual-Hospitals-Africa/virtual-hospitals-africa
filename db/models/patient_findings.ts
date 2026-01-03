@@ -22,7 +22,15 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { ATTRIBUTE_SNOMED_CONCEPT_ID, CLINICAL_FINDING_SNOMED_CONCEPT_ID, NO_QUALIFIER_SNOMED_CONCEPT_ID, SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID, STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID, UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID, YES_QUALIFIER_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import {
+  ATTRIBUTE_SNOMED_CONCEPT_ID,
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  NO_QUALIFIER_SNOMED_CONCEPT_ID,
+  SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
+  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+  UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+  YES_QUALIFIER_SNOMED_CONCEPT_ID,
+} from '../../shared/patient_findings.ts'
 
 type FindingInsert = {
   patient_id: string

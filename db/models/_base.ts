@@ -224,7 +224,7 @@ export function base<
       const page = opts?.page ?? 1
       const rows_per_page = opts?.rows_per_page ?? 10
 
-      const query = this.searchQuery(trx, search_terms as SearchTerms, qb => {
+      const query = this.searchQuery(trx, search_terms as SearchTerms, (qb) => {
         if (rows_per_page === Infinity) {
           assertEquals(page, 1)
           return qb

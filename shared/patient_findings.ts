@@ -7,3 +7,4 @@ export const STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID = '263490005'
 export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self reported (qualifier value)|
 export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
 export const ATTRIBUTE_SNOMED_CONCEPT_ID = '246061005' // |Attribute (attribute)|
+export const CHIEF_COMPLAINT_SNOMED_CONCEPT_ID = '1269489004' // |Chief complaint (observable entity)|

@@ -3302,21 +3302,13 @@ export type VitalMeasurementFormInputDefition = {
 
 export type VitalAssessmentFormInputDefition = {
   vital: VitalAssessment
-  snomed_concept_id: string
+  evaluation_snomed_concept_id: string
   required: boolean
   options: {
     snomed_concept_id: string
     label: string
   }[]
 }
-
-export type RenderedVitalMeasurement = RenderedFindingRelativeToHealthWorker
-// &
-// & {
-//   value: string | number
-//   units: string
-//   finding_type: 'manual' | 'computed'
-// }
 
 export type Evaluation = {
   priority: Priority
@@ -3447,7 +3439,7 @@ export type PreviouslyCompletedProcedures = {
   workflow_step_record_id: string | null
 }
 
-export type RenderedFindingProvider = RenderedEmployee & {
+export type RenderedRecordProvider = RenderedEmployee & {
   is_me: SqlBool
 }
 
@@ -3501,22 +3493,48 @@ export type RecordValue =
   | RecordValueSnomedConcept
   | RecordValueMeasurement
 
-export type RenderedFindingRelativeToHealthWorker = {
+
+
+export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> = Rest & {
+  type: Type
   record_id: string
   patient_encounter_id: string
   root_snomed_concept: RenderedSnomedConcept
-  finding_snomed_concept: RenderedSnomedConcept
   displays: RecordDisplays
   created_at: Date | string
-  priority: Priority | null
-  score: number | null
-  provider: RenderedFindingProvider
-  as_part_of_procedure: AsPartOfProcedure
-  // These are now prefixes
   attributes: RenderedAttribute<RecordValueSnomedConcept>[]
   events: RenderedAttribute<RecordValueEvent>[]
   value: null | RecordValue
 }
+
+
+export type RenderedEvaluationEvaluatedBy = 
+| { by_system: true }
+| ({ by_system: false } & RenderedRecordProvider)
+
+export type RenderedEvaluationRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
+  evaluated_by: RenderedEvaluationEvaluatedBy
+  evaluations: RenderedEvaluationRelativeToHealthWorker[]
+}>
+
+export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'finding', {
+  finding_snomed_concept: RenderedSnomedConcept
+  priority: Priority | null
+  score: number | null
+  provider: RenderedRecordProvider
+  as_part_of_procedure: AsPartOfProcedure
+  evaluations: RenderedEvaluationRelativeToHealthWorker[]
+}>
+
+export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
+  provider: RenderedRecordProvider
+  evaluations: RenderedEvaluationRelativeToHealthWorker[]
+}>
+
+export type RenderedRecordRelativeToHealthWorker = 
+  | RenderedFindingRelativeToHealthWorker 
+  | RenderedEvaluationRelativeToHealthWorker 
+  | RenderedProcedureRelativeToHealthWorker 
 
 export type WithTriageLevelFinding = NonNullableProperty<
   RenderedFindingRelativeToHealthWorker,
@@ -3563,9 +3581,15 @@ export type KeyedWarningSign = {
   key: string
 } & WarningSign
 
-export type CheckedWarningSign = KeyedWarningSign & {
-  satisfied_by_record_id: string | null
+export type WarningSignPresence = {
+  satisfied_by_record_id: string
+  checked: true
+} | {
+  satisfied_by_record_id: null
+  checked: false
 }
+
+export type CheckedWarningSign = KeyedWarningSign & WarningSignPresence
 
 export type IntermediateProcedureRecord = {
   created_at: Date

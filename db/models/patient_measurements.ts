@@ -1,6 +1,6 @@
 import {
   IdSelection,
-  RenderedVitalMeasurement,
+  RenderedFindingRelativeToHealthWorker,
   TrxOrDb,
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
@@ -203,7 +203,7 @@ export const patient_measurements = base({
       patient_id: string
       snomed_concept_ids: string[]
     },
-  ): Promise<RenderedVitalMeasurement[]> {
+  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
     assertArrayNonEmpty(snomed_concept_ids)
 
     const query = trx.with(

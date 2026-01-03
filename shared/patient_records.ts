@@ -77,6 +77,7 @@ function includeRootSnomedConceptName(
     case 'Attribute':
     case 'Event':
     case 'Measurement finding':
+    case 'Clinical finding':
       return false
     default:
       return true

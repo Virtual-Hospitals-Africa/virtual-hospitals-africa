@@ -24,7 +24,10 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../shared/patient_findings.ts'
+import {
+  CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+} from '../../../../../shared/patient_findings.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -728,8 +731,8 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
-      'saves findings other than warning signs (found and selected via search)',
+    itParallel(
+      'saves findings other than warning signs (those selected via search)',
       async () => {
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchOk, fetchCheerio } =
@@ -754,7 +757,8 @@ describeParallel('triage/warning_signs', () => {
             method: 'POST',
             body: asFormData({
               warning_signs: {
-                'Pain of ear': `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`,
               },
             }),
           },
@@ -763,18 +767,50 @@ describeParallel('triage/warning_signs', () => {
           },
         )
 
-        const [finding] = await patient_findings.findAll(db, { patient_id: encounter.patient.id })
+        const [finding] = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        })
 
         assertMatches(finding, {
+          root_snomed_concept: {
+            snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+          },
           finding_snomed_concept: {
-            name: 'Pain of ear'
+            name: 'Pain of ear',
           },
           priority: 'Non-urgent',
         })
 
-        const $ = await fetchCheerio(`${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`)
+        const $ = await fetchCheerio(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
 
-        assertEquals($('#priority-grid-non-urgent').text(), 'Non-urgentPain of earfinding')
+        assertEquals(
+          $('#priority-grid-non-urgent').text(),
+          'Non-urgentPain of earfinding',
+        )
+
+        // Posting again has no effect
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const subsequent_findings = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        })
+        assertLength(subsequent_findings, 1)
       },
     )
 

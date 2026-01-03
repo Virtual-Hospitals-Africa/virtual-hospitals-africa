@@ -7,9 +7,7 @@ import {
 } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
-import {
-  patient_findings,
-} from '../../db/models/patient_findings.ts'
+import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
 import {

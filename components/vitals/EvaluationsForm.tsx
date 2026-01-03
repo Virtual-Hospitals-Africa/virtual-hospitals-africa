@@ -1,10 +1,10 @@
-import { Priority, RenderedVitalMeasurement } from '../../types.ts'
+import { Priority, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import VitalInputWithEvaluation from './VitalInputWithEvaluation.tsx'
 
 export function VitalsEvaluationsForm({
   measurements,
 }: {
-  measurements: (RenderedVitalMeasurement & {
+  measurements: (RenderedFindingRelativeToHealthWorker & {
     finding_type: 'manual' | 'computed'
     evaluation?: {
       evaluation_id: string

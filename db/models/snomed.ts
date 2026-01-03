@@ -64,8 +64,14 @@ function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
     )
     .selectAll('snomed_inferred_canonical_name_and_category')
     .select('snomed_concepts.best_similarity')
-    .$if(!!terms.categories, qb =>
-      qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!)
+    .$if(
+      !!terms.categories,
+      (qb) =>
+        qb.where(
+          'snomed_inferred_canonical_name_and_category.category',
+          'in',
+          terms.categories!,
+        ),
     )
     .orderBy('snomed_concepts.best_similarity', 'desc')
 }

@@ -4,6 +4,7 @@ import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { forEach } from '../../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
 import { pluralize } from '../../util/pluralize.ts'
+import partition from '../../util/partition.ts'
 
 type TestFn = () => void | Promise<void>
 
@@ -18,10 +19,11 @@ export type TestCase =
 function casesToRun(
   cases: TestCase[],
 ) {
-  const any_only = cases.some((test_case) => test_case[2]?.only)
-  return any_only
-    ? cases.filter((test_case) => test_case[2]?.only)
-    : cases.filter((test_case) => !test_case[2]?.skip)
+  const any_only = cases.some(([, , opts = {}]) => opts.only)
+  return partition(
+    cases,
+    ([, , opts = {}]) => any_only ? !!opts.only : !opts.skip,
+  )
 }
 
 async function runTestCases(
@@ -71,9 +73,15 @@ export function describeParallel(
   run(description, () => {
     callback()
     assert(test_cases.length, 'No test cases supplied')
-    const cases_to_run = casesToRun(test_cases)
-    it(`passes ${cases_to_run.length} test ${pluralize('case', cases_to_run.length)}`, () =>
-      runTestCases(cases_to_run))
+    const [cases_to_run, skipped] = casesToRun(test_cases)
+    let it_description = `passes ${cases_to_run.length} test ${
+      pluralize('case', cases_to_run.length)
+    }`
+    if (skipped.length) {
+      const skipped_description = ` (${skipped.length} skipped)`
+      it_description += skipped_description
+    }
+    it(it_description, () => runTestCases(cases_to_run))
   })
 
   descriptions = this_descriptions
