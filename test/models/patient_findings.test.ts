@@ -8,7 +8,6 @@ import {
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   patient_findings,
 } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -23,6 +22,7 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 describeParallel('db/models/patient_findings.ts', () => {
   afterAll(() => db.destroy())

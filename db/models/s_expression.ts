@@ -8,7 +8,7 @@ import {
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
-} from './patient_findings.ts'
+} from '../../shared/patient_findings.ts'
 import isString from '../../util/isString.ts'
 import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'

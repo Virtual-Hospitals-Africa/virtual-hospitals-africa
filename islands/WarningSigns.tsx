@@ -1,8 +1,14 @@
-import { useSignal } from '@preact/signals'
-import { CheckedWarningSign } from '../types.ts'
+import { computed, Signal, useSignal } from '@preact/signals'
+import { CheckedWarningSign, NonEmptyArray } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
+import { assert } from 'std/assert/assert.ts'
+import isString from '../util/isString.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../shared/patient_findings.ts'
+import { EmptyState } from '../components/library/EmptyState.tsx'
+import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
+import sortBy from '../util/sortBy.ts'
 
 const PRIORITIES = [
   {
@@ -20,14 +26,21 @@ const PRIORITIES = [
     header_bg: '#fef9c3', // warning-bg
     header_text: '#854d0e', // warning-textIcon
   },
+  {
+    priority: 'Non-urgent' as const,
+    header_bg: '#dcfce7', // success-bg
+    header_text: '#166534', // success-textIcon
+  },
 ]
 
 type PriorityConfig = typeof PRIORITIES[number]
 
-function KeyedWarningSignCheckbox({ sign }: { sign: CheckedWarningSign }) {
+type OnCheck = (sign: CheckedWarningSign) => void
+
+function KeyedWarningSignCheckbox({ sign, onCheck }: { sign: CheckedWarningSign, onCheck: OnCheck }) {
   const name = `warning_signs.${sign.key}`
   return (
-    <label class='flex gap-3 items-start cursor-pointer'>
+    <label class='flex gap-3 items-start cursor-pointer flex-1 p-3 min-w-0'>
       <div class='pt-0.5'>
         <input
           id={name}
@@ -36,6 +49,7 @@ function KeyedWarningSignCheckbox({ sign }: { sign: CheckedWarningSign }) {
           value={sign.clinical_finding_s_expression}
           checked={!!sign.satisfied_by_record_id}
           class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
+          onInput={event => event.currentTarget.checked && onCheck(sign)}
         />
       </div>
       <label class='flex flex-col gap-1' for={name}>
@@ -55,9 +69,11 @@ function KeyedWarningSignCheckbox({ sign }: { sign: CheckedWarningSign }) {
 function KeyedWarningSignsTable({
   priority_config,
   signs,
+  onCheck
 }: {
   priority_config: PriorityConfig
   signs: CheckedWarningSign[]
+  onCheck: OnCheck
 }) {
   const columns = 5
   const rows: CheckedWarningSign[][] = []
@@ -85,15 +101,12 @@ function KeyedWarningSignsTable({
         {rows.map((row, rowIndex) => (
           <div key={rowIndex} class='flex'>
             {row.map((sign) => (
-              console.log(sign),
-                (
-                  <div
-                    key={sign.key}
-                    class='flex-1 p-3 min-w-0'
-                  >
-                    <KeyedWarningSignCheckbox sign={sign} />
-                  </div>
-                )
+              <div
+                key={sign.key}
+                class='flex-1 p-3 min-w-0'
+              >
+                <KeyedWarningSignCheckbox sign={sign} onCheck={onCheck}/>
+              </div>
             ))}
             {/* Fill remaining columns with empty cells */}
             {row.length < columns &&
@@ -112,19 +125,69 @@ export default function KeyedWarningSigns({
 }: {
   warning_signs: CheckedWarningSign[]
 }) {
-  console.log('blargh')
-  const search = useSignal<string>('')
+  const non_base_checked = useSignal<CheckedWarningSign[]>([])
+  const query = useSignal<string>('')
+  const search_results_as_signs = useSignal<CheckedWarningSign[]>([])
+  
+  const grouped = computed(() => {
+    console.log({
+      'query.value': query.value,
+      'search_results_as_signs.value': search_results_as_signs.value,
+      'non_base_checked.value': non_base_checked.value
+    })
+    if (!query.value) {
+      return groupBy([...non_base_checked.value, ...warning_signs], 'sats_priority')
+    }
+
+    return groupBy([
+      ...search_results_as_signs.value,
+      ...non_base_checked.value,
+      ...warning_signs.filter(sign => sign.satisfied_by_record_id)
+    ], 'sats_priority')
+  })
+  
+  // : Signal<
+  //   Map<
+  //     'Emergency' | 'Very urgent' | 'Urgent' | 'Non-urgent',
+  //     NonEmptyArray<CheckedWarningSign>
+  //   >
+  // > = useSignal(base_warning_signs)
+
 
   const x = useAsyncSearch({
-    search_route: "/app/snomed/warning-signs",
+    search_route: '/app/snomed/warning-signs',
     skip_blank_search: true,
-    value: search.value ? { name: search.value } : null,
+    value: null,
     onSearchResults(results) {
-      console.log(results)
+      query.value = results.query
+      
+
+      const all_results = results.pages.flatMap((page) => page.results)
+
+      search_results_as_signs.value = all_results.map((r): CheckedWarningSign => {
+        assert('id' in r)
+        assert(isString(r.id))
+        assert('category' in r)
+        assert(isString(r.category))
+        assert(r.name)
+        return {
+          satisfied_by_record_id: null,
+          key: r.id,
+          clinical_finding_s_expression:
+            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})`,
+          sats_primary_name: r.name,
+          sats_secondary_text: r.category + ' ' + (r.best_similarity),
+          sats_priority: 'Non-urgent',
+        }
+      })
     },
   })
 
-  const grouped = groupBy(warning_signs, 'sats_priority')
+  const sorted_priorities = sortBy(
+    PRIORITIES,
+    ({ priority }) => -(grouped.value.get(priority) || []).filter(sign => sign.satisfied_by_record_id).length,
+    (_config, index) => index
+  )
 
   return (
     <div class='flex flex-col gap-4 w-full'>
@@ -132,21 +195,35 @@ export default function KeyedWarningSigns({
         do_not_render_built_in_options
         options={x.results}
         onQuery={(query) => {
-          console.log('mmm', query)
           x.setQuery(query)
-          console.log('zzz', query)
         }}
         placeholder='Chief complaint'
-
       />
-      {PRIORITIES.map((priority_config) => {
-        const signs = grouped.get(priority_config.priority)
+      {grouped.value.size === 0 && (
+        <EmptyState 
+          header='No findings found matching that search or its aliases'
+          explanation='Try a different search'
+          icon={<MagnifyingGlassCircleIcon  className='h-5 w-5'/>}
+        />
+      )}
+      {sorted_priorities.map((priority_config) => {
+        const signs = grouped.value.get(priority_config.priority)
         if (!signs?.length) return null
         return (
           <KeyedWarningSignsTable
             key={priority_config.priority}
             priority_config={priority_config}
             signs={signs}
+            onCheck={(sign) => {
+              if (!warning_signs.includes(sign)) {
+                non_base_checked.value = [...non_base_checked.value, {
+                  ...sign,
+                  satisfied_by_record_id: 'hm',
+                }]
+              }
+              query.value = ''
+              x.setQuery('')
+            }}
           />
         )
       })}

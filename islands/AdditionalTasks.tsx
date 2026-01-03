@@ -131,12 +131,6 @@ export default function AdditionalTasks({
     0,
   )
 
-  return (
-    <a href="/medical-resources/primary-care/adult.pdf#page=132">
-      FOEIWELW
-    </a>
-  )
-
   if (task_groups.length === 0) {
     return (
       <div class='flex flex-col gap-4 items-center justify-center py-12 text-gray-500'>
@@ -164,7 +158,7 @@ export default function AdditionalTasks({
 
   return (
     <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
-      <a href="/medical-resources/adult-primary-care.pdf#page=132">
+      <a href='/medical-resources/adult-primary-care.pdf#page=132'>
         FOEIWELW
       </a>
       <ProgressHeader

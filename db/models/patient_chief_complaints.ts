@@ -2,7 +2,7 @@ import { Maybe, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered, nowInvalidRecords } from './patient_records.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './patient_findings.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'

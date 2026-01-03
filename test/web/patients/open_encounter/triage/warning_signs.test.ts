@@ -16,7 +16,6 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { route } from '../../../../route.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../db/models/patient_findings.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -25,6 +24,7 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../shared/patient_findings.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)

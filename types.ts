@@ -3552,7 +3552,7 @@ export type WarningSign = {
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null
-  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency'
+  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency' | 'Non-urgent'
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
@@ -3560,8 +3560,12 @@ export type WarningSign = {
 export type WarningSignKey = keyof typeof WARNING_SIGNS
 
 export type KeyedWarningSign = {
-  key: WarningSignKey
+  key: string
 } & WarningSign
+
+export type CheckedWarningSign = KeyedWarningSign & {
+  satisfied_by_record_id: string | null
+}
 
 export type IntermediateProcedureRecord = {
   created_at: Date
@@ -3575,10 +3579,6 @@ export type IntermediateProcedureRecord = {
   // qualifiers: QualifierIntermediate[]
   value_snomed_concept_id: null | string
   // value_name: null | string
-}
-
-export type CheckedWarningSign = KeyedWarningSign & {
-  satisfied_by_record_id: string | null
 }
 
 export type RenderedRoom = {

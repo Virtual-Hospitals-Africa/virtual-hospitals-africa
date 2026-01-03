@@ -1,6 +1,6 @@
+import { ATTRIBUTE_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 import { Selecting, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
-import { ATTRIBUTE_SNOMED_CONCEPT_ID } from './patient_findings.ts'
 
 // TODO: qualifiers might be entered by someone other than the person who initially created the finding
 function baseInnerQuery(

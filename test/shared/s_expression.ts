@@ -4,8 +4,8 @@ import {
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../db/models/patient_findings.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {

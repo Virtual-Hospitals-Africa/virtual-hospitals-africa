@@ -28,7 +28,6 @@ import {
 } from '../../../../../../../../shared/s_expression.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   patient_findings,
 } from '../../../../../../../../db/models/patient_findings.ts'
 import keys from '../../../../../../../../util/keys.ts'
@@ -48,6 +47,7 @@ import {
   VitalMeasurementFormInputDefition,
 } from '../../../../../../../../types.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../../../../shared/patient_findings.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(

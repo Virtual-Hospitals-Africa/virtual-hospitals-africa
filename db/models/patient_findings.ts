@@ -22,16 +22,7 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-
-export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
-export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
-export const UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
-export const NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '1381510001' // |No known (qualifier value)|
-export const ACTIVE_QUALIFIER_SNOMED_CONCEPT_ID = '55561003' // |Active (qualifier value)|
-export const STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID = '263490005'
-export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self reported (qualifier value)|
-export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
-export const ATTRIBUTE_SNOMED_CONCEPT_ID = '246061005' // |Attribute (attribute)|
+import { ATTRIBUTE_SNOMED_CONCEPT_ID, CLINICAL_FINDING_SNOMED_CONCEPT_ID, NO_QUALIFIER_SNOMED_CONCEPT_ID, SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID, STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID, UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID, YES_QUALIFIER_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 type FindingInsert = {
   patient_id: string
