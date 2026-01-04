@@ -14,13 +14,12 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
   QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
+} from '../../shared/snomed_concepts.ts'
 import {
   IntermediateBaseRecord,
   nonGroupedBaseQuery,
 } from './patient_records_base.ts'
 import { sql } from 'kysely'
-import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,

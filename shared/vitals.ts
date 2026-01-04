@@ -25,14 +25,10 @@ import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import { positive_decimal } from '../util/validators.ts'
 import { collectSortedUniqDecimals } from '../util/collectSorted.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './patient_findings.ts'
+import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from './snomed_concepts.ts'
 import { normalForm } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
-
-export const TAKING_PATIENT_VITAL_SIGNS_SNOMED_CONCEPT_ID = '61746007'
-
-export const SEVERITY_SCORE_SNOMED_CONCEPT_ID = '278305009' // |Severity score (qualifier value)|
 
 export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   height: '1153637007',

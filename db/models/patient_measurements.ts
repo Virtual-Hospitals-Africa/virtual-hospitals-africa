@@ -14,8 +14,6 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
 
-export const MEASUREMENT_FINDING_SNOMED_CONCEPT_ID = '118245000' // |Measurement finding (finding)|
-
 type MeasurementInsert = {
   patient_id: string
   procedure_id: string

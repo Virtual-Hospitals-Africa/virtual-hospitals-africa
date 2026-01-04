@@ -32,7 +32,7 @@ import {
   STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
   UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
+} from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
 type FindingInsert = {

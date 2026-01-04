@@ -14,9 +14,6 @@
 // import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
 // import { markAltered, nowInvalidRecords } from './patient_records_base.ts'
 
-// export const PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID = '410551005'
-// export const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID = '57177007' // |Family history with explicit context (situation)|
-
 // // TODO: get this into a single round trip with the DB
 // export async function upsertOne(
 //   trx: TrxOrDb,

@@ -46,7 +46,7 @@ import {
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
 import {
   EVALUATION_ACTION_SNOMED_CONCEPT_ID,
-} from '../../../../../../../../shared/patient_findings.ts'
+} from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
 const TriageMeasureVitalsSchema = z.object({

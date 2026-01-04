@@ -4,16 +4,8 @@ import generateUUID from '../../util/uuid.ts'
 import {
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   PROCEDURE_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
+} from '../../shared/snomed_concepts.ts'
 import { markAltered, nowInvalidRecords } from './patient_records_base.ts'
-
-export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
-  '409060008'
-
-export const CHIEF_COMPLAINT_SNOMED_CONCEPT_ID = '1269489004'
-
-export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID =
-  '431315003'
 
 // // TODO: get this into a single round trip with the DB
 export async function upsertOne(

@@ -2,8 +2,6 @@ import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { base } from './_base.ts'
 
-const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID = '57177007' // |Family history with explicit context (situation)|
-
 export default base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery: (

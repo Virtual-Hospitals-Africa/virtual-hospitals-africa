@@ -23,7 +23,7 @@ import { debugLog } from '../../db/helpers.ts'
 import {
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   PROCEDURE_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
+} from '../../shared/snomed_concepts.ts'
 import assertLength from '../../util/assertLength.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
 
@@ -328,7 +328,10 @@ describeParallel('db/models/patient_findings.ts', () => {
       const raw_finding = await patient_findings.getById(db, finding_id)
       assertEquals(raw_finding.displays.full, 'Ability to move For Age: Normal')
 
-      assertEquals(asNormalFormSExpression(raw_finding), '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ability to move" "observable entity") (snomed_concept "Normal" "qualifier value") (qualifier (snomed_concept "For" "qualifier value")))')
+      assertEquals(
+        asNormalFormSExpression(raw_finding),
+        '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ability to move" "observable entity") (snomed_concept "Normal" "qualifier value") (qualifier (snomed_concept "For" "qualifier value")))',
+      )
     },
   )
 })

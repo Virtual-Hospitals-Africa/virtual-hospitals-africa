@@ -7,10 +7,8 @@ import {
   literalString,
   success_true,
 } from '../helpers.ts'
-import { EVALUATION_ACTION_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import { EVALUATION_ACTION_SNOMED_CONCEPT_ID } from '../../shared/snomed_concepts.ts'
 
-export const ALTERED_SNOMED_CONCEPT_ID = '18307000' as const
-export const ENTERED_IN_ERROR_SNOMED_CONCEPT_ID = '723510000' as const
 export const RECORD_NOW_INVALID_CONCEPT_ID = [
   ALTERED_SNOMED_CONCEPT_ID,
   ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,

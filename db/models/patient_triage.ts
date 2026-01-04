@@ -16,10 +16,7 @@ import { buildExpression } from './s_expression.ts'
 import {
   EVALUATION_ACTION_SNOMED_CONCEPT_ID,
   PROCEDURE_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
-
-export const NATIONAL_EARLY_WARNING_SCORE_SNOMED_CONCEPT_ID = '1287358002' // |National Early Warning Score (assessment scale)|
-export const SOUTH_AFRICA_SNOMED_CONCEPT_ID = '223549008' // |South Africa (geographic location)|
+} from '../../shared/snomed_concepts.ts'
 
 export function insertProcedure(
   trx: TrxOrDb,

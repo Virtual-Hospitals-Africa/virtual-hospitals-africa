@@ -4,7 +4,6 @@ import {
   RecordDisplays,
   RenderedAttribute,
   RenderedEvaluation,
-  RenderedRecordRelativeToHealthWorker,
   RenderedRecordRelativeToHealthWorkerDef,
   RenderedSnomedConcept,
 } from '../types.ts'
@@ -231,7 +230,10 @@ function toQualifier(modifier: IntermediateBaseRecord): Lang['qualifier'] {
 }
 
 export function asNormalFormSExpression<Rest>(
-  record: RenderedRecordRelativeToHealthWorkerDef<'finding' | 'procedure' | 'evaluation', Rest>,
+  record: RenderedRecordRelativeToHealthWorkerDef<
+    'finding' | 'procedure' | 'evaluation',
+    Rest
+  >,
 ): string {
   const qualifiers = record.modifiers.map(toQualifier)
 
@@ -264,7 +266,9 @@ export function asNormalFormSExpression<Rest>(
   }))
 
   const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
-  const specific_snomed_concept = toSnomedConcept(record.specific_snomed_concept)
+  const specific_snomed_concept = toSnomedConcept(
+    record.specific_snomed_concept,
+  )
   const value_snomed_concept = record.value?.type === 'snomed_concept'
     ? toSnomedConcept(record.value)
     : null

@@ -66,7 +66,7 @@ import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
-import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../../../../../../shared/patient_findings.ts'
+import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../../../../../../shared/snomed_concepts.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient

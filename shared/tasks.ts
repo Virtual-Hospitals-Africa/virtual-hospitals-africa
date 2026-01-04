@@ -1,4 +1,4 @@
-import { PROCEDURE_SNOMED_CONCEPT_ID } from './patient_findings.ts'
+import { PROCEDURE_SNOMED_CONCEPT_ID } from './snomed_concepts.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 

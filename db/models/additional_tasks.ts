@@ -20,11 +20,7 @@ import { patient_vitals } from './patient_vitals.ts'
 import {
   EVALUATION_ACTION_SNOMED_CONCEPT_ID,
   RELATIONSHIP_SNOMED_CONCEPT_ID,
-} from '../../shared/patient_findings.ts'
-
-export const ACTION_STATUS_SNOMED_CONCEPT_ID = '385641008' // |Action status (attribute)|
-export const TO_BE_DONE_SNOMED_CONCEPT_ID = '385643006' // |To be done (qualifier value)|
-export const DUE_TO_SNOMED_CONCEPT_ID = '42752001' // |Due to (attribute)|
+} from '../../shared/snomed_concepts.ts'
 
 export async function insertTasksIfNotAlreadyIdentified(
   trx: TrxOrDb,
@@ -205,6 +201,4 @@ export async function getTasksGroups(
 // to the site of trauma and
 // cover open wounds
 
-// const TRANSFER_OF_CARE_PROCEDURE_SNOMED_CONCEPT_ID = '308292007' // |Transfer of care (procedure)|
-// const PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID = '107724000' // |Patient transfer (procedure)|
 // (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))
