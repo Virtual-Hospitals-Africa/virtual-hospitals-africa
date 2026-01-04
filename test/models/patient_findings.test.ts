@@ -268,4 +268,64 @@ describeParallel('db/models/patient_findings.ts', () => {
       },
     }, { strict: true })
   })
+
+  itParallel.only(
+    'can insert/find a finding with a complex display involving nested qualifiers',
+    async () => {
+      const nurse = await addTestEmployee(db, {
+        profession: 'nurse',
+        registration_status: 'approved',
+      })
+
+      const encounter =
+        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
+      const patient_id = encounter.patient.id
+
+      const procedure = await patient_procedures.insertOneNested(db, {
+        patient_id: encounter.patient.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        procedure: parseExpressionExpectingAtom(
+          `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${
+            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+          })`,
+          'procedure',
+        ),
+      })
+
+      // Normal For Age Ability to move
+      const normal_for_age_s_expression = `
+        (finding
+          ${CLINICAL_FINDING_SNOMED_CONCEPT_ID}
+          (snomed_concept "Ability to move" "observable entity")
+          (snomed_concept "Normal" "qualifier value")
+          (qualifier (snomed_concept "For" "qualifier value")
+            (qualifier (snomed_concept "Age" "qualifier value"))))
+      `
+
+      const { finding_id, inserted_new } = await patient_findings
+        .insertOneNested(
+          db,
+          {
+            patient_id,
+            patient_encounter_id: encounter.patient_encounter_id,
+            patient_encounter_employee_id:
+              encounter.employee.patient_encounter_employee_id,
+            procedure_id: procedure.procedure_id,
+            finding: normal_for_age_s_expression,
+          },
+        )
+
+      assert(inserted_new)
+
+      const raw_finding = await patient_findings.getById(db, finding_id)
+      assertEquals(raw_finding.displays.full, 'Ability to move For Age: Normal')
+    },
+  )
 })

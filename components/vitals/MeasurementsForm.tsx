@@ -20,8 +20,6 @@ export function VitalsMeasurementsForm({
 }) {
   const regular_vitals = vital_measurements_for_this_encounter
 
-  console.log({ most_recent_patient_vitals })
-
   return (
     <div className='flex flex-col gap-4'>
       {!!triage_assessments.length && (

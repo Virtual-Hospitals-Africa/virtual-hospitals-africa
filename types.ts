@@ -3313,7 +3313,7 @@ export type VitalAssessmentFormInputDefition = {
   evaluation_snomed_concept_id: string
   required: boolean
   options: {
-    snomed_concept_id: string
+    s_expression: string
     label: string
   }[]
 }

@@ -8,10 +8,7 @@ import {
 import { z } from 'zod'
 import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import {
-  positive_decimal,
-  snomed_concept_id,
-} from '../../../../../../../../util/validators.ts'
+import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
   getScoreForAssessment,
@@ -24,6 +21,7 @@ import {
 } from '../../../../../../../../shared/vitals.ts'
 import {
   parseExpressionExpectingAtom,
+  sExpressionZodValidator,
 } from '../../../../../../../../shared/s_expression.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import {
@@ -47,9 +45,9 @@ import {
 } from '../../../../../../../../types.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
 import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   EVALUATION_ACTION_SNOMED_CONCEPT_ID,
 } from '../../../../../../../../shared/patient_findings.ts'
+import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -64,7 +62,7 @@ const TriageMeasureVitalsSchema = z.object({
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
     z.object({
-      specific_snomed_concept_id: snomed_concept_id,
+      s_expression: sExpressionZodValidator('finding'),
     }).strict(),
   ).default({}),
 }).strict()
@@ -171,15 +169,14 @@ export const handler = postHandler(
     ) {
       const form_input = form_values.assessments[vital]
       if (form_input) {
-        const option_snomed_concept_ids = options.map((o) =>
-          o.snomed_concept_id
-        )
-        assert(form_input.specific_snomed_concept_id)
+        const option_s_expressions = options.map((o) => o.s_expression)
+        const normal_form = inverseSExpression(form_input.s_expression)
+        assert(form_input.s_expression)
         assertOr400(
-          option_snomed_concept_ids.includes(
-            form_input.specific_snomed_concept_id,
+          option_s_expressions.includes(
+            normal_form,
           ),
-          `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.specific_snomed_concept_id}.`,
+          `Expected s_expression to be one of ${option_s_expressions}. Received ${normal_form}.`,
         )
         continue
       }
@@ -238,23 +235,19 @@ export const handler = postHandler(
         entries(form_values.assessments),
         async ([vital, assessment]) => {
           if (!assessment) return
-          assert(assessment.specific_snomed_concept_id)
-          const finding = parseExpressionExpectingAtom(
-            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${assessment.specific_snomed_concept_id})`,
-            'finding',
-          )
+          assert(assessment.s_expression)
           const result = await patient_findings.insertOneNested(trx, {
             patient_id,
             patient_encounter_id,
             patient_encounter_employee_id,
             procedure_id,
-            finding,
+            finding: assessment.s_expression,
           })
 
           const score = getScoreForAssessment(
             age_determination,
             vital,
-            assessment.specific_snomed_concept_id,
+            assessment.s_expression,
           )
           if (score != null) {
             const evaluation_snomed_concept_id =

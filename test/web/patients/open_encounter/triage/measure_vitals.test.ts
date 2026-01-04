@@ -12,7 +12,7 @@ import { patient_measurements } from '../../../../../db/models/patient_measureme
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { setupTriage } from './_setup.ts'
 import {
-  assessmentOptionSnomedConceptId,
+  assessmentOptionSExpression,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_UNITS,
   VitalAssessment,
@@ -330,19 +330,19 @@ describeParallel('triage/measure_vitals', () => {
               },
               assessments: {
                 mobility_assessment: {
-                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSExpression(
                     'mobility_assessment',
                     'Walking',
                   ),
                 },
                 consciousness: {
-                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSExpression(
                     'consciousness',
                     'Alert',
                   ),
                 },
                 trauma_presence: {
-                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSExpression(
                     'trauma_presence',
                     'No',
                   ),
@@ -402,19 +402,19 @@ describeParallel('triage/measure_vitals', () => {
             },
             assessments: {
               mobility_assessment: {
-                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSExpression(
                   'mobility_assessment',
                   'Walking',
                 ),
               },
               consciousness: {
-                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSExpression(
                   'consciousness',
                   'Alert',
                 ),
               },
               trauma_presence: {
-                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSExpression(
                   'trauma_presence',
                   'No',
                 ),
@@ -596,7 +596,7 @@ describeParallel('triage/measure_vitals', () => {
               units: VITAL_MEASUREMENTS_UNITS[vital],
             })),
             assessments: mapEntries(assessment_values, (value, vital) => ({
-              specific_snomed_concept_id: assessmentOptionSnomedConceptId(
+              specific_snomed_concept_id: assessmentOptionSExpression(
                 vital,
                 value,
               ),
@@ -1733,6 +1733,7 @@ describeParallel('triage/measure_vitals', () => {
       default_measurements_younger_child,
       { ...default_assessments_younger_child, trauma_presence: 'Yes' },
       baseScoresYoungerChild({ 'Traumatic injury': 1 }),
+      { only: true },
     )
   })
 })

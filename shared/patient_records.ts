@@ -1,5 +1,6 @@
 import {
   IntermediateBaseRecord,
+  Maybe,
   RecordDisplays,
   RenderedAttribute,
   RenderedEvaluation,
@@ -87,7 +88,22 @@ function includeRootSnomedConceptName(
   }
 }
 
-function buildDisplays(record: DisplayableRecord): RecordDisplays {
+// In English, certain words connect things at the end
+function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
+  if (!qualifier) return false
+  switch (qualifier.specific_snomed_concept.name) {
+    case 'For':
+    case 'With':
+      return true
+    default:
+      return false
+  }
+}
+
+function buildDisplays(
+  record: DisplayableRecord,
+  postfix?: boolean,
+): RecordDisplays {
   const {
     root_snomed_concept,
     specific_snomed_concept,
@@ -95,6 +111,7 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
     qualifiers = [],
   } = record
 
+  assert(qualifiers.length <= 1)
   for (const qualifier of qualifiers) {
     assert(
       !qualifier.value,
@@ -103,14 +120,23 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
       }`,
     )
   }
-  const prefix_displays = qualifiers.map((prefix) => buildDisplays(prefix).full)
+  const use_postfix = postfix || qualifierIsPostfix(qualifiers[0])
 
-  const finding_display = compact([
-    ...prefix_displays,
+  const qualifier_displays = qualifiers.map((prefix) =>
+    buildDisplays(prefix, use_postfix).full
+  )
+
+  const finding_displays = compact([
     specific_snomed_concept?.name,
     includeRootSnomedConceptName(root_snomed_concept) &&
     root_snomed_concept.name,
-  ]).join(' ')
+  ])
+
+  const finding_displays_qualified = use_postfix
+    ? [...finding_displays, ...qualifier_displays]
+    : [...qualifier_displays, ...finding_displays]
+
+  const finding_display = finding_displays_qualified.join(' ')
 
   if (!value) {
     return {
