@@ -79,6 +79,12 @@ export type JsonSerializable =
   | JsonSerializable[]
   | { [key: string]: JsonSerializable }
 
+export type MostlyJsonSerializable =
+  | Date // eh, dates are fine
+  | JsonSerializable
+  | MostlyJsonSerializable[]
+  | { [key: string]: MostlyJsonSerializable }
+
 export type OptionalUndefinedFields<T> =
   & {
     [K in keyof T as undefined extends T[K] ? never : K]: T[K]
@@ -3473,7 +3479,7 @@ export type RenderedSnomedConcept = {
 }
 export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: RecordValueSnomedConcept | RecordValueEvent
+  value: RecordValueSnomedConcept | RecordValueEvent | null
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }

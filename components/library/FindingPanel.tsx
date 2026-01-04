@@ -2,7 +2,6 @@ import { LocalTime } from '../../islands/LocalTime.tsx'
 import { organizationOf } from '../../shared/employees.ts'
 import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Button } from './Button.tsx'
 import {

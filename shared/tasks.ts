@@ -1,3 +1,4 @@
+import { PROCEDURE_SNOMED_CONCEPT_ID } from './patient_findings.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 
@@ -15,7 +16,7 @@ export const TASKS: Task[] = [
       `(
       task
         (< (measurement 103228002) (units 92 %))
-        (procedure 57485005)
+        (procedure ${PROCEDURE_SNOMED_CONCEPT_ID} 57485005)
     )`,
       'task',
     ),

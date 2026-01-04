@@ -319,7 +319,7 @@ const EXPRESSION_BUILDERS = {
     { specific_snomed_concept, value },
   ) {
     // Only snomed_concept values are queryable
-    const value_snomed_concept = value.atom === 'snomed_concept' ? value : null
+    const value_snomed_concept = value?.atom === 'snomed_concept' ? value : null
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,

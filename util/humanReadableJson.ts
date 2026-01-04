@@ -6,7 +6,7 @@ import {
   // TableCommaPlacement,
   // CommentPolicy,
 } from 'fracturedjsonjs'
-import { JsonSerializable } from '../types.ts'
+import { MostlyJsonSerializable } from '../types.ts'
 
 // The constructor below will give default behavior that is consistent across minor version
 // changes.  But if you don't care about backward compatibility and just want the newest best
@@ -27,6 +27,6 @@ const options = new FracturedJsonOptions()
 const formatter = new Formatter()
 formatter.Options = options
 
-export function humanReadableJson(object: JsonSerializable): string {
+export function humanReadableJson(object: MostlyJsonSerializable): string {
   return formatter.Serialize(object)!
 }

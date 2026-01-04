@@ -13,6 +13,7 @@ import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   buildExpression,
+  maybeSnomedConceptBase,
   satisfyingSExpression,
   snomedConceptBase,
 } from './s_expression.ts'
@@ -303,7 +304,7 @@ export const patient_findings = base({
                 trx,
                 attribute.specific_snomed_concept,
               ),
-              value_snomed_concept_id: snomedConceptBase(trx, value),
+              value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
             }),
       ).with(
         `inserting_attribute_qualifier_${id_token}`,

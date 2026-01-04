@@ -20,7 +20,10 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  PROCEDURE_SNOMED_CONCEPT_ID,
+} from '../../shared/patient_findings.ts'
 import assertLength from '../../util/assertLength.ts'
 
 describeParallel('db/models/patient_findings.ts', () => {
@@ -196,7 +199,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: nurse.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${
+        `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${
           WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
         })`,
         'procedure',

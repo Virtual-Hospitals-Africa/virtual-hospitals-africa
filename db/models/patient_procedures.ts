@@ -13,7 +13,6 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
-import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 type ProcedureInsert =
   & {
@@ -122,6 +121,7 @@ export const patient_procedures = base({
       by_system,
     }: ProcedureInsert,
   ) {
+    assertHasProperty(procedure, 'root_snomed_concept')
     assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
 
@@ -131,11 +131,6 @@ export const patient_procedures = base({
         patient_id,
         patient_encounter_id,
         record_id: procedure_id,
-        root_snomed_concept: {
-          atom: 'snomed_concept',
-          type: 'id',
-          id: PROCEDURE_SNOMED_CONCEPT_ID,
-        },
         value_snomed_concept: null,
         ...procedure,
       },

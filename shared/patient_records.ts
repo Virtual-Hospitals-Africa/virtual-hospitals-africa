@@ -13,6 +13,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertAll } from '../util/assertAll.ts'
 import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -65,7 +66,7 @@ function valueDisplay(
     case 'score':
       return value.score
     default: {
-      throw new Error(`Unexpected type in ${JSON.stringify(value)}`)
+      throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
     }
   }
 }
@@ -95,7 +96,12 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
   } = record
 
   for (const qualifier of qualifiers) {
-    assert(!qualifier.value)
+    assert(
+      !qualifier.value,
+      `Expected only prefixes (without value) saw ${
+        humanReadableJson(qualifier)
+      }`,
+    )
   }
   const prefix_displays = qualifiers.map((prefix) => buildDisplays(prefix).full)
 
@@ -114,7 +120,7 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
     }
   }
 
-  const value_display = value && valueDisplay(value)
+  const value_display = valueDisplay(value)
 
   return {
     finding: finding_display,
@@ -124,7 +130,9 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
 }
 
 /**
- * The idea here is that the qualifiers (at this point all prefixes)
+ * The idea here is that the qualifiers with values are attributes and have
+ * already been attached separately. The rest are prefixes which are consumed
+ * as part of building out the record's displays
  */
 function addDisplay<DR extends DisplayableRecord>(
   record: DR,
@@ -146,24 +154,25 @@ export function formatRecord<
   attributes: RenderedAttribute[]
   evaluations: RenderedEvaluation[]
 } {
-  const [unformatted_attributes, prefixes] = partition(
+  const [qualifiers, unformatted_attributes] = partition(
     record.qualifiers || [],
-    (qualifier) => !!qualifier.value,
+    (qualifier) => qualifier.root_snomed_concept.name === 'Qualifier value',
   )
 
   const attributes = unformatted_attributes.map(addDisplay)
   assertAll(attributes, (attribute): asserts attribute is RenderedAttribute => {
-    assert(attribute.value)
-    assertOneOf(attribute.value.type, [
-      'event' as const,
-      'snomed_concept' as const,
-    ])
+    if (attribute.value) {
+      assertOneOf(attribute.value.type, [
+        'event' as const,
+        'snomed_concept' as const,
+      ])
+    }
   })
 
   const evaluations = record.evaluations.map(addDisplay)
 
   return {
-    ...addDisplay({ ...record, qualifiers: prefixes }),
+    ...addDisplay({ ...record, qualifiers }),
     attributes,
     evaluations,
   }

@@ -116,7 +116,7 @@ export function DrawerThisVisit(
     <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-92'>
       <div className='content-stretch flex flex-col h-11.5 items-start justify-start relative shrink-0 w-full'>
         <div className='box-border content-stretch flex gap-4 h-11.5 isolate items-center justify-start px-4 py-2 relative shrink-0 w-full'>
-          <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[2]">
+          <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-2">
             This Visit
           </h2>
         </div>
