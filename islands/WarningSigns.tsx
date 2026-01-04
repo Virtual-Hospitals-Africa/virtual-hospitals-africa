@@ -150,7 +150,7 @@ export default function KeyedWarningSigns({
       return groupBy(
         uniqBy(
           [...checked_signs.value, ...warning_signs],
-          (sign) => sign.sats_primary_name,
+          (sign) => sign.sats_primary_name + (sign.sats_secondary_text || ''),
         ),
         'sats_priority',
       )

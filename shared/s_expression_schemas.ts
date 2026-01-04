@@ -439,7 +439,38 @@ export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
 export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
   z.object({
     atom: z.literal('procedure'),
-    args: required_snomed_concept_record_schema,
+    args: z.tuple([
+      snomed_concept_or_qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+      qualifier.optional(),
+    ])
+      .transform(
+        (
+          [
+            specific_snomed_concept = null,
+            ...rest
+          ],
+        ) => {
+          const nodes = compact(rest)
+
+          if (
+            specific_snomed_concept && !isSnomedConcept(specific_snomed_concept)
+          ) {
+            nodes.unshift(specific_snomed_concept)
+            specific_snomed_concept = null
+          }
+
+          return {
+            specific_snomed_concept,
+            qualifiers: nodes,
+          }
+        },
+      )
   }).transform(({ atom, args }) => ({
     atom,
     ...args,
