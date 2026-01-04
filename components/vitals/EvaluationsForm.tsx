@@ -24,7 +24,7 @@ export function VitalsEvaluationsForm({
 
   return (
     <div className='flex flex-col max-h-screen overflow-y-auto'>
-      <div className='flex-shrink-0 mb-4'>
+      <div className='shrink-0 mb-4'>
         <h2 className='text-lg font-semibold text-gray-900'>
           Clinical Evaluation
         </h2>

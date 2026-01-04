@@ -161,11 +161,11 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
       : { satisfied_by_record_id: null, checked: false }
 
     return {
-      key: finding.finding_snomed_concept.name,
+      key: finding.specific_snomed_concept.name,
       clinical_finding_s_expression:
-        `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding.finding_snomed_concept.snomed_concept_id})`,
-      sats_primary_name: finding.finding_snomed_concept.name,
-      sats_secondary_text: finding.finding_snomed_concept.category,
+        `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding.specific_snomed_concept.snomed_concept_id})`,
+      sats_primary_name: finding.specific_snomed_concept.name,
+      sats_secondary_text: finding.specific_snomed_concept.category,
       sats_priority: finding.priority || 'Non-urgent',
       ...presence,
     }

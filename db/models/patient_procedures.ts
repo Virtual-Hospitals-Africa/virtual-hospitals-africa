@@ -13,6 +13,7 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
+import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
 
 type ProcedureInsert =
   & {
@@ -58,13 +59,6 @@ export const patient_procedures = base({
     opts: { search?: string; patient_id: string | IdSelection },
   ) {
     assert(!opts.search, 'TODO support')
-    if (opts.search) {
-      qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.name',
-        'ilike',
-        `%${opts.search}%`,
-      )
-    }
     if (opts.patient_id) {
       qb = qb.where(
         'patient_records.patient_id',
@@ -97,11 +91,11 @@ export const patient_procedures = base({
         'patient_procedures.id',
         'patient_records.id',
       )
-      .where('snomed_concept_id', 'in', search_for_concept_ids)
+      .where('specific_snomed_concept_id', 'in', search_for_concept_ids)
       .where('patient_encounter_id', '=', patient_encounter_id)
       .select([
         'patient_records.id',
-        'patient_records.snomed_concept_id',
+        'patient_records.specific_snomed_concept_id as snomed_concept_id',
       ])
       .execute()
 
@@ -128,7 +122,7 @@ export const patient_procedures = base({
       by_system,
     }: ProcedureInsert,
   ) {
-    assertHasProperty(procedure, 'snomed_concept')
+    assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
 
     return patient_records.baseInsert(
@@ -137,6 +131,12 @@ export const patient_procedures = base({
         patient_id,
         patient_encounter_id,
         record_id: procedure_id,
+        root_snomed_concept: {
+          atom: 'snomed_concept',
+          type: 'id',
+          id: PROCEDURE_SNOMED_CONCEPT_ID,
+        },
+        value_snomed_concept: null,
         ...procedure,
       },
     ).with(

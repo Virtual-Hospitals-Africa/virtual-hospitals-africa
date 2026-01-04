@@ -266,7 +266,7 @@ describeParallel('triage/warning_signs', () => {
               'category': 'finding',
               'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'snomed_concept_id': '410429000',
             },
             'patient_encounter_id': encounter.patient_encounter_id,
@@ -341,7 +341,7 @@ describeParallel('triage/warning_signs', () => {
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
             'value': null,
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'snomed_concept_id': '91175000',
               'name': 'Seizure',
               'category': 'finding',
@@ -446,10 +446,10 @@ describeParallel('triage/warning_signs', () => {
 
         // Both should be Clinical findings with the appropriate qualifiers
         const cardiac_arrest_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept.snomed_concept_id === '410429000'
+          f.specific_snomed_concept.snomed_concept_id === '410429000'
         )
         const chest_pain_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept.snomed_concept_id === '29857009'
+          f.specific_snomed_concept.snomed_concept_id === '29857009'
         )
 
         assertMatches(cardiac_arrest_finding, {
@@ -457,7 +457,7 @@ describeParallel('triage/warning_signs', () => {
             'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
             'name': 'Clinical finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '410429000',
           },
         })
@@ -467,7 +467,7 @@ describeParallel('triage/warning_signs', () => {
             'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
             'name': 'Clinical finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '29857009',
           },
         })
@@ -775,7 +775,7 @@ describeParallel('triage/warning_signs', () => {
           root_snomed_concept: {
             snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
           },
-          finding_snomed_concept: {
+          specific_snomed_concept: {
             name: 'Pain of ear',
           },
           priority: 'Non-urgent',

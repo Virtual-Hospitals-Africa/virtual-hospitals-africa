@@ -19,6 +19,10 @@ import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
+import {
+  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+  QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
+} from '../../shared/patient_findings.ts'
 
 export const ALTERED_SNOMED_CONCEPT_ID = '18307000' as const
 export const ENTERED_IN_ERROR_SNOMED_CONCEPT_ID = '723510000' as const
@@ -56,7 +60,8 @@ function markInvalid(
         id,
         patient_id,
         patient_encounter_id,
-        snomed_concept_id,
+        root_snomed_concept_id: EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+        specific_snomed_concept_id: snomed_concept_id,
       })).with(
       'inserting_evaluation',
       (qb) =>
@@ -116,7 +121,7 @@ export function nowInvalidRecords(
       'now_invalid_patient_records.id',
     )
     .where(
-      'now_invalid_patient_records.snomed_concept_id',
+      'now_invalid_patient_records.specific_snomed_concept_id',
       'in',
       RECORD_NOW_INVALID_CONCEPT_ID,
     )
@@ -128,14 +133,19 @@ export function baseQuery(
 ) {
   return trx.selectFrom('patient_records')
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'patient_records.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_inferred_canonical_name_and_category as root_snomed_concept',
+      'patient_records.root_snomed_concept_id',
+      'root_snomed_concept.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category as specific_snomed_concept',
+      'patient_records.specific_snomed_concept_id',
+      'specific_snomed_concept.id',
     )
     .leftJoin(
-      'snomed_inferred_canonical_name_and_category as value_snomed_inferred_canonical_name_and_category',
+      'snomed_inferred_canonical_name_and_category as value_snomed_concept',
       'patient_records.value_snomed_concept_id',
-      'value_snomed_inferred_canonical_name_and_category.id',
+      'value_snomed_concept.id',
     )
     .leftJoin(
       'patient_events as maybe_events',
@@ -156,35 +166,77 @@ export function baseQuery(
       // Probably worth extracting another baseQuery
       jsonArrayFrom(
         eb.selectFrom('patient_evaluations')
-          .innerJoin('patient_records as evaluation_records', 'evaluation_records.id', 'patient_evaluations.id')
-          .innerJoin('snomed_inferred_canonical_name_and_category as evaluation_snomed_inferred_canonical_name_and_category', 'evaluation_snomed_inferred_canonical_name_and_category.id', 'evaluation_records.snomed_concept_id')
-          .whereRef('patient_evaluations.evaluates_record_id', '=', 'patient_records.id')
-          .select(eb_evaluations => [
+          .innerJoin(
+            'patient_records as evaluation_records',
+            'evaluation_records.id',
+            'patient_evaluations.id',
+          )
+          .innerJoin(
+            'snomed_inferred_canonical_name_and_category as evaluation_root_snomed_concept',
+            'evaluation_root_snomed_concept.id',
+            'evaluation_records.root_snomed_concept_id',
+          )
+          .innerJoin(
+            'snomed_inferred_canonical_name_and_category as evaluation_specific_snomed_concept',
+            'evaluation_specific_snomed_concept.id',
+            'evaluation_records.specific_snomed_concept_id',
+          )
+          .whereRef(
+            'patient_evaluations.evaluates_record_id',
+            '=',
+            'patient_records.id',
+          )
+          .select((eb_evaluations) => [
             'evaluation_records.id as record_id',
             'evaluation_records.patient_encounter_id',
             jsonBuildObject({
               snomed_concept_id: asText(
                 eb_evaluations,
-                'evaluation_snomed_inferred_canonical_name_and_category.id',
+                'evaluation_root_snomed_concept.id',
               ),
-              name: eb_evaluations.ref('evaluation_snomed_inferred_canonical_name_and_category.name'),
+              name: eb_evaluations.ref(
+                'evaluation_root_snomed_concept.name',
+              ),
               category: eb_evaluations.ref(
-                'evaluation_snomed_inferred_canonical_name_and_category.category',
+                'evaluation_root_snomed_concept.category',
               ),
             }).as('root_snomed_concept'),
-          ])
+            jsonBuildObject({
+              snomed_concept_id: asText(
+                eb_evaluations,
+                'evaluation_specific_snomed_concept.id',
+              ),
+              name: eb_evaluations.ref(
+                'evaluation_specific_snomed_concept.name',
+              ),
+              category: eb_evaluations.ref(
+                'evaluation_specific_snomed_concept.category',
+              ),
+            }).as('specific_snomed_concept'),
+          ]),
       ).as('evaluations'),
 
       jsonBuildObject({
         snomed_concept_id: asText(
           eb,
-          'snomed_inferred_canonical_name_and_category.id',
+          'root_snomed_concept.id',
         ),
-        name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
+        name: eb.ref('root_snomed_concept.name'),
         category: eb.ref(
-          'snomed_inferred_canonical_name_and_category.category',
+          'root_snomed_concept.category',
         ),
       }).as('root_snomed_concept'),
+
+      jsonBuildObject({
+        snomed_concept_id: asText(
+          eb,
+          'specific_snomed_concept.id',
+        ),
+        name: eb.ref('specific_snomed_concept.name'),
+        category: eb.ref(
+          'specific_snomed_concept.category',
+        ),
+      }).as('specific_snomed_concept'),
 
       eb.fn.coalesce(
         jsonBuildNullableObject(
@@ -193,14 +245,14 @@ export function baseQuery(
             type: literalString('snomed_concept' as const),
             snomed_concept_id: asText(
               eb,
-              'value_snomed_inferred_canonical_name_and_category.id',
+              'value_snomed_concept.id',
             ).$notNull(),
             name: eb.ref(
-              'value_snomed_inferred_canonical_name_and_category.name',
+              'value_snomed_concept.name',
             )
               .$notNull(),
             category: eb.ref(
-              'value_snomed_inferred_canonical_name_and_category.category',
+              'value_snomed_concept.category',
             ).$notNull(),
           },
         ),
@@ -227,12 +279,12 @@ export function baseQuery(
       //     type: literalString('snomed_concept' as const),
       //     snomed_concept_id: asText(
       //       eb,
-      //       'value_snomed_inferred_canonical_name_and_category.id',
+      //       'value_snomed_concept.id',
       //     ).$notNull(),
-      //     name: eb.ref('value_snomed_inferred_canonical_name_and_category.name')
+      //     name: eb.ref('value_snomed_concept.name')
       //       .$notNull(),
       //     category: eb.ref(
-      //       'value_snomed_inferred_canonical_name_and_category.category',
+      //       'value_snomed_concept.category',
       //     ).$notNull(),
       //   },
       // ).as('value_snomed_concept'),
@@ -251,8 +303,15 @@ export function baseQuery(
           )
           .select((eb_destination) => [
             'patient_record_relations.destination_id',
-            asText(eb_destination, 'relation_records.snomed_concept_id').as(
-              'snomed_concept_id',
+            asText(eb_destination, 'relation_records.root_snomed_concept_id')
+              .as(
+                'root_snomed_concept_id',
+              ),
+            asText(
+              eb_destination,
+              'relation_records.specific_snomed_concept_id',
+            ).as(
+              'specific_snomed_concept_id',
             ),
           ]),
       ).as('destination_relations'),
@@ -271,8 +330,11 @@ export function baseQuery(
           )
           .select((eb_source) => [
             'patient_record_relations.source_id',
-            asText(eb_source, 'relation_records.snomed_concept_id').as(
-              'snomed_concept_id',
+            asText(eb_source, 'relation_records.root_snomed_concept_id').as(
+              'root_snomed_concept_id',
+            ),
+            asText(eb_source, 'relation_records.specific_snomed_concept_id').as(
+              'specific_snomed_concept_id',
             ),
           ]),
       ).as('source_relations'),
@@ -340,7 +402,8 @@ type RecordInsert = {
   patient_id: string
   patient_encounter_id: string
   record_id?: string
-  snomed_concept: Lang['snomed_concept']
+  root_snomed_concept: Lang['snomed_concept']
+  specific_snomed_concept: Lang['snomed_concept']
   value_snomed_concept: Lang['snomed_concept'] | null
   qualifiers?: Lang['qualifier'][]
   attributes?: Lang['attribute'][]
@@ -355,7 +418,8 @@ export function baseInsert(
     patient_id,
     patient_encounter_id,
     record_id = generateUUID(),
-    snomed_concept,
+    root_snomed_concept,
+    specific_snomed_concept,
     value_snomed_concept,
     qualifiers = [],
   } = insert
@@ -368,7 +432,11 @@ export function baseInsert(
           id: record_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: snomedConceptBase(trx, snomed_concept),
+          root_snomed_concept_id: snomedConceptBase(trx, root_snomed_concept),
+          specific_snomed_concept_id: snomedConceptBase(
+            trx,
+            specific_snomed_concept,
+          ),
           value_snomed_concept_id: maybeSnomedConceptBase(
             trx,
             value_snomed_concept,
@@ -381,7 +449,7 @@ export function baseInsert(
     qualifier: Lang['qualifier'],
     qualifies_record_id: string,
   ) {
-    assertHasProperty(qualifier, 'snomed_concept')
+    assertHasProperty(qualifier, 'specific_snomed_concept')
     const qualifier_id = generateUUID()
     const id_token = qualifier_id.replaceAll('-', '_')
 
@@ -393,13 +461,10 @@ export function baseInsert(
             id: qualifier_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(
+            root_snomed_concept_id: QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
+            specific_snomed_concept_id: snomedConceptBase(
               trx,
-              qualifier.snomed_concept,
-            ),
-            value_snomed_concept_id: maybeSnomedConceptBase(
-              trx,
-              qualifier.value_snomed_concept,
+              qualifier.specific_snomed_concept,
             ),
           }),
     ).with(

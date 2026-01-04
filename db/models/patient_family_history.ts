@@ -90,14 +90,14 @@ export async function upsertOne(
     .map((member) => {
       const id = generateUUID()
       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
-      const finding_snomed_concept_id =
+      const specific_snomed_concept_id =
         SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
 
       return {
         id,
         patient_id,
         patient_encounter_id,
-        finding_snomed_concept_id,
+        specific_snomed_concept_id,
         procedure_id,
         patient_encounter_employee_id,
       }
@@ -140,7 +140,7 @@ export async function upsertOne(
           id: family_history_id,
           procedure_id,
           patient_encounter_employee_id,
-          finding_snomed_concept_id: snomed_concept_id,
+          specific_snomed_concept_id: snomed_concept_id,
         }))
     // TODO get this working again?
     // .with(

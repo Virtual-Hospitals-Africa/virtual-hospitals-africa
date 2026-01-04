@@ -42,7 +42,7 @@ export default function DatabaseDrivenCategoricalInput({
       <div className='min-w-60 max-w-60 flex items-center'>
         <SelectWithOptions
           id={name}
-          name={`${name}.finding_snomed_concept_id`}
+          name={`${name}.specific_snomed_concept_id`}
           label={null}
           required={assessment.required}
           options={options}

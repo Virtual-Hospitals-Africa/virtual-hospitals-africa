@@ -5,6 +5,7 @@ import {
 } from '../../types.ts'
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
 import DatabaseDrivenCategoricalInput from './DatabaseDrivenCategoricalInput.tsx'
+import { isAssessmentFor } from '../../shared/vitals.ts'
 
 export function VitalsMeasurementsForm({
   vital_measurements_for_this_encounter,
@@ -37,12 +38,14 @@ export function VitalsMeasurementsForm({
           </div>
           {triage_assessments.map((assessment) => (
             <DatabaseDrivenCategoricalInput
-              key={assessment.snomed_concept_id}
+              key={assessment.evaluation_snomed_concept_id}
               assessment={assessment}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.finding_snomed_concept.snomed_concept_id ===
-                    assessment.snomed_concept_id,
+                  isAssessmentFor(
+                    patient_vital,
+                    assessment.evaluation_snomed_concept_id,
+                  ),
               )}
               organization_id={organization_id}
             />
@@ -63,7 +66,7 @@ export function VitalsMeasurementsForm({
               vital={vital}
               most_recent_patient_finding={most_recent_patient_vitals.find(
                 (patient_vital) =>
-                  patient_vital.finding_snomed_concept.snomed_concept_id ===
+                  patient_vital.specific_snomed_concept.snomed_concept_id ===
                     vital.snomed_concept_id,
               )}
               organization_id={organization_id}

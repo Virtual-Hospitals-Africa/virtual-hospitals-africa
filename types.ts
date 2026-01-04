@@ -2475,7 +2475,6 @@ export type PatientMedicationUpsert = {
 }
 
 export type PatientSymptomInsertShared = {
-  snomed_concept_id: string
   severity: number
   start_date: string
   end_date?: Maybe<string>
@@ -2483,6 +2482,7 @@ export type PatientSymptomInsertShared = {
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
+  snomed_concept_id: string
   altered_patient_symptom_id?: string
   media?: {
     id: string
@@ -2493,7 +2493,6 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
-  & { id: string; name: string }
   & {
     media: {
       mime_type: string
@@ -3445,8 +3444,8 @@ export type RenderedRecordProvider = RenderedEmployee & {
 
 export type AsPartOfProcedure = {
   record_id: string
-  snomed_concept_id: string
-  name: string
+  root_snomed_concept: RenderedSnomedConcept
+  specific_snomed_concept: RenderedSnomedConcept
 }
 
 export type RenderedQualifierRelativeToHealthWorker = {
@@ -3471,7 +3470,8 @@ export type RenderedSnomedConcept = {
 }
 export type RenderedAttribute<Value> = {
   record_id: string
-  finding_snomed_concept: RenderedSnomedConcept
+  root_snomed_concept: RenderedSnomedConcept
+  specific_snomed_concept: RenderedSnomedConcept
   patient_encounter_employee_id: string
   procedure_id: string
   displays: RecordDisplays
@@ -3500,6 +3500,7 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
     record_id: string
     patient_encounter_id: string
     root_snomed_concept: RenderedSnomedConcept
+    specific_snomed_concept: RenderedSnomedConcept
     displays: RecordDisplays
     created_at: Date | string
     attributes: RenderedAttribute<RecordValueSnomedConcept>[]
@@ -3509,12 +3510,17 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
       record_id: string
       patient_encounter_id: string
       root_snomed_concept: RenderedSnomedConcept
+      specific_snomed_concept: RenderedSnomedConcept
     }[]
   }
 
 export type RenderedEvaluationEvaluatedBy =
   | { system: true }
-  | ({ system: false, provider: RenderedRecordProvider, as_part_of_procedure: AsPartOfProcedure })
+  | ({
+    system: false
+    provider: RenderedRecordProvider
+    as_part_of_procedure: AsPartOfProcedure
+  })
 
 export type RenderedEvaluationRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
@@ -3523,7 +3529,6 @@ export type RenderedEvaluationRelativeToHealthWorker =
 
 export type RenderedFindingRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'finding', {
-    finding_snomed_concept: RenderedSnomedConcept
     priority: Priority | null
     score: number | null
     provider: RenderedRecordProvider
@@ -3544,6 +3549,12 @@ export type WithTriageLevelFinding = NonNullableProperty<
   RenderedFindingRelativeToHealthWorker,
   'priority'
 >
+
+export type RenderedMeasurementRelativeToHealthWorker =
+  & RenderedFindingRelativeToHealthWorker
+  & {
+    value: RecordValueMeasurement
+  }
 
 export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker

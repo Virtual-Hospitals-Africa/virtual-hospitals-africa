@@ -13,6 +13,10 @@ import {
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'
+import {
+  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+  PROCEDURE_SNOMED_CONCEPT_ID,
+} from '../../shared/patient_findings.ts'
 
 export const NATIONAL_EARLY_WARNING_SCORE_SNOMED_CONCEPT_ID = '1287358002' // |National Early Warning Score (assessment scale)|
 export const SOUTH_AFRICA_SNOMED_CONCEPT_ID = '223549008' // |South Africa (geographic location)|
@@ -39,7 +43,8 @@ export function insertProcedure(
           id: triage_procedure_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: PROCEDURE_SNOMED_CONCEPT_ID,
+          specific_snomed_concept_id: TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID,
         }),
   ).with('inserting_procedure', (qb) =>
     qb.insertInto('patient_procedures')
@@ -90,7 +95,8 @@ export function insertLevel(
           id: triage_level_evaluation_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: PRIORITY_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+          specific_snomed_concept_id: PRIORITY_SNOMED_CONCEPT_ID,
           value_snomed_concept_id,
         }),
   ).with('inserting_evaluations', (qb) =>

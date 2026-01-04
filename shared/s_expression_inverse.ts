@@ -1,4 +1,4 @@
-import { assert } from 'node:console'
+import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from './s_expression_schemas.ts'
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
@@ -15,11 +15,11 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'finding': {
       const parts: string[] = ['finding']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
+      if (node.root_snomed_concept) {
+        parts.push(snomedConceptToString(node.root_snomed_concept))
       }
-      if (node.finding_snomed_concept) {
-        parts.push(snomedConceptToString(node.finding_snomed_concept))
+      if (node.specific_snomed_concept) {
+        parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
       if (node.value_snomed_concept) {
         parts.push(snomedConceptToString(node.value_snomed_concept))
@@ -31,36 +31,30 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'attribute': {
       return `(attribute ${
-        snomedConceptToString(node.finding_snomed_concept)
+        snomedConceptToString(node.specific_snomed_concept)
       } ${snomedConceptToString(node.value)})`
     }
 
     case 'event': {
       assert(!node.value.location, 'TODO support location')
       return `(event ${
-        snomedConceptToString(node.finding_snomed_concept)
+        snomedConceptToString(node.specific_snomed_concept)
       } "${node.value.datetime}")`
     }
 
     case 'qualifier': {
-      const parts: string[] = ['qualifier']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
-      }
-      if (node.value_snomed_concept) {
-        parts.push(snomedConceptToString(node.value_snomed_concept))
-      }
+      const parts: string[] = [
+        'qualifier',
+        snomedConceptToString(node.specific_snomed_concept),
+      ]
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
 
     case 'procedure': {
       const parts: string[] = ['procedure']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
-      }
-      if (node.value_snomed_concept) {
-        parts.push(snomedConceptToString(node.value_snomed_concept))
+      if (node.specific_snomed_concept) {
+        parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
@@ -68,8 +62,8 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'evaluation': {
       const parts: string[] = ['evaluation']
-      if (node.snomed_concept) {
-        parts.push(snomedConceptToString(node.snomed_concept))
+      if (node.root_snomed_concept) {
+        parts.push(snomedConceptToString(node.root_snomed_concept))
       }
       if (node.value_snomed_concept) {
         parts.push(snomedConceptToString(node.value_snomed_concept))

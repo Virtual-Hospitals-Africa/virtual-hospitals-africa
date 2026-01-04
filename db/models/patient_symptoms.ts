@@ -11,7 +11,8 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { markAltered, nowInvalidRecords } from './patient_records.ts'
+import { markAltered } from './patient_records.ts'
+import { patient_findings } from './patient_findings.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
@@ -62,7 +63,7 @@ export async function upsertOne(
       patient_encounter_id,
     )
     .where(
-      'patient_records.snomed_concept_id',
+      'patient_records.specific_snomed_concept_id',
       '=',
       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
     )
@@ -121,7 +122,7 @@ export async function upsertOne(
           id: symptom_id,
           procedure_id,
           patient_encounter_employee_id,
-          finding_snomed_concept_id: snomed_concept_id,
+          specific_snomed_concept_id: snomed_concept_id,
         })).with(
       'inserting_symptoms',
       (qb) =>
@@ -147,31 +148,13 @@ export function getEncounter(
     patient_encounter_id: string
   },
 ): Promise<RenderedPatientSymptom[]> {
-  return trx
-    .selectFrom('patient_records')
-    .innerJoin(
-      'patient_symptoms',
-      'patient_symptoms.id',
-      'patient_records.id',
-    )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'patient_records.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
-    )
+  return patient_findings.baseQuery(trx)
+    .innerJoin('patient_symptoms', 'patient_symptoms.id', 'patient_records.id')
     .where('patient_records.patient_id', '=', patient_id)
     .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
-    .where(
-      'patient_records.id',
-      'not in',
-      nowInvalidRecords(trx),
-    )
-    .selectAll('patient_records')
     .select((eb) => [
-      'patient_symptoms.id',
       'severity',
       'notes',
-      'snomed_inferred_canonical_name_and_category.name',
       isoDate(eb.ref('start_date')).as('start_date'),
       isoDate(eb.ref('end_date')).as('end_date'),
       jsonArrayFrom(

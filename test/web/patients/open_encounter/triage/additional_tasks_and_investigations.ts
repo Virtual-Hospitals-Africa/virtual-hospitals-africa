@@ -277,7 +277,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //         'destination_relations': [],
 //         'value_snomed_concept_id': null,
 //
-//         'finding_snomed_concept_id': '103228002',
+//         'specific_snomed_concept_id': '103228002',
 //         'finding_name': 'Hemoglobin saturation with oxygen',
 //         'value_display': '91%',
 //         'source_relations': [

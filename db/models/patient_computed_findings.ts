@@ -120,7 +120,7 @@ export function insertComputedFinding(
           id: computed_finding_id,
           patient_encounter_employee_id,
           procedure_id,
-          finding_snomed_concept_id: snomed_concept_id,
+          specific_snomed_concept_id: snomed_concept_id,
         }),
   ).with(
     'inserting_computed_finding',

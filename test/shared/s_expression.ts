@@ -12,8 +12,12 @@ describe('shared/s_expression.ts', () => {
     const finding = parseExpression('(finding 182899812 1219200912)')
     assertEquals(finding, {
       atom: 'finding',
-      snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812' },
-      finding_snomed_concept: {
+      root_snomed_concept: {
+        atom: 'snomed_concept',
+        type: 'id',
+        id: '182899812',
+      },
+      specific_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
         id: '1219200912',
@@ -31,8 +35,12 @@ describe('shared/s_expression.ts', () => {
     )
     assertEquals(finding, {
       atom: 'finding',
-      snomed_concept: { atom: 'snomed_concept', type: 'id', id: '182899812' },
-      finding_snomed_concept: {
+      root_snomed_concept: {
+        atom: 'snomed_concept',
+        type: 'id',
+        id: '182899812',
+      },
+      specific_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
         id: '1219200912',
@@ -42,8 +50,11 @@ describe('shared/s_expression.ts', () => {
       events: [],
       qualifiers: [{
         atom: 'qualifier',
-        snomed_concept: { atom: 'snomed_concept', type: 'id', id: '121277' },
-        value_snomed_concept: null,
+        specific_snomed_concept: {
+          atom: 'snomed_concept',
+          type: 'id',
+          id: '121277',
+        },
         qualifiers: [],
       }],
     })
@@ -52,7 +63,7 @@ describe('shared/s_expression.ts', () => {
   /**
    * finding: attribute
     relation: finding site
-    finding_snomed_concept_id: the actual finding site
+    specific_snomed_concept_id: the actual finding site
    */
   it('can parse a finding expression with attributes & snomed concepts', () => {
     const parsed = parseExpressionExpectingAtom(
@@ -65,12 +76,12 @@ describe('shared/s_expression.ts', () => {
 
     assertEquals(parsed, {
       'atom': 'finding',
-      'snomed_concept': {
+      'root_snomed_concept': {
         'atom': 'snomed_concept',
         'type': 'id',
         'id': '404684003',
       },
-      'finding_snomed_concept': {
+      'specific_snomed_concept': {
         'atom': 'snomed_concept',
         'name': 'Burn',
         'category': 'disorder',
@@ -82,7 +93,7 @@ describe('shared/s_expression.ts', () => {
       'attributes': [
         {
           'atom': 'attribute',
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'atom': 'snomed_concept',
             'name': 'Finding site',
             'category': 'attribute',

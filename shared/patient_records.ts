@@ -8,12 +8,10 @@ import {
 import compact from '../util/compact.ts'
 import { positive_decimal } from '../util/validators.ts'
 import isDate from '../util/isDate.ts'
-import { assert } from 'node:console'
-import omit from '../util/omit.ts'
 
 type DisplayableRecord = {
   root_snomed_concept: RenderedSnomedConcept
-  finding_snomed_concept?: Maybe<RenderedSnomedConcept>
+  specific_snomed_concept?: Maybe<RenderedSnomedConcept>
   value?: Maybe<RecordValue>
   prefixes?: DisplayableRecord[]
   // Attributes are not included as part of the display, but listed here for completeness
@@ -86,7 +84,7 @@ function includeRootSnomedConceptName(
 function buildDisplays(record: DisplayableRecord): RecordDisplays {
   const {
     root_snomed_concept,
-    finding_snomed_concept,
+    specific_snomed_concept,
     value,
     prefixes = [],
   } = record
@@ -95,7 +93,7 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
 
   const finding_display = compact([
     ...prefix_displays,
-    finding_snomed_concept?.name,
+    specific_snomed_concept?.name,
     includeRootSnomedConceptName(root_snomed_concept) &&
     root_snomed_concept.name,
   ]).join(' ')

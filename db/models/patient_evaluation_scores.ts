@@ -123,18 +123,18 @@ export const patient_evaluation_scores = base({
       (qb) =>
         baseQuery(qb)
           // The total score will be included also, so by joining with the findings we only get the score components
-          .innerJoin(
-            'patient_findings',
-            'patient_findings.id',
-            'patient_evaluations.evaluates_record_id',
-          )
+          // .innerJoin(
+          //   'patient_findings',
+          //   'patient_findings.id',
+          //   'patient_evaluations.evaluates_record_id',
+          // )
           .where(
             'patient_records.patient_encounter_id',
             '=',
             patient_encounter_id,
           )
           .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            sql`ROW_NUMBER() OVER (PARTITION BY patient_records.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
               .as('rank'),
           )
           .orderBy('patient_records.created_at', 'desc'),

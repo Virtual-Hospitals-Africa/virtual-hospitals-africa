@@ -274,7 +274,7 @@ describeParallel('triage/brief_history', () => {
             'events': [],
             'type': 'finding',
             'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'type': 'snomed_concept',
               'snomed_concept_id': '73211009',
               'name': 'Diabetes mellitus',
@@ -324,7 +324,7 @@ describeParallel('triage/brief_history', () => {
             'events': [],
             'type': 'finding',
             'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'type': 'snomed_concept',
               'snomed_concept_id': '77386006',
               'name': 'Pregnancy',
@@ -374,7 +374,7 @@ describeParallel('triage/brief_history', () => {
             'events': [],
             'type': 'finding',
             'patient_encounter_employee_id': z.string().uuid(),
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'type': 'snomed_concept',
               'snomed_concept_id': '363346000',
               'name': 'Malignant neoplastic disease',
@@ -419,7 +419,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Status',
             'category': 'attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '363346000',
             'name': 'Malignant neoplastic disease',
             'category': 'disorder',
@@ -479,7 +479,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Status',
             'category': 'attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
           },
@@ -930,7 +930,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Status',
             'category': 'attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
           },
@@ -1088,7 +1088,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Status',
             'category': 'attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '363346000',
             'name': 'Malignant neoplastic disease',
             'category': 'disorder',
@@ -1145,7 +1145,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Status',
             'category': 'attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '73211009',
             'name': 'Diabetes mellitus',
             'category': 'disorder',
@@ -1261,7 +1261,7 @@ describeParallel('triage/brief_history', () => {
             'snomed_concept_id': '261665006',
             'name': 'Unknown',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '77386006',
             'name': 'Pregnancy',
           },

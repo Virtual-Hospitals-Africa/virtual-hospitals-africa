@@ -6,7 +6,7 @@ type DiagnosisInsert = {
   patient_id: string
   patient_encounter_id: string
   employment_id: string
-  finding_snomed_concept_id: string
+  specific_snomed_concept_id: string
   evaluates_record_id: string
 }
 
@@ -18,7 +18,7 @@ export function insertOne(
     patient_id,
     patient_encounter_id,
     employment_id,
-    finding_snomed_concept_id,
+    specific_snomed_concept_id,
     evaluates_record_id,
   }: DiagnosisInsert,
 ) {
@@ -48,7 +48,7 @@ export function insertOne(
         qb.insertInto('patient_records')
           .values({
             id: qualifier_id,
-            snomed_concept_id: finding_snomed_concept_id,
+            snomed_concept_id: specific_snomed_concept_id,
             patient_id,
             patient_encounter_id,
           }),

@@ -2,7 +2,10 @@ import {
   AgeDetermination,
   NonEmptyArray,
   Priority,
+  RecordValue,
+  RecordValueMeasurement,
   ReferenceRangeX,
+  RenderedFindingRelativeToHealthWorker,
   Values,
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
@@ -51,7 +54,7 @@ export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
 export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS = {
   mobility_assessment: '430481008', // |Assessment of mobility (procedure)|
   consciousness: '1104441000000107', // |Alert Confusion Voice Pain Unresponsive scale score (observable entity)|
-  trauma_presence: '273884004' // |Trauma score (assessment scale)|',
+  trauma_presence: '273884004', // |Trauma score (assessment scale)|',
 }
 
 export const vitalMeasurementFromSnomedConceptId = memoize(
@@ -74,7 +77,9 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
 export const vitalAssessmentFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
-      const [vital, concept_id] of entries(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)
+      const [vital, concept_id] of entries(
+        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+      )
     ) {
       if (concept_id === snomed_concept_id) {
         return vital
@@ -89,7 +94,8 @@ export const vitalAssessmentFromSnomedConceptId = memoize(
 export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
 export type VitalMeasurement =
   keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
-export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
+export type VitalAssessment =
+  keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
@@ -361,7 +367,8 @@ export function measureVitalsInputDefinitions(
   ).map(([vital, options]) => ({
     vital,
     required: true,
-    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
+    evaluation_snomed_concept_id:
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
     options: options.filter((option) =>
       option.available_to_ages.includes(age_determination)
     ),
@@ -493,4 +500,68 @@ export function buildReferenceRanges(
     high: range.max === Infinity ? high_range_max : range.max,
     color: colorFromScoreComponent(range.score),
   }))
+}
+
+export function isMeasurement<
+  R extends {
+    value: null | RecordValue
+  },
+>(
+  record: R,
+): record is R & { value: RecordValueMeasurement } {
+  return !!record.value && record.value.type === 'measurement'
+}
+
+export function isAssessmentFor(
+  f: RenderedFindingRelativeToHealthWorker,
+  evaluation_snomed_concept_id: string,
+): boolean {
+  const has_matching_evaluation = f.evaluations.some((e) =>
+    e.root_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id
+  )
+  if (!has_matching_evaluation) return false
+
+  const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
+  const vital = vitalAssessmentFromSnomedConceptId(evaluation_snomed_concept_id)
+
+  const options = ASESSMENT_OPTIONS[vital]
+  const finding_matches = options.some((option) =>
+    option.snomed_concept_id === specific_snomed_concept_id
+  )
+  assert(
+    finding_matches,
+    `The evaluation was for ${vital}, but the finding ${specific_snomed_concept_id} was not a recognized option`,
+  )
+  return true
+}
+
+export function matchingAssessment(
+  f: RenderedFindingRelativeToHealthWorker,
+): null | {
+  vital: keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
+  evaluation_snomed_concept_id: string
+  specific_snomed_concept_id: string
+} {
+  for (
+    const [vital, evaluation_snomed_concept_id] of entries(
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+    )
+  ) {
+    for (const evaluation of f.evaluations) {
+      if (
+        evaluation.root_snomed_concept.snomed_concept_id ===
+          evaluation_snomed_concept_id
+      ) {
+        const specific_snomed_concept_id =
+          f.specific_snomed_concept.snomed_concept_id
+        return {
+          vital,
+          evaluation_snomed_concept_id,
+          specific_snomed_concept_id,
+        }
+      }
+    }
+  }
+
+  return null
 }

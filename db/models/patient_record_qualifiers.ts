@@ -1,5 +1,5 @@
 import { ATTRIBUTE_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
-import { Selecting, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
 
 // TODO: qualifiers might be entered by someone other than the person who initially created the finding
@@ -13,22 +13,37 @@ function baseInnerQuery(
       'qualifier_records.id',
     )
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'qualifier_records.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_inferred_canonical_name_and_category as root_snomed_concept',
+      'qualifier_records.root_snomed_concept_id',
+      'root_snomed_concept.id',
+    )
+    .innerJoin(
+      'snomed_inferred_canonical_name_and_category as specific_snomed_concept',
+      'qualifier_records.specific_snomed_concept_id',
+      'specific_snomed_concept.id',
     )
     .select((eb) => [
       'qualifier_records.id as record_id',
       jsonBuildObject({
         snomed_concept_id: asText(
           eb,
-          'snomed_inferred_canonical_name_and_category.id',
+          'root_snomed_concept.id',
         ),
-        name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
+        name: eb.ref('root_snomed_concept.name'),
         category: eb.ref(
-          'snomed_inferred_canonical_name_and_category.category',
+          'root_snomed_concept.category',
         ),
       }).as('root_snomed_concept'),
+      jsonBuildObject({
+        snomed_concept_id: asText(
+          eb,
+          'specific_snomed_concept.id',
+        ),
+        name: eb.ref('specific_snomed_concept.name'),
+        category: eb.ref(
+          'specific_snomed_concept.category',
+        ),
+      }).as('specific_snomed_concept'),
     ])
     .orderBy(
       'qualifier_records.created_at',
@@ -41,7 +56,7 @@ function baseQueryAttributeCommon(
 ) {
   return baseInnerQuery(trx)
     .where(
-      'qualifier_records.snomed_concept_id',
+      'qualifier_records.root_snomed_concept_id',
       '=',
       ATTRIBUTE_SNOMED_CONCEPT_ID,
     )
@@ -50,19 +65,9 @@ function baseQueryAttributeCommon(
       'qualifier_records.id',
       'attribute_patient_findings.id',
     )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category as finding_snomed_concept',
-      'attribute_patient_findings.finding_snomed_concept_id',
-      'finding_snomed_concept.id',
-    )
-    .select((eb) => [
+    .select([
       'attribute_patient_findings.patient_encounter_employee_id',
       'attribute_patient_findings.procedure_id',
-      jsonBuildObject({
-        snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
-        name: eb.ref('finding_snomed_concept.name'),
-        category: eb.ref('finding_snomed_concept.category'),
-      }).as('finding_snomed_concept'),
     ])
 }
 
@@ -76,14 +81,6 @@ export function baseQueryAttributeSnomedConcept(
       'qualifier_records.value_snomed_concept_id',
       'value_snomed_concept.id',
     )
-    .select((eb) => [
-      jsonBuildObject({
-        type: literalString('snomed_concept' as const),
-        snomed_concept_id: asText(eb, 'value_snomed_concept.id'),
-        name: eb.ref('value_snomed_concept.name'),
-        category: eb.ref('value_snomed_concept.category'),
-      }).as('value'),
-    ])
 }
 
 export function baseQueryAttributeEvent(
@@ -102,9 +99,6 @@ export function baseQueryAttributeEvent(
       }).as('value'),
     ])
 }
-export type AttributeValue =
-  | Selecting<ReturnType<typeof baseQueryAttributeSnomedConcept>>['value']
-  | Selecting<ReturnType<typeof baseQueryAttributeEvent>>['value']
 
 export function baseQueryPrefix(
   trx: TrxOrDbOrQueryCreator,

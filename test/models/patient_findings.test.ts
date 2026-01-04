@@ -100,7 +100,7 @@ describeParallel('db/models/patient_findings.ts', () => {
             'snomed_concept_id': '246061005',
             'name': 'Attribute',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '363698007',
             'name': 'Finding site',
             'category': 'attribute',
@@ -251,7 +251,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           'value': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
           'full': 'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
         },
-        'finding_snomed_concept': {
+        'specific_snomed_concept': {
           'snomed_concept_id': '263501003',
           'name': 'Time of onset',
           'category': 'observable entity',

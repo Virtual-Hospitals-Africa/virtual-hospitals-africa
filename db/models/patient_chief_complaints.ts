@@ -118,7 +118,7 @@ export async function upsertOne(
           id: chief_complaint_id,
           procedure_id,
           patient_encounter_employee_id,
-          finding_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+          specific_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
         }))
     .with(
       'inserting_chief_complaint',
@@ -154,7 +154,7 @@ export async function upsertOne(
               patient_encounter_employee_id,
               procedure_id,
               // TODO pick a better concept?
-              finding_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+              specific_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
             })
           : blankSelection(qb),
     )

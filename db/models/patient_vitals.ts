@@ -2,6 +2,7 @@
 import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
 import {
   RenderedFindingRelativeToHealthWorker,
+  RenderedMeasurementRelativeToHealthWorker,
   RenderedPatient,
   TrxOrDb,
   TrxOrDbOrQueryCreator,
@@ -9,41 +10,25 @@ import {
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
 import { IdSelection } from '../../types.ts'
-import {
-  asText,
-  jsonBuildNullableObject,
-  jsonObjectFrom,
-  literalString,
-} from '../helpers.ts'
+import { jsonObjectFrom } from '../helpers.ts'
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
 import * as patient_encounter_employees from './patient_encounter_employees.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+
 import { buildExpression } from './s_expression.ts'
 import { AnyNode } from '../../shared/s_expression_schemas.ts'
 import { base } from './_base.ts'
+import { promiseProps } from '../../util/promiseProps.ts'
+import { isMeasurement } from '../../shared/vitals.ts'
+import { assertArrayEmpty } from '../../util/arraySize.ts'
+import partition from '../../util/partition.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {
   return patient_findings.baseQuery(trx)
-    .leftJoin(
-      'patient_measurements',
-      'patient_findings.id',
-      'patient_measurements.id',
-    )
-    .select((eb) => [
-      jsonBuildNullableObject(
-        eb.ref('patient_measurements.id'),
-        {
-          type: literalString('measurement' as const),
-          value: asText(eb, 'patient_measurements.value').$notNull(),
-          units: eb.ref('patient_measurements.units').$notNull(),
-        },
-      ).as('value'),
-    ])
 }
 
 type VitalsSearch = {
@@ -65,13 +50,6 @@ export const patient_vitals = base({
     trx,
   ) {
     assert(!opts.search, 'TODO support')
-    if (opts.search) {
-      qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.name',
-        'ilike',
-        `%${opts.search}%`,
-      )
-    }
     if (opts.patient_id) {
       qb = qb.where(
         'patient_records.patient_id',
@@ -110,6 +88,37 @@ export const patient_vitals = base({
 
     return qb
   },
+  async getMostRecent(
+    trx: TrxOrDb,
+    {
+      measurement_snomed_concept_ids,
+      assessment_snomed_concept_ids,
+      ...args
+    }: {
+      health_worker_id: string
+      patient_id: string
+      patient_encounter_id?: string
+      excluding_patient_encounter_id?: string
+      measurement_snomed_concept_ids: string[]
+      assessment_snomed_concept_ids: string[]
+    },
+  ) {
+    const { measurements, assessments } = await promiseProps({
+      measurements: patient_vitals.getMostRecentMeasurements(trx, {
+        ...args,
+        snomed_concept_ids: measurement_snomed_concept_ids,
+      }),
+      assessments: patient_vitals.getMostRecentAssessments(trx, {
+        ...args,
+        snomed_concept_ids: assessment_snomed_concept_ids,
+      }),
+    })
+    return {
+      measurements,
+      assessments,
+      all: [...measurements, ...assessments],
+    }
+  },
   async getMostRecentMeasurements(
     trx: TrxOrDb,
     {
@@ -125,9 +134,12 @@ export const patient_vitals = base({
       excluding_patient_encounter_id?: string
       snomed_concept_ids: string[]
     },
-  ): Promise<RenderedFindingRelativeToHealthWorker[]> {
-
-    return (await getMostRecent()).map(formatRecord)
+  ): Promise<RenderedMeasurementRelativeToHealthWorker[]> {
+    const findings = await getMostRecent()
+    const formatted = findings.map(formatRecord)
+    const [measurements, rest] = partition(formatted, isMeasurement)
+    assertArrayEmpty(rest)
+    return measurements
 
     function getMostRecent() {
       return trx.with(
@@ -136,7 +148,7 @@ export const patient_vitals = base({
           baseQuery(qb)
             .where('patient_records.patient_id', '=', patient_id)
             .where(
-              'patient_findings.finding_snomed_concept_id',
+              'patient_records.specific_snomed_concept_id',
               'in',
               snomed_concept_ids!,
             )
@@ -153,14 +165,13 @@ export const patient_vitals = base({
                 excluding_patient_encounter_id!,
               ))
             .select(
-              sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              sql`ROW_NUMBER() OVER (PARTITION BY patient_records.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
                 .as('rank'),
             )
             .orderBy('patient_records.created_at', 'desc'),
       ).selectFrom('ranked_findings')
         .where('ranked_findings.rank', '=', 1)
         .selectAll('ranked_findings')
-        .select(sql<'manual'>`'manual'`.as('finding_type'))
         .select((eb) => [
           jsonObjectFrom(
             patient_encounter_employees.baseQuery(trx)
@@ -194,7 +205,6 @@ export const patient_vitals = base({
       snomed_concept_ids: string[]
     },
   ): Promise<RenderedFindingRelativeToHealthWorker[]> {
-
     return (await getMostRecent()).map(formatRecord)
 
     function getMostRecent() {
@@ -202,22 +212,21 @@ export const patient_vitals = base({
         'ranked_findings',
         (qb) =>
           baseQuery(qb)
+            .innerJoin(
+              'patient_evaluations',
+              'patient_evaluations.evaluates_record_id',
+              'patient_findings.id',
+            )
+            .innerJoin(
+              'patient_records as evaluation_records',
+              'evaluation_records.id',
+              'patient_evaluations.id',
+            )
             .where('patient_records.patient_id', '=', patient_id)
             .where(
-              'patient_findings.id',
+              'evaluation_records.specific_snomed_concept_id',
               'in',
-              trx.selectFrom('patient_evaluations')
-              .innerJoin(
-                'patient_records',
-                'patient_evaluations.id',
-                'patient_records.id',
-              )
-              .where(
-                'patient_records.snomed_concept_id',
-                'in',
-                snomed_concept_ids,
-              )
-              .select('patient_evaluations.evaluates_record_id'),
+              snomed_concept_ids,
             )
             .$if(!!patient_encounter_id, (qb) =>
               qb.where(
@@ -232,14 +241,13 @@ export const patient_vitals = base({
                 excluding_patient_encounter_id!,
               ))
             .select(
-              sql`ROW_NUMBER() OVER (PARTITION BY patient_findings.finding_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
                 .as('rank'),
             )
             .orderBy('patient_records.created_at', 'desc'),
       ).selectFrom('ranked_findings')
         .where('ranked_findings.rank', '=', 1)
         .selectAll('ranked_findings')
-        .select(sql<'manual'>`'manual'`.as('finding_type'))
         .select((eb) => [
           jsonObjectFrom(
             patient_encounter_employees.baseQuery(trx)

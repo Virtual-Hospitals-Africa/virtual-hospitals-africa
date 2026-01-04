@@ -46,7 +46,10 @@ import {
   VitalMeasurementFormInputDefition,
 } from '../../../../../../../../types.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../../../../shared/patient_findings.ts'
+import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+} from '../../../../../../../../shared/patient_findings.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -61,7 +64,7 @@ const TriageMeasureVitalsSchema = z.object({
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
     z.object({
-      finding_snomed_concept_id: snomed_concept_id,
+      specific_snomed_concept_id: snomed_concept_id,
     }).strict(),
   ).default({}),
 }).strict()
@@ -122,7 +125,9 @@ export const handler = postHandler(
             patient_id: ctx.state.patient.id,
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
-            snomed_concept_ids: Object.values(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS),
+            snomed_concept_ids: Object.values(
+              VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+            ),
           },
         ),
       previous_assessments_this_encounter: patient_vitals
@@ -132,7 +137,9 @@ export const handler = postHandler(
             patient_id: ctx.state.patient.id,
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
-            snomed_concept_ids: Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
+            snomed_concept_ids: Object.values(
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+            ),
           },
         ),
     })
@@ -149,7 +156,8 @@ export const handler = postHandler(
       }
 
       const measured_previously = previous_measurements_this_encounter.some(
-        (v) => v.finding_snomed_concept.snomed_concept_id === snomed_concept_id,
+        (v) =>
+          v.specific_snomed_concept.snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
         measured_previously,
@@ -166,12 +174,12 @@ export const handler = postHandler(
         const option_snomed_concept_ids = options.map((o) =>
           o.snomed_concept_id
         )
-        assert(form_input.finding_snomed_concept_id)
+        assert(form_input.specific_snomed_concept_id)
         assertOr400(
           option_snomed_concept_ids.includes(
-            form_input.finding_snomed_concept_id,
+            form_input.specific_snomed_concept_id,
           ),
-          `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.finding_snomed_concept_id}.`,
+          `Expected value_snomed_concept_id to be one of ${option_snomed_concept_ids}. Received ${form_input.specific_snomed_concept_id}.`,
         )
         continue
       }
@@ -220,7 +228,8 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.measurement_id,
-              evaluation: `(evaluation ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+              evaluation:
+                `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
             })
           }
         },
@@ -229,9 +238,9 @@ export const handler = postHandler(
         entries(form_values.assessments),
         async ([vital, assessment]) => {
           if (!assessment) return
-          assert(assessment.finding_snomed_concept_id)
+          assert(assessment.specific_snomed_concept_id)
           const finding = parseExpressionExpectingAtom(
-            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${assessment.finding_snomed_concept_id})`,
+            `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${assessment.specific_snomed_concept_id})`,
             'finding',
           )
           const result = await patient_findings.insertOneNested(trx, {
@@ -245,7 +254,7 @@ export const handler = postHandler(
           const score = getScoreForAssessment(
             age_determination,
             vital,
-            assessment.finding_snomed_concept_id,
+            assessment.specific_snomed_concept_id,
           )
           if (score != null) {
             const evaluation_snomed_concept_id =
@@ -257,7 +266,8 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.finding_id,
-              evaluation: `(evaluation ${evaluation_snomed_concept_id})`,
+              evaluation:
+                `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${evaluation_snomed_concept_id})`,
             })
           }
         },
@@ -308,7 +318,7 @@ export async function TriageMeasureVitalsPage(
       {
         patient_id: ctx.state.patient.id,
         health_worker_id: ctx.state.health_worker.id,
-        snomed_concept_ids: measurements.map((m) => m.snomed_concept_id)
+        snomed_concept_ids: measurements.map((m) => m.snomed_concept_id),
       },
     )
 
@@ -318,21 +328,21 @@ export async function TriageMeasureVitalsPage(
       {
         patient_id: ctx.state.patient.id,
         health_worker_id: ctx.state.health_worker.id,
-        snomed_concept_ids: assessments.map((m) => m.evaluation_snomed_concept_id)
+        snomed_concept_ids: assessments.map((m) =>
+          m.evaluation_snomed_concept_id
+        ),
       },
     )
 
-
-
   function notRequiredIfMeasurementAlreadyDoneThisEncounter<
-    Def extends VitalMeasurementFormInputDefition
+    Def extends VitalMeasurementFormInputDefition,
   >(
     def: Def,
   ): Def {
     if (!def.required) return def
     const already_done_this_encounter = most_recent_patient_measurements.some(
       (v) =>
-        v.finding_snomed_concept.snomed_concept_id === def.snomed_concept_id &&
+        v.specific_snomed_concept.snomed_concept_id === def.snomed_concept_id &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
     )
     return {
@@ -342,14 +352,17 @@ export async function TriageMeasureVitalsPage(
   }
 
   function notRequiredIfAssessmentAlreadyDoneThisEncounter<
-    Def extends VitalAssessmentFormInputDefition
+    Def extends VitalAssessmentFormInputDefition,
   >(
     def: Def,
   ): Def {
     if (!def.required) return def
     const already_done_this_encounter = most_recent_patient_assessments.some(
       (v) =>
-        v.evaluations.some(e => e.root_snomed_concept.snomed_concept_id === def.evaluation_snomed_concept_id) &&
+        v.evaluations.some((e) =>
+          e.root_snomed_concept.snomed_concept_id ===
+            def.evaluation_snomed_concept_id
+        ) &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
     )
     return {

@@ -435,7 +435,7 @@ describeParallel('triage/measure_vitals', () => {
         )
 
         const respiratory_rate_measurement = measurements.find((m) =>
-          m.finding_snomed_concept.snomed_concept_id ===
+          m.specific_snomed_concept.snomed_concept_id ===
             VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate
         )!
 
@@ -450,7 +450,7 @@ describeParallel('triage/measure_vitals', () => {
             'name': 'Measurement finding',
             'category': 'finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '86290005',
             'name': 'Respiratory rate',
             'category': 'observable entity',
@@ -502,7 +502,7 @@ describeParallel('triage/measure_vitals', () => {
               db,
               evaluates_record_id,
             )
-            return { finding_name: finding.finding_snomed_concept.name, score }
+            return { finding_name: finding.specific_snomed_concept.name, score }
           },
         )
 
@@ -627,7 +627,7 @@ describeParallel('triage/measure_vitals', () => {
               db,
               evaluates_record_id,
             )
-            return { finding_name: finding.finding_snomed_concept.name, score }
+            return { finding_name: finding.specific_snomed_concept.name, score }
           },
         )
 

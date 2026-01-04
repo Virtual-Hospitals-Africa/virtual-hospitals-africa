@@ -11,14 +11,13 @@ import {
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,
   triageLevelFromTEWSTotal,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   vitalAssessmentFromSnomedConceptId,
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import {
-  RecordValueMeasurement,
-  RenderedFindingRelativeToHealthWorker,
   TriageAssignPriorityTableVital,
   WithTriageLevelFinding,
 } from '../../../../../../../../types.ts'
@@ -39,6 +38,7 @@ import { patient_evaluation_scores } from '../../../../../../../../db/models/pat
 import sumBy from '../../../../../../../../util/sumBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
+import { intersection } from '../../../../../../../../util/intersection.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -116,12 +116,17 @@ async function sortedVitals(
 
   const age_determination = patientAgeDetermination(patient)
 
-  const vitals_this_encounter = await patient_vitals
+  const this_encounter_vitals = await patient_vitals
     .getMostRecent(trx, {
       health_worker_id,
       patient_id,
       patient_encounter_id,
-      snomed_concept_ids: ALL_VITAL_SNOMED_CONCEPT_IDS,
+      measurement_snomed_concept_ids: Object.values(
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+      ),
+      assessment_snomed_concept_ids: Object.values(
+        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+      ),
     })
 
   const previous_vitals = await patient_vitals
@@ -129,67 +134,58 @@ async function sortedVitals(
       health_worker_id,
       patient_id,
       excluding_patient_encounter_id: patient_encounter_id,
-      snomed_concept_ids: vitals_this_encounter.map((v) =>
-        v.finding_snomed_concept.snomed_concept_id
-      ),
+      measurement_snomed_concept_ids: this_encounter_vitals.measurements.map((
+        v,
+      ) => v.specific_snomed_concept.snomed_concept_id),
+      assessment_snomed_concept_ids: this_encounter_vitals.assessments.flatMap((
+        v,
+      ) => v.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id)),
     })
 
-  const unsorted_vitals = vitals_this_encounter.map(
-    (finding) => {
-      const previous =
-        previous_vitals.find((v) =>
-          v.finding_snomed_concept.snomed_concept_id ===
-            finding.finding_snomed_concept.snomed_concept_id
-        ) ?? null
+  const measurements_unsorted_with_reference_ranges = this_encounter_vitals
+    .measurements.map(
+      (finding) => {
+        const previous =
+          previous_vitals.measurements.find((m) =>
+            m.specific_snomed_concept.snomed_concept_id ===
+              finding.specific_snomed_concept.snomed_concept_id
+          ) ?? null
 
-      return {
-        finding,
-        previous,
-      }
-    },
-  )
+        return {
+          finding,
+          previous,
+          reference_ranges: buildReferenceRanges(
+            finding.specific_snomed_concept.snomed_concept_id,
+            age_determination,
+            compact([finding.value.value, previous?.value.value]),
+          ),
+        }
+      },
+    )
 
-  const [measurements_unsorted, assessments_unsorted] = partition(
-    unsorted_vitals,
-    function isMeasurement(r): r is {
-      finding: RenderedFindingRelativeToHealthWorker & {
-        value: RecordValueMeasurement
-      }
-      previous:
-        | null
-        | (RenderedFindingRelativeToHealthWorker & {
-          value: RecordValueMeasurement
-        })
-    } {
-      if (r.finding.value?.type !== 'measurement') return false
-      if (r.previous) {
-        assert(r.previous.value?.type === 'measurement')
-      }
-      return true
-    },
-  )
-
-  const measurements_unsorted_with_reference_ranges = measurements_unsorted.map(
-    (m) => ({
-      ...m,
-      reference_ranges: buildReferenceRanges(
-        m.finding.finding_snomed_concept.snomed_concept_id,
-        age_determination,
-        compact([m.finding.value.value, m.previous?.value.value]),
-      ),
-    }),
-  )
-
-  const assessments = sortBy(
-    assessments_unsorted,
-    (a) => -exists(a.finding.score),
+  const assessments_sorted = sortBy(
+    this_encounter_vitals.assessments,
+    (a) => -exists(a.score),
     (a) =>
       ASESSMENTS_ORDERED.indexOf(
         vitalAssessmentFromSnomedConceptId(
-          a.finding.finding_snomed_concept.snomed_concept_id,
+          a.specific_snomed_concept.snomed_concept_id,
         ),
       ),
-  )
+  ).map((finding) => {
+    const evaluation_snomed_concept_ids = intersection(
+      finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
+      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
+    )
+    const previous = previous_vitals.assessments.find((a) => {
+      a.evaluations.some((e) =>
+        evaluation_snomed_concept_ids.includes(
+          e.root_snomed_concept.snomed_concept_id,
+        )
+      )
+    }) ?? null
+    return { finding, previous }
+  })
 
   const [tews_measurements_unsorted, other_measurements_unsorted] = partition(
     measurements_unsorted_with_reference_ranges,
@@ -201,7 +197,7 @@ async function sortedVitals(
     (m) =>
       MEASUREMENTS_ORDERED.indexOf(
         vitalMeasurementFromSnomedConceptId(
-          m.finding.finding_snomed_concept.snomed_concept_id,
+          m.finding.specific_snomed_concept.snomed_concept_id,
         ),
       ),
   )
@@ -209,7 +205,7 @@ async function sortedVitals(
   const other_measurements = sortBy(
     other_measurements_unsorted,
     (m) =>
-      m.finding.finding_snomed_concept.snomed_concept_id ===
+      m.finding.specific_snomed_concept.snomed_concept_id ===
           VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic
         ? 0
         : 1,
@@ -218,7 +214,7 @@ async function sortedVitals(
   )
 
   return [
-    ...assessments,
+    ...assessments_sorted,
     ...tews_measurements,
     ...other_measurements,
   ]
