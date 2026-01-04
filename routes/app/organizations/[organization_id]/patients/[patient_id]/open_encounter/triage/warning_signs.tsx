@@ -30,6 +30,7 @@ import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import {
+  CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
   SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
 } from '../../../../../../../../shared/patient_findings.ts'
@@ -138,7 +139,8 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   ).join(' ')
 
   const s_expression = `
-    (and (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})
+    (and (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})
+             (finding ${CHIEF_COMPLAINT_SNOMED_CONCEPT_ID}))
          (not (finding (qualifier ${SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})))
          ${not_expressions})
   `
@@ -150,10 +152,10 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   })
 
   return other_clinical_findings.map((finding) => {
-    assert(
-      finding.root_snomed_concept.snomed_concept_id ===
-        CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-    )
+    // assert(
+    //   finding.root_snomed_concept.snomed_concept_id ===
+    //     CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+    // )
     assertArrayEmpty(finding.attributes)
 
     const presence: WarningSignPresence = finding.record_id

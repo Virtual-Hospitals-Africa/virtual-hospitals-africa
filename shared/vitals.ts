@@ -84,6 +84,11 @@ export const vitalAssessmentFromSnomedConceptId = memoize(
       if (concept_id === snomed_concept_id) {
         return vital
       }
+      for (const option of ASESSMENT_OPTIONS[vital]) {
+        if (option.snomed_concept_id === snomed_concept_id) {
+          return vital
+        }
+      }
     }
     throw new Error(
       `No vital assessment found for snomed_concept_id: ${snomed_concept_id}`,

@@ -241,7 +241,7 @@ export const patient_vitals = base({
                 excluding_patient_encounter_id!,
               ))
             .select(
-              sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
                 .as('rank'),
             )
             .orderBy('patient_records.created_at', 'desc'),

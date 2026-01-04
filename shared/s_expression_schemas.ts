@@ -470,7 +470,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             qualifiers: nodes,
           }
         },
-      )
+      ),
   }).transform(({ atom, args }) => ({
     atom,
     ...args,

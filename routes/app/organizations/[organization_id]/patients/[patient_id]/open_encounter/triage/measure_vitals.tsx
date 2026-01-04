@@ -285,7 +285,8 @@ export const handler = postHandler(
         patient_encounter_id,
         by_system: true,
         evaluates_record_id: procedure_id,
-        evaluation: `(evaluation ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+        evaluation:
+          `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
       },
     )
 
