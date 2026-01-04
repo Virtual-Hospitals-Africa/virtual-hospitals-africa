@@ -2,6 +2,7 @@ import {
   IntermediateBaseRecord,
   RecordDisplays,
   RenderedAttribute,
+  RenderedEvaluation,
   RenderedSnomedConcept,
 } from '../types.ts'
 import compact from '../util/compact.ts'
@@ -61,6 +62,8 @@ function valueDisplay(
       return value.name
     case 'measurement':
       return measurementValueDisplay(value)
+    case 'score':
+      return value.score
     default: {
       throw new Error(`Unexpected type in ${JSON.stringify(value)}`)
     }
@@ -75,6 +78,8 @@ function includeRootSnomedConceptName(
     case 'Event':
     case 'Measurement finding':
     case 'Clinical finding':
+    case 'Qualifier value':
+    case 'Evaluation - action':
       return false
     default:
       return true
@@ -118,22 +123,28 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
   }
 }
 
+/**
+ * The idea here is that the qualifiers (at this point all prefixes)
+ */
 function addDisplay<DR extends DisplayableRecord>(
   record: DR,
 ): Omit<DR, 'qualifiers'> & {
   displays: RecordDisplays
 } {
   return {
-    ...record,
+    ...omit(record, ['qualifiers']),
     displays: buildDisplays(record),
   }
 }
 
 export function formatRecord<
-  DR extends DisplayableRecord,
+  DR extends DisplayableRecord & {
+    evaluations: DisplayableRecord[]
+  },
 >(record: DR): Omit<DR, 'qualifiers'> & {
   displays: RecordDisplays
   attributes: RenderedAttribute[]
+  evaluations: RenderedEvaluation[]
 } {
   const [unformatted_attributes, prefixes] = partition(
     record.qualifiers || [],
@@ -149,9 +160,11 @@ export function formatRecord<
     ])
   })
 
+  const evaluations = record.evaluations.map(addDisplay)
+
   return {
-    ...omit(record, ['qualifiers']),
-    displays: buildDisplays({ ...record, qualifiers: prefixes }),
+    ...addDisplay({ ...record, qualifiers: prefixes }),
     attributes,
+    evaluations,
   }
 }

@@ -59,9 +59,9 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(form_values, {
           assessments: {
-            consciousness: { value_snomed_concept_id: null },
-            mobility_assessment: { value_snomed_concept_id: null },
-            trauma_presence: { value_snomed_concept_id: null },
+            consciousness: { specific_snomed_concept_id: null },
+            mobility_assessment: { specific_snomed_concept_id: null },
+            trauma_presence: { specific_snomed_concept_id: null },
           },
           measurements: {
             temperature: { value: null, units: '°C' },
@@ -74,11 +74,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(form_labels, {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { specific_snomed_concept_id: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              specific_snomed_concept_id: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { specific_snomed_concept_id: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -92,7 +92,7 @@ describeParallel('triage/measure_vitals', () => {
         assertEquals(form_options, {
           'assessments': {
             'consciousness': {
-              'value_snomed_concept_id': [
+              'specific_snomed_concept_id': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -126,7 +126,7 @@ describeParallel('triage/measure_vitals', () => {
               ],
             },
             'mobility_assessment': {
-              'value_snomed_concept_id': [
+              'specific_snomed_concept_id': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -150,7 +150,7 @@ describeParallel('triage/measure_vitals', () => {
               ],
             },
             'trauma_presence': {
-              'value_snomed_concept_id': [
+              'specific_snomed_concept_id': [
                 {
                   'label': 'Select...',
                   'value': '',
@@ -194,11 +194,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { specific_snomed_concept_id: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              specific_snomed_concept_id: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { specific_snomed_concept_id: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -233,11 +233,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { specific_snomed_concept_id: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              specific_snomed_concept_id: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { specific_snomed_concept_id: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -269,11 +269,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(getFormLabels($), {
           assessments: {
-            consciousness: { value_snomed_concept_id: 'Consciousness*' },
+            consciousness: { specific_snomed_concept_id: 'Consciousness*' },
             mobility_assessment: {
-              value_snomed_concept_id: 'Mobility Assessment*',
+              specific_snomed_concept_id: 'Mobility Assessment*',
             },
-            trauma_presence: { value_snomed_concept_id: 'Trauma Presence*' },
+            trauma_presence: { specific_snomed_concept_id: 'Trauma Presence*' },
           },
           measurements: {
             temperature: { value: 'Temperature*' },
@@ -330,19 +330,19 @@ describeParallel('triage/measure_vitals', () => {
               },
               assessments: {
                 mobility_assessment: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                     'mobility_assessment',
                     'Walking',
                   ),
                 },
                 consciousness: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                     'consciousness',
                     'Alert',
                   ),
                 },
                 trauma_presence: {
-                  value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                  specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                     'trauma_presence',
                     'No',
                   ),
@@ -402,19 +402,19 @@ describeParallel('triage/measure_vitals', () => {
             },
             assessments: {
               mobility_assessment: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                   'mobility_assessment',
                   'Walking',
                 ),
               },
               consciousness: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                   'consciousness',
                   'Alert',
                 ),
               },
               trauma_presence: {
-                value_snomed_concept_id: assessmentOptionSnomedConceptId(
+                specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                   'trauma_presence',
                   'No',
                 ),
@@ -596,7 +596,7 @@ describeParallel('triage/measure_vitals', () => {
               units: VITAL_MEASUREMENTS_UNITS[vital],
             })),
             assessments: mapEntries(assessment_values, (value, vital) => ({
-              value_snomed_concept_id: assessmentOptionSnomedConceptId(
+              specific_snomed_concept_id: assessmentOptionSnomedConceptId(
                 vital,
                 value,
               ),

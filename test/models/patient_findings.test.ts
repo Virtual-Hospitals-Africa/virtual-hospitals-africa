@@ -21,6 +21,7 @@ import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'
 import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import assertLength from '../../util/assertLength.ts'
 
 describeParallel('db/models/patient_findings.ts', () => {
   afterAll(() => db.destroy())
@@ -89,12 +90,14 @@ describeParallel('db/models/patient_findings.ts', () => {
 
       assertEquals(
         finding.displays.full,
-        'Burn Clinical finding',
+        'Burn',
       )
 
       assertMatches(finding.attributes, [
         {
           'record_id': z.string().uuid(),
+          'created_at': z.iso.datetime({ offset: true }),
+          'patient_encounter_id': z.string().uuid(),
           'root_snomed_concept': {
             'category': 'attribute',
             'snomed_concept_id': '246061005',
@@ -116,8 +119,6 @@ describeParallel('db/models/patient_findings.ts', () => {
             'value': 'Left upper arm structure',
             'full': 'Finding site: Left upper arm structure',
           },
-          'patient_encounter_employee_id': z.string().uuid(),
-          'procedure_id': z.string().uuid(),
         },
       ], { strict: true })
 
@@ -235,34 +236,33 @@ describeParallel('db/models/patient_findings.ts', () => {
 
     assertEquals(
       finding.displays.full,
-      'Common cold Clinical finding',
+      'Common cold',
     )
 
-    assertMatches(finding.attributes, [
-      {
-        'record_id': z.string().uuid(),
-        'root_snomed_concept': {
-          'category': 'attribute',
-          'snomed_concept_id': '246061005',
-          'name': 'Attribute',
-        },
-        'displays': {
-          'finding': 'Time of onset',
-          'value': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
-          'full': 'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
-        },
-        'specific_snomed_concept': {
-          'snomed_concept_id': '263501003',
-          'name': 'Time of onset',
-          'category': 'observable entity',
-        },
-        'patient_encounter_employee_id': z.string().uuid(),
-        'procedure_id': z.string().uuid(),
-        'value': {
-          'type': 'event',
-          'datetime': '2025-12-28T19:51:18.275-05:00',
-        },
+    assertLength(finding.attributes, 1)
+    assertMatches(finding.attributes[0], {
+      'record_id': z.string().uuid(),
+      'root_snomed_concept': {
+        'category': 'event',
+        'snomed_concept_id': '272379006',
+        'name': 'Event',
       },
-    ], { strict: true })
+      'displays': {
+        'finding': 'Time of onset',
+        'value': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
+        'full': 'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
+      },
+      'created_at': z.iso.datetime({ offset: true }),
+      'patient_encounter_id': z.string().uuid(),
+      'specific_snomed_concept': {
+        'snomed_concept_id': '263501003',
+        'name': 'Time of onset',
+        'category': 'observable entity',
+      },
+      'value': {
+        'type': 'event',
+        'datetime': '2025-12-28T19:51:18.275-05:00',
+      },
+    }, { strict: true })
   })
 })

@@ -332,11 +332,6 @@ const EXPRESSION_BUILDERS = {
       },
     })
       .innerJoin(
-        'patient_findings',
-        'patient_records.id',
-        'patient_findings.id',
-      )
-      .innerJoin(
         'patient_record_qualifiers',
         'patient_records.id',
         'patient_record_qualifiers.id',

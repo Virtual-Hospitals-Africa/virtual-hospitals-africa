@@ -235,10 +235,7 @@ type PatientRecordsSearch = {
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
-  formatResult: (intermediate_record) => {
-    intermediate_record.qualifiers[0]
-    return formatRecord(intermediate_record)
-  },
+  formatResult: formatRecord,
   baseInsert,
   handleSearch(
     qb,

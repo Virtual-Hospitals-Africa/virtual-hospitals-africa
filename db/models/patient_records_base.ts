@@ -146,6 +146,11 @@ export function nonGroupedBaseQuery(
       'patient_records.id',
       'maybe_measurements.id',
     )
+    .leftJoin(
+      'patient_evaluation_scores as maybe_scores',
+      'patient_records.id',
+      'maybe_scores.id',
+    )
     .select((eb) => [
       'patient_records.id as record_id',
       'patient_records.created_at',
@@ -203,6 +208,13 @@ export function nonGroupedBaseQuery(
             type: literalString('measurement' as const),
             value: asText(eb, 'maybe_measurements.value').$notNull(),
             units: eb.ref('maybe_measurements.units').$notNull(),
+          },
+        ),
+        jsonBuildNullableObject(
+          eb.ref('maybe_scores.id'),
+          {
+            type: literalString('score' as const),
+            score: asText(eb, 'maybe_scores.score').$notNull(),
           },
         ),
       ).as('value'),

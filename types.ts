@@ -2496,7 +2496,7 @@ export type RenderedPatientSymptom =
   & {
     id: string
     name: string
-    snomed_concept_id?: string
+    snomed_concept_id: string
     media: {
       mime_type: string
       url: string
@@ -3486,10 +3486,16 @@ export type RecordValueMeasurement = {
   units: string
 }
 
+export type RecordValueScore = {
+  type: 'score'
+  score: string
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
+  | RecordValueScore
 
 export type IntermediateBaseRecord = {
   record_id: string
@@ -3500,6 +3506,10 @@ export type IntermediateBaseRecord = {
   value: null | RecordValue
 }
 
+export type RenderedEvaluation = IntermediateBaseRecord & {
+  displays: RecordDisplays
+}
+
 export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
   & Rest
   & IntermediateBaseRecord
@@ -3507,7 +3517,11 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
     type: Type
     attributes: RenderedAttribute[]
     displays: RecordDisplays
-    evaluations: IntermediateBaseRecord[]
+    evaluations: Array<
+      IntermediateBaseRecord & {
+        displays: RecordDisplays
+      }
+    >
   }
 
 export type RenderedEvaluationEvaluatedBy =

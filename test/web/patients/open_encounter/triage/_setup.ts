@@ -38,7 +38,7 @@ export type TriageScenario = {
     }
     assessments: {
       [v in VitalAssessment]?: {
-        value_snomed_concept_id: string
+        specific_snomed_concept_id: string
       }
     }
   }

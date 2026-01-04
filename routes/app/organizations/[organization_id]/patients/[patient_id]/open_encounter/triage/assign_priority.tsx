@@ -165,6 +165,7 @@ async function sortedVitals(
 
   const assessments_sorted = sortBy(
     this_encounter_vitals.assessments,
+    // (a) =>
     (a) => -exists(a.score),
     (a) =>
       ASESSMENTS_ORDERED.indexOf(
@@ -245,6 +246,10 @@ export async function TriageAssignPriorityPage(
       ORDERED_PRIORITIES.indexOf(total_score.priority),
   )
 
+  with_triage_level_findings.forEach((f) => {
+    console.log(f)
+    console.log(f.evaluations[0])
+  })
   return (
     <TriageAssignPriorityTable
       with_triage_level_findings={with_triage_level_findings}

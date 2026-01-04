@@ -25,7 +25,6 @@ import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
 import {
-  CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
 } from '../../../../../shared/patient_findings.ts'
 
@@ -272,8 +271,16 @@ describeParallel('triage/warning_signs', () => {
             'patient_encounter_id': encounter.patient_encounter_id,
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '245581009',
-              'name': 'Emergency examination for triage',
+              'root_snomed_concept': {
+                'snomed_concept_id': '71388002',
+                'name': 'Procedure',
+                'category': 'procedure',
+              },
+              'specific_snomed_concept': {
+                'snomed_concept_id': '245581009',
+                'name': 'Emergency examination for triage',
+                'category': 'procedure',
+              },
             },
           },
         ])
@@ -348,30 +355,28 @@ describeParallel('triage/warning_signs', () => {
             },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '245581009',
-              'name': 'Emergency examination for triage',
+              'root_snomed_concept': {
+                'snomed_concept_id': '71388002',
+                'name': 'Procedure',
+                'category': 'procedure',
+              },
+              'specific_snomed_concept': {
+                'snomed_concept_id': '245581009',
+                'name': 'Emergency examination for triage',
+                'category': 'procedure',
+              },
             },
             'priority': 'Emergency',
             'score': null,
             'displays': {
-              'finding': 'Current Seizure Clinical finding',
-              'full': 'Current Seizure Clinical finding',
+              'finding': 'Current Qualifier value Seizure',
+              'full': 'Current Qualifier value Seizure',
               'value': null,
             },
             'destination_relations': [],
             'source_relations': [],
-            'prefixes': [
-              {
-                'record_id': z.string().uuid(),
-                'root_snomed_concept': {
-                  'snomed_concept_id': '15240007',
-                  'name': 'Current',
-                  'category': 'qualifier value',
-                },
-              },
-            ],
+            'evaluations': z.array(z.any()),
             'attributes': [],
-            'events': [],
           },
         ], { strict: true })
 
@@ -773,7 +778,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(finding, {
           root_snomed_concept: {
-            snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
+            snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
           },
           specific_snomed_concept: {
             name: 'Pain of ear',
