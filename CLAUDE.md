@@ -29,9 +29,6 @@ deno task check                    # Type check
 
 # Database
 deno task db:codegen               # Regenerate db.d.ts types
-
-# Environment (always use local!)
-deno task local <command>          # Run command against local env
 ```
 
 ## Key Points

@@ -16,7 +16,6 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { route } from '../../../../route.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../../../../db/models/patient_findings.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -25,6 +24,7 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
+import { CLINICAL_FINDING } from '../../../../../shared/snomed_concepts.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -261,23 +261,31 @@ describeParallel('triage/warning_signs', () => {
             'root_snomed_concept': {
               'name': 'Clinical finding',
               'category': 'finding',
-              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              'snomed_concept_id': CLINICAL_FINDING.id,
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'snomed_concept_id': '410429000',
             },
             'patient_encounter_id': encounter.patient_encounter_id,
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '245581009',
-              'name': 'Emergency examination for triage',
+              'root_snomed_concept': {
+                'snomed_concept_id': '71388002',
+                'name': 'Procedure',
+                'category': 'procedure',
+              },
+              'specific_snomed_concept': {
+                'snomed_concept_id': '245581009',
+                'name': 'Emergency examination for triage',
+                'category': 'procedure',
+              },
             },
           },
         ])
       },
     )
 
-    itParallel.only(
+    itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -330,7 +338,7 @@ describeParallel('triage/warning_signs', () => {
             'record_id': z.string().uuid(),
             'created_at': z.date(),
             'root_snomed_concept': {
-              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              'snomed_concept_id': CLINICAL_FINDING.id,
               'name': 'Clinical finding',
               'category': 'finding',
             },
@@ -338,37 +346,36 @@ describeParallel('triage/warning_signs', () => {
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
             'value': null,
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'snomed_concept_id': '91175000',
               'name': 'Seizure',
               'category': 'finding',
             },
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
-              'snomed_concept_id': '245581009',
-              'name': 'Emergency examination for triage',
+              'root_snomed_concept': {
+                'snomed_concept_id': '71388002',
+                'name': 'Procedure',
+                'category': 'procedure',
+              },
+              'specific_snomed_concept': {
+                'snomed_concept_id': '245581009',
+                'name': 'Emergency examination for triage',
+                'category': 'procedure',
+              },
             },
             'priority': 'Emergency',
             'score': null,
             'displays': {
-              'finding': 'Current Seizure Clinical finding',
-              'full': 'Current Seizure Clinical finding',
+              'finding': 'Current Seizure',
+              'full': 'Current Seizure',
               'value': null,
             },
+            'modifiers': z.array(z.any()),
             'destination_relations': [],
             'source_relations': [],
-            'prefixes': [
-              {
-                'record_id': z.string().uuid(),
-                'root_snomed_concept': {
-                  'snomed_concept_id': '15240007',
-                  'name': 'Current',
-                  'category': 'qualifier value',
-                },
-              },
-            ],
+            'evaluations': z.array(z.any()),
             'attributes': [],
-            'events': [],
           },
         ], { strict: true })
 
@@ -443,28 +450,28 @@ describeParallel('triage/warning_signs', () => {
 
         // Both should be Clinical findings with the appropriate qualifiers
         const cardiac_arrest_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept.snomed_concept_id === '410429000'
+          f.specific_snomed_concept.snomed_concept_id === '410429000'
         )
         const chest_pain_finding = this_patient_findings.find((f) =>
-          f.finding_snomed_concept.snomed_concept_id === '29857009'
+          f.specific_snomed_concept.snomed_concept_id === '29857009'
         )
 
         assertMatches(cardiac_arrest_finding, {
           'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'snomed_concept_id': CLINICAL_FINDING.id,
             'name': 'Clinical finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '410429000',
           },
         })
 
         assertMatches(chest_pain_finding, {
           'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'snomed_concept_id': CLINICAL_FINDING.id,
             'name': 'Clinical finding',
           },
-          'finding_snomed_concept': {
+          'specific_snomed_concept': {
             'snomed_concept_id': '29857009',
           },
         })
@@ -725,6 +732,89 @@ describeParallel('triage/warning_signs', () => {
           })
 
         assertEquals(findings_count_after_second_insertion, 2)
+      },
+    )
+
+    itParallel(
+      'saves findings other than warning signs (those selected via search)',
+      async () => {
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const [finding] = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        })
+
+        assertMatches(finding, {
+          root_snomed_concept: {
+            snomed_concept_id: CLINICAL_FINDING.id,
+          },
+          specific_snomed_concept: {
+            name: 'Pain of ear',
+          },
+          priority: 'Non-urgent',
+        })
+
+        const $ = await fetchCheerio(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
+
+        assertEquals(
+          $('#priority-grid-non-urgent').text(),
+          'Non-urgentPain of earfinding',
+        )
+
+        // Posting again has no effect
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const subsequent_findings = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+        })
+        assertLength(subsequent_findings, 1)
       },
     )
 

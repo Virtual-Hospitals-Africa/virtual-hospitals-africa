@@ -36,12 +36,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '79688008',
@@ -60,12 +60,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '91175000',
@@ -74,12 +74,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '15240007',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -95,12 +94,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '262582004',
@@ -119,12 +118,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '425082000',
@@ -143,12 +142,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '410429000',
@@ -167,12 +166,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '400209005',
@@ -191,12 +190,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '230690007',
@@ -215,12 +214,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '125666000',
@@ -229,12 +228,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '255593009',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -250,12 +248,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '267036007',
@@ -264,12 +262,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '24484000',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -285,12 +282,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '61372001',
@@ -309,12 +306,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '426284001',
@@ -333,12 +330,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '21631000119105',
@@ -358,12 +355,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '75478009',
@@ -382,12 +379,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '1149222004',
@@ -406,12 +403,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '66857006',
@@ -430,12 +427,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '231794000',
@@ -454,12 +451,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '29857009',
@@ -480,12 +477,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '87642003',
@@ -504,12 +501,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '267051003',
@@ -528,12 +525,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '283457003',
@@ -552,12 +549,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '52329006',
@@ -576,12 +573,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '417746004',
@@ -607,12 +604,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '21522001',
@@ -638,12 +635,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '131148009',
@@ -652,12 +649,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '19032002',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -673,12 +669,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '31758001',
@@ -697,12 +693,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '76948002',
@@ -721,12 +717,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '284549007',
@@ -735,12 +731,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '6736007',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -756,12 +751,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '131148009',
@@ -770,12 +765,11 @@ describe('shared/warning_signs.ts', () => {
             'qualifiers': [
               {
                 'atom': 'qualifier',
-                'snomed_concept': {
+                'specific_snomed_concept': {
                   'atom': 'snomed_concept',
                   'type': 'id',
                   'id': '31509003',
                 },
-                'value_snomed_concept': null,
                 'qualifiers': [],
               },
             ],
@@ -791,12 +785,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '827108008',
@@ -815,12 +809,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '263030002',
@@ -839,12 +833,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '423125000',
@@ -865,12 +859,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '125666000',
@@ -889,12 +883,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '21522001',
@@ -923,12 +917,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '196746003',
@@ -947,12 +941,12 @@ describe('shared/warning_signs.ts', () => {
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
-            'snomed_concept': {
+            'root_snomed_concept': {
               'atom': 'snomed_concept',
               'type': 'id',
               'id': '404684003',
             },
-            'finding_snomed_concept': {
+            'specific_snomed_concept': {
               'atom': 'snomed_concept',
               'name': 'Moderate pain',
               'category': 'finding',

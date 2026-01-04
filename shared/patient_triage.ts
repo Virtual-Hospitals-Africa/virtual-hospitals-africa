@@ -13,5 +13,3 @@ export function isPatientTriageStep(
 ): step is PatientTriageStep {
   return PATIENT_TRIAGE_STEPS.includes(step as unknown as PatientTriageStep)
 }
-
-export const TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID = '225390008'

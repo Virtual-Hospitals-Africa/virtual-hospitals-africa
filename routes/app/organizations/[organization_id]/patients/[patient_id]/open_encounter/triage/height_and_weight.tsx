@@ -73,7 +73,7 @@ export async function TriageHeightAndWeightPage(
   })
 
   const most_recent_patient_vitals = await patient_vitals
-    .getMostRecent(
+    .getMostRecentMeasurements(
       ctx.state.trx,
       {
         health_worker_id: ctx.state.health_worker.id,

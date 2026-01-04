@@ -14,7 +14,7 @@ import { parseRequestAsserts } from '../../../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
-import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
+// import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]
@@ -99,18 +99,19 @@ export default OpenEncounterWorkflowPage(
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
       employment_id: ctx.state.encounter_employee_presence.employee_id,
     })
-    const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
-      patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-      patient_id: ctx.state.encounter.patient.id,
-    })
-    const symptom_start_dates = symptoms.map((s) => s.start_date)
+    // const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
+    //   patient_encounter_id: ctx.state.encounter.patient_encounter_id,
+    //   patient_id: ctx.state.encounter.patient.id,
+    // })
+    // const symptom_start_dates = symptoms.map((s) => s.start_date)
 
-    let earliest_start_date: string | undefined
-    if (symptom_start_dates.length > 0) {
-      earliest_start_date = symptom_start_dates.reduce((earliest, current) => {
-        return current < earliest ? current : earliest
-      })
-    }
+    // let earliest_start_date: string | undefined
+    // if (symptom_start_dates.length > 0) {
+    //   earliest_start_date = symptom_start_dates.reduce((earliest, current) => {
+    //     return current < earliest ? current : earliest
+    //   })
+    // }
+    const earliest_start_date = undefined
 
     return (
       <FormSection header='Diagnoses'>

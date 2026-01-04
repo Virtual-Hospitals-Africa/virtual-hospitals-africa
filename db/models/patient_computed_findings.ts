@@ -19,7 +19,7 @@ import {
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   VITALS_COMPUTED_SNOMED_CONCEPT_IDS,
 } from '../../shared/vitals.ts'
-import { MEASUREMENT_FINDING_SNOMED_CONCEPT_ID } from './patient_measurements.ts'
+import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
 
 export type PatientComputedFinding = Selectable<DB['patient_computed_findings']>
 export type NewPatientComputedFinding = Insertable<
@@ -110,7 +110,8 @@ export function insertComputedFinding(
           id: computed_finding_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: MEASUREMENT_FINDING.id,
+          specific_snomed_concept_id: snomed_concept_id,
         }),
   ).with(
     'inserting_computed_finding_finding',
@@ -120,7 +121,6 @@ export function insertComputedFinding(
           id: computed_finding_id,
           patient_encounter_employee_id,
           procedure_id,
-          finding_snomed_concept_id: snomed_concept_id,
         }),
   ).with(
     'inserting_computed_finding',

@@ -7,12 +7,13 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { nowInvalidRecords, patient_records } from './patient_records.ts'
+import { patient_records } from './patient_records.ts'
 import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   buildExpression,
+  maybeSnomedConceptBase,
   satisfyingSExpression,
   snomedConceptBase,
 } from './s_expression.ts'
@@ -22,16 +23,14 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-
-export const YES_QUALIFIER_SNOMED_CONCEPT_ID = '373066001' // |Yes (qualifier value)|
-export const NO_QUALIFIER_SNOMED_CONCEPT_ID = '373067005' // |No (qualifier value)|
-export const UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '261665006' // |Unknown (qualifier value)|
-export const NO_KNOWN_QUALIFIER_SNOMED_CONCEPT_ID = '1381510001' // |No known (qualifier value)|
-export const ACTIVE_QUALIFIER_SNOMED_CONCEPT_ID = '55561003' // |Active (qualifier value)|
-export const STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID = '263490005'
-export const SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID = '1156040003' // |Self reported (qualifier value)|
-export const CLINICAL_FINDING_SNOMED_CONCEPT_ID = '404684003' // |Clinical finding (finding)|
-export const ATTRIBUTE_SNOMED_CONCEPT_ID = '246061005' // |Attribute (attribute)|
+import {
+  ATTRIBUTE,
+  EVENT,
+  NO_QUALIFIER,
+  UNKNOWN_QUALIFIER,
+  YES_QUALIFIER,
+} from '../../shared/snomed_concepts.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 
 type FindingInsert = {
   patient_id: string
@@ -61,35 +60,45 @@ export function baseQuery(
       'patient_procedure_records.id',
     )
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category as patient_procedure_snomed_inferred_canonical_name_and_category',
-      'patient_procedure_records.snomed_concept_id',
-      'patient_procedure_snomed_inferred_canonical_name_and_category.id',
+      'snomed_inferred_canonical_name_and_category as procedure_root_snomed_concept',
+      'patient_procedure_records.root_snomed_concept_id',
+      'procedure_root_snomed_concept.id',
     )
     .innerJoin(
-      'snomed_inferred_canonical_name_and_category as finding_snomed_concept',
-      'patient_findings.finding_snomed_concept_id',
-      'finding_snomed_concept.id',
+      'snomed_inferred_canonical_name_and_category as procedure_specific_snomed_concept',
+      'patient_procedure_records.specific_snomed_concept_id',
+      'procedure_specific_snomed_concept.id',
     )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
       'patient_findings.patient_encounter_employee_id',
 
       jsonBuildObject({
-        type: literalString('snomed_concept' as const),
-        snomed_concept_id: asText(eb, 'finding_snomed_concept.id'),
-        name: eb.ref('finding_snomed_concept.name'),
-        category: eb.ref('finding_snomed_concept.category'),
-      }).as('finding_snomed_concept'),
-
-      jsonBuildObject({
         record_id: eb.ref('patient_procedure_records.id'),
-        snomed_concept_id: asText(
-          eb,
-          'patient_procedure_records.snomed_concept_id',
-        ),
-        name: eb.ref(
-          'patient_procedure_snomed_inferred_canonical_name_and_category.name',
-        ),
+        root_snomed_concept: jsonBuildObject({
+          snomed_concept_id: asText(
+            eb,
+            'procedure_root_snomed_concept.id',
+          ),
+          name: eb.ref(
+            'procedure_root_snomed_concept.name',
+          ),
+          category: eb.ref(
+            'procedure_root_snomed_concept.category',
+          ),
+        }),
+        specific_snomed_concept: jsonBuildObject({
+          snomed_concept_id: asText(
+            eb,
+            'procedure_specific_snomed_concept.id',
+          ),
+          name: eb.ref(
+            'procedure_specific_snomed_concept.name',
+          ),
+          category: eb.ref(
+            'procedure_specific_snomed_concept.category',
+          ),
+        }),
       }).as('as_part_of_procedure'),
 
       eb.selectFrom('patient_triage_level')
@@ -233,8 +242,8 @@ export const patient_findings = base({
     }: FindingInsert,
   ) {
     const finding_node = asNode(finding, 'finding')
-    assertHasProperty(finding_node, 'snomed_concept')
-    assertHasProperty(finding_node, 'finding_snomed_concept')
+    assertHasProperty(finding_node, 'root_snomed_concept')
+    assertHasProperty(finding_node, 'specific_snomed_concept')
 
     const finding_id = generateUUID()
 
@@ -251,10 +260,6 @@ export const patient_findings = base({
         .values({
           id: finding_id,
           procedure_id,
-          finding_snomed_concept_id: snomedConceptBase(
-            trx,
-            finding_node.finding_snomed_concept,
-          ),
           patient_encounter_employee_id,
         }))
 
@@ -291,21 +296,12 @@ export const patient_findings = base({
               id: attribute_id,
               patient_id,
               patient_encounter_id,
-              snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
-              value_snomed_concept_id: snomedConceptBase(trx, value),
-            }),
-      ).with(
-        `inserting_attribute_finding_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_findings')
-            .values({
-              id: attribute_id,
-              procedure_id,
-              patient_encounter_employee_id,
-              finding_snomed_concept_id: snomedConceptBase(
+              root_snomed_concept_id: ATTRIBUTE.id,
+              specific_snomed_concept_id: snomedConceptBase(
                 trx,
-                attribute.finding_snomed_concept,
+                attribute.specific_snomed_concept,
               ),
+              value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
             }),
       ).with(
         `inserting_attribute_qualifier_${id_token}`,
@@ -334,21 +330,12 @@ export const patient_findings = base({
               id: event_id,
               patient_id,
               patient_encounter_id,
-              snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
-              value_snomed_concept_id: null,
-            }),
-      ).with(
-        `inserting_event_finding_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_findings')
-            .values({
-              id: event_id,
-              procedure_id,
-              patient_encounter_employee_id,
-              finding_snomed_concept_id: snomedConceptBase(
+              root_snomed_concept_id: EVENT.id,
+              specific_snomed_concept_id: snomedConceptBase(
                 trx,
-                event.finding_snomed_concept,
+                event.specific_snomed_concept,
               ),
+              value_snomed_concept_id: null,
             }),
       ).with(
         `inserting_event_qualifier_${id_token}`,
@@ -392,12 +379,9 @@ export const patient_findings = base({
 
     return patient_findings.insertOneNested(trx, insert)
   },
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-  SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
   QUALIFIERS_BY_EXISTENCE: {
-    Yes: YES_QUALIFIER_SNOMED_CONCEPT_ID,
-    No: NO_QUALIFIER_SNOMED_CONCEPT_ID,
-    Unknown: UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+    Yes: YES_QUALIFIER.id,
+    No: NO_QUALIFIER.id,
+    Unknown: UNKNOWN_QUALIFIER.id,
   },
 })

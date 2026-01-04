@@ -6,7 +6,7 @@ import {
 } from '../../types.ts'
 import {
   patient_findings,
-  // STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
+  // STATUS_ATTRIBUTE.id,
 } from './patient_findings.ts'
 import { patient_measurements } from './patient_measurements.ts'
 import { promiseProps } from '../../util/promiseProps.ts'

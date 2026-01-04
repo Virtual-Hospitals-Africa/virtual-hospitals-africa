@@ -39,7 +39,8 @@ function groupRecordsByWorkflows(
 }[] {
   const records_by_procedure = groupBy(
     this_visit_findings,
-    (record) => record.as_part_of_procedure.snomed_concept_id,
+    (record) =>
+      record.as_part_of_procedure.specific_snomed_concept.snomed_concept_id,
   )
 
   const grouped_records = compact(WORKFLOWS.map((workflow) => {
@@ -112,10 +113,10 @@ export function DrawerThisVisit(
   })
 
   return (
-    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-[368px]'>
-      <div className='content-stretch flex flex-col h-[46px] items-start justify-start relative shrink-0 w-full'>
-        <div className='box-border content-stretch flex gap-[16px] h-[46px] isolate items-center justify-start px-[16px] py-[8px] relative shrink-0 w-full'>
-          <h2 className="font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[22px] not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-[2]">
+    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-92'>
+      <div className='content-stretch flex flex-col h-11.5 items-start justify-start relative shrink-0 w-full'>
+        <div className='box-border content-stretch flex gap-4 h-11.5 isolate items-center justify-start px-4 py-2 relative shrink-0 w-full'>
+          <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-2">
             This Visit
           </h2>
         </div>
@@ -126,12 +127,12 @@ export function DrawerThisVisit(
           {workflow_group.steps.map((step) => (
             <div
               key={step.workflow_step}
-              className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-[368px]'
+              className='box-border content-stretch flex flex-col gap-2 items-start justify-start px-4 py-2 relative shrink-0 w-92'
             >
-              <div className='box-border content-stretch flex flex-col gap-[8px] items-start justify-start pb-[16px] pt-0 px-0 relative shrink-0 w-[342px]'>
-                <div className='content-stretch flex gap-[8px] items-center justify-center relative shrink-0'>
+              <div className='box-border content-stretch flex flex-col gap-2 items-start justify-start pb-4 pt-0 px-0 relative shrink-0 w-85.5'>
+                <div className='content-stretch flex gap-2 items-center justify-center relative shrink-0'>
                   <p
-                    className={`font-['Inter:Medium',_sans-serif] font-medium leading-[20px] not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
+                    className={`font-['Inter:Medium',sans-serif] font-medium leading-5 not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
                       step.status === 'completed'
                         ? 'text-gray-600'
                         : 'text-[#959ca9]'
@@ -141,8 +142,8 @@ export function DrawerThisVisit(
                   </p>
                   {step.status === 'in progress' && (
                     <div className='relative flex items-start justify-start content-stretch shrink-0'>
-                      <div className='box-border content-stretch flex gap-[8px] items-center justify-start px-0 py-[2px] relative rounded-[60px] shrink-0 w-[93px]'>
-                        <p className="font-['Inter:Medium_Italic',_sans-serif] font-medium italic leading-[16px] relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
+                      <div className='box-border content-stretch flex gap-2 items-center justify-start px-0 py-0.5 relative rounded-[60px] shrink-0 w-23.25'>
+                        <p className="font-['Inter:Medium_Italic',sans-serif] font-medium italic leading-4 relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
                           In Progress
                         </p>
                       </div>

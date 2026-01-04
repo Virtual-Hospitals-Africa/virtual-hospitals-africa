@@ -26,6 +26,7 @@ export function jsonSearchHandler<
 ) {
   return {
     GET(ctx: Ctx) {
+      console.log('mmmmmz')
       if (opts?.verbose) {
         console.log('Searching', {
           url: ctx.url,

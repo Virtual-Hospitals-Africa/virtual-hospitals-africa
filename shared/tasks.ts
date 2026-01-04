@@ -1,3 +1,4 @@
+import { PROCEDURE } from './snomed_concepts.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 
@@ -15,7 +16,7 @@ export const TASKS: Task[] = [
       `(
       task
         (< (measurement 103228002) (units 92 %))
-        (procedure 57485005)
+        (procedure ${PROCEDURE.id} 57485005)
     )`,
       'task',
     ),

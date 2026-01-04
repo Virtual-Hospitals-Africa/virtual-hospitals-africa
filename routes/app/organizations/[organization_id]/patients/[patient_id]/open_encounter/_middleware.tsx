@@ -66,6 +66,7 @@ import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
+import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -600,7 +601,7 @@ export function createProcedureIfNotAlreadyCompleted(
     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
     employment_id: ctx.state.encounter_employee_presence.employee_id,
     procedure: parseExpressionExpectingAtom(
-      `(procedure ${procedure_snomed_concept_id})`,
+      `(procedure ${PROCEDURE.id} ${procedure_snomed_concept_id})`,
       'procedure',
     ),
   })

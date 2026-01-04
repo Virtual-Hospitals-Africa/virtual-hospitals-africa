@@ -56,16 +56,13 @@ import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
 import { isEmployed } from './health_workers.ts'
-import makeAssertion from '../../util/makeAssertion.ts'
+import { makeAssertion } from '../../util/makeAssertion.ts'
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
-import {
-  isPriority,
-  PRIORITY_SNOMED_CODES,
-  PRIORITY_SNOMED_CONCEPT_ID,
-} from '../../shared/priorities.ts'
-import { nowInvalidRecords } from './patient_records.ts'
+import { isPriority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
+import { PRIORITY } from '../../shared/snomed_concepts.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -322,8 +319,8 @@ export function baseQuery(trx: TrxOrDb) {
           .select((eb_patient_triage_level) => [
             asText(
               eb_patient_triage_level,
-              'patient_records.snomed_concept_id',
-            ).as('snomed_concept_id'),
+              'patient_records.specific_snomed_concept_id',
+            ).as('specific_snomed_concept_id'),
             asText(
               eb_patient_triage_level,
               'patient_records.value_snomed_concept_id',
@@ -456,10 +453,10 @@ function asPriority(
   priority: IntermediatePatientEncounterResult['priority'],
 ): RenderedPatientEncounter['priority'] {
   if (!priority) return priority
-  console.log({ priority })
-  const { name, snomed_concept_id, value_snomed_concept_id, ...rest } = priority
+  const { name, specific_snomed_concept_id, value_snomed_concept_id, ...rest } =
+    priority
   assert(isPriority(name))
-  assertEquals(snomed_concept_id, PRIORITY_SNOMED_CONCEPT_ID)
+  assertEquals(specific_snomed_concept_id, PRIORITY.id)
   assert(value_snomed_concept_id)
   return { name, value_snomed_concept_id, ...rest }
 }

@@ -1,15 +1,8 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  asText,
-  jsonArrayFrom,
-  jsonBuildNullableObject,
-  jsonBuildObject,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { asText, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
-import * as patient_record_qualifiers from './patient_record_qualifiers.ts'
+import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import {
   buildExpression,
   maybeSnomedConceptBase,
@@ -19,155 +12,42 @@ import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-
-export const ALTERED_SNOMED_CONCEPT_ID = '18307000' as const
-export const ENTERED_IN_ERROR_SNOMED_CONCEPT_ID = '723510000' as const
-export const RECORD_NOW_INVALID_CONCEPT_ID = [
-  ALTERED_SNOMED_CONCEPT_ID,
-  ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,
-]
-
-export type RecordNowInvalidConceptId =
-  (typeof RECORD_NOW_INVALID_CONCEPT_ID)[number]
-
-function markInvalid(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    patient_encounter_id,
-    employment_id,
-    procedure_id,
-    altered_record_id,
-    snomed_concept_id,
-  }: {
-    patient_id: string
-    patient_encounter_id: string
-    employment_id: string
-    procedure_id: string
-    altered_record_id: string
-    snomed_concept_id: RecordNowInvalidConceptId
-  },
-) {
-  const id = generateUUID()
-
-  return trx.with('inserting_record', (qb) =>
-    qb.insertInto('patient_records')
-      .values({
-        id,
-        patient_id,
-        patient_encounter_id,
-        snomed_concept_id,
-      })).with(
-      'inserting_evaluation',
-      (qb) =>
-        qb.insertInto('patient_evaluations')
-          .values({
-            id,
-            employment_id,
-            procedure_id,
-            evaluates_record_id: altered_record_id,
-            by_system: false,
-          }),
-    ).selectNoFrom(success_true)
-    .executeTakeFirstOrThrow()
-}
-
-export function markAltered(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
-    patient_encounter_id: string
-    employment_id: string
-    procedure_id: string
-    altered_record_id: string
-  },
-) {
-  return markInvalid(trx, {
-    ...opts,
-    snomed_concept_id: ALTERED_SNOMED_CONCEPT_ID,
-  })
-}
-
-export function markEnteredInError(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
-    patient_encounter_id: string
-    employment_id: string
-    procedure_id: string
-    altered_record_id: string
-  },
-) {
-  return markInvalid(trx, {
-    ...opts,
-    snomed_concept_id: ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,
-  })
-}
-
-export function nowInvalidRecords(
-  trx: TrxOrDbOrQueryCreator,
-) {
-  return trx.selectFrom(
-    'patient_records as now_invalid_patient_records',
-  )
-    .innerJoin(
-      'patient_evaluations as now_invalid_patient_evaluations',
-      'now_invalid_patient_evaluations.id',
-      'now_invalid_patient_records.id',
-    )
-    .where(
-      'now_invalid_patient_records.snomed_concept_id',
-      'in',
-      RECORD_NOW_INVALID_CONCEPT_ID,
-    )
-    .select('now_invalid_patient_evaluations.evaluates_record_id')
-}
+import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
+import {
+  IntermediateBaseRecord,
+  nonGroupedBaseQuery,
+} from './patient_records_base.ts'
+import { sql } from 'kysely'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {
-  return trx.selectFrom('patient_records')
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'patient_records.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
-    )
-    .leftJoin(
-      'snomed_inferred_canonical_name_and_category as value_snomed_inferred_canonical_name_and_category',
-      'patient_records.value_snomed_concept_id',
-      'value_snomed_inferred_canonical_name_and_category.id',
-    )
+  return nonGroupedBaseQuery(trx)
     .select((eb) => [
-      'patient_records.id as record_id',
-      'patient_records.created_at',
-      'patient_records.patient_encounter_id',
-
-      jsonBuildObject({
-        snomed_concept_id: asText(
-          eb,
-          'snomed_inferred_canonical_name_and_category.id',
-        ),
-        name: eb.ref('snomed_inferred_canonical_name_and_category.name'),
-        category: eb.ref(
-          'snomed_inferred_canonical_name_and_category.category',
-        ),
-      }).as('root_snomed_concept'),
-
-      jsonBuildNullableObject(
-        eb.ref('patient_records.value_snomed_concept_id'),
-        {
-          type: literalString('snomed_concept' as const),
-          snomed_concept_id: asText(
-            eb,
-            'value_snomed_inferred_canonical_name_and_category.id',
-          ).$notNull(),
-          name: eb.ref('value_snomed_inferred_canonical_name_and_category.name')
-            .$notNull(),
-          category: eb.ref(
-            'value_snomed_inferred_canonical_name_and_category.category',
-          ).$notNull(),
-        },
-      ).as('value_snomed_concept'),
+      // TODO: we likely need the values here...
+      // Probably worth extracting another baseQuery
+      jsonArrayFrom(
+        trx.selectFrom(
+          nonGroupedBaseQuery(trx).as('evaluation_records'),
+        )
+          .innerJoin(
+            'patient_evaluations',
+            'evaluation_records.record_id',
+            'patient_evaluations.id',
+          )
+          .whereRef(
+            'patient_evaluations.evaluates_record_id',
+            '=',
+            eb.ref('patient_records.id'),
+          ).select([
+            'evaluation_records.record_id',
+            'evaluation_records.created_at',
+            'evaluation_records.patient_encounter_id',
+            'evaluation_records.root_snomed_concept',
+            'evaluation_records.specific_snomed_concept',
+            'evaluation_records.value',
+          ]),
+      ).as('evaluations'),
 
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')
@@ -183,8 +63,15 @@ export function baseQuery(
           )
           .select((eb_destination) => [
             'patient_record_relations.destination_id',
-            asText(eb_destination, 'relation_records.snomed_concept_id').as(
-              'snomed_concept_id',
+            asText(eb_destination, 'relation_records.root_snomed_concept_id')
+              .as(
+                'root_snomed_concept_id',
+              ),
+            asText(
+              eb_destination,
+              'relation_records.specific_snomed_concept_id',
+            ).as(
+              'specific_snomed_concept_id',
             ),
           ]),
       ).as('destination_relations'),
@@ -203,76 +90,74 @@ export function baseQuery(
           )
           .select((eb_source) => [
             'patient_record_relations.source_id',
-            asText(eb_source, 'relation_records.snomed_concept_id').as(
-              'snomed_concept_id',
+            asText(eb_source, 'relation_records.root_snomed_concept_id').as(
+              'root_snomed_concept_id',
+            ),
+            asText(eb_source, 'relation_records.specific_snomed_concept_id').as(
+              'specific_snomed_concept_id',
             ),
           ]),
       ).as('source_relations'),
+
       jsonArrayFrom(
-        patient_record_qualifiers.baseQueryPrefix(trx)
+        patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
           .where(
-            'patient_record_qualifiers.qualifies_record_id',
+            'qualifiers_1.qualifies_record_id',
             '=',
             eb.ref('patient_records.id'),
-          ),
-      ).as('prefixes'),
-      jsonArrayFrom(
-        patient_record_qualifiers.baseQueryAttributeSnomedConcept(trx)
-          .where(
-            'patient_record_qualifiers.qualifies_record_id',
-            '=',
-            eb.ref('patient_records.id'),
-          ),
-      ).as('attributes'),
-      jsonArrayFrom(
-        patient_record_qualifiers.baseQueryAttributeEvent(trx)
-          .where(
-            'patient_record_qualifiers.qualifies_record_id',
-            '=',
-            eb.ref('patient_records.id'),
-          ),
-      ).as('events'),
-      // Aliased base query idea
-      // https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/blob/a94d120fc459824516c14931ea2f8b4abcf27d9b/db/models/patient_record_qualifiers.ts
-      // jsonArrayFrom(
-      //   patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
-      //     .where(
-      //       'qualifiers_1.qualifies_record_id',
-      //       '=',
-      //       eb.ref('patient_records.id'),
-      //     )
-      //     .select((eb_qualifiers1) => [
-      //       jsonArrayFrom(
-      //         patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
-      //           .where(
-      //             'qualifiers_2.qualifies_record_id',
-      //             '=',
-      //             eb_qualifiers1.ref('qualifiers_1.record_id'),
-      //           )
-      //           .select((_eb_qualifiers2) => [
-      //             // At max depth, just return an empty array
-      //             sql<
-      //               RenderedQualifierRelativeToHealthWorker[]
-      //             >`ARRAY[]::int[]`.as(
-      //               'qualifiers',
-      //             ),
-      //           ]),
-      //       ).as('qualifiers'),
-      //     ]),
-      // ).as('qualifiers'),
+          )
+          .select((eb_qualifiers_1) => [
+            jsonArrayFrom(
+              patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
+                .where(
+                  'qualifiers_2.qualifies_record_id',
+                  '=',
+                  eb_qualifiers_1.ref('qualifiers_1.record_id'),
+                )
+                .select((eb_qualifiers_2) => [
+                  jsonArrayFrom(
+                    patient_record_qualifiers.baseQuery(
+                      trx,
+                      'qualifiers_3' as const,
+                    )
+                      .where(
+                        'qualifiers_3.qualifies_record_id',
+                        '=',
+                        eb_qualifiers_2.ref('qualifiers_2.record_id'),
+                      )
+                      .select((eb_qualifiers_3) => [
+                        jsonArrayFrom(
+                          patient_record_qualifiers.baseQuery(
+                            trx,
+                            'qualifiers_4' as const,
+                          )
+                            .where(
+                              'qualifiers_4.qualifies_record_id',
+                              '=',
+                              eb_qualifiers_3.ref('qualifiers_3.record_id'),
+                            )
+                            .select((_eb_qualifiers_4) => [
+                              // At max depth, just return an empty array, satisfying the typedefs
+                              sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
+                                'qualifiers',
+                              ),
+                            ]),
+                        ).as('qualifiers'),
+                      ]),
+                  ).as('qualifiers'),
+                ]),
+            ).as('qualifiers'),
+          ]),
+      ).as('qualifiers'),
     ])
-    .where(
-      'patient_records.id',
-      'not in',
-      nowInvalidRecords(trx),
-    )
 }
 
 type RecordInsert = {
   patient_id: string
   patient_encounter_id: string
   record_id?: string
-  snomed_concept: Lang['snomed_concept']
+  root_snomed_concept: Lang['snomed_concept']
+  specific_snomed_concept: Lang['snomed_concept']
   value_snomed_concept: Lang['snomed_concept'] | null
   qualifiers?: Lang['qualifier'][]
   attributes?: Lang['attribute'][]
@@ -287,7 +172,8 @@ export function baseInsert(
     patient_id,
     patient_encounter_id,
     record_id = generateUUID(),
-    snomed_concept,
+    root_snomed_concept,
+    specific_snomed_concept,
     value_snomed_concept,
     qualifiers = [],
   } = insert
@@ -300,7 +186,11 @@ export function baseInsert(
           id: record_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: snomedConceptBase(trx, snomed_concept),
+          root_snomed_concept_id: snomedConceptBase(trx, root_snomed_concept),
+          specific_snomed_concept_id: snomedConceptBase(
+            trx,
+            specific_snomed_concept,
+          ),
           value_snomed_concept_id: maybeSnomedConceptBase(
             trx,
             value_snomed_concept,
@@ -313,7 +203,7 @@ export function baseInsert(
     qualifier: Lang['qualifier'],
     qualifies_record_id: string,
   ) {
-    assertHasProperty(qualifier, 'snomed_concept')
+    assertHasProperty(qualifier, 'specific_snomed_concept')
     const qualifier_id = generateUUID()
     const id_token = qualifier_id.replaceAll('-', '_')
 
@@ -325,13 +215,10 @@ export function baseInsert(
             id: qualifier_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id: snomedConceptBase(
+            root_snomed_concept_id: QUALIFIER_VALUE.id,
+            specific_snomed_concept_id: snomedConceptBase(
               trx,
-              qualifier.snomed_concept,
-            ),
-            value_snomed_concept_id: maybeSnomedConceptBase(
-              trx,
-              qualifier.value_snomed_concept,
+              qualifier.specific_snomed_concept,
             ),
           }),
     ).with(
@@ -372,9 +259,7 @@ type PatientRecordsSearch = {
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
-  formatResult: (intermediate_record) => {
-    return formatRecord(intermediate_record)
-  },
+  formatResult: formatRecord,
   baseInsert,
   handleSearch(
     qb,
