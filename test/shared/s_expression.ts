@@ -1,11 +1,17 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
+  firstPass,
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { CLINICAL_FINDING } from '../../shared/patient_findings.ts'
+import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
+import {
+  evaluates,
+  evaluation,
+  finding,
+} from '../../shared/s_expression_schemas.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {
@@ -113,5 +119,30 @@ describe('shared/s_expression.ts', () => {
       inverseSExpression(parsed),
       `(finding ${CLINICAL_FINDING.id} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
     )
+  })
+
+  it('can parse bare evaluations', () => {
+    const parsed = parseExpression('(evaluation (evaluates (finding)))')
+    assertEquals(parsed, {
+      'atom': 'evaluation',
+      'root_snomed_concept': null,
+      'specific_snomed_concept': null,
+      'value_snomed_concept': null,
+      'qualifiers': [],
+      'evaluates': {
+        'atom': 'evaluates',
+        'expression': {
+          'atom': 'finding',
+          'root_snomed_concept': null,
+          'specific_snomed_concept': null,
+          'value_snomed_concept': null,
+          'qualifiers': [],
+          'attributes': [],
+          'events': [],
+        },
+      },
+      'attributes': [],
+      'events': [],
+    })
   })
 })

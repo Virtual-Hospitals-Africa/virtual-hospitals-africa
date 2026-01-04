@@ -74,27 +74,21 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
   },
 )
 
-export const vitalAssessmentFromSnomedConceptId = memoize(
-  (snomed_concept_id: string) => {
-    for (
-      const [vital, concept_id] of entries(
-        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
-      )
-    ) {
-      if (concept_id === snomed_concept_id) {
-        return vital
-      }
-      for (const option of ASESSMENT_OPTIONS[vital]) {
-        if (option.specific_snomed_concept_id === snomed_concept_id) {
-          return vital
-        }
-      }
+export function vitalAssessmentOrder(
+  f: RenderedFindingRelativeToHealthWorker,
+): number {
+  for (
+    const [i, evaluation_snomed_concept_id] of Object.values(
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+    ).entries()
+  ) {
+    if (isAssessmentFor(f, evaluation_snomed_concept_id)) {
+      return i
     }
-    throw new Error(
-      `No vital assessment found for snomed_concept_id: ${snomed_concept_id}`,
-    )
-  },
-)
+  }
+
+  throw new Error(`Finding not an assessment ${f.record_id}`)
+}
 
 export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_ZZ_IDS
 export type VitalMeasurement =
@@ -181,7 +175,7 @@ export function formatBloodPressureDisplay(
 type TEWSScore = 0 | 1 | 2 | 3
 
 function asSExpression(specific_snomed_concept_id: string) {
-  return `(finding ${CLINICAL_FINDING.id} ${specific_snomed_concept_id}`
+  return `(finding ${CLINICAL_FINDING.id} ${specific_snomed_concept_id})`
 }
 
 const normal_for_age = normalForm(`

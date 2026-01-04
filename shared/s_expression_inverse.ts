@@ -1,4 +1,7 @@
 import { AnyNode, Lang } from './s_expression_schemas.ts'
+import * as snomed_concepts from './snomed_concepts.ts'
+
+// function lookupSnomedConceptById(node: Lang['snomed_concept'])
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
   if (node.type === 'id') {

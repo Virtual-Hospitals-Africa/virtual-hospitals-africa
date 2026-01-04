@@ -284,7 +284,7 @@ const snomed_concept_or_attribute_or_event_or_qualifier_or_evaluates: z.ZodType<
 > = z.lazy(() =>
   z.union([
     snomed_concept,
-    attribute_or_event_or_qualifier,
+    attribute_or_event_or_qualifier_or_evaluates,
   ])
 ).describe('snomed_concept | attribute | event | qualifier | evaluates')
 

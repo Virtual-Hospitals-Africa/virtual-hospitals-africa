@@ -13,7 +13,7 @@ import {
   triageLevelFromTEWSTotal,
   VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
-  vitalAssessmentFromSnomedConceptId,
+  vitalAssessmentOrder,
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
@@ -165,14 +165,8 @@ async function sortedVitals(
 
   const assessments_sorted = sortBy(
     this_encounter_vitals.assessments,
-    // (a) =>
     (a) => -exists(a.score),
-    (a) =>
-      ASESSMENTS_ORDERED.indexOf(
-        vitalAssessmentFromSnomedConceptId(
-          a.specific_snomed_concept.snomed_concept_id,
-        ),
-      ),
+    vitalAssessmentOrder,
   ).map((finding) => {
     const evaluation_snomed_concept_ids = intersection(
       finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
